@@ -108,10 +108,6 @@ export default {
   width: 100%;
   text-align: center;
 }
-  
-  .main-section {
-    font-family: Averta,sans-serif;
-  }
 
   .header {
     text-align: center;
@@ -130,7 +126,7 @@ export default {
   }
 
   .input {
-    font-family: Averta,sans-serif;
+    /* font-family: Averta,sans-serif; */
     color: #1c252c;
     font-weight: normal;
     width: 100%;
@@ -147,13 +143,19 @@ export default {
   }
 
   .forgot-password {
-    font-family: Averta,sans-serif;
+    /* font-family: Averta,sans-serif; */
     font-size: 14px;
     line-height: 1.4;
     text-decoration: none;
     color: #136acd;
     font-weight: bold;
     cursor: pointer;
+  }
+
+  .input::placeholder {
+    font-style: italic;
+    color: #b2c2cd;
+    letter-spacing: 1.5px;
   }
 
   .f-password-div {
@@ -184,6 +186,7 @@ export default {
     appearance: none;
     font-weight: 400;
     font-size: 16px;
+    outline: none;
   }
 
   .input:focus {
@@ -191,13 +194,11 @@ export default {
   }
 
   
-.input:not(:focus) {
+/* .input:not(:focus) {
   font-style: italic;
    color: #b2c2cd;
-   font-family: Averta,sans-serif;
    letter-spacing: 1.5px;
-   
-}
+} */
 
 .or {
   display: flex;

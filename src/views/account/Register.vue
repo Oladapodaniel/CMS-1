@@ -139,10 +139,6 @@ export default {
 </script>
 
 <style scoped>
-.main-section {
-  font-family: Averta, sans-serif;
-}
-
 .logo-con {
   display: flex;
   margin-top: 42px 0;
@@ -181,7 +177,6 @@ export default {
 }
 
 .input {
-  font-family: Averta, sans-serif;
   color: #1c252c;
   font-weight: normal;
   width: 100%;
@@ -196,9 +191,14 @@ export default {
   border: 1px solid #b2c2cd;
   margin: 4px 0;
 }
+  .input::placeholder {
+    font-style: italic;
+    color: #b2c2cd;
+    letter-spacing: 1.5px;
+  }
 
 .forgot-password {
-  font-family: Averta, sans-serif;
+  /* font-family: Averta, sans-serif; */
   font-size: 14px;
   line-height: 1.4;
   text-decoration: none;
@@ -232,6 +232,11 @@ export default {
   appearance: none;
   font-weight: 400;
   font-size: 16px;
+  outline: none;
+}
+
+.sign-in-btn:hover {
+    cursor: pointer;
 }
 
 .input:focus {
@@ -241,7 +246,7 @@ export default {
 .input:not(:focus) {
   font-style: italic;
   color: #b2c2cd;
-  font-family: Averta, sans-serif;
+  /* font-family: Averta, sans-serif; */
   letter-spacing: 1.5px;
 }
 

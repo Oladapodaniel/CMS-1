@@ -77,16 +77,17 @@
 
               <div class="input-div">
                 <label class="mb-0">What's the membership size of your ministry?</label>
-                <input
+                <select name="" id="" class="input"
                   v-model="userDetails.churchSize"
-                  type="number"
-                  class="input"
-                  placeholder="Size of your church"
-                  required
-                />
+                >
+                    <option value="">Select ranges close to the church size </option>
+                    <option value="100">Between 1 - 100</option>
+                    <option value="1000">Between 100 - 1000</option>
+                    <option value="100000">Between 1000 - 100000</option>
+                </select>
               </div>
 
-              <button type="submit" class="submit-btn sign-in-btn get-started">
+              <button type="submit" class="submit-btn sign-in-btn get-started" :class="{'disabled': !isValid}" :disabled="!isValid">
                 Next
               </button>
             </form>
@@ -154,6 +155,10 @@ export default {
     churchName() {
         if (!this.userDetails.churchName) return "";
         return this.userDetails.churchName.length < 21 ? this.userDetails.churchName : this.userDetails.churchName.slice(0, 20) + "..."
+    },
+
+    isValid() {
+        return this.userDetails.firstName && this.userDetails.lastName && this.userDetails.phoneNumber && this.userDetails.churchName && this.userDetails.churchSize;
     }
   },
 
@@ -201,6 +206,7 @@ export default {
 
 #onboarding-form {
   width: 55%;
+  display:flex;
   padding: 10px;
   transition: all 0.7s ease-in-out;
 }
@@ -247,9 +253,23 @@ export default {
   margin: 4px 0;
 }
 
+option {
+    color: red;
+}
+
+.input::placeholder {
+    font-style: italic;
+    color: #b2c2cd;
+    letter-spacing: 1.5px;
+}
+
 .submit-btn {
   background: #136acd;
   outline: none;
+}
+
+.disabled {
+    background: rgb(141, 165, 238);
 }
 
 .submit-btn:hover {
@@ -277,13 +297,6 @@ export default {
   box-shadow: 0 0 0 3px rgba(19, 106, 205, 0.2);
 }
 
-.input:not(:focus) {
-  font-style: italic;
-  color: #b2c2cd;
-  font-family: Averta, sans-serif;
-  letter-spacing: 1.5px;
-}
-
 .name-input {
   display: flex;
   justify-content: space-between;
@@ -302,7 +315,7 @@ export default {
   width: 12%;
   min-width: 77px;
   max-width: 78px;
-  color: #b2c2cd;
+  color: #3e3e42;
 }
 
 .step {

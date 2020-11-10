@@ -33,7 +33,7 @@
               </div>
               <div class="link-n-icon">
                 <a href="" class="start-link">Send Email/SMS</a>
-                <p>></p>
+                <p><i class="fas fa-angle-right"></i></p>
               </div>
             </div>
 
@@ -43,7 +43,7 @@
               </div>
               <div class="link-n-icon">
                 <a href="" class="start-link">Add church members</a>
-                <p>></p>
+                <p><i class="fas fa-angle-right"></i></p>
               </div>
             </div>
 
@@ -53,7 +53,7 @@
               </div>
               <div class="link-n-icon">
                 <a href="" class="start-link">Add first timers</a>
-                <p>></p>
+                <p><i class="fas fa-angle-right"></i></p>
               </div>
             </div>
 
@@ -63,7 +63,7 @@
               </div>
               <div class="link-n-icon">
                 <a href="" class="start-link">Not sure yet</a>
-                <p>></p>
+                <p><i class="fas fa-angle-right"></i></p>
               </div>
             </div>
           </div>
@@ -89,7 +89,7 @@ export default {
 
   methods: {
     startPointSelected() {
-      this.processing = !this.processing;
+      // this.processing = !this.processing;
       this.onboardUser();
     },
 
@@ -99,10 +99,10 @@ export default {
         .post("/api/account/onboarding", userData)
         .then((res) => {
           console.log(res);
-          this.$router.push("/next");
+          this.$router.push("/processing");
         })
         .catch((err) => {
-          this.$router.push("/next")
+          this.$router.push("/processing")
         });
     },
 
@@ -186,12 +186,16 @@ export default {
 }
 
 .step-count {
-  margin: 40px 0;
+  margin: 30px 0;
+}
+
+.step-count h3 {
+  font-size: 16px;
 }
 
 .more-later {
   text-align: center;
-  color: #d1f8fa;
+  color: #fff;
   margin: 16px 0;
   font-weight: bold;
 }
@@ -201,6 +205,10 @@ export default {
   font-weight: bold;
 }
 
+.start-text h2 {
+  font-size: 30px;
+}
+
 .all-options {
   display: flex;
   flex-direction: column;
@@ -208,7 +216,7 @@ export default {
   flex-wrap: wrap;
   align-items: center;
   max-width: 407px;
-  margin: auto;
+  margin: 34px auto;
 }
 
 .options-container {
@@ -219,7 +227,7 @@ export default {
   display: flex;
   align-items: center;
   justify-self: center;
-  width: 77%;
+  width: 97%;
   text-align: center;
   padding: 10px;
   margin-top: 8px;
@@ -264,7 +272,6 @@ export default {
   font-weight: 900;
   padding: 0 1rem;
   text-decoration: none;
-  font-size: large;
   color: #215fc4;
 }
 
@@ -275,6 +282,11 @@ export default {
     height: 100%;
     display: flex;
     align-items: center;
+}
+
+.fa-angle-right {
+  font-size: 25px;
+  color: #707070;
 }
 
 @media screen and (max-width: 990px) {
@@ -330,6 +342,10 @@ export default {
 
   .box2 {
     transform: translateX(-127%);
+  }
+
+  .all-options {
+    max-width: 330px;
   }
 }
 </style>
