@@ -27,9 +27,9 @@
           </div>
 
           <div class="all-options">
-            <div class="start-option" @click.once="startPointSelected">
+            <div class="start-option">
               <div class="icon">
-                <img class="link-icon" src="../../assets/sms-email.svg" alt="">
+                <img class="link-icon" src="../../assets/sms-email.svg" alt="Sms Icon">
               </div>
               <div class="link-n-icon">
                 <a href="" class="start-link">Send Email/SMS</a>
@@ -37,9 +37,9 @@
               </div>
             </div>
 
-            <div class="start-option">
+            <div class="start-option" @click.once="startPointSelected('/people/import')">
               <div class="icon">
-                <img class="link-icon link-icon-no-bg" src="../../assets/add-member.svg" alt="">
+                <img class="link-icon link-icon-no-bg" src="../../assets/add-member.svg" alt="Add member Icon">
               </div>
               <div class="link-n-icon">
                 <a href="" class="start-link">Add church members</a>
@@ -47,9 +47,9 @@
               </div>
             </div>
 
-            <div class="start-option">
+            <div class="start-option" @click.once="startPointSelected('/people/import')">
               <div class="icon">
-                <img class="link-icon" src="../../assets/first-timers.svg" alt="">
+                <img class="link-icon" src="../../assets/first-timers.svg" alt="First Timers Icon">
               </div>
               <div class="link-n-icon">
                 <a href="" class="start-link">Add first timers</a>
@@ -57,9 +57,9 @@
               </div>
             </div>
 
-            <div class="start-option">
+            <div class="start-option" @click.once="startPointSelected('/next')">
               <div class="icon">
-                <img class="link-icon" src="../../assets/not-sure.svg" alt="">
+                <img class="link-icon" src="../../assets/not-sure.svg" alt="Question Icon">
               </div>
               <div class="link-n-icon">
                 <a href="" class="start-link">Not sure yet</a>
@@ -79,6 +79,10 @@
 <script>
 import axios from "axios";
 export default {
+  // beforeRouteLeave() {
+  //   this.$store.dispatch("setUserUp", false);
+  // },
+
   data() {
     return {
       processing: false,
@@ -88,21 +92,22 @@ export default {
   },
 
   methods: {
-    startPointSelected() {
+    startPointSelected(url) {
       // this.processing = !this.processing;
-      this.onboardUser();
+      this.onboardUser(url);
     },
 
-    onboardUser() {
+    onboardUser(url) {
       const userData = this.$store.getters.onboardingData;
       axios
-        .post("/api/account/onboarding", userData)
+        .post("/api/onboarding", userData)
         .then((res) => {
-          console.log(res);
+          this.$store.dispatch("setStartPoint", url)
           this.$router.push("/processing");
         })
         .catch((err) => {
-          this.$router.push("/processing")
+          console.log(err.response);
+          alert("Error occurred")
         });
     },
 
@@ -112,12 +117,14 @@ export default {
   },
 
   created() {
-    console.log(window.innerWidth, "width");
+    console.log("starting point");
+    if (!this.$store.getters.onboardingData.firstName) return this.$router.push("/onboarding");
     this.name = this.$store.getters.onboardingData.firstName;
-    console.log(this.$store.getters.onboardingData);
+    console.log(this.$store.getters.onboardingData, "onboarding data");
   },
 
   mounted() {
+    this.$store.dispatch("setUserUp", true);
     this.$nextTick(() => {
       window.addEventListener('resize', this.onResize);
     })

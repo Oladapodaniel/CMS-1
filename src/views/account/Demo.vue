@@ -9,16 +9,16 @@
       </div>
 
       <div class="form-container">
-        <div class="error-div" v-if="state.showError">
-              <p class="error-message">{{ state.errorMessage }}</p>
+        <div class="error-div" v-if="showError">
+              <p class="error-message">{{ errorMessage }}</p>
           </div>
 
         <form action="">
           <div>
-            <input type="text" v-model="state.credentials.userName" class="input" placeholder="Email" required/>
+            <input type="text" v-model="credentials.email" class="input" placeholder="Email" required/>
           </div>
           <div>
-            <input class="input" v-model="state.credentials.password" type="password" placeholder="Password" required/>
+            <input class="input" v-model="credentials.password" type="password" placeholder="Password" required/>
           </div>
           <div class="f-password-div">
             <router-link to="/forgot-password" class="forgot-password">Forgot it?</router-link>
@@ -58,52 +58,45 @@
 
 <script>
 import axios from 'axios';
-import { reactive } from 'vue';
-import store from '../../store/index'
-import router from '../../router/index'
-
 export default {
     setup() {
-      const state = reactive({
-        passwordType: 'password',
-        credentials: { },
-        showError: false,
-        errorMessage: "",
-      });
-      // NProgress.start()
-
-      const login = async (e) => {
-        e.preventDefault();
-        localStorage.setItem("email", state.credentials.userName)
-        // store.dispatch("setUserEmail", state.credentials.userName);
-        // store.dispatch("setUserEmail", credentials.email)
-        try {
-          const res = await axios.post("/login", state.credentials)
-          const { data } = res;
-          console.log(data);
-          store.dispatch("setUserData", data);
-          localStorage.setItem("token", data.token);
-          router.push("/next")
-        } catch (err) { 
-          console.log(err.response);
-            const { status } = err.response;
-            const { message } = err.response.data;
-
-            if (status == 400 && message === "Onboard: false")
-            {
-              console.log("redirecting");
-              router.push('/onboarding');
-            } else {
-              state.errorMessage = err.response.data.message;
-              state.showError = true;
-            }
+      
+    },
+    data() {
+        return {
+            passwordType: 'password',
+            credentials: { },
+            showError: false,
+            errorMessage: "",
         }
-      }
+    },
 
-      return {
-        state,
-        login
-      };
+    methods: {
+      login(e) {
+        e.preventDefault();
+        console.log(this.credentials.email);
+        this.$store.state.userEmail = this.credentials.email
+        // this.$store.dispatch("setUserEmail", this.credentials.email)
+        axios.post("/api/account/login", this.credentials)
+          .then(res => {
+            console.log(res);
+            this.$store.dispatch("setUserData", res.data);
+            localStorage.setItem("token", res.data.accessToken);
+            this.$router.push("/next")
+          })
+          .catch(err => {
+            const { status } = err.response;
+            const { onboarding } = err.response.data;
+
+            if (status == 400 && !onboarding)
+            {
+              this.$router.push('/onboarding');
+            } else {
+              this.errorMessage = err.response.data;
+              this.showError = true;
+            }
+          })
+      }
     }
 };
 </script>

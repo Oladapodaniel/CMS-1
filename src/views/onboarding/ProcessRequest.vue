@@ -30,27 +30,66 @@
 </template>
 
 <script>
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+import store from "@/store/index"
+import router from "@/router/index"
+
 export default {
-    data() {
-        return {
-            processing: false,
-        }
+    beforeRouteEnter(to, from, next) {
+        if (store.getters.settingUserUp) return next(true);
+        return next("/next")
     },
 
-    methods: {
-        test() {
-            this.processing = !this.processing
-        }
-    },
+    setup() {
+        onMounted(() => {
+            console.log(store.getters.userStartPoint, "user p");
+            const url = store.getters.userStartPoint;
+            console.log(url, "start");
+            setTimeout(() => {
+                toggleProcessing()
+            }, 200);
+            setTimeout(() => {
+                if (url) router.push(url)
+                else router.push("/next")
+            }, 3000);
+        })
 
-    mounted() {
-        setTimeout(() => {
-            this.test()
-        }, 200);
-        setTimeout(() => {
-            this.$router.push("/next")
-        }, 3000);
+        onBeforeUnmount(() => {
+            store.dispatch("setUserUp", false);
+        })
+
+        const processing = ref(false)
+        const toggleProcessing = () => {
+            processing.value = !processing.value;
+        }
+
+        return { processing }
     }
+
+    // data() {
+    //     return {
+    //         processing: false,
+    //     }
+    // },
+
+    // methods: {
+    //     test() {
+    //         this.processing = !this.processing
+    //     }
+    // },
+
+    // mounted() {
+    //     // console.log(this.$store.getters.userStartPoint, "user p");
+    //     const url = this.$store.getters.userStartPoint;
+    //     console.log(url, "start");
+    //     setTimeout(() => {
+    //         this.test()
+    //     }, 200);
+    //     setTimeout(() => {
+    //         if (url) this.$router.push(url)
+    //         else this.$router.push("/next")
+    //     }, 3000);
+    // }
 };
 </script>
 

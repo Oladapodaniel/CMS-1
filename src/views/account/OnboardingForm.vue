@@ -1,5 +1,5 @@
 <template>
-  <div class="top-most">
+  <div class="top-most" @click="hideCodes">
     <div class="container">
       <div class="row" id="onboarding">
         <div
@@ -17,7 +17,7 @@
               </div>
             </div>
 
-            <form style="width: 100%" @submit="next">
+            <form style="width: 100%" @submit.prevent="next">
               <div class="input-div">
                 <label class="mb-0">What's your name?</label>
                 <div class="name-input">
@@ -41,19 +41,8 @@
               <div class="input-div">
                 <label class="mb-0">What's your phone number?</label>
                 <div class="phone-input">
-                  <!-- <input type="text" class="input zip-code" placeholder="Your church name goes here" /> -->
-                  <select
-                    name=""
-                    id=""
-                    class="input zip-code"
-                    v-model="zipCode"
-                  >
-                    <option value="+234">+234</option>
-                    <option value="+234">+233</option>
-                    <option value="+234">+231</option>
-                    <option value="+234">+230</option>
-                    <option value="+234">+235</option>
-                  </select>
+                  <input type="text" v-model="searchCode" class="input zip-code" placeholder="+zip" @focus="showCodes" @blur="hideCodes" required />
+
                   <input
                     v-model.trim="userDetails.phoneNumber"
                     type="text"
@@ -61,6 +50,9 @@
                     placeholder="Phone number"
                     required
                   />
+                </div>
+                <div class="codes" :class="{'show': codesVissible}">
+                  <p class="code" v-for="code in countryCodes" :key="code.id" @click="codeSelected(code)">{{ code.phoneCode }}</p>
                 </div>
               </div>
 
@@ -106,7 +98,7 @@
             <div>
                 <div>
                     <div class="onboarding-image-con">
-                        <img src="../../assets/onboarding.png" alt="">
+                        <img src="../../assets/onboarding.png" alt="Image">
                         <span class="reactive-text">{{ churchName }}</span>
                     </div>
                 </div>
@@ -118,8 +110,15 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
+// import "node_modules/mdbootstrap/css/mdb.css"
+
 export default {
+  beforeRouteLeave() {
+    const userEmail = localStorage.getItem("email");
+    if (userEmail) localStorage.removeItem("email");
+  },
+
   data() {
     return {
       toggle: false,
@@ -127,18 +126,28 @@ export default {
       itemsVisible: false,
       zipCode: "",
       step1Completed: true,
-      userDetails: {},
+      userDetails: {
+        subscriptionPlanID: 1,
+        countryId: 1,
+        password: "password"
+      },
+
+      countries: [ ],
+      codesVissible: false,
+      searchCode: "",
+      selectedCountry: { },
     };
   },
   methods: {
-    next(e) {
+    next() {
+      if (!this.userDetails.email) return false;
       //   this.toggle = !this.toggle;
-      this.userDetails.email = this.$store.getters.userEmail;
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
         ? this.userDetails.phoneNumber
         : `${this.zipCode}${this.userDetails.phoneNumber}`;
       this.userDetails.churchSize = Number(this.userDetails.churchSize);
-      this.$store.state.onboardingData = this.userDetails;
+      console.log(this.userDetails);
+      this.$store.dispatch("setOnboardingData", this.userDetails);
       this.$router.push("/onboarding/step2");
     },
 
@@ -149,6 +158,23 @@ export default {
     selectItems() {
       alert("hi");
     },
+
+    showCodes() {
+      this.codesVissible = true;
+    },
+
+    codeSelected(code) {
+      this.selectedCountry = code;
+      this.codesVissible = false;
+      this.searchCode = code.phoneCode
+      console.log(this.selectedCountry);
+    },
+
+    hideCodes(e) {
+      if (!e.target.classList.contains("code") && !e.target.classList.contains("codes") && !e.target.classList.contains("zip-code")) {
+        this.codesVissible = false;
+      }
+    },
   },
 
   computed: {
@@ -158,31 +184,31 @@ export default {
     },
 
     isValid() {
-        return this.userDetails.firstName && this.userDetails.lastName && this.userDetails.phoneNumber && this.userDetails.churchName && this.userDetails.churchSize;
+        return this.userDetails.firstName && this.userDetails.lastName && this.userDetails.phoneNumber && this.userDetails.churchName && this.userDetails.churchSize && this.searchCode;
+    },
+
+    countryCodes() {
+      if (!this.searchCode) return this.countries;
+      return this.countries.filter(c => {
+        if (!c.phoneCode) return false;
+        return c.phoneCode.includes(this.searchCode);
+      })
     }
   },
 
   created() {
     console.log(this.$store.getters.userEmail);
-    this.zipCode = "+234";
+    // if (!localStorage.getItem("email")) this.$router.push("/") 
+    // if (!this.$store.getters.userEmail) this.$router.push("/")
+    // this.userDetails.email = this.$store.getters.userEmail;
 
-        navigator.geolocation.getCurrentPosition(
-         position => {
-           console.log(position.coords.latitude);
-           console.log(position.coords.longitude);
-           axios.get("https://maps.googleapis.com/maps/api/geocode/json?latlng="+position.coords.latitude+","+position.coords.longitude+"&key=AIzaSyDR6gcUbcg_4zUB5QyFDWMRiy434KlUxnw")
-        //    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng="${Math.floor(position.coords.latitude)},${Math.floor(position.coords.longitude  )}"&key=AIzaSyDR6gcUbcg_4zUB5QyFDWMRiy434KlUxnw`)
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => {
-                console.log(err.response, "error");
-            })
-         },
-         error => {
-           console.log(error.message);
-         },
-      )
+    this.userDetails.email = localStorage.getItem("email")
+    axios.get("/api/GetAllCountries")
+      .then((res) => {
+        this.countries = res.data;
+        this.countryCodes = res.data;
+      })
+    this.zipCode = "+234";
   },
 };
 </script>
@@ -200,7 +226,7 @@ export default {
 #onboarding-visuals {
   width: 45%;
   height: 100;
-  background-image: -webkit-linear-gradient(top, #3362c9 0%, #8949d3 100%);
+  background-image: -webkit-linear-gradient(top, #3362c9 0%, #582994 100%);
   transition: all 0.7s ease-in-out;
 }
 
@@ -350,6 +376,30 @@ option {
 
 .phone-input .phone-num {
   margin-left: 2px;
+}
+
+/* Codes */
+.codes {
+    border: 1px solid #b2c2cd;
+    padding: 4px;
+    margin: 0;
+    border-radius: 4px;
+    width: 77px;
+    position: absolute;
+    background: #fff;
+    max-height: 300px;
+    overflow: scroll;
+    display: none;
+}
+
+.code:hover {
+  cursor: pointer;
+  background: #b2c2cd85;
+  padding: 4px;
+}
+
+.show {
+  display: block;
 }
 
 @media screen and (max-width: 990px) {

@@ -1,29 +1,16 @@
 <template>
   <div>
       <div class="logo-con">
-        <a href="" class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"></a>
+        <a class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"></a>
       </div>
     <div class="main-con">
-      <!-- <div class="nav-con">
-        <div>
-          <ul class="navn-items">
-            <li class="navn-item">Dashboard</li>
-            <li class="navn-item">Communication</li>
-            <li class="navn-item">Members</li>
-            <li class="navn-item">First Timers</li>
-            <li class="navn-item">Events</li>
-            <li class="navn-item">Finances</li>
-            <li class="navn-item">Reports</li>
-          </ul>
-        </div>
-      </div> -->
       <div class="main-section">
         <div class="intro-div">
           <h1 class="intro-header">Welcome Grace and Power Ministry</h1>
           <p class="intro-subtext">Where do you want to start ?</p>
         </div>
         <div class="boxes-con">
-          <div class="box">
+          <div class="box" @click="actionSelected('/people/import')">
             <div class="inner-box">
               <div class="img-box">
                 <img
@@ -61,11 +48,11 @@
             </div>
           </div>
 
-          <div class="box">
+          <div class="box" @click="actionSelected('/people/import')">
             <div class="inner-box">
                 <div class="img-box">
                 <img
-                  src="../../assets/sms-email-big.svg"
+                  src="../../assets/add-first-timer.svg"
                   alt="Add Member Icon"
                 />
               </div>
@@ -87,9 +74,15 @@
 
 <script>
 export default {
+  methods: {
+    actionSelected(url) {
+      this.$router.push(url);
+    }
+  },
+
   created() {
     console.log(this.$store.getters.userData, "data");
-  },
+  }
 };
 </script>
 
@@ -134,10 +127,12 @@ export default {
   border-radius: 10px;
   margin: 10px;
   padding: 30px 0;
+  transition: all .4s ease-in-out;
 }
 
 .box:hover {
   cursor: pointer;
+  box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .img-box {

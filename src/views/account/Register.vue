@@ -69,11 +69,7 @@
             <span></span>
           </button>
         </div>
-        <!-- <div>
-          <button type="submit" class="facebook-btn sign-in-btn">
-            Sign in with Facebook
-          </button>
-        </div> -->
+        
         <div class="terms">
           <p>
             By signing up, you are indicating that you have read and agree to
@@ -104,7 +100,11 @@ export default {
       passwordIsVissible: false,
       passwordType: "password",
       showBtnText: "Show",
-      credentials: {},
+      credentials: {
+        ChurchName: "Default Church",
+        firstName: "First name",
+        lastName: "Last name",
+      },
       showError: false,
       errorMessage: "",
       show: false,
@@ -120,14 +120,17 @@ export default {
       this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
     },
 
-    register(e) {
+    register() {
       axios
-        .post("/api/account/register", this.credentials)
+        .post("/initialsignup", this.credentials)
         .then((res) => {
+          console.log(res);
           this.$store.dispatch("setUserEmail", this.credentials.email);
+          localStorage.setItem("email", this.credentials.email)
           this.$router.push("/onboarding");
         })
         .catch((err) => {
+          console.log(err.response);
           if (err.response.status === 400) {
             this.errorMessage = err.response.data;
             this.showError = true;
@@ -243,12 +246,17 @@ export default {
   box-shadow: 0 0 0 3px rgba(19, 106, 205, 0.2);
 }
 
-.input:not(:focus) {
+  .input::placeholder {
+    font-style: italic;
+    color: #b2c2cd;
+    letter-spacing: 1.5px;
+  }
+
+/* .input:not(:focus) {
   font-style: italic;
   color: #b2c2cd;
-  /* font-family: Averta, sans-serif; */
   letter-spacing: 1.5px;
-}
+} */
 
 .or {
   display: flex;

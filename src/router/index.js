@@ -6,12 +6,28 @@ import OnboardingForm from '../views/account/OnboardingForm.vue';
 import StartingPoint from '../views/onboarding/StartingPoint.vue';
 import StartingDashboard from '../views/onboarding/StartingDashboard.vue';
 import ProcessRequest from '../views/onboarding/ProcessRequest.vue';
+import ForgotPassword from '../views/account/ForgotPassword.vue';
+import EmailSent from '../views/account/EmailSent.vue';
+import ResetPassword from '../views/account/ResetPassword.vue';
+import Nav from '../components/nav/MenuLinks.vue';
+import Home from '../views/dashboard/Home.vue';
+import ChurchDashboard from '../views/dashboard/ChurchDashboard.vue';
+import People from '../views/people/People.vue';
+import PeopleEmpty from '../views/people/PeopleEmpty.vue';
+import ImportPeople from '../views/people/ImportPeople.vue';
+import AddPerson from '../views/people/AddPerson.vue';
+import List from '../views/people/PeopleList.vue';
 
 const routes = [
   {
     path: '/',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/nav',
+    name: 'Nav',
+    component: Nav,
   },
   {
     path: '/register',
@@ -39,6 +55,49 @@ const routes = [
     component: ProcessRequest
   },
   {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword
+  },
+  {
+    path: '/email-sent/:email',
+    name: 'EmailSent',
+    component: EmailSent
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: Home,
+    children: [
+      {
+        path: '',
+        component: ChurchDashboard
+      },
+      {
+        path: '/home/people',
+        component: People,
+        children: [
+          {path: '', component: PeopleEmpty},
+          {path: '/people/import', component: ImportPeople}
+        ]
+      },
+      {
+        path: '/home/add-person',
+        component: AddPerson
+      },
+    ]
+  },
+  {
+    path: '/list',
+    name: 'List',
+    component: List
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -57,9 +116,23 @@ const router = createRouter({
 
 // router.beforeEach((to, from, next) => {
 //   const token = localStorage.getItem("token")
-//   if ((to.name !== "Login" && to.name !== "Register") && !token) return next("/")
+//   if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" &&  to.name !== "StartingPoint" && !token) return next("/")
 //   if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
 //   next(true)
+// })
+
+// router.beforeResolve((to, from, next) => {
+//   // If this isn't an initial page load.
+//   if (to.name) {
+//     // Start the route progress bar.
+//     NProgress.start()
+//   }
+//   next()
+// })
+
+// router.afterEach((to, from) => {
+//   // Complete the animation of the route progress bar.
+//   NProgress.done()
 // })
 
 export default router
