@@ -18,17 +18,16 @@
 import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 export default {
-    props: [ "domId" ],
   components: {},
 
   props: [ "domId", "title", "subtitle", "header" ],
   
   setup(props) {
     const chart = ref(null);
-    const header = ref(null);
+    const headerText = ref(null);
 
     onMounted(() => {
-        header.value = props.header;
+        headerText.value = props.header;
 
       var highchartsOptions = {
         chart: {
@@ -106,7 +105,7 @@ export default {
 
     return {
       chart,
-      header,
+      headerText,
     }
   },
 };
