@@ -18,6 +18,7 @@
 
         <div class="top-row">
           <div class="help-text">
+            <img src="../../assets/can-do.svg" alt="">
             <div class="can-do">
               <h4>Things You Can Do</h4>
               <div class="can-do-links">
@@ -77,7 +78,15 @@
             </div>
           </div>
         </div>
-
+        
+        <div class="celeb-header">
+          <div class="celeb-icon">
+            <img src="../../assets/celeb-icon.svg" alt="Celebration Icon">
+          </div>
+          <div class="celeb-header-text">
+            <p>Celebrations</p>
+          </div>
+        </div>
         <div class="table">
           <div class="table-top">
             <router-link to="" class="view-all">View all</router-link>
@@ -176,12 +185,14 @@
             <ColumnChart domId="chart3" title="Event Attendance" subtitle="Weekly Attendance of Events" header="Members Attendance" />
           </div>
           
-          <div>
-            <PieChart domId="piechart" title="Offering Breakdown" subtitle="Overview" distance="5" />
-          </div>
-          
-          <div>
-            <PieChart domId="pchart" title="Offering Breakdown" subtitle="Overview" distance="1" />
+          <div class="pies">
+            <div class="pie-con">
+              <PieChart domId="pichart" title="Offering Breakdown" subtitle="Overview" distance="5" />
+            </div>
+            
+            <div class="pie-con">
+              <PieChart domId="pchart" title="Offering Breakdown" subtitle="Overview" distance="1" />
+            </div>
           </div>
         </div>
 
@@ -245,8 +256,7 @@ export default {
 .main-content {
   display: flex;
   justify-content: space-around;
-  width: 100%;
-  max-width: 800px;
+  width: 90%;
   margin: 0 auto;
   /* background: #F1F5F8; */
   padding: 10px;
@@ -292,7 +302,7 @@ export default {
   color: #fff;
   border-radius: 22px;
   border: none;
-  padding: 4px 8px;
+  padding: 4px 14px;
   height: 40px;
   align-self: center;
   font-size: 16px;
@@ -329,7 +339,8 @@ export default {
 }
 
 .create-dd {
-  padding: 0 8px;
+  padding: 0 9px;
+  color: #fff;
 }
 
 .first-col {
@@ -379,8 +390,9 @@ export default {
 }
 
 .box {
-  width: 38%;
+  width: 40%;
   margin-left: 20px;
+   
   /* background: #F1F5F8; */
 }
 
@@ -388,6 +400,7 @@ export default {
   border-radius: 28px 28px 0 0;
   padding: 20px;
   border: 1px solid #e6e5f2;
+  box-shadow: 0px 1px 4px #02172E45;
   border-bottom: transparent;
 }
 
@@ -398,12 +411,14 @@ export default {
   background: #F1F5F8;
   padding: 10px;
   border: 1px solid #e6e5f2;
+  box-shadow: 0px 1px 4px #02172E45;
   border-top: transparent;
 }
 
-.box2 .box-bottom {
-  /* background: transparent; */
-  /* border-bottom: transparent; */
+.box2 .bottom {
+  border: 1px solid #e6e5f2;
+  box-shadow: 0px 1px 4px #02172E45;
+  border-radius: 0px 0px 28px 28px;
 }
 
 .box2 .upgrade-btn {
@@ -467,6 +482,10 @@ export default {
   margin-top: 80px;
 }
 
+.pie-con {
+  margin: 24px 0;
+}
+
 /* Table */
 .table-top {
   display: flex;
@@ -481,5 +500,75 @@ export default {
   border-radius: 1000px;
   text-align: center;
   margin: 4px;
+}
+
+.celeb-header {
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.celeb-header-text p {
+  margin: 0;
+}
+
+.celeb-icon {
+  height: 81px;
+}
+
+.help-text {
+  display: flex;
+  align-items: flex-start;
+}
+
+.help-text img {
+  width: 87px;
+  margin-top: -20px;
+}
+
+.pies {
+  margin-top: 50px;
+}
+
+.table-body:nth-child(even) {
+  background: #F7FAFC;
+}
+
+@media screen and (max-width: 376px) {
+  .top-row {
+    flex-direction: column;
+  }
+
+  .can-do, .can-do-links {
+    width: 90%;
+  }
+
+  .number-boxes {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .box {
+    width: 80%;
+  }
+
+  .number-boxes {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .box {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .top-row {
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>

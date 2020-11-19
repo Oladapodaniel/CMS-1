@@ -170,6 +170,13 @@ export default {
   margin: 10px 0;
 }
 
+.nav .link:hover {
+  filter: grayscale(29%) brightness(3%) hue-rotate(338deg) saturate(940%) opacity(95%) contrast(989%);
+}
+
+.nav router-link:hover {
+    color: #00204412;
+}
 .nav .user {
   opacity: 1;
   display: flex;
@@ -211,7 +218,7 @@ export default {
 }
 
 .router-link-exact-active {
-  filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg) brightness(91%) contrast(89%);
+  filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg) brightness(91%) contrast(189%);
   opacity: 1 !important;
 }
 

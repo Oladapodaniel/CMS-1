@@ -1,6 +1,6 @@
 <template>
   <div class="con">
-    <div :id="elemId" class="chart summary-chart"></div>
+    <div :id="domId" class="chart summary-chart"></div>
   </div>
 </template>
 
@@ -12,11 +12,11 @@ export default {
     props: [ "title", "subtitle", "distance", "domId"],
   setup(props) {
     const chart = ref(null);
-    const elemId = ref("");
+    // let elemId = "";
     
 
     onMounted(() => {
-      elemId.value = props.domId;
+      // elemId = props.domId;
       var highchartsOptions = {
         chart: {
           type: "pie",
@@ -29,7 +29,7 @@ export default {
           enabled: false,
         },
         title: {
-          text: props.title,
+          text: `<b>${props.title}</b>`,
           align: 'left',
           x: 70,
           margin: 0,
@@ -63,7 +63,7 @@ export default {
             dataLabels: {
               enabled: true,
               formatter: function() {
-                return this.point.name + ' ' + Math.round(this.percentage*100)/100 + ' %';
+                return this.point.name + ': ' + Math.round(this.percentage*100)/100 + ' %';
               },
               // format: '{point.name}: {point.y:.1f}%',
               distance: props.distance ? props.distance : -50,
@@ -98,7 +98,7 @@ export default {
       chart.value = new Highcharts.chart(highchartsOptions);
     });
 
-    return { chart, elemId, };
+    return { chart, };
   },
 };
 </script>
@@ -127,6 +127,6 @@ export default {
       box-shadow: 0px 1px 4px #02172E45;
       border: 1px solid #DDE2E6;
       border-radius: 22px;
-      margin-bottom: 24px;
+      /* margin-bottom: 24px; */
     }
 </style>

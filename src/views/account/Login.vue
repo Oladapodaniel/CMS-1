@@ -13,7 +13,7 @@
               <p class="error-message">{{ state.errorMessage }}</p>
           </div>
 
-        <form action="">
+        <form @submit="login">
           <div>
             <input type="text" v-model="state.credentials.userName" class="input" placeholder="Email" required/>
           </div>
@@ -24,7 +24,7 @@
             <router-link to="/forgot-password" class="forgot-password">Forgot it?</router-link>
           </div>
 
-          <button class="submit-btn sign-in-btn" @click="login">Sign in</button>
+          <button class="submit-btn sign-in-btn" >Sign in</button>
         </form>
 
         <div style="margin: 24px 0">

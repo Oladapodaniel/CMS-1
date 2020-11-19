@@ -123,15 +123,16 @@ export default {
 
 .chart-header {
     display: flex;
+    margin-top: 45px;
 }
 
 .icon-div img {
-    height: 56px;
+    height: 108px;
 }
 
 .chart-header p {
-    font-size: 19px;
-    font-weight: 700;
+    font-size: 25px;
+    font-weight: 600;
     margin: 0 0 10px 0;
 }
 
@@ -147,6 +148,10 @@ export default {
         top: auto;
         width: 100%;
         z-index: -1;
+    }
+
+    .wrapper div {
+      width: 100% !important;
     }
 }
 </style>

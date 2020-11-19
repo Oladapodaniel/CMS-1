@@ -20,7 +20,7 @@
 
       <div class="chart-con">
         <div style="width: 45%">
-          <ByGenderChart domId="chart" title="By Gender" />
+          <ByGenderChart domId="chart" title="By Gender" distance="5" />
         </div>
         <div style="width: 45%">
           <ByMaritalStatusChart domId="second" title="By Marital Status" />
@@ -170,6 +170,12 @@ export default {
   box-shadow: 0px 3px 6px #2c28281c;
   padding: 24px 10px;
   background: #fff;
+}
+
+.table {
+  box-shadow: 0px 1px 4px #02172E45;
+border: 1px solid #DDE2E6;
+border-radius: 30px;
 }
 
 .summary-header {
@@ -391,7 +397,12 @@ export default {
 }
 
 .table-header .check {
-  width: 50px;
+  width: 80px;
+  text-align: center;
+}
+
+.check.data {
+  text-align: center;
 }
 
 .table-header p {
@@ -418,6 +429,7 @@ export default {
 
 .select-all {
   width: 65%;
+  padding: 0 10px;
 }
 
 .filter,
