@@ -28,7 +28,7 @@
                 <input type="text" class="input" placeholder="" v-model="person.firstName" />
               </div>
               <div class="input-field">
-                <label for="" class="label"><span style="color:red"> *</span>Phone number</label>
+                <label for="" class="label">Phone number <span style="color:red"> *</span></label>
                 <input type="text" class="input" placeholder="" v-model="person.mobilePhone" />
               </div>
               <div class="input-field">
