@@ -15,6 +15,7 @@ export default {
       /*eslint no-undef: 1*/
     const chartDiv = ref(null)
     const elemId = ref("");
+    console.log(elemId.value);
     onMounted(() => {
       elemId.value = props.domEL;
       google.charts.load("current", { packages: ["corechart"] });
