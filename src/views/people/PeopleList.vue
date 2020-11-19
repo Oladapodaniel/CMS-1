@@ -309,7 +309,7 @@ export default {
   }
 
   .table {
-    overflow: scroll !important;
+    /* overflow: scroll !important; */
   }
 }
 
