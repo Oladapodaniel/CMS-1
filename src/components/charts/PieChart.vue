@@ -61,6 +61,10 @@ export default {
             cursor: "pointer",
             dataLabels: {
               enabled: true,
+              formatter: function() {
+                return this.point.name + ' ' + Math.round(this.percentage*100)/100 + ' %';
+              },
+              // format: '{point.name}: {point.y:.1f}%',
               distance: props.distance ? props.distance : -50,
             },
             size: 180,

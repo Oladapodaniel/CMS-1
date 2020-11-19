@@ -336,6 +336,12 @@ export default {
   padding: 10px 30px;
 }
 
+.can-do h4 {
+  margin: 0 ;
+  font-weight: 600;
+  font-size: 20px;
+}
+
 .can-do-links {
   display: flex;
   flex-direction: column;
