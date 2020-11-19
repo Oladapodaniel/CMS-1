@@ -71,7 +71,7 @@
               <div class="bottom">
                 <div class="box-bottom">
                   <span class="plan-text"></span>
-                  <button class="upgrade-btn buy-btn">Buy Again</button>
+                  <button class="upgrade-btn buy-btn">Buy Unit</button>
                 </div>
               </div>
             </div>
@@ -176,13 +176,13 @@
             <ColumnChart domId="chart3" title="Event Attendance" subtitle="Weekly Attendance of Events" header="Members Attendance" />
           </div>
           
-          <!-- <div>
-            <PieChart domEl="piechart" />
+          <div>
+            <PieChart domId="piechart" title="Offering Breakdown" subtitle="Overview" distance="5" />
           </div>
           
           <div>
-            <PieChart domEl="pchart" />
-          </div> -->
+            <PieChart domId="pchart" title="Offering Breakdown" subtitle="Overview" distance="1" />
+          </div>
         </div>
 
       </div>
@@ -193,12 +193,12 @@
 <script>
 // import Highcharts from "highcharts";
 // import { onMounted, reactive, ref } from "vue";
-// import PieChart from "@/components/chart/PieChart.vue"
+import PieChart from "@/components/charts/PieChart.vue"
 import ColumnChart from "@/components/charts/ColumnChart.vue"
 
 export default {
   components: {
-    // PieChart,
+    PieChart,
     ColumnChart,
   },
 
@@ -420,7 +420,7 @@ export default {
 }
 
 .buy-btn {
-  width: 110px;
+  width: 94px;
   color: #002044;
 }
 

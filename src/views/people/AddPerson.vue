@@ -20,15 +20,15 @@
                 </div>
               </div>
               <div class="input-field">
-                <label for="" class="label">Surname</label>
+                <label for="" class="label">Surname<span style="color:red"> *</span></label>
                 <input type="text" class="input" placeholder="" v-model="person.lastName" />
               </div>
               <div class="input-field">
-                <label for="" class="label">Firstname</label>
+                <label for="" class="label">Firstname<span style="color:red"> *</span></label>
                 <input type="text" class="input" placeholder="" v-model="person.firstName" />
               </div>
               <div class="input-field">
-                <label for="" class="label">Phone number</label>
+                <label for="" class="label"><span style="color:red"> *</span>Phone number</label>
                 <input type="text" class="input" placeholder="" v-model="person.mobilePhone" />
               </div>
               <div class="input-field">

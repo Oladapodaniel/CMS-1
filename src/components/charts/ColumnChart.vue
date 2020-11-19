@@ -45,7 +45,6 @@ export default {
           align: 'left',
             x: 70,
             margin: 50,
-          subtitle: "subtitle"
         },
         subtitle: {
           text: props.subtitle,
@@ -154,6 +153,7 @@ export default {
 
 <style>
     .chart-div {
+        width: 90%;
          border: 1px solid #DDE2E6;
         border-radius: 30px;
         margin: 0 0 24px 0;
