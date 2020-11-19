@@ -12,6 +12,7 @@ export default {
   components: {},
 
   setup(props) {
+    /*eslint no-undef: 0*/
     const chartDiv = ref(null)
     const elemId = ref("");
     onMounted(() => {
