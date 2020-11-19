@@ -144,8 +144,9 @@ export default {
       //   this.toggle = !this.toggle;
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
         ? this.userDetails.phoneNumber
-        : `${this.zipCode}${this.userDetails.phoneNumber}`;
+        : `${this.selectedCountry.phoneCode}${this.userDetails.phoneNumber}`;
       this.userDetails.churchSize = Number(this.userDetails.churchSize);
+      console.log(this.userDetails);
       console.log(this.userDetails);
       this.$store.dispatch("setOnboardingData", this.userDetails);
       this.$router.push("/onboarding/step2");
@@ -167,7 +168,7 @@ export default {
       this.selectedCountry = code;
       this.codesVissible = false;
       this.searchCode = code.phoneCode
-      console.log(this.selectedCountry);
+      this.userDetails.countryId = code.id
     },
 
     hideCodes(e) {
@@ -198,7 +199,7 @@ export default {
 
   created() {
     console.log(this.$store.getters.userEmail);
-    // if (!localStorage.getItem("email")) this.$router.push("/") 
+    if (!localStorage.getItem("email")) this.$router.push("/") 
     // if (!this.$store.getters.userEmail) this.$router.push("/")
     // this.userDetails.email = this.$store.getters.userEmail;
 

@@ -124,7 +124,7 @@ export default {
       axios
         .post("/initialsignup", this.credentials)
         .then((res) => {
-          console.log(res);
+          console.log(res, "register response");
           this.$store.dispatch("setUserEmail", this.credentials.email);
           localStorage.setItem("email", this.credentials.email)
           this.$router.push("/onboarding");

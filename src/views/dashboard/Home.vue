@@ -55,7 +55,7 @@
         width: 20%;
         max-width: 287px;
         height: 100%;
-        position: relative;
+        /* position: absolute; */
     }
 
     .main-con {
@@ -91,6 +91,7 @@
         .links-menu {
             position: fixed;
             left: -287px;
+            z-index: 9;
         }
 
         .links-menu.show {

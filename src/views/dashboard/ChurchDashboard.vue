@@ -8,6 +8,7 @@
         <div class="create-btn-div">
           <div>
             <h2 class="title">Dashboard</h2>
+            <p class="welcome-text">Welcome Back!</p>
           </div>
           <button class="create-btn">
             Create a new
@@ -47,7 +48,7 @@
               </div>
               <div class="bottom">
                 <div class="box-bottom">
-                  <span class="plan-text">YOU ARE ON A FREE PLAN</span>
+                  <span class="plan-text">YOU'RE ON A FREE PLAN</span>
                   <button class="upgrade-btn">Upgrade</button>
                 </div>
               </div>
@@ -56,11 +57,10 @@
               <div class="top">
                 <div class="box-top">
                   <div class="top-icon-div">
-                    <i class="fa fa-users"></i>
+                    <i class="fa fa-envelope"></i>
                   </div>
                   <div class="box-top-text">
-                    <p>FIRST TIMERS</p>
-                    <h4>30</h4>
+                    
                   </div>
                 </div>
                 <div class="box-middle">
@@ -71,7 +71,7 @@
               <div class="bottom">
                 <div class="box-bottom">
                   <span class="plan-text"></span>
-                  <button class="upgrade-btn">Buy Again</button>
+                  <button class="upgrade-btn buy-btn">Buy Again</button>
                 </div>
               </div>
             </div>
@@ -163,81 +163,47 @@
             </button>
           </div>
         </div>
-        <div class="charts" id="plot"></div>
+        <div class="charts" id="plot">
+          <div>
+            <ColumnChart domId="chart1" title="Event Attendance" subtitle="Weekly Attendance of Events" header="Members Attendance" />
+          </div>
+
+          <div>
+            <ColumnChart domId="chart2" title="Event Attendance" subtitle="Weekly Attendance of Events" header="" />
+          </div>
+
+          <div>
+            <ColumnChart domId="chart3" title="Event Attendance" subtitle="Weekly Attendance of Events" header="Members Attendance" />
+          </div>
+          
+          <div>
+            <PieChart domEl="piechart" />
+          </div>
+          
+          <div>
+            <PieChart domEl="pchart" />
+          </div>
+        </div>
+
       </div>
     </div>
   </main>
 </template>
 
 <script>
-import Highcharts from "highcharts";
-import { onMounted, reactive, ref } from "vue";
-export default {
-  setup() {
-    const chart = ref(null);
+// import Highcharts from "highcharts";
+// import { onMounted, reactive, ref } from "vue";
+import PieChart from "@/components/chart/PieChart.vue"
+import ColumnChart from "@/components/charts/ColumnChart.vue"
 
-    onMounted(() => {
-      var highchartsOptions = {
-        chart: {
-          type: "column",
-          renderTo: "plot",
-        },
-        credits: {
-          enabled: false,
-        },
-        tooltip: {
-          enabled: false,
-        },
-        title: {
-          text: "Title",
-        },
-        xAxis: {
-          allowDecimals: false,
-          title: {
-            text: "Age",
-          },
-        },
-        yAxis: {
-          title: {
-            text: "Pot Value",
-          },
-          labels: {
-            formatter: function () {
-              return "£" + this.value / 1000 + "k";
-            },
-          },
-          opposite: false,
-        },
-        plotOptions: {
-          column: {
-            // pointPadding: 1,
-            borderWidth: 7,
-            //  groupPadding: 0.1,
-            //  pointWidth: 1,
-            //  pointMargin: 0.1
-          },
-        },
-        series: [
-          {
-            name: "Y",
-            color: "#EBEFF4",
-            data: [2, 2, 3, 4, 5],
-          },
-          {
-            name: "X",
-            color: "#136ACD",
-            data: [1, 2, 3, 4, 5],
-          },
-          {
-            name: "Z",
-            color: "#002044",
-            data: [1, 2, 3, 4, 5],
-          },
-        ],
-        //   credits: false,
-      };
-      chart.value = new Highcharts.chart(highchartsOptions);
-    });
+export default {
+  components: {
+    PieChart,
+    ColumnChart,
+  },
+
+  setup() {
+    // const chart = ref(null);
 
     const celebrations = [
       {
@@ -254,78 +220,9 @@ export default {
 
 
     return {
-      chart,
       celebrations,
     }
   },
-  // data() {
-  //   return {
-  //     chart: undefined,
-  //   };
-  // },
-  // mounted() {
-  //   var highchartsOptions = {
-  //     chart: {
-  //       type: "column",
-  //       renderTo: "plot",
-  //     },
-  //     credits: {
-  //       enabled: false,
-  //     },
-  //     tooltip: {
-  //       enabled: false,
-  //     },
-  //     title: {
-  //       text: "Title",
-  //     },
-  //     xAxis: {
-  //       allowDecimals: false,
-  //       title: {
-  //         text: "Age",
-  //       },
-  //     },
-  //     yAxis: {
-  //       title: {
-  //         text: "Pot Value",
-  //       },
-  //       labels: {
-  //         formatter: function () {
-  //           return "£" + this.value / 1000 + "k";
-  //         },
-  //       },
-  //       opposite: false,
-  //     },
-  //     plotOptions: {
-  //       column: {
-  //           // pointPadding: 1,
-  //           borderWidth: 7,
-  //           //  groupPadding: 0.1,
-  //           //  pointWidth: 1,
-  //           //  pointMargin: 0.1
-
-  //       }
-  //     },
-  //     series: [
-  //       {
-  //         name: "Y",
-  //         color: "#EBEFF4",
-  //         data: [2, 2, 3, 4, 5],
-  //       },
-  //       {
-  //         name: "X",
-  //         color: "#136ACD",
-  //         data: [1, 2, 3, 4, 5],
-  //       },
-  //       {
-  //         name: "Z",
-  //         color: "#002044",
-  //         data: [1, 2, 3, 4, 5],
-  //       },
-  //     ],
-  //     //   credits: false,
-  //   };
-  //   this.chart = new Highcharts.chart(highchartsOptions);
-  // },
 };
 </script>
 
@@ -350,13 +247,17 @@ export default {
   justify-content: space-around;
   width: 100%;
   max-width: 800px;
-  margin: auto;
+  margin: 0 auto;
   /* background: #F1F5F8; */
   padding: 10px;
 }
 
 .second-col {
   width: 100%;
+}
+
+.charts {
+  margin-bottom: 2rem;
 }
 
 .top-bar {
@@ -368,9 +269,16 @@ export default {
   display: flex;
   /* width: fit-content; */
   /* margin-left: auto; */
-  padding: 10px;
+  padding: 10px 10px 10px 0;
   /* margin: 10px 0 15px auto; */
   justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.welcome-text {
+    margin: -18px 0 0 0;
+    color: #02172E;
+    font-size: 18px;
 }
 
 .top-row {
@@ -395,6 +303,29 @@ export default {
 
 .second-col .create-btn-div .create-btn:hover {
   cursor: pointer;
+}
+
+.top-icon-div {
+      background: #F1F5F8;
+    padding: 4px;
+    border-radius: 50%;
+    
+}
+
+.top-icon-div i {
+  color: #136ACD;
+  font-size: 24px;
+  padding: 4px;
+  /* filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg) brightness(91%) contrast(89%); */
+}
+
+.box-top-text p {
+  font-weight: 600;
+}
+
+.box-top-text h4 {
+  color: #136acd;
+  font-size: larger;
 }
 
 .create-dd {
@@ -438,11 +369,12 @@ export default {
   max-width: 551px;
   margin-left: auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
 .box {
-  width: 47%;
+  width: 38%;
+  margin-left: 20px;
   /* background: #F1F5F8; */
 }
 
@@ -457,44 +389,56 @@ export default {
   display: flex;
   justify-content: space-around;
   border-radius: 0px 0px 28px 28px;
-  background: #136acd;
-  padding: 6px;
+  background: #F1F5F8;
+  padding: 10px;
   border: 1px solid #e6e5f2;
   border-top: transparent;
 }
 
 .box2 .box-bottom {
-  background: transparent;
+  /* background: transparent; */
   /* border-bottom: transparent; */
 }
 
 .box2 .upgrade-btn {
   background: #136acd;
   color: #fff;
-  padding: 4px 8px;
   justify-self: flex-end;
   margin-left: auto;
 }
 
 .upgrade-btn {
-  max-height: 30px;
   align-self: center;
-  padding: 0.2rem;
-  background: #fff;
+  padding: 10px;
+  background: #DDE2E6;
   border-radius: 20px;
-  color: #136acd;
+  color: #002044;
   border: none;
+  width: 110px;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.buy-btn {
+  width: 110px;
+  color: #002044;
 }
 
 .plan-text {
   font-size: 12px;
   align-self: center;
+  text-transform: uppercase;
+  font-weight: 800;
 }
 
 .box-top {
   display: flex;
   justify-content: space-between;
   align-items: start;
+}
+
+.box-middle {
+  padding: 24px 0;
 }
 
 .box-top-text h4,

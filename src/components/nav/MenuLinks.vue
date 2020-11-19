@@ -218,8 +218,8 @@ export default {
 @media screen and (max-width: 1100px) {
   .nav {
     width: 287px;
-    background: #828282;
-
+    position: absolute;
+    z-index: 10;
   }
 
   .nav .link {

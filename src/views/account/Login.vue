@@ -80,7 +80,7 @@ export default {
         try {
           const res = await axios.post("/login", state.credentials)
           const { data } = res;
-          console.log(data);
+          // console.log(data, "login data");
           store.dispatch("setUserData", data);
           localStorage.setItem("token", data.token);
           router.push("/next")

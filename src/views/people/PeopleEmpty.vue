@@ -29,7 +29,6 @@ export default {
       } catch (err) {
         loading.value = false;
         console.log(err);
-        NProgress.done(true)
       }
     });
     
