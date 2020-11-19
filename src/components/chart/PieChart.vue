@@ -5,53 +5,53 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+// import { onMounted, ref } from "vue";
 
-export default {
-    props: [ "domEL" ],
-  components: {},
+// export default {
+//     props: [ "domEL" ],
+//   components: {},
 
-  setup(props) {
+//   setup(props) {
       /*eslint no-undef: 1*/
-    const chartDiv = ref(null)
-    const elemId = ref("");
-    console.log(elemId.value);
-    onMounted(() => {
-      elemId.value = props.domEL;
-      google.charts.load("current", { packages: ["corechart"] });
-      google.charts.setOnLoadCallback(drawChart);
-    });
+//     const chartDiv = ref(null)
+//     const elemId = ref("");
+//     console.log(elemId.value);
+//     onMounted(() => {
+//       elemId.value = props.domEL;
+//       google.charts.load("current", { packages: ["corechart"] });
+//       google.charts.setOnLoadCallback(drawChart);
+//     });
 
-    const drawChart = () => {
-      var data = google.visualization.arrayToDataTable([
-        ["Task", "Hours per Day"],
-        ["Male", 11],
-        ["Female", 2],
-        ["Not sure", 2]
-      ]);
+//     const drawChart = () => {
+//       var data = google.visualization.arrayToDataTable([
+//         ["Task", "Hours per Day"],
+//         ["Male", 11],
+//         ["Female", 2],
+//         ["Not sure", 2]
+//       ]);
 
-      var options = {
-        title: "Offering Breakdown",
-        slices: {0: {color: '#002044'}, 1:{color: '#136acd'}, 2:{color: '#d5d7de'}},
+//       var options = {
+//         title: "Offering Breakdown",
+//         slices: {0: {color: '#002044'}, 1:{color: '#136acd'}, 2:{color: '#d5d7de'}},
         
-      };
+//       };
 
 
-      var chart = new google.visualization.PieChart(
-        chartDiv.value
-      );
+//       var chart = new google.visualization.PieChart(
+//         chartDiv.value
+//       );
 
 
-      chart.draw(data, options);
-    };
+//       chart.draw(data, options);
+//     };
 
-    return {
-        chartDiv,
-        drawChart,
-        elemId,
-    }
-  },
-};
+//     return {
+//         chartDiv,
+//         drawChart,
+//         elemId,
+//     }
+//   },
+// };
 </script>
 
 <style scoped>

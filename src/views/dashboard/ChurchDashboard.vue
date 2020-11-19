@@ -176,13 +176,13 @@
             <ColumnChart domId="chart3" title="Event Attendance" subtitle="Weekly Attendance of Events" header="Members Attendance" />
           </div>
           
-          <div>
+          <!-- <div>
             <PieChart domEl="piechart" />
           </div>
           
           <div>
             <PieChart domEl="pchart" />
-          </div>
+          </div> -->
         </div>
 
       </div>
@@ -193,12 +193,12 @@
 <script>
 // import Highcharts from "highcharts";
 // import { onMounted, reactive, ref } from "vue";
-import PieChart from "@/components/chart/PieChart.vue"
+// import PieChart from "@/components/chart/PieChart.vue"
 import ColumnChart from "@/components/charts/ColumnChart.vue"
 
 export default {
   components: {
-    PieChart,
+    // PieChart,
     ColumnChart,
   },
 
