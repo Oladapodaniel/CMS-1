@@ -9,13 +9,14 @@ import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-    props: ["domId", "title", "subtitle", "distance"],
+    props: [ "title", "subtitle", "distance", "domId"],
   setup(props) {
     const chart = ref(null);
     const elemId = ref("");
-    elemId.value = props.domId;
+    
 
     onMounted(() => {
+      elemId.value = props.domId;
       var highchartsOptions = {
         chart: {
           type: "pie",

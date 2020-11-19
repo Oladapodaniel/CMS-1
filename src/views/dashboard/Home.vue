@@ -65,7 +65,7 @@
         height: 100%;
         max-height: fit-content;
         background: #fff;
-        overflow-y: scroll;
+        overflow-y: auto;
         padding-top: 20px;
     }
 
