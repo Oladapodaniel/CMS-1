@@ -627,17 +627,25 @@ export default {
 
 .white-bg {
   background: white;
+  border-radius: 6px;
+  box-shadow: 0px 1px 3px #00000029;
 }
 
 .info-btn {
-  background: #136ACD;
+  background: #DDE2E6;
   border-radius: 22px;
   border: none;
   padding: 8px 10px;
-  color: #fff;
+  color: #002044;
   font-size: 12px;
   outline: transparent;
   margin: 10px;
+  font-weight: 400;
+}
+
+.info-btn:hover {
+  background: #136ACD;
+  color: #fff;
 }
 
 .submit-div {
