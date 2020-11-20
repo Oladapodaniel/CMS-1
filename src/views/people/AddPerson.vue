@@ -36,6 +36,10 @@
                 <input type="text" class="input" placeholder="" v-model="person.email" />
               </div>
               <div class="input-field">
+                <label for="" class="label">Address</label>
+                <input type="text" class="input" placeholder="" v-model="person.address" />
+              </div>
+              <div class="input-field">
                 <label for=""></label>
                 <div class="status-n-gender">
                   <div class="status custom-select">
@@ -358,6 +362,7 @@ export default {
       formData.monthOfWedding = anniversaryDate.month();
       formData.dayOfWedding = anniversaryDate.date();
       formData.peopleClassificationID = personObj.peopleClassificationID;
+      formData.address = personObj.address;
       formData.picture = image;
 
       try {
