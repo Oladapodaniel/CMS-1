@@ -83,7 +83,7 @@
                   />
                 </div>
                 <div>
-                  <button class="upload-btn">Upload</button>
+                  <button class="upload-btn" @click.prevent="uploadImage">Upload</button>
                 </div>
               </div>
             </div>
@@ -347,6 +347,10 @@ export default {
     const peopleClassifications = ref([]);
     const person = reactive({ });
 
+    const uploadImage = () => {
+
+    }
+
     const addPerson = async () => {
       const personObj = { ...person };
       const formData = new FormData();
@@ -412,6 +416,7 @@ export default {
       peopleClassifications,
       url,
       imageSelected,
+      uploadImage,
     };
   },
 };

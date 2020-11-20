@@ -102,7 +102,7 @@ export default {
       axios
         .post("/api/onboarding", userData)
         .then((res) => {
-          console.log(res);
+          console.log(res, "onboarding response");
           this.$store.dispatch("setStartPoint", url)
           this.$router.push("/processing");
         })

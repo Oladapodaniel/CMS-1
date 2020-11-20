@@ -156,10 +156,6 @@ export default {
       this.itemsVisible = !this.itemsVisible;
     },
 
-    selectItems() {
-      alert("hi");
-    },
-
     showCodes() {
       this.codesVissible = true;
     },
@@ -209,7 +205,7 @@ export default {
         this.countries = res.data;
         this.countryCodes = res.data;
       })
-    this.zipCode = "+234";
+      this.searchCode = "234";
   },
 };
 </script>
