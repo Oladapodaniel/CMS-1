@@ -49,7 +49,7 @@
 
       <div class="bottom-container">
         <div>
-          <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up">Sign up now</router-link></p>
+          <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p>
         </div>
       </div>
     </div>
@@ -164,6 +164,7 @@ export default {
 
   .input::placeholder {
     font-style: italic;
+    font-weight: 600;
     color: #b2c2cd;
     letter-spacing: 1.5px;
   }

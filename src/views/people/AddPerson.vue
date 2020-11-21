@@ -13,8 +13,8 @@
               <div class="input-field ">
                 <label for="" class="label">Membership</label>
                 <div class="custom-select">
-                  <select name="" id="" class="input select" v-model="person.peopleClassificationID">
-                  <option value="">Classification</option>
+                  <select name="" id="" class="input select" v-model="membershipId">
+                  <option value="" selected >-Select Membership</option>
                   <option :value="category.id" v-for="category in peopleClassifications" :key="category.id">{{ category.name }}</option>
                 </select>
                 </div>
@@ -118,6 +118,7 @@
                       <select
                         @change="editBirthDateValue('date', $event)"
                         ref="birthDay"
+                        class="celeb-date"
                       >
                         <option v-for="i in daysInBirthMonth" :key="i" :value="i">
                           {{ i }}
@@ -129,6 +130,7 @@
                       <select
                         @change="editBirthDateValue('year', $event)"
                         ref="birthYear"
+                        class="celeb-year"
                       >
                         <option
                           v-for="i in numberofYears"
@@ -165,6 +167,7 @@
                       <select
                         @change="editAnnDateValue('date', $event)"
                         ref="annDay"
+                        class="celeb-date"
                       >
                         <option v-for="i in daysInAnnMonth" :key="i" :value="i">
                           {{ i }}
@@ -176,6 +179,7 @@
                       <select
                         @change="editAnnDateValue('year', $event)"
                         ref="annYear"
+                        class="celeb-year"
                       >
                         <option
                           v-for="i in numberofYears"
@@ -250,9 +254,9 @@
               </div>
             </div>
             <div class="info-box-body">
-              <button class="info-btn" v-if="areaInView === 'groups'">Add to Group</button>
-              <button class="info-btn" v-if="areaInView === 'fellowship'">Add to House fellowship</button>
-              <button class="info-btn" v-if="areaInView === 'notes'">New Notes</button>
+              <button @click.prevent="uploadImage" class="info-btn" v-if="areaInView === 'groups'">Add to Group</button>
+              <button @click.prevent="uploadImage" class="info-btn" v-if="areaInView === 'fellowship'">Add to House fellowship</button>
+              <button @click.prevent="uploadImage" class="info-btn" v-if="areaInView === 'notes'">New Notes</button>
             </div>
           </div>
         </div>
@@ -335,16 +339,12 @@ export default {
     let image;
     const imageSelected = (e) => {
       image = e.target.files[0];
-      // let reader = new FileReader()
-      // reader.readAsDataURL(e.target.files[0])
-      // reader.onload = (e) => {
-      //   console.log(e.target.result);
-      // }
       url.value = URL.createObjectURL(image);
     }
 
     //Person
     const peopleClassifications = ref([]);
+    const membershipId = ref("");
     const person = reactive({ });
 
     const uploadImage = () => {
@@ -358,16 +358,16 @@ export default {
       formData.append("lastName", personObj.lastName)
       formData.append("mobilePhone", personObj.mobilePhone)
       formData.append("email", personObj.email)
-      formData.dayOfBirth = birthDate.date();
-      formData.monthOfBirth = birthDate.month();
-      formData.yearOfBirth = birthDate.year();
-      formData.occupation = personObj.occupation;
-      formData.yearOfWedding = anniversaryDate.year();
-      formData.monthOfWedding = anniversaryDate.month();
-      formData.dayOfWedding = anniversaryDate.date();
-      formData.peopleClassificationID = personObj.peopleClassificationID;
-      formData.address = personObj.address;
-      formData.picture = image;
+      formData("dayOfBirth", birthDate.date());
+      formData("monthOfBirth", birthDate.month());
+      formData("yearOfBirth", birthDate.year());
+      formData("occupation", personObj.occupation);
+      formData("yearOfWedding", anniversaryDate.year());
+      formData("monthOfWedding", anniversaryDate.month());
+      formData("dayOfWedding", anniversaryDate.date());
+      formData("peopleClassificationID", membershipId.value);
+      formData("address", personObj.address);
+      formData("picture", image);
 
       try {
         console.log(formData, "data");
@@ -389,7 +389,7 @@ export default {
         const {data} = response;
         peopleClassifications.value = data;
       } catch(err) {
-        console.log(err.response);
+        console.log(err);
       }
     });
 
@@ -417,6 +417,7 @@ export default {
       url,
       imageSelected,
       uploadImage,
+      membershipId,
     };
   },
 };
@@ -451,20 +452,22 @@ export default {
   border-radius: 22px;
   width: 28%;
   min-width: 228px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: 20px;
+  height: fit-content;
 }
 
 .input-field {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin: 10px 0;
+  margin: 0 10px 10px 10px;
 }
 
 .input {
   color: #1c252c;
   font-weight: normal;
-  width: 250px;
+  width: 330px;
   box-sizing: border-box;
   border-radius: 4px;
   padding: 8px 10px 6px;
@@ -481,6 +484,13 @@ export default {
   font-style: italic;
   color: #b2c2cd;
   letter-spacing: 1.5px;
+}
+
+.celeb-info select {
+  transition: border 0.1s linear;
+  border: 1px solid #b2c2cd;
+  box-sizing: border-box;
+  border-radius: 4px;
 }
 
 .label {
@@ -525,7 +535,6 @@ export default {
 
 .header-text {
   font-size: 26px;
-  padding: 0 10px;
 }
 
 .status-n-gender {
@@ -534,7 +543,7 @@ export default {
 
 .gender .input,
 .status .input {
-  width: 119px;
+  width: 160px;
   font-size: 12px;
 }
 
@@ -580,19 +589,21 @@ export default {
 
 .add-info--con {
   display: flex;
+  width: 100%;
 }
 
 .label-text-box {
-  width: 32.5%;
+  width: calc(62% - 344px);
   padding: 10px;
   text-align: right;
 }
 
 .info-box {
-  width: 60%;
+  width: calc(100% - (62% - 350px));
   background: #FFFFFF91;
   border: 1px solid #B9C5CF;
   margin-bottom: 24px;
+  margin-right: 20px;
 }
 
 .nav-bar {
@@ -622,7 +633,7 @@ export default {
 
 .info-box-body {
   height: fit-content;
-  padding: 24px 10px;
+  padding: 54px 10px;
 }
 
 .form-section-header {
@@ -697,6 +708,11 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
+  .add-info--con {
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .bio-info {
     flex-direction: column-reverse;
     margin-top: 24px;
@@ -709,32 +725,53 @@ export default {
   .info-box, .label-text-box {
     width: 80% !important;
   }
+
+  .other {
+    margin: 0 auto 20px;
+  }
+}
+
+@media screen and (min-width: 858px) {
+  .celeb-info .celeb-date {
+    width: 87px;
+  }
+
+  .celeb-info .celeb-year {
+    width: 113px;
+  }
 }
 
 @media screen and (max-width: 898px) {
   .add-info--con {
-    flex-direction: column;
+    /* flex-direction: column; */
     justify-content: center;
   }
 
   .label-text-box {
-    width: 50%;
+    width: calc(62% - 344px);
     align-self: center;
     text-align: left;
   }
 
   .info-box {
-    width: 50%;
+    width: calc(100% - (62% - 350px));
     align-self: center;
   }
 }
 
-@media screen and (min-width: 1050px) {
+@media screen and (min-width: 1100px) {
   .my-con {
-    /* width: 90%; */
-    padding: 24px 5%;
-    /* max-width: 990px; */
-    margin: auto;
+    margin-top: 0;
+  }
+
+  .header h3 {
+    margin: 0;
+  }
+}
+
+@media screen and (min-width: 1560px) {
+  .label-text-box {
+    width: calc(62% - 336px);
   }
 }
 </style>
