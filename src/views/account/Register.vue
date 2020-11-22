@@ -2,7 +2,7 @@
   <div>
     <div class="main-section">
       <div class="logo-con">
-        <a href="" class="logo-link"
+        <a class="logo-link"
           ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
         /></a>
       </div>
@@ -39,6 +39,7 @@
               v-model="credentials.password"
               class="input"
               placeholder="Password"
+              pattern=".{6,}" 
               required
             />
           </div>
@@ -53,8 +54,10 @@
             >
           </div>
 
-          <button class="submit-btn sign-in-btn get-started">
-            Get Started
+          <button class="submit-btn sign-in-btn get-started" :class="{ 'btn-loading': loading }">
+            <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+            <span>Get Started</span>
+            <span></span>
           </button>
         </form>
 
@@ -108,6 +111,7 @@ export default {
       showError: false,
       errorMessage: "",
       show: false,
+      loading: false,
     };
   },
 
@@ -121,18 +125,23 @@ export default {
     },
 
     register() {
+      this.loading = true;
+      // this.showError = false;
       axios
         .post("/initialsignup", this.credentials)
         .then((res) => {
+          this.loading = false;
           console.log(res, "register response");
           this.$store.dispatch("setUserEmail", this.credentials.email);
           localStorage.setItem("email", this.credentials.email)
           this.$router.push("/onboarding");
         })
         .catch((err) => {
+          this.loading = false;
           console.log(err.response);
           if (err.response.status === 400) {
-            this.errorMessage = err.response.data;
+            const { message } = err.response.data;
+            this.errorMessage = message ? message : "An error occurred";
             this.showError = true;
           }
         });

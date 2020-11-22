@@ -5,7 +5,7 @@
     </div>
 
     <div class="form-div">
-      <form action="">
+      <form  @submit.prevent="addPerson">
         <div class="bio-div">
           <p class="form-section-header">Bio:</p>
           <div class="bio-info">
@@ -13,7 +13,7 @@
               <div class="input-field ">
                 <label for="" class="label">Membership</label>
                 <div class="custom-select">
-                  <select name="" id="" class="input select" v-model="membershipId">
+                  <select name="" id="" class="input select search-box" v-model="membershipId">
                   <option value="" selected >-Select Membership</option>
                   <option :value="category.id" v-for="category in peopleClassifications" :key="category.id">{{ category.name }}</option>
                 </select>
@@ -21,15 +21,15 @@
               </div>
               <div class="input-field">
                 <label for="" class="label">Surname<span style="color:red"> *</span></label>
-                <input type="text" class="input" placeholder="" v-model="person.lastName" />
+                <input type="text" class="input" placeholder="" v-model="person.lastName" required />
               </div>
               <div class="input-field">
                 <label for="" class="label">Firstname<span style="color:red"> *</span></label>
-                <input type="text" class="input" placeholder="" v-model="person.firstName" />
+                <input type="text" class="input" placeholder="" v-model="person.firstName" required />
               </div>
               <div class="input-field">
                 <label for="" class="label">Phone number <span style="color:red"> *</span></label>
-                <input type="text" class="input" placeholder="" v-model="person.mobilePhone" />
+                <input type="text" class="input" placeholder="" v-model="person.mobilePhone" required />
               </div>
               <div class="input-field">
                 <label for="" class="label">Email</label>
@@ -43,14 +43,14 @@
                 <label for=""></label>
                 <div class="status-n-gender">
                   <div class="status custom-select">
-                    <select name="" id="" class="input select">
+                    <select name="" id="" class="input select search-box">
                       <option value="">Martal satus</option>
                       <option value="">First timer</option>
                       <option value="">Old timer</option>
                     </select>
                   </div>
                   <div class="gender custom-select">
-                    <select name="" id="" class="input select">
+                    <select name="" id="" class="input select search-box">
                       <option value="">Gender</option>
                       <option value="">Male</option>
                       <option value="">Female</option>
@@ -103,6 +103,7 @@
                       <select
                         @change="editBirthDateValue('months', $event)"
                         ref="birthMonth"
+                        class="search-box"
                       >
                         <option
                           v-for="(month, index) in months"
@@ -118,7 +119,7 @@
                       <select
                         @change="editBirthDateValue('date', $event)"
                         ref="birthDay"
-                        class="celeb-date"
+                        class="celeb-date search-box"
                       >
                         <option v-for="i in daysInBirthMonth" :key="i" :value="i">
                           {{ i }}
@@ -130,7 +131,7 @@
                       <select
                         @change="editBirthDateValue('year', $event)"
                         ref="birthYear"
-                        class="celeb-year"
+                        class="celeb-year search-box"
                       >
                         <option
                           v-for="i in numberofYears"
@@ -152,6 +153,7 @@
                       <select
                         @change="editAnnDateValue('months', $event)"
                         ref="annMonth"
+                        class="search-box"
                       >
                         <option
                           v-for="(month, index) in months"
@@ -167,7 +169,7 @@
                       <select
                         @change="editAnnDateValue('date', $event)"
                         ref="annDay"
-                        class="celeb-date"
+                        class="celeb-date search-box"
                       >
                         <option v-for="i in daysInAnnMonth" :key="i" :value="i">
                           {{ i }}
@@ -179,7 +181,7 @@
                       <select
                         @change="editAnnDateValue('year', $event)"
                         ref="annYear"
-                        class="celeb-year"
+                        class="celeb-year search-box"
                       >
                         <option
                           v-for="i in numberofYears"
@@ -212,7 +214,7 @@
               </div>
               <div class="input-field">
                 <label for="" class="label">Age</label>
-                <div class="custom-select">
+                <div class="custom-select search-box">
                   <select name="" id="" class="input select">
                   <option value="">Select age range</option>
                   <option value="">14 - 18</option>
@@ -262,7 +264,11 @@
         </div>
 
         <div class="submit-div">
-          <button class="submit-btn" @click.prevent="addPerson">Save</button>
+          <button class="submit-btn" :class="{ 'btn-loading': loading }">
+            <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+            <span>Save</span>
+            <span></span>
+          </button>
         </div>
       </form>
     </div>
@@ -274,9 +280,11 @@ import moment from "moment";
 import { ref, reactive, onMounted } from "vue";
 import router from "@/router/index"
 import axios from "axios";
+// import $ from 'jquery'
 
 export default {
   setup() {
+    const loading = ref(false);
     const months = [
       "January",
       "February",
@@ -353,34 +361,40 @@ export default {
 
     const addPerson = async () => {
       const personObj = { ...person };
+      
       const formData = new FormData();
       formData.append("firstName", personObj.firstName)
       formData.append("lastName", personObj.lastName)
       formData.append("mobilePhone", personObj.mobilePhone)
       formData.append("email", personObj.email)
-      formData("dayOfBirth", birthDate.date());
-      formData("monthOfBirth", birthDate.month());
-      formData("yearOfBirth", birthDate.year());
-      formData("occupation", personObj.occupation);
-      formData("yearOfWedding", anniversaryDate.year());
-      formData("monthOfWedding", anniversaryDate.month());
-      formData("dayOfWedding", anniversaryDate.date());
-      formData("peopleClassificationID", membershipId.value);
-      formData("address", personObj.address);
-      formData("picture", image);
-
+      formData.append("dayOfBirth", birthDate.date());
+      formData.append("monthOfBirth", birthDate.month());
+      formData.append("yearOfBirth", birthDate.year());
+      formData.append("occupation", personObj.occupation);
+      formData.append("yearOfWedding", anniversaryDate.year());
+      formData.append("monthOfWedding", anniversaryDate.month());
+      formData.append("dayOfWedding", anniversaryDate.date());
+      formData.append("peopleClassificationID", membershipId.value);
+      formData.append("address", personObj.address);
+      formData.append("picture", image);
       try {
-        console.log(formData, "data");
+        
+        loading.value = true;
         const response = await axios.post("/api/people/createperson", formData);
-        if (response.status === 200)
+        
+        if (response.status === 200 || response.status === 201) {
+          loading.value = false;
           router.push("/home/people")
+        }
       } catch (err) {
+        loading.value = false;
         console.log(err.response);
       }
     }
 
 
     onMounted(async () => {
+      // $('.search-box').select2();
       updateBirthDateElements();
       updateAnnDateElements()
 
@@ -418,6 +432,7 @@ export default {
       imageSelected,
       uploadImage,
       membershipId,
+      loading,
     };
   },
 };
@@ -604,6 +619,7 @@ export default {
   border: 1px solid #B9C5CF;
   margin-bottom: 24px;
   margin-right: 20px;
+  border-radius: 5px;
 }
 
 .nav-bar {
@@ -665,6 +681,8 @@ export default {
 }
 
 .submit-div {
+  display: flex;
+  justify-content: center;
   text-align: center;
   margin-bottom: 24px;
 }

@@ -6,7 +6,6 @@ import Highcharts from 'highcharts';
 import VueHighcharts from 'vue-highcharts';
 import axios from "axios";
 import NProgress from "nprogress"
-import VueGoogleCharts from 'vue-google-charts'
 
 NProgress.configure({ showSpinner: false });
 axios.interceptors.request.use((config) => {
@@ -19,11 +18,6 @@ axios.interceptors.request.use((config) => {
     NProgress.start()
     return config;
   })
-
-  // instance.interceptors.request.use(config => {
-  //   NProgress.start()
-  //   return config
-  // })
   
   // before a response is returned stop nprogress
   axios.interceptors.response.use(response => {
@@ -34,4 +28,4 @@ axios.interceptors.request.use((config) => {
 
 axios.defaults.baseURL = "https://churchplusv3coreapi.azurewebsites.net/";
 
-createApp(App).use(store).use(router).use(VueGoogleCharts).use(VueHighcharts, { Highcharts }).mount('#app')
+createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).mount('#app')

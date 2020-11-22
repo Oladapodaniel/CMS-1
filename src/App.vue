@@ -52,4 +52,9 @@ export default {
   opacity: 0;
   transform: translate(-2em, 0);
 }
+
+.btn-loading {
+  display: flex;
+  justify-content: space-between;
+}
 </style>
