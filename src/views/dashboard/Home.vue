@@ -68,6 +68,16 @@ export default {
         padding-top: 20px;
     }
 
+    .main-con::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide Scrolbar for IE, Edge and Firefox */
+    .main-con {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+
     .toggle {
         display: none;
         width: 30px;

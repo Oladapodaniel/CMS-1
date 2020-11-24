@@ -202,8 +202,8 @@
 </template>
 
 <script>
-import Highcharts from "highcharts";
-import { onMounted, ref } from "vue";
+// import Highcharts from "highcharts";
+// import { onMounted, ref } from "vue";
 // import Highcharts from "highcharts";
 // import { onMounted, reactive, ref } from "vue";
 import PieChart from "@/components/charts/PieChart.vue"
@@ -439,7 +439,7 @@ export default {
   border: none;
   width: 110px;
   text-transform: uppercase;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .buy-btn {
