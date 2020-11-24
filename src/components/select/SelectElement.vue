@@ -1,14 +1,15 @@
 <template>
-    <select class="input-sm" :name="name" style="width: 200px">
+    <select class="input-sm" :name="name" style="width: 100%" @change="selecteditem">
         <slot></slot>
     </select>
 </template>
 
 <script>
+    /* eslint no-unused-vars: 1 */
     import select2 from 'select2'
     import $ from 'jquery'
     export default {
-        props: ["options", "value", "name"],
+        props: ["options", "value", "name", "typ"],
 
         data() {
             return {
@@ -16,18 +17,22 @@
             }
         },
 
+        methods: {
+            selectedItem(e) {
+                console.log(e.target.value);
+            }
+        },
+
         mounted() {
             console.log();
             $('.input-sm').select2();
-            console.log($);
-            console.log(select2);
             let vm = this;
             $(this.$el)
             .select2({theme: 'bootstrap', data: this.options})
             .val(this.value)
             .trigger('change')
             .on('change', function() {
-                vm.$emit('input', this.value)
+                vm.$emit('input', { value: this.value, dataType: this.name })
             })
         },
 

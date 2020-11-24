@@ -41,7 +41,10 @@
               <div class="input-div">
                 <label class="mb-0">What's your phone number?</label>
                 <div class="phone-input">
-                  <select
+                  <div style="width: 80px">
+                    <SelectElem :typ="'code'" name="code" :options="countryCodes" value="-Select size range" @input="itemSelected"/>
+                  </div>
+                  <!-- <select
                     name=""
                     id="code"
                     class="input zip-code select2"
@@ -55,7 +58,7 @@
                     >
                       {{ code.phoneCode }}
                     </option>
-                  </select>
+                  </select> -->
 
                   <input
                     v-model.trim="userDetails.phoneNumber"
@@ -79,11 +82,12 @@
                 />
               </div>
 
-              <div class="input-div custom-select">
+              <div class="input-div custom-select" id="myInput">
                 <label class="mb-0"
                   >What's the membership size of your ministry?</label
                 >
-                <select
+                  <SelectElem :typ="'churchsize'" name="churchSize" :options="['-Select size range', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="-Select size range" @input="itemSelected"/>
+                <!-- <select
                   name="size"
                   id="size"
                   class="input size select2"
@@ -96,7 +100,7 @@
                   <option value="100" @click="sizeSelected('100')">Between 1 - 100</option>
                   <option value="1000" @click="sizeSelected('100')">Between 100 - 1000</option>
                   <option value="100000" @click="sizeSelected('100')">Between 1000 - 100000</option>
-                </select>
+                </select> -->
               </div>
 
               
@@ -141,9 +145,9 @@
 <script>
 import axios from "axios";
 // import $ from 'jquery'
-// import SelectElem from '@/components/select/SelectElement.vue'
+import SelectElem from '@/components/select/SelectElement.vue'
 export default {
-  // components: { SelectElem },
+  components: { SelectElem },
   beforeRouteLeave() {
     const userEmail = localStorage.getItem("email");
     if (userEmail) localStorage.removeItem("email");
@@ -164,7 +168,7 @@ export default {
       myOptions: ['op1', 'op2', 'op3'],
 
       selectedCountry: {},
-      countries: [],
+      countries: [{country: "Zambia", phoneCode: "234"}, {country: "Nigeria", phoneCode: "234"}, {country: "Congo", phoneCode: "235"}],
       loading: false,
     };
   },
@@ -190,13 +194,22 @@ export default {
 
     selectCountry(e) {
       console.log(e.target.value, "Id");
-      // this.userDetails.countryId = +e.target.value;
       this.zipCode = this.countries.filter((i) => i.id === +e.target.value);
     },
 
     sizeSelected(e) {
       console.log(this.userDetails);
       this.userDetails.churchSize = e.target.value;
+    },
+
+    itemSelected(data) {
+      if (data.dataType === "churchSize") {
+        this.userDetails.churchSize = data.value;
+      }
+      
+      if (data.dataType === "code") {
+        this.zipCode = data.value;
+      }
     }
   },
 
@@ -219,14 +232,14 @@ export default {
     },
 
     countryCodes() {
-      return this.countries.filter((i) => i.phoneCode);
-    },
-  },
+      const codes = [ ]
+      this.countries.forEach(i => {
+        if (i.phoneCode) codes.push(i.phoneCode);
+      });
+      console.log(codes);
 
-  mounted() {
-    // console.log($('#size'));
-    // $('#size').select2()
-    // $('#code').select2()
+      return codes;
+    },
   },
  
   created() {
@@ -477,6 +490,11 @@ span .select2-selection--single {
 #size {
   appearance: none !important;
 } */
+
+#myInput {
+  display: flex;
+  flex-direction: column;
+}
 
 
 @media screen and (max-width: 990px) {
