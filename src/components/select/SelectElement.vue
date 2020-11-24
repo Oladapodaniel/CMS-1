@@ -5,6 +5,7 @@
 </template>
 
 <script>
+    /* eslint no-unused-vars: 1 */
     import select2 from 'select2'
     import $ from 'jquery'
     export default {
