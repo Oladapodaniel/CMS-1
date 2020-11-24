@@ -75,7 +75,7 @@
         text-align: center;
         position: absolute;
         top: 4px;
-        right: 8px;
+        right: 30px;
         font-size: 30px;
     }
 
@@ -85,17 +85,24 @@
 
     @media screen and (max-width: 1100px) {
         .toggle {
-            display: block
+            display: block;
+            /* background-color: #136acd;
+            padding: 5px;
+            border-radius: 5px;
+            width: 8%; */
         }
 
         .links-menu {
             position: fixed;
             left: -287px;
+            transition: all .5s ease-in-out;
         }
 
         .links-menu.show {
             position: fixed;
             left: 0;
+            transition: all .5s ease-in-out;
+            z-index: 1
         }
 
         .main-con {

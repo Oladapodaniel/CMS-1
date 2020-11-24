@@ -159,6 +159,8 @@ export default {
   padding: 8px 20px;
   background: #ebeff4;
   height: 100vh;
+  z-index: 100;
+  /* border: 2px solid red; */
 }
 
 .nav .link {
@@ -218,12 +220,12 @@ export default {
 @media screen and (max-width: 1100px) {
   .nav {
     width: 287px;
-    background: #828282;
+    /* background: #828282; */
 
   }
 
   .nav .link {
-    opacity: 1;
+    /* opacity: 1; */
   }
 }
 </style>

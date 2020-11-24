@@ -171,7 +171,7 @@
 
 <script>
 import Highcharts from "highcharts";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, ref } from "vue";
 export default {
   setup() {
     const chart = ref(null);
