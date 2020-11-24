@@ -2,7 +2,7 @@
   <div>
     <div class="main-section">
       <div class="logo-con">
-        <a href="" class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"></a>
+        <a class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"></a>
       </div>
       <div class="header">
         <h1>Sign in</h1>
@@ -13,7 +13,7 @@
               <p class="error-message">{{ state.errorMessage }}</p>
           </div>
 
-        <form action="">
+        <form @submit="login">
           <div>
             <input type="text" v-model="state.credentials.userName" class="input" placeholder="Email" required/>
           </div>
@@ -24,7 +24,11 @@
             <router-link to="/forgot-password" class="forgot-password">Forgot it?</router-link>
           </div>
 
-          <button class="submit-btn sign-in-btn" @click="login">Sign in</button>
+          <button class="submit-btn sign-in-btn" :class="{ 'btn-loading': loading }" >
+            <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+            <span>Sign in</span>
+            <span></span>
+            </button>
         </form>
 
         <div style="margin: 24px 0">
@@ -49,7 +53,7 @@
 
       <div class="bottom-container">
         <div>
-          <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up">Sign up now</router-link></p>
+          <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p>
         </div>
       </div>
     </div>
@@ -58,9 +62,9 @@
 
 <script>
 import axios from 'axios';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import store from '../../store/index'
-import router from '../../router/index'
+import router from '../../router/index';
 
 export default {
     setup() {
@@ -70,39 +74,43 @@ export default {
         showError: false,
         errorMessage: "",
       });
+      const loading = ref(false)
       // NProgress.start()
 
       const login = async (e) => {
         e.preventDefault();
         localStorage.setItem("email", state.credentials.userName)
-        // store.dispatch("setUserEmail", state.credentials.userName);
-        // store.dispatch("setUserEmail", credentials.email)
         try {
+          loading.value = true;
           const res = await axios.post("/login", state.credentials)
+          loading.value = false;
           const { data } = res;
-          console.log(data);
+          console.log(data, "login data");
           store.dispatch("setUserData", data);
           localStorage.setItem("token", data.token);
           router.push("/next")
         } catch (err) { 
+          loading.value = false;
           console.log(err.response);
-            const { status } = err.response;
-            const { message } = err.response.data;
-
-            if (status == 400 && message === "Onboard: false")
-            {
-              console.log("redirecting");
-              router.push('/onboarding');
-            } else {
-              state.errorMessage = err.response.data.message;
-              state.showError = true;
-            }
+          console.log(err.response);
+          const { status } = err.response;
+          const { message } = err.response.data;
+          console.log(message);
+          if (status == 400 && message === "Onboard: false")
+          {
+            console.log("redirecting");
+            router.push('/onboarding');
+          } else {
+            state.errorMessage = err.response.data.message;
+            state.showError = true;
+          }
         }
       }
 
       return {
         state,
-        login
+        login,
+        loading,
       };
     }
 };
@@ -164,6 +172,7 @@ export default {
 
   .input::placeholder {
     font-style: italic;
+    font-weight: 600;
     color: #b2c2cd;
     letter-spacing: 1.5px;
   }
@@ -186,7 +195,7 @@ export default {
     border: 1px solid transparent;
     margin-top: 8px;
     width: 100%;
-    padding: 8px 20px;
+    padding: 8px 8px;
     box-sizing: border-box;
     text-align: center;
     min-width: 100px;
@@ -234,7 +243,7 @@ export default {
 }
 
 .facebook-btn {
-  background: #410093;
+  background: #3B5998;
 }
 
 .fb-icon {

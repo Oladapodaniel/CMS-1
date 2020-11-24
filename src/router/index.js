@@ -18,8 +18,15 @@ import ImportPeople from '../views/people/ImportPeople.vue';
 import AddPerson from '../views/people/AddPerson.vue';
 import List from '../views/people/PeopleList.vue';
 import Event from '../views/event/Event.vue'
+import Column from '@/components/charts/ColumnChart.vue';
+
 
 const routes = [
+  {
+    path: '/column',
+    name: 'column',
+    component: Column
+  },
   {
     path: '/',
     name: 'Login',

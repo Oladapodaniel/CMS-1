@@ -15,9 +15,45 @@
         box-sizing: border-box;
         margin: 0;
       }
+
+      .select2-selection--single {
+        padding: 0px 10px !important;
+        height: 40px !important;
+        margin-top: 4px !important;
+        display: flex !important;
+        align-items: center !important;
+        border: 1px solid #b2c2cd;
+      }
+      .select2-container .select2-choice {
+          padding: 5px 4px;
+          height: 40px;
+          /* width: 132px;  */
+          font-size: 1.2em;
+          appearance: none;
+          border: 1px solid #b2c2cd;
+      }
+
+      .select2-selection__arrow {
+        position: absolute;
+        top: 10px !important;
+      }
+
+      #select2-code-container {
+        padding: 0;
+      }
     </style>
-    <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" />
-    <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+    <!-- <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" />
+    <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script> -->
+
+    <script src="https://unpkg.com/jquery@3.1.1/dist/jquery.js"></script>
+    <script src="https://unpkg.com/select2@4.0.3/dist/js/select2.js"></script>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://unpkg.com/select2@4.0.3/dist/css/select2.min.css"
+    />
+    
   </head>
   <body>
     <noscript>
@@ -25,7 +61,8 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>

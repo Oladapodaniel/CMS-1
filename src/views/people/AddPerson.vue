@@ -5,7 +5,7 @@
     </div>
 
     <div class="form-div">
-      <form action="">
+      <form  @submit.prevent="addPerson">
         <div class="bio-div">
           <p class="form-section-header">Bio:</p>
           <div class="bio-info">
@@ -13,40 +13,44 @@
               <div class="input-field ">
                 <label for="" class="label">Membership</label>
                 <div class="custom-select">
-                  <select name="" id="" class="input select" v-model="person.peopleClassificationID">
-                  <option value="">Classification</option>
+                  <select name="" id="" class="input select search-box" v-model="membershipId">
+                  <option value="" selected >-Select Membership</option>
                   <option :value="category.id" v-for="category in peopleClassifications" :key="category.id">{{ category.name }}</option>
                 </select>
                 </div>
               </div>
               <div class="input-field">
-                <label for="" class="label">Surname</label>
-                <input type="text" class="input" placeholder="" v-model="person.lastName" />
+                <label for="" class="label">Surname<span style="color:red"> *</span></label>
+                <input type="text" class="input" placeholder="" v-model="person.lastName" required />
               </div>
               <div class="input-field">
-                <label for="" class="label">Firstname</label>
-                <input type="text" class="input" placeholder="" v-model="person.firstName" />
+                <label for="" class="label">Firstname<span style="color:red"> *</span></label>
+                <input type="text" class="input" placeholder="" v-model="person.firstName" required />
               </div>
               <div class="input-field">
-                <label for="" class="label">Phone number</label>
-                <input type="text" class="input" placeholder="" v-model="person.mobilePhone" />
+                <label for="" class="label">Phone number <span style="color:red"> *</span></label>
+                <input type="text" class="input" placeholder="" v-model="person.mobilePhone" required />
               </div>
               <div class="input-field">
                 <label for="" class="label">Email</label>
                 <input type="text" class="input" placeholder="" v-model="person.email" />
               </div>
               <div class="input-field">
+                <label for="" class="label">Address</label>
+                <input type="text" class="input" placeholder="" v-model="person.address" />
+              </div>
+              <div class="input-field">
                 <label for=""></label>
                 <div class="status-n-gender">
                   <div class="status custom-select">
-                    <select name="" id="" class="input select">
+                    <select name="" id="" class="input select search-box">
                       <option value="">Martal satus</option>
                       <option value="">First timer</option>
                       <option value="">Old timer</option>
                     </select>
                   </div>
                   <div class="gender custom-select">
-                    <select name="" id="" class="input select">
+                    <select name="" id="" class="input select search-box">
                       <option value="">Gender</option>
                       <option value="">Male</option>
                       <option value="">Female</option>
@@ -79,7 +83,7 @@
                   />
                 </div>
                 <div>
-                  <button class="upload-btn">Upload</button>
+                  <button class="upload-btn" @click.prevent="uploadImage">Upload</button>
                 </div>
               </div>
             </div>
@@ -99,6 +103,7 @@
                       <select
                         @change="editBirthDateValue('months', $event)"
                         ref="birthMonth"
+                        class="search-box"
                       >
                         <option
                           v-for="(month, index) in months"
@@ -114,6 +119,7 @@
                       <select
                         @change="editBirthDateValue('date', $event)"
                         ref="birthDay"
+                        class="celeb-date search-box"
                       >
                         <option v-for="i in daysInBirthMonth" :key="i" :value="i">
                           {{ i }}
@@ -125,6 +131,7 @@
                       <select
                         @change="editBirthDateValue('year', $event)"
                         ref="birthYear"
+                        class="celeb-year search-box"
                       >
                         <option
                           v-for="i in numberofYears"
@@ -146,6 +153,7 @@
                       <select
                         @change="editAnnDateValue('months', $event)"
                         ref="annMonth"
+                        class="search-box"
                       >
                         <option
                           v-for="(month, index) in months"
@@ -161,6 +169,7 @@
                       <select
                         @change="editAnnDateValue('date', $event)"
                         ref="annDay"
+                        class="celeb-date search-box"
                       >
                         <option v-for="i in daysInAnnMonth" :key="i" :value="i">
                           {{ i }}
@@ -172,6 +181,7 @@
                       <select
                         @change="editAnnDateValue('year', $event)"
                         ref="annYear"
+                        class="celeb-year search-box"
                       >
                         <option
                           v-for="i in numberofYears"
@@ -204,7 +214,7 @@
               </div>
               <div class="input-field">
                 <label for="" class="label">Age</label>
-                <div class="custom-select">
+                <div class="custom-select search-box">
                   <select name="" id="" class="input select">
                   <option value="">Select age range</option>
                   <option value="">14 - 18</option>
@@ -246,15 +256,19 @@
               </div>
             </div>
             <div class="info-box-body">
-              <button class="info-btn" v-if="areaInView === 'groups'">Add to Group</button>
-              <button class="info-btn" v-if="areaInView === 'fellowship'">Add to House fellowship</button>
-              <button class="info-btn" v-if="areaInView === 'notes'">New Notes</button>
+              <button @click.prevent="uploadImage" class="info-btn" v-if="areaInView === 'groups'">Add to Group</button>
+              <button @click.prevent="uploadImage" class="info-btn" v-if="areaInView === 'fellowship'">Add to House fellowship</button>
+              <button @click.prevent="uploadImage" class="info-btn" v-if="areaInView === 'notes'">New Notes</button>
             </div>
           </div>
         </div>
 
         <div class="submit-div">
-          <button class="submit-btn" @click.prevent="addPerson">Save</button>
+          <button class="submit-btn" :class="{ 'btn-loading': loading }">
+            <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+            <span>Save</span>
+            <span></span>
+          </button>
         </div>
       </form>
     </div>
@@ -266,9 +280,11 @@ import moment from "moment";
 import { ref, reactive, onMounted } from "vue";
 import router from "@/router/index"
 import axios from "axios";
+// import $ from 'jquery'
 
 export default {
   setup() {
+    const loading = ref(false);
     const months = [
       "January",
       "February",
@@ -331,47 +347,54 @@ export default {
     let image;
     const imageSelected = (e) => {
       image = e.target.files[0];
-      // let reader = new FileReader()
-      // reader.readAsDataURL(e.target.files[0])
-      // reader.onload = (e) => {
-      //   console.log(e.target.result);
-      // }
       url.value = URL.createObjectURL(image);
     }
 
     //Person
     const peopleClassifications = ref([]);
+    const membershipId = ref("");
     const person = reactive({ });
+
+    const uploadImage = () => {
+
+    }
 
     const addPerson = async () => {
       const personObj = { ...person };
+      
       const formData = new FormData();
       formData.append("firstName", personObj.firstName)
       formData.append("lastName", personObj.lastName)
       formData.append("mobilePhone", personObj.mobilePhone)
       formData.append("email", personObj.email)
-      formData.dayOfBirth = birthDate.date();
-      formData.monthOfBirth = birthDate.month();
-      formData.yearOfBirth = birthDate.year();
-      formData.occupation = personObj.occupation;
-      formData.yearOfWedding = anniversaryDate.year();
-      formData.monthOfWedding = anniversaryDate.month();
-      formData.dayOfWedding = anniversaryDate.date();
-      formData.peopleClassificationID = personObj.peopleClassificationID;
-      formData.picture = image;
-
+      formData.append("dayOfBirth", birthDate.date());
+      formData.append("monthOfBirth", birthDate.month());
+      formData.append("yearOfBirth", birthDate.year());
+      formData.append("occupation", personObj.occupation);
+      formData.append("yearOfWedding", anniversaryDate.year());
+      formData.append("monthOfWedding", anniversaryDate.month());
+      formData.append("dayOfWedding", anniversaryDate.date());
+      formData.append("peopleClassificationID", membershipId.value);
+      formData.append("address", personObj.address);
+      formData.append("picture", image);
       try {
-        console.log(formData, "data");
+        
+        loading.value = true;
         const response = await axios.post("/api/people/createperson", formData);
-        if (response.status === 200)
+        
+        if (response.status === 200 || response.status === 201) {
+          loading.value = false;
           router.push("/home/people")
+        }
       } catch (err) {
+        loading.value = false;
         console.log(err.response);
       }
     }
 
 
     onMounted(async () => {
+      // $('.search-box').select2();
       updateBirthDateElements();
       updateAnnDateElements()
 
@@ -380,7 +403,7 @@ export default {
         const {data} = response;
         peopleClassifications.value = data;
       } catch(err) {
-        console.log(err.response);
+        console.log(err);
       }
     });
 
@@ -407,6 +430,9 @@ export default {
       peopleClassifications,
       url,
       imageSelected,
+      uploadImage,
+      membershipId,
+      loading,
     };
   },
 };
@@ -441,20 +467,22 @@ export default {
   border-radius: 22px;
   width: 28%;
   min-width: 228px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: 20px;
+  height: fit-content;
 }
 
 .input-field {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin: 10px 0;
+  margin: 0 10px 10px 10px;
 }
 
 .input {
   color: #1c252c;
   font-weight: normal;
-  width: 250px;
+  width: 330px;
   box-sizing: border-box;
   border-radius: 4px;
   padding: 8px 10px 6px;
@@ -471,6 +499,13 @@ export default {
   font-style: italic;
   color: #b2c2cd;
   letter-spacing: 1.5px;
+}
+
+.celeb-info select {
+  transition: border 0.1s linear;
+  border: 1px solid #b2c2cd;
+  box-sizing: border-box;
+  border-radius: 4px;
 }
 
 .label {
@@ -515,7 +550,6 @@ export default {
 
 .header-text {
   font-size: 26px;
-  padding: 0 10px;
 }
 
 .status-n-gender {
@@ -524,7 +558,7 @@ export default {
 
 .gender .input,
 .status .input {
-  width: 119px;
+  width: 160px;
   font-size: 12px;
 }
 
@@ -570,19 +604,22 @@ export default {
 
 .add-info--con {
   display: flex;
+  width: 100%;
 }
 
 .label-text-box {
-  width: 32.5%;
+  width: calc(62% - 344px);
   padding: 10px;
   text-align: right;
 }
 
 .info-box {
-  width: 60%;
+  width: calc(100% - (62% - 350px));
   background: #FFFFFF91;
   border: 1px solid #B9C5CF;
   margin-bottom: 24px;
+  margin-right: 20px;
+  border-radius: 5px;
 }
 
 .nav-bar {
@@ -612,7 +649,7 @@ export default {
 
 .info-box-body {
   height: fit-content;
-  padding: 24px 10px;
+  padding: 54px 10px;
 }
 
 .form-section-header {
@@ -622,20 +659,30 @@ export default {
 
 .white-bg {
   background: white;
+  border-radius: 6px;
+  box-shadow: 0px 1px 3px #00000029;
 }
 
 .info-btn {
-  background: #136ACD;
+  background: #DDE2E6;
   border-radius: 22px;
   border: none;
   padding: 8px 10px;
-  color: #fff;
+  color: #002044;
   font-size: 12px;
   outline: transparent;
   margin: 10px;
+  font-weight: 400;
+}
+
+.info-btn:hover {
+  background: #136ACD;
+  color: #fff;
 }
 
 .submit-div {
+  display: flex;
+  justify-content: center;
   text-align: center;
   margin-bottom: 24px;
 }
@@ -679,6 +726,11 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
+  .add-info--con {
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .bio-info {
     flex-direction: column-reverse;
     margin-top: 24px;
@@ -691,32 +743,53 @@ export default {
   .info-box, .label-text-box {
     width: 80% !important;
   }
+
+  .other {
+    margin: 0 auto 20px;
+  }
+}
+
+@media screen and (min-width: 858px) {
+  .celeb-info .celeb-date {
+    width: 87px;
+  }
+
+  .celeb-info .celeb-year {
+    width: 113px;
+  }
 }
 
 @media screen and (max-width: 898px) {
   .add-info--con {
-    flex-direction: column;
+    /* flex-direction: column; */
     justify-content: center;
   }
 
   .label-text-box {
-    width: 50%;
+    width: calc(62% - 344px);
     align-self: center;
     text-align: left;
   }
 
   .info-box {
-    width: 50%;
+    width: calc(100% - (62% - 350px));
     align-self: center;
   }
 }
 
-@media screen and (min-width: 1050px) {
+@media screen and (min-width: 1100px) {
   .my-con {
-    /* width: 90%; */
-    padding: 24px 5%;
-    /* max-width: 990px; */
-    margin: auto;
+    margin-top: 0;
+  }
+
+  .header h3 {
+    margin: 0;
+  }
+}
+
+@media screen and (min-width: 1560px) {
+  .label-text-box {
+    width: calc(62% - 336px);
   }
 }
 </style>

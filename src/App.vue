@@ -1,13 +1,5 @@
 <template>
-  <div id="nav"></div>
-  <!-- <router-view/> -->
-  <!-- <transition name="slither">
-    <router-view></router-view>
-  </transition> -->
-
-  <!-- <transition name="fade" mode="out-in"> -->
     <router-view class="view"></router-view>
-  <!-- </transition> -->
 </template>
 
 <script>
@@ -18,15 +10,15 @@ export default {
     return { transitionName: null };
   },
 
-  watch: {
-    $route(to, from) {
-      if (from.path === "/drain") {
-        this.transitionName = "drain";
-      } else {
-        this.transitionName = "slither";
-      }
-    },
-  },
+  // watch: {
+  //   $route(to, from) {
+  //     if (from.path === "/drain") {
+  //       this.transitionName = "drain";
+  //     } else {
+  //       this.transitionName = "slither";
+  //     }
+  //   },
+  // },
 };
 </script>
 
@@ -59,5 +51,10 @@ export default {
 .slide-right-enter {
   opacity: 0;
   transform: translate(-2em, 0);
+}
+
+.btn-loading {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

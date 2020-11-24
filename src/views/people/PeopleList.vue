@@ -6,26 +6,26 @@
 
       <div class="boards">
         <div class="board">
-        <div class="board-top">
-          <p class="total-text">TOTAL MEMBERS</p>
-          <!-- <i class="fa fa-chart-line trend-icon"></i> -->
-          <img class="trend-icon" src="../../assets/dashboardlinks/trend-icon.svg" alt="">
-        </div>
-        <h4 class="total">123,456</h4>
-        <p>
-          <span class="percent">+3.48% </span>
-          <span class="percent-text">  Since last month</span>
-        </p>
+          <div class="board-top">
+            <p class="total-text">TOTAL MEMBERS</p>
+            <img class="trend-icon" src="../../assets/dashboardlinks/trend-icon.svg" alt="">
+          </div>
+          <h4 class="total">123,456</h4>
+          <p>
+            <span class="percent">+3.48% </span>
+            <span class="percent-text">  Since last month</span>
+          </p>
       </div>
-
-      <!-- <div class="board">
-        <BarChart chartType="pie" key="1"/>
-      </div> -->
 
 
       <div class="chart-con">
-        <ByGenderChart domId="chart" title="By Gender" />
-        <ByMaritalStatusChart domId="second" title="By Marital Status" />
+        <div style="width: 45%">
+          <ByGenderChart domId="chart" title="By Gender" distance="5" />
+        </div>
+        <div style="width: 45%">
+          <ByMaritalStatusChart domId="second" title="By Marital Status" />
+        </div>
+        
       </div>
       </div>
     </div>
@@ -172,6 +172,12 @@ export default {
   background: #fff;
 }
 
+.table {
+  box-shadow: 0px 1px 4px #02172E45;
+border: 1px solid #DDE2E6;
+border-radius: 30px;
+}
+
 .summary-header {
   margin: 0 10px;
   color: #02172e;
@@ -189,10 +195,15 @@ export default {
   border-radius: 10px;
   border: 0.4000000059604645px solid #dde2e6;
   padding: 0 8px;
+  box-shadow: 0px 1px 4px #02172E45;
+  box-shadow: 0px 1px 4px #02172E45;
+  border: 1px solid #DDE2E6;
 }
 
 .chart-con {
   width: 70%;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .board-top {
@@ -304,7 +315,7 @@ export default {
   }
 
   .table {
-    overflow: scroll !important;
+    /* overflow: scroll !important; */
   }
 }
 
@@ -386,7 +397,12 @@ export default {
 }
 
 .table-header .check {
-  width: 50px;
+  width: 80px;
+  text-align: center;
+}
+
+.check.data {
+  text-align: center;
 }
 
 .table-header p {
@@ -413,6 +429,7 @@ export default {
 
 .select-all {
   width: 65%;
+  padding: 0 10px;
 }
 
 .filter,

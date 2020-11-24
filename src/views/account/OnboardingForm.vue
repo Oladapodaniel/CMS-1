@@ -1,5 +1,5 @@
 <template>
-  <div class="top-most" @click="hideCodes">
+  <div class="top-most">
     <div class="container">
       <div class="row" id="onboarding">
         <div
@@ -41,7 +41,21 @@
               <div class="input-div">
                 <label class="mb-0">What's your phone number?</label>
                 <div class="phone-input">
-                  <input type="text" v-model="searchCode" class="input zip-code" placeholder="+zip" @focus="showCodes" @blur="hideCodes" required />
+                  <select
+                    name=""
+                    id="code"
+                    class="input zip-code select2"
+                    @change="selectCountry"
+                  >
+                    <option value="182" selected disabled>+234</option>
+                    <option
+                      :value="code.id"
+                      v-for="code in countryCodes"
+                      :key="code.id"
+                    >
+                      {{ code.phoneCode }}
+                    </option>
+                  </select>
 
                   <input
                     v-model.trim="userDetails.phoneNumber"
@@ -50,9 +64,6 @@
                     placeholder="Phone number"
                     required
                   />
-                </div>
-                <div class="codes" :class="{'show': codesVissible}">
-                  <p class="code" v-for="code in countryCodes" :key="code.id" @click="codeSelected(code)">{{ code.phoneCode }}</p>
                 </div>
               </div>
 
@@ -64,26 +75,44 @@
                   class="input"
                   placeholder="Name of church"
                   required
+                  @change="selectCountry"
                 />
               </div>
 
-              <div class="input-div">
-                <label class="mb-0">What's the membership size of your ministry?</label>
-                <select name="" id="" class="input"
-                  v-model="userDetails.churchSize"
+              <div class="input-div custom-select">
+                <label class="mb-0"
+                  >What's the membership size of your ministry?</label
                 >
-                    <option value="">Select ranges close to the church size </option>
-                    <option value="100">Between 1 - 100</option>
-                    <option value="1000">Between 100 - 1000</option>
-                    <option value="100000">Between 1000 - 100000</option>
+                <select
+                  name="size"
+                  id="size"
+                  class="input size select2"
+                  ref="sizeSelect"
+                  @change="sizeSelected"
+                >
+                  <option value="" selected disabled>
+                    -Select range close to the church size
+                  </option>
+                  <option value="100" @click="sizeSelected('100')">Between 1 - 100</option>
+                  <option value="1000" @click="sizeSelected('100')">Between 100 - 1000</option>
+                  <option value="100000" @click="sizeSelected('100')">Between 1000 - 100000</option>
                 </select>
               </div>
 
-              <button type="submit" class="submit-btn sign-in-btn get-started" :class="{'disabled': !isValid}" :disabled="!isValid">
-                Next
+              
+              <button
+                type="submit"
+                class="submit-btn sign-in-btn get-started"
+                :class="{ disabled: !isValid, 'btn-loading': loading }"
+                :disabled="!isValid"
+              >
+                <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+                <span>Next</span>
+                <span></span>
               </button>
             </form>
           </div>
+          <!-- <SelectElem name="test" :options="[1, 2, 3]" value="2" v-if="false"/> -->
         </div>
         <div
           class="col-xs-12 col-md-6"
@@ -91,18 +120,18 @@
           :class="{ 'swap-box2': toggle }"
           ref="box2"
         >
-            <div class="step">
-                <h3>STEP 1 OF 2</h3>
-            </div>
+          <div class="step">
+            <h3>STEP 1 OF 2</h3>
+          </div>
 
+          <div>
             <div>
-                <div>
-                    <div class="onboarding-image-con">
-                        <img src="../../assets/onboarding.png" alt="Image">
-                        <span class="reactive-text">{{ churchName }}</span>
-                    </div>
-                </div>
+              <div class="onboarding-image-con">
+                <img src="../../assets/onboarding.png" alt="Image" />
+                <span class="reactive-text">{{ churchName }}</span>
+              </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -111,9 +140,10 @@
 
 <script>
 import axios from "axios";
-// import "node_modules/mdbootstrap/css/mdb.css"
-
+// import $ from 'jquery'
+// import SelectElem from '@/components/select/SelectElement.vue'
 export default {
+  // components: { SelectElem },
   beforeRouteLeave() {
     const userEmail = localStorage.getItem("email");
     if (userEmail) localStorage.removeItem("email");
@@ -122,23 +152,30 @@ export default {
   data() {
     return {
       toggle: false,
-      options: ["1", "22"],
-      itemsVisible: false,
       zipCode: "",
       step1Completed: true,
       userDetails: {
         subscriptionPlanID: 1,
         countryId: 1,
-        password: "password"
+        password: "password",
       },
 
-      countries: [ ],
-      codesVissible: false,
-      searchCode: "",
-      selectedCountry: { },
+      myValue: '',
+      myOptions: ['op1', 'op2', 'op3'],
+
+      selectedCountry: {},
+      countries: [],
+      loading: false,
     };
   },
   methods: {
+    myChangeEvent(val){
+      console.log(val);
+    },
+    mySelectEvent({id, text}){
+      console.log({id, text})
+    },
+
     next() {
       if (!this.userDetails.email) return false;
       //   this.toggle = !this.toggle;
@@ -146,69 +183,63 @@ export default {
         ? this.userDetails.phoneNumber
         : `${this.zipCode}${this.userDetails.phoneNumber}`;
       this.userDetails.churchSize = Number(this.userDetails.churchSize);
-      console.log(this.userDetails);
+      console.log(this.userDetails, "userDetails");
       this.$store.dispatch("setOnboardingData", this.userDetails);
       this.$router.push("/onboarding/step2");
     },
 
-    toggleItems() {
-      this.itemsVisible = !this.itemsVisible;
+    selectCountry(e) {
+      console.log(e.target.value, "Id");
+      // this.userDetails.countryId = +e.target.value;
+      this.zipCode = this.countries.filter((i) => i.id === +e.target.value);
     },
 
-    selectItems() {
-      alert("hi");
-    },
-
-    showCodes() {
-      this.codesVissible = true;
-    },
-
-    codeSelected(code) {
-      this.selectedCountry = code;
-      this.codesVissible = false;
-      this.searchCode = code.phoneCode
-      console.log(this.selectedCountry);
-    },
-
-    hideCodes(e) {
-      if (!e.target.classList.contains("code") && !e.target.classList.contains("codes") && !e.target.classList.contains("zip-code")) {
-        this.codesVissible = false;
-      }
-    },
+    sizeSelected(e) {
+      console.log(this.userDetails);
+      this.userDetails.churchSize = e.target.value;
+    }
   },
 
   computed: {
     churchName() {
-        if (!this.userDetails.churchName) return "";
-        return this.userDetails.churchName.length < 21 ? this.userDetails.churchName : this.userDetails.churchName.slice(0, 20) + "..."
+      if (!this.userDetails.churchName) return "";
+      return this.userDetails.churchName.length < 21
+        ? this.userDetails.churchName
+        : this.userDetails.churchName.slice(0, 20) + "...";
     },
 
     isValid() {
-        return this.userDetails.firstName && this.userDetails.lastName && this.userDetails.phoneNumber && this.userDetails.churchName && this.userDetails.churchSize && this.searchCode;
+      return (
+        this.userDetails.firstName &&
+        this.userDetails.lastName &&
+        this.userDetails.phoneNumber &&
+        this.userDetails.churchName &&
+        this.userDetails.churchSize
+      );
     },
 
     countryCodes() {
-      if (!this.searchCode) return this.countries;
-      return this.countries.filter(c => {
-        if (!c.phoneCode) return false;
-        return c.phoneCode.includes(this.searchCode);
-      })
-    }
+      return this.countries.filter((i) => i.phoneCode);
+    },
   },
 
+  mounted() {
+    // console.log($('#size'));
+    // $('#size').select2()
+    // $('#code').select2()
+  },
+ 
   created() {
     console.log(this.$store.getters.userEmail);
-    // if (!localStorage.getItem("email")) this.$router.push("/") 
+    if (!localStorage.getItem("email")) this.$router.push("/");
     // if (!this.$store.getters.userEmail) this.$router.push("/")
     // this.userDetails.email = this.$store.getters.userEmail;
 
-    this.userDetails.email = localStorage.getItem("email")
-    axios.get("/api/GetAllCountries")
-      .then((res) => {
-        this.countries = res.data;
-        this.countryCodes = res.data;
-      })
-    this.zipCode = "+234";
+    this.userDetails.email = localStorage.getItem("email");
+    axios.get("/api/GetAllCountries").then((res) => {
+      this.countries = res.data;
+      this.zipCode = "234";
+    });
   },
 };
 </script>
@@ -232,7 +263,7 @@ export default {
 
 #onboarding-form {
   width: 55%;
-  display:flex;
+  display: flex;
   padding: 10px;
   transition: all 0.7s ease-in-out;
 }
@@ -270,7 +301,7 @@ export default {
   border-radius: 4px;
   padding: 8px 10px 6px;
   min-height: 40px;
-  -webkit-appearance: button;
+  /* -webkit-appearance: button; */
   /* appearance: none; */
   outline: none;
   vertical-align: middle;
@@ -280,13 +311,13 @@ export default {
 }
 
 option {
-    color: red;
+  color: red;
 }
 
 .input::placeholder {
-    font-style: italic;
-    color: #b2c2cd;
-    letter-spacing: 1.5px;
+  font-style: italic;
+  color: #b2c2cd;
+  letter-spacing: 1.5px;
 }
 
 .submit-btn {
@@ -295,7 +326,7 @@ option {
 }
 
 .disabled {
-    background: rgb(141, 165, 238);
+  background: rgb(141, 165, 238);
 }
 
 .submit-btn:hover {
@@ -345,32 +376,32 @@ option {
 }
 
 .step {
-    text-align: center;
-    color: #fff;
-    margin: 30px 0;
-    font-weight: bold;
+  text-align: center;
+  color: #fff;
+  margin: 30px 0;
+  font-weight: bold;
 }
 
 .onboarding-image-con {
-    width: 80%;
-    margin-left: auto;
-    position: relative;
+  width: 80%;
+  margin-left: auto;
+  position: relative;
 }
 
 .onboarding-image-con img {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .reactive-text {
-    position: absolute;
-    top: 8%;
-    left: 24%;
-    width: 70%;
-    font-size: 23px;
-    font-weight: 600;
-    color: #4d6575;
-    overflow: hidden;
+  position: absolute;
+  top: 8%;
+  left: 24%;
+  width: 70%;
+  font-size: 23px;
+  font-weight: 600;
+  color: #4d6575;
+  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -380,16 +411,16 @@ option {
 
 /* Codes */
 .codes {
-    border: 1px solid #b2c2cd;
-    padding: 4px;
-    margin: 0;
-    border-radius: 4px;
-    width: 77px;
-    position: absolute;
-    background: #fff;
-    max-height: 300px;
-    overflow: scroll;
-    display: none;
+  border: 1px solid #b2c2cd;
+  padding: 4px;
+  margin: 0;
+  border-radius: 4px;
+  width: 77px;
+  position: absolute;
+  background: #fff;
+  max-height: 300px;
+  overflow: scroll;
+  display: none;
 }
 
 .code:hover {
@@ -398,9 +429,55 @@ option {
   padding: 4px;
 }
 
+.input:after {
+  content: "\25bc" !important;
+  color: #aaa;
+  font-size: 12px;
+  position: absolute;
+  right: 8px;
+  top: 10px;
+}
+
 .show {
   display: block;
 }
+
+span .select2-selection--single {
+  padding: 0px 10px !important;
+  height: 40px !important;
+  margin-top: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  border: 1px solid #b2c2cd;
+}
+.select2-container .select2-choice {
+    padding: 5px 10px;
+    height: 100px;
+    width: 132px; 
+    font-size: 1.2em;  
+}
+
+/* #size {
+  -moz-appearance: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+ 
+} */
+
+/* drop arrow */
+/* #size:after  {
+  content: "\25bc" !important;
+  color: #aaa;
+  font-size: 12px;
+  position: absolute;
+  right: 8px;
+  top: 10px;
+}
+
+#size {
+  appearance: none !important;
+} */
+
 
 @media screen and (max-width: 990px) {
   #onboarding {

@@ -1,7 +1,6 @@
 <template>
   <div class="con">
-    <div id="chart"></div>
-    <div id="second"></div>
+    <div :id="domId" class="chart summary-chart"></div>
   </div>
 </template>
 
@@ -10,19 +9,18 @@ import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-    props: ["domId", "title"],
+    props: [ "title", "subtitle", "distance", "domId"],
   setup(props) {
     const chart = ref(null);
+    // let elemId = "";
+    
+
     onMounted(() => {
+      // elemId = props.domId;
       var highchartsOptions = {
         chart: {
           type: "pie",
           renderTo: props.domId,
-        //   margin: [0, 0, 0, 0],
-        //     spacingTop: 0,
-        //     spacingBottom: 0,
-        //     spacingLeft: 0,
-        //     spacingRight: 0
         },
         credits: {
           enabled: false,
@@ -31,7 +29,15 @@ export default {
           enabled: false,
         },
         title: {
-          text: props.title,
+          text: `<b>${props.title}</b>`,
+          align: 'left',
+          x: 70,
+          margin: 0,
+        },
+        subtitle: {
+          text: props.subtitle,
+          align: 'left',
+          x: 70,
         },
         xAxis: {
           allowDecimals: false,
@@ -51,23 +57,16 @@ export default {
           opposite: false,
         },
         plotOptions: {
-          //   column: {
-          //     pointPadding: 0.02,
-          //     borderWidth: 0,
-          //     groupPadding: 0.1,
-          //     pointWidth: 2,
-          //   },
-          // bar: {
-          //   pointPadding: 0,
-          //   borderWidth: 1,
-          //   groupPadding: 0.0,
-          // },
           pie: {
             // allowPointSelect: true,
             cursor: "pointer",
             dataLabels: {
               enabled: true,
-              distance: -50,
+              formatter: function() {
+                return this.point.name + ': ' + Math.round(this.percentage*100)/100 + ' %';
+              },
+              // format: '{point.name}: {point.y:.1f}%',
+              distance: props.distance ? props.distance : -50,
             },
             size: 180,
           },
@@ -78,23 +77,19 @@ export default {
             colorByPoint: true,
             data: [
               {
-                name: "Chrome",
+                name: "Male",
                 y: 61.41,
                 sliced: true,
                 selected: true,
               },
               {
-                name: "Internet Explorer",
+                name: "Female",
                 y: 11.84,
               },
               {
-                name: "Firefox",
+                name: "Not sure",
                 y: 10.85,
-              },
-              {
-                name: "Edge",
-                y: 4.67,
-              },
+              }
             ],
           },
         ],
@@ -103,7 +98,7 @@ export default {
       chart.value = new Highcharts.chart(highchartsOptions);
     });
 
-    return { chart };
+    return { chart, };
   },
 };
 </script>
@@ -111,6 +106,27 @@ export default {
 <style scoped>
     .con {
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .chart {
+      display: flex;
+      align-items: center;
+      width: 100% !important;
+    }
+
+    .chart div {
+      width: 100%;
+    }
+
+    .summary-chart {
+      width: 100% !important;
+      box-shadow: 0px 1px 4px #02172E45;
+      box-shadow: 0px 1px 4px #02172E45;
+      border: 1px solid #DDE2E6;
+      border-radius: 22px;
+      /* margin-bottom: 24px; */
     }
 </style>

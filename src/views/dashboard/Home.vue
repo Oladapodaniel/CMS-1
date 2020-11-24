@@ -1,41 +1,40 @@
 <template>
-    <div class="whole-page">
-        <div class="links-menu" :class="{ 'show': menuShouldShow }">
-            <MenuLinks />
-        </div>
-        <div class="main-con dim" @click="hideMenu">
-            <router-view></router-view>
-        </div>
+  <div class="whole-page">
+    <div class="links-menu" :class="{ show: menuShouldShow }">
+      <MenuLinks />
     </div>
-    <div class="toggle" @click="toggleMenu">
-        <i class="fa fa-bars"></i>
+    <div class="main-con dim" @click="hideMenu">
+      <router-view></router-view>
     </div>
+  </div>
+  <div class="toggle" @click="toggleMenu">
+    <i class="fa fa-bars"></i>
+  </div>
 </template>
 
 <script>
-    import { ref } from "vue";
-    import MenuLinks from "../../components/nav/MenuLinks.vue";
+import { ref } from "vue";
+import MenuLinks from "../../components/nav/MenuLinks.vue";
 
-    export default {
-        components: { MenuLinks },
+export default {
+  components: { MenuLinks },
 
-        setup() {
-            const menuShouldShow = ref(false);
+  setup() {
+    const menuShouldShow = ref(false);
 
-            const toggleMenu = () => menuShouldShow.value = !menuShouldShow.value;
+    const toggleMenu = () => (menuShouldShow.value = !menuShouldShow.value);
 
-            const hideMenu = () => {
-                if (menuShouldShow.value)
-                    menuShouldShow.value = false;
-            }
+    const hideMenu = () => {
+      if (menuShouldShow.value) menuShouldShow.value = false;
+    };
 
-            return {
-                menuShouldShow,
-                toggleMenu,
-                hideMenu
-            }
-        }
-    }
+    return {
+      menuShouldShow,
+      toggleMenu,
+      hideMenu,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -65,7 +64,7 @@
         height: 100%;
         max-height: fit-content;
         background: #fff;
-        overflow-y: scroll;
+        overflow-y: auto;
         padding-top: 20px;
     }
 
