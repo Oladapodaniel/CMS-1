@@ -12,14 +12,11 @@
             <div class="inputs">
               <div class="input-field ">
                 <label for="" class="label">Membership</label>
-                <div class="custom-select">
+                <div class="cstm-select">
                   <div style="width: 330px">
                     <SelectElem :typ="'membership'" name="membership" :options="['-Select membership', ...peopleClassifications]" value="-Select size range" @input="itemSelected"/>
                   </div>
-                  <!-- <select name="" id="" class="input select search-box" v-model="membershipId">
-                  <option value="" selected >-Select Membership</option>
-                  <option :value="category.id" v-for="category in peopleClassifications" :key="category.id">{{ category.name }}</option>
-                </select> -->
+                  
                 </div>
               </div>
               <div class="input-field">
@@ -45,25 +42,17 @@
               <div class="input-field">
                 <label for=""></label>
                 <div class="status-n-gender">
-                  <div class="status custom-select">
+                  <div class="status cstm-select">
                     <div class="cs-select">
                       <SelectElem :typ="'membership'" name="status" :options="['Marital status', 'Married', 'Single']" value="Marital status" @input="itemSelected"/>
                     </div>
-                    <!-- <select name="" id="" class="input select search-box">
-                      <option value="">Martal satus</option>
-                      <option value="">First timer</option>
-                      <option value="">Old timer</option>
-                    </select> -->
+                    
                   </div>
-                  <div class="gender custom-select">
+                  <div class="gender cstm-select">
                     <div class="cs-select">
                       <SelectElem :typ="'membership'" name="gender" :options="['Gender', 'Male', 'Female', 'Not sure']" value="Gender" @input="itemSelected"/>
                     </div>
-                    <!-- <select name="" id="" class="input select search-box">
-                      <option value="">Gender</option>
-                      <option value="">Male</option>
-                      <option value="">Female</option>
-                    </select> -->
+                    
                   </div>
                 </div>
               </div>
@@ -108,57 +97,25 @@
                 <label for="" class="label">Birthday</label>
                 <div class="status-n-gender">
                   <div class="date-picker">
-                    <div class="custom-select">
+                    <div class="cstm-select">
                       <div class="cs-select" style="width:111px">
                         <SelectElem :typ="'membership'" name="birthmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/>
                       </div>
-                      <!-- <select
-                        @change="editBirthDateValue('months', $event)"
-                        ref="birthMonth"
-                        class="search-box"
-                      >
-                        <option
-                          v-for="(month, index) in months"
-                          :key="month"
-                          :value="index"
-                        >
-                          {{ month }}
-                        </option>
-                      </select> -->
+                      
                     </div>
 
-                    <div class="custom-select">
+                    <div class="cstm-select">
                       <div class="cs-select" style="width:87px">
                         <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/>
                       </div>
-                      <!-- <select
-                        @change="editBirthDateValue('date', $event)"
-                        ref="birthDay"
-                        class="celeb-date search-box"
-                      >
-                        <option v-for="i in daysInBirthMonth" :key="i" :value="i">
-                          {{ i }}
-                        </option>
-                      </select> -->
+                      
                     </div>
 
-                    <div class="custom-select">
+                    <div class="cstm-select">
                       <div class="cs-select" style="width:113px">
                         <SelectElem :typ="'membership'" name="birthyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/>
                       </div>
-                      <!-- <select
-                        @change="editBirthDateValue('year', $event)"
-                        ref="birthYear"
-                        class="celeb-year search-box"
-                      >
-                        <option
-                          v-for="i in numberofYears"
-                          :key="i"
-                          :value="startingYear + (i - 1)"
-                        >
-                          {{ startingYear + (i - 1) }}
-                        </option>
-                      </select> -->
+                      
                     </div>
                   </div>
                 </div>
@@ -167,57 +124,25 @@
                 <label for="" class="label">Wedding Anniversary</label>
                 <div class="status-n-gender">
                   <div class="date-picker">
-                    <div class="custom-select">
+                    <div class="cstm-select">
                       <div class="cs-select" style="width:111px">
                         <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/>
                       </div>
-                      <!-- <select
-                        @change="editAnnDateValue('months', $event)"
-                        ref="annMonth"
-                        class="search-box"
-                      >
-                        <option
-                          v-for="(month, index) in months"
-                          :key="month"
-                          :value="index"
-                        >
-                          {{ month }}
-                        </option>
-                      </select> -->
+                     
                     </div>
 
-                    <div class="custom-select">
+                    <div class="cstm-select">
                       <div class="cs-select" style="width:87px">
                         <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/>
                       </div>
-                      <!-- <select
-                        @change="editAnnDateValue('date', $event)"
-                        ref="annDay"
-                        class="celeb-date search-box"
-                      >
-                        <option v-for="i in daysInAnnMonth" :key="i" :value="i">
-                          {{ i }}
-                        </option>
-                      </select> -->
+                      
                     </div>
 
-                    <div class="custom-select">
+                    <div class="cstm-select">
                       <div class="cs-select" style="width:113px">
                         <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="-Select size range" @input="itemSelected"/>
                       </div>
-                      <!-- <select
-                        @change="editAnnDateValue('year', $event)"
-                        ref="annYear"
-                        class="celeb-year search-box"
-                      >
-                        <option
-                          v-for="i in numberofYears"
-                          :key="i"
-                          :value="startingYear + (i - 1)"
-                        >
-                          {{ startingYear + (i - 1) }}
-                        </option>
-                      </select> -->
+                      
                     </div>
                   </div>
                 </div>
@@ -241,19 +166,11 @@
               </div>
               <div class="input-field">
                 <label for="" class="label">Age</label>
-                <div class="custom-select search-box">
+                <div class="cstm-select search-box">
                   <div class="cs-select" style="width:330px">
                     <SelectElem name="agegroup" :options="['-Select age range', '14 - 18', '19 - 25', '26 - 40', '41 - 60', '61 and above']" value="-Select age range" @input="itemSelected"/>
                   </div>
-                  <!-- <select name="" id="" class="input select">
-                  <option value="">Select age range</option>
-                  <option value="">14 - 18</option>
-                  <option value="">19 - 25</option>
-                  <option value="">26 - 40</option>
-                  <option value="">26 - 40</option>
-                  <option value="">41 - 60</option>
-                  <option value="">61 and above</option>
-                </select> -->
+                  
                 </div>
               </div>
               
@@ -316,7 +233,7 @@ import router from "@/router/index"
 import axios from "axios";
 import SelectElem from '@/components/select/SelectElement.vue'
 
-// import $ from 'jquery'
+import NProgress from 'nprogress'
 
 export default {
   components: { SelectElem },
@@ -510,6 +427,7 @@ export default {
       // daysInBirthMonth = birthDate.daysInMonth();
 
       try {
+        NProgress.start()
         const response = await axios.get("/api/Settings/GetTenantPeopleClassification");
         const {data} = response;
         peopleClassifications.value = data.map(i => i.name);
@@ -680,14 +598,14 @@ export default {
 
 /* Datepicker */
 /* wrapper-div for including arrow */
-.custom-select {
+.cstm-select {
   background-color: inherit;
   float: left;
   margin-right: 10px;
   position: relative;
 }
 
-.custom-select select {
+.cstm-select select {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none; /* remove default styling */
@@ -703,7 +621,7 @@ export default {
 }
 
 /* drop arrow */
-.custom-select:after  {
+.cstm-select:after  {
   content: "\25bc";
   color: #aaa;
   font-size: 12px;

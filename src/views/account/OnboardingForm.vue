@@ -44,21 +44,6 @@
                   <div style="width: 80px">
                     <SelectElem :typ="'code'" name="code" :options="countryCodes" value="-Select size range" @input="itemSelected"/>
                   </div>
-                  <!-- <select
-                    name=""
-                    id="code"
-                    class="input zip-code select2"
-                    @change="selectCountry"
-                  >
-                    <option value="182" selected disabled>+234</option>
-                    <option
-                      :value="code.id"
-                      v-for="code in countryCodes"
-                      :key="code.id"
-                    >
-                      {{ code.phoneCode }}
-                    </option>
-                  </select> -->
 
                   <input
                     v-model.trim="userDetails.phoneNumber"
@@ -82,25 +67,12 @@
                 />
               </div>
 
-              <div class="input-div custom-select" id="myInput">
+              <div class="input-div cstm-select" id="myInput">
                 <label class="mb-0"
                   >What's the membership size of your ministry?</label
                 >
                   <SelectElem :typ="'churchsize'" name="churchSize" :options="['-Select size range', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="-Select size range" @input="itemSelected"/>
-                <!-- <select
-                  name="size"
-                  id="size"
-                  class="input size select2"
-                  ref="sizeSelect"
-                  @change="sizeSelected"
-                >
-                  <option value="" selected disabled>
-                    -Select range close to the church size
-                  </option>
-                  <option value="100" @click="sizeSelected('100')">Between 1 - 100</option>
-                  <option value="1000" @click="sizeSelected('100')">Between 100 - 1000</option>
-                  <option value="100000" @click="sizeSelected('100')">Between 1000 - 100000</option>
-                </select> -->
+                
               </div>
 
               
