@@ -27,4 +27,4 @@ axios.interceptors.request.use((config) => {
 
 axios.defaults.baseURL = "https://churchplusv3coreapi.azurewebsites.net/";
 
-createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).mount('#app')
+createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use(NProgress).mount('#app')
