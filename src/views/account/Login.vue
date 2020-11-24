@@ -68,6 +68,7 @@ import router from '../../router/index';
 
 export default {
     setup() {
+
       const state = reactive({
         passwordType: 'password',
         credentials: { },
@@ -107,10 +108,15 @@ export default {
         }
       }
 
+      const itemSelected = (data) => {
+        console.log(data);
+      }
+
       return {
         state,
         login,
         loading,
+        itemSelected,
       };
     }
 };

@@ -571,4 +571,10 @@ export default {
     flex-direction: column;
   }
 }
+
+/* @media screen and (min-width: 1100px) {
+  .user {
+    margin: 139px 0;
+  }
+} */
 </style>

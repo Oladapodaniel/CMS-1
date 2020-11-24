@@ -13,10 +13,13 @@
               <div class="input-field ">
                 <label for="" class="label">Membership</label>
                 <div class="custom-select">
-                  <select name="" id="" class="input select search-box" v-model="membershipId">
+                  <div style="width: 330px">
+                    <SelectElem :typ="'membership'" name="membership" :options="['-Select membership', ...peopleClassifications]" value="-Select size range" @input="itemSelected"/>
+                  </div>
+                  <!-- <select name="" id="" class="input select search-box" v-model="membershipId">
                   <option value="" selected >-Select Membership</option>
                   <option :value="category.id" v-for="category in peopleClassifications" :key="category.id">{{ category.name }}</option>
-                </select>
+                </select> -->
                 </div>
               </div>
               <div class="input-field">
@@ -43,18 +46,24 @@
                 <label for=""></label>
                 <div class="status-n-gender">
                   <div class="status custom-select">
-                    <select name="" id="" class="input select search-box">
+                    <div class="cs-select">
+                      <SelectElem :typ="'membership'" name="status" :options="['Marital status', 'Married', 'Single']" value="Marital status" @input="itemSelected"/>
+                    </div>
+                    <!-- <select name="" id="" class="input select search-box">
                       <option value="">Martal satus</option>
                       <option value="">First timer</option>
                       <option value="">Old timer</option>
-                    </select>
+                    </select> -->
                   </div>
                   <div class="gender custom-select">
-                    <select name="" id="" class="input select search-box">
+                    <div class="cs-select">
+                      <SelectElem :typ="'membership'" name="gender" :options="['Gender', 'Male', 'Female', 'Not sure']" value="Gender" @input="itemSelected"/>
+                    </div>
+                    <!-- <select name="" id="" class="input select search-box">
                       <option value="">Gender</option>
                       <option value="">Male</option>
                       <option value="">Female</option>
-                    </select>
+                    </select> -->
                   </div>
                 </div>
               </div>
@@ -100,7 +109,10 @@
                 <div class="status-n-gender">
                   <div class="date-picker">
                     <div class="custom-select">
-                      <select
+                      <div class="cs-select" style="width:111px">
+                        <SelectElem :typ="'membership'" name="birthmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/>
+                      </div>
+                      <!-- <select
                         @change="editBirthDateValue('months', $event)"
                         ref="birthMonth"
                         class="search-box"
@@ -112,11 +124,14 @@
                         >
                           {{ month }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
 
                     <div class="custom-select">
-                      <select
+                      <div class="cs-select" style="width:87px">
+                        <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/>
+                      </div>
+                      <!-- <select
                         @change="editBirthDateValue('date', $event)"
                         ref="birthDay"
                         class="celeb-date search-box"
@@ -124,11 +139,14 @@
                         <option v-for="i in daysInBirthMonth" :key="i" :value="i">
                           {{ i }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
 
                     <div class="custom-select">
-                      <select
+                      <div class="cs-select" style="width:113px">
+                        <SelectElem :typ="'membership'" name="birthyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/>
+                      </div>
+                      <!-- <select
                         @change="editBirthDateValue('year', $event)"
                         ref="birthYear"
                         class="celeb-year search-box"
@@ -140,7 +158,7 @@
                         >
                           {{ startingYear + (i - 1) }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
                   </div>
                 </div>
@@ -150,7 +168,10 @@
                 <div class="status-n-gender">
                   <div class="date-picker">
                     <div class="custom-select">
-                      <select
+                      <div class="cs-select" style="width:111px">
+                        <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/>
+                      </div>
+                      <!-- <select
                         @change="editAnnDateValue('months', $event)"
                         ref="annMonth"
                         class="search-box"
@@ -162,11 +183,14 @@
                         >
                           {{ month }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
 
                     <div class="custom-select">
-                      <select
+                      <div class="cs-select" style="width:87px">
+                        <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/>
+                      </div>
+                      <!-- <select
                         @change="editAnnDateValue('date', $event)"
                         ref="annDay"
                         class="celeb-date search-box"
@@ -174,11 +198,14 @@
                         <option v-for="i in daysInAnnMonth" :key="i" :value="i">
                           {{ i }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
 
                     <div class="custom-select">
-                      <select
+                      <div class="cs-select" style="width:113px">
+                        <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="-Select size range" @input="itemSelected"/>
+                      </div>
+                      <!-- <select
                         @change="editAnnDateValue('year', $event)"
                         ref="annYear"
                         class="celeb-year search-box"
@@ -190,7 +217,7 @@
                         >
                           {{ startingYear + (i - 1) }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
                   </div>
                 </div>
@@ -215,7 +242,10 @@
               <div class="input-field">
                 <label for="" class="label">Age</label>
                 <div class="custom-select search-box">
-                  <select name="" id="" class="input select">
+                  <div class="cs-select" style="width:330px">
+                    <SelectElem name="agegroup" :options="['-Select age range', '14 - 18', '19 - 25', '26 - 40', '41 - 60', '61 and above']" value="-Select age range" @input="itemSelected"/>
+                  </div>
+                  <!-- <select name="" id="" class="input select">
                   <option value="">Select age range</option>
                   <option value="">14 - 18</option>
                   <option value="">19 - 25</option>
@@ -223,7 +253,7 @@
                   <option value="">26 - 40</option>
                   <option value="">41 - 60</option>
                   <option value="">61 and above</option>
-                </select>
+                </select> -->
                 </div>
               </div>
               
@@ -263,7 +293,11 @@
           </div>
         </div>
 
+        <div class="error-div">
+          <p v-if="!loading">{{ errMessage }}</p>
+        </div>
         <div class="submit-div">
+          
           <button class="submit-btn" :class="{ 'btn-loading': loading }">
             <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
             <span>Save</span>
@@ -277,12 +311,15 @@
 
 <script>
 import moment from "moment";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import router from "@/router/index"
 import axios from "axios";
+import SelectElem from '@/components/select/SelectElement.vue'
+
 // import $ from 'jquery'
 
 export default {
+  components: { SelectElem },
   setup() {
     const loading = ref(false);
     const months = [
@@ -300,28 +337,46 @@ export default {
       "December",
     ];
 
-    const birthMonth = ref(null);
-    const birthDay = ref(null);
-    const birthYear = ref(null);
+    const birthMonth = ref(1);
+    const birthDay = ref(1);
+    const birthYear = ref(1922);
 
     const startingYear = 1920;
     const numberofYears = 100;
 
     const birthDate = moment();
     const daysInBirthMonth = ref(birthDate.daysInMonth());
+    const birthDaysArr = computed(() => {
+      console.log(birthDate.month(), "month");
+      const arrOfDays = [];
+      console.log(daysInBirthMonth.value, "dm");
+      for (let i = 1; i <= daysInBirthMonth.value; i++) {
+        arrOfDays.push(i);
+      }
+      return arrOfDays;
+    })
+    const birthYearsArr = computed(() => {
+      const arrOfYears = [];
+      let currentYear = new Date().getFullYear();
+      while (arrOfYears.length <= 100) {
+        arrOfYears.push(currentYear)
+        currentYear = currentYear - 1;
+      }
+      return arrOfYears;
+    })
 
 
-    const editBirthDateValue = (unit, evt) => {
-      birthDate.set(unit, evt.target.value);
+    const editBirthDateValue = (unit, val) => {
+      birthDate.set(unit, val);
       daysInBirthMonth.value = birthDate.daysInMonth();
       updateBirthDateElements();
     };
 
     
     const updateBirthDateElements = () => {
-      birthMonth.value.value = birthDate.month();
-      birthDay.value.value = birthDate.date();
-      birthYear.value.value = birthDate.format("YYYY");
+      birthMonth.value = birthDate.month();
+      birthDay.value = birthDate.date();
+      birthYear.value = birthDate.format("YYYY");
     }
 
     const annMonth = ref(null);
@@ -330,17 +385,27 @@ export default {
 
     const anniversaryDate = moment();
     const daysInAnnMonth = ref(anniversaryDate.daysInMonth());
+    const annDaysArr = computed(() => {
+      console.log(anniversaryDate.month(), "month");
+      const arrOfDays = [];
+      console.log(daysInAnnMonth.value, "dm");
+      for (let i = 1; i <= daysInAnnMonth.value; i++) {
+        arrOfDays.push(i);
+      }
+      console.log(arrOfDays, "anndayys");
+      return arrOfDays;
+    })
 
-    const editAnnDateValue = (unit, evt) => {
-      anniversaryDate.set(unit, evt.target.value);
-      daysInBirthMonth.value = anniversaryDate.daysInMonth();
+    const editAnnDateValue = (unit, val) => {
+      anniversaryDate.set(unit, val);
+      daysInAnnMonth.value = anniversaryDate.daysInMonth();
       updateAnnDateElements()
     };
 
     const updateAnnDateElements = () => {
-      annMonth.value.value = anniversaryDate.month();
-      annDay.value.value = anniversaryDate.date();
-      annYear.value.value = anniversaryDate.format("YYYY");
+      annMonth.value = anniversaryDate.month();
+      annDay.value = anniversaryDate.date();
+      annYear.value = anniversaryDate.format("YYYY");
     }
 
     let url = ref("");
@@ -359,6 +424,7 @@ export default {
 
     }
 
+    const errMessage = ref("");
     const addPerson = async () => {
       const personObj = { ...person };
       
@@ -367,13 +433,13 @@ export default {
       formData.append("lastName", personObj.lastName)
       formData.append("mobilePhone", personObj.mobilePhone)
       formData.append("email", personObj.email)
-      formData.append("dayOfBirth", birthDate.date());
+      formData.append("dayOfBirth", +birthDate.date());
       formData.append("monthOfBirth", birthDate.month());
-      formData.append("yearOfBirth", birthDate.year());
+      formData.append("yearOfBirth", +birthDate.year());
       formData.append("occupation", personObj.occupation);
-      formData.append("yearOfWedding", anniversaryDate.year());
-      formData.append("monthOfWedding", anniversaryDate.month());
-      formData.append("dayOfWedding", anniversaryDate.date());
+      formData.append("yearOfWedding", +anniversaryDate.year());
+      formData.append("monthOfWedding", +anniversaryDate.month());
+      formData.append("dayOfWedding", +anniversaryDate.date());
       formData.append("peopleClassificationID", membershipId.value);
       formData.append("address", personObj.address);
       formData.append("picture", image);
@@ -388,20 +454,65 @@ export default {
         }
       } catch (err) {
         loading.value = false;
+        errMessage.value = err.response.data.messsage ? err.response.data.messsage : "An error occurred";
         console.log(err.response);
+      }
+    }
+
+    const itemSelected = (data) => {
+      //Membership
+      if (data.dataType === "membership") {
+        membershipId.value = data.value;
+      }
+      //Birthday
+      if (data.dataType === "birthmonth") {
+        const dateValue = months.indexOf(data.value)
+        editBirthDateValue('month', dateValue.toString())
+      }
+      if (data.dataType === "birthday") {
+        console.log(data);
+        editBirthDateValue('date', data.value)
+      }
+      if (data.dataType === "birthyear") {
+        console.log(data);
+        editBirthDateValue('year', data.value)
+        console.log(`${birthDate.date()}/${birthDate.month() + 1}/${birthDate.year()}`);
+      }
+      //Anniversary
+      if (data.dataType === "annmonth") {
+        const dateValue = months.indexOf(data.value)
+        editAnnDateValue('month', dateValue.toString())
+        console.log(`${anniversaryDate.date()}/${anniversaryDate.month() + 1}/${anniversaryDate.year()}`);
+      }
+      if (data.dataType === "annday") {
+        editAnnDateValue('date', data.value)
+        console.log(`${anniversaryDate.date()}/${anniversaryDate.month() + 1}/${anniversaryDate.year()}`);
+      }
+      if (data.dataType === "annyear") {
+        editAnnDateValue('year', data.value)
+        console.log(`${anniversaryDate.date()}/${anniversaryDate.month() + 1}/${anniversaryDate.year()}`);
+      }
+      //Age group
+      if (data.dataType === "agegroup") {
+        console.log(data);
       }
     }
 
 
     onMounted(async () => {
       // $('.search-box').select2();
-      updateBirthDateElements();
-      updateAnnDateElements()
+      // updateBirthDateElements();
+      // updateAnnDateElements()
+
+      // birthDate.set('month', '1');
+      // birthDate.set('date', '2');
+      // birthDate.set('year', '1994');
+      // daysInBirthMonth = birthDate.daysInMonth();
 
       try {
         const response = await axios.get("/api/Settings/GetTenantPeopleClassification");
         const {data} = response;
-        peopleClassifications.value = data;
+        peopleClassifications.value = data.map(i => i.name);
       } catch(err) {
         console.log(err);
       }
@@ -416,7 +527,7 @@ export default {
       startingYear,
       daysInBirthMonth,
       daysInAnnMonth,
-      editBirthDateValue,
+      // editBirthDateValue,
       editAnnDateValue,
       birthMonth,
       birthDay,
@@ -433,6 +544,11 @@ export default {
       uploadImage,
       membershipId,
       loading,
+      birthDaysArr,
+      birthYearsArr,
+      itemSelected,
+      annDaysArr,
+      errMessage
     };
   },
 };
@@ -592,8 +708,8 @@ export default {
   color: #aaa;
   font-size: 12px;
   position: absolute;
-  right: 8px;
-  top: 10px;
+  right: 6px;
+  top: 18px;
 }
 /* End */
 
@@ -702,6 +818,15 @@ export default {
 
 .submit-btn:hover {
   cursor: pointer;
+}
+
+.cs-select {
+  width: 160px;
+}
+
+.error-div {
+  text-align: center;
+  color: red;
 }
 
 @media screen and (max-width: 528px) {
