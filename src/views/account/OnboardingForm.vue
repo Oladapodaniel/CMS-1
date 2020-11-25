@@ -71,7 +71,7 @@
                 <label class="mb-0"
                   >What's the membership size of your ministry?</label
                 >
-                  <SelectElem :typ="'churchsize'" name="churchSize" :options="['-Select size range', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="-Select size range" @input="itemSelected"/>
+                  <SelectElem :typ="'churchsize'" name="churchSize" :options="['--Select size range--', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="--Select size range--" @input="itemSelected"/>
                 
               </div>
 
@@ -158,7 +158,7 @@ export default {
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
         ? this.userDetails.phoneNumber
         : `${this.zipCode}${this.userDetails.phoneNumber}`;
-      this.userDetails.churchSize = Number(this.userDetails.churchSize);
+      this.userDetails.churchSize = this.userDetails.churchSize;
       console.log(this.userDetails, "userDetails");
       this.$store.dispatch("setOnboardingData", this.userDetails);
       this.$router.push("/onboarding/step2");

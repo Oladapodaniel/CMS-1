@@ -120,12 +120,12 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   const token = localStorage.getItem("token")
-//   if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" &&  to.name !== "StartingPoint" && !token) return next("/")
-//   if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
-//   next(true)
-// })
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("token")
+  if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" &&  to.name !== "StartingPoint" && !token) return next("/")
+  if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
+  next(true)
+})
 
 // router.beforeResolve((to, from, next) => {
 //   // If this isn't an initial page load.
