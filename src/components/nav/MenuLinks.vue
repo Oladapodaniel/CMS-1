@@ -69,10 +69,10 @@
             <div>
               <p @click="showMore">
                 <span>More...</span>
-                <span><i class="fa fa-angle-up more-icon"></i></span>
+                <span><i class="fa fa-angle-up more-icon" :class="{ 'tbb-icon-rotate': moreShown}"></i></span>
               </p>
             </div>
-            <div v-if="moreShown">
+            <div class="more-links" :class="{ 'hide-more-links': moreShown }">
 
               <a href="" class="link">
                 <img
@@ -127,18 +127,15 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 export default {
-    data() {
-        return {
-            moreShown: false
-        }
-    },
+  setup() {
+    const moreShown = ref(false);
 
-    methods: {
-        showMore() {
-            this.moreShown = !this.moreShown
-        }
-    }
+    const showMore = () => moreShown.value = !moreShown.value;
+
+    return { moreShown, showMore }
+  }
 };
 </script>
 
@@ -167,7 +164,7 @@ export default {
   color: #02172e;
   text-decoration: none;
   opacity: 0.5;
-  margin: 10px 0;
+  margin: 12px 0;
 }
 
 .nav .link:hover {
@@ -207,6 +204,15 @@ export default {
 
 .more-icon {
   float: right;
+  transition: all 0.5s ease-in-out;
+  transform: rotate(180deg);
+}
+
+.tbb-icon-rotate {
+  transition: all 0.5s ease-in-out;
+  transform: rotate(0deg);
+  color: #190138;
+  font-size: 20px;
 }
 
 .more-icon:hover {
@@ -220,6 +226,17 @@ export default {
 .router-link-exact-active {
   filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg) brightness(91%) contrast(189%);
   opacity: 1 !important;
+}
+
+.more-links {
+  height: 0;
+  overflow: hidden;
+  transition: all .5s ease-in-out;
+}
+
+.hide-more-links {
+  transition: all .5s ease-in-out;
+  height: 164px;
 }
 
 @media screen and (max-width: 1100px) {
