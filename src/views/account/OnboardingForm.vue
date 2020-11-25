@@ -158,7 +158,6 @@ export default {
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
         ? this.userDetails.phoneNumber
         : `${this.zipCode}${this.userDetails.phoneNumber}`;
-      this.userDetails.churchSize = this.userDetails.churchSize;
       console.log(this.userDetails, "userDetails");
       this.$store.dispatch("setOnboardingData", this.userDetails);
       this.$router.push("/onboarding/step2");
