@@ -9,8 +9,8 @@
               class="link-image"
               alt=""
             />
-            <a href="" class="user-link">Grace... <span class="user-link-icon"> ></span></a>
-            <!-- <a href="" class="user-link">Grace and Power <span class="user-link-icon"><i class="fa fa-angle-right"></i></span></a> -->
+            <!-- <a href="" class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
+            <a href="" class="user-link">Grace and ... <span class="user-link-icon"><i class="fa fa-angle-right"></i></span></a>
           </div>
           <router-link to="/home" class="link dashboard-link">
             <img
@@ -37,7 +37,7 @@
               alt=""
             />
             
-            <span class="drop-link">Communication <span class="user-link-icon"> ></span></span>
+            <span class="drop-link">Communication <span class="user-link-icon"> <i class="fa fa-angle-down"></i></span></span>
           </a>
 
           <a href="" class="link">
@@ -46,7 +46,7 @@
               class="link-icon"
               alt=""
             />
-            <span class="drop-link">Events <span class="user-link-icon"> ></span></span>
+            <span class="drop-link">Events <span class="user-link-icon"> <i class="fa fa-angle-down"></i></span></span>
           </a>
 
           <a href="" class="link">
@@ -184,6 +184,7 @@ export default {
 
 .user-link-icon {
   float: right;
+  opacity: .5;
 }
 
 .nav .link:hover {
@@ -225,6 +226,7 @@ export default {
   float: right;
   transition: all 0.5s ease-in-out;
   transform: rotate(180deg);
+  opacity: .5;
 }
 
 .tbb-icon-rotate {
@@ -267,9 +269,10 @@ export default {
 
 .more-tab {
   font-size: 18px;
-  font-weight: 700;
   padding-left: 25px;
   margin: 30px 0 10px 0;
+  color: #02172E;
+  opacity: .5;
 }
 
 .more-tab:hover {
@@ -277,7 +280,7 @@ export default {
 }
 
 .dashboard-link {
-  margin-top: 8px !important;
+  margin-top: 22px !important;
 }
 
 @media screen and (max-width: 1100px) {

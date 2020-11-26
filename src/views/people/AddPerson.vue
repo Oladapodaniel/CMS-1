@@ -822,6 +822,7 @@ export default {
   height: 30px;
   width: 30px;
   border-radius: 50%;
+  opacity: .5;
 }
 
 .tb-icon {

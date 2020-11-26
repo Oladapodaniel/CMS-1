@@ -89,7 +89,7 @@ const routes = [
         component: People,
         children: [
           {path: '', component: PeopleEmpty},
-          {path: '/people/import', component: ImportPeople}
+          {path: '/people/import', component: ImportPeople, name: 'ImportPeople'}
         ]
       },
       {

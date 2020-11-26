@@ -11,15 +11,25 @@
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
-            <router-link to="/people/import" class="">
-              <button class="button add-person-btn">
-                Add Person
-              </button>
-            </router-link>
+            <!-- <router-link class=""> -->
+            <button @click="addPersonClicked" class="button add-person-btn">
+              Add Person
+            </button>
+            <!-- </router-link> -->
           </div>
         </div>
         <hr class="hr" />
 
+        <!-- Transitio area -->
+        <!-- <transition
+          :name="$store.state.pageTransition.name"
+          :mode="$store.state.pageTransition.mode"
+          v-on:after-enter="afterEvent"
+          v-on:after-leave="afterLeave"
+        >
+          <router-view class="view transition" />
+        </transition> -->
+        <!-- End of Transition -->
         <transition name="fade" mode="out-in">
           <router-view class="view" />
         </transition>
@@ -29,8 +39,37 @@
 </template>
 
 <script>
+import store from "@/store/index";
+import router from "@/router/index";
+import { useRoute } from "vue-router";
+
 export default {
+  setup() {
+    const route = useRoute();
+
+    const addPersonClicked = () => {
+      if (route.name === "ImportPeople") {
+        router.push("/home/add-person");
+      } else {
+        router.push("/people/import");
+      }
+    };
+
+    //   const afterEnter =  () => {
+    //   window.scrollTo(0, 0);
+    // }
+    // const afterLeave = () => {
+    //   Store.commit("setPageTransition", "default");
+    // }
+
+    return { addPersonClicked };
+  },
 };
+// transition method
+// methods: {
+
+// }
+// End of transition
 </script>
 
 <style scoped>
@@ -45,12 +84,12 @@ export default {
 }
 
 .main-con {
-    width: 100%;
-    height: 70%;
+  width: 100%;
+  height: 70%;
 }
 
 .main-body {
-    height: 100%;
+  height: 100%;
 }
 
 .top {
@@ -114,18 +153,16 @@ export default {
 } */
 
 .hr {
-  border: 1px solid #0020440a;
+  border: 0.8px solid #0020440a;
   margin: 0 4px;
 }
 
-
-
 @media screen and (min-width: 990px) {
-    .main-body {
-        width: 95%;
-        /* max-width: 1021px; */
-        margin: 0 auto;
-    }
+  .main-body {
+    width: 95%;
+    /* max-width: 1021px; */
+    margin: 0 auto;
+  }
 }
 
 @media screen and (min-width: 1400px) {
@@ -149,17 +186,18 @@ export default {
   justify-content: space-between;
 }
 
-.fade-enter-active{
-  transition: all 1s cubic-bezier(.67,.01,.86,.65);
+.fade-enter-active {
+  transition: all 1s cubic-bezier(0.67, 0.01, 0.86, 0.65);
 }
 
-.fade-leave-active{
-  transition: all 0.6s cubic-bezier(.67,.01,.86,.65);
+.fade-leave-active {
+  transition: all 0.6s cubic-bezier(0.67, 0.01, 0.86, 0.65);
 }
 
 .fade-enter-from,
-.fade-leave-to{
+.fade-leave-to {
   transition: translateX(20px);
   opacity: 0;
 }
 </style>
+
