@@ -9,9 +9,10 @@
               class="link-image"
               alt=""
             />
-            <a href="" class="user-link">Grace and Power</a>
+            <a href="" class="user-link">Grace... <span class="user-link-icon"> ></span></a>
+            <!-- <a href="" class="user-link">Grace and Power <span class="user-link-icon"><i class="fa fa-angle-right"></i></span></a> -->
           </div>
-          <router-link to="/home" class="link">
+          <router-link to="/home" class="link dashboard-link">
             <img
               src="../../assets/dashboardlinks/dashboard-icon.svg"
               class="link-icon"
@@ -35,7 +36,8 @@
               class="link-icon comm"
               alt=""
             />
-            Communication
+            
+            <span class="drop-link">Communication <span class="user-link-icon"> ></span></span>
           </a>
 
           <a href="" class="link">
@@ -44,7 +46,7 @@
               class="link-icon"
               alt=""
             />
-            Events
+            <span class="drop-link">Events <span class="user-link-icon"> ></span></span>
           </a>
 
           <a href="" class="link">
@@ -67,14 +69,14 @@
 
           <div>
             <div>
-              <p @click="showMore">
-                <span>More...</span>
+              <p @click="showMore" class="more-tab">
+                <span>{{ dropDownText }}...</span>
                 <span><i class="fa fa-angle-up more-icon" :class="{ 'tbb-icon-rotate': moreShown}"></i></span>
               </p>
             </div>
             <div class="more-links" :class="{ 'hide-more-links': moreShown }">
 
-              <a href="" class="link">
+              <a href="" class="link follow-up">
                 <img
                   src="../../assets/dashboardlinks/follow-up-icon.svg"
                   class="link-icon"
@@ -127,14 +129,20 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 export default {
   setup() {
     const moreShown = ref(false);
 
-    const showMore = () => moreShown.value = !moreShown.value;
+    const showMore = () => {
+      moreShown.value = !moreShown.value;
+    }
 
-    return { moreShown, showMore }
+    const dropDownText = computed(() => {
+      return moreShown.value ? "Less" : "More";
+    })
+
+    return { moreShown, showMore, dropDownText }
   }
 };
 </script>
@@ -148,12 +156,13 @@ export default {
   background: #d7e0ea;
   padding: 0.5rem;
   border-radius: 29px;
+  margin-left: 16px;
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  padding: 8px 20px;
+  padding: 8px 20px 8px 4px;
   background: #ebeff4;
   height: 100vh;
 }
@@ -164,7 +173,17 @@ export default {
   color: #02172e;
   text-decoration: none;
   opacity: 0.5;
-  margin: 12px 0;
+  margin: 22px 0 0 0;
+  padding-left: 25px;
+  
+}
+
+.user-link, .drop-link {
+  width: 100%;
+}
+
+.user-link-icon {
+  float: right;
 }
 
 .nav .link:hover {
@@ -217,6 +236,7 @@ export default {
 
 .more-icon:hover {
   cursor: pointer;
+  filter: grayscale(29%) brightness(3%) hue-rotate(338deg) saturate(940%) opacity(95%) contrast(989%);
 }
 
 .comm {
@@ -226,6 +246,8 @@ export default {
 .router-link-exact-active {
   filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg) brightness(91%) contrast(189%);
   opacity: 1 !important;
+  border-left: 4px solid #136ACD;
+  border-radius: 2px 2px;
 }
 
 .more-links {
@@ -237,6 +259,25 @@ export default {
 .hide-more-links {
   transition: all .5s ease-in-out;
   height: 164px;
+}
+
+.follow-up {
+  margin-top: 0 !important;
+}
+
+.more-tab {
+  font-size: 18px;
+  font-weight: 700;
+  padding-left: 25px;
+  margin: 30px 0 10px 0;
+}
+
+.more-tab:hover {
+  cursor: pointer;
+}
+
+.dashboard-link {
+  margin-top: 8px !important;
 }
 
 @media screen and (max-width: 1100px) {

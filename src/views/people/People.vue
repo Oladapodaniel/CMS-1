@@ -20,7 +20,9 @@
         </div>
         <hr class="hr" />
 
-        <router-view></router-view>
+        <transition name="fade" mode="out-in">
+          <router-view class="view" />
+        </transition>
       </div>
     </div>
   </div>
@@ -139,5 +141,25 @@ export default {
   .no-person {
     height: calc(100% - 90px);
   }
+}
+
+/* Route Transition */
+.btn-loading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.fade-enter-active{
+  transition: all 1s cubic-bezier(.67,.01,.86,.65);
+}
+
+.fade-leave-active{
+  transition: all 0.6s cubic-bezier(.67,.01,.86,.65);
+}
+
+.fade-enter-from,
+.fade-leave-to{
+  transition: translateX(20px);
+  opacity: 0;
 }
 </style>

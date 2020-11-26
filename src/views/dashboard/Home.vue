@@ -4,7 +4,10 @@
       <MenuLinks />
     </div>
     <div class="main-con dim" @click="hideMenu">
-      <router-view></router-view>
+      <transition name="fade" mode="out-in">
+        <router-view class="view" />
+      </transition>
+      <!-- <router-view></router-view> -->
     </div>
   </div>
   <div class="toggle" @click="toggleMenu">
@@ -45,14 +48,14 @@ export default {
 .whole-page {
   position: relative;
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   overflow: auto;
   background: #fff;
 }
 
 .links-menu {
   width: 20%;
-  max-width: 287px;
+  max-width: 266px;
   height: 100%;
   /* position: absolute; */
 }
@@ -98,7 +101,7 @@ export default {
 
   .links-menu {
     position: fixed;
-    left: -287px;
+    left: -266px;
     z-index: 9;
   }
 
@@ -110,5 +113,25 @@ export default {
   .main-con {
     width: 100%;
   }
+}
+
+/* Route Transition */
+.btn-loading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.fade-enter-active{
+  transition: all 1s cubic-bezier(.67,.01,.86,.65);
+}
+
+.fade-leave-active{
+  transition: all 0.6s cubic-bezier(.67,.01,.86,.65);
+}
+
+.fade-enter-from,
+.fade-leave-to{
+  transition: translateX(20px);
+  opacity: 0;
 }
 </style>
