@@ -1,7 +1,7 @@
 <template>
-<transition name="fade" mode="out-in">
+<!-- <transition name="fade" mode="out-in"> -->
     <router-view class="view" />
-</transition>
+<!-- </transition> -->
 </template>
 
 <script>
@@ -51,7 +51,7 @@ export default {
 }
 
 .fade-enter-active{
-  transition: all 1s cubic-bezier(.67,.01,.86,.65);
+  transition: all .7s cubic-bezier(.67,.01,.86,.65);
 }
 
 .fade-leave-active{

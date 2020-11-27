@@ -19,17 +19,6 @@
           </div>
         </div>
         <hr class="hr" />
-
-        <!-- Transitio area -->
-        <!-- <transition
-          :name="$store.state.pageTransition.name"
-          :mode="$store.state.pageTransition.mode"
-          v-on:after-enter="afterEvent"
-          v-on:after-leave="afterLeave"
-        >
-          <router-view class="view transition" />
-        </transition> -->
-        <!-- End of Transition -->
         <transition name="fade" mode="out-in">
           <router-view class="view" />
         </transition>
@@ -39,7 +28,6 @@
 </template>
 
 <script>
-// import store from "@/store/index";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
 
@@ -55,21 +43,10 @@ export default {
       }
     };
 
-    //   const afterEnter =  () => {
-    //   window.scrollTo(0, 0);
-    // }
-    // const afterLeave = () => {
-    //   Store.commit("setPageTransition", "default");
-    // }
-
     return { addPersonClicked };
   },
 };
-// transition method
-// methods: {
 
-// }
-// End of transition
 </script>
 
 <style scoped>
@@ -187,7 +164,7 @@ export default {
 }
 
 .fade-enter-active {
-  transition: all 1s cubic-bezier(0.67, 0.01, 0.86, 0.65);
+  transition: all 0.6s cubic-bezier(0.67, 0.01, 0.86, 0.65);
 }
 
 .fade-leave-active {

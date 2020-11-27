@@ -9,11 +9,6 @@ export default createStore({
     userStartPoint: "",
     settingUserUp: false,
 
-    // transition area
-    pageTransition: {
-      name: "router-view",
-      mode: "in-out"
-    }
   },
 
   mutations: {
@@ -35,24 +30,7 @@ export default createStore({
 
     setUserUp(state, payload) {
       state.settingUserUp = payload;
-    },
-
-    // transition Area
-    // setPageTransition(state, value) {
-    //   if ("default" === value) {
-    //     Vue.set(state, "pageTransition", {
-    //       name: "router-view",
-    //       mode: "in-out"
-    //     })
-    //   }
-    //   if ("back" === value) {
-    //     Vue.set(state, "pageTransition", {
-    //       name: "router-view-back",
-    //       mode: ","
-    //     })
-    //   }
-    // }
-// end of transition
+    }
   },
   actions: {
     setUserEmail({ commit }, payload) {
