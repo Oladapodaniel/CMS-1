@@ -50,7 +50,7 @@ export default {
   justify-content: space-between;
 }
 
-.fade-enter-active{
+  .fade-enter-active{
   transition: all .7s cubic-bezier(.67,.01,.86,.65);
 }
 
