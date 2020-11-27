@@ -1,22 +1,23 @@
 <template>
     <div class="event">
-        <div class="bg col-md-10 col-lg-8 offset-md-1 offset-lg-2">
+        <div class="bg col-md-10 offset-md-1 ">
         <div class="container first-pane">
             <div class="row">
                 <div class="col-12 col-sm-4 col-lg-6 events">Events</div>
                 <div class="col-5 col-sm-3 col-lg-2 btn btn-preview">Preview</div>
-                <div class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save">Save and Continue</div>
+                <div class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save" @click="post">Save and Continue</div>
             </div>
         </div>
            <div class="form col-12 col-sm-12  offset-md-0 col-md-12">
             
-                <div class="row form-header" @click="events">
+                <div class="row form-header" @click="toggleForm2">
                     <div class="col-12 col-sm-6">
                         Events and Activities
                     </div>
+                    <div class="col-sm-6 text-right"><i class="fa fa-angle-down" :class="{ 'roll2': showForm2 }" aria-hidden="true"></i></div>
                 </div>
                 <!-- <div class="container"> -->
-                <div class="row form-body" ref="formBody">
+                <div class="row form-body" :class="{ 'close-slide2': showForm2 }">
                     <div class="col-6 offset-3 offset-sm-0 col-sm-5 col-md-3">
                         <div class="drop-box">Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or GIF formats.</div>
                     </div>
@@ -26,7 +27,7 @@
                                     <label for="eventName">Event Name</label>
                                 </div>
                                 <div class="col-12 col-sm-7">
-                                    <input type="text" class="form-control">
+                                    <input type="text" v-model="eventName" class="form-control">
                                 </div>
                                 <div class="col-sm-5">
                                     <label for="venue">Venue</label>
@@ -42,6 +43,7 @@
                                 </div>
                         </div>
                     </div>
+                    
                     <div class="col-sm-12 push-public">
                         <div class="row">
                             <div class="col-1">
@@ -53,13 +55,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-7 col-md-5 push-down event-reg">
+                    <!-- <div class="col-7 col-md-5 push-down event-reg">
                         <div>Event Registration Setting</div>
                     </div>
                     <div class="col-5 col-md-7 push-down event-reg-dark">
                         <div>Event Registration</div>
-                    </div>
-                    <div class="col-sm-12">
+                    </div> -->
+                    <ul class="nav nav-tabs w-100 push-down event-reg" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Event Registration Setting</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Event Registration</a>
+                        </li>
+                        <!-- <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+                        </li> -->
+                        </ul>
+                        <div class="tab-content w-100" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="col-sm-12">
                         <div class="row enable-reg">
                             <div class="col-1">
                                 <input type="checkbox" v-model="check" class="form-check">
@@ -69,16 +84,17 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div v-if="check" class="col-sm-12">
                         <div class="row">
                             <div class="col-6 col-sm-4 paid">is this event paid for?</div>
-                    <div class="col-2">
+                    <div class="col-3">
                         <div class="form-radio form-radio-inline paid">
                             <input class="form-radio-input" @change="changeValue" name="event" type="radio" label="Yes" value="Yes">
                             <label class="form-radio-label" >Yes</label>
                         </div>
                     </div>
-                    <div class="col-4 col-sm-6">
+                    <div class="col-3 col-sm-5">
                         <div class="form-radio form-radio-inline paid">
                         <input class="form-radio-input"  @change="changeValue" name="event" type="radio" label="No" value="No">
                         <label class="form-radio-label" >No</label>
@@ -91,7 +107,7 @@
                         Amount
                     </div>
                     <div class="col-12 col-sm-8 col-lg-4">
-                        <input type="number" class="form-control">
+                        <input type="number" v-model="preEventAmount" class="form-control">
                     </div>
                     <div class="col-12 col-sm-4 col-lg-2">
                         Email to be sent upon after registration
@@ -138,6 +154,116 @@
                   </div>
                 </div>
                 </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="w-100 box-table">
+                        <table class="table">
+                            <thead>
+                                <tr class="event-list">
+                                    <th scope="col"> <input type="checkbox" name="checkbox" class=""> </th>
+                                    <th scope="col">Picture</th>
+                                    <th scope="col">Firstname</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Reg.Code</th>
+                                    <th scope="col">Attended</th>
+                                    <th scope="col">Paid</th>
+                                    <th scope="col">Date</th>
+                                </tr>
+                            </thead>
+            <tbody>
+                <tr class="event-list">
+                    <th scope="row"> <input type="checkbox" name="checkbox" class=""></th>
+                    <td>
+                        <div id="img">
+                            <img src="../../assets/logo.png" class="img-fluid rounded-circle  mb-3" alt="">
+                        </div>
+                    </td>
+                    <td>Ajose Tosin</td>
+                    <td>08041941919</td>
+                    <td>0123345</td>
+                    <td> <input type="radio" name="radio" class=""></td>
+                    <td> <input type="radio" name="radio" class=""></td>
+                    <td>01/02/2021</td>
+                </tr>
+                <tr>
+                    <th scope="row"> <input type="checkbox" name="checkbox" class="">
+                    </th>
+                    <td>
+                        <div id="img">
+                            <img src="../../assets/logo.png" class="img-fluid rounded-circle  mb-3" alt="">
+                        </div>
+                    </td>
+                    <td>Ajose Tosin</td>
+                    <td>08041941919</td>
+                    <td>0123345</td>
+                    <td> <input type="radio" name="radio" class=""></td>
+                    <td> <input type="radio" name="radio" class=""></td>
+                    <td>01/02/2021</td>
+                </tr>
+                <tr>
+                    <th scope="row"> <input type="checkbox" name="checkbox" class="">
+                    </th>
+                    <td>
+                        <div id="img">
+                            <img src="../../assets/logo.png" class="img-fluid rounded-circle  mb-3" alt="">
+                        </div>
+                    </td>
+                    <td>Ajose Tosin</td>
+                    <td>08041941919</td>
+                    <td>0123345</td>
+                    <td> <input type="radio" name="radio" class=""></td>
+                    <td> <input type="radio" name="radio" class=""></td>
+                    <td>01/02/2021</td>
+                </tr>
+            
+            </tbody>
+           
+        </table>
+        <tr class="offset-sm-3">
+            <td>
+                <!-- WITH ARROWS -->
+                <!--  -->
+                <nav>
+                    <ul class="pagination rounded-circ  le justify-content-end mx-3 my-3">
+                        <li class="page-item">
+                            <a class="page-link rounded-circle mr-2" href="#">
+                                <span>&lt;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link rounded-circle mr-2" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link rounded-circle mr-2" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link rounded-circle mr-2" href="#">3</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link rounded-circle mr-2" href="#">4</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link rounded-circle mr-2" href="#">5</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link rounded-circle mr-2" href="#">
+                                <span>&gt;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </td>
+        </tr>
+        
+                    </div>
+                        </div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+                        </div>
+
+                    
+
             </div>
         <!-- </div> -->
         </div>
@@ -174,18 +300,18 @@
                                     <label for="topic">Topic</label>
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control">
+                                    <input type="text" v-model="topic" class="form-control">
                                 </div>
                                 <div class="col-sm-6">
                                     <label for="preacher">Preacher</label>
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control">
+                                    <input type="text" v-model="preacher" class="form-control">
                                 </div>
                             </div>
                         </div>
                     </div>
-                <div class="col-sm-12 offset-sm-1 add">Add Attendance</div>
+                <div class="col-sm-12 offset-sm-1 add"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Attendance</div>
                 <div class="attendance-header">
                     <div class="row">
                         <div class="col-sm-3">Attendance Type</div>
@@ -207,10 +333,11 @@
                             <input type="number" v-model="item.count" class="form-control">
                         </div>
                         <div class="col-sm-2 offset-sm-1">{{ item.count }}</div>
-                        <div class="col-sm-1" @click="delAttendance(index)">del</div>
+                        <div class="col-sm-1" @click="delAttendance(index)"><i class="fa fa-trash" aria-hidden="true"></i></div>
                     </div>
                 </div>
-                    <div class="col-sm-12 text-center add-attendance" id="addAttendance" @click="addAttendance">Add Attendance Item</div>
+
+                    <div class="col-sm-12 text-center add-attendance" id="addAttendance" @click="addAttendance"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Attendance Item</div>
                     <div  class="display" id="showAttendance">
                         <input type="text" class="form-control shadow mb-3" v-model="attendanceText" placeholder="Search attendance item">
                         <div @click="attendance" v-for="(filteredAttendance, index) in filterAttendance" :key="index">{{ filteredAttendance }}</div>
@@ -220,9 +347,9 @@
                         Launch demo modal
                     </button>
                     <div class="col-sm-12 empty"></div>
-                    <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea>
+                    <!-- <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea> -->
 
-                <div class="col-sm-12 offset-sm-1 add">Add Offering</div>
+                <div class="col-sm-12 offset-sm-1 add"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Offering</div>
                 <div class="attendance-header">
                     <div class="row">
                         <div class="col-sm-4">Offering Item</div>
@@ -250,15 +377,13 @@
                                 <input type="text" class="form-control" v-model="item.amount">
                             </div>
                             <div class="col-sm-1 offset-sm-1">{{ item.amount }}</div>
-                            <div class="col-sm-1 offset-sm-1">del</div>
+                            <div class="col-sm-1 offset-sm-1" @click="delOffering(index)"><i class="fa fa-trash" aria-hidden="true"></i></div>
                     </div>
                 </div>
-                    <div class="col-sm-12 text-center add-attendance" id="addOffering" @click="addOffering">Add Offering Item</div>
+                    <div class="col-sm-12 text-center add-attendance" id="addOffering" @click="addOffering"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Offering Item</div>
                     <div  class="display" id="showList">
                         <input type="text" class="form-control shadow mb-3" v-model="offeringText" placeholder="Search Offering item">
-                        <!-- <div @click="offering">Building</div>
-                        <div @click="offering">Children Dedication</div>
-                        <div @click="offering">Tithe</div> -->
+
                         <div v-for="(newOffering, index) in filterOffering" :key="index" @click="offering">{{ newOffering }}</div>
                         <div @click="createOffering" class="create">Create New Offering Item</div>
                     </div>
@@ -266,63 +391,67 @@
                         Launch demo modal
                     </button>
                     
-                    <div class="col-sm-12 empty"></div>
-                    <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea>
-                    <div class="col-sm-12 offset-sm-1 add">Add First Timers</div>
-                <div class="attendance-header">
-                    <div class="row">
-                        <div class="col-sm-4">Name</div>
-                        <div class="col-sm-4">Address</div>
-                        <div class="col-sm-4">Phone Number</div>
-                    </div>
-                </div>
-                <div class="attendance-body" v-for="(item, index) in firstTimers" :key="index">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <select class="form-control" v-model="item.name">
-                                <option :value="item.name">{{ item.name }}</option>
-                                
-                            </select>
+                    <div class="col-sm-12 empty">
+                        <div class="row">
+                            <div class="col-sm-5 total-2">
+                                TOTAL
+                            </div>
+                            <div class="col-sm-4">
+                                <!-- <div>Total Attendance</div>
+                                <div>Total Offering</div> -->
+                                <SelectElem :options="['NGN - Naira', 'CAD - Canadian dollar', 'AFN - Afghanistan']" name='NGN - Naira' value='NGN - Naira'/>
+                            </div>
+                            <div class="col-sm-3 align-self-center">{{ addOfferingTotal }}</div>
                         </div>
-                        <div class="col-sm-3 offset-sm-1">
-                            <input type="text" v-model="item.address" class="form-control">
-                        </div>
-                        <div class="col-sm-2 offset-sm-1">{{ item.phoneNumber }}</div>
                     </div>
-                </div>
-                    <div class="col-sm-12 text-center add-attendance" @click="createFirstTimers">Add First Timers</div>
+                    <!-- <div class="col-sm-12 text-center add-attendance" @click="createFirstTimers">Add First Timers</div> -->
                     <button hidden type="button" id="modalTogglerFirstTimers" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalFirstTimers">
                         Launch demo modal
                     </button>
-                    <div class="col-sm-12 empty"></div>
+                    <!-- <div class="col-sm-12 empty"></div> -->
                     <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea>
                 <!-- </div> -->
         </div>
         
             <div class="form">
                 <div class="container">
-                <div class="row row-form">
-                    <div class="total">
-        <h1 class="header1">TOTAL</h1>
-        <hr>
-        <div class="attendance1">
-            <div class="attendance2">
-                <h5 class="head5">ATTENDANCE</h5>
-                <h3 class="header3">2666</h3>
-
-            </div>
-             <div class="attendance3">
-                <h5 class="head5">OFFERING</h5>
-                <h3 class="header3">$ 2666</h3>
-
-            </div>
-        </div>
-        <hr>
-
-        <h1 class="header2">NOTES</h1>
-        <h5 class="header5">Total Attendance Count : 234</h5>
-    <!-- </div> -->
-    </div>
+                <div class="row row-form form-header" @click="toggleForm3">
+                    <div class="col-sm-6">
+                        <div>First Timers and New Convert</div>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <i class="fa fa-angle-up" :class="{ 'roll3': showForm3 }" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="row form-body close-slide3" :class="{ 'slide-down3': showForm3 }">
+                    <div class="col-sm-3 add-first-timer" @click="createFirstTimers">Add First Timers</div>
+                    <div class="col-sm-3 offset-sm-1 add-new-convert">Add New Converts</div>
+                    <div class="col-sm-12 box-table">
+                          <table class="table">
+                            <thead>
+                                <tr class="event-list">
+                                    <th> <input type="checkbox" name="checkbox" class=""> </th>
+                                    <th>PICTURE</th>
+                                    <th>FIRSTNAME</th>
+                                    <th>LASTNAME</th>
+                                    <th>PHONE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="event-list" v-for="(item, index) in firstTimers" :key="index">
+                                    <th scope="row"> <input type="checkbox" name="checkbox" class=""></th>
+                                    <td>
+                                        <div id="img">
+                                            <img src="../../assets/logo.png" class="img-fluid rounded-circle  mb-3" alt="">
+                                        </div>
+                                    </td>
+                                    <td>{{ item.firstName }}</td>
+                                    <td>{{ item.lastName }}</td>
+                                    <td>{{ item.phoneNumber }}</td>
+                                </tr>
+                            </tbody>
+                          </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -411,7 +540,7 @@
 
     <!-- First Timers Modal -->
   <div class="modal fade" id="exampleModalFirstTimers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog"  role="document">
     <div class="modal-content">
         <div class="modal-header">
           <div class="modal-title" id="exampleModalLabel">Add First Timers</div>
@@ -420,82 +549,109 @@
           </button>
         </div>
         <div class="modal-body">
-            <div class="row">
-                <!-- <div class="offset-sm-1 col-sm-3">Add First Timers</div> -->
-                <!-- <div class="col-sm-7">
-                    <input type="text" v-model="name" class="form-control">
-                </div>
-                <div class="col-sm-7">
-                    <input type="text" v-model="address" class="form-control">
-                </div>
-                <div class="col-sm-7">
-                    <input type="text" v-model="phoneNumber" class="form-control">
-                </div> -->
-            </div>
-            <!-- <div class="input-group mt-lg-3">
-                                    <input type="text" class="form-control w-lg-100 w-sm-75" 
-                                        aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <input type="file" id="myfiles" style="display: none;" directory webkit-directory>
-                                        <span class="input-group-text" id="basic-addon2"> Choose File</span>
-                                        <input type="button" id="filebtn" onclick="document.getElementById('myfiles').click()">
-                                    </div>
-                                </div> -->
+          
             <div class="">
                 <form>
                     <div class="form-group row">
-                        <label for="Surname" class="col-sm-2 col-form-label">Surname</label>
-                        <div class="col-sm-10">
-                            <input type="text" v-model="name" class="form-control" id="surname" required>
+                        <label for="Firstname" class="col-sm-2 col-form-label">Firstname<sup class="text-danger">*</sup></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control input-first" v-model="firstTimersObj.firstName" id="Firstname" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="Firstname" class="col-sm-2 col-form-label">Firstname</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="Firstname" required>
+                        <label for="LastName" class="col-sm-2 col-form-label">Last Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" v-model="firstTimersObj.lastName" class="form-control input-first" id="surname" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="phone number" class="col-sm-2 col-form-label">Phone number</label>
-                        <div class="col-sm-10">
-                            <input type="tel" v-model="phoneNumber" class="form-control" id="phone number">
+                        <div class="col-sm-9">
+                            <input type="tel" v-model="firstTimersObj.phoneNumber" class="form-control input-first" id="phone number">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="email" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="email">
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control input-first" v-model="firstTimersObj.email" id="email">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="address" class="col-sm-2 col-form-label">Address</label>
-                        <div class="col-sm-10 mb-4">
-                            <input type="text" v-model="address" class="form-control" id="address">
+                        <div class="col-sm-9 mb-4">
+                            <input type="text" v-model="firstTimersObj.address" class="form-control input-first" id="address">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="birthday" class="col-sm-2 col-form-label">Birthday</label>
+                        <div class="col-sm-3 mb-4">
+                            <SelectElem :options="['day', ...day]" name="day" class="input-first" value="day"/>
+                        </div>
+                        <div class="col-sm-3 mb-4">
+                            <SelectElem :options="['month', ...months]" name="month" class="input-first" value="month"/>
+                        </div>
+                        <div class="col-sm-3 mb-4">
+                            <SelectElem :options="['Year', ...birthYearsArr]" name="year" class="input-first" value="Year"/>
+                        </div>
+                        <div class="col-sm-5 mb-4 offset-sm-2">
+                            <SelectElem :options="['Marital Status', 'Single', 'Engaged', 'Married', 'Divorced', 'Single Parent']" class="input-first" name="Marital Status" value="Marital Status"/>
+                        </div>
+                        <div class="col-sm-4 mb-4">
+                            <SelectElem :options="['Gender', 'Male', 'Female']" name="Gender" class="input-first" value="Gender"/>
                         </div>
                     </div>
 
 
-                    <div class="form-row ml-lg-5 m-auto">
-                        <div class="col">
-                            <select class="custom-select custom-select-sm">
-                                <option selected>Marital Status</option>
-                                <option value="1">Married</option>
-                                <option value="2">Single</option>
-                            </select>
+                    <!-- <div class="col-sm-12 mt-4">Insights</div>-->
+                    <span class="d-flex justify-content-between align-items-center" @click="toggleForm1">
+                        <span>Insights</span><span style="border: 0px solid red; width: 70%;"><hr /></span><span><i class="fa fa-angle-up" :class="{ 'roll1': showForm1 }" aria-hidden="true"></i>
+</span>
+                    </span>
+
+
+                    <div class="form-group row close-slide1" :class="{ 'slide-down1': showForm1 }">
+                        
+                        <div class=" col-sm-9 offset-sm-2 mb-4">
+                            <div>How did you hear about us</div>
+                            <SelectElem :options="['Friend', 'Social media', 'Church Flyer', 'Tv', 'Radio']"/>
                         </div>
-                        <div class="col">
-                            <select class="custom-select custom-select-sm">
-                                <option selected>Gender</option>
-                                <option value="1">Male</option>
-                                <option value="2">Female</option>
-                            </select>
+                        <div class=" col-sm-9 offset-sm-2 mb-4">
+                            <div>Preferred means of communication</div>
+                            <SelectElem :options="['Call', 'Email', 'Visit', 'SMS']"/>
+                        </div>
+                        <div class=" col-sm-9 offset-sm-2 mb-4">
+                            <div>Interested in joining us</div>
+                            <SelectElem :options="['Yes', 'No']"/>
+                        </div>
+                        <div class=" col-sm-9 offset-sm-2 mb-4">
+                            <div>Want to be visited?</div>
+                            <SelectElem :options="['Yes', 'No', 'Maybe', 'On Transit']"/>
                         </div>
                     </div>
-                    <!-- <div class="container my-3 m-auto  row">
-                        <button type="button"
-                            class="col btn but mr-3 btn-outline-secondary btn-sm but2 ml-sm-5">Cancel</button>
-                        <button type="button" class="col btn but but1 btn-primary btn-sm">Save</button>
-                    </div> -->
+
+
+                    <!-- <div class="col-sm-12 mt-4">Follow up and Retention</div> -->
+                    <span class="d-flex justify-content-between align-items-center" @click="toggleForm">
+                        <span>Follow up and retention</span><span style="border: 0px solid red; width: 40%;"><hr /></span><span><i class="fa fa-angle-up" :class="{ 'roll': showForm }" aria-hidden="true"></i>
+                    </span>
+                    </span>
+
+
+                    <div class="form-group row close-slide" :class="{ 'slide-down': showForm }">
+                        
+                        <div class="col-sm-4 offset-sm-2 mt-4 mb-4">Send Welcome SMS</div>
+                        <div class=" mt-4 mb-4"><input type="radio" name="sms"></div>
+
+                        <div class="col-sm-4 mt-4 mb-4">Send Welcome SMS</div>
+                        <div class=" mt-4 mb-4"><input type="radio" name="sms"></div>
+                        <div class="col-sm-9 offset-sm-2">
+                            <div>Assigned automated follow-up</div>
+                            <SelectElem :options="['List 1','List 2', 'List 3', 'List 4']"/>
+                        </div>
+                    </div>
+
+                    
                 </form>
 
 
@@ -516,7 +672,12 @@
 
 <script>
 // import { onMounted, ref } from "vue";
+import SelectElem from '@/components/select/SelectElement.vue'
+import axios from 'axios'
 export default {
+    components: {
+        SelectElem
+    },
     data () {
         return{
             type: null,
@@ -526,9 +687,13 @@ export default {
             category: null,
             count: null,
             attendanceItem: [],
-            name: null,
-            address: null,
-            phoneNumber: null,
+            firstTimersObj: {
+                firstName: null,
+                lastName: null,
+                address: null,
+                phoneNumber: null,
+                email: null,
+            },
             firstTimers:[],
             selectedValue: null,
             check: false,
@@ -539,7 +704,30 @@ export default {
             eventCreate: null,
             newEvents: [],
             attendanceText: '',
-            offeringText: ''
+            offeringText: '',
+            day: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ,16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+            months: [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ],
+            showForm1: false,
+            showForm: false,
+            showForm2: false,
+            showForm3: false,
+            topic: '',
+            preacher: '',
+            preEventAmount: '',
+            eventName: ''
             
         }
     },
@@ -550,13 +738,16 @@ export default {
             showAttendance.classList.toggle('offering-drop')
         },
         addOffering () {
-            const showList = document.querySelector('#showList')
-            showList.classList.toggle('offering-drop')               
+            const showList = document.querySelector('#showList');
+            showList.classList.toggle('offering-drop') 
+            // console.log(this.offeringItem)     
         },
         offering (e) {
             this.offeringItem.push({
                 type: e.target.innerHTML
             })
+            console.log(this.offeringItem)
+
              const showList = document.querySelector('#showList')
             showList.classList.toggle('offering-drop')
             
@@ -583,24 +774,22 @@ export default {
             document.querySelector('#modalTogglerFirstTimers').click();
         },
         save () {
-            if (this.name && this.address && this.phoneNumber) {
+            if (this.firstTimersObj.firstName && this.firstTimersObj.lastName && this.firstTimersObj.address && this.firstTimersObj.phoneNumber && this.firstTimersObj.email) {
                 this.firstTimers.push({
-                name: this.name,
-                address:this.address,
-                phoneNumber: this.phoneNumber
+                firstName: this.firstTimersObj.firstName,
+                lastName: this.firstTimersObj.lastName,
+                phoneNumber: this.firstTimersObj.phoneNumber
             })
-            this.name = '';
-            this.address = '';
-            this.phoneNumber = '';
+            // this.name = '';
+            // this.address = '';
+            // this.phoneNumber = '';
+            console.log(this.firstTimers)
             document.querySelector('#closeFirstTimers').setAttribute('data-dismiss',  'modal')
             }
+            console.log(this.firstTimersObj.firstName, this.firstTimersObj.lastName, this.firstTimersObj.phoneNumber, this.firstTimersObj.email, this.firstTimersObj.address)
         },
         changeValue (e) {
            this.selectedValue = e.target.value
-        },
-        events () {
-            // console.log(this.$refs)
-            // this.$refs.formBody.classList.toggle('show-body')
         },
         createNewOffering () {
             this.newOfferings.push(this.offeringCreate)
@@ -620,6 +809,43 @@ export default {
         },
         delAttendance (index) {
             this.attendanceItem.splice(index, 1)
+        },
+        delOffering (index) {
+            this.offeringItem.splice(index, 1)
+        },
+        toggleForm1 () {
+            this.showForm1 = !this.showForm1
+        },
+        toggleForm () {
+            this.showForm = !this.showForm
+        },
+        toggleForm2 () {
+            this.showForm2 = !this.showForm2
+        },
+        toggleForm3 () {
+            this.showForm3 = !this.showForm3
+        },
+        post () {
+            let event = {
+                topic: this.topic,
+                preacher: this.preacher,
+                preEvent: {
+                    name: this.eventName,
+                    isPaidFor: this.selectedValue === "Yes" ? true : false,
+                    amount: this.preEventAmount,
+
+                },
+                attendance: this.attendanceItem,
+                offering: this.offeringItem,
+    
+                
+            }
+
+            axios.post('/api/Events/CreateActivity', event)
+                .then ((res) => {
+                    console.log(res)
+                })
+                .catch ((err) => console.log(err.response))
         }
     },
     computed: {
@@ -631,7 +857,18 @@ export default {
             } else {
                 return this.newAttendances;
             }
+
         },
+        
+            birthYearsArr () {
+                const arrOfYears = []
+                let currentYear = new Date().getFullYear();
+                while (arrOfYears.length <= 100) {
+                    arrOfYears.push(currentYear)
+                    currentYear = currentYear - 1;
+                }
+                return arrOfYears;
+            },
 
         filterOffering() {
             if (this.offeringText !== '' && this.newOfferings.length > 0) {
@@ -641,18 +878,38 @@ export default {
             } else {
                 return this.newOfferings;
             }
-        }
-    },
+        },
 
-    created () {
-            console.log(this.selectedValue)
-    }   
+        addOfferingTotal () {
+            // var sum = 0;
+                // return for (let i = 0; i < this.offeringItem.length; i++)  {
+                    //     return sum =+ parseInt(this.offeringItem[i].amount)
+                //     // cosum, parseInt(this.offeringItem[i].amount))
+                // }
+                // console.log(sum)
+
+               if (this.offeringItem.length <= 0) return 0
+               if (this.offeringItem.length === 1) return this.offeringItem[0].amount
+                const amounts = this.offeringItem.map(i => +i.amount)
+                return amounts.reduce((a, b) => {
+                    return (a || 0) + (b || 0)
+                });
+            //    return this.offeringItem.reduce((a, b) => {
+            //        const first = Number(a.amount) ? Number(a.amount) : 0
+            //        const second =  Number(b.amount) ? Number(b.amount) : 0;
+            //        return first + second
+            //    })
+
+            // return this.offeringItem.forEach(i => {
+            //     return sum =+ Number(i.amount)
+            // })
+        }
+    }  
 }
 </script>
 
 <style scoped>
     .event {
-    font-size: 0.9em;
     font-family: 'Nunito sans';
 }
 
@@ -694,7 +951,7 @@ export default {
 }
 
 .container.first-pane {
-    margin-top: 20px;
+    /* margin-top: 5px; */
 }
 
 .event-category {
@@ -781,7 +1038,16 @@ export default {
     border: none;
     border-top: 1px solid rgb(231, 231, 231);
     width: 100%;
-    height: 70px;
+    padding: 20px;
+    font: normal normal 600 18px/24px Nunito Sans;
+}
+
+.total-2 {
+    font: normal normal 600 20px/27px Nunito Sans;
+    letter-spacing: 0px;
+    color: #02172eb9;
+    text-align: right;
+    align-self: center;
 }
 
 .edit {
@@ -883,7 +1149,7 @@ export default {
     border: 2px dotted rgb(211, 211, 211);
     display: inline-block;
     padding: 15%;
-    font-size:0.8em;
+    font-size:0.9em;
 }
 
 .textarea-adjust {
@@ -905,7 +1171,7 @@ export default {
 }
 
 .public{
-    font: normal normal 600 12px/16px Nunito Sans;
+    font: normal normal 600 14px/16px Nunito Sans;
     color: #136ACD;
 }
 
@@ -915,12 +1181,12 @@ export default {
 
 .event-reg {
     font: normal normal bold 16px/22px Nunito Sans;
-    color: #136ACD;
+    /* color: #136ACD; */
 }
 
 .event-reg-dark {
     font: normal normal bold 16px/22px Nunito Sans;
-    color: #02172E;
+    /* color: #02172E; */
 }
 
 .enable-reg {
@@ -1001,6 +1267,172 @@ div .maintext{
     font-size: 18px;
 }
 
+/* *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+
+.table {
+    padding: 20px 10px 0 10px;
+}
+
+.table {
+    width: 100%;
+    /* box-shadow: 0px 1px 4px #02172E45; */
+    box-shadow: none;
+    /* border: 1px solid #DDE2E6; */
+    border: none;
+    /* border-radius: 30px; */
+    border-radius: 0;
+    /* margin: 0 */
+    margin: 24px 0 0 0;
+}
+
+.box-table {
+    box-shadow: 0px 1px 4px #02172E45;
+    border-radius: 30px;
+    margin-top: 30px;
+    width: 100%
+
+}
+
+/* @media (min-width: 500px) and (max-width: 600px) {
+    .box-table {
+        width: 58%
+    }
+} */
+
+.t-header{
+    background-color:#F1F3F9;
+
+}
+
+#img{
+max-width: 30px;
+}
+
+tr.event-list th{
+    color: #8898AA;
+    /* font-size: 11px; */
+    font-family: 'Nunito Sans' Arial, sans-serif;
+    letter-spacing: 1px;
+    padding: 10px;
+}
+
+tr.event-list td{
+    color: #02172E;
+    /* padding: 5px; */
+    vertical-align: middle;
+}
+
+.page-link{
+    color: #136ACD;
+}
+.page-link:hover{
+    background-color: #136ACD;
+    color: #fff;
+}
+.page-link.active:hover{
+    background-color: #136ACD;
+    color: #fff;
+}
+
+.add-first-timer {
+    background: #EBEFF4;
+    padding: 10px;
+    border-radius: 35px;
+    font: normal normal bold 14px/19px Nunito Sans;
+    letter-spacing: 0px;
+    color: #136ACD;
+    text-align: center
+}
+
+.add-new-convert {
+    background: #EBEFF4;
+    padding: 10px;
+    border-radius: 35px;
+    font: normal normal bold 14px/19px Nunito Sans;
+    letter-spacing: 0px;
+    color: #136ACD;
+    text-align: center
+}
+
+.input-first {
+    /* width: 320px; */
+    height: 39px;
+    border: 1px solid #B9C5CF;
+}
+
+.close-slide1 {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out
+}
+
+.slide-down1 {
+    height: 365px;
+    /* overflow: visible; */
+    transition: all 0.5s ease-in-out
+}
+
+.roll1 {
+    transition: all 0.5s ease-in-out;
+    transform: rotate(180deg);
+}
+
+.close-slide {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out
+}
+
+.slide-down {
+    height: 162px;
+    transition: all 0.5s ease-in-out
+}
+
+.roll {
+    transition: all 0.5s ease-in-out;
+    transform: rotate(180deg);
+}
+
+.close-slide2 {
+    padding: 0;
+    height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
+    
+}
+
+.slide-down2 {
+    height: 412px;
+    transition: all 0.5s ease-in-out;
+    /* padding: 30px */
+}
+
+.roll2 {
+    transition: all 0.5s ease-in-out;
+    transform: rotate(180deg);
+}
+
+.close-slide3 {
+    padding: 0;
+    height: 0;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out
+}
+
+.slide-down3 {
+    height: auto;
+    padding: 30px;
+    transition: all 0.5s ease-in-out
+}
+
+.roll3 {
+    transition: all 0.5s ease-in-out;
+    transform: rotate(180deg);
+}
 
 @media(max-width: 575px) {
     .btn-preview, .btn-save {

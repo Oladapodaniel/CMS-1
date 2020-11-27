@@ -65,7 +65,7 @@ export default {
         max-height: fit-content;
         background: #fff;
         overflow-y: auto;
-        padding-top: 20px;
+        padding-top: 59px;
     }
 
     .main-con::-webkit-scrollbar {
