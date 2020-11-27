@@ -14,7 +14,7 @@
                 <label for="" class="label">Membership</label>
                 <div class="cstm-select">
                   <div style="width: 330px">
-                    <SelectElem :typ="'membership'" name="membership" :options="['-Select membership', ...peopleClassifications]" value="-Select size range" @input="itemSelected"/>
+                    <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/>
                   </div>
                   
                 </div>
@@ -73,12 +73,18 @@
                   />
                 </div>
                 <div>
-                  <input
+                  <div class="cs-input">
+                    <label for="imgUpload" class="choose-file">
+                    Choose file
+                    <input
                     type="file"
                     class="input file-input"
                     placeholder=""
+                    id="imgUpload"
                     @change="imageSelected"
                   />
+                  </label>
+                  </div>
                 </div>
                 <div>
                   <button class="upload-btn" @click.prevent="uploadImage">Upload</button>
@@ -87,11 +93,15 @@
             </div>
           </div>
         </div>
-        <hr class="hr">
+        <!-- <hr class="hr"> -->
 
         <div class="bio-div">
-          <p class="form-section-header">Celebrations:</p>
-          <div class="bio-info celeb-info">
+          <span class="celeb-tab" @click="showCelebTab">
+            <span class="tab-header">Celebrations:</span>
+            <span class="h-rule"><hr class="hr"></span>
+            <span class="tb-icon-span"><i class="fa fa-angle-down tbb-icon" :class="{ 'tb-icon': !hideCelebTab}"></i></span>
+          </span>
+          <div class="bio-info celeb-info" :class="{ 'hide-tab': hideCelebTab, 'show-tab': !hideCelebTab }">
             <div class="inputs">
               <div class="input-field">
                 <label for="" class="label">Birthday</label>
@@ -154,11 +164,13 @@
             </div>
           </div>
         </div>
-        <hr class="hr">
-
         <div class="bio-div">
-          <p class="form-section-header">Additional information:</p>
-          <div class="bio-info">
+           <span class="celeb-tab" @click="showAddInfoTab">
+            <span class="tab-header">Additional information:</span>
+            <span class="h-rule"><hr class="hr"></span>
+            <span class="tb-icon-span"><i class="fa fa-angle-down tbb-icon" :class="{ 'tb-icon': !hideAddInfoTab}"></i></span>
+          </span>
+          <div class="bio-info" :class="{'hide-tab': hideAddInfoTab, 'show-occ-tab': !hideAddInfoTab }">
             <div class="inputs">
               <div class="input-field">
                 <label for="" class="label">Occupation</label>
@@ -182,7 +194,7 @@
           </div>
         </div>
 
-        <div class="add-info--con">
+        <div class="add-info--con" :class="{'hide-tab': hideAddInfoTab, 'show-addinfo-tab': !hideAddInfoTab }">
           <div class="label-text-box">
             <p>Related information</p>
             <small>Including small groups and cell/house fellowship membership</small>
@@ -238,6 +250,13 @@ import NProgress from 'nprogress'
 export default {
   components: { SelectElem },
   setup() {
+    const hideCelebTab = ref(true);
+    const hideAddInfoTab = ref(true);
+    const showCelebTab = () => hideCelebTab.value = !hideCelebTab.value;
+    const showAddInfoTab = () => hideAddInfoTab.value = !hideAddInfoTab.value;
+
+
+
     const loading = ref(false);
     const months = [
       "January",
@@ -466,7 +485,11 @@ export default {
       birthYearsArr,
       itemSelected,
       annDaysArr,
-      errMessage
+      errMessage,
+      hideCelebTab,
+      showCelebTab,
+      hideAddInfoTab,
+      showAddInfoTab,
     };
   },
 };
@@ -484,8 +507,13 @@ export default {
   height: 100vh;
 }
 
+.bio-div {
+  margin-top: 50px;
+}
+
 .bio-info {
   display: flex;
+  
 }
 
 .celeb-info {
@@ -549,11 +577,12 @@ export default {
 
 .grey-bg {
   text-align: center;
-  margin: 20px 0;
+  margin: 20px auto;
+  max-width: 267px;
 }
 
 .person-img {
-  width: 40%;
+  width: 50%;
   margin: auto;
 }
 
@@ -568,7 +597,7 @@ export default {
   width: 135px;
   border: none;
   outline: none;
-  color: #000;
+  color: #fff;
 }
 
 .upload-btn:hover {
@@ -580,6 +609,7 @@ export default {
 .file-input {
   width: 85% !important;
   margin: 24px 0;
+  display: none;
 }
 
 .header-text {
@@ -632,13 +662,14 @@ export default {
 /* End */
 
 .hr {
-  border: 1px solid #0020440a;
+  border: 1px solid #00204412;
   margin: 0 4px;
 }
 
 .add-info--con {
   display: flex;
   width: 100%;
+  overflow: hidden;
 }
 
 .label-text-box {
@@ -745,6 +776,94 @@ export default {
 .error-div {
   text-align: center;
   color: red;
+}
+
+.celeb-tab {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.celeb-tab:hover {
+  cursor: pointer;
+}
+
+.h-rule {
+  width: 70%;
+}
+
+.tab-header {
+  font-weight: 600;
+  font-size: 18px;
+  width: 101px;
+  color: #002044;
+}
+
+.hide-tab {
+  height: 0;
+  /* display: none; */
+  transition: all 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+.tbb-icon {
+  transition: all 0.5s ease-in-out;
+  transform: rotate(0deg);
+  color: #190138;
+  font-size: 20px;
+}
+
+.tb-icon-span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #DDE2E6;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  opacity: .5;
+}
+
+.tb-icon {
+  transition: all 0.5s ease-in-out;
+  transform: rotate(180deg);
+}
+
+.show-tab {
+  transition: all 0.5s ease-in-out;
+  height: 108px;
+}
+
+.show-addinfo-tab {
+  transition: all 0.7s ease-in-out;
+  height: 223px;
+}
+
+.show-occ-tab {
+  transition: all 0.5s ease-in-out;
+  min-height: 113px;
+}
+
+.cs-input {
+  border: 1px solid #B9C5CF;
+  width: 90%;
+  margin: 29px auto;
+  background: #fff;
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.choose-file {
+    background: #DDE2E6;
+    padding: 4px 10px;
+}
+
+.choose-file:hover {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 528px) {

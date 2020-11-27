@@ -3,12 +3,19 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     userEmail: "",
-    onboardingData: { },
+    onboardingData: {},
     userRole: "",
-    userData: { },
+    userData: {},
     userStartPoint: "",
     settingUserUp: false,
+
+    // transition area
+    pageTransition: {
+      name: "router-view",
+      mode: "in-out"
+    }
   },
+
   mutations: {
     setUserEmail(state, payload) {
       state.userEmail = payload;
@@ -28,26 +35,43 @@ export default createStore({
 
     setUserUp(state, payload) {
       state.settingUserUp = payload;
-    }
+    },
+
+    // transition Area
+    // setPageTransition(state, value) {
+    //   if ("default" === value) {
+    //     Vue.set(state, "pageTransition", {
+    //       name: "router-view",
+    //       mode: "in-out"
+    //     })
+    //   }
+    //   if ("back" === value) {
+    //     Vue.set(state, "pageTransition", {
+    //       name: "router-view-back",
+    //       mode: ","
+    //     })
+    //   }
+    // }
+// end of transition
   },
   actions: {
-    setUserEmail({commit}, payload) {
+    setUserEmail({ commit }, payload) {
       commit("setUserEmail", payload)
     },
 
-    setUserData({commit}, payload) {
+    setUserData({ commit }, payload) {
       commit("setUserData", payload)
     },
 
-    setOnboardingData({commit}, payload) {
+    setOnboardingData({ commit }, payload) {
       commit("setOnboardingData", payload)
     },
 
-    setStartPoint({commit}, payload) {
+    setStartPoint({ commit }, payload) {
       commit("setStartPoint", payload)
     },
 
-    setUserUp({commit}, payload) {
+    setUserUp({ commit }, payload) {
       commit("setUserUp", payload)
     }
   },
@@ -63,6 +87,6 @@ export default createStore({
   },
 
   modules: {
-    
+
   }
 })

@@ -102,7 +102,8 @@ export default {
       axios
         .post("/api/onboarding", userData)
         .then((res) => {
-          console.log(res)
+        console.log(res, "onboarding response");
+          localStorage.setItem("token", res.data.token);
           this.$store.dispatch("setStartPoint", url)
           this.$router.push("/processing");
         })

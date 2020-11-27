@@ -296,7 +296,7 @@ export default {
 .top-row {
   display: flex;
   padding: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .second-col .create-btn-div .create-btn {
@@ -419,32 +419,43 @@ export default {
 
 .box2 .bottom {
   border: 1px solid #e6e5f2;
-  box-shadow: 0px 1px 4px #02172E45;
   border-radius: 0px 0px 28px 28px;
 }
 
 .box2 .upgrade-btn {
-  background: #136acd;
+  /* background: #136acd; */
   color: #fff;
   justify-self: flex-end;
   margin-left: auto;
+  outline: none;
 }
 
 .upgrade-btn {
   align-self: center;
   padding: 10px;
-  background: #DDE2E6;
+  background: #797E81;
   border-radius: 20px;
   color: #002044;
   border: none;
   width: 110px;
   text-transform: uppercase;
   font-weight: 600;
+  outline: none;
+  color: #fff;
+}
+
+.upgrade-btn:hover {
+  background: #136acd;
 }
 
 .buy-btn {
   width: 94px;
   color: #002044;
+  background: #797E81;
+}
+
+.buy-btn:hover {
+  background: #136acd;
 }
 
 .plan-text {
@@ -535,6 +546,10 @@ export default {
 
 .table-body:nth-child(even) {
   background: #F7FAFC;
+}
+
+.title {
+  margin: 0 0 15px 0;
 }
 
 @media screen and (max-width: 376px) {
