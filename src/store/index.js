@@ -1,4 +1,3 @@
-import vueHighcharts from 'vue-highcharts';
 import { createStore } from 'vuex'
 
 export default createStore({
@@ -39,20 +38,20 @@ export default createStore({
     },
 
     // transition Area
-    setPageTransition(state, value) {
-      if ("default" === value) {
-        Vue.set(state, "pageTransition", {
-          name: "router-view",
-          mode: "in-out"
-        })
-      }
-      if ("back" === value) {
-        Vue.set(state, "pageTransition", {
-          name: "router-view-back",
-          mode: ","
-        })
-      }
-    }
+    // setPageTransition(state, value) {
+    //   if ("default" === value) {
+    //     Vue.set(state, "pageTransition", {
+    //       name: "router-view",
+    //       mode: "in-out"
+    //     })
+    //   }
+    //   if ("back" === value) {
+    //     Vue.set(state, "pageTransition", {
+    //       name: "router-view-back",
+    //       mode: ","
+    //     })
+    //   }
+    // }
 // end of transition
   },
   actions: {

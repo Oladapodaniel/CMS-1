@@ -421,27 +421,39 @@ export default {
 }
 
 .box2 .upgrade-btn {
-  background: #136acd;
+  /* background: #136acd; */
   color: #fff;
   justify-self: flex-end;
   margin-left: auto;
+  outline: none;
 }
 
 .upgrade-btn {
   align-self: center;
   padding: 10px;
-  background: #DDE2E6;
+  background: #797E81;
   border-radius: 20px;
   color: #002044;
   border: none;
   width: 110px;
   text-transform: uppercase;
   font-weight: 800;
+  outline: none;
+  color: #fff;
+}
+
+.upgrade-btn:hover {
+  background: #136acd;
 }
 
 .buy-btn {
   width: 94px;
   color: #002044;
+  background: #797E81;
+}
+
+.buy-btn:hover {
+  background: #136acd;
 }
 
 .plan-text {

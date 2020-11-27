@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import store from "@/store/index";
+// import store from "@/store/index";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
 
