@@ -17,7 +17,9 @@ import PeopleEmpty from '../views/people/PeopleEmpty.vue';
 import ImportPeople from '../views/people/ImportPeople.vue';
 import AddPerson from '../views/people/AddPerson.vue';
 import List from '../views/people/PeopleList.vue';
+import Event from '../views/event/Event.vue'
 import Column from '@/components/charts/ColumnChart.vue';
+
 
 const routes = [
   {
@@ -96,6 +98,11 @@ const routes = [
         path: '/home/add-person',
         component: AddPerson
       },
+      {
+        path: '/home/event',
+        name: 'Event',
+        component: Event
+      }
     ]
   },
   {

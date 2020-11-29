@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "@/gateway/backendapi";
 // import $ from 'jquery'
 import SelectElem from '@/components/select/SelectElement.vue'
 export default {
@@ -154,7 +154,6 @@ export default {
 
     next() {
       if (!this.userDetails.email) return false;
-      //   this.toggle = !this.toggle;
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
         ? this.userDetails.phoneNumber
         : `${this.zipCode}${this.userDetails.phoneNumber}`;
@@ -164,7 +163,6 @@ export default {
     },
 
     selectCountry(e) {
-      console.log(e.target.value, "Id");
       this.zipCode = this.countries.filter((i) => i.id === +e.target.value);
     },
 

@@ -30,7 +30,7 @@
             People
           </router-link>
 
-          <a href="" class="link">
+          <router-link to="/home/event" class="link">
             <img
               src="../../assets/dashboardlinks/com-icon.svg"
               class="link-icon comm"
@@ -38,16 +38,16 @@
             />
             
             <span class="drop-link">Communication <span class="user-link-icon"> <i class="fa fa-angle-down"></i></span></span>
-          </a>
+          </router-link>
 
-          <a href="" class="link">
+          <router-link to="/home/event" class="link">
             <img
               src="../../assets/dashboardlinks/events-icon.svg"
               class="link-icon"
               alt=""
             />
             <span class="drop-link">Events <span class="user-link-icon"> <i class="fa fa-angle-down"></i></span></span>
-          </a>
+          </router-link>
 
           <a href="" class="link">
             <img
@@ -165,6 +165,8 @@ export default {
   padding: 8px 20px 8px 4px;
   background: #ebeff4;
   height: 100vh;
+  z-index: 100;
+  /* border: 2px solid red; */
 }
 
 .nav .link {
@@ -291,7 +293,7 @@ export default {
   }
 
   .nav .link {
-    opacity: 1;
+    /* opacity: 1; */
   }
 }
 </style>

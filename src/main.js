@@ -1,10 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './store'
+import store from './store/store'
 import Highcharts from 'highcharts';
 import VueHighcharts from 'vue-highcharts';
-import axios from "axios";
+// import axios from "axios";
+import axios from "./gateway/backendapi";
 import NProgress from "nprogress"
 
 NProgress.configure({ showSpinner: false });
@@ -25,6 +26,6 @@ axios.interceptors.request.use((config) => {
     return response
   })
 
-axios.defaults.baseURL = "https://churchplusv3coreapi.azurewebsites.net/";
+// axios.defaults.baseURL = "https://churchplusv3coreapi.azurewebsites.net/";
 
 createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use(NProgress).mount('#app')

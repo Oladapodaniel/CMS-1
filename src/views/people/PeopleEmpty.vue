@@ -12,7 +12,8 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import axios from "@/gateway/backendapi";
+// import axios from "axios";
 import PeopleList from '@/views/people/PeopleList.vue';
 
 export default {
@@ -29,6 +30,7 @@ export default {
       } catch (err) {
         loading.value = false;
         console.log(err);
+        // NProgress.done(true)
       }
     });
     

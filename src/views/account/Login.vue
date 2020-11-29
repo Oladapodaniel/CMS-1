@@ -61,9 +61,9 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/gateway/backendapi';
 import { reactive, ref } from 'vue';
-import store from '../../store/index'
+import store from '../../store/store'
 import router from '../../router/index';
 
 export default {

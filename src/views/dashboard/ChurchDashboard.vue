@@ -203,6 +203,8 @@
 
 <script>
 // import Highcharts from "highcharts";
+// import { onMounted, ref } from "vue";
+// import Highcharts from "highcharts";
 // import { onMounted, reactive, ref } from "vue";
 import PieChart from "@/components/charts/PieChart.vue"
 import ColumnChart from "@/components/charts/ColumnChart.vue"
@@ -444,6 +446,7 @@ export default {
 
 .upgrade-btn:hover {
   background: #136acd;
+  /* font-weight: 600; */
 }
 
 .buy-btn {

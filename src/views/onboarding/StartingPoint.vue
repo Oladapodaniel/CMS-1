@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "@/gateway/backendapi";
 export default {
   // beforeRouteLeave() {
   //   this.$store.dispatch("setUserUp", false);

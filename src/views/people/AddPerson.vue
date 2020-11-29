@@ -150,7 +150,7 @@
 
                     <div class="cstm-select">
                       <div class="cs-select" style="width:113px">
-                        <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="-Select size range" @input="itemSelected"/>
+                        <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/>
                       </div>
                       
                     </div>
@@ -242,7 +242,7 @@
 import moment from "moment";
 import { ref, reactive, onMounted, computed } from "vue";
 import router from "@/router/index"
-import axios from "axios";
+import axios from "@/gateway/backendapi";
 import SelectElem from '@/components/select/SelectElement.vue'
 
 import NProgress from 'nprogress'
@@ -250,7 +250,7 @@ import NProgress from 'nprogress'
 export default {
   components: { SelectElem },
   setup() {
-    const hideCelebTab = ref(true);
+    const hideCelebTab = ref(false);
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => hideCelebTab.value = !hideCelebTab.value;
     const showAddInfoTab = () => hideAddInfoTab.value = !hideAddInfoTab.value;
@@ -859,7 +859,8 @@ export default {
 
 .choose-file {
     background: #DDE2E6;
-    padding: 4px 10px;
+    padding: 3px 10px;
+    margin-bottom: 0;
 }
 
 .choose-file:hover {
