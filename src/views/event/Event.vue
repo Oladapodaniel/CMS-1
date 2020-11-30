@@ -361,9 +361,9 @@
                     <div class="row">
                         <div class="col-sm-3">
                             <select class="form-control" v-model="item.type">
-                                <option value="Building">Building</option>
+                                <!-- <option value="Building">Building</option>
                                 <option value="Child dedication">Child Dedication</option>
-                                <option value="Tithe">Tithe</option>
+                                <option value="Tithe">Tithe</option> -->
                                 <option v-for="(newOffering, index) in newOfferings" :key="index" :value="newOffering">{{ newOffering }}</option>
                             </select>
                         </div>
@@ -383,8 +383,8 @@
                     <div class="col-sm-12 text-center add-attendance" id="addOffering" @click="addOffering"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Offering Item</div>
                     <div  class="display" id="showList">
                         <input type="text" class="form-control shadow mb-3" v-model="offeringText" placeholder="Search Offering item">
-
-                        <div v-for="(newOffering, index) in filterOffering" :key="index" @click="offering">{{ newOffering }}</div>
+                        
+                        <div v-for="(newOffering, index) in filterOffering" :key="index" @click="offering(newOffering)">{{ newOffering.name }}</div>
                         <div @click="createOffering" class="create">Create New Offering Item</div>
                     </div>
                     <button hidden type="button" id="modalTogglerOffering" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalOffering">
@@ -742,11 +742,17 @@ export default {
             showList.classList.toggle('offering-drop') 
             // console.log(this.offeringItem)     
         },
-        offering (e) {
-            this.offeringItem.push({
-                type: e.target.innerHTML
-            })
-            console.log(this.offeringItem)
+        offering (offObj) {
+            // this.offeringItem.push({
+            //     type: offObj.name,
+            //     offeringTypeId: offObj.id
+            // })
+            // this.offeringItem.push(offObj)
+            // axios.post('/api/Offering', this.offeringItem)
+            //     .then(res => {
+            //         console.log(res)
+            //     })
+            console.log(offObj, this.offeringItem)
 
              const showList = document.querySelector('#showList')
             showList.classList.toggle('offering-drop')
@@ -792,9 +798,19 @@ export default {
            this.selectedValue = e.target.value
         },
         createNewOffering () {
-            this.newOfferings.push(this.offeringCreate)
-            this.offeringCreate = '';
+            // this.newOfferings.push(this.offeringCreate)
+            // this.offeringCreate = '';
+
+        let off = {
+            offeringTypeName: this.offeringCreate
+        }
+            axios.post(`/api/Offering/`, off)
+                .then(res => {
+                    console.log(res)
+                })
             document.querySelector('#closeOffering').setAttribute('data-dismiss',  'modal')
+
+
         },
         createNewAttendance () {
             this.newAttendances.push(this.attendanceCreate)
@@ -826,27 +842,40 @@ export default {
             this.showForm3 = !this.showForm3
         },
         post () {
-            let event = {
-                topic: this.topic,
-                preacher: this.preacher,
-                preEvent: {
-                    name: this.eventName,
-                    isPaidFor: this.selectedValue === "Yes" ? true : false,
-                    amount: this.preEventAmount,
+            // let event = {
+            //     topic: this.topic,
+            //     preacher: this.preacher,
+            //     preEvent: {
+            //         name: this.eventName,
+            //         isPaidFor: this.selectedValue === "Yes" ? true : false,
+            //         amount: this.preEventAmount,
 
-                },
-                attendance: this.attendanceItem,
-                offering: this.offeringItem,
+            //     },
+            //     attendance: this.attendanceItem,
+            //     offering: this.offeringItem,
     
                 
-            }
+            // }
 
-            axios.post('/api/Events/CreateActivity', event)
-                .then ((res) => {
-                    console.log(res)
-                })
-                .catch ((err) => console.log(err.response))
+            // axios.post('/api/Events/CreateActivity', event)
+            //     .then ((res) => {
+            //         console.log(res)
+            //     })
+            //     .catch ((err) => console.log(err.response))
+            console.log(this.offeringItem)
         }
+    },
+    created () {
+        axios.get('/api/Offering')
+            .then((res) => {
+                // console.log(res)
+                this.offeringItem = res.data.map(i => {
+                    return {
+                        id: i.id,
+                        name: i.name
+                    }
+                })
+            })
     },
     computed: {
         filterAttendance() {
