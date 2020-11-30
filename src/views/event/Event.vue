@@ -319,20 +319,26 @@
                         <div class="col-sm-2 offset-sm-1">Total</div>
                     </div>
                 </div>
+
+                <!-- Attendance Items -->
                 <div class="attendance-body" id="attendanceBody" v-for="(item, index) in attendanceItem" :key="index">
                     <div class="row">
                         <div class="col-sm-3">
-                            <select class="form-control" v-model="item.category">
-                                <option :value="select">Select type</option>
+                            <select class="form-control">
+                                <!-- <option :value="select">Select type</option>
                                 <option value="Adult">Adult</option>
-                                <option value="Children">Children</option>
-                                <option v-for="(newAttendance, index) in newAttendances" :key="index" :value="newAttendance">{{ newAttendance }}</option>
+                                <option value="Children">Children</option> -->
+                                <option v-for="(newAttendance, index) in newAttendances" :key="index" :value="newAttendance.attendanceTypeID"
+                                    :selected="newAttendance.attendanceTypeID === item.attendanceTypeID"
+                                >
+                                    {{ newAttendance.name }}
+                                </option>
                             </select>
                         </div>
                         <div class="col-sm-3 offset-sm-2">
-                            <input type="number" v-model="item.count" class="form-control">
+                            <input type="number" v-model="item.number" class="form-control">
                         </div>
-                        <div class="col-sm-2 offset-sm-1">{{ item.count }}</div>
+                        <div class="col-sm-2 offset-sm-1">{{ item.number }}</div>
                         <div class="col-sm-1" @click="delAttendance(index)"><i class="fa fa-trash" aria-hidden="true"></i></div>
                     </div>
                 </div>
@@ -340,7 +346,7 @@
                     <div class="col-sm-12 text-center add-attendance" id="addAttendance" @click="addAttendance"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Attendance Item</div>
                     <div  class="display" id="showAttendance">
                         <input type="text" class="form-control shadow mb-3" v-model="attendanceText" placeholder="Search attendance item">
-                        <div @click="attendance" v-for="(filteredAttendance, index) in filterAttendance" :key="index">{{ filteredAttendance }}</div>
+                        <div @click="attendance(filteredAttendance)" v-for="(filteredAttendance, index) in filterAttendance" :key="index">{{ filteredAttendance.name }}</div>
                         <div @click="createAttendance" class="create">Create New Attendance Item</div>
                     </div>
                     <button hidden type="button" id="modalTogglerAttendance" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalAttendance">
@@ -357,14 +363,13 @@
                         <div class="col-sm-2">Total</div>
                     </div>
                 </div>
+
+                <!-- Selected offerings -->
                 <div class="attendance-body" id="offeringBody" v-for="(item, index) in offeringItem" :key="index">
                     <div class="row">
                         <div class="col-sm-3">
-                            <select class="form-control" v-model="item.type">
-                                <option value="Building">Building</option>
-                                <option value="Child dedication">Child Dedication</option>
-                                <option value="Tithe">Tithe</option>
-                                <option v-for="(newOffering, index) in newOfferings" :key="index" :value="newOffering">{{ newOffering }}</option>
+                            <select class="form-control">
+                                <option v-for="(newOffering, index) in newOfferings" :key="index" :value="newOffering.id" :selected="newOffering.id === item.offeringTypeId">{{ newOffering.name }}</option>
                             </select>
                         </div>
                         <div class="offset-sm-1 col-sm-1">
@@ -380,6 +385,7 @@
                             <div class="col-sm-1 offset-sm-1" @click="delOffering(index)"><i class="fa fa-trash" aria-hidden="true"></i></div>
                     </div>
                 </div>
+                    <!-- Bring up offerings modal -->
                     <div class="col-sm-12 text-center add-attendance" id="addOffering" @click="addOffering"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Offering Item</div>
                     <div  class="display" id="showList">
                         <input type="text" class="form-control shadow mb-3" v-model="offeringText" placeholder="Search Offering item">
@@ -495,6 +501,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <!-- Create -->
         <div class="modal-body">
             <div class="row">
                 <div class="offset-sm-1 col-sm-3">Attendance Item</div>
@@ -698,7 +705,7 @@ export default {
             selectedValue: null,
             check: false,
             offeringCreate: null,
-            newOfferings: ['Building', 'Children Dedication', 'Tithe'],
+            newOfferings: [ ],
             attendanceCreate: null,
             newAttendances: ['Adult', 'Children'],
             eventCreate: null,
@@ -753,9 +760,9 @@ export default {
             showList.classList.toggle('offering-drop')
             
         },
-        attendance (e) {
+        attendance (attObj) {
             this.attendanceItem.push({
-                category: e.target.innerHTML
+                attendanceTypeID: attObj.attendanceTypeID,
             })
             const showAttendance = document.querySelector('#showAttendance')
             showAttendance.classList.remove('offering-drop')
@@ -792,15 +799,33 @@ export default {
         changeValue (e) {
            this.selectedValue = e.target.value
         },
+
+        // Create Offering
         createNewOffering () {
-            this.newOfferings.push(this.offeringCreate)
+            // axios.post(`/api/offering/offeringTypeName?=${this.offeringCreate}`, {offeringTypeName: this.offeringCreate})
+            axios.post(`/api/offering`, JSON.stringify(this.offeringCreate))
+                .then(res => {
+                    console.log(res, "new offering");
+                    this.newOfferings = res.data.map(i => {
+                        return { id: i.id, name: i.name }
+                    })
+                })
+
             this.offeringCreate = '';
             document.querySelector('#closeOffering').setAttribute('data-dismiss',  'modal')
         },
         createNewAttendance () {
-            this.newAttendances.push(this.attendanceCreate)
-            this.attendanceCreate = '';
-            console.log(this.newAttendances,"att");
+            console.log("posted");
+            axios.post(`/postAttendantType`, { name: this.attendanceCreate })
+                .then(res => {
+                    console.log(res, "new attendance");
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            // this.newAttendances.push(this.attendanceCreate)
+            // this.attendanceCreate = '';
+            // console.log(this.newAttendances,"att");
             document.querySelector('#closeAttendance').setAttribute('data-dismiss',  'modal')
         },
         createNewEvent () {
@@ -838,26 +863,30 @@ export default {
                 },
                 attendance: this.attendanceItem,
                 offering: this.offeringItem,
-    
-                
             }
 
-            axios.post('/api/Events/CreateActivity', event)
+            axios.post('api/Events/CreateActivity', event)
                 .then ((res) => {
-                    console.log(res)
+                    console.log(res, "main post")
                 })
                 .catch ((err) => console.log(err.response))
         }
     },
     created () {
-        axios.get(res => {
-            this.offeringItem = res.data.map(i => {
-                return {
-                    id: i.id,
-                    name: i.name
-                }
+        axios.get("/api/offering")
+            .then(res => {
+                this.newOfferings = res.data.map(i => {
+                    return { id: i.id, name: i.name }
+                })
+                console.log(res.data, "offerings on load");
+            });
+
+        axios.get("/GetAttendanceType")
+            .then(res => {
+                this.newAttendances = res.data.map(i => {
+                    return { attendanceTypeID: i.id, name: i.name }
+                })
             })
-        })
     },
     computed: {
         filterAttendance() {
@@ -915,7 +944,15 @@ export default {
             //     return sum =+ Number(i.amount)
             // })
         }
-    }  
+    },
+    watch: {
+        newOfferings() {
+            console.log(this.newOfferings, "new");
+        },
+        offeringItem() {
+            console.log(this.offeringItem, "items");
+        }
+    }
 }
 </script>
 

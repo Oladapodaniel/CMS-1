@@ -91,13 +91,13 @@ export default {
           localStorage.setItem("token", data.token);
           router.push("/next")
         } catch (err) { 
+          console.log(err, "raw");
           loading.value = false;
           console.log(err.response);
           console.log(err.response);
           const { status } = err.response;
-          const { message } = err.response.data;
-          console.log(message);
-          if (status == 400 && message === "Onboard: false")
+          const { onboarded } = err.response.data;
+          if (status == 400 && onboarded === false)
           {
             console.log("redirecting");
             router.push('/onboarding');

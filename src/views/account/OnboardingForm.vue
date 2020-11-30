@@ -1,9 +1,8 @@
 <template>
   <div class="top-most">
-    <div class="container">
-      <div class="row" id="onboarding">
+    <div>
+      <div id="onboarding">
         <div
-          class="col-xs-12 col-md-6"
           id="onboarding-form"
           :class="{ 'swap-box1': toggle }"
         >

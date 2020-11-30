@@ -50,7 +50,9 @@
               <div class="bottom">
                 <div class="box-bottom">
                   <span class="plan-text">YOU'RE ON A FREE PLAN</span>
-                  <button class="upgrade-btn">Upgrade</button>
+                  <button class="upgrade-btn">
+                    <h4 class="box-btn-text">UPGRADE</h4>
+                  </button>
                 </div>
               </div>
             </div>
@@ -72,7 +74,9 @@
               <div class="bottom">
                 <div class="box-bottom">
                   <span class="plan-text"></span>
-                  <button class="upgrade-btn buy-btn">Buy Unit</button>
+                  <button class="upgrade-btn buy-btn">
+                    <h4 class="box-btn-text">BUY UNIT</h4>
+                  </button>
                 </div>
               </div>
             </div>
@@ -408,7 +412,7 @@ export default {
 
 .box-bottom {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   border-radius: 0px 0px 28px 28px;
   background: #F1F5F8;
   padding: 10px;
@@ -438,10 +442,10 @@ export default {
   color: #002044;
   border: none;
   width: 110px;
-  text-transform: uppercase;
   font-weight: 800;
   outline: none;
   color: #fff;
+  width: 109.5px;
 }
 
 .upgrade-btn:hover {
@@ -450,7 +454,7 @@ export default {
 }
 
 .buy-btn {
-  width: 94px;
+  width: 109.5px;
   color: #002044;
   background: #797E81;
 }
@@ -464,6 +468,7 @@ export default {
   align-self: center;
   text-transform: uppercase;
   font-weight: 800;
+  width: 80px;
 }
 
 .box-top {
@@ -551,6 +556,13 @@ export default {
 
 .title {
   margin: 0 0 15px 0;
+}
+
+.box-btn-text {
+  margin: 0px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
 }
 
 @media screen and (max-width: 376px) {
