@@ -1,6 +1,8 @@
 <template>
     <select class="input-sm" :name="name" style="width: 100%" @change="selecteditem">
-        <slot></slot>
+        <slot>
+            
+        </slot>
     </select>
 </template>
 
@@ -47,6 +49,8 @@
     }
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+    .create-link {
+        color: blue !important;
+    }
 </style>
