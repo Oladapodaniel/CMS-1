@@ -1,5 +1,5 @@
 <template>
-    <div class="event">
+    <div class="event" @click="clearPopUp">
         <div class="bg col-md-10 offset-md-1 ">
         <div class="container first-pane">
             <div class="row">
@@ -270,9 +270,9 @@
         <div class="form">
             <!-- <div class="container"> -->
                     <div class="row second-form first-row">
-                        <div class="col-sm-5 dropdown-container" >
+                        <div class="col-sm-5 dropdown-container">
                             <!-- <div class="event-category">Add event Categories</div> -->
-                            <select class="event-category form-control" @change="addEvent" id="selectEvent">
+                            <select class="event-category form-control" v-model="selectedEventCat" @change="addEvent" id="selectEvent">
                                 <option value="">Add Event Categories</option>
                                 <option>Sunday Service(First Service)</option>
                                 <option>Sunday Service(Second Service)</option>
@@ -345,7 +345,7 @@
 
                     <div class="col-sm-12 text-center add-attendance" id="addAttendance" @click="addAttendance"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Attendance Item</div>
                     <div  class="display" id="showAttendance">
-                        <input type="text" class="form-control shadow mb-3" v-model="attendanceText" placeholder="Search attendance item">
+                        <input type="text" class="form-control mb-3" v-model="attendanceText" placeholder="Search attendance item">
                         <div @click="attendance(filteredAttendance)" v-for="(filteredAttendance, index) in filterAttendance" :key="index">{{ filteredAttendance.name }}</div>
                         <div @click="createAttendance" class="create">Create New Attendance Item</div>
                     </div>
@@ -358,9 +358,10 @@
                 <div class="col-sm-12 offset-sm-1 add"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Offering</div>
                 <div class="attendance-header">
                     <div class="row">
-                        <div class="col-sm-4">Offering Item</div>
-                        <div class="col-sm-5">Amount</div>
-                        <div class="col-sm-2">Total</div>
+                        <div class="col-sm-3">Offering Item</div>
+                        <div class="col-sm-3">Channel</div>
+                        <div class="col-sm-3">Amount</div>
+                        <div class="col-sm-3">Total</div>
                     </div>
                 </div>
 
@@ -372,7 +373,17 @@
                                 <option v-for="(newOffering, index) in newOfferings" :key="index" :value="newOffering.id" :selected="newOffering.id === item.offeringTypeId">{{ newOffering.name }}</option>
                             </select>
                         </div>
-                        <div class="offset-sm-1 col-sm-1">
+                        <div class="col-sm-3">
+                            <select class="">
+                                    <option :value="Cheque">Cheque</option>
+                                    <option value="POS">POS</option>
+                                    <option value="Online">Online</option>
+                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="USSD">USSD</option>
+                                    <option value="Text">Text</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3">
                                 <select class="currency" v-model="item.currency">
                                     <option :value="NGN">NGN</option>
                                     <option value="GHA">GHA</option>
@@ -387,9 +398,8 @@
                 </div>
                     <!-- Bring up offerings modal -->
                     <div class="col-sm-12 text-center add-attendance" id="addOffering" @click="addOffering"><i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add Offering Item</div>
-                    <div  class="display" id="showList">
-                        <input type="text" class="form-control shadow mb-3" v-model="offeringText" placeholder="Search Offering item">
-
+                    <div  class="display" id="showList" :class="{ 'offering-drop': showList }" v-click-outside-element="close" v-if="showList">
+                        <input type="text" class="form-control mb-3" v-model="offeringText" placeholder="Search Offering item">
                         <div v-for="(newOffering, index) in filterOffering" :key="index" @click="offering(newOffering)">{{ newOffering.name }}</div>
                         <div @click="createOffering" class="create">Create New Offering Item</div>
                     </div>
@@ -459,6 +469,13 @@
                           </table>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="container first-pane mt-5 mb-3">
+            <div class="row">
+                <div class="col-12 col-sm-4 col-lg-6 events"></div>
+                <div class="col-5 col-sm-3 col-lg-2 btn btn-preview">Preview</div>
+                <div class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save" @click="post">Save and Continue</div>
             </div>
         </div>
         
@@ -734,7 +751,9 @@ export default {
             topic: '',
             preacher: '',
             preEventAmount: '',
-            eventName: ''
+            eventName: '',
+            selectedEventName: '',
+            showList: false
             
         }
     },
@@ -745,9 +764,10 @@ export default {
             showAttendance.classList.toggle('offering-drop')
         },
         addOffering () {
-            const showList = document.querySelector('#showList');
-            showList.classList.toggle('offering-drop') 
-            // console.log(this.offeringItem)     
+            // const showList = document.querySelector('#showList');
+            // showList.classList.toggle('offering-drop') 
+            // console.log(this.offeringItem)   
+            this.showList = !this.showList  
         },
         offering (offObj) {
             this.offeringItem.push({
@@ -770,7 +790,11 @@ export default {
         addEvent (e) {
             if (e.target.value == 'Add New Event') {
         document.querySelector('#modalTogglerEvent').click();
+
+        
     }
+    // this.$refs['event-cat'].innerHTML = this.selectedEventCat
+    // console.log(this.selectedEventCat)
         },
         createOffering () {
             document.querySelector('#modalTogglerOffering').click();
@@ -870,7 +894,14 @@ export default {
                     console.log(res, "main post")
                 })
                 .catch ((err) => console.log(err.response))
-        }
+        },
+        // clearPopUp (e) {
+        //     if (!e.target.classList.contains('offering-drop')) {
+        //         // console.log('dapo')
+        //         const showList = document.querySelector('#showList')
+        //         showList.classList.remove('offering-drop')
+        //     }
+        // }
     },
     created () {
         axios.get("/api/offering")
@@ -959,6 +990,7 @@ export default {
 <style scoped>
     .event {
     font-family: 'Nunito sans';
+    margin-top: 20px;
 }
 
 .events {
@@ -1120,9 +1152,10 @@ export default {
     box-shadow: 0px 3px 15px #797E8159;
     z-index: 1;
     position: absolute;
-    left: 25%;
+    left: 5%;
+    margin-top: -50px;
     padding: 10px 10px;
-    width: 50%;
+    width: 90%;
     background: white;
     display: block;
 }
