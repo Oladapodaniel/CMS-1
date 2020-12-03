@@ -15,7 +15,7 @@
 
         <form @submit="login">
           <div>
-            <input type="text" v-model="state.credentials.userName" class="input" placeholder="Email" required/>
+            <input type="email" v-model="state.credentials.userName" class="input" placeholder="Email" required/>
           </div>
           <div>
             <input class="input" v-model="state.credentials.password" type="password" placeholder="Password" required/>
@@ -81,6 +81,7 @@ export default {
       const login = async (e) => {
         e.preventDefault();
         localStorage.setItem("email", state.credentials.userName)
+        state.showError = false;
         try {
           loading.value = true;
           const res = await axios.post("/login", state.credentials)
