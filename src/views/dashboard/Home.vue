@@ -54,8 +54,8 @@ export default {
 }
 
 .links-menu {
-  width: 20%;
-  max-width: 266px;
+  /* width: 20%; */
+  width: 266px;
   height: 100vh;
   overflow-y: scroll;
 }

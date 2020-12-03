@@ -44,13 +44,13 @@
                 <div class="status-n-gender">
                   <div class="status cstm-select">
                     <div class="cs-select">
-                      <SelectElem :typ="'membership'" name="status" :options="['Marital status', 'Married', 'Single']" value="Marital status" @input="itemSelected"/>
+                      <SelectElem :typ="'membership'" name="status" :options="['Marital status', ...maritalStatusArr]" value="Marital status" @input="itemSelected"/>
                     </div>
                     
                   </div>
                   <div class="gender cstm-select">
                     <div class="cs-select">
-                      <SelectElem :typ="'membership'" name="gender" :options="['Gender', 'Male', 'Female', 'Not sure']" value="Gender" @input="itemSelected"/>
+                      <SelectElem :typ="'membership'" name="gender" :options="['Gender', ...gendersArr]" value="Gender" @input="itemSelected"/>
                     </div>
                     
                   </div>
@@ -379,8 +379,10 @@ export default {
       formData.append("peopleClassificationID", membershipId.value);
       formData.append("address", personObj.address);
       formData.append("picture", image);
+      formData.append("maritalStatusID", personObj.maritalStatusID);
+      formData.append("genderID", personObj.genderID);
       try {
-        
+        console.log(formData);
         loading.value = true;
         const response = await axios.post("/api/people/createperson", formData);
         
@@ -399,6 +401,14 @@ export default {
       //Membership
       if (data.dataType === "membership") {
         membershipId.value = data.value;
+      }
+      //gender
+      if (data.dataType === "gender") {
+        person.genderID = genders.value.find(i => i.value.toLowerCase() === data.value.toLowerCase()).id;
+      }
+      //Marital status
+      if (data.dataType === "status") {
+        person.maritalStatusID = maritalStatus.value.find(i => i.value.toLowerCase() === data.value.toLowerCase()).id;
       }
       //Birthday
       if (data.dataType === "birthmonth") {
@@ -434,17 +444,26 @@ export default {
       }
     }
 
+    let genders = ref([])
+    let maritalStatus = ref([]);
+    const getLookUps = () => {
+      axios.get('/api/LookUp/GetAllLookUps')
+        .then(res => {
+          
+          genders.value = res.data.find(i => i.type.toLowerCase() === "gender").lookUps;
+          maritalStatus.value = res.data.find(i => i.type.toLowerCase() === "marital status").lookUps;
+        })
+    }
+    const gendersArr = computed(() => {
+      return genders.value.map(i => i.value);
+    })
+    const maritalStatusArr = computed(() => {
+      return maritalStatus.value.map(i => i.value);
+    })
 
+    
     onMounted(async () => {
-      // $('.search-box').select2();
-      // updateBirthDateElements();
-      // updateAnnDateElements()
-
-      // birthDate.set('month', '1');
-      // birthDate.set('date', '2');
-      // birthDate.set('year', '1994');
-      // daysInBirthMonth = birthDate.daysInMonth();
-
+      getLookUps();
       try {
         NProgress.start()
         const response = await axios.get("/api/Settings/GetTenantPeopleClassification");
@@ -490,6 +509,10 @@ export default {
       showCelebTab,
       hideAddInfoTab,
       showAddInfoTab,
+      genders,
+      maritalStatus,
+      gendersArr,
+      maritalStatusArr,
     };
   },
 };

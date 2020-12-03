@@ -26,11 +26,11 @@
         },
 
         mounted() {
-            console.log();
+            // console.log();
             $('.input-sm').select2();
             let vm = this;
             $(this.$el)
-            .select2({theme: 'bootstrap', data: this.options})
+            .select2({theme: 'bootstrap4', data: this.options})
             .val(this.value)
             .trigger('change')
             .on('change', function() {

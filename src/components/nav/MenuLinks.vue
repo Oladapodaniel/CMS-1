@@ -25,7 +25,7 @@
             Dashboard
           </router-link>
 
-          <a to="/home/people" class="link dd">
+          <a class="link dd" :class="{'router-link-exact-active': route.path === '/home/people'}">
             <span @click="togglePeopleDropDown">
               <img
                 src="../../assets/dashboardlinks/people.svg"
@@ -41,25 +41,26 @@
                   ></i></span
               ></span>
             </span>
-            <ul class="dd-list" :class="{ 'dd-hide-list': !peopleLinkDropped }">
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/home/people">Members</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/home"
-                  >First Timers</router-link
-                >
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Groups</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Families</router-link>
-              </li>
-            </ul>
           </a>
+          <ul class="dd-list" :class="{ 'dd-hide-list': !peopleLinkDropped }">
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/home/people">Members</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/home"
+                >First Timers</router-link
+              >
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Groups</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Families</router-link>
+            </li>
+          </ul>
+          <!-- </a> -->
 
-          <a to="/home/people" class="link dd">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path === '/home/communication'}">
             <span @click="toggleCommDropDown">
               <img
                 src="../../assets/dashboardlinks/com-icon.svg"
@@ -75,23 +76,24 @@
                   ></i></span
               ></span>
             </span>
-            <ul class="dd-list" :class="{ 'dd-hide-list': !commLinkDropped }">
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">SMS</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Email</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Whatsapp</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Voice</router-link>
-              </li>
-            </ul>
           </a>
+          <ul class="dd-list" :class="{ 'dd-hide-list': !commLinkDropped }">
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">SMS</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Email</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Whatsapp</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Voice</router-link>
+            </li>
+          </ul>
+          <!-- </a> -->
 
-          <a to="/home/people" class="link dd">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path === '/home/event'}">
             <span @click="toggleEventsDropDown">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
@@ -107,17 +109,18 @@
                   ></i></span
               ></span>
             </span>
-            <ul class="dd-list events-list" :class="{ 'dd-hide-list': !eventsLinkDropped }">
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/home/event">Events</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Attendance & Checkin</router-link>
-              </li>
-            </ul>
           </a>
+          <ul class="dd-list events-list" :class="{ 'dd-hide-list': !eventsLinkDropped }">
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/home/event">Events</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Attendance & Checkin</router-link>
+            </li>
+          </ul>
+          <!-- </a> -->
 
-          <a to="/home/people" class="link dd">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path === '/home/accounting'}">
             <span @click="toggleAccDropDown">
               <img
                 src="../../assets/dashboardlinks/acc-icon.svg"
@@ -133,27 +136,28 @@
                   ></i></span
               ></span>
             </span>
-            <ul class="dd-list acc-list" :class="{ 'dd-hide-list': !accLinkDropped }">
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Offerings</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Expenses</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Pledges</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Transactions</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Expense Approval</router-link>
-              </li>
-              <li class="dd-list-item">
-                <router-link class="dd-link-item" to="/">Charts of Account</router-link>
-              </li>
-            </ul>
           </a>
+          <ul class="dd-list acc-list" :class="{ 'dd-hide-list': !accLinkDropped }">
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Offerings</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Expenses</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Pledges</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Transactions</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Expense Approval</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Charts of Account</router-link>
+            </li>
+          </ul>
+          <!-- </a> -->
 
           <a href="" class="link">
             <img
@@ -227,38 +231,41 @@
 
 <script>
 import { computed, ref } from "vue";
+import { useRoute } from 'vue-router';
 export default {
   setup() {
-    const moreShown = ref(false);
-    const peopleLinkDropped = ref(false);
-    const commLinkDropped = ref(false);
-    const eventsLinkDropped = ref(false);
-    const accLinkDropped = ref(false);
+    const route = useRoute();
 
+    const moreShown = ref(false);
     const showMore = () => {
       moreShown.value = !moreShown.value;
-      // peopleLinkDropped.value = false;
-      // accLinkDropped.value = false;
-      // eventsLinkDropped.value = false;
     };
+
+    const peopleLinkDropped = ref(false);
     const togglePeopleDropDown = () => {
       peopleLinkDropped.value = !peopleLinkDropped.value;
       commLinkDropped.value = false;
       accLinkDropped.value = false;
       eventsLinkDropped.value = false;
     };
+
+    const commLinkDropped = ref(false);
     const toggleCommDropDown = () => {
       commLinkDropped.value = !commLinkDropped.value;
       peopleLinkDropped.value = false;
       eventsLinkDropped.value = false;
       accLinkDropped.value = false;
     };
+
+    const eventsLinkDropped = ref(false);
     const toggleEventsDropDown = () => {
       eventsLinkDropped.value = !eventsLinkDropped.value;
       commLinkDropped.value = false;
       accLinkDropped.value = false;
       peopleLinkDropped.value = false;
     };
+
+    const accLinkDropped = ref(false);
     const toggleAccDropDown = () => {
       accLinkDropped.value = !accLinkDropped.value;
       commLinkDropped.value = false;
@@ -271,6 +278,7 @@ export default {
     });
 
     return {
+      route,
       moreShown,
       showMore,
       dropDownText,
@@ -389,7 +397,7 @@ export default {
   margin-left: -10px;
 }
 
-.router-link-exact-active {
+.link.router-link-exact-active {
   filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg)
     brightness(91%) contrast(189%);
   opacity: 1 !important;

@@ -15,7 +15,7 @@
 
         <form @submit="login">
           <div>
-            <input type="text" v-model="state.credentials.userName" class="input" placeholder="Email" required/>
+            <input type="email" v-model="state.credentials.userName" class="input" placeholder="Email" required/>
           </div>
           <div>
             <input class="input" v-model="state.credentials.password" type="password" placeholder="Password" required/>
@@ -81,23 +81,23 @@ export default {
       const login = async (e) => {
         e.preventDefault();
         localStorage.setItem("email", state.credentials.userName)
+        state.showError = false;
         try {
           loading.value = true;
           const res = await axios.post("/login", state.credentials)
           loading.value = false;
           const { data } = res;
-          console.log(data, "login data");
+          
           store.dispatch("setUserData", data);
           localStorage.setItem("token", data.token);
           router.push("/next")
         } catch (err) { 
-          console.log(err, "raw");
+          
           loading.value = false;
-          console.log(err.response);
-          console.log(err.response);
+          
           const { status } = err.response;
           const { onboarded } = err.response.data;
-          if (status == 400 && onboarded === false)
+          if (status && status == 400 && onboarded === false)
           {
             console.log("redirecting");
             router.push('/onboarding');
@@ -291,5 +291,6 @@ export default {
 
 .error-message {
     color: #b52626;
+    margin-bottom: 0;
 }
 </style>
