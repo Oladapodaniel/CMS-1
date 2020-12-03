@@ -44,7 +44,7 @@
                 </div>
                 <div class="box-middle">
                   <h1>302</h1>
-                  <span>Church Size</span>
+                  <span class="size-text">Church Size</span>
                 </div>
               </div>
               <div class="bottom">
@@ -68,7 +68,7 @@
                 </div>
                 <div class="box-middle">
                   <h1>302</h1>
-                  <span>Church Size</span>
+                  <span class="size-text">Church Size</span>
                 </div>
               </div>
               <div class="bottom">
@@ -365,10 +365,10 @@ export default {
 }
 
 .can-do-links a {
-  margin: 5px 0;
+  margin-top: 20px;
   text-decoration: none;
   color: #2b6ecd;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 16px;
 }
 
@@ -389,7 +389,7 @@ export default {
 
 .second-col .number-boxes {
   width: 100%;
-  max-width: 551px;
+  max-width: 589px;
   margin-left: auto;
   display: flex;
   justify-content: flex-end;
@@ -422,7 +422,7 @@ export default {
 }
 
 .box2 .bottom {
-  border: 1px solid #e6e5f2;
+  /* border: 1px solid #e6e5f2; */
   border-radius: 0px 0px 28px 28px;
 }
 
@@ -485,6 +485,11 @@ export default {
 .box-top-text p {
   margin: 0;
   font-size: 12px;
+}
+
+.box-top-text h4 {
+  font-size: 20px;
+  font-weight: 800;
 }
 
 .box-middle h1 {
@@ -565,6 +570,11 @@ export default {
   color: #fff;
 }
 
+.size-text {
+  color: #136acd;
+  font-weight: 700;
+}
+
 @media screen and (max-width: 376px) {
   .top-row {
     flex-direction: column;
@@ -602,9 +612,13 @@ export default {
   }
 }
 
-/* @media screen and (min-width: 1100px) {
-  .user {
-    margin: 139px 0;
+@media screen and (min-width: 1300px) {
+  .box {
+    width: 260px;
   }
-} */
+
+  .box-middle {
+    padding: 43px 0;
+  }
+}
 </style>

@@ -56,8 +56,8 @@ export default {
 .links-menu {
   width: 20%;
   max-width: 266px;
-  height: 100%;
-  /* position: absolute; */
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .main-con {
