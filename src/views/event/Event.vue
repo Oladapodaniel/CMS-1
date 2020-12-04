@@ -38,13 +38,13 @@
                 <label for="eventName">Event Name</label>
               </div>
               <div class="col-12 col-sm-7">
-                <input type="text" v-model="eventName" class="form-control" />
+                <input type="text" v-model="preEventName" class="form-control" />
               </div>
               <div class="col-sm-5">
                 <label for="venue">Venue</label>
               </div>
               <div class="col-sm-7">
-                <input type="text" class="form-control" />
+                <input type="text" v-model="venue" class="form-control" />
               </div>
               <div class="col-sm-5">
                 <label for="details">Details</label>
@@ -52,7 +52,7 @@
               <div class="col-sm-7">
                 <textarea
                   class="form-control textarea-adjust"
-                  rows="3"
+                  rows="3" v-model="details"
                 ></textarea>
               </div>
             </div>
@@ -61,7 +61,7 @@
           <div class="col-sm-12 push-public">
             <div class="row">
               <div class="col-1">
-                <input type="checkbox" class="form-check" />
+                <input type="checkbox" v-model="isPublic" class="form-check" />
               </div>
               <div class="col-10">
                 <div class="make-public">Make Public</div>
@@ -69,12 +69,6 @@
               </div>
             </div>
           </div>
-          <!-- <div class="col-7 col-md-5 push-down event-reg">
-                        <div>Event Registration Setting</div>
-                    </div>
-                    <div class="col-5 col-md-7 push-down event-reg-dark">
-                        <div>Event Registration</div>
-                    </div> -->
           <ul
             class="nav nav-tabs w-100 push-down event-reg"
             id="myTab"
@@ -104,9 +98,6 @@
                 >Event Registration</a
               >
             </li>
-            <!-- <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-                        </li> -->
           </ul>
           <div class="tab-content w-100" id="myTabContent">
             <div
@@ -118,7 +109,7 @@
               <div class="col-sm-12">
                 <div class="row enable-reg">
                   <div class="col-1">
-                    <input type="checkbox" v-model="check" class="form-check" />
+                    <input type="checkbox" v-model="check" class="form-check" @click="getPreActivityId" />
                   </div>
                   <div class="col-10">
                     <div>Enable Registration</div>
@@ -176,19 +167,19 @@
                         Email to be sent upon after registration
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="2"></textarea>
+                        <textarea class="form-control" v-model="emailRegistration" rows="2"></textarea>
                       </div>
                       <div class="col-12 col-sm-4 col-lg-2">
                         Event rules and guidelines
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" v-model="eventRules" rows="4"></textarea>
                       </div>
                       <div class="col-12 col-sm-4 col-lg-2">
                         SMS to be sent upon after registration
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" v-model="SMSRegistration" rows="4"></textarea>
                       </div>
                     </div>
                   </div>
@@ -198,19 +189,19 @@
                         Email to be sent upon after registration
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="3"></textarea>
+                        <textarea class="form-control" v-model="emailRegistration" rows="3"></textarea>
                       </div>
                       <div class="col-12 col-sm-4 col-lg-2">
                         SMS to be sent upon after registration
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" v-model="SMSRegistration" rows="4"></textarea>
                       </div>
                       <div class="col-12 col-sm-4 col-lg-2">
                         Event rules and guidelines
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" v-model="eventRules" rows="4"></textarea>
                       </div>
                     </div>
                   </div>
@@ -377,13 +368,14 @@
               ></i></span>
                <!-- <SelectElem name="eventcategory" @input="categorySelected" :options="[ 'Select Event', ...eventCategoriesArr, 'Add Event Category' ]" value="Select Event" /> -->
             </div>
-            <div class="ofering" :class="{ 'style-category': showCategory }" v-if="showCategory" ref="showEventCategory">
+            <div class="ofering" :class="{ 'style-category': showCategory }" v-if="showCategory" id="showEventCategory">
                 <input type="text" placeholder="Search ..." class="form-control ofering" v-model="eventText">
                 <div v-for="(eventCategory,index) in filterEventCategory" :key="index" class="ofering">
-                  <div class="ofering">{{ eventCategory }}</div>
+                  <div class="ofering" @click="individualEvent(eventCategory)">{{ eventCategory.name }}</div>
                 </div>
                 <div @click="addEvent" class="create cat ofering">Add new Event</div>
             </div>
+            
             <!-- <div class="event-category">Add event Categories</div> -->
             <!-- <select
               class="event-category form-control"
@@ -464,7 +456,6 @@
             <div class="col-sm-2 offset-sm-1">Total</div>
           </div>
         </div>
-
         <!-- Attendance Items -->
         <div
           class="attendance-body"
@@ -474,7 +465,7 @@
         >
           <div class="row">
             <div class="col-sm-3">
-              <select class="form-control" v-if="item.attendanceType">
+              <select class="form-control" v-if="item.attendanceTypeID">
                 <option
                   v-for="(newAttendance, index) in newAttendances"
                   :key="index"
@@ -597,7 +588,7 @@
               />
             </div>
             <div class="col-sm-2 offset-sm-1">
-            <select class="w-100 form-control">
+            <select class="w-100 form-control" v-model="item.channel">
                 <option :value="Cheque">Cheque</option>
                 <option value="POS">POS</option>
                 <option value="Online">Online</option>
@@ -1183,8 +1174,18 @@ export default {
   data() {
     return {
       type: null,
-      currency: null,
+    //   currency: '',
       amount: null,
+      preEventTopic: '',
+      details: '',
+      eventRules: '',
+      preActivityId: '',
+    //   enableRegistration: '',
+      venue: '',
+      emailRegistration: '',
+      SMSRegistration: '',
+      banner: '',
+      isPublic: '',
       offeringItem: [],
       category: null,
       count: null,
@@ -1197,6 +1198,7 @@ export default {
       newOfferings: [],
       attendanceCreate: null,
       newAttendances: ["Adult", "Children"],
+      channel: '',
       eventCreate: null,
       newEvents: [],
       attendanceText: "",
@@ -1254,7 +1256,7 @@ export default {
       topic: "",
       preacher: "",
       preEventAmount: "",
-      eventName: "",
+      preEventName: "",
       eventCategories: [],
       selectedEventCategory: { },
       selectedEventCategoryId: '',
@@ -1275,8 +1277,6 @@ export default {
       if (!e.target.classList.contains('ofering')) {
         this.$refs.offeringDrop.classList.remove('offering-drop')
         this.$refs.attendanceDrop.classList.remove('offering-drop')
-        
-        console.log(this.$refs)
       }
     },
 
@@ -1294,10 +1294,10 @@ export default {
         this.offeringItem.push({
           name: offObj.name,
           offeringTypeId: offObj.id,
-          channel: "Cash"
+          channel: ""
         });
       } else {
-        this.offeringItem.push({channel: "Cash"});
+        this.offeringItem.push({channel: this.channel});
       }
       console.log(this.offeringItem);
 
@@ -1311,9 +1311,10 @@ export default {
     //   console.log(attObj)
       if (attObj) {
         this.attendanceItem.push({
-          name: attObj.name,
-          attendanceType: attObj.attendanceTypeID
+          attendanceTypeName: attObj.name,
+          attendanceTypeID: attObj.attendanceTypeID
         });
+        // console.log(attObj)
       } 
     //   console.log(this.attendanceItem)
       else {
@@ -1323,7 +1324,7 @@ export default {
       showAttendance.classList.remove("offering-drop");
     },
     addEvent(e) {
-        this.selectedEventCategoryId = e.target.value;
+        // this.selectedEventCategoryId = e.target.value;
     //   if (e.target.value == "Add New Event") {
         document.querySelector("#modalTogglerEvent").click();
     //   }
@@ -1412,18 +1413,29 @@ export default {
     },
     post() {
       let event = {
+        date: this.eventDate,
         topic: this.topic,
         preacher: this.preacher,
         preEvent: {
-          name: this.eventName,
+          name: this.preEventName,
+          topic: this.preEventTopic,
+          preActivityId: null,
+          details: '',
+          eventRules: this.eventRules,
+          enableRegistration: this.check,
           isPaidFor: this.selectedValue === "Yes" ? true : false,
           amount: this.preEventAmount,
+          venue: this.venue,
+          emailRegistration: this.emailRegistration,
+          SMSRegistration: this.SMSRegistration,
+          banner: this.banner,
+          isPublic: this.isPublic
+
         },
-        attendance: this.attendanceItem,
-        offering: this.offeringItem,
-        eventCategoryId: this.selectedEventCategory,
-        date: this.eventDate,
-        firstTimers: this.firstTimers
+        attendances: this.attendanceItem,
+        offerings: this.offeringItem,
+        eventCategoryId: this.selectedEventCategoryId,
+        activityFirstTimers: this.firstTimers
       };
       console.log(event);
 
@@ -1476,17 +1488,17 @@ export default {
       }
     },
 
-    categorySelected(data) {
-      if (data.dataType === 'eventcategory') {
-        this.selectedEventCategory = this.newEvents.find(i => i.name === data.value);
-        this.selectedEventCategoryId = this.selectedEventCategory.id;
-      }
-    },
+    // categorySelected(data) {
+    //   if (data.dataType === 'eventcategory') {
+    //     this.selectedEventCategory = this.newEvents.find(i => i.name === data.value);
+    //     this.selectedEventCategoryId = this.selectedEventCategory.id;
+    //   }
+    // },
     select2Value (data) {
 
 
         if (data.dataType === "day") {
-            this.firstTimersObj.birthDay = data.value
+            this.firstTimersObj.birthday = data.value
         }
 
         if (data.dataType === "month") {
@@ -1525,6 +1537,22 @@ export default {
             this.firstTimersObj.automatedFollowUp = data.value
         }
     },
+    individualEvent(eventObj) {
+        this.selectedEventCategoryName = eventObj.name
+        this.selectedEventCategoryId = eventObj.id
+
+        // const showEventCategory = document.querySelector("#showEventCategory");
+        // showEventCategory.classList.remove("style-category");
+        this.showCategory = false
+    },
+    getPreActivityId () {
+        // console.log(this.check)
+        if (this.check == false) {
+            axios.post('/api/Events/EventPreRegistration', { eventCategoryName: this.preEventName, eventRegistrationLink: '' })
+                .then(res => console.log(res.data))
+                .catch(err => console.log(err.response))
+        }
+    }
   },
   created() {
     axios.get("/api/offering").then((res) => {
@@ -1576,12 +1604,12 @@ export default {
 
     filterEventCategory() {
         // let x;
-        if (this.eventText !== "" && this.eventCategoriesArr.length > 0) {
-            return this.eventCategoriesArr.filter((i) => {
-                return i.toLowerCase().includes(this.eventText.toLowerCase());
+        if (this.eventText !== "" && this.newEvents.length > 0) {
+            return this.newEvents.filter((i) => {
+                return i.name.toLowerCase().includes(this.eventText.toLowerCase());
                 });
             } else {
-                return this.eventCategoriesArr;
+                return this.newEvents
             }
             // return x
         }
@@ -1857,7 +1885,7 @@ export default {
   width: 120%;
   height: 100%;
   font-size: 0.8em;
-  background: rgb(207, 207, 207);
+  background: rgba(207, 207, 207, 0.651);
   border: none;
   outline: none;
 }
@@ -2216,9 +2244,10 @@ tr.event-list td {
 .style-category {
     padding: 10px;
     box-shadow: 0px 3px 15px #797e8159;
-    /* position: relative;
-    top: -7em; */
+    position: absolute;
+    top: 10px;
     background: white;
+    z-index: 1
 }
 
 .style-category div:hover {
