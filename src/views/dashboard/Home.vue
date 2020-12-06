@@ -48,26 +48,23 @@ export default {
 .whole-page {
   position: relative;
   display: flex;
-  height: 100vh;
+  /* height: 100vh; */
   overflow: auto;
   background: #fff;
 }
 
 .links-menu {
-  /* width: 20%; */
   width: 266px;
-  height: 100vh;
-  overflow-y: scroll;
+  height: 100%;
+  background: #ebeff4;
+  height: inherit;
 }
 
 .main-con {
   width: 80%;
   max-width: 1200px;
   margin: 0 auto;
-  height: 100%;
-  max-height: fit-content;
   background: #fff;
-  overflow-y: auto;
 }
 
 .main-con::-webkit-scrollbar {

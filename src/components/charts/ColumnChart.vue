@@ -50,7 +50,7 @@ export default {
           text: props.subtitle,
           align: 'left',
             x: 70,
-            margin: 50,
+            y: 50,
         },
         xAxis: {
           allowDecimals: false,

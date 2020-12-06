@@ -1,5 +1,5 @@
 <template>
-    <select class="input-sm" :name="name" style="width: 100%" @change="selecteditem">
+    <select class="input-sm" :name="name" style="width: 100%" :id="id" @change="selecteditem">
         <slot>
             
         </slot>
@@ -11,7 +11,7 @@
     import select2 from 'select2'
     import $ from 'jquery'
     export default {
-        props: ["options", "value", "name", "typ"],
+        props: ["options", "value", "name", "typ", "id"],
 
         data() {
             return {
