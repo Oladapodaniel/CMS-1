@@ -9,7 +9,7 @@ import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-  props: ["elemId", "domId", "title", "subtitle"],
+  props: ["elemId", "domId", "title", "subtitle", "lineColor"],
   setup(props) {
     const chart = ref(null);
     onMounted(() => {
@@ -75,6 +75,7 @@ export default {
 
         series: [
           {
+              color: props.lineColor,
             name: "",
             data: [29.9, 71.5, 106.4, 23, 34, 24, 56, 12, 23, 32, 45, 38],
           },

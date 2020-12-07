@@ -616,6 +616,7 @@
                 domId="areaChart1"
                 title="OFFERING"
                 subtitle="This month"
+                lineColor="#50AB00"
               />
             </div>
             <div class="area-chart mt-5">
@@ -624,6 +625,7 @@
                 domId="areaChart2"
                 title="ATTENDANCE"
                 subtitle="This month"
+                lineColor="#1F78B4"
               />
             </div>
             <div class="area-chart mt-5">
@@ -631,6 +633,7 @@
                 elemId="chart"
                 domId="areaChart3"
                 title="FIRST TIMERS PERFORMANCE"
+                lineColor="#1F78B4"
               />
             </div>
           </div>
