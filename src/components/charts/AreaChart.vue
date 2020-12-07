@@ -19,6 +19,12 @@ export default {
           type: "line",
           renderTo: props.domId,
         },
+        title: {
+          text: `Line Graph`,
+          align: 'left',
+          x: 20,
+          y: 20,
+        },
         xAxis: {
           categories: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
           tickInterval: 1,
