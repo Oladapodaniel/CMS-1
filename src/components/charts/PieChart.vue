@@ -1,6 +1,6 @@
 <template>
   <div class="con">
-    <div :id="domId" class="chart summary-chart"></div>
+    <div :id="domId" class="chart summary-chart" style="height: 100%"></div>
   </div>
 </template>
 
@@ -9,7 +9,7 @@ import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-    props: [ "title", "subtitle", "distance", "domId"],
+    props: [ "title", "subtitle", "distance", "domId", "titleMargin", "titleMarginLeft"],
   setup(props) {
     const chart = ref(null);
     // let elemId = "";
@@ -29,15 +29,17 @@ export default {
           enabled: false,
         },
         title: {
-          text: `<b>${props.title}</b>`,
+          text: `<b style="font-weight:normal">${props.title}</b>`,
           align: 'left',
-          x: 70,
+          x: props.titleMarginLeft ? props.titleMarginLeft : 20,
+          y: props.titleMargin ? props.titleMargin : 20,
           margin: 0,
         },
         subtitle: {
           text: props.subtitle,
           align: 'left',
-          x: 70,
+          x: props.titleMarginLeft ? props.titleMarginLeft : 20,
+          y: 50
         },
         xAxis: {
           allowDecimals: false,
@@ -125,7 +127,7 @@ export default {
       width: 100% !important;
       box-shadow: 0px 1px 4px #02172E45;
       box-shadow: 0px 1px 4px #02172E45;
-      border: 1px solid #DDE2E6;
+      /* border: 1px solid #DDE2E6; */
       border-radius: 22px;
       /* margin-bottom: 24px; */
     }

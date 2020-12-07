@@ -191,11 +191,11 @@
           
           <div class="pies">
             <div class="pie-con">
-              <PieChart domId="pichart" title="Offering Breakdown" subtitle="Overview" distance="5" />
+              <PieChart domId="pichart" title="Offering Breakdown" subtitle="Overview" distance="5" :titleMarginLeft="70" />
             </div>
             
             <div class="pie-con">
-              <PieChart domId="pchart" title="Offering Breakdown" subtitle="Overview" distance="1" />
+              <PieChart domId="pchart" title="Offering Breakdown" subtitle="Overview" distance="1" :titleMarginLeft="70" />
             </div>
           </div>
         </div>
@@ -251,7 +251,6 @@ export default {
 #main {
   display: flex;
   justify-content: space-between;
-  height: 100vh;
 }
 
 .menu-links {

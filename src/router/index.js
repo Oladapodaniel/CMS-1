@@ -20,9 +20,17 @@ import List from '../views/people/PeopleList.vue';
 import Event from '../views/event/Event.vue'
 import Column from '@/components/charts/ColumnChart.vue';
 import EventReportStats from '../views/event/EventReportStats'
+import Report from '@/views/event/EventReport.vue'
+import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
+import FirstTimers from '@/views/people/FirstTimersList.vue';
 
 
 const routes = [
+  {
+    path: '/report',
+    name: 'report',
+    component: Report
+  },
   {
     path: '/column',
     name: 'column',
@@ -108,7 +116,17 @@ const routes = [
         path: '/home/event-report-stat',
         name: 'EventReportStats',
         component: EventReportStats
-      }
+      },
+      {
+        path: '/home/people/add-first-timer',
+        name: 'AddFirstTimer',
+        component: AddFirstTimer
+      },
+      {
+        path: '/home/people/first-timers',
+        name: 'FirstTimers',
+        component: FirstTimers
+      },
     ]
   },
   {

@@ -25,7 +25,7 @@
             Dashboard
           </router-link>
 
-          <a class="link dd" :class="{'router-link-exact-active': route.path === '/home/people'}">
+          <a class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/people')}">
             <span @click="togglePeopleDropDown">
               <img
                 src="../../assets/dashboardlinks/people.svg"
@@ -60,7 +60,7 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path === '/home/communication'}">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/communication')}">
             <span @click="toggleCommDropDown">
               <img
                 src="../../assets/dashboardlinks/com-icon.svg"
@@ -93,7 +93,7 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path === '/home/event'}">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/event')}">
             <span @click="toggleEventsDropDown">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
@@ -120,7 +120,7 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path === '/home/accounting'}">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('home/accounting')}">
             <span @click="toggleAccDropDown">
               <img
                 src="../../assets/dashboardlinks/acc-icon.svg"
@@ -312,8 +312,8 @@ export default {
   flex-direction: column;
   padding: 8px 20px 24px 4px;
   background: #ebeff4;
-  min-height: 100vh;
   z-index: 100;
+  min-height: 100vh;
   /* border: 2px solid red; */
 }
 
@@ -447,6 +447,7 @@ export default {
 
 .dd-list {
   margin-bottom: 0;
+  overflow: hidden;
   height: 180px;
   transition: all 0.3s ease-in-out;
 }
@@ -456,7 +457,7 @@ export default {
 }
 
 .acc-list {
-  height: 250px;
+  height: 257px;
 }
 
 .dd-hide-list {
@@ -472,6 +473,8 @@ export default {
 
 .dd-link-item {
   color: #02172E;
+  text-decoration: none;
+  opacity: .5;
 }
 
 .comm-link-icon {
