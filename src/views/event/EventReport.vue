@@ -84,7 +84,7 @@
 
       <div class="row mx-1">
           <div class="col-md-8 dark-red-section pl-5">
-              <h2>Event and Report</h2>
+              <h2 class="evt-report">Event and Report</h2>
           </div>
           <div class="col-md-4 d-flex flex-column light-red-section pr-5">
               <span>
@@ -101,7 +101,7 @@
       <div class="row py-5 px-5">
           <div class="col-md-7">
               <span class="evt-label grey-text">Event Name</span>
-              <h2 class="font-weight-bold mb-3">Grace and Power Convention</h2>
+              <h2 class="font-weight-bold mb-3" style="font-size: 25px">Grace and Power Convention</h2>
               <span class="evt-date text-danger">20th October 2020.</span>
           </div>
           <div class="col-md-5">
@@ -578,13 +578,13 @@
           <div class="area-charts analytics-container mb-5">
             <!-- <div id="chart" style="width:50%;height:500px"></div> -->
             <div class="area-chart mt-5">
-              <ReportAreaChart elemId="chart" domId="areaChart1" />
+              <ReportAreaChart elemId="chart" domId="areaChart1" title="OFFERING" subtitle="This month"/>
             </div>
             <div class="area-chart mt-5">
-              <ReportAreaChart elemId="chart" domId="areaChart2" />
+              <ReportAreaChart elemId="chart" domId="areaChart2" title="ATTENDANCE" subtitle="This month" />
             </div>
             <div class="area-chart mt-5">
-              <ReportAreaChart elemId="chart" domId="areaChart3" />
+              <ReportAreaChart elemId="chart" domId="areaChart3" title="FIRST TIMERS PERFORMANCE" subtitle="This month"/>
             </div>
           </div>
         </div>
@@ -636,6 +636,10 @@ a {
     color: #136ACD;
     font-weight: 800;
     font-size: 22px;
+}
+
+.evt-report {
+    font-size: 25px;
 }
 
 .date {

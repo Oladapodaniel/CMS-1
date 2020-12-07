@@ -80,7 +80,7 @@ export default {
 .whole-con {
   display: flex;
   /* background: #f1f5f8; */
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .main-con {

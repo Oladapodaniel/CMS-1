@@ -9,39 +9,73 @@ import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-  props: [ "elemId", "domId" ],
+  props: ["elemId", "domId", "title", "subtitle"],
   setup(props) {
     const chart = ref(null);
     onMounted(() => {
-        console.log(props.elemId);
+      console.log(props.elemId);
       let highchartsOptions = {
         chart: {
           type: "line",
           renderTo: props.domId,
         },
         title: {
-          text: `Line Graph`,
-          align: 'left',
+          text: `${props.title}`,
+          align: "left",
           x: 20,
           y: 20,
         },
         xAxis: {
-          categories: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          categories: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
           tickInterval: 1,
           labels: {
-            // enabled: true,
+            // enabled: false,
           },
         },
+        subtitle: {
+          text: `<span style="color: #136ACD;font-size:16px">${props.subtitle}</span>`,
+          align: 'left',
+          x: 20,
+          y: 40
+        },
+        // plotOptions: {
+        //   series: {
+        //     lineWidth: 2,
+        //     shadow: true,
+        //     marker: {
+        //       enabled: false,
+        //       symbol: "circle",
+        //       states: {
+        //         hover: {
+        //           enabled: true,
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
 
         yAxis: {
-            labels: {
-                enabled: false
-            }
+          labels: {
+            enabled: false,
+          },
         },
 
         series: [
           {
-            name: "ser1",
+            name: "",
             data: [29.9, 71.5, 106.4, 23, 34, 24, 56, 12, 23, 32, 45, 38],
           },
         ],
