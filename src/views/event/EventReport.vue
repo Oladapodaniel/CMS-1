@@ -11,7 +11,7 @@
           <div class="col-md-7">
               <span class="theader">Event</span>
               <div class="my-3">
-                  <span class="evt-name">Grace and Power <i class="fa fa-facebook"></i></span>
+                  <span class="evt-name">Grace and Power <i class="fa fa-info-circle 1x"></i></span>
               </div>
           </div>
 
@@ -597,10 +597,10 @@
 // import { onMounted, ref } from "vue";
 // import Highcharts from "highcharts";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
-import EventReportStats from "@/components/eventreports/EventReportStats";
+// import EventReportStats from "@/components/eventreports/EventReportStats";
 
 export default {
-  components: { ReportAreaChart, EventReportStats },
+  components: { ReportAreaChart },
   setup() {
     
   },
@@ -666,7 +666,9 @@ a {
     height: 40px;
     width: 40px;
     text-align: center;
-    font-size: 30px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .grey-text {
