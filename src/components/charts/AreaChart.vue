@@ -46,7 +46,7 @@ export default {
           },
         },
         subtitle: {
-          text: `<span style="color: #136ACD;font-size:16px">${props.subtitle}</span>`,
+          text: `<span style="color: #136ACD;font-size:16px">${props.subtitle ? props.subtitle : " "}</span>`,
           align: 'left',
           x: 20,
           y: 40
