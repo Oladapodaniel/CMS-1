@@ -18,14 +18,14 @@
           <div class="col-12 col-sm-6">Events and Activities</div>
           <div class="col-sm-6 text-right">
             <i
-              class="fa fa-angle-down"
+              class="fa fa-angle-up"
               :class="{ roll2: showForm2 }"
               aria-hidden="true"
             ></i>
           </div>
         </div>
         <!-- <div class="container"> -->
-        <div class="row form-body" :class="{ 'close-slide2': showForm2 }">
+        <div class="row form-body" :class="{ 'close-slide2': !showForm2 }">
           <div class="col-6 offset-3 offset-sm-0 col-sm-5 col-md-3">
             <div class="drop-box">
               Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
@@ -38,13 +38,13 @@
                 <label for="eventName">Event Name</label>
               </div>
               <div class="col-12 col-sm-7">
-                <input type="text" v-model="eventName" class="form-control" />
+                <input type="text" v-model="preEventName" class="form-control" />
               </div>
               <div class="col-sm-5">
                 <label for="venue">Venue</label>
               </div>
               <div class="col-sm-7">
-                <input type="text" class="form-control" />
+                <input type="text" v-model="venue" class="form-control" />
               </div>
               <div class="col-sm-5">
                 <label for="details">Details</label>
@@ -52,7 +52,7 @@
               <div class="col-sm-7">
                 <textarea
                   class="form-control textarea-adjust"
-                  rows="3"
+                  rows="3" v-model="details"
                 ></textarea>
               </div>
             </div>
@@ -60,21 +60,15 @@
 
           <div class="col-sm-12 push-public">
             <div class="row">
-              <div class="col-1">
-                <input type="checkbox" class="form-check" />
+              <div class="col-1 mt-3">
+                <input type="checkbox" v-model="isPublic" class="form-check" />
               </div>
-              <div class="col-10">
+              <div class="col-10 mt-3">
                 <div class="make-public">Make Public</div>
                 <div class="public">Make Event publicly visible on app</div>
               </div>
             </div>
           </div>
-          <!-- <div class="col-7 col-md-5 push-down event-reg">
-                        <div>Event Registration Setting</div>
-                    </div>
-                    <div class="col-5 col-md-7 push-down event-reg-dark">
-                        <div>Event Registration</div>
-                    </div> -->
           <ul
             class="nav nav-tabs w-100 push-down event-reg"
             id="myTab"
@@ -104,9 +98,6 @@
                 >Event Registration</a
               >
             </li>
-            <!-- <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-                        </li> -->
           </ul>
           <div class="tab-content w-100" id="myTabContent">
             <div
@@ -118,7 +109,7 @@
               <div class="col-sm-12">
                 <div class="row enable-reg">
                   <div class="col-1">
-                    <input type="checkbox" v-model="check" class="form-check" />
+                    <input type="checkbox" v-model="check" class="form-check" @click="getPreActivityId" />
                   </div>
                   <div class="col-10">
                     <div>Enable Registration</div>
@@ -128,6 +119,14 @@
 
               <div v-if="check" class="col-sm-12">
                 <div class="row">
+                  <!-- <div class="col-sm-12 mt-4"><input type="text" class="form-control"></div> -->
+                  <div class="input-group mt-3 col-sm-7">
+                    <input type="text" class="form-control" v-model="eventRegistrationLink" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">COPY</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-5"></div>
                   <div class="col-6 col-sm-4 paid">is this event paid for?</div>
                   <div class="col-3">
                     <div class="form-radio form-radio-inline paid">
@@ -176,19 +175,19 @@
                         Email to be sent upon after registration
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="2"></textarea>
+                        <textarea class="form-control" v-model="emailRegistration" rows="2"></textarea>
                       </div>
                       <div class="col-12 col-sm-4 col-lg-2">
                         Event rules and guidelines
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" v-model="eventRules" rows="4"></textarea>
                       </div>
                       <div class="col-12 col-sm-4 col-lg-2">
                         SMS to be sent upon after registration
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" v-model="SMSRegistration" rows="4"></textarea>
                       </div>
                     </div>
                   </div>
@@ -198,19 +197,19 @@
                         Email to be sent upon after registration
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="3"></textarea>
+                        <textarea class="form-control" v-model="emailRegistration" rows="3"></textarea>
                       </div>
                       <div class="col-12 col-sm-4 col-lg-2">
                         SMS to be sent upon after registration
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" v-model="SMSRegistration" rows="4"></textarea>
                       </div>
                       <div class="col-12 col-sm-4 col-lg-2">
                         Event rules and guidelines
                       </div>
                       <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea class="form-control" rows="4"></textarea>
+                        <textarea class="form-control" v-model="eventRules" rows="4"></textarea>
                       </div>
                     </div>
                   </div>
@@ -308,7 +307,7 @@
                     <!--  -->
                     <nav>
                       <ul
-                        class="pagination rounded-circ le justify-content-end mx-3 my-3"
+                        class="pagination rounded-circle justify-content-end mx-3 my-3"
                       >
                         <li class="page-item">
                           <a class="page-link rounded-circle mr-2" href="#">
@@ -369,10 +368,22 @@
         <!-- <div class="container"> -->
         <div class="row second-form first-row">
           <div class="col-sm-5 dropdown-container">
-            <div class="select-elem-con" id="eventCategorySelectElem" v-if="!selectedEventCategoryId && !showEditEventCategory">
-              <span class="select-calendar-icon"><i class="fa fa-calendar"></i></span>
-              <SelectElem name="eventcategory" @input="categorySelected" :options="[ 'Select Event', ...eventCategoriesArr ]" value="Select Event" />
+            <div class="select-elem-con pointer" id="eventCategorySelectElem" @click="showCategory = !showCategory" v-if="!selectedEventCategoryId && !showEditEventCategory">
+              <span class="offset-sm-2"><i class="fa fa-calendar"></i>&nbsp;&nbsp;&nbsp;Select Category</span><span> <i
+                class="fa fa-angle-down offset-sm-2"
+                :class="{ roll3: showForm3 }"
+                aria-hidden="true"
+              ></i></span>
+               <!-- <SelectElem name="eventcategory" @input="categorySelected" :options="[ 'Select Event', ...eventCategoriesArr, 'Add Event Category' ]" value="Select Event" /> -->
             </div>
+            <div class="ofering" :class="{ 'style-category': showCategory }" v-if="showCategory" id="showEventCategory">
+                <input type="text" placeholder="Search ..." class="form-control ofering" v-model="eventText">
+                <div v-for="(eventCategory,index) in filterEventCategory" :key="index" class="ofering">
+                  <div class="ofering" @click="individualEvent(eventCategory)">{{ eventCategory.name }}</div>
+                </div>
+                <div @click="addEvent" class="create cat ofering">Add new Event</div>
+            </div>
+            
             <!-- <div class="event-category">Add event Categories</div> -->
             <!-- <select
               class="event-category form-control"
@@ -443,7 +454,7 @@
           </div>
         </div>
         <div class="col-sm-12 offset-sm-1 add">
-          <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add
+          Add
           Attendance
         </div>
         <div class="attendance-header">
@@ -453,7 +464,6 @@
             <div class="col-sm-2 offset-sm-1">Total</div>
           </div>
         </div>
-
         <!-- Attendance Items -->
         <div
           class="attendance-body"
@@ -463,10 +473,7 @@
         >
           <div class="row">
             <div class="col-sm-3">
-              <select class="form-control">
-                <!-- <option :value="select">Select type</option>
-                                <option value="Adult">Adult</option>
-                                <option value="Children">Children</option> -->
+              <select class="form-control" v-if="item.attendanceTypeID">
                 <option
                   v-for="(newAttendance, index) in newAttendances"
                   :key="index"
@@ -478,6 +485,24 @@
                   {{ newAttendance.name }}
                 </option>
               </select>
+              <input
+                type="text"
+                class="form-control"
+                name=""
+                id=""
+                v-else
+                v-model="item.attendanceTypeName"
+              />
+              <!-- <select class="form-control" v-if="item.offeringTypeId">
+                <option
+                  v-for="(newOffering, index) in newOfferings"
+                  :key="index"
+                  :value="newOffering.id"
+                  :selected="newOffering.id === item.offeringTypeId"
+                >
+                  {{ newOffering.name }}
+                </option>
+              </select> -->
             </div>
             <div class="col-sm-3 offset-sm-2">
               <input type="number" v-model.number="item.number" class="form-control" />
@@ -494,13 +519,13 @@
           id="addAttendance"
           @click="addAttendance"
         >
-          <i class="fa fa-plus-circle ofering" aria-hidden="true"></i>&nbsp;&nbsp;Add
+        <i class="fa fa-plus-circle ofering" aria-hidden="true"></i>&nbsp;&nbsp;Add
           Attendance Item
         </div>
         <div class="display ofering" id="showAttendance" ref="attendanceDrop">
           <input
             type="text"
-            class="form-control shadow mb-3 ofering"
+            class="form-control mb-3 ofering"
             v-model="attendanceText"
             placeholder="Search attendance item"
           />
@@ -512,7 +537,7 @@
           >
             {{ filteredAttendance.name }}
           </div>
-          <div @click="createAttendance" class="create ofering">
+          <div @click="attendance(null)" class="create ofering">
             Create New Attendance Item
           </div>
         </div>
@@ -530,18 +555,20 @@
         <!-- <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea> -->
 
         <div class="col-sm-12 offset-sm-1 add">
-          <i class="fa fa-plus-circle" aria-hidden="true"></i>&nbsp;&nbsp;Add
+          Add
           Offering
         </div>
         <div class="attendance-header">
           <div class="row">
-            <div class="col-sm-4">Offering Item</div>
-            <div class="col-sm-5">Amount</div>
+            <div class="col-sm-3">Offering Item</div>
+            <div class="col-sm-3">Channel</div>
+            <div class="col-sm-2">Amount</div>
             <div class="col-sm-2">Total</div>
-          </div>
+        </div>
         </div>
 
         <!-- Selected offerings -->
+      
         <div
           class="attendance-body"
           id="offeringBody"
@@ -549,7 +576,7 @@
           :key="index"
         >
           <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-2">
               <select class="form-control" v-if="item.offeringTypeId">
                 <option
                   v-for="(newOffering, index) in newOfferings"
@@ -569,13 +596,23 @@
                 v-model="item.name"
               />
             </div>
-            <div class="offset-sm-1 col-sm-1">
+            <div class="col-sm-2 offset-sm-1">
+            <select class="w-100 form-control" v-model="item.channel">
+                <option :value="Cheque">Cheque</option>
+                <option value="POS">POS</option>
+                <option value="Online">Online</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="USSD">USSD</option>
+                <option value="Text">Text</option>
+            </select>
+            </div>
+            <div class="col-sm-1 offset-sm-1">
               <select class="currency" v-model="item.currency">
                 <option :value="NGN">NGN</option>
                 <option value="GHA">GHA</option>
               </select>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
               <input type="text" class="form-control" v-model.number="item.amount" />
             </div>
             <div class="col-sm-1 offset-sm-1">{{ item.amount }}</div>
@@ -596,7 +633,7 @@
         <div class="display ofering" id="showList" ref="offeringDrop">
           <input
             type="text"
-            class="form-control shadow mb-3 ofering"
+            class="form-control mb-3 ofering"
             v-model="offeringText"
             placeholder="Search Offering item"
           />
@@ -663,7 +700,7 @@ Note ...</textarea
 
       <div class="form">
         <div class="container">
-          <div class="row row-form form-header" @click="toggleForm3">
+          <div class="row row-form form-header pointer" @click="toggleForm3">
             <div class="col-sm-6">
               <div>First Timers and New Convert</div>
             </div>
@@ -679,10 +716,10 @@ Note ...</textarea
             class="row form-body close-slide3"
             :class="{ 'slide-down3': showForm3 }"
           >
-            <div class="col-sm-3 add-first-timer" @click="createFirstTimers">
+            <div class="col-sm-3 add-first-timer pointer" @click="createFirstTimers">
               Add First Timers
             </div>
-            <div class="col-sm-3 offset-sm-1 add-new-convert">
+            <div class="col-sm-3 offset-sm-1 add-new-convert pointer">
               Add New Converts
             </div>
             <div class="col-sm-12 box-table">
@@ -724,6 +761,13 @@ Note ...</textarea
           </div>
         </div>
       </div>
+      <div class="container first-pane mt-5 mb-3">
+            <div class="row">
+                <div class="col-12 col-sm-4 col-lg-6 events"></div>
+                <div class="col-5 col-sm-3 col-lg-2 btn btn-preview">Preview</div>
+                <div class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save" @click="post">Save and Continue</div>
+            </div>
+        </div>
     </div>
 
     <!-- Event Modal -->
@@ -887,7 +931,7 @@ Note ...</textarea
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog first-timers-modal" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <div class="modal-title" id="exampleModalLabel">
@@ -966,7 +1010,7 @@ Note ...</textarea
                   <div class="col-sm-9 mb-4">
                     <input
                       type="text"
-                      v-model="firstTimersObj.address"
+                      v-model="firstTimersObj.homeAddress"
                       class="form-control input-first"
                       id="address"
                     />
@@ -983,6 +1027,7 @@ Note ...</textarea
                       name="day"
                       class="input-first"
                       value="day"
+                      @input="select2Value"
                     />
                   </div>
                   <div class="col-sm-3 mb-4">
@@ -991,6 +1036,7 @@ Note ...</textarea
                       name="month"
                       class="input-first"
                       value="month"
+                      @input="select2Value"
                     />
                   </div>
                   <div class="col-sm-3 mb-4">
@@ -999,29 +1045,25 @@ Note ...</textarea
                       name="year"
                       class="input-first"
                       value="Year"
+                      @input="select2Value"
                     />
                   </div>
                   <div class="col-sm-5 mb-4 offset-sm-2">
                     <SelectElem
-                      :options="[
-                        'Marital Status',
-                        'Single',
-                        'Engaged',
-                        'Married',
-                        'Divorced',
-                        'Single Parent',
-                      ]"
+                      :options="[...maritalStatuses]"
                       class="input-first"
-                      name="Marital Status"
+                      name="marital status"
                       value="Marital Status"
+                      @input="select2Value"
                     />
                   </div>
                   <div class="col-sm-4 mb-4">
                     <SelectElem
-                      :options="['Gender', 'Male', 'Female']"
-                      name="Gender"
+                      :options="[...genders]"
+                      name="gender"
                       class="input-first"
-                      value="Gender"
+                      value="gender"
+                      @input="select2Value"
                     />
                   </div>
                 </div>
@@ -1049,27 +1091,22 @@ Note ...</textarea
                   <div class="col-sm-9 offset-sm-2 mb-4">
                     <div>How did you hear about us</div>
                     <SelectElem
-                      :options="[
-                        'Friend',
-                        'Social media',
-                        'Church Flyer',
-                        'Tv',
-                        'Radio',
-                      ]"
+                      :options="[...howYouHeard]"
+                      @input="select2Value" name="howDidYouAboutUsId"
                     />
                   </div>
                   <div class="col-sm-9 offset-sm-2 mb-4">
                     <div>Preferred means of communication</div>
-                    <SelectElem :options="['Call', 'Email', 'Visit', 'SMS']" />
+                    <SelectElem :options="[...comMeansArr]" @input="select2Value" name="communicationMeans"/>
                   </div>
                   <div class="col-sm-9 offset-sm-2 mb-4">
                     <div>Interested in joining us</div>
-                    <SelectElem :options="['Yes', 'No']" />
+                    <SelectElem :options="[...joinInterest]" @input="select2Value" name="interestedInJoining"/>
                   </div>
                   <div class="col-sm-9 offset-sm-2 mb-4">
                     <div>Want to be visited?</div>
                     <SelectElem
-                      :options="['Yes', 'No', 'Maybe', 'On Transit']"
+                      :options="[...wantVisitArr]" @input="select2Value" name="wantToBeVisited"
                     />
                   </div>
                 </div>
@@ -1089,7 +1126,6 @@ Note ...</textarea
                     ></i>
                   </span>
                 </span>
-
                 <div
                   class="form-group row close-slide"
                   :class="{ 'slide-down': showForm }"
@@ -1097,14 +1133,14 @@ Note ...</textarea
                   <div class="col-sm-4 offset-sm-2 mt-4 mb-4">
                     Send Welcome SMS
                   </div>
-                  <div class="mt-4 mb-4"><input type="radio" name="sms" /></div>
+                  <div class="mt-4 mb-4"><input type="checkbox" name="sms" v-model="firstTimersObj.sendWelcomeSms"/></div>
 
-                  <div class="col-sm-4 mt-4 mb-4">Send Welcome SMS</div>
-                  <div class="mt-4 mb-4"><input type="radio" name="sms" /></div>
+                  <div class="col-sm-4 mt-4 mb-4">Send Welcome Email</div>
+                  <div class="mt-4 mb-4"><input type="checkbox" name="sms" value="email" v-model="firstTimersObj.sendWelcomeEmail" /></div>
                   <div class="col-sm-9 offset-sm-2">
                     <div>Assigned automated follow-up</div>
                     <SelectElem
-                      :options="['List 1', 'List 2', 'List 3', 'List 4']"
+                      :options="['List 1', 'List 2', 'List 3', 'List 4']" @input="select2Value" name="automatedFollowUp"
                     />
                   </div>
                 </div>
@@ -1141,19 +1177,24 @@ export default {
   data() {
     return {
       type: null,
-      currency: null,
+    //   currency: '',
       amount: null,
+      preEventTopic: '',
+      details: '',
+      eventRules: '',
+      preActivityId: '',
+    //   enableRegistration: '',
+      eventRegistrationLink:'',
+      venue: '',
+      emailRegistration: '',
+      SMSRegistration: '',
+      banner: '',
+      isPublic: false,
       offeringItem: [],
       category: null,
       count: null,
       attendanceItem: [],
-      firstTimersObj: {
-        firstName: null,
-        lastName: null,
-        address: null,
-        phoneNumber: null,
-        email: null,
-      },
+      firstTimersObj: {},
       firstTimers: [],
       selectedValue: null,
       check: false,
@@ -1161,6 +1202,7 @@ export default {
       newOfferings: [],
       attendanceCreate: null,
       newAttendances: ["Adult", "Children"],
+      channel: '',
       eventCreate: null,
       newEvents: [],
       attendanceText: "",
@@ -1218,12 +1260,27 @@ export default {
       topic: "",
       preacher: "",
       preEventAmount: "",
-      eventName: "",
+      preEventName: "",
       eventCategories: [],
       selectedEventCategory: { },
       selectedEventCategoryId: '',
       eventDate: "",
       showEditEventCategory: false,
+      gender: [],
+      comMeansArr: ['Call', 'Email', 'Visit', 'SMS'],
+      wantVisitArr: ['Yes', 'No', 'Maybe', 'On Transit'],
+      joinInterest: ['Yes', 'No', 'Maybe', 'On Transit'],
+      maritalStatusArr: [],
+      howDidYouAboutUsId: [],
+      
+                        // 'Friend',
+                        // 'Social media',
+                        // 'Church Flyer',
+                        // 'Tv',
+                        // 'Radio',
+                      
+      showCategory: false,
+      eventText: ""
     };
   },
 
@@ -1249,10 +1306,10 @@ export default {
         this.offeringItem.push({
           name: offObj.name,
           offeringTypeId: offObj.id,
-          channel: "Cash"
+          channel: ""
         });
       } else {
-        this.offeringItem.push({channel: "Cash"});
+        this.offeringItem.push({});
       }
       console.log(this.offeringItem);
 
@@ -1260,17 +1317,29 @@ export default {
       showList.classList.toggle("offering-drop");
     },
     attendance(attObj) {
-      this.attendanceItem.push({
-        attendanceTypeID: attObj.attendanceTypeID,
-      });
+    //   this.attendanceItem.push({
+    //     attendanceTypeID: attObj.attendanceTypeID,
+    //   });
+    //   console.log(attObj)
+      if (attObj) {
+        this.attendanceItem.push({
+          attendanceTypeName: attObj.name,
+          attendanceTypeID: attObj.attendanceTypeID
+        });
+        // console.log(attObj)
+      } 
+
+      else {
+        this.attendanceItem.push({});
+      }
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
     },
     addEvent(e) {
         this.selectedEventCategoryId = e.target.value;
-      if (e.target.value == "Add New Event") {
+    //   if (e.target.value == "Add New Event") {
         document.querySelector("#modalTogglerEvent").click();
-      }
+    //   }
     },
     createOffering() {
       document.querySelector("#modalTogglerOffering").click();
@@ -1282,33 +1351,14 @@ export default {
       document.querySelector("#modalTogglerFirstTimers").click();
     },
     save() {
-      if (
-        this.firstTimersObj.firstName &&
-        this.firstTimersObj.lastName &&
-        this.firstTimersObj.address &&
-        this.firstTimersObj.phoneNumber &&
-        this.firstTimersObj.email
-      ) {
         this.firstTimers.push({
-          firstName: this.firstTimersObj.firstName,
-          lastName: this.firstTimersObj.lastName,
-          phoneNumber: this.firstTimersObj.phoneNumber,
+            ...this.firstTimersObj
         });
-        // this.name = '';
-        // this.address = '';
-        // this.phoneNumber = '';
+        this.firstTimersObj = {}
         console.log(this.firstTimers);
         document
           .querySelector("#closeFirstTimers")
           .setAttribute("data-dismiss", "modal");
-      }
-      console.log(
-        this.firstTimersObj.firstName,
-        this.firstTimersObj.lastName,
-        this.firstTimersObj.phoneNumber,
-        this.firstTimersObj.email,
-        this.firstTimersObj.address
-      );
     },
     changeValue(e) {
       this.selectedValue = e.target.value;
@@ -1375,17 +1425,29 @@ export default {
     },
     post() {
       let event = {
+        date: this.eventDate === '' ? '01.01.0001 00:00:00' : this.eventDate,
         topic: this.topic,
         preacher: this.preacher,
         preEvent: {
-          name: this.eventName,
+          name: this.preEventName,
+          topic: this.preEventTopic,
+          preActivityId: this.preActivityId === '' ? '00000000-0000-0000-0000-000000000000' : this.preActivityId,
+          details: this.details,
+          eventRules: this.eventRules,
+          enableRegistration: this.check,
           isPaidFor: this.selectedValue === "Yes" ? true : false,
           amount: this.preEventAmount,
+          venue: this.venue,
+          emailRegistration: this.emailRegistration,
+          SMSRegistration: this.SMSRegistration,
+          banner: this.banner,
+          isPublic: this.isPublic
+
         },
-        attendance: this.attendanceItem,
-        offering: this.offeringItem,
-        eventCategoryId: this.selectedEventCategory,
-        date: this.eventDate
+        attendances: this.attendanceItem,
+        offerings: this.offeringItem,
+        eventCategoryId: this.selectedEventCategoryId === '' ? '00000000-0000-0000-0000-000000000000' : this.selectedEventCategoryId,
+        activityFirstTimers: this.firstTimers
       };
       console.log(event);
 
@@ -1405,6 +1467,26 @@ export default {
       });
     },
 
+    getLookUps () {
+        axios.get("/api/LookUp/GetAllLookUps").then((res) => {
+            // res.data.map((i) => {
+
+            // })
+            console.log(res.data)
+            res.data.find((i) => {
+                 if (i.type.toLowerCase() === "gender") {
+                     this.gender = i.lookUps
+                 }
+                 if (i.type.toLowerCase() === "marital status") {
+                     this.maritalStatusArr = i.lookUps
+                 }
+
+            })
+            
+        })
+
+    },
+
     changeSelectedEventCategory(action) {
       if (action === 'edit') {
         // do something
@@ -1418,11 +1500,84 @@ export default {
       }
     },
 
-    categorySelected(data) {
-      if (data.dataType === 'eventcategory') {
-        this.selectedEventCategory = this.newEvents.find(i => i.name === data.value);
-        this.selectedEventCategoryId = this.selectedEventCategory.id;
-      }
+    // categorySelected(data) {
+    //   if (data.dataType === 'eventcategory') {
+    //     this.selectedEventCategory = this.newEvents.find(i => i.name === data.value);
+    //     this.selectedEventCategoryId = this.selectedEventCategory.id;
+    //   }
+    // },
+    select2Value (data) {
+
+
+        if (data.dataType === "day") {
+            this.firstTimersObj.birthday = data.value
+        }
+
+        if (data.dataType === "month") {
+            this.firstTimersObj.birthMonth = data.value
+        }
+
+        if (data.dataType === "year") {
+            this.firstTimersObj.birthYear = data.value
+        }
+
+        if (data.dataType === "marital status") {
+            this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find(i => i.value === data.value).id
+        }
+
+        if (data.dataType === "gender") {
+            this.firstTimersObj.genderId = this.gender.find(i => i.value === data.value).id
+        }
+
+        if (data.dataType === "howDidYouAboutUsId") {
+            this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(i => i.name === data.value).id
+
+        }
+
+        if (data.dataType === "communicationMeans") {
+            this.firstTimersObj.communicationMeans = this.comMeansArr.indexOf(data.value)
+        }
+
+        if (data.dataType === "interestedInJoining") {
+            this.firstTimersObj.interestedInJoining = this.joinInterest.indexOf(data.value)
+        }
+
+        if (data.dataType === "wantToBeVisited") {
+            this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(data.value)
+        }
+
+        if (data.dataType === "automatedFollowUp") {
+            this.firstTimersObj.automatedFollowUp = data.value
+        }
+    },
+    individualEvent(eventObj) {
+        this.selectedEventCategoryName = eventObj.name
+        this.selectedEventCategoryId = eventObj.id
+
+        // const showEventCategory = document.querySelector("#showEventCategory");
+        // showEventCategory.classList.remove("style-category");
+        this.showCategory = false
+    },
+    getPreActivityId () {
+        // console.log(this.check)
+        if (this.check == false) {
+            axios.post('/api/Events/EventPreRegistration', { eventCategoryName: this.preEventName, eventRegistrationLink: '' })
+                .then(res => {
+                    this.preActivityId = res.data.activityId
+                    this.eventRegistrationLink = res.data.eventRegistrationLink
+                    console.log(res.data)
+                    })
+                .catch(err => console.log(err.response))
+        }
+    },
+    getHowDidYouAboutUsId () {
+        axios.get('/api/membership/howyouheardaboutus')
+            .then(res => {
+                // console.log(res.data)
+                this.howDidYouAboutUsId = res.data.map(i => {
+                    return { name: i.name, id: i.id }
+                })
+            })
     }
   },
   created() {
@@ -1440,6 +1595,8 @@ export default {
     });
 
     this.getEventCategories();
+    this.getLookUps();
+    this.getHowDidYouAboutUsId();
   },
   computed: {
     filterAttendance() {
@@ -1472,6 +1629,20 @@ export default {
       }
     },
 
+    filterEventCategory() {
+        // let x;
+        if (this.eventText !== "" && this.newEvents.length > 0) {
+            return this.newEvents.filter((i) => {
+                return i.name.toLowerCase().includes(this.eventText.toLowerCase());
+                });
+            } else {
+                return this.newEvents
+            }
+            // return x
+        }
+        
+    ,
+
     addOfferingTotal() {
       if (this.offeringItem.length <= 0) return 0;
       if (this.offeringItem.length === 1) return this.offeringItem[0].amount;
@@ -1488,6 +1659,24 @@ export default {
     eventCategoriesArr() {
       const arr = this.newEvents.map(i => i.name);
       return arr;
+    },
+
+    genders() {
+        return this.gender.map((i) => {
+            return i.value
+        })
+    },
+
+    maritalStatuses () {
+        return this.maritalStatusArr.map(i => {
+            return i.value
+        })
+    },
+
+    howYouHeard () {
+        return this.howDidYouAboutUsId.map(i => {
+            return i.name
+        })
     }
   },
   watch: {
@@ -1502,8 +1691,9 @@ export default {
 </script>
 
 <style scoped>
-.event {
-  font-family: "Nunito sans";
+    .event {
+    font-family: 'Nunito sans';
+    margin-top: 20px;
 }
 
 .events {
@@ -1659,14 +1849,15 @@ export default {
   display: none;
 }
 .offering-drop {
-  box-shadow: 0px 3px 15px #797e8159;
-  z-index: 1;
-  position: absolute;
-  left: 25%;
-  padding: 10px 10px;
-  width: 50%;
-  background: white;
-  display: block;
+    box-shadow: 0px 3px 15px #797E8159;
+    z-index: 1;
+    position: absolute;
+    left: 5%;
+    margin-top: -50px;
+    padding: 10px 10px;
+    width: 90%;
+    background: white;
+    display: block;
 }
 
 .offering-drop div {
@@ -1727,7 +1918,7 @@ export default {
   width: 120%;
   height: 100%;
   font-size: 0.8em;
-  background: rgb(207, 207, 207);
+  background: rgba(207, 207, 207, 0.651);
   border: none;
   outline: none;
 }
@@ -1783,7 +1974,7 @@ export default {
 }
 
 .paid {
-  margin-top: 3em;
+  margin-top: 2em;
   font: normal normal normal 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #02172e;
@@ -2033,7 +2224,7 @@ tr.event-list td {
   margin: 0 24px 0 0;
 }
 
-.event-buttons a:hover {
+.event-buttons a:hover,.pointer {
   cursor: pointer;
 }
 
@@ -2041,6 +2232,8 @@ tr.event-list td {
   padding: 47px 0;
   border: 1px solid #EBEFF4;
   border-radius: 8px;
+  font-size: 1.2em;
+  font-weight: 600
 }
 
 .edit-category {
@@ -2079,6 +2272,25 @@ tr.event-list td {
   left: 48px;
   top: 59px;
   z-index: 9;
+}
+
+.style-category {
+    padding: 10px;
+    box-shadow: 0px 3px 15px #797e8159;
+    position: absolute;
+    top: 10px;
+    background: white;
+    z-index: 1
+}
+
+.style-category div:hover {
+    background-color: #ecf0f3;
+    cursor: pointer;
+}
+
+.cat {
+    padding: 5px;
+    border-top: 1px solid #ecf0f3;
 }
 
 @media (min-width: 576px) {

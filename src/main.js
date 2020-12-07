@@ -6,7 +6,7 @@ import Highcharts from 'highcharts';
 import VueHighcharts from 'vue-highcharts';
 // import axios from "axios";
 import axios from "./gateway/backendapi";
-import NProgress from "nprogress"
+import NProgress from "nprogress";
 
 NProgress.configure({ showSpinner: false });
 axios.interceptors.request.use((config) => {
