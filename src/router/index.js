@@ -19,6 +19,7 @@ import AddPerson from '../views/people/AddPerson.vue';
 import List from '../views/people/PeopleList.vue';
 import Event from '../views/event/Event.vue'
 import Column from '@/components/charts/ColumnChart.vue';
+import EventReportStats from '../views/event/EventReportStats'
 
 
 const routes = [
@@ -102,6 +103,11 @@ const routes = [
         path: '/home/event',
         name: 'Event',
         component: Event
+      },
+      {
+        path: '/home/event-report-stat',
+        name: 'EventReportStats',
+        component: EventReportStats
       }
     ]
   },

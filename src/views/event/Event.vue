@@ -18,14 +18,14 @@
           <div class="col-12 col-sm-6">Events and Activities</div>
           <div class="col-sm-6 text-right">
             <i
-              class="fa fa-angle-down"
+              class="fa fa-angle-up"
               :class="{ roll2: showForm2 }"
               aria-hidden="true"
             ></i>
           </div>
         </div>
         <!-- <div class="container"> -->
-        <div class="row form-body" :class="{ 'close-slide2': showForm2 }">
+        <div class="row form-body" :class="{ 'close-slide2': !showForm2 }">
           <div class="col-6 offset-3 offset-sm-0 col-sm-5 col-md-3">
             <div class="drop-box">
               Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
@@ -60,10 +60,10 @@
 
           <div class="col-sm-12 push-public">
             <div class="row">
-              <div class="col-1">
+              <div class="col-1 mt-3">
                 <input type="checkbox" v-model="isPublic" class="form-check" />
               </div>
-              <div class="col-10">
+              <div class="col-10 mt-3">
                 <div class="make-public">Make Public</div>
                 <div class="public">Make Event publicly visible on app</div>
               </div>
@@ -119,6 +119,14 @@
 
               <div v-if="check" class="col-sm-12">
                 <div class="row">
+                  <!-- <div class="col-sm-12 mt-4"><input type="text" class="form-control"></div> -->
+                  <div class="input-group mt-3 col-sm-7">
+                    <input type="text" class="form-control" v-model="eventRegistrationLink" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">COPY</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-5"></div>
                   <div class="col-6 col-sm-4 paid">is this event paid for?</div>
                   <div class="col-3">
                     <div class="form-radio form-radio-inline paid">
@@ -483,7 +491,7 @@
                 name=""
                 id=""
                 v-else
-                v-model="item.name"
+                v-model="item.attendanceTypeName"
               />
               <!-- <select class="form-control" v-if="item.offeringTypeId">
                 <option
@@ -560,6 +568,7 @@
         </div>
 
         <!-- Selected offerings -->
+      
         <div
           class="attendance-body"
           id="offeringBody"
@@ -1082,14 +1091,8 @@ Note ...</textarea
                   <div class="col-sm-9 offset-sm-2 mb-4">
                     <div>How did you hear about us</div>
                     <SelectElem
-                      :options="[
-                        'Friend',
-                        'Social media',
-                        'Church Flyer',
-                        'Tv',
-                        'Radio',
-                      ]"
-                      @input="select2Value" name="howYouAboutUsId"
+                      :options="[...howYouHeard]"
+                      @input="select2Value" name="howDidYouAboutUsId"
                     />
                   </div>
                   <div class="col-sm-9 offset-sm-2 mb-4">
@@ -1181,11 +1184,12 @@ export default {
       eventRules: '',
       preActivityId: '',
     //   enableRegistration: '',
+      eventRegistrationLink:'',
       venue: '',
       emailRegistration: '',
       SMSRegistration: '',
       banner: '',
-      isPublic: '',
+      isPublic: false,
       offeringItem: [],
       category: null,
       count: null,
@@ -1267,6 +1271,14 @@ export default {
       wantVisitArr: ['Yes', 'No', 'Maybe', 'On Transit'],
       joinInterest: ['Yes', 'No', 'Maybe', 'On Transit'],
       maritalStatusArr: [],
+      howDidYouAboutUsId: [],
+      
+                        // 'Friend',
+                        // 'Social media',
+                        // 'Church Flyer',
+                        // 'Tv',
+                        // 'Radio',
+                      
       showCategory: false,
       eventText: ""
     };
@@ -1297,7 +1309,7 @@ export default {
           channel: ""
         });
       } else {
-        this.offeringItem.push({channel: this.channel});
+        this.offeringItem.push({});
       }
       console.log(this.offeringItem);
 
@@ -1316,15 +1328,15 @@ export default {
         });
         // console.log(attObj)
       } 
-    //   console.log(this.attendanceItem)
+
       else {
-        this.attendanceItem.push({name: ""});
+        this.attendanceItem.push({});
       }
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
     },
     addEvent(e) {
-        // this.selectedEventCategoryId = e.target.value;
+        this.selectedEventCategoryId = e.target.value;
     //   if (e.target.value == "Add New Event") {
         document.querySelector("#modalTogglerEvent").click();
     //   }
@@ -1413,14 +1425,14 @@ export default {
     },
     post() {
       let event = {
-        date: this.eventDate,
+        date: this.eventDate === '' ? '01.01.0001 00:00:00' : this.eventDate,
         topic: this.topic,
         preacher: this.preacher,
         preEvent: {
           name: this.preEventName,
           topic: this.preEventTopic,
-          preActivityId: null,
-          details: '',
+          preActivityId: this.preActivityId === '' ? '00000000-0000-0000-0000-000000000000' : this.preActivityId,
+          details: this.details,
           eventRules: this.eventRules,
           enableRegistration: this.check,
           isPaidFor: this.selectedValue === "Yes" ? true : false,
@@ -1434,7 +1446,7 @@ export default {
         },
         attendances: this.attendanceItem,
         offerings: this.offeringItem,
-        eventCategoryId: this.selectedEventCategoryId,
+        eventCategoryId: this.selectedEventCategoryId === '' ? '00000000-0000-0000-0000-000000000000' : this.selectedEventCategoryId,
         activityFirstTimers: this.firstTimers
       };
       console.log(event);
@@ -1517,8 +1529,9 @@ export default {
             this.firstTimersObj.genderId = this.gender.find(i => i.value === data.value).id
         }
 
-        if (data.dataType === "howYouAboutUsId") {
-            this.firstTimersObj.howYouAboutUsID = data.value
+        if (data.dataType === "howDidYouAboutUsId") {
+            this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(i => i.name === data.value).id
+
         }
 
         if (data.dataType === "communicationMeans") {
@@ -1549,9 +1562,22 @@ export default {
         // console.log(this.check)
         if (this.check == false) {
             axios.post('/api/Events/EventPreRegistration', { eventCategoryName: this.preEventName, eventRegistrationLink: '' })
-                .then(res => console.log(res.data))
+                .then(res => {
+                    this.preActivityId = res.data.activityId
+                    this.eventRegistrationLink = res.data.eventRegistrationLink
+                    console.log(res.data)
+                    })
                 .catch(err => console.log(err.response))
         }
+    },
+    getHowDidYouAboutUsId () {
+        axios.get('/api/membership/howyouheardaboutus')
+            .then(res => {
+                // console.log(res.data)
+                this.howDidYouAboutUsId = res.data.map(i => {
+                    return { name: i.name, id: i.id }
+                })
+            })
     }
   },
   created() {
@@ -1570,6 +1596,7 @@ export default {
 
     this.getEventCategories();
     this.getLookUps();
+    this.getHowDidYouAboutUsId();
   },
   computed: {
     filterAttendance() {
@@ -1643,6 +1670,12 @@ export default {
     maritalStatuses () {
         return this.maritalStatusArr.map(i => {
             return i.value
+        })
+    },
+
+    howYouHeard () {
+        return this.howDidYouAboutUsId.map(i => {
+            return i.name
         })
     }
   },
@@ -1941,7 +1974,7 @@ export default {
 }
 
 .paid {
-  margin-top: 3em;
+  margin-top: 2em;
   font: normal normal normal 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #02172e;
