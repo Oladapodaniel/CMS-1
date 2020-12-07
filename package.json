@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "highcharts": "^8.2.2",
     "jquery": "^3.5.1",
+    "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "nprogress": "^0.2.0",
     "select2": "^4.0.13",

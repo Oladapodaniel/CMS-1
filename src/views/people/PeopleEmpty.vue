@@ -12,7 +12,8 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import axios from "@/gateway/backendapi";
+// import axios from "axios";
 import PeopleList from '@/views/people/PeopleList.vue';
 
 export default {

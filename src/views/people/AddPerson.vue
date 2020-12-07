@@ -44,13 +44,13 @@
                 <div class="status-n-gender">
                   <div class="status cstm-select">
                     <div class="cs-select">
-                      <SelectElem :typ="'membership'" name="status" :options="['Marital status', 'Married', 'Single']" value="Marital status" @input="itemSelected"/>
+                      <SelectElem :typ="'membership'" name="status" :options="['Marital status', ...maritalStatusArr]" value="Marital status" @input="itemSelected"/>
                     </div>
                     
                   </div>
                   <div class="gender cstm-select">
                     <div class="cs-select">
-                      <SelectElem :typ="'membership'" name="gender" :options="['Gender', 'Male', 'Female', 'Not sure']" value="Gender" @input="itemSelected"/>
+                      <SelectElem :typ="'membership'" name="gender" :options="['Gender', ...gendersArr]" value="Gender" @input="itemSelected"/>
                     </div>
                     
                   </div>
@@ -150,7 +150,7 @@
 
                     <div class="cstm-select">
                       <div class="cs-select" style="width:113px">
-                        <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="-Select size range" @input="itemSelected"/>
+                        <SelectElem :typ="'membership'" name="annyear" :options="['Year', ...birthYearsArr]" value="Year" @input="itemSelected"/>
                       </div>
                       
                     </div>
@@ -242,7 +242,7 @@
 import moment from "moment";
 import { ref, reactive, onMounted, computed } from "vue";
 import router from "@/router/index"
-import axios from "axios";
+import axios from "@/gateway/backendapi";
 import SelectElem from '@/components/select/SelectElement.vue'
 
 import NProgress from 'nprogress'
@@ -250,7 +250,7 @@ import NProgress from 'nprogress'
 export default {
   components: { SelectElem },
   setup() {
-    const hideCelebTab = ref(true);
+    const hideCelebTab = ref(false);
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => hideCelebTab.value = !hideCelebTab.value;
     const showAddInfoTab = () => hideAddInfoTab.value = !hideAddInfoTab.value;
@@ -379,8 +379,10 @@ export default {
       formData.append("peopleClassificationID", membershipId.value);
       formData.append("address", personObj.address);
       formData.append("picture", image);
+      formData.append("maritalStatusID", personObj.maritalStatusID);
+      formData.append("genderID", personObj.genderID);
       try {
-        
+        console.log(formData);
         loading.value = true;
         const response = await axios.post("/api/people/createperson", formData);
         
@@ -399,6 +401,14 @@ export default {
       //Membership
       if (data.dataType === "membership") {
         membershipId.value = data.value;
+      }
+      //gender
+      if (data.dataType === "gender") {
+        person.genderID = genders.value.find(i => i.value.toLowerCase() === data.value.toLowerCase()).id;
+      }
+      //Marital status
+      if (data.dataType === "status") {
+        person.maritalStatusID = maritalStatus.value.find(i => i.value.toLowerCase() === data.value.toLowerCase()).id;
       }
       //Birthday
       if (data.dataType === "birthmonth") {
@@ -434,17 +444,26 @@ export default {
       }
     }
 
+    let genders = ref([])
+    let maritalStatus = ref([]);
+    const getLookUps = () => {
+      axios.get('/api/LookUp/GetAllLookUps')
+        .then(res => {
+          
+          genders.value = res.data.find(i => i.type.toLowerCase() === "gender").lookUps;
+          maritalStatus.value = res.data.find(i => i.type.toLowerCase() === "marital status").lookUps;
+        })
+    }
+    const gendersArr = computed(() => {
+      return genders.value.map(i => i.value);
+    })
+    const maritalStatusArr = computed(() => {
+      return maritalStatus.value.map(i => i.value);
+    })
 
+    
     onMounted(async () => {
-      // $('.search-box').select2();
-      // updateBirthDateElements();
-      // updateAnnDateElements()
-
-      // birthDate.set('month', '1');
-      // birthDate.set('date', '2');
-      // birthDate.set('year', '1994');
-      // daysInBirthMonth = birthDate.daysInMonth();
-
+      getLookUps();
       try {
         NProgress.start()
         const response = await axios.get("/api/Settings/GetTenantPeopleClassification");
@@ -490,6 +509,10 @@ export default {
       showCelebTab,
       hideAddInfoTab,
       showAddInfoTab,
+      genders,
+      maritalStatus,
+      gendersArr,
+      maritalStatusArr,
     };
   },
 };
@@ -859,7 +882,8 @@ export default {
 
 .choose-file {
     background: #DDE2E6;
-    padding: 4px 10px;
+    padding: 3px 10px;
+    margin-bottom: 0;
 }
 
 .choose-file:hover {

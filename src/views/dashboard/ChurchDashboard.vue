@@ -44,13 +44,15 @@
                 </div>
                 <div class="box-middle">
                   <h1>302</h1>
-                  <span>Church Size</span>
+                  <span class="size-text">Church Size</span>
                 </div>
               </div>
               <div class="bottom">
                 <div class="box-bottom">
                   <span class="plan-text">YOU'RE ON A FREE PLAN</span>
-                  <button class="upgrade-btn">Upgrade</button>
+                  <button class="upgrade-btn">
+                    <h4 class="box-btn-text">UPGRADE</h4>
+                  </button>
                 </div>
               </div>
             </div>
@@ -66,13 +68,15 @@
                 </div>
                 <div class="box-middle">
                   <h1>302</h1>
-                  <span>Church Size</span>
+                  <span class="size-text">Church Size</span>
                 </div>
               </div>
               <div class="bottom">
                 <div class="box-bottom">
                   <span class="plan-text"></span>
-                  <button class="upgrade-btn buy-btn">Buy Unit</button>
+                  <button class="upgrade-btn buy-btn">
+                    <h4 class="box-btn-text">BUY UNIT</h4>
+                  </button>
                 </div>
               </div>
             </div>
@@ -187,11 +191,11 @@
           
           <div class="pies">
             <div class="pie-con">
-              <PieChart domId="pichart" title="Offering Breakdown" subtitle="Overview" distance="5" />
+              <PieChart domId="pichart" title="Offering Breakdown" subtitle="Overview" distance="5" :titleMarginLeft="70" />
             </div>
             
             <div class="pie-con">
-              <PieChart domId="pchart" title="Offering Breakdown" subtitle="Overview" distance="1" />
+              <PieChart domId="pchart" title="Offering Breakdown" subtitle="Overview" distance="1" :titleMarginLeft="70" />
             </div>
           </div>
         </div>
@@ -247,7 +251,6 @@ export default {
 #main {
   display: flex;
   justify-content: space-between;
-  height: 100vh;
 }
 
 .menu-links {
@@ -361,10 +364,10 @@ export default {
 }
 
 .can-do-links a {
-  margin: 5px 0;
+  margin-top: 20px;
   text-decoration: none;
   color: #2b6ecd;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 16px;
 }
 
@@ -385,7 +388,7 @@ export default {
 
 .second-col .number-boxes {
   width: 100%;
-  max-width: 551px;
+  max-width: 589px;
   margin-left: auto;
   display: flex;
   justify-content: flex-end;
@@ -408,7 +411,7 @@ export default {
 
 .box-bottom {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   border-radius: 0px 0px 28px 28px;
   background: #F1F5F8;
   padding: 10px;
@@ -418,7 +421,7 @@ export default {
 }
 
 .box2 .bottom {
-  border: 1px solid #e6e5f2;
+  /* border: 1px solid #e6e5f2; */
   border-radius: 0px 0px 28px 28px;
 }
 
@@ -438,18 +441,19 @@ export default {
   color: #002044;
   border: none;
   width: 110px;
-  text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 800;
   outline: none;
   color: #fff;
+  width: 109.5px;
 }
 
 .upgrade-btn:hover {
   background: #136acd;
+  /* font-weight: 600; */
 }
 
 .buy-btn {
-  width: 94px;
+  width: 109.5px;
   color: #002044;
   background: #797E81;
 }
@@ -463,6 +467,7 @@ export default {
   align-self: center;
   text-transform: uppercase;
   font-weight: 800;
+  width: 80px;
 }
 
 .box-top {
@@ -479,6 +484,11 @@ export default {
 .box-top-text p {
   margin: 0;
   font-size: 12px;
+}
+
+.box-top-text h4 {
+  font-size: 20px;
+  font-weight: 800;
 }
 
 .box-middle h1 {
@@ -552,6 +562,18 @@ export default {
   margin: 0 0 15px 0;
 }
 
+.box-btn-text {
+  margin: 0px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.size-text {
+  color: #136acd;
+  font-weight: 700;
+}
+
 @media screen and (max-width: 376px) {
   .top-row {
     flex-direction: column;
@@ -589,9 +611,13 @@ export default {
   }
 }
 
-/* @media screen and (min-width: 1100px) {
-  .user {
-    margin: 139px 0;
+@media screen and (min-width: 1300px) {
+  .box {
+    width: 260px;
   }
-} */
+
+  .box-middle {
+    padding: 43px 0;
+  }
+}
 </style>

@@ -10,7 +10,11 @@
               alt=""
             />
             <!-- <a href="" class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
-            <a href="" class="user-link">Grace and ... <span class="user-link-icon"><i class="fa fa-angle-right"></i></span></a>
+            <a href="" class="user-link"
+              >Grace and ...
+              <span class="user-link-icon"
+                ><i class="fa fa-angle-right"></i></span
+            ></a>
           </div>
           <router-link to="/home" class="link dashboard-link">
             <img
@@ -21,42 +25,139 @@
             Dashboard
           </router-link>
 
-          <router-link to="/home/people" class="link">
-            <img
-              src="../../assets/dashboardlinks/people.svg"
-              class="link-icon"
-              alt=""
-            />
-            People
-          </router-link>
-
-          <a href="" class="link">
-            <img
-              src="../../assets/dashboardlinks/com-icon.svg"
-              class="link-icon comm"
-              alt=""
-            />
-            
-            <span class="drop-link">Communication <span class="user-link-icon"> <i class="fa fa-angle-down"></i></span></span>
+          <a class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/people')}">
+            <span @click="togglePeopleDropDown">
+              <img
+                src="../../assets/dashboardlinks/people.svg"
+                class="link-icon"
+                alt=""
+              />
+              <span class="drop-link"
+                >People
+                <span class="user-link-icon">
+                  <i
+                    class="fa fa-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': peopleLinkDropped }"
+                  ></i></span
+              ></span>
+            </span>
           </a>
+          <ul class="dd-list" :class="{ 'dd-hide-list': !peopleLinkDropped }">
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/home/people">Members</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/home"
+                >First Timers</router-link
+              >
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Groups</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Families</router-link>
+            </li>
+          </ul>
+          <!-- </a> -->
 
-          <a href="" class="link">
-            <img
-              src="../../assets/dashboardlinks/events-icon.svg"
-              class="link-icon"
-              alt=""
-            />
-            <span class="drop-link">Events <span class="user-link-icon"> <i class="fa fa-angle-down"></i></span></span>
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/communication')}">
+            <span @click="toggleCommDropDown">
+              <img
+                src="../../assets/dashboardlinks/com-icon.svg"
+                class="link-icon comm-link-icon"
+                alt=""
+              />
+              <span class="drop-link"
+                >Communication
+                <span class="user-link-icon">
+                  <i
+                    class="fa fa-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': commLinkDropped }"
+                  ></i></span
+              ></span>
+            </span>
           </a>
+          <ul class="dd-list" :class="{ 'dd-hide-list': !commLinkDropped }">
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">SMS</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Email</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Whatsapp</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Voice</router-link>
+            </li>
+          </ul>
+          <!-- </a> -->
 
-          <a href="" class="link">
-            <img
-              src="../../assets/dashboardlinks/acc-icon.svg"
-              class="link-icon"
-              alt=""
-            />
-            Accounting
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/event')}">
+            <span @click="toggleEventsDropDown">
+              <img
+                src="../../assets/dashboardlinks/events-icon.svg"
+                class="link-icon"
+                alt=""
+              />
+              <span class="drop-link"
+                >Events
+                <span class="user-link-icon">
+                  <i
+                    class="fa fa-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': eventsLinkDropped }"
+                  ></i></span
+              ></span>
+            </span>
           </a>
+          <ul class="dd-list events-list" :class="{ 'dd-hide-list': !eventsLinkDropped }">
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/home/event">Events</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Attendance & Checkin</router-link>
+            </li>
+          </ul>
+          <!-- </a> -->
+
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('home/accounting')}">
+            <span @click="toggleAccDropDown">
+              <img
+                src="../../assets/dashboardlinks/acc-icon.svg"
+                class="link-icon"
+                alt=""
+              />
+              <span class="drop-link"
+                >Accounting
+                <span class="user-link-icon">
+                  <i
+                    class="fa fa-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': accLinkDropped }"
+                  ></i></span
+              ></span>
+            </span>
+          </a>
+          <ul class="dd-list acc-list" :class="{ 'dd-hide-list': !accLinkDropped }">
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Offerings</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Expenses</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Pledges</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Transactions</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Expense Approval</router-link>
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item" to="/">Charts of Account</router-link>
+            </li>
+          </ul>
+          <!-- </a> -->
 
           <a href="" class="link">
             <img
@@ -71,11 +172,15 @@
             <div>
               <p @click="showMore" class="more-tab">
                 <span>{{ dropDownText }}...</span>
-                <span><i class="fa fa-angle-up more-icon" :class="{ 'tbb-icon-rotate': moreShown}"></i></span>
+                <span
+                  ><i
+                    class="fa fa-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': moreShown }"
+                  ></i
+                ></span>
               </p>
             </div>
             <div class="more-links" :class="{ 'hide-more-links': moreShown }">
-
               <a href="" class="link follow-up">
                 <img
                   src="../../assets/dashboardlinks/follow-up-icon.svg"
@@ -115,13 +220,9 @@
           </div>
           <hr class="hr" />
 
-          <a href="" class="link">
-            Settings
-          </a>
+          <a class="link"> Settings </a>
 
-          <a href="" class="link">
-            Integration
-          </a>
+          <a class="link"> Integration </a>
         </div>
       </div>
     </div>
@@ -129,27 +230,74 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref } from "vue";
+import { useRoute } from 'vue-router';
 export default {
   setup() {
-    const moreShown = ref(false);
+    const route = useRoute();
 
+    const moreShown = ref(false);
     const showMore = () => {
       moreShown.value = !moreShown.value;
-    }
+    };
+
+    const peopleLinkDropped = ref(false);
+    const togglePeopleDropDown = () => {
+      peopleLinkDropped.value = !peopleLinkDropped.value;
+      commLinkDropped.value = false;
+      accLinkDropped.value = false;
+      eventsLinkDropped.value = false;
+    };
+
+    const commLinkDropped = ref(false);
+    const toggleCommDropDown = () => {
+      commLinkDropped.value = !commLinkDropped.value;
+      peopleLinkDropped.value = false;
+      eventsLinkDropped.value = false;
+      accLinkDropped.value = false;
+    };
+
+    const eventsLinkDropped = ref(false);
+    const toggleEventsDropDown = () => {
+      eventsLinkDropped.value = !eventsLinkDropped.value;
+      commLinkDropped.value = false;
+      accLinkDropped.value = false;
+      peopleLinkDropped.value = false;
+    };
+
+    const accLinkDropped = ref(false);
+    const toggleAccDropDown = () => {
+      accLinkDropped.value = !accLinkDropped.value;
+      commLinkDropped.value = false;
+      eventsLinkDropped.value = false;
+      peopleLinkDropped.value = false;
+    };
 
     const dropDownText = computed(() => {
       return moreShown.value ? "Less" : "More";
-    })
+    });
 
-    return { moreShown, showMore, dropDownText }
-  }
+    return {
+      route,
+      moreShown,
+      showMore,
+      dropDownText,
+      peopleLinkDropped,
+      togglePeopleDropDown,
+      commLinkDropped,
+      toggleCommDropDown,
+      accLinkDropped,
+      toggleAccDropDown,
+      eventsLinkDropped,
+      toggleEventsDropDown,
+    };
+  },
 };
 </script>
 
 <style scoped>
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .user {
@@ -162,10 +310,10 @@ export default {
 .nav {
   display: flex;
   flex-direction: column;
-  padding: 8px 20px 8px 4px;
+  padding: 8px 20px 24px 4px;
   background: #ebeff4;
-  height: 100vh;
   z-index: 100;
+  min-height: 100vh;
   /* border: 2px solid red; */
 }
 
@@ -177,24 +325,25 @@ export default {
   opacity: 0.5;
   margin: 22px 0 0 0;
   padding-left: 25px;
-  
 }
 
-.user-link, .drop-link {
+.user-link,
+.drop-link {
   width: 100%;
 }
 
 .user-link-icon {
   float: right;
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .nav .link:hover {
-  filter: grayscale(29%) brightness(3%) hue-rotate(338deg) saturate(940%) opacity(95%) contrast(989%);
+  filter: grayscale(29%) brightness(3%) hue-rotate(338deg) saturate(940%)
+    opacity(95%) contrast(989%);
 }
 
 .nav router-link:hover {
-    color: #00204412;
+  color: #00204412;
 }
 .nav .user {
   opacity: 1;
@@ -213,9 +362,9 @@ export default {
 }
 
 .link-image {
-    width: 40px;
-    height: 23px;
-    padding-right: 0;
+  width: 40px;
+  height: 23px;
+  padding-right: 0;
 }
 
 .hr {
@@ -228,7 +377,7 @@ export default {
   float: right;
   transition: all 0.5s ease-in-out;
   transform: rotate(180deg);
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .tbb-icon-rotate {
@@ -240,28 +389,30 @@ export default {
 
 .more-icon:hover {
   cursor: pointer;
-  filter: grayscale(29%) brightness(3%) hue-rotate(338deg) saturate(940%) opacity(95%) contrast(989%);
+  filter: grayscale(29%) brightness(3%) hue-rotate(338deg) saturate(940%)
+    opacity(95%) contrast(989%);
 }
 
 .comm {
   margin-left: -10px;
 }
 
-.router-link-exact-active {
-  filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg) brightness(91%) contrast(189%);
+.link.router-link-exact-active {
+  filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg)
+    brightness(91%) contrast(189%);
   opacity: 1 !important;
-  border-left: 4px solid #136ACD;
+  border-left: 4px solid #136acd;
   border-radius: 2px 2px;
 }
 
 .more-links {
   height: 0;
   overflow: hidden;
-  transition: all .5s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 .hide-more-links {
-  transition: all .5s ease-in-out;
+  transition: all 0.5s ease-in-out;
   height: 164px;
 }
 
@@ -273,8 +424,8 @@ export default {
   font-size: 18px;
   padding-left: 25px;
   margin: 30px 0 10px 0;
-  color: #02172E;
-  opacity: .5;
+  color: #02172e;
+  opacity: 0.5;
 }
 
 .more-tab:hover {
@@ -285,9 +436,54 @@ export default {
   margin-top: 22px !important;
 }
 
+.dd {
+  display: flex;
+  flex-direction: column;
+}
+
+.dd:hover {
+  cursor: pointer;
+}
+
+.dd-list {
+  margin-bottom: 0;
+  overflow: hidden;
+  height: 180px;
+  transition: all 0.3s ease-in-out;
+}
+
+.events-list {
+  height: 90px;
+}
+
+.acc-list {
+  height: 257px;
+}
+
+.dd-hide-list {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+
+.dd-list-item {
+  list-style: none;
+  padding-top: 19px;
+}
+
+.dd-link-item {
+  color: #02172E;
+  text-decoration: none;
+  opacity: .5;
+}
+
+.comm-link-icon {
+  margin-left: -10px;
+}
+
 @media screen and (max-width: 1100px) {
   .nav {
-    width: 287px;
+    width: 266px;
     position: absolute;
     z-index: 10;
   }

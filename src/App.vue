@@ -48,6 +48,7 @@ export default {
 .btn-loading {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .fade-enter-active{
