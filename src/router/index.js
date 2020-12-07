@@ -25,11 +25,11 @@ import FirstTimers from '@/views/people/FirstTimersList.vue';
 
 
 const routes = [
-  {
-    path: '/report',
-    name: 'report',
-    component: Report
-  },
+  // {
+  //   path: '/report',
+  //   name: 'report',
+  //   component: Report
+  // },
   {
     path: '/column',
     name: 'column',
@@ -120,6 +120,11 @@ const routes = [
         path: '/home/people/first-timers',
         name: 'FirstTimers',
         component: FirstTimers
+      },
+      {
+        path: '/home/event/report',
+        name: 'Report',
+        component: Report
       },
     ]
   },

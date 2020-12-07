@@ -16,7 +16,7 @@ export default {
         console.log(props.elemId);
       let highchartsOptions = {
         chart: {
-          type: "area",
+          type: "line",
           renderTo: props.domId,
         },
         xAxis: {
