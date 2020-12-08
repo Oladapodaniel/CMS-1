@@ -47,7 +47,7 @@
               <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/people`">Members</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/tenant"
+              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/first-timers`"
                 >First Timers</router-link
               >
             </li>
@@ -112,7 +112,7 @@
           </a>
           <ul class="dd-list events-list" :class="{ 'dd-hide-list': !eventsLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/tenant/event">Events</router-link>
+              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/event`">Events</router-link>
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item" to="/">Attendance & Checkin</router-link>
