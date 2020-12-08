@@ -124,11 +124,11 @@
       <div class="col-md-4 d-flex flex-column light-red-section pr-5">
         <span>
           <span>Total Attendance: </span>
-          <span>2666</span>
+          <span>{{ stats.todayAttendance }}</span>
         </span>
         <span>
           <span>Total Offering: </span>
-          <span>2666</span>
+          <span>{{ stats.todayOffering }}</span>
         </span>
       </div>
     </div>
