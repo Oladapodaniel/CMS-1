@@ -206,12 +206,13 @@
 </template>
 
 <script>
-// import Highcharts from "highcharts";
-// import { onMounted, ref } from "vue";
-// import Highcharts from "highcharts";
-// import { onMounted, reactive, ref } from "vue";
 import PieChart from "@/components/charts/PieChart.vue"
 import ColumnChart from "@/components/charts/ColumnChart.vue"
+import { onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import store from "@/store/store.js"
+import router from "@/router/index"
+
 
 export default {
   components: {
@@ -220,8 +221,6 @@ export default {
   },
 
   setup() {
-    // const chart = ref(null);
-
     const celebrations = [
       {
         firstName: "FirstName",
@@ -234,6 +233,23 @@ export default {
         mobilePhone: "mobilePhone",
       }
     ];
+
+    const route = useRoute();
+    onMounted(() => {
+      console.log(route.params.userId, "rid");
+      console.log(store.getters.currentUser, "crtuser");
+
+      if (route.params.userId !== store.getters.currentUser.tenantId) {
+        if (store.getters.currentUser.tenantId) {
+          console.log("entered");
+          router.push({name: "Dashboard", params: { userId: store.getters.currentUser.tenantId }})
+        } else {
+          store.dispatch("getUser", route.params.userId);
+        }
+      }
+    })
+    
+
 
 
     return {

@@ -49,7 +49,7 @@ export default {
 
     const addPersonClicked = () => {
       if (route.name === "ImportPeople") {
-        router.push("/home/add-person");
+        router.push("/tenant/add-person");
       } else {
         router.push("/people/import");
       }

@@ -4,7 +4,7 @@
             <p class="header-text">You haven't added any member yet</p>
         </div>
         <div class="options">
-            <div class="option" @click="addPerson('/home/add-person')">
+            <div class="option" @click="addPerson('/tenant/add-person')">
                 <div class="option-img">
                     <img src="../../assets/people/phone-import.svg" alt="Phone Import">
                 </div>

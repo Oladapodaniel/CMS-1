@@ -16,7 +16,7 @@
                 ><i class="fa fa-angle-right"></i></span
             ></a>
           </div>
-          <router-link to="/home" class="link dashboard-link">
+          <router-link to="/tenant/65b0998f-edd2-4a10-32d9-08d89b7258bd" class="link dashboard-link">
             <img
               src="../../assets/dashboardlinks/dashboard-icon.svg"
               class="link-icon"
@@ -25,7 +25,7 @@
             Dashboard
           </router-link>
 
-          <a class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/people')}">
+          <a class="link dd" :class="{'router-link-exact-active': route.path.includes('/tenant/people')}">
             <span @click="togglePeopleDropDown">
               <img
                 src="../../assets/dashboardlinks/people.svg"
@@ -44,10 +44,10 @@
           </a>
           <ul class="dd-list" :class="{ 'dd-hide-list': !peopleLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/home/people">Members</router-link>
+              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/people`">Members</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/home"
+              <router-link class="dd-link-item" to="/tenant"
                 >First Timers</router-link
               >
             </li>
@@ -60,7 +60,7 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/communication')}">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/tenant/communication')}">
             <span @click="toggleCommDropDown">
               <img
                 src="../../assets/dashboardlinks/com-icon.svg"
@@ -93,7 +93,7 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/event')}">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/tenant/event')}">
             <span @click="toggleEventsDropDown">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
@@ -112,7 +112,7 @@
           </a>
           <ul class="dd-list events-list" :class="{ 'dd-hide-list': !eventsLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/home/event">Events</router-link>
+              <router-link class="dd-link-item" to="/tenant/event">Events</router-link>
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item" to="/">Attendance & Checkin</router-link>
@@ -120,7 +120,7 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('home/accounting')}">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('tenant/accounting')}">
             <span @click="toggleAccDropDown">
               <img
                 src="../../assets/dashboardlinks/acc-icon.svg"

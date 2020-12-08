@@ -7,7 +7,7 @@
 
         <div class="col-md-8 d-flex justify-content-end">
             <button class="more mr-3">More <i class="fa fa-angle-down"></i></button>
-            <router-link to="/home/people/add-first-timer" class="add-btn">
+            <router-link to="/tenant/people/add-first-timer" class="add-btn">
                 Add First timer
             </router-link>
         </div>
