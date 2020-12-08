@@ -416,10 +416,10 @@
                 <div class="ana-item">
                   <div class="ana-item-text">
                     <p class="ana-item-header">Attendance</p>
-                    <p class="ana-item-percentage">10.3%</p>
+                    <p class="ana-item-percentage">{{ stats.todayVsLastWeekAttendancePercentage }}%</p>
                     <p>
-                      <span class="ana-item-value">10103</span> vs
-                      <span class="ana-item-value">123</span>
+                      <span class="ana-item-value">{{ stats.todayAttendance }}</span> vs
+                      <span class="ana-item-value">{{ stats.lastWeekAttendance }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -433,11 +433,11 @@
                 </div>
                 <div class="ana-item">
                   <div class="ana-item-text">
-                    <p class="ana-item-header">Attendance</p>
-                    <p class="ana-item-percentage">10.3%</p>
+                    <p class="ana-item-header">Offering</p>
+                    <p class="ana-item-percentage">{{ stats.todayVsLastWeekAttendancePercentage }}%</p>
                     <p>
-                      <span class="ana-item-value">10103</span> vs
-                      <span class="ana-item-value">123</span>
+                      <span class="ana-item-value">{{ stats.todayOffering }}</span> vs
+                      <span class="ana-item-value">{{ stats.lastWeekOffering }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -451,7 +451,7 @@
                 </div>
                 <div class="ana-item">
                   <div class="ana-item-text">
-                    <p class="ana-item-header">Attendance</p>
+                    <p class="ana-item-header">First timers</p>
                     <p class="ana-item-percentage">10.3%</p>
                     <p>
                       <span class="ana-item-value">10103</span> vs
@@ -484,10 +484,10 @@
                 <div class="ana-item">
                   <div class="ana-item-text">
                     <p class="ana-item-header">Attendance</p>
-                    <p class="ana-item-percentage">10.3%</p>
+                    <p class="ana-item-percentage">{{ stats.todayVsLastMonthAttendancePercentage }}%</p>
                     <p>
-                      <span class="ana-item-value">10103</span> vs
-                      <span class="ana-item-value">123</span>
+                      <span class="ana-item-value">{{ stats.todayAttendance }}</span> vs
+                      <span class="ana-item-value">{{ stats.lastMonthAttendance }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -501,11 +501,11 @@
                 </div>
                 <div class="ana-item">
                   <div class="ana-item-text">
-                    <p class="ana-item-header">Attendance</p>
-                    <p class="ana-item-percentage">10.3%</p>
+                    <p class="ana-item-header">Offering</p>
+                    <p class="ana-item-percentage">{{ stats.todayVsLastMonthOfferingPercentage }}%</p>
                     <p>
-                      <span class="ana-item-value">10103</span> vs
-                      <span class="ana-item-value">123</span>
+                      <span class="ana-item-value">{{ stats.todayOffering }}</span> vs
+                      <span class="ana-item-value">{{ stats.lastMonthOffering }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -519,7 +519,7 @@
                 </div>
                 <div class="ana-item">
                   <div class="ana-item-text">
-                    <p class="ana-item-header">Attendance</p>
+                    <p class="ana-item-header">First timers</p>
                     <p class="ana-item-percentage">10.3%</p>
                     <p>
                       <span class="ana-item-value">10103</span> vs
@@ -552,10 +552,10 @@
                 <div class="ana-item">
                   <div class="ana-item-text">
                     <p class="ana-item-header">Attendance</p>
-                    <p class="ana-item-percentage">10.3%</p>
+                    <p class="ana-item-percentage">{{ stats.todayVsLastYearAttendancePercentage }}%</p>
                     <p>
-                      <span class="ana-item-value">10103</span> vs
-                      <span class="ana-item-value">123</span>
+                      <span class="ana-item-value">{{ stats.todayAttendance }}</span> vs
+                      <span class="ana-item-value">{{ stats.lastYearAttendance }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -569,11 +569,11 @@
                 </div>
                 <div class="ana-item">
                   <div class="ana-item-text">
-                    <p class="ana-item-header">Attendance</p>
-                    <p class="ana-item-percentage">10.3%</p>
+                    <p class="ana-item-header">Offering</p>
+                    <p class="ana-item-percentage">{{ stats.todayVsLastYearOfferingPercentage }}%</p>
                     <p>
-                      <span class="ana-item-value">10103</span> vs
-                      <span class="ana-item-value">123</span>
+                      <span class="ana-item-value">{{ stats.todayOffering }}</span> vs
+                      <span class="ana-item-value">{{ stats.lastYearOffering }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -587,7 +587,7 @@
                 </div>
                 <div class="ana-item">
                   <div class="ana-item-text">
-                    <p class="ana-item-header">Attendance</p>
+                    <p class="ana-item-header">First timers</p>
                     <p class="ana-item-percentage">10.3%</p>
                     <p>
                       <span class="ana-item-value">10103</span> vs
@@ -691,12 +691,15 @@
 // import Highcharts from "highcharts";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import axios from "@/gateway/backendapi";
 // import EventReportStats from "@/components/eventreports/EventReportStats";
 
 export default {
   components: { ReportAreaChart, ReportModal },
   setup() {
+      const route = useRoute();
       const reportApproved = ref(false);
       const lastSent = ref("just a moment ago");
       const status = ref("Draft");
@@ -715,6 +718,18 @@ export default {
           sendBtnText.value = "Resend report";
       }
 
+        const stats = ref({ })
+      onMounted(async () => {
+          const activityId = route.params.id;
+          try {
+              const res = await axios.post(`/api/Events/GetAnalysis?activityId=${activityId}`, { name: "gukfeau" });
+              console.log(res.data);
+            stats.value = res.data;
+          } catch(err) {
+              console.log(err.response);
+          }
+      })
+
       return {
           reportApproved,
           toggleReportState,
@@ -723,6 +738,7 @@ export default {
           status,
           lastSent,
           sendBtnText,
+          stats,
       }
   },
 };

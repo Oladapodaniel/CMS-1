@@ -23,6 +23,7 @@ import EventReportStats from '../views/event/EventReportStats'
 import Report from '@/views/event/EventReport.vue'
 import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
 import FirstTimers from '@/views/people/FirstTimersList.vue';
+import EventList from '@/views/event/EventList'
 
 
 const routes = [
@@ -118,6 +119,11 @@ const routes = [
         component: EventReportStats
       },
       {
+        path: '/home/event-list',
+        name: 'EventList',
+        component: EventList
+      },
+      {
         path: '/home/people/add-first-timer',
         name: 'AddFirstTimer',
         component: AddFirstTimer
@@ -128,7 +134,7 @@ const routes = [
         component: FirstTimers
       },
       {
-        path: '/home/event/report',
+        path: '/home/event/report/:id',
         name: 'Report',
         component: Report
       },

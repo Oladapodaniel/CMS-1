@@ -1170,6 +1170,8 @@ Note ...</textarea
 // import { onMounted, ref } from "vue";
 import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
+
+
 export default {
   components: {
     SelectElem,
@@ -1306,10 +1308,13 @@ export default {
         this.offeringItem.push({
           name: offObj.name,
           offeringTypeId: offObj.id,
-          channel: ""
+          channel: "",
+          convertedAmount: 5000
         });
       } else {
-        this.offeringItem.push({});
+        this.offeringItem.push({
+          convertedAmount: 5000
+        });
       }
       console.log(this.offeringItem);
 
@@ -1455,6 +1460,8 @@ export default {
         .post("api/Events/CreateActivity", event)
         .then((res) => {
           console.log(res, "main post");
+          const activityId = res.data.currentEvent.id;
+          this.$router.push({ name: "Report", params: { id: activityId }});
         })
         .catch((err) => console.log(err.response));
     },
