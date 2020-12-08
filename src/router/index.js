@@ -24,6 +24,7 @@ import Report from '@/views/event/EventReport.vue'
 import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
 import FirstTimers from '@/views/people/FirstTimersList.vue';
 import EventList from '@/views/event/EventList'
+import EmptyEvent from '../views/event/EmptyEvent'
 
 
 const routes = [
@@ -122,6 +123,11 @@ const routes = [
         path: '/home/event-list',
         name: 'EventList',
         component: EventList
+      },
+      {  
+        path: '/home/empty-event',
+        name: 'EmptyEvent',
+        component: EmptyEvent
       },
       {
         path: '/home/people/add-first-timer',

@@ -112,7 +112,7 @@
           </a>
           <ul class="dd-list events-list" :class="{ 'dd-hide-list': !eventsLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/home/event">Events</router-link>
+              <router-link class="dd-link-item" to="/home/empty-event">Events</router-link>
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item" to="/">Attendance & Checkin</router-link>
