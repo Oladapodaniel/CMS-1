@@ -1,5 +1,8 @@
 <template>
-     <div class="top mt-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-10">
+        <div class="top mt-3">
           <div class="header">
             <h2>Events</h2>
           </div>
@@ -15,10 +18,15 @@
             <!-- </router-link> -->
           </div>
         </div>
+      </div>
+    </div>
+  </div>
         <hr class="hr" />
         <div class="container">
-            <div>Overall Average</div>
-            <div class="row average">
+          <div class="row">
+            <div class="col-sm-10">
+                 <div class="avg">Overall Average</div>
+            <div class="row avg-table">
                 <div class="col-sm-3">
                     <div>Attendance</div>
                     <div>123,456</div>
@@ -37,12 +45,14 @@
                     <div>2345</div>
                 </div>
             </div>
+            </div>
+          </div>
+          <hr class="hr" />
         </div>
-
-
-
-
-    <div class="table">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-10">
+              <div class="table">
             <div class="top-con">
               <div class="table-top my-2">
                 <div class="select-all">
@@ -53,6 +63,12 @@
                   <p @click="toggleFilterFormVissibility">
                     <i class="fas fa-filter"></i>
                     FILTER
+                  </p>
+                </div>
+                <div class="filter">
+                  <p>
+                    <i class="fas fa-filter"></i>
+                    SORT
                   </p>
                 </div>
                 <div class="search d-flex">
@@ -79,19 +95,6 @@
                   <div class="row">
                     <div class="col-md-9">
                       <div class="row">
-                        <div class="col-md-5 form-group inp">
-                          <select name="" id="" class="form-control">
-                            <option value="">Option 1</option>
-                            <option value="">Option 2</option>
-                          </select>
-                        </div>
-
-                        <div class="col-md-5 offset-md-2 form-group">
-                          <input type="date" class="form-control inp" />
-                        </div>
-                      </div>
-
-                      <div class="row">
                         <div class="col-md-5 form-group">
                           <select name="" id="" class="form-control inp">
                             <option value="">Option 1</option>
@@ -99,11 +102,19 @@
                           </select>
                         </div>
 
-                        <div class="col-md-5 offset-md-2 form-group">
+                        <div class="col-md-5 form-group">
                           <select name="" id="" class="form-control inp">
                             <option value="">Option 1</option>
                             <option value="">Option 2</option>
                           </select>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        
+
+                        <div class="col-md-5 form-group">
+                          <input type="date" class="form-control inp" />
                         </div>
                       </div>
                     </div>
@@ -125,104 +136,32 @@
               </div>
             </div>
 
-            <div class="table-header">
-              <div class="check"></div>
-              <div class="picture theader">
-                <p>STATUS</p>
-              </div>
-              <div class="picture theader">
-                <p>EVENT NAME</p>
-              </div>
-              <div class="picture theader">
-                <p>TITLE</p>
-              </div>
-              <div class="firstname theader">
-                <p>DATE</p>
-              </div>
-              <div class="lastname theader">
-                <p>ATTENDANCE</p>
-              </div>
-              <div class="phone theader">
-                <p>FIRST TIMERS</p>
-              </div>
-              <div class="phone theader">
-                <p>NEW CONVERTS</p>
-              </div>
-              <div class="action"></div>
-            </div>
-
-            <div
-              class="table-body"
-              v-for="person in churchMembers"
-              :key="person.id"
-            >
-              <div class="data-row">
-                <div class="check data">
-                  <input type="checkbox" name="" id="" />
-                </div>
-
-                <div class="picture data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Name</p>
-                    </div>
-                    <div class="data-value">
-                      {{ person.firstName }}
-                    </div>
-                  </div>
-                </div>
-
-                <div class="firstname data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Phone Number</p>
-                    </div>
-                    <div class="data-value">{{ person.mobilePhone }}</div>
-                  </div>
-                </div>
-
-                <div class="lastname data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Source</p>
-                    </div>
-                    <div class="data-value">Social media</div>
-                  </div>
-                </div>
-
-                <div class="phone data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Interested</p>
-                    </div>
-                    <div class="data-value">Yes</div>
-                  </div>
-                </div>
-
-                <div class="phone data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Date</p>
-                    </div>
-                    <div class="data-value">11/11/2011</div>
-                  </div>
-                </div>
-
-                <div class="phone data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Status</p>
-                    </div>
-                    <div class="data-value">SMS sent</div>
-                  </div>
-                </div>
-
-                <div class="action data action-icon">
-                  <i class="fas fa-ellipsis-v"></i>
-                </div>
-              </div>
-              <hr class="row-divider" />
-            </div>
+            
+            <table class="w-100">
+                <thead class="thead">
+                <tr>
+                  <th>STATUS</th>
+                  <th>EVENT NAME</th>
+                  <th>TITLE</th>
+                  <th>DATE</th>
+                  <th>ATTENDANCE</th>
+                  <th>FIRST TIMERS</th>
+                  <th>NEW CONVERTS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(event,index) in events"
+              :key="index">
+                  <td> <div class="td-first">Unsent</div></td>
+                  <td>{{ event.eventName }}</td>
+                  <td>{{ event.date }}</td>
+                  <td>{{ event.status }}</td>
+                  <td>{{ event.status }}</td>
+                  <td>{{ event.firstItmers }}</td>
+                  <td>{{ event.newConverts }}</td>
+              </tr>
+              </tbody>
+              </table>
 
             <div class="table-footer">
               <button class="tbl-footer-btn">
@@ -235,11 +174,31 @@
               </button>
             </div>
           </div>
+            </div>
+          </div>
+        </div>
+
+        
+
+
+    
 </template>
 
 <script>
+import { ref } from 'vue'
 export default {
-    
+    setup() {
+      const events = ref([{ status: 'Oladapo', eventName: 'Daniel', title: '09033246067', date: 'oladapodaniel@', attendanve: 'building', firstItmers: 2, newConverts: true },
+                            { status: 'Oladapo', eventName: 'Daniel', title: '09033246067', date: 'oladapodaniel@', attendanve: 'building', firstItmers: 2, newConverts: true },
+                            { status: 'Oladapo', eventName: 'Daniel', title: '09033246067', date: 'oladapodaniel@', attendanve: 'building', firstItmers: 2, newConverts: true }
+                          ])
+      const  filterFormIsVissible = ref(false)
+      const toggleFilterFormVissibility = () => {
+         filterFormIsVissible.value = ! filterFormIsVissible.value
+      }
+
+      return { events,  filterFormIsVissible, toggleFilterFormVissibility }
+    }
 }
 </script>
 
@@ -342,10 +301,11 @@ export default {
 }
 
 .table {
-  box-shadow: 0px 1px 4px #02172e45;
+  /* box-shadow: 0px 1px 4px #02172e45; */
   border: 1px solid #dde2e6;
   border-radius: 30px;
   text-align: left;
+  width: 100%;
 }
 
 .summary-header {
@@ -420,12 +380,11 @@ export default {
 
 .data-value {
   display: flex;
-  padding-left: 6px;
+  /* padding-left: 6px; */
 }
 
 .theader {
-  padding-left: 2px;
-  text-align: left;
+  margin: 0;
 }
 
 .filter-options {
@@ -443,10 +402,10 @@ export default {
 .apply-btn {
   background: #136acd;
   color: #fff;
-  border: 1px solid #002044;
   border-radius: 111px;
   width: 101px;
   height: 41px;
+  border: none;
   font-weight: 700;
   outline: transparent;
 }
@@ -464,6 +423,8 @@ export default {
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  padding-top: 20px;
+  padding-left: 20px;
 }
 
 .table-top label:hover,
@@ -548,6 +509,59 @@ export default {
 }
 
 /* .average  */
+.avg {
+  font: normal normal bold 24px/32px Nunito Sans;
+  letter-spacing: 0px;
+  color: #136ACD;
+  margin-top: 1em;
+}
+
+.avg-table {
+  margin-top: 2em;
+  border: 1px solid #00204445;
+  border-radius: 10px;
+  margin: 2em 10px;
+  padding: 10px;
+}
+.avg-table > div > div:first-child {
+  font: normal normal 600 16px/13px Nunito Sans;
+  letter-spacing: 0px;
+  color: #002044;
+  padding: 15px;
+}
+
+.avg-table > div > div:nth-child(2) {
+  font: normal normal normal 32px/13px Nunito Sans;
+  letter-spacing: 0px;
+  color: #002044;
+  padding: 15px;
+}
+
+.avg-table > div > div:last-child {
+  font: normal normal normal 14px/13px Nunito Sans;
+letter-spacing: 0px;
+color: #002044;
+padding: 15px;
+}
+
+.thead {
+  background: #f1f3f9;
+  padding: 0 25px;
+}
+
+.td-first {
+  font: normal normal 800 14px/19px Nunito Sans;
+letter-spacing: 0px;
+color: #700303;
+border-top-left-radius: 25px;
+border-bottom-left-radius: 25px;
+background: #da320870;
+padding: 7px;
+}
+
+.top-con {
+  padding: 0px 25px;
+}
 
 @media screen and (max-width: 500px) {
   .picture,
@@ -573,7 +587,7 @@ export default {
   }
 
   .data-con {
-    text-align: center;
+    /* text-align: center; */
     display: flex;
     justify-content: space-between;
   }
@@ -641,7 +655,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   background: #fff;
-  padding: 10px 0;
+  padding: 10px 25px;
   border-radius: 0px 0px 22px 22px;
 }
 
@@ -684,8 +698,7 @@ export default {
 
 @media screen and (min-width: 1400px) {
   .table {
-    width: 68%;
-    margin-top: 0;
+    margin-top: 2em;
   }
 
   .total-text {

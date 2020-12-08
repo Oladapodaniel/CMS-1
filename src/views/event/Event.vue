@@ -457,6 +457,23 @@
           Add
           Attendance
         </div>
+        <!-- <table>
+          <thead>
+            <tr>
+            <th>Attendance Type</th>
+            <th>Count</th>
+            <th>Total</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>dapo</td>
+              <td>dainel</td>
+              <td>tobi</td>
+            </tr>
+          </tbody>
+           
+        </table> -->
         <div class="attendance-header">
           <div class="row">
             <div class="col-sm-3">Attendance Type</div>
@@ -492,20 +509,13 @@
                 id=""
                 v-else
                 v-model="item.attendanceTypeName"
+                placeholder="Enter Attendance Item"
+                ref="focusAttendance"
+                :autofocus="index === newAttendances.length - 1"
               />
-              <!-- <select class="form-control" v-if="item.offeringTypeId">
-                <option
-                  v-for="(newOffering, index) in newOfferings"
-                  :key="index"
-                  :value="newOffering.id"
-                  :selected="newOffering.id === item.offeringTypeId"
-                >
-                  {{ newOffering.name }}
-                </option>
-              </select> -->
             </div>
             <div class="col-sm-3 offset-sm-2">
-              <input type="number" v-model.number="item.number" class="form-control" />
+              <input type="number" v-model.number="item.number" class="form-control" placeholder="Enter Count"/>
             </div>
             <div class="col-sm-2 offset-sm-1">{{ item.number }}</div>
             <div class="col-sm-1" @click="delAttendance(index)">
@@ -561,9 +571,9 @@
         <div class="attendance-header">
           <div class="row">
             <div class="col-sm-3">Offering Item</div>
-            <div class="col-sm-3">Channel</div>
-            <div class="col-sm-2">Amount</div>
-            <div class="col-sm-2">Total</div>
+            <div class="col-sm-2" style="margin-left: -35px;">Channel</div>
+            <div class="col-sm-3" style="margin-left: 35px;">Amount</div>
+            <div class="col-sm-2 offset-sm-1">Total</div>
         </div>
         </div>
 
@@ -594,11 +604,14 @@
                 id=""
                 v-else
                 v-model="item.name"
+                placeholder="Enter Attendance Item"
               />
             </div>
             <div class="col-sm-2 offset-sm-1">
             <select class="w-100 form-control" v-model="item.channel">
-                <option :value="Cheque">Cheque</option>
+                <option :value="selected">Select</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Cash">Cash</option>
                 <option value="POS">POS</option>
                 <option value="Online">Online</option>
                 <option value="Bank Transfer">Bank Transfer</option>
@@ -613,7 +626,7 @@
               </select>
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" v-model.number="item.amount" />
+              <input type="text" class="form-control" v-model.number="item.amount" placeholder="Enter Amount"/>
             </div>
             <div class="col-sm-1 offset-sm-1">{{ item.amount }}</div>
             <div class="col-sm-1 offset-sm-1" @click="delOffering(index)">
@@ -664,7 +677,7 @@
         <div class="col-sm-12 empty">
           <div class="row">
             <div class="col-sm-5 total-2">TOTAL</div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               <!-- <div>Total Attendance</div>
                                 <div>Total Offering</div> -->
               <SelectElem
@@ -1322,23 +1335,18 @@ export default {
       showList.classList.toggle("offering-drop");
     },
     attendance(attObj) {
-    //   this.attendanceItem.push({
-    //     attendanceTypeID: attObj.attendanceTypeID,
-    //   });
-    //   console.log(attObj)
       if (attObj) {
         this.attendanceItem.push({
           attendanceTypeName: attObj.name,
           attendanceTypeID: attObj.attendanceTypeID
         });
-        // console.log(attObj)
       } 
-
       else {
         this.attendanceItem.push({});
       }
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
+      // this.$refs.focusAttendance.focus()
     },
     addEvent(e) {
         this.selectedEventCategoryId = e.target.value;
