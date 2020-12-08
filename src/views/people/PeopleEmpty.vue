@@ -1,5 +1,5 @@
 <template>
-    <div class="no-person" v-if="!loading && people.length === 0">
+    <div class="no-person mt-5" v-if="!loading && people.length === 0">
         <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any member yet</p>

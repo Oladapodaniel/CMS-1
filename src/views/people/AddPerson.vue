@@ -1,12 +1,12 @@
 <template>
   <div class="my-con">
-    <div class="header">
-      <h3 class="header-text">Add Contact</h3>
+    <div class="header mt-2">
+      <h3 class="header-text font-weight-bold">Add Contact</h3>
     </div>
 
     <div class="form-div">
       <form  @submit.prevent="addPerson">
-        <div class="bio-div">
+        <div class="bio-div mt-2">
           <p class="form-section-header">Bio:</p>
           <div class="bio-info">
             <div class="inputs">
@@ -527,7 +527,7 @@ export default {
 .my-con {
   background: #fff;
   padding: 8px;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .bio-div {

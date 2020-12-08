@@ -2,9 +2,9 @@
   <div class="whole-con">
     <div class="main-con">
       <div class="main-body">
-        <div class="top">
+        <div class="top mt-3">
           <div class="header">
-            <h2>People</h2>
+            <h2>Members</h2>
           </div>
           <div class="actions">
             <button class="more-btn button">
@@ -13,7 +13,7 @@
             </button>
             <!-- <router-link class=""> -->
             <button @click="addPersonClicked" class="button add-person-btn">
-              Add Person
+              Add Member
             </button>
             <!-- </router-link> -->
           </div>
@@ -80,7 +80,7 @@ export default {
 .whole-con {
   display: flex;
   /* background: #f1f5f8; */
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .main-con {

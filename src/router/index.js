@@ -24,14 +24,15 @@ import Report from '@/views/event/EventReport.vue'
 import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
 import FirstTimers from '@/views/people/FirstTimersList.vue';
 import EmptyEvent from '../views/event/EmptyEvent'
+import EventList from '@/views/event/EventList'
 
 
 const routes = [
-  {
-    path: '/report',
-    name: 'report',
-    component: Report
-  },
+  // {
+  //   path: '/report',
+  //   name: 'report',
+  //   component: Report
+  // },
   {
     path: '/column',
     name: 'column',
@@ -124,6 +125,11 @@ const routes = [
         component: EmptyEvent
       },
       {
+        path: '/home/event-list',
+        name: 'EventList',
+        component: EventList
+      },
+      {
         path: '/home/people/add-first-timer',
         name: 'AddFirstTimer',
         component: AddFirstTimer
@@ -132,6 +138,11 @@ const routes = [
         path: '/home/people/first-timers',
         name: 'FirstTimers',
         component: FirstTimers
+      },
+      {
+        path: '/home/event/report/:id',
+        name: 'Report',
+        component: Report
       },
     ]
   },
