@@ -1,5 +1,5 @@
 <template>
-  <div class="event" @click="hideModals">
+  <div class="event mt-4" @click="hideModals">
     <div class="bg col-md-10 offset-md-1">
       <div class="container first-pane">
         <div class="row">
@@ -765,7 +765,7 @@ Note ...</textarea
             <div class="row">
                 <div class="col-12 col-sm-4 col-lg-6 events"></div>
                 <div class="col-5 col-sm-3 col-lg-2 btn btn-preview">Preview</div>
-                <div class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save" @click="post">Save and Continue</div>
+                <div class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save"  @click="post">Save and Continue</div>
             </div>
         </div>
     </div>
@@ -1693,7 +1693,7 @@ export default {
 <style scoped>
     .event {
     font-family: 'Nunito sans';
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 
 .events {
