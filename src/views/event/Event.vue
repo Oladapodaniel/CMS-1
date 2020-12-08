@@ -1585,7 +1585,11 @@ export default {
                     return { name: i.name, id: i.id }
                 })
             })
-    }
+    },
+
+    // convertOfferingCurrency() {
+
+    // }
   },
   created() {
     axios.get("/api/offering").then((res) => {

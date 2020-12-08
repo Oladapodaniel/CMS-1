@@ -720,10 +720,11 @@ export default {
 
         const stats = ref({ })
       onMounted(async () => {
+          console.log(process.env.VUE_APP_EXCHANGE_API_KEY, "Key")
           const activityId = route.params.id;
-          try {
-              const res = await axios.post(`/api/Events/GetAnalysis?activityId=${activityId}`, { name: "gukfeau" });
-              console.log(res.data);
+          try { 
+            const res = await axios.post(`/api/Events/GetAnalysis?activityId=${activityId}`, { name: "gukfeau" });
+            console.log(res.data);
             stats.value = res.data;
           } catch(err) {
               console.log(err.response);
