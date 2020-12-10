@@ -44,15 +44,16 @@ export default {
           commit("setCurrentUser", payload)
         },
 
-        async getUser({ commit }, payload) {
+        async getUser({ commit }) {
           try {
             const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
             commit("setCurrentUser", res.data)
-            if (payload !== res.data.tenantId) {
-              router.push("/next")
-            }
+            // if (payload !== res.data.tenantId) {
+            //   router.push("/next")
+            // }
+              router.push(`/tenant/${res.data.tenantId}`)
           } catch(err) {
-            console.log(err, "insore");
+            console.log(err, "in store");
           }
           
         },

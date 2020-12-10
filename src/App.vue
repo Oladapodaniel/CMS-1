@@ -1,7 +1,7 @@
 <template>
-<transition name="fade" mode="out-in">
+<!-- <transition name="fade" mode="out-in"> -->
     <router-view class="view" />
-</transition>
+<!-- </transition> -->
 </template>
 
 <script>
@@ -47,7 +47,7 @@ export default {
   align-items: center;
 }
 
-.fade-enter-active{
+/* .fade-enter-active{
   transition: all 1s cubic-bezier(.67,.01,.86,.65);
 }
 
@@ -59,6 +59,6 @@ export default {
 .fade-leave-to{
   transition: translateX(20px);
   opacity: 0;
-}
+} */
 
 </style>

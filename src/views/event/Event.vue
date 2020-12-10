@@ -1183,6 +1183,7 @@ Note ...</textarea
 // import { onMounted, ref } from "vue";
 import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
+// import store from "@/store/store.js"
 
 
 export default {
@@ -1295,7 +1296,7 @@ export default {
                         // 'Radio',
                       
       showCategory: false,
-      eventText: ""
+      eventText: "",
     };
   },
 
@@ -1469,6 +1470,7 @@ export default {
         .then((res) => {
           console.log(res, "main post");
           const activityId = res.data.currentEvent.id;
+          localStorage.setItem("eventData", JSON.stringify(event))
           this.$router.push({ name: "Report", params: { id: activityId }});
         })
         .catch((err) => console.log(err.response));

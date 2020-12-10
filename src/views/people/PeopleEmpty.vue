@@ -1,8 +1,15 @@
 <template>
     <div class="no-person mt-5" v-if="!loading && people.length === 0">
-        <div class="empty-img">
+        <!-- <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any member yet</p>
+        </div> -->
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <ImportPeople />
+            </div>
+          </div>
         </div>
     </div>
     <div class="people-list" v-if="!loading && people.length > 0">
@@ -17,9 +24,11 @@ import store from "@/store/store.js";
 import PeopleList from '@/views/people/PeopleList.vue';
 import { useRoute } from 'vue-router';
 import router from "@/router/index"
+import ImportPeople from '@/views/people/ImportPeople.vue';
+
 
 export default {
-  components: { PeopleList },
+  components: { PeopleList, ImportPeople },
 
   setup() {
 

@@ -328,10 +328,10 @@ export default {
 .summary {
   /* width: 20%; */
   border-radius: 30px;
-  box-shadow: 0px 3px 6px #2c28281c;
+  /* box-shadow: 0px 3px 6px #2c28281c; */
   padding: 0px 20px 0 20px;
   background: #fff;
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
 }
 
 .table {

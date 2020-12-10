@@ -1,15 +1,17 @@
 <template>
   <div class="container">
-      <div class="row mt-4">
-          <div class="col-md-6">
-              <h2 class="font-weight-bold page-hder">New Event and Report</h2>
-          </div>
-          <div class="col-md-6 d-sm-flex justify-content-end">
-              <a class="def-btn mr-3 px-4">More Actions <i class="fad fa-caret-circle-down"></i></a>
-              <a class="def-btn px-4">Create another report</a>
-          </div>
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <h2 class="font-weight-bold page-hder">New Event and Report</h2>
       </div>
-      <hr class="mb-4">
+      <div class="col-md-6 d-sm-flex justify-content-end">
+        <a class="def-btn mr-3 px-4"
+          >More Actions <i class="fad fa-caret-circle-down"></i
+        ></a>
+        <a class="def-btn px-4">Create another report</a>
+      </div>
+    </div>
+    <hr class="mb-4" />
   </div>
   <div class="container" style="width: 80%">
     <div class="row mx-1 mb-4 mt-3">
@@ -36,7 +38,6 @@
         </div>
       </div>
     </div>
-    
 
     <div class="row mx-1 mb-5">
       <div class="col-md-12">
@@ -69,8 +70,13 @@
                   <span class="grey-text"> just a moment ago</span>
                 </p>
               </div>
-              <div class="col-md-6 d-sm-flex justify-content-end" v-if="!reportApproved">
-                <a class="def-btn approve-btn mr-4" @click="toggleReportState">Approve draft</a>
+              <div
+                class="col-md-6 d-sm-flex justify-content-end"
+                v-if="!reportApproved"
+              >
+                <a class="def-btn approve-btn mr-4" @click="toggleReportState"
+                  >Approve draft</a
+                >
                 <a class="def-btn edit-btn">Edit draft</a>
               </div>
             </div>
@@ -96,10 +102,13 @@
               <div class="col-md-6" v-if="reportApproved">
                 <div class="row">
                   <div class="col-md-12 d-sm-flex justify-content-end">
-                    <a class="def-btn approve-btn mr-4" data-toggle="modal" data-target="#sendReport"
-                        :class="{ 'resend-btn': markedAsSent}"
+                    <a
+                      class="def-btn approve-btn mr-4"
+                      data-toggle="modal"
+                      data-target="#sendReport"
+                      :class="{ 'resend-btn': markedAsSent }"
                     >
-                        {{ sendBtnText }}
+                      {{ sendBtnText }}
                     </a>
                     <a class="def-btn edit-btn">Get share link</a>
                   </div>
@@ -107,7 +116,11 @@
                 <div class="row">
                   <div class="col-md-12 ml-sm-5">
                     <span class="mr-2">or</span>
-                    <a style="color: #136acd;cursor:pointer" @click="markAsSent">mark as sent</a>
+                    <a
+                      style="color: #136acd; cursor: pointer"
+                      @click="markAsSent"
+                      >mark as sent</a
+                    >
                   </div>
                 </div>
               </div>
@@ -204,27 +217,38 @@
             <hr class="hr-dark" />
           </div>
         </div>
-        <div class="row px-5">
-          <div class="col-sm-12">
+        <div class="row">
+          <div
+            class="col-sm-12"
+            v-for="(attendance, index) in eventData.attendances"
+            :key="index"
+          >
+            <div class="row px-5">
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <span class="bold-700">{{
+                      attendance.attendanceTypeName
+                    }}</span>
+                  </div>
+                  <div class="col-sm-4">
+                    <span class="bold-700">{{ attendance.number }}</span>
+                  </div>
+                  <div class="col-sm-4 text-sm-center">
+                    <span class="bold-700">{{ attendance.number }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row">
-              <div class="col-sm-4">
-                <span class="bold-700">Male</span>
-              </div>
-              <div class="col-sm-4">
-                <span class="bold-700">123</span>
-              </div>
-              <div class="col-sm-4 text-sm-center">
-                <span class="bold-700">123</span>
+              <div class="col-sm-12">
+                <hr class="hr" />
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <hr class="hr" />
-          </div>
-        </div>
-        <div class="row px-5">
+
+        <!-- <div class="row px-5">
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-4">
@@ -238,13 +262,13 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
+        </div> -->
+        <!-- <div class="row">
           <div class="col-sm-12">
             <hr class="hr" />
           </div>
-        </div>
-        <div class="row px-5">
+        </div> -->
+        <!-- <div class="row px-5">
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-4">
@@ -258,13 +282,13 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
+        </div> -->
+        <!-- <div class="row">
           <div class="col-sm-12">
             <hr class="hr-dark" />
           </div>
-        </div>
-        <div class="row px-5">
+        </div> -->
+        <!-- <div class="row px-5">
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-4"></div>
@@ -276,7 +300,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -310,76 +334,42 @@
             <hr class="hr-dark" />
           </div>
         </div>
-        <div class="row px-5">
-          <div class="col-sm-12">
+        <div class="row"
+          v-for="(offering, index) in eventData.offerings"
+          :key="index"
+        >
+          <div class="col-md-12">
+            <div class="row px-5">
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <span class="bold-700">{{ offering.name }}</span>
+                  </div>
+                  <div class="col-sm-3">
+                    <span class="bold-700">{{ offering.channel }}</span>
+                  </div>
+                  <div class="col-sm-3">
+                    <span class="bold-700">{{ offering.amount }}</span>
+                  </div>
+                  <div class="col-sm-3 text-sm-center">
+                    <span class="bold-700">{{ offering.amount }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="row">
-              <div class="col-sm-3">
-                <span class="bold-700">Tight</span>
-              </div>
-              <div class="col-sm-3">
-                <span class="bold-700">123</span>
-              </div>
-              <div class="col-sm-3">
-                <span class="bold-700">123</span>
-              </div>
-              <div class="col-sm-3 text-sm-center">
-                <span class="bold-700">123</span>
+              <div class="col-sm-12">
+                <hr class="hr" />
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" >
           <div class="col-sm-12">
-            <hr class="hr" />
+            <hr class="hr-dark" v-if="eventData.offerings.length > 0"/>
           </div>
         </div>
-        <div class="row px-5">
-          <div class="col-sm-12">
-            <div class="row">
-              <div class="col-sm-3">
-                <span class="bold-700">Building</span>
-              </div>
-              <div class="col-sm-3">
-                <span class="bold-700">344</span>
-              </div>
-              <div class="col-sm-3">
-                <span class="bold-700">344</span>
-              </div>
-              <div class="col-sm-3 text-sm-center">
-                <span class="bold-700">344</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <hr class="hr" />
-          </div>
-        </div>
-        <div class="row px-5">
-          <div class="col-sm-12">
-            <div class="row">
-              <div class="col-sm-3">
-                <span class="bold-700">Hospitality</span>
-              </div>
-              <div class="col-sm-3">
-                <span class="bold-700">1222</span>
-              </div>
-              <div class="col-sm-3">
-                <span class="bold-700">1222</span>
-              </div>
-              <div class="col-sm-3 text-sm-center">
-                <span class="bold-700">1222</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <hr class="hr-dark" />
-          </div>
-        </div>
-        <div class="row px-5">
+        <div class="row px-5" v-if="eventData.offerings.length > 0">
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-3"></div>
@@ -387,8 +377,8 @@
               <div class="col-sm-3 text-sm-right">
                 <span class="bold-700">Total</span>
               </div>
-              <div class="col-sm-3text-sm-center">
-                <span class="bold-700">1689</span>
+              <div class="col-sm-3 text-sm-center">
+                <span class="bold-700">{{ tottalOfferings }}</span>
               </div>
             </div>
           </div>
@@ -416,10 +406,17 @@
                 <div class="ana-item">
                   <div class="ana-item-text">
                     <p class="ana-item-header">Attendance</p>
-                    <p class="ana-item-percentage">{{ stats.todayVsLastWeekAttendancePercentage }}%</p>
+                    <p class="ana-item-percentage">
+                      {{ stats.todayVsLastWeekAttendancePercentage }}%
+                    </p>
                     <p>
-                      <span class="ana-item-value">{{ stats.todayAttendance }}</span> vs
-                      <span class="ana-item-value">{{ stats.lastWeekAttendance }}</span>
+                      <span class="ana-item-value">{{
+                        stats.todayAttendance
+                      }}</span>
+                      vs
+                      <span class="ana-item-value">{{
+                        stats.lastWeekAttendance
+                      }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -434,10 +431,17 @@
                 <div class="ana-item">
                   <div class="ana-item-text">
                     <p class="ana-item-header">Offering</p>
-                    <p class="ana-item-percentage">{{ stats.todayVsLastWeekAttendancePercentage }}%</p>
+                    <p class="ana-item-percentage">
+                      {{ stats.todayVsLastWeekAttendancePercentage }}%
+                    </p>
                     <p>
-                      <span class="ana-item-value">{{ stats.todayOffering }}</span> vs
-                      <span class="ana-item-value">{{ stats.lastWeekOffering }}</span>
+                      <span class="ana-item-value">{{
+                        stats.todayOffering
+                      }}</span>
+                      vs
+                      <span class="ana-item-value">{{
+                        stats.lastWeekOffering
+                      }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -484,10 +488,17 @@
                 <div class="ana-item">
                   <div class="ana-item-text">
                     <p class="ana-item-header">Attendance</p>
-                    <p class="ana-item-percentage">{{ stats.todayVsLastMonthAttendancePercentage }}%</p>
+                    <p class="ana-item-percentage">
+                      {{ stats.todayVsLastMonthAttendancePercentage }}%
+                    </p>
                     <p>
-                      <span class="ana-item-value">{{ stats.todayAttendance }}</span> vs
-                      <span class="ana-item-value">{{ stats.lastMonthAttendance }}</span>
+                      <span class="ana-item-value">{{
+                        stats.todayAttendance
+                      }}</span>
+                      vs
+                      <span class="ana-item-value">{{
+                        stats.lastMonthAttendance
+                      }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -502,10 +513,17 @@
                 <div class="ana-item">
                   <div class="ana-item-text">
                     <p class="ana-item-header">Offering</p>
-                    <p class="ana-item-percentage">{{ stats.todayVsLastMonthOfferingPercentage }}%</p>
+                    <p class="ana-item-percentage">
+                      {{ stats.todayVsLastMonthOfferingPercentage }}%
+                    </p>
                     <p>
-                      <span class="ana-item-value">{{ stats.todayOffering }}</span> vs
-                      <span class="ana-item-value">{{ stats.lastMonthOffering }}</span>
+                      <span class="ana-item-value">{{
+                        stats.todayOffering
+                      }}</span>
+                      vs
+                      <span class="ana-item-value">{{
+                        stats.lastMonthOffering
+                      }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -552,10 +570,17 @@
                 <div class="ana-item">
                   <div class="ana-item-text">
                     <p class="ana-item-header">Attendance</p>
-                    <p class="ana-item-percentage">{{ stats.todayVsLastYearAttendancePercentage }}%</p>
+                    <p class="ana-item-percentage">
+                      {{ stats.todayVsLastYearAttendancePercentage }}%
+                    </p>
                     <p>
-                      <span class="ana-item-value">{{ stats.todayAttendance }}</span> vs
-                      <span class="ana-item-value">{{ stats.lastYearAttendance }}</span>
+                      <span class="ana-item-value">{{
+                        stats.todayAttendance
+                      }}</span>
+                      vs
+                      <span class="ana-item-value">{{
+                        stats.lastYearAttendance
+                      }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -570,10 +595,17 @@
                 <div class="ana-item">
                   <div class="ana-item-text">
                     <p class="ana-item-header">Offering</p>
-                    <p class="ana-item-percentage">{{ stats.todayVsLastYearOfferingPercentage }}%</p>
+                    <p class="ana-item-percentage">
+                      {{ stats.todayVsLastYearOfferingPercentage }}%
+                    </p>
                     <p>
-                      <span class="ana-item-value">{{ stats.todayOffering }}</span> vs
-                      <span class="ana-item-value">{{ stats.lastYearOffering }}</span>
+                      <span class="ana-item-value">{{
+                        stats.todayOffering
+                      }}</span>
+                      vs
+                      <span class="ana-item-value">{{
+                        stats.lastYearOffering
+                      }}</span>
                     </p>
                   </div>
                   <div class="ana-item-icon">
@@ -653,7 +685,9 @@
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title font-weight-bold" id="sendReport">Send this report</h5>
+                <h5 class="modal-title font-weight-bold" id="sendReport">
+                  Send this report
+                </h5>
                 <button
                   type="button"
                   class="close"
@@ -664,7 +698,7 @@
                 </button>
               </div>
               <div class="modal-body pt-0 px-0">
-                  <ReportModal />
+                <ReportModal />
               </div>
               <!-- <div class="modal-footer">
                 <button
@@ -691,56 +725,81 @@
 // import Highcharts from "highcharts";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, computed, ref } from "vue";
+import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
 // import EventReportStats from "@/components/eventreports/EventReportStats";
 
 export default {
   components: { ReportAreaChart, ReportModal },
   setup() {
-      const route = useRoute();
-      const reportApproved = ref(false);
-      const lastSent = ref("just a moment ago");
-      const status = ref("Draft");
-      const markedAsSent = ref(false);
-      const sendBtnText = ref("Send report");
+    const route = useRoute();
+    const reportApproved = ref(false);
+    const lastSent = ref("just a moment ago");
+    const status = ref("Draft");
+    const markedAsSent = ref(false);
+    const sendBtnText = ref("Send report");
 
-      const toggleReportState = () => {
-          reportApproved.value = !reportApproved.value;
-          status.value = "Unsent"
+    const toggleReportState = () => {
+      reportApproved.value = !reportApproved.value;
+      status.value = "Unsent";
+    };
+
+    const markAsSent = () => {
+      lastSent.value = "Marked as sent today";
+      status.value = "Sent";
+      markedAsSent.value = true;
+      sendBtnText.value = "Resend report";
+    };
+
+    const stats = ref({});
+    const attendanceArr = ref([]);
+    const offeringArr = ref([]);
+    const eventData = ref([]);
+
+    const tottalOfferings = computed(() => {
+      if (eventData.value.offerings && eventData.value.offerings.length <= 0) return 0;
+      const amounts = eventData.value.offerings.map(i => i.amount);
+      console.log(amounts, "amounts");
+      const sum = amounts.length > 0 ? amounts.reduce((a, b) => a + b) : 0;
+      console.log(sum, "sum");
+      return sum;
+    })
+
+    eventData.value = JSON.parse(localStorage.getItem("eventData"));
+      if (eventData.value) {
+        console.log(eventData.value, "ED");
+        attendanceArr.value = eventData.value.attendances;
+        offeringArr.value = eventData.value.offerings;
       }
-
-      const markAsSent = () => {
-          lastSent.value = "Marked as sent today";
-          status.value = "Sent";
-          markedAsSent.value = true;
-          sendBtnText.value = "Resend report";
+    onMounted(async () => {
+      const activityId = route.params.id;
+      try {
+        const res = await axios.post(
+          `/api/Events/GetAnalysis?activityId=${activityId}`,
+          { name: "gukfeau" }
+        );
+        console.log(res.data);
+        stats.value = res.data;
+      } catch (err) {
+        console.log(err.response);
       }
+    });
 
-        const stats = ref({ })
-      onMounted(async () => {
-          console.log(process.env.VUE_APP_EXCHANGE_API_KEY, "Key")
-          const activityId = route.params.id;
-          try { 
-            const res = await axios.post(`/api/Events/GetAnalysis?activityId=${activityId}`, { name: "gukfeau" });
-            console.log(res.data);
-            stats.value = res.data;
-          } catch(err) {
-              console.log(err.response);
-          }
-      })
-
-      return {
-          reportApproved,
-          toggleReportState,
-          markedAsSent,
-          markAsSent,
-          status,
-          lastSent,
-          sendBtnText,
-          stats,
-      }
+    return {
+      reportApproved,
+      toggleReportState,
+      markedAsSent,
+      markAsSent,
+      status,
+      lastSent,
+      sendBtnText,
+      stats,
+      offeringArr,
+      attendanceArr,
+      eventData,
+      tottalOfferings,
+    };
   },
 };
 </script>
@@ -757,7 +816,7 @@ a {
 }
 
 .page-hder {
-    font-size: 28px;
+  font-size: 28px;
 }
 
 /* Top */
@@ -834,11 +893,11 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #DDE2E6;
+  border: 1px solid #dde2e6;
 }
 
 .def-btn:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .approve-btn {
@@ -970,13 +1029,13 @@ a {
 }
 
 .modal-lg {
-    width: 639px !important;
+  width: 639px !important;
 }
 
 .resend-btn {
-    background: transparent !important;
-    color: #4D6676 !important;
-    border: 1px solid #DDE2E6 !important;
+  background: transparent !important;
+  color: #4d6676 !important;
+  border: 1px solid #dde2e6 !important;
 }
 
 @media screen and (max-width: 1000px) {

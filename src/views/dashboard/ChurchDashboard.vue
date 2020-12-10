@@ -244,7 +244,7 @@ export default {
           console.log("entered");
           router.push({name: "Dashboard", params: { userId: store.getters.currentUser.tenantId }})
         } else {
-          store.dispatch("getUser", route.params.userId);
+          store.dispatch("getUser");
         }
       }
     })
