@@ -37,6 +37,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import store from "@/store/store"
 import router from "@/router/index"
 import { useRoute } from 'vue-router';
+import axios from "@/gateway/backendapi";
 
 export default {
     beforeRouteEnter(to, from, next) {
@@ -77,7 +78,7 @@ export default {
             userId.value = currentUser.tenantId;
         } else {
         try {
-            const res = axios.get("/api/Membership/GetCurrentSignedInUser")
+            axios.get("/api/Membership/GetCurrentSignedInUser")
                 .then(res => {
                     userId.value = res.data.tenantId;
                 })
