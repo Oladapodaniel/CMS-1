@@ -11,11 +11,11 @@
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
-            <!-- <router-link class=""> -->
-            <button @click="addPersonClicked" class="button add-person-btn">
+            <router-link :to="`/tenant/${route.params.userId}/add-person`" class="">
+            <button class="button add-person-btn">
               Add Member
             </button>
-            <!-- </router-link> -->
+            </router-link>
           </div>
         </div>
         <hr class="hr" />
@@ -62,7 +62,7 @@ export default {
     //   Store.commit("setPageTransition", "default");
     // }
 
-    return { addPersonClicked };
+    return { addPersonClicked, route };
   },
 };
 // transition method

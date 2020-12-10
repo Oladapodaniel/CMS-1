@@ -10,10 +10,23 @@
             <h2 class="title">Dashboard</h2>
             <p class="welcome-text">Welcome Back!</p>
           </div>
-          <button class="create-btn">
-            Create a new
-            <i class="fa fa-angle-down create-dd"></i>
-          </button>
+          
+          <div >
+            <button class="create-btn" @click="moreLinksVissible = !moreLinksVissible">
+              Create a new
+              <i class="fa fa-angle-down create-dd"></i>
+            </button>
+            <div class="more-items ml-1" v-if="moreLinksVissible">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12 d-flex flex-column border rounded more-links">
+                    <router-link to="" class="font-weight-bold mt-3">Add member</router-link>
+                    <router-link to="" class="font-weight-bold">Add first timer</router-link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="top-row">
@@ -43,7 +56,7 @@
                   </div>
                 </div>
                 <div class="box-middle">
-                  <h1>302</h1>
+                  <h1>{{ tenantInfo.memberCount }}</h1>
                   <span class="size-text">Church Size</span>
                 </div>
               </div>
@@ -67,7 +80,7 @@
                   </div>
                 </div>
                 <div class="box-middle">
-                  <h1>302</h1>
+                  <h1>{{ tenantInfo.memberCount }}</h1>
                   <span class="size-text">Church Size</span>
                 </div>
               </div>
@@ -208,11 +221,11 @@
 <script>
 import PieChart from "@/components/charts/PieChart.vue"
 import ColumnChart from "@/components/charts/ColumnChart.vue"
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import store from "@/store/store.js"
 import router from "@/router/index"
-
+import axios from "@/gateway/backendapi";
 
 export default {
   components: {
@@ -221,6 +234,11 @@ export default {
   },
 
   setup() {
+    const moreLinksVissible = ref(false);
+    const toggleMoreLinkVissibility = () => {
+      moreLinksVissible.value != moreLinksVissible.value;
+    }
+
     const celebrations = [
       {
         firstName: "FirstName",
@@ -248,12 +266,22 @@ export default {
         }
       }
     })
+
+    const tenantInfo = ref({ });
     
+    axios.get("/dashboard")
+      .then(res => {
+        tenantInfo.value = res.data;
+      })
+      .catch(err => console.log(err.respone))
 
 
 
     return {
       celebrations,
+      tenantInfo,
+      moreLinksVissible,
+      toggleMoreLinkVissibility,
     }
   },
 };
@@ -589,6 +617,15 @@ export default {
   color: #136acd;
   font-weight: 700;
 }
+
+.more-links {
+  margin-top: -10px !important;
+  background: transparent !important;
+  border-top: none !important;
+  position: absolute !important;
+  width: inherit;
+}
+/* WIP */
 
 @media screen and (max-width: 376px) {
   .top-row {

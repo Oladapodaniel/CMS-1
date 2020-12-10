@@ -10,8 +10,8 @@
               alt=""
             />
             <!-- <a href="" class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
-            <a href="" class="user-link"
-              >Grace and ...
+            <a class="user-link"
+              >{{ tenantDisplayName }}
               <span class="user-link-icon"
                 ><i class="fa fa-angle-right"></i></span
             ></a>
@@ -233,6 +233,8 @@
 <script>
 import { computed, ref } from "vue";
 import { useRoute } from 'vue-router';
+import store from "@/store/store"
+import axios from "@/gateway/backendapi";
 export default {
   setup() {
     const route = useRoute();
@@ -278,6 +280,24 @@ export default {
       return moreShown.value ? "Less" : "More";
     });
 
+    const tenantInfo = ref({ });
+    
+    if (!store.getters.currentUser.churchName) {
+      axios.get("/dashboard")
+      .then(res => {
+        tenantInfo.value = res.data;
+      })
+      .catch(err => console.log(err.respone))
+    } else {
+      tenantInfo.value.churchName = store.getters.currentUser.churchName;
+    }
+
+    const tenantDisplayName = computed(() => {
+      if (!tenantInfo.value.churchName) return '';
+      const name = tenantInfo.value.churchName.length < 15 ? tenantInfo.value.churchName : `${tenantInfo.value.churchName.slice(0, 15)}...`;
+      return name;
+    })
+
     return {
       route,
       moreShown,
@@ -291,6 +311,7 @@ export default {
       toggleAccDropDown,
       eventsLinkDropped,
       toggleEventsDropDown,
+      tenantDisplayName,
     };
   },
 };

@@ -827,7 +827,7 @@ export default {
 .tab-header {
   font-weight: 600;
   font-size: 18px;
-  width: 101px;
+  width: auto;
   color: #002044;
 }
 
