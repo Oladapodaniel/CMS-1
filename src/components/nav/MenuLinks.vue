@@ -469,6 +469,7 @@ export default {
 
 .dd-list {
   margin-bottom: 0;
+  margin-left: 20px !important;
   overflow: hidden;
   height: 180px;
   transition: all 0.3s ease-in-out;
