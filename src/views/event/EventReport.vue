@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <div class="row mt-4">
-      <div class="col-md-6">
+      <div class="col-md-5">
         <h2 class="font-weight-bold page-hder">New Event and Report</h2>
       </div>
-      <div class="col-md-6 d-sm-flex justify-content-end">
-        <a class="def-btn mr-3 px-4"
+      <div class="col-md-7 d-sm-flex justify-content-md-end">
+        <a class="def-btn mr-3 px-md-4 my-sm-1"
           >More Actions <i class="fad fa-caret-circle-down"></i
         ></a>
-        <a class="def-btn px-4">Create another report</a>
+        <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
       </div>
     </div>
     <hr class="mb-4" />
@@ -34,7 +34,7 @@
       <div class="col-md-3">
         <span class="theader">Date</span>
         <div class="my-3">
-          <span class="date">11/11/2011</span>
+          <span class="date">{{ eventData.date}}</span>
         </div>
       </div>
     </div>
@@ -152,7 +152,7 @@
         <h2 class="font-weight-bold mb-3" style="font-size: 25px">
           Grace and Power Convention
         </h2>
-        <span class="evt-date text-danger">20th October 2020.</span>
+        <span class="evt-date text-danger">{{ eventDateString }}.</span>
       </div>
       <div class="col-md-5">
         <div class="row">
@@ -160,7 +160,7 @@
             <span class="bold-700">Preacher: </span>
           </div>
           <div class="col-md-6 pl-md-0">
-            <span>Pastor OO Aina</span>
+            <span>{{ eventData.preacher}}</span>
           </div>
         </div>
         <div class="row">
@@ -168,7 +168,7 @@
             <span class="bold-700">Topic: </span>
           </div>
           <div class="col-md-6 pl-md-0">
-            <span>Faith</span>
+            <span>{{ eventData.topic}}</span>
           </div>
         </div>
         <div class="row">
@@ -766,6 +766,11 @@ export default {
       return sum;
     })
 
+    const eventDateString = computed(() => {
+      return new Date(eventData.value.date).toString().split(' ').slice(0, 4).join(' ')
+;
+    })
+
     eventData.value = JSON.parse(localStorage.getItem("eventData"));
       if (eventData.value) {
         console.log(eventData.value, "ED");
@@ -799,6 +804,7 @@ export default {
       attendanceArr,
       eventData,
       tottalOfferings,
+      eventDateString,
     };
   },
 };
@@ -1038,9 +1044,25 @@ a {
   border: 1px solid #dde2e6 !important;
 }
 
+@media screen and (max-width: 414px) {
+  .ana-item {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 507px) {
+  .ana-item {
+    width: 80%;
+  }
+}
+
 @media screen and (max-width: 1000px) {
   .container {
     width: 100% !important;
+  }
+
+  .def-btn {
+    max-width: 280px;
   }
 }
 </style>

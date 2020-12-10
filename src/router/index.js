@@ -65,7 +65,7 @@ const routes = [
     component: StartingDashboard
   },
   {
-    path: '/processing',
+    path: '/processing/:option',
     name: 'ProcessRequest',
     component: ProcessRequest
   },

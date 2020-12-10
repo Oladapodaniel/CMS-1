@@ -157,8 +157,20 @@ export default {
         ? this.userDetails.phoneNumber
         : `${this.zipCode}${this.userDetails.phoneNumber}`;
       console.log(this.userDetails, "userDetails");
-      this.$store.dispatch("setOnboardingData", this.userDetails);
-      this.$router.push("/onboarding/step2");
+      axios
+        .post("/api/onboarding", this.userDetails)
+        .then((res) => {
+          console.log(res, "onboarding response");
+          localStorage.setItem("token", res.data.token);
+          // this.$store.dispatch("setStartPoint", url)
+          this.$router.push("/onboarding/step2");
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+
+      // this.$store.dispatch("setOnboardingData", this.userDetails);
+      // 
     },
 
     selectCountry(e) {
