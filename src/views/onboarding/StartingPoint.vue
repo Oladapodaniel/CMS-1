@@ -27,51 +27,73 @@
           </div>
 
           <div class="all-options">
-            <div class="start-option">
+            <router-link to="" class="start-option">
               <div class="icon">
-                <img class="link-icon" src="../../assets/sms-email.svg" alt="Sms Icon">
+                <img
+                  class="link-icon"
+                  src="../../assets/sms-email.svg"
+                  alt="Sms Icon"
+                />
               </div>
               <div class="link-n-icon">
-                <a href="" class="start-link">Send Email/SMS</a>
+                <a class="start-link">Send Email/SMS</a>
                 <p><i class="fas fa-angle-right"></i></p>
               </div>
-            </div>
+            </router-link>
 
-            <div class="start-option" @click.once="startPointSelected('/people/import')">
+            <router-link
+              class="start-option"
+              :to="`/tenant/add-person`"
+            >
               <div class="icon">
-                <img class="link-icon link-icon-no-bg" src="../../assets/add-member.svg" alt="Add member Icon">
+                <img
+                  class="link-icon link-icon-no-bg"
+                  src="../../assets/people/add-church-members.svg"
+                  alt="Add member Icon"
+                />
               </div>
               <div class="link-n-icon">
-                <a href="" class="start-link">Add church members</a>
+                <a class="start-link">Add church members</a>
                 <p><i class="fas fa-angle-right"></i></p>
               </div>
-            </div>
+            </router-link>
 
-            <div class="start-option" @click.once="startPointSelected('/people/import')">
+            <router-link
+              class="start-option"
+              :to="`/processing/add-first-timer`"
+            >
               <div class="icon">
-                <img class="link-icon" src="../../assets/first-timers.svg" alt="First Timers Icon">
+                <img
+                  class="link-icon"
+                  src="../../assets/first-timers.svg"
+                  alt="First Timers Icon"
+                />
               </div>
               <div class="link-n-icon">
-                <a href="" class="start-link">Add first timers</a>
+                <a class="start-link">Add first timers</a>
                 <p><i class="fas fa-angle-right"></i></p>
               </div>
-            </div>
+            </router-link>
 
-            <div class="start-option" @click.once="startPointSelected('/next')">
+            <router-link class="start-option" to="/next">
               <div class="icon">
-                <img class="link-icon" src="../../assets/not-sure.svg" alt="Question Icon">
+                <img
+                  class="link-icon"
+                  src="../../assets/not-sure.svg"
+                  alt="Question Icon"
+                />
               </div>
               <div class="link-n-icon">
-                <a href="" class="start-link">Not sure yet</a>
+                <a class="start-link">Not sure yet</a>
                 <p><i class="fas fa-angle-right"></i></p>
               </div>
-            </div>
+            </router-link>
           </div>
         </div>
       </div>
     </div>
     <div class="logo">
-      <img src="../../assets/churchplus-logo.png" alt="">
+      <img src="../../assets/churchplus-logo.png" alt="" />
     </div>
   </div>
 </template>
@@ -88,15 +110,11 @@ export default {
       processing: false,
       name: "",
       screenWidth: window.innerWidth,
+      userId: "",
     };
   },
 
   methods: {
-    startPointSelected(url) {
-      // this.processing = !this.processing;
-      this.onboardUser(url);
-    },
-
     onboardUser(url) {
       const userData = this.$store.getters.onboardingData;
       axios
@@ -104,7 +122,7 @@ export default {
         .then((res) => {
           console.log(res, "onboarding response");
           localStorage.setItem("token", res.data.token);
-          this.$store.dispatch("setStartPoint", url)
+          this.$store.dispatch("setStartPoint", url);
           this.$router.push("/processing");
         })
         .catch((err) => {
@@ -113,22 +131,29 @@ export default {
     },
 
     onResize() {
-      this.screenWidth = window.innerWidth
-    }
+      this.screenWidth = window.innerWidth;
+    },
   },
 
-  created() {
-    console.log("starting point");
-    if (!this.$store.getters.onboardingData.firstName) return this.$router.push("/onboarding");
-    this.name = this.$store.getters.onboardingData.firstName;
-    console.log(this.$store.getters.onboardingData, "onboarding data");
+  async created() {
+    const currentUser = this.$store.getters.currentUser;
+    if (currentUser.tenantId) {
+      this.userId = currentUser.tenantId;
+    } else {
+      try {
+        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+        this.userId = res.data.tenantId
+    } catch (err) {
+        console.log(err, "in store");
+      }
+    }
   },
 
   mounted() {
     this.$store.dispatch("setUserUp", true);
     this.$nextTick(() => {
-      window.addEventListener('resize', this.onResize);
-    })
+      window.addEventListener("resize", this.onResize);
+    });
   },
 };
 </script>
@@ -138,6 +163,10 @@ export default {
   position: relative;
   height: 100vh;
   display: flex;
+}
+
+a {
+  text-decoration: none;
 }
 
 .logo {
@@ -269,11 +298,7 @@ export default {
 }
 
 .link-icon-no-bg {
-  width: 60% !important;
-  height: 20px !important;
-  background: #414db7;
   border-radius: 50%;
-  padding: .5rem;
 }
 
 .start-link {
@@ -284,12 +309,12 @@ export default {
 }
 
 .loading-div {
-    max-width: 400px;
-    margin: auto;
-    text-align: center;
-    height: 100%;
-    display: flex;
-    align-items: center;
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .fa-angle-right {

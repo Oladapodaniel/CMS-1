@@ -167,7 +167,7 @@ export default {
 .summary {
   /* width: 20%; */
   border-radius: 30px;
-  box-shadow: 0px 3px 6px #2c28281c;
+  /* box-shadow: 0px 3px 6px #2c28281c; */
   padding: 24px 10px;
   background: #fff;
 }

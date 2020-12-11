@@ -10,13 +10,13 @@
               alt=""
             />
             <!-- <a href="" class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
-            <a href="" class="user-link"
-              >Grace and ...
+            <a class="user-link"
+              >{{ tenantDisplayName }}
               <span class="user-link-icon"
                 ><i class="fa fa-angle-right"></i></span
             ></a>
           </div>
-          <router-link to="/home" class="link dashboard-link">
+          <router-link to="/tenant/65b0998f-edd2-4a10-32d9-08d89b7258bd" class="link dashboard-link">
             <img
               src="../../assets/dashboardlinks/dashboard-icon.svg"
               class="link-icon"
@@ -25,7 +25,7 @@
             Dashboard
           </router-link>
 
-          <a class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/people')}">
+          <a class="link dd" :class="{'router-link-exact-active': route.path.includes('/tenant/people')}">
             <span @click="togglePeopleDropDown">
               <img
                 src="../../assets/dashboardlinks/people.svg"
@@ -44,10 +44,10 @@
           </a>
           <ul class="dd-list" :class="{ 'dd-hide-list': !peopleLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/home/people">Members</router-link>
+              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/people`">Members</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/home"
+              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/first-timers`"
                 >First Timers</router-link
               >
             </li>
@@ -60,7 +60,7 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/communication')}">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/tenant/communication')}">
             <span @click="toggleCommDropDown">
               <img
                 src="../../assets/dashboardlinks/com-icon.svg"
@@ -93,7 +93,7 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/home/event')}">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/tenant/event')}">
             <span @click="toggleEventsDropDown">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
@@ -112,7 +112,8 @@
           </a>
           <ul class="dd-list events-list" :class="{ 'dd-hide-list': !eventsLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/home/empty-event">Events</router-link>
+              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/event`">Events</router-link>
+
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item" to="/">Attendance & Checkin</router-link>
@@ -120,7 +121,7 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('home/accounting')}">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('tenant/accounting')}">
             <span @click="toggleAccDropDown">
               <img
                 src="../../assets/dashboardlinks/acc-icon.svg"
@@ -232,6 +233,8 @@
 <script>
 import { computed, ref } from "vue";
 import { useRoute } from 'vue-router';
+import store from "@/store/store"
+import axios from "@/gateway/backendapi";
 export default {
   setup() {
     const route = useRoute();
@@ -277,6 +280,24 @@ export default {
       return moreShown.value ? "Less" : "More";
     });
 
+    const tenantInfo = ref({ });
+    
+    if (!store.getters.currentUser.churchName) {
+      axios.get("/dashboard")
+      .then(res => {
+        tenantInfo.value = res.data;
+      })
+      .catch(err => console.log(err.respone))
+    } else {
+      tenantInfo.value.churchName = store.getters.currentUser.churchName;
+    }
+
+    const tenantDisplayName = computed(() => {
+      if (!tenantInfo.value.churchName) return '';
+      const name = tenantInfo.value.churchName.length < 15 ? tenantInfo.value.churchName : `${tenantInfo.value.churchName.slice(0, 15)}...`;
+      return name;
+    })
+
     return {
       route,
       moreShown,
@@ -290,6 +311,7 @@ export default {
       toggleAccDropDown,
       eventsLinkDropped,
       toggleEventsDropDown,
+      tenantDisplayName,
     };
   },
 };
@@ -447,6 +469,7 @@ export default {
 
 .dd-list {
   margin-bottom: 0;
+  margin-left: 20px !important;
   overflow: hidden;
   height: 180px;
   transition: all 0.3s ease-in-out;

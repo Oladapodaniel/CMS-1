@@ -7,7 +7,7 @@
 
         <div class="col-md-8 d-flex justify-content-end">
             <button class="more mr-3">More <i class="fa fa-angle-down"></i></button>
-            <router-link to="/home/people/add-first-timer" class="add-btn">
+            <router-link to="/tenant/people/add-first-timer" class="add-btn">
                 Add First timer
             </router-link>
         </div>
@@ -328,10 +328,10 @@ export default {
 .summary {
   /* width: 20%; */
   border-radius: 30px;
-  box-shadow: 0px 3px 6px #2c28281c;
+  /* box-shadow: 0px 3px 6px #2c28281c; */
   padding: 0px 20px 0 20px;
   background: #fff;
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
 }
 
 .table {

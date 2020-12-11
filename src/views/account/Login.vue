@@ -87,10 +87,15 @@ export default {
           const res = await axios.post("/login", state.credentials)
           loading.value = false;
           const { data } = res;
+          console.log(data, "On login");
           
           store.dispatch("setUserData", data);
           localStorage.setItem("token", data.token);
-          router.push("/next")
+          if (data.churchSize > 0) {
+            router.push("/tenant/1")
+          } else {
+            router.push("/next")
+          }
         } catch (err) { 
           
           loading.value = false;

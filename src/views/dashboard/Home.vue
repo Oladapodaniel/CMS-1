@@ -119,11 +119,11 @@ export default {
 }
 
 .fade-enter-active{
-  transition: all 1s cubic-bezier(.67,.01,.86,.65);
+  transition: all .3s cubic-bezier(.67,.01,.86,.65);
 }
 
 .fade-leave-active{
-  transition: all 0.6s cubic-bezier(.67,.01,.86,.65);
+  transition: all 0.3s cubic-bezier(.67,.01,.86,.65);
 }
 
 .fade-enter-from,

@@ -1,8 +1,15 @@
 <template>
     <div class="no-person mt-5" v-if="!loading && people.length === 0">
-        <div class="empty-img">
+        <!-- <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any member yet</p>
+        </div> -->
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <ImportPeople />
+            </div>
+          </div>
         </div>
     </div>
     <div class="people-list" v-if="!loading && people.length > 0">
@@ -13,16 +20,30 @@
 <script>
 import { ref, onMounted } from "vue";
 import axios from "@/gateway/backendapi";
-// import axios from "axios";
+import store from "@/store/store.js";
 import PeopleList from '@/views/people/PeopleList.vue';
+import { useRoute } from 'vue-router';
+import router from "@/router/index"
+import ImportPeople from '@/views/people/ImportPeople.vue';
+
 
 export default {
-  components: { PeopleList },
+  components: { PeopleList, ImportPeople },
 
   setup() {
+
     const people = ref([]);
     const loading = ref(true);
+    const route = useRoute()
     onMounted(async () => {
+      if (route.params.userId !== store.getters.currentUser.tenantId) {
+        if (store.getters.currentUser.tenantId) {
+          console.log("entered");
+          router.push({name: "Dashboard", params: { userId: store.getters.currentUser.tenantId }})
+        } else {
+          store.dispatch("getUser", route.params.userId);
+        }
+      }
       try {
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
         people.value = data;
@@ -30,13 +51,8 @@ export default {
       } catch (err) {
         loading.value = false;
         console.log(err);
-        // NProgress.done(true)
       }
     });
-    
-    // const people = [ ];
-
-
     
     return {
       people,

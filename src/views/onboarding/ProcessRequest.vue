@@ -3,27 +3,30 @@
     <div class="top-container">
       <div class="loading-div" :class="{ box1: processing }">
         <div class="spin-div">
-            <div v-if="processing">
-                <i class="loading-icon fas fa-circle-notch fa-spin"></i>
-            </div>
-            <div>
-                <h3 @click="test">Hang tight!</h3>
-                <h3>We 're setting things up for you.</h3>
-            </div>
+          <div v-if="processing">
+            <i class="loading-icon fas fa-circle-notch fa-spin"></i>
+          </div>
+          <div>
+            <h3 @click="test">Hang tight!</h3>
+            <h3>We 're setting things up for you.</h3>
+          </div>
         </div>
         <!-- <i class="fa fa-spinner fa-spin"></i> -->
       </div>
 
       <div class="desc" :class="{ box2: processing }">
-          <div class="desc-details">
-              <div class="image-box">
-              <img src="../../assets/laptop.png" alt="">
+        <div class="desc-details">
+          <div class="image-box">
+            <img src="../../assets/laptop.png" alt="" />
           </div>
           <div class="desc-text">
-              <h4>All-in-one Church management software</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et odit voluptates voluptate.</p>
+            <h4>All-in-one Church management software</h4>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Et odit
+              voluptates voluptate.
+            </p>
           </div>
-          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -33,6 +36,8 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue';
 import store from "@/store/store"
 import router from "@/router/index"
+import { useRoute } from 'vue-router';
+import axios from "@/gateway/backendapi";
 
 export default {
     beforeRouteEnter(to, from, next) {
@@ -41,6 +46,10 @@ export default {
     },
 
     setup() {
+        const route = useRoute();
+        const userSelectedRoute = route.params.option;
+        console.log(userSelectedRoute);
+
         onMounted(() => {
             console.log(store.getters.userStartPoint, "user p");
             const url = store.getters.userStartPoint;
@@ -50,7 +59,7 @@ export default {
             }, 200);
             setTimeout(() => {
                 if (url) router.push(url)
-                else router.push("/next")
+                else router.push(`/tenant/${userId.value}/${userSelectedRoute}`)
             }, 3000);
         })
 
@@ -61,6 +70,24 @@ export default {
         const processing = ref(false)
         const toggleProcessing = () => {
             processing.value = !processing.value;
+        }
+
+        const userId = ref('')
+        const currentUser = store.getters.currentUser;
+        if (currentUser.tenantId) {
+            userId.value = currentUser.tenantId;
+        } else {
+        try {
+            axios.get("/api/Membership/GetCurrentSignedInUser")
+                .then(res => {
+                    userId.value = res.data.tenantId;
+                })
+                .catch(err => console.log(err.response))
+            
+            
+        } catch (err) {
+            console.log(err, "in store");
+        }
         }
 
         return { processing }
@@ -94,96 +121,95 @@ export default {
 </script>
 
 <style scoped>
-    .top-container {
-        display: flex;
-    }
+.top-container {
+  display: flex;
+}
 
-    .loading-div {
-        width: 55%;
-        display: flex;
-        transition: all 1s ease-in-out;
-    }
+.loading-div {
+  width: 55%;
+  display: flex;
+  transition: all 1s ease-in-out;
+}
 
-    .spin-div {
-        width: 80%;
-        margin: auto;
-        text-align: center;
-    }
+.spin-div {
+  width: 80%;
+  margin: auto;
+  text-align: center;
+}
 
-    .spin-div h3 {
-        font-size: 32px;
-        color: #252A2F;
-    }
+.spin-div h3 {
+  font-size: 32px;
+  color: #252a2f;
+}
 
-    .loading-icon {
-        font-size: 100px;
-        color: #4C39A6;
-    }
+.loading-icon {
+  font-size: 100px;
+  color: #4c39a6;
+}
 
-    .desc {
-        display: flex;
-        width: 45%;
-        height: 100vh;
-        background-image: -webkit-linear-gradient(top, #2E67CE 0%, #690C7F 100%);
-        transition: all 0.7s ease-in-out;
-    }
+.desc {
+  display: flex;
+  width: 45%;
+  height: 100vh;
+  background-image: -webkit-linear-gradient(top, #2e67ce 0%, #690c7f 100%);
+  transition: all 0.7s ease-in-out;
+}
 
-    .desc-details {
-        width: 80%;
-        margin: auto;
-    }
+.desc-details {
+  width: 80%;
+  margin: auto;
+}
 
-    .image-box img {
-        width: 100%
-    }
+.image-box img {
+  width: 100%;
+}
 
-    .desc-text {
-        text-align: center;
-        color: #fff;
-    }
+.desc-text {
+  text-align: center;
+  color: #fff;
+}
 
-    .desc-text h4 {
-        font-size: 20px;
-    }
+.desc-text h4 {
+  font-size: 20px;
+}
 
-  @media screen and (min-width: 601px) {
-        .box1 {
-        transform: translateX(80%);
-    }
-
-    .box2 {
-        transform: translateX(-127%);
-    }
+@media screen and (min-width: 601px) {
+  .box1 {
+    transform: translateX(80%);
   }
 
-    @media screen and (max-width: 600px) {
-        .desc {
-            display: none;
-        }
+  .box2 {
+    transform: translateX(-127%);
+  }
+}
 
-        .loading-div {
-            width: 100%;
-        }
+@media screen and (max-width: 600px) {
+  .desc {
+    display: none;
+  }
 
-        .spin-div {
-            margin: 40px auto;
-        }
-    }
+  .loading-div {
+    width: 100%;
+  }
 
-    @media screen and (max-width: 460px) {
-        .spin-div h3 {
-            font-size: 20px;
-            
-        }
+  .spin-div {
+    margin: 40px auto;
+  }
+}
 
-        .loading-icon {
-            font-size: 60px;
-        }
-    }
+@media screen and (max-width: 460px) {
+  .spin-div h3 {
+    font-size: 20px;
+  }
 
-    @media screen and (min-width: 1300px) {
-        .desc-text h4 {
-            font-size: 30px;
-        }
-    }
+  .loading-icon {
+    font-size: 60px;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .desc-text h4 {
+    font-size: 30px;
+  }
+}
 </style>

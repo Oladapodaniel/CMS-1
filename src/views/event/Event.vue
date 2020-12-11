@@ -437,7 +437,7 @@
                 <label for="date">Date</label>
               </div>
               <div class="col-sm-6">
-                <input type="date" v-model="eventDate" class="form-control" />
+                <input type="date" v-model="eventDate" class="form-control" required />
               </div>
               <div class="col-sm-6">
                 <label for="topic">Topic</label>
@@ -1172,6 +1172,7 @@ Note ...</textarea
 // import { onMounted, ref } from "vue";
 import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
+// import store from "@/store/store.js"
 
 
 export default {
@@ -1422,6 +1423,7 @@ export default {
         .then((res) => {
           console.log(res, "main post");
           const activityId = res.data.currentEvent.id;
+          localStorage.setItem("eventData", JSON.stringify(event))
           this.$router.push({ name: "Report", params: { id: activityId }});
         })
         .catch((err) => console.log(err.response));
