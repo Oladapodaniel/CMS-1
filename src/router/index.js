@@ -26,6 +26,7 @@ import FirstTimers from '@/views/people/FirstTimersList.vue';
 // import EmptyEvent from '../views/event/EmptyEvent'
 import EventList from '@/views/event/EventList'
 import SmsList from '@/views/communication/SmsList'
+import Editor from '@/components/communication/TextEditor'
 
 
 const routes = [
@@ -34,6 +35,11 @@ const routes = [
     path: '/column',
     name: 'column',
     component: Column
+  },
+  {
+    path: '/editor',
+    name: 'editor',
+    component: Editor
   },
   {
     path: '/sms',
