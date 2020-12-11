@@ -381,7 +381,8 @@
                 <div v-for="(eventCategory,index) in filterEventCategory" :key="index" class="ofering">
                   <div class="ofering" @click="individualEvent(eventCategory)">{{ eventCategory.name }}</div>
                 </div>
-                <div @click="addEvent" class="create cat ofering">Add new Event</div>
+                <div v-if="filterEventCategory == []">{{ eventText }}</div>
+                <div @click="addEvent" v-else class="create cat ofering">Add New Event</div>     
             </div>
             
             <!-- <div class="event-category">Add event Categories</div> -->
@@ -457,24 +458,7 @@
           Add
           Attendance
         </div>
-        <!-- <table>
-          <thead>
-            <tr>
-            <th>Attendance Type</th>
-            <th>Count</th>
-            <th>Total</th>
-          </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>dapo</td>
-              <td>dainel</td>
-              <td>tobi</td>
-            </tr>
-          </tbody>
-           
-        </table> -->
-        <div class="attendance-header">
+        <div class="attendance-header d-none d-md-block">
           <div class="row">
             <div class="col-sm-3">Attendance Type</div>
             <div class="col-sm-3 offset-sm-2">Count</div>
@@ -485,11 +469,11 @@
         <div
           class="attendance-body"
           id="attendanceBody"
-          v-for="(item, index) in attendanceItem"
-          :key="index"
+          v-for="(item, indx) in attendanceItem"
+          :key="indx"
         >
           <div class="row">
-            <div class="col-sm-3">
+            <div class="col-6 col-md-3">
               <select class="form-control" v-if="item.attendanceTypeID">
                 <option
                   v-for="(newAttendance, index) in newAttendances"
@@ -511,21 +495,21 @@
                 v-model="item.attendanceTypeName"
                 placeholder="Enter Attendance Item"
                 ref="focusAttendance"
-                :autofocus="index === newAttendances.length - 1"
+                :autofocus="indx == 2" 
               />
             </div>
-            <div class="col-sm-3 offset-sm-2">
+            <div class="col-5 col-md-3 offset-md-2">
               <input type="number" v-model.number="item.number" class="form-control" placeholder="Enter Count"/>
             </div>
-            <div class="col-sm-2 offset-sm-1">{{ item.number }}</div>
-            <div class="col-sm-1" @click="delAttendance(index)">
+            <div class="d-none d-md-block col-sm-2 offset-sm-1">{{ item.number }}</div>
+            <div class="col-1" @click="delAttendance(index)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
           </div>
         </div>
 
         <div
-          class="col-sm-12 text-center add-attendance ofering"
+          class="col-12 text-center add-attendance ofering"
           id="addAttendance"
           @click="addAttendance"
         >
@@ -551,7 +535,7 @@
             Create New Attendance Item
           </div>
         </div>
-        <button
+        <!-- <button
           hidden
           type="button"
           id="modalTogglerAttendance"
@@ -559,16 +543,21 @@
           data-toggle="modal"
           data-target="#exampleModalAttendance"
         >
-          Launch demo modal
-        </button>
-        <div class="col-sm-12 empty"></div>
+          Launch demo modal<div></div>
+        </button> -->
+        <div class="col-sm-12 empty">
+          <div class="row">
+            <div class="offset-sm-7 col-2 offset-4">TOTAL</div>
+            <div class="col-3">{{ addAttendanceTotal }}</div>
+          </div>
+        </div>
         <!-- <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea> -->
 
-        <div class="col-sm-12 offset-sm-1 add">
+        <div class="col-12 offset-sm-1 add">
           Add
           Offering
         </div>
-        <div class="attendance-header">
+        <div class="attendance-header d-none d-lg-block">
           <div class="row">
             <div class="col-sm-3">Offering Item</div>
             <div class="col-sm-2" style="margin-left: -35px;">Channel</div>
@@ -586,7 +575,7 @@
           :key="index"
         >
           <div class="row">
-            <div class="col-sm-2">
+            <div class="col-8 col-lg-2">
               <select class="form-control" v-if="item.offeringTypeId">
                 <option
                   v-for="(newOffering, index) in newOfferings"
@@ -607,7 +596,7 @@
                 placeholder="Enter Attendance Item"
               />
             </div>
-            <div class="col-sm-2 offset-sm-1">
+            <div class="col-4 col-lg-2 offset-sm-1">
             <select class="w-100 form-control" v-model="item.channel">
                 <option :value="selected">Select</option>
                 <option value="Cheque">Cheque</option>
@@ -676,7 +665,7 @@
 
         <div class="col-sm-12 empty">
           <div class="row">
-            <div class="col-sm-5 total-2">TOTAL</div>
+            <div class="col-sm-5 total-2 offset-sm-1">TOTAL</div>
             <div class="col-sm-3">
               <!-- <div>Total Attendance</div>
                                 <div>Total Offering</div> -->
@@ -690,7 +679,7 @@
                 value="NGN - Naira"
               />
             </div>
-            <div class="col-sm-3 align-self-center">{{ addOfferingTotal }}</div>
+            <div class="col-sm-2 align-self-center offset-sm-1">{{ addOfferingTotal }}</div>
           </div>
         </div>
         <!-- <div class="col-sm-12 text-center add-attendance" @click="createFirstTimers">Add First Timers</div> -->
@@ -1222,52 +1211,8 @@ export default {
       newEvents: [],
       attendanceText: "",
       offeringText: "",
-      day: [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-      ],
-      months: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ],
+      day:  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 ],
+      months: [ "January","February","March","April","May","June","July","August","September","October","November","December"],
       showForm1: false,
       showForm: false,
       showForm2: false,
@@ -1295,7 +1240,8 @@ export default {
                         // 'Radio',
                       
       showCategory: false,
-      eventText: ""
+      eventText: "",
+      toggleFocus: true
     };
   },
 
@@ -1346,7 +1292,14 @@ export default {
       }
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
-      // this.$refs.focusAttendance.focus()
+      // 
+      // if (this.$refs.focusAttendance == undefined) {
+      //   this.toggleFocus = !this.toggleFocus
+      // } else {
+      //   console.log('itis defined')
+      //   this.toggleFocus = false
+      //   this.$refs.focusAttendance.focus()
+      // }
     },
     addEvent(e) {
         this.selectedEventCategoryId = e.target.value;
@@ -1546,6 +1499,7 @@ export default {
 
         if (data.dataType === "howDidYouAboutUsId") {
             this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(i => i.name === data.value).id
+            console.log(this.firstTimersObj.howDidYouAboutUsId)
 
         }
 
@@ -1594,10 +1548,6 @@ export default {
                 })
             })
     },
-
-    // convertOfferingCurrency() {
-
-    // }
   },
   created() {
     axios.get("/api/offering").then((res) => {
@@ -1650,14 +1600,26 @@ export default {
 
     filterEventCategory() {
         // let x;
-        if (this.eventText !== "" && this.newEvents.length > 0) {
-            return this.newEvents.filter((i) => {
+
+       let arr = []
+        if (this.newEvents.length > 0) {
+            arr = this.newEvents.filter((i) => {
                 return i.name.toLowerCase().includes(this.eventText.toLowerCase());
                 });
-            } else {
-                return this.newEvents
+                    
+            // } else if (this.newEvents.length <= 0) {
+            // // return this.newEvents.filter((i) => {
+            // //     return i.name.toLowerCase().includes(this.eventText.toLowerCase());
+            // //     });
+            // // console.log(this.eventText)
+            //   return this.addEventCategoryText = this.eventText
             }
-            // return x
+            
+            else {
+                return this.newEvents
+                // this.addEventCategoryText = this.eventText
+            }
+            return arr
         }
         
     ,
@@ -1667,6 +1629,15 @@ export default {
       if (this.offeringItem.length === 1) return this.offeringItem[0].amount;
       const amounts = this.offeringItem.map((i) => +i.amount);
       return amounts.reduce((a, b) => {
+        return (a || 0) + (b || 0);
+      });
+    },
+
+    addAttendanceTotal() {
+      if (this.attendanceItem.length <= 0) return 0;
+      if (this.attendanceItem.length === 1) return this.attendanceItem[0].number;
+      const number = this.attendanceItem.map((i) => +i.number);
+      return number.reduce((a, b) => {
         return (a || 0) + (b || 0);
       });
     },
