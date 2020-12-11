@@ -25,6 +25,7 @@ import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
 import FirstTimers from '@/views/people/FirstTimersList.vue';
 // import EmptyEvent from '../views/event/EmptyEvent'
 import EventList from '@/views/event/EventList'
+import SmsList from '@/views/communication/SmsList'
 
 
 const routes = [
@@ -33,6 +34,11 @@ const routes = [
     path: '/column',
     name: 'column',
     component: Column
+  },
+  {
+    path: '/sms',
+    name: 'Sms',
+    component: SmsList
   },
   {
     path: '/',
