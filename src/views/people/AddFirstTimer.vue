@@ -303,7 +303,7 @@
             const onSubmit = () => {
                 console.log(firstTimersObj.value)
 
-                axios.post('/api​/People​/FirstTimer', firstTimersObj.value)
+                axios.post('/api/people/firsttimer', firstTimersObj.value)
                     .then(res => console.log(res.data))
                     .catch(err => console.log(err))
             }

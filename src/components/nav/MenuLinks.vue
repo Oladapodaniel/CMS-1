@@ -112,7 +112,7 @@
           </a>
           <ul class="dd-list events-list" :class="{ 'dd-hide-list': !eventsLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/event`">Events</router-link>
+              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/empty-event`">Events</router-link>
 
             </li>
             <li class="dd-list-item">

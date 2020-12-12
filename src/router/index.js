@@ -106,17 +106,17 @@ const routes = [
         component: AddPerson
       },
       {
-        path: '/home/event',
+        path: 'event',
         name: 'Event',
         component: Event
       },
       {
-        path: '/home/empty-event',
+        path: 'empty-event',
         name: 'EmptyEvent',
         component: EmptyEvent
       },
       {
-        path: '/home/event-list',
+        path: 'event-list',
         name: 'EventList',
         component: EventList
       },
