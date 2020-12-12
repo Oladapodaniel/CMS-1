@@ -1,49 +1,45 @@
 <template>
-<transition name="fade" mode="out-in">
+<!-- <transition name="fade" mode="out-in"> -->
     <router-view class="view" />
-</transition>
+<!-- </transition> -->
 </template>
 
 <script>
+import axios from "@/gateway/backendapi";
+import store from "@/store/store.js";
+
 export default {
   name: "App",
 
   data() {
     return { transitionName: null };
   },
+
+  methods: {
+    async getCurrentUser() {
+      try {
+        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+        console.log(res.data, "Current user");
+        store.dispatch("setCurrentUser", res.data);
+        // console.log(store.getters.currentUser);
+      } catch(err) {
+        console.log(err.response);
+      }
+    }
+  },
+
+  created() {
+    this.getCurrentUser()
+  }
 };
 </script>
 
 <style>
 #app {
-  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center;
-  color: #2c3e50; */
-}
-/* 
-.slide-left-enter-active,
-.slide-left-leave-active,
-.slide-right-enter-active,
-.slide-right-leave-active {
-  transition-duration: 0.5s;
-  transition-property: height, opacity, transform;
-  transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
-  overflow: hidden;
-} */
-
-/* .slide-left-enter,
-.slide-right-leave-active {
-  opacity: 0;
-  transform: translate(2em, 0);
 }
 
-.slide-left-leave-active,
-.slide-right-enter {
-  opacity: 0;
-  transform: translate(-2em, 0);
-} */
 
 .btn-loading {
   display: flex;
@@ -51,7 +47,7 @@ export default {
   align-items: center;
 }
 
-.fade-enter-active{
+/* .fade-enter-active{
   transition: all 1s cubic-bezier(.67,.01,.86,.65);
 }
 
@@ -63,6 +59,6 @@ export default {
 .fade-leave-to{
   transition: translateX(20px);
   opacity: 0;
-}
+} */
 
 </style>

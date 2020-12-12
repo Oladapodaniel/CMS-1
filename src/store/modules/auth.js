@@ -1,14 +1,23 @@
+import axios from "@/gateway/backendapi";
+import router from "@/router/index"
+
+
 export default {
     state: {
         userEmail: "",
         onboardingData: {},
         userRole: "",
         userData: {},
+        currentUser: {},
         userStartPoint: "",
         settingUserUp: false,
     },
 
     mutations: {
+        setCurrentUser(state, payload) {
+            state.currentUser = payload;
+        },
+
         setUserEmail(state, payload) {
             state.userEmail = payload;
         },
@@ -31,6 +40,24 @@ export default {
     },
 
     actions: {
+        setCurrentUser({ commit }, payload) {
+          commit("setCurrentUser", payload)
+        },
+
+        async getUser({ commit }) {
+          try {
+            const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+            commit("setCurrentUser", res.data)
+            // if (payload !== res.data.tenantId) {
+            //   router.push("/next")
+            // }
+              router.push(`/tenant/${res.data.tenantId}`)
+          } catch(err) {
+            console.log(err, "in store");
+          }
+          
+        },
+
         setUserEmail({ commit }, payload) {
           commit("setUserEmail", payload)
         },
@@ -53,6 +80,7 @@ export default {
       },
 
       getters: {
+        currentUser: state => state.currentUser,
         userEmail: state => state.userEmail,
         onboardingData: state => state.onboardingData,
         userRole: state => state.userRole,

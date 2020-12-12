@@ -11,11 +11,11 @@
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
-            <!-- <router-link class=""> -->
-            <button @click="addPersonClicked" class="button add-person-btn">
+            <router-link :to="`/tenant/${route.params.userId}/add-person`" class="">
+            <button class="button add-person-btn">
               Add Member
             </button>
-            <!-- </router-link> -->
+            </router-link>
           </div>
         </div>
         <hr class="hr" />
@@ -49,7 +49,7 @@ export default {
 
     const addPersonClicked = () => {
       if (route.name === "ImportPeople") {
-        router.push("/home/add-person");
+        router.push("/tenant/add-person");
       } else {
         router.push("/people/import");
       }
@@ -62,7 +62,7 @@ export default {
     //   Store.commit("setPageTransition", "default");
     // }
 
-    return { addPersonClicked };
+    return { addPersonClicked, route };
   },
 };
 // transition method
@@ -129,29 +129,6 @@ export default {
   padding: 0 8px;
 }
 
-/* .no-person {
-  height: 100%;
-  display: flex;
-  text-align: center;
-}
-
-.empty-img {
-  width: 30%;
-  min-width: 397px;
-  margin: auto;
-}
-
-.empty-img img {
-  width: 100%;
-  max-width: 200px;
-}
-
-.tip {
-  color: #02172e;
-  font-size: 20px;
-  font-weight: 600;
-} */
-
 .hr {
   border: 0.8px solid #0020440a;
   margin: 0 4px;
@@ -187,11 +164,11 @@ export default {
 }
 
 .fade-enter-active {
-  transition: all 1s cubic-bezier(0.67, 0.01, 0.86, 0.65);
+  transition: all .3s cubic-bezier(0.67, 0.01, 0.86, 0.65);
 }
 
 .fade-leave-active {
-  transition: all 0.6s cubic-bezier(0.67, 0.01, 0.86, 0.65);
+  transition: all 0.3s cubic-bezier(0.67, 0.01, 0.86, 0.65);
 }
 
 .fade-enter-from,

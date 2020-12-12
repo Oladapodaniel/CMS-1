@@ -20,16 +20,16 @@
                 </div>
               </div>
               <div class="input-field">
-                <label for="" class="label">Surname<span style="color:red"> *</span></label>
-                <input type="text" class="input" placeholder="" v-model="person.lastName" required />
-              </div>
-              <div class="input-field">
                 <label for="" class="label">Firstname<span style="color:red"> *</span></label>
                 <input type="text" class="input" placeholder="" v-model="person.firstName" required />
               </div>
               <div class="input-field">
-                <label for="" class="label">Phone number <span style="color:red"> *</span></label>
-                <input type="text" class="input" placeholder="" v-model="person.mobilePhone" required />
+                <label for="" class="label">Surname</label>
+                <input type="text" class="input" placeholder="" v-model="person.lastName" />
+              </div>
+              <div class="input-field">
+                <label for="" class="label">Phone number</label>
+                <input type="text" class="input" placeholder="" v-model="person.mobilePhone" />
               </div>
               <div class="input-field">
                 <label for="" class="label">Email</label>
@@ -174,13 +174,13 @@
             <div class="inputs">
               <div class="input-field">
                 <label for="" class="label">Occupation</label>
-                <input type="text" class="input" placeholder="" />
+                <input type="text" class="input" placeholder="" v-model="person.occupation" />
               </div>
               <div class="input-field">
                 <label for="" class="label">Age</label>
                 <div class="cstm-select search-box">
                   <div class="cs-select" style="width:330px">
-                    <SelectElem name="agegroup" :options="['-Select age range', '14 - 18', '19 - 25', '26 - 40', '41 - 60', '61 and above']" value="-Select age range" @input="itemSelected"/>
+                    <SelectElem name="agegroup" :options="['-Select age range', ...groupsByAge]" value="-Select age range" @input="itemSelected"/>
                   </div>
                   
                 </div>
@@ -244,8 +244,6 @@ import { ref, reactive, onMounted, computed } from "vue";
 import router from "@/router/index"
 import axios from "@/gateway/backendapi";
 import SelectElem from '@/components/select/SelectElement.vue'
-
-import NProgress from 'nprogress'
 
 export default {
   components: { SelectElem },
@@ -328,7 +326,6 @@ export default {
       for (let i = 1; i <= daysInAnnMonth.value; i++) {
         arrOfDays.push(i);
       }
-      console.log(arrOfDays, "anndayys");
       return arrOfDays;
     })
 
@@ -363,24 +360,27 @@ export default {
     const errMessage = ref("");
     const addPerson = async () => {
       const personObj = { ...person };
+      console.log(person, "person");
       
       const formData = new FormData();
       formData.append("firstName", personObj.firstName)
       formData.append("lastName", personObj.lastName)
       formData.append("mobilePhone", personObj.mobilePhone)
-      formData.append("email", personObj.email)
+      formData.append("email", personObj.email ? personObj.email : '')
+      formData.append("occupation", personObj.occupation)
       formData.append("dayOfBirth", +birthDate.date());
-      formData.append("monthOfBirth", birthDate.month());
+      formData.append("monthOfBirth", (birthDate.month() + 1));
       formData.append("yearOfBirth", +birthDate.year());
       formData.append("occupation", personObj.occupation);
       formData.append("yearOfWedding", +anniversaryDate.year());
-      formData.append("monthOfWedding", +anniversaryDate.month());
+      formData.append("monthOfWedding", (+anniversaryDate.month() + 1));
       formData.append("dayOfWedding", +anniversaryDate.date());
-      formData.append("peopleClassificationID", membershipId.value);
+      formData.append("peopleClassificationID", membershipId.value ? membershipId.value : '');
       formData.append("address", personObj.address);
       formData.append("picture", image);
-      formData.append("maritalStatusID", personObj.maritalStatusID);
-      formData.append("genderID", personObj.genderID);
+      formData.append("maritalStatusID", personObj.maritalStatusID ? personObj.maritalStatusID : '');
+      formData.append("genderID", personObj.genderID ? personObj.genderID : '');
+      formData.append("ageGroupID", personObj.ageGroupID ? personObj.ageGroupID : '');
       try {
         console.log(formData);
         loading.value = true;
@@ -388,7 +388,7 @@ export default {
         
         if (response.status === 200 || response.status === 201) {
           loading.value = false;
-          router.push("/home/people")
+          router.push("/tenant/people")
         }
       } catch (err) {
         loading.value = false;
@@ -400,7 +400,7 @@ export default {
     const itemSelected = (data) => {
       //Membership
       if (data.dataType === "membership") {
-        membershipId.value = data.value;
+        membershipId.value = memberships.find(i => i.name === data.value).id
       }
       //gender
       if (data.dataType === "gender") {
@@ -422,25 +422,21 @@ export default {
       if (data.dataType === "birthyear") {
         console.log(data);
         editBirthDateValue('year', data.value)
-        console.log(`${birthDate.date()}/${birthDate.month() + 1}/${birthDate.year()}`);
       }
       //Anniversary
       if (data.dataType === "annmonth") {
         const dateValue = months.indexOf(data.value)
         editAnnDateValue('month', dateValue.toString())
-        console.log(`${anniversaryDate.date()}/${anniversaryDate.month() + 1}/${anniversaryDate.year()}`);
       }
       if (data.dataType === "annday") {
         editAnnDateValue('date', data.value)
-        console.log(`${anniversaryDate.date()}/${anniversaryDate.month() + 1}/${anniversaryDate.year()}`);
       }
       if (data.dataType === "annyear") {
         editAnnDateValue('year', data.value)
-        console.log(`${anniversaryDate.date()}/${anniversaryDate.month() + 1}/${anniversaryDate.year()}`);
       }
       //Age group
       if (data.dataType === "agegroup") {
-        console.log(data);
+        person.ageGroupID = ageGroups.value.find(i => i.name === data.value).id;
       }
     }
 
@@ -449,25 +445,36 @@ export default {
     const getLookUps = () => {
       axios.get('/api/LookUp/GetAllLookUps')
         .then(res => {
-          
           genders.value = res.data.find(i => i.type.toLowerCase() === "gender").lookUps;
           maritalStatus.value = res.data.find(i => i.type.toLowerCase() === "marital status").lookUps;
         })
+        .catch(err => console.log(err.response))
     }
+
+    let ageGroups = ref([ ]);
+    const getAgeGroups = () => {
+      axios.get("/api/Settings/GetTenantAgeGroups")
+        .then(res => {
+          ageGroups.value = res.data;
+        })
+        .catch(err => console.log(err.response))
+    }
+    const groupsByAge = computed(() => ageGroups.value.map(i => i.name))
     const gendersArr = computed(() => {
       return genders.value.map(i => i.value);
     })
     const maritalStatusArr = computed(() => {
       return maritalStatus.value.map(i => i.value);
     })
-
     
+    let memberships = [ ]
     onMounted(async () => {
       getLookUps();
+      getAgeGroups()
       try {
-        NProgress.start()
         const response = await axios.get("/api/Settings/GetTenantPeopleClassification");
         const {data} = response;
+        memberships = data;
         peopleClassifications.value = data.map(i => i.name);
       } catch(err) {
         console.log(err);
@@ -513,6 +520,7 @@ export default {
       maritalStatus,
       gendersArr,
       maritalStatusArr,
+      groupsByAge,
     };
   },
 };
@@ -819,7 +827,7 @@ export default {
 .tab-header {
   font-weight: 600;
   font-size: 18px;
-  width: 101px;
+  width: auto;
   color: #002044;
 }
 

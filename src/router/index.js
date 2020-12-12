@@ -23,20 +23,22 @@ import EventReportStats from '../views/event/EventReportStats'
 import Report from '@/views/event/EventReport.vue'
 import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
 import FirstTimers from '@/views/people/FirstTimersList.vue';
-import EmptyEvent from '../views/event/EmptyEvent'
+// import EmptyEvent from '../views/event/EmptyEvent'
 import EventList from '@/views/event/EventList'
+import SmsList from '@/views/communication/SmsList'
 
 
 const routes = [
-  // {
-  //   path: '/report',
-  //   name: 'report',
-  //   component: Report
-  // },
+
   {
     path: '/column',
     name: 'column',
     component: Column
+  },
+  {
+    path: '/sms',
+    name: 'Sms',
+    component: SmsList
   },
   {
     path: '/',
@@ -69,7 +71,7 @@ const routes = [
     component: StartingDashboard
   },
   {
-    path: '/processing',
+    path: '/processing/:option',
     name: 'ProcessRequest',
     component: ProcessRequest
   },
@@ -89,58 +91,54 @@ const routes = [
     component: ResetPassword
   },
   {
-    path: '/home',
+    path: '/tenant/:userId',
     name: 'Home',
     component: Home,
     children: [
       {
         path: '',
+        name: 'Dashboard',
         component: ChurchDashboard
       },
       {
-        path: '/home/people',
+        path: 'people',
         component: People,
         children: [
           {path: '', component: PeopleEmpty},
-          {path: '/people/import', component: ImportPeople, name: 'ImportPeople'}
+          {path: 'import', component: ImportPeople, name: 'ImportPeople'}
         ]
       },
       {
-        path: '/home/add-person',
+        path: 'add-person',
         component: AddPerson
       },
       {
-        path: '/home/event',
+        path: 'event',
         name: 'Event',
         component: Event
       },
       {
-        path: '/home/event-report-stat',
+        path: 'event-report-stat',
         name: 'EventReportStats',
         component: EventReportStats
       },
       {
-        path: '/home/empty-event',
-        name: 'EmptyEvent',
-        component: EmptyEvent
-      },
-      {
-        path: '/home/event-list',
+        path: 'event-list',
         name: 'EventList',
         component: EventList
       },
       {
-        path: '/home/people/add-first-timer',
+        path: 'add-first-timer',
         name: 'AddFirstTimer',
         component: AddFirstTimer
       },
       {
-        path: '/home/people/first-timers',
+        path: 'first-timers',
         name: 'FirstTimers',
         component: FirstTimers
       },
       {
-        path: '/home/event/report/:id',
+        path: 'report/:id',
         name: 'Report',
         component: Report
       },
@@ -168,25 +166,12 @@ const router = createRouter({
   routes
 })
 
+
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token")
   if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" &&  to.name !== "StartingPoint" && !token) return next("/")
   if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
   next(true)
 })
-
-// router.beforeResolve((to, from, next) => {
-//   // If this isn't an initial page load.
-//   if (to.name) {
-//     // Start the route progress bar.
-//     NProgress.start()
-//   }
-//   next()
-// })
-
-// router.afterEach((to, from) => {
-//   // Complete the animation of the route progress bar.
-//   NProgress.done()
-// })
 
 export default router

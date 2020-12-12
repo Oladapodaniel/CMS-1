@@ -131,7 +131,7 @@ export default {
       step1Completed: true,
       userDetails: {
         subscriptionPlanID: 1,
-        countryId: 1,
+        countryId: 89,
         password: "password",
       },
 
@@ -157,8 +157,23 @@ export default {
         ? this.userDetails.phoneNumber
         : `${this.zipCode}${this.userDetails.phoneNumber}`;
       console.log(this.userDetails, "userDetails");
-      this.$store.dispatch("setOnboardingData", this.userDetails);
-      this.$router.push("/onboarding/step2");
+      this.loading = true;
+      axios
+        .post("/api/onboarding", this.userDetails)
+        .then((res) => {
+          console.log(res, "onboarding response");
+          localStorage.setItem("token", res.data.token);
+          // this.$store.dispatch("setStartPoint", url)
+          this.loading = false;
+          this.$router.push("/onboarding/step2");
+        })
+        .catch((err) => {
+          this.loading = false;
+          console.log(err.response);
+        });
+
+      // this.$store.dispatch("setOnboardingData", this.userDetails);
+      // this.$router.push("/onboarding/step2");
     },
 
     selectCountry(e) {
@@ -204,17 +219,12 @@ export default {
       this.countries.forEach(i => {
         if (i.phoneCode) codes.push(i.phoneCode);
       });
-      console.log(codes);
-
       return codes;
     },
   },
  
   created() {
-    console.log(this.$store.getters.userEmail);
     if (!localStorage.getItem("email")) this.$router.push("/");
-    // if (!this.$store.getters.userEmail) this.$router.push("/")
-    // this.userDetails.email = this.$store.getters.userEmail;
 
     this.userDetails.email = localStorage.getItem("email");
     axios.get("/api/GetAllCountries").then((res) => {
