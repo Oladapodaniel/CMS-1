@@ -131,7 +131,7 @@ export default {
       step1Completed: true,
       userDetails: {
         subscriptionPlanID: 1,
-        countryId: 1,
+        countryId: 89,
         password: "password",
       },
 
@@ -173,7 +173,7 @@ export default {
         });
 
       // this.$store.dispatch("setOnboardingData", this.userDetails);
-      // 
+      // this.$router.push("/onboarding/step2");
     },
 
     selectCountry(e) {
