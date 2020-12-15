@@ -20,53 +20,61 @@
             <div class="col-md-3" id="side-menu">
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                  <router-link to="/tenant/2/communications/compose-message" class="btn compose-btn">Compose new SMS</router-link>
+                  <router-link to="/tenant/communications/compose-message" class="btn compose-btn">Compose new SMS</router-link>
                 </div>
               </div>
-              <div class="row">
+              <div class="row mb-3">
                 <div
                   class="col-md-12"
                 >
-                  <div class="row menu-item-con active py-2">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
-                        <i class="fas fa-inbox mr-3 menu-icon"></i>
                         <span class="menu-item"
-                          ><router-link to="/tenant/2/communications">Inbox</router-link>
+                          ><router-link class="r-link" to="/tenant/communications">
+                            <i class="fas fa-inbox mr-3 menu-icon"></i>
+                            <span class="active">Inbox</span>
+                          </router-link>
                           <span class="inbox-count ml-md-2">3</span></span
                         >
                       </a>
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications/sent'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
-                        <i class="fa fa-location-arrow mr-3 menu-icon"></i>
                         <span class="menu-item">
-                            <router-link to="/tenant/2/communications/sent">Sent</router-link>
+                            <router-link class="r-link" to="/tenant/communications/sent">
+                              <i class="fa fa-location-arrow mr-3 menu-icon"></i>
+                              <span class="active">Sent</span>
+                            </router-link>
                         </span>
                     </a>
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications/draft'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
-                        <i class="fa fa-envelope-open mr-3 menu-icon"></i>
                         <span class="menu-item">
-                            <router-link to="/tenant/2/communications/draft">Draft</router-link>
+                            <router-link class="r-link" to="/tenant/communications/draft">
+                              <i class="fa fa-envelope-open mr-3 menu-icon"></i>
+                              <span class="active">Draft</span>
+                            </router-link>
                         </span>
                     </a>
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications/contacts'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
-                        <i class="fa fa-list-alt mr-3 menu-icon"></i>
                         <span class="menu-item">
-                            <router-link to="/tenant/2/communications/contacts">Contact List</router-link>
+                            <router-link class="r-link" to="/tenant/communications/contacts">
+                              <i class="fa fa-list-alt mr-3 menu-icon"></i>
+                              <span class="active">Contact List</span>
+                            </router-link>
                         </span>
                     </a>
                     </div>
@@ -92,10 +100,21 @@
 </template>
 
 <script>
-export default {};
+import { useRoute } from 'vue-router';
+export default {
+  setup() {
+    const route = useRoute();
+
+    return {
+      route,
+    }
+  }
+};
 </script>
 
 <style scoped>
+
+
 #main {
   border: 1px solid #02172e30;
   border-radius: 30px;
@@ -160,13 +179,20 @@ export default {};
 
 .menu-item-con {
     color: #002044;
-    opacity: 0.5;
 }
 
-.menu-item-con.active {
+.active {
+  opacity: .5;
+}
+
+.active-link {
     background: rgba(19, 106, 205, 0.05);
     border-left: 2px solid #136ACD;
-    opacity: 1;
+    
+}
+
+.router-link-exact-active .active {
+   opacity: 1 !important;
 }
 
 .buy-btn {
@@ -194,6 +220,14 @@ export default {};
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.r-link {
+  color: #002044;
+}
+.router-link-exact-active i {
+  color: #136ACD;
+  opacity: 1;
 }
 
 @media screen and (max-width: 767px) {

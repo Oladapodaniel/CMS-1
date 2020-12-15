@@ -36,14 +36,14 @@ export default {
     const loading = ref(true);
     const route = useRoute()
     onMounted(async () => {
-      if (route.params.userId !== store.getters.currentUser.tenantId) {
-        if (store.getters.currentUser.tenantId) {
-          console.log("entered");
-          router.push({name: "Dashboard", params: { userId: store.getters.currentUser.tenantId }})
-        } else {
-          store.dispatch("getUser", route.params.userId);
-        }
-      }
+      // if (route.params.userId !== store.getters.currentUser.tenantId) {
+      //   if (store.getters.currentUser.tenantId) {
+      //     console.log("entered");
+      //     router.push({name: "Dashboard", params: { userId: store.getters.currentUser.tenantId }})
+      //   } else {
+      //     store.dispatch("getUser", route.params.userId);
+      //   }
+      // }
       try {
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
         people.value = data;

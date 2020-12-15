@@ -4,7 +4,7 @@
       <p class="header-text">You haven't added any member yet</p>
     </div>
     <div class="options">
-      <div class="option" @click="addPerson(`/tenant/${userId}/add-person`)">
+      <div class="option" @click="addPerson(`/tenant/add-person`)">
         <div class="option-img">
           <img src="../../assets/people/phone-import.svg" alt="Phone Import" />
         </div>
@@ -49,16 +49,16 @@ export default {
     const userId = ref('')
 
     onMounted(() => {
-      if (store.getters.currentUser.tenantId) {
-        userId.value = store.getters.currentUser.tenantId;
-      } else {
-        axios
-          .get("/api/Membership/GetCurrentSignedInUser")
-          .then((res) => {
-            userId.value = res.data.tenantId;
-          })
-          .catch((err) => console.log(err.response));
-      }
+      // if (store.getters.currentUser.tenantId) {
+      //   userId.value = store.getters.currentUser.tenantId;
+      // } else {
+      //   axios
+      //     .get("/api/Membership/GetCurrentSignedInUser")
+      //     .then((res) => {
+      //       userId.value = res.data.tenantId;
+      //     })
+      //     .catch((err) => console.log(err.response));
+      // }
     });
 
     return {

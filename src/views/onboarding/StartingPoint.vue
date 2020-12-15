@@ -135,19 +135,19 @@ export default {
     },
   },
 
-  async created() {
-    const currentUser = this.$store.getters.currentUser;
-    if (currentUser.tenantId) {
-      this.userId = currentUser.tenantId;
-    } else {
-      try {
-        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        this.userId = res.data.tenantId
-    } catch (err) {
-        console.log(err, "in store");
-      }
-    }
-  },
+  // async created() {
+  //   const currentUser = this.$store.getters.currentUser;
+  //   if (currentUser.tenantId) {
+  //     this.userId = currentUser.tenantId;
+  //   } else {
+  //     try {
+  //       const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+  //       this.userId = res.data.tenantId
+  //   } catch (err) {
+  //       console.log(err, "in store");
+  //     }
+  //   }
+  // },
 
   mounted() {
     this.$store.dispatch("setUserUp", true);

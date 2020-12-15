@@ -102,7 +102,7 @@ const routes = [
     component: ResetPassword
   },
   {
-    path: '/tenant/:userId',
+    path: '/tenant',
     name: 'Home',
     component: Home,
     children: [
@@ -116,7 +116,12 @@ const routes = [
         component: People,
         children: [
           {path: '', component: PeopleEmpty},
-          {path: 'import', component: ImportPeople, name: 'ImportPeople'}
+          {path: 'import', component: ImportPeople, name: 'ImportPeople'},
+          {
+            path: 'add-first-timer',
+            name: 'AddFirstTimer',
+            component: AddFirstTimer
+          },
         ]
       },
       {
@@ -138,11 +143,7 @@ const routes = [
         name: 'EventList',
         component: EventList
       },
-      {
-        path: 'add-first-timer',
-        name: 'AddFirstTimer',
-        component: AddFirstTimer
-      },
+      
       {
         path: 'first-timers',
         name: 'FirstTimers',

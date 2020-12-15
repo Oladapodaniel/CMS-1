@@ -58,8 +58,9 @@ export default {
                 toggleProcessing()
             }, 200);
             setTimeout(() => {
-                if (url) router.push(url)
-                else router.push(`/tenant/${userId.value}/${userSelectedRoute}`)
+                // if (url) router.push(url)
+                // else router.push(`/tenant/${userSelectedRoute}`)
+                router.push(`/tenant/${userSelectedRoute}`)
             }, 3000);
         })
 
@@ -72,23 +73,23 @@ export default {
             processing.value = !processing.value;
         }
 
-        const userId = ref('')
-        const currentUser = store.getters.currentUser;
-        if (currentUser.tenantId) {
-            userId.value = currentUser.tenantId;
-        } else {
-        try {
-            axios.get("/api/Membership/GetCurrentSignedInUser")
-                .then(res => {
-                    userId.value = res.data.tenantId;
-                })
-                .catch(err => console.log(err.response))
-            
-            
-        } catch (err) {
-            console.log(err, "in store");
-        }
-        }
+        // const userId = ref('')
+        // const currentUser = store.getters.currentUser;
+        // if (currentUser.tenantId) {
+        //     userId.value = currentUser.tenantId;
+        // } else {
+        //   try {
+        //       axios.get("/api/Membership/GetCurrentSignedInUser")
+        //           .then(res => {
+        //               userId.value = res.data.tenantId;
+        //           })
+        //           .catch(err => console.log(err.response))
+              
+              
+        //   } catch (err) {
+        //       console.log(err, "in store");
+        //   }
+        // }
 
         return { processing }
     }

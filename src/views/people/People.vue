@@ -11,7 +11,7 @@
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
-            <router-link :to="`/tenant/${route.params.userId}/add-person`" class="">
+            <router-link :to="`/tenant/add-person`" class="">
             <button class="button add-person-btn">
               Add Member
             </button>

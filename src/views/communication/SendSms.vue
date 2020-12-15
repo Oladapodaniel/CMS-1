@@ -145,6 +145,16 @@ export default {
     align-items: center;
     justify-content: flex-end;
 }
+
+.dropdown-toggle:focus {
+  outline: none !important;
+  border: none;
+}
+
+.inp:focus {
+  outline: none;
+  border: none;
+}
 </style>
 
 <style>

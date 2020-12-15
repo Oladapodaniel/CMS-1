@@ -68,12 +68,12 @@
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-5 d-md-flex justify-content-between">
+                        <div class="col-md-2 d-md-flex justify-content-between">
                            <span class="hidden-header">SENDER: </span>
                           <span>message</span>
                         </div>
                         <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
+                          class="col-md-5 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
                             >MESSAGE:
@@ -108,12 +108,12 @@
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-5 d-md-flex justify-content-between">
+                        <div class="col-md-2 d-md-flex justify-content-between">
                            <span class="hidden-header">SENDER: </span>
                           <span>message</span>
                         </div>
                         <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
+                          class="col-md-5 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header">message: </span>
                           <span>message</span>

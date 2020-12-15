@@ -1579,7 +1579,7 @@ export default {
     filterAttendance() {
       if (this.attendanceText !== "" && this.newAttendances.length > 0) {
         return this.newAttendances.filter((i) => {
-          return i.toLowerCase().includes(this.attendanceText.toLowerCase());
+          return i.name.toLowerCase().includes(this.attendanceText.toLowerCase());
         });
       } else {
         return this.newAttendances;
@@ -1599,7 +1599,7 @@ export default {
     filterOffering() {
       if (this.offeringText !== "" && this.newOfferings.length > 0) {
         return this.newOfferings.filter((i) => {
-          return i.toLowerCase().includes(this.offeringText.toLowerCase());
+          return i.name.toLowerCase().includes(this.offeringText.toLowerCase());
         });
       } else {
         return this.newOfferings;
@@ -2289,6 +2289,11 @@ tr.event-list td {
 .cat {
     padding: 5px;
     border-top: 1px solid #ecf0f3;
+}
+
+.offering-drop {
+  max-height: 300px;
+  overflow: auto;
 }
 
 @media (min-width: 576px) {
