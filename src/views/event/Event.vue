@@ -494,8 +494,7 @@
                 v-else
                 v-model="item.attendanceTypeName"
                 placeholder="Enter Attendance Item"
-                ref="focusAttendance"
-                :autofocus="indx == 2" 
+                ref="attendanceInput"
               />
             </div>
             <div class="col-5 col-md-3 offset-md-2">
@@ -594,6 +593,7 @@
                 v-else
                 v-model="item.name"
                 placeholder="Enter Attendance Item"
+                ref="offeringInput"
               />
             </div>
             <div class="col-4 col-lg-2 offset-sm-1">
@@ -1275,6 +1275,9 @@ export default {
         this.offeringItem.push({
           convertedAmount: 5000
         });
+        this.$nextTick(() => {
+          this.$refs.offeringInput.focus();
+        });
       }
       console.log(this.offeringItem);
 
@@ -1290,6 +1293,9 @@ export default {
       } 
       else {
         this.attendanceItem.push({});
+        this.$nextTick(() => {
+          this.$refs.attendanceInput.focus();
+        });
       }
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
