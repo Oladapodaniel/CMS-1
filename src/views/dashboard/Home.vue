@@ -100,11 +100,13 @@ export default {
     position: fixed;
     left: -266px;
     z-index: 9;
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1)
   }
 
   .links-menu.show {
     position: fixed;
     left: 0;
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1)
   }
 
   .main-con {

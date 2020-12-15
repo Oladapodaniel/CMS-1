@@ -19,11 +19,10 @@ import AddPerson from '../views/people/AddPerson.vue';
 import List from '../views/people/PeopleList.vue';
 import Event from '../views/event/Event.vue'
 import Column from '@/components/charts/ColumnChart.vue';
-import EventReportStats from '../views/event/EventReportStats'
 import Report from '@/views/event/EventReport.vue'
 import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
 import FirstTimers from '@/views/people/FirstTimersList.vue';
-// import EmptyEvent from '../views/event/EmptyEvent'
+import EmptyEvent from '../views/event/EmptyEvent'
 import EventList from '@/views/event/EventList'
 import SmsList from '@/views/communication/SmsList'
 import SendSms from '@/views/communication/SendSms'
@@ -130,9 +129,9 @@ const routes = [
         component: Event
       },
       {
-        path: 'event-report-stat',
-        name: 'EventReportStats',
-        component: EventReportStats
+        path: 'empty-event',
+        name: 'EmptyEvent',
+        component: EmptyEvent
       },
       {
         path: 'event-list',
