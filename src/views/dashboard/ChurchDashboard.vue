@@ -1,10 +1,10 @@
 <template>
-  <main id="main">
+  <main class="container-slim" id="main">
     <!-- <div class="menu-links">
       <menu-links />
     </div> -->
-    <div class="main-content">
-      <div class="second-col">
+    <!-- <div class="main-content"> -->
+      <div class="second-col container-top">
         <div class="create-btn-div">
           <div>
             <h2 class="title">Dashboard</h2>
@@ -28,9 +28,20 @@
             </div>
           </div>
         </div>
-
+        <!-- <div class="help-text1">
+            <img src="../../assets/can-do.svg" alt="">
+            <div class="can-do">
+              <h4>Things You Can Do</h4>
+              <div class="can-do-links">
+                <a href="">Add member</a>
+                <a href="">Send SMS</a>
+                <a href="">Add First Timer</a>
+                <a href="">Add Follow-up</a>
+              </div>
+            </div>
+          </div> -->
         <div class="top-row">
-          <div class="help-text">
+          <div class="help-text2">
             <img src="../../assets/can-do.svg" alt="">
             <div class="can-do">
               <h4>Things You Can Do</h4>
@@ -44,7 +55,7 @@
           </div>
 
           <div class="number-boxes">
-            <div class="box">
+            <div class="box one">
               <div class="top">
                 <div class="box-top">
                   <div class="top-icon-div">
@@ -104,13 +115,13 @@
             <p>Celebrations</p>
           </div>
         </div>
-        <div class="table">
+        <!-- <div class="table">
           <div class="table-top">
             <router-link to="" class="view-all">View all</router-link>
           </div>
 
           <div class="table-header">
-            <!-- <div class="check"></div> -->
+         
             <div class="picture">
               <p>PICTURE</p>
             </div>
@@ -120,7 +131,7 @@
             <div class="lastname">
               <p>LASTNAME</p>
             </div>
-            <div class="phone">
+            <div class="phone one">
               <p>PHONE</p>
             </div>
             <div class="action"></div>
@@ -132,9 +143,7 @@
             :key="person.id"
           >
             <div class="data-row">
-              <!-- <div class="check data">
-            <input type="checkbox" name="" id="" />
-          </div> -->
+           
               <div class="picture data">
                 <div class="data-con">
                   <div class="data-text">
@@ -142,7 +151,7 @@
                   </div>
                   <div class="data-value">
                     <div class="image-con">
-                      <img src="../../assets/people/phone-import.svg" alt="" />
+                      <img src="../../assets/people/phone-import.svg"  alt="" />
                     </div>
                   </div>
                 </div>
@@ -188,6 +197,48 @@
               <i class="fa fa-angle-right"></i>
             </button>
           </div>
+        </div> -->
+        <div class="table table-responsive">
+          <div class="table-top">
+            <router-link to="" class="view-all">View all</router-link>
+          </div>
+          <table class="w-100">
+            <thead>
+              <tr>
+                <th>PICTURE</th>
+                <th>FIRSTNAME</th>
+                <th>LASTNAME</th>
+                <th>PHONE</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><img src="../../assets/people/phone-import.svg" alt="" /></td>
+                <td>FirstName</td>
+                <td>Lastname</td>
+                <td>mobilePhne</td>
+                <td><i class="fas fa-ellipsis-v"></i></td>
+              </tr>
+              <tr>
+                <td><img src="../../assets/people/phone-import.svg" alt="" /></td>
+                <td>Firstname</td>
+                <td>Lastname</td>
+                <td>mobilePhne</td>
+                <td><i class="fas fa-ellipsis-v"></i></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="table-footer">
+            <button class="tbl-footer-btn">
+              <i class="fa fa-angle-left"></i>
+            </button>
+              <button class="tbl-footer-btn">A</button>
+              <button class="tbl-footer-btn">A</button>
+              <button class="tbl-footer-btn">
+                <i class="fa fa-angle-right"></i>
+            </button>
+          </div>
         </div>
         <div class="charts" id="plot">
           <div>
@@ -214,7 +265,7 @@
         </div>
 
       </div>
-    </div>
+    <!-- </div> -->
   </main>
 </template>
 
@@ -328,7 +379,7 @@ export default {
   display: flex;
   /* width: fit-content; */
   /* margin-left: auto; */
-  padding: 10px 10px 10px 0;
+  padding: 0 10px 10px 0;
   /* margin: 10px 0 15px auto; */
   justify-content: space-between;
   margin-bottom: 24px;
@@ -432,14 +483,14 @@ export default {
 
 .second-col .number-boxes {
   width: 100%;
-  max-width: 589px;
-  margin-left: auto;
+  max-width: 450px;
+  /* margin-left: auto; */
   display: flex;
   justify-content: flex-end;
 }
 
 .box {
-  width: 40%;
+  width: 200px;
   margin-left: 20px;
    
   /* background: #F1F5F8; */
@@ -479,16 +530,15 @@ export default {
 
 .upgrade-btn {
   align-self: center;
-  padding: 10px;
+  padding: 7px;
   background: #797E81;
   border-radius: 20px;
   color: #002044;
   border: none;
-  width: 110px;
   font-weight: 800;
   outline: none;
   color: #fff;
-  width: 109.5px;
+  width: 80px;
 }
 
 .upgrade-btn:hover {
@@ -507,11 +557,12 @@ export default {
 }
 
 .plan-text {
-  font-size: 12px;
+  font-size: 9px;
   align-self: center;
   text-transform: uppercase;
   font-weight: 800;
   width: 80px;
+  margin-left: 10px;
 }
 
 .box-top {
@@ -582,24 +633,34 @@ export default {
 
 .celeb-icon {
   height: 81px;
+  margin-left: -33px;
 }
 
-.help-text {
+.help-text2 {
   display: flex;
   align-items: flex-start;
 }
 
-.help-text img {
-  width: 87px;
+.help-text2 img {
+  width: 100px;
   margin-top: -20px;
+  margin-left: -35px;
 }
 
 .pies {
   margin-top: 50px;
 }
 
-.table-body:nth-child(even) {
+tbody tr:nth-child(even) {
   background: #F7FAFC;
+}
+
+.table-body {
+  font-size: 14px;
+}
+
+.phone.one {
+  margin-left: -20px;
 }
 
 .title {
@@ -608,7 +669,7 @@ export default {
 
 .box-btn-text {
   margin: 0px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: #fff;
 }
@@ -625,6 +686,23 @@ export default {
   position: absolute !important;
   width: inherit;
 }
+
+.table thead {
+  background: #f1f3f9;
+  color: #8898aa;
+  font-size: 11px;
+}
+
+.table tr td img{
+  width: 40px;
+}
+
+.table tbody {
+  font-size: 14px;
+  align-items: center
+}
+
+
 /* WIP */
 
 @media screen and (max-width: 376px) {
@@ -636,39 +714,90 @@ export default {
     width: 90%;
   }
 
+  /* .number-boxes {
+    flex-direction: column;
+  } */
+}
+
+/* @media screen and (max-width: 570px) {
+  
+} */
+
+@media (max-width: 600px) {
+  .box {
+    width: 70%;
+  }
+
+  .box {
+    margin: 0 auto
+  }
+
   .number-boxes {
     flex-direction: column;
   }
+
+  /* .table {
+    min-width: 120%;
+    overflow: scroll;
+    border: 2px solid red;
+  }
+
+  .data-row {
+    flex-direction: inherit;
+  } */
 }
 
-@media screen and (max-width: 400px) {
+@media (min-width:  601px) and (max-width: 939px) {
+    .number-boxes {
+      display: flex;
+      justify-content: space-between !important;
+  }
+
   .box {
-    width: 80%;
+    margin-left: 0
   }
-
-  .number-boxes {
-    flex-direction: column;
-  }
+  /* .box {
+    margin-right: 20px;
+  } */
 }
 
-@media screen and (max-width: 500px) {
-  .box {
-    width: 50%;
-  }
-}
-
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 940px) {
   .top-row {
     display: flex;
     flex-direction: column;
   }
+
+  .help-text2 {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .box {
+    margin-top: 20px;
+  }
+}
+
+
+@media (min-width: 1101px) and (max-width: 1231px) {
+
+  .top-row {
+      flex-direction: column;
+  }
+
+  .help-text2, .number-boxes {
+    /* margin: 0 auto; */
+  }
+
+  .number-boxes {
+     margin: 0;
+  }
+
+  .box {
+    margin-top: 20px;
+  }
 }
 
 @media screen and (min-width: 1300px) {
-  .box {
-    width: 260px;
-  }
-
   .box-middle {
     padding: 43px 0;
   }

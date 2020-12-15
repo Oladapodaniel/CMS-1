@@ -596,7 +596,7 @@
                 placeholder="Enter Attendance Item"
               />
             </div>
-            <div class="col-4 col-lg-2 offset-sm-1">
+            <div class="col-3 col-lg-2 offset-sm-1 offset-md-0">
             <select class="w-100 form-control" v-model="item.channel">
                 <option :value="selected">Select</option>
                 <option value="Cheque">Cheque</option>
@@ -608,17 +608,17 @@
                 <option value="Text">Text</option>
             </select>
             </div>
-            <div class="col-sm-1 offset-sm-1">
+            <div class="col-2 col-sm-1 offset-sm-1">
               <select class="currency" v-model="item.currency">
                 <option :value="NGN">NGN</option>
                 <option value="GHA">GHA</option>
               </select>
             </div>
-            <div class="col-sm-2">
+            <div class="col-6 col-sm-2">
               <input type="text" class="form-control" v-model.number="item.amount" placeholder="Enter Amount"/>
             </div>
-            <div class="col-sm-1 offset-sm-1">{{ item.amount }}</div>
-            <div class="col-sm-1 offset-sm-1" @click="delOffering(index)">
+            <div class="col-1 col-sm-1 offset-sm-1">{{ item.amount }}</div>
+            <div class="col-1 col-sm-1 offset-1 offset-sm-1" @click="delOffering(index)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
           </div>

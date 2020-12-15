@@ -299,7 +299,9 @@
             const wantVisitArr = ref(['Yes', 'No', 'Maybe', 'On Transit'])
             const eventsAttended = ref([])
             const howDidYouAboutUs = ref([])
-            const firstTimersObj = ref({})
+            const firstTimersObj = ref({
+                howDidYouAboutUsId: '00000000-0000-0000-0000-000000000000'
+            })
             const onSubmit = () => {
                 console.log(firstTimersObj.value)
 
@@ -377,7 +379,8 @@
                 }
 
                 if (data.dataType === "month") {
-                    firstTimersObj.value.birthMonth = data.value
+                    firstTimersObj.value.birthMonth = month.value.indexOf(data.value) + 1
+                    console.log(firstTimersObj.value.birthMonth)
                 }
                 if (data.dataType === "year") {
                     firstTimersObj.value.birthYear = data.value

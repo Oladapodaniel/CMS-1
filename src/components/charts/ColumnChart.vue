@@ -128,6 +128,7 @@ export default {
 
 .icon-div img {
     height: 108px;
+    margin-left: -30px;
 }
 
 .chart-header p {

@@ -35,6 +35,9 @@ export default {
 </script>
 
 <style>
+
+@import './styles/style.css';
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
