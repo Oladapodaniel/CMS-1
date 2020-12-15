@@ -122,12 +122,13 @@ const routes = [
             name: 'AddFirstTimer',
             component: AddFirstTimer
           },
+          {
+            path: 'add-person/:personId?',
+            component: AddPerson
+          },
         ]
       },
-      {
-        path: 'add-person/:personId?',
-        component: AddPerson
-      },
+      
       {
         path: 'event',
         name: 'Event',

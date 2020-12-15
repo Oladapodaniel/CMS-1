@@ -43,7 +43,7 @@
 
             <router-link
               class="start-option"
-              :to="`/tenant/add-person`"
+              :to="`/processing/add-person`"
             >
               <div class="icon">
                 <img

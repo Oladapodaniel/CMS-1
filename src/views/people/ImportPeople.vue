@@ -4,7 +4,7 @@
       <p class="header-text">You haven't added any member yet</p>
     </div>
     <div class="options">
-      <div class="option" @click="addPerson(`/tenant/add-person`)">
+      <router-link class="option" to="/tenant/add-person">
         <div class="option-img">
           <img src="../../assets/people/phone-import.svg" alt="Phone Import" />
         </div>
@@ -12,7 +12,7 @@
           <p class="option-header">Add members</p>
           <p class="option-text">Stay compliant by keeping accurate records</p>
         </div>
-      </div>
+      </router-link>
 
       <div class="option">
         <div class="option-img">
@@ -38,33 +38,15 @@
 </template>
 
 <script>
-import router from "@/router/index";
-import { onMounted, ref } from "vue";
-import store from "@/store/store"
-import axios from "@/gateway/backendapi";
 
 export default {
   setup() {
-    const addPerson = (path) => router.push(path);
-    const userId = ref('')
+    // const addPerson = (path) => router.push(path);
 
-    onMounted(() => {
-      // if (store.getters.currentUser.tenantId) {
-      //   userId.value = store.getters.currentUser.tenantId;
-      // } else {
-      //   axios
-      //     .get("/api/Membership/GetCurrentSignedInUser")
-      //     .then((res) => {
-      //       userId.value = res.data.tenantId;
-      //     })
-      //     .catch((err) => console.log(err.response));
-      // }
-    });
-
-    return {
-      addPerson,
-      userId,
-    };
+    // return {
+    //   addPerson,
+    //   userId,
+    // };
   },
 };
 </script>
