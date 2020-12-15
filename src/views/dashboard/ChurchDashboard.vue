@@ -275,7 +275,7 @@ import ColumnChart from "@/components/charts/ColumnChart.vue"
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import store from "@/store/store.js"
-import router from "@/router/index"
+// import router from "@/router/index"
 import axios from "@/gateway/backendapi";
 
 export default {
@@ -308,14 +308,14 @@ export default {
       console.log(route.params.userId, "rid");
       console.log(store.getters.currentUser, "crtuser");
 
-      if (route.params.userId !== store.getters.currentUser.tenantId) {
-        if (store.getters.currentUser.tenantId) {
-          console.log("entered");
-          router.push({name: "Dashboard", params: { userId: store.getters.currentUser.tenantId }})
-        } else {
-          store.dispatch("getUser");
-        }
-      }
+      // if (route.params.userId !== store.getters.currentUser.tenantId) {
+      //   if (store.getters.currentUser.tenantId) {
+      //     console.log("entered");
+      //     router.push({name: "Dashboard", params: { userId: store.getters.currentUser.tenantId }})
+      //   } else {
+      //     store.dispatch("getUser");
+      //   }
+      // }
     })
 
     const tenantInfo = ref({ });

@@ -494,8 +494,7 @@
                 v-else
                 v-model="item.attendanceTypeName"
                 placeholder="Enter Attendance Item"
-                ref="focusAttendance"
-                :autofocus="indx == 2" 
+                ref="attendanceInput"
               />
             </div>
             <div class="col-5 col-md-3 offset-md-2">
@@ -594,6 +593,7 @@
                 v-else
                 v-model="item.name"
                 placeholder="Enter Attendance Item"
+                ref="offeringInput"
               />
             </div>
             <div class="col-3 col-lg-2 offset-sm-1 offset-md-0">
@@ -1275,6 +1275,9 @@ export default {
         this.offeringItem.push({
           convertedAmount: 5000
         });
+        this.$nextTick(() => {
+          this.$refs.offeringInput.focus();
+        });
       }
       console.log(this.offeringItem);
 
@@ -1290,6 +1293,9 @@ export default {
       } 
       else {
         this.attendanceItem.push({});
+        this.$nextTick(() => {
+          this.$refs.attendanceInput.focus();
+        });
       }
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
@@ -1573,7 +1579,7 @@ export default {
     filterAttendance() {
       if (this.attendanceText !== "" && this.newAttendances.length > 0) {
         return this.newAttendances.filter((i) => {
-          return i.toLowerCase().includes(this.attendanceText.toLowerCase());
+          return i.name.toLowerCase().includes(this.attendanceText.toLowerCase());
         });
       } else {
         return this.newAttendances;
@@ -1593,7 +1599,7 @@ export default {
     filterOffering() {
       if (this.offeringText !== "" && this.newOfferings.length > 0) {
         return this.newOfferings.filter((i) => {
-          return i.toLowerCase().includes(this.offeringText.toLowerCase());
+          return i.name.toLowerCase().includes(this.offeringText.toLowerCase());
         });
       } else {
         return this.newOfferings;
@@ -2283,6 +2289,11 @@ tr.event-list td {
 .cat {
     padding: 5px;
     border-top: 1px solid #ecf0f3;
+}
+
+.offering-drop {
+  max-height: 300px;
+  overflow: auto;
 }
 
 @media (min-width: 576px) {

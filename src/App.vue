@@ -19,7 +19,6 @@ export default {
     async getCurrentUser() {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        console.log(res.data, "Current user");
         store.dispatch("setCurrentUser", res.data);
         // console.log(store.getters.currentUser);
       } catch(err) {

@@ -39,7 +39,7 @@
                             <label for="">Phone number</label>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4 form-group">
-                            <input type="text" class="form-control input" v-model="firstTimersObj.phoneNumber" name="" id="">
+                            <input type="text" class="form-control input" v-model="firstTimersObj.phoneNumber">
                         </div>
                         <div class="col-sm-2">
                             
@@ -51,7 +51,7 @@
                             <label for="">Email</label>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4 form-group">
-                            <input type="text" class="form-control input" v-model="firstTimersObj.email" name="" id="">
+                            <input type="text" class="form-control input" v-model="firstTimersObj.email">
                         </div>
                         <div class="col-sm-2">
                             
@@ -63,7 +63,7 @@
                             <label for="">Address</label>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4 form-group">
-                            <input type="text" class="form-control input" v-model="firstTimersObj.address" name="" id="">
+                            <input type="text" class="form-control input" v-model="firstTimersObj.address">
                         </div>
                         <div class="col-md-4">
                             
@@ -259,25 +259,6 @@
 
                 </div>
             </div>
-
-            <!-- <div class="row form-container">
-                <div class="col-md-12">
-
-                    <div class="row">
-                        <div class="col-md-5 text-md-right pr-0">
-                            <label for=""></label>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <button class="cancel-btn">Cancel</button>
-                            <button class="save-btn">Save</button>
-                        </div>
-                        <div class="col-md-1">
-                            
-                        </div>
-                    </div>
-
-                </div>
-            </div> -->
         </div>
     </form>
 </template>
@@ -318,7 +299,6 @@
             onMounted(() => {
                 axios.get('/api/Events/EventActivity')
                     .then(res => {
-                        console.log(res.data)
                         eventsAttended.value = res.data
                         })
 
@@ -349,11 +329,10 @@
                 })
 
             const gender = computed(() => {
-                let x = genderArr.value.map(i => {
+                let arr = genderArr.value.map(i => {
                     return i.value
                 })
-                console.log(x, "x");
-                return x
+                return arr;
             })
 
             const maritalStatus = computed(() => {

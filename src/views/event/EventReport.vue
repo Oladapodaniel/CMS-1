@@ -767,8 +767,7 @@ export default {
     })
 
     const eventDateString = computed(() => {
-      return new Date(eventData.value.date).toString().split(' ').slice(0, 4).join(' ')
-;
+      return new Date(eventData.value.date).toString().split(' ').slice(0, 4).join(' ');
     })
 
     eventData.value = JSON.parse(localStorage.getItem("eventData"));
@@ -779,6 +778,7 @@ export default {
       }
     onMounted(async () => {
       const activityId = route.params.id;
+
       try {
         const res = await axios.post(
           `/api/Events/GetAnalysis?activityId=${activityId}`,

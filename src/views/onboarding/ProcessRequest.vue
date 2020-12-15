@@ -37,7 +37,6 @@ import { onBeforeUnmount, onMounted, ref } from 'vue';
 import store from "@/store/store"
 import router from "@/router/index"
 import { useRoute } from 'vue-router';
-import axios from "@/gateway/backendapi";
 
 export default {
     beforeRouteEnter(to, from, next) {
@@ -58,8 +57,8 @@ export default {
                 toggleProcessing()
             }, 200);
             setTimeout(() => {
-                if (url) router.push(url)
-                else router.push(`/tenant/${userId.value}/${userSelectedRoute}`)
+                const nextRoute = userSelectedRoute.includes('add') ? `people/${userSelectedRoute}` : userSelectedRoute;
+                router.push(`/tenant/${nextRoute}`)
             }, 3000);
         })
 
@@ -70,24 +69,6 @@ export default {
         const processing = ref(false)
         const toggleProcessing = () => {
             processing.value = !processing.value;
-        }
-
-        const userId = ref('')
-        const currentUser = store.getters.currentUser;
-        if (currentUser.tenantId) {
-            userId.value = currentUser.tenantId;
-        } else {
-        try {
-            axios.get("/api/Membership/GetCurrentSignedInUser")
-                .then(res => {
-                    userId.value = res.data.tenantId;
-                })
-                .catch(err => console.log(err.response))
-            
-            
-        } catch (err) {
-            console.log(err, "in store");
-        }
         }
 
         return { processing }

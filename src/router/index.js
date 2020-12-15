@@ -25,6 +25,12 @@ import FirstTimers from '@/views/people/FirstTimersList.vue';
 import EmptyEvent from '../views/event/EmptyEvent'
 import EventList from '@/views/event/EventList'
 import SmsList from '@/views/communication/SmsList'
+import SendSms from '@/views/communication/SendSms'
+import Communication from '@/views/communication/Communication'
+import Inbox from '@/views/communication/MessageInbox'
+import SentMessages from '@/views/communication/SentMessages'
+import DraftMessages from '@/views/communication/DraftMessages'
+import ContactList from '@/views/communication/ContactList'
 
 
 const routes = [
@@ -33,6 +39,12 @@ const routes = [
     path: '/column',
     name: 'column',
     component: Column
+  },
+
+  {
+    path: '/send-sms',
+    name: 'sendsms',
+    component: SendSms
   },
   {
     path: '/sms',
@@ -90,7 +102,7 @@ const routes = [
     component: ResetPassword
   },
   {
-    path: '/tenant/:userId',
+    path: '/tenant',
     name: 'Home',
     component: Home,
     children: [
@@ -104,13 +116,19 @@ const routes = [
         component: People,
         children: [
           {path: '', component: PeopleEmpty},
-          {path: 'import', component: ImportPeople, name: 'ImportPeople'}
+          {path: 'import', component: ImportPeople, name: 'ImportPeople'},
+          {
+            path: 'add-first-timer',
+            name: 'AddFirstTimer',
+            component: AddFirstTimer
+          },
+          {
+            path: 'add-person/:personId?',
+            component: AddPerson
+          },
         ]
       },
-      {
-        path: 'add-person',
-        component: AddPerson
-      },
+      
       {
         path: 'event',
         name: 'Event',
@@ -126,11 +144,7 @@ const routes = [
         name: 'EventList',
         component: EventList
       },
-      {
-        path: 'add-first-timer',
-        name: 'AddFirstTimer',
-        component: AddFirstTimer
-      },
+      
       {
         path: 'first-timers',
         name: 'FirstTimers',
@@ -140,6 +154,18 @@ const routes = [
         path: 'report/:id',
         name: 'Report',
         component: Report
+      },
+      {
+        path: 'communications',
+        name: 'Communication',
+        component: Communication,
+        children: [
+          { path: '', name: 'Inbox', component: Inbox },
+          { path: 'sent', name: 'SentMessages', component: SentMessages },
+          { path: 'draft', name: 'DraftMessages', component: DraftMessages },
+          { path: 'contacts', name: 'ContactList', component: ContactList },
+          { path: 'compose-message', name: 'SendMessage', component: SendSms }
+        ]
       },
     ]
   },

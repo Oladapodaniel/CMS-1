@@ -16,7 +16,7 @@
                 ><i class="fa fa-angle-right"></i></span
             ></a>
           </div>
-          <router-link to="/tenant/65b0998f-edd2-4a10-32d9-08d89b7258bd" class="link dashboard-link">
+          <router-link to="/tenant" class="link dashboard-link">
             <img
               src="../../assets/dashboardlinks/dashboard-icon.svg"
               class="link-icon"
@@ -44,10 +44,10 @@
           </a>
           <ul class="dd-list" :class="{ 'dd-hide-list': !peopleLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/people`">Members</router-link>
+              <router-link class="dd-link-item" :to="`/tenant/people`">Members</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/first-timers`"
+              <router-link class="dd-link-item" :to="`/tenant/first-timers`"
                 >First Timers</router-link
               >
             </li>
@@ -112,7 +112,7 @@
           </a>
           <ul class="dd-list events-list" :class="{ 'dd-hide-list': !eventsLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" :to="`/tenant/${route.params.userId}/empty-event`">Events</router-link>
+              <router-link class="dd-link-item" :to="`/tenant/empty-event`">Events</router-link>
 
             </li>
             <li class="dd-list-item">
