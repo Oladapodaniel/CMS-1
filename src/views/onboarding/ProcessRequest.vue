@@ -60,7 +60,8 @@ export default {
             setTimeout(() => {
                 // if (url) router.push(url)
                 // else router.push(`/tenant/${userSelectedRoute}`)
-                router.push(`/tenant/${userSelectedRoute}`)
+                const nextRoute = userSelectedRoute.includes('add') ? `people/${userSelectedRoute}` : userSelectedRoute;
+                router.push(`/tenant/${nextRoute}`)
             }, 3000);
         })
 
