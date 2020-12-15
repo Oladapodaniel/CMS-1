@@ -8,25 +8,27 @@
         <div class="board">
           <div class="board-top">
             <p class="total-text">TOTAL MEMBERS</p>
-            <img class="trend-icon" src="../../assets/dashboardlinks/trend-icon.svg" alt="">
+            <img
+              class="trend-icon"
+              src="../../assets/dashboardlinks/trend-icon.svg"
+              alt=""
+            />
           </div>
           <h4 class="total">123,456</h4>
           <p>
             <span class="percent">+3.48% </span>
-            <span class="percent-text">  Since last month</span>
+            <span class="percent-text"> Since last month</span>
           </p>
-      </div>
-
-
-      <div class="chart-con">
-        <div style="width: 45%">
-          <ByGenderChart domId="chart" title="By Gender" distance="5" />
         </div>
-        <div style="width: 45%">
-          <ByMaritalStatusChart domId="second" title="By Marital Status" />
+
+        <div class="chart-con">
+          <div style="width: 45%">
+            <ByGenderChart domId="chart" title="By Gender" distance="5" />
+          </div>
+          <div style="width: 45%">
+            <ByMaritalStatusChart domId="second" title="By Marital Status" />
+          </div>
         </div>
-        
-      </div>
       </div>
     </div>
     <div class="table">
@@ -105,7 +107,21 @@
             </div>
           </div>
           <div class="action data action-icon">
-            <i class="fas fa-ellipsis-v"></i>
+            <div class="dropdown">
+              <i
+                class="fas fa-ellipsis-v"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></i>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Send SMS</a>
+                <a class="dropdown-item" href="#">Send Email</a>
+                <a class="dropdown-item" >Edit </a>
+                <a class="dropdown-item" href="#">Delete</a>
+              </div>
+            </div>
           </div>
         </div>
         <hr class="row-divider" />
@@ -122,31 +138,30 @@
         </button>
       </div>
     </div>
-    
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
-import ByGenderChart from "@/components/charts/PieChart.vue"
-import ByMaritalStatusChart from "@/components/charts/PieChart.vue"
+import ByGenderChart from "@/components/charts/PieChart.vue";
+import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 
 export default {
-    props: ["list"],
-    components: { 
-      ByGenderChart,
-      ByMaritalStatusChart
-   },
+  props: ["list"],
+  components: {
+    ByGenderChart,
+    ByMaritalStatusChart,
+  },
 
   setup(props) {
-    const churchMembers = ref([])
+    const churchMembers = ref([]);
 
     onMounted(() => {
-        console.log(props.list, "props");
-        churchMembers.value = props.list
-    })
+      console.log(props.list, "props");
+      churchMembers.value = props.list;
+    });
 
-    return { churchMembers }
+    return { churchMembers };
   },
 };
 </script>
@@ -162,8 +177,6 @@ export default {
   margin: 24px 0;
 }
 
-
-
 .summary {
   /* width: 20%; */
   border-radius: 30px;
@@ -173,9 +186,9 @@ export default {
 }
 
 .table {
-  box-shadow: 0px 1px 4px #02172E45;
-border: 1px solid #DDE2E6;
-border-radius: 30px;
+  box-shadow: 0px 1px 4px #02172e45;
+  border: 1px solid #dde2e6;
+  border-radius: 30px;
 }
 
 .summary-header {
@@ -195,9 +208,9 @@ border-radius: 30px;
   border-radius: 10px;
   border: 0.4000000059604645px solid #dde2e6;
   padding: 0 8px;
-  box-shadow: 0px 1px 4px #02172E45;
-  box-shadow: 0px 1px 4px #02172E45;
-  border: 1px solid #DDE2E6;
+  box-shadow: 0px 1px 4px #02172e45;
+  box-shadow: 0px 1px 4px #02172e45;
+  border: 1px solid #dde2e6;
 }
 
 .chart-con {
@@ -228,14 +241,10 @@ border-radius: 30px;
   color: #136acd;
 }
 
-
-
 .hr {
   border: 1px solid #0020440a;
   margin: 0 4px 10px 0;
 }
-
-
 
 .tbl-footer-btn {
   background: transparent;
@@ -251,7 +260,6 @@ border-radius: 30px;
 .action-icon {
   text-align: center;
 }
-
 
 @media screen and (max-width: 500px) {
   .picture,
@@ -307,7 +315,6 @@ border-radius: 30px;
   .action {
     width: 20%;
   }
-
 }
 
 @media screen and (max-width: 1024px) {
@@ -341,25 +348,25 @@ border-radius: 30px;
 </style>
 
 <style>
-  #chart{
-    width: 48%;
-    max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
-    border-radius: 10px;
-  }
+#chart {
+  width: 48%;
+  max-height: 310px;
+  border: 0.4000000059604645px solid #dde2e6;
+  border-radius: 10px;
+}
 
-  #second {
-    width: 48%;
-    max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
-    border-radius: 10px;
-  }
+#second {
+  width: 48%;
+  max-height: 310px;
+  border: 0.4000000059604645px solid #dde2e6;
+  border-radius: 10px;
+}
 
-  .table {
+.table {
   width: 100%;
   margin: 24px 0;
-  box-shadow: 0px 3px 6px #2C28281C;
-  border-radius: 30px;  
+  box-shadow: 0px 3px 6px #2c28281c;
+  border-radius: 30px;
 }
 
 .table-top,
@@ -426,7 +433,7 @@ border-radius: 30px;
 .filter,
 .sort,
 .search {
-  width: 15%; 
+  width: 15%;
 }
 
 .data-text {
@@ -436,15 +443,15 @@ border-radius: 30px;
 }
 
 .picture,
-  .firstname,
-  .lastname,
-  .phone {
-    text-align: center;
-  }
+.firstname,
+.lastname,
+.phone {
+  text-align: center;
+}
 </style>
 
 <style>
-  .tbl-footer-btn {
+.tbl-footer-btn {
   background: transparent;
   padding: 4px;
   margin: 4px 8px;
@@ -458,7 +465,6 @@ border-radius: 30px;
 .action-icon {
   text-align: center;
 }
-
 
 @media screen and (max-width: 500px) {
   .picture,
@@ -514,7 +520,6 @@ border-radius: 30px;
   .action {
     width: 20%;
   }
-
 }
 
 @media screen and (max-width: 1024px) {
@@ -550,25 +555,25 @@ border-radius: 30px;
 
 <style>
 /*Global */
-  #chart{
-    width: 48%;
-    max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
-    border-radius: 10px;
-  }
+#chart {
+  width: 48%;
+  max-height: 310px;
+  border: 0.4000000059604645px solid #dde2e6;
+  border-radius: 10px;
+}
 
-  #second {
-    width: 48%;
-    max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
-    border-radius: 10px;
-  }
+#second {
+  width: 48%;
+  max-height: 310px;
+  border: 0.4000000059604645px solid #dde2e6;
+  border-radius: 10px;
+}
 
-  .table {
+.table {
   width: 95%;
   margin: 24px auto;
-  box-shadow: 0px 3px 6px #2C28281C;
-  border-radius: 30px;  
+  box-shadow: 0px 3px 6px #2c28281c;
+  border-radius: 30px;
 }
 
 .table-top,

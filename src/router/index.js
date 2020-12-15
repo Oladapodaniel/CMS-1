@@ -121,7 +121,7 @@ const routes = [
         ]
       },
       {
-        path: 'add-person',
+        path: 'add-person/:personId?',
         component: AddPerson
       },
       {
