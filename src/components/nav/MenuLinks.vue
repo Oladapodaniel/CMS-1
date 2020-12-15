@@ -158,7 +158,6 @@
               <router-link class="dd-link-item" to="/">Charts of Account</router-link>
             </li>
           </ul>
-          <!-- </a> -->
 
           <a href="" class="link">
             <img
