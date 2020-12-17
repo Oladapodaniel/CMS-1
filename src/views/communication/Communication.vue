@@ -20,18 +20,18 @@
             <div class="col-md-3" id="side-menu">
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                  <router-link to="/tenant/communications/compose-message" class="btn compose-btn">Compose new SMS</router-link>
+                  <router-link to="/tenant/sms-communications/compose-message" class="btn compose-btn">Compose new SMS</router-link>
                 </div>
               </div>
               <div class="row mb-3">
                 <div
                   class="col-md-12"
                 >
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications'}">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/sms-communications'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item"
-                          ><router-link class="r-link" to="/tenant/communications">
+                          ><router-link class="r-link" to="/tenant/sms-communications">
                             <i class="fas fa-inbox mr-3 menu-icon"></i>
                             <span class="active">Inbox</span>
                           </router-link>
@@ -41,11 +41,11 @@
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications/sent'}">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/sms-communications/sent'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/communications/sent">
+                            <router-link class="r-link" to="/tenant/sms-communications/sent">
                               <i class="fa fa-location-arrow mr-3 menu-icon"></i>
                               <span class="active">Sent</span>
                             </router-link>
@@ -54,11 +54,11 @@
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications/draft'}">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/sms-communications/draft'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/communications/draft">
+                            <router-link class="r-link" to="/tenant/sms-communications/draft">
                               <i class="fa fa-envelope-open mr-3 menu-icon"></i>
                               <span class="active">Draft</span>
                             </router-link>
@@ -67,11 +67,11 @@
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications/contacts'}">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/sms-communications/contacts'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/communications/contacts">
+                            <router-link class="r-link" to="/tenant/sms-communications/contacts">
                               <i class="fa fa-list-alt mr-3 menu-icon"></i>
                               <span class="active">Contact List</span>
                             </router-link>

@@ -195,7 +195,7 @@
                       <p>Name</p>
                     </div>
                     <div class="data-value">
-                      {{ person.firstName }}
+                      {{ person.fullName }}
                     </div>
                   </div>
                 </div>
@@ -204,7 +204,7 @@
                     <div class="data-text">
                       <p>Phone Number</p>
                     </div>
-                    <div class="data-value">{{ person.mobilePhone }}</div>
+                    <div class="data-value">{{ person.phoneNumber }}</div>
                   </div>
                 </div>
                 <div class="lastname data">
@@ -220,7 +220,7 @@
                     <div class="data-text">
                       <p>Interested</p>
                     </div>
-                    <div class="data-value">Yes</div>
+                    <div class="data-value">{{ person.interestedInJoining }}</div>
                   </div>
                 </div>
                 <div class="phone data">
@@ -228,7 +228,7 @@
                     <div class="data-text">
                       <p>Date</p>
                     </div>
-                    <div class="data-value">11/11/2011</div>
+                    <div class="data-value">{{ person.date }}</div>
                   </div>
                 </div>
                 <div class="phone data">
@@ -236,7 +236,7 @@
                     <div class="data-text">
                       <p>Status</p>
                     </div>
-                    <div class="data-value">SMS sent</div>
+                    <div class="data-value">{{ person.status }}</div>
                   </div>
                 </div>
                 <div class="action data action-icon">
@@ -295,18 +295,7 @@ export default {
 
   setup(props) {
     const churchMembers = ref([
-      {
-        firstName: "Test",
-        lastName: "Example",
-        mobilePhone: "1234567890",
-        id: 1,
-      },
-      {
-        firstName: "Example",
-        lastName: "Test",
-        mobilePhone: "1234567890",
-        id: 2,
-      },
+      
     ]);
 
     const filterFormIsVissible = ref(false);
@@ -315,10 +304,9 @@ export default {
 
     onMounted(() => {
       console.log(props.list, "props");
-      // churchMembers.value = props.list
       axios.get("/api/People/FirstTimer")
           .then(res => {
-            console.log(res.data, "FTs");
+            churchMembers.value = res.data;
           })
     });
 
@@ -598,13 +586,13 @@ export default {
   }
 }
 
+@media screen and (max-width: 500px) {
+  .board {
+    width: 100% !important;
+  }
+}
+
 @media screen and (min-width: 500px) {
-  /* .picture,
-  .firstname,
-  .lastname,
-  .phone {
-    width: 19%;
-  } */
   .theader {
     width: 23%;
   }

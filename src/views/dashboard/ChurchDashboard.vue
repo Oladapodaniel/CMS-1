@@ -275,7 +275,7 @@ import ColumnChart from "@/components/charts/ColumnChart.vue"
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import store from "@/store/store.js"
-// import router from "@/router/index"
+import router from "@/router/index"
 import axios from "@/gateway/backendapi";
 
 export default {
@@ -324,7 +324,13 @@ export default {
       .then(res => {
         tenantInfo.value = res.data;
       })
-      .catch(err => console.log(err.respone))
+      .catch(err => {
+        console.log(err.respone)
+        if (err.response.status === 401) {
+          localStorage.removeItem("token")
+          router.push("/")
+        }
+      })
 
 
 

@@ -77,7 +77,7 @@
 
 <script>
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 export default {
   setup() {
@@ -87,6 +87,8 @@ export default {
       // The configuration of the editor.
       height: "800",
     };
+
+    onMounted(() => console.log(editorData.value))
 
     return {
       editor,

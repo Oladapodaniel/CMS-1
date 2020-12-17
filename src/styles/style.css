@@ -24,3 +24,12 @@
     border: 1px solid #DDE2E6;
     border-radius: 30px;
   }
+
+  .light-grey-bg {
+    background: rgb(235, 239, 244, .3)
+  }
+
+  .grey-border {
+    border: 1px solid #DDE2E6;
+    border-radius: 22px;
+  }

@@ -1,0 +1,128 @@
+<template>
+  <div class="con">
+    <div :id="domId" class="chart summary-chart"></div>
+  </div>
+</template>
+
+<script>
+import { onMounted, ref } from "vue";
+import Highcharts from "highcharts";
+
+export default {
+    props: [ "title", "subtitle", "distance", "domId", "titleMargin", "titleMarginLeft"],
+  setup(props) {
+    const chart = ref(null);
+    // let elemId = "";
+    
+
+    onMounted(() => {
+      // elemId = props.domId;
+      var highchartsOptions = {
+        chart: {
+          type: "pie",
+          renderTo: props.domId,
+        },
+        credits: {
+          enabled: false,
+        },
+        tooltip: {
+          enabled: false,
+        },
+        title: {
+          text: ``,
+         
+        },
+        // subtitle: {
+        //   text: props.subtitle,
+        //   align: 'left',
+        //   x: props.titleMarginLeft ? props.titleMarginLeft : 20,
+        //   y: 50
+        // },
+        xAxis: {
+          allowDecimals: false,
+          title: {
+            text: "Age",
+          },
+        },
+        yAxis: {
+          title: {
+            text: "Pot Value",
+          },
+          labels: {
+            formatter: function () {
+              return "£" + this.value / 1000 + "k";
+            },
+          },
+          opposite: false,
+        },
+        plotOptions: {
+          pie: {
+            // allowPointSelect: true,
+            cursor: "pointer",
+            dataLabels: {
+              enabled: true,
+              formatter: function() {
+                return this.point.name + ':\n ' + Math.round(this.percentage*100)/100 + ' %';
+              },
+              // format: '{point.name}: {point.y:.1f}%',
+              distance: props.distance ? props.distance : -20,
+            },
+            size: 180,
+          },
+        },
+        series: [
+          {
+            name: "Brands",
+            colorByPoint: true,
+            data: [
+              {
+                name: "Male",
+                y: 61.41,
+                sliced: true,
+                selected: true,
+              },
+              {
+                name: "Female",
+                y: 11.84,
+              },
+              {
+                name: "Not sure",
+                y: 10.85,
+              }
+            ],
+          },
+        ],
+        //   credits: false,
+      };
+      chart.value = new Highcharts.chart(highchartsOptions);
+    });
+
+    return { chart, };
+  },
+};
+</script>
+
+<style scoped>
+    .con {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .chart {
+      display: flex;
+      height: 200px;
+      align-items: center;
+      width: 100% !important;
+    }
+
+    .chart div {
+      width: 100%;
+    }
+
+    .summary-chart {
+      width: 100% !important;
+      box-shadow: none !important;
+    }
+</style>

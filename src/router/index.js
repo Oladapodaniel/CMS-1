@@ -31,6 +31,7 @@ import Inbox from '@/views/communication/MessageInbox'
 import SentMessages from '@/views/communication/SentMessages'
 import DraftMessages from '@/views/communication/DraftMessages'
 import ContactList from '@/views/communication/ContactList'
+import DeliveryReport from '@/views/communication/DeliveryReport'
 
 
 const routes = [
@@ -156,7 +157,7 @@ const routes = [
         component: Report
       },
       {
-        path: 'communications',
+        path: 'sms-communications',
         name: 'Communication',
         component: Communication,
         children: [
@@ -164,6 +165,7 @@ const routes = [
           { path: 'sent', name: 'SentMessages', component: SentMessages },
           { path: 'draft', name: 'DraftMessages', component: DraftMessages },
           { path: 'contacts', name: 'ContactList', component: ContactList },
+          { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
           { path: 'compose-message', name: 'SendMessage', component: SendSms }
         ]
       },

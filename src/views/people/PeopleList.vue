@@ -269,6 +269,10 @@ export default {
     width: 100%;
   }
 
+  .table {
+    padding: 0 10px;
+  }
+
   .table-body .check {
     width: 100%;
     display: flex;
@@ -502,6 +506,46 @@ export default {
 
   .table-header {
     display: none;
+  }
+
+  .boards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chart-con {
+    flex-direction: column !important;
+    align-items: center;
+    width: 85% !important;
+  }
+
+  .chart-con div {
+    width: 100% !important;
+    margin-top: 10px;
+  }
+
+  .board {
+    width: 85% !important;
+  }
+}
+
+@media screen and (min-width: 501px) and (max-width: 768px) {
+  .boards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chart-con {
+    width: 85% !important;
+  }
+
+  .chart-con div {
+    width: 40%;
+  }
+
+  .board {
+    width: 80% !important;
+    margin-bottom: 10px;
   }
 }
 

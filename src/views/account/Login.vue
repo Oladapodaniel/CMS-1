@@ -92,7 +92,7 @@ export default {
           store.dispatch("setUserData", data);
           localStorage.setItem("token", data.token);
           if (data.churchSize > 0) {
-            router.push("/tenant/1")
+            router.push("/tenant")
           } else {
             router.push("/next")
           }

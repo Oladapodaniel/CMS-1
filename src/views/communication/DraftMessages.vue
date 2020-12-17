@@ -38,7 +38,7 @@
                 <div class="col-md-12">
                   <div class="row header-row">
                     <div class="col-md-12">
-                      <div class="row">
+                      <div class="row light-grey-bg py-2">
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
