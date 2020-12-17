@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="row">
-        <div class="col-md-12 mb-3 mt-3">
+        <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
           <h4 class="font-weight-bold">Compose New SMS</h4>
         </div>
       </div>
@@ -14,10 +14,10 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-2">
+        <div class="col-3 col-lg-2 align-self-center">
           <span>Send to : </span>
         </div>
-        <div class="col-sm-10 form-group mb-0">
+        <div class="col-9 col-lg-10 form-group mb-0">
           <div class="dropdown">
             <button
               class="btn btn-default dropdown-toggle"
@@ -45,11 +45,11 @@
       </div>
 
       <div class="row">
-        <div class="col-sm-2">
+        <div class="col-3 col-lg-2 align-self-center">
           <span>Subject : </span>
         </div>
-        <div class="col-sm-10 form-group mb-0">
-          <input type="text" class="form-control input" />
+        <div class="col-9 col-lg-10 form-group mb-0">
+          <input type="text" class="input" />
         </div>
       </div>
 
@@ -100,11 +100,25 @@ export default {
 </script>
 
 <style scoped>
+
 .input {
-  outline: transparent !important;;
-  border: none;
-  background: transparent;
-}
+        display: block;
+        width: 100%;
+        height: calc(1.5em + .75rem + 2px);
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: none;
+        /* transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out; */
+  }
+
+  input:focus {
+    outline: none;
+  }
 
 .send-btn,
 .discard-btn {

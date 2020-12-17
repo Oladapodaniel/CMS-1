@@ -258,6 +258,12 @@ export default {
   }
 }
 
+@media (min-width: 768px) and (max-width: 991px) {
+    .compose-btn {
+        font-size: 0.8em;
+  }
+}
+
 @media screen and (max-width: 1000px) {
   .msg-n-time {
     flex-direction: column;
