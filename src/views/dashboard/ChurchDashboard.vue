@@ -401,6 +401,7 @@ export default {
   display: flex;
   padding: 10px;
   margin-bottom: 30px;
+  justify-content: space-between;
 }
 
 .second-col .create-btn-div .create-btn {
