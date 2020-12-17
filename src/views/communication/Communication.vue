@@ -28,7 +28,7 @@
                   class="col-md-12"
                 >
                   <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications'}">
-                    <div class="col-md-12 menu-item-div m-auto">
+                    <div class="col-3 col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item"
                           ><router-link class="r-link" to="/tenant/communications">
@@ -42,7 +42,7 @@
                   </div>
 
                   <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications/sent'}">
-                    <div class="col-md-12 menu-item-div m-auto">
+                    <div class="col-3 col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                             <router-link class="r-link" to="/tenant/communications/sent">
@@ -55,7 +55,7 @@
                   </div>
 
                   <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications/draft'}">
-                    <div class="col-md-12 menu-item-div m-auto">
+                    <div class="col-3 col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                             <router-link class="r-link" to="/tenant/communications/draft">
@@ -68,7 +68,7 @@
                   </div>
 
                   <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/communications/contacts'}">
-                    <div class="col-md-12 menu-item-div m-auto">
+                    <div class="col-5 offset-4 offset-md-0 col-md-12 menu-item-div">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                             <router-link class="r-link" to="/tenant/communications/contacts">
@@ -255,6 +255,12 @@ export default {
   .units-container {
     margin-left: 0;
     margin: auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .compose-btn {
+        font-size: 0.8em;
   }
 }
 
