@@ -494,6 +494,10 @@ export default {
         memberships = data;
         peopleClassifications.value = data.map(i => i.name);
       } catch(err) {
+        if (err.response && err.response.status === 401) {
+          localStorage.setItem("token", "");
+          router.push("/")
+        }
         console.log(err);
       }
     });

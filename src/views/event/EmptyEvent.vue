@@ -79,9 +79,9 @@
           <router-view class="view transition" />
         </transition> -->
         <!-- End of Transition -->
-        <transition name="fade" mode="out-in">
+        <!-- <transition name="fade" mode="out-in"> -->
           <router-view class="view" />
-        </transition>
+        <!-- </transition> -->
       </div>
     </div>
   </div>

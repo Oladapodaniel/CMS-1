@@ -23,6 +23,10 @@ export default {
         // console.log(store.getters.currentUser);
       } catch(err) {
         console.log(err.response);
+        if (err.response && err.response.status === 401) {
+          localStorage.setItem("token", "");
+          router.push("/")
+        }
       }
     }
   },

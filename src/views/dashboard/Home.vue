@@ -4,9 +4,9 @@
       <MenuLinks />
     </div>
     <div class="main-con dim" @click="hideMenu">
-      <transition name="fade" mode="out-in">
+      <!-- <transition name="fade" mode="out-in"> -->
         <router-view class="view" />
-      </transition>
+      <!-- </transition> -->
       <!-- <router-view></router-view> -->
     </div>
   </div>
