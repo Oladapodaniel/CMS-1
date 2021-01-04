@@ -36,9 +36,9 @@
 
               <div class="row">
                 <div class="col-md-12">
-                  <div class="row header-row">
+                  <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12 px-0">
-                      <div class="row light-grey-bg">
+                      <div class="row">
                         <div class="col-md-1 text-md-right text-lg-center px-0">
                           <input type="checkbox" />
                         </div>
@@ -59,7 +59,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <hr class="hr" />
+                      <hr class="hr mt-0" />
                     </div>
                   </div>
                   <div class="row">

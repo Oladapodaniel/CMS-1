@@ -25,7 +25,7 @@
             Dashboard
           </router-link>
 
-          <a class="link dd" :class="{'router-link-exact-active': route.path.includes('/tenant/people')}">
+          <a class="link dd" :class="{'router-link-exact-active': route.path.includes('people') || route.path.includes('first-time')}">
             <span @click="togglePeopleDropDown">
               <img
                 src="../../assets/dashboardlinks/people.svg"
@@ -60,7 +60,7 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/tenant/communication')}">
+          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('communication')}">
             <span @click="toggleCommDropDown">
               <img
                 src="../../assets/dashboardlinks/com-icon.svg"
@@ -79,10 +79,10 @@
           </a>
           <ul class="dd-list" :class="{ 'dd-hide-list': !commLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">SMS</router-link>
+              <router-link class="dd-link-item" to="/tenant/sms-communications">SMS</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Email</router-link>
+              <router-link class="dd-link-item" to="/tenant/email-communications">Email</router-link>
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item" to="/">Whatsapp</router-link>

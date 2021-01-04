@@ -38,7 +38,7 @@
                   </div>
                   <div class="row">
                     <div class="col-md-12">
-                      <hr class="hr" />
+                      <hr class="hr mt-0" />
                     </div>
                   </div>
                   <div class="row">

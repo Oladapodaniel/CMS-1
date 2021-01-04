@@ -26,10 +26,15 @@ import EmptyEvent from '../views/event/EmptyEvent'
 import EventList from '@/views/event/EventList'
 import SmsList from '@/views/communication/SmsList'
 import SendSms from '@/views/communication/SendSms'
-import Communication from '@/views/communication/Communication'
+import ComposeEmail from '@/views/communication/ComposeEmail'
+import SmsCommunication from '@/views/communication/SmsCommunication'
+import EmailCommunication from '@/views/communication/EmailCommunication'
 import Inbox from '@/views/communication/MessageInbox'
+import EmailInbox from '@/views/communication/EmailInbox'
 import SentMessages from '@/views/communication/SentMessages'
+import SentEmails from '@/views/communication/SentEmails'
 import DraftMessages from '@/views/communication/DraftMessages'
+import EmailDraft from '@/views/communication/EmailDraft'
 import ContactList from '@/views/communication/ContactList'
 import DeliveryReport from '@/views/communication/DeliveryReport'
 
@@ -158,8 +163,8 @@ const routes = [
       },
       {
         path: 'sms-communications',
-        name: 'Communication',
-        component: Communication,
+        name: 'SmsCommunication',
+        component: SmsCommunication,
         children: [
           { path: '', name: 'Inbox', component: Inbox },
           { path: 'sent', name: 'SentMessages', component: SentMessages },
@@ -167,6 +172,19 @@ const routes = [
           { path: 'contacts', name: 'ContactList', component: ContactList },
           { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
           { path: 'compose-message', name: 'SendMessage', component: SendSms }
+        ]
+      },
+      {
+        path: 'email-communications',
+        name: 'EmailCommunication',
+        component: EmailCommunication,
+        children: [
+          { path: '', name: 'EmailInbox', component: EmailInbox },
+          { path: 'sent', name: 'SentEmails', component: SentEmails },
+          { path: 'draft', name: 'EmailDraft', component: EmailDraft },
+          // { path: 'contacts', name: 'ContactList', component: ContactList },
+          // { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
+          { path: 'compose-message', name: 'ComposeEmail', component: ComposeEmail }
         ]
       },
     ]

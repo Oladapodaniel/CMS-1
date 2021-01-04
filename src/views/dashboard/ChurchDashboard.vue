@@ -20,8 +20,8 @@
               <div class="container">
                 <div class="row">
                   <div class="col-md-12 d-flex flex-column border rounded more-links">
-                    <router-link to="" class="font-weight-bold mt-3">Add member</router-link>
-                    <router-link to="" class="font-weight-bold">Add first timer</router-link>
+                    <router-link to="/tenant/people/add-person" class="font-weight-bold mt-3">Add member</router-link>
+                    <router-link to="/tenant/people/add-first-timer" class="font-weight-bold">Add first timer</router-link>
                   </div>
                 </div>
               </div>
@@ -46,10 +46,10 @@
             <div class="can-do">
               <h4>Things You Can Do</h4>
               <div class="can-do-links">
-                <a href="">Add member</a>
-                <a href="">Send SMS</a>
-                <a href="">Add First Timer</a>
-                <a href="">Add Follow-up</a>
+                <router-link to="/tenant/people/add-person">Add member</router-link>
+                <router-link to="/tenant/sms-communications/compose-message">Send SMS</router-link>
+                <router-link to="/tenant/people/add-first-timer">Add First Timer</router-link>
+                <router-link to="">Add Follow-up</router-link>
               </div>
             </div>
           </div>
@@ -272,9 +272,9 @@
 <script>
 import PieChart from "@/components/charts/PieChart.vue"
 import ColumnChart from "@/components/charts/ColumnChart.vue"
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import store from "@/store/store.js"
+import { ref } from 'vue';
+// import { useRoute } from 'vue-router';
+// import store from "@/store/store.js"
 import router from "@/router/index"
 import axios from "@/gateway/backendapi";
 
@@ -303,20 +303,7 @@ export default {
       }
     ];
 
-    const route = useRoute();
-    onMounted(() => {
-      console.log(route.params.userId, "rid");
-      console.log(store.getters.currentUser, "crtuser");
-
-      // if (route.params.userId !== store.getters.currentUser.tenantId) {
-      //   if (store.getters.currentUser.tenantId) {
-      //     console.log("entered");
-      //     router.push({name: "Dashboard", params: { userId: store.getters.currentUser.tenantId }})
-      //   } else {
-      //     store.dispatch("getUser");
-      //   }
-      // }
-    })
+    // const route = useRoute();
 
     const tenantInfo = ref({ });
     
@@ -789,10 +776,6 @@ tbody tr:nth-child(even) {
 
   .top-row {
       flex-direction: column;
-  }
-
-  .help-text2, .number-boxes {
-    /* margin: 0 auto; */
   }
 
   .number-boxes {

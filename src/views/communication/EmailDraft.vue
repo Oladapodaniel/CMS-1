@@ -8,7 +8,7 @@
           <div class="row px-0">
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-3 mb-4">
-                <div class="col-md-7 col-sm-12">
+                <div class="col-md-12 col-sm-12">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
                     <input type="text" placeholder="Search here..." />
@@ -17,42 +17,21 @@
                     <span class="font-weight-bold"> Newest</span>
                   </div>
                 </div>
-                <div class="col-md-4 ml-2 mt-sm-2 units-container">
-                  <div class="row d-sm-flex align-items-center units-div">
-                    <div class="col-sm-6">
-                      <h4 class="font-weight-bold mb-0">302</h4>
-                      <p class="font-weight-bold mb-0">SMS Units</p>
-                    </div>
-                    <div class="col-sm-6 d-sm-flex justify-content-end">
-                      <button class="btn buy-btn">
-                        <span class="btn-text">
-                            BUY UNITS
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               <div class="row">
                 <div class="col-md-12">
-                  <div class="row header-row">
+                  <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12 px-0">
-                      <div class="row light-grey-bg">
+                      <div class="row">
                         <div class="col-md-1 text-md-right text-lg-center px-0">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-7">
                           <span class="th">MESSAGE</span>
                         </div>
-                        <div class="col-md-2">
-                          <span class="th">SENT BY</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">UNITS</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">DELIVERY REPORT</span>
+                        <div class="col-md-4">
+                          <span class="th"></span>
                         </div>
                       </div>
                     </div>
@@ -68,7 +47,7 @@
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-5 d-md-flex flex-column">
+                        <div class="col-md-7 d-md-flex flex-column">
                           <span
                             class="d-flex justify-content-between msg-n-time"
                           >
@@ -80,28 +59,12 @@
                           >
                         </div>
                         <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
+                          class="col-md-4 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >SENT BY:
+                            >
                           </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >UNITS:
-                          </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >DELIVER REPORT:
-                          </span>
-                          <span class="view-btn">View</span>
+                          <span></span>
                         </div>
                       </div>
                       <div class="row">
@@ -118,7 +81,7 @@
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-5 d-md-flex flex-column">
+                        <div class="col-md-7 d-md-flex flex-column">
                           <span
                             class="d-flex justify-content-between msg-n-time"
                           >
@@ -130,22 +93,10 @@
                           >
                         </div>
                         <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
+                          class="col-md-4 col-ms-12 d-flex justify-content-between"
                         >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span class="view-btn">View</span>
+                          <!-- <span class="hidden-header">message: </span> -->
+                          <!-- <span>test@example.com</span> -->
                         </div>
                       </div>
                       <div class="row">
