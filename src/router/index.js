@@ -26,6 +26,7 @@ import EmptyEvent from '../views/event/EmptyEvent'
 import EventList from '@/views/event/EventList'
 import SmsList from '@/views/communication/SmsList.vue'
 import ContactList from '@/views/communication/ContactList.vue'
+import MessageDetails from '@/views/communication/MessageDetails.vue'
 
 
 const routes = [
@@ -44,6 +45,11 @@ const routes = [
     path: '/contactlist',
     name: 'ContactList',
     component: ContactList
+  },
+  {
+    path: '/messagedetails',
+    name: 'MessageDetails',
+    component: MessageDetails
   },
   {
     path: '/',
@@ -109,8 +115,8 @@ const routes = [
         path: 'people',
         component: People,
         children: [
-          {path: '', component: PeopleEmpty},
-          {path: 'import', component: ImportPeople, name: 'ImportPeople'}
+          { path: '', component: PeopleEmpty },
+          { path: 'import', component: ImportPeople, name: 'ImportPeople' }
         ]
       },
       {
@@ -174,7 +180,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token")
-  if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" &&  to.name !== "StartingPoint" && !token) return next("/")
+  if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && !token) return next("/")
   if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
   next(true)
 })
