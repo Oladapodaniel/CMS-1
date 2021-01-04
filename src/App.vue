@@ -7,6 +7,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import store from "@/store/store.js";
+import router from "@/router/index"
 
 export default {
   name: "App",

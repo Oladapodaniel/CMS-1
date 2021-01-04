@@ -344,6 +344,8 @@
 import { ref, onMounted, computed } from "vue";
 import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
+import router from "@/router/index"
+
 export default {
   components: { SelectElem },
 
