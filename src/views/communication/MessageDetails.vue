@@ -12,31 +12,29 @@
             <div class="d-flex mx-md-3">
               <button class="btn btn1 btn-outline-primary">
                 Team
-                <i class="fas fa-times icons px-2">A</i>
+                <i class="fas fa-times icons px-2"></i>
               </button>
             </div>
             <div class="d-flex mx-md-3">
               <button class="btn btn2 btn-outline-primary">
                 Team
-                <i class="fas fa-times icons px-2">A</i>
+                <i class="fas fa-times icons px-2"></i>
               </button>
             </div>
           </div>
           <div class="col-md-2 d-md-flex mx-md-2 ispa justify-content-end">
             <span
-              ><i class="fas fa-long-arrow-alt-right icons mx-md-2"></i>A</span
-            >
+              ><i class="fas fa-long-arrow-alt-right icons mx-md-2"></i
+            ></span>
             <span
               ><i class="fas fa-print icons mx-md-2" aria-hidden="true"></i
-              >A</span
-            >
+            ></span>
             <span
               ><i
                 class="fas fa-trash icons mx-md-2 mr-md-3"
                 aria-hidden="true"
               ></i
-              >A</span
-            >
+            ></span>
           </div>
         </div>
 
@@ -53,9 +51,9 @@
           <div class="col-md-6 d-md-flex mt-3 justify-content-end">
             <p class="mx-4">May 8, 2018, 11:18 AM</p>
             <div class="icons">
-              <span><i class="fas fa-star mx-2 icons"></i>A</span>
-              <span><i class="fas fa-trash mx-2 icons"></i>A</span>
-              <span><i class="fas fa-ellipsis-v mx-2 icons"></i>A</span>
+              <span><i class="fas fa-star mx-2 icons"></i></span>
+              <span><i class="fas fa-trash mx-2 icons"></i></span>
+              <span><i class="fas fa-ellipsis-v mx-2 icons"></i></span>
             </div>
           </div>
           <div class="row d-md-flex flex-md-column mailText">
@@ -99,7 +97,7 @@
               Thank you.
               <br />
               <br />
-              <span><i class="fas fa-ellipsis-h mx-2 icons"></i>A</span>
+              <span><i class="fas fa-ellipsis-h mx-2 icons"></i></span>
               <br />
               <br />
               Best Regards,

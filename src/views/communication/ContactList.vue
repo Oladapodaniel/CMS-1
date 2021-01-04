@@ -24,8 +24,8 @@
                             <div class="col-md-12 gName">
                                 <h3 class="ml-md-n3"> Group Name</h3>
                             </div>
-                        </div>  
-
+                        </div>
+                        
                         <!-- Context Area -->
                         <div class="row amazing d-flex flex-row justify-content-between mt-lg-3">
                             <div class="col-lg-7 col-sm-4 amazingG">

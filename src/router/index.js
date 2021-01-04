@@ -24,11 +24,9 @@ import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
 import FirstTimers from '@/views/people/FirstTimersList.vue';
 import EmptyEvent from '../views/event/EmptyEvent'
 import EventList from '@/views/event/EventList'
-<<<<<<< HEAD
-import SmsList from '@/views/communication/SmsList.vue'
-import ContactList from '@/views/communication/ContactList.vue'
+// import SmsList from '@/views/communication/SmsList.vue'
+// import ContactList from '@/views/communication/ContactList'
 import MessageDetails from '@/views/communication/MessageDetails.vue'
-=======
 import SmsList from '@/views/communication/SmsList'
 import SendSms from '@/views/communication/SendSms'
 import ComposeEmail from '@/views/communication/ComposeEmail'
@@ -42,7 +40,6 @@ import DraftMessages from '@/views/communication/DraftMessages'
 import EmailDraft from '@/views/communication/EmailDraft'
 import ContactList from '@/views/communication/ContactList'
 import DeliveryReport from '@/views/communication/DeliveryReport'
->>>>>>> main
 
 
 const routes = [
@@ -56,7 +53,7 @@ const routes = [
   {
     path: '/send-sms',
     name: 'sendsms',
-    component: SendSms
+    component: SendSms,
   },
   {
     path: '/sms',
@@ -64,7 +61,7 @@ const routes = [
     component: SmsList
   },
   {
-    path: '/contactlist',
+    path: '/contacts',
     name: 'ContactList',
     component: ContactList
   },
@@ -137,12 +134,9 @@ const routes = [
         path: 'people',
         component: People,
         children: [
-<<<<<<< HEAD
+
           { path: '', component: PeopleEmpty },
-          { path: 'import', component: ImportPeople, name: 'ImportPeople' }
-=======
-          {path: '', component: PeopleEmpty},
-          {path: 'import', component: ImportPeople, name: 'ImportPeople'},
+          { path: 'import', component: ImportPeople, name: 'ImportPeople' },
           {
             path: 'add-first-timer',
             name: 'AddFirstTimer',
@@ -152,10 +146,9 @@ const routes = [
             path: 'add-person/:personId?',
             component: AddPerson
           },
->>>>>>> main
         ]
       },
-      
+
       {
         path: 'event',
         name: 'Event',
@@ -171,7 +164,7 @@ const routes = [
         name: 'EventList',
         component: EventList
       },
-      
+
       {
         path: 'first-timers',
         name: 'FirstTimers',
