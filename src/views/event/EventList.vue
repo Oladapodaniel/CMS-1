@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <!-- <div class="container">
     <div class="row">
-      <div class="col-sm-10">
+      <div class="col-sm-12">
         <div class="top mt-3">
           <div class="header">
             <h2>Events</h2>
@@ -11,48 +11,52 @@
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
-            <!-- <router-link class=""> -->
+            
             <button @click="addPersonClicked" class="button add-person-btn">
               Add Event
             </button>
-            <!-- </router-link> -->
+    
           </div>
         </div>
       </div>
     </div>
-  </div>
-        <hr class="hr" />
+  </div> -->
+        <!-- <hr class="hr" /> -->
         <div class="container">
           <div class="row">
-            <div class="col-sm-10">
-                 <div class="avg">Overall Average</div>
+            <div class="col-sm-12">
+              <div class="avg">Overall Average</div>
+            </div>
+          </div>
+                 
             <div class="row avg-table">
-                <div class="col-sm-3">
+                <div class="col-6 col-md-3 first-row">
                     <div>Attendance</div>
                     <div>123,456</div>
-                    <div>Last Updated 2 hours ago</div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-6 col-md-3">
                     <div>Offering</div>
                     <div>$1234</div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-6 col-md-3">
                     <div>First Timers</div>
                     <div>345</div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-6 col-md-3">
                     <div>New Converts</div>
                     <div>2345</div>
                 </div>
+                <div class="col-12">
+                  <div>Last Updated 2 hours ago</div>
+                </div>
             </div>
             </div>
-          </div>
           <hr class="hr" />
-        </div>
+        <!-- </div> -->
         <div class="container">
           <div class="row">
-            <div class="col-sm-10">
-              <div class="table">
+            <div class="col-sm-12">
+              <div class="table table-responsive">
             <div class="top-con">
               <div class="table-top my-2">
                 <div class="select-all">
@@ -137,7 +141,7 @@
             </div>
 
             
-            <table class="w-100">
+            <table class="w-100" >
                 <thead class="thead">
                 <tr>
                   <th>STATUS</th>
@@ -154,10 +158,10 @@
               :key="index">
                   <td> <div class="td-first">Unsent</div></td>
                   <td>{{ event.eventName }}</td>
-                  <td>{{ event.date }}</td>
-                  <td>{{ event.status }}</td>
-                  <td>{{ event.status }}</td>
-                  <td>{{ event.firstItmers }}</td>
+                  <td>{{ event.title }}</td>
+                  <td>{{ event.activityDate }}</td>
+                  <td>{{ event.attendances }}</td>
+                  <td>{{ event.firstTimers }}</td>
                   <td>{{ event.newConverts }}</td>
               </tr>
               </tbody>
@@ -185,14 +189,21 @@
 </template>
 
 <script>
+import axios from '@/gateway/backendapi'
 import { ref } from 'vue'
 export default {
     setup() {
-      const events = ref([{ status: 'Oladapo', eventName: 'Daniel', title: '09033246067', date: 'oladapodaniel@', attendanve: 'building', firstItmers: 2, newConverts: true },
-                            { status: 'Oladapo', eventName: 'Daniel', title: '09033246067', date: 'oladapodaniel@', attendanve: 'building', firstItmers: 2, newConverts: true },
-                            { status: 'Oladapo', eventName: 'Daniel', title: '09033246067', date: 'oladapodaniel@', attendanve: 'building', firstItmers: 2, newConverts: true }
-                          ])
+      const events = ref(getEventList())
       const  filterFormIsVissible = ref(false)
+
+      function getEventList () {
+        return axios.get('/api/eventreports/eventReports')
+          .then(res => {
+            events.value = res.data
+            console.log(res.data)
+          })
+          .catch(err => console.log(err))
+      }
       const toggleFilterFormVissibility = () => {
          filterFormIsVissible.value = ! filterFormIsVissible.value
       }
@@ -537,16 +548,16 @@ export default {
   padding: 15px;
 }
 
-.avg-table > div > div:last-child {
+.avg-table > div:nth-child(5) {
   font: normal normal normal 14px/13px Nunito Sans;
 letter-spacing: 0px;
 color: #002044;
-padding: 15px;
 }
 
 .thead {
   background: #f1f3f9;
   padding: 0 25px;
+  font-size: 0.7em;
 }
 
 .td-first {

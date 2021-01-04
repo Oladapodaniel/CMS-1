@@ -1,22 +1,22 @@
 <template>
   <div class="container">
     <div class="row my-3">
-        <div class="col-md-4">
-            <h2 class="page-header">First Timers</h2>
-        </div>
+      <div class="col-md-4">
+        <h2 class="page-header">First Timers</h2>
+      </div>
 
-        <div class="col-md-8 d-flex justify-content-end">
-            <button class="more mr-3">More <i class="fa fa-angle-down"></i></button>
-            <router-link to="/tenant/people/add-first-timer" class="add-btn">
-                Add First timer
-            </router-link>
-        </div>
+      <div class="col-md-8 d-flex justify-content-end">
+        <button class="more mr-3">More <i class="fa fa-angle-down"></i></button>
+        <router-link to="/tenant/people/add-first-timer" class="add-btn">
+          Add First timer
+        </router-link>
+      </div>
     </div>
 
     <div class="row">
-        <div class="col-md-12">
-            <hr class="hr">
-        </div>
+      <div class="col-md-12">
+        <hr class="hr" />
+      </div>
     </div>
 
     <div class="row">
@@ -195,7 +195,7 @@
                       <p>Name</p>
                     </div>
                     <div class="data-value">
-                      {{ person.firstName }}
+                      {{ person.fullName }}
                     </div>
                   </div>
                 </div>
@@ -204,7 +204,7 @@
                     <div class="data-text">
                       <p>Phone Number</p>
                     </div>
-                    <div class="data-value">{{ person.mobilePhone }}</div>
+                    <div class="data-value">{{ person.phoneNumber }}</div>
                   </div>
                 </div>
                 <div class="lastname data">
@@ -220,7 +220,7 @@
                     <div class="data-text">
                       <p>Interested</p>
                     </div>
-                    <div class="data-value">Yes</div>
+                    <div class="data-value">{{ person.interestedInJoining }}</div>
                   </div>
                 </div>
                 <div class="phone data">
@@ -228,7 +228,7 @@
                     <div class="data-text">
                       <p>Date</p>
                     </div>
-                    <div class="data-value">11/11/2011</div>
+                    <div class="data-value">{{ person.date }}</div>
                   </div>
                 </div>
                 <div class="phone data">
@@ -236,11 +236,28 @@
                     <div class="data-text">
                       <p>Status</p>
                     </div>
-                    <div class="data-value">SMS sent</div>
+                    <div class="data-value">{{ person.status }}</div>
                   </div>
                 </div>
                 <div class="action data action-icon">
-                  <i class="fas fa-ellipsis-v"></i>
+                  <div class="dropdown">
+                    <i class="fas fa-ellipsis-v"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                  ></i>
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <a class="dropdown-item" href="#">Convert to member</a>
+                      <a class="dropdown-item" href="#">Assign to follow-up</a>
+                      <a class="dropdown-item" href="#">Send SMS</a>
+                      <a class="dropdown-item" href="#">Send Email</a>
+                      <a class="dropdown-item" href="#">Delete</a>
+                    </div>
+                  </div>
                 </div>
               </div>
               <hr class="row-divider" />
@@ -267,6 +284,7 @@
 import { ref, onMounted } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
+import axios from "@/gateway/backendapi";
 
 export default {
   props: ["list"],
@@ -277,18 +295,7 @@ export default {
 
   setup(props) {
     const churchMembers = ref([
-      {
-        firstName: "Test",
-        lastName: "Example",
-        mobilePhone: "1234567890",
-        id: 1,
-      },
-      {
-        firstName: "Example",
-        lastName: "Test",
-        mobilePhone: "1234567890",
-        id: 2,
-      },
+      
     ]);
 
     const filterFormIsVissible = ref(false);
@@ -297,7 +304,10 @@ export default {
 
     onMounted(() => {
       console.log(props.list, "props");
-      // churchMembers.value = props.list
+      axios.get("/api/People/FirstTimer")
+          .then(res => {
+            churchMembers.value = res.data;
+          })
     });
 
     return {
@@ -315,8 +325,8 @@ export default {
 }
 
 .page-header {
-    font-weight: 800;
-    font-size: 40px;
+  font-weight: 800;
+  font-size: 40px;
 }
 
 .my-con {
@@ -508,29 +518,33 @@ export default {
 } */
 
 .select-all input {
-    margin: 0 8px 0 -5px !important;
+  margin: 0 8px 0 -5px !important;
 }
 
 .add-btn {
-    width: 180px;
-    background: #136ACD;
-    border-radius: 22px;
-    color: #ffffff;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 42px;
+  width: 180px;
+  background: #136acd;
+  border-radius: 22px;
+  color: #ffffff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
 }
 
 .more {
-    background: #DDE2E6;
-    border-radius: 22px;
-    width: 180px;
-    font-weight: bold;
-    border: transparent;
-    outline: transparent;
-    height: 42px;
+  background: #dde2e6;
+  border-radius: 22px;
+  width: 180px;
+  font-weight: bold;
+  border: transparent;
+  outline: transparent;
+  height: 42px;
+}
+
+.fa-ellipsis-v:hover {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 500px) {
@@ -572,13 +586,13 @@ export default {
   }
 }
 
+@media screen and (max-width: 500px) {
+  .board {
+    width: 100% !important;
+  }
+}
+
 @media screen and (min-width: 500px) {
-  /* .picture,
-  .firstname,
-  .lastname,
-  .phone {
-    width: 19%;
-  } */
   .theader {
     width: 23%;
   }

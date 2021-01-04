@@ -20,10 +20,7 @@
 <script>
 import { ref, onMounted } from "vue";
 import axios from "@/gateway/backendapi";
-import store from "@/store/store.js";
 import PeopleList from '@/views/people/PeopleList.vue';
-import { useRoute } from 'vue-router';
-import router from "@/router/index"
 import ImportPeople from '@/views/people/ImportPeople.vue';
 
 
@@ -34,16 +31,7 @@ export default {
 
     const people = ref([]);
     const loading = ref(true);
-    const route = useRoute()
     onMounted(async () => {
-      if (route.params.userId !== store.getters.currentUser.tenantId) {
-        if (store.getters.currentUser.tenantId) {
-          console.log("entered");
-          router.push({name: "Dashboard", params: { userId: store.getters.currentUser.tenantId }})
-        } else {
-          store.dispatch("getUser", route.params.userId);
-        }
-      }
       try {
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
         people.value = data;

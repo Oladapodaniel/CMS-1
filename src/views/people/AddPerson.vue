@@ -244,6 +244,7 @@ import { ref, reactive, onMounted, computed } from "vue";
 import router from "@/router/index"
 import axios from "@/gateway/backendapi";
 import SelectElem from '@/components/select/SelectElement.vue'
+import { useRoute } from 'vue-router';
 
 export default {
   components: { SelectElem },
@@ -351,7 +352,7 @@ export default {
     //Person
     const peopleClassifications = ref([]);
     const membershipId = ref("");
-    const person = reactive({ });
+    let person = reactive({ firstName: "Hello"});
 
     const uploadImage = () => {
 
@@ -468,6 +469,22 @@ export default {
     })
     
     let memberships = [ ]
+    const route = useRoute();
+    console.log(route.params.personId, "o personId");
+    if (route.params.personId) {
+      axios.get(`/api/People/GetPersonInfoWithAssignments/${route.params.personId}`)
+        .then(res => {
+          console.log(res.data, "p");
+          person.firstName = res.data.firstName;
+          person.email = res.data.email;
+          person.lastName = res.data.lastName;
+          person.firstName = res.data.firstName;
+          person.mobilePhone = res.data.mobilePhone;
+          person.address = res.data.homeAddress;
+          person.occupation = res.data.occupation;
+        })
+    }
+
     onMounted(async () => {
       getLookUps();
       getAgeGroups()
@@ -477,6 +494,10 @@ export default {
         memberships = data;
         peopleClassifications.value = data.map(i => i.name);
       } catch(err) {
+        if (err.response && err.response.status === 401) {
+          localStorage.setItem("token", "");
+          router.push("/")
+        }
         console.log(err);
       }
     });

@@ -10,7 +10,7 @@
           <p class="intro-subtext">Where do you want to start ?</p>
         </div>
         <div class="boxes-con">
-          <div class="box" @click="actionSelected(`/tenant/${userId}/add-person`)">
+          <router-link class="box" to="/tenant/people/add-person">
             <div class="inner-box">
               <div class="img-box">
                 <img
@@ -27,9 +27,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </router-link>
 
-          <div class="box">
+          <router-link class="box" to="/tenant/sms-communications/compose-message">
             <div class="inner-box">
               <div class="img-box">
                 <img
@@ -46,9 +46,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </router-link>
 
-          <div class="box" @click="actionSelected(`/tenant/${userId}/add-first-timer`)">
+          <router-link class="box" to="/tenant/people/add-first-timer">
             <div class="inner-box">
                 <div class="img-box">
                 <img
@@ -65,7 +65,8 @@
                 </div>
               </div>
             </div>
-          </div>
+          </router-link>
+
         </div>
       </div>
     </div>
@@ -73,7 +74,6 @@
 </template>
 
 <script>
-import axios from "@/gateway/backendapi";
 export default {
   data() {
     return {
@@ -82,22 +82,10 @@ export default {
   },
 
   methods: {
-    actionSelected(url) {
-      this.$router.push(url);
-    }
+    // actionSelected(url) {
+    //   this.$router.push(url);
+    // }
   },
-
-  created() {
-    if (this.$store.getters.currentUser.tenantId) {
-      this.userId = this.$store.getters.currentUser.tenantId;
-    } else {
-      axios.get("/api/Membership/GetCurrentSignedInUser")
-        .then(res => {
-          this.userId = res.data.tenantId;
-        })
-        .catch(err => console.log(err.response))
-    }
-  }
 };
 </script>
 

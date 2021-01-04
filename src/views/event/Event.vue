@@ -494,8 +494,7 @@
                 v-else
                 v-model="item.attendanceTypeName"
                 placeholder="Enter Attendance Item"
-                ref="focusAttendance"
-                :autofocus="indx == 2" 
+                ref="attendanceInput"
               />
             </div>
             <div class="col-5 col-md-3 offset-md-2">
@@ -503,7 +502,7 @@
             </div>
             <div class="d-none d-md-block col-sm-2 offset-sm-1">{{ item.number }}</div>
             <div class="col-1" @click="delAttendance(index)">
-              <i class="fa fa-trash" aria-hidden="true"></i>
+              <i class="fa fa-trash" aria-hidden="true"></i>del
             </div>
           </div>
         </div>
@@ -575,7 +574,7 @@
           :key="index"
         >
           <div class="row">
-            <div class="col-8 col-lg-2">
+            <div class="col-8 col-sm-8 col-lg-2">
               <select class="form-control" v-if="item.offeringTypeId">
                 <option
                   v-for="(newOffering, index) in newOfferings"
@@ -594,9 +593,10 @@
                 v-else
                 v-model="item.name"
                 placeholder="Enter Attendance Item"
+                ref="offeringInput"
               />
             </div>
-            <div class="col-4 col-lg-2 offset-sm-1">
+            <div class="col-4 col-sm-3 col-lg-2 offset-sm-1 offset-md-0">
             <select class="w-100 form-control" v-model="item.channel">
                 <option :value="selected">Select</option>
                 <option value="Cheque">Cheque</option>
@@ -608,17 +608,17 @@
                 <option value="Text">Text</option>
             </select>
             </div>
-            <div class="col-sm-1 offset-sm-1">
+            <div class="col-2 col-sm-2 offset-sm-1 col-lg-1">
               <select class="currency" v-model="item.currency">
                 <option :value="NGN">NGN</option>
                 <option value="GHA">GHA</option>
               </select>
             </div>
-            <div class="col-sm-2">
+            <div class="col-6 col-sm-5 col-lg-2">
               <input type="text" class="form-control" v-model.number="item.amount" placeholder="Enter Amount"/>
             </div>
-            <div class="col-sm-1 offset-sm-1">{{ item.amount }}</div>
-            <div class="col-sm-1 offset-sm-1" @click="delOffering(index)">
+            <div class="col-1 col-sm-1 offset-sm-1 offset-lg-1 d-block d-sm-none d-lg-block">{{ item.amount }}</div>
+            <div class="col-1 col-sm-1 offset-1 offset-sm-2 offset-lg-0" @click="delOffering(index)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
           </div>
@@ -1275,6 +1275,9 @@ export default {
         this.offeringItem.push({
           convertedAmount: 5000
         });
+        this.$nextTick(() => {
+          this.$refs.offeringInput.focus();
+        });
       }
       console.log(this.offeringItem);
 
@@ -1290,6 +1293,9 @@ export default {
       } 
       else {
         this.attendanceItem.push({});
+        this.$nextTick(() => {
+          this.$refs.attendanceInput.focus();
+        });
       }
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
@@ -1573,7 +1579,7 @@ export default {
     filterAttendance() {
       if (this.attendanceText !== "" && this.newAttendances.length > 0) {
         return this.newAttendances.filter((i) => {
-          return i.toLowerCase().includes(this.attendanceText.toLowerCase());
+          return i.name.toLowerCase().includes(this.attendanceText.toLowerCase());
         });
       } else {
         return this.newAttendances;
@@ -1593,7 +1599,7 @@ export default {
     filterOffering() {
       if (this.offeringText !== "" && this.newOfferings.length > 0) {
         return this.newOfferings.filter((i) => {
-          return i.toLowerCase().includes(this.offeringText.toLowerCase());
+          return i.name.toLowerCase().includes(this.offeringText.toLowerCase());
         });
       } else {
         return this.newOfferings;
@@ -2283,6 +2289,11 @@ tr.event-list td {
 .cat {
     padding: 5px;
     border-top: 1px solid #ecf0f3;
+}
+
+.offering-drop {
+  max-height: 300px;
+  overflow: auto;
 }
 
 @media (min-width: 576px) {

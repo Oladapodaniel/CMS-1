@@ -24,9 +24,25 @@ import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
 import FirstTimers from '@/views/people/FirstTimersList.vue';
 import EmptyEvent from '../views/event/EmptyEvent'
 import EventList from '@/views/event/EventList'
+<<<<<<< HEAD
 import SmsList from '@/views/communication/SmsList.vue'
 import ContactList from '@/views/communication/ContactList.vue'
 import MessageDetails from '@/views/communication/MessageDetails.vue'
+=======
+import SmsList from '@/views/communication/SmsList'
+import SendSms from '@/views/communication/SendSms'
+import ComposeEmail from '@/views/communication/ComposeEmail'
+import SmsCommunication from '@/views/communication/SmsCommunication'
+import EmailCommunication from '@/views/communication/EmailCommunication'
+import Inbox from '@/views/communication/MessageInbox'
+import EmailInbox from '@/views/communication/EmailInbox'
+import SentMessages from '@/views/communication/SentMessages'
+import SentEmails from '@/views/communication/SentEmails'
+import DraftMessages from '@/views/communication/DraftMessages'
+import EmailDraft from '@/views/communication/EmailDraft'
+import ContactList from '@/views/communication/ContactList'
+import DeliveryReport from '@/views/communication/DeliveryReport'
+>>>>>>> main
 
 
 const routes = [
@@ -35,6 +51,12 @@ const routes = [
     path: '/column',
     name: 'column',
     component: Column
+  },
+
+  {
+    path: '/send-sms',
+    name: 'sendsms',
+    component: SendSms
   },
   {
     path: '/sms',
@@ -102,7 +124,7 @@ const routes = [
     component: ResetPassword
   },
   {
-    path: '/tenant/:userId',
+    path: '/tenant',
     name: 'Home',
     component: Home,
     children: [
@@ -115,14 +137,25 @@ const routes = [
         path: 'people',
         component: People,
         children: [
+<<<<<<< HEAD
           { path: '', component: PeopleEmpty },
           { path: 'import', component: ImportPeople, name: 'ImportPeople' }
+=======
+          {path: '', component: PeopleEmpty},
+          {path: 'import', component: ImportPeople, name: 'ImportPeople'},
+          {
+            path: 'add-first-timer',
+            name: 'AddFirstTimer',
+            component: AddFirstTimer
+          },
+          {
+            path: 'add-person/:personId?',
+            component: AddPerson
+          },
+>>>>>>> main
         ]
       },
-      {
-        path: 'add-person',
-        component: AddPerson
-      },
+      
       {
         path: 'event',
         name: 'Event',
@@ -138,11 +171,7 @@ const routes = [
         name: 'EventList',
         component: EventList
       },
-      {
-        path: 'add-first-timer',
-        name: 'AddFirstTimer',
-        component: AddFirstTimer
-      },
+      
       {
         path: 'first-timers',
         name: 'FirstTimers',
@@ -152,6 +181,32 @@ const routes = [
         path: 'report/:id',
         name: 'Report',
         component: Report
+      },
+      {
+        path: 'sms-communications',
+        name: 'SmsCommunication',
+        component: SmsCommunication,
+        children: [
+          { path: '', name: 'Inbox', component: Inbox },
+          { path: 'sent', name: 'SentMessages', component: SentMessages },
+          { path: 'draft', name: 'DraftMessages', component: DraftMessages },
+          { path: 'contacts', name: 'ContactList', component: ContactList },
+          { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
+          { path: 'compose-message', name: 'SendMessage', component: SendSms }
+        ]
+      },
+      {
+        path: 'email-communications',
+        name: 'EmailCommunication',
+        component: EmailCommunication,
+        children: [
+          { path: '', name: 'EmailInbox', component: EmailInbox },
+          { path: 'sent', name: 'SentEmails', component: SentEmails },
+          { path: 'draft', name: 'EmailDraft', component: EmailDraft },
+          // { path: 'contacts', name: 'ContactList', component: ContactList },
+          // { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
+          { path: 'compose-message', name: 'ComposeEmail', component: ComposeEmail }
+        ]
       },
     ]
   },

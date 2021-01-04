@@ -11,7 +11,7 @@
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
-            <router-link :to="`/tenant/${route.params.userId}/add-person`" class="">
+            <router-link :to="`/tenant/people/add-person`" class="">
             <button class="button add-person-btn">
               Add Member
             </button>
@@ -19,20 +19,10 @@
           </div>
         </div>
         <hr class="hr" />
-
-        <!-- Transitio area -->
-        <!-- <transition
-          :name="$store.state.pageTransition.name"
-          :mode="$store.state.pageTransition.mode"
-          v-on:after-enter="afterEvent"
-          v-on:after-leave="afterLeave"
-        >
-          <router-view class="view transition" />
-        </transition> -->
-        <!-- End of Transition -->
-        <transition name="fade" mode="out-in">
+        
+        <!-- <transition name="fade" mode="out-in"> -->
           <router-view class="view" />
-        </transition>
+        <!-- </transition> -->
       </div>
     </div>
   </div>
@@ -49,7 +39,7 @@ export default {
 
     const addPersonClicked = () => {
       if (route.name === "ImportPeople") {
-        router.push("/tenant/add-person");
+        router.push("/tenant/people/add-person");
       } else {
         router.push("/people/import");
       }

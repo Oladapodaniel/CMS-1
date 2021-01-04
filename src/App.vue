@@ -7,6 +7,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import store from "@/store/store.js";
+import router from "@/router/index"
 
 export default {
   name: "App",
@@ -19,11 +20,14 @@ export default {
     async getCurrentUser() {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-        console.log(res.data, "Current user");
         store.dispatch("setCurrentUser", res.data);
         // console.log(store.getters.currentUser);
       } catch(err) {
         console.log(err.response);
+        if (err.response && err.response.status === 401) {
+          localStorage.setItem("token", "");
+          router.push("/")
+        }
       }
     }
   },
@@ -35,6 +39,9 @@ export default {
 </script>
 
 <style>
+
+@import './styles/style.css';
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

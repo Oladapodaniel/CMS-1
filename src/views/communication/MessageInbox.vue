@@ -1,77 +1,12 @@
 !<template>
   <div>
     <div class="container">
-      <div class="row mt-4">
-        <div class="col-md-12">
-          <h1 class="font-weight-bold">SMS</h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <hr class="hr" />
-        </div>
-      </div>
 
       <!-- Content Box -->
       <main id="main" class="mt-3">
-        <div class="container-fluid">
-          <div class="row">
-            <!-- Side mennu -->
-            <div class="col-md-3" id="side-menu">
-              <div class="row">
-                <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                  <button class="btn compose-btn">Compose new SMS</button>
-                </div>
-              </div>
-              <div class="row">
-                <div
-                  class="col-md-12"
-                >
-                  <div class="row menu-item-con active py-2">
-                    <div class="col-md-8 m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <i class="fas fa-inbox mr-3 menu-icon"></i>
-                        <span class="menu-item"
-                          >Inbox
-                          <span class="inbox-count ml-md-2">3</span></span
-                        >
-                      </a>
-                    </div>
-                  </div>
-
-                  <div class="row menu-item-con py-2">
-                    <div class="col-md-8 m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <i class="fa fa-location-arrow mr-3 menu-icon"></i>
-                        <span class="menu-item">Sent</span>
-                    </a>
-                    </div>
-                  </div>
-
-                  <div class="row menu-item-con py-2">
-                    <div class="col-md-8 m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <i class="fa fa-envelope-open mr-3 menu-icon"></i>
-                        <span class="menu-item">Draft</span>
-                    </a>
-                    </div>
-                  </div>
-
-                  <div class="row menu-item-con py-2">
-                    <div class="col-md-8 m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <i class="fa fa-list-alt mr-3 menu-icon"></i>
-                        <span class="menu-item">Contact List</span>
-                    </a>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-
-            <!-- Bigger row -->
-            <div class="col-md-9">
+        <div class="container-fluid px-0">
+          <div class="row px-0">
+            <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-7 col-sm-12">
                   <div class="search-div">
@@ -84,11 +19,11 @@
                 </div>
                 <div class="col-md-4 ml-2 mt-sm-2 units-container">
                   <div class="row d-sm-flex align-items-center units-div">
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                       <h4 class="font-weight-bold mb-0">302</h4>
                       <p class="font-weight-bold mb-0">SMS Units</p>
                     </div>
-                    <div class="col-sm-7 d-sm-flex justify-content-end">
+                    <div class="col-sm-6 d-sm-flex justify-content-end">
                       <button class="btn buy-btn">
                         <span class="btn-text">
                             BUY UNITS
@@ -101,9 +36,9 @@
 
               <div class="row">
                 <div class="col-md-12">
-                  <div class="row header-row">
+                  <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12 px-0">
-                      <div class="row light-grey-bg">
+                      <div class="row">
                         <div class="col-md-1 text-md-right text-lg-center px-0">
                           <input type="checkbox" />
                         </div>
@@ -235,15 +170,6 @@ export default {};
 </script>
 
 <style scoped>
-#main {
-  border: 1px solid #02172e30;
-  border-radius: 30px;
-}
-
-#side-menu {
-  border-right: 1px solid #02172e30;
-}
-
 .search-div {
   width: fit-content;
   padding: 10px;
