@@ -325,8 +325,8 @@ export default {
 }
 
 .page-header {
-  font-weight: 800;
-  font-size: 40px;
+  font-weight: 500;
+  font-size: 2rem;
 }
 
 .my-con {
@@ -345,6 +345,7 @@ export default {
 }
 
 .table {
+  width: 99% !important;
   box-shadow: 0px 1px 4px #02172e45;
   border: 1px solid #dde2e6;
   border-radius: 30px;
@@ -531,6 +532,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: 42px;
+  text-decoration: none;
 }
 
 .more {
@@ -647,7 +649,7 @@ export default {
   .boards {
     /* flex-direction: column; */
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-between;
   }
 
   .board {

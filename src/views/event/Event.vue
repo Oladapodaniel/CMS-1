@@ -1225,7 +1225,7 @@ export default {
       eventCategories: [],
       selectedEventCategory: { },
       selectedEventCategoryId: '',
-      eventDate: "",
+      eventDate: new Date(Date.now()).toLocaleDateString(),
       showEditEventCategory: false,
       gender: [],
       comMeansArr: ['Call', 'Email', 'Visit', 'SMS'],
@@ -1676,14 +1676,6 @@ export default {
             return i.name
         })
     }
-  },
-  watch: {
-    newOfferings() {
-      console.log(this.newOfferings, "new");
-    },
-    offeringItem() {
-      console.log(this.offeringItem, "items");
-    },
   },
 };
 </script>
