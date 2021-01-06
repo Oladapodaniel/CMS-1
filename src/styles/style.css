@@ -33,3 +33,12 @@
     border: 1px solid #DDE2E6;
     border-radius: 22px;
   }
+
+  .grey-rounded-border {
+    border: 1px solid #02172E30;
+    border-radius: 8px;
+  }
+
+  .border-none {
+    border: none;
+  }

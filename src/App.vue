@@ -34,6 +34,7 @@ export default {
 
   created() {
     this.getCurrentUser()
+    store.dispatch("getMembers");
   }
 };
 </script>

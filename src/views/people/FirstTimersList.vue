@@ -29,7 +29,7 @@
             <div class="boards">
               <div class="board members-count">
                 <div class="board-top">
-                  <p class="total-text">TOTAL MEMBERS</p>
+                  <p class="total-text mb-0">TOTAL MEMBERS</p>
                   <img
                     class="trend-icon"
                     src="../../assets/dashboardlinks/trend-icon.svg"
@@ -297,6 +297,7 @@ export default {
     const churchMembers = ref([
       
     ]);
+    // if ()
 
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
@@ -385,8 +386,8 @@ export default {
   justify-content: space-between;
   margin-bottom: 40px;
   align-items: center;
-  /* box-shadow: 0px 3px 6px #2c28281c; */
-  padding: 0 4px;
+  box-shadow: 0px 3px 6px #2c28281c;
+  padding: 4px;
 }
 
 .total {
@@ -679,6 +680,14 @@ export default {
   .board.fig {
     box-shadow: none !important;
     border: none;
+  }
+
+  .page-header {
+    font-size: 1.7rem;
+  }
+
+  .total {
+    font-size: 27px;
   }
 }
 
