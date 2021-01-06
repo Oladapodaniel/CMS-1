@@ -24,9 +24,11 @@ import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
 import FirstTimers from '@/views/people/FirstTimersList.vue';
 import EmptyEvent from '../views/event/EmptyEvent'
 import EventList from '@/views/event/EventList'
+
 // import SmsList from '@/views/communication/SmsList.vue'
-// import ContactList from '@/views/communication/ContactList'
+import ContactList from '@/views/communication/ContactList.vue'
 import MessageDetails from '@/views/communication/MessageDetails.vue'
+
 import SmsList from '@/views/communication/SmsList'
 import SendSms from '@/views/communication/SendSms'
 import ComposeEmail from '@/views/communication/ComposeEmail'
@@ -38,7 +40,7 @@ import SentMessages from '@/views/communication/SentMessages'
 import SentEmails from '@/views/communication/SentEmails'
 import DraftMessages from '@/views/communication/DraftMessages'
 import EmailDraft from '@/views/communication/EmailDraft'
-import ContactList from '@/views/communication/ContactList'
+// import ContactList from '@/views/communication/ContactList'
 import DeliveryReport from '@/views/communication/DeliveryReport'
 
 
@@ -53,16 +55,16 @@ const routes = [
   {
     path: '/send-sms',
     name: 'sendsms',
-    component: SendSms,
+    component: SendSms
   },
   {
-    path: '/sms',
-    name: 'Sms',
+    path: '/smslist',
+    name: 'SmsList',
     component: SmsList
   },
   {
-    path: '/contacts',
-    name: 'ContactList',
+    path: '/contactlist',
+    name: 'contactlist',
     component: ContactList
   },
   {
@@ -135,6 +137,9 @@ const routes = [
         component: People,
         children: [
 
+          // { path: '', component: PeopleEmpty },
+          // { path: 'import', component: ImportPeople, name: 'ImportPeople' }
+
           { path: '', component: PeopleEmpty },
           { path: 'import', component: ImportPeople, name: 'ImportPeople' },
           {
@@ -146,6 +151,7 @@ const routes = [
             path: 'add-person/:personId?',
             component: AddPerson
           },
+
         ]
       },
 

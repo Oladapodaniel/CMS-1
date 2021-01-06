@@ -1,208 +1,129 @@
 !<template>
   <div>
     <div class="container">
-      <div class="row mainHeada ">
+      <div class="row mainHeada">
         <div class="col-md-6 col-sm-10 mt-lg-5">
           <h1>Contact List</h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <hr class="hr mb-md-5"/>
+          <hr class="hr mb-md-5" />
         </div>
       </div>
-      
+
       <!-- Content of the Box -->
       <main class="">
-        <div id="main" class="container-fluid col-lg-6 col-md-6 col-sm-12 mt-lg-5">
+        <div
+          id="main"
+          class="container-fluid col-lg-6 col-md-6 col-sm-12 mt-lg-5"
+        >
           <div class="row">
             <!-- Group Name row -->
             <div class="col-md-12">
               <div class="row d-md-flex align-items-center mt-2">
                 <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12 gName">
-                                <h3 class="ml-md-n3"> Group Name</h3>
-                            </div>
-                        </div>
-                        
-                        <!-- Context Area -->
-                        <div class="row amazing d-flex flex-row justify-content-between mt-lg-3">
-                            <div class="col-lg-7 col-sm-4 amazingG">
-                                <h4 class="ml-md-n3 mt-lg-1">
-                                    Amazing Group
-                                </h4>
-                            </div>
-                            <div class="col-lg-5 col-sm-4 mr-lg-n5 amazingE">
-                                <button class="btn btnIcons btn-secondary align-self-end">
-                                    <i class="fas fa-pencil-alt icons"></i>
-                                    Edit
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="row mt-lg-5 mb-lg-4"> 
-                                <h3> Phone Numbers </h3>
-                        </div>
-                            <div class="row d-flex flex-row justify-content-between mdiv"> 
-                                        <div class="col-md-7 form-group px-0">
-                                          <input type="text" class="form-control">
-                                        </div>
-                                        <div class="col-md-5 mr-lg-n5 addIconarea">
-                                          <button class="btn btnIcons align-self-end   btn-secondary">
-                                            <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
-                                            Add
-                                        </button>
-                                    </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-7 col-sm-4 addContent spanArea1">
-                                    <div class="row d-md-flex align-items-center">
-                                      <div class="col-md-7  spanArea col-sm-4">
-                                        <span>0123456789</span>
-                                      </div>
-                                      <div class="col-md-5 d-md-flex justify-content-end spanArea2">
-                                        <button class="btn btn-default text-danger">Remove</button>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Button Area -->
-                            <div class="row mt-md-5">
-                              <div class="col-md-7">
-                                <div class="row d-md-flex align-items-center">
-                                  <div class="col-md-6 basebtns">
-                                      <button class="btn btnBase1 btnBase btn-primary">
-                                      cancel
-                                      </button>
-                                  </div>
-                                  <div class="col-md-6 basebtns">
-                                    <button class="btn btnBase btn-primary">
-                                    save
-                                    </button>
-                                  </div>
-                          </div>
-                        </div>
-                    </div>
-
-      <!-- Content Box -->
-      <main id="main" class="mt-3">
-        <div class="container-fluid px-0">
-          <div class="row px-0">
-            <div class="col-md-12 px-0">
-              <div class="row d-md-flex align-items-center mt-2 mb-4">
-                <div class="col-md-12">
-                    <button class="create-btn font-weigth-bold border-0"><span class="mr-2" style="font-size: 22px">+</span> Create new group</button>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="row header-row">
-                    <div class="col-md-12">
-                      <div class="row light-grey-bg py-2">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">NAME</span>
-                        </div>
-                        <div class="col-md-5">
-                          <span class="th">TOTAL PHONE NUMBER</span>
-                        </div>
-                        <div class="col-md-3">
-                          <span class="th">DATE & TIME CREATED</span>
-                        </div>
-                        <div class="col-md-1">
-                          <span class="th"></span>
-                        </div>
-                      </div>
+                  <div class="row">
+                    <div class="col-md-12 gName">
+                      <h3 class="ml-md-n3 mb-n2">Group Name</h3>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <hr class="hr mt-0" />
+
+                  <!-- Context Area -->
+                  <div
+                    class="row amazing d-flex flex-row justify-content-between mt-lg-3"
+                  >
+                    <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
+                    <div class="col-md-7 form-group px-0">
+                      <input
+                        type="text"
+                        class="inputWithDisable"
+                        id="groupName"
+                        v-model="groupNameValue"
+                        v-bind:disabled="groupNameDisabled"
+                        ref="groupName"
+                      />
+                    </div>
+
+                    <div class="col-lg-5 col-sm-4 mr-lg-n5 amazingE">
+                      <button
+                        v-on:click="enableGroupName"
+                        class="btn btnIcons btn-secondary"
+                      >
+                        <i class="fas fa-pencil-alt icons"></i>
+                        Edit
+                      </button>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
 
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
+                  <div class="row mt-lg-5 mb-lg-1">
+                    <h3>Phone Numbers</h3>
+                  </div>
+                  <div class="row d-flex flex-row justify-content-between mdiv">
+                    <div class="col-md-7 form-group px-0">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="phoneNumber"
+                        v-model="enteredValue"
+                      />
+                    </div>
+                    <div class="col-md-5 mr-lg-n5 addIconarea">
+                      <button
+                        v-on:click="addPhoneNumber"
+                        class="btn btnIcons align-self-end btn-secondary mb-2"
+                      >
+                        <i
+                          class="fa fa-plus-circle icons"
+                          aria-hidden="true"
+                        ></i>
+                        Add
+                      </button>
+                    </div>
+                  </div>
 
-                        <div class="col-md-2 d-md-flex justify-content-between">
-                           <span class="hidden-header">SENDER: </span>
-                          <span>message</span>
-                        </div>
-
-                        <div
-                          class="col-md-5 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >MESSAGE:
+                  <div
+                    v-for="(phoneNumber, index) in phoneNumbers"
+                    :key="index"
+                    class="row"
+                  >
+                    <div class="col-md-7 col-sm-4 addContent spanArea1 mt-1">
+                      <div class="row d-md-flex align-items-center">
+                        <div class="col-md-7 spanArea col-sm-4">
+                          <span>
+                            {{ phoneNumber }}
                           </span>
-                          <span>message</span>
                         </div>
-
                         <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between"
+                          class="col-md-5 d-md-flex justify-content-end spanArea2"
                         >
-                          <span class="hidden-header font-weight-bold"
-                            >DATE CREATED
-                          </span>
-                          <span>message</span>
-                        </div>
-
-                        <div
-                          class="col-md-1 col-ms-12"
-                        >
-                          <span><i class="fa fa-trash delete-icon"></i></span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
+                          <button
+                            v-on:click="removePhoneNumber(index)"
+                            class="btn btn-default text-danger"
+                          >
+                            Remove
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
+                  <!-- Button Area -->
+                  <div class="row mt-md-5">
+                    <div class="col-md-7">
+                      <div class="row d-md-flex align-items-center">
+                        <div class="col-md-6 basebtns">
+                          <button class="btn btnBase1 btnBase btn-primary">
+                            cancel
+                          </button>
                         </div>
-                        <div class="col-md-2 d-md-flex justify-content-between">
-                           <span class="hidden-header">SENDER: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-5 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-1 col-ms-12"
-                        >
-                          <span><i class="fa fa-trash delete-icon"></i></span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
+                        <div class="col-md-6 basebtns">
+                          <button
+                            v-on:click="saveDetails"
+                            class="btn btnBase btn-primary"
+                          >
+                            save
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -214,11 +135,77 @@
         </div>
       </main>
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
-export default {};
+import axios from "@/gateway/backendapi";
+
+export default {
+  data() {
+    return {
+      phoneNumbers: [],
+      enteredValue: "",
+      groupNameValue: "Amazing group",
+      groupNameDisabled: true,
+    };
+  },
+
+  methods: {
+    addPhoneNumber() {
+      if (
+        this.enteredValue !== "" &&
+        this.phoneNumbers.indexOf(this.enteredValue) < 0
+      ) {
+        this.phoneNumbers.push(this.enteredValue);
+        this.enteredValue = "";
+      }
+
+      // this.phoneNumbers.push(this.enteredValue);
+      // this.enteredValue = "";
+      // console.log("am here");
+    },
+    removePhoneNumber(index) {
+      this.phoneNumbers.splice(index, 1);
+    },
+
+    enableGroupName() {
+      this.groupNameDisabled = false;
+      this.$refs.groupName.focus();
+    },
+
+    saveDetails() {
+      let details = {
+        id: "",
+        groupName: this.groupNameValue,
+        phoneNumbers: this.phoneNumbers.join(","),
+      };
+      console.log(details);
+
+      axios
+        .put("/api/editgroup", details)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+        axios 
+        .post("/api/editgroup", details)
+        .then ((res) => {
+          console.log(res);
+        })
+        .catch((err)  => {
+          console.log(err);
+        })
+    },
+  },
+
+  created() {
+    // console.log(this.$route.params.groupId);
+  },
+};
 </script>
 
 <style scoped>
@@ -226,6 +213,25 @@ export default {};
   --font-color: #02172e;
   --hrule-color: #708eb15c;
   --primary-color: #000000;
+}
+
+.container {
+  outline: none;
+  overflow: hidden;
+}
+
+#groupName:focus {
+  border: none;
+}
+
+.inputWithDisable {
+  /* background-color: rgba(252, 252, 252, 0.932); */
+  border: none;
+  outline: transparent;
+}
+
+.inputWithDisable:disabled {
+  background: transparent;
 }
 
 h1,
@@ -319,7 +325,8 @@ h4 {
   .amazingE {
     padding: 0;
     width: 50%;
-    display: flex;
+    margin-left: 1rem;
+    /* display: flex; */
     justify-content: flex-end;
   }
 
@@ -349,136 +356,8 @@ h4 {
     width: 40%;
   }
 
-  .search-div {
-    width: fit-content;
-    padding: 10px;
-    background: #f5f8f9;
-    border-radius: 200px;
-  }
-
-  .search-div input {
-    background: none;
-    border: none;
-    outline: transparent;
-  }
-
-  .brief-message {
-    color: #4762f0;
-  }
-
-  .compose-btn {
-    background: #136acd;
-    box-shadow: 0px 6px 12px #708eb170;
-    border-radius: 22px;
-    color: #fff;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .menu-icon {
-    font-size: 20px;
-  }
-
-  .units-div {
-    border: 1px solid #dde2e6;
-    border-radius: 20px;
-    padding: 15px 0;
-  }
-
-  .hidden-header {
-    display: none;
-  }
-
-  .th {
-    font-size: 12px;
-    font-weight: 700;
-  }
-
-  .inbox-count {
-    background: rgba(19, 106, 205, 0.3);
-    padding: 4px 8px;
-    border-radius: 22px;
-  }
-
-  .menu-item-con {
-    color: #002044;
-    opacity: 0.5;
-  }
-
-  .menu-item-con.active {
-    background: rgba(19, 106, 205, 0.05);
-    border-left: 2px solid #136acd;
-    opacity: 1;
-  }
-
-  .buy-btn {
-    background: rgb(112, 142, 177, 0.33);
-    border-radius: 22px;
-  }
-
-  .btn-text {
-    opacity: 1;
-    font-size: 11px;
-    font-weight: 700;
-  }
-
-  .timestamp {
-    font-size: 14px;
-    color: #333333;
-    opacity: 0.5;
-  }
-
-  .create-btn {
-    background: #ebeff4;
-    border-radius: 21px;
-    padding: 4px 18px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  @media screen and (max-width: 767px) {
-    .hidden-header {
-      display: inline-block;
-      font-size: 12px;
-    }
-
-    .header-row {
-      display: none;
-    }
-
-    #menu-items {
-      flex-direction: row !important;
-    }
-
-    .search-div {
-      width: 100%;
-    }
-
-    .units-div {
-      width: 100%;
-    }
-
-    .units-container {
-      margin-left: 0;
-      margin: auto;
-    }
-  }
-
-  @media screen and (max-width: 1000px) {
-    .msg-n-time {
-      flex-direction: column;
-      margin-bottom: 8px;
-    }
-  }
-
-  @media screen and (min-width: 1000px) {
-    #menu-items {
-      min-width: 100% !important;
-    }
+  #groupName {
+    margin-left: 1rem;
   }
 }
 </style>
