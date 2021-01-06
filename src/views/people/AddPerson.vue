@@ -364,20 +364,20 @@ export default {
       console.log(person, "person");
       
       const formData = new FormData();
-      formData.append("firstName", personObj.firstName)
-      formData.append("lastName", personObj.lastName)
-      formData.append("mobilePhone", personObj.mobilePhone)
+      formData.append("firstName", personObj.firstName ? personObj.firstName : "")
+      formData.append("lastName", personObj.lastName ? personObj.lastName : "")
+      formData.append("mobilePhone", personObj.mobilePhone ? personObj.mobilePhone : "")
       formData.append("email", personObj.email ? personObj.email : '')
-      formData.append("occupation", personObj.occupation)
+      formData.append("occupation", personObj.occupation ? personObj.occupation : "")
       formData.append("dayOfBirth", +birthDate.date());
       formData.append("monthOfBirth", (birthDate.month() + 1));
       formData.append("yearOfBirth", +birthDate.year());
-      formData.append("occupation", personObj.occupation);
+      formData.append("occupation", personObj.occupation ? personObj.occupation : "");
       formData.append("yearOfWedding", +anniversaryDate.year());
       formData.append("monthOfWedding", (+anniversaryDate.month() + 1));
       formData.append("dayOfWedding", +anniversaryDate.date());
       formData.append("peopleClassificationID", membershipId.value ? membershipId.value : '');
-      formData.append("address", personObj.address);
+      formData.append("address", personObj.address ? personObj.address : "");
       formData.append("picture", image);
       formData.append("maritalStatusID", personObj.maritalStatusID ? personObj.maritalStatusID : '');
       formData.append("genderID", personObj.genderID ? personObj.genderID : '');

@@ -4,8 +4,8 @@
             <div class="row mt-4">
                 <div class="col-sm-12 py-2">
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'churchplus'}" @click="changeTab('churchplus')">Churchplus</a>
-                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sharelink'}">Share link</a>
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'sms'}" @click="changeTab('sms')">SMS</a>
+                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sharelink'}">Share link</a>
                 </div>
             </div>
             <hr style="margin: 0">
@@ -133,7 +133,7 @@
                     <div class="col-sm-12 d-flex justify-content-end">
                         <a class="action-btn mx-2 my-1" data-dismiss="modal">Cancel</a>
                         <a class="action-btn mx-2 my-1">Preview</a>
-                        <a class="action-btn mx-2 my-1 save-action-btn mr-sm-5">Save</a>
+                        <a class="action-btn mx-2 my-1 save-action-btn mr-sm-5">Send</a>
                     </div>
                 <!-- </div> -->
             </div>

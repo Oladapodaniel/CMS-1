@@ -2,9 +2,9 @@
   <div class="whole-con">
     <div class="main-con">
       <div class="main-body">
-        <div class="top mt-3">
+        <div class="top mt-3" v-if="!isFormPage">
           <div class="header">
-            <h2>Members</h2>
+            <h2>{{ header }}</h2>
           </div>
           <div class="actions">
             <button class="more-btn button">
@@ -18,8 +18,8 @@
             </router-link>
           </div>
         </div>
-        <hr class="hr" />
-        
+        <hr class="hr" v-if="!isFormPage"/>
+
         <!-- <transition name="fade" mode="out-in"> -->
           <router-view class="view" />
         <!-- </transition> -->
@@ -32,10 +32,16 @@
 // import store from "@/store/index";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
+import { computed } from 'vue';
 
 export default {
   setup() {
     const route = useRoute();
+    const isFormPage = computed(() => {
+      if (route.path.includes("add")) return true;
+      return false;
+    })
+    
 
     const addPersonClicked = () => {
       if (route.name === "ImportPeople") {
@@ -45,6 +51,12 @@ export default {
       }
     };
 
+    const header = computed(() => {
+      console.log(route.path, "path");
+      if (route.path.includes("/people/add-first-timer")) return "First Timers";
+      return "Members";
+    })
+
     //   const afterEnter =  () => {
     //   window.scrollTo(0, 0);
     // }
@@ -52,7 +64,7 @@ export default {
     //   Store.commit("setPageTransition", "default");
     // }
 
-    return { addPersonClicked, route };
+    return { addPersonClicked, route, header, isFormPage, };
   },
 };
 // transition method

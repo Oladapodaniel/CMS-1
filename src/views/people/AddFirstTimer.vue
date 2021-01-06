@@ -3,7 +3,7 @@
     <div class="container my-content">
       <div class="row page-header">
         <div class="col-12">
-          <h2 class="header-text">First timers</h2>
+          <h3 class="header-text font-weight-bold">Add First timers</h3>
         </div>
       </div>
 
@@ -569,7 +569,7 @@ export default {
 }
 
 .page-header {
-  margin-bottom: 44px;
+  margin-bottom: 21px;
   margin-top: 15px;
 }
 
