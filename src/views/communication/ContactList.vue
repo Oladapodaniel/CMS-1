@@ -113,7 +113,10 @@
                     <div class="col-md-7">
                       <div class="row d-md-flex align-items-center">
                         <div class="col-md-6 basebtns">
-                          <button class="btn btnBase1 btnBase btn-primary">
+                          <button
+                            v-on:click="resetInputFields"
+                            class="btn btnBase1 btnBase btn-primary"
+                          >
                             cancel
                           </button>
                         </div>
@@ -208,6 +211,12 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    resetInputFields() {
+      this.enteredValue = "";
+      this.groupNameValue = "";
+      this.phoneNumbers = "";
     },
   },
 
