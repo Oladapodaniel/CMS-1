@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row mainHeada">
         <div class="col-md-6 col-sm-10 mt-lg-5">
-          <h1>Contact List</h1>
+          <h1>Add Group</h1>
         </div>
       </div>
       <div class="row">
@@ -34,7 +34,7 @@
                     class="row amazing d-flex flex-row justify-content-between mt-lg-3"
                   >
                     <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
-                    <div class="col-md-7 form-group px-0">
+                    <!-- <div class="col-md-7 form-group px-0">
                       <input
                         type="text"
                         class="inputWithDisable"
@@ -43,6 +43,14 @@
                         v-bind:disabled="groupNameDisabled"
                         ref="groupName"
                       />
+                    </div> -->
+                    <div class="col-md-7 form-group px-0">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="groupName"
+                        v-model="groupNameValue"
+                      />
                     </div>
 
                     <div class="col-lg-5 col-sm-4 mr-lg-n5 amazingE">
@@ -50,8 +58,11 @@
                         v-on:click="enableGroupName"
                         class="btn btnIcons btn-secondary"
                       >
-                        <i class="fas fa-pencil-alt icons"></i>
-                        Edit
+                        <i
+                          class="fa fa-plus-circle icons"
+                          aria-hidden="true"
+                        ></i>
+                        Add
                       </button>
                     </div>
                   </div>
@@ -113,13 +124,16 @@
                     <div class="col-md-7">
                       <div class="row d-md-flex align-items-center">
                         <div class="col-md-6 basebtns">
-                          <button class="btn btnBase1 btnBase btn-primary">
+                          <button
+                            v-on:click="resetInputFields"
+                            class="btn btnBase1 btnBase btn-primary"
+                          >
                             cancel
                           </button>
                         </div>
                         <div class="col-md-6 basebtns">
                           <button
-                            v-on:click="saveDetails"
+                            v-on:click="saveGroupDetails"
                             class="btn btnBase btn-primary"
                           >
                             save
@@ -140,17 +154,17 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-
 export default {
   data() {
     return {
       phoneNumbers: [],
       enteredValue: "",
-      groupNameValue: "Amazing group",
+      groupNameValue: "",
       groupNameDisabled: true,
     };
   },
 
+  // this.phoneNumbers.indexOf(this.enteredValue) < 0
   methods: {
     addPhoneNumber() {
       if (this.enteredValue !== "") {
@@ -182,7 +196,6 @@ export default {
       // this.enteredValue = "";
       // console.log("am here");
     },
-
     removePhoneNumber(index) {
       this.phoneNumbers.splice(index, 1);
     },
@@ -192,13 +205,21 @@ export default {
       this.$refs.groupName.focus();
     },
 
-    saveDetails() {
+    saveGroupDetails() {
+      if (
+        this.enteredValue !== "" &&
+        this.phoneNumbers.indexOf(this.enteredValue) < 0
+      ) {
+        this.phoneNumbers.push(this.enteredValue);
+        this.enteredValue = "";
+      }
       let details = {
         id: "",
         groupName: this.groupNameValue,
         phoneNumbers: this.phoneNumbers.join(","),
       };
       console.log(details);
+      console.log(this.phoneNumbers);
 
       axios
         .post("/api/Messaging/createPhoneGroups", details)
@@ -209,10 +230,12 @@ export default {
           console.log(err);
         });
     },
-  },
 
-  created() {
-    // console.log(this.$route.params.groupId);
+    resetInputFields() {
+      this.enteredValue = "";
+      this.groupNameValue = "";
+      this.phoneNumbers = "";
+    },
   },
 };
 </script>

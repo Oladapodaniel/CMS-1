@@ -27,6 +27,7 @@ import EventList from '@/views/event/EventList'
 
 // import SmsList from '@/views/communication/SmsList.vue'
 import ContactList from '@/views/communication/ContactList.vue'
+import PhoneGroup from '@/views/communication/PhoneGroup.vue'
 import MessageDetails from '@/views/communication/MessageDetails.vue'
 
 import SmsList from '@/views/communication/SmsList'
@@ -66,6 +67,11 @@ const routes = [
     path: '/contactlist',
     name: 'contactlist',
     component: ContactList
+  },
+  {
+    path: '/phonegroup',
+    name: 'phonegroup',
+    component: PhoneGroup,
   },
   {
     path: '/messagedetails',
