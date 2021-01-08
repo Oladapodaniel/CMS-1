@@ -9,7 +9,15 @@
             class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save"
             @click="post"
           >
-            Save and Continue
+            <i class="fas fa-circle-notch fa-spin mr-2 text-white" v-if="loading"></i>
+            <span class="text-white">Save and Continue</span>
+            <span></span>
+          </div>
+        </div>
+
+        <div class="row mt-1">
+          <div class="col-md-12">
+            <span class="float-right text-danger font-weight-bold">{{ errorMessage }}</span>
           </div>
         </div>
       </div>
@@ -437,7 +445,7 @@
                 <label for="date">Date</label>
               </div>
               <div class="col-sm-6">
-                <input type="date" v-model="eventDate" class="form-control" required />
+                <input type="date" v-model="eventDate" placeholder="Helo" class="form-control" required />
               </div>
               <div class="col-sm-6">
                 <label for="topic">Topic</label>
@@ -763,11 +771,21 @@ Note ...</textarea
           </div>
         </div>
       </div>
-      <div class="container first-pane mt-5 mb-3">
+      <div class="container first-pane mt-3 mb-5">
+          <div class="row">
+            <div class="col-md-12">
+              <span class="float-right text-danger font-weight-bold">{{ errorMessage }}</span>
+            </div>
+          </div>
+
             <div class="row">
                 <div class="col-12 col-sm-4 col-lg-6 events"></div>
                 <div class="col-5 col-sm-3 col-lg-2 btn btn-preview">Preview</div>
-                <div class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save"  @click="post">Save and Continue</div>
+                <div class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save"  @click="post">
+                  <i class="fas fa-circle-notch fa-spin mr-2 text-white" v-if="loading"></i>
+                  <span class="text-white">Save and Continue</span>
+                  <span></span>
+                </div>
             </div>
         </div>
     </div>
@@ -1242,7 +1260,9 @@ export default {
                       
       showCategory: false,
       eventText: "",
-      toggleFocus: true
+      toggleFocus: true,
+      loading: false,
+      errorMessage: ""
     };
   },
 
@@ -1362,7 +1382,7 @@ export default {
           console.log(res, "new attendance");
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response, "error saving event");
         });
       // this.newAttendances.push(this.attendanceCreate)
       // this.attendanceCreate = '';
@@ -1424,15 +1444,24 @@ export default {
       };
       console.log(event);
 
+      this.loading = true;
       axios
         .post("api/Events/CreateActivity", event)
         .then((res) => {
+          this.loading = false;
           console.log(res, "main post");
           const activityId = res.data.currentEvent.id;
           localStorage.setItem("eventData", JSON.stringify(event))
           this.$router.push({ name: "Report", params: { id: activityId }});
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          this.loading = false;
+          if (err.response) {
+            const { data, status } = err.response;
+            if (status === 400) this.errorMessage = data;
+          }
+          console.log(err.response)
+        });
     },
 
     getEventCategories() {

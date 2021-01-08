@@ -330,7 +330,11 @@
               </button>
             </div>
             <div class="col-5 form-group">
-              <button class="save-btn btn">Save</button>
+              <button class="save-btn btn text-light">
+                <i class="fas fa-circle-notch fa-spin mr-2 text-white" v-if="loading"></i>
+                <span class="text-white">Save</span>
+                <span></span>
+              </button>
             </div>
             <div class="col-md-2"></div>
           </div>
@@ -344,7 +348,7 @@
 import { ref, onMounted, computed } from "vue";
 import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
-import router from "@/router/index"
+import router from "@/router/index";
 
 export default {
   components: { SelectElem },
@@ -410,16 +414,22 @@ export default {
       // maritalStatusId: "00000000-0000-0000-0000-000000000000",
       // maritalStatusId: "00000000-0000-0000-0000-000000000000",
     });
+
+    const loading = ref(false)
     const onSubmit = () => {
       console.log(firstTimersObj.value);
-
+      loading.value = true;
       axios
         .post("/api/people/firsttimer", firstTimersObj.value)
         .then((res) => {
-          console.log(res.data)
-          router.push("/tenant/first-timers")
+          console.log(res.data);
+          loading.value = false;
+          router.push("/tenant/first-timers");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          loading.value = false;
+          console.log(err)
+        });
     };
 
     const onCancel = () => {};
@@ -511,8 +521,8 @@ export default {
         console.log(firstTimersObj.value.activityID);
       }
       if (data.dataType === "howYouHeard") {
-        if (data.value !== 'select') {
-            firstTimersObj.value.howDidYouAboutUsId = howDidYouAboutUs.value.find(
+        if (data.value !== "select") {
+          firstTimersObj.value.howDidYouAboutUsId = howDidYouAboutUs.value.find(
             (i) => i.name == data.value
           ).id;
         }
@@ -566,6 +576,7 @@ export default {
       wantVisitArr,
       comMeansArr,
       select2Value,
+      loading,
     };
   },
 };

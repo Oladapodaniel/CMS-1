@@ -16,7 +16,7 @@
       <main class="">
         <div
           id="main"
-          class="container-fluid col-lg-6 col-md-6 col-sm-12 mt-lg-5"
+          class="container-fluid col-sm-12"
         >
           <div class="row">
             <!-- Group Name row -->
@@ -44,7 +44,7 @@
                         ref="groupName"
                       />
                     </div> -->
-                    <div class="col-md-7 form-group px-0">
+                    <div class="col-md-5 form-group px-0">
                       <input
                         type="text"
                         class="form-control"
@@ -72,7 +72,7 @@
                     <h3>Phone Numbers</h3>
                   </div>
                   <div class="row d-flex flex-row justify-content-between mdiv">
-                    <div class="col-md-7 form-group px-0">
+                    <div class="col-md-5 form-group px-0">
                       <input
                         type="text"
                         class="form-control"
@@ -100,7 +100,7 @@
                     :key="index"
                     class="row"
                   >
-                    <div class="col-md-7 col-sm-4 addContent spanArea1 mt-1">
+                    <div class="col-md-5 col-sm-4 addContent spanArea1 mt-1">
                       <div class="row d-md-flex align-items-center">
                         <div class="col-md-7 spanArea col-sm-4">
                           <span>
@@ -136,7 +136,7 @@
                         <div class="col-md-6 basebtns">
                           <button
                             v-on:click="saveGroupDetails"
-                            class="btn btnBase btn-primary"
+                            class="btn btnBase btn-primary ml-md-4"
                           >
                             save
                           </button>
@@ -156,6 +156,8 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import router from "../../router/index"
+
 export default {
   data() {
     return {
@@ -227,6 +229,7 @@ export default {
         .post("/api/Messaging/createPhoneGroups", details)
         .then((res) => {
           console.log(res);
+          router.push("/tenant/sms-communications/contacts")
         })
         .catch((err) => {
           console.log(err);

@@ -8,13 +8,13 @@
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-2 mb-4">
                 <div class="col-md-12">
-                  <button
-                    v-on:click="tenant / sms - communications / add - group"
+                  <router-link
+                  to="/tenant/sms-communications/add-group"
                     class="create-btn font-weigth-bold border-0"
                   >
                     <span class="mr-2" style="font-size: 22px">+</span> Create
                     new group
-                  </button>
+                  </router-link>
                 </div>
               </div>
 
@@ -132,10 +132,39 @@
 </template>
 
 <script>
-export default {};
+import { onMounted, ref } from 'vue';
+import axios from "@/gateway/backendapi";
+
+export default {
+  setup() {
+    const groups = ref([ ]);
+    const getGroups = async () => {
+      try {
+        const res = await axios.get("/api/Messaging/getCommunicationGroups");
+        console.log(res, "groups");
+        groups.value = res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    onMounted(() => {
+      getGroups();
+    })
+
+    return {
+      groups,
+
+    }
+  }
+};
 </script>
 
 <style scoped>
+* {
+  color:  #02172e;
+}
+
 .search-div {
   width: fit-content;
   padding: 10px;
@@ -225,6 +254,8 @@ export default {};
   display: flex;
   align-items: center;
   justify-content: center;
+  width: fit-content;
+  text-decoration: none;
 }
 
 @media screen and (max-width: 767px) {
