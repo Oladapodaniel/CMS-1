@@ -50,6 +50,7 @@
                         class="form-control"
                         id="groupName"
                         v-model="groupNameValue"
+                        required
                       />
                     </div>
 
@@ -77,6 +78,7 @@
                         class="form-control"
                         id="phoneNumber"
                         v-model="enteredValue"
+                        required
                       />
                     </div>
                     <div class="col-md-5 mr-lg-n5 addIconarea">
@@ -120,7 +122,7 @@
                   </div>
 
                   <!-- Button Area -->
-                  <div class="row mt-md-5">
+                  <div class="row mt-md-5 mb-4">
                     <div class="col-md-7">
                       <div class="row d-md-flex align-items-center">
                         <div class="col-md-6 basebtns">

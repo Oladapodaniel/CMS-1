@@ -8,10 +8,7 @@
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-2 mb-4">
                 <div class="col-md-12">
-                  <button
-                    v-on:click="tenant / sms - communications / add - group"
-                    class="create-btn font-weigth-bold border-0"
-                  >
+                  <button class="create-btn font-weigth-bold border-0">
                     <span class="mr-2" style="font-size: 22px">+</span> Create
                     new group
                   </button>

@@ -36,6 +36,8 @@ import SentEmails from '@/views/communication/SentEmails'
 import DraftMessages from '@/views/communication/DraftMessages'
 import EmailDraft from '@/views/communication/EmailDraft'
 import ContactList from '@/views/communication/ContactList'
+import PhoneGroup from '@/views/communication/PhoneGroup'
+import EditContactList from '@/views/communication/EditContactList'
 import DeliveryReport from '@/views/communication/DeliveryReport'
 
 
@@ -121,8 +123,8 @@ const routes = [
         path: 'people',
         component: People,
         children: [
-          {path: '', component: PeopleEmpty},
-          {path: 'import', component: ImportPeople, name: 'ImportPeople'},
+          { path: '', component: PeopleEmpty },
+          { path: 'import', component: ImportPeople, name: 'ImportPeople' },
           {
             path: 'add-first-timer',
             name: 'AddFirstTimer',
@@ -134,7 +136,7 @@ const routes = [
           },
         ]
       },
-      
+
       {
         path: 'event',
         name: 'Event',
@@ -150,7 +152,7 @@ const routes = [
         name: 'EventList',
         component: EventList
       },
-      
+
       {
         path: 'first-timers',
         name: 'FirstTimers',
@@ -170,6 +172,8 @@ const routes = [
           { path: 'sent', name: 'SentMessages', component: SentMessages },
           { path: 'draft', name: 'DraftMessages', component: DraftMessages },
           { path: 'contacts', name: 'ContactList', component: ContactList },
+          { path: 'add-group', name: 'Phongroup', component: PhoneGroup },
+          { path: 'edit-contact', name: 'EditContactList', component: EditContactList },
           { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
           { path: 'compose-message', name: 'SendMessage', component: SendSms }
         ]
@@ -214,7 +218,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token")
-  if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" &&  to.name !== "StartingPoint" && !token) return next("/")
+  if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && !token) return next("/")
   if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
   next(true)
 })
