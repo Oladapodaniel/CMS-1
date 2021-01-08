@@ -1372,7 +1372,7 @@ export default {
         .setAttribute("data-dismiss", "modal");
     },
     createNewEvent() {
-      this.newEvents.push(this.eventCreate);
+      this.newEvents.push({ name: this.eventCreate });
       this.eventCreate = "";
       document
         .querySelector("#closeEvent")
@@ -1611,7 +1611,9 @@ export default {
 
        let arr = []
         if (this.newEvents.length > 0) {
+          console.log(this.newEvents, "new events");
             arr = this.newEvents.filter((i) => {
+                
                 return i.name.toLowerCase().includes(this.eventText.toLowerCase());
                 });
                     

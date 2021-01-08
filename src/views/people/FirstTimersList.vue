@@ -29,7 +29,7 @@
             <div class="boards">
               <div class="board members-count">
                 <div class="board-top">
-                  <p class="total-text">TOTAL MEMBERS</p>
+                  <p class="total-text mb-0">TOTAL MEMBERS</p>
                   <img
                     class="trend-icon"
                     src="../../assets/dashboardlinks/trend-icon.svg"
@@ -228,7 +228,7 @@
                     <div class="data-text">
                       <p>Date</p>
                     </div>
-                    <div class="data-value">{{ person.date }}</div>
+                    <div class="data-value">{{ new Date(person.date).toLocaleDateString() }}</div>
                   </div>
                 </div>
                 <div class="phone data">
@@ -264,14 +264,15 @@
             </div>
 
             <div class="table-footer">
-              <button class="tbl-footer-btn">
+              <!-- <button class="tbl-footer-btn">
                 <i class="fa fa-angle-left"></i>
               </button>
               <button class="tbl-footer-btn">A</button>
               <button class="tbl-footer-btn">A</button>
               <button class="tbl-footer-btn">
                 <i class="fa fa-angle-right"></i>
-              </button>
+              </button> -->
+              <Pagination />
             </div>
           </div>
         </div>
@@ -285,18 +286,21 @@ import { ref, onMounted } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
+import Pagination from "../../components/pagination/PaginationButtons"
 
 export default {
   props: ["list"],
   components: {
     ByGenderChart,
     ByMaritalStatusChart,
+    Pagination
   },
 
   setup(props) {
     const churchMembers = ref([
       
     ]);
+    // if ()
 
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
@@ -385,8 +389,8 @@ export default {
   justify-content: space-between;
   margin-bottom: 40px;
   align-items: center;
-  /* box-shadow: 0px 3px 6px #2c28281c; */
-  padding: 0 4px;
+  box-shadow: 0px 3px 6px #2c28281c;
+  padding: 4px;
 }
 
 .total {
@@ -679,6 +683,14 @@ export default {
   .board.fig {
     box-shadow: none !important;
     border: none;
+  }
+
+  .page-header {
+    font-size: 1.7rem;
+  }
+
+  .total {
+    font-size: 27px;
   }
 }
 
