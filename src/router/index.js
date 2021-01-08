@@ -19,6 +19,9 @@ import AddPerson from '../views/people/AddPerson.vue';
 import List from '../views/people/PeopleList.vue';
 import Event from '../views/event/Event.vue'
 import Column from '@/components/charts/ColumnChart.vue';
+
+import Pagination from '@/components/pagination/PaginationButtons.vue';
+
 import Report from '@/views/event/EventReport.vue'
 import AddFirstTimer from '@/views/people/AddFirstTimer.vue';
 import FirstTimers from '@/views/people/FirstTimersList.vue';
@@ -45,6 +48,12 @@ const routes = [
     path: '/column',
     name: 'column',
     component: Column
+  },
+
+  {
+    path: '/pagination',
+    name: 'Pagination',
+    component: Pagination
   },
 
   {

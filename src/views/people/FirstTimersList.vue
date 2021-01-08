@@ -228,7 +228,7 @@
                     <div class="data-text">
                       <p>Date</p>
                     </div>
-                    <div class="data-value">{{ person.date }}</div>
+                    <div class="data-value">{{ new Date(person.date).toLocaleDateString() }}</div>
                   </div>
                 </div>
                 <div class="phone data">
@@ -264,14 +264,15 @@
             </div>
 
             <div class="table-footer">
-              <button class="tbl-footer-btn">
+              <!-- <button class="tbl-footer-btn">
                 <i class="fa fa-angle-left"></i>
               </button>
               <button class="tbl-footer-btn">A</button>
               <button class="tbl-footer-btn">A</button>
               <button class="tbl-footer-btn">
                 <i class="fa fa-angle-right"></i>
-              </button>
+              </button> -->
+              <Pagination />
             </div>
           </div>
         </div>
@@ -285,12 +286,14 @@ import { ref, onMounted } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
+import Pagination from "../../components/pagination/PaginationButtons"
 
 export default {
   props: ["list"],
   components: {
     ByGenderChart,
     ByMaritalStatusChart,
+    Pagination
   },
 
   setup(props) {

@@ -404,14 +404,21 @@ export default {
     const eventsAttended = ref([]);
     const howDidYouAboutUs = ref([]);
     const firstTimersObj = ref({
-      howDidYouAboutUsId: "00000000-0000-0000-0000-000000000000",
+      // howDidYouAboutUsId: "00000000-0000-0000-0000-000000000000",
+      // maritalStatusId: "00000000-0000-0000-0000-000000000000",
+      // genderId: "00000000-0000-0000-0000-000000000000",
+      // maritalStatusId: "00000000-0000-0000-0000-000000000000",
+      // maritalStatusId: "00000000-0000-0000-0000-000000000000",
     });
     const onSubmit = () => {
       console.log(firstTimersObj.value);
 
       axios
         .post("/api/people/firsttimer", firstTimersObj.value)
-        .then((res) => console.log(res.data))
+        .then((res) => {
+          console.log(res.data)
+          router.push("/tenant/first-timers")
+        })
         .catch((err) => console.log(err));
     };
 
@@ -504,9 +511,11 @@ export default {
         console.log(firstTimersObj.value.activityID);
       }
       if (data.dataType === "howYouHeard") {
-        firstTimersObj.value.howDidYouAboutUsId = howDidYouAboutUs.value.find(
-          (i) => i.name == data.value
-        ).id;
+        if (data.value !== 'select') {
+            firstTimersObj.value.howDidYouAboutUsId = howDidYouAboutUs.value.find(
+            (i) => i.name == data.value
+          ).id;
+        }
       }
       if (data.dataType === "commeans") {
         firstTimersObj.value.communicationMeans = comMeansArr.value.indexOf(

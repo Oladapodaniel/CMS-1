@@ -85,7 +85,7 @@
             </div>
 
             <!-- Bigger row -->
-            <div class="col-md-9">
+            <div class="col-md-9 col-xl-8" style="margin: auto">
                 <router-view>
 
                 </router-view>
