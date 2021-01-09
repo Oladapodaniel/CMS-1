@@ -444,73 +444,49 @@ export default {
 
     const loading = ref(false);
     const onSubmit = () => {
-      const x = {
-        activityID: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        address: "string",
-        autoMatedFollowUp: "string",
-        birthday: "string",
-        birthMonth: "string",
-        birthYear: "string",
-        sendWelcomeEmail: true,
-        sendWelcomeSMS: true,
-        communicationMeans: 0,
-        email: "string",
-        firstName: "string",
-        lastName: "string",
-        genderId: 0,
-        howDidYouAboutUsId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        interestedInJoining: 0,
-        wantToBeVisited: 0,
-        maritalStatusId: 0,
-        phoneNumber: "string",
-        sendSms: true,
-        sendEmail: true,
-        followUpTypeId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      };
-      // firstTimersObj.value.followUpTypeId =
-      //   "00000000-0000-0000-0000-000000000000";
-      // firstTimersObj.value.genderId = selectedGender.value
-      //   ? selectedGender.value.id
-      //   : 0;
-      // firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
-      //   ? selectedMaritalStatus.value.id
-      //   : 0;
-      // firstTimersObj.value.activityID = selectedEventAttended.value
-      //   ? selectedEventAttended.value.activityID
-      //   : "00000000-0000-0000-0000-000000000000";
-      // firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
-      //   ? selectedAboutUsSource.value.id
-      //   : "00000000-0000-0000-0000-000000000000";
-      // firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
-      //   ? comMeansArr.value.indexOf(selectedCommunicationMeans.value)
-      //   : 0;
-      // firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
-      //   ? joinInterestArr.value.indexOf(selectedJoinInterest.value)
-      //   : 0;
-      // firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
-      //   ? wantVisitArr.value.indexOf(selectedVisitOption.value)
-      //   : 0;
+      firstTimersObj.value.followUpTypeId =
+        "00000000-0000-0000-0000-000000000000";
+      firstTimersObj.value.genderId = selectedGender.value
+        ? selectedGender.value.id
+        : 0;
+      firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
+        ? selectedMaritalStatus.value.id
+        : 0;
+      firstTimersObj.value.activityID = selectedEventAttended.value
+        ? selectedEventAttended.value.activityID
+        : "00000000-0000-0000-0000-000000000000";
+      firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
+        ? selectedAboutUsSource.value.id
+        : "00000000-0000-0000-0000-000000000000";
+      firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
+        ? comMeansArr.value.indexOf(selectedCommunicationMeans.value)
+        : 0;
+      firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
+        ? joinInterestArr.value.indexOf(selectedJoinInterest.value)
+        : 0;
+      firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
+        ? wantVisitArr.value.indexOf(selectedVisitOption.value)
+        : 0;
 
       console.log(firstTimersObj.value);
       loading.value = true;
       axios
-        .post("/api/people/firsttimer", x)
-        // .post("/api/people/firsttimer", firstTimersObj.value)
+        .post("/api/people/firsttimer", firstTimersObj.value)
         .then((res) => {
           console.log(res.data);
           loading.value = false;
-          $toast.show(`Saving successful`, {
-            position: "top-right",
-            type: "success",
-          });
+          // $toast.show(`Saving successful`, {
+          //   position: "top-right",
+          //   type: "success",
+          // });
           router.push("/tenant/first-timers");
         })
         .catch((err) => {
           loading.value = false;
-          $toast.show(`Saving failed`, {
-            position: "top-right",
-            type: "error",
-          });
+          // $toast.show(`Saving failed`, {
+          //   position: "top-right",
+          //   type: "error",
+          // });
           console.log(err);
         });
     };

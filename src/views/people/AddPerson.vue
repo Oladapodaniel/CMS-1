@@ -583,18 +583,18 @@ export default {
 
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
-            $toast.show(`Member added`, {
-              position: "top-right",
-              type: "success",
-            });
+            // $toast.show(`Member added`, {
+            //   position: "top-right",
+            //   type: "success",
+            // });
             router.push("/tenant/people");
           }
         } catch (err) {
           loading.value = false;
-          $toast.show(`Updating failed`, {
-            position: "top-right",
-            type: "error",
-          });
+          // $toast.show(`Updating failed`, {
+          //   position: "top-right",
+          //   type: "error",
+          // });
           errMessage.value = err.response.data.messsage
             ? err.response.data.messsage
             : "An error occurred";
@@ -610,18 +610,18 @@ export default {
 
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
-            $toast.show(`Member added`, {
-              position: "top-right",
-              type: "success",
-            });
+            // $toast.show(`Member added`, {
+            //   position: "top-right",
+            //   type: "success",
+            // });
             router.push("/tenant/people");
           }
         } catch (err) {
           loading.value = false;
-          $toast.show(`Saving failed`, {
-            position: "top-right",
-            type: "error",
-          });
+          // $toast.show(`Saving failed`, {
+          //   position: "top-right",
+          //   type: "error",
+          // });
           errMessage.value = err.response.data.messsage
             ? err.response.data.messsage
             : "An error occurred";
