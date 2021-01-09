@@ -11,12 +11,12 @@
         <div class="col-10 offset-1 offset-sm-0 col-sm-12">
           <span class="sub-header">Bio: </span>
           <div class="row first-row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-3 text-md-right pr-0">
               <label for="firstname"
                 >Firstname <span class="required">*</span></label
               >
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-5 form-group">
               <input
                 type="text"
                 class="form-control input"
@@ -26,14 +26,14 @@
                 required
               />
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-md-4"></div>
           </div>
 
           <div class="row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-3 text-md-right pr-0">
               <label for="">Surname</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-5 form-group">
               <input
                 type="text"
                 class="form-control input"
@@ -41,42 +41,90 @@
                 name=""
               />
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-md-4"></div>
           </div>
 
           <div class="row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-3 text-md-right pr-0">
               <label for="">Phone number</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-5 form-group">
               <input
                 type="text"
                 class="form-control input"
                 v-model="firstTimersObj.phoneNumber"
               />
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-md-4"></div>
+          </div>
+
+          <div class="row select-elem">
+            <div class="col-12 col-md-3 text-md-right pr-0">
+              <label for=""></label>
+            </div>
+            <div class="col-12 col-md-5 form-group">
+              <div class="row d-md-flex justify-content-between">
+                <div class="col-md-5 w-100 pr-0 pt-0 select-div">
+                  <Dropdown
+                    v-model="selectedMaritalStatus"
+                    :options="maritalStatusArr"
+                    optionLabel="value"
+                    placeholder="Marital status"
+                    style="width: 100%"
+                  />
+                </div>
+                <div class="col-md-5 pl-0 select-div">
+                  <Dropdown
+                    v-model="selectedGender"
+                    :options="genderArr"
+                    optionLabel="value"
+                    placeholder="Gender"
+                    style="width: 100%"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4"></div>
           </div>
 
           <div class="row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-3 text-md-right pr-0">
               <label for="">Email</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-5 form-group">
               <input
                 type="text"
                 class="form-control input"
                 v-model="firstTimersObj.email"
               />
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-md-4"></div>
+          </div>
+
+          <!-- Event attended -->
+          <div class="row select-elem">
+            <div class="col-md-3 text-md-right pr-0">
+              <label for="">Event or service attended</label>
+            </div>
+            <div class="col-12 col-md-5 form-group">
+              <Dropdown
+                v-model="selectedEventAttended"
+                :options="eventsAttended"
+                optionLabel="name"
+                :filter="true"
+                filterPlaceholder="Find event"
+                placeholder="Select from events and activities"
+                style="width: 100%"
+              />
+            </div>
+            <div class="col-md-4"></div>
           </div>
 
           <div class="row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-3 text-md-right pr-0">
               <label for="">Address</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-5 form-group">
               <input
                 type="text"
                 class="form-control input"
@@ -88,85 +136,36 @@
 
           <!-- Birthday -->
           <div class="row select-elem">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-md-3 text-md-right pr-0">
               <label for="">Birthday</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-5 form-group">
               <div class="row">
-                <div class="col-4 w-100 form-group pr-0 pt-0 select-div">
-                  <SelectElem
-                    name="day"
-                    id="day"
-                    value="day"
-                    :options="['day', ...day]"
-                    @input="select2Value"
+                <div class="col-md-4 w-100 form-group pt-0 select-div">
+                  <Dropdown
+                    v-model="firstTimersObj.birthday"
+                    :options="day"
+                    placeholder="Day"
+                    style="width: 100%"
                   />
                 </div>
-                <div class="col-4 form-group px-0 select-div">
-                  <SelectElem
-                    name="month"
-                    id="month"
-                    value="month"
-                    :options="['month', ...month]"
-                    @input="select2Value"
+                <div class="col-md-4 form-group px-0 select-div">
+                  <Dropdown
+                    v-model="firstTimersObj.birthMonth"
+                    :options="month"
+                    placeholder="Month"
+                    style="width: 100%"
                   />
                 </div>
-                <div class="col-4 form-group pl-0 select-div">
-                  <SelectElem
-                    name="year"
-                    id="year"
-                    value="year"
-                    :options="['year', ...year]"
-                    @input="select2Value"
+                <div class="col-md-4 form-group select-div">
+                  <Dropdown
+                    v-model="firstTimersObj.birthYear"
+                    :options="year"
+                    placeholder="Year"
+                    style="width: 100%"
                   />
                 </div>
               </div>
-            </div>
-            <div class="col-md-4"></div>
-          </div>
-
-          <!-- Marital status -->
-          <div class="row select-elem">
-            <!-- <div class="col-md-4 text-md-right pr-0">
-                            <label for=""></label>
-                        </div> -->
-            <div class="offset-sm-4 col-sm-6 col-md-4 form-group">
-              <div class="row">
-                <div class="col-sm-6 form-group pr-0 select-div">
-                  <SelectElem
-                    name="maritalStatus"
-                    :options="['Marital Status', ...maritalStatus]"
-                    value="Marital status"
-                    @input="select2Value"
-                  />
-                </div>
-                <div
-                  class="col-sm-6 col-md-5 offset-md-1 form-group pl-0 select-div"
-                >
-                  <SelectElem
-                    name="gender"
-                    :options="['Gender', ...gender]"
-                    value="Gender"
-                    @input="select2Value"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4"></div>
-          </div>
-
-          <!-- Event attended -->
-          <div class="row select-elem">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
-              <label for="">Event or service attended</label>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group mb-0">
-              <SelectElem
-                name="eventAttended"
-                :options="['Event Attended', ...eventAttended]"
-                value="Event Attended"
-                @input="select2Value"
-              />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -190,15 +189,16 @@
 
           <!-- Hear About Us -->
           <div class="row select-elem first-row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
-              <label for="">How did you hear about us</label>
+            <div class="col-12 col-md-3 text-md-right pr-0">
+              <label for="">How did you hear about us?</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
-              <SelectElem
-                name="howYouHeard"
-                :options="['select', ...howYouHeard]"
-                value="select"
-                @input="select2Value"
+            <div class="col-12 col-md-5 form-group">
+              <Dropdown
+                v-model="selectedAboutUsSource"
+                :options="howDidYouAboutUs"
+                optionLabel="name"
+                placeholder=""
+                style="width: 100%"
               />
             </div>
             <div class="col-md-4"></div>
@@ -206,15 +206,15 @@
 
           <!-- Communication means -->
           <div class="row select-elem">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-3 text-md-right pr-0">
               <label for="">Preferred means of communication</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
-              <SelectElem
-                name="commeans"
-                :options="['select', ...comMeansArr]"
-                @input="select2Value"
-                value="select"
+            <div class="col-12 col-md-5 form-group">
+              <Dropdown
+                v-model="selectedCommunicationMeans"
+                :options="comMeansArr"
+                placeholder=""
+                style="width: 100%"
               />
             </div>
             <div class="col-md-4"></div>
@@ -222,15 +222,15 @@
 
           <!-- Interested in joining us -->
           <div class="row select-elem">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
-              <label for="">Interested in joining us ?</label>
+            <div class="col-12 col-md-3 text-md-right pr-0">
+              <label for="">Interested in joining us?</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
-              <SelectElem
-                name="joininterest"
-                :options="['select', ...joinInterestArr]"
-                @input="select2Value"
-                value="select"
+            <div class="col-12 col-md-5 form-group">
+              <Dropdown
+                v-model="selectedJoinInterest"
+                :options="joinInterestArr"
+                placeholder=""
+                style="width: 100%"
               />
             </div>
             <div class="col-md-4"></div>
@@ -238,15 +238,15 @@
 
           <!-- Want visit -->
           <div class="row select-elem">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
-              <label for="">Want to be visited ?</label>
+            <div class="col-12 col-md-3 text-md-right pr-0">
+              <label for="">Want to be visited?</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
-              <SelectElem
-                name="wantvisit"
-                :options="['select', ...wantVisitArr]"
-                value="select"
-                @input="select2Value"
+            <div class="col-12 col-md-5 form-group">
+              <Dropdown
+                v-model="selectedVisitOption"
+                :options="wantVisitArr"
+                placeholder=""
+                style="width: 100%"
               />
             </div>
             <div class="col-md-4"></div>
@@ -255,7 +255,7 @@
       </div>
 
       <div class="row form-container">
-        <div class="offset-1 offset-sm-0 col-10 col-sm-12">
+        <div class="offset-1 offset-md-0 col-10 col-md-12">
           <div class="row">
             <div class="col-md-11">
               <span
@@ -272,7 +272,7 @@
           </div>
 
           <div class="row first-row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-3 text-md-right pr-0">
               <label for=""></label>
             </div>
             <div class="col-12 col-md-5 form-group">
@@ -301,17 +301,18 @@
               </div>
             </div>
 
-            <div class="col-md-2"></div>
+            <div class="col-md-4"></div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0 form-group">
+            <div class="col-12 col-md-3 text-md-right pr-0 form-group">
               <label for="welcomeSms">Assigned automated follow-up</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-              <SelectElem
-                name="automatedfollowup"
+            <div class="col-12 col-md-5">
+              <Dropdown
+                v-model="selectedFollowUp"
                 :options="['Option1', 'Option2']"
-                value="Option1"
+                placeholder="..."
+                style="width: 100%"
               />
             </div>
           </div>
@@ -319,9 +320,10 @@
       </div>
 
       <div class="row form-container">
-        <div class="col-md-12">
-          <div class="row select-elem first-row">
-            <div class="offset-3 offset-sm-4 col-3 col-lg-2 pr-0">
+        <div class="col-md-3"></div>
+        <div class="col-md-5">
+          <div class="row d-flex justify-content-between">
+            <div class="col-xs-5 col-sm-5 my-2 pr-0">
               <button
                 class="action-btn cancel-btn btn"
                 @click.prevent="onCancel"
@@ -329,16 +331,20 @@
                 Cancel
               </button>
             </div>
-            <div class="col-5 form-group">
+            <div class="col-xs-5 col-sm-5 my-2 form-group">
               <button class="save-btn btn text-light">
-                <i class="fas fa-circle-notch fa-spin mr-2 text-white" v-if="loading"></i>
+                <i
+                  class="fas fa-circle-notch fa-spin mr-2 text-white"
+                  v-if="loading"
+                ></i>
                 <span class="text-white">Save</span>
                 <span></span>
               </button>
             </div>
-            <div class="col-md-2"></div>
+            <!-- <div class="col-xs-2 col-sm-2"></div> -->
           </div>
         </div>
+        <div class="col-md-4"></div>
       </div>
     </div>
   </form>
@@ -346,14 +352,17 @@
 
 <script>
 import { ref, onMounted, computed } from "vue";
-import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
+import Dropdown from "primevue/dropdown";
+import { getCurrentInstance } from "vue";
 
 export default {
-  components: { SelectElem },
+  components: { Dropdown },
 
   setup() {
+    const $toast = getCurrentInstance().ctx.$toast;
+
     const day = ref([
       1,
       2,
@@ -401,38 +410,114 @@ export default {
       "December",
     ]);
     const maritalStatusArr = ref([]);
+    const selectedMaritalStatus = ref(null);
+
     const genderArr = ref([]);
+    const selectedGender = ref(null);
+
     const comMeansArr = ref(["Call", "Email", "Visit", "SMS"]);
+    const selectedCommunicationMeans = ref(null);
+
     const joinInterestArr = ref(["Yes", "No", "Maybe", "On Transit"]);
+    const selectedJoinInterest = ref(null);
+
     const wantVisitArr = ref(["Yes", "No", "Maybe", "On Transit"]);
+    const selectedVisitOption = ref(null);
+
     const eventsAttended = ref([]);
+    const selectedEventAttended = ref(null);
+
     const howDidYouAboutUs = ref([]);
+    const selectedAboutUsSource = ref(null);
+
+    const selectedFollowUp = ref(null);
+
     const firstTimersObj = ref({
       // howDidYouAboutUsId: "00000000-0000-0000-0000-000000000000",
       // maritalStatusId: "00000000-0000-0000-0000-000000000000",
       // genderId: "00000000-0000-0000-0000-000000000000",
       // maritalStatusId: "00000000-0000-0000-0000-000000000000",
       // maritalStatusId: "00000000-0000-0000-0000-000000000000",
+      sendWelcomeSMS: false,
+      sendWelcomeEmail: true,
     });
 
-    const loading = ref(false)
+    const loading = ref(false);
     const onSubmit = () => {
+      const x = {
+        activityID: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        address: "string",
+        autoMatedFollowUp: "string",
+        birthday: "string",
+        birthMonth: "string",
+        birthYear: "string",
+        sendWelcomeEmail: true,
+        sendWelcomeSMS: true,
+        communicationMeans: 0,
+        email: "string",
+        firstName: "string",
+        lastName: "string",
+        genderId: 0,
+        howDidYouAboutUsId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        interestedInJoining: 0,
+        wantToBeVisited: 0,
+        maritalStatusId: 0,
+        phoneNumber: "string",
+        sendSms: true,
+        sendEmail: true,
+        followUpTypeId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      };
+      // firstTimersObj.value.followUpTypeId =
+      //   "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.genderId = selectedGender.value
+      //   ? selectedGender.value.id
+      //   : 0;
+      // firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
+      //   ? selectedMaritalStatus.value.id
+      //   : 0;
+      // firstTimersObj.value.activityID = selectedEventAttended.value
+      //   ? selectedEventAttended.value.activityID
+      //   : "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
+      //   ? selectedAboutUsSource.value.id
+      //   : "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
+      //   ? comMeansArr.value.indexOf(selectedCommunicationMeans.value)
+      //   : 0;
+      // firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
+      //   ? joinInterestArr.value.indexOf(selectedJoinInterest.value)
+      //   : 0;
+      // firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
+      //   ? wantVisitArr.value.indexOf(selectedVisitOption.value)
+      //   : 0;
+
       console.log(firstTimersObj.value);
       loading.value = true;
       axios
-        .post("/api/people/firsttimer", firstTimersObj.value)
+        .post("/api/people/firsttimer", x)
+        // .post("/api/people/firsttimer", firstTimersObj.value)
         .then((res) => {
           console.log(res.data);
           loading.value = false;
+          $toast.show(`Saving successful`, {
+            position: "top-right",
+            type: "success",
+          });
           router.push("/tenant/first-timers");
         })
         .catch((err) => {
           loading.value = false;
-          console.log(err)
+          $toast.show(`Saving failed`, {
+            position: "top-right",
+            type: "error",
+          });
+          console.log(err);
         });
     };
 
-    const onCancel = () => {};
+    const onCancel = () => {
+      router.back();
+    };
 
     onMounted(() => {
       axios.get("/api/Events/EventActivity").then((res) => {
@@ -442,7 +527,7 @@ export default {
       axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
-          // console.log(res.data)
+          // console.log(res.data, 'all lkups')
           res.data.find((i) => {
             if (i.type.toLowerCase() === "gender") {
               genderArr.value = i.lookUps;
@@ -461,91 +546,12 @@ export default {
         });
 
       axios.get("/api/membership/howyouheardaboutus").then((res) => {
-        // console.log(res.data)
+        // console.log(res.data, 'about us')
         howDidYouAboutUs.value = res.data.map((i) => {
           return { name: i.name, id: i.id };
         });
       });
     });
-
-    const gender = computed(() => {
-      let arr = genderArr.value.map((i) => {
-        return i.value;
-      });
-      return arr;
-    });
-
-    const maritalStatus = computed(() => {
-      return maritalStatusArr.value.map((i) => {
-        return i.value;
-      });
-    });
-
-    const eventAttended = computed(() => {
-      return eventsAttended.value.map((i) => {
-        return i.name;
-      });
-    });
-
-    const howYouHeard = computed(() => {
-      return howDidYouAboutUs.value.map((i) => {
-        return i.name;
-      });
-    });
-    const select2Value = (data) => {
-      if (data.dataType === "day") {
-        firstTimersObj.value.birthday = data.value;
-      }
-
-      if (data.dataType === "month") {
-        firstTimersObj.value.birthMonth = month.value.indexOf(data.value) + 1;
-        console.log(firstTimersObj.value.birthMonth);
-      }
-      if (data.dataType === "year") {
-        firstTimersObj.value.birthYear = data.value;
-      }
-      if (data.dataType === "gender") {
-        firstTimersObj.value.genderId = genderArr.value.find(
-          (i) => i.value === data.value
-        ).id;
-      }
-      if (data.dataType === "maritalStatus") {
-        firstTimersObj.value.maritalStatusId = maritalStatusArr.value.find(
-          (i) => i.value == data.value
-        ).id;
-      }
-      if (data.dataType === "eventAttended") {
-        firstTimersObj.value.activityID = eventsAttended.value.find(
-          (i) => i.name == data.value
-        ).activityID;
-        console.log(firstTimersObj.value.activityID);
-      }
-      if (data.dataType === "howYouHeard") {
-        if (data.value !== "select") {
-          firstTimersObj.value.howDidYouAboutUsId = howDidYouAboutUs.value.find(
-            (i) => i.name == data.value
-          ).id;
-        }
-      }
-      if (data.dataType === "commeans") {
-        firstTimersObj.value.communicationMeans = comMeansArr.value.indexOf(
-          data.value
-        );
-      }
-      if (data.dataType === "joininterest") {
-        firstTimersObj.value.interestedInJoining = joinInterestArr.value.indexOf(
-          data.value
-        );
-      }
-      if (data.dataType === "wantvisit") {
-        firstTimersObj.value.wantToBeVisited = wantVisitArr.value.indexOf(
-          data.value
-        );
-      }
-      if (data.dataType === "automatedfollowup") {
-        firstTimersObj.value.autoMatedFollowUp = data.value;
-      }
-    };
 
     const year = computed(() => {
       const arrOfYears = [];
@@ -565,18 +571,21 @@ export default {
       month,
       year,
       maritalStatusArr,
-      maritalStatus,
-      gender,
       genderArr,
-      eventAttended,
       eventsAttended,
       howDidYouAboutUs,
-      howYouHeard,
       joinInterestArr,
       wantVisitArr,
       comMeansArr,
-      select2Value,
       loading,
+      selectedGender,
+      selectedMaritalStatus,
+      selectedEventAttended,
+      selectedAboutUsSource,
+      selectedCommunicationMeans,
+      selectedJoinInterest,
+      selectedVisitOption,
+      selectedFollowUp,
     };
   },
 };

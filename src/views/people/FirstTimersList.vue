@@ -253,7 +253,9 @@
                     >
                       <a class="dropdown-item" href="#">Convert to member</a>
                       <a class="dropdown-item" href="#">Assign to follow-up</a>
-                      <a class="dropdown-item" href="#">Send SMS</a>
+                      <a class="dropdown-item" v-if="person.phoneNumber">
+                        <router-link :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`">Send SMS</router-link>
+                      </a>
                       <a class="dropdown-item" href="#">Send Email</a>
                       <a class="dropdown-item" href="#">Delete</a>
                     </div>
@@ -287,6 +289,7 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
 import Pagination from "../../components/pagination/PaginationButtons"
+import { useRoute } from 'vue-router';
 
 export default {
   props: ["list"],
@@ -296,18 +299,19 @@ export default {
     Pagination
   },
 
-  setup(props) {
+  setup() {
     const churchMembers = ref([
       
     ]);
     // if ()
 
+    const route = useRoute();
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
 
     onMounted(() => {
-      console.log(props.list, "props");
+      console.log(route, "route");
       axios.get("/api/People/FirstTimer")
           .then(res => {
             churchMembers.value = res.data;
@@ -326,6 +330,7 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+  color:  #02172e;
 }
 
 .page-header {

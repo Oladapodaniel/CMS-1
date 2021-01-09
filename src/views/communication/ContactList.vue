@@ -26,10 +26,10 @@
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                           <span class="th">NAME</span>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                           <span class="th">TOTAL PHONE NUMBER</span>
                         </div>
                         <div class="col-md-3">
@@ -46,34 +46,36 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row" v-for="(group, index) in groups" :key="index">
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
 
-                        <div class="col-md-2 d-md-flex justify-content-between">
-                          <span class="hidden-header">SENDER: </span>
-                          <span>message</span>
+                        <div class="col-md-3 d-md-flex justify-content-between">
+                          <span class="hidden-header">NAME: </span>
+                          <span>
+                            <router-link class="link" :to="{name: 'EditContactList', params: { groupId: group.id}}">{{ group.name }}</router-link>
+                          </span>
                         </div>
 
                         <div
-                          class="col-md-5 col-ms-12 d-flex justify-content-between"
+                          class="col-md-4 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >MESSAGE:
+                            >TOTAL PHONE NUMBER:
                           </span>
-                          <span>message</span>
+                          <span>{{ group.numbers }}</span>
                         </div>
 
                         <div
                           class="col-md-3 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >DATE CREATED
+                            >DATE & TIME CREATED
                           </span>
-                          <span>message</span>
+                          <span>{{ new Date(group.dateEntered).toLocaleDateString() }}</span>
                         </div>
 
                         <div class="col-md-1 col-ms-12">
@@ -88,7 +90,7 @@
                     </div>
                   </div>
 
-                  <div class="row">
+                  <!-- <div class="row">
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
@@ -120,7 +122,8 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
+
                 </div>
               </div>
             </div>
@@ -140,7 +143,7 @@ export default {
     const groups = ref([ ]);
     const getGroups = async () => {
       try {
-        const res = await axios.get("/api/Messaging/getCommunicationGroups");
+        const res = await axios.get("/api/Messaging/getPhoneGroups");
         console.log(res, "groups");
         groups.value = res.data;
       } catch (error) {
@@ -256,6 +259,12 @@ export default {
   justify-content: center;
   width: fit-content;
   text-decoration: none;
+}
+
+
+.link {
+  text-decoration: none;
+  color: #136acd !important;
 }
 
 @media screen and (max-width: 767px) {

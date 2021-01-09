@@ -1,9 +1,9 @@
-!<template>
+<template>
   <div>
     <div class="container">
-      <div class="row mainHeada">
-        <div class="col-md-6 col-sm-10 mt-lg-5">
-          <h1>Add Group</h1>
+      <div class="row mainHeada mt-5">
+        <div class="col-md-6 col-sm-10">
+          <h1>Contact List</h1>
         </div>
       </div>
       <div class="row">
@@ -15,7 +15,7 @@
       <!-- Content of the Box -->
       <main class="">
         <div id="main" class="container-fluid col-sm-12">
-          <div class="row">
+          <div class="row mb-4">
             <!-- Group Name row -->
             <div class="col-md-12">
               <div class="row d-md-flex align-items-center mt-2">
@@ -28,10 +28,10 @@
 
                   <!-- Context Area -->
                   <div
-                    class="row amazing d-flex flex-row justify-content-between mt-lg-3"
+                    class="row amazing d-flex flex-row justify-content-between mt-lg-3 mb-4"
                   >
                     <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
-                    <!-- <div class="col-md-7 form-group px-0">
+                    <div class="col-md-6 form-group px-0">
                       <input
                         type="text"
                         class="inputWithDisable"
@@ -40,32 +40,20 @@
                         v-bind:disabled="groupNameDisabled"
                         ref="groupName"
                       />
-                    </div> -->
-                    <div class="col-md-6 form-group px-0">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="groupName"
-                        v-model="groupNameValue"
-                        required
-                      />
                     </div>
 
-                    <div class="col-lg-5 col-sm-4 mr-lg-n5 amazingE">
+                    <div class="col-lg-5 col-sm-4 amazingE">
                       <button
                         v-on:click="enableGroupName"
                         class="btn btnIcons btn-secondary"
                       >
-                        <i
-                          class="fa fa-plus-circle icons"
-                          aria-hidden="true"
-                        ></i>
-                        Add
+                        <i class="fas fa-pencil-alt icons"></i>
+                        Edit
                       </button>
                     </div>
                   </div>
 
-                  <div class="row mt-lg-5 mb-lg-1">
+                  <div class="row mb-lg-1">
                     <h3>Phone Numbers</h3>
                   </div>
                   <div class="row d-flex flex-row justify-content-between mdiv">
@@ -75,10 +63,9 @@
                         class="form-control"
                         id="phoneNumber"
                         v-model="enteredValue"
-                        required
                       />
                     </div>
-                    <div class="col-md-5 mr-lg-n5 addIconarea">
+                    <div class="col-md-5 addIconarea">
                       <button
                         v-on:click="addPhoneNumber"
                         class="btn btnIcons align-self-end btn-secondary mb-2"
@@ -97,9 +84,9 @@
                     :key="index"
                     class="row"
                   >
-                    <div class="col-md-6 col-sm-4 addContent spanArea1 mt-1">
+                    <div class="col-md-7 col-sm-4 addContent spanArea1 mt-1">
                       <div class="row d-md-flex align-items-center">
-                        <div class="col-md-7 spanArea col-sm-4">
+                        <div class="col-md-6 spanArea col-sm-4">
                           <span>
                             {{ phoneNumber }}
                           </span>
@@ -119,7 +106,7 @@
                   </div>
 
                   <!-- Button Area -->
-                  <div class="row mt-md-5 mb-4">
+                  <div class="row mt-md-5">
                     <div class="col-md-7">
                       <div class="row d-md-flex align-items-center">
                         <div class="col-md-6 basebtns">
@@ -132,7 +119,7 @@
                         </div>
                         <div class="col-md-6 basebtns">
                           <button
-                            v-on:click="saveGroupDetails"
+                            v-on:click="saveDetails"
                             class="btn btnBase btn-primary ml-md-4"
                           >
                             <i
@@ -158,20 +145,18 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import router from "../../router/index";
 
 export default {
   data() {
     return {
       phoneNumbers: [],
       enteredValue: "",
-      groupNameValue: "",
+      groupNameValue: "Amazing group",
       groupNameDisabled: true,
       loading: false,
     };
   },
 
-  // this.phoneNumbers.indexOf(this.enteredValue) < 0
   methods: {
     addPhoneNumber() {
       if (this.enteredValue !== "") {
@@ -198,11 +183,8 @@ export default {
         this.enteredValue = "";
         console.log(this.phoneNumbers);
       }
-
-      // this.phoneNumbers.push(this.enteredValue);
-      // this.enteredValue = "";
-      // console.log("am here");
     },
+
     removePhoneNumber(index) {
       this.phoneNumbers.splice(index, 1);
     },
@@ -212,31 +194,22 @@ export default {
       this.$refs.groupName.focus();
     },
 
-    saveGroupDetails() {
-      if (
-        this.enteredValue !== "" &&
-        this.phoneNumbers.indexOf(this.enteredValue) < 0
-      ) {
-        this.phoneNumbers.push(this.enteredValue);
-        this.enteredValue = "";
-      }
+    saveDetails() {
       let details = {
         id: "",
         groupName: this.groupNameValue,
         phoneNumbers: this.phoneNumbers.join(","),
       };
       console.log(details);
-      console.log(this.phoneNumbers);
-      this.loading = true;
+        this.loading = true;
       axios
         .post("/api/Messaging/createPhoneGroups", details)
         .then((res) => {
-          this.loading = false;
+            this.loading = false;
           console.log(res);
-          router.push("/tenant/sms-communications/contacts");
         })
         .catch((err) => {
-          this.loading = false;
+            this.loading = false;
           console.log(err);
         });
     },
@@ -246,6 +219,11 @@ export default {
       this.groupNameValue = "";
       this.phoneNumbers = "";
     },
+  },
+
+  created() {
+    const groupId = this.$route.params.groupId;
+    console.log(groupId);
   },
 };
 </script>

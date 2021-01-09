@@ -90,7 +90,7 @@
                         <div class="col-md-12">
                           <h6 class="text-uppercase font-weight-bold">{{ category }}</h6>
                           <a
-                            class="dropdown-item px-1"
+                            class="dropdown-item px-1 c-pointer"
                             v-for="(group, indx) in allGroups[index]"
                             @click="
                               selectGroup(group.category, group.id, group.name)
@@ -169,7 +169,7 @@
                 aria-labelledby="dropdownMenu"
               >
                 <a
-                  class="dropdown-item px-1"
+                  class="dropdown-item px-1 c-pointer"
                   v-for="(member, index) in memberSearchResults"
                   :key="index"
                   @click="selectMember(member)"
@@ -177,7 +177,7 @@
                 >
                 <p
                   class="bg-secondary p-1 mb-0 disable"
-                  v-if="searchText.length < 3 && !loading && memberSearchResults.length === 0"
+                  v-if="searchText.length < 3 && loading == false && memberSearchResults.length === 0"
                 >
                   Enter 3 or more characters
                 </p>
@@ -315,9 +315,11 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from '../../services/communication/composer';
+import { useRoute } from 'vue-router';
 
 export default {
   setup() {
+   
     const editor = ClassicEditor;
     const editorData = ref("");
     const editorConfig = {
@@ -387,7 +389,7 @@ export default {
 
     const subject = ref("");
     const phoneNumber = ref("");
-    const loading = ref(composerObj.searchingMembers);
+    const loading = ref(false);
     // const isPersonalized = ref(false);
     const sendSMS = () => {
       const data = {
@@ -413,6 +415,12 @@ export default {
         })
         .catch(err => console.log(err))
     };
+
+    const route = useRoute();
+     if (route.query.phone) {
+       phoneNumber.value = route.query.phone;
+       phoneNumberSelectionTab.value = true;
+     }
 
     const allGroups = [];
     const categories = [];
@@ -586,6 +594,15 @@ input:focus {
 
 .disable {
   pointer-events:none;
+}
+
+.c-pointer {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  max-height: 300px !important;
+  overflow-y: auto;
 }
 </style>
 

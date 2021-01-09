@@ -40,7 +40,7 @@ import DraftMessages from '@/views/communication/DraftMessages'
 import EmailDraft from '@/views/communication/EmailDraft'
 import ContactList from '@/views/communication/ContactList'
 import PhoneGroup from '@/views/communication/PhoneGroup'
-import EditContactList from '@/views/communication/EditContactList'
+import EditContactList from '@/views/communication/EditGroup'
 import DeliveryReport from '@/views/communication/DeliveryReport'
 
 
@@ -182,7 +182,7 @@ const routes = [
           { path: 'draft', name: 'DraftMessages', component: DraftMessages },
           { path: 'contacts', name: 'ContactList', component: ContactList },
           { path: 'add-group', name: 'Phongroup', component: PhoneGroup },
-          { path: 'edit-contact', name: 'EditContactList', component: EditContactList },
+          { path: 'edit-contact/:groupId', name: 'EditContactList', component: EditContactList },
           { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
           { path: 'compose-message', name: 'SendMessage', component: SendSms }
         ]

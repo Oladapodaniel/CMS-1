@@ -8,6 +8,9 @@ import VueHighcharts from 'vue-highcharts';
 import axios from "./gateway/backendapi";
 // import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import Toaster from '@meforma/vue-toaster';
+import PrimeVue from 'primevue/config';
+import 'primeflex/primeflex.css';
 
 
 // NProgress.configure({ showSpinner: false });
@@ -30,4 +33,4 @@ axios.interceptors.request.use((config) => {
 
 // axios.defaults.baseURL = "https://churchplusv3coreapi.azurewebsites.net/";
 
-createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor ).mount('#app')
+createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).mount('#app')

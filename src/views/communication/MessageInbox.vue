@@ -8,7 +8,7 @@
           <div class="row px-0">
             <div class="col-md-12 px-0">
               <div class="row d-md-flex justify-content-between align-items-center mt-3 mb-4">
-                <div class="col-md-8 col-sm-12">
+                <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
                     <input type="text" placeholder="Search here..." />
@@ -60,7 +60,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 px-0">
                       <hr class="hr mt-0" />
                     </div>
                   </div>
@@ -107,7 +107,7 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 px-0">
                           <hr class="hr" />
                         </div>
                       </div>
@@ -168,7 +168,25 @@
 </template>
 
 <script>
-export default {};
+// import axios from "@/gateway/backendapi";
+// import { onMounted } from 'vue';
+
+export default {
+  // setup() {
+  //   const getSentSMS = async () => {
+  //     try {
+  //       const res = await axios.get("/api/Messaging/getAllSentSms");
+  //       console.log(res, "sent sms");
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   onMounted(() => {
+  //     console.log("Hello");
+  //     getSentSMS()
+  //   })
+  // }
+};
 </script>
 
 <style scoped>
@@ -270,6 +288,11 @@ export default {};
 }
 
 .table-box {
+  border: 1px solid #4762F01F;
+}
+
+
+.hr {
   border: 1px solid #4762F01F;
 }
 

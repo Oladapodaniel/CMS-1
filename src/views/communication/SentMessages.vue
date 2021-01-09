@@ -8,7 +8,7 @@
           <div class="row px-0">
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center mt-3 mb-4">
-                <div class="col-md-7 col-sm-12">
+                <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
                     <input type="text" placeholder="Search here..." />
@@ -17,14 +17,14 @@
                     <span class="font-weight-bold"> Newest</span>
                   </div>
                 </div>
-                <div class="col-md-4 ml-2 mt-sm-2 units-container">
-                  <div class="row d-sm-flex align-items-center units-div">
+                <div class="col-sm-5 col-md-3 ml-2 mt-sm-2 units-container">
+                  <div class="row d-sm-flex align-items-center justify-content-between units-div">
                     <div class="col-sm-6">
-                      <h4 class="font-weight-bold mb-0">302</h4>
-                      <p class="font-weight-bold mb-0">SMS Units</p>
+                      <h4 class="font-weight-bold mb-0 center-flexed">302</h4>
+                      <p class="font-weight-bold mb-0 center-flexed">SMS Units</p>
                     </div>
                     <div class="col-sm-6 d-sm-flex justify-content-end">
-                      <button class="btn buy-btn">
+                      <button class="btn buy-btn center-flexed">
                         <span class="btn-text">
                             BUY UNITS
                         </span>
@@ -34,9 +34,9 @@
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row table-box mb-4">
                 <div class="col-md-12">
-                  <div class="row header-row">
+                  <div class="row header-row light-grey-bg">
                     <div class="col-md-12 px-0">
                       <div class="row light-grey-bg">
                         <div class="col-md-1 text-md-right text-lg-center px-0">
@@ -58,11 +58,11 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 px-0">
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row" v-for="(sms, index) in sentSMS" :key="index">
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
@@ -72,11 +72,11 @@
                           <span
                             class="d-flex justify-content-between msg-n-time"
                           >
-                            <span class="font-weight-bold">message</span>
+                            <span class="font-weight-bold">{{ sms.subject }}</span>
                             <span class="timestamp">Today | 08:45 PM</span>
                           </span>
                           <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
+                            >{{ `${sms.message.slice(0, 25).join("")}...` }}</span
                           >
                         </div>
                         <div
@@ -85,7 +85,7 @@
                           <span class="hidden-header font-weight-bold"
                             >SENT BY:
                           </span>
-                          <span>message</span>
+                          <span>{{ sms.sender }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
@@ -93,7 +93,7 @@
                           <span class="hidden-header font-weight-bold"
                             >UNITS:
                           </span>
-                          <span>message</span>
+                          <span>{{ sms.units }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
@@ -104,15 +104,21 @@
                           <span class="view-btn">View</span>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-md-12">
+                      <div class="row" v-if="index !== sentSMS.length - 1">
+                        <div class="col-md-12 px-0">
                           <hr class="hr" />
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  <div class="row">
+                  <div class="row" v-if="sentSMS.length === 0">
+                    <div class="col-md-12 d-flex justify-content-center">
+                      <span class="my-4 font-weight-bold">No sent mesages</span>
+                    </div>
+                  </div>
+
+                  <!-- <div class="row">
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
@@ -154,7 +160,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -166,7 +172,30 @@
 </template>
 
 <script>
-export default {};
+import axios from "@/gateway/backendapi";
+import { onMounted, ref } from 'vue';
+export default {
+  setup() {
+    const sentSMS = ref([ ]);
+    const getSentSMS = async () => {
+      try {
+        const res = await axios.get("/api/Messaging/getAllSentSms");
+        console.log(res, "sent sms");
+        sentSMS.value = res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    onMounted(() => {
+      console.log("Hello");
+      getSentSMS()
+    })
+
+    return {
+      sentSMS,
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -206,6 +235,7 @@ export default {};
   border: 1px solid #dde2e6;
   border-radius: 20px;
   padding: 15px 0;
+  background: #f9a9a933 !important;
 }
 
 .hidden-header {
@@ -259,6 +289,19 @@ export default {};
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.center-flexed {
+  display: flex;
+  justify-content: center;
+}
+
+.table-box {
+  border: 1px solid #4762F01F;
+}
+
+.hr {
+  border: 1px solid #4762F01F;
 }
 
 @media screen and (max-width: 767px) {

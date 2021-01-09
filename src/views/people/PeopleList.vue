@@ -109,16 +109,31 @@
           <div class="action data action-icon">
             <div class="dropdown">
               <i
-                class="fas fa-ellipsis-v"
+                class="fas fa-ellipsis-v cursor-pointer"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
               ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Send SMS</a>
-                <a class="dropdown-item" href="#">Send Email</a>
-                <a class="dropdown-item" >Edit </a>
+                <a class="dropdown-item" v-if="person.mobilePhone">
+                  <router-link
+                    :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
+                    >Send SMS</router-link
+                  >
+                </a>
+                <a class="dropdown-item" v-if="person.email">
+                  <router-link
+                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    >Send Email</router-link
+                  >
+                </a>
+                <a class="dropdown-item">
+                  <router-link
+                    :to="`/tenant/people/add-person/${person.id}`"
+                    >Edit</router-link
+                  >
+                </a>
                 <a class="dropdown-item" href="#">Delete</a>
               </div>
             </div>
@@ -169,6 +184,11 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+  color:  #02172e;
+}
+
+a {
+  text-decoration: none;
 }
 
 .my-con {
