@@ -397,13 +397,13 @@ import router from "@/router/index";
 // import store from "../../store/store"
 import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
-import { getCurrentInstance } from "vue";
+// import { getCurrentInstance } from "vue";
 import Dropdown from "primevue/dropdown";
 
 export default {
   components: { Dropdown },
   setup() {
-    const $toast = getCurrentInstance().ctx.$toast;
+    // const $toast = getCurrentInstance().ctx.$toast;
     const hideCelebTab = ref(false);
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
