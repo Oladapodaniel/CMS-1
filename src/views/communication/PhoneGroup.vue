@@ -125,9 +125,9 @@
                         <div class="col-md-6 basebtns">
                           <button
                             v-on:click="resetInputFields"
-                            class="btn btnBase1 btnBase btn-primary"
+                            class="btn btnBase1 btnBase"
                           >
-                            cancel
+                            Cancel
                           </button>
                         </div>
                         <div class="col-md-6 basebtns">
@@ -257,6 +257,10 @@ export default {
   --primary-color: #000000;
 }
 
+* {
+  color:  #02172e;
+}
+
 .container {
   outline: none;
   overflow: hidden;
@@ -314,14 +318,17 @@ h4 {
 .btnIcons {
   width: 110px;
   height: 35px;
-  color: var(--primary-color);
+  /* color: var(--primary-color); */
   background-color: #dde2e6;
   border-radius: 40px;
   border: none;
 }
 
+.btnIcons:hover {
+  color: #136acd;
+}
+
 .btnBase1 {
-  color: var(--primary-color);
   background-color: transparent;
   /* border: 1px var(--primary-color) solid; */
   border: 1px solid #000000;

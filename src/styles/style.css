@@ -46,3 +46,45 @@
   .cursor-pointer {
     cursor: pointer !important;
   }
+  
+  .primary-btn {
+    padding: 8px 10px;
+    border: none;
+    border-radius: 22px;
+    /* width: 180px; */
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 8px;
+    outline: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: #136acd;
+    color: #fff;
+  }
+  
+  .secondary-btn {
+    padding: 8px 10px;
+    border: none;
+    border-radius: 22px;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 8px;
+    outline: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    background: #EBEFF4;
+  }
+
+  .primary-text {
+    color: #136ACD;
+  }
+
+  .outline-none {
+    outline: none !important;
+  }
+
+  @media screen and (min-width: 200px) and (max-width: 768px) {
+    .container-slim {
+      width: 95%;
+    }
+  }

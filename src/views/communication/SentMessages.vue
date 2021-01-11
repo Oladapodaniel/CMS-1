@@ -7,7 +7,7 @@
         <div class="container-fluid px-0">
           <div class="row px-0">
             <div class="col-md-12 px-0">
-              <div class="row d-md-flex align-items-center mt-3 mb-4">
+              <div class="row d-md-flex align-items-center justify-content-between mt-3 mb-4">
                 <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
@@ -17,13 +17,13 @@
                     <span class="font-weight-bold"> Newest</span>
                   </div>
                 </div>
-                <div class="col-sm-5 col-md-3 ml-2 mt-sm-2 units-container">
-                  <div class="row d-sm-flex align-items-center justify-content-between units-div">
-                    <div class="col-sm-6">
+                <div class="col-sm-5 col-md-3 mt-sm-2 units-container">
+                  <div class="row d-sm-flex align-items-center units-div">
+                    <div class="col-sm-12">
                       <h4 class="font-weight-bold mb-0 center-flexed">302</h4>
                       <p class="font-weight-bold mb-0 center-flexed">SMS Units</p>
                     </div>
-                    <div class="col-sm-6 d-sm-flex justify-content-end">
+                    <div class="col-sm-12 d-sm-flex justify-content-center">
                       <button class="btn buy-btn center-flexed">
                         <span class="btn-text">
                             BUY UNITS

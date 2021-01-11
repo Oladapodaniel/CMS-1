@@ -2,6 +2,7 @@
   <div class="my-con">
     <div class="header mt-2">
       <h3 class="header-text font-weight-bold">Add Contact</h3>
+      <Toast />
     </div>
 
     <div class="form-div">
@@ -399,6 +400,7 @@ import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 // import { getCurrentInstance } from "vue";
 import Dropdown from "primevue/dropdown";
+// import { useToast } from 'primevue/usetoast';
 
 export default {
   components: { Dropdown },
@@ -583,18 +585,10 @@ export default {
 
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
-            // $toast.show(`Member added`, {
-            //   position: "top-right",
-            //   type: "success",
-            // });
             router.push("/tenant/people");
           }
         } catch (err) {
           loading.value = false;
-          // $toast.show(`Updating failed`, {
-          //   position: "top-right",
-          //   type: "error",
-          // });
           errMessage.value = err.response.data.messsage
             ? err.response.data.messsage
             : "An error occurred";
@@ -610,18 +604,10 @@ export default {
 
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
-            // $toast.show(`Member added`, {
-            //   position: "top-right",
-            //   type: "success",
-            // });
             router.push("/tenant/people");
           }
         } catch (err) {
           loading.value = false;
-          // $toast.show(`Saving failed`, {
-          //   position: "top-right",
-          //   type: "error",
-          // });
           errMessage.value = err.response.data.messsage
             ? err.response.data.messsage
             : "An error occurred";

@@ -52,7 +52,7 @@
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Groups</router-link>
+              <router-link class="dd-link-item" to="/tenant/people-groups">Groups</router-link>
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item" to="/">Families</router-link>

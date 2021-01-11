@@ -31,6 +31,7 @@
         </div>
       </div>
     </div>
+
     <div class="table">
       <div class="table-top">
         <div class="select-all">
@@ -129,8 +130,7 @@
                   >
                 </a>
                 <a class="dropdown-item">
-                  <router-link
-                    :to="`/tenant/people/add-person/${person.id}`"
+                  <router-link :to="`/tenant/people/add-person/${person.id}`"
                     >Edit</router-link
                   >
                 </a>
@@ -184,7 +184,7 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-  color:  #02172e;
+  color: #02172e;
 }
 
 a {
