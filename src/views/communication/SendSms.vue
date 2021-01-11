@@ -52,7 +52,7 @@
       </div>
 
       <!-- Select Group -->
-      <div class="col-md-12" v-if="groupSelectionTab">
+      <div class="col-md-12 px-0" v-if="groupSelectionTab">
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0 grey-rounded-border">
@@ -136,7 +136,7 @@
       </div>
 
       <!-- Select Person from DB -->
-      <div class="col-md-12 my-1" v-if="membershipSelectionTab">
+      <div class="col-md-12 my-1 px-0" v-if="membershipSelectionTab">
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0 grey-rounded-border">
@@ -226,7 +226,7 @@
       </div>
 
       <!-- Enter phone numbers -->
-      <div class="col-md-12 my-1" v-if="phoneNumberSelectionTab">
+      <div class="col-md-12 my-1 px-0" v-if="phoneNumberSelectionTab">
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
@@ -276,7 +276,7 @@
           <span>Subject: </span>
         </div>
         <div class="col-md-10 px-0">
-          <input type="text" class="input px-1" v-model="subject" />
+          <input type="text" class="input px-1 grey-rounded-border" style="border-radius: 4px" v-model="subject" />
         </div>
       </div>
 
@@ -482,7 +482,7 @@ export default {
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  border: none;
+  /* border: none; */
   /* transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out; */
 }
 

@@ -225,7 +225,7 @@
             </div>
           </div>
 
-          <div class="row table-header-row py-2" v-if="groupMembers.length > 0">
+          <div class="row table-header-row py-2">
             <div class="col-md-1">
               <input type="checkbox" class="py-2" />
             </div>
@@ -246,6 +246,42 @@
             </div>
             <div class="col-md-">
               <!-- <i class="fa fa-elipsis-v"></i> -->
+            </div>
+          </div>
+
+          <div class="row" v-if="loadingMembers">
+            <div class="col-md-12">
+              <div class="row">
+                <div
+                  class="col-md-12 d-flex align-items-center justify-content-center"
+                >
+                  <i
+                    class="fas fa-circle-notch fa-spin py-2"
+                  ></i>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 px-0">
+                  <hr class="hr my-0" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" v-if="loadingMembers == false && groupMembers.length === 0">
+            <div class="col-md-12">
+              <div class="row">
+                <div
+                  class="col-md-12 d-flex align-items-center justify-content-center"
+                >
+                  <p class="text-center font-weight-bold py-2">No members yet</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 px-0">
+                  <hr class="hr my-0" />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -348,7 +384,7 @@
             >Discard</router-link
           >
           <button class="primary-btn outline-none" @click="saveGroupData">
-            Save group
+            {{ buttonText }}
           </button>
         </div>
       </div>
@@ -368,6 +404,7 @@ export default {
     const groupData = ref({});
     const searchText = ref("");
     const loading = ref(false);
+    const loadingMembers = ref(true);
     const memberSearchResults = ref([]);
     const position = ref("");
 
@@ -447,14 +484,35 @@ export default {
     const route = useRoute();
     const getGroupById = async () => {
         try {
+            loadingMembers.value = true;
             const { data } = await axios.get(`/api/GetGroupsFromId/${route.params.groupId}`, groupData.value)
             console.log(data, "group info");
+            loadingMembers.value = false;
             groupData.value.name = data.name;
             groupData.value.description = data.description;
+            
+            data.peopleInGroups.forEach(i => {
+                const person = { 
+                    personID: i.person.personID,
+                    address: i.person.address,
+                    email: i.person.email,
+                    name: i.person.firstName + i.person.lastName,
+                    phone: i.person.phoneNumber,
+                    position: i.position
+                }
+
+                groupMembers.value.push(person);
+            })
         } catch (error) {
+            loadingMembers.value = false;
             console.log(error.response);
         }
     }
+
+    const buttonText = computed(() => {
+        if (route.params.groupId) return "Update group";
+        return "Save group";
+    })
 
     if (route.params.groupId) getGroupById();
 
@@ -475,6 +533,8 @@ export default {
       groupNameIsInvalid,
       saveGroupData,
       validateGroupName,
+      buttonText,
+      loadingMembers,
     };
   },
 };
