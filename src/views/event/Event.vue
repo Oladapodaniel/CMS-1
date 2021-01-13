@@ -718,7 +718,7 @@
             </div>
             <div class="col-6 col-sm-5 col-lg-2">
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 v-model.number="item.amount"
                 placeholder="Enter Amount"
@@ -1491,7 +1491,7 @@ export default {
         });
       }
       console.log(this.offeringItem);
-
+      this.offeringText = ""
       const showList = document.querySelector("#showList");
       showList.classList.toggle("offering-drop");
     },
@@ -1509,6 +1509,7 @@ export default {
           this.$refs.attendanceInput.focus();
         });
       }
+      this.attendanceText = ""
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
       //
