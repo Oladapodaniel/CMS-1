@@ -427,22 +427,22 @@
         <div class="row second-form first-row">
           <div class="col-sm-5 dropdown-container">
             <div
-              class="select-elem-con pointer"
+              class="select-elem-con pointer ofering"
               id="eventCategorySelectElem"
               @click="showCategory = !showCategory"
               v-if="!selectedEventCategoryId && !showEditEventCategory"
             >
-              <span class="offset-sm-2"
-                ><i class="fa fa-calendar"></i>&nbsp;&nbsp;&nbsp;Select
+              <span class="offset-sm-2 ofering"
+                ><i class="fa fa-calendar ofering"></i>&nbsp;&nbsp;&nbsp;Select
                 Category</span
               ><span>
                 <i
-                  class="fa fa-angle-down offset-sm-2"
+                  class="fa fa-angle-down offset-sm-2 ofering"
                   :class="{ roll3: showForm3 }"
                   aria-hidden="true"
                 ></i
               ></span>
-              <!-- <SelectElem name="eventcategory" @input="categorySelected" :options="[ 'Select Event', ...eventCategoriesArr, 'Add Event Category' ]" value="Select Event" /> -->
+
             </div>
             <div
               class="ofering"
@@ -453,7 +453,7 @@
               <input
                 type="text"
                 placeholder="Search ..."
-                class="form-control ofering"
+                class="form-control ofering mb-3"
                 v-model="eventText"
               />
               <div
@@ -471,22 +471,6 @@
               <div v-else class="create mt-3" @click="individualEvent({})" >Create "{{ eventText }}" event</div>
             </div>
 
-            <!-- <div class="event-category">Add event Categories</div> -->
-            <!-- <select
-              class="event-category form-control"
-              @change="addEvent"
-              id="selectEvent"
-              v-if="!selectedEventCategory"
-            >
-              <option
-                v-for="(newEvent, index) in newEvents"
-                :key="index"
-                :value="newEvent.id"
-              >
-                {{ newEvent.name }}
-              </option>
-              <option>Add New Event</option>
-            </select> -->
             <button
               hidden
               type="button"
@@ -1462,6 +1446,7 @@ export default {
       if (!e.target.classList.contains("ofering")) {
         this.$refs.offeringDrop.classList.remove("offering-drop");
         this.$refs.attendanceDrop.classList.remove("offering-drop");
+        this.showCategory = false
       }
     },
 
@@ -1618,6 +1603,7 @@ export default {
       this.showForm3 = !this.showForm3;
     },
     post() {
+      console.log(this.selectedEventCategoryId);
       let event = {
         date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
         topic: this.topic,
@@ -1643,7 +1629,7 @@ export default {
         attendances: this.attendanceItem,
         offerings: this.offeringItem,
         eventCategoryId:
-          this.selectedEventCategoryId === ""
+          !this.selectedEventCategoryId.includes('-')
             ? "00000000-0000-0000-0000-000000000000"
             : this.selectedEventCategoryId,
         activityFirstTimers: this.firstTimers,
@@ -1770,21 +1756,25 @@ export default {
     },
     individualEvent(eventObj) {
       if (eventObj.id) {
-        console.log('dapo is goood man')
         this.selectedEventCategoryName = eventObj.name;
         this.selectedEventCategoryId = eventObj.id;
+        console.log(this.selectedEventCategoryId);
       } else {
-        console.log('No event Id')
+        let rahh = `${this.newEvents.length + 1}`
         this.newEvents.push({
           name: this.eventText,
-          id: "00000000-0000-0000-0000-000000000000"
+          // id: "00000000-0000-0000-0000-000000000000"
+          id: rahh
         })
-        this.selectedEventCategoryName = this.eventText;
-        this.selectedEventCategoryId = "00000000-0000-0000-0000-000000000000"
+        this.selectedEventCategoryName = this.event;
+        // this.selectedEventCategoryName = this.eventText;
+        // this.selectedEventCategoryId ="00000000-0000-0000-0000-000000000000"
+        // alert(this.selectedEventCategoryName)
+        // alert(this.eventText)
+        this.selectedEventCategoryId = rahh
       }
-
-      
-
+      console.log(this.newEvents)
+      this.eventText = ""
       // const showEventCategory = document.querySelector("#showEventCategory");
       // showEventCategory.classList.remove("style-category");
       this.showCategory = false;
@@ -1908,8 +1898,10 @@ export default {
     },
 
     selectedEventCategoryName() {
+      console.log(this.selectedEventCategoryId);
+      if (!this.selectedEventCategoryId) return ''; 
       return this.newEvents.find((i) => i.id === this.selectedEventCategoryId)
-        .name;
+        .name
     },
 
     eventCategoriesArr() {
@@ -2530,6 +2522,9 @@ tr.event-list td {
   top: 10px;
   background: white;
   z-index: 1;
+  width: 80%;
+  max-height: 20em;
+  overflow-y: scroll;
 }
 
 .style-category div:hover {
