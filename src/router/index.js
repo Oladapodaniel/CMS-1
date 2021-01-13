@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import Pagination from '@/components/pagination/PaginationButtons.vue';
+import Payment from '../components/payment/Payment.vue';
 
 
 
@@ -9,6 +10,11 @@ const routes = [
     path: '/pagination',
     name: 'Pagination',
     component: Pagination
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: Payment
   },
   {
     path: '/',

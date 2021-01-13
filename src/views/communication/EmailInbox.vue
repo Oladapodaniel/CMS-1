@@ -1,7 +1,6 @@
 !<template>
   <div>
     <div class="container">
-
       <!-- Content Box -->
       <main id="main" class="mt-3">
         <div class="container-fluid px-0">
@@ -117,7 +116,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {};
+  },
+
+  
+};
 </script>
 
 <style scoped>
@@ -175,41 +180,41 @@ export default {};
 }
 
 .menu-item-con {
-    color: #002044;
-    opacity: 0.5;
+  color: #002044;
+  opacity: 0.5;
 }
 
 .menu-item-con.active {
-    background: rgba(19, 106, 205, 0.05);
-    border-left: 2px solid #136ACD;
-    opacity: 1;
+  background: rgba(19, 106, 205, 0.05);
+  border-left: 2px solid #136acd;
+  opacity: 1;
 }
 
 .buy-btn {
-    background: rgb(112, 142, 177, .33);
-    border-radius: 22px;
+  background: rgb(112, 142, 177, 0.33);
+  border-radius: 22px;
 }
 
 .btn-text {
-    opacity: 1;
-    font-size: 11px;
-    font-weight: 700;
+  opacity: 1;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .timestamp {
-    font-size: 14px;
-    color: #333333;
-    opacity: 0.5;
+  font-size: 14px;
+  color: #333333;
+  opacity: 0.5;
 }
 
 .view-btn {
-    background: #EBEFF4;
-    border-radius: 21px;
-    padding: 4px 18px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: #ebeff4;
+  border-radius: 21px;
+  padding: 4px 18px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media screen and (max-width: 767px) {
