@@ -472,7 +472,7 @@
             >
               <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
-                  <div class="modal-header grey-bg">
+                  <div class="modal-header grey-background">
                     <h5 class="modal-title" id="exampleModalLabel">
                       <i class="pi pi-user mr-2"></i>
                       Send SMS Alternative
@@ -507,12 +507,12 @@
                         <div class="container">
                           <div class="row">
                             <div class="col-md-12">
-                              <label for="" class="small-text font-weight-600"
+                              <label for="" class="small-text font-weight-600 py-2"
                                 >NEW** BULK SMS - 100% SMS DELIVERY</label
                               >
                             </div>
                             <div
-                              class="col-md-12 send-now-div py-2 d-flex justify-content-center"
+                              class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
                             >
                               <button
                                 class="primary-btn px-4 my-2 font-weight-600 outline-none"
@@ -523,7 +523,7 @@
                               </button>
                             </div>
                             <div class="col-md-12 px-0">
-                              <hr class="hr" />
+                              <hr class="hr my-2" />
                             </div>
                             <div class="col-md-12 px-0 d-flex flex-column">
                               <span>Please note:</span>
@@ -544,23 +544,23 @@
                         <div class="container">
                           <div class="row">
                             <div class="col-md-12">
-                              <label for="" class="small-text font-weight-600"
+                              <label for="" class="small-text font-weight-600 py-2"
                                 >REGULAR BULK SMS- PROVIDER</label
                               >
                             </div>
                             <div
-                              class="col-md-12 send-now-div py-2 d-flex justify-content-center"
+                              class="col-md-12 my-2 send-now-div py-2 d-flex justify-content-center"
                             >
                               <!-- hostedsms_instant -->
                               <button
-                                class="primary-btn px-4 my-2 grey-bg text-grey outline-none"
+                                class="primary-btn px-4 my-2 grey-background text-grey outline-none"
                                 @click="sendSMS('')"
                               >
                                 Send SMS Now
                               </button>
                             </div>
                             <div class="col-md-12 px-0">
-                              <hr class="hr" />
+                              <hr class="hr my-2" />
                             </div>
                             <div class="col-md-12 px-0 d-flex flex-column">
                               <span>Please note:</span>
@@ -892,7 +892,7 @@ input:focus {
   border-radius: 0 111px 111px 0;
   height: 30px;
   background: #136acd;
-  padding: 0px 10px 7px;
+  padding: 1px 10px 8px;
   font-size: 22px;
   border-left: 1px solid #80808069;
 }
@@ -1016,7 +1016,7 @@ input:focus {
   padding: 2rem !important;
 }
 
-.grey-bg {
+.grey-background {
   background: #ebeff4;
 }
 

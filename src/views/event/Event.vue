@@ -465,10 +465,10 @@
                   {{ eventCategory.name }}
                 </div>
               </div>
-              <div v-if="filterEventCategory == []">{{ eventText }}</div>
-              <div @click="addEvent" v-else class="create cat ofering">
+              <div v-if="filterEventCategory.length >= 1" @click="addEvent"  class="create cat ofering">
                 Add New Event
               </div>
+              <div v-else class="create mt-3" @click="individualEvent({})" >Create "{{ eventText }}" event</div>
             </div>
 
             <!-- <div class="event-category">Add event Categories</div> -->
@@ -606,7 +606,7 @@
               {{ item.number }}
             </div>
             <div class="col-1" @click="delAttendance(index)">
-              <i class="fa fa-trash" aria-hidden="true"></i>del
+              <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
           </div>
         </div>
@@ -627,16 +627,17 @@
             placeholder="Search attendance item"
           />
           <div
-            class="ofering"
+            class="ofering pointer"
             @click="attendance(filteredAttendance)"
             v-for="(filteredAttendance, index) in filterAttendance"
             :key="index"
           >
             {{ filteredAttendance.name }}
           </div>
-          <div @click="attendance(null)" class="create ofering">
+          <div v-if="filterAttendance.length >= 1" @click="attendance(null)" class="create ofering pointer">
             Create New Attendance Item
           </div>
+          <div v-else class="create pointer"  @click="attendance(null)">Create "{{ attendanceText }}" attendance item</div>
         </div>
         <!-- <button
           hidden
@@ -717,7 +718,7 @@
             </div>
             <div class="col-6 col-sm-5 col-lg-2">
               <input
-                type="text"
+                type="number"
                 class="form-control"
                 v-model.number="item.amount"
                 placeholder="Enter Amount"
@@ -754,16 +755,17 @@
           />
 
           <div
-            class="ofering"
+            class="ofering pointer"
             v-for="(newOffering, index) in filterOffering"
             :key="index"
             @click="offering(newOffering)"
           >
             {{ newOffering.name }}
           </div>
-          <div @click="offering(null)" class="create ofering">
+          <div v-if="filterOffering.length >= 1" @click="offering(null)" class="create ofering pointer">
             Create New Offering Item
           </div>
+          <div v-else @click="offering({name: offeringText})" class="create pointer">Create "{{offeringText}}" offering item</div>
         </div>
         <button
           hidden
@@ -1489,7 +1491,7 @@ export default {
         });
       }
       console.log(this.offeringItem);
-
+      this.offeringText = ""
       const showList = document.querySelector("#showList");
       showList.classList.toggle("offering-drop");
     },
@@ -1500,11 +1502,14 @@ export default {
           attendanceTypeID: attObj.attendanceTypeID,
         });
       } else {
-        this.attendanceItem.push({});
+        this.attendanceItem.push({
+          attendanceTypeName: this.attendanceText
+        });
         this.$nextTick(() => {
           this.$refs.attendanceInput.focus();
         });
       }
+      this.attendanceText = ""
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
       //
@@ -1581,8 +1586,15 @@ export default {
         .setAttribute("data-dismiss", "modal");
     },
     createNewEvent() {
-      this.newEvents.push({ name: this.eventCreate });
+      this.newEvents.push({
+          name: this.eventCreate,
+          id: "00000000-0000-0000-0000-000000000000"
+        })
+        this.selectedEventCategoryName = this.eventCreate;
+        this.selectedEventCategoryId = "00000000-0000-0000-0000-000000000000"
+      
       this.eventCreate = "";
+      this.showCategory = false
       document
         .querySelector("#closeEvent")
         .setAttribute("data-dismiss", "modal");
@@ -1757,8 +1769,21 @@ export default {
       }
     },
     individualEvent(eventObj) {
-      this.selectedEventCategoryName = eventObj.name;
-      this.selectedEventCategoryId = eventObj.id;
+      if (eventObj.id) {
+        console.log('dapo is goood man')
+        this.selectedEventCategoryName = eventObj.name;
+        this.selectedEventCategoryId = eventObj.id;
+      } else {
+        console.log('No event Id')
+        this.newEvents.push({
+          name: this.eventText,
+          id: "00000000-0000-0000-0000-000000000000"
+        })
+        this.selectedEventCategoryName = this.eventText;
+        this.selectedEventCategoryId = "00000000-0000-0000-0000-000000000000"
+      }
+
+      
 
       // const showEventCategory = document.querySelector("#showEventCategory");
       // showEventCategory.classList.remove("style-category");
