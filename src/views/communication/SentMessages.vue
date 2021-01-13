@@ -37,9 +37,9 @@
               <div class="row table-box mb-4">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg">
-                    <div class="col-md-12 px-0">
+                    <div class="col-md-12">
                       <div class="row light-grey-bg">
-                        <div class="col-md-1 text-md-right text-lg-center px-0">
+                        <div class="col-md-1 text-md-right text-lg-center">
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-5">
@@ -72,11 +72,11 @@
                           <span
                             class="d-flex justify-content-between msg-n-time"
                           >
-                            <span class="font-weight-bold">{{ sms.subject }}</span>
-                            <span class="timestamp">Today | 08:45 PM</span>
+                            <span class="font-weight-bold">{{ !sms.subject ? '(no subject)' : sms.subject }}</span>
+                            <span class="timestamp">{{ sms.dateSent }}</span>
                           </span>
-                          <span class="brief-message"
-                            >{{ `${sms.message.slice(0, 25).join("")}...` }}</span
+                          <span class="brief-message font-weight-600"
+                            >{{ `${sms.message.split('').slice(0, 25).join("")}...` }}</span
                           >
                         </div>
                         <div
@@ -112,9 +112,15 @@
                     </div>
                   </div>
 
-                  <div class="row" v-if="sentSMS.length === 0">
+                  <div class="row" v-if="sentSMS.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
                       <span class="my-4 font-weight-bold">No sent mesages</span>
+                    </div>
+                  </div>
+
+                  <div class="row" v-if="sentSMS.length === 0 && loading">
+                    <div class="col-md-12 py-2 d-flex justify-content-center">
+                      <i class="fas fa-circle-notch fa-spin"></i>
                     </div>
                   </div>
 
@@ -174,13 +180,17 @@
 <script>
 import axios from "@/gateway/backendapi";
 import { onMounted, ref } from 'vue';
+
 export default {
   setup() {
     const sentSMS = ref([ ]);
+    const loading = ref(false);
+
     const getSentSMS = async () => {
       try {
+        loading.value = true;
         const res = await axios.get("/api/Messaging/getAllSentSms");
-        console.log(res, "sent sms");
+        loading.value = false;
         sentSMS.value = res.data;
       } catch (error) {
         console.log(error);
@@ -193,6 +203,7 @@ export default {
 
     return {
       sentSMS,
+      loading,
     }
   }
 };

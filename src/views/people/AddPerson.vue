@@ -305,7 +305,9 @@
           </div>
         </div>
 
+        <!-- DISABLED -->
         <div
+          v-if="false" 
           class="add-info--con"
           :class="{
             'hide-tab': hideAddInfoTab,
@@ -608,7 +610,7 @@ export default {
           }
         } catch (err) {
           loading.value = false;
-          errMessage.value = err.response.data.messsage
+          errMessage.value = err.response
             ? err.response.data.messsage
             : "An error occurred";
           console.log(err.response);

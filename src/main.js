@@ -14,6 +14,7 @@ import PrimeVue from 'primevue/config';
 import Toast from 'primevue/toast'
 import Skeleton from 'primevue/skeleton';
 import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
 
 import ToastService from 'primevue/toastservice';
 
@@ -47,3 +48,4 @@ app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use
 app.component("Toast", Toast);
 app.component("Skeleton", Skeleton);
 app.component("Dialog", Dialog);
+app.component("Button", Button);

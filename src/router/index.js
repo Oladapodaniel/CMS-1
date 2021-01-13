@@ -13,67 +13,67 @@ const routes = [
   {
     path: '/',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "about" */ '../views/account/Login.vue')
+    component: () => import(/* webpackChunkName: "login" */ '../views/account/Login.vue')
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import(/* webpackChunkName: "about" */ '../views/account/Register.vue')
+    component: () => import(/* webpackChunkName: "register" */ '../views/account/Register.vue')
   },
   {
     path: '/onboarding',
     name: 'Onboarding',
-    component: () => import(/* webpackChunkName: "about" */ '../views/account/OnboardingForm.vue')
+    component: () => import(/* webpackChunkName: "onboarding" */ '../views/account/OnboardingForm.vue')
   },
   {
     path: '/onboarding/step2',
     name: 'StartingPoint',
-    component: () => import(/* webpackChunkName: "about" */ '../views/onboarding/StartingPoint.vue')
+    component: () => import(/* webpackChunkName: "startingpoint" */ '../views/onboarding/StartingPoint.vue')
   },
   {
     path: '/next',
     name: 'StartingDashboard',
-    component: () => import(/* webpackChunkName: "about" */ '../views/onboarding/StartingDashboard.vue')
+    component: () => import(/* webpackChunkName: "startingdashboard" */ '../views/onboarding/StartingDashboard.vue')
   },
   {
     path: '/processing/:option',
     name: 'ProcessRequest',
-    component: () => import(/* webpackChunkName: "about" */ '../views/onboarding/ProcessRequest.vue')
+    component: () => import(/* webpackChunkName: "processrequest" */ '../views/onboarding/ProcessRequest.vue')
   },
   {
     path: '/forgot-password',
     name: 'ForgotPassword',
-    component: () => import(/* webpackChunkName: "about" */ '../views/account/ForgotPassword.vue')
+    component: () => import(/* webpackChunkName: "forgotpassword" */ '../views/account/ForgotPassword.vue')
   },
   {
     path: '/reset-password',
     name: 'ResetPassword',
-    component: () => import(/* webpackChunkName: "about" */ '../views/account/ResetPassword.vue')
+    component: () => import(/* webpackChunkName: "resetpassword" */ '../views/account/ResetPassword.vue')
   },
   {
     path: '/tenant',
     name: 'Home',
-    component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/Home.vue'),
+    component: () => import(/* webpackChunkName: "home" */ '../views/dashboard/Home.vue'),
     children: [
       {
         path: '',
         name: 'Dashboard',
-        component: () => import(/* webpackChunkName: "about" */ '../views/dashboard/ChurchDashboard.vue')
+        component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard/ChurchDashboard.vue')
       },
       {
         path: 'people',
-        component: () => import(/* webpackChunkName: "about" */ '../views/people/People.vue'),
+        component: () => import(/* webpackChunkName: "people" */ '../views/people/People.vue'),
         children: [
-          { path: '', component: () => import(/* webpackChunkName: "about" */ '../views/people/PeopleEmpty.vue') },
-          { path: 'import', component: () => import(/* webpackChunkName: "about" */ '../views/people/ImportPeople.vue'), name: 'ImportPeople' },
+          { path: '', component: () => import(/* webpackChunkName: "peopleempty" */ '../views/people/PeopleEmpty.vue') },
+          { path: 'import', component: () => import(/* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'), name: 'ImportPeople' },
           {
             path: 'add-first-timer',
             name: 'AddFirstTimer',
-            component: () => import(/* webpackChunkName: "about" */ '../views/people/AddFirstTimer.vue')
+            component: () => import(/* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
           },
           {
             path: 'add-person/:personId?',
-            component: () => import(/* webpackChunkName: "about" */ '../views/people/AddPerson.vue')
+            component: () => import(/* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
           },
         ]
       },
@@ -81,66 +81,79 @@ const routes = [
       {
         path: 'event',
         name: 'Event',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/event/Event.vue')
+        component: () => import(/* webpackChunkName: "event" */ '@/views/event/Event.vue')
       },
       {
         path: 'empty-event',
         name: 'EmptyEvent',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/event/EmptyEvent.vue')
+        component: () => import(/* webpackChunkName: "emptyevent" */ '@/views/event/EmptyEvent.vue')
       },
       {
         path: 'event-list',
         name: 'EventList',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/event/EventList.vue')
+        component: () => import(/* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
       },
 
       {
         path: 'first-timers',
         name: 'FirstTimers',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/people/FirstTimersList.vue')
+        component: () => import(/* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimersList.vue')
       },
       {
         path: 'report/:id',
         name: 'Report',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/event/EventReport.vue')
+        component: () => import(/* webpackChunkName: "report" */ '@/views/event/EventReport.vue')
       },
       {
         path: 'sms-communications',
         name: 'SmsCommunication',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/communication/SmsCommunication'),
+        component: () => import(/* webpackChunkName: "smscommunication" */ '@/views/communication/SmsCommunication'),
         children: [
-          { path: '', name: 'Inbox', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/MessageInbox') },
-          { path: 'sent', name: 'SentMessages', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/SentMessages') },
-          { path: 'draft', name: 'DraftMessages', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/DraftMessages') },
-          { path: 'contacts', name: 'ContactList', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/ContactList') },
-          { path: 'add-group', name: 'Phongroup', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/PhoneGroup') },
-          { path: 'edit-contact/:groupId', name: 'EditContactList', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/EditContactList') },
-          { path: 'report', name: 'DeliveryReport', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/DeliveryReport') },
-          { path: 'compose-message', name: 'SendMessage', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/SendSms') }
+          { path: '', name: 'Inbox', component: () => import(/* webpackChunkName: "inbox" */ '@/views/communication/MessageInbox') },
+          { path: 'sent', name: 'SentMessages', component: () => import(/* webpackChunkName: "sentmessages" */ '@/views/communication/SentMessages') },
+          { path: 'draft', name: 'DraftMessages', component: () => import(/* webpackChunkName: "draftmessages" */ '@/views/communication/DraftMessages') },
+          { path: 'contacts', name: 'ContactList', component: () => import(/* webpackChunkName: "contactlist" */ '@/views/communication/ContactList') },
+          { path: 'add-group', name: 'Phongroup', component: () => import(/* webpackChunkName: "phonegroup" */ '@/views/communication/PhoneGroup') },
+          { path: 'edit-contact/:groupId', name: 'EditContactList', component: () => import(/* webpackChunkName: "editcontactlist" */ '@/views/communication/EditContactList') },
+          { path: 'report', name: 'DeliveryReport', component: () => import(/* webpackChunkName: "deliveryreport" */ '@/views/communication/DeliveryReport') },
+          { path: 'compose-message', name: 'SendMessage', component: () => import(/* webpackChunkName: "sendmessage" */ '@/views/communication/SendSms') },
+          { path: 'scheduled', name: 'ScheduledSMS', component: () => import(/* webpackChunkName: "scheduled" */ '@/views/communication/ScheduledSMS') }
         ]
       },
       {
         path: 'email-communications',
         name: 'EmailCommunication',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/communication/EmailCommunication'),
+        component: () => import(/* webpackChunkName: "emailcommunication" */ '@/views/communication/EmailCommunication'),
         children: [
-          { path: '', name: 'EmailInbox', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/EmailInbox') },
-          { path: 'sent', name: 'SentEmails', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/SentEmails') },
-          { path: 'draft', name: 'EmailDraft', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/EmailDraft')  },
+          { path: '', name: 'EmailInbox', component: () => import(/* webpackChunkName: "emailinbox" */ '@/views/communication/EmailInbox') },
+          { path: 'sent', name: 'SentEmails', component: () => import(/* webpackChunkName: "sentemails" */ '@/views/communication/SentEmails') },
+          { path: 'draft', name: 'EmailDraft', component: () => import(/* webpackChunkName: "emaildraft" */ '@/views/communication/EmailDraft')  },
           // { path: 'contacts', name: 'ContactList', component: ContactList },
           // { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
-          { path: 'compose-message', name: 'ComposeEmail', component: () => import(/* webpackChunkName: "about" */ '@/views/communication/ComposeEmail') }
+          { path: 'compose-message', name: 'ComposeEmail', component: () => import(/* webpackChunkName: "composemessage" */ '@/views/communication/ComposeEmail') }
         ]
       },
       {
         path: 'people-groups',
         name: 'Groups',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/groups/GroupsList')
+        component: () => import(/* webpackChunkName: "groups" */ '@/views/groups/GroupsList')
       },
       {
         path: 'create-people-group/:groupId?',
         name: 'CreateGroup',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/groups/CreateGroup')
+        component: () => import(/* webpackChunkName: "createpeoplegroup" */ '@/views/groups/CreateGroup')
+      },
+      {
+        path: 'settings',
+        name: 'ChurchSettings',
+        component: () => import(/* webpackChunkName: "settings" */ '@/views/settings/ChurchSettings'),
+        children: [
+          { path: '', name: 'MinistryUsers', component: () => import(/* webpackChunkName: "ministryusers" */ '@/views/settings/MinistryUsers') },
+          { path: 'profile', name: 'ChurchProfile', component: () => import(/* webpackChunkName: "churchprofile" */ '@/views/settings/ChurchProfile') },
+          { path: 'defaultmessage', name: 'DefaultMessage', component: () => import(/* webpackChunkName: "defaultmessage" */ '@/views/settings/DefaultMessage') },
+          { path: 'membership', name: 'MembershipCategory', component: () => import(/* webpackChunkName: "membership" */ '@/views/settings/MembershipCategory') },
+          { path: 'giving', name: 'OnlineGiving', component: () => import(/* webpackChunkName: "giving" */ '@/views/settings/OnlineGivingSetup') }
+        ]
       }
     ]
   },

@@ -1535,7 +1535,7 @@ export default {
       this.firstTimers.push({
         ...this.firstTimersObj,
       });
-      this.$toast.add({ severity: 'success', summary: 'Success', detail: 'First timer added' })
+      this.$toast.add({ severity: 'success', summary: 'Success', detail: 'First timer added', life: 2000 })
       this.firstTimersObj = {};
       console.log(this.firstTimers);
       document
