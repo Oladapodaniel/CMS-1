@@ -150,6 +150,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "createpeoplegroup" */ '@/views/groups/CreateGroup')
       },
       {
+        path: 'units',
+        name: 'BuyUnits',
+        component: () => import(/* webpackChunkName: "buyunits" */ '@/views/payment/BuyUnits')
+      },
+      {
         path: 'settings',
         name: 'ChurchSettings',
         component: () => import(/* webpackChunkName: "settings" */ '@/views/settings/ChurchSettings'),
