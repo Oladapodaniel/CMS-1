@@ -143,14 +143,7 @@
       </div>
 
       <div class="table-footer">
-        <button class="tbl-footer-btn">
-          <i class="fa fa-angle-left"></i>
-        </button>
-        <button class="tbl-footer-btn">A</button>
-        <button class="tbl-footer-btn">A</button>
-        <button class="tbl-footer-btn">
-          <i class="fa fa-angle-right"></i>
-        </button>
+        <PaginationButtons />
       </div>
     </div>
   </div>
@@ -160,12 +153,14 @@
 import { ref, onMounted } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
+import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 
 export default {
   props: ["list"],
   components: {
     ByGenderChart,
     ByMaritalStatusChart,
+    PaginationButtons,
   },
 
   setup(props) {

@@ -1,30 +1,6 @@
 !<template>
   <div>
     <div class="container">
-<<<<<<< HEAD
-      <div class="row mainHeada">
-        <div class="col-md-6 col-sm-10 mt-lg-5">
-          <h1>Contact List</h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <hr class="hr mb-md-5" />
-        </div>
-      </div>
-
-      <!-- Content of the Box -->
-      <main class="">
-        <div
-          id="main"
-          class="container-fluid col-lg-6 col-md-6 col-sm-12 mt-lg-5"
-        >
-          <div class="row">
-            <!-- Group Name row -->
-            <div class="col-md-12">
-              <div class="row d-md-flex align-items-center mt-2">
-                <div class="col-md-12">
-=======
       <!-- Content Box -->
       <main id="main" class="mt-3">
         <div class="container-fluid px-0">
@@ -33,7 +9,7 @@
               <div class="row d-md-flex align-items-center mt-2 mb-4">
                 <div class="col-md-12">
                   <router-link
-                  to="/tenant/sms-communications/add-group"
+                    to="/tenant/sms-communications/add-group"
                     class="create-btn font-weigth-bold border-0"
                   >
                     <span class="mr-2" style="font-size: 22px">+</span> Create
@@ -65,90 +41,17 @@
                       </div>
                     </div>
                   </div>
->>>>>>> main
                   <div class="row">
                     <div class="col-md-12 gName">
                       <h3 class="ml-md-n3 mb-n2">Group Name</h3>
                     </div>
                   </div>
 
-<<<<<<< HEAD
-                  <!-- Context Area -->
                   <div
-                    class="row amazing d-flex flex-row justify-content-between mt-lg-3"
-                  >
-                    <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
-                    <div class="col-md-7 form-group px-0">
-                      <input
-                        type="text"
-                        class="inputWithDisable"
-                        id="groupName"
-                        v-model="groupNameValue"
-                        v-bind:disabled="groupNameDisabled"
-                        ref="groupName"
-                      />
-                    </div>
-
-                    <div class="col-lg-5 col-sm-4 mr-lg-n5 amazingE">
-                      <button
-                        v-on:click="enableGroupName"
-                        class="btn btnIcons btn-secondary"
-                      >
-                        <i class="fas fa-pencil-alt icons"></i>
-                        Edit
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="row mt-lg-5 mb-lg-1">
-                    <h3>Phone Numbers</h3>
-                  </div>
-                  <div class="row d-flex flex-row justify-content-between mdiv">
-                    <div class="col-md-7 form-group px-0">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="phoneNumber"
-                        v-model="enteredValue"
-                      />
-                    </div>
-                    <div class="col-md-5 mr-lg-n5 addIconarea">
-                      <button
-                        v-on:click="addPhoneNumber"
-                        class="btn btnIcons align-self-end btn-secondary mb-2"
-                      >
-                        <i
-                          class="fa fa-plus-circle icons"
-                          aria-hidden="true"
-                        ></i>
-                        Add
-                      </button>
-                    </div>
-                  </div>
-
-                  <div
-                    v-for="(phoneNumber, index) in phoneNumbers"
-                    :key="index"
                     class="row"
+                    v-for="(group, index) in groups"
+                    :key="index"
                   >
-                    <div class="col-md-7 col-sm-4 addContent spanArea1 mt-1">
-                      <div class="row d-md-flex align-items-center">
-                        <div class="col-md-7 spanArea col-sm-4">
-                          <span>
-                            {{ phoneNumber }}
-                          </span>
-                        </div>
-                        <div
-                          class="col-md-5 d-md-flex justify-content-end spanArea2"
-                        >
-                          <button
-                            v-on:click="removePhoneNumber(index)"
-                            class="btn btn-default text-danger"
-                          >
-                            Remove
-                          </button>
-=======
-                  <div class="row" v-for="(group, index) in groups" :key="index">
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
@@ -158,7 +61,14 @@
                         <div class="col-md-3 d-md-flex justify-content-between">
                           <span class="hidden-header">NAME: </span>
                           <span>
-                            <router-link class="link" :to="{name: 'EditContactList', params: { groupId: group.id}}">{{ group.name }}</router-link>
+                            <router-link
+                              class="link"
+                              :to="{
+                                name: 'EditContactList',
+                                params: { groupId: group.id },
+                              }"
+                              >{{ group.name }}</router-link
+                            >
                           </span>
                         </div>
 
@@ -177,7 +87,9 @@
                           <span class="hidden-header font-weight-bold"
                             >DATE & TIME CREATED
                           </span>
-                          <span>{{ new Date(group.dateEntered).toLocaleDateString() }}</span>
+                          <span>{{
+                            new Date(group.dateEntered).toLocaleDateString()
+                          }}</span>
                         </div>
 
                         <div class="col-md-1 col-ms-12">
@@ -187,25 +99,11 @@
                       <div class="row">
                         <div class="col-md-12">
                           <hr class="hr" />
->>>>>>> main
                         </div>
                       </div>
                     </div>
                   </div>
 
-<<<<<<< HEAD
-                  <!-- Button Area -->
-                  <div class="row mt-md-5">
-                    <div class="col-md-7">
-                      <div class="row d-md-flex align-items-center">
-                        <div class="col-md-6 basebtns">
-                          <button
-                            v-on:click="resetInputFields"
-                            class="btn btnBase1 btnBase btn-primary"
-                          >
-                            cancel
-                          </button>
-=======
                   <div class="row" v-if="groups.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
                       <span class="my-4 font-weight-bold">No groups</span>
@@ -242,7 +140,6 @@
                         </div>
                         <div class="col-md-1 col-ms-12">
                           <span><i class="fa fa-trash delete-icon"></i></span>
->>>>>>> main
                         </div>
                         <div class="col-md-6 basebtns">
                           <button
@@ -255,7 +152,6 @@
                       </div>
                     </div>
                   </div> -->
-
                 </div>
               </div>
             </div>
@@ -267,95 +163,12 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-import axios from "@/gateway/backendapi";
-
-export default {
-  data() {
-    return {
-      phoneNumbers: [],
-      enteredValue: "",
-      groupNameValue: "Amazing group",
-      groupNameDisabled: true,
-    };
-  },
-
-  methods: {
-    addPhoneNumber() {
-      if (this.enteredValue !== "") {
-        this.enteredValue.trim();
-        if (this.enteredValue.includes(",")) {
-          this.enteredValue
-            .split(",")
-            .forEach((i) => this.phoneNumbers.push(i));
-        }
-        if (
-          this.enteredValue.split(" ").length > 1 &&
-          !this.enteredValue.includes(",")
-        ) {
-          this.enteredValue
-            .split(" ")
-            .forEach((i) => this.phoneNumbers.push(i));
-        }
-        if (
-          !this.enteredValue.includes(",") &&
-          !this.enteredValue.includes(" ")
-        ) {
-          this.phoneNumbers.push(this.enteredValue);
-        }
-        this.enteredValue = "";
-        console.log(this.phoneNumbers);
-      }
-
-      // this.phoneNumbers.push(this.enteredValue);
-      // this.enteredValue = "";
-      // console.log("am here");
-    },
-
-    removePhoneNumber(index) {
-      this.phoneNumbers.splice(index, 1);
-    },
-
-    enableGroupName() {
-      this.groupNameDisabled = false;
-      this.$refs.groupName.focus();
-    },
-
-    saveDetails() {
-      let details = {
-        id: "",
-        groupName: this.groupNameValue,
-        phoneNumbers: this.phoneNumbers.join(","),
-      };
-      console.log(details);
-
-      axios
-        .post("/api/Messaging/createPhoneGroups", details)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-
-    resetInputFields() {
-      this.enteredValue = "";
-      this.groupNameValue = "";
-      this.phoneNumbers = "";
-    },
-  },
-
-  created() {
-    // console.log(this.$route.params.groupId);
-  },
-=======
-import { onMounted, ref } from 'vue';
+import { onMounted, ref } from "vue";
 import axios from "@/gateway/backendapi";
 
 export default {
   setup() {
-    const groups = ref([ ]);
+    const groups = ref([]);
     const loading = ref(false);
 
     const getGroups = async () => {
@@ -368,35 +181,23 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     onMounted(() => {
       getGroups();
-    })
+    });
 
     return {
       groups,
       loading,
-    }
-  }
->>>>>>> main
+    };
+  },
 };
 </script>
 
 <style scoped>
-<<<<<<< HEAD
-:root {
-  --font-color: #02172e;
-  --hrule-color: #708eb15c;
-  --primary-color: #000000;
-}
-
-.container {
-  outline: none;
-  overflow: hidden;
-=======
 * {
-  color:  #02172e;
+  color: #02172e;
 }
 
 .search-div {
@@ -404,7 +205,6 @@ export default {
   padding: 10px;
   background: #f5f8f9;
   border-radius: 200px;
->>>>>>> main
 }
 
 #groupName:focus {
@@ -452,59 +252,6 @@ h4 {
   height: 40px;
 }
 
-<<<<<<< HEAD
-.btn {
-  display: inline-block;
-}
-
-.btnIcons {
-  width: 110px;
-  height: 35px;
-  color: var(--primary-color);
-  background-color: #dde2e6;
-  border-radius: 40px;
-  border: none;
-}
-
-.btnBase1 {
-  color: var(--primary-color);
-  background-color: transparent;
-  /* border: 1px var(--primary-color) solid; */
-  border: 1px solid #000000;
-}
-
-.btnBase {
-  box-sizing: border-box;
-  width: 108px;
-  height: 44px;
-  border-radius: 50px;
-}
-
-.icons {
-  color: var(--primary-color);
-  margin-right: 10px;
-}
-
-@media only screen and (max-width: 500px) {
-  .mainHeada {
-    margin-top: 1rem;
-  }
-
-  .gName {
-    margin: 0 0 1rem -1rem;
-  }
-
-  h3 {
-    font-size: 17px;
-    font-weight: bold;
-  }
-
-  .amazing {
-    margin: 0 0 2rem -2rem;
-    display: flex;
-    flex-direction: row;
-  }
-=======
 .menu-item-con {
   color: #002044;
   opacity: 0.5;
@@ -545,54 +292,52 @@ h4 {
   text-decoration: none;
 }
 
-
 .link {
   text-decoration: none;
   color: #136acd !important;
 }
->>>>>>> main
 
-  .amazingG {
-    width: 50%;
-    margin-top: 0.5rem;
-  }
-
-  .amazingE {
-    padding: 0;
-    width: 50%;
-    margin-left: 1rem;
-    /* display: flex; */
-    justify-content: flex-end;
-  }
-
-  .spanArea1 {
-    position: relative;
-    margin-top: 1rem;
-    display: flex;
-  }
-
-  .spanArea2 {
-    position: absolute;
-    top: 0;
-    right: -13.5rem;
-  }
-
-  .spanArea {
-    width: 40%;
-    position: absolute;
-  }
-
-  .addIconarea {
-    padding: 0;
-  }
-
-  .basebtns {
-    margin: 2.5rem auto;
-    width: 40%;
-  }
-
-  #groupName {
-    margin-left: 1rem;
-  }
+.amazingG {
+  width: 50%;
+  margin-top: 0.5rem;
 }
+
+.amazingE {
+  padding: 0;
+  width: 50%;
+  margin-left: 1rem;
+  /* display: flex; */
+  justify-content: flex-end;
+}
+
+.spanArea1 {
+  position: relative;
+  margin-top: 1rem;
+  display: flex;
+}
+
+.spanArea2 {
+  position: absolute;
+  top: 0;
+  right: -13.5rem;
+}
+
+.spanArea {
+  width: 40%;
+  position: absolute;
+}
+
+.addIconarea {
+  padding: 0;
+}
+
+.basebtns {
+  margin: 2.5rem auto;
+  width: 40%;
+}
+
+#groupName {
+  margin-left: 1rem;
+}
+/* } */
 </style>

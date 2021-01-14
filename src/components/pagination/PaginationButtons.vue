@@ -32,7 +32,7 @@ export default {
 
   methods: {
     getPageContent(page) {
-      alert("getting content for page" + page);
+      this.$emit("get content", page);
     },
   },
 };
