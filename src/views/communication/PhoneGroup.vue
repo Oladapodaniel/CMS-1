@@ -155,8 +155,8 @@
     </div>
   </div>
 </template>
-	
-	<script>
+
+<script>
 import axios from "@/gateway/backendapi";
 import router from "../../router/index";
 
@@ -249,8 +249,8 @@ export default {
   },
 };
 </script>
-	
-	<style scoped>
+
+<style scoped>
 :root {
   --font-color: #02172e;
   --hrule-color: #708eb15c;

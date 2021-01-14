@@ -32,7 +32,7 @@
                   >
                   <router-link
                     to="/tenant/people/add-first-timer"
-                    class="font-weight-bold text-dec-none"
+                    class="font-weight-bold text-dec-none roat"
                     >Add first timer</router-link
                   >
                 </div>
