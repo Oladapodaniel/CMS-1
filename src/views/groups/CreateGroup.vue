@@ -464,7 +464,8 @@ export default {
       }
 
       groupData.value.peopleInGroups = groupMembers.value;
-      axios
+      if (!route.params.groupId) {
+        axios
         .post("/api/CreateGroup", groupData.value)
         .then((res) => {
             console.log(res.data);
@@ -473,6 +474,17 @@ export default {
         .catch((err) => {
           console.log(err.response);
         });
+      }else {
+        axios
+        .put(`/api/UpdateGroup/${route.params.groupId}`, groupData.value)
+        .then((res) => {
+          console.log(res.data, "saved");
+          router.push("/tenant/people-groups")
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+      }
     };
 
     const validateGroupName = (e) => {
@@ -482,6 +494,7 @@ export default {
     };
 
     const route = useRoute();
+
     const getGroupById = async () => {
         try {
             loadingMembers.value = true;
@@ -535,6 +548,7 @@ export default {
       validateGroupName,
       buttonText,
       loadingMembers,
+      route,
     };
   },
 };
