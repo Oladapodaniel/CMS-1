@@ -26,7 +26,7 @@
         <span class="theader">Event</span>
         <div class="my-3">
           <span class="evt-name">
-            Grace and Power <i class="fa fa-info-circle"></i>
+            {{ eventData.preEvent.name }} <i class="fa fa-info-circle"></i>
           </span>
         </div>
       </div>
@@ -101,23 +101,31 @@
               </div>
               <div class="col-md-6" v-if="reportApproved">
                 <div class="row">
-                  <div class="col-md-12 d-sm-flex justify-content-end">
-                    <a
-                      class="def-btn approve-btn mr-4"
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-6">
+                        <a
+                      class="def-btn approve-btn"
                       data-toggle="modal"
                       data-target="#sendReport"
                       :class="{ 'resend-btn': markedAsSent }"
                     >
                       {{ sendBtnText }}
                     </a>
-                    <a class="def-btn edit-btn">Get share link</a>
+                      </div>
+                      <div class="col-6">
+                        <a class="def-btn edit-btn">Get share link</a>
+                      </div>
+                    </div>
+                    
+                    
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-12 ml-sm-5">
+                  <div class="col-md-6 offset-md-1" style="">
                     <span class="mr-2">or</span>
                     <a
-                      style="color: #136acd; cursor: pointer"
+                      style="color: #136acd; cursor: pointer;"
                       @click="markAsSent"
                       >mark as sent</a
                     >
@@ -151,7 +159,7 @@
           <div class="col-md-7">
             <span class="evt-label grey-text">Event Name</span>
             <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-              Grace and Power Convention
+              {{ eventData.preEvent.name }}
             </h2>
             <span class="evt-date text-danger">{{ eventDateString }}.</span>
           </div>
@@ -177,7 +185,7 @@
                 <span class="bold-700">First timers: </span>
               </div>
               <div class="col-md-6 pl-md-0">
-                <span>12</span>
+                <span>{{ eventData.activityFirstTimers.length }}</span>
               </div>
             </div>
             <div class="row">
@@ -701,7 +709,7 @@
                 </button>
               </div>
               <div class="modal-body pt-0 px-0">
-                <ReportModal />
+                <ReportModal :eventName="eventData.preEvent.name"/>
               </div>
               <!-- <div class="modal-footer">
                 <button
@@ -781,6 +789,7 @@ export default {
     eventData.value = JSON.parse(localStorage.getItem("eventData"));
     if (eventData.value) {
       console.log(eventData.value, "ED");
+      console.log(eventData.value.preEvent.name)
       attendanceArr.value = eventData.value.attendances;
       offeringArr.value = eventData.value.offerings;
     }
@@ -902,7 +911,8 @@ a {
 .def-btn {
   height: 43px;
   border-radius: 22px;
-  padding: 0 24px;
+  /* padding: 0 24px; */
+  padding: 8px 10px;
   width: auto;
   display: flex;
   align-items: center;

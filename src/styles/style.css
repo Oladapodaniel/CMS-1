@@ -811,7 +811,7 @@
     cursor: pointer;
   }
   
-  @media screen and (max-width: 528px) {
+  @media screen and (max-width: 620px) {
     .inputs {
       width: 100% !important;
     }
@@ -844,7 +844,7 @@
     }
   
     .inputs {
-      width: 75%;
+      width: 80%;
     }
   
     .info-box,
