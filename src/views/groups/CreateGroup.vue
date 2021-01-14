@@ -86,7 +86,7 @@
                 <div class="modal-dialog" role="document" ref="modal">
                   <div class="modal-content py-4 px-5">
                     <div class="modal-header py-3">
-                      <h5 class="modal-title" id="exampleModalLabel">
+                      <h5 class="modal-title font-weight-600" id="exampleModalLabel">
                         Group membership
                       </h5>
                       <button
@@ -319,7 +319,7 @@
                   class="col-md-2 d-flex justify-content-between align-items-center"
                 >
                   <span class="py-2 hidden-header">EMAIL</span>
-                  <span class="py-2">{{ member.email }}</span>
+                  <span class="py-2">{{ member.email && member.email.length > 11 ? `${member.email.split('').slice(0, 11).join('')}...` : member.email ? member.email : ''  }}</span>
                 </div>
                 <div
                   class="col-md-2 d-flex justify-content-between align-items-center"
@@ -380,10 +380,11 @@
           </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end action-btns">
-          <router-link to="" class="secondary-btn bg-white text-dark"
+          <router-link to="/tenant/people-groups" class="secondary-btn bg-white text-dark"
             >Discard</router-link
           >
-          <button class="primary-btn outline-none" @click="saveGroupData">
+          <button class="primary-btn outline-none" @click="saveGroupData" :disabled="savingGroup">
+            <i class="fas fa-circle-notch fa-spin" v-if="savingGroup"></i>
             {{ buttonText }}
           </button>
         </div>
@@ -404,7 +405,7 @@ export default {
     const groupData = ref({});
     const searchText = ref("");
     const loading = ref(false);
-    const loadingMembers = ref(true);
+    const loadingMembers = ref(false);
     const memberSearchResults = ref([]);
     const position = ref("");
 
@@ -457,6 +458,7 @@ export default {
     });
 
     const groupNameIsInvalid = ref(false);
+    const savingGroup = ref(false);
     const saveGroupData = () => {
       if (!groupData.value.name) {
         groupNameIsInvalid.value = true;
@@ -465,23 +467,29 @@ export default {
 
       groupData.value.peopleInGroups = groupMembers.value;
       if (!route.params.groupId) {
+        savingGroup.value = true;
         axios
         .post("/api/CreateGroup", groupData.value)
         .then((res) => {
-            console.log(res.data);
+          console.log(res);
+          savingGroup.value = false;
           router.push("/tenant/people-groups")
         })
         .catch((err) => {
+          savingGroup.value = false;
           console.log(err.response);
         });
       }else {
+        savingGroup.value = true;
         axios
         .put(`/api/UpdateGroup/${route.params.groupId}`, groupData.value)
         .then((res) => {
+          savingGroup.value = false;
           console.log(res.data, "saved");
           router.push("/tenant/people-groups")
         })
         .catch((err) => {
+          savingGroup.value = false;
           console.log(err.response);
         });
       }
@@ -549,6 +557,7 @@ export default {
       buttonText,
       loadingMembers,
       route,
+      savingGroup,
     };
   },
 };

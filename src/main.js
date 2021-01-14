@@ -15,8 +15,10 @@ import Toast from 'primevue/toast'
 import Skeleton from 'primevue/skeleton';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 
 import 'primevue/resources/themes/saga-blue/theme.css'       //theme
 import 'primevue/resources/primevue.min.css'                 //core css
@@ -42,9 +44,10 @@ axios.interceptors.request.use((config) => {
 
 // axios.defaults.baseURL = "https://churchplusv3coreapi.azurewebsites.net/";
 const app = createApp(App);
-app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).mount('#app')
+app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')
 // createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).mount('#app')
 app.component("Toast", Toast);
 app.component("Skeleton", Skeleton);
 app.component("Dialog", Dialog);
 app.component("Button", Button);
+app.component("ConfirmDialog", ConfirmDialog);

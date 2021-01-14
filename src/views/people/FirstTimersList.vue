@@ -315,6 +315,7 @@ export default {
       axios.get("/api/People/FirstTimer")
           .then(res => {
             churchMembers.value = res.data;
+            console.log(res, "FS");
           })
     });
 

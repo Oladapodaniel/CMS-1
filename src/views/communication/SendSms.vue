@@ -351,12 +351,12 @@
 
       <div class="row">
         <div class="col-md-2">
-          <span>Subject: </span>
+          <span class="font-weight-600">Subject: </span>
         </div>
         <div class="col-md-10 px-0">
           <input
             type="text"
-            class="input px-1 grey-rounded-border"
+            class="input p-0 mx-0 grey-rounded-border"
             style="border-radius: 4px"
             v-model="subject"
           />
@@ -365,7 +365,7 @@
 
       <div class="row">
         <div class="col-md-2">
-          <span>Message: </span>
+          <span class="font-weight-600">Message: </span>
         </div>
         <div class="col-md-10 px-0">
           <textarea
@@ -374,11 +374,29 @@
             v-model="editorData"
           ></textarea>
           <div class="col-md-12 px-0">
-            <p class="bg-success mb-0 p-1" v-if="editorData.length > 0">
+            <p class="bg-success mb-0 p-1" v-if="editorData.length > 0" :class="{ 'amber': charactersCount > 160 }">
               <span>Characters count {{ charactersCount }}</span>
               <span class="float-right">Page {{ pageCount }}</span>
             </p>
           </div>
+        </div>
+      </div>
+
+      <div class="row my-3">
+        <div class="col-md-12 form-group">
+          <input
+            type="checkbox"
+            v-model="isPersonalized"
+            class="mr-3"
+          />
+          <span class="font-weight-600">Personal Message</span>
+        </div>
+        <div class="col-md-12">
+          <span class="hint"
+            >Insert #name# any where you want the contact name to appear in the
+            message, it will be replaced by the actual name of the member when
+            sending the message.</span
+          >
         </div>
       </div>
 
@@ -507,7 +525,9 @@
                         <div class="container">
                           <div class="row">
                             <div class="col-md-12">
-                              <label for="" class="small-text font-weight-600 py-2"
+                              <label
+                                for=""
+                                class="small-text font-weight-600 py-2"
                                 >NEW** BULK SMS - 100% SMS DELIVERY</label
                               >
                             </div>
@@ -544,7 +564,9 @@
                         <div class="container">
                           <div class="row">
                             <div class="col-md-12">
-                              <label for="" class="small-text font-weight-600 py-2"
+                              <label
+                                for=""
+                                class="small-text font-weight-600 py-2"
                                 >REGULAR BULK SMS- PROVIDER</label
                               >
                             </div>
@@ -699,6 +721,8 @@ export default {
     // const isPersonalized = ref(false);
 
     const isoCode = ref("");
+    const isPersonalized = ref(false);
+
     const sendSMS = (gateway) => {
       toast.add({
         severity: "info",
@@ -713,7 +737,7 @@ export default {
         message: editorData.value,
         contacts: [],
         // contacts: selectedMembers.value,
-        isPersonalized: false,
+        isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
         toContacts: "",
         // toOthers: phoneNumber.value,
@@ -1043,6 +1067,14 @@ input:focus {
 
 .dd-item:hover {
   cursor: pointer;
+}
+
+.hint {
+  font-size: 12px;
+}
+
+.amber {
+  background: #ffbf00 !important;
 }
 
 @media screen and (max-width: 630px) {
