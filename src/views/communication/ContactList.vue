@@ -46,6 +46,7 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
+
                   <div class="row" v-for="(group, index) in groups" :key="index">
                     <div class="col-md-12">
                       <div class="row">
@@ -87,6 +88,18 @@
                           <hr class="hr" />
                         </div>
                       </div>
+                    </div>
+                  </div>
+
+                  <div class="row" v-if="groups.length === 0 && !loading">
+                    <div class="col-md-12 d-flex justify-content-center">
+                      <span class="my-4 font-weight-bold">No groups</span>
+                    </div>
+                  </div>
+
+                  <div class="row" v-if="groups.length === 0 && loading">
+                    <div class="col-md-12 py-2 d-flex justify-content-center">
+                      <i class="fas fa-circle-notch fa-spin"></i>
                     </div>
                   </div>
 
@@ -141,9 +154,13 @@ import axios from "@/gateway/backendapi";
 export default {
   setup() {
     const groups = ref([ ]);
+    const loading = ref(false);
+
     const getGroups = async () => {
       try {
+        loading.value = true;
         const res = await axios.get("/api/Messaging/getPhoneGroups");
+        loading.value = false;
         console.log(res, "groups");
         groups.value = res.data;
       } catch (error) {
@@ -157,7 +174,7 @@ export default {
 
     return {
       groups,
-
+      loading,
     }
   }
 };

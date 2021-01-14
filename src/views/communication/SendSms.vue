@@ -1,9 +1,59 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container" @click="closeDropdownIfOpen">
+      <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
           <h4 class="font-weight-bold">Compose New SMS</h4>
+          <Toast />
+          <!-- <Dialog
+            header="Header"
+            v-model:visible="display"
+            style="width: 500px"
+          >
+            <div class="row">
+              <div class="col-md-12">
+                <input
+                  type="datetime-local"
+                  id="birthdaytime"
+                  class="form-control"
+                  name="birthdaytime"
+                />
+              </div>
+            </div>
+          </Dialog> -->
+          <Dialog
+            header="Select Date nad Time"
+            v-model:visible="display"
+            :style="{ width: '50vw' }"
+            :modal="true"
+          >
+            <div class="row">
+              <div class="col-md-12">
+                <input
+                  type="datetime-local"
+                  id="birthdaytime"
+                  class="form-control"
+                  name="birthdaytime"
+                />
+              </div>
+            </div>
+            <template #footer>
+              <Button
+                label="Cancel"
+                icon="pi pi-times"
+                @click="() => (display = false)"
+                class="p-button-text"
+                style="color: #136acd"
+              />
+              <Button
+                label="Schedule"
+                class="p-button-rounded"
+                style="background: #136acd"
+                @click="scheduleMessage"
+              />
+            </template>
+          </Dialog>
         </div>
       </div>
 
@@ -88,12 +138,20 @@
                     <div class="col-md-12" v-if="allGroups[index].length > 0">
                       <div class="row">
                         <div class="col-md-12">
-                          <h6 class="text-uppercase font-weight-bold">{{ category }}</h6>
+                          <h6 class="text-uppercase font-weight-bold">
+                            {{ category }}
+                          </h6>
                           <a
                             class="dropdown-item px-1 c-pointer"
                             v-for="(group, indx) in allGroups[index]"
                             @click="
-                              selectGroup(group.category, group.id, group.name)
+                              selectGroup(
+                                group.category,
+                                group.id,
+                                group.name,
+                                index,
+                                indx
+                              )
                             "
                             :key="indx"
                           >
@@ -122,7 +180,15 @@
                     <h4>{{ category }}</h4>
                     <p
                       v-for="(group, indx) in allGroups[index]"
-                      @click="selectGroup(group.category, group.id, group.name)"
+                      @click="
+                        selectGroup(
+                          group.category,
+                          group.id,
+                          group.name,
+                          index,
+                          indx
+                        )
+                      "
                       :key="indx"
                     >
                       {{ group.name }}
@@ -153,7 +219,7 @@
 
             <div class="dropdown">
               <input
-              placeholder="Select persons"
+                placeholder="Select persons"
                 class="border-none dropdown-toggle my-1 px-1"
                 type="text"
                 id="dropdownMenu"
@@ -172,19 +238,27 @@
                   class="dropdown-item px-1 c-pointer"
                   v-for="(member, index) in memberSearchResults"
                   :key="index"
-                  @click="selectMember(member)"
+                  @click="selectMember(member, index)"
                   >{{ member.name }}</a
                 >
                 <p
                   class="bg-secondary p-1 mb-0 disable"
-                  v-if="searchText.length < 3 && loading == false && memberSearchResults.length === 0"
+                  v-if="
+                    searchText.length < 3 &&
+                    loading == false &&
+                    memberSearchResults.length === 0
+                  "
                 >
                   Enter 3 or more characters
                 </p>
                 <p
-                aria-disabled="true"
+                  aria-disabled="true"
                   class="btn btn-default p-1 mb-0 disable"
-                  v-if="memberSearchResults.length === 0 && searchText.length >= 3 && !loading"
+                  v-if="
+                    memberSearchResults.length === 0 &&
+                    searchText.length >= 3 &&
+                    !loading
+                  "
                 >
                   No match found
                 </p>
@@ -230,7 +304,11 @@
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
-            <textarea class="form-control w-100 px-1" placeholder="Enter phone number(s)" v-model="phoneNumber"></textarea>
+            <textarea
+              class="form-control w-100 px-1"
+              placeholder="Enter phone number(s)"
+              v-model="phoneNumber"
+            ></textarea>
           </div>
           <div
             class="col-md-12 grey-rounded-border groups"
@@ -276,7 +354,12 @@
           <span>Subject: </span>
         </div>
         <div class="col-md-10 px-0">
-          <input type="text" class="input px-1 grey-rounded-border" style="border-radius: 4px" v-model="subject" />
+          <input
+            type="text"
+            class="input px-1 grey-rounded-border"
+            style="border-radius: 4px"
+            v-model="subject"
+          />
         </div>
       </div>
 
@@ -286,7 +369,6 @@
         </div>
         <div class="col-md-10 px-0">
           <textarea
-          
             rows="10"
             class="text-area my-2"
             v-model="editorData"
@@ -302,8 +384,205 @@
 
       <div class="row mt-4 mb-5">
         <div class="col-md-12 d-flex justify-content-end">
-          <button class="btn send-btn px-4" @click="sendSMS">Send</button>
+          <span>
+            <button
+              class="btn send-btn px-4"
+              data-toggle="modal"
+              data-target="#sendsmsbtn"
+            >
+              Send
+            </button>
+            <a
+              class="send-btn-options dd-item"
+              @click="toggleSendOptionsDisplay"
+              ><i class="pi pi-caret-down dd-item text-white"></i
+            ></a>
+            <div
+              class="send-dropdown d-flex py-1 flex-column dd-item"
+              :class="{ 'hide-dd': !sendOptionsIsShown }"
+            >
+              <a class="font-weight-600 px-1 py-1 dd-item">Save as draft</a>
+              <a
+                class="font-weight-600 px-1 py-1 dd-item"
+                data-toggle="modal"
+                data-target="#schedulemodal"
+                @click="showDateTimeSelectionModal"
+                >Schedule send</a
+              >
+              <!-- Datetime modal -->
+
+              <!-- <div
+                class="modal fade"
+                id="schedulemodal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Modal title
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <input type="datetime-local" id="birthdaytime" class="form-control" name="birthdaytime">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                      <button type="button" class="btn btn-primary">
+                        Save changes
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+          </span>
           <button class="btn discard-btn ml-3 px-3">Discard</button>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div
+              class="modal fade"
+              id="sendsmsbtn"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header grey-background">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      <i class="pi pi-user mr-2"></i>
+                      Send SMS Alternative
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-12 px-1">
+                        <p>
+                          We are providing more options to reach and communicate
+                          with your members
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12 px-1">
+                        <hr class="hr" />
+                      </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-between">
+                      <div class="col-md-6 px-1">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <label for="" class="small-text font-weight-600 py-2"
+                                >NEW** BULK SMS - 100% SMS DELIVERY</label
+                              >
+                            </div>
+                            <div
+                              class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
+                            >
+                              <button
+                                class="primary-btn px-4 my-2 font-weight-600 outline-none"
+                                data-dismiss="modal"
+                                @click="sendSMS('hostedsms')"
+                              >
+                                Send SMS Now
+                              </button>
+                            </div>
+                            <div class="col-md-12 px-0">
+                              <hr class="hr my-2" />
+                            </div>
+                            <div class="col-md-12 px-0 d-flex flex-column">
+                              <span>Please note:</span>
+                              <span
+                                >100% delivery to all valid phone numbers.</span
+                              >
+                              <span>Not Affected by DND.</span>
+                              <span
+                                >Dedicated phone number: No sender
+                                customization.</span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 px-1">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <label for="" class="small-text font-weight-600 py-2"
+                                >REGULAR BULK SMS- PROVIDER</label
+                              >
+                            </div>
+                            <div
+                              class="col-md-12 my-2 send-now-div py-2 d-flex justify-content-center"
+                            >
+                              <!-- hostedsms_instant -->
+                              <button
+                                class="primary-btn px-4 my-2 grey-background text-grey outline-none"
+                                @click="sendSMS('')"
+                              >
+                                Send SMS Now
+                              </button>
+                            </div>
+                            <div class="col-md-12 px-0">
+                              <hr class="hr my-2" />
+                            </div>
+                            <div class="col-md-12 px-0 d-flex flex-column">
+                              <span>Please note:</span>
+                              <span>Uses the regular bulk sms engine</span>
+                              <span
+                                >Delivery rate varies and is affected by DND
+                                number.</span
+                              >
+                              <span>Sender Name can be customized.</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- <div class="modal-footer">
+                    
+                  </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -314,12 +593,15 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
-import composerObj from '../../services/communication/composer';
-import { useRoute } from 'vue-router';
+import composerObj from "../../services/communication/composer";
+import { useRoute } from "vue-router";
+import { useToast } from "primevue/usetoast";
+import store from "../../store/store";
+import axios from "@/gateway/backendapi";
 
 export default {
   setup() {
-   
+    const toast = useToast();
     const editor = ClassicEditor;
     const editorData = ref("");
     const editorConfig = {
@@ -333,19 +615,41 @@ export default {
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
     const selectedGroups = ref([]);
+
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
     };
+
     const showSection = (index) => {
       if (index === 0) groupSelectionTab.value = true;
       if (index === 1) membershipSelectionTab.value = true;
       if (index === 2) phoneNumberSelectionTab.value = true;
     };
-    const selectGroup = (category, id, name) => {
+
+    const sendOptionsIsShown = ref(false);
+    const toggleSendOptionsDisplay = () =>
+      (sendOptionsIsShown.value = !sendOptionsIsShown.value);
+
+    const closeDropdownIfOpen = (e) => {
+      if (!e.target.classList.contains("dd-item")) {
+        sendOptionsIsShown.value = false;
+      }
+    };
+
+    const selectGroup = (
+      category,
+      id,
+      name,
+      indexInCategories,
+      indexInGroup
+    ) => {
+      console.log(allGroups.value, "Cats");
       selectedGroups.value.push({ data: `${category}_${id}`, name });
       groupsAreVissible.value = false;
+      allGroups.value[indexInCategories].splice(indexInGroup, 1);
       console.log(selectedGroups);
     };
+
     const removeGroup = (index) => {
       selectedGroups.value.splice(index, 1);
     };
@@ -355,8 +659,9 @@ export default {
       { name: "You", id: 2 },
     ];
     const selectedMembers = ref([]);
-    const selectMember = (selectedMember) => {
+    const selectMember = (selectedMember, index) => {
       selectedMembers.value.push(selectedMember);
+      memberSearchResults.value.splice(index, 1);
       console.log(selectedMembers, "selected members");
     };
     const removeMember = (index) => {
@@ -368,21 +673,22 @@ export default {
       const filtered = members.filter((i) => i.name.includes(searchText.value));
       return filtered;
     });
-    const memberSearchResults = ref([ ])
+    const memberSearchResults = ref([]);
     const searchForPerson = (e) => {
       if (e.target.value.length >= 3) {
-        memberSearchResults.value = [ ];
+        memberSearchResults.value = [];
         loading.value = true;
-        composerObj.searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
-          .then(res => {
+        composerObj
+          .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
+          .then((res) => {
             loading.value = false;
-            memberSearchResults.value = res
-          })
+            memberSearchResults.value = res;
+          });
         console.log(memberSearchResults.value);
       } else {
-        memberSearchResults.value = []
+        memberSearchResults.value = [];
       }
-    }
+    };
 
     const charactersCount = computed(() => editorData.value.length);
     const pageCount = computed(() => Math.ceil(editorData.value.length / 160));
@@ -391,51 +697,123 @@ export default {
     const phoneNumber = ref("");
     const loading = ref(false);
     // const isPersonalized = ref(false);
-    const sendSMS = () => {
+
+    const isoCode = ref("");
+    const sendSMS = (gateway) => {
+      toast.add({
+        severity: "info",
+        summary: "Sending SMS",
+        detail: "SMS is being sent....",
+        life: 2500,
+      });
+
+      console.log(selectedMembers.value, "sm");
       const data = {
         subject: subject.value,
         message: editorData.value,
-        contacts: selectedMembers.value,
+        contacts: [],
+        // contacts: selectedMembers.value,
         isPersonalized: false,
-        groupedContacts: selectedGroups.value.map(i => i.data),
-        toContacts: phoneNumber.value,
-        toOthers: "",
-        isoCode: "",
+        groupedContacts: selectedGroups.value.map((i) => i.data),
+        toContacts: "",
+        // toOthers: phoneNumber.value,
+        isoCode: isoCode.value,
+        // isoCode: "NG",
         category: "",
         emailAddress: "",
         emailDisplayName: "",
-        gateWayToUse: "",
+        gateWayToUse: gateway,
       };
+
+      data.toOthers = phoneNumber.value;
+      if (selectedMembers.value.length > 0) {
+        data.toOthers += data.toOthers.length > 0 ? "," : "";
+        data.toOthers += selectedMembers.value
+          .map((i) => {
+            if (i.phone) return i.phone;
+            return false;
+          })
+          .join();
+      }
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
 
-      composeService.sendMessage("/api/Messaging/sendSms", data)
-        .then(res => {
+      composeService
+        .sendMessage("/api/Messaging/sendSms", data)
+        .then((res) => {
+          if (!res.status) {
+            toast.add({
+              severity: "error",
+              summary: "Failed operation",
+              detail: typeof res === "object" ? "SMS sending failed" : res,
+              life: 2500,
+            });
+          } else {
+            toast.add({
+              severity: "success",
+              summary: "Successful operation",
+              detail: "SMS was sent successfully",
+              life: 2500,
+            });
+          }
           console.log(res);
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          console.log(err);
+          toast.add({
+            severity: "error",
+            summary: "Failed operation",
+            detail: "SMS sending failed",
+            life: 2500,
+          });
+        });
     };
 
     const route = useRoute();
-     if (route.query.phone) {
-       phoneNumber.value = route.query.phone;
-       phoneNumberSelectionTab.value = true;
-     }
+    if (route.query.phone) {
+      phoneNumber.value = route.query.phone;
+      phoneNumberSelectionTab.value = true;
+    }
 
-    const allGroups = [];
-    const categories = [];
+    if (store.getters.currentUser) {
+      isoCode.value = store.getters.currentUser.isoCode;
+    } else {
+      axios
+        .get("/api/Membership/GetCurrentSignedInUser")
+        .then((res) => {
+          isoCode.value = res.data.isoCode;
+        })
+        .catch((err) => console.log(err));
+    }
+
+    const allGroups = ref([]);
+    const categories = ref([]);
     onMounted(() => {
       composeService
         .getCommunicationGroups()
         .then((res) => {
           for (let prop in res) {
-            categories.push(prop);
-            allGroups.push(res[prop]);
+            categories.value.push(prop);
+            allGroups.value.push(res[prop]);
           }
-          console.log(allGroups);
+          console.log(allGroups.value);
         })
         .catch((err) => console.log(err));
     });
+
+    const display = ref(false);
+    const showDateTimeSelectionModal = () => {
+      display.value = !display.value;
+    };
+    const scheduleMessage = () => {
+      display.value = false;
+      toast.add({
+        severity: "info",
+        summary: "Missing implementation",
+        detail: "Can't schedule message now",
+        life: 2500,
+      });
+    };
 
     return {
       editor,
@@ -465,6 +843,13 @@ export default {
       searchForPerson,
       loading,
       memberSearchResults,
+      subject,
+      sendOptionsIsShown,
+      toggleSendOptionsDisplay,
+      closeDropdownIfOpen,
+      display,
+      showDateTimeSelectionModal,
+      scheduleMessage,
     };
   },
 };
@@ -496,6 +881,20 @@ input:focus {
   border-radius: 111px;
   color: #fff;
   outline: transparent;
+  max-height: 38px;
+}
+
+.send-btn {
+  border-radius: 111px 0 0 111px;
+}
+
+.send-btn-options {
+  border-radius: 0 111px 111px 0;
+  height: 30px;
+  background: #136acd;
+  padding: 1px 10px 8px;
+  font-size: 22px;
+  border-left: 1px solid #80808069;
 }
 
 .discard-btn {
@@ -569,8 +968,8 @@ input:focus {
   scrollbar-width: none;
 }
 
-.hide {
-  display: none;
+.hide-dd {
+  display: none !important;
 }
 
 .subject-text {
@@ -593,7 +992,7 @@ input:focus {
 }
 
 .disable {
-  pointer-events:none;
+  pointer-events: none;
 }
 
 .c-pointer {
@@ -603,6 +1002,53 @@ input:focus {
 .dropdown-menu {
   max-height: 300px !important;
   overflow-y: auto;
+}
+
+.send-now-div {
+  border: 1px solid #ddd;
+}
+
+.modal-lg {
+  max-width: 680px;
+}
+
+.modal-body {
+  padding: 2rem !important;
+}
+
+.grey-background {
+  background: #ebeff4;
+}
+
+.text-grey {
+  color: grey;
+}
+
+.send-dropdown {
+  border: 1px solid #ddd;
+  width: 124px;
+  position: absolute;
+  background: #fff;
+}
+
+.send-dropdown a {
+  color: #190138;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.hide {
+  display: none;
+}
+
+.dd-item:hover {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 630px) {
+  .send-btn-options {
+    padding: 1px 10px 7px;
+  }
 }
 </style>
 
