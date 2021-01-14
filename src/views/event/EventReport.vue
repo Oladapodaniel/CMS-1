@@ -909,7 +909,7 @@ a {
 }
 
 .def-btn {
-  /* height: 43px; */
+  height: 43px;
   border-radius: 22px;
   /* padding: 0 24px; */
   padding: 8px 10px;
