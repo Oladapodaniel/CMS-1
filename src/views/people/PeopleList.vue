@@ -2,7 +2,7 @@
   <div class="my-con">
     <div class="summary">
       <p class="summary-header">Summary</p>
-      <hr class="hr" />
+      <!-- <hr class="hr" /> -->
 
       <div class="boards">
         <div class="board">
@@ -51,9 +51,9 @@
 
       <div class="table-header">
         <div class="check"></div>
-        <div class="picture">
+        <!-- <div class="picture">
           <p>PICTURE</p>
-        </div>
+        </div> -->
         <div class="firstname">
           <p>FIRSTNAME</p>
         </div>
@@ -71,7 +71,7 @@
           <div class="check data">
             <input type="checkbox" name="" id="" />
           </div>
-          <div class="picture data">
+          <!-- <div class="picture data">
             <div class="data-con">
               <div class="data-text">
                 <p>Picture</p>
@@ -82,13 +82,17 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="firstname data">
             <div class="data-con">
               <div class="data-text">
                 <p>Firstnmae</p>
               </div>
-              <div class="data-value">{{ person.firstName }}</div>
+              <router-link
+                to="/tenant/people/add-person"
+                class="data-value itemroute-color"
+                >{{ person.firstName }}</router-link
+              >
             </div>
           </div>
           <div class="lastname data">
@@ -96,7 +100,11 @@
               <div class="data-text">
                 <p>Lastname</p>
               </div>
-              <div class="data-value">{{ person.lastName }}</div>
+              <router-link
+                to="/tenant/people/add-person"
+                class="data-value itemroute-color"
+                >{{ person.lastName }}</router-link
+              >
             </div>
           </div>
           <div class="phone data">
@@ -104,7 +112,11 @@
               <div class="data-text">
                 <p>Phone</p>
               </div>
-              <div class="data-value">{{ person.mobilePhone }}</div>
+              <router-link
+                to="/tenant/people/add-person"
+                class="data-value itemroute-color"
+                >{{ person.mobilePhone }}</router-link
+              >
             </div>
           </div>
           <div class="action data action-icon">
@@ -143,7 +155,7 @@
       </div>
 
       <div class="table-footer">
-        <PaginationButtons />
+        <PaginationButtons @getcontent="getPeopleByPage" />
       </div>
     </div>
   </div>
@@ -154,6 +166,8 @@ import { ref, onMounted } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
+
+import axios from "@/gateway/backendapi";
 
 export default {
   props: ["list"],
@@ -166,12 +180,26 @@ export default {
   setup(props) {
     const churchMembers = ref([]);
 
+    const getPeopleByPage = async (e) => {
+      try {
+        const { data } = await axios.get(
+          `/api/People/GetPeopleBasicInfo?page=${e}`
+        );
+        churchMembers.value = data;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     onMounted(() => {
       console.log(props.list, "props");
       churchMembers.value = props.list;
     });
 
-    return { churchMembers };
+    return {
+      churchMembers,
+      getPeopleByPage,
+    };
   },
 };
 </script>
@@ -180,6 +208,10 @@ export default {
 * {
   box-sizing: border-box;
   color: #02172e;
+}
+
+.itemroute-color {
+  color: #136acd;
 }
 
 a {
@@ -207,8 +239,8 @@ a {
 }
 
 .summary-header {
-  margin: 0 10px;
-  color: #02172e;
+  margin: -0.8rem 10px 0.5rem 10px;
+  color: #136acd;
   opacity: 0.8;
   font-size: 22px;
   font-weight: 600;
@@ -256,10 +288,10 @@ a {
   color: #136acd;
 }
 
-.hr {
+/* .hr {
   border: 1px solid #0020440a;
   margin: 0 4px 10px 0;
-}
+} */
 
 .tbl-footer-btn {
   background: transparent;
@@ -316,6 +348,8 @@ a {
 
   .table-header {
     display: none;
+    /* Tosin */
+    padding: 0 0 0 2rem;
   }
 }
 

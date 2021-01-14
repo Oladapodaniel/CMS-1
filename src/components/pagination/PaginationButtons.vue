@@ -2,19 +2,19 @@
   <div>
     <div class="container">
       <div class="row mt-4" style="margin-top: 10px">
-        <div class="col-md-12">
-          <a class="p-2 mx-1 page-btn rounded-circle float-right"
-            ><i class="fa fa-angle-right"></i
-          ></a>
+        <div class="col-md-12 d-flex">
+          <a class="p-2 mx-1 page-btn rounded-circle"
+            ><i class="fa fa-angle-left"></i>
+          </a>
           <a
-            class="p-2 mx-1 page-btn rounded-circle float-right"
+            class="p-2 mx-1 page-btn rounded-circle"
             v-for="i in 10"
             :key="i"
             @click="getPageContent(i)"
             >{{ i }}</a
           >
-          <a class="p-2 mx-1 page-btn rounded-circle float-right"
-            ><i class="fa fa-angle-left"></i
+          <a class="p-2 mx-1 page-btn rounded-circle"
+            ><i class="fa fa-angle-right"></i
           ></a>
         </div>
       </div>
@@ -32,7 +32,7 @@ export default {
 
   methods: {
     getPageContent(page) {
-      this.$emit("get content", page);
+      this.$emit("getcontent", page);
     },
   },
 };

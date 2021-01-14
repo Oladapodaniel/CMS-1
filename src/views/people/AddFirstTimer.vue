@@ -362,8 +362,6 @@
     </div>
   </form> -->
 
-
-
   <div class="my-con">
     <div class="header mt-2">
       <h3 class="header-text font-weight-bold">Add First timers</h3>
@@ -381,12 +379,12 @@
                   >Firstname<span style="color: red"> *</span></label
                 >
                 <input
-                type="text"
-                class="input"
-                v-model="firstTimersObj.firstName"
-                name=""
-                id="firstname"
-                required
+                  type="text"
+                  class="input"
+                  v-model="firstTimersObj.firstName"
+                  name=""
+                  id="firstname"
+                  required
                 />
               </div>
               <div class="input-field">
@@ -397,7 +395,6 @@
                   placeholder=""
                   v-model="firstTimersObj.lastName"
                   name=""
-                  
                 />
               </div>
               <div class="input-field">
@@ -421,7 +418,6 @@
                         placeholder="Marital status"
                         style="width: 100%"
                       />
-                     
                     </div>
                   </div>
                   <div class="gender cstm-select">
@@ -433,7 +429,6 @@
                         placeholder="Gender"
                         style="width: 100%"
                       />
-                      
                     </div>
                   </div>
                 </div>
@@ -451,17 +446,17 @@
                 <label for="" class="label">Events or Service Attended</label>
                 <div class="gender cstm-select">
                   <div class="cs-select" style="width: 330px">
-                  <Dropdown
-                    v-model="selectedEventAttended"
-                    :options="eventsAttended"
-                    optionLabel="name"
-                    :filter="true"
-                    filterPlaceholder="Find event"
-                    placeholder="Select from events and activities"
-                    style="width: 100%"
-                  />
-                </div> 
-                </div> 
+                    <Dropdown
+                      v-model="selectedEventAttended"
+                      :options="eventsAttended"
+                      optionLabel="name"
+                      :filter="true"
+                      filterPlaceholder="Find event"
+                      placeholder="Select from events and activities"
+                      style="width: 100%"
+                    />
+                  </div>
+                </div>
               </div>
               <div class="input-field">
                 <label for="" class="label">Address</label>
@@ -495,7 +490,6 @@
                           placeholder="Month"
                           style="width: 100%"
                         />
-                      
                       </div>
                     </div>
 
@@ -507,8 +501,6 @@
                           placeholder="Year"
                           style="width: 100%"
                         />
-
-                       
                       </div>
                     </div>
                   </div>
@@ -571,56 +563,56 @@
                 <!-- <label for="" class="label">Events or Service Attended</label> -->
                 <div class="gender cstm-select">
                   <div class="cs-select" style="width: 330px">
-                  <Dropdown
-                    v-model="selectedAboutUsSource"
-                    :options="howDidYouAboutUs"
-                    optionLabel="name"
-                    placeholder="How did you hear about us?"
-                    style="width: 100%;"
-                  />
-                </div> 
-                </div> 
+                    <Dropdown
+                      v-model="selectedAboutUsSource"
+                      :options="howDidYouAboutUs"
+                      optionLabel="name"
+                      placeholder="How did you hear about us?"
+                      style="width: 100%"
+                    />
+                  </div>
+                </div>
               </div>
               <div class="input-field">
                 <!-- <label for="" class="label">Events or Service Attended</label> -->
                 <div class="gender cstm-select">
                   <div class="cs-select" style="width: 330px">
-                  <Dropdown
-                    v-model="selectedCommunicationMeans"
-                    :options="comMeansArr"
-                    placeholder=" Means of communication"
-                    style="width: 100%"
-                  />
-                </div> 
-                </div> 
+                    <Dropdown
+                      v-model="selectedCommunicationMeans"
+                      :options="comMeansArr"
+                      placeholder=" Means of communication"
+                      style="width: 100%"
+                    />
+                  </div>
+                </div>
               </div>
               <div class="input-field">
                 <!-- <label for="" class="label">Events or Service Attended</label> -->
                 <div class="gender cstm-select">
                   <div class="cs-select" style="width: 330px">
-                  <Dropdown
-                    v-model="selectedJoinInterest"
-                    :options="joinInterestArr"
-                    placeholder="Interested in joining us?"
-                    style="width: 100%"
-                  />
-                </div> 
-                </div> 
+                    <Dropdown
+                      v-model="selectedJoinInterest"
+                      :options="joinInterestArr"
+                      placeholder="Interested in joining us?"
+                      style="width: 100%"
+                    />
+                  </div>
+                </div>
               </div>
               <div class="input-field">
                 <!-- <label for="" class="label">Events or Service Attended</label> -->
                 <div class="gender cstm-select">
                   <div class="cs-select" style="width: 330px">
-                  <Dropdown
-                    v-model="selectedVisitOption"
-                    :options="wantVisitArr"
-                    placeholder="Want to be visited?"
-                    style="width: 100%"
-                  />
-                </div> 
-                </div> 
+                    <Dropdown
+                      v-model="selectedVisitOption"
+                      :options="wantVisitArr"
+                      placeholder="Want to be visited?"
+                      style="width: 100%"
+                    />
+                  </div>
+                </div>
               </div>
-              
+
               <!-- <div class="input-field"> 
                 <label for="" class="label">Wedding Anniversary</label>
                 <div class="status-n-gender">
@@ -694,7 +686,7 @@
             <div class="inputs">
               <div class="input-field">
                 <span class="">
-                    <label for="welcomeSms">Send welcome SMS</label>
+                  <label for="welcomeSms">Send welcome SMS</label>
                   <input
                     type="checkbox"
                     class="check-box"
@@ -702,20 +694,19 @@
                     v-model="firstTimersObj.sendWelcomeSMS"
                     id="welcomeSms"
                   />
-                  </span>
+                </span>
 
                 <label for="welcomeEmail">Send welcome email</label>
-                  <input
-                    type="checkbox"
-                    checked
-                    class="check-box"
-                    name=""
-                    v-model="firstTimersObj.sendWelcomeEmail"
-                    id="welcomeEmail"
-                  />
-                  
+                <input
+                  type="checkbox"
+                  checked
+                  class="check-box"
+                  name=""
+                  v-model="firstTimersObj.sendWelcomeEmail"
+                  id="welcomeEmail"
+                />
               </div>
-              
+
               <div class="input-field">
                 <!-- <label for="" class="label">Age</label> -->
                 <div class="cstm-select search-box">
@@ -726,15 +717,12 @@
                       placeholder="Assigned automated follow-up"
                       style="width: 100%"
                     />
-                  
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="image-div other">
-              
-            </div>
+            <div class="image-div other"></div>
           </div>
         </div>
 
@@ -814,18 +802,20 @@
         </div>
         <div class="inputs">
           <div class="submit-div">
-          <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
-                Cancel
-              </button>
+            <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
+              Cancel
+            </button>
 
-          <button class="submit-btn ml-5" :class="{ 'btn-loading': loading }">
-            <i class="fas fa-circle-notch fa-spin mr-2 text-white" v-if="loading"></i>
-            <span class="text-white">Save</span>
-            <span></span>
-          </button>
+            <button class="submit-btn ml-5" :class="{ 'btn-loading': loading }">
+              <i
+                class="fas fa-circle-notch fa-spin mr-2 text-white"
+                v-if="loading"
+              ></i>
+              <span class="text-white">Save</span>
+              <span></span>
+            </button>
+          </div>
         </div>
-        </div>
-        
       </form>
     </div>
   </div>
@@ -930,9 +920,6 @@ export default {
 
     const loading = ref(false);
 
-    
-
-
     const onSubmit = () => {
       firstTimersObj.value.followUpTypeId =
         "00000000-0000-0000-0000-000000000000";
@@ -984,8 +971,6 @@ export default {
     const onCancel = () => {
       router.back();
     };
-
-
 
     onMounted(() => {
       axios.get("/api/Events/EventActivity").then((res) => {
@@ -1057,7 +1042,7 @@ export default {
       hideCelebTab,
       showCelebTab,
       showAddInfoTab,
-      hideAddInfoTab
+      hideAddInfoTab,
     };
   },
 };
@@ -1088,13 +1073,13 @@ export default {
 }
 
 @media (max-width: 528px) {
-    .submit-div {
+  .submit-div {
     margin-left: 1em;
   }
 }
 
 @media (min-width: 529px) and (max-width: 900px) {
-    .submit-div {
+  .submit-div {
     margin-left: 9em;
   }
 }
@@ -1141,9 +1126,9 @@ export default {
   border-radius: 0 8px 8px 0;
 }
 
-.select-elem {
-  /* height: 50px !important; */
-}
+/* .select-elem {
+  height: 50px !important;
+} */
 
 #welcomeSms,
 #welcomeEmail {
@@ -1185,7 +1170,8 @@ export default {
   border-radius: 22px;
 }
 
-.drop-it.placeholder{ /* Chrome/Opera/Safari */
+.drop-it.placeholder {
+  /* Chrome/Opera/Safari */
   /* color: pink; */
   border: 2px solid red;
 }

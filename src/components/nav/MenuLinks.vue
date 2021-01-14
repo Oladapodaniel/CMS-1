@@ -25,7 +25,14 @@
             Dashboard
           </router-link>
 
-          <a class="link dd" :class="{'router-link-exact-active': route.path.includes('people') || route.path.includes('first-time')}">
+          <a
+            class="link dd"
+            :class="{
+              'router-link-exact-active':
+                route.path.includes('people') ||
+                route.path.includes('first-time'),
+            }"
+          >
             <span @click="togglePeopleDropDown">
               <img
                 src="../../assets/dashboardlinks/people.svg"
@@ -44,7 +51,9 @@
           </a>
           <ul class="dd-list" :class="{ 'dd-hide-list': !peopleLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" :to="`/tenant/people`">Members</router-link>
+              <router-link class="dd-link-item" :to="`/tenant/people`"
+                >Members</router-link
+              >
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item" :to="`/tenant/first-timers`"
@@ -52,7 +61,9 @@
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/tenant/people-groups">Groups</router-link>
+              <router-link class="dd-link-item" to="/tenant/people-groups"
+                >Groups</router-link
+              >
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item" to="/">Families</router-link>
@@ -60,7 +71,12 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('communication')}">
+          <a
+            class="link dd"
+            :class="{
+              'router-link-exact-active': route.path.includes('communication'),
+            }"
+          >
             <span @click="toggleCommDropDown">
               <img
                 src="../../assets/dashboardlinks/com-icon.svg"
@@ -79,10 +95,16 @@
           </a>
           <ul class="dd-list" :class="{ 'dd-hide-list': !commLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/tenant/sms-communications">SMS</router-link>
+              <router-link class="dd-link-item" to="/tenant/sms-communications"
+                >SMS</router-link
+              >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/tenant/email-communications">Email</router-link>
+              <router-link
+                class="dd-link-item"
+                to="/tenant/email-communications"
+                >Email</router-link
+              >
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item" to="/">Whatsapp</router-link>
@@ -93,7 +115,12 @@
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('/tenant/event')}">
+          <a
+            class="link dd"
+            :class="{
+              'router-link-exact-active': route.path.includes('/tenant/event'),
+            }"
+          >
             <span @click="toggleEventsDropDown">
               <img
                 src="../../assets/dashboardlinks/events-icon.svg"
@@ -110,18 +137,31 @@
               ></span>
             </span>
           </a>
-          <ul class="dd-list events-list" :class="{ 'dd-hide-list': !eventsLinkDropped }">
+          <ul
+            class="dd-list events-list"
+            :class="{ 'dd-hide-list': !eventsLinkDropped }"
+          >
             <li class="dd-list-item">
-              <router-link class="dd-link-item" :to="`/tenant/empty-event`">Events</router-link>
-
+              <router-link class="dd-link-item" :to="`/tenant/empty-event`"
+                >Events</router-link
+              >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Attendance & Checkin</router-link>
+              <router-link class="dd-link-item" to="/"
+                >Attendance & Checkin</router-link
+              >
             </li>
           </ul>
           <!-- </a> -->
 
-          <a  class="link dd" :class="{'router-link-exact-active': route.path.includes('tenant/accounting')}">
+          <a
+            class="link dd"
+            :class="{
+              'router-link-exact-active': route.path.includes(
+                'tenant/accounting'
+              ),
+            }"
+          >
             <span @click="toggleAccDropDown">
               <img
                 src="../../assets/dashboardlinks/acc-icon.svg"
@@ -138,7 +178,10 @@
               ></span>
             </span>
           </a>
-          <ul class="dd-list acc-list" :class="{ 'dd-hide-list': !accLinkDropped }">
+          <ul
+            class="dd-list acc-list"
+            :class="{ 'dd-hide-list': !accLinkDropped }"
+          >
             <li class="dd-list-item">
               <router-link class="dd-link-item" to="/">Offerings</router-link>
             </li>
@@ -149,13 +192,19 @@
               <router-link class="dd-link-item" to="/">Pledges</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Transactions</router-link>
+              <router-link class="dd-link-item" to="/"
+                >Transactions</router-link
+              >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Expense Approval</router-link>
+              <router-link class="dd-link-item" to="/"
+                >Expense Approval</router-link
+              >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Charts of Account</router-link>
+              <router-link class="dd-link-item" to="/"
+                >Charts of Account</router-link
+              >
             </li>
           </ul>
 
@@ -231,8 +280,8 @@
 
 <script>
 import { computed, ref } from "vue";
-import { useRoute } from 'vue-router';
-import store from "@/store/store"
+import { useRoute } from "vue-router";
+import store from "@/store/store";
 import axios from "@/gateway/backendapi";
 export default {
   setup() {
@@ -279,23 +328,27 @@ export default {
       return moreShown.value ? "Less" : "More";
     });
 
-    const tenantInfo = ref({ });
-    
+    const tenantInfo = ref({});
+
     if (!store.getters.currentUser.churchName) {
-      axios.get("/dashboard")
-      .then(res => {
-        tenantInfo.value = res.data;
-      })
-      .catch(err => console.log(err.respone))
+      axios
+        .get("/dashboard")
+        .then((res) => {
+          tenantInfo.value = res.data;
+        })
+        .catch((err) => console.log(err.respone));
     } else {
       tenantInfo.value.churchName = store.getters.currentUser.churchName;
     }
 
     const tenantDisplayName = computed(() => {
-      if (!tenantInfo.value.churchName) return '';
-      const name = tenantInfo.value.churchName.length < 15 ? tenantInfo.value.churchName : `${tenantInfo.value.churchName.slice(0, 15)}...`;
+      if (!tenantInfo.value.churchName) return "";
+      const name =
+        tenantInfo.value.churchName.length < 15
+          ? tenantInfo.value.churchName
+          : `${tenantInfo.value.churchName.slice(0, 15)}...`;
       return name;
-    })
+    });
 
     return {
       route,
@@ -494,9 +547,9 @@ export default {
 }
 
 .dd-link-item {
-  color: #02172E;
+  color: #02172e;
   text-decoration: none;
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .comm-link-icon {
@@ -510,8 +563,8 @@ export default {
     z-index: 10;
   }
 
-  .nav .link {
-    /* opacity: 1; */
-  }
+  /* .nav .link {
+    opacity: 1;
+  } */
 }
 </style>

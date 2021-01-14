@@ -17,21 +17,6 @@ const routes = [
     component: Payment
   },
   {
-    path: '/contactlist',
-    name: 'contactlist',
-    component: ContactList
-  },
-  {
-    path: '/phonegroup',
-    name: 'phonegroup',
-    component: PhoneGroup,
-  },
-  {
-    path: '/messagedetails',
-    name: 'MessageDetails',
-    component: MessageDetails
-  },
-  {
     path: '/',
     name: 'Login',
     component: () => import(/* webpackChunkName: "login" */ '../views/account/Login.vue')
