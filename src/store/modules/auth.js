@@ -11,6 +11,7 @@ export default {
         currentUser: {},
         userStartPoint: "",
         settingUserUp: false,
+        churchMembers: { },
     },
 
     mutations: {
@@ -36,6 +37,10 @@ export default {
 
         setUserUp(state, payload) {
             state.settingUserUp = payload;
+        },
+
+        getMembers(state, payload) {
+            state.churchMembers = payload;
         }
     },
 
@@ -48,12 +53,19 @@ export default {
           try {
             const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
             commit("setCurrentUser", res.data)
-            // if (payload !== res.data.tenantId) {
-            //   router.push("/next")
-            // }
               router.push(`/tenant/${res.data.tenantId}`)
           } catch(err) {
             console.log(err, "in store");
+          }
+          
+        },
+
+        async getMembers({ commit }) {
+          try {
+            const res = await axios.get("/api/People/FirstTimer");
+            commit("setCurrentUser", res.data)
+          } catch(err) {
+            console.log(err, "error getting church members");
           }
           
         },

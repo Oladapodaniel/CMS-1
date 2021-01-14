@@ -1,9 +1,8 @@
-!<template>
+<template>
   <div>
     <div class="container">
-<<<<<<< HEAD
-      <div class="row mainHeada">
-        <div class="col-md-6 col-sm-10 mt-lg-5">
+      <div class="row mainHeada mt-5">
+        <div class="col-md-6 col-sm-10">
           <h1>Contact List</h1>
         </div>
       </div>
@@ -15,70 +14,24 @@
 
       <!-- Content of the Box -->
       <main class="">
-        <div
-          id="main"
-          class="container-fluid col-lg-6 col-md-6 col-sm-12 mt-lg-5"
-        >
-          <div class="row">
+        <div id="main" class="container-fluid col-sm-12">
+          <div class="row mb-4">
             <!-- Group Name row -->
             <div class="col-md-12">
               <div class="row d-md-flex align-items-center mt-2">
                 <div class="col-md-12">
-=======
-      <!-- Content Box -->
-      <main id="main" class="mt-3">
-        <div class="container-fluid px-0">
-          <div class="row px-0">
-            <div class="col-md-12 px-0">
-              <div class="row d-md-flex align-items-center mt-2 mb-4">
-                <div class="col-md-12">
-                  <router-link
-                  to="/tenant/sms-communications/add-group"
-                    class="create-btn font-weigth-bold border-0"
-                  >
-                    <span class="mr-2" style="font-size: 22px">+</span> Create
-                    new group
-                  </router-link>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="row header-row">
-                    <div class="col-md-12">
-                      <div class="row light-grey-bg py-2">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-3">
-                          <span class="th">NAME</span>
-                        </div>
-                        <div class="col-md-4">
-                          <span class="th">TOTAL PHONE NUMBER</span>
-                        </div>
-                        <div class="col-md-3">
-                          <span class="th">DATE & TIME CREATED</span>
-                        </div>
-                        <div class="col-md-1">
-                          <span class="th"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
->>>>>>> main
                   <div class="row">
                     <div class="col-md-12 gName">
                       <h3 class="ml-md-n3 mb-n2">Group Name</h3>
                     </div>
                   </div>
 
-<<<<<<< HEAD
                   <!-- Context Area -->
                   <div
-                    class="row amazing d-flex flex-row justify-content-between mt-lg-3"
+                    class="row amazing d-flex flex-row justify-content-between mt-lg-3 mb-4"
                   >
                     <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
-                    <div class="col-md-7 form-group px-0">
+                    <div class="col-md-6 form-group px-0">
                       <input
                         type="text"
                         class="inputWithDisable"
@@ -89,7 +42,7 @@
                       />
                     </div>
 
-                    <div class="col-lg-5 col-sm-4 mr-lg-n5 amazingE">
+                    <div class="col-lg-5 col-sm-4 amazingE">
                       <button
                         v-on:click="enableGroupName"
                         class="btn btnIcons btn-secondary"
@@ -100,11 +53,11 @@
                     </div>
                   </div>
 
-                  <div class="row mt-lg-5 mb-lg-1">
+                  <div class="row mb-lg-1">
                     <h3>Phone Numbers</h3>
                   </div>
                   <div class="row d-flex flex-row justify-content-between mdiv">
-                    <div class="col-md-7 form-group px-0">
+                    <div class="col-md-6 form-group px-0">
                       <input
                         type="text"
                         class="form-control"
@@ -112,7 +65,7 @@
                         v-model="enteredValue"
                       />
                     </div>
-                    <div class="col-md-5 mr-lg-n5 addIconarea">
+                    <div class="col-md-5 addIconarea">
                       <button
                         v-on:click="addPhoneNumber"
                         class="btn btnIcons align-self-end btn-secondary mb-2"
@@ -133,7 +86,7 @@
                   >
                     <div class="col-md-7 col-sm-4 addContent spanArea1 mt-1">
                       <div class="row d-md-flex align-items-center">
-                        <div class="col-md-7 spanArea col-sm-4">
+                        <div class="col-md-6 spanArea col-sm-4">
                           <span>
                             {{ phoneNumber }}
                           </span>
@@ -147,53 +100,11 @@
                           >
                             Remove
                           </button>
-=======
-                  <div class="row" v-for="(group, index) in groups" :key="index">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-
-                        <div class="col-md-3 d-md-flex justify-content-between">
-                          <span class="hidden-header">NAME: </span>
-                          <span>
-                            <router-link class="link" :to="{name: 'EditContactList', params: { groupId: group.id}}">{{ group.name }}</router-link>
-                          </span>
-                        </div>
-
-                        <div
-                          class="col-md-4 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >TOTAL PHONE NUMBER:
-                          </span>
-                          <span>{{ group.numbers }}</span>
-                        </div>
-
-                        <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >DATE & TIME CREATED
-                          </span>
-                          <span>{{ new Date(group.dateEntered).toLocaleDateString() }}</span>
-                        </div>
-
-                        <div class="col-md-1 col-ms-12">
-                          <span><i class="fa fa-trash delete-icon"></i></span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
->>>>>>> main
                         </div>
                       </div>
                     </div>
                   </div>
 
-<<<<<<< HEAD
                   <!-- Button Area -->
                   <div class="row mt-md-5">
                     <div class="col-md-7">
@@ -205,57 +116,23 @@
                           >
                             cancel
                           </button>
-=======
-                  <div class="row" v-if="groups.length === 0 && !loading">
-                    <div class="col-md-12 d-flex justify-content-center">
-                      <span class="my-4 font-weight-bold">No groups</span>
-                    </div>
-                  </div>
-
-                  <div class="row" v-if="groups.length === 0 && loading">
-                    <div class="col-md-12 py-2 d-flex justify-content-center">
-                      <i class="fas fa-circle-notch fa-spin"></i>
-                    </div>
-                  </div>
-
-                  <!-- <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-2 d-md-flex justify-content-between">
-                          <span class="hidden-header">SENDER: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-5 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div class="col-md-1 col-ms-12">
-                          <span><i class="fa fa-trash delete-icon"></i></span>
->>>>>>> main
                         </div>
                         <div class="col-md-6 basebtns">
                           <button
                             v-on:click="saveDetails"
-                            class="btn btnBase btn-primary"
+                            class="btn btnBase btn-primary ml-md-4"
                           >
-                            save
+                            <i
+                              class="fas fa-circle-notch fa-spin"
+                              v-if="loading"
+                            ></i>
+                            <span>Save</span>
+                            <span></span>
                           </button>
                         </div>
                       </div>
                     </div>
-                  </div> -->
-
+                  </div>
                 </div>
               </div>
             </div>
@@ -267,7 +144,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
 import axios from "@/gateway/backendapi";
 
 export default {
@@ -277,6 +153,7 @@ export default {
       enteredValue: "",
       groupNameValue: "Amazing group",
       groupNameDisabled: true,
+      loading: false,
     };
   },
 
@@ -306,10 +183,6 @@ export default {
         this.enteredValue = "";
         console.log(this.phoneNumbers);
       }
-
-      // this.phoneNumbers.push(this.enteredValue);
-      // this.enteredValue = "";
-      // console.log("am here");
     },
 
     removePhoneNumber(index) {
@@ -328,13 +201,15 @@ export default {
         phoneNumbers: this.phoneNumbers.join(","),
       };
       console.log(details);
-
+        this.loading = true;
       axios
         .post("/api/Messaging/createPhoneGroups", details)
         .then((res) => {
+            this.loading = false;
           console.log(res);
         })
         .catch((err) => {
+            this.loading = false;
           console.log(err);
         });
     },
@@ -347,44 +222,13 @@ export default {
   },
 
   created() {
-    // console.log(this.$route.params.groupId);
+    const groupId = this.$route.params.groupId;
+    console.log(groupId);
   },
-=======
-import { onMounted, ref } from 'vue';
-import axios from "@/gateway/backendapi";
-
-export default {
-  setup() {
-    const groups = ref([ ]);
-    const loading = ref(false);
-
-    const getGroups = async () => {
-      try {
-        loading.value = true;
-        const res = await axios.get("/api/Messaging/getPhoneGroups");
-        loading.value = false;
-        console.log(res, "groups");
-        groups.value = res.data;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    onMounted(() => {
-      getGroups();
-    })
-
-    return {
-      groups,
-      loading,
-    }
-  }
->>>>>>> main
 };
 </script>
 
 <style scoped>
-<<<<<<< HEAD
 :root {
   --font-color: #02172e;
   --hrule-color: #708eb15c;
@@ -394,17 +238,6 @@ export default {
 .container {
   outline: none;
   overflow: hidden;
-=======
-* {
-  color:  #02172e;
-}
-
-.search-div {
-  width: fit-content;
-  padding: 10px;
-  background: #f5f8f9;
-  border-radius: 200px;
->>>>>>> main
 }
 
 #groupName:focus {
@@ -452,7 +285,6 @@ h4 {
   height: 40px;
 }
 
-<<<<<<< HEAD
 .btn {
   display: inline-block;
 }
@@ -504,53 +336,6 @@ h4 {
     display: flex;
     flex-direction: row;
   }
-=======
-.menu-item-con {
-  color: #002044;
-  opacity: 0.5;
-}
-
-.menu-item-con.active {
-  background: rgba(19, 106, 205, 0.05);
-  border-left: 2px solid #136acd;
-  opacity: 1;
-}
-
-.buy-btn {
-  background: rgb(112, 142, 177, 0.33);
-  border-radius: 22px;
-}
-
-.btn-text {
-  opacity: 1;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.timestamp {
-  font-size: 14px;
-  color: #333333;
-  opacity: 0.5;
-}
-
-.create-btn {
-  background: #ebeff4;
-  border-radius: 21px;
-  padding: 4px 18px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  text-decoration: none;
-}
-
-
-.link {
-  text-decoration: none;
-  color: #136acd !important;
-}
->>>>>>> main
 
   .amazingG {
     width: 50%;

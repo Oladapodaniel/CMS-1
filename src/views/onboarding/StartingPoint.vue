@@ -27,7 +27,7 @@
           </div>
 
           <div class="all-options">
-            <router-link to="" class="start-option">
+            <router-link to="/processing/sms-communications" class="start-option">
               <div class="icon">
                 <img
                   class="link-icon"

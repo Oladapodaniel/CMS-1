@@ -1,4 +1,4 @@
-!<template>
+<template>
   <div>
     <div class="container">
       <div class="row mainHeada">
@@ -14,10 +14,7 @@
 
       <!-- Content of the Box -->
       <main class="">
-        <div
-          id="main"
-          class="container-fluid col-lg-6 col-md-6 col-sm-12 mt-lg-5"
-        >
+        <div id="main" class="container-fluid col-sm-12">
           <div class="row">
             <!-- Group Name row -->
             <div class="col-md-12">
@@ -35,21 +32,22 @@
                   >
                     <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
                     <!-- <div class="col-md-7 form-group px-0">
-                      <input
-                        type="text"
-                        class="inputWithDisable"
-                        id="groupName"
-                        v-model="groupNameValue"
-                        v-bind:disabled="groupNameDisabled"
-                        ref="groupName"
-                      />
-                    </div> -->
-                    <div class="col-md-7 form-group px-0">
+	 <input
+	 type="text"
+	 class="inputWithDisable"
+	 id="groupName"
+	 v-model="groupNameValue"
+	 v-bind:disabled="groupNameDisabled"
+	 ref="groupName"
+	 />
+	 </div> -->
+                    <div class="col-md-6 form-group px-0">
                       <input
                         type="text"
                         class="form-control"
                         id="groupName"
                         v-model="groupNameValue"
+                        required
                       />
                     </div>
 
@@ -71,12 +69,13 @@
                     <h3>Phone Numbers</h3>
                   </div>
                   <div class="row d-flex flex-row justify-content-between mdiv">
-                    <div class="col-md-7 form-group px-0">
+                    <div class="col-md-6 form-group px-0">
                       <input
                         type="text"
                         class="form-control"
                         id="phoneNumber"
                         v-model="enteredValue"
+                        required
                       />
                     </div>
                     <div class="col-md-5 mr-lg-n5 addIconarea">
@@ -98,7 +97,7 @@
                     :key="index"
                     class="row"
                   >
-                    <div class="col-md-7 col-sm-4 addContent spanArea1 mt-1">
+                    <div class="col-md-6 col-sm-4 addContent spanArea1 mt-1">
                       <div class="row d-md-flex align-items-center">
                         <div class="col-md-7 spanArea col-sm-4">
                           <span>
@@ -120,23 +119,28 @@
                   </div>
 
                   <!-- Button Area -->
-                  <div class="row mt-md-5">
+                  <div class="row mt-md-5 mb-4">
                     <div class="col-md-7">
                       <div class="row d-md-flex align-items-center">
                         <div class="col-md-6 basebtns">
                           <button
                             v-on:click="resetInputFields"
-                            class="btn btnBase1 btnBase btn-primary"
+                            class="btn btnBase1 btnBase"
                           >
-                            cancel
+                            Cancel
                           </button>
                         </div>
                         <div class="col-md-6 basebtns">
                           <button
                             v-on:click="saveGroupDetails"
-                            class="btn btnBase btn-primary"
+                            class="btn btnBase btn-primary ml-md-4"
                           >
-                            save
+                            <i
+                              class="fas fa-circle-notch fa-spin"
+                              v-if="loading"
+                            ></i>
+                            <span>Save</span>
+                            <span></span>
                           </button>
                         </div>
                       </div>
@@ -151,9 +155,11 @@
     </div>
   </div>
 </template>
-
-<script>
+	
+	<script>
 import axios from "@/gateway/backendapi";
+import router from "../../router/index";
+
 export default {
   data() {
     return {
@@ -161,6 +167,7 @@ export default {
       enteredValue: "",
       groupNameValue: "",
       groupNameDisabled: true,
+      loading: false,
     };
   },
 
@@ -220,13 +227,16 @@ export default {
       };
       console.log(details);
       console.log(this.phoneNumbers);
-
+      this.loading = true;
       axios
         .post("/api/Messaging/createPhoneGroups", details)
         .then((res) => {
+          this.loading = false;
           console.log(res);
+          router.push("/tenant/sms-communications/contacts");
         })
         .catch((err) => {
+          this.loading = false;
           console.log(err);
         });
     },
@@ -239,12 +249,16 @@ export default {
   },
 };
 </script>
-
-<style scoped>
+	
+	<style scoped>
 :root {
   --font-color: #02172e;
   --hrule-color: #708eb15c;
   --primary-color: #000000;
+}
+
+* {
+  color: #02172e;
 }
 
 .container {
@@ -304,14 +318,17 @@ h4 {
 .btnIcons {
   width: 110px;
   height: 35px;
-  color: var(--primary-color);
+  /* color: var(--primary-color); */
   background-color: #dde2e6;
   border-radius: 40px;
   border: none;
 }
 
+.btnIcons:hover {
+  color: #136acd;
+}
+
 .btnBase1 {
-  color: var(--primary-color);
   background-color: transparent;
   /* border: 1px var(--primary-color) solid; */
   border: 1px solid #000000;

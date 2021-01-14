@@ -1,36 +1,17 @@
 !<template>
   <div>
     <div class="container">
-
       <!-- Content Box -->
       <main id="main" class="mt-3">
         <div class="container-fluid px-0">
           <div class="row px-0">
             <div class="col-md-12 px-0">
-              <div class="row d-md-flex align-items-center mt-3 mb-4">
-                <div class="col-md-8 col-sm-12 pl-0">
-                  <div class="search-div">
-                    <span><i class="fa fa-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..." />
-                    <span class="mx-2"> | </span>
-                    <span class="mx-2">Sort By</span>
-                    <span class="font-weight-bold"> Newest</span>
-                  </div>
-                </div>
-                <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
-                  <div class="row d-sm-flex align-items-center jsutify-content-between units-div">
-                    <div class="col-sm-12">
-                      <h4 class="font-weight-bold mb-0 center-flexed">302</h4>
-                      <p class="font-weight-bold mb-0 center-flexed">SMS Units</p>
-                    </div>
-                    <div class="col-sm-12 d-sm-flex justify-content-center">
-                      <button class="btn buy-btn center-flexed">
-                        <span class="btn-text">
-                            BUY UNITS
-                        </span>
-                      </button>
-                    </div>
-                  </div>
+              <div class="row d-md-flex align-items-center mt-2 mb-4">
+                <div class="col-md-12">
+                  <button class="create-btn font-weigth-bold border-0">
+                    <span class="mr-2" style="font-size: 22px">+</span> Create
+                    new group
+                  </button>
                 </div>
               </div>
 
@@ -43,10 +24,10 @@
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-2">
-                          <span class="th">SENDER</span>
+                          <span class="th">NAME</span>
                         </div>
                         <div class="col-md-5">
-                          <span class="th">MESSAGE</span>
+                          <span class="th">TOTAL PHONE NUMBER</span>
                         </div>
                         <div class="col-md-3">
                           <span class="th">DATE & TIME CREATED</span>
@@ -68,10 +49,12 @@
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
+
                         <div class="col-md-2 d-md-flex justify-content-between">
-                           <span class="hidden-header">SENDER: </span>
+                          <span class="hidden-header">SENDER: </span>
                           <span>message</span>
                         </div>
+
                         <div
                           class="col-md-5 col-ms-12 d-flex justify-content-between"
                         >
@@ -80,6 +63,7 @@
                           </span>
                           <span>message</span>
                         </div>
+
                         <div
                           class="col-md-3 col-ms-12 d-flex justify-content-between"
                         >
@@ -88,9 +72,8 @@
                           </span>
                           <span>message</span>
                         </div>
-                        <div
-                          class="col-md-1 col-ms-12 d-flex justify-content-between"
-                        >
+
+                        <div class="col-md-1 col-ms-12">
                           <span><i class="fa fa-trash delete-icon"></i></span>
                         </div>
                       </div>
@@ -109,7 +92,7 @@
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-2 d-md-flex justify-content-between">
-                           <span class="hidden-header">SENDER: </span>
+                          <span class="hidden-header">SENDER: </span>
                           <span>message</span>
                         </div>
                         <div
@@ -124,9 +107,7 @@
                           <span class="hidden-header">message: </span>
                           <span>message</span>
                         </div>
-                        <div
-                          class="col-md-1 col-ms-12"
-                        >
+                        <div class="col-md-1 col-ms-12">
                           <span><i class="fa fa-trash delete-icon"></i></span>
                         </div>
                       </div>
@@ -188,7 +169,6 @@ export default {};
   border: 1px solid #dde2e6;
   border-radius: 20px;
   padding: 15px 0;
-  background: #f9a9a933 !important;
 }
 
 .hidden-header {
@@ -207,50 +187,41 @@ export default {};
 }
 
 .menu-item-con {
-    color: #002044;
-    opacity: 0.5;
+  color: #002044;
+  opacity: 0.5;
 }
 
 .menu-item-con.active {
-    background: rgba(19, 106, 205, 0.05);
-    border-left: 2px solid #136ACD;
-    opacity: 1;
+  background: rgba(19, 106, 205, 0.05);
+  border-left: 2px solid #136acd;
+  opacity: 1;
 }
 
 .buy-btn {
-    background: rgb(112, 142, 177, .33);
-    border-radius: 22px;
+  background: rgb(112, 142, 177, 0.33);
+  border-radius: 22px;
 }
 
 .btn-text {
-    opacity: 1;
-    font-size: 11px;
-    font-weight: 700;
+  opacity: 1;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .timestamp {
-    font-size: 14px;
-    color: #333333;
-    opacity: 0.5;
+  font-size: 14px;
+  color: #333333;
+  opacity: 0.5;
 }
 
-.view-btn {
-    background: #EBEFF4;
-    border-radius: 21px;
-    padding: 4px 18px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.center-flexed {
+.create-btn {
+  background: #ebeff4;
+  border-radius: 21px;
+  padding: 4px 18px;
+  height: 40px;
   display: flex;
+  align-items: center;
   justify-content: center;
-}
-
-.table-box {
-  border: 1px solid #4762F01F;
 }
 
 @media screen and (max-width: 767px) {

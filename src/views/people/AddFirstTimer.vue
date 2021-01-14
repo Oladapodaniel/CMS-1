@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="onSubmit">
+  <!-- <form @submit.prevent="onSubmit">
     <div class="container my-content">
       <div class="row page-header">
         <div class="col-12">
@@ -11,12 +11,12 @@
         <div class="col-10 offset-1 offset-sm-0 col-sm-12">
           <span class="sub-header">Bio: </span>
           <div class="row first-row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-4 text-md-right pr-0">
               <label for="firstname"
                 >Firstname <span class="required">*</span></label
               >
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-4 form-group">
               <input
                 type="text"
                 class="form-control input"
@@ -26,14 +26,14 @@
                 required
               />
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-md-4"></div>
           </div>
 
           <div class="row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-4 text-md-right pr-0">
               <label for="">Surname</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-4 form-group">
               <input
                 type="text"
                 class="form-control input"
@@ -41,42 +41,91 @@
                 name=""
               />
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-md-4"></div>
           </div>
 
           <div class="row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-4 text-md-right pr-0">
               <label for="">Phone number</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-4 form-group">
               <input
                 type="text"
                 class="form-control input"
                 v-model="firstTimersObj.phoneNumber"
               />
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-md-4"></div>
+          </div>
+
+          <div class="row select-elem">
+            <div class="col-12 col-md-4 text-md-right pr-0">
+              <label for=""></label>
+            </div>
+            <div class="col-12 col-md-4 form-group">
+              <div class="row ">
+                <div class="col-md-6 select-div">
+                  <Dropdown
+                    v-model="selectedMaritalStatus"
+                    :options="maritalStatusArr"
+                    optionLabel="value"
+                    placeholder="Marital status"
+                    style="width: 100%"
+                  />
+                </div>
+                <div class="col-md-6 pl-0 select-div">
+                  <Dropdown
+                    v-model="selectedGender"
+                    :options="genderArr"
+                    optionLabel="value"
+                    placeholder="Gender"
+                    style="width: 100%"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4"></div>
           </div>
 
           <div class="row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-4 text-md-right pr-0">
               <label for="">Email</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-4 form-group">
               <input
                 type="text"
                 class="form-control input"
                 v-model="firstTimersObj.email"
               />
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-md-4"></div>
+          </div>
+
+         
+          <div class="row select-elem">
+            <div class="col-md-4 text-md-right pr-0">
+              <label for="">Event or service attended</label>
+            </div>
+            <div class="col-12 col-md-4 form-group">
+              <Dropdown
+                v-model="selectedEventAttended"
+                :options="eventsAttended"
+                optionLabel="name"
+                :filter="true"
+                filterPlaceholder="Find event"
+                placeholder="Select from events and activities"
+                style="width: 100%"
+              />              
+            </div>
+            <div class="col-md-4"></div>
+            
           </div>
 
           <div class="row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-4 text-md-right pr-0">
               <label for="">Address</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-4 form-group">
               <input
                 type="text"
                 class="form-control input"
@@ -86,87 +135,38 @@
             <div class="col-md-4"></div>
           </div>
 
-          <!-- Birthday -->
+        
           <div class="row select-elem">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-md-4 text-md-right pr-0">
               <label for="">Birthday</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
+            <div class="col-12 col-md-4 form-group">
               <div class="row">
-                <div class="col-4 w-100 form-group pr-0 pt-0 select-div">
-                  <SelectElem
-                    name="day"
-                    id="day"
-                    value="day"
-                    :options="['day', ...day]"
-                    @input="select2Value"
+                <div class="col-md-4 w-100 form-group pt-0 select-div">
+                  <Dropdown
+                    v-model="firstTimersObj.birthday"
+                    :options="day"
+                    placeholder="Day"
+                    style="width: 100%"
                   />
                 </div>
-                <div class="col-4 form-group px-0 select-div">
-                  <SelectElem
-                    name="month"
-                    id="month"
-                    value="month"
-                    :options="['month', ...month]"
-                    @input="select2Value"
+                <div class="col-md-4 form-group px-0 select-div">
+                  <Dropdown
+                    v-model="firstTimersObj.birthMonth"
+                    :options="month"
+                    placeholder="Month"
+                    style="width: 100%"
                   />
                 </div>
-                <div class="col-4 form-group pl-0 select-div">
-                  <SelectElem
-                    name="year"
-                    id="year"
-                    value="year"
-                    :options="['year', ...year]"
-                    @input="select2Value"
+                <div class="col-md-4 form-group select-div">
+                  <Dropdown
+                    v-model="firstTimersObj.birthYear"
+                    :options="year"
+                    placeholder="Year"
+                    style="width: 100%"
                   />
                 </div>
               </div>
-            </div>
-            <div class="col-md-4"></div>
-          </div>
-
-          <!-- Marital status -->
-          <div class="row select-elem">
-            <!-- <div class="col-md-4 text-md-right pr-0">
-                            <label for=""></label>
-                        </div> -->
-            <div class="offset-sm-4 col-sm-6 col-md-4 form-group">
-              <div class="row">
-                <div class="col-sm-6 form-group pr-0 select-div">
-                  <SelectElem
-                    name="maritalStatus"
-                    :options="['Marital Status', ...maritalStatus]"
-                    value="Marital status"
-                    @input="select2Value"
-                  />
-                </div>
-                <div
-                  class="col-sm-6 col-md-5 offset-md-1 form-group pl-0 select-div"
-                >
-                  <SelectElem
-                    name="gender"
-                    :options="['Gender', ...gender]"
-                    value="Gender"
-                    @input="select2Value"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4"></div>
-          </div>
-
-          <!-- Event attended -->
-          <div class="row select-elem">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
-              <label for="">Event or service attended</label>
-            </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group mb-0">
-              <SelectElem
-                name="eventAttended"
-                :options="['Event Attended', ...eventAttended]"
-                value="Event Attended"
-                @input="select2Value"
-              />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -184,78 +184,91 @@
                 <span class="hr-span" style="width: 80%; margin-top: 10px"
                   ><hr class="hr"
                 /></span>
+                <span
+                  @click="toggleForm1"
+                    ><i
+                      class="fa fa-angle-up"
+                      :class="{ roll1: showForm1 }"
+                      aria-hidden="true"
+                    ></i>
+                  </span>
               </span>
             </div>
           </div>
 
-          <!-- Hear About Us -->
+          
+          <div :class="{ 'slide-down1': showForm1 }">
           <div class="row select-elem first-row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
-              <label for="">How did you hear about us</label>
+            <div class="col-12 col-md-4 text-md-right pr-0">
+     
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
-              <SelectElem
-                name="howYouHeard"
-                :options="['select', ...howYouHeard]"
-                value="select"
-                @input="select2Value"
+            <div class="col-12 col-md-2 pr-0 form-group">
+              <Dropdown
+              class="drop-it"
+                v-model="selectedAboutUsSource"
+                :options="howDidYouAboutUs"
+                optionLabel="name"
+                placeholder="How you heard?"
+                style="width: 100%;"
+              />
+            </div>
+            <div class="col-12 col-md-2 form-group">
+              <Dropdown
+                v-model="selectedCommunicationMeans"
+                :options="comMeansArr"
+                placeholder=" Means of communication"
+                style="width: 100%"
               />
             </div>
             <div class="col-md-4"></div>
           </div>
 
-          <!-- Communication means -->
           <div class="row select-elem">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
-              <label for="">Preferred means of communication</label>
+            <div class="col-12 col-md-4 text-md-right pr-0">
+
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
-              <SelectElem
-                name="commeans"
-                :options="['select', ...comMeansArr]"
-                @input="select2Value"
-                value="select"
+      
+            <div class="col-12 col-md-2 pr-0 form-group">
+              <Dropdown
+                v-model="selectedJoinInterest"
+                :options="joinInterestArr"
+                placeholder="Interested in joining us?"
+                style="width: 100%"
+              />
+            </div>
+            <div class="col-12 col-md-2 form-group">
+              <Dropdown
+                v-model="selectedVisitOption"
+                :options="wantVisitArr"
+                placeholder="Want to be visited?"
+                style="width: 100%"
               />
             </div>
             <div class="col-md-4"></div>
           </div>
 
-          <!-- Interested in joining us -->
+   
           <div class="row select-elem">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
-              <label for="">Interested in joining us ?</label>
+            <div class="col-12 col-md-4 text-md-right pr-0">
+  
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
-              <SelectElem
-                name="joininterest"
-                :options="['select', ...joinInterestArr]"
-                @input="select2Value"
-                value="select"
-              />
-            </div>
+  
             <div class="col-md-4"></div>
           </div>
 
-          <!-- Want visit -->
           <div class="row select-elem">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
-              <label for="">Want to be visited ?</label>
+            <div class="col-12 col-md-4 text-md-right pr-0">
+ 
             </div>
-            <div class="col-12 col-sm-6 col-lg-4 form-group">
-              <SelectElem
-                name="wantvisit"
-                :options="['select', ...wantVisitArr]"
-                value="select"
-                @input="select2Value"
-              />
-            </div>
+
             <div class="col-md-4"></div>
+          </div>
           </div>
         </div>
       </div>
 
       <div class="row form-container">
-        <div class="offset-1 offset-sm-0 col-10 col-sm-12">
+        <div class="offset-1 offset-md-0 col-10 col-md-12">
           <div class="row">
             <div class="col-md-11">
               <span
@@ -272,10 +285,10 @@
           </div>
 
           <div class="row first-row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0">
+            <div class="col-12 col-md-4 text-md-right pr-0">
               <label for=""></label>
             </div>
-            <div class="col-12 col-md-5 form-group">
+            <div class="col-12 col-md-4 form-group">
               <div class="row">
                 <div class="col-6 form-group d-flex">
                   <label for="welcomeSms">Send welcome SMS</label>
@@ -301,17 +314,18 @@
               </div>
             </div>
 
-            <div class="col-md-2"></div>
+            <div class="col-md-4"></div>
           </div>
           <div class="row">
-            <div class="col-12 col-sm-4 text-sm-right pr-0 form-group">
+            <div class="col-12 col-md-4 text-md-right pr-0 form-group">
               <label for="welcomeSms">Assigned automated follow-up</label>
             </div>
-            <div class="col-12 col-sm-6 col-lg-4">
-              <SelectElem
-                name="automatedfollowup"
+            <div class="col-12 col-md-4">
+              <Dropdown
+                v-model="selectedFollowUp"
                 :options="['Option1', 'Option2']"
-                value="Option1"
+                placeholder="..."
+                style="width: 100%"
               />
             </div>
           </div>
@@ -319,37 +333,517 @@
       </div>
 
       <div class="row form-container">
-        <div class="col-md-12">
-          <div class="row select-elem first-row">
-            <div class="offset-3 offset-sm-4 col-3 col-lg-2 pr-0">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <div class="row d-flex justify-content-between">
+            <div class="col-xs-5 col-sm-5 my-2 pr-0">
               <button
-                class="action-btn cancel-btn btn"
+                class="action-btn cancel-btn btn w-100"
+                
                 @click.prevent="onCancel"
               >
                 Cancel
               </button>
             </div>
-            <div class="col-5 form-group">
-              <button class="save-btn btn">Save</button>
+            <div class="col-xs-5 col-sm-5 my-2 mr-0 form-group">
+              <button class="save-btn btn text-light w-100">
+                <i
+                  class="fas fa-circle-notch fa-spin mr-2 text-white"
+                  v-if="loading"
+                ></i>
+                <span class="text-white">Save</span>
+                <span></span>
+              </button>
             </div>
-            <div class="col-md-2"></div>
           </div>
         </div>
+        <div class="col-md-4"></div>
       </div>
     </div>
-  </form>
+  </form> -->
+
+
+
+  <div class="my-con">
+    <div class="header mt-2">
+      <h3 class="header-text font-weight-bold">Add First timers</h3>
+      <Toast />
+    </div>
+
+    <div class="form-div">
+      <form @submit.prevent="onSubmit">
+        <div class="bio-div mt-2">
+          <p class="form-section-header">Bio:</p>
+          <div class="bio-info">
+            <div class="inputs">
+              <div class="input-field">
+                <label for="" class="label"
+                  >Firstname<span style="color: red"> *</span></label
+                >
+                <input
+                type="text"
+                class="input"
+                v-model="firstTimersObj.firstName"
+                name=""
+                id="firstname"
+                required
+                />
+              </div>
+              <div class="input-field">
+                <label for="" class="label">Surname</label>
+                <input
+                  type="text"
+                  class="input"
+                  placeholder=""
+                  v-model="firstTimersObj.lastName"
+                  name=""
+                  
+                />
+              </div>
+              <div class="input-field">
+                <label for="" class="label">Phone number</label>
+                <input
+                  type="text"
+                  class="input"
+                  placeholder=""
+                  v-model="firstTimersObj.phoneNumber"
+                />
+              </div>
+              <div class="input-field">
+                <label for=""></label>
+                <div class="status-n-gender">
+                  <div class="status cstm-select">
+                    <div class="cs-select">
+                      <Dropdown
+                        v-model="selectedMaritalStatus"
+                        :options="maritalStatusArr"
+                        optionLabel="value"
+                        placeholder="Marital status"
+                        style="width: 100%"
+                      />
+                     
+                    </div>
+                  </div>
+                  <div class="gender cstm-select">
+                    <div class="cs-select">
+                      <Dropdown
+                        v-model="selectedGender"
+                        :options="genderArr"
+                        optionLabel="value"
+                        placeholder="Gender"
+                        style="width: 100%"
+                      />
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="input-field">
+                <label for="" class="label">Email</label>
+                <input
+                  type="text"
+                  class="input"
+                  placeholder=""
+                  v-model="firstTimersObj.email"
+                />
+              </div>
+              <div class="input-field">
+                <label for="" class="label">Events or Service Attended</label>
+                <div class="gender cstm-select">
+                  <div class="cs-select" style="width: 330px">
+                  <Dropdown
+                    v-model="selectedEventAttended"
+                    :options="eventsAttended"
+                    optionLabel="name"
+                    :filter="true"
+                    filterPlaceholder="Find event"
+                    placeholder="Select from events and activities"
+                    style="width: 100%"
+                  />
+                </div> 
+                </div> 
+              </div>
+              <div class="input-field">
+                <label for="" class="label">Address</label>
+                <input
+                  type="text"
+                  class="input"
+                  placeholder=""
+                  v-model="firstTimersObj.address"
+                />
+              </div>
+              <div class="input-field">
+                <label for="" class="label">Birthday</label>
+                <div class="status-n-gender">
+                  <div class="date-picker">
+                    <div class="cstm-select">
+                      <div class="cs-select" style="width: 87px">
+                        <Dropdown
+                          v-model="firstTimersObj.birthday"
+                          :options="day"
+                          placeholder="Day"
+                          style="width: 100%"
+                        />
+                        <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
+                      </div>
+                    </div>
+                    <div class="cstm-select">
+                      <div class="cs-select" style="width: 111px">
+                        <Dropdown
+                          v-model="firstTimersObj.birthMonth"
+                          :options="month"
+                          placeholder="Month"
+                          style="width: 100%"
+                        />
+                      
+                      </div>
+                    </div>
+
+                    <div class="cstm-select">
+                      <div class="cs-select" style="width: 113px">
+                        <Dropdown
+                          v-model="firstTimersObj.birthYear"
+                          :options="year"
+                          placeholder="Year"
+                          style="width: 100%"
+                        />
+
+                       
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="image-div other">
+              <div class="grey-bg">
+                <div class="person-img">
+                  <img
+                    v-if="!url"
+                    src="../../assets/people/phone-import.svg"
+                    alt="Uploaded Image"
+                  />
+                  <img v-else :src="url" alt="Uploaded Image" />
+                </div>
+                <div>
+                  <div class="cs-input">
+                    <label for="imgUpload" class="choose-file">
+                      Choose file
+                      <input
+                        type="file"
+                        class="input file-input"
+                        placeholder=""
+                        id="imgUpload"
+                        @change="imageSelected"
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <button class="upload-btn" @click.prevent="uploadImage">
+                    Upload
+                  </button>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+        <!-- <hr class="hr"> -->
+
+        <div class="bio-div">
+          <span class="celeb-tab" @click="showCelebTab">
+            <span class="tab-header">Insights:</span>
+            <span class="h-rule"><hr class="hr" /></span>
+            <span class="tb-icon-span"
+              ><i
+                class="fa fa-angle-down tbb-icon"
+                :class="{ 'tb-icon': !hideCelebTab }"
+              ></i
+            ></span>
+          </span>
+          <div
+            class="bio-info celeb-info"
+            :class="{ 'hide-tab': hideCelebTab, 'show-tab': !hideCelebTab }"
+          >
+            <div class="inputs">
+              <div class="input-field">
+                <!-- <label for="" class="label">Events or Service Attended</label> -->
+                <div class="gender cstm-select">
+                  <div class="cs-select" style="width: 330px">
+                  <Dropdown
+                    v-model="selectedAboutUsSource"
+                    :options="howDidYouAboutUs"
+                    optionLabel="name"
+                    placeholder="How did you hear about us?"
+                    style="width: 100%;"
+                  />
+                </div> 
+                </div> 
+              </div>
+              <div class="input-field">
+                <!-- <label for="" class="label">Events or Service Attended</label> -->
+                <div class="gender cstm-select">
+                  <div class="cs-select" style="width: 330px">
+                  <Dropdown
+                    v-model="selectedCommunicationMeans"
+                    :options="comMeansArr"
+                    placeholder=" Means of communication"
+                    style="width: 100%"
+                  />
+                </div> 
+                </div> 
+              </div>
+              <div class="input-field">
+                <!-- <label for="" class="label">Events or Service Attended</label> -->
+                <div class="gender cstm-select">
+                  <div class="cs-select" style="width: 330px">
+                  <Dropdown
+                    v-model="selectedJoinInterest"
+                    :options="joinInterestArr"
+                    placeholder="Interested in joining us?"
+                    style="width: 100%"
+                  />
+                </div> 
+                </div> 
+              </div>
+              <div class="input-field">
+                <!-- <label for="" class="label">Events or Service Attended</label> -->
+                <div class="gender cstm-select">
+                  <div class="cs-select" style="width: 330px">
+                  <Dropdown
+                    v-model="selectedVisitOption"
+                    :options="wantVisitArr"
+                    placeholder="Want to be visited?"
+                    style="width: 100%"
+                  />
+                </div> 
+                </div> 
+              </div>
+              
+              <!-- <div class="input-field"> 
+                <label for="" class="label">Wedding Anniversary</label>
+                <div class="status-n-gender">
+                  <div class="date-picker">
+                    <div class="cstm-select">
+                      <div class="cs-select" style="width: 111px">
+                        <Dropdown
+                         
+                          :options="months"
+                          placeholder="Month"
+                          @change="
+                            editAnnDateValue('month', person.monthOfWedding)
+                          "
+                          style="width: 100%"
+                        />
+                         <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/>
+                      </div>
+                    </div>
+
+                    <div class="cstm-select">
+                      <div class="cs-select" style="width: 87px">
+                        <Dropdown
+                        
+                          :options="annDaysArr"
+                          placeholder="Day"
+                          style="width: 100%"
+                        />
+                        
+                      </div>
+                    </div>
+
+                    <div class="cstm-select">
+                      <div class="cs-select" style="width: 113px">
+                        <Dropdown
+                       
+                          :options="birthYearsArr"
+                          placeholder="Year"
+                          style="width: 100%"
+                        />
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+
+            <div class="image-div other">
+              <!-- Empty space -->
+            </div>
+          </div>
+        </div>
+        <div class="bio-div">
+          <span class="celeb-tab" @click="showAddInfoTab">
+            <span class="tab-header">Follow up and Retention:</span>
+            <span class="h-rule"><hr class="hr" /></span>
+            <span class="tb-icon-span"
+              ><i
+                class="fa fa-angle-down tbb-icon"
+                :class="{ 'tb-icon': !hideAddInfoTab }"
+              ></i
+            ></span>
+          </span>
+          <div
+            class="bio-info"
+            :class="{
+              'hide-tab': hideAddInfoTab,
+              'show-occ-tab': !hideAddInfoTab,
+            }"
+          >
+            <div class="inputs">
+              <div class="input-field">
+                <span class="">
+                    <label for="welcomeSms">Send welcome SMS</label>
+                  <input
+                    type="checkbox"
+                    class="check-box"
+                    name=""
+                    v-model="firstTimersObj.sendWelcomeSMS"
+                    id="welcomeSms"
+                  />
+                  </span>
+
+                <label for="welcomeEmail">Send welcome email</label>
+                  <input
+                    type="checkbox"
+                    checked
+                    class="check-box"
+                    name=""
+                    v-model="firstTimersObj.sendWelcomeEmail"
+                    id="welcomeEmail"
+                  />
+                  
+              </div>
+              
+              <div class="input-field">
+                <!-- <label for="" class="label">Age</label> -->
+                <div class="cstm-select search-box">
+                  <div class="cs-select" style="width: 330px">
+                    <Dropdown
+                      v-model="selectedFollowUp"
+                      :options="['Option1', 'Option2']"
+                      placeholder="Assigned automated follow-up"
+                      style="width: 100%"
+                    />
+                  
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="image-div other">
+              
+            </div>
+          </div>
+        </div>
+
+        <!-- <div
+          class="add-info--con"
+          :class="{
+            'hide-tab': hideAddInfoTab,
+            'show-addinfo-tab': !hideAddInfoTab,
+          }"
+        >
+          <div class="label-text-box">
+            <p>Related information</p>
+            <small
+              >Including small groups and cell/house fellowship
+              membership</small
+            >
+          </div>
+          <div class="info-box">
+            <div class="nav-bar">
+              <div
+                class="groups box"
+                @click.prevent="() => (areaInView = 'groups')"
+                :class="{ 'white-bg': areaInView === 'groups' }"
+              >
+                <a class="tab">Groups</a>
+              </div>
+              <div
+                class="house-fel box"
+                @click.prevent="() => (areaInView = 'fellowship')"
+                :class="{ 'white-bg': areaInView === 'fellowship' }"
+              >
+                <a class="tab">House fellowship</a>
+              </div>
+              <div
+                class="notes box"
+                @click.prevent="() => (areaInView = 'notes')"
+                :class="{ 'white-bg': areaInView === 'notes' }"
+              >
+                <a class="tab">Notes</a>
+              </div>
+              <div
+                class="follow-up box"
+                @click.prevent="() => (areaInView = 'followup')"
+                :class="{ 'white-bg': areaInView === 'followup' }"
+              >
+                <a class="tab">Follow-up</a>
+              </div>
+            </div>
+            <div class="info-box-body">
+              <button
+                @click.prevent="uploadImage"
+                class="info-btn"
+                v-if="areaInView === 'groups'"
+              >
+                Add to Group
+              </button>
+              <button
+                @click.prevent="uploadImage"
+                class="info-btn"
+                v-if="areaInView === 'fellowship'"
+              >
+                Add to House fellowship
+              </button>
+              <button
+                @click.prevent="uploadImage"
+                class="info-btn"
+                v-if="areaInView === 'notes'"
+              >
+                New Notes
+              </button>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="error-div">
+          <p v-if="!loading">{{ errMessage }}</p>
+        </div>
+        <div class="inputs">
+          <div class="submit-div">
+          <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
+                Cancel
+              </button>
+
+          <button class="submit-btn ml-5" :class="{ 'btn-loading': loading }">
+            <i class="fas fa-circle-notch fa-spin mr-2 text-white" v-if="loading"></i>
+            <span class="text-white">Save</span>
+            <span></span>
+          </button>
+        </div>
+        </div>
+        
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
 import { ref, onMounted, computed } from "vue";
-import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
-import router from "@/router/index"
+import router from "@/router/index";
+import Dropdown from "primevue/dropdown";
+// import { getCurrentInstance } from "vue";
 
 export default {
-  components: { SelectElem },
+  components: { Dropdown },
 
   setup() {
+    // const $toast = getCurrentInstance().ctx.$toast;
+
     const day = ref([
       1,
       2,
@@ -397,25 +891,101 @@ export default {
       "December",
     ]);
     const maritalStatusArr = ref([]);
-    const genderArr = ref([]);
-    const comMeansArr = ref(["Call", "Email", "Visit", "SMS"]);
-    const joinInterestArr = ref(["Yes", "No", "Maybe", "On Transit"]);
-    const wantVisitArr = ref(["Yes", "No", "Maybe", "On Transit"]);
-    const eventsAttended = ref([]);
-    const howDidYouAboutUs = ref([]);
-    const firstTimersObj = ref({
-      howDidYouAboutUsId: "00000000-0000-0000-0000-000000000000",
-    });
-    const onSubmit = () => {
-      console.log(firstTimersObj.value);
+    const selectedMaritalStatus = ref(null);
 
+    const genderArr = ref([]);
+    const selectedGender = ref(null);
+
+    const comMeansArr = ref(["Call", "Email", "Visit", "SMS"]);
+    const selectedCommunicationMeans = ref(null);
+
+    const joinInterestArr = ref(["Yes", "No", "Maybe", "On Transit"]);
+    const selectedJoinInterest = ref(null);
+
+    const wantVisitArr = ref(["Yes", "No", "Maybe", "On Transit"]);
+    const selectedVisitOption = ref(null);
+
+    const eventsAttended = ref([]);
+    const selectedEventAttended = ref(null);
+
+    const howDidYouAboutUs = ref([]);
+    const selectedAboutUsSource = ref(null);
+
+    const selectedFollowUp = ref(null);
+
+    const firstTimersObj = ref({
+      // howDidYouAboutUsId: "00000000-0000-0000-0000-000000000000",
+      // maritalStatusId: "00000000-0000-0000-0000-000000000000",
+      // genderId: "00000000-0000-0000-0000-000000000000",
+      // maritalStatusId: "00000000-0000-0000-0000-000000000000",
+      // maritalStatusId: "00000000-0000-0000-0000-000000000000",
+      sendWelcomeSMS: false,
+      sendWelcomeEmail: true,
+    });
+
+    const hideCelebTab = ref(true);
+    const hideAddInfoTab = ref(true);
+    const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
+    const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
+
+    const loading = ref(false);
+
+    
+
+
+    const onSubmit = () => {
+      firstTimersObj.value.followUpTypeId =
+        "00000000-0000-0000-0000-000000000000";
+      firstTimersObj.value.genderId = selectedGender.value
+        ? selectedGender.value.id
+        : 0;
+      firstTimersObj.value.maritalStatusId = selectedMaritalStatus.value
+        ? selectedMaritalStatus.value.id
+        : 0;
+      firstTimersObj.value.activityID = selectedEventAttended.value
+        ? selectedEventAttended.value.activityID
+        : "00000000-0000-0000-0000-000000000000";
+      firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
+        ? selectedAboutUsSource.value.id
+        : "00000000-0000-0000-0000-000000000000";
+      firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
+        ? comMeansArr.value.indexOf(selectedCommunicationMeans.value)
+        : 0;
+      firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
+        ? joinInterestArr.value.indexOf(selectedJoinInterest.value)
+        : 0;
+      firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
+        ? wantVisitArr.value.indexOf(selectedVisitOption.value)
+        : 0;
+
+      console.log(firstTimersObj.value);
+      loading.value = true;
       axios
         .post("/api/people/firsttimer", firstTimersObj.value)
-        .then((res) => console.log(res.data))
-        .catch((err) => console.log(err));
+        .then((res) => {
+          console.log(res.data);
+          loading.value = false;
+          // $toast.show(`Saving successful`, {
+          //   position: "top-right",
+          //   type: "success",
+          // });
+          router.push("/tenant/first-timers");
+        })
+        .catch((err) => {
+          loading.value = false;
+          // $toast.show(`Saving failed`, {
+          //   position: "top-right",
+          //   type: "error",
+          // });
+          console.log(err);
+        });
     };
 
-    const onCancel = () => {};
+    const onCancel = () => {
+      router.back();
+    };
+
+
 
     onMounted(() => {
       axios.get("/api/Events/EventActivity").then((res) => {
@@ -425,7 +995,7 @@ export default {
       axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
-          // console.log(res.data)
+          // console.log(res.data, 'all lkups')
           res.data.find((i) => {
             if (i.type.toLowerCase() === "gender") {
               genderArr.value = i.lookUps;
@@ -444,89 +1014,12 @@ export default {
         });
 
       axios.get("/api/membership/howyouheardaboutus").then((res) => {
-        // console.log(res.data)
+        // console.log(res.data, 'about us')
         howDidYouAboutUs.value = res.data.map((i) => {
           return { name: i.name, id: i.id };
         });
       });
     });
-
-    const gender = computed(() => {
-      let arr = genderArr.value.map((i) => {
-        return i.value;
-      });
-      return arr;
-    });
-
-    const maritalStatus = computed(() => {
-      return maritalStatusArr.value.map((i) => {
-        return i.value;
-      });
-    });
-
-    const eventAttended = computed(() => {
-      return eventsAttended.value.map((i) => {
-        return i.name;
-      });
-    });
-
-    const howYouHeard = computed(() => {
-      return howDidYouAboutUs.value.map((i) => {
-        return i.name;
-      });
-    });
-    const select2Value = (data) => {
-      if (data.dataType === "day") {
-        firstTimersObj.value.birthday = data.value;
-      }
-
-      if (data.dataType === "month") {
-        firstTimersObj.value.birthMonth = month.value.indexOf(data.value) + 1;
-        console.log(firstTimersObj.value.birthMonth);
-      }
-      if (data.dataType === "year") {
-        firstTimersObj.value.birthYear = data.value;
-      }
-      if (data.dataType === "gender") {
-        firstTimersObj.value.genderId = genderArr.value.find(
-          (i) => i.value === data.value
-        ).id;
-      }
-      if (data.dataType === "maritalStatus") {
-        firstTimersObj.value.maritalStatusId = maritalStatusArr.value.find(
-          (i) => i.value == data.value
-        ).id;
-      }
-      if (data.dataType === "eventAttended") {
-        firstTimersObj.value.activityID = eventsAttended.value.find(
-          (i) => i.name == data.value
-        ).activityID;
-        console.log(firstTimersObj.value.activityID);
-      }
-      if (data.dataType === "howYouHeard") {
-        firstTimersObj.value.howDidYouAboutUsId = howDidYouAboutUs.value.find(
-          (i) => i.name == data.value
-        ).id;
-      }
-      if (data.dataType === "commeans") {
-        firstTimersObj.value.communicationMeans = comMeansArr.value.indexOf(
-          data.value
-        );
-      }
-      if (data.dataType === "joininterest") {
-        firstTimersObj.value.interestedInJoining = joinInterestArr.value.indexOf(
-          data.value
-        );
-      }
-      if (data.dataType === "wantvisit") {
-        firstTimersObj.value.wantToBeVisited = wantVisitArr.value.indexOf(
-          data.value
-        );
-      }
-      if (data.dataType === "automatedfollowup") {
-        firstTimersObj.value.autoMatedFollowUp = data.value;
-      }
-    };
 
     const year = computed(() => {
       const arrOfYears = [];
@@ -546,17 +1039,25 @@ export default {
       month,
       year,
       maritalStatusArr,
-      maritalStatus,
-      gender,
       genderArr,
-      eventAttended,
       eventsAttended,
       howDidYouAboutUs,
-      howYouHeard,
       joinInterestArr,
       wantVisitArr,
       comMeansArr,
-      select2Value,
+      loading,
+      selectedGender,
+      selectedMaritalStatus,
+      selectedEventAttended,
+      selectedAboutUsSource,
+      selectedCommunicationMeans,
+      selectedJoinInterest,
+      selectedVisitOption,
+      selectedFollowUp,
+      hideCelebTab,
+      showCelebTab,
+      showAddInfoTab,
+      hideAddInfoTab
     };
   },
 };
@@ -566,6 +1067,36 @@ export default {
 * {
   box-sizing: border-box;
   color: #02172e;
+}
+
+.show-tab {
+  transition: all 0.5s ease-in-out;
+  height: 200px;
+}
+
+.show-occ-tab {
+  transition: all 0.5s ease-in-out;
+  height: 100px;
+}
+
+.submit-div {
+  margin-left: 18em;
+}
+
+.inputs {
+  width: 70%;
+}
+
+@media (max-width: 528px) {
+    .submit-div {
+    margin-left: 1em;
+  }
+}
+
+@media (min-width: 529px) and (max-width: 900px) {
+    .submit-div {
+    margin-left: 9em;
+  }
 }
 
 .page-header {
@@ -635,20 +1166,47 @@ export default {
 .action-btn {
   background: #fff;
   border: 1px solid #002044;
-  border-radius: 111px;
-  width: 121px;
-  height: 49px;
+  border-radius: 22px;
+  width: 104px;
+  /* height: 49px; */
   outline: transparent;
 }
 
 .save-btn {
-  color: #fff;
   background: #136acd;
-  border-radius: 111px;
-  width: 121px;
-  height: 49px;
+  border: none;
   outline: transparent;
-  /* margin-left: 40px; */
+  /* padding: 8px 10px; */
+  /* color: #fff; */
+  /* width: 40px; */
+  /* min-width: 104px; */
+  color: #fff;
+  font-size: 16px;
+  border-radius: 22px;
+}
+
+.drop-it.placeholder{ /* Chrome/Opera/Safari */
+  /* color: pink; */
+  border: 2px solid red;
+}
+
+template.p-dropdown-parent {
+  border: 2px solid red;
+}
+
+.roll1 {
+  transition: all 0.5s ease-in-out;
+  transform: rotate(180deg);
+}
+
+.slide-down1 {
+  height: 200px;
+  transition: all 0.5s ease-in-out;
+}
+.close-slide1 {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
 }
 
 .required {

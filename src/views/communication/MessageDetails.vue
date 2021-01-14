@@ -17,7 +17,6 @@
             </div>
             <div class="d-flex mx-md-3">
               <button class="btn btn2 btn-outline-primary">
-                Team
                 <i class="fas fa-times icons px-2"></i>
               </button>
             </div>
