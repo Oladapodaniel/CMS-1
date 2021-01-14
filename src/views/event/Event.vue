@@ -1609,7 +1609,7 @@ export default {
         topic: this.topic,
         preacher: this.preacher,
         preEvent: {
-          name: this.preEventName,
+          name: this.preEventName === "" ? this.selectedEventCategoryName : this.preEventName,
           topic: this.preEventTopic,
           preActivityId:
             this.preActivityId === ""
@@ -1706,7 +1706,48 @@ export default {
       }
 
       if (data.dataType === "month") {
-        this.firstTimersObj.birthMonth = data.value;
+         switch (data.value) {
+          case "January":
+          this.firstTimersObj.birthMonth = "1";
+           break;
+          case "February":
+          this.firstTimersObj.birthMonth = "2";
+           break;
+          case "March":
+          this.firstTimersObj.birthMonth = "3";
+           break;
+          case "April":
+          this.firstTimersObj.birthMonth = "4";
+           break;
+          case "May":
+          this.firstTimersObj.birthMonth = "5";
+           break;
+          case "June":
+          this.firstTimersObj.birthMonth = "6";
+           break;
+          case "July":
+          this.firstTimersObj.birthMonth = "7";
+           break;
+          case "August":
+          this.firstTimersObj.birthMonth = "8";
+           break;
+          case "September":
+          this.firstTimersObj.birthMonth = "9";
+           break;
+          case "October":
+          this.firstTimersObj.birthMonth = "10";
+           break;
+          case "November":
+          this.firstTimersObj.birthMonth = "11";
+           break;
+          case "December":
+          this.firstTimersObj.birthMonth = "12";
+           break;
+          default:
+          // firstTimersObj.value.birthMonth = "12";
+          console.log('No month chosen')
+            break;
+        }
       }
 
       if (data.dataType === "year") {
