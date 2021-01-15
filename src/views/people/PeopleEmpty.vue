@@ -1,73 +1,80 @@
 <template>
-    <div class="no-person mt-5" v-if="!loading && people.length === 0 && !errorGettingPeople">
-        <!-- <div class="empty-img">
-            <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't added any member yet</p>
-        </div> -->
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <ImportPeople />
-            </div>
-          </div>
-        </div>
-    </div>
-
-
-    <div class="row" v-if="loading && people.length === 0">
-      <div class="col-md-12">
-        <div class="row my-2 d-md-flex justify-content-between">
-          <div class="col-md-4">
-            <Skeleton width="100%" height="200px" shape="circle" />
-          </div>
-          <div class="col-md-4">
-            <Skeleton width="100%" height="200px" shape="circle" />
-          </div>
-          <div class="col-md-4">
-            <Skeleton width="100%" height="200px" shape="circle" />
-          </div>
-        </div>
-
-        <div class="row my-2 d-md-flex justify-content-center" v-for="i in 10" :key="i">
-          <div class="col-md-2 my-2">
-            <Skeleton width="100%" height="2rem" borderRadius="16px" />
-          </div>
-          <div class="col-md-2 my-2">
-            <Skeleton width="100%" height="2rem" borderRadius="16px" />
-          </div>
-          <div class="col-md-2 my-2">
-            <Skeleton width="100%" height="2rem" borderRadius="16px" />
-          </div>
-          <div class="col-md-2 my-2">
-            <Skeleton width="100%" height="2rem" borderRadius="16px" />
-          </div>
-          <div class="col-md-2 my-2">
-            <Skeleton width="100%" height="2rem" borderRadius="16px" />
-          </div>
-          <div class="col-md-2 my-2">
-            <Skeleton width="100%" height="2rem" />
-          </div>
+  <div
+    class="no-person mt-5"
+    v-if="!loading && people.length === 0 && !errorGettingPeople"
+  >
+    <!-- <div class="empty-img">
+      <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
+      <p class="tip">You haven't added any member yet</p>
+    </div> -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <ImportPeople />
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="people-list" v-if="!loading && (people.length > 0 || errorGettingPeople)">
-      <PeopleList :list="people" />
+  <div class="row" v-if="loading && people.length === 0">
+    <div class="col-md-12">
+      <div class="row my-2 d-md-flex justify-content-between">
+        <div class="col-md-4">
+          <Skeleton width="100%" height="200px" shape="circle" />
+        </div>
+        <div class="col-md-4">
+          <Skeleton width="100%" height="200px" shape="circle" />
+        </div>
+        <div class="col-md-4">
+          <Skeleton width="100%" height="200px" shape="circle" />
+        </div>
+      </div>
+
+      <div
+        class="row my-2 d-md-flex justify-content-center"
+        v-for="i in 10"
+        :key="i"
+      >
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
+        </div>
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
+        </div>
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
+        </div>
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
+        </div>
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
+        </div>
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" />
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div
+    class="people-list"
+    v-if="!loading && (people.length > 0 || errorGettingPeople)"
+  >
+    <PeopleList :list="people" />
+  </div>
 </template>
 
 <script>
 import { ref, onMounted } from "vue";
 import axios from "@/gateway/backendapi";
-import PeopleList from '@/views/people/PeopleList.vue';
-import ImportPeople from '@/views/people/ImportPeople.vue';
-
+import PeopleList from "@/views/people/PeopleList.vue";
+import ImportPeople from "@/views/people/ImportPeople.vue";
 
 export default {
   components: { PeopleList, ImportPeople },
 
   setup() {
-
     const people = ref([]);
     const loading = ref(false);
     const errorGettingPeople = ref(false);
@@ -83,19 +90,19 @@ export default {
         console.log(err);
       }
     });
-    
+
     return {
       people,
       loading,
       errorGettingPeople,
     };
-  }
+  },
 };
 </script>
 
 <style scoped>
 .main-body {
-    height: 100%;
+  height: 100%;
 }
 
 .top {
@@ -129,11 +136,11 @@ export default {
 }
 
 @media screen and (min-width: 990px) {
-    .main-body {
-        width: 90%;
-        /* max-width: 1200px; */
-        margin: 0 auto;
-    }
+  .main-body {
+    width: 90%;
+    /* max-width: 1200px; */
+    margin: 0 auto;
+  }
 }
 
 @media screen and (min-width: 1200px) {

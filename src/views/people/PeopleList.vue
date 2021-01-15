@@ -51,9 +51,9 @@
 
       <div class="table-header">
         <div class="check"></div>
-        <!-- <div class="picture">
+        <div class="picture">
           <p>PICTURE</p>
-        </div> -->
+        </div>
         <div class="firstname">
           <p>FIRSTNAME</p>
         </div>
@@ -71,7 +71,7 @@
           <div class="check data">
             <input type="checkbox" name="" id="" />
           </div>
-          <!-- <div class="picture data">
+          <div class="picture data">
             <div class="data-con">
               <div class="data-text">
                 <p>Picture</p>
@@ -82,7 +82,7 @@
                 </div>
               </div>
             </div>
-          </div> -->
+          </div>
           <div class="firstname data">
             <div class="data-con">
               <div class="data-text">
