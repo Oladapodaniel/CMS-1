@@ -16,6 +16,7 @@ import Skeleton from 'primevue/skeleton';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import ConfirmDialog from 'primevue/confirmdialog';
+import OverlayPanel from 'primevue/overlaypanel';
 
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
@@ -50,4 +51,5 @@ app.component("Toast", Toast);
 app.component("Skeleton", Skeleton);
 app.component("Dialog", Dialog);
 app.component("Button", Button);
+app.component("OverlayPanel", OverlayPanel);
 app.component("ConfirmDialog", ConfirmDialog);
