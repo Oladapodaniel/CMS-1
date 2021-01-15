@@ -28,7 +28,7 @@
             <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
             <span>Sign in</span>
             <span></span>
-            </button>
+          </button>
         </form>
 
         <div style="margin: 24px 0">

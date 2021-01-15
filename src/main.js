@@ -8,7 +8,19 @@ import VueHighcharts from 'vue-highcharts';
 import axios from "./gateway/backendapi";
 // import NProgress from "nprogress";
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import Toaster from '@meforma/vue-toaster';
 
+import PrimeVue from 'primevue/config';
+import Toast from 'primevue/toast'
+import Skeleton from 'primevue/skeleton';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
+
+import ToastService from 'primevue/toastservice';
+
+import 'primevue/resources/themes/saga-blue/theme.css'       //theme
+import 'primevue/resources/primevue.min.css'                 //core css
+import 'primeicons/primeicons.css'                           //icons
 
 // NProgress.configure({ showSpinner: false });
 axios.interceptors.request.use((config) => {
@@ -29,5 +41,10 @@ axios.interceptors.request.use((config) => {
   // })
 
 // axios.defaults.baseURL = "https://churchplusv3coreapi.azurewebsites.net/";
-
-createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor ).mount('#app')
+const app = createApp(App);
+app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).mount('#app')
+// createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).mount('#app')
+app.component("Toast", Toast);
+app.component("Skeleton", Skeleton);
+app.component("Dialog", Dialog);
+app.component("Button", Button);

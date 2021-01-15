@@ -60,6 +60,11 @@ export default {
         },
         plotOptions: {
           pie: {
+            colors: [
+              '#0f0221', 
+              '#136acd', 
+              '#dde2e6'
+            ],
             // allowPointSelect: true,
             cursor: "pointer",
             dataLabels: {
@@ -98,6 +103,9 @@ export default {
         //   credits: false,
       };
       chart.value = new Highcharts.chart(highchartsOptions);
+    });
+    Highcharts.setOptions({
+     colors: ['brown', 'purple', '#DDDF00']
     });
 
     return { chart, };

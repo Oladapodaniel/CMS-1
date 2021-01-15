@@ -1,40 +1,46 @@
 !<template>
   <div>
     <div class="container">
-
       <!-- Content Box -->
       <main id="main" class="mt-3">
         <div class="container-fluid px-0">
           <div class="row px-0">
             <div class="col-md-12 px-0">
-              <div class="row d-md-flex align-items-center mt-3 mb-4">
-                <div class="col-md-7 col-sm-12">
+              <div
+                class="row d-md-flex justify-content-between align-items-center mt-3 mb-4"
+              >
+                <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
                     <input type="text" placeholder="Search here..." />
-                    <span class="mx-2"> | </span>
-                    <span class="mx-2">Sort By</span>
-                    <span class="font-weight-bold"> Newest</span>
+                    <span class="float-right">
+                      <span class="mx-2"> | </span>
+                      <span class="mx-2">Sort By</span>
+                      <span class="font-weight-bold"> Newest</span>
+                    </span>
                   </div>
                 </div>
-                <div class="col-md-4 ml-2 mt-sm-2 units-container">
+                <div class="col-sm-5 col-md-3 ml-2 mt-sm-2 units-container">
                   <div class="row d-sm-flex align-items-center units-div">
-                    <div class="col-sm-6">
-                      <h4 class="font-weight-bold mb-0">302</h4>
-                      <p class="font-weight-bold mb-0">SMS Units</p>
+                    <div class="col-sm-12">
+                      <h4 class="font-weight-bold mb-0 center-flexed">302</h4>
+                      <p class="font-weight-bold mb-0 center-flexed">
+                        SMS Units
+                      </p>
                     </div>
-                    <div class="col-sm-6 d-sm-flex justify-content-end">
-                      <button class="btn buy-btn">
-                        <span class="btn-text">
-                            BUY UNITS
-                        </span>
+                    <div class="col-sm-12 d-sm-flex justify-content-center">
+                      <button
+                        class="btn buy-btn center-flexed mt-2"
+                        @click="payWithPaystack"
+                      >
+                        <span class="btn-text"> BUY UNITS </span>
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="row">
+              <div class="row table-box mb-4">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12 px-0">
@@ -58,7 +64,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 px-0">
                       <hr class="hr mt-0" />
                     </div>
                   </div>
@@ -105,7 +111,7 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 px-0">
                           <hr class="hr" />
                         </div>
                       </div>
@@ -148,11 +154,11 @@
                           <span class="view-btn">View</span>
                         </div>
                       </div>
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col-md-12">
                           <hr class="hr" />
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -166,7 +172,65 @@
 </template>
 
 <script>
-export default {};
+import axios from "@/gateway/backendapi";
+// import { onMounted } from 'vue';
+
+export default {
+  // setup() {
+  //   const getSentSMS = async () => {
+  //     try {
+  //       const res = await axios.get("/api/Messaging/getAllSentSms");
+  //       console.log(res, "sent sms");
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   onMounted(() => {
+  //     console.log("Hello");
+  //     getSentSMS()
+  //   })
+  // }
+
+  methods: {
+    payWithPaystack(e) {
+      e.preventDefault();
+
+      /*eslint no-undef: "warn"*/
+      let handler = PaystackPop.setup({
+        key: "pk_test_9a8895ede03716b9a0474fea6da11ec5bc1c7033",
+        email: "stgodstar@gmail.com",
+        // email: document.getElementById("email").value,
+        amount: 100 * 100,
+        firstname: "Godstar",
+        lastname: "Gerrald",
+        onClose: function () {
+          swal("Transaction Canceled!", { icon: "error" });
+        },
+        callback: function (response) {
+          //Route to where you confirm payment status
+          console.log(response, "response");
+          var returnres = {
+            smsUnit: 66,
+            transaction_Reference: response.reference,
+            amount: 100 * 100,
+          };
+          //Route to where you confirm payment status
+
+          axios.post('/api/Payment/buySms', returnres)
+            .then(res => {
+              console.log(res, "success data");
+            })
+            .catch(err => {
+              console.log(err, "error confirming payment");
+            })
+          // window.location =
+          //   "https://localhost:44364/api/Payment/buySms?=" + returnres;
+        },
+      });
+      handler.openIframe();
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -206,6 +270,7 @@ export default {};
   border: 1px solid #dde2e6;
   border-radius: 20px;
   padding: 15px 0;
+  background: #f9a9a933 !important;
 }
 
 .hidden-header {
@@ -224,41 +289,54 @@ export default {};
 }
 
 .menu-item-con {
-    color: #002044;
-    opacity: 0.5;
+  color: #002044;
+  opacity: 0.5;
 }
 
 .menu-item-con.active {
-    background: rgba(19, 106, 205, 0.05);
-    border-left: 2px solid #136ACD;
-    opacity: 1;
+  background: rgba(19, 106, 205, 0.05);
+  border-left: 2px solid #136acd;
+  opacity: 1;
 }
 
 .buy-btn {
-    background: rgb(112, 142, 177, .33);
-    border-radius: 22px;
+  background: rgb(112, 142, 177, 0.33);
+  border-radius: 22px;
 }
 
 .btn-text {
-    opacity: 1;
-    font-size: 11px;
-    font-weight: 700;
+  opacity: 1;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .timestamp {
-    font-size: 14px;
-    color: #333333;
-    opacity: 0.5;
+  font-size: 14px;
+  color: #333333;
+  opacity: 0.5;
 }
 
 .view-btn {
-    background: #EBEFF4;
-    border-radius: 21px;
-    padding: 4px 18px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: #ebeff4;
+  border-radius: 21px;
+  padding: 4px 18px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-flexed {
+  display: flex;
+  justify-content: center;
+}
+
+.table-box {
+  border: 1px solid #4762f01f;
+}
+
+.hr {
+  border: 1px solid #4762f01f;
 }
 
 @media screen and (max-width: 767px) {

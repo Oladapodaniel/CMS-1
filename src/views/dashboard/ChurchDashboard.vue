@@ -20,8 +20,8 @@
               <div class="container">
                 <div class="row">
                   <div class="col-md-12 d-flex flex-column border rounded more-links">
-                    <router-link to="/tenant/people/add-person" class="font-weight-bold mt-3">Add member</router-link>
-                    <router-link to="/tenant/people/add-first-timer" class="font-weight-bold">Add first timer</router-link>
+                    <router-link to="/tenant/people/add-person" class="font-weight-bold mt-3 text-dec-none">Add member</router-link>
+                    <router-link to="/tenant/people/add-first-timer" class="font-weight-bold text-dec-none">Add first timer</router-link>
                   </div>
                 </div>
               </div>
@@ -40,7 +40,7 @@
               </div>
             </div>
           </div> -->
-        <div class="top-row">
+        <div class="top-row px-0">
           <div class="help-text2">
             <img src="../../assets/can-do.svg" alt="">
             <div class="can-do">
@@ -696,10 +696,12 @@ tbody tr:nth-child(even) {
   align-items: center
 }
 
-
+.more-links a {
+  text-decoration: none;
+}
 /* WIP */
 
-@media screen and (max-width: 376px) {
+/* @media screen and (max-width: 376px) {
   .top-row {
     flex-direction: column;
   }
@@ -707,53 +709,8 @@ tbody tr:nth-child(even) {
   .can-do, .can-do-links {
     width: 90%;
   }
-
-  /* .number-boxes {
-    flex-direction: column;
-  } */
-}
-
-/* @media screen and (max-width: 570px) {
-  
 } */
 
-@media (max-width: 600px) {
-  .box {
-    width: 70%;
-  }
-
-  .box {
-    margin: 0 auto
-  }
-
-  .number-boxes {
-    flex-direction: column;
-  }
-
-  /* .table {
-    min-width: 120%;
-    overflow: scroll;
-    border: 2px solid red;
-  }
-
-  .data-row {
-    flex-direction: inherit;
-  } */
-}
-
-@media (min-width:  601px) and (max-width: 939px) {
-    .number-boxes {
-      display: flex;
-      justify-content: space-between !important;
-  }
-
-  .box {
-    margin-left: 0
-  }
-  /* .box {
-    margin-right: 20px;
-  } */
-}
 
 @media screen and (max-width: 940px) {
   .top-row {
@@ -766,15 +723,31 @@ tbody tr:nth-child(even) {
     align-items: flex-start;
   }
 
+  .second-col .number-boxes {
+    max-width: 100%;
+    justify-content: space-between;
+  }
+
   .box {
     margin-top: 20px;
+    width: 40%;
+    margin-left: 0;
+  }
+
+  .can-do {
+    width: 100%;
+  }
+
+  .can-do-links {
+    flex-direction: row;
+    justify-content: space-around;
   }
 }
 
 
 @media (min-width: 1101px) and (max-width: 1231px) {
 
-  .top-row {
+  /* .top-row {
       flex-direction: column;
   }
 
@@ -784,12 +757,33 @@ tbody tr:nth-child(even) {
 
   .box {
     margin-top: 20px;
-  }
+  } */
 }
 
 @media screen and (min-width: 1300px) {
   .box-middle {
     padding: 43px 0;
+  }
+}
+
+@media (max-width: 556px) {
+  .can-do-links {
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .can-do-links a {
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 508px) {
+  .box {
+    width: 100%;
+  }
+
+  .number-boxes {
+    flex-direction: column;
   }
 }
 </style>

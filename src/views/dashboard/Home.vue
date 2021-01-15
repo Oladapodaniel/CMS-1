@@ -5,7 +5,30 @@
     </div>
     <div class="main-con dim" @click="hideMenu">
       <!-- <transition name="fade" mode="out-in"> -->
-        <router-view class="view" />
+      <!-- <div
+        aria-live="polite"
+        aria-atomic="true"
+        style="position: relative; min-height: 200px"
+      >
+        <div class="toast" style="position: absolute; top: 0; right: 0">
+          <div class="toast-header">
+            <img src="" class="rounded mr-2" alt="..." />
+            <strong class="mr-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button
+              type="button"
+              class="ml-2 mb-1 close"
+              data-dismiss="toast"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body">Hello, world! This is a toast message.</div>
+        </div>
+      </div> -->
+
+      <router-view class="view" />
       <!-- </transition> -->
       <!-- <router-view></router-view> -->
     </div>
@@ -91,7 +114,7 @@ export default {
   cursor: pointer;
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1184px) {
   .toggle {
     display: block;
   }
@@ -100,13 +123,13 @@ export default {
     position: fixed;
     left: -266px;
     z-index: 9;
-    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1)
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 
   .links-menu.show {
     position: fixed;
     left: 0;
-    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1)
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 
   .main-con {
@@ -120,16 +143,16 @@ export default {
   justify-content: space-between;
 }
 
-.fade-enter-active{
-  transition: all .3s cubic-bezier(.67,.01,.86,.65);
+.fade-enter-active {
+  transition: all 0.3s cubic-bezier(0.67, 0.01, 0.86, 0.65);
 }
 
-.fade-leave-active{
-  transition: all 0.3s cubic-bezier(.67,.01,.86,.65);
+.fade-leave-active {
+  transition: all 0.3s cubic-bezier(0.67, 0.01, 0.86, 0.65);
 }
 
 .fade-enter-from,
-.fade-leave-to{
+.fade-leave-to {
   transition: translateX(20px);
   opacity: 0;
 }

@@ -47,6 +47,7 @@ export default {
     setup() {
         const route = useRoute();
         const userSelectedRoute = route.params.option;
+        // if (userSelectedRoute.includes("%")) userSelectedRoute.replace("%", "/")
         console.log(userSelectedRoute);
 
         onMounted(() => {
