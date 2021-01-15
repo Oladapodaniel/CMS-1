@@ -89,7 +89,7 @@
                 <p>Firstnmae</p>
               </div>
               <router-link
-                to="/tenant/people/add-person"
+                :to="`/tenant/people/add-person/${person.id}`"
                 class="data-value itemroute-color"
                 >{{ person.firstName }}</router-link
               >
@@ -101,7 +101,7 @@
                 <p>Lastname</p>
               </div>
               <router-link
-                to="/tenant/people/add-person"
+                :to="`/tenant/people/add-person/${person.id}`"
                 class="data-value itemroute-color"
                 >{{ person.lastName }}</router-link
               >
@@ -113,7 +113,7 @@
                 <p>Phone</p>
               </div>
               <router-link
-                to="/tenant/people/add-person"
+                :to="`/tenant/people/add-person/${person.id}`"
                 class="data-value itemroute-color"
                 >{{ person.mobilePhone }}</router-link
               >
