@@ -123,6 +123,7 @@ const routes = [
           { path: 'sent', name: 'SentMessages', component: () => import(/* webpackChunkName: "sentmessages" */ '@/views/communication/SentMessages') },
           { path: 'draft', name: 'DraftMessages', component: () => import(/* webpackChunkName: "draftmessages" */ '@/views/communication/DraftMessages') },
           { path: 'contacts', name: 'ContactList', component: () => import(/* webpackChunkName: "contactlist" */ '@/views/communication/ContactList') },
+          { path: 'message-details', name: 'MessageDetails', component: () => import(/* webpackChunkName: "contactlist" */ '@/views/communication/MessageDetails') },
           { path: 'add-group', name: 'Phongroup', component: () => import(/* webpackChunkName: "phonegroup" */ '@/views/communication/PhoneGroup') },
           { path: 'edit-contact/:groupId', name: 'EditContactList', component: () => import(/* webpackChunkName: "editcontactlist" */ '@/views/communication/EditContactList') },
           { path: 'report', name: 'DeliveryReport', component: () => import(/* webpackChunkName: "deliveryreport" */ '@/views/communication/DeliveryReport') },

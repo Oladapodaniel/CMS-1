@@ -20,18 +20,29 @@
             <div class="col-md-3" id="side-menu">
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                  <router-link to="/tenant/sms-communications/compose-message" class="btn compose-btn">Compose new SMS</router-link>
+                  <router-link
+                    to="/tenant/sms-communications/compose-message"
+                    class="btn compose-btn"
+                    >Compose new SMS</router-link
+                  >
                 </div>
               </div>
               <div class="row mb-3">
-                <div
-                  class="col-md-12"
-                >
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/sms-communications'}">
+                <div class="col-md-12">
+                  <div
+                    class="row menu-item-con py-2"
+                    :class="{
+                      'active-link':
+                        route.path === '/tenant/sms-communications',
+                    }"
+                  >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item"
-                          ><router-link class="r-link" to="/tenant/sms-communications">
+                          ><router-link
+                            class="r-link"
+                            to="/tenant/sms-communications"
+                          >
                             <i class="fas fa-inbox mr-3 menu-icon"></i>
                             <span class="active">Inbox</span>
                           </router-link>
@@ -41,71 +52,105 @@
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/sms-communications/sent'}">
+                  <div
+                    class="row menu-item-con py-2"
+                    :class="{
+                      'active-link':
+                        route.path === '/tenant/sms-communications/sent',
+                    }"
+                  >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/sms-communications/sent">
-                              <i class="fa fa-location-arrow mr-3 menu-icon"></i>
-                              <span class="active">Sent</span>
-                            </router-link>
+                          <router-link
+                            class="r-link"
+                            to="/tenant/sms-communications/sent"
+                          >
+                            <i class="fa fa-location-arrow mr-3 menu-icon"></i>
+                            <span class="active">Sent</span>
+                          </router-link>
                         </span>
-                    </a>
+                      </a>
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/sms-communications/draft'}">
+                  <div
+                    class="row menu-item-con py-2"
+                    :class="{
+                      'active-link':
+                        route.path === '/tenant/sms-communications/draft',
+                    }"
+                  >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/sms-communications/draft">
-                              <i class="fa fa-envelope-open mr-3 menu-icon"></i>
-                              <span class="active">Draft</span>
-                            </router-link>
+                          <router-link
+                            class="r-link"
+                            to="/tenant/sms-communications/draft"
+                          >
+                            <i class="fa fa-envelope-open mr-3 menu-icon"></i>
+                            <span class="active">Draft</span>
+                          </router-link>
                         </span>
-                    </a>
+                      </a>
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/sms-communications/contacts'}">
+                  <div
+                    class="row menu-item-con py-2"
+                    :class="{
+                      'active-link':
+                        route.path === '/tenant/sms-communications/contacts',
+                    }"
+                  >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/sms-communications/contacts">
-                              <i class="fa fa-list-alt mr-3 menu-icon"></i>
-                              <span class="active">Contact List</span>
-                            </router-link>
+                          <router-link
+                            class="r-link"
+                            to="/tenant/sms-communications/contacts"
+                          >
+                            <i class="fa fa-list-alt mr-3 menu-icon"></i>
+                            <span class="active">Contact List</span>
+                          </router-link>
                         </span>
-                    </a>
+                      </a>
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/sms-communications/scheduled'}">
+                  <div
+                    class="row menu-item-con py-2"
+                    :class="{
+                      'active-link':
+                        route.path === '/tenant/sms-communications/scheduled',
+                    }"
+                  >
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/sms-communications/scheduled">
-                              <!-- <i class="fa fa-list-alt mr-3 menu-icon"></i> -->
-                              <i class="fa fa-clock-o mr-3 menu-icon" aria-hidden="true"></i>
-                              <span class="active">Scheduled</span>
-                            </router-link>
+                          <router-link
+                            class="r-link"
+                            to="/tenant/sms-communications/scheduled"
+                          >
+                            <!-- <i class="fa fa-list-alt mr-3 menu-icon"></i> -->
+                            <i
+                              class="fa fa-clock-o mr-3 menu-icon"
+                              aria-hidden="true"
+                            ></i>
+                            <span class="active">Scheduled</span>
+                          </router-link>
                         </span>
-                    </a>
+                      </a>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
 
             <!-- Bigger row -->
             <div class="col-md-9 col-xl-8" style="margin: auto">
-                <router-view>
-
-                </router-view>
+              <router-view> </router-view>
             </div>
-
-
           </div>
         </div>
       </main>
@@ -114,21 +159,19 @@
 </template>
 
 <script>
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 export default {
   setup() {
     const route = useRoute();
 
     return {
       route,
-    }
-  }
+    };
+  },
 };
 </script>
 
 <style scoped>
-
-
 #main {
   border: 1px solid #02172e30;
   border-radius: 30px;
@@ -192,55 +235,55 @@ export default {
 }
 
 .menu-item-con {
-    color: #002044;
+  color: #002044;
 }
 
 .active {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .active-link {
-    background: rgba(19, 106, 205, 0.05);
-    border-left: 2px solid #136ACD;
-    
+  background: rgba(19, 106, 205, 0.05);
+  border-left: 2px solid #136acd;
 }
 
 .router-link-exact-active .active {
-   opacity: 1 !important;
+  opacity: 1 !important;
 }
 
 .buy-btn {
-    background: rgb(112, 142, 177, .33);
-    border-radius: 22px;
+  background: rgb(112, 142, 177, 0.33);
+  border-radius: 22px;
 }
 
 .btn-text {
-    opacity: 1;
-    font-size: 11px;
-    font-weight: 700;
+  opacity: 1;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .timestamp {
-    font-size: 14px;
-    color: #333333;
-    opacity: 0.5;
+  font-size: 14px;
+  color: #333333;
+  opacity: 0.5;
 }
 
 .view-btn {
-    background: #EBEFF4;
-    border-radius: 21px;
-    padding: 4px 18px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: #ebeff4;
+  border-radius: 21px;
+  padding: 4px 18px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .r-link {
   color: #002044;
 }
 .router-link-exact-active i {
-  color: #136ACD;
+  color: #136acd;
   opacity: 1;
 }
 
@@ -273,8 +316,8 @@ export default {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-    .compose-btn {
-        font-size: 0.8em;
+  .compose-btn {
+    font-size: 0.8em;
   }
 }
 
