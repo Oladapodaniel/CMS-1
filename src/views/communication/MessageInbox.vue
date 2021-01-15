@@ -102,7 +102,7 @@
                           <span>message</span>
                         </div>
                         <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
+                          class="col-md-2 my-2 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
@@ -148,7 +148,7 @@
                           <span>message</span>
                         </div>
                         <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
+                          class="col-md-2 col-ms-12 my-2 d-flex justify-content-between"
                         >
                           <span class="hidden-header">message: </span>
                           <span class="view-btn">View</span>
@@ -172,7 +172,8 @@
 </template>
 
 <script>
-import axios from "@/gateway/backendapi";
+// import axios from "@/gateway/backendapi";
+import router from "@/router/index";
 // import { onMounted } from 'vue';
 
 export default {
@@ -192,42 +193,8 @@ export default {
   // }
 
   methods: {
-    payWithPaystack(e) {
-      e.preventDefault();
-
-      /*eslint no-undef: "warn"*/
-      let handler = PaystackPop.setup({
-        key: "pk_test_9a8895ede03716b9a0474fea6da11ec5bc1c7033",
-        email: "stgodstar@gmail.com",
-        // email: document.getElementById("email").value,
-        amount: 100 * 100,
-        firstname: "Godstar",
-        lastname: "Gerrald",
-        onClose: function () {
-          swal("Transaction Canceled!", { icon: "error" });
-        },
-        callback: function (response) {
-          //Route to where you confirm payment status
-          console.log(response, "response");
-          var returnres = {
-            smsUnit: 66,
-            transaction_Reference: response.reference,
-            amount: 100 * 100,
-          };
-          //Route to where you confirm payment status
-
-          axios.post('/api/Payment/buySms', returnres)
-            .then(res => {
-              console.log(res, "success data");
-            })
-            .catch(err => {
-              console.log(err, "error confirming payment");
-            })
-          // window.location =
-          //   "https://localhost:44364/api/Payment/buySms?=" + returnres;
-        },
-      });
-      handler.openIframe();
+    payWithPaystack() {
+      router.push("/tenant/units")
     },
   },
 };

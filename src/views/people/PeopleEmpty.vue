@@ -1,5 +1,5 @@
 <template>
-    <div class="no-person mt-5" v-if="!loading && people.length === 0">
+    <div class="no-person mt-5" v-if="!loading && people.length === 0 && !errorGettingPeople">
         <!-- <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any member yet</p>
@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <div class="people-list" v-if="!loading && people.length > 0">
+    <div class="people-list" v-if="!loading && (people.length > 0 || errorGettingPeople)">
       <PeopleList :list="people" />
     </div>
 </template>
@@ -69,14 +69,17 @@ export default {
   setup() {
 
     const people = ref([]);
-    const loading = ref(true);
+    const loading = ref(false);
+    const errorGettingPeople = ref(false);
     onMounted(async () => {
       try {
+        loading.value = true;
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
         people.value = data;
         loading.value = false;
       } catch (err) {
         loading.value = false;
+        errorGettingPeople.value = true;
         console.log(err);
       }
     });
@@ -84,6 +87,7 @@ export default {
     return {
       people,
       loading,
+      errorGettingPeople,
     };
   }
 };

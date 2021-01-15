@@ -269,7 +269,7 @@
           </div>
           <hr class="hr" />
 
-          <a class="link"> Settings </a>
+          <router-link class="link" to="/tenant/settings"> Settings </router-link>
 
           <a class="link"> Integration </a>
         </div>

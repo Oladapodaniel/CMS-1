@@ -24,7 +24,7 @@
                       <p class="font-weight-bold mb-0 center-flexed">SMS Units</p>
                     </div>
                     <div class="col-sm-12 d-sm-flex justify-content-center">
-                      <button class="btn buy-btn center-flexed">
+                      <button class="btn buy-btn center-flexed" @click="payWithPaystack">
                         <span class="btn-text">
                             BUY UNITS
                         </span>
@@ -63,7 +63,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 py-2">
                       <div class="row">
                         <div class="col-md-1">
                           <input type="checkbox" />
@@ -103,7 +103,7 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 py-2">
                       <div class="row">
                         <div class="col-md-1">
                           <input type="checkbox" />
@@ -148,7 +148,20 @@
 </template>
 
 <script>
-export default {};
+import router from "@/router/index";
+export default {
+  data() {
+    return {
+
+    }
+  },
+
+  methods: {
+    payWithPaystack() {
+      router.push("/tenant/units")
+    },
+  }
+};
 </script>
 
 <style scoped>

@@ -318,9 +318,10 @@ export default {
 
     onMounted(() => {
       console.log(route, "route");
-      axios.get("/api/People/FirstTimer").then((res) => {
-        churchMembers.value = res.data;
-      });
+      axios.get("/api/People/FirstTimer")
+          .then(res => {
+            churchMembers.value = res.data;
+          })
     });
 
     return {

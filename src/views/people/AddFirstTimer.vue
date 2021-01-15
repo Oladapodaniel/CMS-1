@@ -485,7 +485,7 @@
                     <div class="cstm-select">
                       <div class="cs-select" style="width: 111px">
                         <Dropdown
-                          v-model="firstTimersObj.birthMonth"
+                          v-model="birthMonth"
                           :options="month"
                           placeholder="Month"
                           style="width: 100%"
@@ -543,7 +543,7 @@
         </div>
         <!-- <hr class="hr"> -->
 
-        <div class="bio-div">
+        <div class="">
           <span class="celeb-tab" @click="showCelebTab">
             <span class="tab-header">Insights:</span>
             <span class="h-rule"><hr class="hr" /></span>
@@ -558,9 +558,8 @@
             class="bio-info celeb-info"
             :class="{ 'hide-tab': hideCelebTab, 'show-tab': !hideCelebTab }"
           >
-            <div class="inputs">
+            <div class="inputs mt-3">
               <div class="input-field">
-                <!-- <label for="" class="label">Events or Service Attended</label> -->
                 <div class="gender cstm-select">
                   <div class="cs-select" style="width: 330px">
                     <Dropdown
@@ -665,7 +664,7 @@
             </div>
           </div>
         </div>
-        <div class="bio-div">
+        <div class="">
           <span class="celeb-tab" @click="showAddInfoTab">
             <span class="tab-header">Follow up and Retention:</span>
             <span class="h-rule"><hr class="hr" /></span>
@@ -683,7 +682,7 @@
               'show-occ-tab': !hideAddInfoTab,
             }"
           >
-            <div class="inputs">
+            <div class="inputs mt-3">
               <div class="input-field">
                 <span class="">
                   <label for="welcomeSms">Send welcome SMS</label>
@@ -718,6 +717,8 @@
                       style="width: 100%"
                     />
                   </div>
+
+                  
                 </div>
               </div>
             </div>
@@ -913,6 +914,10 @@ export default {
       sendWelcomeEmail: true,
     });
 
+    const birthMonth = ref(null);
+
+    // const birthMonth = ref(null)
+
     const hideCelebTab = ref(true);
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
@@ -944,6 +949,51 @@ export default {
       firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
         ? wantVisitArr.value.indexOf(selectedVisitOption.value)
         : 0;
+
+      switch (birthMonth.value) {
+        case "January":
+          firstTimersObj.value.birthMonth = "1";
+          break;
+        case "February":
+          firstTimersObj.value.birthMonth = "2";
+          break;
+        case "March":
+          firstTimersObj.value.birthMonth = "3";
+          break;
+        case "April":
+          firstTimersObj.value.birthMonth = "4";
+          break;
+        case "May":
+          firstTimersObj.value.birthMonth = "5";
+          break;
+        case "June":
+          firstTimersObj.value.birthMonth = "6";
+          break;
+        case "July":
+          firstTimersObj.value.birthMonth = "7";
+          break;
+        case "August":
+          firstTimersObj.value.birthMonth = "8";
+          break;
+        case "September":
+          firstTimersObj.value.birthMonth = "9";
+          break;
+        case "October":
+          firstTimersObj.value.birthMonth = "10";
+          break;
+        case "November":
+          firstTimersObj.value.birthMonth = "11";
+          break;
+        case "December":
+          firstTimersObj.value.birthMonth = "12";
+          break;
+        default:
+          // firstTimersObj.value.birthMonth = "12";
+          console.log("No month chosen");
+          break;
+      }
+
+      console.log(birthMonth.value);
 
       console.log(firstTimersObj.value);
       loading.value = true;
@@ -1043,6 +1093,7 @@ export default {
       showCelebTab,
       showAddInfoTab,
       hideAddInfoTab,
+      birthMonth,
     };
   },
 };
@@ -1072,13 +1123,13 @@ export default {
   width: 70%;
 }
 
-@media (max-width: 528px) {
+@media (max-width: 620px) {
   .submit-div {
     margin-left: 1em;
   }
 }
 
-@media (min-width: 529px) and (max-width: 900px) {
+@media (min-width: 621px) and (max-width: 900px) {
   .submit-div {
     margin-left: 9em;
   }
