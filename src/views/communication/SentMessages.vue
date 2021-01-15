@@ -24,7 +24,7 @@
                       <p class="font-weight-bold mb-0 center-flexed">SMS Units</p>
                     </div>
                     <div class="col-sm-12 d-sm-flex justify-content-center">
-                      <button class="btn buy-btn center-flexed">
+                      <button class="btn buy-btn center-flexed" @click="payWithPaystack">
                         <span class="btn-text">
                             BUY UNITS
                         </span>
@@ -96,7 +96,7 @@
                           <span>{{ sms.units }}</span>
                         </div>
                         <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
+                          class="col-md-2 col-ms-12 my-2 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
@@ -180,6 +180,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import { onMounted, ref } from 'vue';
+import router from "@/router/index";
 
 export default {
   setup() {
@@ -196,6 +197,11 @@ export default {
         console.log(error);
       }
     }
+
+    const payWithPaystack = () => {
+      router.push("/tenant/units")
+    }
+
     onMounted(() => {
       console.log("Hello");
       getSentSMS()
@@ -204,6 +210,7 @@ export default {
     return {
       sentSMS,
       loading,
+      payWithPaystack,
     }
   }
 };

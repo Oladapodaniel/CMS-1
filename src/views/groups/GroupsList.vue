@@ -4,6 +4,7 @@
       <div class="row d-md-flex justify-content-between mt-3">
         <div class="col-md-4">
           <h2>Groups</h2>
+          <ConfirmDialog />
         </div>
         <div class="col-md-4 mt-2 link">
           <router-link
@@ -32,6 +33,23 @@
                   <span class="my-2 font-weight-bold">MEMBERSHIP SIZE</span>
                 </div>
                 <div class="col-md-2 d-md-flex align-items-center"></div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 px-0">
+                  <hr class="hr my-0" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" v-if="!loading && groups.length === 0">
+            <div class="col-md-12">
+              <div class="row">
+                <div
+                  class="col-md-12 d-flex align-items-center justify-content-center"
+                >
+                <p class="py-2">No groups yet</p>
+                </div>
               </div>
               <div class="row">
                 <div class="col-md-12 px-0">
@@ -100,7 +118,7 @@
                       <a class="dropdown-item">
                         <router-link to="">Send Email</router-link>
                       </a>
-                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item" @click="() => displayConfirmModal = true">Delete</a>
                     </div>
                   </div>
                 </div>
@@ -122,11 +140,13 @@
 import { onMounted, ref } from "vue";
 import axios from "@/gateway/backendapi";
 // import router from "@/router/index";
-
+// import { getCurrentInstance } from "vue";
 export default {
   setup() {
+    //   const $confirm = getCurrentInstance().ctx.$confirm;
     const groups = ref([]);
     const loading = ref(false);
+    const displayConfirmModal = ref(false);
     const getgroups = async () => {
       try {
         loading.value = true;
@@ -155,6 +175,7 @@ export default {
     return {
       groups,
       loading,
+      displayConfirmModal,
     };
   },
 };

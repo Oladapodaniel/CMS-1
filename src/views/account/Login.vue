@@ -91,6 +91,7 @@ export default {
           
           store.dispatch("setUserData", data);
           localStorage.setItem("token", data.token);
+          console.log(data, "Church data");
           if (data.churchSize > 0) {
             router.push("/tenant")
           } else {

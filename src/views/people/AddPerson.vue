@@ -161,7 +161,7 @@
                 <div class="status-n-gender">
                   <div class="date-picker">
                     <div class="cstm-select">
-                      <div class="cs-select" style="width: 111px">
+                      <div class="cs-select month">
                         <Dropdown
                           v-model="person.monthOfBirth"
                           :options="months"
@@ -176,7 +176,7 @@
                     </div>
 
                     <div class="cstm-select">
-                      <div class="cs-select" style="width: 87px">
+                      <div class="cs-select day">
                         <Dropdown
                           v-model="person.dayOfBirth"
                           :options="birthDaysArr"
@@ -188,7 +188,7 @@
                     </div>
 
                     <div class="cstm-select">
-                      <div class="cs-select" style="width: 113px">
+                      <div class="cs-select year">
                         <Dropdown
                           v-model="person.yearOfBirth"
                           :options="birthYearsArr"
@@ -207,7 +207,7 @@
                 <div class="status-n-gender">
                   <div class="date-picker">
                     <div class="cstm-select">
-                      <div class="cs-select" style="width: 111px">
+                      <div class="cs-select month">
                         <Dropdown
                           v-model="person.monthOfWedding"
                           :options="months"
@@ -222,7 +222,7 @@
                     </div>
 
                     <div class="cstm-select">
-                      <div class="cs-select" style="width: 87px">
+                      <div class="cs-select day">
                         <Dropdown
                           v-model="person.dayOfWedding"
                           :options="annDaysArr"
@@ -234,7 +234,7 @@
                     </div>
 
                     <div class="cstm-select">
-                      <div class="cs-select" style="width: 113px">
+                      <div class="cs-select year">
                         <Dropdown
                           v-model="person.yearOfWedding"
                           :options="birthYearsArr"
@@ -382,7 +382,7 @@
           <p v-if="!loading">{{ errMessage }}</p>
         </div>
         <div class="submit-div">
-          <button class="submit-btn" :class="{ 'btn-loading': loading }">
+          <button class="submit-btn" :class="{ 'btn-loading': loading }" :disabled="loading">
             <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
             <span>Save</span>
             <span></span>
@@ -764,5 +764,45 @@ export default {
   box-sizing: border-box;
 }
 
+.cs-select.month {
+  width: 111px;
+}
 
+.cs-select.day {
+  width: 87px
+}
+
+.cs-select.year {
+  width: 113px
+}
+
+@media (min-width: 663px) and (max-width: 667px) {
+  .bio-info.celeb-info {
+    margin-top: 30px;
+  }
+}
+
+@media (min-width: 377px) and (max-width: 662px) {
+  .bio-info.celeb-info {
+    margin-top: 70px;
+  }
+}
+
+@media (max-width: 376px) {
+  .bio-info.celeb-info {
+    margin-top: 80px;
+  }
+
+  .cs-select.month {
+    width: 85px
+  }
+
+  .cs-select.day {
+    width: 85px
+  }
+
+  .cs-select.year {
+    width: 90px
+  }
+}
 </style>

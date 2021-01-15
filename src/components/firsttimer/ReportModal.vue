@@ -63,7 +63,7 @@
                         <span class="">Subject</span>
                     </div>
                     <div class="col-sm-5 form-group">
-                        <input type="text" class="form-control border-0 inp evt-name" name="" value="Event report from Grace chapel"
+                        <input type="text" class="form-control border-0 inp evt-name" name="" :value="`Report For ${eventName}`"
                             style="margin-top: -5px"
                         >
                     </div>
@@ -80,7 +80,7 @@
                         <span class="">Message</span>
                     </div>
                     <div class="col-sm-6 form-group">
-                        <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Enter you message to Grace chapel"></textarea>
+                        <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Enter you message"></textarea>
                     </div>
                     <div class="col-sm-2">
                         
@@ -143,8 +143,11 @@
 
 <script>
 import { ref } from 'vue'
+
+    
     export default {
-        setup() {
+        props: ['eventName'],
+        setup(props) {
             const activeTab = ref("churchplus");
             const recipients = ref([ { phone: "01234567890", email: "test@example.com" } ])
             const count = 0;
@@ -161,7 +164,9 @@ import { ref } from 'vue'
                 recipients.value.splice(index, 1);
             }
 
-            return { changeTab, activeTab,  recipients, removeRecipient, addRecipient }
+            const event = ref(props.eventName)
+
+            return { changeTab, activeTab,  recipients, removeRecipient, addRecipient, event }
         }
     }
 </script>
