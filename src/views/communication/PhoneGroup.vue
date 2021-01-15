@@ -31,16 +31,8 @@
                     class="row amazing d-flex flex-row justify-content-between mt-lg-3"
                   >
                     <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
-                    <!-- <div class="col-md-7 form-group px-0">
-	 <input
-	 type="text"
-	 class="inputWithDisable"
-	 id="groupName"
-	 v-model="groupNameValue"
-	 v-bind:disabled="groupNameDisabled"
-	 ref="groupName"
-	 />
-	 </div> -->
+                    <!-- <div class="col-md-7 form-group px-0"> <input type="text"
+class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="groupNameDisabled"ref="groupName"/></div> -->
                     <div class="col-md-6 form-group px-0">
                       <input
                         type="text"

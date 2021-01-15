@@ -1,8 +1,10 @@
 <template>
   <div>
-      <div class="logo-con">
-        <a class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"></a>
-      </div>
+    <div class="logo-con">
+      <a class="logo-link"
+        ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
+      /></a>
+    </div>
     <div class="main-con">
       <div class="main-section">
         <div class="intro-div">
@@ -10,7 +12,11 @@
           <p class="intro-subtext">Where do you want to start ?</p>
         </div>
         <div class="boxes-con">
-          <router-link class="box" to="/tenant/people/add-person">
+          <router-link
+            class="box"
+            to="/tenant/people/add-person"
+            style="text-decoration: none"
+          >
             <div class="inner-box">
               <div class="img-box">
                 <img
@@ -18,7 +24,7 @@
                   alt="Add Member Icon"
                 />
               </div>
-              <div class="box-text">
+              <div class="box-text can-dogi">
                 <div class="box-header-text">
                   <h4>Add members</h4>
                 </div>
@@ -29,7 +35,11 @@
             </div>
           </router-link>
 
-          <router-link class="box" to="/tenant/sms-communications/compose-message">
+          <router-link
+            class="box can-do"
+            to="/tenant/sms-communications/compose-message"
+            style="text-decoration: none"
+          >
             <div class="inner-box">
               <div class="img-box">
                 <img
@@ -37,7 +47,7 @@
                   alt="Add Member Icon"
                 />
               </div>
-              <div class="box-text">
+              <div class="box-text can-do">
                 <div class="box-header-text">
                   <h4>Send SMS</h4>
                 </div>
@@ -48,15 +58,19 @@
             </div>
           </router-link>
 
-          <router-link class="box" to="/tenant/people/add-first-timer">
+          <router-link
+            class="box"
+            to="/tenant/people/add-first-timer"
+            style="text-decoration: none"
+          >
             <div class="inner-box">
-                <div class="img-box">
+              <div class="img-box">
                 <img
                   src="../../assets/add-first-timer.svg"
                   alt="Add Member Icon"
                 />
               </div>
-              <div class="box-text">
+              <div class="box-text can-do">
                 <div class="box-header-text">
                   <h4>Add first timers</h4>
                 </div>
@@ -66,7 +80,6 @@
               </div>
             </div>
           </router-link>
-
         </div>
       </div>
     </div>
@@ -77,8 +90,8 @@
 export default {
   data() {
     return {
-      userId: '',
-    }
+      userId: "",
+    };
   },
 
   methods: {
@@ -93,6 +106,10 @@ export default {
 .logo-con {
   display: flex;
   margin-top: 24px;
+}
+
+.can-do a:hover {
+  text-decoration: none;
 }
 
 .logo-link {
@@ -130,7 +147,7 @@ export default {
   border-radius: 10px;
   margin: 10px;
   padding: 30px 0;
-  transition: all .4s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
 .box:hover {

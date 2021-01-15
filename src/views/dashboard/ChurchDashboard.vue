@@ -32,7 +32,7 @@
                   >
                   <router-link
                     to="/tenant/people/add-first-timer"
-                    class="font-weight-bold text-dec-none roat"
+                    class="font-weight-bold text-dec-none"
                     >Add first timer</router-link
                   >
                 </div>
@@ -480,9 +480,6 @@ export default {
 
 .first-col {
   padding: 10px 30px;
-}
-.can-do a:hover {
-  text-decoration: none;
 }
 
 .can-do h4 {
