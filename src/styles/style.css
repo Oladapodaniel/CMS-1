@@ -351,16 +351,11 @@
     .chart-con {
       flex-direction: column !important;
       align-items: center;
-      width: 85% !important;
     }
   
     .chart-con div {
       width: 100% !important;
       margin-top: 10px;
-    }
-  
-    .board {
-      width: 85% !important;
     }
   }
   
@@ -371,15 +366,16 @@
     }
   
     .chart-con {
-      width: 85% !important;
+      width: 100% !important;
     }
   
-    .chart-con div {
-      width: 40%;
+    .chart1,
+    .chart2 {
+      width: 49% !important;
     }
   
     .board {
-      width: 80% !important;
+      width: 100% !important;
       margin-bottom: 10px;
     }
   }

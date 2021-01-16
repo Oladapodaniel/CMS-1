@@ -382,7 +382,7 @@
           <p v-if="!loading">{{ errMessage }}</p>
         </div>
         <div class="submit-div">
-          <button class="submit-btn" :class="{ 'btn-loading': loading }" :disabled="loading">
+          <button class="submit-btn outline-none" :class="{ 'btn-loading': loading }" :disabled="loading">
             <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
             <span>Save</span>
             <span></span>

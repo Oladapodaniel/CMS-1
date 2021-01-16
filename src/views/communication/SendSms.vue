@@ -576,6 +576,7 @@
                               <!-- hostedsms_instant -->
                               <button
                                 class="primary-btn px-4 my-2 grey-background text-grey outline-none"
+                                data-dismiss="modal"
                                 @click="sendSMS('')"
                               >
                                 Send SMS Now

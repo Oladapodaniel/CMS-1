@@ -745,6 +745,7 @@ export default {
     width: 30%;
     margin-left: 10px;
     border: 1px solid #dde2e6;
+    box-shadow: 0px 1px 4px #02172E45;
   }
 
   .my-con {

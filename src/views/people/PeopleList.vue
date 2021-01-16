@@ -1,6 +1,6 @@
 <template>
   <div class="my-con">
-    <div class="summary">
+    <div class="summary px-0">
       <p class="summary-header">Summary</p>
       <!-- <hr class="hr" /> -->
 
@@ -22,34 +22,34 @@
         </div>
 
         <div class="chart-con">
-          <div style="width: 45%">
-            <ByGenderChart domId="chart" title="By Gender" distance="5" />
+          <div style="width: 45%" class="ml-md-4 chart1">
+            <ByGenderChart domId="chart" title="By Gender" distance="5" :titleMargin="10" />
           </div>
-          <div style="width: 45%">
-            <ByMaritalStatusChart domId="second" title="By Marital Status" />
+          <div style="width: 45%" class="chart2">
+            <ByMaritalStatusChart domId="second" title="By Marital Status" :titleMargin="10" />
           </div>
         </div>
       </div>
     </div>
 
-    <div class="table">
-      <div class="table-top">
-        <div class="select-all">
+    <div class="table mx-0">
+      <div class="table-top py-2 font-weight-bold">
+        <div class="select-all d-flex align-items-center">
           <input type="checkbox" name="all" id="all" />
-          <label for="all">SELECT ALL</label>
+          <label for="all" class="mb-0">SELECT ALL</label>
         </div>
-        <div class="filter">
-          <p>FILTER</p>
+        <div class="filter d-flex align-items-center">
+          <p class="mb-0">FILTER</p>
         </div>
-        <div class="sort">
-          <p>SORT</p>
+        <div class="sort d-flex align-items-center">
+          <p class="mb-0">SORT</p>
         </div>
-        <div class="search">
-          <p>SEARCH</p>
+        <div class="search d-flex align-items-center">
+          <p class="mb-0">SEARCH</p>
         </div>
       </div>
 
-      <div class="table-header">
+      <div class="table-header font-weight-700">
         <div class="check"></div>
         <div class="picture">
           <p>PICTURE</p>
@@ -236,6 +236,7 @@ a {
   box-shadow: 0px 1px 4px #02172e45;
   border: 1px solid #dde2e6;
   border-radius: 30px;
+  width: 100% !important;
 }
 
 .summary-header {
@@ -263,7 +264,7 @@ a {
 .chart-con {
   width: 70%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .board-top {
@@ -308,7 +309,22 @@ a {
   text-align: center;
 }
 
+.chart1,
+.chart2 {
+  border: 0.4000000059604645px solid #dde2e6;
+  box-shadow: 0px 1px 4px #02172e45;
+  border-radius: 10px;
+}
+
 @media screen and (max-width: 500px) {
+
+  .chart1,
+  .chart2,
+  .board,
+  .chart-con {
+    width: 100% !important;
+  }
+
   .picture,
   .firstname,
   .lastname,
@@ -370,248 +386,13 @@ a {
   }
 }
 
-@media screen and (max-width: 1024px) {
-  .my-con {
-    flex-direction: column;
-  }
-
-  .table {
-    width: 98%;
-    margin: 24px auto;
-  }
-
-  .summary {
-    width: 98%;
-    margin: auto;
-  }
-}
-
-.row-divider {
-  border: 1px solid #0020440a;
-  margin: 0;
-}
-
-.table-footer {
-  display: flex;
-  justify-content: flex-end;
-  background: #fff;
-  padding: 10px 0;
-  border-radius: 0px 0px 22px 22px;
-}
-</style>
-
-<style>
-#chart {
-  width: 48%;
-  max-height: 310px;
-  border: 0.4000000059604645px solid #dde2e6;
-  border-radius: 10px;
-}
-
-#second {
-  width: 48%;
-  max-height: 310px;
-  border: 0.4000000059604645px solid #dde2e6;
-  border-radius: 10px;
-}
-
-.table {
-  width: 100%;
-  margin: 24px 0;
-  box-shadow: 0px 3px 6px #2c28281c;
-  border-radius: 30px;
-}
-
-.table-top,
-.table-header,
-.table-body .data-row {
-  display: flex;
-  padding: 4px;
-  align-items: center;
-}
-
-.select-all input {
-  margin: 0 8px;
-}
-.table-top {
-  background: #fff;
-  color: #172b4d;
-  font-size: 11px;
-  border-radius: 22px 22px 0px 0px;
-}
-.table-header {
-  background: #f1f3f9;
-  color: #8898aa;
-  font-size: 11px;
-  text-align: left;
-  box-shadow: 0px 3px 6px #2c28281c;
-}
-
-.table-header .check {
-  width: 22px;
-  text-align: center;
-}
-
-.check.data {
-  text-align: center;
-}
-
-.table-header p {
-  margin: 8px;
-}
-
-.table-body {
-  background: #fff;
-  color: #172b4d;
-}
-
-.image-con {
-  width: 40px;
-  margin: auto;
-}
-
-.image-con img {
-  width: 100%;
-}
-
-.data-con {
-  text-align: center;
-}
-
-.select-all {
-  width: 65%;
-  padding: 0 10px;
-}
-
-.filter,
-.sort,
-.search {
-  width: 15%;
-}
-
-.data-text {
-  font-weight: bold;
-  font-size: large;
-  display: none;
-}
-
-.picture,
-.firstname,
-.lastname,
-.phone {
-  text-align: center;
-}
-</style>
-
-<style>
-.tbl-footer-btn {
-  background: transparent;
-  padding: 4px;
-  margin: 4px 8px;
-  border-radius: 50%;
-  width: 29px;
-  border: none;
-  border: 1px solid #8898aa80;
-  outline: transparent;
-}
-
-.action-icon {
-  text-align: center;
-}
-
-@media screen and (max-width: 500px) {
-  .picture,
-  .firstname,
-  .lastname,
-  .phone {
-    width: 100%;
-  }
-
-  .table-body .check {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin: 10px 0;
-  }
-
-  .data-text {
-    display: inline-block;
-  }
-
-  .data-row {
-    flex-direction: column;
-  }
-
-  .data-con {
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .action-icon {
-    width: 100%;
-    text-align: right;
-  }
-
-  .table-header {
-    display: none;
-  }
-
-  .boards {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .chart-con {
-    flex-direction: column !important;
-    align-items: center;
-    width: 85% !important;
-  }
-
-  .chart-con div {
-    width: 100% !important;
-    margin-top: 10px;
-  }
-
-  .board {
-    width: 100% !important;
-  }
-}
-
-@media screen and (min-width: 501px) and (max-width: 768px) {
-  .boards {
-    flex-direction: column;
-    align-items: start;
-  }
-
-  .chart-con {
-    width: 85% !important;
-  }
-
-  .chart-con div {
-    width: 40%;
-  }
-
-  .board {
-    width: 100% !important;
+@media screen and (max-width: 768px) {
+  .board-top {
     margin-bottom: 10px;
   }
-}
 
-@media screen and (min-width: 500px) {
-  .picture,
-  .firstname,
-  .lastname,
-  .phone {
-    width: 19%;
-  }
-
-  .table-body .check {
-    width: 4%;
-  }
-
-  .action {
-    width: 20%;
+  .total {
+    margin-bottom: 0;
   }
 }
 
@@ -621,7 +402,7 @@ a {
   }
 
   .table {
-    width: 98%;
+    width: 100%;
     margin: 24px auto;
   }
 
@@ -646,99 +427,4 @@ a {
 </style>
 
 
-<style>
-/*Global */
-#chart {
-  width: 48%;
-  max-height: 310px;
-  border: 0.4000000059604645px solid #dde2e6;
-  border-radius: 10px;
-}
 
-#second {
-  width: 48%;
-  max-height: 310px;
-  border: 0.4000000059604645px solid #dde2e6;
-  border-radius: 10px;
-}
-
-.table {
-  width: 95%;
-  margin: 24px auto;
-  box-shadow: 0px 3px 6px #2c28281c;
-  border-radius: 30px;
-}
-
-.table-top,
-.table-header,
-.table-body .data-row {
-  display: flex;
-  padding: 4px;
-  align-items: center;
-}
-
-.select-all input {
-  margin: 0 8px;
-}
-.table-top {
-  background: #fff;
-  color: #172b4d;
-  font-size: 11px;
-  border-radius: 22px 22px 0px 0px;
-}
-.table-header {
-  background: #f1f3f9;
-  color: #8898aa;
-  font-size: 11px;
-  text-align: left;
-  box-shadow: 0px 3px 6px #2c28281c;
-}
-
-.table-header .check {
-  width: 22px;
-  text-align: center;
-}
-
-.check.data {
-  text-align: center;
-}
-
-.table-header p {
-  margin: 8px;
-}
-
-.table-body {
-  background: #fff;
-  color: #172b4d;
-}
-
-.image-con {
-  width: 40px;
-  margin: auto;
-}
-
-.image-con img {
-  width: 100%;
-}
-
-.data-con {
-  text-align: center;
-}
-
-.select-all {
-  width: 65%;
-  padding: 0 10px;
-}
-
-.filter,
-.sort,
-.search {
-  width: 15%;
-}
-
-.data-text {
-  font-weight: bold;
-  font-size: large;
-  display: none;
-}
-</style>
