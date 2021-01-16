@@ -94,18 +94,18 @@
   .small-text {
     font-size: 14px;
   }
-
+/* 
   #chart {
     width: 48%;
     max-height: 310px;
     border: 0.4000000059604645px solid #dde2e6;
     border-radius: 10px;
-  }
+  } */
   
   #second {
     width: 48%;
     max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
+    /* border: 0.4000000059604645px solid #dde2e6; */
     border-radius: 10px;
   }
   
@@ -204,19 +204,19 @@
     text-align: center;
   }
 
-  #chart {
+  /* #chart {
     width: 48%;
     max-height: 310px;
     border: 0.4000000059604645px solid #dde2e6;
     border-radius: 10px;
-  }
+  } */
   
-  #second {
+  /* #second {
     width: 48%;
     max-height: 310px;
     border: 0.4000000059604645px solid #dde2e6;
     border-radius: 10px;
-  }
+  } */
   
   .table {
     width: 100%;

@@ -545,14 +545,14 @@ a {
   }
 
   .board {
-    width: 85% !important;
+    width: 100% !important;
   }
 }
 
 @media screen and (min-width: 501px) and (max-width: 768px) {
   .boards {
     flex-direction: column;
-    align-items: center;
+    align-items: start;
   }
 
   .chart-con {
@@ -564,7 +564,7 @@ a {
   }
 
   .board {
-    width: 80% !important;
+    width: 100% !important;
     margin-bottom: 10px;
   }
 }
