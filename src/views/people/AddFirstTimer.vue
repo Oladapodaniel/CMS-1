@@ -362,7 +362,7 @@
     </div>
   </form> -->
 
-  <div class="my-con">
+  <div class="my-con" @click="closeManualModalIfOpen">
     <div class="header mt-2">
       <h3 class="header-text font-weight-bold">Add First timers</h3>
       <Toast />
@@ -442,7 +442,75 @@
                   v-model="firstTimersObj.email"
                 />
               </div>
+
+              <!-- Test -->
               <div class="input-field">
+                <label for="" class="label">Event or Service Attended</label>
+                <i class="pi pi-chevron-down manual-dd-icon"></i>
+                <input
+                  type="text"
+                  class="input dd"
+                  placeholder=""
+                  v-model="selectedEventAttended.name"
+                  @click="selectEventAttended"
+                  @keydown="preventTying"
+                />
+              </div>
+              <div class="input-field manual-dd-con" v-if="showEventList">
+                <div class="manual-dd dd">
+                  <div class="container-fluid dd dd-search-con" v-if="eventsAttended.length > 5">
+                    <div class="row dd">
+                      <div class="col-md-12 dd px-0 py-1">
+                        <input
+                          type="text"
+                          class="form-control dd dd-search-field"
+                          v-model="eventsSearchString"
+                          placeholder="search for event"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="container-fluid dd-list-con">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <p
+                          class="px-1 manual-dd-item mb-0 py-2 dd"
+                          v-for="(event, index) in filteredEvents"
+                          :key="index"
+                          @click="eventAttendedSelected(event)"
+                        >
+                          {{ event.name }}
+                        </p>
+                        <p
+                          class="text-center mb-1 mt-1"
+                          v-if="
+                            eventsSearchString &&
+                            eventsAttended.length > 0 &&
+                            filteredEvents.length === 0
+                          "
+                        >
+                          No match found
+                        </p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 py-2 px-0" v-if="eventsAttended.length > 0">
+                        <hr class="hr" />
+                      </div>
+                      <div class="col-md-12 create-event py-2 text-center">
+                        <a
+                          class="craete-event-btn font-weight-bold"
+                          data-toggle="modal"
+                          data-target="#eventModal"
+                          >Create new event</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="input-field">
                 <label for="" class="label">Events or Service Attended</label>
                 <div class="gender cstm-select">
                   <div class="cs-select" style="width: 330px">
@@ -457,7 +525,7 @@
                     />
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="input-field">
                 <label for="" class="label">Address</label>
                 <input
@@ -467,6 +535,7 @@
                   v-model="firstTimersObj.address"
                 />
               </div>
+
               <div class="input-field">
                 <label for="" class="label">Birthday</label>
                 <div class="status-n-gender">
@@ -717,8 +786,6 @@
                       style="width: 100%"
                     />
                   </div>
-
-                  
                 </div>
               </div>
             </div>
@@ -807,7 +874,7 @@
               Cancel
             </button>
 
-            <button class="submit-btn ml-5" :class="{ 'btn-loading': loading }">
+            <button class="submit-btn ml-5 outline-none" :class="{ 'btn-loading': loading }" :disabled="loading">
               <i
                 class="fas fa-circle-notch fa-spin mr-2 text-white"
                 v-if="loading"
@@ -815,6 +882,107 @@
               <span class="text-white">Save</span>
               <span></span>
             </button>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 py-4">
+              <div
+                class="modal fade"
+                id="eventModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="eventModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content py-5 px-3">
+                    <div class="modal-header">
+                      <h5
+                        class="modal-title font-weight-bold"
+                        id="exampleModalLabel"
+                      >
+                        Create New Event
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row my-5">
+                        <div class="col-md-4 text-md-center">
+                          <label for="" class="label font-weight-bold"
+                            >Event name</label
+                          >
+                        </div>
+                        <div class="col-md-7">
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="newEvent.preEvent.name"
+                          />
+                        </div>
+                      </div>
+                      <div class="row mt-5 mb-4">
+                        <div class="col-md-4 text-md-center">
+                          <label for="" class="label font-weight-bold"
+                            >Event date</label
+                          >
+                        </div>
+                        <div class="col-md-7">
+                          <input
+                            type="date"
+                            class="form-control"
+                            v-model="newEvent.date"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-4">
+                          </div>
+                          <div
+                            class="col-md-7"
+                          >
+                            <div class="row">
+                              <div class="col-md-12 text-md-right">
+                                <p class="mb-1 text-danger" v-if="invalidEventDetails">Enter event name and date</p>
+                              </div>
+                              <div class="col-md-12 d-md-flex justify-content-between">
+                                <button
+                                  type="button"
+                                  class="btn secondary-btn px-4"
+                                  data-dismiss="modal"
+                                >
+                                  Close
+                                </button>
+                                <button
+                                  type="button"
+                                  class="btn primary-btn px-4 text-white"
+                                  :data-dismiss="modalShouldClose"
+                                  @click="createNewEvent"
+                                  :disabled="savingNewEvent"
+                                >
+                                  Save changes
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </form>
@@ -828,12 +996,22 @@ import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
 // import { getCurrentInstance } from "vue";
+import { useToast } from "primevue/usetoast";
 
 export default {
   components: { Dropdown },
 
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
+    const toast = useToast();
+
+    const showEventList = ref(false);
+    const selectEventAttended = () => {
+      showEventList.value = !showEventList.value;
+    };
+    const preventTying = (e) => {
+      e.preventDefault();
+    };
 
     const day = ref([
       1,
@@ -897,7 +1075,7 @@ export default {
     const selectedVisitOption = ref(null);
 
     const eventsAttended = ref([]);
-    const selectedEventAttended = ref(null);
+    const selectedEventAttended = ref({});
 
     const howDidYouAboutUs = ref([]);
     const selectedAboutUsSource = ref(null);
@@ -1022,6 +1200,88 @@ export default {
       router.back();
     };
 
+    const closeManualModalIfOpen = (e) => {
+      if (!e.target.classList.contains("dd")) {
+        showEventList.value = false;
+        eventsSearchString.value = "";
+      }
+    };
+
+    const eventsSearchString = ref("");
+    const filteredEvents = computed(() => {
+      if (!eventsSearchString.value) return eventsAttended.value;
+      return eventsAttended.value.filter((i) =>
+        i.name.includes(eventsSearchString.value)
+      );
+    });
+
+    const eventAttendedSelected = (eventObj) => {
+      selectedEventAttended.value = eventObj;
+      showEventList.value = false;
+      eventsSearchString.value = "";
+    };
+
+    const newEvent = ref({
+      date: "",
+      topic: "",
+      preacher: "",
+      preEvent: {
+        name: "",
+        topic: "",
+        details: "",
+        preActivityId: "00000000-0000-0000-0000-000000000000",
+        isPaidFor: false,
+        amount: "",
+        eventRules: "",
+        enableRegistration: false,
+        venue: "",
+        emailRegistration: "",
+        smsRegistraion: "",
+        banner: "",
+        isPublic: false,
+      },
+      eventCategoryId: "00000000-0000-0000-0000-000000000000",
+      attendances: [],
+      offerings: [],
+      activityFirstTimers: [],
+    });
+
+    const modalShouldClose = ref("");
+    const invalidEventDetails = ref(false);
+    const savingNewEvent = ref(false);
+    const createNewEvent = async () => {
+      // console.log(eventsAttended.value);
+      invalidEventDetails.value = false;
+      if (newEvent.value.preEvent.name && newEvent.value.date) {
+        try {
+          savingNewEvent.value = true;
+          const { data } = await axios.post(
+            "/api/Events/CreateActivity",
+            newEvent.value
+          );
+          selectedEventAttended.value.id = data.id;
+          selectedEventAttended.value.name = data.name;
+          modalShouldClose.value = "modal";
+          toast.add({
+            severity: "success",
+            summary: "Event created",
+            detail: "Your new event was created successfully",
+            life: 2500,
+          });
+          newEvent.value.date = "";
+          newEvent.value.preEvent.name = "";
+
+          console.log(data, "data");
+        } catch (error) {
+          savingNewEvent.value = false;
+          console.log(error.response);
+          modalShouldClose.value = "modal";
+        }
+      } else {
+        invalidEventDetails.value = true;
+      }
+    };
+
     onMounted(() => {
       axios.get("/api/Events/EventActivity").then((res) => {
         eventsAttended.value = res.data;
@@ -1094,6 +1354,18 @@ export default {
       showAddInfoTab,
       hideAddInfoTab,
       birthMonth,
+      showEventList,
+      selectEventAttended,
+      closeManualModalIfOpen,
+      filteredEvents,
+      eventsSearchString,
+      eventAttendedSelected,
+      preventTying,
+      newEvent,
+      createNewEvent,
+      modalShouldClose,
+      invalidEventDetails,
+      savingNewEvent,
     };
   },
 };
@@ -1121,6 +1393,75 @@ export default {
 
 .inputs {
   width: 70%;
+}
+
+.manual-dd-con {
+  position: relative;
+}
+
+.manual-dd {
+  width: 330px;
+  border: 1px solid #b9c5cf;
+  position: absolute;
+  background: white;
+  z-index: 2;
+  top: -13px;
+  margin-right: 0.5rem;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+    0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  max-height: 400px;
+  overflow: auto;
+}
+
+.manual-dd::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.manual-dd {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.manual-dd-item {
+  color: #495057;
+}
+
+.manual-dd-item:hover {
+  background: #e9ecef;
+  cursor: pointer;
+}
+
+.dd-search-field {
+  border-radius: 20px;
+}
+
+.create-event a {
+  color: #136acd !important;
+  text-decoration: none;
+}
+
+.create-event a:hover {
+  cursor: pointer;
+  padding: 8px;
+}
+
+.manual-dd-icon {
+  position: absolute;
+  margin-right: 1rem;
+}
+
+.dd-search-con {
+  max-height: 40px;
+}
+
+.dd-list-con {
+  max-height: 360px;
+  overflow: auto;
+}
+
+.modal-footer {
+  border-top: none !important;
 }
 
 @media (max-width: 620px) {
@@ -1283,6 +1624,14 @@ template.p-dropdown-parent {
 @media screen and (min-width: 770px) and (max-width: 1190px) {
   .followup-hr-span {
     width: 60% !important;
+  }
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 650px;
+    margin: 1.75rem auto;
+    /* padding: 32px; */
   }
 }
 </style>

@@ -810,6 +810,14 @@
   .choose-file:hover {
     cursor: pointer;
   }
+
+  .primary-btn:disabled {
+    opacity: .5;
+  }
+
+  .submit-btn:disabled {
+    opacity: .5;
+  }
   
   @media screen and (max-width: 620px) {
     .inputs {

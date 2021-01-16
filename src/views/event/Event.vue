@@ -818,6 +818,7 @@
           <div
             class="row form-body close-slide3"
             :class="{ 'slide-down3': showForm3 }"
+            v-if="false"
           >
             <div
               class="col-sm-3 add-first-timer pointer"
@@ -1322,7 +1323,6 @@ import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
 // import store from "@/store/store.js"
   // import { useToast } from 'primevue/usetoast';
-
 export default {
   components: {
     SelectElem,
@@ -1425,13 +1425,11 @@ export default {
       joinInterest: ["Yes", "No", "Maybe", "On Transit"],
       maritalStatusArr: [],
       howDidYouAboutUsId: [],
-
       // 'Friend',
       // 'Social media',
       // 'Church Flyer',
       // 'Tv',
       // 'Radio',
-
       showCategory: false,
       eventText: "",
       toggleFocus: true,
@@ -1440,7 +1438,6 @@ export default {
       firstTimerNameIsInValid: false,
     };
   },
-
   methods: {
     hideModals(e) {
       if (!e.target.classList.contains("ofering")) {
@@ -1449,7 +1446,6 @@ export default {
         this.showCategory = false
       }
     },
-
     addAttendance() {
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.toggle("offering-drop");
@@ -1535,7 +1531,6 @@ export default {
     changeValue(e) {
       this.selectedValue = e.target.value;
     },
-
     // Create Offering
     createNewOffering() {
       // axios.post(`/api/offering/offeringTypeName?=${this.offeringCreate}`, {offeringTypeName: this.offeringCreate})
@@ -1547,7 +1542,6 @@ export default {
             return { id: i.id, name: i.name };
           });
         });
-
       this.offeringCreate = "";
       document
         .querySelector("#closeOffering")
@@ -1635,7 +1629,6 @@ export default {
         activityFirstTimers: this.firstTimers,
       };
       console.log(event);
-
       this.loading = true;
       axios
         .post("api/Events/CreateActivity", event)
@@ -1655,7 +1648,6 @@ export default {
           console.log(err.response);
         });
     },
-
     getEventCategories() {
       axios.get("/api/EventCategory").then((res) => {
         this.newEvents = res.data.map((i) => {
@@ -1663,11 +1655,9 @@ export default {
         });
       });
     },
-
     getLookUps() {
       axios.get("/api/LookUp/GetAllLookUps").then((res) => {
         // res.data.map((i) => {
-
         // })
         console.log(res.data);
         res.data.find((i) => {
@@ -1680,7 +1670,6 @@ export default {
         });
       });
     },
-
     changeSelectedEventCategory(action) {
       if (action === "edit") {
         // do something
@@ -1688,12 +1677,10 @@ export default {
         this.showEditEventCategory = true;
         console.log(this.selectedEventCategory);
       }
-
       if (action === "change") {
         this.selectedEventCategoryId = "";
       }
     },
-
     // categorySelected(data) {
     //   if (data.dataType === 'eventcategory') {
     //     this.selectedEventCategory = this.newEvents.find(i => i.name === data.value);
@@ -1704,7 +1691,6 @@ export default {
       if (data.dataType === "day") {
         this.firstTimersObj.birthday = data.value;
       }
-
       if (data.dataType === "month") {
          switch (data.value) {
           case "January":
@@ -1749,48 +1735,40 @@ export default {
             break;
         }
       }
-
       if (data.dataType === "year") {
         this.firstTimersObj.birthYear = data.value;
       }
-
       if (data.dataType === "marital status") {
         this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find(
           (i) => i.value === data.value
         ).id;
       }
-
       if (data.dataType === "gender") {
         this.firstTimersObj.genderId = this.gender.find(
           (i) => i.value === data.value
         ).id;
       }
-
       if (data.dataType === "howDidYouAboutUsId") {
         this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
           (i) => i.name === data.value
         ).id;
         console.log(this.firstTimersObj.howDidYouAboutUsId);
       }
-
       if (data.dataType === "communicationMeans") {
         this.firstTimersObj.communicationMeans = this.comMeansArr.indexOf(
           data.value
         );
       }
-
       if (data.dataType === "interestedInJoining") {
         this.firstTimersObj.interestedInJoining = this.joinInterest.indexOf(
           data.value
         );
       }
-
       if (data.dataType === "wantToBeVisited") {
         this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(
           data.value
         );
       }
-
       if (data.dataType === "automatedFollowUp") {
         this.firstTimersObj.automatedFollowUp = data.value;
       }
@@ -1852,13 +1830,11 @@ export default {
       });
       console.log(res.data, "offerings on load");
     });
-
     axios.get("/GetAttendanceType").then((res) => {
       this.newAttendances = res.data.map((i) => {
         return { attendanceTypeID: i.id, name: i.name };
       });
     });
-
     this.getEventCategories();
     this.getLookUps();
     this.getHowDidYouAboutUsId();
@@ -1875,7 +1851,6 @@ export default {
         return this.newAttendances;
       }
     },
-
     birthYearsArr() {
       const arrOfYears = [];
       let currentYear = new Date().getFullYear();
@@ -1885,7 +1860,6 @@ export default {
       }
       return arrOfYears;
     },
-
     filterOffering() {
       if (this.offeringText !== "" && this.newOfferings.length > 0) {
         return this.newOfferings.filter((i) => {
@@ -1895,17 +1869,14 @@ export default {
         return this.newOfferings;
       }
     },
-
     filterEventCategory() {
       // let x;
-
       let arr = [];
       if (this.newEvents.length > 0) {
         console.log(this.newEvents, "new events");
         arr = this.newEvents.filter((i) => {
           return i.name.toLowerCase().includes(this.eventText.toLowerCase());
         });
-
         // } else if (this.newEvents.length <= 0) {
         // // return this.newEvents.filter((i) => {
         // //     return i.name.toLowerCase().includes(this.eventText.toLowerCase());
@@ -1918,7 +1889,6 @@ export default {
       }
       return arr;
     },
-
     addOfferingTotal() {
       if (this.offeringItem.length <= 0) return 0;
       if (this.offeringItem.length === 1) return this.offeringItem[0].amount;
@@ -1927,7 +1897,6 @@ export default {
         return (a || 0) + (b || 0);
       });
     },
-
     addAttendanceTotal() {
       if (this.attendanceItem.length <= 0) return 0;
       if (this.attendanceItem.length === 1)
@@ -1937,31 +1906,26 @@ export default {
         return (a || 0) + (b || 0);
       });
     },
-
     selectedEventCategoryName() {
       console.log(this.selectedEventCategoryId);
       if (!this.selectedEventCategoryId) return ''; 
       return this.newEvents.find((i) => i.id === this.selectedEventCategoryId)
         .name
     },
-
     eventCategoriesArr() {
       const arr = this.newEvents.map((i) => i.name);
       return arr;
     },
-
     genders() {
       return this.gender.map((i) => {
         return i.value;
       });
     },
-
     maritalStatuses() {
       return this.maritalStatusArr.map((i) => {
         return i.value;
       });
     },
-
     howYouHeard() {
       return this.howDidYouAboutUsId.map((i) => {
         return i.name;
@@ -1976,34 +1940,28 @@ export default {
   font-family: "Nunito sans";
   /* margin-top: 20px; */
 }
-
 .events {
   font: normal normal 800 28px Nunito sans;
 }
-
 .btn-preview {
   border: 1px solid #797e81;
   border-radius: 22px;
 }
-
 .btn-save {
   background: #136acd 0% 0% no-repeat padding-box;
   border-radius: 22px;
   color: white;
   /* border: 2px solid red; */
 }
-
 .nested-row {
   font-size: 0.9em;
 }
-
 .nested-row label {
   color: #02172e;
   margin-top: 10px;
   width: 100%;
   text-align: right;
 }
-
 .nested-row input {
   margin: 5px;
   padding: 5px;
@@ -2011,11 +1969,9 @@ export default {
   border: 1px solid #b2c2cd;
   border-radius: 5px;
 }
-
 .container.first-pane {
   /* margin-top: 5px; */
 }
-
 .event-category {
   display: inline-block;
   background: #ffffff 0% 0% no-repeat padding-box;
@@ -2029,26 +1985,22 @@ export default {
   text-align: center;
   text-align-last: center;
 }
-
 .dropdown-container select {
   /* for Firefox */
   -moz-appearance: none;
   /* for Safari, Chrome, Opera */
   -webkit-appearance: none;
 }
-
 /* for IE10 */
 .dropdown-container select::-ms-expand {
   display: none;
 }
-
 .new-category {
   text-align: center;
   padding: 30px;
   color: #136acd;
   font: normal normal bold 16px Nunito Sans;
 }
-
 .form {
   margin-top: 50px;
   background: #ffffff 0% 0% no-repeat padding-box;
@@ -2056,27 +2008,22 @@ export default {
   border: 1px solid #dde2e6;
   border-radius: 7px;
 }
-
 .form .second-form.row.first-row {
   padding: 50px;
 }
-
 .form-body {
   padding: 30px;
 }
-
 .attendance-header {
   background-color: #ecf0f3;
   padding: 0 50px;
   border: none;
   border-bottom: 1px solid rgb(204, 204, 204);
 }
-
 .attendance-body {
   padding: 0 50px;
   background-color: #ecf0f3;
 }
-
 .attendance-type,
 .count {
   background-color: rgb(255, 255, 255);
@@ -2084,17 +2031,14 @@ export default {
   border-radius: 5px;
   padding: 5px;
 }
-
 .attendance-header div,
 .attendance-body div {
   padding: 5px;
 }
-
 .attendance-header div {
   color: #002044;
   font-weight: 700;
 }
-
 .empty {
   border: none;
   border-top: 1px solid rgb(231, 231, 231);
@@ -2102,7 +2046,6 @@ export default {
   padding: 20px;
   font: normal normal 600 18px/24px Nunito Sans;
 }
-
 .total-2 {
   font: normal normal 600 20px/27px Nunito Sans;
   letter-spacing: 0px;
@@ -2110,13 +2053,11 @@ export default {
   text-align: right;
   align-self: center;
 }
-
 .edit {
   font: normal normal bold 13px Nunito Sans;
   letter-spacing: 0px;
   color: #136acd;
 }
-
 .add-attendance {
   color: #136acd;
   font-weight: 600;
@@ -2125,7 +2066,6 @@ export default {
   padding: 20px;
   cursor: pointer;
 }
-
 .display {
   display: none;
 }
@@ -2140,16 +2080,13 @@ export default {
   background: white;
   display: block;
 }
-
 .offering-drop div {
   padding: 3px;
 }
-
 .offering-drop div:hover {
   padding: 3px;
   background: #ecf0f3;
 }
-
 .add {
   font: normal normal bold 16px Nunito Sans;
   letter-spacing: 0px;
@@ -2159,42 +2096,34 @@ export default {
   background: #ecf0f3;
   border-radius: 10px 10px 0px 0px;
 }
-
 .textarea {
   border: none;
   border-top: 1px solid rgb(231, 231, 231);
 }
-
 .modal-title {
   font: normal normal 800 23px/31px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
 }
-
 .modal-fade {
   background: #002044;
 }
-
 .modal-body {
   margin: 10px;
 }
-
 .modal-content {
   border: none;
   border-radius: 7px;
 }
-
 .btn-second {
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 1px solid #002044;
   border-radius: 111px;
 }
-
 .btn-primary {
   background: #136acd 0% 0% no-repeat padding-box;
   border-radius: 111px;
 }
-
 .currency {
   width: 120%;
   height: 100%;
@@ -2203,18 +2132,15 @@ export default {
   border: none;
   outline: none;
 }
-
 .drop-box {
   border: 2px dotted rgb(211, 211, 211);
   display: inline-block;
   padding: 15%;
   font-size: 0.9em;
 }
-
 .textarea-adjust {
   margin: 7px 10px 0px 7px;
 }
-
 .form-header {
   font: normal normal bold 18px/24px Nunito Sans;
   letter-spacing: 0px;
@@ -2223,118 +2149,96 @@ export default {
   background: #ebeff4;
   border: 1px solid #00204430;
 }
-
 .make-public {
   font: normal normal bold 16px/22px Nunito Sans;
   color: #02172e;
 }
-
 .public {
   font: normal normal 600 14px/16px Nunito Sans;
   color: #136acd;
 }
-
 .push-down {
   margin-top: 5em;
 }
-
 .event-reg {
   font: normal normal bold 16px/22px Nunito Sans;
   /* color: #136ACD; */
 }
-
 .event-reg-dark {
   font: normal normal bold 16px/22px Nunito Sans;
   /* color: #02172E; */
 }
-
 .enable-reg {
   font: normal normal 600 16px/22px Nunito Sans;
   color: #02172e;
   margin-top: 3em;
 }
-
 .paid {
   margin-top: 2em;
   font: normal normal normal 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #02172e;
 }
-
 .create {
   text-align: center;
   font: normal normal bold 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #136acd;
 }
-
 .total {
   padding: 15px;
   width: 100%;
 }
-
 .header1 {
   margin-bottom: 20px;
   color: #136acd;
   font-size: 24px;
 }
-
 .attendance1 {
   width: 80%;
   margin: auto;
   padding: 20px;
   justify-content: space-between;
 }
-
 .attendance2 {
   display: inline-block;
   font-size: 15px;
 }
-
 .attendance3 {
   /* display: inline-block; */
   float: right;
   font-size: 15px;
 }
-
 .header2 {
   color: #02172e;
   font-size: 24px;
 }
-
 .header5 {
   margin-top: 0;
   color: rgb(77, 73, 73);
   font-size: 15px;
 }
-
 .header3 {
   color: #02172e;
   font-size: 42px;
 }
-
 .head5 {
   color: rgb(77, 73, 73);
 }
-
 hr {
   border-color: 0.01px rgba(158, 157, 157, 0.842);
 }
-
 div .maintext {
   font-size: 18px;
 }
-
 /* *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 } */
-
 .table {
   padding: 20px 10px 0 10px;
 }
-
 .table {
   width: 100%;
   /* box-shadow: 0px 1px 4px #02172E45; */
@@ -2346,28 +2250,23 @@ div .maintext {
   /* margin: 0 */
   margin: 24px 0 0 0;
 }
-
 .box-table {
   box-shadow: 0px 1px 4px #02172e45;
   border-radius: 30px;
   margin-top: 30px;
   width: 100%;
 }
-
 /* @media (min-width: 500px) and (max-width: 600px) {
     .box-table {
         width: 58%
     }
 } */
-
 .t-header {
   background-color: #f1f3f9;
 }
-
 #img {
   max-width: 30px;
 }
-
 tr.event-list th {
   color: #8898aa;
   /* font-size: 11px; */
@@ -2375,13 +2274,11 @@ tr.event-list th {
   letter-spacing: 1px;
   padding: 10px;
 }
-
 tr.event-list td {
   color: #02172e;
   /* padding: 5px; */
   vertical-align: middle;
 }
-
 .page-link {
   color: #136acd;
 }
@@ -2393,7 +2290,6 @@ tr.event-list td {
   background-color: #136acd;
   color: #fff;
 }
-
 .add-first-timer {
   background: #ebeff4;
   padding: 10px;
@@ -2403,7 +2299,6 @@ tr.event-list td {
   color: #136acd;
   text-align: center;
 }
-
 .add-new-convert {
   background: #ebeff4;
   padding: 10px;
@@ -2413,103 +2308,85 @@ tr.event-list td {
   color: #136acd;
   text-align: center;
 }
-
 .input-first {
   /* width: 320px; */
   height: 39px;
   border: 1px solid #b9c5cf;
 }
-
 .close-slide1 {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .slide-down1 {
   height: 365px;
   /* overflow: visible; */
   transition: all 0.5s ease-in-out;
 }
-
 .roll1 {
   transition: all 0.5s ease-in-out;
   transform: rotate(180deg);
 }
-
 .close-slide {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .slide-down {
   height: 162px;
   transition: all 0.5s ease-in-out;
 }
-
 .roll {
   transition: all 0.5s ease-in-out;
   transform: rotate(180deg);
 }
-
 .close-slide2 {
   padding: 0;
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .slide-down2 {
   height: 412px;
   transition: all 0.5s ease-in-out;
   /* padding: 30px */
 }
-
 .roll2 {
   transition: all 0.5s ease-in-out;
   transform: rotate(180deg);
 }
-
 .close-slide3 {
   padding: 0;
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .slide-down3 {
   height: auto;
   padding: 30px;
   transition: all 0.5s ease-in-out;
 }
-
 .roll3 {
   transition: all 0.5s ease-in-out;
   transform: rotate(180deg);
 }
-
 .selected-category h4 {
   font-weight: 700;
   font-size: 22px;
 }
-
 .event-buttons {
   display: flex;
   justify-content: flex-start;
 }
-
 .event-buttons a {
   color: #136acd;
   font-weight: 600;
   margin: 0 24px 0 0;
 }
-
 .event-buttons a:hover,
 .pointer {
   cursor: pointer;
 }
-
 .select-elem-con {
   padding: 47px 0;
   border: 1px solid #ebeff4;
@@ -2517,21 +2394,17 @@ tr.event-list td {
   font-size: 1.2em;
   font-weight: 600;
 }
-
 .edit-category {
   border: 1px solid #ebeff4;
   border-radius: 8px;
   text-align: center;
 }
-
 .edit-form {
   margin: 10px 0 50px 0;
 }
-
 .edit-input {
   margin-bottom: 20px;
 }
-
 .edit-input input {
   border: 1px solid #ebeff4;
   border-radius: 8px;
@@ -2539,7 +2412,6 @@ tr.event-list td {
   height: 40px;
   box-sizing: border-box;
 }
-
 .edit-form button {
   border-radius: 22px;
   background: #ebeff4;
@@ -2548,14 +2420,12 @@ tr.event-list td {
   width: 80px;
   border: none;
 }
-
 .select-calendar-icon {
   position: absolute;
   left: 48px;
   top: 59px;
   z-index: 9;
 }
-
 .style-category {
   padding: 10px;
   box-shadow: 0px 3px 15px #797e8159;
@@ -2567,47 +2437,38 @@ tr.event-list td {
   max-height: 20em;
   overflow-y: scroll;
 }
-
 .style-category div:hover {
   background-color: #ecf0f3;
   cursor: pointer;
 }
-
 .cat {
   padding: 5px;
   border-top: 1px solid #ecf0f3;
 }
-
 .offering-drop {
   max-height: 300px;
   overflow: auto;
 }
-
 @media (min-width: 576px) {
   .offset-sm-1 {
     margin-left: 4.333333%;
   }
 }
-
 @media (max-width: 575px) {
   .btn-preview,
   .btn-save {
     margin-top: 2em;
   }
-
   .nested-row label {
     text-align: left;
   }
-
   .nested-row {
     margin-top: 2em;
   }
-
   .push-public {
     margin-top: 2em;
   }
 }
-
 @media (max-width: 991px) {
   .row.form-body.reg .row div {
     margin-top: 2em;

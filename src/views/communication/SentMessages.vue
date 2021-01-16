@@ -76,7 +76,7 @@
                             <span class="timestamp">{{ sms.dateSent }}</span>
                           </span>
                           <span class="brief-message font-weight-600"
-                            >{{ `${sms.message.split('').slice(0, 25).join("")}...` }}</span
+                            >{{ sms.message && sms.length > 25 ? `${sms.message.split('').slice(0, 25).join("")}...` : sms.message ? sms.message : '' }}</span
                           >
                         </div>
                         <div
