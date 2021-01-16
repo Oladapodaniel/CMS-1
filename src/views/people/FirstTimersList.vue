@@ -24,7 +24,7 @@
         <div class="my-con">
           <div class="summary px-0">
             <p class="summary-header">Summary</p>
-            <hr class="hr" />
+            <!-- <hr class="hr" /> -->
 
             <div class="boards">
               <div class="board members-count">
@@ -220,7 +220,9 @@
                     <div class="data-text">
                       <p>Interested</p>
                     </div>
-                    <div class="data-value">{{ person.interestedInJoining }}</div>
+                    <div class="data-value">
+                      {{ person.interestedInJoining }}
+                    </div>
                   </div>
                 </div>
                 <div class="phone data">
@@ -228,7 +230,9 @@
                     <div class="data-text">
                       <p>Date</p>
                     </div>
-                    <div class="data-value">{{ new Date(person.date).toLocaleDateString() }}</div>
+                    <div class="data-value">
+                      {{ new Date(person.date).toLocaleDateString() }}
+                    </div>
                   </div>
                 </div>
                 <div class="phone data">
@@ -241,12 +245,13 @@
                 </div>
                 <div class="action data action-icon">
                   <div class="dropdown">
-                    <i class="fas fa-ellipsis-v"
+                    <i
+                      class="fas fa-ellipsis-v"
                       id="dropdownMenuButton"
                       data-toggle="dropdown"
                       aria-haspopup="true"
                       aria-expanded="false"
-                  ></i>
+                    ></i>
                     <div
                       class="dropdown-menu"
                       aria-labelledby="dropdownMenuButton"
@@ -254,7 +259,10 @@
                       <a class="dropdown-item" href="#">Convert to member</a>
                       <a class="dropdown-item" href="#">Assign to follow-up</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
-                        <router-link :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`">Send SMS</router-link>
+                        <router-link
+                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          >Send SMS</router-link
+                        >
                       </a>
                       <a class="dropdown-item" href="#">Send Email</a>
                       <a class="dropdown-item" href="#">Delete</a>
@@ -288,21 +296,19 @@ import { ref, onMounted } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
-import Pagination from "../../components/pagination/PaginationButtons"
-import { useRoute } from 'vue-router';
+import Pagination from "../../components/pagination/PaginationButtons";
+import { useRoute } from "vue-router";
 
 export default {
   props: ["list"],
   components: {
     ByGenderChart,
     ByMaritalStatusChart,
-    Pagination
+    Pagination,
   },
 
   setup() {
-    const churchMembers = ref([
-      
-    ]);
+    const churchMembers = ref([]);
     // if ()
 
     const route = useRoute();
@@ -315,7 +321,6 @@ export default {
       axios.get("/api/People/FirstTimer")
           .then(res => {
             churchMembers.value = res.data;
-            console.log(res, "FS");
           })
     });
 
@@ -331,7 +336,7 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-  color:  #02172e;
+  color: #02172e;
 }
 
 .page-header {
@@ -363,10 +368,12 @@ export default {
 }
 
 .summary-header {
+  margin: -0.8rem 10px 0.5rem 10px !important;
+  color: #136acd !important;
   margin: 0 10px;
   color: #02172e;
   opacity: 0.8;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 600;
 }
 
@@ -703,7 +710,7 @@ export default {
 @media screen and (min-width: 1400px) {
   .table {
     width: 68%;
-    margin-top: 0;
+    margin-top: 3.3rem;
   }
 
   .total-text {

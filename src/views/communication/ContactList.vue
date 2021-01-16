@@ -9,7 +9,7 @@
               <div class="row d-md-flex align-items-center mt-2 mb-4">
                 <div class="col-md-12">
                   <router-link
-                  to="/tenant/sms-communications/add-group"
+                    to="/tenant/sms-communications/add-group"
                     class="create-btn font-weigth-bold border-0"
                   >
                     <span class="mr-2" style="font-size: 22px">+</span> Create
@@ -42,12 +42,16 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12">
-                      <hr class="hr mt-0" />
+                    <div class="col-md-12 gName">
+                      <h3 class="ml-md-n3 mb-n2">Group Name</h3>
                     </div>
                   </div>
 
-                  <div class="row" v-for="(group, index) in groups" :key="index">
+                  <div
+                    class="row"
+                    v-for="(group, index) in groups"
+                    :key="index"
+                  >
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
@@ -57,7 +61,14 @@
                         <div class="col-md-3 d-md-flex justify-content-between">
                           <span class="hidden-header">NAME: </span>
                           <span>
-                            <router-link class="link" :to="{name: 'EditContactList', params: { groupId: group.id}}">{{ group.name }}</router-link>
+                            <router-link
+                              class="link"
+                              :to="{
+                                name: 'EditContactList',
+                                params: { groupId: group.id },
+                              }"
+                              >{{ group.name }}</router-link
+                            >
                           </span>
                         </div>
 
@@ -76,7 +87,9 @@
                           <span class="hidden-header font-weight-bold"
                             >DATE & TIME CREATED
                           </span>
-                          <span>{{ new Date(group.dateEntered).toLocaleDateString() }}</span>
+                          <span>{{
+                            new Date(group.dateEntered).toLocaleDateString()
+                          }}</span>
                         </div>
 
                         <div class="col-md-1 col-ms-12">
@@ -128,15 +141,17 @@
                         <div class="col-md-1 col-ms-12">
                           <span><i class="fa fa-trash delete-icon"></i></span>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
+                        <div class="col-md-6 basebtns">
+                          <button
+                            v-on:click="saveDetails"
+                            class="btn btnBase btn-primary"
+                          >
+                            save
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div> -->
-
                 </div>
               </div>
             </div>
@@ -148,12 +163,12 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref } from "vue";
 import axios from "@/gateway/backendapi";
 
 export default {
   setup() {
-    const groups = ref([ ]);
+    const groups = ref([]);
     const loading = ref(false);
 
     const getGroups = async () => {
@@ -166,23 +181,23 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     onMounted(() => {
       getGroups();
-    })
+    });
 
     return {
       groups,
       loading,
-    }
-  }
+    };
+  },
 };
 </script>
 
 <style scoped>
 * {
-  color:  #02172e;
+  color: #02172e;
 }
 
 .search-div {
@@ -192,50 +207,49 @@ export default {
   border-radius: 200px;
 }
 
-.search-div input {
-  background: none;
+#groupName:focus {
+  border: none;
+}
+
+.inputWithDisable {
+  /* background-color: rgba(252, 252, 252, 0.932); */
   border: none;
   outline: transparent;
 }
 
-.brief-message {
-  color: #4762f0;
+.inputWithDisable:disabled {
+  background: transparent;
 }
 
-.compose-btn {
-  background: #136acd;
-  box-shadow: 0px 6px 12px #708eb170;
-  border-radius: 22px;
-  color: #fff;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+h1,
+h3,
+h4 {
+  font-family: "Nunito Sans";
+  color: var(--font-color);
 }
 
-.menu-icon {
-  font-size: 20px;
+h1 {
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.units-div {
-  border: 1px solid #dde2e6;
-  border-radius: 20px;
-  padding: 15px 0;
+h3 {
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.hidden-header {
-  display: none;
+h4 {
+  font-size: 16px;
 }
 
-.th {
-  font-size: 12px;
-  font-weight: 700;
+.hr {
+  color: #708eb15c;
 }
 
-.inbox-count {
-  background: rgba(19, 106, 205, 0.3);
-  padding: 4px 8px;
-  border-radius: 22px;
+.addContent {
+  border: 1px solid #02172e30;
+  border-radius: 5px;
+  height: 40px;
 }
 
 .menu-item-con {
@@ -278,50 +292,52 @@ export default {
   text-decoration: none;
 }
 
-
 .link {
   text-decoration: none;
   color: #136acd !important;
 }
 
-@media screen and (max-width: 767px) {
-  .hidden-header {
-    display: inline-block;
-    font-size: 12px;
-  }
-
-  .header-row {
-    display: none;
-  }
-
-  #menu-items {
-    flex-direction: row !important;
-  }
-
-  .search-div {
-    width: 100%;
-  }
-
-  .units-div {
-    width: 100%;
-  }
-
-  .units-container {
-    margin-left: 0;
-    margin: auto;
-  }
+.amazingG {
+  width: 50%;
+  margin-top: 0.5rem;
 }
 
-@media screen and (max-width: 1000px) {
-  .msg-n-time {
-    flex-direction: column;
-    margin-bottom: 8px;
-  }
+.amazingE {
+  padding: 0;
+  width: 50%;
+  margin-left: 1rem;
+  /* display: flex; */
+  justify-content: flex-end;
 }
 
-@media screen and (min-width: 1000px) {
-  #menu-items {
-    min-width: 100% !important;
-  }
+.spanArea1 {
+  position: relative;
+  margin-top: 1rem;
+  display: flex;
 }
+
+.spanArea2 {
+  position: absolute;
+  top: 0;
+  right: -13.5rem;
+}
+
+.spanArea {
+  width: 40%;
+  position: absolute;
+}
+
+.addIconarea {
+  padding: 0;
+}
+
+.basebtns {
+  margin: 2.5rem auto;
+  width: 40%;
+}
+
+#groupName {
+  margin-left: 1rem;
+}
+/* } */
 </style>

@@ -70,8 +70,11 @@ const routes = [
         path: 'people',
         component: () => import(/* webpackChunkName: "people" */ '../views/people/People.vue'),
         children: [
+
           { path: '', component: () => import(/* webpackChunkName: "peopleempty" */ '../views/people/PeopleEmpty.vue') },
-          { path: 'import', component: () => import(/* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'), name: 'ImportPeople' },
+          {
+            path: 'import', component: () => import(/* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'), name: 'ImportPeople'
+          },
           {
             path: 'add-first-timer',
             name: 'AddFirstTimer',
@@ -81,6 +84,7 @@ const routes = [
             path: 'add-person/:personId?',
             component: () => import(/* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
           },
+
         ]
       },
 
@@ -119,6 +123,7 @@ const routes = [
           { path: 'sent', name: 'SentMessages', component: () => import(/* webpackChunkName: "sentmessages" */ '@/views/communication/SentMessages') },
           { path: 'draft', name: 'DraftMessages', component: () => import(/* webpackChunkName: "draftmessages" */ '@/views/communication/DraftMessages') },
           { path: 'contacts', name: 'ContactList', component: () => import(/* webpackChunkName: "contactlist" */ '@/views/communication/ContactList') },
+          { path: 'message-details', name: 'MessageDetails', component: () => import(/* webpackChunkName: "contactlist" */ '@/views/communication/MessageDetails') },
           { path: 'add-group', name: 'Phongroup', component: () => import(/* webpackChunkName: "phonegroup" */ '@/views/communication/PhoneGroup') },
           { path: 'edit-contact/:groupId', name: 'EditContactList', component: () => import(/* webpackChunkName: "editcontactlist" */ '@/views/communication/EditContactList') },
           { path: 'report', name: 'DeliveryReport', component: () => import(/* webpackChunkName: "deliveryreport" */ '@/views/communication/DeliveryReport') },
@@ -133,7 +138,7 @@ const routes = [
         children: [
           { path: '', name: 'EmailInbox', component: () => import(/* webpackChunkName: "emailinbox" */ '@/views/communication/EmailInbox') },
           { path: 'sent', name: 'SentEmails', component: () => import(/* webpackChunkName: "sentemails" */ '@/views/communication/SentEmails') },
-          { path: 'draft', name: 'EmailDraft', component: () => import(/* webpackChunkName: "emaildraft" */ '@/views/communication/EmailDraft')  },
+          { path: 'draft', name: 'EmailDraft', component: () => import(/* webpackChunkName: "emaildraft" */ '@/views/communication/EmailDraft') },
           // { path: 'contacts', name: 'ContactList', component: ContactList },
           // { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
           { path: 'compose-message', name: 'ComposeEmail', component: () => import(/* webpackChunkName: "composemessage" */ '@/views/communication/ComposeEmail') }

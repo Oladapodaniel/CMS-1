@@ -1,7 +1,7 @@
 <template>
   <div class="container-slim">
     <div class="container-fluid">
-      <div class="row d-md-flex justify-content-between mt-3">
+      <div class="row d-md-flex justify-content-between yu mt-5">
         <div class="col-md-4">
           <h2>Groups</h2>
           <ConfirmDialog />
@@ -151,21 +151,20 @@ export default {
       try {
         loading.value = true;
         const res = await axios.get("/api/GetAllGroupBasicInformation");
-        loading.value = false,
-        groups.value = res.data.map((i) => {
-          return {
-            dateCreated: i.dateCreated,
-            description: i.description,
-            name: i.name,
-            id: i.id,
-            tenantID: i.tenantID,
-            peopleInGroupsCount: i.peopleInGroupsCount,
-          };
-        });
+        (loading.value = false),
+          (groups.value = res.data.map((i) => {
+            return {
+              dateCreated: i.dateCreated,
+              description: i.description,
+              name: i.name,
+              id: i.id,
+              tenantID: i.tenantID,
+              peopleInGroupsCount: i.peopleInGroupsCount,
+            };
+          }));
         console.log(groups.value);
       } catch (error) {
-        loading.value = false,
-        console.log(error.response);
+        (loading.value = false), console.log(error.response);
       }
     };
     onMounted(() => {
@@ -184,6 +183,10 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+
+.yu {
+  margin-top: 5rem !important;
 }
 
 .dropdown-menu a {
