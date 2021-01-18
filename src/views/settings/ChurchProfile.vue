@@ -216,7 +216,7 @@ export default {
     return {
       url,
       imageSelected,
-
+      uploadImage,
     }
   }
 
