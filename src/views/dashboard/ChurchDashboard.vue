@@ -293,6 +293,7 @@
               subtitle="Overview"
               distance="5"
               :titleMarginLeft="70"
+              :height="400"
             />
           </div>
 
@@ -303,6 +304,7 @@
               subtitle="Overview"
               distance="1"
               :titleMarginLeft="70"
+              :height="400"
             />
           </div>
         </div>
@@ -739,6 +741,12 @@ tbody tr:nth-child(even) {
 
 .more-links a {
   text-decoration: none;
+}
+
+.pie-con {
+  border: 0.4000000059604645px solid #dde2e6;
+  box-shadow: 0px 1px 4px #02172e45;
+  border-radius: 10px;
 }
 /* WIP */
 

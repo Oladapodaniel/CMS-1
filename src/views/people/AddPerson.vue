@@ -130,7 +130,7 @@
                   </div>
                 </div>
                 <div>
-                  <button class="upload-btn" @click.prevent="uploadImage">
+                  <button class="upload-btn outline-none" @click.prevent="uploadImage">
                     Upload
                   </button>
                 </div>

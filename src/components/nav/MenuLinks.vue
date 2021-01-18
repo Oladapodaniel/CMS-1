@@ -9,7 +9,7 @@
               class="link-image"
               alt=""
             />
-            <!-- <a href="" class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
+            <!-- <a  class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
             <a class="user-link"
               >{{ tenantDisplayName }}
               <span class="user-link-icon"
@@ -66,7 +66,7 @@
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Families</router-link>
+              <router-link class="dd-link-item" to="">Families</router-link>
             </li>
           </ul>
           <!-- </a> -->
@@ -107,10 +107,10 @@
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Whatsapp</router-link>
+              <router-link class="dd-link-item" to="">Whatsapp</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Voice</router-link>
+              <router-link class="dd-link-item" to="">Voice</router-link>
             </li>
           </ul>
           <!-- </a> -->
@@ -147,7 +147,7 @@
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/"
+              <router-link class="dd-link-item" to=""
                 >Attendance & Checkin</router-link
               >
             </li>
@@ -183,32 +183,32 @@
             :class="{ 'dd-hide-list': !accLinkDropped }"
           >
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Offerings</router-link>
+              <router-link class="dd-link-item" to="">Offerings</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Expenses</router-link>
+              <router-link class="dd-link-item" to="">Expenses</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Pledges</router-link>
+              <router-link class="dd-link-item" to="">Pledges</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/"
+              <router-link class="dd-link-item" to=""
                 >Transactions</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/"
+              <router-link class="dd-link-item" to=""
                 >Expense Approval</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/"
+              <router-link class="dd-link-item" to=""
                 >Charts of Account</router-link
               >
             </li>
           </ul>
 
-          <a href="" class="link">
+          <a class="link">
             <img
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"
@@ -230,7 +230,7 @@
               </p>
             </div>
             <div class="more-links" :class="{ 'hide-more-links': moreShown }">
-              <a href="" class="link follow-up">
+              <a  class="link follow-up">
                 <img
                   src="../../assets/dashboardlinks/follow-up-icon.svg"
                   class="link-icon"
@@ -239,7 +239,7 @@
                 Follow up
               </a>
 
-              <a href="" class="link">
+              <a  class="link">
                 <img
                   src="../../assets/dashboardlinks/social-icon.svg"
                   class="link-icon"
@@ -248,7 +248,7 @@
                 Social & Mobile App
               </a>
 
-              <a href="" class="link">
+              <a  class="link">
                 <img
                   src="../../assets/dashboardlinks/media.svg"
                   class="link-icon"
@@ -257,7 +257,7 @@
                 Media & Monetization
               </a>
 
-              <a href="" class="link">
+              <a  class="link">
                 <img
                   src="../../assets/dashboardlinks/branches.svg"
                   class="link-icon"
@@ -418,6 +418,10 @@ export default {
 
 .nav router-link:hover {
   color: #00204412;
+}
+
+.link:hover {
+  cursor: pointer;
 }
 .nav .user {
   opacity: 1;

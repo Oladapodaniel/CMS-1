@@ -12,63 +12,93 @@
           <span class="sub-header">Church Details </span>
           <div class="row first-row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label for="firstname" class="small-text">Name</label>
+              <label for="firstname" class="small-text lb lb font-weight-600">Name</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <input
-                type="text"
-                class="form-control input"
+                type="text" placeholder="Name"
+                class="form-control ml-0 input"
                 name=""
                 id="firstname"
                 required
               />
             </div>
+            <div class="col-md-4">
+              <div class="grey-bg light-grey-bg mt-0 py-2">
+                <div class="person-img">
+                  <img
+                    v-if="!url"
+                    src="../../assets/people/phone-import.svg"
+                    alt="Uploaded Image"
+                  />
+                  <img v-else :src="url" alt="Uploaded Image" />
+                </div>
+                <div>
+                  <div class="cs-input">
+                    <label for="imgUpload" class="choose-file">
+                      Choose file
+                      <input
+                        type="file"
+                        class="input file-input"
+                        placeholder=""
+                        id="imgUpload"
+                        @change="imageSelected"
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <button class="upload-btn cursor-pointer outline-none" @click.prevent="uploadImage">
+                    Upload
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-md-3 text-md-right pr-0">
+              <label class="small-text lb font-weight-600" for="">Aka/Parish</label>
+            </div>
+            <div class="col-12 col-md-5 form-group">
+              <input type="text" placeholder="Aka/Parish" class="form-control ml-0 input" />
+            </div>
             <div class="col-md-4"></div>
           </div>
 
           <div class="row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text" for="">Aka/Parish</label>
+              <label class="small-text lb font-weight-600">Address</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" class="form-control input" name="" />
+              <input type="text" placeholder="Address" class="form-control ml-0 input" />
             </div>
             <div class="col-md-4"></div>
           </div>
 
           <div class="row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text">Address</label>
+              <label class="small-text lb font-weight-600" for="">Phone number</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" class="form-control input" />
+              <input type="text" placeholder="Phone Number" class="form-control ml-0 input" />
             </div>
             <div class="col-md-4"></div>
           </div>
 
           <div class="row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text" for="">Phone number</label>
+              <label class="small-text lb font-weight-600" for="">Email</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" class="form-control input" />
-            </div>
-            <div class="col-md-4"></div>
-          </div>
-
-          <div class="row">
-            <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text" for="">Email</label>
-            </div>
-            <div class="col-12 col-md-5 form-group">
-              <input type="text" class="form-control input" />
+              <input type="text" placeholder="Email" class="form-control ml-0 input" />
             </div>
             <div class="col-md-4"></div>
           </div>
 
           <div class="row select-elem">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text">Country</label>
+              <label class="small-text lb font-weight-600">Country</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <Dropdown
@@ -82,12 +112,12 @@
 
           <div class="row select-elem">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text">Time zone</label>
+              <label class="small-text lb font-weight-600">Time zone</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <Dropdown
                 :options="[1, 2, 3, 4, 5]"
-                placeholder="Select Country"
+                placeholder="Select time zone"
                 style="width: 100%"
               />
             </div>
@@ -96,12 +126,12 @@
 
           <div class="row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text" for="">Website URL</label>
+              <label class="small-text lb font-weight-600" for="">Website URL</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <input
-                type="text"
-                class="form-control input"
+                type="text" placeholder="Website URL"
+                class="form-control ml-0 input"
               />
             </div>
             <div class="col-md-4"></div>
@@ -114,24 +144,20 @@
           </div>
 
           <!-- Event attended -->
-          <div class="row select-elem">
-            <div class="col-md-3 text-md-right pr-0">
-              <label class="small-text" for="">Pastor's Detail</label>
+          <div class="row">
+            <div class="col-sm-12 mt-2">
+              <span class="sub-header">Pastor's Detail</span>
             </div>
-            <div class="col-12 col-md-5 form-group">
-                
-            </div>
-            <div class="col-md-4"></div>
           </div>
 
           <div class="row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text" for="">Name</label>
+              <label class="small-text lb font-weight-600" for="">Name</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <input
-                type="text"
-                class="form-control input"
+                type="text" placeholder="Name"
+                class="form-control ml-0 input"
               />
             </div>
             <div class="col-md-4"></div>
@@ -139,12 +165,12 @@
 
           <div class="row">
             <div class="col-12 col-md-3 text-md-right pr-0">
-              <label class="small-text" for="">Email</label>
+              <label class="small-text lb font-weight-600" for="">Email</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <input
-                type="text"
-                class="form-control input"
+                type="text" placeholder="Email"
+                class="form-control ml-0 input"
               />
             </div>
             <div class="col-md-4"></div>
@@ -168,14 +194,31 @@
 </template>
 
 <script>
-// import { ref, onMounted, computed } from "vue";
 // import axios from "@/gateway/backendapi";
 // import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
+import { ref } from 'vue';
 // import { getCurrentInstance } from "vue";
 
 export default {
   components: { Dropdown },
+
+  setup() {
+    let url = ref("");
+    let image;
+    const imageSelected = (e) => {
+      image = e.target.files[0];
+      url.value = URL.createObjectURL(image);
+    };
+
+    const uploadImage = () => { }
+
+    return {
+      url,
+      imageSelected,
+
+    }
+  }
 
 };
 </script>
@@ -208,6 +251,7 @@ export default {
 }
 
 .input {
+  width: 100%;
   height: 40px;
   border: 1px solid #b9c5cf;
 }
@@ -273,6 +317,11 @@ export default {
   color: #ef0535;
 }
 
+.light-grey-bg {
+  border-radius: 10px;
+}
+
+
 @media screen and (max-width: 767px) {
   .select-elem {
     height: auto !important;
@@ -280,6 +329,31 @@ export default {
 
   .select-div {
     padding: 0.8rem !important;
+  }
+
+  .lb {
+    display: none !important;
+  }
+
+  .first-row {
+    flex-flow: column-reverse;
+  }
+
+}
+
+.check-box:checked {
+  background-color: #0f529f;
+}
+
+@media screen and (min-width: 768px) {
+  .light-grey-bg {
+    position: absolute;
+    width: 100%;
+    z-index: 900;
+  }
+
+  .input::placeholder {
+    color: white !important;
   }
 }
 
