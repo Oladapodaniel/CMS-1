@@ -304,6 +304,10 @@
   .phone {
     text-align: center;
   }
+
+  .c-pointer {
+    cursor: pointer;
+  }
   
   @media screen and (max-width: 500px) {
     .picture,
