@@ -16,24 +16,24 @@
             class="create-btn"
             @click="moreLinksVissible = !moreLinksVissible"
           >
-            Create a new
+            Create new
             <i class="fa fa-angle-down create-dd"></i>
           </button>
           <div class="more-items ml-1" v-if="moreLinksVissible">
             <div class="container">
               <div class="row">
                 <div
-                  class="col-md-12 d-flex flex-column border rounded more-links"
+                  class="col-md-12 d-flex flex-column border rounded more-links px-4"
                 >
                   <router-link
                     to="/tenant/people/add-person"
                     class="font-weight-bold mt-3 text-dec-none"
-                    >Add member</router-link
+                    >Member</router-link
                   >
                   <router-link
                     to="/tenant/people/add-first-timer"
                     class="font-weight-bold text-dec-none"
-                    >Add first timer</router-link
+                    >First timer</router-link
                   >
                 </div>
               </div>
