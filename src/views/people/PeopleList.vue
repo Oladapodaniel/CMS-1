@@ -1,6 +1,6 @@
 <template>
   <div class="my-con">
-    <div class="summary px-0">
+    <div class="summary px-3">
       <p class="summary-header">Summary</p>
       <!-- <hr class="hr" /> -->
 
@@ -78,7 +78,17 @@
               </div>
               <div class="data-value">
                 <div class="image-con">
-                  <img src="../../assets/people/phone-import.svg" alt="" />
+                  <div v-if="person.gender == 'Male'">
+                    <img src="../../assets/people/avatar-male.png" alt="" style="border-radius: 50%"/>
+                  </div>
+                  <div v-else-if="person.gender == 'Female'">
+                    <img src="../../assets/people/avatar-female.png" alt="" />
+                  </div>
+                  <div v-else>
+                    <img src="../../assets/people/no-gender-avatar.png" alt="" />
+                  </div>
+                  
+                  
                 </div>
               </div>
             </div>
@@ -230,11 +240,13 @@ a {
   /* box-shadow: 0px 3px 6px #2c28281c; */
   padding: 24px 10px;
   background: #fff;
+  box-shadow: 0px 3px 6px #2c28281c;
+border: 1px solid #00204424;
 }
 
 .table {
-  box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6;
+  box-shadow: 0px 3px 6px #2c28281c;
+/* border: 1px solid #00204424; */
   border-radius: 30px;
   width: 100% !important;
 }
@@ -254,11 +266,11 @@ a {
 .board {
   width: 30%;
   border-radius: 10px;
-  border: 0.4000000059604645px solid #dde2e6;
+  /* border: 0.4000000059604645px solid #dde2e6; */
   padding: 0 8px;
+  /* box-shadow: 0px 1px 4px #02172e45;
   box-shadow: 0px 1px 4px #02172e45;
-  box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6;
+  border: 1px solid #dde2e6; */
 }
 
 .chart-con {
@@ -311,9 +323,28 @@ a {
 
 .chart1,
 .chart2 {
-  border: 0.4000000059604645px solid #dde2e6;
-  box-shadow: 0px 1px 4px #02172e45;
+  /* border: 0.4000000059604645px solid #dde2e6;
+  box-shadow: 0px 1px 4px #02172e45; */
   border-radius: 10px;
+}
+
+.picture .data-value {
+  margin-left: 22px;
+  width: 50%;
+}
+
+.firstname .data-value {
+  margin-left: -32px;
+  margin-right: 3px;
+}
+
+.lastname .data-value {
+  margin-left: -41px;
+  margin-right: 2px;
+}
+
+.phone .data-value {
+  margin-left: 38px;
 }
 
 @media screen and (max-width: 500px) {

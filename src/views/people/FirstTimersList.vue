@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
+  <div class="container container-top">
     <div class="row my-3">
-      <div class="col-md-4">
+      <div class="col-sm-4 first-timers-text">
         <h2 class="page-header">First Timers</h2>
       </div>
 
-      <div class="col-md-8 d-flex justify-content-end">
-        <button class="more mr-3">More <i class="fa fa-angle-down"></i></button>
+      <div class="col-sm-8 d-flex head-button">
+        <button class="more">More <i class="fa fa-angle-down"></i></button>
         <router-link to="/tenant/people/add-first-timer" class="add-btn">
           Add First timer
         </router-link>
@@ -76,7 +76,7 @@
           </div>
           <div class="table">
             <div class="top-con">
-              <div class="table-top my-2">
+              <div class="table-top my-3">
                 <div class="select-all">
                   <input type="checkbox" name="all" id="all" />
                   <label>SELECT ALL</label>
@@ -307,8 +307,9 @@ export default {
     Pagination,
   },
 
-  setup() {
+   setup() {
     const churchMembers = ref([]);
+
     // if ()
 
     const route = useRoute();
@@ -316,11 +317,35 @@ export default {
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
 
+    //  const getFirstTimers = () => {
+      // axios.get("/api/People/FirstTimer")
+      //     .then(res => {
+      //       churchMembers.value = res.data;
+      //       console.log(res.data)
+      //     })
+      //     .catch(err => console.log(err))
+    //   console.log('Is it getting')
+    // }
+
+
+    // const getFirstTimers = async () => {
+    //   try {
+    //     const { data } = await axios.get(
+    //       `/api/People/FirstTimer`
+    //     );
+    //     churchMembers.value = data;
+    //     console.log(data)
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+
     onMounted(() => {
       console.log(route, "route");
-      axios.get("/api/People/FirstTimer")
+        axios.get("/api/People/FirstTimer")
           .then(res => {
             churchMembers.value = res.data;
+            console.log(res.data)
           })
     });
 
@@ -328,6 +353,7 @@ export default {
       churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,
+      // getFirstTimers,
     };
   },
 };
@@ -357,6 +383,7 @@ export default {
   padding: 0px 20px 0 20px;
   background: #fff;
   /* margin-bottom: 24px; */
+  height: fit-content
 }
 
 .table {
@@ -536,6 +563,11 @@ export default {
   margin: 0 8px 0 -5px !important;
 }
 
+.head-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .add-btn {
   width: 180px;
   background: #136acd;
@@ -557,6 +589,7 @@ export default {
   border: transparent;
   outline: transparent;
   height: 42px;
+  margin-right: 1rem;
 }
 
 .fa-ellipsis-v:hover {
@@ -625,6 +658,34 @@ export default {
 
   .action {
     width: 5%;
+  }
+}
+
+@media (max-width: 414px) {
+  .head-button {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .more {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 575px) {
+  .head-button {
+    display: flex;
+    /* flex-direction: row; */
+    /* align-items: center; */
+    justify-content: center;
+  }
+
+  .add-btn, .more {
+    margin-top: 10px;
+  }
+
+  .first-timers-text {
+    text-align: center
   }
 }
 
