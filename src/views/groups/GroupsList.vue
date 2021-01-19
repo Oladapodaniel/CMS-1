@@ -1,7 +1,7 @@
 <template>
   <div class="container-slim">
     <div class="container-fluid">
-      <div class="row d-md-flex justify-content-between mt-3">
+      <div class="row d-md-flex justify-content-between yu mt-5">
         <div class="col-md-4">
           <h2>Groups</h2>
           <ConfirmDialog />
@@ -20,19 +20,19 @@
 
       <div class="row mt-4 grey-rounded-border">
         <div class="col-md-12">
-          <div class="row">
+          <div class="row main-header">
             <div class="col-md-12">
               <div class="row">
-                <div class="col-md-2 d-md-flex align-items-center">
+                <div class="col-sm-2 d-md-flex align-items-center">
                   <input class="my-2" type="checkbox" />
                 </div>
-                <div class="col-md-4 d-md-flex align-items-center">
+                <div class="col-sm-4 d-md-flex align-items-center">
                   <span class="my-2 font-weight-bold">GROUP NAME</span>
                 </div>
-                <div class="col-md-4 d-md-flex align-items-center">
+                <div class="col-sm-4 d-md-flex align-items-center">
                   <span class="my-2 font-weight-bold">MEMBERSHIP SIZE</span>
                 </div>
-                <div class="col-md-2 d-md-flex align-items-center"></div>
+                <div class="col-sm-2 d-md-flex align-items-center"></div>
               </div>
               <div class="row">
                 <div class="col-md-12 px-0">
@@ -82,21 +82,25 @@
           <div class="row" v-for="(group, index) in groups" :key="index">
             <div class="col-md-12">
               <div class="row">
-                <div class="col-md-2 d-md-flex align-items-center">
+                <div class="col-sm-2 d-md-flex align-items-center">
                   <input class="my-2" type="checkbox" />
                 </div>
-                <div class="col-md-4 d-md-flex align-items-center">
+                <div class="col-sm-4 d-md-flex align-items-center">
                   <span class="my-2 name-link">
-                    <router-link
+                    <span class="hidden-header font-sm-weight-600">GROUP NAME</span>
+                    <span class="f-right">
+                      <router-link
                       :to="`/tenant/create-people-group/${group.id}`"
                       >{{ group.name }}</router-link
                     >
+                    </span>
                   </span>
                 </div>
-                <div class="col-md-4 d-md-flex align-items-center">
-                  <span class="my-2">{{ group.peopleInGroupsCount }}</span>
+                <div class="col-sm-4 d-md-flex align-items-center">
+                  <span class="hidden-header font-weight-600">GROUP SIZE</span>
+                  <span class="my-2 f-right">{{ group.peopleInGroupsCount }}</span>
                 </div>
-                <div class="col-md-2 d-md-flex align-items-center">
+                <div class="col-sm-2 d-md-flex align-items-center text-right">
                   <div class="dropdown">
                     <i
                       class="fas fa-ellipsis-v cursor-pointer"
@@ -151,21 +155,20 @@ export default {
       try {
         loading.value = true;
         const res = await axios.get("/api/GetAllGroupBasicInformation");
-        loading.value = false,
-        groups.value = res.data.map((i) => {
-          return {
-            dateCreated: i.dateCreated,
-            description: i.description,
-            name: i.name,
-            id: i.id,
-            tenantID: i.tenantID,
-            peopleInGroupsCount: i.peopleInGroupsCount,
-          };
-        });
+        (loading.value = false),
+          (groups.value = res.data.map((i) => {
+            return {
+              dateCreated: i.dateCreated,
+              description: i.description,
+              name: i.name,
+              id: i.id,
+              tenantID: i.tenantID,
+              peopleInGroupsCount: i.peopleInGroupsCount,
+            };
+          }));
         console.log(groups.value);
       } catch (error) {
-        loading.value = false,
-        console.log(error.response);
+        (loading.value = false), console.log(error.response);
       }
     };
     onMounted(() => {
@@ -186,6 +189,10 @@ export default {
   box-sizing: border-box;
 }
 
+.yu {
+  margin-top: 5rem !important;
+}
+
 .dropdown-menu a {
   color: #02172e;
 }
@@ -196,5 +203,21 @@ export default {
 
 .link a:hover {
   color: #fff;
+}
+
+@media screen and (min-width: 580px) {
+  .hidden-header {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 581px) {
+  .main-header {
+    display: none;
+  }
+
+  .f-right {
+    float: right;
+  }
 }
 </style>

@@ -1,4 +1,4 @@
-!<template>
+<template>
   <div>
     <div class="container">
       <div class="row mainHeada">
@@ -31,16 +31,8 @@
                     class="row amazing d-flex flex-row justify-content-between mt-lg-3"
                   >
                     <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
-                    <!-- <div class="col-md-7 form-group px-0">
-                      <input
-                        type="text"
-                        class="inputWithDisable"
-                        id="groupName"
-                        v-model="groupNameValue"
-                        v-bind:disabled="groupNameDisabled"
-                        ref="groupName"
-                      />
-                    </div> -->
+                    <!-- <div class="col-md-7 form-group px-0"> <input type="text"
+class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="groupNameDisabled"ref="groupName"/></div> -->
                     <div class="col-md-6 form-group px-0">
                       <input
                         type="text"
@@ -258,7 +250,7 @@ export default {
 }
 
 * {
-  color:  #02172e;
+  color: #02172e;
 }
 
 .container {

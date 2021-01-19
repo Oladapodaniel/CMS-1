@@ -119,11 +119,6 @@ export default {
   width: 100% !important;
 }
 
-.sidebar {
-  min-height: 100vh;
-  border-right: 1px solid #4762f01f;
-}
-
 .small-text {
   font-size: 14px;
 }
@@ -132,6 +127,13 @@ export default {
     background: #EBEFF4;
     border-radius: 5px;
     width: 100%;
+}
+
+@media screen and (min-width: 767px) {
+    .sidebar {
+      min-height: 100vh;
+      border-right: 1px solid #4762f01f;
+    }
 }
 
 @media screen and (max-width: 1280px) {

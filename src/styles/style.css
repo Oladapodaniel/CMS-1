@@ -94,18 +94,18 @@
   .small-text {
     font-size: 14px;
   }
-
+/* 
   #chart {
     width: 48%;
     max-height: 310px;
     border: 0.4000000059604645px solid #dde2e6;
     border-radius: 10px;
-  }
+  } */
   
   #second {
     width: 48%;
     max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
+    /* border: 0.4000000059604645px solid #dde2e6; */
     border-radius: 10px;
   }
   
@@ -204,19 +204,19 @@
     text-align: center;
   }
 
-  #chart {
+  /* #chart {
     width: 48%;
     max-height: 310px;
     border: 0.4000000059604645px solid #dde2e6;
     border-radius: 10px;
-  }
+  } */
   
-  #second {
+  /* #second {
     width: 48%;
     max-height: 310px;
     border: 0.4000000059604645px solid #dde2e6;
     border-radius: 10px;
-  }
+  } */
   
   .table {
     width: 100%;
@@ -304,6 +304,10 @@
   .phone {
     text-align: center;
   }
+
+  .c-pointer {
+    cursor: pointer;
+  }
   
   @media screen and (max-width: 500px) {
     .picture,
@@ -351,16 +355,11 @@
     .chart-con {
       flex-direction: column !important;
       align-items: center;
-      width: 85% !important;
     }
   
     .chart-con div {
       width: 100% !important;
       margin-top: 10px;
-    }
-  
-    .board {
-      width: 85% !important;
     }
   }
   
@@ -371,15 +370,16 @@
     }
   
     .chart-con {
-      width: 85% !important;
+      width: 100% !important;
     }
   
-    .chart-con div {
-      width: 40%;
+    .chart1,
+    .chart2 {
+      width: 49% !important;
     }
   
     .board {
-      width: 80% !important;
+      width: 100% !important;
       margin-bottom: 10px;
     }
   }
@@ -809,6 +809,14 @@
   
   .choose-file:hover {
     cursor: pointer;
+  }
+
+  .primary-btn:disabled {
+    opacity: .5;
+  }
+
+  .submit-btn:disabled {
+    opacity: .5;
   }
   
   @media screen and (max-width: 620px) {

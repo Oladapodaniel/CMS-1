@@ -77,7 +77,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Select the destination of the mail
+              Select Destination
             </button>
             <div
               class="dropdown-menu w-100"
@@ -576,6 +576,7 @@
                               <!-- hostedsms_instant -->
                               <button
                                 class="primary-btn px-4 my-2 grey-background text-grey outline-none"
+                                data-dismiss="modal"
                                 @click="sendSMS('')"
                               >
                                 Send SMS Now

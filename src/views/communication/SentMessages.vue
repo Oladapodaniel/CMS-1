@@ -1,13 +1,14 @@
 !<template>
   <div>
     <div class="container">
-
       <!-- Content Box -->
       <main id="main" class="mt-3">
         <div class="container-fluid px-0">
           <div class="row px-0">
             <div class="col-md-12 px-0">
-              <div class="row d-md-flex align-items-center justify-content-between mt-3 mb-4">
+              <div
+                class="row d-md-flex align-items-center justify-content-between mt-3 mb-4"
+              >
                 <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
@@ -21,13 +22,16 @@
                   <div class="row d-sm-flex align-items-center units-div">
                     <div class="col-sm-12">
                       <h4 class="font-weight-bold mb-0 center-flexed">302</h4>
-                      <p class="font-weight-bold mb-0 center-flexed">SMS Units</p>
+                      <p class="font-weight-bold mb-0 center-flexed">
+                        SMS Units
+                      </p>
                     </div>
                     <div class="col-sm-12 d-sm-flex justify-content-center">
-                      <button class="btn buy-btn center-flexed" @click="payWithPaystack">
-                        <span class="btn-text">
-                            BUY UNITS
-                        </span>
+                      <button
+                        class="btn buy-btn center-flexed"
+                        @click="payWithPaystack"
+                      >
+                        <span class="btn-text"> BUY UNITS </span>
                       </button>
                     </div>
                   </div>
@@ -72,11 +76,13 @@
                           <span
                             class="d-flex justify-content-between msg-n-time"
                           >
-                            <span class="font-weight-bold">{{ !sms.subject ? '(no subject)' : sms.subject }}</span>
+                            <span class="font-weight-bold">{{
+                              !sms.subject ? "(no subject)" : sms.subject
+                            }}</span>
                             <span class="timestamp">{{ sms.dateSent }}</span>
                           </span>
                           <span class="brief-message font-weight-600"
-                            >{{ `${sms.message.split('').slice(0, 25).join("")}...` }}</span
+                            >{{ sms.message && sms.length > 25 ? `${sms.message.split('').slice(0, 25).join("")}...` : sms.message ? sms.message : '' }}</span
                           >
                         </div>
                         <div
@@ -96,12 +102,14 @@
                           <span>{{ sms.units }}</span>
                         </div>
                         <div
-                          class="col-md-2 col-ms-12 my-2 d-flex justify-content-between"
+                          class="col-md-2 col-ms-12 my-2 d-flex justify-content-between cursor-pointer"
                         >
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
                           </span>
-                          <span class="view-btn">View</span>
+                          <router-link to="/message-details" class="view-btn"
+                            >View</router-link
+                          >
                         </div>
                       </div>
                       <div class="row" v-if="index !== sentSMS.length - 1">
@@ -179,12 +187,12 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { onMounted, ref } from 'vue';
+import { onMounted, ref } from "vue";
 import router from "@/router/index";
 
 export default {
   setup() {
-    const sentSMS = ref([ ]);
+    const sentSMS = ref([]);
     const loading = ref(false);
 
     const getSentSMS = async () => {
@@ -196,23 +204,23 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     const payWithPaystack = () => {
-      router.push("/tenant/units")
-    }
+      router.push("/tenant/units");
+    };
 
     onMounted(() => {
       console.log("Hello");
-      getSentSMS()
-    })
+      getSentSMS();
+    });
 
     return {
       sentSMS,
       loading,
       payWithPaystack,
-    }
-  }
+    };
+  },
 };
 </script>
 
@@ -272,42 +280,48 @@ export default {
 }
 
 .menu-item-con {
-    color: #002044;
-    opacity: 0.5;
+  color: #002044;
+  opacity: 0.5;
 }
 
 .menu-item-con.active {
-    background: rgba(19, 106, 205, 0.05);
-    border-left: 2px solid #136ACD;
-    opacity: 1;
+  background: rgba(19, 106, 205, 0.05);
+  border-left: 2px solid #136acd;
+  opacity: 1;
 }
 
 .buy-btn {
-    background: rgb(112, 142, 177, .33);
-    border-radius: 22px;
+  background: rgb(112, 142, 177, 0.33);
+  border-radius: 22px;
 }
 
 .btn-text {
-    opacity: 1;
-    font-size: 11px;
-    font-weight: 700;
+  opacity: 1;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .timestamp {
-    font-size: 14px;
-    color: #333333;
-    opacity: 0.5;
+  font-size: 14px;
+  color: #333333;
+  opacity: 0.5;
 }
 
 .view-btn {
-    background: #EBEFF4;
-    border-radius: 21px;
-    padding: 4px 18px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: #ebeff4;
+  border-radius: 21px;
+  padding: 4px 18px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* .view-btn:hover {
+  cursor: pointer;
+  background-color: #136acd;
+  color: #fff;
+} */
 
 .center-flexed {
   display: flex;
@@ -315,11 +329,11 @@ export default {
 }
 
 .table-box {
-  border: 1px solid #4762F01F;
+  border: 1px solid #4762f01f;
 }
 
 .hr {
-  border: 1px solid #4762F01F;
+  border: 1px solid #4762f01f;
 }
 
 @media screen and (max-width: 767px) {

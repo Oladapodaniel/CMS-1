@@ -4,31 +4,44 @@
       <menu-links />
     </div> -->
     <!-- <div class="main-content"> -->
-      <div class="second-col container-top">
-        <div class="create-btn-div">
-          <div>
-            <h2 class="title">Dashboard</h2>
-            <p class="welcome-text">Welcome Back!</p>
-          </div>
-          
-          <div >
-            <button class="create-btn" @click="moreLinksVissible = !moreLinksVissible">
-              Create a new
-              <i class="fa fa-angle-down create-dd"></i>
-            </button>
-            <div class="more-items ml-1" v-if="moreLinksVissible">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-12 d-flex flex-column border rounded more-links">
-                    <router-link to="/tenant/people/add-person" class="font-weight-bold mt-3 text-dec-none">Add member</router-link>
-                    <router-link to="/tenant/people/add-first-timer" class="font-weight-bold text-dec-none">Add first timer</router-link>
-                  </div>
+    <div class="second-col container-top">
+      <div class="create-btn-div">
+        <div>
+          <h2 class="title">Dashboard</h2>
+          <p class="welcome-text">Welcome Back!</p>
+        </div>
+
+        <div>
+          <button
+            class="create-btn"
+            @click="moreLinksVissible = !moreLinksVissible"
+          >
+            Create new
+            <i class="fa fa-angle-down create-dd"></i>
+          </button>
+          <div class="more-items ml-1" v-if="moreLinksVissible">
+            <div class="container">
+              <div class="row">
+                <div
+                  class="col-md-12 d-flex flex-column border rounded more-links px-4"
+                >
+                  <router-link
+                    to="/tenant/people/add-person"
+                    class="font-weight-bold mt-3 text-dec-none"
+                    >Member</router-link
+                  >
+                  <router-link
+                    to="/tenant/people/add-first-timer"
+                    class="font-weight-bold text-dec-none"
+                    >First timer</router-link
+                  >
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- <div class="help-text1">
+      </div>
+      <!-- <div class="help-text1">
             <img src="../../assets/can-do.svg" alt="">
             <div class="can-do">
               <h4>Things You Can Do</h4>
@@ -40,82 +53,86 @@
               </div>
             </div>
           </div> -->
-        <div class="top-row px-0">
-          <div class="help-text2">
-            <img src="../../assets/can-do.svg" alt="">
-            <div class="can-do">
-              <h4>Things You Can Do</h4>
-              <div class="can-do-links">
-                <router-link to="/tenant/people/add-person">Add member</router-link>
-                <router-link to="/tenant/sms-communications/compose-message">Send SMS</router-link>
-                <router-link to="/tenant/people/add-first-timer">Add First Timer</router-link>
-                <router-link to="">Add Follow-up</router-link>
-              </div>
+      <div class="top-row px-0">
+        <div class="help-text2">
+          <img src="../../assets/can-do.svg" alt="" />
+          <div class="can-do">
+            <h4>Things You Can Do</h4>
+            <div class="can-do-links">
+              <router-link to="/tenant/people/add-person"
+                >Add member</router-link
+              >
+              <router-link to="/tenant/sms-communications/compose-message"
+                >Send SMS</router-link
+              >
+              <router-link to="/tenant/people/add-first-timer"
+                >Add First Timer</router-link
+              >
+              <router-link to="">Add Follow-up</router-link>
             </div>
           </div>
+        </div>
 
-          <div class="number-boxes">
-            <div class="box one">
-              <div class="top">
-                <div class="box-top">
-                  <div class="top-icon-div">
-                    <i class="fa fa-users"></i>
-                  </div>
-                  <div class="box-top-text">
-                    <p>FIRST TIMERS</p>
-                    <h4>30</h4>
-                  </div>
+        <div class="number-boxes">
+          <div class="box one">
+            <div class="top">
+              <div class="box-top">
+                <div class="top-icon-div">
+                  <i class="fa fa-users"></i>
                 </div>
-                <div class="box-middle">
-                  <h1>{{ tenantInfo.memberCount }}</h1>
-                  <span class="size-text">Church Size</span>
+                <div class="box-top-text">
+                  <p>FIRST TIMERS</p>
+                  <h4>30</h4>
                 </div>
               </div>
-              <div class="bottom">
-                <div class="box-bottom">
-                  <span class="plan-text">YOU'RE ON A FREE PLAN</span>
-                  <button class="upgrade-btn">
-                    <h4 class="box-btn-text">UPGRADE</h4>
-                  </button>
-                </div>
+              <div class="box-middle">
+                <h1>{{ tenantInfo.memberCount }}</h1>
+                <span class="size-text">Church Size</span>
               </div>
             </div>
-            <div class="box box2">
-              <div class="top">
-                <div class="box-top">
-                  <div class="top-icon-div">
-                    <i class="fa fa-envelope"></i>
-                  </div>
-                  <div class="box-top-text">
-                    
-                  </div>
-                </div>
-                <div class="box-middle">
-                  <h1>{{ tenantInfo.memberCount }}</h1>
-                  <span class="size-text">Church Size</span>
-                </div>
+            <div class="bottom">
+              <div class="box-bottom">
+                <span class="plan-text">YOU'RE ON A FREE PLAN</span>
+                <button class="upgrade-btn">
+                  <h4 class="box-btn-text">UPGRADE</h4>
+                </button>
               </div>
-              <div class="bottom">
-                <div class="box-bottom">
-                  <span class="plan-text"></span>
-                  <button class="upgrade-btn buy-btn">
-                    <h4 class="box-btn-text">BUY UNIT</h4>
-                  </button>
+            </div>
+          </div>
+          <div class="box box2">
+            <div class="top">
+              <div class="box-top">
+                <div class="top-icon-div">
+                  <i class="fa fa-envelope"></i>
                 </div>
+                <div class="box-top-text"></div>
+              </div>
+              <div class="box-middle">
+                <h1>{{ tenantInfo.memberCount }}</h1>
+                <span class="size-text">Church Size</span>
+              </div>
+            </div>
+            <div class="bottom">
+              <div class="box-bottom">
+                <span class="plan-text"></span>
+                <button class="upgrade-btn buy-btn">
+                  <h4 class="box-btn-text">BUY UNIT</h4>
+                </button>
               </div>
             </div>
           </div>
         </div>
-        
-        <div class="celeb-header">
-          <div class="celeb-icon">
-            <img src="../../assets/celeb-icon.svg" alt="Celebration Icon">
-          </div>
-          <div class="celeb-header-text">
-            <p>Celebrations</p>
-          </div>
+      </div>
+
+      <div class="celeb-header">
+        <div class="celeb-icon">
+          <img src="../../assets/celeb-icon.svg" alt="Celebration Icon" />
         </div>
-        <!-- <div class="table">
+        <div class="celeb-header-text">
+          <p>Celebrations</p>
+        </div>
+      </div>
+      <!-- <div class="table">
           <div class="table-top">
             <router-link to="" class="view-all">View all</router-link>
           </div>
@@ -198,84 +215,112 @@
             </button>
           </div>
         </div> -->
-        <div class="table table-responsive">
-          <div class="table-top">
-            <router-link to="" class="view-all">View all</router-link>
-          </div>
-          <table class="w-100">
-            <thead>
-              <tr>
-                <th>PICTURE</th>
-                <th>FIRSTNAME</th>
-                <th>LASTNAME</th>
-                <th>PHONE</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><img src="../../assets/people/phone-import.svg" alt="" /></td>
-                <td>FirstName</td>
-                <td>Lastname</td>
-                <td>mobilePhne</td>
-                <td><i class="fas fa-ellipsis-v"></i></td>
-              </tr>
-              <tr>
-                <td><img src="../../assets/people/phone-import.svg" alt="" /></td>
-                <td>Firstname</td>
-                <td>Lastname</td>
-                <td>mobilePhne</td>
-                <td><i class="fas fa-ellipsis-v"></i></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="table-footer">
-            <button class="tbl-footer-btn">
-              <i class="fa fa-angle-left"></i>
-            </button>
-              <button class="tbl-footer-btn">A</button>
-              <button class="tbl-footer-btn">A</button>
-              <button class="tbl-footer-btn">
-                <i class="fa fa-angle-right"></i>
-            </button>
-          </div>
+      <div class="table table-responsive">
+        <div class="table-top">
+          <router-link to="" class="view-all">View all</router-link>
         </div>
-        <div class="charts" id="plot">
-          <div>
-            <ColumnChart domId="chart1" title="Event Attendance" subtitle="Weekly Attendance of Events" header="Members Attendance" />
-          </div>
-
-          <div>
-            <ColumnChart domId="chart2" title="Event Attendance" subtitle="Weekly Attendance of Events" header="" />
-          </div>
-
-          <div>
-            <ColumnChart domId="chart3" title="Event Attendance" subtitle="Weekly Attendance of Events" header="Members Attendance" />
-          </div>
-          
-          <div class="pies">
-            <div class="pie-con">
-              <PieChart domId="pichart" title="Offering Breakdown" subtitle="Overview" distance="5" :titleMarginLeft="70" />
-            </div>
-            
-            <div class="pie-con">
-              <PieChart domId="pchart" title="Offering Breakdown" subtitle="Overview" distance="1" :titleMarginLeft="70" />
-            </div>
-          </div>
+        <table class="w-100">
+          <thead>
+            <tr>
+              <th>PICTURE</th>
+              <th>FIRSTNAME</th>
+              <th>LASTNAME</th>
+              <th>PHONE</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><img src="../../assets/people/phone-import.svg" alt="" /></td>
+              <td>FirstName</td>
+              <td>Lastname</td>
+              <td>mobilePhne</td>
+              <td><i class="fas fa-ellipsis-v"></i></td>
+            </tr>
+            <tr>
+              <td><img src="../../assets/people/phone-import.svg" alt="" /></td>
+              <td>Firstname</td>
+              <td>Lastname</td>
+              <td>mobilePhne</td>
+              <td><i class="fas fa-ellipsis-v"></i></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-footer">
+          <button class="tbl-footer-btn">
+            <i class="fa fa-angle-left"></i>
+          </button>
+          <button class="tbl-footer-btn">A</button>
+          <button class="tbl-footer-btn">A</button>
+          <button class="tbl-footer-btn">
+            <i class="fa fa-angle-right"></i>
+          </button>
         </div>
-
       </div>
+      <div class="charts" id="plot">
+        <div>
+          <ColumnChart
+            domId="chart1"
+            title="Event Attendance"
+            subtitle="Weekly Attendance of Events"
+            header="Members Attendance"
+          />
+        </div>
+
+        <div>
+          <ColumnChart
+            domId="chart2"
+            title="Event Attendance"
+            subtitle="Weekly Attendance of Events"
+            header=""
+          />
+        </div>
+
+        <div>
+          <ColumnChart
+            domId="chart3"
+            title="Event Attendance"
+            subtitle="Weekly Attendance of Events"
+            header="Members Attendance"
+          />
+        </div>
+
+        <div class="pies">
+          <div class="pie-con">
+            <PieChart
+              domId="pichart"
+              title="Offering Breakdown"
+              subtitle="Overview"
+              distance="5"
+              :titleMarginLeft="70"
+              :height="400"
+            />
+          </div>
+
+          <div class="pie-con">
+            <PieChart
+              domId="pchart"
+              title="Offering Breakdown"
+              subtitle="Overview"
+              distance="1"
+              :titleMarginLeft="70"
+              :height="400"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- </div> -->
   </main>
 </template>
 
 <script>
-import PieChart from "@/components/charts/PieChart.vue"
-import ColumnChart from "@/components/charts/ColumnChart.vue"
-import { ref } from 'vue';
+import PieChart from "@/components/charts/PieChart.vue";
+import ColumnChart from "@/components/charts/ColumnChart.vue";
+import { ref } from "vue";
 // import { useRoute } from 'vue-router';
 // import store from "@/store/store.js"
-import router from "@/router/index"
+import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 
 export default {
@@ -288,7 +333,7 @@ export default {
     const moreLinksVissible = ref(false);
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
-    }
+    };
 
     const celebrations = [
       {
@@ -300,33 +345,32 @@ export default {
         firstName: "FirstName",
         lastName: "lastName",
         mobilePhone: "mobilePhone",
-      }
+      },
     ];
 
     // const route = useRoute();
 
-    const tenantInfo = ref({ });
-    
-    axios.get("/dashboard")
-      .then(res => {
+    const tenantInfo = ref({});
+
+    axios
+      .get("/dashboard")
+      .then((res) => {
         tenantInfo.value = res.data;
       })
-      .catch(err => {
-        console.log(err.respone)
+      .catch((err) => {
+        console.log(err.respone);
         if (err.response.status === 401) {
-          localStorage.removeItem("token")
-          router.push("/")
+          localStorage.removeItem("token");
+          router.push("/");
         }
-      })
-
-
+      });
 
     return {
       celebrations,
       tenantInfo,
       moreLinksVissible,
       toggleMoreLinkVissibility,
-    }
+    };
   },
 };
 </script>
@@ -379,9 +423,9 @@ export default {
 }
 
 .welcome-text {
-    margin: -18px 0 0 0;
-    color: #02172E;
-    font-size: 18px;
+  margin: -18px 0 0 0;
+  color: #02172e;
+  font-size: 18px;
 }
 
 .top-row {
@@ -410,14 +454,13 @@ export default {
 }
 
 .top-icon-div {
-      background: #F1F5F8;
-    padding: 4px;
-    border-radius: 50%;
-    
+  background: #f1f5f8;
+  padding: 4px;
+  border-radius: 50%;
 }
 
 .top-icon-div i {
-  color: #136ACD;
+  color: #136acd;
   font-size: 24px;
   padding: 4px;
   /* filter: invert(29%) sepia(74%) saturate(1909%) hue-rotate(197deg) brightness(91%) contrast(89%); */
@@ -442,7 +485,7 @@ export default {
 }
 
 .can-do h4 {
-  margin: 0 ;
+  margin: 0;
   font-weight: 600;
   font-size: 20px;
 }
@@ -486,7 +529,7 @@ export default {
 .box {
   width: 200px;
   margin-left: 20px;
-   
+
   /* background: #F1F5F8; */
 }
 
@@ -494,7 +537,7 @@ export default {
   border-radius: 28px 28px 0 0;
   padding: 20px;
   border: 1px solid #e6e5f2;
-  box-shadow: 0px 1px 4px #02172E45;
+  box-shadow: 0px 1px 4px #02172e45;
   border-bottom: transparent;
 }
 
@@ -502,10 +545,10 @@ export default {
   display: flex;
   justify-content: space-between;
   border-radius: 0px 0px 28px 28px;
-  background: #F1F5F8;
+  background: #f1f5f8;
   padding: 10px;
   border: 1px solid #e6e5f2;
-  box-shadow: 0px 1px 4px #02172E45;
+  box-shadow: 0px 1px 4px #02172e45;
   border-top: transparent;
 }
 
@@ -525,7 +568,7 @@ export default {
 .upgrade-btn {
   align-self: center;
   padding: 7px;
-  background: #797E81;
+  background: #797e81;
   border-radius: 20px;
   color: #002044;
   border: none;
@@ -543,7 +586,7 @@ export default {
 .buy-btn {
   width: 109.5px;
   color: #002044;
-  background: #797E81;
+  background: #797e81;
 }
 
 .buy-btn:hover {
@@ -646,7 +689,7 @@ export default {
 }
 
 tbody tr:nth-child(even) {
-  background: #F7FAFC;
+  background: #f7fafc;
 }
 
 .table-body {
@@ -687,17 +730,23 @@ tbody tr:nth-child(even) {
   font-size: 11px;
 }
 
-.table tr td img{
+.table tr td img {
   width: 40px;
 }
 
 .table tbody {
   font-size: 14px;
-  align-items: center
+  align-items: center;
 }
 
 .more-links a {
   text-decoration: none;
+}
+
+.pie-con {
+  border: 0.4000000059604645px solid #dde2e6;
+  box-shadow: 0px 1px 4px #02172e45;
+  border-radius: 10px;
 }
 /* WIP */
 
@@ -710,7 +759,6 @@ tbody tr:nth-child(even) {
     width: 90%;
   }
 } */
-
 
 @media screen and (max-width: 940px) {
   .top-row {
@@ -744,9 +792,7 @@ tbody tr:nth-child(even) {
   }
 }
 
-
 @media (min-width: 1101px) and (max-width: 1231px) {
-
   /* .top-row {
       flex-direction: column;
   }
