@@ -11,8 +11,8 @@
           <div class="header">
             <h1>Your all in one church management solution</h1>
             <h3 class="intro">
-              Wave helps freelancers, consultants, and small businesses <br />
-              around the world simplify their finances.
+              A church software that automates your entire  <br />
+              church management processes.
             </h3>
           </div>
         </div>
@@ -165,7 +165,7 @@ export default {
 .header {
   text-align: center;
   margin-bottom: 30px;
-  margin-top: 4px;
+  margin-top: 3em;
 }
 
 .header h1 {

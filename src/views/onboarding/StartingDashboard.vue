@@ -8,7 +8,7 @@
     <div class="main-con">
       <div class="main-section">
         <div class="intro-div">
-          <h1 class="intro-header">Welcome Grace and Power Ministry</h1>
+          <h1 class="intro-header">Welcome {{ data.churchName }} Ministry</h1>
           <p class="intro-subtext">Where do you want to start ?</p>
         </div>
         <div class="boxes-con">
@@ -77,6 +77,7 @@
                 <div class="box-small-text">
                   <p>Stay compliant by keeping accurate records</p>
                 </div>
+                
               </div>
             </div>
           </router-link>
@@ -87,18 +88,33 @@
 </template>
 
 <script>
+import  { ref } from 'vue'
+import store from '../../store/modules/auth'
+import axios from "@/gateway/backendapi"
 export default {
-  data() {
-    return {
-      userId: "",
-    };
-  },
+  setup() {
+       const data =  ref({})
+      const churchData = () => {
+        if (store.state.currentUser.churchName == undefined) {
+          axios.get("/api/Membership/GetCurrentSignedInUser")
+              .then(res => {
+                console.log(res.data);
+                data.value = res.data
+              })
+              .catch(err => console.log(err))
+        }  else {
+            data.value = store.state.currentUser
+            
+        }
+      }
+      churchData()
 
-  methods: {
-    // actionSelected(url) {
-    //   this.$router.push(url);
-    // }
-  },
+
+    return {
+      data,
+      churchData
+    };
+  }
 };
 </script>
 
@@ -119,6 +135,7 @@ export default {
 
 .main-con {
   display: flex;
+  margin-top: 3em;
 }
 
 .nav-con {

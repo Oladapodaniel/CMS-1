@@ -49,19 +49,6 @@
                     class="label-search d-flex"
                     :class="{ 'show-search': filterFormIsVissible }"
                   >
-                    <input type="text" placeholder="filter" />
-                    <span class="empty-btn">x</span>
-                    <span class="search-btn">
-                      <i class="fa fa-search"></i>
-                    </span>
-                  </label>
-
-                  <label
-                    v-if="filterFormIsVissible"
-                    class="label-search d-flex"
-                    placeholder="search"
-                    :class="{ 'show-search': filterFormIsVissible }"
-                  >
                     <input type="text" />
                     <span class="empty-btn">x</span>
                     <span class="search-btn">
@@ -82,10 +69,15 @@
                     <div class="col-md-9">
                       <div class="row">
                         <div class="col-md-5 form-group inp">
-                          <select name="" id="" class="form-control">
-                            <option value="">Option 1</option>
-                            <option value="">Option 2</option>
-                          </select>
+                          <div class="input-field">
+                            <label for="" class="label">Address</label>
+                            <input
+                              type="text"
+                              class="input"
+                              placeholder=""
+                            
+                            />
+                          </div>
                         </div>
 
                         <div class="col-md-5 offset-md-2 form-group">
