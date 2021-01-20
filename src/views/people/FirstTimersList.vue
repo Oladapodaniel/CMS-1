@@ -317,15 +317,15 @@ export default {
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
 
-    //  const getFirstTimers = () => {
-      // axios.get("/api/People/FirstTimer")
-      //     .then(res => {
-      //       churchMembers.value = res.data;
-      //       console.log(res.data)
-      //     })
-      //     .catch(err => console.log(err))
-    //   console.log('Is it getting')
-    // }
+     const firstTimerSummary = () => {
+      axios.get("/api/People/GetFirsttimerSummary")
+          .then(res => {
+            // churchMembers.value = res.data;
+            console.log(res.data)
+          })
+          .catch(err => console.log(err))
+        
+    }
 
 
     // const getFirstTimers = async () => {
@@ -340,6 +340,7 @@ export default {
     //   }
     // };
 
+
     onMounted(() => {
       console.log(route, "route");
         axios.get("/api/People/FirstTimer")
@@ -353,7 +354,7 @@ export default {
       churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,
-      // getFirstTimers,
+      firstTimerSummary
     };
   },
 };
