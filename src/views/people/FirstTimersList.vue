@@ -376,17 +376,6 @@ export default {
   margin: 18px 0;
 }
 
-/* .summary { */
-  /* width: 20%; */
-  /* border-radius: 30px; */
-  /* box-shadow: 0px 3px 6px #2c28281c; */
-  /* padding: 0px 20px 0 20px;
-  background: #fff; */
-  /* margin-bottom: 24px; */
-  /* height: fit-content;
-  border: 2px solid red;
-} */
-
 .summary {
     /* width: 20%; */
     border-radius: 30px;

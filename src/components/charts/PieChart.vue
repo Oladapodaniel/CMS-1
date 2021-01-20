@@ -26,13 +26,17 @@ export default {
 
 
     onUpdated(() => {
-       props.membershipSummary.forEach(i => {
-        let summaryObj = {
-          name: i.name,
-          y: i.value
-        }
-        summary.value.push(summaryObj)
-      })
+       try {
+         props.membershipSummary.forEach(i => {
+          let summaryObj = {
+            name: i.name,
+            y: i.value
+          }
+          summary.value.push(summaryObj)
+        })
+       } catch (error) {
+         console.log(error);
+       }
 
       console.log(summary.value)
 
