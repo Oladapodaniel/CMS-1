@@ -30,7 +30,7 @@ export default {
           enabled: false,
         },
         title: {
-          text: `<b style="font-weight:normal">${props.title}</b>`,
+          text: `<b style="font-weight:normal;font-size:10px">${props.title}</b>`,
           align: 'left',
           x: props.titleMarginLeft ? props.titleMarginLeft : 20,
           y: props.titleMargin ? props.titleMargin : 20,
