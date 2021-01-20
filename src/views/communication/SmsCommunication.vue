@@ -22,7 +22,7 @@
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
                   <router-link
                     to="/tenant/sms-communications/compose-message"
-                    class="btn compose-btn"
+                    class="btn compose-btn default-btn border-none"
                     >Compose new SMS</router-link
                   >
                 </div>
