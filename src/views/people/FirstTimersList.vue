@@ -22,7 +22,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="my-con">
-          <div class="summary px-0">
+          <div class="summary">
             <p class="summary-header">Summary</p>
             <!-- <hr class="hr" /> -->
 
@@ -47,7 +47,7 @@
               <div class="board fig">
                 <ByGenderChart
                   domId="chart"
-                  title="INVITATION SOURCE"
+                  title="Invitation Source"
                   distance="5"
                   :titleMargin="10"
                 />
@@ -55,14 +55,14 @@
               <div class="board fig">
                 <ByMaritalStatusChart
                   domId="second"
-                  title="INTERESTING IN JOINING"
+                  title="Interested In Joining"
                   :titleMargin="10"
                 />
               </div>
               <div class="board fig">
                 <ByMaritalStatusChart
                   domId="set"
-                  title="TO BE CONTACTED"
+                  title="To Be Contacted"
                   style="height: 100%"
                   :titleMargin="10"
                 />
@@ -376,14 +376,25 @@ export default {
   margin: 18px 0;
 }
 
-.summary {
+/* .summary { */
   /* width: 20%; */
-  border-radius: 30px;
+  /* border-radius: 30px; */
   /* box-shadow: 0px 3px 6px #2c28281c; */
-  padding: 0px 20px 0 20px;
-  background: #fff;
+  /* padding: 0px 20px 0 20px;
+  background: #fff; */
   /* margin-bottom: 24px; */
-  height: fit-content
+  /* height: fit-content;
+  border: 2px solid red;
+} */
+
+.summary {
+    /* width: 20%; */
+    border-radius: 30px;
+    /* box-shadow: 0px 3px 6px #2c28281c; */
+    padding: 24px 10px;
+    background: #fff;
+    box-shadow: 0px 3px 6px #2c28281c;
+    border: 1px solid #00204424;
 }
 
 .table {
@@ -485,21 +496,7 @@ export default {
   transition: all 0.5s ease-in-out;
 }
 
-.apply-btn {
-  background: #136acd;
-  color: #fff;
-  border: 1px solid #002044;
-  border-radius: 111px;
-  width: 101px;
-  height: 41px;
-  font-weight: 700;
-  outline: transparent;
-}
 
-.clear-link,
-.hide-link {
-  color: #136acd;
-}
 
 .clear-link,
 .hide-link {
@@ -601,6 +598,30 @@ export default {
   max-height: 310px;
   border-radius: 10px;
 }
+
+  .boards {
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .board {
+    width: 45%;
+    margin: 10px 0;
+    max-height: 310px;
+  }
+
+  .board.members-count {
+    padding: 24px;
+  }
+
+  .chart-con {
+    flex-direction: column;
+  }
+
+  .page-header {
+    font-size: 1.7rem;
+  }
 
 @media screen and (max-width: 500px) {
   .picture,
@@ -755,44 +776,11 @@ export default {
   max-height: 216px;
 }
 
-@media screen and (max-width: 1399px) {
-  .boards {
-    /* flex-direction: column; */
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
+/* @media screen and (max-width: 1399px) { */
 
-  .board {
-    width: 45%;
-    margin: 8px 0;
-    max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
-    box-shadow: 0px 1px 4px #02172e45;
-  }
+/* } */
 
-  .board.members-count {
-    padding: 24px;
-  }
-
-  .chart-con {
-    flex-direction: column;
-  }
-
-  .summary {
-    border-radius: none !important;
-    box-shadow: none !important;
-  }
-
-  .page-header {
-    font-size: 1.7rem;
-  }
-
-  .total {
-    font-size: 27px;
-  }
-}
-
-@media screen and (min-width: 1400px) {
+/* @media screen and (min-width: 1400px) {
   .table {
     width: 68%;
     margin-top: 0 !important;
@@ -827,8 +815,7 @@ export default {
 
   .board.fig {
     padding: 24px 8px 0 8px;
-    /* border: none;
-    box-shadow: none; */
+
   }
 
   .board.members-count {
@@ -837,9 +824,6 @@ export default {
     border: 0.4000000059604645px solid #dde2e6;
   }
 
-  /* #chart {
-    border: 0.4000000059604645px solid #dde2e6;
-  } */
 
   .chart-con {
     width: 100%;
@@ -853,7 +837,7 @@ export default {
     min-height: 390px !important;
   }
 
-}
+} */
 </style>
 
 

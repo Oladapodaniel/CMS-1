@@ -138,7 +138,6 @@ export default {
 
 @media (max-width: 545px) {
   .top {
-    border: 2px solid red;
     display: block;
     text-align: center;
     }

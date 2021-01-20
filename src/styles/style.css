@@ -75,6 +75,17 @@
     background: #EBEFF4;
   }
 
+  .apply-btn {
+    background: #136acd;
+    color: #fff;
+    border: 1px solid #002044;
+    border-radius: 111px;
+    width: 101px;
+    height: 41px;
+    font-weight: 700;
+    outline: transparent;
+  }
+
   .primary-text {
     color: #136ACD;
   }
@@ -173,10 +184,6 @@
     text-align: center;
   }
   
-  .select-all {
-    width: 65%;
-    padding: 0 10px;
-  }
   
   .filter,
   .sort,
@@ -287,17 +294,6 @@
     padding: 0 10px;
   }
   
-  .filter,
-  .sort,
-  .search {
-    width: 15%;
-  }
-  
-  .data-text {
-    font-weight: bold;
-    font-size: large;
-    display: none;
-  }
   
   .picture,
   .firstname,
