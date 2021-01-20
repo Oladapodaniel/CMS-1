@@ -9,7 +9,7 @@ import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-    props: [ "title", "subtitle", "distance", "domId", "titleMargin", "titleMarginLeft"],
+    props: [ "title", "subtitle", "distance", "domId", "titleMargin", "titleMarginLeft", "height"],
   setup(props) {
     const chart = ref(null);
     // let elemId = "";
@@ -21,6 +21,7 @@ export default {
         chart: {
           type: "pie",
           renderTo: props.domId,
+          height: props.height ? props.height : 216,
         },
         credits: {
           enabled: false,
@@ -29,7 +30,7 @@ export default {
           enabled: false,
         },
         title: {
-          text: `<b style="font-weight:normal">${props.title}</b>`,
+          text: `<b style="font-weight:normal;font-size:10px">${props.title}</b>`,
           align: 'left',
           x: props.titleMarginLeft ? props.titleMarginLeft : 20,
           y: props.titleMargin ? props.titleMargin : 20,
@@ -133,8 +134,7 @@ export default {
 
     .summary-chart {
       width: 100% !important;
-      box-shadow: 0px 1px 4px #02172E45;
-      box-shadow: 0px 1px 4px #02172E45;
+      /* box-shadow: 0px 1px 4px #02172E45; */
       /* border: 1px solid #DDE2E6; */
       border-radius: 22px;
       /* margin-bottom: 24px; */

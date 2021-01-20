@@ -16,6 +16,10 @@
     margin-top: 30px
 }
 
+.bg-secondary {
+  background: #6c757d47 !important;
+}
+
 .table {
     margin: 20px auto;
     width: 100%;
@@ -35,7 +39,8 @@
   }
 
   .grey-rounded-border {
-    border: 1px solid #02172E30;
+    /* border: 1px solid #02172E30; */
+    border: 1px solid #b2c2cd !important;
     border-radius: 8px;
   }
 
@@ -94,18 +99,22 @@
   .small-text {
     font-size: 14px;
   }
-
+/* 
   #chart {
     width: 48%;
     max-height: 310px;
     border: 0.4000000059604645px solid #dde2e6;
     border-radius: 10px;
+  } */
+
+  .minimized-input-width {
+    width: 50px;
   }
   
   #second {
     width: 48%;
     max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
+    /* border: 0.4000000059604645px solid #dde2e6; */
     border-radius: 10px;
   }
   
@@ -204,19 +213,19 @@
     text-align: center;
   }
 
-  #chart {
+  /* #chart {
     width: 48%;
     max-height: 310px;
     border: 0.4000000059604645px solid #dde2e6;
     border-radius: 10px;
-  }
+  } */
   
-  #second {
+  /* #second {
     width: 48%;
     max-height: 310px;
     border: 0.4000000059604645px solid #dde2e6;
     border-radius: 10px;
-  }
+  } */
   
   .table {
     width: 100%;
@@ -304,6 +313,10 @@
   .phone {
     text-align: center;
   }
+
+  .c-pointer {
+    cursor: pointer;
+  }
   
   @media screen and (max-width: 500px) {
     .picture,
@@ -351,16 +364,11 @@
     .chart-con {
       flex-direction: column !important;
       align-items: center;
-      width: 85% !important;
     }
   
     .chart-con div {
       width: 100% !important;
       margin-top: 10px;
-    }
-  
-    .board {
-      width: 85% !important;
     }
   }
   
@@ -371,15 +379,16 @@
     }
   
     .chart-con {
-      width: 85% !important;
+      width: 100% !important;
     }
   
-    .chart-con div {
-      width: 40%;
+    .chart1,
+    .chart2 {
+      width: 49% !important;
     }
   
     .board {
-      width: 80% !important;
+      width: 100% !important;
       margin-bottom: 10px;
     }
   }
@@ -687,6 +696,16 @@
   .info-btn:hover {
     background: #136acd;
     color: #fff;
+  }
+
+  .select-groups-dropdown {
+    position: absolute;
+    z-index: 10001;
+    max-height: 350px;
+    overflow: auto;
+    background: #fff;
+    box-shadow: 0px 1px 4px #02172e45;
+    border: 1px solid #dde2e6;
   }
   
   .submit-div {

@@ -189,12 +189,12 @@
       </div>
 
       <div class="row d-md-flex justify-content-around mb-5">
-        <div class="col-md-4 bank-details">
+        <div class="col-md-4 my-2 bank-details px-0">
           <div class="row">
-            <div class="col-md-3">
-              <img src="../../assets/google.png" alt="Image" />
+            <div class="col-md-4 d-flex align-items-center">
+              <img src="../../assets/gtbank.png" class="px-1" alt="Image" />
             </div>
-            <div class="col-md-9">
+            <div class="col-md-8 px-md-1">
               <p class="font-weight-600 pt-2">Guarantee Trust Bank</p>
               <p class="mb-0">Account Name:</p>
               <p class="mb-0">Account Number:</p>
@@ -202,12 +202,12 @@
           </div>
         </div>
 
-        <div class="col-md-5 bank-details">
+        <div class="col-md-5 my-2 bank-details px-0">
           <div class="row">
-            <div class="col-md-3">
-              <img src="../../assets/google.png" alt="Image" />
+            <div class="col-md-4 d-flex align-items-center">
+              <img src="../../assets/diamondbank.png" class="px-1" alt="Image" />
             </div>
-            <div class="col-md-9">
+            <div class="col-md-8 px-md-1">
               <p class="font-weight-600 pt-2">Diamond Bank</p>
               <p class="mb-0">Account Name: Complustech Limited</p>
               <p class="mb-0">Account Number: 0017934252</p>
@@ -215,10 +215,13 @@
           </div>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-2 my-2 px-0">
           <div class="row">
             <div class="col-md-12">
-              <img src="../../assets/google.png" alt="Image" />
+              <img src="../../assets/mastercard.png" alt="Image" />
+            </div>
+            <div class="col-md-12">
+              <img src="../../assets/visacard.png" class="px-1" alt="Image" />
             </div>
           </div>
         </div>

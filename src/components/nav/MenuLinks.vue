@@ -2,21 +2,21 @@
   <div>
     <div class="nav-con">
       <div>
-        <div class="nav">
+        <div class="nav" @click="linkClicked">
           <div class="user">
             <img
               src="../../assets/dashboardlinks/churchcloud.png"
               class="link-image"
               alt=""
             />
-            <!-- <a href="" class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
+            <!-- <a  class="user-link">Grace... <span class="user-link-icon"> ></span></a> -->
             <a class="user-link"
               >{{ tenantDisplayName }}
               <span class="user-link-icon"
                 ><i class="fa fa-angle-right"></i></span
             ></a>
           </div>
-          <router-link to="/tenant" class="link dashboard-link">
+          <router-link to="/tenant" class="link routelink dashboard-link">
             <img
               src="../../assets/dashboardlinks/dashboard-icon.svg"
               class="link-icon"
@@ -51,22 +51,22 @@
           </a>
           <ul class="dd-list" :class="{ 'dd-hide-list': !peopleLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" :to="`/tenant/people`"
+              <router-link class="dd-link-item routelink" :to="`/tenant/people`"
                 >Members</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" :to="`/tenant/first-timers`"
+              <router-link class="dd-link-item routelink" :to="`/tenant/first-timers`"
                 >First Timers</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/tenant/people-groups"
+              <router-link class="dd-link-item routelink" to="/tenant/people-groups"
                 >Groups</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Families</router-link>
+              <router-link class="dd-link-item routelink" to="">Families</router-link>
             </li>
           </ul>
           <!-- </a> -->
@@ -95,22 +95,22 @@
           </a>
           <ul class="dd-list" :class="{ 'dd-hide-list': !commLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/tenant/sms-communications"
+              <router-link class="dd-link-item routelink" to="/tenant/sms-communications"
                 >SMS</router-link
               >
             </li>
             <li class="dd-list-item">
               <router-link
-                class="dd-link-item"
+                class="dd-link-item routelink"
                 to="/tenant/email-communications"
                 >Email</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Whatsapp</router-link>
+              <router-link class="dd-link-item routelink" to="">Whatsapp</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Voice</router-link>
+              <router-link class="dd-link-item routelink" to="">Voice</router-link>
             </li>
           </ul>
           <!-- </a> -->
@@ -142,12 +142,12 @@
             :class="{ 'dd-hide-list': !eventsLinkDropped }"
           >
             <li class="dd-list-item">
-              <router-link class="dd-link-item" :to="`/tenant/empty-event`"
+              <router-link class="dd-link-item routelink" :to="`/tenant/empty-event`"
                 >Events</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/"
+              <router-link class="dd-link-item routelink" to=""
                 >Attendance & Checkin</router-link
               >
             </li>
@@ -183,32 +183,32 @@
             :class="{ 'dd-hide-list': !accLinkDropped }"
           >
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Offerings</router-link>
+              <router-link class="dd-link-item routelink" to="">Offerings</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Expenses</router-link>
+              <router-link class="dd-link-item routelink" to="">Expenses</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/">Pledges</router-link>
+              <router-link class="dd-link-item routelink" to="">Pledges</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/"
+              <router-link class="dd-link-item routelink" to=""
                 >Transactions</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/"
+              <router-link class="dd-link-item routelink" to=""
                 >Expense Approval</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item" to="/"
+              <router-link class="dd-link-item routelink" to=""
                 >Charts of Account</router-link
               >
             </li>
           </ul>
 
-          <a href="" class="link">
+          <a class="link routelink">
             <img
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"
@@ -230,7 +230,7 @@
               </p>
             </div>
             <div class="more-links" :class="{ 'hide-more-links': moreShown }">
-              <a href="" class="link follow-up">
+              <a  class="link follow-up routelink">
                 <img
                   src="../../assets/dashboardlinks/follow-up-icon.svg"
                   class="link-icon"
@@ -239,7 +239,7 @@
                 Follow up
               </a>
 
-              <a href="" class="link">
+              <a  class="link routelink">
                 <img
                   src="../../assets/dashboardlinks/social-icon.svg"
                   class="link-icon"
@@ -248,7 +248,7 @@
                 Social & Mobile App
               </a>
 
-              <a href="" class="link">
+              <a  class="link routelink">
                 <img
                   src="../../assets/dashboardlinks/media.svg"
                   class="link-icon"
@@ -257,7 +257,7 @@
                 Media & Monetization
               </a>
 
-              <a href="" class="link">
+              <a  class="link routelink">
                 <img
                   src="../../assets/dashboardlinks/branches.svg"
                   class="link-icon"
@@ -269,9 +269,9 @@
           </div>
           <hr class="hr" />
 
-          <router-link class="link" to="/tenant/settings"> Settings </router-link>
+          <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
 
-          <a class="link"> Integration </a>
+          <a class="link routelink"> Integration </a>
         </div>
       </div>
     </div>
@@ -284,7 +284,7 @@ import { useRoute } from "vue-router";
 import store from "@/store/store";
 import axios from "@/gateway/backendapi";
 export default {
-  setup() {
+  setup(props, { emit }) {
     const route = useRoute();
 
     const moreShown = ref(false);
@@ -350,6 +350,12 @@ export default {
       return name;
     });
 
+    const linkClicked = (e) => {
+      if (e.target.classList.contains("routelink")) {
+        emit('linkclicked', true);
+      }
+    }
+
     return {
       route,
       moreShown,
@@ -364,6 +370,7 @@ export default {
       eventsLinkDropped,
       toggleEventsDropDown,
       tenantDisplayName,
+      linkClicked,
     };
   },
 };
@@ -418,6 +425,10 @@ export default {
 
 .nav router-link:hover {
   color: #00204412;
+}
+
+.link:hover {
+  cursor: pointer;
 }
 .nav .user {
   opacity: 1;

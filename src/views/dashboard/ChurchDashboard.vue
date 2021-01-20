@@ -16,24 +16,24 @@
             class="create-btn"
             @click="moreLinksVissible = !moreLinksVissible"
           >
-            Create a new
+            Create new
             <i class="fa fa-angle-down create-dd"></i>
           </button>
           <div class="more-items ml-1" v-if="moreLinksVissible">
             <div class="container">
               <div class="row">
                 <div
-                  class="col-md-12 d-flex flex-column border rounded more-links"
+                  class="col-md-12 d-flex flex-column border rounded more-links px-4"
                 >
                   <router-link
                     to="/tenant/people/add-person"
                     class="font-weight-bold mt-3 text-dec-none"
-                    >Add member</router-link
+                    >Member</router-link
                   >
                   <router-link
                     to="/tenant/people/add-first-timer"
                     class="font-weight-bold text-dec-none"
-                    >Add first timer</router-link
+                    >First timer</router-link
                   >
                 </div>
               </div>
@@ -293,6 +293,7 @@
               subtitle="Overview"
               distance="5"
               :titleMarginLeft="70"
+              :height="400"
             />
           </div>
 
@@ -303,6 +304,7 @@
               subtitle="Overview"
               distance="1"
               :titleMarginLeft="70"
+              :height="400"
             />
           </div>
         </div>
@@ -739,6 +741,12 @@ tbody tr:nth-child(even) {
 
 .more-links a {
   text-decoration: none;
+}
+
+.pie-con {
+  border: 0.4000000059604645px solid #dde2e6;
+  box-shadow: 0px 1px 4px #02172e45;
+  border-radius: 10px;
 }
 /* WIP */
 

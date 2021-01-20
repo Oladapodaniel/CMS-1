@@ -967,9 +967,8 @@
                                 <button
                                   type="button"
                                   class="btn primary-btn px-4 text-white"
-                                  :data-dismiss="modalShouldClose"
                                   @click="createNewEvent"
-                                  :disabled="savingNewEvent"
+                                  data-dismiss="modal"
                                 >
                                   Save changes
                                 </button>
@@ -1246,7 +1245,6 @@ export default {
       activityFirstTimers: [],
     });
 
-    const modalShouldClose = ref("");
     const invalidEventDetails = ref(false);
     const savingNewEvent = ref(false);
     const createNewEvent = async () => {
@@ -1259,9 +1257,9 @@ export default {
             "/api/Events/CreateActivity",
             newEvent.value
           );
-          selectedEventAttended.value.id = data.id;
-          selectedEventAttended.value.name = data.name;
-          modalShouldClose.value = "modal";
+          selectedEventAttended.value.activityID = data.currentEvent.id;
+          selectedEventAttended.value.name = data.currentEvent.name ? data.currentEvent.name : "New event selected";
+          console.log(selectedEventAttended, "SAE");
           toast.add({
             severity: "success",
             summary: "Event created",
@@ -1275,7 +1273,6 @@ export default {
         } catch (error) {
           savingNewEvent.value = false;
           console.log(error.response);
-          modalShouldClose.value = "modal";
         }
       } else {
         invalidEventDetails.value = true;
@@ -1363,7 +1360,6 @@ export default {
       preventTying,
       newEvent,
       createNewEvent,
-      modalShouldClose,
       invalidEventDetails,
       savingNewEvent,
     };
