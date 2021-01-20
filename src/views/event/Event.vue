@@ -1779,18 +1779,18 @@ export default {
         this.selectedEventCategoryId = eventObj.id;
         console.log(this.selectedEventCategoryId);
       } else {
-        let rahh = `${this.newEvents.length + 1}`
+        let arrLengthId = `${this.newEvents.length + 1}`
         this.newEvents.push({
           name: this.eventText,
           // id: "00000000-0000-0000-0000-000000000000"
-          id: rahh
+          id: arrLengthId
         })
         this.selectedEventCategoryName = this.event;
         // this.selectedEventCategoryName = this.eventText;
         // this.selectedEventCategoryId ="00000000-0000-0000-0000-000000000000"
         // alert(this.selectedEventCategoryName)
         // alert(this.eventText)
-        this.selectedEventCategoryId = rahh
+        this.selectedEventCategoryId = arrLengthId
       }
       console.log(this.newEvents)
       this.eventText = ""

@@ -49,6 +49,13 @@
              <span></span>
           </button>
         </div>
+        <!-- <div @click="facebookSignIn"> -->
+          <fb:login-button scope="public_profile,email"
+                     onlogin="checkLoginState();">
+          </fb:login-button>
+          <!--Display access token-->
+          <div id="authstatus">   </div>
+        <!-- </div> -->
       </div>
 
       <div class="bottom-container">
@@ -118,11 +125,44 @@ export default {
         console.log(data);
       }
 
+        const  facebookSignIn = () => {
+        
+      }
+      window.fbAsyncInit = function() {
+          /*eslint no-undef: "warn"*/
+          FB.init({
+              appId: '4114921131852813',
+            cookie     : true,
+            xfbml      : true,
+              version: 'v9.0'
+          });
+
+          FB.AppEvents.logPageView();
+
+        };
+
+        (function(d, s, id){
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "https://connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+
+          const checkLoginState = () => {
+
+              FB.getLoginStatus(function (response) {
+                  $("#authstatus").html("<code>" + JSON.stringify(response,null,2) + "</code>");
+              });
+        }
+
       return {
         state,
         login,
         loading,
         itemSelected,
+        facebookSignIn,
+        checkLoginState
       };
     }
 };

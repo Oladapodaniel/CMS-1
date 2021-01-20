@@ -5,19 +5,44 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-    props: [ "title", "subtitle", "distance", "domId", "titleMargin", "titleMarginLeft", "height"],
+    props: [ "title", "subtitle", "distance", "domId", "titleMargin", "titleMarginLeft", "height", "membershipSummary"],
   setup(props) {
     const chart = ref(null);
+    const summary = ref([])
     // let elemId = "";
     
+    
 
-    onMounted(() => {
+    // onMounted(() => {
       // elemId = props.domId;
-      var highchartsOptions = {
+     
+      
+
+      console.log(props)
+
+
+    onUpdated(() => {
+       try {
+         props.membershipSummary.forEach(i => {
+          let summaryObj = {
+            name: i.name,
+            y: i.value
+          }
+          summary.value.push(summaryObj)
+        })
+       } catch (error) {
+         console.log(error);
+       }
+
+      console.log(summary.value)
+
+
+
+            var highchartsOptions = {
         chart: {
           type: "pie",
           renderTo: props.domId,
@@ -74,7 +99,7 @@ export default {
                 return this.point.name + ': ' + Math.round(this.percentage*100)/100 + ' %';
               },
               // format: '{point.name}: {point.y:.1f}%',
-              distance: props.distance ? props.distance : -50,
+              distance: props.distance ? props.distance : 3,
             },
             size: 180,
           },
@@ -83,22 +108,7 @@ export default {
           {
             name: "Brands",
             colorByPoint: true,
-            data: [
-              {
-                name: "Male",
-                y: 61.41,
-                sliced: true,
-                selected: true,
-              },
-              {
-                name: "Female",
-                y: 11.84,
-              },
-              {
-                name: "Not sure",
-                y: 10.85,
-              }
-            ],
+            data: summary.value
           },
         ],
         //   credits: false,
@@ -108,8 +118,9 @@ export default {
     Highcharts.setOptions({
      colors: ['brown', 'purple', '#DDDF00']
     });
+    // })
 
-    return { chart, };
+    return { chart, summary};
   },
 };
 </script>
