@@ -144,33 +144,38 @@
             </li>
           </ul>
           <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
-          <div class="row dd-item" v-for="(category, index) in categories" :key="index">
-            <div class="col-md-12 dd-item" v-if="allGroups[index].length > 0">
-              <div class="row dd-item">
-                <div class="col-md-12 dd-item">
-                  <h6 class="text-uppercase dd-item font-weight-bold">
-                    {{ category }}
-                  </h6>
-                  <a
-                    class="dropdown-item px-1 c-pointer dd-item"
-                    v-for="(group, indx) in allGroups[index]"
-                    @click="
-                      selectGroup(
-                        group.category,
-                        group.id,
-                        group.name,
-                        index,
-                        indx
-                      )
-                    "
-                    :key="indx"
-                  >
-                    {{ group.name }}
-                  </a>
+            <div class="row dd-item" v-if="categories.length === 0">
+              <div class="col-md-12 dd-item">
+                <p>No groups yet</p>
+              </div>
+            </div>
+            <div class="row dd-item" v-for="(category, index) in categories" :key="index">
+              <div class="col-md-12 dd-item" v-if="allGroups[index].length > 0">
+                <div class="row dd-item">
+                  <div class="col-md-12 dd-item">
+                    <h6 class="text-uppercase dd-item font-weight-bold">
+                      {{ category }}
+                    </h6>
+                    <a
+                      class="dropdown-item px-1 c-pointer dd-item"
+                      v-for="(group, indx) in allGroups[index]"
+                      @click="
+                        selectGroup(
+                          group.category,
+                          group.id,
+                          group.name,
+                          index,
+                          indx
+                        )
+                      "
+                      :key="indx"
+                    >
+                      {{ group.name }}
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
         </div>
         </div>
         
@@ -460,6 +465,10 @@
       </div>
 
       <div class="row mt-4 mb-5">
+        <div class="col-md-12">
+          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidDestination">Please select destination</p>
+          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidMessage">Enter your message </p>
+        </div>
         <div class="col-md-12 d-flex justify-content-end">
           <span>
             <SplitButton
@@ -469,7 +478,7 @@
               data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
-          <button class="btn discard-btn ml-3 px-3">Discard</button>
+          <button class="default-btn d-flex align-items-center ml-3">Discard</button>
         </div>
 
         <div class="row">
@@ -733,8 +742,23 @@ export default {
 
     const isoCode = ref("");
     const isPersonalized = ref(false);
+    const invalidMessage = ref(false);
+    const invalidDestination = ref(false);
 
     const sendSMS = (gateway) => {
+      invalidDestination.value = false;
+      invalidMessage.value = false;
+
+      if (selectedGroups.value.length === 0 && !phoneNumber.value && selectedMembers.value.length === 0) {
+        invalidDestination.value = true;
+        return false;
+      }
+
+      if (!editorData.value) {
+        invalidMessage.value = true;
+        return false;
+      }
+
       toast.add({
         severity: "info",
         summary: "Sending SMS",
@@ -772,7 +796,6 @@ export default {
       }
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
-
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
@@ -794,13 +817,22 @@ export default {
           console.log(res);
         })
         .catch((err) => {
-          console.log(err);
-          toast.add({
+          toast.removeAllGroups();
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "You 're Offline",
+              detail: "Please ensure you have internet access",
+              life: 2500,
+            });
+          } else {
+            toast.add({
             severity: "error",
             summary: "Failed operation",
             detail: "SMS sending failed",
             life: 2500,
           });
+          }
         });
     };
 
@@ -937,6 +969,9 @@ export default {
       memberListShown,
       showMemberList,
       memberSelectInput,
+      invalidDestination,
+      invalidMessage,
+
     };
   },
 };

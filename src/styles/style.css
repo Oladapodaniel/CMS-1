@@ -558,6 +558,18 @@
     cursor: pointer;
     color: #fff;
   }
+
+  .default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1.1rem;
+    border-radius: 3rem;
+    border-color: #002044;
+    padding: .6rem 1.25rem;
+    width: auto;
+    height: 40px;
+    background: #fff;
+  }
   
   .file-input {
     width: 85% !important;
