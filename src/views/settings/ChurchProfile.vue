@@ -272,10 +272,6 @@ export default {
   border-radius: 0 8px 8px 0;
 }
 
-.select-elem {
-  /* height: 50px !important; */
-}
-
 #welcomeSms,
 #welcomeEmail {
   margin-top: 6px;

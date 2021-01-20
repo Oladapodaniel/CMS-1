@@ -77,7 +77,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              Select the destination of the mail
+              Select Destination
             </button>
             <div
               class="dropdown-menu w-100"

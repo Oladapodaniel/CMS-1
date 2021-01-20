@@ -3,7 +3,9 @@
     <div class="container-fluid">
       <div class="row mt-3">
         <div class="col-md-12">
-          <h2>Add Group</h2>
+          <h2 v-if="!route.params.groupId">Add Group</h2>
+          <h2 v-else>Update Group</h2>
+          <Toast />
         </div>
         <div class="col-md-12 px-0">
           <hr class="hr" />
@@ -399,6 +401,7 @@ import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from 'vue-router';
+import { useToast } from "primevue/usetoast";
 
 export default {
   setup() {
@@ -417,7 +420,15 @@ export default {
           .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
           .then((res) => {
             loading.value = false;
-            memberSearchResults.value = res;
+            // memberSearchResults.value = res;
+            memberSearchResults.value = res.filter(i => {
+              const memberInExistingMembers = groupMembers.value.find(j => j.personID === i.id);
+              console.log(memberInExistingMembers, "em");
+              if (memberInExistingMembers && memberInExistingMembers.personID) return false;
+              return true;
+            });
+
+            console.log(res, "users");
           });
       } else {
         memberSearchResults.value = [];
@@ -426,6 +437,7 @@ export default {
 
     const selectedMembers = ref([]);
     const selectMember = (member, index) => {
+      console.log(member, "member");
       selectedMembers.value.push(member);
       memberSearchResults.value.splice(index, 1);
     };
@@ -439,13 +451,15 @@ export default {
     const addSelectedMembersToGroup = () => {
       selectedMembers.value.forEach((i) => {
         i.position = position.value;
-        i.personId = i.id;
+        i.personID = i.id;
         i.id = "";
         groupMembers.value.push(i);
       });
       modalStatus.value = "modal";
       position.value = "";
       memberSearchResults.value = [];
+      console.log(selectedMembers.value);
+      console.log(groupMembers.value, "GM");
       selectedMembers.value = [ ];
     };
 
@@ -459,6 +473,8 @@ export default {
 
     const groupNameIsInvalid = ref(false);
     const savingGroup = ref(false);
+    const toast = useToast();
+    
     const saveGroupData = () => {
       if (!groupData.value.name) {
         groupNameIsInvalid.value = true;
@@ -478,6 +494,13 @@ export default {
         .catch((err) => {
           savingGroup.value = false;
           console.log(err.response);
+          toast.add({
+            severity: "error",
+            summary: "Save Error",
+            detail: "Failed saving group",
+            life: 2500,
+          });
+          alert("it works")
         });
       }else {
         savingGroup.value = true;
@@ -491,6 +514,12 @@ export default {
         .catch((err) => {
           savingGroup.value = false;
           console.log(err.response);
+          toast.add({
+            severity: "error",
+            summary: "Update Error",
+            detail: "Failed updating group",
+            life: 2500,
+          });
         });
       }
     };
@@ -514,16 +543,18 @@ export default {
             
             data.peopleInGroups.forEach(i => {
                 const person = { 
-                    personID: i.person.personID,
-                    address: i.person.address,
-                    email: i.person.email,
-                    name: i.person.firstName + i.person.lastName,
-                    phone: i.person.phoneNumber,
-                    position: i.position
+                  personID: i.person.id,
+                  address: i.person.address,
+                  email: i.person.email,
+                  name: i.person.firstName + i.person.lastName,
+                  phone: i.person.phoneNumber,
+                  position: i.position
                 }
 
                 groupMembers.value.push(person);
+            
             })
+            console.log(selectedMembers.value, "SM");
         } catch (error) {
             loadingMembers.value = false;
             console.log(error.response);

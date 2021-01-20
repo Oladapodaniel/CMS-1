@@ -1,7 +1,7 @@
 <template>
   <div class="whole-page">
     <div class="links-menu" :class="{ show: menuShouldShow }">
-      <MenuLinks />
+      <MenuLinks @linkclicked="hideNav" />
     </div>
     <div class="main-con dim" @click="hideMenu">
       <!-- <transition name="fade" mode="out-in"> -->
@@ -54,10 +54,17 @@ export default {
       if (menuShouldShow.value) menuShouldShow.value = false;
     };
 
+    const hideNav = (val) => {
+      if (val && menuShouldShow.value) {
+        menuShouldShow.value = false;
+      }
+    }
+
     return {
       menuShouldShow,
       toggleMenu,
       hideMenu,
+      hideNav,
     };
   },
 };
@@ -78,9 +85,21 @@ export default {
 
 .links-menu {
   width: 266px;
-  height: 100%;
+  min-height: 100%;
   background: #ebeff4;
   height: inherit;
+  overflow: auto;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.links-menu::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.links-menu {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .main-con {
