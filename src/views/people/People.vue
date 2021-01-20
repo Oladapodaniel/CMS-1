@@ -136,6 +136,17 @@ export default {
   margin: 0 4px;
 }
 
+@media (max-width: 545px) {
+  .top {
+    display: block;
+    text-align: center;
+    }
+
+  .more-btn.button, .add-person-btn.button {
+    margin-top: 20px;
+  }
+}
+
 @media screen and (min-width: 990px) {
   .main-body {
     width: 95%;

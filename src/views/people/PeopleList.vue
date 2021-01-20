@@ -1,6 +1,6 @@
 <template>
   <div class="my-con">
-    <div class="summary px-0">
+    <div class="summary px-3">
       <p class="summary-header">Summary</p>
       <!-- <hr class="hr" /> -->
 
@@ -14,40 +14,118 @@
               alt=""
             />
           </div>
-          <h4 class="total">123,456</h4>
+          <h4 class="total">{{ membershipSummary.totalMember }}</h4>
           <p>
-            <span class="percent">+3.48% </span>
+            <span class="percent">+{{ membershipSummary.percentageGrowth }}% </span>
             <span class="percent-text"> Since last month</span>
           </p>
         </div>
 
         <div class="chart-con">
           <div style="width: 45%" class="ml-md-4 chart1">
-            <ByGenderChart domId="chart" title="By Gender" distance="5" :titleMargin="10" />
+            <ByGenderChart domId="chart" title="By Gender" distance="5" :titleMargin="10" :membershipSummary="membershipSummary.genders"/>
           </div>
           <div style="width: 45%" class="chart2">
-            <ByMaritalStatusChart domId="second" title="By Marital Status" :titleMargin="10" />
+            <ByMaritalStatusChart domId="second" title="By Marital Status" :titleMargin="10" :membershipSummary="membershipSummary.maritalStatus"/>
           </div>
         </div>
       </div>
     </div>
 
     <div class="table mx-0">
-      <div class="table-top py-2 font-weight-bold">
-        <div class="select-all d-flex align-items-center">
-          <input type="checkbox" name="all" id="all" />
-          <label for="all" class="mb-0">SELECT ALL</label>
-        </div>
-        <div class="filter d-flex align-items-center">
-          <p class="mb-0">FILTER</p>
-        </div>
-        <div class="sort d-flex align-items-center">
-          <p class="mb-0">SORT</p>
-        </div>
-        <div class="search d-flex align-items-center">
-          <p class="mb-0">SEARCH</p>
-        </div>
-      </div>
+      <div class="table-top my-3">
+                <div class="select-all">
+                  <input type="checkbox" name="all" id="all" />
+                  <label>SELECT ALL</label>
+                </div>
+                <div class="filter">
+                  <p @click="toggleFilterFormVissibility">
+                    <i class="fas fa-filter"></i>
+                    FILTER
+                  </p>
+                </div>
+                <div class="search d-flex">
+                  <label
+                    class="label-search d-flex"
+                    :class="{ 'show-search': filterFormIsVissible }"
+                  >
+                    <input type="text" placeholder="filter" />
+                    <span class="empty-btn">x</span>
+                    <span class="search-btn">
+                      <i class="fa fa-search"></i>
+                    </span>
+                  </label>
+
+                  <label
+                    v-if="filterFormIsVissible"
+                    class="label-search d-flex"
+                    placeholder="search"
+                    :class="{ 'show-search': filterFormIsVissible }"
+                  >
+                    <input type="text" />
+                    <span class="empty-btn">x</span>
+                    <span class="search-btn">
+                      <i class="fa fa-search"></i>
+                    </span>
+                  </label>
+                  <p v-if="!filterFormIsVissible">
+                    <i class="fa fa-search"></i> SEARCH
+                  </p>
+                </div>
+              </div>
+              <div
+                class="filter-options"
+                :class="{ 'filter-options-shown': filterFormIsVissible }"
+              >
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-9">
+                      <div class="row">
+                        <div class="col-md-5 form-group inp">
+                          <select name="" id="" class="form-control">
+                            <option value="">Option 1</option>
+                            <option value="">Option 2</option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-5 offset-md-2 form-group">
+                          <input type="date" class="form-control inp" />
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-5 form-group">
+                          <select name="" id="" class="form-control inp">
+                            <option value="firstName">First Name</option>
+                            <option value="lastName">Last Name</option>
+                            <option value="phone">Phone</option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-5 offset-md-2 form-group">
+                          <select name="" id="" class="form-control inp">
+                            <option value="">Option 1</option>
+                            <option value="">Option 2</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-3 d-flex flex-column align-items-center">
+                      <button class="apply-btn text-white">Apply</button>
+                      <span class="mt-2">
+                        <a class="clear-link mr-2">Clear all</a>
+                        <span class="mx-2"
+                          ><i
+                            class="fas fa-circle"
+                            style="font-size: 4px"
+                          ></i></span
+                        ><a class="hide-link ml-2">Hide</a>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
       <div class="table-header font-weight-700">
         <div class="check"></div>
@@ -78,7 +156,17 @@
               </div>
               <div class="data-value">
                 <div class="image-con">
-                  <img src="../../assets/people/phone-import.svg" alt="" />
+                  <div v-if="person.gender == 'Male'">
+                    <img src="../../assets/people/avatar-male.png" alt="" style="border-radius: 50%"/>
+                  </div>
+                  <div v-else-if="person.gender == 'Female'">
+                    <img src="../../assets/people/avatar-female.png" alt="" />
+                  </div>
+                  <div v-else>
+                    <img src="../../assets/people/no-gender-avatar.png" alt="" />
+                  </div>
+                  
+                  
                 </div>
               </div>
             </div>
@@ -146,12 +234,13 @@
                     >Edit</router-link
                   >
                 </a>
-                <a class="dropdown-item" href="#">Delete</a>
+                <a class="dropdown-item" href="#" @click.prevent="deleteMember(person.id)">Delete</a>
               </div>
             </div>
           </div>
         </div>
         <hr class="row-divider" />
+        <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
 
       <div class="table-footer">
@@ -166,7 +255,6 @@ import { ref, onMounted } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
-
 import axios from "@/gateway/backendapi";
 
 export default {
@@ -179,26 +267,59 @@ export default {
 
   setup(props) {
     const churchMembers = ref([]);
+    const filterFormIsVissible = ref(false);
+    const toggleFilterFormVissibility = () =>
+      (filterFormIsVissible.value = !filterFormIsVissible.value);
+    const membershipSummary = ref([])
 
-    const getPeopleByPage = async (e) => {
-      try {
-        const { data } = await axios.get(
-          `/api/People/GetPeopleBasicInfo?page=${e}`
-        );
-        churchMembers.value = data;
-      } catch (error) {
-        console.log(error);
-      }
-    };
+
+    const deleteMember = (id) => {
+      axios.delete("/api/People/DeleteOnePerson", { params: { id: id } })
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => console.log(err))
+    }
+    // const getPeopleByPage = async (e) => {
+
+    //   try {
+    //     const { data } = await axios.get(
+    //       `/api/People/GetPeopleBasicInfo?page=${e}`
+    //     );
+    //     churchMembers.value = data;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // const getMemberSummary = () => {
+      
+    // }
+    
+    // onBeforeUnmount(() => {
+      axios.get(`/api/People/GetMembershipSummary`)
+        .then(res => {
+          membershipSummary.value = res.data
+          console.log(res.data)
+        })
+        .catch(err => console.log(err))
+    // })
+
 
     onMounted(() => {
       console.log(props.list, "props");
       churchMembers.value = props.list;
+
+      
     });
 
     return {
       churchMembers,
-      getPeopleByPage,
+      // getPeopleByPage,
+      filterFormIsVissible,
+      toggleFilterFormVissibility,
+      membershipSummary,
+      // getMemberSummary
+      deleteMember
     };
   },
 };
@@ -230,11 +351,13 @@ a {
   /* box-shadow: 0px 3px 6px #2c28281c; */
   padding: 24px 10px;
   background: #fff;
+  box-shadow: 0px 3px 6px #2c28281c;
+border: 1px solid #00204424;
 }
 
 .table {
-  box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6;
+  box-shadow: 0px 3px 6px #2c28281c;
+/* border: 1px solid #00204424; */
   border-radius: 30px;
   width: 100% !important;
 }
@@ -254,11 +377,11 @@ a {
 .board {
   width: 30%;
   border-radius: 10px;
-  border: 0.4000000059604645px solid #dde2e6;
+  /* border: 0.4000000059604645px solid #dde2e6; */
   padding: 0 8px;
+  /* box-shadow: 0px 1px 4px #02172e45;
   box-shadow: 0px 1px 4px #02172e45;
-  box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6;
+  border: 1px solid #dde2e6; */
 }
 
 .chart-con {
@@ -311,9 +434,94 @@ a {
 
 .chart1,
 .chart2 {
-  border: 0.4000000059604645px solid #dde2e6;
-  box-shadow: 0px 1px 4px #02172e45;
+  /* border: 0.4000000059604645px solid #dde2e6;
+  box-shadow: 0px 1px 4px #02172e45; */
   border-radius: 10px;
+}
+
+.picture .data-value {
+  margin-left: 22px;
+  width: 50%;
+}
+
+.firstname .data-value {
+  margin-left: -32px;
+  margin-right: 3px;
+}
+
+.lastname .data-value {
+  margin-left: -41px;
+  margin-right: 2px;
+}
+
+.phone .data-value {
+  margin-left: 38px;
+}
+
+.label-search {
+  width: 0;
+  background: transparent;
+  padding: 4px;
+  overflow: hidden;
+  transition: all 0.5 ease-in-out;
+}
+.label-search input {
+  border: transparent;
+  background: transparent;
+  width: 70%;
+  outline: none;
+}
+
+.label-search .search-btn {
+  display: flex;
+  align-items: center;
+  background: #7894a6;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+.label-search .empty-btn {
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+}
+
+.clear-link,
+.hide-link {
+  color: #136acd;
+}
+
+
+.table-top {
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.table-top label:hover,
+.table-top p:hover {
+  cursor: pointer;
+}
+
+.show-search {
+  width: 174px;
+  overflow: hidden;
+  transition: all 0.5 ease-in-out;
+  border: 1px solid #dde2e6;
+  border-radius: 5px 0px 0px 5px;
+  background: #ebeff4;
+  transition: all 0.5s ease-in-out;
+}
+
+.filter-options {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+
+.filter-options-shown {
+  height: 110px !important;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
 }
 
 @media screen and (max-width: 500px) {

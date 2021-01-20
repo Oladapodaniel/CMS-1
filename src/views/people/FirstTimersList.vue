@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
+  <div class="container container-top">
     <div class="row my-3">
-      <div class="col-md-4">
+      <div class="col-sm-4 first-timers-text">
         <h2 class="page-header">First Timers</h2>
       </div>
 
-      <div class="col-md-8 d-flex justify-content-end">
-        <button class="more mr-3">More <i class="fa fa-angle-down"></i></button>
+      <div class="col-sm-8 d-flex head-button">
+        <button class="more">More <i class="fa fa-angle-down"></i></button>
         <router-link to="/tenant/people/add-first-timer" class="add-btn">
           Add First timer
         </router-link>
@@ -22,7 +22,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="my-con">
-          <div class="summary px-0">
+          <div class="summary">
             <p class="summary-header">Summary</p>
             <!-- <hr class="hr" /> -->
 
@@ -47,7 +47,7 @@
               <div class="board fig">
                 <ByGenderChart
                   domId="chart"
-                  title="INVITATION SOURCE"
+                  title="Invitation Source"
                   distance="5"
                   :titleMargin="10"
                 />
@@ -55,14 +55,14 @@
               <div class="board fig">
                 <ByMaritalStatusChart
                   domId="second"
-                  title="INTERESTING IN JOINING"
+                  title="Interested In Joining"
                   :titleMargin="10"
                 />
               </div>
               <div class="board fig">
                 <ByMaritalStatusChart
                   domId="set"
-                  title="TO BE CONTACTED"
+                  title="To Be Contacted"
                   style="height: 100%"
                   :titleMargin="10"
                 />
@@ -76,7 +76,7 @@
           </div>
           <div class="table">
             <div class="top-con">
-              <div class="table-top my-2">
+              <div class="table-top my-3">
                 <div class="select-all">
                   <input type="checkbox" name="all" id="all" />
                   <label>SELECT ALL</label>
@@ -307,8 +307,9 @@ export default {
     Pagination,
   },
 
-  setup() {
+   setup() {
     const churchMembers = ref([]);
+
     // if ()
 
     const route = useRoute();
@@ -316,11 +317,35 @@ export default {
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
 
+    //  const getFirstTimers = () => {
+      // axios.get("/api/People/FirstTimer")
+      //     .then(res => {
+      //       churchMembers.value = res.data;
+      //       console.log(res.data)
+      //     })
+      //     .catch(err => console.log(err))
+    //   console.log('Is it getting')
+    // }
+
+
+    // const getFirstTimers = async () => {
+    //   try {
+    //     const { data } = await axios.get(
+    //       `/api/People/FirstTimer`
+    //     );
+    //     churchMembers.value = data;
+    //     console.log(data)
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+
     onMounted(() => {
       console.log(route, "route");
-      axios.get("/api/People/FirstTimer")
+        axios.get("/api/People/FirstTimer")
           .then(res => {
             churchMembers.value = res.data;
+            console.log(res.data)
           })
     });
 
@@ -328,6 +353,7 @@ export default {
       churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,
+      // getFirstTimers,
     };
   },
 };
@@ -350,13 +376,25 @@ export default {
   margin: 18px 0;
 }
 
-.summary {
+/* .summary { */
   /* width: 20%; */
-  border-radius: 30px;
+  /* border-radius: 30px; */
   /* box-shadow: 0px 3px 6px #2c28281c; */
-  padding: 0px 20px 0 20px;
-  background: #fff;
+  /* padding: 0px 20px 0 20px;
+  background: #fff; */
   /* margin-bottom: 24px; */
+  /* height: fit-content;
+  border: 2px solid red;
+} */
+
+.summary {
+    /* width: 20%; */
+    border-radius: 30px;
+    /* box-shadow: 0px 3px 6px #2c28281c; */
+    padding: 24px 10px;
+    background: #fff;
+    box-shadow: 0px 3px 6px #2c28281c;
+    border: 1px solid #00204424;
 }
 
 .table {
@@ -458,21 +496,7 @@ export default {
   transition: all 0.5s ease-in-out;
 }
 
-.apply-btn {
-  background: #136acd;
-  color: #fff;
-  border: 1px solid #002044;
-  border-radius: 111px;
-  width: 101px;
-  height: 41px;
-  font-weight: 700;
-  outline: transparent;
-}
 
-.clear-link,
-.hide-link {
-  color: #136acd;
-}
 
 .clear-link,
 .hide-link {
@@ -536,6 +560,11 @@ export default {
   margin: 0 8px 0 -5px !important;
 }
 
+.head-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .add-btn {
   width: 180px;
   background: #136acd;
@@ -557,6 +586,7 @@ export default {
   border: transparent;
   outline: transparent;
   height: 42px;
+  margin-right: 1rem;
 }
 
 .fa-ellipsis-v:hover {
@@ -568,6 +598,30 @@ export default {
   max-height: 310px;
   border-radius: 10px;
 }
+
+  .boards {
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .board {
+    width: 45%;
+    margin: 10px 0;
+    max-height: 310px;
+  }
+
+  .board.members-count {
+    padding: 24px;
+  }
+
+  .chart-con {
+    flex-direction: column;
+  }
+
+  .page-header {
+    font-size: 1.7rem;
+  }
 
 @media screen and (max-width: 500px) {
   .picture,
@@ -625,6 +679,34 @@ export default {
 
   .action {
     width: 5%;
+  }
+}
+
+@media (max-width: 414px) {
+  .head-button {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .more {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 575px) {
+  .head-button {
+    display: flex;
+    /* flex-direction: row; */
+    /* align-items: center; */
+    justify-content: center;
+  }
+
+  .add-btn, .more {
+    margin-top: 10px;
+  }
+
+  .first-timers-text {
+    text-align: center
   }
 }
 
@@ -694,44 +776,11 @@ export default {
   max-height: 216px;
 }
 
-@media screen and (max-width: 1399px) {
-  .boards {
-    /* flex-direction: column; */
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
+/* @media screen and (max-width: 1399px) { */
 
-  .board {
-    width: 45%;
-    margin: 8px 0;
-    max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
-    box-shadow: 0px 1px 4px #02172e45;
-  }
+/* } */
 
-  .board.members-count {
-    padding: 24px;
-  }
-
-  .chart-con {
-    flex-direction: column;
-  }
-
-  .summary {
-    border-radius: none !important;
-    box-shadow: none !important;
-  }
-
-  .page-header {
-    font-size: 1.7rem;
-  }
-
-  .total {
-    font-size: 27px;
-  }
-}
-
-@media screen and (min-width: 1400px) {
+/* @media screen and (min-width: 1400px) {
   .table {
     width: 68%;
     margin-top: 0 !important;
@@ -766,8 +815,7 @@ export default {
 
   .board.fig {
     padding: 24px 8px 0 8px;
-    /* border: none;
-    box-shadow: none; */
+
   }
 
   .board.members-count {
@@ -776,9 +824,6 @@ export default {
     border: 0.4000000059604645px solid #dde2e6;
   }
 
-  /* #chart {
-    border: 0.4000000059604645px solid #dde2e6;
-  } */
 
   .chart-con {
     width: 100%;
@@ -792,7 +837,7 @@ export default {
     min-height: 390px !important;
   }
 
-}
+} */
 </style>
 
 
