@@ -22,36 +22,13 @@
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
                   <router-link
                     to="/tenant/sms-communications/compose-message"
-                    class="btn compose-btn default-btn border-none"
-                    >Compose new SMS</router-link
+                    class="btn compose-btn border-0 font-weight-bold default-btn border-none"
+                    >Compose SMS</router-link
                   >
                 </div>
               </div>
               <div class="row mb-3">
                 <div class="col-md-12">
-                  <div
-                    class="row menu-item-con py-2"
-                    :class="{
-                      'active-link':
-                        route.path === '/tenant/sms-communications',
-                    }"
-                  >
-                    <div class="col-md-12 menu-item-div m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <span class="menu-item"
-                          ><router-link
-                            class="r-link"
-                            to="/tenant/sms-communications"
-                          >
-                            <i class="fas fa-inbox mr-3 menu-icon"></i>
-                            <span class="active">Inbox</span>
-                          </router-link>
-                          <span class="inbox-count ml-md-2">3</span></span
-                        >
-                      </a>
-                    </div>
-                  </div>
-
                   <div
                     class="row menu-item-con py-2"
                     :class="{
@@ -70,6 +47,29 @@
                             <span class="active">Sent</span>
                           </router-link>
                         </span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div
+                    class="row menu-item-con py-2"
+                    :class="{
+                      'active-link':
+                        route.path === '/tenant/sms-communications',
+                    }"
+                  >
+                    <div class="col-md-12 menu-item-div m-auto">
+                      <a class="btn btn-default font-weight-bold">
+                        <span class="menu-item"
+                          ><router-link
+                            class="r-link"
+                            to="/tenant/sms-communications"
+                          >
+                            <i class="fas fa-inbox mr-3 menu-icon"></i>
+                            <span class="active">Replies</span>
+                          </router-link>
+                          <span class="inbox-count ml-md-2">3</span></span
+                        >
                       </a>
                     </div>
                   </div>

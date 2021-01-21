@@ -6,8 +6,8 @@
       </div>
 
       <div class="col-sm-8 d-flex head-button">
-        <button class="more">More <i class="fa fa-angle-down"></i></button>
-        <router-link to="/tenant/people/add-first-timer" class="add-btn">
+        <button class="more default-btn">More <i class="fa fa-angle-down ml-2"></i></button>
+        <router-link to="/tenant/people/add-first-timer" class="add-btn default-btn">
           Add First timer
         </router-link>
       </div>
@@ -221,7 +221,7 @@
                       <p>Interested</p>
                     </div>
                     <div class="data-value">
-                      {{ person.interestedInJoining }}
+                      {{ person.interestedInJoining === "Not_Specified" ? "Not Specified" : person.interestedInJoining }}
                     </div>
                   </div>
                 </div>
