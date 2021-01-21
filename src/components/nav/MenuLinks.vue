@@ -95,7 +95,7 @@
           </a>
           <ul class="dd-list" :class="{ 'dd-hide-list': !commLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/sms-communications"
+              <router-link class="dd-link-item routelink" to="/tenant/sms-communications/sent"
                 >SMS</router-link
               >
             </li>

@@ -66,6 +66,10 @@
     background: #136acd;
     color: #fff;
   }
+
+  .default-btn:disabled {
+    cursor: not-allowed !important;
+  }
   
   .secondary-btn {
     padding: 8px 10px;
@@ -557,16 +561,26 @@
     color: #fff;
   }
 
+  .primary-bg {
+    background: #136acd !important;
+  }
+
   .default-btn {
     font-weight: 600;
     white-space: initial;
-    font-size: 1.1rem;
+    font-size: 1rem;
     border-radius: 3rem;
-    border-color: #002044;
-    padding: .6rem 1.25rem;
+    border: 1px solid #002044;
+    padding: .5rem 1.25rem;
     width: auto;
-    height: 40px;
+    outline: transparent !important;
+    /* height: 40px; */
     background: #fff;
+    min-width: 121px;
+  }
+
+  .short-btn {
+    min-width: 90px !important;
   }
   
   .file-input {

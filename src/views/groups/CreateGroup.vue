@@ -86,7 +86,7 @@
                 aria-hidden="true"
               >
                 <div class="modal-dialog" role="document" ref="modal">
-                  <div class="modal-content py-4 px-5">
+                  <div class="modal-content pr-2">
                     <div class="modal-header py-3">
                       <h5 class="modal-title font-weight-600" id="exampleModalLabel">
                         Group membership
@@ -207,14 +207,14 @@
                     <div class="modal-footer">
                       <button
                         type="button"
-                        class="secondary-btn bg-white text-dark"
+                        class="secondary-btn default-btn bg-white text-dark"
                         data-dismiss="modal"
                       >
                         Cancel
                       </button>
 
                       <button
-                        class="primary-btn outline-none"
+                        class="primary-btn default-btn primary-bg border-0 outline-none"
                         @click="addSelectedMembersToGroup"
                         :data-dismiss="modalStatus"
                       >
@@ -321,7 +321,7 @@
                   class="col-md-2 d-flex justify-content-between align-items-center"
                 >
                   <span class="py-2 hidden-header">EMAIL</span>
-                  <span class="py-2">{{ member.email && member.email.length > 11 ? `${member.email.split('').slice(0, 11).join('')}...` : member.email ? member.email : ''  }}</span>
+                  <span class="py-2">{{ member.email && member.email.length > 10 ? `${member.email.split('').slice(0, 11).join('')}...` : member.email ? member.email : ''  }}</span>
                 </div>
                 <div
                   class="col-md-2 d-flex justify-content-between align-items-center"
@@ -385,7 +385,7 @@
           <router-link to="/tenant/people-groups" class="secondary-btn bg-white text-dark"
             >Discard</router-link
           >
-          <button class="primary-btn outline-none" @click="saveGroupData" :disabled="savingGroup">
+          <button class="primary-btn default-btn primary-bg border-0 outline-none" @click="saveGroupData" :disabled="savingGroup">
             <i class="fas fa-circle-notch fa-spin" v-if="savingGroup"></i>
             {{ buttonText }}
           </button>
@@ -562,8 +562,8 @@ export default {
     }
 
     const buttonText = computed(() => {
-        if (route.params.groupId) return "Update group";
-        return "Save group";
+        if (route.params.groupId) return "Update";
+        return "Save";
     })
 
     if (route.params.groupId) getGroupById();

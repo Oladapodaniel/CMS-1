@@ -478,7 +478,7 @@
               data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
-          <button class="default-btn d-flex align-items-center ml-3">Discard</button>
+          <button class="default-btn d-flex justify-content-center short-btn align-items-center ml-3">Discard</button>
         </div>
 
         <div class="row">
@@ -537,7 +537,7 @@
                               class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
                             >
                               <button
-                                class="primary-btn px-4 my-2 font-weight-600 outline-none"
+                                class="primary-btn default-btn primary-bg border-0 px-4 my-2 font-weight-600 outline-none"
                                 data-dismiss="modal"
                                 @click="sendSMS('hostedsms')"
                               >
@@ -577,7 +577,7 @@
                             >
                               <!-- hostedsms_instant -->
                               <button
-                                class="primary-btn px-4 my-2 grey-background text-grey outline-none"
+                                class="primary-btn default-btn border-0 px-4 my-2 grey-background text-grey outline-none"
                                 data-dismiss="modal"
                                 @click="sendSMS('')"
                               >
