@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Pagination from '@/components/pagination/PaginationButtons.vue';
 import Payment from '../components/payment/Payment.vue';
+import TermsOfService from '@/views/account/TermsOfService.vue'
 
 
 
@@ -9,6 +10,11 @@ const routes = [{
         path: '/pagination',
         name: 'Pagination',
         component: Pagination
+    },
+    {
+        path: '/termsofservice',
+        name: 'TermsOfService',
+        component: TermsOfService,
     },
     {
         path: '/payment',
@@ -295,6 +301,12 @@ const routes = [{
                         name: 'AddDefaultMessage',
                         component: () =>
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/AddDefaultMessage')
+                    },
+                    {
+                        path: 'details',
+                        name: 'Details',
+                        component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/Details')
                     },
                 ]
             }
