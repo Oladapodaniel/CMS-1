@@ -684,7 +684,7 @@
             </div>
             <div class="col-4 col-sm-3 col-lg-2 offset-sm-1 offset-md-0">
               <select class="w-100 form-control" v-model="item.channel">
-                <option :value="selected">Select</option>
+                <option :value="select">Select</option>
                 <option value="Cheque">Cheque</option>
                 <option value="Cash">Cash</option>
                 <option value="POS">POS</option>
@@ -696,8 +696,13 @@
             </div>
             <div class="col-2 col-sm-2 offset-sm-1 col-lg-1">
               <select class="currency" v-model="item.currency">
-                <option :value="NGN">NGN</option>
-                <option value="GHA">GHA</option>
+                <option value="NGN">NGN</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="ZAR">ZAR</option>
+                <option value="GBP">GBP</option>
+                <option value="CAD">CAD</option>
+                <option value="GHS">GHS</option>
               </select>
             </div>
             <div class="col-6 col-sm-5 col-lg-2">
@@ -818,7 +823,7 @@
           <div
             class="row form-body close-slide3"
             :class="{ 'slide-down3': showForm3 }"
-            v-if="false"
+            @click="toggleForm3"
           >
             <div
               class="col-sm-3 add-first-timer pointer"
@@ -1135,7 +1140,7 @@
                   <div class="col-sm-9 mb-4">
                     <input
                       type="text"
-                      v-model="firstTimersObj.homeAddress"
+                      v-model="firstTimersObj.address"
                       class="form-control input-first"
                       id="address"
                     />
@@ -1461,11 +1466,12 @@ export default {
           name: offObj.name,
           offeringTypeId: offObj.id,
           channel: "",
-          convertedAmount: 5000,
+          currency: offObj.currency == undefined ? "NGN" : offObj.currency
+          
         });
       } else {
         this.offeringItem.push({
-          convertedAmount: 5000,
+          // convertedAmount: 5000,
         });
         this.$nextTick(() => {
           this.$refs.offeringInput.focus();
@@ -1598,37 +1604,78 @@ export default {
     },
     post() {
       console.log(this.selectedEventCategoryId);
-      let event = {
-        date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
-        topic: this.topic,
-        preacher: this.preacher,
-        preEvent: {
-          name: this.preEventName === "" ? this.selectedEventCategoryName : this.preEventName,
-          topic: this.preEventTopic,
-          preActivityId:
-            this.preActivityId === ""
-              ? "00000000-0000-0000-0000-000000000000"
-              : this.preActivityId,
-          details: this.details,
-          eventRules: this.eventRules,
-          enableRegistration: this.check,
-          isPaidFor: this.selectedValue === "Yes" ? true : false,
-          amount: this.preEventAmount,
-          venue: this.venue,
-          emailRegistration: this.emailRegistration,
-          SMSRegistration: this.SMSRegistration,
-          banner: this.banner,
-          isPublic: this.isPublic,
-        },
+      // let event = {
+      //   date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
+      //   topic: this.topic,
+      //   preacher: this.preacher,
+      //   preEvent: {
+      //     name: this.preEventName === "" ? this.selectedEventCategoryName : this.preEventName,
+      //     topic: this.preEventTopic,
+      //     preActivityId:
+      //       this.preActivityId === ""
+      //         ? "00000000-0000-0000-0000-000000000000"
+      //         : this.preActivityId,
+      //     details: this.details,
+      //     eventRules: this.eventRules,
+      //     enableRegistration: this.check,
+      //     isPaidFor: this.selectedValue === "Yes" ? true : false,
+      //     amount: this.preEventAmount,
+      //     venue: this.venue,
+      //     emailRegistration: this.emailRegistration,
+      //     SMSRegistration: this.SMSRegistration,
+      //     banner: this.banner,
+      //     isPublic: this.isPublic,
+      //   },
+      //   attendances: this.attendanceItem,
+      //   offerings: this.offeringItem,
+      //   eventCategoryId:
+      //     !this.selectedEventCategoryId.includes('-')
+      //       ? "00000000-0000-0000-0000-000000000000"
+      //       : this.selectedEventCategoryId,
+      //   activityFirstTimers: this.firstTimers,
+      // };
+
+      let event =  {
+        
         attendances: this.attendanceItem,
         offerings: this.offeringItem,
-        eventCategoryId:
-          !this.selectedEventCategoryId.includes('-')
-            ? "00000000-0000-0000-0000-000000000000"
-            : this.selectedEventCategoryId,
-        activityFirstTimers: this.firstTimers,
-      };
-      console.log(event);
+        activityFirstTimers: this.firstTimers
+      }
+
+
+      // If preactivity id is empty, dont send preevent as part of the event object, else send it
+      if (this.preActivityId) {
+        event.preEvent = {
+            name: this.preEventName,
+            topic: this.preEventTopic,
+            details: this.details,
+            preActivityId: this.preActivityId === "" ? "00000000-0000-0000-0000-000000000000" : this.preActivityId,
+            isPaidFor: this.selectedValue === "Yes" ? true : false,
+            amount: this.preEventAmount,
+            eventRules: this.eventRules,
+            enableRegistration: this.check,
+            venue: this.venue,
+            emailRegistration: this.emailRegistration,
+            smsRegistraion: this.SMSRegistration,
+            banner: this.banner,
+            isPublic: this.isPublic
+          }
+      } else {
+              event.activity = {
+              date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
+              topic: this.topic,
+              preacher: this.preacher,
+            }
+
+                    // If you chose an event activity, send the id in the event object, else if a new activity was created send the name
+              if (this.selectedEventCategoryId == "00000000-0000-0000-0000-000000000000") {
+              event.activity.newEventCategoryName = this.selectedEventCategoryName
+              } else {
+                event.activity.eventCategoryId = this.selectedEventCategoryId
+              }
+         }
+
+     console.log(event);
       this.loading = true;
       axios
         .post("api/Events/CreateActivity", event)
@@ -1637,6 +1684,7 @@ export default {
           console.log(res, "main post");
           const activityId = res.data.currentEvent.id;
           localStorage.setItem("eventData", JSON.stringify(event));
+          localStorage.setItem("eventDataResponse", JSON.stringify(res.data.currentEvent));
           this.$router.push({ name: "Report", params: { id: activityId } });
         })
         .catch((err) => {
@@ -1770,7 +1818,7 @@ export default {
         );
       }
       if (data.dataType === "automatedFollowUp") {
-        this.firstTimersObj.automatedFollowUp = data.value;
+        this.firstTimersObj.autoMatedFollowUp = data.value;
       }
     },
     individualEvent(eventObj) {
