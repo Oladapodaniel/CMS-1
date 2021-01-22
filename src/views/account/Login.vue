@@ -35,27 +35,32 @@
           <span class="or">or</span>
         </div>
 
-        <div>
+        <div v-if="false">
           <button type="submit" class="google-btn btn-logo sign-in-btn">
              <img src="../../assets/google.png" alt="Google Icon">
-             <span>Sign in with Google</span>
+             <span>Sign up with Google</span>
              <span></span>
           </button>
         </div>
-        <div>
-          <button class="facebook-btn btn-logo sign-in-btn">
+        <div v-if="false">
+          <button class="facebook-btn btn-logo sign-in-btn" @click="loginWithFacebook">
             <img src="../../assets/facebook-small.png" class="fb-icon" alt="Google Icon">
-             <span>Sign in with Facebook</span>
+             <span>Sign up with Facebook</span>
              <span></span>
           </button>
         </div>
+
+        <!-- <button  onclick="alert('it works')">Love you</button> -->
         <!-- <div @click="facebookSignIn"> -->
-          <fb:login-button scope="public_profile,email"
-                     onlogin="checkLoginState();">
-          </fb:login-button>
+          <!-- <fb:login-button scope="public_profile,email"
+                     onlogin="checkLoginState();" ref="loginFacebook">
+          </fb:login-button> -->
           <!--Display access token-->
-          <div id="authstatus">   </div>
+          <!-- <div id="authstatus">   </div> -->
         <!-- </div> -->
+
+        <div class="fb-login-button" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></div>
+
       </div>
 
       <div class="bottom-container">
@@ -84,6 +89,8 @@ export default {
       });
       const loading = ref(false)
       // NProgress.start()
+
+      const loginFacebook = ref(null)
 
       const login = async (e) => {
         e.preventDefault();
@@ -125,44 +132,20 @@ export default {
         console.log(data);
       }
 
-        const  facebookSignIn = () => {
-        
+        const  loginWithFacebook = () => {
+          console.log(loginFacebook.value)
+            loginFacebook.value.click()
       }
-      window.fbAsyncInit = function() {
-          /*eslint no-undef: "warn"*/
-          FB.init({
-              appId: '4114921131852813',
-            cookie     : true,
-            xfbml      : true,
-              version: 'v9.0'
-          });
-
-          FB.AppEvents.logPageView();
-
-        };
-
-        (function(d, s, id){
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) {return;}
-          js = d.createElement(s); js.id = id;
-          js.src = "https://connect.facebook.net/en_US/sdk.js";
-          fjs.parentNode.insertBefore(js, fjs);
-          }(document, 'script', 'facebook-jssdk'));
-
-          const checkLoginState = () => {
-
-              FB.getLoginStatus(function (response) {
-                  $("#authstatus").html("<code>" + JSON.stringify(response,null,2) + "</code>");
-              });
-        }
+      
 
       return {
         state,
         login,
         loading,
         itemSelected,
-        facebookSignIn,
-        checkLoginState
+        loginWithFacebook,
+        loginFacebook
+        // checkLoginState
       };
     }
 };
@@ -339,4 +322,5 @@ export default {
     color: #b52626;
     margin-bottom: 0;
 }
+
 </style>

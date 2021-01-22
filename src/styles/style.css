@@ -87,12 +87,16 @@
   .apply-btn {
     background: #136acd;
     color: #fff;
-    border: 1px solid #002044;
+    border: none;
     border-radius: 111px;
     width: 101px;
     height: 41px;
     font-weight: 700;
     outline: transparent;
+  }
+
+  .apply-btn:focus {
+    outline: none;
   }
 
   .primary-text {
@@ -200,8 +204,16 @@
   
   .filter,
   .sort,
+  .search-text {
+    width: 9%;
+  }
+
+  /* .search-text {
+    width: 9%;
+  } */
+
   .search {
-    width: 15%;
+    width: 15%
   }
   
   .data-text {
