@@ -545,6 +545,7 @@ export default {
         personObj.firstName ? personObj.firstName : ""
       );
       formData.append("lastName", personObj.lastName ? personObj.lastName : "");
+      formData.append("picture", image ? image : "");
       formData.append(
         "mobilePhone",
         personObj.mobilePhone ? personObj.mobilePhone : ""

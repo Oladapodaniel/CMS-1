@@ -591,6 +591,22 @@
     min-width: 121px;
   }
 
+  .view-item-btn {
+    font-display: flex;
+    align-items: center;
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .2rem 1.25rem;
+    width: auto;
+    outline: transparent !important;
+    max-height: 35px;
+    background: #ebeff4;
+    text-decoration: none;
+  }
+
   .short-btn {
     min-width: 90px !important;
   }

@@ -836,6 +836,27 @@ export default {
         });
     };
 
+    const draftMessage = async () => {
+      try {
+        const response = await composerObj.svaeDraft({ body: editorData.value, isDefaultBirthDayMessage: false });
+        console.log(response, "draft response");
+        toast.add({
+          severity: "success",
+          summary: "Draft Saved",
+          detail: "Message saved as draft",
+          life: 2500,
+        });
+      } catch (error) {
+        console.log(error, "drafting error");
+        toast.add({
+          severity: "warn",
+          summary: "Missing implementation",
+          detail: "Can't draft message now",
+          life: 2500,
+        });
+      }
+    }
+
     const route = useRoute();
     if (route.query.phone) {
       phoneNumber.value = route.query.phone;
@@ -900,15 +921,6 @@ export default {
         severity: "info",
         summary: "Missing implementation",
         detail: "Can't schedule message now",
-        life: 2500,
-      });
-    };
-
-    const draftMessage = () => {
-      toast.add({
-        severity: "warn",
-        summary: "Missing implementation",
-        detail: "Can't draft message now",
         life: 2500,
       });
     };

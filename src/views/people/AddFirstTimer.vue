@@ -458,7 +458,10 @@
               </div>
               <div class="input-field manual-dd-con" v-if="showEventList">
                 <div class="manual-dd dd">
-                  <div class="container-fluid dd dd-search-con" v-if="eventsAttended.length > 5">
+                  <div
+                    class="container-fluid dd dd-search-con"
+                    v-if="eventsAttended.length > 5"
+                  >
                     <div class="row dd">
                       <div class="col-md-12 dd px-0 py-1">
                         <input
@@ -495,37 +498,29 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-12 py-2 px-0" v-if="eventsAttended.length > 0">
+                      <div
+                        class="col-md-12 py-2 px-0"
+                        v-if="eventsAttended.length > 0"
+                      >
                         <hr class="hr" />
                       </div>
                       <div class="col-md-12 create-event py-2 text-center">
                         <a
                           class="craete-event-btn font-weight-bold"
+                          @click="() => display = !display"
+                          >Create new event</a
+                        >
+                        <!-- <a
+                          class="craete-event-btn font-weight-bold"
                           data-toggle="modal"
                           data-target="#eventModal"
                           >Create new event</a
-                        >
+                        > -->
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- <div class="input-field">
-                <label for="" class="label">Events or Service Attended</label>
-                <div class="gender cstm-select">
-                  <div class="cs-select" style="width: 330px">
-                    <Dropdown
-                      v-model="selectedEventAttended"
-                      :options="eventsAttended"
-                      optionLabel="name"
-                      :filter="true"
-                      filterPlaceholder="Find event"
-                      placeholder="Select from events and activities"
-                      style="width: 100%"
-                    />
-                  </div>
-                </div>
-              </div> -->
               <div class="input-field">
                 <label for="" class="label">Address</label>
                 <input
@@ -548,7 +543,6 @@
                           placeholder="Day"
                           style="width: 100%"
                         />
-                        <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
                       </div>
                     </div>
                     <div class="cstm-select">
@@ -576,41 +570,8 @@
                 </div>
               </div>
             </div>
-
-            <!-- <div class="image-div other">
-              <div class="grey-bg">
-                <div class="person-img">
-                  <img
-                    v-if="!url"
-                    src="../../assets/people/phone-import.svg"
-                    alt="Uploaded Image"
-                  />
-                  <img v-else :src="url" alt="Uploaded Image" />
-                </div>
-                <div>
-                  <div class="cs-input">
-                    <label for="imgUpload" class="choose-file">
-                      Choose file
-                      <input
-                        type="file"
-                        class="input file-input"
-                        placeholder=""
-                        id="imgUpload"
-                        @change="imageSelected"
-                      />
-                    </label>
-                  </div>
-                </div>
-                <div>
-                  <button class="upload-btn" @click.prevent="uploadImage">
-                    Upload
-                  </button>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
-        <!-- <hr class="hr"> -->
 
         <div class="">
           <span class="celeb-tab" @click="showCelebTab">
@@ -642,7 +603,6 @@
                 </div>
               </div>
               <div class="input-field">
-                <!-- <label for="" class="label">Events or Service Attended</label> -->
                 <div class="gender cstm-select">
                   <div class="cs-select" style="width: 330px">
                     <Dropdown
@@ -680,52 +640,6 @@
                   </div>
                 </div>
               </div>
-
-              <!-- <div class="input-field"> 
-                <label for="" class="label">Wedding Anniversary</label>
-                <div class="status-n-gender">
-                  <div class="date-picker">
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 111px">
-                        <Dropdown
-                         
-                          :options="months"
-                          placeholder="Month"
-                          @change="
-                            editAnnDateValue('month', person.monthOfWedding)
-                          "
-                          style="width: 100%"
-                        />
-                         <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/>
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 87px">
-                        <Dropdown
-                        
-                          :options="annDaysArr"
-                          placeholder="Day"
-                          style="width: 100%"
-                        />
-                        
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 113px">
-                        <Dropdown
-                       
-                          :options="birthYearsArr"
-                          placeholder="Year"
-                          style="width: 100%"
-                        />
-                        
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
             </div>
 
             <div class="image-div other">
@@ -794,82 +708,8 @@
           </div>
         </div>
 
-        <!-- <div
-          class="add-info--con"
-          :class="{
-            'hide-tab': hideAddInfoTab,
-            'show-addinfo-tab': !hideAddInfoTab,
-          }"
-        >
-          <div class="label-text-box">
-            <p>Related information</p>
-            <small
-              >Including small groups and cell/house fellowship
-              membership</small
-            >
-          </div>
-          <div class="info-box">
-            <div class="nav-bar">
-              <div
-                class="groups box"
-                @click.prevent="() => (areaInView = 'groups')"
-                :class="{ 'white-bg': areaInView === 'groups' }"
-              >
-                <a class="tab">Groups</a>
-              </div>
-              <div
-                class="house-fel box"
-                @click.prevent="() => (areaInView = 'fellowship')"
-                :class="{ 'white-bg': areaInView === 'fellowship' }"
-              >
-                <a class="tab">House fellowship</a>
-              </div>
-              <div
-                class="notes box"
-                @click.prevent="() => (areaInView = 'notes')"
-                :class="{ 'white-bg': areaInView === 'notes' }"
-              >
-                <a class="tab">Notes</a>
-              </div>
-              <div
-                class="follow-up box"
-                @click.prevent="() => (areaInView = 'followup')"
-                :class="{ 'white-bg': areaInView === 'followup' }"
-              >
-                <a class="tab">Follow-up</a>
-              </div>
-            </div>
-            <div class="info-box-body">
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'groups'"
-              >
-                Add to Group
-              </button>
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'fellowship'"
-              >
-                Add to House fellowship
-              </button>
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'notes'"
-              >
-                New Notes
-              </button>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- <div class="error-div">
-          <p v-if="!loading">{{ errMessage }}</p>
-        </div> -->
         <div class="inputs">
-          <div class="submit-div">
+          <div class="submit-div d-flex">
             <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
               Cancel
             </button>
@@ -896,7 +736,73 @@
         <div class="container">
           <div class="row">
             <div class="col-md-12 py-4">
-              <div
+              <Dialog header="Create Event" v-model:visible="display" style="max-width:600px;width:100%">
+                <div class="container">
+                  <div class="row">
+                  <div class="col-md-4 text-md-center">
+                    <label for="" class="label font-weight-600"
+                      >Event name</label
+                    >
+                  </div>
+                  <div class="col-md-7">
+                    <input type="text" class="form-control" v-model="newEvent.preEvent.name">
+                    <!-- <CustomDropdown /> -->
+                  </div>
+                </div>
+                <div class="row mt-3 mb-4">
+                  <div class="col-md-4 text-md-center">
+                    <label for="" class="label font-weight-600"
+                      >Event date</label
+                    >
+                  </div>
+                  <div class="col-md-7">
+                    <input
+                      type="date"
+                      class="form-control"
+                      v-model="newEvent.date"
+                    />
+                  </div>
+                </div>
+                </div>
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-7">
+                      <div class="row">
+                        <div class="col-md-12 text-md-right">
+                          <p
+                            class="mb-1 text-danger"
+                            v-if="invalidEventDetails"
+                          >
+                            Enter event name and date
+                          </p>
+                        </div>
+                        <div
+                          class="col-md-12 d-md-flex justify-content-between"
+                        >
+                          <button
+                            type="button"
+                            class="btn secondary-btn px-4"
+                            data-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button
+                            type="button"
+                            class="btn primary-btn px-4 text-white"
+                            @click="createNewEvent"
+                            data-dismiss="modal"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Dialog>
+              <!-- <div
                 class="modal fade"
                 id="eventModal"
                 tabindex="-1"
@@ -904,8 +810,13 @@
                 aria-labelledby="eventModalLabel"
                 aria-hidden="true"
               >
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content py-5 px-3">
+                <div
+                  class="modal-dialog"
+                  role="document"
+                  :data-keyboard="true"
+                  :data-backdrop="'non static'"
+                >
+                  <div class="modal-content py-2">
                     <div class="modal-header">
                       <h5
                         class="modal-title font-weight-bold"
@@ -923,21 +834,17 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <div class="row my-5">
+                      <div class="row">
                         <div class="col-md-4 text-md-center">
                           <label for="" class="label font-weight-bold"
                             >Event name</label
                           >
                         </div>
                         <div class="col-md-7">
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="newEvent.preEvent.name"
-                          />
+                          <CustomDropdown />
                         </div>
                       </div>
-                      <div class="row mt-5 mb-4">
+                      <div class="row mt-3 mb-4">
                         <div class="col-md-4 text-md-center">
                           <label for="" class="label font-weight-bold"
                             >Event date</label
@@ -955,16 +862,20 @@
                     <div class="modal-footer">
                       <div class="container">
                         <div class="row">
-                          <div class="col-md-4">
-                          </div>
-                          <div
-                            class="col-md-7"
-                          >
+                          <div class="col-md-4"></div>
+                          <div class="col-md-7">
                             <div class="row">
                               <div class="col-md-12 text-md-right">
-                                <p class="mb-1 text-danger" v-if="invalidEventDetails">Enter event name and date</p>
+                                <p
+                                  class="mb-1 text-danger"
+                                  v-if="invalidEventDetails"
+                                >
+                                  Enter event name and date
+                                </p>
                               </div>
-                              <div class="col-md-12 d-md-flex justify-content-between">
+                              <div
+                                class="col-md-12 d-md-flex justify-content-between"
+                              >
                                 <button
                                   type="button"
                                   class="btn secondary-btn px-4"
@@ -988,7 +899,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -1004,6 +915,7 @@ import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
 // import { getCurrentInstance } from "vue";
 import { useToast } from "primevue/usetoast";
+// import CustomDropdown from "@/components/dropdown/CustomDropdown";
 
 export default {
   components: { Dropdown },
@@ -1011,6 +923,7 @@ export default {
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
+    const display = ref(false);
 
     const showEventList = ref(false);
     const selectEventAttended = () => {
@@ -1264,24 +1177,26 @@ export default {
       invalidEventDetails.value = false;
       if (newEvent.value.preEvent.name && newEvent.value.date) {
         try {
-          savingNewEvent.value = true;
-          const { data } = await axios.post(
-            "/api/Events/CreateActivity",
-            newEvent.value
-          );
-          selectedEventAttended.value.activityID = data.currentEvent.id;
-          selectedEventAttended.value.name = data.currentEvent.name ? data.currentEvent.name : "New event selected";
-          console.log(selectedEventAttended, "SAE");
+          // savingNewEvent.value = true;
+          // const { data } = await axios.post(
+          //   "/api/Events/CreateActivity",
+          //   newEvent.value
+          // );
+          // selectedEventAttended.value.activityID = data.currentEvent.id;
+          // selectedEventAttended.value.name = data.currentEvent.name
+          //   ? data.currentEvent.name
+          //   : "New event selected";
+          // console.log(selectedEventAttended, "SAE");
           toast.add({
-            severity: "success",
-            summary: "Event created",
-            detail: "Your new event was created successfully",
+            severity: "warn",
+            summary: "Coming Soon",
+            detail: "Feature not implemented",
             life: 2500,
           });
-          newEvent.value.date = "";
-          newEvent.value.preEvent.name = "";
+          // newEvent.value.date = "";
+          // newEvent.value.preEvent.name = "";
 
-          console.log(data, "data");
+          // console.log(data, "data");
         } catch (error) {
           savingNewEvent.value = false;
           console.log(error.response);
@@ -1374,6 +1289,7 @@ export default {
       createNewEvent,
       invalidEventDetails,
       savingNewEvent,
+      display,
     };
   },
 };
