@@ -317,7 +317,6 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("token")
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && !token) return next("/")
     if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
-    // if ((to.name === "StartingPoint" && localStorage.getItem("userSetup"))) return next(true)
     next(true)
 })
 
