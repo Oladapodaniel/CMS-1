@@ -195,7 +195,7 @@
                       <p>Name</p>
                     </div>
                     <div class="data-value">
-                      {{ person.fullName }}
+                      <router-link :to="{name: 'AddFirstTimer', params: { id: person.personID}}">{{ person.fullName }}</router-link>
                     </div>
                   </div>
                 </div>
@@ -231,7 +231,7 @@
                       <p>Date</p>
                     </div>
                     <div class="data-value">
-                      {{ new Date(person.date).toLocaleDateString() }}
+                      {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}
                     </div>
                   </div>
                 </div>
@@ -298,6 +298,7 @@ import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
 import Pagination from "../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
+import moment from 'moment'
 
 export default {
   props: ["list"],
@@ -353,7 +354,7 @@ export default {
       churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,
-      // getFirstTimers,
+      moment,
     };
   },
 };
@@ -363,6 +364,11 @@ export default {
 * {
   box-sizing: border-box;
   color: #02172e;
+}
+
+.data-value a {
+  color: #136acd;
+  text-decoration: none;
 }
 
 .page-header {

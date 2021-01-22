@@ -99,6 +99,12 @@ export default {
     //   this.$router.push(url);
     // }
   },
+
+  mounted() {
+    if (!localStorage.getItem("userSetup")) {
+      localStorage.setItem("userSetup", true);
+    }
+  }
 };
 </script>
 

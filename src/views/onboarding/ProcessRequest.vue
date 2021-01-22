@@ -33,72 +33,74 @@
 </template>
 
 <script>
-import { onBeforeUnmount, onMounted, ref } from 'vue';
-import store from "@/store/store"
-import router from "@/router/index"
-import { useRoute } from 'vue-router';
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import store from "@/store/store";
+import router from "@/router/index";
+import { useRoute } from "vue-router";
 
 export default {
-    beforeRouteEnter(to, from, next) {
-        if (store.getters.settingUserUp) return next(true);
-        return next("/next")
-    },
+  beforeRouteEnter(to, from, next) {
+    if (store.getters.settingUserUp) return next(true);
+    return next("/next");
+  },
 
-    setup() {
-        const route = useRoute();
-        const userSelectedRoute = route.params.option;
-        // if (userSelectedRoute.includes("%")) userSelectedRoute.replace("%", "/")
-        console.log(userSelectedRoute);
+  setup() {
+    const route = useRoute();
+    const userSelectedRoute = route.params.option;
+    // if (userSelectedRoute.includes("%")) userSelectedRoute.replace("%", "/")
+    console.log(userSelectedRoute);
 
-        onMounted(() => {
-            console.log(store.getters.userStartPoint, "user p");
-            const url = store.getters.userStartPoint;
-            console.log(url, "start");
-            setTimeout(() => {
-                toggleProcessing()
-            }, 200);
-            setTimeout(() => {
-                const nextRoute = userSelectedRoute.includes('add') ? `people/${userSelectedRoute}` : userSelectedRoute;
-                router.push(`/tenant/${nextRoute}`)
-            }, 3000);
-        })
+    onMounted(() => {
+      // const url = store.getters.userStartPoint;
+      if (route.params.option) {
+        localStorage.setItem("userSetup", true);
+      }
+      setTimeout(() => {
+        toggleProcessing();
+      }, 200);
+      setTimeout(() => {
+        const nextRoute = route.params.option;
+        // const nextRoute = userSelectedRoute.includes('add') ? `people/${userSelectedRoute}` : userSelectedRoute;
+        router.push(nextRoute);
+      }, 3000);
+    });
 
-        onBeforeUnmount(() => {
-            store.dispatch("setUserUp", false);
-        })
+    onBeforeUnmount(() => {
+      store.dispatch("setUserUp", false);
+    });
 
-        const processing = ref(false)
-        const toggleProcessing = () => {
-            processing.value = !processing.value;
-        }
+    const processing = ref(false);
+    const toggleProcessing = () => {
+      processing.value = !processing.value;
+    };
 
-        return { processing }
-    }
+    return { processing };
+  },
 
-    // data() {
-    //     return {
-    //         processing: false,
-    //     }
-    // },
+  // data() {
+  //     return {
+  //         processing: false,
+  //     }
+  // },
 
-    // methods: {
-    //     test() {
-    //         this.processing = !this.processing
-    //     }
-    // },
+  // methods: {
+  //     test() {
+  //         this.processing = !this.processing
+  //     }
+  // },
 
-    // mounted() {
-    //     // console.log(this.$store.getters.userStartPoint, "user p");
-    //     const url = this.$store.getters.userStartPoint;
-    //     console.log(url, "start");
-    //     setTimeout(() => {
-    //         this.test()
-    //     }, 200);
-    //     setTimeout(() => {
-    //         if (url) this.$router.push(url)
-    //         else this.$router.push("/next")
-    //     }, 3000);
-    // }
+  // mounted() {
+  //     // console.log(this.$store.getters.userStartPoint, "user p");
+  //     const url = this.$store.getters.userStartPoint;
+  //     console.log(url, "start");
+  //     setTimeout(() => {
+  //         this.test()
+  //     }, 200);
+  //     setTimeout(() => {
+  //         if (url) this.$router.push(url)
+  //         else this.$router.push("/next")
+  //     }, 3000);
+  // }
 };
 </script>
 

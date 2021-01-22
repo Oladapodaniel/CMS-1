@@ -81,7 +81,7 @@
                   <!-- <SelectElem :typ="'churchsize'" name="churchSize" :options="['--Select size range--', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="--Select size range--" @input="itemSelected"/> -->
                 <Dropdown
                   v-model="userDetails.churchSize"
-                  :options="['--Select size range--', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']"
+                  :options="['Between 1 - 100', 'Between 101 - 200', 'Between 201 - 500', 'Between 501 - 2000']"
                   style="width: 100%"
                   placeholder="Select size range"
                 />
@@ -177,6 +177,7 @@ export default {
         .then((res) => {
           console.log(res, "onboarding response");
           localStorage.setItem("token", res.data.token);
+          console.log(typeof res.data.token, "token type")
           // this.$store.dispatch("setStartPoint", url)
           this.loading = false;
           this.$router.push("/onboarding/step2");

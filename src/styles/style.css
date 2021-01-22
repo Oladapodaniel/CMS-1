@@ -574,7 +574,7 @@
     padding: .5rem 1.25rem;
     width: auto;
     outline: transparent !important;
-    /* height: 40px; */
+    max-height: 40px;
     background: #fff;
     min-width: 121px;
   }

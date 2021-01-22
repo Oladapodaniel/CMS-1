@@ -88,7 +88,7 @@
                 <div class="modal-dialog" role="document" ref="modal">
                   <div class="modal-content pr-2">
                     <div class="modal-header py-3">
-                      <h5 class="modal-title font-weight-600" id="exampleModalLabel">
+                      <h5 class="modal-title font-weight-700" id="exampleModalLabel">
                         Group membership
                       </h5>
                       <button
@@ -104,8 +104,8 @@
                       <div class="row">
                         <div class="col-md-12">
                           <div class="row my-3">
-                            <div class="col-md-5 text-right">
-                              <label>Select Members</label>
+                            <div class="col-md-4 text-right d-flex align-items-center justify-content-md-end">
+                              <label class="font-weight-600">Select Members</label>
                             </div>
                             <div class="col-md-7">
                               <div class="row">
@@ -189,8 +189,8 @@
                           </div>
 
                           <div class="row mb-3">
-                            <div class="col-md-5 text-right">
-                              <label>Position in group</label>
+                            <div class="col-md-4 text-right d-flex align-items-center justify-content-md-end">
+                              <label class="font-weight-600">Position in group</label>
                             </div>
                             <div class="col-md-7 px-0">
                               <input
@@ -204,10 +204,10 @@
                         </div>
                       </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer mb-2">
                       <button
                         type="button"
-                        class="secondary-btn default-btn bg-white text-dark"
+                        class="default-btn cancel bg-white text-dark"
                         data-dismiss="modal"
                       >
                         Cancel
@@ -449,17 +449,23 @@ export default {
     const modalStatus = ref("");
     const groupMembers = ref([]);
     const addSelectedMembersToGroup = () => {
+      if (selectedMembers.value.length === 0) {
+        modalStatus.value = "modal";
+        return false;
+      }
       selectedMembers.value.forEach((i) => {
         i.position = position.value;
         i.personID = i.id;
         i.id = "";
         groupMembers.value.push(i);
       });
+      if (route.params.groupId) {
+        groupData.value.peopleInGroups = groupMembers.value;
+        updateGroup(groupData.value, false);
+      }
       modalStatus.value = "modal";
       position.value = "";
       memberSearchResults.value = [];
-      console.log(selectedMembers.value);
-      console.log(groupMembers.value, "GM");
       selectedMembers.value = [ ];
     };
 
@@ -484,14 +490,56 @@ export default {
       groupData.value.peopleInGroups = groupMembers.value;
       if (!route.params.groupId) {
         savingGroup.value = true;
-        axios
-        .post("/api/CreateGroup", groupData.value)
+        createGroup(groupData.value);
+      }else {
+        savingGroup.value = true;
+        updateGroup(groupData.value, true)
+      }
+    };
+
+    /*eslint no-undef: "warn"*/
+    const updateGroup = (data, redirect) => {
+      NProgress.start();
+      axios
+      .put(`/api/UpdateGroup/${route.params.groupId}`, data)
+      .then((res) => {
+        savingGroup.value = false;
+        console.log(res.data, "saved");
+        if (redirect) {
+          router.push("/tenant/people-groups");
+        } else {
+          toast.add({
+          severity: "success",
+          summary: "Group Updated",
+          detail: "Group members update successfull",
+          life: 2500,
+        });
+        }
+      })
+      .catch((err) => {
+        NProgress.done();
+        savingGroup.value = false;
+        console.log(err.response);
+        toast.add({
+          severity: "error",
+          summary: "Update Error",
+          detail: "Failed updating group",
+          life: 2500,
+        });
+      });
+    }
+
+    const createGroup = (data) => {
+      NProgress.start();
+      axios
+        .post("/api/CreateGroup", data)
         .then((res) => {
           console.log(res);
           savingGroup.value = false;
           router.push("/tenant/people-groups")
         })
         .catch((err) => {
+          NProgress.done();
           savingGroup.value = false;
           console.log(err.response);
           toast.add({
@@ -500,29 +548,8 @@ export default {
             detail: "Failed saving group",
             life: 2500,
           });
-          alert("it works")
         });
-      }else {
-        savingGroup.value = true;
-        axios
-        .put(`/api/UpdateGroup/${route.params.groupId}`, groupData.value)
-        .then((res) => {
-          savingGroup.value = false;
-          console.log(res.data, "saved");
-          router.push("/tenant/people-groups")
-        })
-        .catch((err) => {
-          savingGroup.value = false;
-          console.log(err.response);
-          toast.add({
-            severity: "error",
-            summary: "Update Error",
-            detail: "Failed updating group",
-            life: 2500,
-          });
-        });
-      }
-    };
+    }
 
     const validateGroupName = (e) => {
       if (e.target.value) {
@@ -535,6 +562,7 @@ export default {
     const getGroupById = async () => {
         try {
             loadingMembers.value = true;
+            NProgress.start();
             const { data } = await axios.get(`/api/GetGroupsFromId/${route.params.groupId}`, groupData.value)
             console.log(data, "group info");
             loadingMembers.value = false;
@@ -556,6 +584,7 @@ export default {
             })
             console.log(selectedMembers.value, "SM");
         } catch (error) {
+          NProgress.done();
             loadingMembers.value = false;
             console.log(error.response);
         }
@@ -672,6 +701,14 @@ export default {
 .dropdown-toggle:focus {
   outline: none !important;
   border: none;
+}
+
+.modal-dialog {
+  max-width: 600px;
+}
+
+.cancel {
+  border: 1px solid #dde2e6;;
 }
 
 @media screen and (max-width: 767px) {

@@ -26,7 +26,7 @@ import 'primevue/resources/themes/saga-blue/theme.css'       //theme
 import 'primevue/resources/primevue.min.css'                 //core css
 import 'primeicons/primeicons.css'                           //icons
 
-// NProgress.configure({ showSpinner: false });
+NProgress.configure({ showSpinner: false });
 axios.interceptors.request.use((config) => {
     if (typeof window === 'undefined') return config;
     const token =  localStorage.getItem('token');
@@ -34,15 +34,16 @@ axios.interceptors.request.use((config) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    // NProgress.start()
+    /*eslint no-undef: "warn"*/
+    NProgress.start()
     return config;
   })
   
   // before a response is returned stop nprogress
-  // axios.interceptors.response.use(response => {
-  //   NProgress.done()
-  //   return response
-  // })
+  axios.interceptors.response.use(response => {
+    NProgress.done()
+    return response
+  })
 
 // axios.defaults.baseURL = "https://churchplusv3coreapi.azurewebsites.net/";
 const app = createApp(App);

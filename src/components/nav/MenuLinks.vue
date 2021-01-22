@@ -403,7 +403,7 @@ export default {
   justify-content: start;
   color: #02172e;
   text-decoration: none;
-  opacity: 0.5;
+  opacity: 0.8;
   margin: 22px 0 0 0;
   padding-left: 25px;
 }
