@@ -1,5 +1,5 @@
 <template>
-  <div class="container container-top">
+  <div class="container-wide container-top">
     <div class="row my-3">
       <div class="col-sm-4 first-timers-text">
         <h2 class="page-header">First Timers</h2>
@@ -80,33 +80,33 @@
           <div class="table">
             <div class="top-con">
               <div class="table-top my-3">
-                <div class="select-all">
-                  <input type="checkbox" name="all" id="all" />
-                  <label>SELECT ALL</label>
-                </div>
-                <div class="filter">
-                  <p @click="toggleFilterFormVissibility">
-                    <i class="fas fa-filter"></i>
-                    FILTER
-                  </p>
-                </div>
-                <div class="search d-flex">
-                  <label
-                    class="label-search d-flex"
-                    :class="{ 'show-search': filterFormIsVissible }"
-                  >
-                    <input type="text" />
-                    <span class="empty-btn">x</span>
-                    <span class="search-btn">
-                      <i class="fa fa-search"></i>
-                    </span>
-                  </label>
-                  <p v-if="!filterFormIsVissible">
-                    <i class="fa fa-search"></i> SEARCH
-                  </p>
-                </div>
-              </div>
-              <div
+        <div class="select-all">
+          <input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/>
+          <label>SELECT ALL</label>
+        </div>
+        <div class="filter">
+          <p @click="toggleFilterFormVissibility">
+            <i class="fas fa-filter"></i>
+            FILTER
+          </p>
+        </div>
+        <p @click="toggleSearch" class="search-text">
+            <i class="fa fa-search"></i> SEARCH
+          </p>
+        <div class="search d-flex" >
+          <label 
+            class="label-search d-flex"
+            :class="{ 'show-search': searchIsVisible }"
+          >
+            <input type="text" placeholder="Search..." />
+            <span class="empty-btn">x</span>
+            <span class="search-btn">
+              <i class="fa fa-search"></i>
+            </span>
+          </label>
+        </div>
+      </div>
+              <!-- <div
                 class="filter-options"
                 :class="{ 'filter-options-shown': filterFormIsVissible }"
               >
@@ -163,8 +163,72 @@
                     </div>
                   </div>
                 </div>
+              </div> -->
+            </div>
+            <div
+        class="filter-options"
+        :class="{ 'filter-options-shown': filterFormIsVissible }"
+      >
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-9">
+              <div class="row">
+                <div class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100">
+                  <!-- <div class="input-field"> -->
+
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="First Name"
+                    v-model="filter.filterFirstName"
+                  />
+                  <!-- </div> -->
+                </div>
+
+                <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="date"
+                    class="form-control input inp w-100"
+                    v-model="filter.filterDate"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="Last Name"
+                    v-model="filter.filterLastName"
+                  />
+                </div>
+
+                <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="Phone Number"
+                    v-model="filter.phoneNumber"
+                  />
+                </div>
               </div>
             </div>
+
+            <div class="col-md-3 d-flex flex-column align-items-center">
+              <button class="apply-btn text-white" @click="applyFilter">
+                Apply
+              </button>
+              <span class="mt-2">
+                <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                <span class="mx-2"
+                  ><i class="fas fa-circle" style="font-size: 4px"></i></span
+                ><a class="hide-link ml-2" @click="hide">Hide</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
 
             <div class="table-header font-weight-700">
               <div class="check"></div>
@@ -189,7 +253,105 @@
               <div class="action"></div>
             </div>
 
-            <div
+            <div v-if="filterResult.length > 0 && ( filter.filterFirstName || filter.filterLastName || filter.phoneNumber )">
+              <div
+              class="table-body"
+              v-for="person in filterResult"
+              :key="person.id"
+            >
+              <div class="data-row">
+                <div class="check data">
+                  <input type="checkbox" name="" id="" />
+                </div>
+                <div class="picture data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Name</p>
+                    </div>
+                    <div class="data-value">
+                      {{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}
+                    </div>
+                  </div>
+                </div>
+                <div class="firstname data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Phone Number</p>
+                    </div>
+                    <div class="data-value">{{ person.phoneNumber }}</div>
+                  </div>
+                </div>
+                <div class="lastname data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Source</p>
+                    </div>
+                    <div class="data-value">Social media</div>
+                  </div>
+                </div>
+                <div class="phone data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Interested</p>
+                    </div>
+                    <div class="data-value">
+                      {{ person.interestedInJoining }}
+                    </div>
+                  </div>
+                </div>
+                <div class="phone data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Date</p>
+                    </div>
+                    <div class="data-value">
+                      {{ new Date(person.date).toLocaleDateString() }}
+                    </div>
+                  </div>
+                </div>
+                <div class="phone data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Status</p>
+                    </div>
+                    <div class="data-value">{{ person.status }}</div>
+                  </div>
+                </div>
+                <div class="action data action-icon">
+                  <div class="dropdown">
+                    <i
+                      class="fas fa-ellipsis-v"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    ></i>
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <a class="dropdown-item" href="#">Convert to member</a>
+                      <a class="dropdown-item" href="#">Assign to follow-up</a>
+                      <a class="dropdown-item" v-if="person.phoneNumber">
+                        <router-link
+                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          >Send SMS</router-link
+                        >
+                      </a>
+                      <a class="dropdown-item" href="#">Send Email</a>
+                      <a class="dropdown-item" href="#">Delete</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr class="row-divider" />
+            </div>
+            </div>
+            <!-- <div v-else-if="filterResult.length == 0">
+              <div>No records found</div>
+            </div> -->
+            <div v-else>
+              <div
               class="table-body"
               v-for="person in churchMembers"
               :key="person.id"
@@ -281,6 +443,7 @@
               </div>
               <hr class="row-divider" />
             </div>
+            </div>
 
             <div class="table-footer">
               <!-- <button class="tbl-footer-btn">
@@ -320,6 +483,8 @@ export default {
     const churchMembers = ref([]);
     const getFirstTimerSummary = ref({})
     const filter = ref({})
+    const searchIsVisible = ref(false)
+    const filterResult = ref([])
 
     // if ()
 
@@ -327,6 +492,11 @@ export default {
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
+
+    const toggleSearch = () => {
+      searchIsVisible.value = !searchIsVisible.value
+   }
+      
 
      const firstTimerSummary = () => {
       axios.get("/api/People/GetFirsttimerSummary")
@@ -339,9 +509,6 @@ export default {
     firstTimerSummary()
 
 
-    const applyFilter = () => {
-      console.log(filter.value)
-    }
     // const getFirstTimers = async () => {
     //   try {
     //     const { data } = await axios.get(
@@ -364,6 +531,20 @@ export default {
           })
     });
 
+    const applyFilter = () => {
+        console.log(filter.value.phoneNumber)
+        filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
+        filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
+        filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
+    
+         let url = "/api/People/FilterMembers?firstname="+filter.value.filterFirstName +"&lastname="+filter.value.filterLastName +"&phone_number="+ filter.value.phoneNumber +"&page=1"
+      axios.get(url).then((res) => {
+        
+        filterResult.value = res.data
+        console.log(filterResult.value);
+      }) .catch(err => console.log(err))
+    }
+
     return {
       churchMembers,
       filterFormIsVissible,
@@ -371,7 +552,10 @@ export default {
       firstTimerSummary,
       getFirstTimerSummary,
       applyFilter,
-      filter
+      filter,
+      toggleSearch,
+      searchIsVisible,
+      filterResult
     };
   },
 };
@@ -509,7 +693,7 @@ export default {
 }
 
 .filter-options-shown {
-  height: 110px !important;
+  height: 120px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }

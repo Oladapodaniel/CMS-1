@@ -9,7 +9,7 @@
           <div class="col-12 col-sm-4 col-lg-6 events">Events</div>
           <div class="col-5 col-sm-3 col-lg-2 btn btn-preview">Preview</div>
           <div
-            class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save"
+            class="col-6 col-sm-4 col-lg-3 btn-save button"
             @click="post"
           >
             <i
@@ -886,7 +886,7 @@
           <div class="col-12 col-sm-4 col-lg-6 events"></div>
           <div class="col-5 col-sm-3 col-lg-2 btn btn-preview">Preview</div>
           <div
-            class="col-6 col-sm-4 offset-1 col-lg-3 btn btn-save"
+            class="col-6 col-sm-4 col-lg-3 button btn-save"
             @click="post"
           >
             <i
@@ -1994,12 +1994,15 @@ export default {
 .btn-preview {
   border: 1px solid #797e81;
   border-radius: 22px;
+  margin-left: 46px;
+
 }
 .btn-save {
   background: #136acd 0% 0% no-repeat padding-box;
-  border-radius: 22px;
-  color: white;
-  /* border: 2px solid red; */
+  /* border-radius: 22px;
+  color: white; */
+  margin-left: 26px; 
+  text-align: center;
 }
 .nested-row {
   font-size: 0.9em;

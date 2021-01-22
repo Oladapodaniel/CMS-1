@@ -49,7 +49,7 @@
     <div class="table mx-0">
       <div class="table-top my-3">
         <div class="select-all">
-          <input type="checkbox" name="all" id="all" />
+          <input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/>
           <label>SELECT ALL</label>
         </div>
         <div class="filter">
@@ -156,10 +156,11 @@
         <div class="action"></div>
       </div>
 
-      <div class="table-body" v-for="person in churchMembers" :key="person.id">
+      <div v-if="filterResult.length > 0 && filter.filterFirstName || filter.filterLastName || filter.phoneNumber">
+        <div class="table-body" v-for="person in filterResult" :key="person.id">
         <div class="data-row">
           <div class="check data">
-            <input type="checkbox" name="" id="" />
+            <input type="checkbox" name="" id="" v-model="selectAll"/>
           </div>
           <div class="picture data">
             <div class="data-con">
@@ -266,6 +267,122 @@
         <hr class="row-divider" />
         <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
+      </div>
+      <!-- <div v-else-if="filterResult.length == 0">
+        <div>No record found</div>
+      </div> -->
+      <div v-else>
+        <div class="table-body" v-for="person in churchMembers" :key="person.id">
+        <div class="data-row">
+          <div class="check data">
+            <input type="checkbox" name="" id="" v-model="selectAll"/>
+          </div>
+          <div class="picture data">
+            <div class="data-con">
+              <div class="data-text">
+                <p>Picture</p>
+              </div>
+              <div class="data-value">
+                <div class="image-con">
+                  <div v-if="person.gender == 'Male'">
+                    <img
+                      src="../../assets/people/avatar-male.png"
+                      alt=""
+                      style="border-radius: 50%"
+                    />
+                  </div>
+                  <div v-else-if="person.gender == 'Female'">
+                    <img src="../../assets/people/avatar-female.png" alt="" />
+                  </div>
+                  <div v-else>
+                    <img
+                      src="../../assets/people/no-gender-avatar.png"
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="firstname data">
+            <div class="data-con">
+              <div class="data-text">
+                <p>Firstname</p>
+              </div>
+              <router-link
+                :to="`/tenant/people/add-person/${person.id}`"
+                class="data-value itemroute-color"
+                >{{ person.firstName }}</router-link
+              >
+            </div>
+          </div>
+          <div class="lastname data">
+            <div class="data-con">
+              <div class="data-text">
+                <p>Lastname</p>
+              </div>
+              <router-link
+                :to="`/tenant/people/add-person/${person.id}`"
+                class="data-value itemroute-color"
+                >{{ person.lastName }}</router-link
+              >
+            </div>
+          </div>
+          <div class="phone data">
+            <div class="data-con">
+              <div class="data-text">
+                <p>Phone</p>
+              </div>
+              <router-link
+                :to="`/tenant/people/add-person/${person.id}`"
+                class="data-value itemroute-color"
+                >{{ person.mobilePhone }}</router-link
+              >
+            </div>
+          </div>
+          <div class="action data action-icon">
+            <div class="dropdown">
+              <i
+                class="fas fa-ellipsis-v cursor-pointer"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></i>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" v-if="person.mobilePhone">
+                  <router-link
+                    :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
+                    >Send SMS</router-link
+                  >
+                </a>
+                <a class="dropdown-item" v-if="person.email">
+                  <router-link
+                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    >Send Email</router-link
+                  >
+                </a>
+                <a class="dropdown-item">
+                  <router-link :to="`/tenant/people/add-person/${person.id}`"
+                    >Edit</router-link
+                  >
+                </a>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click.prevent="showConfirmModal(person.id)"
+                  >Delete</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <ConfirmDialog />
+        <Toast />
+        <hr class="row-divider" />
+        <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
+      </div>
+      </div>
 
       <div class="table-footer">
         <PaginationButtons @getcontent="getPeopleByPage" />
@@ -296,6 +413,8 @@ export default {
     const filterFormIsVissible = ref(false);
     const filter = ref({});
     const searchIsVisible = ref(false)
+    const filterResult = ref([])
+    const selectAll = ref(true)
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -320,7 +439,9 @@ export default {
     
          let url = "/api/People/FilterMembers?firstname="+filter.value.filterFirstName +"&lastname="+filter.value.filterLastName +"&phone_number="+ filter.value.phoneNumber +"&page=1"
       axios.get(url).then((res) => {
-        console.log(res);
+        
+        filterResult.value = res.data
+        console.log(res.data);
       }) .catch(err => console.log(err))
     };
 
@@ -409,6 +530,11 @@ export default {
       churchMembers.value = props.list;
     });
 
+    const toggleSelect = () => {
+      selectAll.value = !selectAll.value
+      console.log(selectAll.value)
+    }
+
     return {
       churchMembers,
       // getPeopleByPage,
@@ -424,7 +550,11 @@ export default {
       disableBtn,
       toggleSearch,
       searchIsVisible,
-      showConfirmModal
+      showConfirmModal,
+      // filterChurchMembers,
+      filterResult,
+      selectAll,
+      toggleSelect
     };
   },
 };
