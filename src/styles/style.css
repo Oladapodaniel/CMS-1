@@ -99,6 +99,23 @@
     outline: none;
   }
 
+  .button {
+    padding: 8px 10px;
+    border: none;
+    border-radius: 22px;
+    width: 180px;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 8px;
+    outline: none;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+  
+  .button:hover {
+    cursor: pointer;
+  }
+
   .primary-text {
     color: #136ACD;
   }
