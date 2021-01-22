@@ -36,9 +36,9 @@
                     alt=""
                   />
                 </div>
-                <h4 class="total">123,456</h4>
+                <h4 class="total">{{ getFirstTimerSummary.totalFirstTimer }}</h4>
                 <p>
-                  <span class="percent">+3.48% </span>
+                  <span class="percent">+{{ getFirstTimerSummary.firstTimerPercentageGrowth }}% </span>
                   <span class="percent-text"> Since last month</span>
                 </p>
               </div>
@@ -50,6 +50,7 @@
                   title="Invitation Source"
                   distance="5"
                   :titleMargin="10"
+                  :summary="getFirstTimerSummary.invitationSource"
                 />
               </div>
               <div class="board fig">
@@ -57,6 +58,7 @@
                   domId="second"
                   title="Interested In Joining"
                   :titleMargin="10"
+                  :summary="getFirstTimerSummary.interestedInJoining"
                 />
               </div>
               <div class="board fig">
@@ -65,6 +67,7 @@
                   title="To Be Contacted"
                   style="height: 100%"
                   :titleMargin="10"
+                  :summary="getFirstTimerSummary.toBeContacted"
                 />
               </div>
               <!-- <div  class="board fig">
@@ -112,36 +115,42 @@
                     <div class="col-md-9">
                       <div class="row">
                         <div class="col-md-5 form-group inp">
-                          <select name="" id="" class="form-control">
-                            <option value="">Option 1</option>
-                            <option value="">Option 2</option>
-                          </select>
+                          <input
+                              type="text"
+                              class="input"
+                              placeholder="Name"
+                              v-model="filter.filterName"
+                            />
                         </div>
 
                         <div class="col-md-5 offset-md-2 form-group">
-                          <input type="date" class="form-control inp" />
+                          <input type="date" class="form-control inp" v-model="filter.filterDate"/>
                         </div>
                       </div>
 
                       <div class="row">
                         <div class="col-md-5 form-group">
-                          <select name="" id="" class="form-control inp">
-                            <option value="">Option 1</option>
-                            <option value="">Option 2</option>
-                          </select>
+                          <input
+                              type="text"
+                              class="input"
+                              placeholder="Source"
+                              v-model="filter.filterSource"
+                            />
                         </div>
 
                         <div class="col-md-5 offset-md-2 form-group">
-                          <select name="" id="" class="form-control inp">
-                            <option value="">Option 1</option>
-                            <option value="">Option 2</option>
-                          </select>
+                          <input
+                              type="text"
+                              class="input"
+                              placeholder="Status"
+                              v-model="filter.filterStatus"
+                            />
                         </div>
                       </div>
                     </div>
 
                     <div class="col-md-3 d-flex flex-column align-items-end">
-                      <button class="apply-btn">Apply</button>
+                      <button class="apply-btn" @click="applyFilter">Apply</button>
                       <span class="mt-2">
                         <a class="clear-link mr-2">Clear all</a>
                         <span class="mx-2"
@@ -309,6 +318,8 @@ export default {
 
    setup() {
     const churchMembers = ref([]);
+    const getFirstTimerSummary = ref({})
+    const filter = ref({})
 
     // if ()
 
@@ -320,14 +331,17 @@ export default {
      const firstTimerSummary = () => {
       axios.get("/api/People/GetFirsttimerSummary")
           .then(res => {
-            // churchMembers.value = res.data;
+            getFirstTimerSummary.value = res.data;
             console.log(res.data)
           })
           .catch(err => console.log(err))
-        
+      }
+    firstTimerSummary()
+
+
+    const applyFilter = () => {
+      console.log(filter.value)
     }
-
-
     // const getFirstTimers = async () => {
     //   try {
     //     const { data } = await axios.get(
@@ -354,7 +368,10 @@ export default {
       churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,
-      firstTimerSummary
+      firstTimerSummary,
+      getFirstTimerSummary,
+      applyFilter,
+      filter
     };
   },
 };

@@ -35,20 +35,20 @@
           <span class="or">or</span>
         </div>
 
-        <!-- <div>
+        <div v-if="false">
           <button type="submit" class="google-btn btn-logo sign-in-btn">
              <img src="../../assets/google.png" alt="Google Icon">
              <span>Sign up with Google</span>
              <span></span>
           </button>
-        </div> -->
-        <!-- <div>
+        </div>
+        <div v-if="false">
           <button class="facebook-btn btn-logo sign-in-btn" @click="loginWithFacebook">
             <img src="../../assets/facebook-small.png" class="fb-icon" alt="Google Icon">
              <span>Sign up with Facebook</span>
              <span></span>
           </button>
-        </div> -->
+        </div>
 
         <!-- <button  onclick="alert('it works')">Love you</button> -->
         <!-- <div @click="facebookSignIn"> -->

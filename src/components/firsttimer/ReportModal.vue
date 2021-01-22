@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-sm-6 form-group">
                         <select name="" class="form-control inp" v-show="activeTab === 'churchplus'">
-                            <option value="">test@example.com</option>
+                            <option value="">{{ userEmail }}</option>
                         </select>
                         <select name="" class="form-control inp" v-show="activeTab === 'sms'">
                             <option value="">0123456789</option>
@@ -33,7 +33,7 @@
                         <span>To</span>
                     </div>
                     <div class="col-sm-6 form-group">
-                        <input type="email" class="form-control inp" name="" id="" placeholder="test@example.com" v-show="activeTab === 'churchplus'">
+                        <input type="email" class="form-control inp" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'">
                         <input type="text" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
@@ -47,7 +47,7 @@
                         <span>From</span>
                     </div>
                     <div class="col-sm-6 form-group">
-                        <input type="email" v-model="recipient.to" class="form-control inp" name="" id="" placeholder="test@example.com" v-show="activeTab === 'churchplus'">
+                        <input type="email" v-model="recipient.to" class="form-control inp" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'">
                         <input type="text" v-model="recipient.to" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
                         <span class="text-danger">Enter {{ activeTab === 'sms' ? 'phone number' : 'email address' }}</span>
                     </div>
@@ -100,7 +100,7 @@
                                 <input type="checkbox" name="" id="">
                             </div>
                             <div class="col-sm-10">
-                                <span>Send a copy to myself at test@example.com</span>
+                                <span>Send a copy to myself at {{ userEmail }}</span>
                             </div>
                         </div>
                         <div class="row">
@@ -143,6 +143,7 @@
 
 <script>
 import { ref } from 'vue'
+import axios from "@/gateway/backendapi";
 
     
     export default {
@@ -151,6 +152,7 @@ import { ref } from 'vue'
             const activeTab = ref("churchplus");
             const recipients = ref([ { phone: "01234567890", email: "test@example.com" } ])
             const count = 0;
+            const userEmail = ref("")
 
             const changeTab = (tab) => activeTab.value = tab;
 
@@ -166,7 +168,17 @@ import { ref } from 'vue'
 
             const event = ref(props.eventName)
 
-            return { changeTab, activeTab,  recipients, removeRecipient, addRecipient, event }
+            const getUserEmail = () => {
+                axios.get("/api/Membership/GetCurrentSignedInUser")
+                    .then(res => {
+                        console.log(res.data)
+                        userEmail.value = res.data.userEmail
+                    })
+                    .catch(err => console.log(err))
+            }
+            getUserEmail()
+
+            return { changeTab, activeTab,  recipients, removeRecipient, addRecipient, event, userEmail, getUserEmail }
         }
     }
 </script>

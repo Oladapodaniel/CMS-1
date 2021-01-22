@@ -86,6 +86,10 @@
     outline: transparent;
   }
 
+  .apply-btn:focus {
+    outline: none;
+  }
+
   .primary-text {
     color: #136ACD;
   }
@@ -187,8 +191,16 @@
   
   .filter,
   .sort,
+  .search-text {
+    width: 9%;
+  }
+
+  /* .search-text {
+    width: 9%;
+  } */
+
   .search {
-    width: 15%;
+    width: 15%
   }
   
   .data-text {

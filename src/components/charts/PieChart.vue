@@ -9,10 +9,10 @@ import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-    props: [ "title", "subtitle", "distance", "domId", "titleMargin", "titleMarginLeft", "height", "membershipSummary"],
+    props: [ "title", "subtitle", "distance", "domId", "titleMargin", "titleMarginLeft", "height", "summary"],
   setup(props) {
     const chart = ref(null);
-    const summary = ref([])
+    const getSummary = ref([])
     // let elemId = "";
     
     
@@ -26,15 +26,15 @@ export default {
 
 
     onUpdated(() => {
-       props.membershipSummary.forEach(i => {
+       props.summary.forEach(i => {
         let summaryObj = {
           name: i.name,
           y: i.value
         }
-        summary.value.push(summaryObj)
+        getSummary.value.push(summaryObj)
       })
 
-      console.log(summary.value)
+      console.log(getSummary.value)
 
 
 
@@ -104,7 +104,7 @@ export default {
           {
             name: "Brands",
             colorByPoint: true,
-            data: summary.value
+            data: getSummary.value
           },
         ],
         //   credits: false,
@@ -116,7 +116,7 @@ export default {
     });
     // })
 
-    return { chart, summary};
+    return { chart, getSummary};
   },
 };
 </script>

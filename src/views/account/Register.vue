@@ -65,13 +65,14 @@
           <span class="or">or</span>
         </div>
 
-        <div>
+        <div v-if="false">
           <button class="facebook-btn btn-logo sign-in-btn google-sign-up">
             <img src="../../assets/google.png" alt="Google Icon" />
             <span>Sign in with Google</span>
             <span></span>
           </button>
         </div>
+        <div class="fb-login-button" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></div>
         
         <div class="terms">
           <p>

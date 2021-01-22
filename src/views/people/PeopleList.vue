@@ -2,6 +2,7 @@
   <div class="my-con">
     <div class="summary px-3">
       <p class="summary-header">Summary</p>
+      
       <!-- <hr class="hr" /> -->
 
       <div class="boards">
@@ -16,17 +17,30 @@
           </div>
           <h4 class="total">{{ membershipSummary.totalMember }}</h4>
           <p>
-            <span class="percent">+{{ membershipSummary.percentageGrowth }}% </span>
+            <span class="percent"
+              >+{{ membershipSummary.percentageGrowth }}%
+            </span>
             <span class="percent-text"> Since last month</span>
           </p>
         </div>
 
         <div class="chart-con">
           <div style="width: 45%" class="ml-md-4 chart1">
-            <ByGenderChart domId="chart" title="By Gender" distance="5" :titleMargin="10" :membershipSummary="membershipSummary.genders"/>
+            <ByGenderChart
+              domId="chart"
+              title="By Gender"
+              distance="5"
+              :titleMargin="10"
+              :summary="membershipSummary.genders"
+            />
           </div>
           <div style="width: 45%" class="chart2">
-            <ByMaritalStatusChart domId="second" title="By Marital Status" :titleMargin="10" :membershipSummary="membershipSummary.maritalStatus"/>
+            <ByMaritalStatusChart
+              domId="second"
+              title="By Marital Status"
+              :titleMargin="10"
+              :summary="membershipSummary.maritalStatus"
+            />
           </div>
         </div>
       </div>
@@ -34,90 +48,96 @@
 
     <div class="table mx-0">
       <div class="table-top my-3">
-                <div class="select-all">
-                  <input type="checkbox" name="all" id="all" />
-                  <label>SELECT ALL</label>
+        <div class="select-all">
+          <input type="checkbox" name="all" id="all" />
+          <label>SELECT ALL</label>
+        </div>
+        <div class="filter">
+          <p @click="toggleFilterFormVissibility">
+            <i class="fas fa-filter"></i>
+            FILTER
+          </p>
+        </div>
+        <p @click="toggleSearch" class="search-text">
+            <i class="fa fa-search"></i> SEARCH
+          </p>
+        <div class="search d-flex" >
+          <label 
+            class="label-search d-flex"
+            :class="{ 'show-search': searchIsVisible }"
+          >
+            <input type="text" placeholder="Search..." />
+            <span class="empty-btn">x</span>
+            <span class="search-btn">
+              <i class="fa fa-search"></i>
+            </span>
+          </label>
+        </div>
+      </div>
+      <div
+        class="filter-options"
+        :class="{ 'filter-options-shown': filterFormIsVissible }"
+      >
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-9">
+              <div class="row">
+                <div class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100">
+                  <!-- <div class="input-field"> -->
+
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="First Name"
+                    v-model="filter.filterFirstName"
+                  />
+                  <!-- </div> -->
                 </div>
-                <div class="filter">
-                  <p @click="toggleFilterFormVissibility">
-                    <i class="fas fa-filter"></i>
-                    FILTER
-                  </p>
-                </div>
-                <div class="search d-flex">
-                  <label
-                    class="label-search d-flex"
-                    :class="{ 'show-search': filterFormIsVissible }"
-                  >
-                    <input type="text" />
-                    <span class="empty-btn">x</span>
-                    <span class="search-btn">
-                      <i class="fa fa-search"></i>
-                    </span>
-                  </label>
-                  <p v-if="!filterFormIsVissible">
-                    <i class="fa fa-search"></i> SEARCH
-                  </p>
-                </div>
-              </div>
-              <div
-                class="filter-options"
-                :class="{ 'filter-options-shown': filterFormIsVissible }"
-              >
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-9">
-                      <div class="row">
-                        <div class="col-md-5 form-group inp">
-                          <div class="input-field">
-                            <label for="" class="label">Address</label>
-                            <input
-                              type="text"
-                              class="input"
-                              placeholder=""
-                            
-                            />
-                          </div>
-                        </div>
 
-                        <div class="col-md-5 offset-md-2 form-group">
-                          <input type="date" class="form-control inp" />
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-md-5 form-group">
-                          <select name="" id="" class="form-control inp">
-                            <option value="firstName">First Name</option>
-                            <option value="lastName">Last Name</option>
-                            <option value="phone">Phone</option>
-                          </select>
-                        </div>
-
-                        <div class="col-md-5 offset-md-2 form-group">
-                          <select name="" id="" class="form-control inp">
-                            <option value="">Option 1</option>
-                            <option value="">Option 2</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-3 d-flex flex-column align-items-center">
-                      <button class="apply-btn text-white">Apply</button>
-                      <span class="mt-2">
-                        <a class="clear-link mr-2">Clear all</a>
-                        <span class="mx-2"
-                          ><i
-                            class="fas fa-circle"
-                            style="font-size: 4px"
-                          ></i></span
-                        ><a class="hide-link ml-2">Hide</a>
-                      </span>
-                    </div>
-                  </div>
+                <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="date"
+                    class="form-control input inp w-100"
+                    v-model="filter.filterDate"
+                  />
                 </div>
               </div>
+
+              <div class="row">
+                <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="Last Name"
+                    v-model="filter.filterLastName"
+                  />
+                </div>
+
+                <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="Phone Number"
+                    v-model="filter.phoneNumber"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 d-flex flex-column align-items-center">
+              <button class="apply-btn text-white" @click="applyFilter" :disabled="disableBtn">
+                Apply
+              </button>
+              <span class="mt-2">
+                <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                <span class="mx-2"
+                  ><i class="fas fa-circle" style="font-size: 4px"></i></span
+                ><a class="hide-link ml-2" @click="hide">Hide</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="table-header font-weight-700">
         <div class="check"></div>
@@ -149,16 +169,21 @@
               <div class="data-value">
                 <div class="image-con">
                   <div v-if="person.gender == 'Male'">
-                    <img src="../../assets/people/avatar-male.png" alt="" style="border-radius: 50%"/>
+                    <img
+                      src="../../assets/people/avatar-male.png"
+                      alt=""
+                      style="border-radius: 50%"
+                    />
                   </div>
                   <div v-else-if="person.gender == 'Female'">
                     <img src="../../assets/people/avatar-female.png" alt="" />
                   </div>
                   <div v-else>
-                    <img src="../../assets/people/no-gender-avatar.png" alt="" />
+                    <img
+                      src="../../assets/people/no-gender-avatar.png"
+                      alt=""
+                    />
                   </div>
-                  
-                  
                 </div>
               </div>
             </div>
@@ -166,7 +191,7 @@
           <div class="firstname data">
             <div class="data-con">
               <div class="data-text">
-                <p>Firstnmae</p>
+                <p>Firstname</p>
               </div>
               <router-link
                 :to="`/tenant/people/add-person/${person.id}`"
@@ -226,11 +251,18 @@
                     >Edit</router-link
                   >
                 </a>
-                <a class="dropdown-item" href="#" @click.prevent="deleteMember(person.id)">Delete</a>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click.prevent="showConfirmModal(person.id)"
+                  >Delete</a
+                >
               </div>
             </div>
           </div>
         </div>
+        <ConfirmDialog />
+        <Toast />
         <hr class="row-divider" />
         <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
@@ -243,11 +275,13 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import axios from "@/gateway/backendapi";
+import { useConfirm } from "primevue/useConfirm"
+import { useToast } from 'primevue/usetoast';
 
 export default {
   props: ["list"],
@@ -260,18 +294,91 @@ export default {
   setup(props) {
     const churchMembers = ref([]);
     const filterFormIsVissible = ref(false);
+    const filter = ref({});
+    const searchIsVisible = ref(false)
+
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
-    const membershipSummary = ref([])
-
+    const membershipSummary = ref([]);
 
     const deleteMember = (id) => {
-      axios.delete("/api/People/DeleteOnePerson", { params: { id: id } })
-        .then(res => {
-          console.log(res)
+      //  , { params: { id: id } }
+      axios
+        .delete(`/api/People/DeleteOnePerson/${id}`)
+        .then((res) => {
+          console.log(res);
+          churchMembers.value = churchMembers.value.filter(item => item.id !== id )
         })
-        .catch(err => console.log(err))
-    }
+        .catch((err) => console.log(err));
+    };
+
+    const applyFilter = () => {
+        console.log(filter.value.phoneNumber)
+        filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
+        filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
+        filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
+    
+         let url = "/api/People/FilterMembers?firstname="+filter.value.filterFirstName +"&lastname="+filter.value.filterLastName +"&phone_number="+ filter.value.phoneNumber +"&page=1"
+      axios.get(url).then((res) => {
+        console.log(res);
+      }) .catch(err => console.log(err))
+    };
+
+    const clearAll = () => {
+       filter.value.filterFirstName = ""
+       filter.value.filterLastName = ""
+       filter.value.filterDate = ""
+       filter.value.phoneNumber = ""
+      }
+
+   const hide = () => {
+      filterFormIsVissible.value = false
+   }
+
+   const disableBtn = computed(() => {
+      if (!filter.value.filterFirstName && !filter.value.filterLastName && !filter.value.phoneNumber) return true;
+      return false;
+   })
+
+   const toggleSearch = () => {
+      searchIsVisible.value = !searchIsVisible.value
+   }
+
+   // onMounted(() => {
+   //    console.log('working')
+   //    confirm.require({
+   //       message: "Are you sure?"
+   //    })
+   // })
+
+    const confirm = useConfirm();
+    let toast = useToast();
+        const showConfirmModal = (id) => {
+           
+           confirm.require({
+               message: 'Are you sure you want to proceed?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                accept: () => {
+                    deleteMember(id)
+                    toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+                },
+                reject: () => {
+                    toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+                }
+
+            // message: 'Are you sure you want to proceed?',
+            // header: 'Confirmation',
+            // icon: 'pi pi-exclamation-triangle',
+            // accept: () => {
+            //     deleteMember(id)
+            // },
+            // reject: () => {
+            //     //callback to execute when user rejects the action
+            // }
+        });
+        }
+
     // const getPeopleByPage = async (e) => {
 
     //   try {
@@ -284,24 +391,22 @@ export default {
     //   }
     // };
     // const getMemberSummary = () => {
-      
-    // }
-    
-    // onBeforeUnmount(() => {
-      axios.get(`/api/People/GetMembershipSummary`)
-        .then(res => {
-          membershipSummary.value = res.data
-          console.log(res.data)
-        })
-        .catch(err => console.log(err))
-    // })
 
+    // }
+
+    // onBeforeUnmount(() => {
+    axios
+      .get(`/api/People/GetMembershipSummary`)
+      .then((res) => {
+        membershipSummary.value = res.data;
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+    // })
 
     onMounted(() => {
       console.log(props.list, "props");
       churchMembers.value = props.list;
-
-      
     });
 
     return {
@@ -311,7 +416,15 @@ export default {
       toggleFilterFormVissibility,
       membershipSummary,
       // getMemberSummary
-      deleteMember
+      deleteMember,
+      filter,
+      applyFilter,
+      clearAll,
+      hide,
+      disableBtn,
+      toggleSearch,
+      searchIsVisible,
+      showConfirmModal
     };
   },
 };
@@ -344,12 +457,12 @@ a {
   padding: 24px 10px;
   background: #fff;
   box-shadow: 0px 3px 6px #2c28281c;
-border: 1px solid #00204424;
+  border: 1px solid #00204424;
 }
 
 .table {
   box-shadow: 0px 3px 6px #2c28281c;
-/* border: 1px solid #00204424; */
+  /* border: 1px solid #00204424; */
   border-radius: 30px;
   width: 100% !important;
 }
@@ -481,8 +594,9 @@ border: 1px solid #00204424;
 .clear-link,
 .hide-link {
   color: #136acd;
+  font-weight: 700;
+  cursor: pointer;
 }
-
 
 .table-top {
   font-weight: 800;
@@ -511,13 +625,12 @@ border: 1px solid #00204424;
 }
 
 .filter-options-shown {
-  height: 110px !important;
+  height: 130px;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
 
 @media screen and (max-width: 500px) {
-
   .chart1,
   .chart2,
   .board,
@@ -584,6 +697,12 @@ border: 1px solid #00204424;
   .action {
     width: 20%;
   }
+}
+
+@media (max-width: 767px) {
+   .filter-options-shown {
+      height: 150px;
+   }
 }
 
 @media screen and (max-width: 768px) {

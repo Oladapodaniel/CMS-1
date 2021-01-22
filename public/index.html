@@ -160,7 +160,7 @@
                       if (res.data.isOnboarded) {
                         localStorage.setItem("email", res.data.username)
                         localStorage.setItem("token", res.data.token);
-                        window.location.href = "http://localhost:8080/next";
+                        window.location.href = "http://localhost:8080/tenant";
                       } else {
                         localStorage.setItem("email", res.data.username)
                         localStorage.setItem("token", res.data.token);
