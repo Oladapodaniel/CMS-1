@@ -865,16 +865,16 @@
           </div>
         </div> -->
 
-        <div class="error-div">
+        <!-- <div class="error-div">
           <p v-if="!loading">{{ errMessage }}</p>
-        </div>
+        </div> -->
         <div class="inputs">
           <div class="submit-div">
             <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
               Cancel
             </button>
 
-            <button class="submit-btn ml-5 outline-none" :class="{ 'btn-loading': loading }" :disabled="loading">
+            <button class="submit-btn ml-5 outline-none" :disabled="loading">
               <i
                 class="fas fa-circle-notch fa-spin mr-2 text-white"
                 v-if="loading"
@@ -882,6 +882,14 @@
               <span class="text-white">Save</span>
               <span></span>
             </button>
+            <!-- <button class="submit-btn ml-5 outline-none" :class="{ 'btn-loading': loading }" :disabled="loading">
+              <i
+                class="fas fa-circle-notch fa-spin mr-2 text-white"
+                v-if="loading"
+              ></i>
+              <span class="text-white">Save</span>
+              <span></span>
+            </button> -->
           </div>
         </div>
 
@@ -1174,6 +1182,8 @@ export default {
 
       console.log(firstTimersObj.value);
       loading.value = true;
+      /*eslint no-undef: "warn"*/
+      NProgress.start();
       axios
         .post("/api/people/firsttimer", firstTimersObj.value)
         .then((res) => {
@@ -1191,6 +1201,8 @@ export default {
           //   position: "top-right",
           //   type: "error",
           // });
+          NProgress.set(1);
+          NProgress.done();
           console.log(err);
         });
     };

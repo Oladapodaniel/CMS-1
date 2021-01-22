@@ -159,7 +159,7 @@
                   <td> <div class="td-first">Unsent</div></td>
                   <td>{{ event.eventName }}</td>
                   <td>{{ event.title }}</td>
-                  <td>{{ event.activityDate }}</td>
+                  <td>{{ moment.parseZone(new Date(event.activityDate).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
                   <td>{{ event.attendances }}</td>
                   <td>{{ event.firstTimers }}</td>
                   <td>{{ event.newConverts }}</td>
@@ -191,6 +191,7 @@
 <script>
 import axios from '@/gateway/backendapi'
 import { ref } from 'vue'
+import moment from 'moment'
 export default {
     setup() {
       const events = ref(getEventList())
@@ -208,7 +209,7 @@ export default {
          filterFormIsVissible.value = ! filterFormIsVissible.value
       }
 
-      return { events,  filterFormIsVissible, toggleFilterFormVissibility }
+      return { events,  filterFormIsVissible, toggleFilterFormVissibility, moment, }
     }
 }
 </script>

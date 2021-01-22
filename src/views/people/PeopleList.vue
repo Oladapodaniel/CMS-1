@@ -266,6 +266,7 @@ export default {
   },
 
   setup(props) {
+   
     const churchMembers = ref([]);
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>

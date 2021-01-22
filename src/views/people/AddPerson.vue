@@ -381,11 +381,19 @@
           </div>
         </div>
 
-        <div class="error-div">
+        <!-- <div class="error-div">
           <p v-show="!loading && showError">{{ errMessage }}</p>
-        </div>
+        </div> -->
         <div class="submit-div">
           <button
+            class="primary-bg px-md-4 outline-none default-btn text-white border-0"
+            :disabled="loading"
+          >
+            <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
+            <span>Save</span>
+            <span></span>
+          </button>
+          <!-- <button
             class="primary-bg px-md-4 outline-none default-btn text-white border-0"
             :class="{ 'btn-loading': loading }"
             :disabled="loading"
@@ -393,7 +401,7 @@
             <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
             <span>Save</span>
             <span></span>
-          </button>
+          </button> -->
         </div>
       </form>
     </div>
@@ -584,7 +592,8 @@ export default {
         "ageGroupID",
         selectedAgeGroup.value ? selectedAgeGroup.value.id : ""
       );
-
+      /*eslint no-undef: "warn"*/
+      NProgress.start();
       if (route.params.personId) {
         try {
           loading.value = true;
@@ -599,6 +608,7 @@ export default {
           }
         } catch (err) {
           loading.value = false;
+          NProgress.done();
           if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
               severity: "warn",
@@ -609,7 +619,7 @@ export default {
           } else {
             showError.value = true;
             errMessage.value =
-              error.response && err.response.data.messsage
+              err.response && err.response.data.messsage
                 ? err.response.data.messsage
                 : "Update operation was not succesfull";
             toast.add({
@@ -636,6 +646,7 @@ export default {
           }
         } catch (err) {
           loading.value = false;
+          NProgress.done();
           if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
               severity: "warn",
@@ -720,7 +731,9 @@ export default {
         });
     }
 
+    
     onMounted(async () => {
+      console.log(moment.parseZone(new Date("2021-01-14T07:54:27.3620261").toLocaleDateString(), 'YYYY MM DD HH ZZ')._i);
       getLookUps();
       getAgeGroups();
       try {

@@ -1,19 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Pagination from '@/components/pagination/PaginationButtons.vue';
-import Payment from '../components/payment/Payment.vue';
+import ConnectionStatus from '@/components/connectivity/ConnectionStatus.vue';
 
 
 
 const routes = [{
-        path: '/pagination',
-        name: 'Pagination',
-        component: Pagination
-    },
-    {
-        path: '/payment',
-        name: 'Payment',
-        component: Payment
+        path: '/online',
+        name: 'online',
+        component: ConnectionStatus
     },
     {
         path: '/',
@@ -92,7 +86,7 @@ const routes = [{
                         name: 'ImportPeople'
                     },
                     {
-                        path: 'add-first-timer',
+                        path: 'add-first-timer/:id?',
                         name: 'AddFirstTimer',
                         component: () =>
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
@@ -321,8 +315,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("token")
-    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && !token) return next("/")
+    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && !token) return next("/")
     if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
+    // if ((to.name === "StartingPoint" && localStorage.getItem("userSetup"))) return next(true)
     next(true)
 })
 

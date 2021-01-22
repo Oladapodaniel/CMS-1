@@ -27,7 +27,7 @@
           </div>
 
           <div class="all-options">
-            <router-link to="/processing/sms-communications" class="start-option">
+            <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms-communications/compose-message' }}" class="start-option">
               <div class="icon">
                 <img
                   class="link-icon"
@@ -37,13 +37,13 @@
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Send Email/SMS</a>
-                <p><i class="fas fa-angle-right"></i></p>
+                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
 
             <router-link
               class="start-option"
-              :to="`/processing/add-person`"
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add-person' }}"
             >
               <div class="icon">
                 <img
@@ -54,13 +54,13 @@
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Add church members</a>
-                <p><i class="fas fa-angle-right"></i></p>
+                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
 
             <router-link
               class="start-option"
-              :to="`/processing/add-first-timer`"
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add-first-timer' }}"
             >
               <div class="icon">
                 <img
@@ -71,7 +71,7 @@
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Add first timers</a>
-                <p><i class="fas fa-angle-right"></i></p>
+                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
 
@@ -85,7 +85,7 @@
               </div>
               <div class="link-n-icon">
                 <a class="start-link">Not sure yet</a>
-                <p><i class="fas fa-angle-right"></i></p>
+                <p class="my-auto"><i class="fas fa-angle-right"></i></p>
               </div>
             </router-link>
           </div>
@@ -101,9 +101,10 @@
 <script>
 import axios from "@/gateway/backendapi";
 export default {
-  // beforeRouteLeave() {
-  //   this.$store.dispatch("setUserUp", false);
-  // },
+  beforeRouteEnter(to, from, next) {
+    if (localStorage.getItem("userSetup")) return next('/');
+    return next(true);
+  },
 
   data() {
     return {
@@ -305,6 +306,7 @@ a {
   font-weight: 900;
   padding: 0 1rem;
   text-decoration: none;
+  text-transform: capitalize;
   color: #215fc4;
 }
 
