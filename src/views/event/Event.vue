@@ -1668,7 +1668,7 @@ export default {
             }
 
                     // If you chose an event activity, send the id in the event object, else if a new activity was created send the name
-              if (this.selectedEventCategoryId == "00000000-0000-0000-0000-000000000000") {
+              if (this.selectedEventCategoryId == "00000000-0000-0000-0000-000000000000" || this.selectedEventCategoryId == this.newEvents.length) {
               event.activity.newEventCategoryName = this.selectedEventCategoryName
               } else {
                 event.activity.eventCategoryId = this.selectedEventCategoryId
