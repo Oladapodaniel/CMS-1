@@ -49,7 +49,7 @@
     <div class="table mx-0">
       <div class="table-top my-3">
         <div class="select-all">
-          <input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/>
+          <input type="checkbox" name="all" id="all" @click="toggleSelect" v-model="selectAll"/>
           <label>SELECT ALL</label>
         </div>
         <div class="filter">
@@ -156,7 +156,7 @@
         <div class="action"></div>
       </div>
 
-      <div v-if="filterResult.length > 0 && filter.filterFirstName || filter.filterLastName || filter.phoneNumber">
+      <div v-if="filterResult.length > 0 && (filter.filterFirstName || filter.filterLastName || filter.phoneNumber)">
         <div class="table-body" v-for="person in filterResult" :key="person.id">
         <div class="data-row">
           <div class="check data">
@@ -268,14 +268,14 @@
         <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
       </div>
-      <!-- <div v-else-if="filterResult.length == 0">
-        <div>No record found</div>
-      </div> -->
+      <div v-else-if="filterResult.length == 0 && noRecords">
+        <div class="no-record text-center my-4">No member found</div>
+      </div>
       <div v-else>
         <div class="table-body" v-for="person in churchMembers" :key="person.id">
         <div class="data-row">
           <div class="check data">
-            <input type="checkbox" name="" id="" v-model="selectAll"/>
+            <input type="checkbox" name="" id="" v-model="selecteAll"/>
           </div>
           <div class="picture data">
             <div class="data-con">
@@ -414,7 +414,27 @@ export default {
     const filter = ref({});
     const searchIsVisible = ref(false)
     const filterResult = ref([])
-    const selectAll = ref(true)
+    const selectAll = ref(false)
+    const noRecords = ref(false)
+    // const selected = ref([])
+    // const count = ref(churchMembers.length)
+
+    // const selectAll = computed(() => {
+      // selectedAll: {
+      // set(val) {
+      //   selected.value = []
+        // if (val) {
+          // for(let i = 1; i <= churchMembers.value; i++) {
+          //   selected.value.push(i)
+          // }
+    //     }
+    //   }
+    //   get() {
+    //     return selected.value.length === churchMembers.value
+    //   // }
+    // }
+    // })
+    
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -432,7 +452,11 @@ export default {
     };
 
     const applyFilter = () => {
-        console.log(filter.value.phoneNumber)
+        // console.log(filter.value.phoneNumber)
+
+        noRecords.value = true
+
+
         filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
         filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
         filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
@@ -443,6 +467,8 @@ export default {
         filterResult.value = res.data
         console.log(res.data);
       }) .catch(err => console.log(err))
+
+      
     };
 
     const clearAll = () => {
@@ -554,7 +580,8 @@ export default {
       // filterChurchMembers,
       filterResult,
       selectAll,
-      toggleSelect
+      toggleSelect,
+      noRecords
     };
   },
 };
@@ -721,13 +748,6 @@ a {
   padding: 0 5px;
 }
 
-.clear-link,
-.hide-link {
-  color: #136acd;
-  font-weight: 700;
-  cursor: pointer;
-}
-
 .table-top {
   font-weight: 800;
   font-size: 12px;
@@ -758,6 +778,11 @@ a {
   height: 130px;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
+}
+
+.no-record {
+  color: rgba(184, 5, 5, 0.726);
+  font-size: 1.1em;
 }
 
 @media screen and (max-width: 500px) {

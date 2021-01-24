@@ -1,5 +1,5 @@
 <template>
-  <div class="container-wide container-top">
+  <div class="container container-top">
     <div class="row my-3">
       <div class="col-sm-4 first-timers-text">
         <h2 class="page-header">First Timers</h2>
@@ -269,7 +269,7 @@
                       <p>Name</p>
                     </div>
                     <div class="data-value">
-                      {{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}
+                      {{ person.fullName ? person.fullName : `${person.firstName}` }}
                     </div>
                   </div>
                 </div>
@@ -347,9 +347,9 @@
               <hr class="row-divider" />
             </div>
             </div>
-            <!-- <div v-else-if="filterResult.length == 0">
-              <div>No records found</div>
-            </div> -->
+            <div v-else-if="filterResult.length == 0 && noRecords">
+              <div class="no-record text-center my-4">No records found</div>
+            </div>
             <div v-else>
               <div
               class="table-body"
@@ -485,6 +485,7 @@ export default {
     const filter = ref({})
     const searchIsVisible = ref(false)
     const filterResult = ref([])
+    const noRecords = ref(false)
 
     // if ()
 
@@ -532,7 +533,8 @@ export default {
     });
 
     const applyFilter = () => {
-        console.log(filter.value.phoneNumber)
+        noRecords.value = true
+
         filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
         filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
         filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
@@ -555,7 +557,8 @@ export default {
       filter,
       toggleSearch,
       searchIsVisible,
-      filterResult
+      filterResult,
+      noRecords
     };
   },
 };
@@ -823,6 +826,11 @@ export default {
 
   .page-header {
     font-size: 1.7rem;
+  }
+
+  .no-record {
+  color: rgba(184, 5, 5, 0.726);
+  font-size: 1.1em;
   }
 
 @media screen and (max-width: 500px) {
