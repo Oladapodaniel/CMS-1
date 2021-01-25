@@ -8,7 +8,6 @@
       <div class="create-btn-div">
         <div>
           <h2 class="title">Dashboard</h2>
-          <p class="welcome-text">Welcome Back!</p>
         </div>
 
         <div>
@@ -82,7 +81,7 @@
                 </div>
                 <div class="box-top-text">
                   <p>FIRST TIMERS</p>
-                  <h4>30</h4>
+                  <h4>{{ firstTimerArr.length }}</h4>
                 </div>
               </div>
               <div class="box-middle">
@@ -331,6 +330,10 @@ export default {
 
   setup() {
     const moreLinksVissible = ref(false);
+    const firstTimerArr = ref([])
+
+
+
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
@@ -365,11 +368,33 @@ export default {
         }
       });
 
+      const firstTimer = () => {
+        axios.get("/api/People/FirstTimer")
+          .then(res => {
+            firstTimerArr.value = res.data;
+            console.log(res.data)
+          })
+      }
+      firstTimer()
+
+      
+
+      const subPlan = () => {
+        axios.get("/api/GetAllSubscriptionPlans")
+          .then(res => {
+            console.log(res.data)
+          })
+      }
+      subPlan()
+
     return {
       celebrations,
       tenantInfo,
       moreLinksVissible,
       toggleMoreLinkVissibility,
+      firstTimer,
+      firstTimerArr,
+      subPlan
     };
   },
 };
@@ -421,13 +446,6 @@ export default {
   justify-content: space-between;
   margin-bottom: 24px;
 }
-
-.welcome-text {
-  margin: -18px 0 0 0;
-  color: #02172e;
-  font-size: 18px;
-}
-
 .top-row {
   display: flex;
   padding: 10px;
@@ -568,25 +586,21 @@ export default {
 .upgrade-btn {
   align-self: center;
   padding: 7px;
-  background: #797e81;
+  background: #136acd4b;
   border-radius: 20px;
-  color: #002044;
   border: none;
   font-weight: 800;
   outline: none;
-  color: #fff;
   width: 80px;
 }
 
 .upgrade-btn:hover {
-  background: #136acd;
+  background: #136acd91;
   /* font-weight: 600; */
 }
 
 .buy-btn {
   width: 109.5px;
-  color: #002044;
-  background: #797e81;
 }
 
 .buy-btn:hover {
@@ -708,7 +722,7 @@ tbody tr:nth-child(even) {
   margin: 0px;
   font-size: 12px;
   font-weight: 700;
-  color: #fff;
+  color: #136ACD;
 }
 
 .size-text {

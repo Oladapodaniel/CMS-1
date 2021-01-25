@@ -482,16 +482,7 @@
               </div>
             </div>
 
-            <button
-              hidden
-              type="button"
-              id="modalTogglerEvent"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#exampleModalEvent"
-            >
-              Launch demo modal
-            </button>
+            
             <div class="selected-category" v-if="selectedEventCategoryId">
               <p><i class="fa fa-calendar-alt mr-2"></i> Events</p>
               <h4>{{ selectedEventCategoryName }}</h4>
@@ -671,7 +662,7 @@
         <!-- Selected offerings -->
 
         <div
-          class="attendance-body"
+          class="attendance-body stretch"
           id="offeringBody"
           v-for="(item, index) in offeringItem"
           :key="index"
@@ -741,8 +732,76 @@
             >
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
+
+            <!-- Giver Modal Button -->
+    <button
+    hidden
+          ref="modalTogglerGiver"
+          type="button"
+          id="modalTogglerGiver"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleGiver"
+        >
+          Launch demo modal
+      </button>
+
+    <!-- Giver Modal -->
+    <div
+      class="modal fade"
+      id="exampleGiver"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title" id="exampleModalLabel">Add Giver</div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">Name</div>
+              <div class="col-sm-7">
+                <input type="text" v-model="item.addGiver" class="form-control"/>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-second" data-dismiss="modal">
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="apply-btn"
+              id="closeEvent"
+              @click="addDonor"
+              ref="closeDonorModal"
+            >
+              Save
+            </button>
           </div>
         </div>
+      </div>
+    </div>
+
+            
+            <div class="col-sm-3 offset-sm-5 donor-text pt-0" :class="{ 'donor-text-name': donorBoolean }" @click="triggerGiverModal">{{ item.addGiver }}</div>
+            <!-- <div v-else>{{ item.addGiver }}</div> -->
+            <span v-if="donorBoolean" @click="triggerGiverModal" class="mr-4"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
+            
+          </div>
+            
+        </div><div>{{ offeringItem }}</div>
         <!-- Bring up offerings modal -->
         <div
           class="col-sm-12 text-center add-attendance ofering"
@@ -928,6 +987,19 @@
       </div>
     </div>
 
+    <!-- Event Modal Button -->
+
+    <button
+              hidden
+              type="button"
+              id="modalTogglerEvent"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModalEvent"
+            >
+              Launch demo modal
+            </button>
+
     <!-- Event Modal -->
     <div
       class="modal fade"
@@ -952,7 +1024,7 @@
           </div>
           <div class="modal-body">
             <div class="row">
-              <div class="offset-sm-1 col-sm-3">New Event</div>
+              <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">New Event</div>
               <div class="col-sm-7">
                 <input type="text" v-model="eventCreate" class="form-control" />
               </div>
@@ -964,7 +1036,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-primary"
+              class="apply-btn"
               id="closeEvent"
               @click="createNewEvent"
             >
@@ -1018,7 +1090,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-primary"
+              class="apply-btn"
               id="closeAttendance"
               @click="createNewAttendance"
             >
@@ -1071,7 +1143,7 @@
               type="button"
               @click="createNewOffering"
               id="closeOffering"
-              class="btn btn-primary"
+              class="apply-btn"
             >
               Save
             </button>
@@ -1089,7 +1161,7 @@
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog first-timers-modal" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <div class="modal-title" id="exampleModalLabel">
@@ -1105,13 +1177,13 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="">
+            <div class="container">
               <form>
                 <div class="form-group row">
-                  <label for="Firstname" class="col-sm-2 col-form-label"
+                  <label for="Firstname" class="col-sm-3 text-sm-right col-form-label"
                     >Firstname<sup class="text-danger">*</sup></label
                   >
-                  <div class="col-sm-9">
+                  <div class="col-sm-6">
                     <input
                       type="text"
                       class="form-control input-first"
@@ -1122,10 +1194,10 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="LastName" class="col-sm-2 col-form-label"
+                  <label for="LastName" class="col-sm-3 text-sm-right col-form-label"
                     >Last Name</label
                   >
-                  <div class="col-sm-9">
+                  <div class="col-sm-6">
                     <input
                       type="text"
                       v-model="firstTimersObj.lastName"
@@ -1136,10 +1208,10 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="phone number" class="col-sm-2 col-form-label"
+                  <label for="phone number" class="col-sm-3 text-sm-right col-form-label"
                     >Phone number</label
                   >
-                  <div class="col-sm-9">
+                  <div class="col-sm-6">
                     <input
                       type="tel"
                       v-model="firstTimersObj.phoneNumber"
@@ -1149,10 +1221,10 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="email" class="col-sm-2 col-form-label"
+                  <label for="email" class="col-sm-3 text-sm-right col-form-label"
                     >Email</label
                   >
-                  <div class="col-sm-9">
+                  <div class="col-sm-6">
                     <input
                       type="text"
                       class="form-control input-first"
@@ -1162,10 +1234,10 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="address" class="col-sm-2 col-form-label"
+                  <label for="address" class="col-sm-3 text-sm-right col-form-label"
                     >Address</label
                   >
-                  <div class="col-sm-9 mb-4">
+                  <div class="col-sm-6 mb-4">
                     <input
                       type="text"
                       v-model="firstTimersObj.address"
@@ -1176,10 +1248,10 @@
                 </div>
 
                 <div class="form-group row">
-                  <label for="birthday" class="col-sm-2 col-form-label"
+                  <label for="birthday" class="col-sm-3 text-sm-right col-form-label"
                     >Birthday</label
                   >
-                  <div class="col-sm-3 mb-4">
+                  <div class="col-sm-2 mb-4">
                     <SelectElem
                       :options="['day', ...day]"
                       name="day"
@@ -1188,7 +1260,7 @@
                       @input="select2Value"
                     />
                   </div>
-                  <div class="col-sm-3 mb-4">
+                  <div class="col-sm-2 mb-4 px-sm-0">
                     <SelectElem
                       :options="['month', ...months]"
                       name="month"
@@ -1197,7 +1269,7 @@
                       @input="select2Value"
                     />
                   </div>
-                  <div class="col-sm-3 mb-4">
+                  <div class="col-sm-2 mb-4">
                     <SelectElem
                       :options="['Year', ...birthYearsArr]"
                       name="year"
@@ -1206,7 +1278,7 @@
                       @input="select2Value"
                     />
                   </div>
-                  <div class="col-sm-5 mb-4 offset-sm-2">
+                  <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
                     <SelectElem
                       :options="[...maritalStatuses]"
                       class="input-first"
@@ -1215,7 +1287,7 @@
                       @input="select2Value"
                     />
                   </div>
-                  <div class="col-sm-4 mb-4">
+                  <div class="col-sm-3 mb-4">
                     <SelectElem
                       :options="[...genders]"
                       name="gender"
@@ -1246,34 +1318,34 @@
                   class="form-group row close-slide1"
                   :class="{ 'slide-down1': showForm1 }"
                 >
-                  <div class="col-sm-9 offset-sm-2 mb-4">
+                  <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
                     <SelectElem
-                      :options="[...howYouHeard]"
+                      :options="['select', ...howYouHeard]"
                       @input="select2Value"
                       name="howDidYouAboutUsId"
                     />
                   </div>
-                  <div class="col-sm-9 offset-sm-2 mb-4">
+                  <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
                     <SelectElem
-                      :options="[...comMeansArr]"
+                      :options="['select', ...comMeansArr]"
                       @input="select2Value"
                       name="communicationMeans"
                     />
                   </div>
-                  <div class="col-sm-9 offset-sm-2 mb-4">
+                  <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
                     <SelectElem
-                      :options="[...joinInterest]"
+                      :options="['select', ...joinInterest]"
                       @input="select2Value"
                       name="interestedInJoining"
                     />
                   </div>
-                  <div class="col-sm-9 offset-sm-2 mb-4">
+                  <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
                     <SelectElem
-                      :options="[...wantVisitArr]"
+                      :options="['select...', ...wantVisitArr]"
                       @input="select2Value"
                       name="wantToBeVisited"
                     />
@@ -1286,7 +1358,7 @@
                   @click="toggleForm"
                 >
                   <span>Follow up and retention</span
-                  ><span style="border: 0px solid red; width: 40%"><hr /></span
+                  ><span style="width: 60%"><hr /></span
                   ><span
                     ><i
                       class="fa fa-angle-up"
@@ -1299,7 +1371,7 @@
                   class="form-group row close-slide"
                   :class="{ 'slide-down': showForm }"
                 >
-                  <div class="col-sm-4 offset-sm-2 mt-4 mb-4">
+                  <div class="col-sm-3 offset-sm-3 mt-4 mb-4">
                     Send Welcome SMS
                   </div>
                   <div class="mt-4 mb-4">
@@ -1310,7 +1382,7 @@
                     />
                   </div>
 
-                  <div class="col-sm-4 mt-4 mb-4">Send Welcome Email</div>
+                  <div class="col-sm-3 mt-4 mb-4">Send Welcome Email</div>
                   <div class="mt-4 mb-4">
                     <input
                       type="checkbox"
@@ -1319,10 +1391,10 @@
                       v-model="firstTimersObj.sendWelcomeEmail"
                     />
                   </div>
-                  <div class="col-sm-9 offset-sm-2">
+                  <div class="col-sm-6 offset-sm-3">
                     <div>Assigned automated follow-up</div>
                     <SelectElem
-                      :options="['List 1', 'List 2', 'List 3', 'List 4']"
+                      options="['List 1', 'List 2', 'List 3', 'List 4']"
                       @input="select2Value"
                       name="automatedFollowUp"
                     />
@@ -1337,7 +1409,7 @@
             </button>
             <button
               type="button"
-              class="btn btn-primary"
+              class="apply-btn"
               id="closeFirstTimers"
               @click="save"
             >
@@ -1469,6 +1541,9 @@ export default {
       loading: false,
       errorMessage: "",
       firstTimerNameIsInValid: false,
+      donorText: "",
+      // addGiver: "Add Giver",
+      donorBoolean: false
     };
   },
   methods: {
@@ -1550,6 +1625,9 @@ export default {
     createFirstTimers() {
       document.querySelector("#modalTogglerFirstTimers").click();
     },
+    triggerGiverModal () {
+      this.$refs.modalTogglerGiver.click()
+    },
     save() {
       this.firstTimers.push({
         ...this.firstTimersObj,
@@ -1621,6 +1699,13 @@ export default {
       document
         .querySelector("#closeEvent")
         .setAttribute("data-dismiss", "modal");
+    },
+    addDonor () {
+      console.log(this.donorText)
+      // this.addGiver = this.donorText
+      this.$refs.closeDonorModal.setAttribute("data-dismiss", "modal");
+      this.donorBoolean = true
+      this.donorText = ""
     },
     delAttendance(index) {
       this.attendanceItem.splice(index, 1);
@@ -2124,6 +2209,10 @@ export default {
   padding: 0 50px;
   background-color: #ecf0f3;
 }
+
+.attendance-body.stretch{
+  height: 85px;
+}
 .attendance-type,
 .count {
   background-color: rgb(255, 255, 255);
@@ -2217,8 +2306,9 @@ export default {
 }
 .btn-second {
   background: #ffffff 0% 0% no-repeat padding-box;
-  border: 1px solid #002044;
+  border: 1px solid #00204494;
   border-radius: 111px;
+  height: 41px;
 }
 .btn-primary {
   background: #136acd 0% 0% no-repeat padding-box;
@@ -2433,7 +2523,7 @@ tr.event-list td {
   transition: all 0.5s ease-in-out;
 }
 .slide-down {
-  height: 162px;
+  height: 195px;
   transition: all 0.5s ease-in-out;
 }
 .roll {
@@ -2549,6 +2639,24 @@ tr.event-list td {
   max-height: 300px;
   overflow: auto;
 }
+.donor-text {
+  height: 28px;
+  color: #136acd;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600px;
+  font-size: 0.9em;
+}
+.donor-text-name {
+  color: black;
+  text-decoration:none;
+  font-weight: 700;
+}
+
+.modal-header, .modal-footer {
+  border: none;
+}
+
 @media (min-width: 576px) {
   .offset-sm-1 {
     margin-left: 4.333333%;

@@ -1,6 +1,4 @@
-.pahh {
-    border: 2px solid red
-}
+
 
 .container-slim {
     width: 70%;
@@ -8,7 +6,7 @@
 }
 
 .container-wide {
-    width: 80%;
+    width: 90%;
     margin: 0 auto
 }
 
@@ -909,6 +907,13 @@
 
   .submit-btn:disabled {
     opacity: .5;
+  }
+
+  .clear-link,
+  .hide-link {
+    color: #136acd;
+    font-weight: 700;
+    cursor: pointer;
   }
   
   @media screen and (max-width: 620px) {

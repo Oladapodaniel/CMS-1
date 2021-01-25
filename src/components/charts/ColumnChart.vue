@@ -10,7 +10,7 @@
       </div>
 </div>
   <div class="wrapper">
-    <div class="chart-div" :id="domId" style="width: 900px; height: 500px" ref="chartDiv"></div>
+    <div class="chart-div" :id="domId" style="height: 530px" ref="chartDiv"></div>
   </div>
 </template>
 
@@ -159,12 +159,11 @@ export default {
 
 <style>
     .chart-div {
-        width: 90%;
          border: 1px solid #DDE2E6;
         border-radius: 30px;
         margin: 0 0 24px 0;
         box-shadow: 0px 1px 4px #02172E45;
-        box-shadow: 0px 1px 4px #02172E45;
         border: 1px solid #DDE2E6;
+        padding: 25px 0;
     }
 </style>
