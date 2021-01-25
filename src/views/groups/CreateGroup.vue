@@ -1,5 +1,5 @@
 <template>
-  <div class="container-slim">
+  <div class="container-slim" @click="closeDropdownIfOpen">
     <div class="container-fluid">
       <div class="row mt-3">
         <div class="col-md-12">
@@ -14,7 +14,6 @@
 
       <div class="row py-3">
         <div class="col-md-12">
-
           <div class="row group-form pt-3 my-4">
             <div class="col-md-12">
               <div class="row">
@@ -132,79 +131,104 @@
                                   >
                                 </div>
                                 <div class="col-md-7">
-                                  <div class="row">
+                                  <div
+                                    class="row"
+                                  >
                                     <div
-                                      class="col-md-12 py-2 px-0"
+                                      class="col-md-12 pl-0 grey-rounded-border"
                                     >
-                                      <p class="d-flex flex-wrap">
-                                        <span
-                                          class="select-member m-1"
+                                      <ul
+                                        class="d-flex flex-wrap px-1 mb-0 m-dd-item"
+                                        @click="() => memberSelectInput.focus()"
+                                      >
+                                        <li
+                                          style="
+                                            list-style: none;
+                                            min-width: 100px;
+                                          "
                                           v-for="(
-                                            member, index
+                                            member, indx
                                           ) in selectedMembers"
-                                          :key="index"
+                                          :key="indx"
+                                          class="email-destination d-flex justify-content-between m-1"
                                         >
                                           <span>{{ member.name }}</span>
                                           <span
-                                            class="ml-2 remove-member"
-                                            @click="removeMember(index)"
+                                            class="ml-2 remove-email"
+                                            @click="removeMember(indx)"
                                             >x</span
                                           >
-                                        </span>
-                                      </p>
-
-                                      <div class="dropdown">
-                                        <input
-                                          placeholder="Select persons"
-                                          class="border-none outline-none dropdown-toggle my-1 px-1"
-                                          type="text"
-                                          id="dropdownMenu"
-                                          @input="searchForMembers"
-                                          v-model="searchText"
-                                          data-toggle="dropdown"
-                                          aria-haspopup="true"
-                                          aria-expanded="false"
-                                        />
-
+                                        </li>
+                                        <li
+                                          style="list-style: none"
+                                          class="m-dd-item"
+                                        >
+                                          <input
+                                            type="text"
+                                            class="border-0 m-dd-item text outline-none"
+                                            ref="memberSelectInput"
+                                            @input="searchForMembers"
+                                            :class="{
+                                              'w-100':
+                                                selectedMembers.length === 0,
+                                              'minimized-input-width':
+                                                selectedMembers.length > 0,
+                                            }"
+                                            @focus="showMemberList"
+                                            @click="showMemberList"
+                                            v-model="searchText"
+                                            style="padding: 0.5rem"
+                                            :placeholder="`${
+                                              selectedMembers.length > 0
+                                                ? ''
+                                                : 'Select from members'
+                                            }`"
+                                            @blur="() => inputBlurred = true"
+                                          />
+                                        </li>
+                                      </ul>
+                                      <div
+                                        class="col-md-12 px-0 select-groups-dropdown m-dd-item"
+                                        v-if="memberListShown"
+                                      >
                                         <div
-                                          class="dropdown-menu pt-0 w-100"
-                                          aria-labelledby="dropdownMenu"
+                                          class="dropdownmenu pt-0 w-100 m-dd-item"
                                         >
                                           <a
-                                            class="dropdown-item px-1 c-pointer"
+                                            class="dropdown-item px-1 c-pointer m-dd-item"
                                             v-for="(
                                               member, index
                                             ) in memberSearchResults"
-                                            :key="member.id"
+                                            :key="index"
                                             @click="selectMember(member, index)"
                                             >{{ member.name }}</a
                                           >
                                           <p
-                                            class="bg-secondary p-1 mb-0 disable"
-                                            v-if="invalidSearchText"
+                                            class="bg-secondary p-1 mb-0 disable m-dd-item"
+                                            v-if="invalidSearchText && !inputBlurred"
                                           >
                                             Enter 3 or more characters
                                           </p>
                                           <p
-                                            class="btn btn-default p-1 mb-0 disable"
+                                            aria-disabled="true"
+                                            class="btn btn-default p-1 mb-0 disable m-dd-item"
                                             v-if="
+                                              memberSearchResults.length ===
+                                                0 &&
                                               searchText.length >= 3 &&
-                                              loading == false &&
-                                              memberSearchResults.length === 0
+                                              !loading
                                             "
                                           >
                                             No match found
                                           </p>
                                           <p
-                                            class="btn btn-default p-1 mb-0 disable"
+                                            class="btn btn-default p-1 mb-0 disable m-dd-item"
+                                            v-if="
+                                              loading && searchText.length >= 3
+                                            "
                                           >
                                             <i
-                                              class="fas fa-circle-notch fa-spin"
-                                              v-if="
-                                                searchText.length >= 3 &&
-                                                loading == true &&
-                                                memberSearchResults.length === 0
-                                              "
+                                              class="fas fa-circle-notch fa-spin m-dd-item"
                                             ></i>
                                           </p>
                                         </div>
@@ -213,6 +237,7 @@
                                   </div>
                                 </div>
                               </div>
+                              <!-- End -->
 
                               <div class="row mb-3">
                                 <div
@@ -460,6 +485,7 @@ export default {
     const loadingMembers = ref(false);
     const memberSearchResults = ref([]);
     const position = ref("");
+    const memberSelectInput = ref(null);
 
     const searchForMembers = (e) => {
       if (e.target.value.length >= 3) {
@@ -471,20 +497,25 @@ export default {
             loading.value = false;
             // memberSearchResults.value = res;
             memberSearchResults.value = res.filter((i) => {
-              const memberInExistingMembers = groupMembers.value.find(
-                (j) => j.personID === i.id
+              const memberInExistingMembers = selectedMembers.value.find(
+                (j) => j.id === i.id
               );
-              console.log(memberInExistingMembers, "em");
-              if (memberInExistingMembers && memberInExistingMembers.personID)
+              if (memberInExistingMembers && memberInExistingMembers.id)
                 return false;
               return true;
             });
 
-            console.log(res, "users");
           });
       } else {
         memberSearchResults.value = [];
       }
+    };
+
+    const memberListShown = ref(false);
+    const inputBlurred = ref(true);
+    const showMemberList = () => {
+      memberListShown.value = true;
+      inputBlurred.value = false;
     };
 
     const selectedMembers = ref([]);
@@ -492,6 +523,9 @@ export default {
       console.log(member, "member");
       selectedMembers.value.push(member);
       memberSearchResults.value.splice(index, 1);
+      searchText.value = "";
+      memberListShown.value = false;
+      memberSearchResults.value = [ ];
     };
 
     const removeMember = (index) => {
@@ -651,6 +685,15 @@ export default {
 
     if (route.params.groupId) getGroupById();
 
+    const closeDropdownIfOpen = (e) => {
+      if (!e.target.classList.contains("m-dd-item")) {
+        memberListShown.value = false;
+        searchText.value = "";
+        memberListShown.value = false;
+        memberSearchResults.value = [ ];
+      }
+    };
+
     return {
       groupData,
       searchForMembers,
@@ -672,6 +715,11 @@ export default {
       loadingMembers,
       route,
       savingGroup,
+      memberSelectInput,
+      showMemberList,
+      memberListShown,
+      inputBlurred,
+      closeDropdownIfOpen,
     };
   },
 };
@@ -702,11 +750,11 @@ export default {
 }
 
 .default-btn {
-  background: #EBEFF4;
+  background: #ebeff4;
 }
 
 .bottom-box {
-  border: 1px solid #DDE2E6;
+  border: 1px solid #dde2e6;
   border-radius: 10px;
 }
 
@@ -769,8 +817,62 @@ export default {
 
 .group-form {
   box-shadow: 0px 5px 15px #00000017;
-  border: 1px solid #DDE2E6;
+  border: 1px solid #dde2e6;
   border-radius: 10px;
+}
+
+.grey-background {
+  background: #ebeff4;
+}
+
+.text-grey {
+  color: grey;
+}
+
+.send-dropdown {
+  border: 1px solid #ddd;
+  width: 124px;
+  position: absolute;
+  background: #fff;
+}
+
+.send-dropdown a {
+  color: #190138;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.hide {
+  display: none;
+}
+
+.dd-item:hover {
+  cursor: pointer;
+}
+
+.hint {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.amber {
+  background: #ffbf00 !important;
+}
+
+.email-destination {
+  padding: 0.1rem 0.4rem;
+  border: 1px solid #02172e0d;
+  border-radius: 8px;
+  background: #02172e14;
+}
+
+.remove-email {
+  color: #000;
+  font-weight: bold;
+}
+
+.remove-email:hover {
+  cursor: pointer;
 }
 
 @media screen and (max-width: 767px) {
