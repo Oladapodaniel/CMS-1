@@ -50,7 +50,7 @@
     <div class="table mx-0">
       <div class="table-top my-3">
         <div class="select-all">
-          <input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/>
+          <input type="checkbox" name="all" id="all" @click="toggleSelect" v-model="selectAll"/>
           <label>SELECT ALL</label>
         </div>
         <div class="filter">
@@ -67,7 +67,7 @@
             class="label-search d-flex"
             :class="{ 'show-search': searchIsVisible }"
           >
-            <input type="text" placeholder="Search..." />
+            <input type="text" placeholder="Search..." v-model="searchText" />
             <span class="empty-btn">x</span>
             <span class="search-btn">
               <i class="fa fa-search"></i>
@@ -157,7 +157,7 @@
         <div class="action"></div>
       </div>
 
-      <div v-if="filterResult.length > 0 && filter.filterFirstName || filter.filterLastName || filter.phoneNumber">
+      <div v-if="filterResult.length > 0 && (filter.filterFirstName || filter.filterLastName || filter.phoneNumber)">
         <div class="table-body" v-for="person in filterResult" :key="person.id">
         <div class="data-row">
           <div class="check data">
@@ -268,14 +268,15 @@
         <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
       </div>
-      <!-- <div v-else-if="filterResult.length == 0">
-        <div>No record found</div>
-      </div> -->
+      <div v-else-if="filterResult.length == 0 && noRecords">
+        <div class="no-record text-center my-4">No member found</div>
+      </div>
       <div v-else>
-        <div class="table-body" v-for="person in churchMembers" :key="person.id">
+        <div v-if="searchMember.length > 0">
+          <div class="table-body" v-for="person in searchMember" :key="person.id">
         <div class="data-row">
           <div class="check data">
-            <input type="checkbox" name="" id="" v-model="selectAll"/>
+            <input type="checkbox" name="" id="" v-model="selecteAll"/>
           </div>
           <div class="picture data">
             <div class="data-con">
@@ -380,6 +381,10 @@
         <hr class="row-divider" />
         <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
+        </div>
+        <div v-else>
+          <div class="no-record text-center my-4">No member found</div>
+        </div>
       </div>
 
       <div class="table-footer">
@@ -413,7 +418,28 @@ export default {
     const filter = ref({});
     const searchIsVisible = ref(false)
     const filterResult = ref([])
-    const selectAll = ref(true)
+    const selectAll = ref(false)
+    const noRecords = ref(false)
+    const searchText = ref("")
+    // const selected = ref([])
+    // const count = ref(churchMembers.length)
+
+    // const selectAll = computed(() => {
+      // selectedAll: {
+      // set(val) {
+      //   selected.value = []
+        // if (val) {
+          // for(let i = 1; i <= churchMembers.value; i++) {
+          //   selected.value.push(i)
+          // }
+    //     }
+    //   }
+    //   get() {
+    //     return selected.value.length === churchMembers.value
+    //   // }
+    // }
+    // })
+    
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -431,7 +457,11 @@ export default {
     };
 
     const applyFilter = () => {
-        console.log(filter.value.phoneNumber)
+        // console.log(filter.value.phoneNumber)
+
+        noRecords.value = true
+
+
         filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
         filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
         filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
@@ -442,6 +472,8 @@ export default {
         filterResult.value = res.data
         console.log(res.data);
       }) .catch(err => console.log(err))
+
+      
     };
 
     const clearAll = () => {
@@ -487,17 +519,9 @@ export default {
                     toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
                 }
 
-            // message: 'Are you sure you want to proceed?',
-            // header: 'Confirmation',
-            // icon: 'pi pi-exclamation-triangle',
-            // accept: () => {
-            //     deleteMember(id)
-            // },
-            // reject: () => {
-            //     //callback to execute when user rejects the action
-            // }
         });
         }
+        
 
     // const getPeopleByPage = async (e) => {
 
@@ -534,13 +558,22 @@ export default {
       console.log(selectAll.value)
     }
 
+    const searchMember = computed(() => {
+        if (searchText.value !== "") {
+          return churchMembers.value.filter(i => {
+            return i.firstName.toLowerCase().includes(searchText.value.toLowerCase())
+          })
+        } else {
+          return churchMembers.value
+        }
+      })
+
     return {
       churchMembers,
       // getPeopleByPage,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       membershipSummary,
-      // getMemberSummary
       deleteMember,
       filter,
       applyFilter,
@@ -553,7 +586,10 @@ export default {
       // filterChurchMembers,
       filterResult,
       selectAll,
-      toggleSelect
+      toggleSelect,
+      noRecords,
+      searchText,
+      searchMember
     };
   },
 };
@@ -668,8 +704,6 @@ a {
 
 .chart1,
 .chart2 {
-  /* border: 0.4000000059604645px solid #dde2e6;
-  box-shadow: 0px 1px 4px #02172e45; */
   border-radius: 10px;
 }
 
@@ -720,13 +754,6 @@ a {
   padding: 0 5px;
 }
 
-.clear-link,
-.hide-link {
-  color: #136acd;
-  font-weight: 700;
-  cursor: pointer;
-}
-
 .table-top {
   font-weight: 800;
   font-size: 12px;
@@ -762,6 +789,11 @@ a {
 .elipsis-items a {
   display: flex;
   justify-content: stretch;
+}
+
+.no-record {
+  color: rgba(184, 5, 5, 0.726);
+  font-size: 1.1em;
 }
 
 @media screen and (max-width: 500px) {

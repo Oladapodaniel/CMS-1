@@ -32,19 +32,19 @@
             <div class="row avg-table">
                 <div class="col-6 col-md-3 first-row">
                     <div>Attendance</div>
-                    <div>123,456</div>
+                    <div>{{ eventSummary.attendance }}</div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div>Offering</div>
-                    <div>$1234</div>
+                    <div>${{ eventSummary.offerings }}</div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div>First Timers</div>
-                    <div>345</div>
+                    <div>{{ eventSummary.firstTimers }}</div>
                 </div>
                 <div class="col-6 col-md-3">
                     <div>New Converts</div>
-                    <div>2345</div>
+                    <div>{{ eventSummary.newConverts }}</div>
                 </div>
                 <div class="col-12">
                   <div>Last Updated 2 hours ago</div>
@@ -58,7 +58,7 @@
             <div class="col-sm-12">
               <div class="table table-responsive">
             <div class="top-con">
-              <div class="table-top my-2">
+              <!-- <div class="table-top my-2">
                 <div class="select-all">
                   <input type="checkbox" name="all" id="all" />
                   <label>SELECT ALL</label>
@@ -90,8 +90,35 @@
                     <i class="fa fa-search"></i> SEARCH
                   </p>
                 </div>
-              </div>
-              <div
+              </div> -->
+              <div class="table-top my-3">
+                  <div class="select-all">
+                    <input type="checkbox" name="all" id="all" @click="toggleSelect" v-model="selectAll"/>
+                    <label>SELECT ALL</label>
+                  </div>
+                  <div class="filter">
+                    <p @click="toggleFilterFormVissibility">
+                      <i class="fas fa-filter"></i>
+                      FILTER
+                    </p>
+                  </div>
+                  <p @click="toggleSearch" class="search-text">
+                      <i class="fa fa-search"></i> SEARCH
+                    </p>
+                  <div class="search d-flex" >
+                    <label 
+                      class="label-search d-flex"
+                      :class="{ 'show-search': searchIsVisible }"
+                    >
+                      <input type="text" placeholder="Search..." />
+                      <span class="empty-btn">x</span>
+                      <span class="search-btn">
+                        <i class="fa fa-search"></i>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              <!-- <div
                 class="filter-options"
                 :class="{ 'filter-options-shown': filterFormIsVissible }"
               >
@@ -137,7 +164,67 @@
                     </div>
                   </div>
                 </div>
+              </div> -->
+              <div
+        class="filter-options"
+        :class="{ 'filter-options-shown': filterFormIsVissible }"
+      >
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-9">
+              <div class="row">
+                <div class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100">
+                  <!-- <div class="input-field"> -->
+
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="First Name"
+                  />
+                  <!-- </div> -->
+                </div>
+
+                    <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                      <input
+                        type="date"
+                        class="form-control input inp w-100"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                      <input
+                        type="text"
+                        class="input w-100"
+                        placeholder="Last Name"
+                      />
+                    </div>
+
+                    <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                      <input
+                        type="text"
+                        class="input w-100"
+                        placeholder="Phone Number"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-3 d-flex flex-column align-items-center">
+                  <button class="apply-btn text-white" @click="applyFilter" :disabled="disableBtn">
+                    Apply
+                  </button>
+                  <span class="mt-2">
+                    <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                    <span class="mx-2"
+                      ><i class="fas fa-circle" style="font-size: 4px"></i></span
+                    ><a class="hide-link ml-2" @click="hide">Hide</a>
+                  </span>
+                </div>
               </div>
+            </div>
+          </div>
             </div>
 
             
@@ -196,20 +283,53 @@ export default {
     setup() {
       const events = ref(getEventList())
       const  filterFormIsVissible = ref(false)
+      const searchIsVisible = ref(false)
+      // const attendanceAverage = ref(null)
+      // const firstTimerAverage = ref(null)
+      // const newConvertAverage = ref(null)
+      const eventSummary = ref({})
 
-      function getEventList () {
-        return axios.get('/api/eventreports/eventReports')
+      async function getEventList () {
+        return await axios.get('/api/eventreports/eventReports')
           .then(res => {
             events.value = res.data
             console.log(res.data)
+            // attendanceAverage.value = res.data.map(i => { return i.attendances }).reduce((a, b) => { return a + b })
+            // firstTimerAverage.value = res.data.map(i => { return i.firstTimers }).reduce((a, b) => { return a + b })
+            // newConvertAverage.value = res.data.map(i => { return i.newConverts }).reduce((a, b) => { return a + b })
           })
           .catch(err => console.log(err))
       }
+
+      const getEventSummary = async () => {
+        try {
+          const { data } = await axios.get("/api/Events/Eventsummary")
+          console.log(data)
+          eventSummary.value = data
+        }
+        catch (err) {
+          console.log(err.response)
+        }
+      }
+      getEventSummary()
+
       const toggleFilterFormVissibility = () => {
          filterFormIsVissible.value = ! filterFormIsVissible.value
       }
 
-      return { events,  filterFormIsVissible, toggleFilterFormVissibility, moment, }
+
+      const toggleSearch = () => {
+      searchIsVisible.value = !searchIsVisible.value
+   }
+
+      // const attendanceAverage = computed(() => {
+        // return events.value.reduce( (a, b) => { return a.attendances + b.attendances })
+        // return events.value
+        // return events.value.map(i => { return i.attendances })
+        // return events.value.forEach(i => {return i.attendances })
+      // })
+
+      return { events,  filterFormIsVissible, toggleFilterFormVissibility, searchIsVisible, toggleSearch, eventSummary, moment }
     }
 }
 </script>
@@ -406,7 +526,7 @@ export default {
 }
 
 .filter-options-shown {
-  height: 110px !important;
+  height: 130px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }

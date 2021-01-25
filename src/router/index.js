@@ -74,28 +74,24 @@ const routes = [{
                     import ( /* webpackChunkName: "people" */ '../views/people/People.vue'),
                 children: [
 
-                    {
-                        path: '',
-                        component: () =>
-                            import ( /* webpackChunkName: "peopleempty" */ '../views/people/PeopleEmpty.vue')
-                    },
-                    {
-                        path: 'import',
-                        component: () =>
-                            import ( /* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'),
-                        name: 'ImportPeople'
-                    },
-                    {
-                        path: 'add-first-timer/:id?',
-                        name: 'AddFirstTimer',
-                        component: () =>
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
-                    },
-                    {
-                        path: 'add-person/:personId?',
-                        component: () =>
-                            import ( /* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
-                    },
+
+          { path: '', component: () => import(/* webpackChunkName: "peopleempty" */ '../views/people/PeopleEmpty.vue') },
+          {
+            path: 'import', component: () => import(/* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'), name: 'ImportPeople'
+          },
+          {
+            path: 'add-first-timer',
+            name: 'AddFirstTimer',
+            component: () => import(/* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
+          },
+          {
+            path: 'add-person/:personId?',
+            component: () => import(/* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
+          },
+          {
+            path: 'add-first-timer/:firstTimerId?',
+            component: () => import(/* webpackChunkName: "addperson" */ '../views/people/AddFirstTimer.vue')
+          },
 
                 ]
             },
