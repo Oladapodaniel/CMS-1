@@ -112,7 +112,8 @@ export default {
             router.push("/next")
           }
         } catch (err) { 
-          
+          /*eslint no-undef: "warn"*/
+          NProgress.done();
           loading.value = false;
           
           const { status } = err.response;

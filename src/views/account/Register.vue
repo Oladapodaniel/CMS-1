@@ -138,6 +138,8 @@ export default {
           this.$router.push("/onboarding");
         })
         .catch((err) => {
+          /*eslint no-undef: "warn"*/
+          NProgress.done();
           this.loading = false;
           console.log(err.response);
           if (err.response.status === 400) {
