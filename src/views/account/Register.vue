@@ -20,7 +20,7 @@
 
       <div class="form-container">
         <div class="error-div" v-if="showError">
-          <p class="error-message">{{ errorMessage }}</p>
+          <p class="error-message">{{ errorMessage }} <span>OR <span> <a class="font-weight-bold text-decoration-none c-pointer" @click="resetPassword">click here to reset your password</a></span></span></p>
         </div>
 
         <form @submit.prevent="register">
@@ -127,7 +127,7 @@ export default {
 
     register() {
       this.loading = true;
-      // this.showError = false;
+      this.showError = false;
       axios
         .post("/initialsignup", this.credentials)
         .then((res) => {
@@ -149,6 +149,17 @@ export default {
           }
         });
     },
+
+    async resetPassword() {
+      try {
+        const { data } = await axios.post(`/forgotpassword/${this.credentials.email}`);
+        console.log(data, "reset data");
+        this.$router.push({name: 'ResetPassword', params: { token: data.manualGeneratedCode}}); 
+      } catch (error) {
+        console.log(error);
+      }
+
+    }
   },
 };
 </script>

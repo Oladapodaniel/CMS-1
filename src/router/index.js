@@ -52,7 +52,7 @@ const routes = [{
             import ( /* webpackChunkName: "forgotpassword" */ '../views/account/ForgotPassword.vue')
     },
     {
-        path: '/reset-password',
+        path: '/reset-password/:token',
         name: 'ResetPassword',
         component: () =>
             import ( /* webpackChunkName: "resetpassword" */ '../views/account/ResetPassword.vue')
@@ -157,7 +157,7 @@ const routes = [{
                             import ( /* webpackChunkName: "contactlist" */ '@/views/communication/ContactList')
                     },
                     {
-                        path: 'message-details',
+                        path: 'sent/:messageId',
                         name: 'MessageDetails',
                         component: () =>
                             import ( /* webpackChunkName: "contactlist" */ '@/views/communication/MessageDetails')
