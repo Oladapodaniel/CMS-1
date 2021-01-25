@@ -678,7 +678,6 @@ export default {
       if (!e.target.classList.contains("m-dd-item")) {
         memberListShown.value = false;
       }
-      console.log(e.target);
     };
 
     const selectGroup = (
