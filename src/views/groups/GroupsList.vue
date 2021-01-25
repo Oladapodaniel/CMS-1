@@ -6,7 +6,7 @@
           <h2>Groups</h2>
           <ConfirmDialog />
         </div>
-        <div class="col-md-4 mt-2 link">
+        <div class="col-md-4 mt-2 my-1 link">
           <router-link
             to="/tenant/create-people-group"
             class="grey-border primary-btn default-btn primary-bg border-0"

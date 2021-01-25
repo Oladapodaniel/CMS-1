@@ -6,18 +6,24 @@
           <Toast />
         </div>
         <div class="row">
-          <div class="col-12 col-sm-4 col-lg-6 events">Events</div>
-          <div class="col-5 col-sm-3 col-lg-2 btn btn-preview">Preview</div>
-          <div
-            class="col-6 col-sm-4 col-lg-3 btn-save button"
-            @click="post"
-          >
-            <i
-              class="fas fa-circle-notch fa-spin mr-2 text-white"
-              v-if="loading"
-            ></i>
-            <span class="text-white">Save and Continue</span>
-            <span></span>
+          <div class="col-md-5 events">Events</div>
+          <div class="col-md-7">
+            <div class="row">
+              <div class="col-md-12 d-lg-flex justify-content-end">
+                <button class="default-btn">Preview</button>
+                <button
+                  class="default-btn primary-bg border-0 ml-3"
+                  @click="post"
+                >
+                  <i
+                    class="fas fa-circle-notch fa-spin mr-2 text-white"
+                    v-if="loading"
+                  ></i>
+                  <span class="text-white">Save and Continue</span>
+                  <span></span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -442,7 +448,6 @@
                   aria-hidden="true"
                 ></i
               ></span>
-
             </div>
             <div
               class="ofering"
@@ -465,10 +470,16 @@
                   {{ eventCategory.name }}
                 </div>
               </div>
-              <div v-if="filterEventCategory.length >= 1" @click="addEvent"  class="create cat ofering">
+              <div
+                v-if="filterEventCategory.length >= 1"
+                @click="addEvent"
+                class="create cat ofering"
+              >
                 Add New Event
               </div>
-              <div v-else class="create mt-3" @click="individualEvent({})" >Create "{{ eventText }}" event</div>
+              <div v-else class="create mt-3" @click="individualEvent({})">
+                Create "{{ eventText }}" event
+              </div>
             </div>
 
             <button
@@ -618,10 +629,16 @@
           >
             {{ filteredAttendance.name }}
           </div>
-          <div v-if="filterAttendance.length >= 1" @click="attendance(null)" class="create ofering pointer">
+          <div
+            v-if="filterAttendance.length >= 1"
+            @click="attendance(null)"
+            class="create ofering pointer"
+          >
             Create New Attendance Item
           </div>
-          <div v-else class="create pointer"  @click="attendance(null)">Create "{{ attendanceText }}" attendance item</div>
+          <div v-else class="create pointer" @click="attendance(null)">
+            Create "{{ attendanceText }}" attendance item
+          </div>
         </div>
         <!-- <button
           hidden
@@ -751,10 +768,20 @@
           >
             {{ newOffering.name }}
           </div>
-          <div v-if="filterOffering.length >= 1" @click="offering(null)" class="create ofering pointer">
+          <div
+            v-if="filterOffering.length >= 1"
+            @click="offering(null)"
+            class="create ofering pointer"
+          >
             Create New Offering Item
           </div>
-          <div v-else @click="offering({name: offeringText})" class="create pointer">Create "{{offeringText}}" offering item</div>
+          <div
+            v-else
+            @click="offering({ name: offeringText })"
+            class="create pointer"
+          >
+            Create "{{ offeringText }}" offering item
+          </div>
         </div>
         <button
           hidden
@@ -800,9 +827,12 @@
           Launch demo modal
         </button>
         <!-- <div class="col-sm-12 empty"></div> -->
-        <textarea class="col-sm-12 textarea form-control" placeholder="Notes..." rows="5">
-        </textarea
+        <textarea
+          class="col-sm-12 textarea form-control"
+          placeholder="Notes..."
+          rows="5"
         >
+        </textarea>
         <!-- </div> -->
       </div>
 
@@ -883,18 +913,16 @@
         </div>
 
         <div class="row">
-          <div class="col-12 col-sm-4 col-lg-6 events"></div>
-          <div class="col-5 col-sm-3 col-lg-2 btn btn-preview">Preview</div>
-          <div
-            class="col-6 col-sm-4 col-lg-3 button btn-save"
-            @click="post"
-          >
-            <i
-              class="fas fa-circle-notch fa-spin mr-2 text-white"
-              v-if="loading"
-            ></i>
-            <span class="text-white">Save and Continue</span>
-            <span></span>
+          <div class="col-md-12 d-lg-flex justify-content-end">
+            <button class="default-btn">Preview</button>
+            <button class="default-btn primary-bg border-0 ml-3" @click="post">
+              <i
+                class="fas fa-circle-notch fa-spin mr-2 text-white"
+                v-if="loading"
+              ></i>
+              <span class="text-white">Save and Continue</span>
+              <span></span>
+            </button>
           </div>
         </div>
       </div>
@@ -1327,7 +1355,7 @@
 import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
 // import store from "@/store/store.js"
-  // import { useToast } from 'primevue/usetoast';
+// import { useToast } from 'primevue/usetoast';
 export default {
   components: {
     SelectElem,
@@ -1448,7 +1476,7 @@ export default {
       if (!e.target.classList.contains("ofering")) {
         this.$refs.offeringDrop.classList.remove("offering-drop");
         this.$refs.attendanceDrop.classList.remove("offering-drop");
-        this.showCategory = false
+        this.showCategory = false;
       }
     },
     addAttendance() {
@@ -1466,8 +1494,7 @@ export default {
           name: offObj.name,
           offeringTypeId: offObj.id,
           channel: "",
-          currency: offObj.currency == undefined ? "NGN" : offObj.currency
-          
+          currency: offObj.currency == undefined ? "NGN" : offObj.currency,
         });
       } else {
         this.offeringItem.push({
@@ -1478,7 +1505,7 @@ export default {
         });
       }
       console.log(this.offeringItem);
-      this.offeringText = ""
+      this.offeringText = "";
       const showList = document.querySelector("#showList");
       showList.classList.toggle("offering-drop");
     },
@@ -1490,13 +1517,13 @@ export default {
         });
       } else {
         this.attendanceItem.push({
-          attendanceTypeName: this.attendanceText
+          attendanceTypeName: this.attendanceText,
         });
         this.$nextTick(() => {
           this.$refs.attendanceInput.focus();
         });
       }
-      this.attendanceText = ""
+      this.attendanceText = "";
       const showAttendance = document.querySelector("#showAttendance");
       showAttendance.classList.remove("offering-drop");
       //
@@ -1527,7 +1554,12 @@ export default {
       this.firstTimers.push({
         ...this.firstTimersObj,
       });
-      this.$toast.add({ severity: 'success', summary: 'Success', detail: 'First timer added', life: 2000 })
+      this.$toast.add({
+        severity: "success",
+        summary: "Success",
+        detail: "First timer added",
+        life: 2000,
+      });
       this.firstTimersObj = {};
       console.log(this.firstTimers);
       document
@@ -1547,7 +1579,11 @@ export default {
           this.newOfferings = res.data.map((i) => {
             return { id: i.id, name: i.name };
           });
-        });
+        })
+        .then(err => {
+          NProgress.done();
+          console.log(err);
+        })
       this.offeringCreate = "";
       document
         .querySelector("#closeOffering")
@@ -1555,12 +1591,14 @@ export default {
     },
     createNewAttendance() {
       console.log("posted");
+      /*eslint no-undef: "warn"*/
       axios
         .post(`/postAttendantType`, { name: this.attendanceCreate })
         .then((res) => {
           console.log(res, "new attendance");
         })
         .catch((err) => {
+          NProgress.done();
           console.log(err.response, "error saving event");
         });
       // this.newAttendances.push(this.attendanceCreate)
@@ -1572,14 +1610,14 @@ export default {
     },
     createNewEvent() {
       this.newEvents.push({
-          name: this.eventCreate,
-          id: "00000000-0000-0000-0000-000000000000"
-        })
-        this.selectedEventCategoryName = this.eventCreate;
-        this.selectedEventCategoryId = "00000000-0000-0000-0000-000000000000"
-      
+        name: this.eventCreate,
+        id: "00000000-0000-0000-0000-000000000000",
+      });
+      this.selectedEventCategoryName = this.eventCreate;
+      this.selectedEventCategoryId = "00000000-0000-0000-0000-000000000000";
+
       this.eventCreate = "";
-      this.showCategory = false
+      this.showCategory = false;
       document
         .querySelector("#closeEvent")
         .setAttribute("data-dismiss", "modal");
@@ -1635,47 +1673,52 @@ export default {
       //   activityFirstTimers: this.firstTimers,
       // };
 
-      let event =  {
-        
+      let event = {
         attendances: this.attendanceItem,
         offerings: this.offeringItem,
-        activityFirstTimers: this.firstTimers
-      }
-
+        activityFirstTimers: this.firstTimers,
+      };
 
       // If preactivity id is empty, dont send preevent as part of the event object, else send it
       if (this.preActivityId) {
         event.preEvent = {
-            name: this.preEventName,
-            topic: this.preEventTopic,
-            details: this.details,
-            preActivityId: this.preActivityId === "" ? "00000000-0000-0000-0000-000000000000" : this.preActivityId,
-            isPaidFor: this.selectedValue === "Yes" ? true : false,
-            amount: this.preEventAmount,
-            eventRules: this.eventRules,
-            enableRegistration: this.check,
-            venue: this.venue,
-            emailRegistration: this.emailRegistration,
-            smsRegistraion: this.SMSRegistration,
-            banner: this.banner,
-            isPublic: this.isPublic
-          }
+          name: this.preEventName,
+          topic: this.preEventTopic,
+          details: this.details,
+          preActivityId:
+            this.preActivityId === ""
+              ? "00000000-0000-0000-0000-000000000000"
+              : this.preActivityId,
+          isPaidFor: this.selectedValue === "Yes" ? true : false,
+          amount: this.preEventAmount,
+          eventRules: this.eventRules,
+          enableRegistration: this.check,
+          venue: this.venue,
+          emailRegistration: this.emailRegistration,
+          smsRegistraion: this.SMSRegistration,
+          banner: this.banner,
+          isPublic: this.isPublic,
+        };
       } else {
-              event.activity = {
-              date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
-              topic: this.topic,
-              preacher: this.preacher,
-            }
+        event.activity = {
+          date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
+          topic: this.topic,
+          preacher: this.preacher,
+        };
 
-                    // If you chose an event activity, send the id in the event object, else if a new activity was created send the name
-              if (this.selectedEventCategoryId == "00000000-0000-0000-0000-000000000000" || this.selectedEventCategoryId == this.newEvents.length) {
-              event.activity.newEventCategoryName = this.selectedEventCategoryName
-              } else {
-                event.activity.eventCategoryId = this.selectedEventCategoryId
-              }
-         }
+        // If you chose an event activity, send the id in the event object, else if a new activity was created send the name
+        if (
+          this.selectedEventCategoryId ==
+            "00000000-0000-0000-0000-000000000000" ||
+          this.selectedEventCategoryId == this.newEvents.length
+        ) {
+          event.activity.newEventCategoryName = this.selectedEventCategoryName;
+        } else {
+          event.activity.eventCategoryId = this.selectedEventCategoryId;
+        }
+      }
 
-     console.log(event);
+      console.log(event);
       this.loading = true;
       axios
         .post("api/Events/CreateActivity", event)
@@ -1684,14 +1727,18 @@ export default {
           console.log(res, "main post");
           const activityId = res.data.currentEvent.id;
           localStorage.setItem("eventData", JSON.stringify(event));
-          localStorage.setItem("eventDataResponse", JSON.stringify(res.data.currentEvent));
+          localStorage.setItem(
+            "eventDataResponse",
+            JSON.stringify(res.data.currentEvent)
+          );
           this.$router.push({ name: "Report", params: { id: activityId } });
         })
         .catch((err) => {
+          NProgress.done();
           this.loading = false;
           if (err.response) {
             const { data, status } = err.response;
-            if (status === 400) this.errorMessage = data;
+            if (status === 400) this.errorMessage = typeof data === "string" ? data : "Failed! ensure you provide activity name and date";
           }
           console.log(err.response);
         });
@@ -1740,46 +1787,46 @@ export default {
         this.firstTimersObj.birthday = data.value;
       }
       if (data.dataType === "month") {
-         switch (data.value) {
+        switch (data.value) {
           case "January":
-          this.firstTimersObj.birthMonth = "1";
-           break;
+            this.firstTimersObj.birthMonth = "1";
+            break;
           case "February":
-          this.firstTimersObj.birthMonth = "2";
-           break;
+            this.firstTimersObj.birthMonth = "2";
+            break;
           case "March":
-          this.firstTimersObj.birthMonth = "3";
-           break;
+            this.firstTimersObj.birthMonth = "3";
+            break;
           case "April":
-          this.firstTimersObj.birthMonth = "4";
-           break;
+            this.firstTimersObj.birthMonth = "4";
+            break;
           case "May":
-          this.firstTimersObj.birthMonth = "5";
-           break;
+            this.firstTimersObj.birthMonth = "5";
+            break;
           case "June":
-          this.firstTimersObj.birthMonth = "6";
-           break;
+            this.firstTimersObj.birthMonth = "6";
+            break;
           case "July":
-          this.firstTimersObj.birthMonth = "7";
-           break;
+            this.firstTimersObj.birthMonth = "7";
+            break;
           case "August":
-          this.firstTimersObj.birthMonth = "8";
-           break;
+            this.firstTimersObj.birthMonth = "8";
+            break;
           case "September":
-          this.firstTimersObj.birthMonth = "9";
-           break;
+            this.firstTimersObj.birthMonth = "9";
+            break;
           case "October":
-          this.firstTimersObj.birthMonth = "10";
-           break;
+            this.firstTimersObj.birthMonth = "10";
+            break;
           case "November":
-          this.firstTimersObj.birthMonth = "11";
-           break;
+            this.firstTimersObj.birthMonth = "11";
+            break;
           case "December":
-          this.firstTimersObj.birthMonth = "12";
-           break;
+            this.firstTimersObj.birthMonth = "12";
+            break;
           default:
-          // firstTimersObj.value.birthMonth = "12";
-          console.log('No month chosen')
+            // firstTimersObj.value.birthMonth = "12";
+            console.log("No month chosen");
             break;
         }
       }
@@ -1827,21 +1874,21 @@ export default {
         this.selectedEventCategoryId = eventObj.id;
         console.log(this.selectedEventCategoryId);
       } else {
-        let arrLengthId = `${this.newEvents.length + 1}`
+        let arrLengthId = `${this.newEvents.length + 1}`;
         this.newEvents.push({
           name: this.eventText,
           // id: "00000000-0000-0000-0000-000000000000"
-          id: arrLengthId
-        })
+          id: arrLengthId,
+        });
         this.selectedEventCategoryName = this.event;
         // this.selectedEventCategoryName = this.eventText;
         // this.selectedEventCategoryId ="00000000-0000-0000-0000-000000000000"
         // alert(this.selectedEventCategoryName)
         // alert(this.eventText)
-        this.selectedEventCategoryId = arrLengthId
+        this.selectedEventCategoryId = arrLengthId;
       }
-      console.log(this.newEvents)
-      this.eventText = ""
+      console.log(this.newEvents);
+      this.eventText = "";
       // const showEventCategory = document.querySelector("#showEventCategory");
       // showEventCategory.classList.remove("style-category");
       this.showCategory = false;
@@ -1859,7 +1906,10 @@ export default {
             this.eventRegistrationLink = res.data.eventRegistrationLink;
             console.log(res.data);
           })
-          .catch((err) => console.log(err.response));
+          .catch((err) => {
+            NProgress.done();
+            console.log(err.response)
+          });
       }
     },
     getHowDidYouAboutUsId() {
@@ -1956,9 +2006,9 @@ export default {
     },
     selectedEventCategoryName() {
       console.log(this.selectedEventCategoryId);
-      if (!this.selectedEventCategoryId) return ''; 
+      if (!this.selectedEventCategoryId) return "";
       return this.newEvents.find((i) => i.id === this.selectedEventCategoryId)
-        .name
+        .name;
     },
     eventCategoriesArr() {
       const arr = this.newEvents.map((i) => i.name);
@@ -1995,13 +2045,12 @@ export default {
   border: 1px solid #797e81;
   border-radius: 22px;
   margin-left: 46px;
-
 }
 .btn-save {
   background: #136acd 0% 0% no-repeat padding-box;
   /* border-radius: 22px;
   color: white; */
-  margin-left: 26px; 
+  margin-left: 26px;
   text-align: center;
 }
 .nested-row {

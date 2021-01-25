@@ -608,6 +608,10 @@
     min-width: 121px;
   }
 
+  .light-grey-border {
+    border: 1px solid #dde2e6;
+  }
+
   .view-item-btn {
     font-display: flex;
     align-items: center;

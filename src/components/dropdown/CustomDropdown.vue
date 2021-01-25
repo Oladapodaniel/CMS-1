@@ -1,41 +1,42 @@
 <template>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="row">
-        <div class="input-field col-md-12 px-md-0">
-          <i class="pi pi-chevron-down manual-dd-icon"></i>
-          <input
-            type="text"
-            class="input dd w-100"
-            placeholder=""
-            @click="selectEventAttended"
-          />
-          <Dialog header="Header" v-model:visible="display" >
-            Content
-          </Dialog>
-        </div>
-      <div class="input-field manual-dd-con col-md-12" v-if="showEventList">
-        <div class="manual-dd dd">
-          <div
-            class="container-fluid dd dd-search-con"
-          >
-            <div class="row dd">
-              <div class="col-md-12 dd px-0 py-1">
-                <input
-                  type="text"
-                  class="form-control dd dd-search-field"
-                  v-model="eventsSearchString"
-                  placeholder="search for event"
-                />
-              </div>
-            </div>
-          </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="input-field col-md-12 pl-md-0">
+            <i class="pi pi-chevron-down manual-dd-icon"></i>
+            <input
+              type="text"
+              class="input dd w-100"
+              placeholder=""
+              @click="selectEventAttended"
+            />
 
-          <div class="container-fluid dd-list-con">
-            <div class="row">
-              <div class="col-md-12">
-                <p>Hello</p>
-                <!-- <p
+            <div class="input-field manual-dd-con col-md-12" v-if="showEventList">
+            <div class="manual-dd dd">
+              <div class="container-fluid dd dd-search-con">
+                <div class="row dd">
+                  <div class="col-md-12 py-1">
+                    <input
+                      type="text"
+                      class="form-control dd dd-search-field"
+                      v-model="eventsSearchString"
+                      placeholder="search for event"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="container-fluid dd-list-con">
+                <div class="row">
+                  <div class="col-md-12" style="max-width:100px;overflow:scroll">
+                    <p>Hello</p>
+                    <p>Hello</p>
+                    <p>Hello</p>
+                    <p>Hello</p>
+                    <p>Hello</p>
+                    <p>Hello</p>
+                    <!-- <p
               class="px-1 manual-dd-item mb-0 py-2 dd"
               v-for="(event, index) in filteredEvents"
               :key="index"
@@ -53,27 +54,28 @@
             >
               No match found
             </p> -->
-              </div>
-            </div>
-            <div class="row">
-              <div
-                class="col-md-12 py-2 px-0"
-              >
-                <hr class="hr" />
-              </div>
-              <div class="col-md-12 create-event py-2 text-center">
-                <a
-                  class="craete-event-btn font-weight-bold"
-                  data-toggle="modal"
-                  data-target="#eventModal"
-                  @click="() => display = !display"
-                  >Create new event</a
-                >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 py-2 px-0">
+                    <hr class="hr" />
+                  </div>
+                  <div class="col-md-12 create-event py-2 text-center">
+                    <a
+                      class="craete-event-btn font-weight-bold"
+                      data-toggle="modal"
+                      data-target="#eventModal"
+                      @click="() => (display = !display)"
+                      >Create new event</a
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          </div>
+          
         </div>
-      </div>
       </div>
     </div>
   </div>
@@ -88,7 +90,7 @@ export default {
       showEventList.value = !showEventList.value;
     };
 
-    const display = ref(false)
+    const display = ref(false);
 
     return {
       showEventList,

@@ -734,7 +734,6 @@ export default {
 
     
     onMounted(async () => {
-      console.log(moment.parseZone(new Date("2021-01-14T07:54:27.3620261").toLocaleDateString(), 'YYYY MM DD HH ZZ')._i);
       getLookUps();
       getAgeGroups();
       try {
