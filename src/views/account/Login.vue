@@ -43,7 +43,7 @@
           </button>
         </div>
         <div v-if="false">
-          <button class="facebook-btn btn-logo sign-in-btn" @click="loginWithFacebook">
+          <button class="facebook-btn btn-logo sign-in-btn" >
             <img src="../../assets/facebook-small.png" class="fb-icon" alt="Google Icon">
              <span>Sign up with Facebook</span>
              <span></span>
@@ -61,6 +61,14 @@
 
         <div class="fb-login-button" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></div>
 
+
+  <!-- <VFacebookLogin app-id="966242223397117" /> -->
+  <div>
+    <v-facebook-login v-model="model" @sdk-init="handleSdkInit" />
+    <button >
+      Logout
+    </button>
+  </div>
       </div>
 
       <div class="bottom-container">
@@ -77,8 +85,12 @@ import axios from '@/gateway/backendapi';
 import { reactive, ref } from 'vue';
 import store from '../../store/store'
 import router from '../../router/index';
+import VFacebookLogin from 'vue-facebook-login-component'
 
 export default {
+  components: {
+      VFacebookLogin,
+    },
     setup() {
 
       const state = reactive({
@@ -136,7 +148,51 @@ export default {
           console.log(loginFacebook.value)
             loginFacebook.value.click()
       }
-      
+
+        const handleSdkInit = () => {
+          FB.value = FB
+          scope.value = scope
+        }
+
+//       const checkLoginState = () => {
+// /*eslint no-undef: "warn"*/
+//               FB.getLoginStatus(function (response) {
+//                   // $("#authstatus").html("<code>" + response + "</code>");
+//                   // console.log(response)
+//                   // fetch('https://churchplusv3coreapi.azurewebsites.net/api/People/GetMembershipSummary')
+//                   //   .then(response => response.json())
+//                   //   .then(data => console.log(data));
+//                   // fetch('https://churchplusv3coreapi.azurewebsites.net/api/People/GetMembershipSummary', {
+//                   //       method: 'post',
+//                   //       files: {}
+//                   //     }).then(function(res) {
+//                   //       return res.json();
+//                   //     }).then(function(data) {
+//                   //       console.log(data)
+//                   //       // ChromeSamples.log('Created Gist:', data.html_url);
+//                   //     })
+//                   let token = {
+//                     accessToken: response.authResponse.accessToken
+//                   }
+//                   console.log(response.authResponse.accessToken)
+//                   axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
+//                     .then(res => {
+//                       console.log(res.data)
+//                       if (res.data.isOnboarded) {
+//                         localStorage.setItem("email", res.data.username)
+//                         localStorage.setItem("token", res.data.token);
+//                         window.location.href = "/tenant";
+//                       } else {
+//                         localStorage.setItem("email", res.data.username)
+//                         localStorage.setItem("token", res.data.token);
+//                         window.location.href = "/onboarding";
+//                       }
+                      
+//                     })
+//                       .catch(err => console.log(err))
+//               });
+//               // statusChangeCallback(response);
+//       }
 
       return {
         state,
@@ -144,7 +200,7 @@ export default {
         loading,
         itemSelected,
         loginWithFacebook,
-        loginFacebook
+        loginFacebook,
         // checkLoginState
       };
     }
@@ -321,6 +377,11 @@ export default {
 .error-message {
     color: #b52626;
     margin-bottom: 0;
+}
+
+._5h0i._88va {
+    background-color: #3B5998 !important;
+    border: 2px solid red !important;
 }
 
 </style>

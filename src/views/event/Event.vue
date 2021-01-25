@@ -784,7 +784,8 @@
             
           </div>
             
-        </div><div>{{ offeringItem }}</div>
+        </div>
+        <!-- <div>{{ offeringItem }}</div> -->
         <!-- Bring up offerings modal -->
         <div
           class="col-sm-12 text-center add-attendance ofering"
