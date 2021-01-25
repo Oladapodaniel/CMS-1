@@ -423,8 +423,8 @@
                       <p>Phone Number</p>
                     </div>
                     <router-link
-                      :to="`/tenant/people/add-first-timer/${person.personID}`"
-                      class="data-value itemroute-color">
+                      :to="``"
+                      class="data-value">
                       {{ person.phoneNumber }}
                     </router-link>
                   </div>
@@ -434,11 +434,10 @@
                     <div class="data-text">
                       <p>Source</p>
                     </div>
-                    <router-link
-                      :to="`/tenant/people/add-first-timer/${person.personID}`"
-                      class="data-value itemroute-color">
+                    <div
+                      class="data-value">
                       Social media
-                      </router-link>
+                      </div>
                   </div>
                 </div>
                 <div class="phone data">
@@ -446,9 +445,9 @@
                     <div class="data-text">
                       <p>Interested</p>
                     </div>
-                    <div class="data-value">
+                    <a class="data-value">
                       {{ person.interestedInJoining === "Not_Specified" ? "Not Specified" : person.interestedInJoining }}
-                    </div>
+                    </a>
 
                   </div>
                 </div>
