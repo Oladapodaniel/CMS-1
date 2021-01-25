@@ -452,15 +452,29 @@
 
       <div class="row my-3">
         <div class="col-md-12 form-group">
-          <input type="checkbox" v-model="isPersonalized" class="mr-3" />
-          <span class="font-weight-600">Personal Message</span>
+          <div class="row">
+            <div class="col-md-2">
+              
+            </div>
+            <div class="col-md-10 pl-0">
+              <input type="checkbox" v-model="isPersonalized" class="mr-3" />
+              <span class="font-weight-600">Personal Message</span>
+            </div>
+          </div>
         </div>
         <div class="col-md-12">
-          <span class="hint"
-            >Insert #name# any where you want the contact name to appear in the
-            message, it will be replaced by the actual name of the member when
-            sending the message.</span
-          >
+          <div class="row">
+            <div class="col-md-2">
+              
+            </div>
+            <div class="col-md-10 pl-0">
+              <span class="hint"
+                >Insert #name# any where you want the contact name to appear in the
+                message, it will be replaced by the actual name of the member when
+                sending the message.</span
+              >
+                </div>
+          </div>
         </div>
       </div>
 

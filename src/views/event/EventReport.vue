@@ -8,7 +8,9 @@
         <a class="def-btn mr-3 px-md-4 my-sm-1"
           >More Actions <i class="fad fa-caret-circle-down"></i
         ></a>
-        <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
+        <router-link :to="{ name: 'Event', path: '/tenant/event' }">
+          <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
+        </router-link>
       </div>
     </div>
     <hr class="mb-4" />
@@ -163,7 +165,7 @@
             </h2>
             <span class="evt-date text-danger">{{ eventDateString }}.</span>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-5 pl-0">
             <div class="row">
               <div class="col-md-6 d-md-flex justify-content-end">
                 <span class="bold-700">Preacher: </span>
@@ -914,7 +916,7 @@ a {
 }
 
 .def-btn {
-  height: 43px;
+  height: 40px;
   border-radius: 22px;
   /* padding: 0 24px; */
   padding: 8px 10px;

@@ -443,18 +443,26 @@
                 />
               </div>
 
-              <!-- Test -->
+              <!-- Test pi pi-angle -->
               <div class="input-field">
-                <label for="" class="label">Event or Service Attended</label>
-                <i class="pi pi-chevron-down manual-dd-icon"></i>
-                <input
+                <label for="" class="label">Event or Service Attended</label> 
+                <button
+                  class="btn activity-attended-btn input dd"
+                  @click.prevent="selectEventAttended"
+                >
+                  <span class="float-left">{{ selectedEventAttended.name }}</span>
+                  <span class="float-right"
+                    ><i class="pi pi-chevron-down dd"></i
+                  ></span>
+                </button>
+                <!-- <input
                   type="text"
                   class="input dd"
                   placeholder=""
                   v-model="selectedEventAttended.name"
                   @click="selectEventAttended"
                   @keydown="preventTying"
-                />
+                /> -->
               </div>
               <div class="input-field manual-dd-con" v-if="showEventList">
                 <div class="manual-dd dd">
@@ -507,7 +515,7 @@
                       <div class="col-md-12 create-event py-2 text-center">
                         <a
                           class="craete-event-btn font-weight-bold"
-                          @click="() => display = !display"
+                          @click="() => (display = !display)"
                           >Create new event</a
                         >
                         <!-- <a
@@ -736,33 +744,163 @@
         <div class="container">
           <div class="row">
             <div class="col-md-12 py-4">
-              <Dialog header="Create Event" v-model:visible="display" style="max-width:600px;width:100%">
+              <Dialog
+                :modal="true"
+                header="Create Event"
+                v-model:visible="display"
+                style="
+                  max-width: 600px;
+                  width: 100%;
+                  height: 350px;
+                  background: #fff;
+                "
+              >
                 <div class="container">
                   <div class="row">
-                  <div class="col-md-4 text-md-center">
-                    <label for="" class="label font-weight-600"
-                      >Event name</label
-                    >
+                    <div class="col-md-4 text-md-center">
+                      <label for="" class="label font-weight-600"
+                        >Event name</label
+                      >
+                    </div>
+                    <div class="col-md-7">
+                      <!-- <input type="text" class="form-control" v-model="newEvent.preEvent.name"> -->
+                      <div class="dropdown">
+                        <button
+                          class="btn activity-dd-btn"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <span class="float-left"></span>
+                          <span class="float-right"
+                            ><i class="pi pi-chevron-down"></i
+                          ></span>
+                        </button>
+                        <div
+                          class="dropdown-menu px-1"
+                          aria-labelledby="dropdownMenuButton"
+                          style="width: 100%; height: 191px; overflow: scroll"
+                        >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Search activity"
+                          />
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <hr class="hr" />
+                              </div>
+                            </div>
+                          </div>
+                          <p
+                            class="my-1 text-center primary-text modal-action-btn font-weight-700"
+                            @click="() => (innerModal = !innerModal)"
+                          >
+                            Create new Activity
+                          </p>
+                        </div>
+                      </div>
+                      <!-- <CustomDropdown /> -->
+                      <Dialog
+                        header="Create Activity"
+                        v-model:visible="innerModal"
+                        style="max-width: 550px"
+                      >
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-md-5 text-md-center">
+                              <label for="" class="label font-weight-600"
+                                >Event name</label
+                              >
+                            </div>
+                            <div class="col-md-7">
+                              <input
+                                type="text"
+                                class="form-control"
+                                v-model="newEvent.preEvent.name"
+                              />
+                            </div>
+                          </div>
+                          <div class="row mt-4 mb-4">
+                            <div class="col-md-5 text-md-center">
+                              <label for="" class="label font-weight-600"
+                                >Event date</label
+                              >
+                            </div>
+                            <div class="col-md-7">
+                              <div class="container">
+                                <div class="row">
+                                  <div class="col-md-12 px-0">
+                                    <input
+                                      type="date"
+                                      class="form-control"
+                                      v-model="newEvent.date"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-12 d-md-flex justify-content-end">
+                              <button
+                                type="button"
+                                class="default-btn d-flex align-items-center justify-content-center"
+                                data-dismiss="modal"
+                                @click="innerModal = false"
+                              >
+                                Close
+                              </button>
+                              <button
+                                type="button"
+                                class="default-btn d-flex align-items-center justify-content-center ml-3 text-white primary-bg border-0"
+                                @click="createNewEvent"
+                                data-dismiss="modal"
+                              >
+                                Save
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </Dialog>
+                    </div>
                   </div>
-                  <div class="col-md-7">
-                    <input type="text" class="form-control" v-model="newEvent.preEvent.name">
-                    <!-- <CustomDropdown /> -->
+                  <div class="row mt-4 mb-4">
+                    <div class="col-md-4 text-md-center">
+                      <label for="" class="label font-weight-600"
+                        >Event date</label
+                      >
+                    </div>
+                    <div class="col-md-7">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col-md-12 px-0">
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="newEvent.date"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="row mt-3 mb-4">
-                  <div class="col-md-4 text-md-center">
-                    <label for="" class="label font-weight-600"
-                      >Event date</label
-                    >
-                  </div>
-                  <div class="col-md-7">
-                    <input
-                      type="date"
-                      class="form-control"
-                      v-model="newEvent.date"
-                    />
-                  </div>
-                </div>
                 </div>
 
                 <div class="container">
@@ -1240,6 +1378,8 @@ export default {
       });
     });
 
+    const innerModal = ref(false);
+
     const year = computed(() => {
       const arrOfYears = [];
       let currentYear = new Date().getFullYear();
@@ -1290,6 +1430,7 @@ export default {
       invalidEventDetails,
       savingNewEvent,
       display,
+      innerModal,
     };
   },
 };
@@ -1513,6 +1654,31 @@ template.p-dropdown-parent {
 
 .required {
   color: #ef0535;
+}
+
+.activity-dd-btn {
+  width: 100%;
+  height: 40px;
+  background: transparent;
+  border: 1px solid #ced4da;
+}
+
+.activity-attende-btn {
+  height: 40px;
+  background: transparent;
+  border: 1px solid #ced4da;
+}
+
+.modal-action-btn {
+  color: #136acd;
+}
+
+.modal-action-btn:hover {
+  cursor: pointer;
+}
+
+.pi-chevron-down {
+  color: #747d83;
 }
 
 @media screen and (max-width: 767px) {
