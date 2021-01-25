@@ -84,6 +84,10 @@ const routes = [
             path: 'add-person/:personId?',
             component: () => import(/* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
           },
+          {
+            path: 'add-first-timer/:firstTimerId?',
+            component: () => import(/* webpackChunkName: "addperson" */ '../views/people/AddFirstTimer.vue')
+          },
 
         ]
       },

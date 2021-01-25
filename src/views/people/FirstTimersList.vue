@@ -1,5 +1,5 @@
 <template>
-  <div class="container container-top">
+  <div class="container-wide container-top">
     <div class="row my-3">
       <div class="col-sm-4 first-timers-text">
         <h2 class="page-header">First Timers</h2>
@@ -22,9 +22,9 @@
     <div class="row">
       <div class="col-md-12">
         <div class="my-con">
-          <div class="summary">
+          <!-- <div class="summary">
             <p class="summary-header">Summary</p>
-            <!-- <hr class="hr" /> -->
+           
 
             <div class="boards mb-4">
               <div class="board members-count">
@@ -43,7 +43,7 @@
                 </p>
               </div>
 
-              <!-- <div class="chart-con"> -->
+        
               <div class="board fig">
                 <ByGenderChart
                   domId="chart"
@@ -69,17 +69,62 @@
                   :titleMargin="10"
                   :summary="getFirstTimerSummary.toBeContacted"
                 />
-              </div>
+              </div> -->
               <!-- <div  class="board fig">
           <ByMaritalStatusChart domId="third" title="TO BE CONTACTED" distance="5" />
         </div> -->
 
               <!-- </div> -->
-            </div>
+            <!-- </div>
+          </div> -->
+
+          <div class="summary px-3">
+      <p class="summary-header">Summary</p>
+      <div class="boards">
+        <div class="board">
+          <div class="board-top">
+            <p class="total-text mb-0">TOTAL MEMBERS</p>
+            <img
+              class="trend-icon"
+              src="../../assets/dashboardlinks/trend-icon.svg"
+              alt=""
+            />
           </div>
+          <h4 class="total">{{ getFirstTimerSummary.totalFirstTimer }}</h4>
+          <p>
+            <span class="percent"
+              >+{{ getFirstTimerSummary.firstTimerPercentageGrowth }}%
+            </span>
+            <span class="percent-text"> Since last month</span>
+          </p>
+        </div>
+
+        <div class="chart-con">
+          <div style="width: 45%" class="ml-md-4 chart1">
+            <ByGenderChart
+              domId="chart"
+              title="Invitation"
+              distance="5"
+              :titleMargin="10"
+              :summary="getFirstTimerSummary.invitationSource"
+            />
+          </div>
+          <div style="width: 45%;" class="chart2">
+            <ByMaritalStatusChart
+              domId="second"
+              title="Interested"
+              :titleMargin="10"
+              :summary="getFirstTimerSummary.interestedInJoining"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+
           <div class="table">
             <div class="top-con">
-              <div class="table-top my-3">
+              <div class="table-top my-4 px-4">
         <div class="select-all">
           <input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/>
           <label>SELECT ALL</label>
@@ -98,7 +143,7 @@
             class="label-search d-flex"
             :class="{ 'show-search': searchIsVisible }"
           >
-            <input type="text" placeholder="Search..." />
+            <input type="text" placeholder="Search..." v-model="searchText" />
             <span class="empty-btn">x</span>
             <span class="search-btn">
               <i class="fa fa-search"></i>
@@ -351,10 +396,11 @@
               <div class="no-record text-center my-4">No records found</div>
             </div>
             <div v-else>
-              <div
+              <div v-if="searchMember.length > 0" class="list-body">
+                <div
               class="table-body"
-              v-for="person in churchMembers"
-              :key="person.id"
+              v-for="person in searchMember"
+              :key="person.personID"
             >
               <div class="data-row">
                 <div class="check data">
@@ -365,9 +411,11 @@
                     <div class="data-text">
                       <p>Name</p>
                     </div>
-                    <div class="data-value">
+                      <router-link
+                      :to="`/tenant/people/add-first-timer/${person.personID}`"
+                      class="data-value itemroute-color">
                       {{ person.fullName }}
-                    </div>
+                      </router-link>
                   </div>
                 </div>
                 <div class="firstname data">
@@ -375,7 +423,11 @@
                     <div class="data-text">
                       <p>Phone Number</p>
                     </div>
-                    <div class="data-value">{{ person.phoneNumber }}</div>
+                    <router-link
+                      :to="`/tenant/people/add-first-timer/${person.personID}`"
+                      class="data-value itemroute-color">
+                      {{ person.phoneNumber }}
+                    </router-link>
                   </div>
                 </div>
                 <div class="lastname data">
@@ -383,7 +435,11 @@
                     <div class="data-text">
                       <p>Source</p>
                     </div>
-                    <div class="data-value">Social media</div>
+                    <router-link
+                      :to="`/tenant/people/add-first-timer/${person.personID}`"
+                      class="data-value itemroute-color">
+                      Social media
+                      </router-link>
                   </div>
                 </div>
                 <div class="phone data">
@@ -391,9 +447,11 @@
                     <div class="data-text">
                       <p>Interested</p>
                     </div>
-                    <div class="data-value">
+                    <router-link
+                      :to="`/tenant/people/add-first-timer/${person.personID}`"
+                      class="data-value itemroute-color">
                       {{ person.interestedInJoining }}
-                    </div>
+                    </router-link>
                   </div>
                 </div>
                 <div class="phone data">
@@ -401,9 +459,11 @@
                     <div class="data-text">
                       <p>Date</p>
                     </div>
-                    <div class="data-value">
+                    <router-link
+                      :to="`/tenant/people/add-first-timer/${person.personID}`"
+                      class="data-value itemroute-color">
                       {{ new Date(person.date).toLocaleDateString() }}
-                    </div>
+                    </router-link>
                   </div>
                 </div>
                 <div class="phone data">
@@ -411,7 +471,11 @@
                     <div class="data-text">
                       <p>Status</p>
                     </div>
-                    <div class="data-value">{{ person.status }}</div>
+                    <router-link
+                      :to="`/tenant/people/add-first-timer/${person.personID}`"
+                      class="data-value itemroute-color">
+                    {{ person.status }}
+                    </router-link>
                   </div>
                 </div>
                 <div class="action data action-icon">
@@ -443,6 +507,10 @@
               </div>
               <hr class="row-divider" />
             </div>
+              </div>
+              <div v-else>
+                <div class="no-record text-center my-4">No records found</div>
+              </div>
             </div>
 
             <div class="table-footer">
@@ -464,7 +532,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
@@ -486,6 +554,7 @@ export default {
     const searchIsVisible = ref(false)
     const filterResult = ref([])
     const noRecords = ref(false)
+    const searchText = ref("")
 
     // if ()
 
@@ -509,6 +578,15 @@ export default {
       }
     firstTimerSummary()
 
+      const searchMember = computed(() => {
+        if (searchText.value !== "") {
+          return churchMembers.value.filter(i => {
+            return i.fullName.toLowerCase().includes(searchText.value.toLowerCase())
+          })
+        } else {
+          return churchMembers.value
+        }
+      })
 
     // const getFirstTimers = async () => {
     //   try {
@@ -558,7 +636,9 @@ export default {
       toggleSearch,
       searchIsVisible,
       filterResult,
-      noRecords
+      noRecords,
+      searchText,
+      searchMember
     };
   },
 };
@@ -609,6 +689,11 @@ export default {
   border-radius: 30px;
   text-align: left;
   margin-bottom: auto !important;
+  /* padding: 0 21px; */
+}
+
+.table-header {
+  padding: 0 30px;
 }
 
 .summary-header {
@@ -634,7 +719,7 @@ export default {
 .chart-con {
   width: 70%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .board-top {
@@ -677,6 +762,10 @@ export default {
 
 .action-icon {
   text-align: center;
+}
+
+.list-body {
+  padding: 0 21px;
 }
 
 .data-value {
@@ -804,24 +893,20 @@ export default {
   border-radius: 10px;
 }
 
-  .boards {
+  /* .boards { */
     /* flex-direction: column; */
-    flex-wrap: wrap;
+    /* flex-wrap: wrap;
     justify-content: space-between;
-  }
+  } */
 
-  .board {
+  /* .board {
     width: 45%;
     margin: 10px 0;
     max-height: 310px;
-  }
+  } */
 
   .board.members-count {
     padding: 24px;
-  }
-
-  .chart-con {
-    flex-direction: column;
   }
 
   .page-header {
@@ -833,12 +918,30 @@ export default {
   font-size: 1.1em;
   }
 
+  .chart1,
+  .chart2 {
+    border-radius: 10px;
+  }
+
+  .itemroute-color {
+    color: #136acd;
+  }
+
+
 @media screen and (max-width: 500px) {
   .picture,
   .firstname,
   .lastname,
   .phone {
     width: 100%;
+  }
+
+
+  .chart1,
+  .chart2,
+  .board,
+  .chart-con {
+    width: 100% !important;
   }
 
   .table-body .check {
@@ -985,69 +1088,6 @@ export default {
 .board.members-count {
   max-height: 216px;
 }
-
-/* @media screen and (max-width: 1399px) { */
-
-/* } */
-
-/* @media screen and (min-width: 1400px) {
-  .table {
-    width: 68%;
-    margin-top: 0 !important;
-  }
-
-  .total-text {
-    font-size: 18px;
-  }
-
-  .summary {
-    width: 30%;
-    margin-left: 10px;
-    border: 1px solid #dde2e6;
-    box-shadow: 0px 1px 4px #02172E45;
-  }
-
-  .my-con {
-    display: flex;
-    flex-direction: row-reverse;
-  }
-
-  .boards {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .board {
-    width: 100%;
-    margin-bottom: 22px;
-    padding: 0 8px;
-  }
-
-  .board.fig {
-    padding: 24px 8px 0 8px;
-
-  }
-
-  .board.members-count {
-    width: 95% !important;
-    margin: auto;
-    border: 0.4000000059604645px solid #dde2e6;
-  }
-
-
-  .chart-con {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .chart-con div {
-    width: 100% !important;
-    margin-bottom: 10px !important;
-    min-height: 390px !important;
-  }
-
-} */
 </style>
 
 

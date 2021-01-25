@@ -66,7 +66,7 @@
             class="label-search d-flex"
             :class="{ 'show-search': searchIsVisible }"
           >
-            <input type="text" placeholder="Search..." />
+            <input type="text" placeholder="Search..." v-model="searchText" />
             <span class="empty-btn">x</span>
             <span class="search-btn">
               <i class="fa fa-search"></i>
@@ -272,7 +272,8 @@
         <div class="no-record text-center my-4">No member found</div>
       </div>
       <div v-else>
-        <div class="table-body" v-for="person in churchMembers" :key="person.id">
+        <div v-if="searchMember.length > 0">
+          <div class="table-body" v-for="person in searchMember" :key="person.id">
         <div class="data-row">
           <div class="check data">
             <input type="checkbox" name="" id="" v-model="selecteAll"/>
@@ -382,6 +383,10 @@
         <hr class="row-divider" />
         <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
+        </div>
+        <div v-else>
+          <div class="no-record text-center my-4">No member found</div>
+        </div>
       </div>
 
       <div class="table-footer">
@@ -416,6 +421,7 @@ export default {
     const filterResult = ref([])
     const selectAll = ref(false)
     const noRecords = ref(false)
+    const searchText = ref("")
     // const selected = ref([])
     // const count = ref(churchMembers.length)
 
@@ -514,17 +520,9 @@ export default {
                     toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
                 }
 
-            // message: 'Are you sure you want to proceed?',
-            // header: 'Confirmation',
-            // icon: 'pi pi-exclamation-triangle',
-            // accept: () => {
-            //     deleteMember(id)
-            // },
-            // reject: () => {
-            //     //callback to execute when user rejects the action
-            // }
         });
         }
+        
 
     // const getPeopleByPage = async (e) => {
 
@@ -561,13 +559,22 @@ export default {
       console.log(selectAll.value)
     }
 
+    const searchMember = computed(() => {
+        if (searchText.value !== "") {
+          return churchMembers.value.filter(i => {
+            return i.firstName.toLowerCase().includes(searchText.value.toLowerCase())
+          })
+        } else {
+          return churchMembers.value
+        }
+      })
+
     return {
       churchMembers,
       // getPeopleByPage,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       membershipSummary,
-      // getMemberSummary
       deleteMember,
       filter,
       applyFilter,
@@ -581,7 +588,9 @@ export default {
       filterResult,
       selectAll,
       toggleSelect,
-      noRecords
+      noRecords,
+      searchText,
+      searchMember
     };
   },
 };
@@ -696,8 +705,6 @@ a {
 
 .chart1,
 .chart2 {
-  /* border: 0.4000000059604645px solid #dde2e6;
-  box-shadow: 0px 1px 4px #02172e45; */
   border-radius: 10px;
 }
 

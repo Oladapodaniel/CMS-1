@@ -755,7 +755,7 @@
             <div class="row">
               <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">Name</div>
               <div class="col-sm-7">
-                <input type="text" v-model="item.addGiver" class="form-control" />
+                <input type="text" v-model="item.addGiver" class="form-control"/>
               </div>
             </div>
           </div>
@@ -1664,7 +1664,7 @@ export default {
     },
     addDonor () {
       console.log(this.donorText)
-      this.addGiver = this.donorText
+      // this.addGiver = this.donorText
       this.$refs.closeDonorModal.setAttribute("data-dismiss", "modal");
       this.donorBoolean = true
       this.donorText = ""

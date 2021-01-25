@@ -1,6 +1,4 @@
-.pahh {
-    border: 2px solid red
-}
+
 
 .container-slim {
     width: 70%;
@@ -8,7 +6,7 @@
 }
 
 .container-wide {
-    width: 80%;
+    width: 90%;
     margin: 0 auto
 }
 
