@@ -443,33 +443,22 @@
                 />
               </div>
 
-              <!-- Test pi pi-angle -->
+              <!-- Test -->
               <div class="input-field">
-                <label for="" class="label">Event or Service Attended</label> 
-                <button
-                  class="btn activity-attended-btn input dd"
-                  @click.prevent="selectEventAttended"
-                >
-                  <span class="float-left">{{ selectedEventAttended.name }}</span>
-                  <span class="float-right"
-                    ><i class="pi pi-chevron-down dd"></i
-                  ></span>
-                </button>
-                <!-- <input
+                <label for="" class="label">Event or Service Attended</label>
+                <i class="pi pi-chevron-down manual-dd-icon"></i>
+                <input
                   type="text"
                   class="input dd"
                   placeholder=""
                   v-model="selectedEventAttended.name"
                   @click="selectEventAttended"
                   @keydown="preventTying"
-                /> -->
+                />
               </div>
               <div class="input-field manual-dd-con" v-if="showEventList">
                 <div class="manual-dd dd">
-                  <div
-                    class="container-fluid dd dd-search-con"
-                    v-if="eventsAttended.length > 5"
-                  >
+                  <div class="container-fluid dd dd-search-con" v-if="eventsAttended.length > 5">
                     <div class="row dd">
                       <div class="col-md-12 dd px-0 py-1">
                         <input
@@ -506,29 +495,37 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div
-                        class="col-md-12 py-2 px-0"
-                        v-if="eventsAttended.length > 0"
-                      >
+                      <div class="col-md-12 py-2 px-0" v-if="eventsAttended.length > 0">
                         <hr class="hr" />
                       </div>
                       <div class="col-md-12 create-event py-2 text-center">
                         <a
                           class="craete-event-btn font-weight-bold"
-                          @click="() => (display = !display)"
-                          >Create new event</a
-                        >
-                        <!-- <a
-                          class="craete-event-btn font-weight-bold"
                           data-toggle="modal"
                           data-target="#eventModal"
                           >Create new event</a
-                        > -->
+                        >
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <!-- <div class="input-field">
+                <label for="" class="label">Events or Service Attended</label>
+                <div class="gender cstm-select">
+                  <div class="cs-select" style="width: 330px">
+                    <Dropdown
+                      v-model="selectedEventAttended"
+                      :options="eventsAttended"
+                      optionLabel="name"
+                      :filter="true"
+                      filterPlaceholder="Find event"
+                      placeholder="Select from events and activities"
+                      style="width: 100%"
+                    />
+                  </div>
+                </div>
+              </div> -->
               <div class="input-field">
                 <label for="" class="label">Address</label>
                 <input
@@ -551,6 +548,7 @@
                           placeholder="Day"
                           style="width: 100%"
                         />
+                        <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
                       </div>
                     </div>
                     <div class="cstm-select">
@@ -578,8 +576,41 @@
                 </div>
               </div>
             </div>
+
+            <!-- <div class="image-div other">
+              <div class="grey-bg">
+                <div class="person-img">
+                  <img
+                    v-if="!url"
+                    src="../../assets/people/phone-import.svg"
+                    alt="Uploaded Image"
+                  />
+                  <img v-else :src="url" alt="Uploaded Image" />
+                </div>
+                <div>
+                  <div class="cs-input">
+                    <label for="imgUpload" class="choose-file">
+                      Choose file
+                      <input
+                        type="file"
+                        class="input file-input"
+                        placeholder=""
+                        id="imgUpload"
+                        @change="imageSelected"
+                      />
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <button class="upload-btn" @click.prevent="uploadImage">
+                    Upload
+                  </button>
+                </div>
+              </div>
+            </div> -->
           </div>
         </div>
+        <!-- <hr class="hr"> -->
 
         <div class="">
           <span class="celeb-tab" @click="showCelebTab">
@@ -611,6 +642,7 @@
                 </div>
               </div>
               <div class="input-field">
+                <!-- <label for="" class="label">Events or Service Attended</label> -->
                 <div class="gender cstm-select">
                   <div class="cs-select" style="width: 330px">
                     <Dropdown
@@ -648,6 +680,52 @@
                   </div>
                 </div>
               </div>
+
+              <!-- <div class="input-field"> 
+                <label for="" class="label">Wedding Anniversary</label>
+                <div class="status-n-gender">
+                  <div class="date-picker">
+                    <div class="cstm-select">
+                      <div class="cs-select" style="width: 111px">
+                        <Dropdown
+                         
+                          :options="months"
+                          placeholder="Month"
+                          @change="
+                            editAnnDateValue('month', person.monthOfWedding)
+                          "
+                          style="width: 100%"
+                        />
+                         <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/>
+                      </div>
+                    </div>
+
+                    <div class="cstm-select">
+                      <div class="cs-select" style="width: 87px">
+                        <Dropdown
+                        
+                          :options="annDaysArr"
+                          placeholder="Day"
+                          style="width: 100%"
+                        />
+                        
+                      </div>
+                    </div>
+
+                    <div class="cstm-select">
+                      <div class="cs-select" style="width: 113px">
+                        <Dropdown
+                       
+                          :options="birthYearsArr"
+                          placeholder="Year"
+                          style="width: 100%"
+                        />
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
             </div>
 
             <div class="image-div other">
@@ -716,13 +794,87 @@
           </div>
         </div>
 
+        <!-- <div
+          class="add-info--con"
+          :class="{
+            'hide-tab': hideAddInfoTab,
+            'show-addinfo-tab': !hideAddInfoTab,
+          }"
+        >
+          <div class="label-text-box">
+            <p>Related information</p>
+            <small
+              >Including small groups and cell/house fellowship
+              membership</small
+            >
+          </div>
+          <div class="info-box">
+            <div class="nav-bar">
+              <div
+                class="groups box"
+                @click.prevent="() => (areaInView = 'groups')"
+                :class="{ 'white-bg': areaInView === 'groups' }"
+              >
+                <a class="tab">Groups</a>
+              </div>
+              <div
+                class="house-fel box"
+                @click.prevent="() => (areaInView = 'fellowship')"
+                :class="{ 'white-bg': areaInView === 'fellowship' }"
+              >
+                <a class="tab">House fellowship</a>
+              </div>
+              <div
+                class="notes box"
+                @click.prevent="() => (areaInView = 'notes')"
+                :class="{ 'white-bg': areaInView === 'notes' }"
+              >
+                <a class="tab">Notes</a>
+              </div>
+              <div
+                class="follow-up box"
+                @click.prevent="() => (areaInView = 'followup')"
+                :class="{ 'white-bg': areaInView === 'followup' }"
+              >
+                <a class="tab">Follow-up</a>
+              </div>
+            </div>
+            <div class="info-box-body">
+              <button
+                @click.prevent="uploadImage"
+                class="info-btn"
+                v-if="areaInView === 'groups'"
+              >
+                Add to Group
+              </button>
+              <button
+                @click.prevent="uploadImage"
+                class="info-btn"
+                v-if="areaInView === 'fellowship'"
+              >
+                Add to House fellowship
+              </button>
+              <button
+                @click.prevent="uploadImage"
+                class="info-btn"
+                v-if="areaInView === 'notes'"
+              >
+                New Notes
+              </button>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="error-div">
+          <p v-if="!loading">{{ errMessage }}</p>
+        </div>
         <div class="inputs">
-          <div class="submit-div d-flex">
+          <div class="submit-div">
             <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
               Cancel
             </button>
 
-            <button class="submit-btn ml-5 outline-none" :disabled="loading">
+            <button class="submit-btn ml-5 outline-none" :class="{ 'btn-loading': loading }" :disabled="loading">
               <i
                 class="fas fa-circle-notch fa-spin mr-2 text-white"
                 v-if="loading"
@@ -730,217 +882,13 @@
               <span class="text-white">Save</span>
               <span></span>
             </button>
-            <!-- <button class="submit-btn ml-5 outline-none" :class="{ 'btn-loading': loading }" :disabled="loading">
-              <i
-                class="fas fa-circle-notch fa-spin mr-2 text-white"
-                v-if="loading"
-              ></i>
-              <span class="text-white">Save</span>
-              <span></span>
-            </button> -->
           </div>
         </div>
 
         <div class="container">
           <div class="row">
             <div class="col-md-12 py-4">
-              <Dialog
-                :modal="true"
-                header="Create Event"
-                v-model:visible="display"
-                style="
-                  max-width: 600px;
-                  width: 100%;
-                  height: 350px;
-                  background: #fff;
-                "
-              >
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-4 text-md-center">
-                      <label for="" class="label font-weight-600"
-                        >Event name</label
-                      >
-                    </div>
-                    <div class="col-md-7">
-                      <!-- <input type="text" class="form-control" v-model="newEvent.preEvent.name"> -->
-                      <div class="dropdown">
-                        <button
-                          class="btn activity-dd-btn"
-                          type="button"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <span class="float-left"></span>
-                          <span class="float-right"
-                            ><i class="pi pi-chevron-down"></i
-                          ></span>
-                        </button>
-                        <div
-                          class="dropdown-menu px-1"
-                          aria-labelledby="dropdownMenuButton"
-                          style="width: 100%; height: 191px; overflow: scroll"
-                        >
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Search activity"
-                          />
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <a class="dropdown-item" href="#">Action</a>
-                          <a class="dropdown-item" href="#">Another action</a>
-                          <div class="container">
-                            <div class="row">
-                              <div class="col-md-12">
-                                <hr class="hr" />
-                              </div>
-                            </div>
-                          </div>
-                          <p
-                            class="my-1 text-center primary-text modal-action-btn font-weight-700"
-                            @click="() => (innerModal = !innerModal)"
-                          >
-                            Create new Activity
-                          </p>
-                        </div>
-                      </div>
-                      <!-- <CustomDropdown /> -->
-                      <Dialog
-                        header="Create Activity"
-                        v-model:visible="innerModal"
-                        style="max-width: 550px"
-                      >
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-md-5 text-md-center">
-                              <label for="" class="label font-weight-600"
-                                >Event name</label
-                              >
-                            </div>
-                            <div class="col-md-7">
-                              <input
-                                type="text"
-                                class="form-control"
-                                v-model="newEvent.preEvent.name"
-                              />
-                            </div>
-                          </div>
-                          <div class="row mt-4 mb-4">
-                            <div class="col-md-5 text-md-center">
-                              <label for="" class="label font-weight-600"
-                                >Event date</label
-                              >
-                            </div>
-                            <div class="col-md-7">
-                              <div class="container">
-                                <div class="row">
-                                  <div class="col-md-12 px-0">
-                                    <input
-                                      type="date"
-                                      class="form-control"
-                                      v-model="newEvent.date"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="row">
-                            <div class="col-md-12 d-md-flex justify-content-end">
-                              <button
-                                type="button"
-                                class="default-btn d-flex align-items-center justify-content-center"
-                                data-dismiss="modal"
-                                @click="innerModal = false"
-                              >
-                                Close
-                              </button>
-                              <button
-                                type="button"
-                                class="default-btn d-flex align-items-center justify-content-center ml-3 text-white primary-bg border-0"
-                                @click="createNewEvent"
-                                data-dismiss="modal"
-                              >
-                                Save
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </Dialog>
-                    </div>
-                  </div>
-                  <div class="row mt-4 mb-4">
-                    <div class="col-md-4 text-md-center">
-                      <label for="" class="label font-weight-600"
-                        >Event date</label
-                      >
-                    </div>
-                    <div class="col-md-7">
-                      <div class="container">
-                        <div class="row">
-                          <div class="col-md-12 px-0">
-                            <input
-                              type="date"
-                              class="form-control"
-                              v-model="newEvent.date"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="container">
-                  <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-7">
-                      <div class="row">
-                        <div class="col-md-12 text-md-right">
-                          <p
-                            class="mb-1 text-danger"
-                            v-if="invalidEventDetails"
-                          >
-                            Enter event name and date
-                          </p>
-                        </div>
-                        <div
-                          class="col-md-12 d-md-flex justify-content-between"
-                        >
-                          <button
-                            type="button"
-                            class="btn secondary-btn px-4"
-                            data-dismiss="modal"
-                          >
-                            Close
-                          </button>
-                          <button
-                            type="button"
-                            class="btn primary-btn px-4 text-white"
-                            @click="createNewEvent"
-                            data-dismiss="modal"
-                          >
-                            Save
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Dialog>
-              <!-- <div
+              <div
                 class="modal fade"
                 id="eventModal"
                 tabindex="-1"
@@ -948,13 +896,8 @@
                 aria-labelledby="eventModalLabel"
                 aria-hidden="true"
               >
-                <div
-                  class="modal-dialog"
-                  role="document"
-                  :data-keyboard="true"
-                  :data-backdrop="'non static'"
-                >
-                  <div class="modal-content py-2">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content py-5 px-3">
                     <div class="modal-header">
                       <h5
                         class="modal-title font-weight-bold"
@@ -972,25 +915,13 @@
                       </button>
                     </div>
                     <div class="modal-body">
-<<<<<<< HEAD
-                      <div class="row">
-                        <div class="col-md-4 text-md-center">
-=======
                       <div class="row my-5">
                         <div class="col-md-4 text-md-right align-self-center">
->>>>>>> dapobranch2
                           <label for="" class="label font-weight-bold"
                             >Event name</label
                           >
                         </div>
                         <div class="col-md-7">
-<<<<<<< HEAD
-                          <CustomDropdown />
-                        </div>
-                      </div>
-                      <div class="row mt-3 mb-4">
-                        <div class="col-md-4 text-md-center">
-=======
                           <input
                             type="text"
                             class="form-control"
@@ -1000,7 +931,6 @@
                       </div>
                       <div class="row mt-4 mb-4">
                         <div class="col-md-4 text-md-right align-self-center">
->>>>>>> dapobranch2
                           <label for="" class="label font-weight-bold"
                             >Event date</label
                           >
@@ -1017,24 +947,16 @@
                     <div class="modal-footer">
                       <div class="container">
                         <div class="row">
-                          <div class="col-md-4"></div>
-                          <div class="col-md-7">
+                          <div class="col-md-4">
+                          </div>
+                          <div
+                            class="col-md-7"
+                          >
                             <div class="row">
                               <div class="col-md-12 text-md-right">
-                                <p
-                                  class="mb-1 text-danger"
-                                  v-if="invalidEventDetails"
-                                >
-                                  Enter event name and date
-                                </p>
+                                <p class="mb-1 text-danger" v-if="invalidEventDetails">Enter event name and date</p>
                               </div>
-<<<<<<< HEAD
-                              <div
-                                class="col-md-12 d-md-flex justify-content-between"
-                              >
-=======
                               <div class="col-md-12 d-md-flex justify-content-end">
->>>>>>> dapobranch2
                                 <button
                                   type="button"
                                   class="btn secondary-btn px-4"
@@ -1058,8 +980,7 @@
                     </div>
                   </div>
                 </div>
-              </div> -->
-            
+              </div>
             </div>
           </div>
         </div>
@@ -1075,7 +996,6 @@ import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
 // import { getCurrentInstance } from "vue";
 import { useToast } from "primevue/usetoast";
-// import CustomDropdown from "@/components/dropdown/CustomDropdown";
 
 export default {
   components: { Dropdown },
@@ -1083,7 +1003,6 @@ export default {
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
-    const display = ref(false);
 
     const showEventList = ref(false);
     const selectEventAttended = () => {
@@ -1255,8 +1174,6 @@ export default {
 
       console.log(firstTimersObj.value);
       loading.value = true;
-      /*eslint no-undef: "warn"*/
-      NProgress.start();
       axios
         .post("/api/people/firsttimer", firstTimersObj.value)
         .then((res) => {
@@ -1274,8 +1191,6 @@ export default {
           //   position: "top-right",
           //   type: "error",
           // });
-          NProgress.set(1);
-          NProgress.done();
           console.log(err);
         });
     };
@@ -1370,7 +1285,7 @@ export default {
           // newEvent.value.date = "";
           // newEvent.value.preEvent.name = "";
 
-          // console.log(data, "data");
+          console.log(data, "data");
         } catch (error) {
           if (error.response.data == "An Event with this name already exist") {
               toast.add({
@@ -1423,8 +1338,6 @@ export default {
       });
     });
 
-    const innerModal = ref(false);
-
     const year = computed(() => {
       const arrOfYears = [];
       let currentYear = new Date().getFullYear();
@@ -1474,8 +1387,6 @@ export default {
       createNewEvent,
       invalidEventDetails,
       savingNewEvent,
-      display,
-      innerModal,
     };
   },
 };
@@ -1699,31 +1610,6 @@ template.p-dropdown-parent {
 
 .required {
   color: #ef0535;
-}
-
-.activity-dd-btn {
-  width: 100%;
-  height: 40px;
-  background: transparent;
-  border: 1px solid #ced4da;
-}
-
-.activity-attende-btn {
-  height: 40px;
-  background: transparent;
-  border: 1px solid #ced4da;
-}
-
-.modal-action-btn {
-  color: #136acd;
-}
-
-.modal-action-btn:hover {
-  cursor: pointer;
-}
-
-.pi-chevron-down {
-  color: #747d83;
 }
 
 @media screen and (max-width: 767px) {
