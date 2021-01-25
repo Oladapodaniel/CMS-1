@@ -39,6 +39,7 @@
                       Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam
                 </p>
+                 
             </div>
             <div class="buton">
                  <Button label="UNDERSTOOD" class="p-button-raised p-button-rounded"  style="font-size:14px; opacity:1; color:#ffffff; background:#136ACD; border-color: #136ACD;width:156px; height:45px" />
@@ -52,7 +53,11 @@
 <script>
 import Button from 'primevue/button';
     export default {
-        components:{Button}
+        components:{Button},
+        data() {
+            return {
+            }
+        },
         
     }
 </script>
