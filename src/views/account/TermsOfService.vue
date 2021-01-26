@@ -126,7 +126,6 @@ import Button from 'primevue/button';
         components:{Button},
         data() {
             return {
-               
                 
                 
             }
