@@ -40,7 +40,7 @@
 
               <div class="row table-box mb-4">
                 <div class="col-md-12">
-                  <div class="row header-row light-grey-bg">
+                  <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12">
                       <div class="row light-grey-bg">
                         <div class="col-md-1 text-md-right text-lg-center">
@@ -56,7 +56,7 @@
                           <span class="th">UNITS</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">DELIVERY REPORT</span>
+                          <span class="th">REPORT</span>
                         </div>
                       </div>
                     </div>
@@ -82,7 +82,7 @@
                             <span class="timestamp">{{ sms.dateSent }}</span>
                           </span>
                           <span class="brief-message font-weight-600"
-                            >{{ sms.message && sms.length > 25 ? `${sms.message.split('').slice(0, 25).join("")}...` : sms.message ? sms.message : '' }}</span
+                            >{{ sms.message && sms.message.length > 25 ? `${sms.message.split('').slice(0, 25).join("")}...` : sms.message ? sms.message : '' }}</span
                           >
                         </div>
                         <div
@@ -107,7 +107,7 @@
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
                           </span>
-                          <router-link to="/message-details" class="view-btn"
+                          <router-link to="/message-details" class="view-item-btn"
                             >View</router-link
                           >
                         </div>
@@ -198,10 +198,13 @@ export default {
     const getSentSMS = async () => {
       try {
         loading.value = true;
+        /*eslint no-undef: "warn"*/
+        NProgress.start();
         const res = await axios.get("/api/Messaging/getAllSentSms");
         loading.value = false;
         sentSMS.value = res.data;
       } catch (error) {
+        NProgress.done();
         console.log(error);
       }
     };
@@ -240,6 +243,7 @@ export default {
 
 .brief-message {
   color: #4762f0;
+  font-size: 14px;
 }
 
 .compose-btn {

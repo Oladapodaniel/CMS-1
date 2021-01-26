@@ -897,7 +897,7 @@
                 aria-hidden="true"
               >
                 <div class="modal-dialog" role="document">
-                  <div class="modal-content py-5 px-3">
+                  <div class="modal-content py-2 px-2">
                     <div class="modal-header">
                       <h5
                         class="modal-title font-weight-bold"
@@ -915,7 +915,7 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <div class="row my-5">
+                      <div class="row my-4">
                         <div class="col-md-4 text-md-right align-self-center">
                           <label for="" class="label font-weight-bold"
                             >Event name</label
@@ -970,7 +970,7 @@
                                   @click="createNewEvent"
                                   data-dismiss="modal"
                                 >
-                                  Save changes
+                                  Save
                                 </button>
                               </div>
                             </div>
@@ -1295,7 +1295,8 @@ export default {
                 life: 2500,
               });
           }
-
+          /*eslint no-undef: "warn"*/
+          NProgress.done();
           savingNewEvent.value = false;
           console.log(error.response);
         }

@@ -81,10 +81,13 @@ export default {
     onMounted(async () => {
       try {
         loading.value = true;
+         /*eslint no-undef: "warn"*/
+         NProgress.start()
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
         people.value = data;
         loading.value = false;
       } catch (err) {
+        NProgress.done()
         loading.value = false;
         errorGettingPeople.value = true;
         console.log(err);

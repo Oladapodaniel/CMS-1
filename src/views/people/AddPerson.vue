@@ -130,7 +130,10 @@
                   </div>
                 </div>
                 <div>
-                  <button class="upload-btn outline-none" @click.prevent="uploadImage">
+                  <button
+                    class="upload-btn outline-none"
+                    @click.prevent="uploadImage"
+                  >
                     Upload
                   </button>
                 </div>
@@ -307,7 +310,7 @@
 
         <!-- DISABLED -->
         <div
-          v-if="false" 
+          v-if="false"
           class="add-info--con"
           :class="{
             'hide-tab': hideAddInfoTab,
@@ -378,15 +381,27 @@
           </div>
         </div>
 
-        <div class="error-div">
-          <p v-if="!loading">{{ errMessage }}</p>
-        </div>
+        <!-- <div class="error-div">
+          <p v-show="!loading && showError">{{ errMessage }}</p>
+        </div> -->
         <div class="submit-div">
-          <button class="submit-btn outline-none" :class="{ 'btn-loading': loading }" :disabled="loading">
-            <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
+          <button
+            class="primary-bg px-md-4 outline-none default-btn text-white border-0"
+            :disabled="loading"
+          >
+            <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
             <span>Save</span>
             <span></span>
           </button>
+          <!-- <button
+            class="primary-bg px-md-4 outline-none default-btn text-white border-0"
+            :class="{ 'btn-loading': loading }"
+            :disabled="loading"
+          >
+            <i class="fas fa-circle-notch fa-spin mr-2" v-if="loading"></i>
+            <span>Save</span>
+            <span></span>
+          </button> -->
         </div>
       </form>
     </div>
@@ -402,12 +417,13 @@ import axios from "@/gateway/backendapi";
 import { useRoute } from "vue-router";
 // import { getCurrentInstance } from "vue";
 import Dropdown from "primevue/dropdown";
-// import { useToast } from 'primevue/usetoast';
+import { useToast } from "primevue/usetoast";
 
 export default {
   components: { Dropdown },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
+    const toast = useToast();
     const hideCelebTab = ref(false);
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
@@ -519,16 +535,17 @@ export default {
     const uploadImage = () => {};
 
     const errMessage = ref("");
+    const showError = ref(false);
     const addPerson = async () => {
       const personObj = { ...person };
-      console.log(person, "person");
-
+      errMessage.value = "";
       const formData = new FormData();
       formData.append(
         "firstName",
         personObj.firstName ? personObj.firstName : ""
       );
       formData.append("lastName", personObj.lastName ? personObj.lastName : "");
+      formData.append("picture", image ? image : "");
       formData.append(
         "mobilePhone",
         personObj.mobilePhone ? personObj.mobilePhone : ""
@@ -576,7 +593,8 @@ export default {
         "ageGroupID",
         selectedAgeGroup.value ? selectedAgeGroup.value.id : ""
       );
-
+      /*eslint no-undef: "warn"*/
+      NProgress.start();
       if (route.params.personId) {
         try {
           loading.value = true;
@@ -591,9 +609,28 @@ export default {
           }
         } catch (err) {
           loading.value = false;
-          errMessage.value = err.response.data.messsage
-            ? err.response.data.messsage
-            : "An error occurred";
+          NProgress.done();
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "You 're Offline",
+              detail: "Please ensure you have internet access",
+              life: 2500,
+            });
+          } else {
+            showError.value = true;
+            errMessage.value =
+              err.response && err.response.data.messsage
+                ? err.response.data.messsage
+                : "Update operation was not succesfull";
+            toast.add({
+              severity: "error",
+              summary: "Update Failed",
+              detail: errMessage.value ? errMessage.value : "Update operation failed",
+              life: 2500,
+            });
+          }
+          showError.value = true;
           console.log(err.response);
         }
       } else {
@@ -610,10 +647,27 @@ export default {
           }
         } catch (err) {
           loading.value = false;
-          errMessage.value = err.response
-            ? err.response.data.messsage
-            : "An error occurred";
-          console.log(err.response);
+          NProgress.done();
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "You 're Offline",
+              detail: "Please ensure you have internet access",
+              life: 2500,
+            });
+          } else {
+            showError.value = true;
+            loading.value = false;
+            if (err.response && err.response.status === 400) {
+              errMessage.value = err.response.data.message;
+            }
+            toast.add({
+              severity: "error",
+              summary: "Saving Failed",
+              detail: errMessage.value ? errMessage.value : "Save operation failed",
+              life: 2500,
+            });
+          }
         }
       }
     };
@@ -678,6 +732,7 @@ export default {
         });
     }
 
+    
     onMounted(async () => {
       getLookUps();
       getAgeGroups();
@@ -753,6 +808,7 @@ export default {
       memberships,
       selectedAgeGroup,
       ageGroups,
+      showError,
     };
   },
 };
@@ -769,11 +825,11 @@ export default {
 }
 
 .cs-select.day {
-  width: 87px
+  width: 87px;
 }
 
 .cs-select.year {
-  width: 113px
+  width: 113px;
 }
 
 @media (min-width: 663px) and (max-width: 667px) {
@@ -794,15 +850,15 @@ export default {
   }
 
   .cs-select.month {
-    width: 85px
+    width: 85px;
   }
 
   .cs-select.day {
-    width: 85px
+    width: 85px;
   }
 
   .cs-select.year {
-    width: 90px
+    width: 90px;
   }
 }
 </style>

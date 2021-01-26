@@ -40,8 +40,17 @@
               <div class="input-div">
                 <label class="mb-0">What's your phone number?</label>
                 <div class="phone-input">
-                  <div style="width: 80px">
-                    <SelectElem :typ="'code'" name="code" :options="countryCodes" value="-Select size range" @input="itemSelected"/>
+                  <div style="width: 100px; margin-top:4px">
+                    <Dropdown
+                      v-model="selectedCountry"
+                      :options="countryCodes"
+                      optionLabel="phoneCode"
+                      placeholder="Zip code"
+                      style="width: 100%;max-height:40px"
+                      :filter="true"
+                    />
+                    <!-- <Dropdown :options="countryCodes" optionLabel="phoneCode" placeholder="Zip code" v-model="zipCode" style="width:100%;max-height:40px" /> -->
+                    <!-- <SelectElem :typ="'code'" name="code" :options="countryCodes" value="-Select size range" @input="itemSelected"/> -->
                   </div>
 
                   <input
@@ -62,22 +71,26 @@
                   class="input"
                   placeholder="Name of church"
                   required
-                  @change="selectCountry"
                 />
               </div>
 
-              <div class="input-div cstm-select" id="myInput">
+              <div class="input-div cstm-select w-100" id="myInput">
                 <label class="mb-0"
                   >What's the membership size of your ministry?</label
                 >
-                  <SelectElem :typ="'churchsize'" name="churchSize" :options="['--Select size range--', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="--Select size range--" @input="itemSelected"/>
-                
+                  <!-- <SelectElem :typ="'churchsize'" name="churchSize" :options="['--Select size range--', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="--Select size range--" @input="itemSelected"/> -->
+                <Dropdown
+                  v-model="userDetails.churchSize"
+                  :options="['Between 1 - 100', 'Between 101 - 200', 'Between 201 - 500', 'Between 501 - 2000']"
+                  style="width: 100%"
+                  placeholder="Select size range"
+                />
               </div>
 
               
               <button
                 type="submit"
-                class="submit-btn sign-in-btn get-started"
+                class="submit-btn sign-in-btn get-started default-btn font-weight-700"
                 :class="{ disabled: !isValid, 'btn-loading': loading }"
                 :disabled="!isValid"
               >
@@ -115,10 +128,9 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-// import $ from 'jquery'
-import SelectElem from '@/components/select/SelectElement.vue'
+import Dropdown from "primevue/dropdown";
 export default {
-  components: { SelectElem },
+  components: { Dropdown },
   beforeRouteLeave() {
     const userEmail = localStorage.getItem("email");
     if (userEmail) localStorage.removeItem("email");
@@ -155,7 +167,9 @@ export default {
       if (!this.userDetails.email) return false;
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
         ? this.userDetails.phoneNumber
-        : `${this.zipCode}${this.userDetails.phoneNumber}`;
+        : `${this.selectedCountry.phoneCode}${this.userDetails.phoneNumber}`;
+        console.log(this.selectedCountry, "country");
+        this.userDetails.countryId = this.selectedCountry.id;
       console.log(this.userDetails, "userDetails");
       this.loading = true;
       axios
@@ -163,6 +177,7 @@ export default {
         .then((res) => {
           console.log(res, "onboarding response");
           localStorage.setItem("token", res.data.token);
+          console.log(typeof res.data.token, "token type")
           // this.$store.dispatch("setStartPoint", url)
           this.loading = false;
           this.$router.push("/onboarding/step2");
@@ -175,25 +190,6 @@ export default {
       // this.$store.dispatch("setOnboardingData", this.userDetails);
       // this.$router.push("/onboarding/step2");
     },
-
-    selectCountry(e) {
-      this.zipCode = this.countries.filter((i) => i.id === +e.target.value);
-    },
-
-    sizeSelected(e) {
-      console.log(this.userDetails);
-      this.userDetails.churchSize = e.target.value;
-    },
-
-    itemSelected(data) {
-      if (data.dataType === "churchSize") {
-        this.userDetails.churchSize = data.value;
-      }
-      
-      if (data.dataType === "code") {
-        this.zipCode = data.value;
-      }
-    }
   },
 
   computed: {
@@ -210,26 +206,28 @@ export default {
         this.userDetails.lastName &&
         this.userDetails.phoneNumber &&
         this.userDetails.churchName &&
-        this.userDetails.churchSize
+        this.userDetails.churchSize &&
+        this.selectedCountry.id
       );
     },
 
     countryCodes() {
       const codes = [ ]
       this.countries.forEach(i => {
-        if (i.phoneCode) codes.push(i.phoneCode);
+        if (i.phoneCode) codes.push(i);
       });
       return codes;
     },
   },
+
+  beforeCreate() {
+    if (!localStorage.getItem("email")) this.$router.push("/");
+  },
  
   created() {
-    if (!localStorage.getItem("email")) this.$router.push("/");
-
     this.userDetails.email = localStorage.getItem("email");
     axios.get("/api/GetAllCountries").then((res) => {
       this.countries = res.data;
-      this.zipCode = "234";
     });
   },
 };

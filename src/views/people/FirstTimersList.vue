@@ -6,8 +6,8 @@
       </div>
 
       <div class="col-sm-8 d-flex head-button">
-        <button class="more">More <i class="fa fa-angle-down"></i></button>
-        <router-link to="/tenant/people/add-first-timer" class="add-btn">
+        <button class="more default-btn">More <i class="fa fa-angle-down ml-2"></i></button>
+        <router-link to="/tenant/people/add-first-timer" class="add-btn default-btn">
           Add First timer
         </router-link>
       </div>
@@ -411,11 +411,10 @@
                     <div class="data-text">
                       <p>Name</p>
                     </div>
-                      <router-link
-                      :to="`/tenant/people/add-first-timer/${person.personID}`"
-                      class="data-value itemroute-color">
-                      {{ person.fullName }}
-                      </router-link>
+                    <div class="data-value">
+                      <router-link :to="{name: 'AddFirstTimer', params: { id: person.personID}}">{{ person.fullName }}</router-link>
+                    </div>
+
                   </div>
                 </div>
                 <div class="firstname data">
@@ -424,8 +423,8 @@
                       <p>Phone Number</p>
                     </div>
                     <router-link
-                      :to="`/tenant/people/add-first-timer/${person.personID}`"
-                      class="data-value itemroute-color">
+                      :to="``"
+                      class="data-value">
                       {{ person.phoneNumber }}
                     </router-link>
                   </div>
@@ -435,11 +434,10 @@
                     <div class="data-text">
                       <p>Source</p>
                     </div>
-                    <router-link
-                      :to="`/tenant/people/add-first-timer/${person.personID}`"
-                      class="data-value itemroute-color">
+                    <div
+                      class="data-value">
                       Social media
-                      </router-link>
+                      </div>
                   </div>
                 </div>
                 <div class="phone data">
@@ -447,11 +445,10 @@
                     <div class="data-text">
                       <p>Interested</p>
                     </div>
-                    <router-link
-                      :to="`/tenant/people/add-first-timer/${person.personID}`"
-                      class="data-value itemroute-color">
-                      {{ person.interestedInJoining }}
-                    </router-link>
+                    <a class="data-value">
+                      {{ person.interestedInJoining === "Not_Specified" ? "Not Specified" : person.interestedInJoining }}
+                    </a>
+
                   </div>
                 </div>
                 <div class="phone data">
@@ -459,11 +456,10 @@
                     <div class="data-text">
                       <p>Date</p>
                     </div>
-                    <router-link
-                      :to="`/tenant/people/add-first-timer/${person.personID}`"
-                      class="data-value itemroute-color">
-                      {{ new Date(person.date).toLocaleDateString() }}
-                    </router-link>
+                    <div class="data-value">
+                      {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}
+                    </div>
+
                   </div>
                 </div>
                 <div class="phone data">
@@ -538,6 +534,7 @@ import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
 import Pagination from "../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
+import moment from 'moment'
 
 export default {
   props: ["list"],
@@ -629,6 +626,7 @@ export default {
       churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,
+      moment,
       firstTimerSummary,
       getFirstTimerSummary,
       applyFilter,
@@ -650,6 +648,11 @@ export default {
   color: #02172e;
 }
 
+.data-value a {
+  color: #136acd;
+  text-decoration: none;
+}
+
 .page-header {
   font-weight: 500;
   font-size: 2rem;
@@ -660,17 +663,6 @@ export default {
   justify-content: space-between;
   margin: 18px 0;
 }
-
-/* .summary { */
-  /* width: 20%; */
-  /* border-radius: 30px; */
-  /* box-shadow: 0px 3px 6px #2c28281c; */
-  /* padding: 0px 20px 0 20px;
-  background: #fff; */
-  /* margin-bottom: 24px; */
-  /* height: fit-content;
-  border: 2px solid red;
-} */
 
 .summary {
     /* width: 20%; */

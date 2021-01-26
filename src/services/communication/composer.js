@@ -51,6 +51,22 @@ const composerObj = {
         }
         console.log(members, "members");
         // return members;
+    },
+
+    svaeDraft(data) {
+        return new Promise((resolve, reject) => {
+            /*eslint no-undef: "warn"*/
+            NProgress.start();
+            axios.post("/api/Messaging/PostSmsDraft", data)
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    NProgress.done();
+                    if (error.response) reject(error.response);
+                    if (!error.response) reject(error);
+                })
+        })
     }
 }
 

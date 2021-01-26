@@ -1,21 +1,19 @@
 <template>
-  <div class="px-sm-2">
+  <div class="px-sm-2 slim-container">
     <div class="container">
       <div class="row text-center">
         <div class="col-md-12 mb-4 mt-3">
-          <h2 class="font-weight-bold">
+          <h2 class="font-weight-bold intro-text">
             Choose a plan that's right for your church
           </h2>
         </div>
       </div>
+      
 
       <div class="row text-center mb-4">
-        <div class="col-md-12">
+        <div class="col-lg-8 offset-lg-2">
           <p class="font-weight-noraml small-text">
-            Our primary clients are from Nigeria, hence our prices are in this
-            country's official currency, Naira(₦). There is no maximum limit or
-            expiry date for your units which you may purchase at any time. With
-            our pricing system you get more SMS units the more you buy.
+            There is no maximum limit or expiry date for your units which you may purchase at any time. With our pricing system you get more SMS units the more you buy.
           </p>
           <p class="font-weight-600">
             Note that we charge 1 unit per SMS to all GSM networks in Nigeria.
@@ -23,7 +21,7 @@
         </div>
       </div>
 
-      <div class="row d-md-flex justify-content-around mb-3">
+      <!-- <div class="row d-md-flex justify-content-around mb-3">
         <div class="col-md-2 d-flex flex-column justify-content-end">
           <div class="row labels-box">
             <div class="col-md-12"></div>
@@ -103,96 +101,127 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row mt-5">
-        <div class="col-md-12">
-          <h2 class="font-weight-700 plan-header">Pricing Calculator</h2>
-        </div>
-        <div class="col-md-12 calc-con">
-          <div class="row">
-            <div class="col-md-5">
+
+      <div class="row mb-4">
+        <div class="col-lg-8 offset-lg-2 buy-box">
+          <div class="row mb-5">
+            <div class="col-md-12 calc-con">
+              <h2 class="font-weight-700 plan-header text-white">
+                Buy SMS Units
+              </h2>
+            </div>
+          </div>
+
+          <div class="row my-3">
+            <div class="col-md-12">
+              
               <div class="row">
-                <div class="col-sm-2 d-flex align-items-center">
-                  <label class="amount mr-2 text-white font-weight-bold"
-                    >Amount</label
-                  >
+                <div
+                  class="col-md-3 d-flex align-items-center justify-content-md-end"
+                >
+                  <label for="">Amount:</label>
                 </div>
-                <div class="col-sm-10">
+                <div class="col-md-6">
                   <div class="row">
-                    <div class="col-sm-4 pr-0">
-                      <select name="" id="" class="form-control px-0">
-                        <option value="">Naira</option>
-                        <option value="">Pounds</option>
+                    <div class="col-sm-3 pr-sm-0 d-flex align-items-center">
+                      <select
+                        name=""
+                        id=""
+                        class="form-control flat-right-border px-sm-0"
+                      >
+                        <option value="">Naira(N)</option>
                       </select>
                     </div>
-                    <div class="col-sm-8 pl-0">
+                    <div class="col-sm-9 pl-sm-0 d-flex align-items-center">
                       <input
-                        type="number"
+                        type="text"
                         v-model="amount"
-                        class="pl-0 form-control text-field inp-field"
+                        class="form-control flat-left-border"
                       />
                     </div>
                   </div>
                 </div>
+                <div class="col-md-3"></div>
               </div>
             </div>
+          </div>
 
-            <div class="col-md-4 d-flex">
+          <div class="row my-3">
+            <div class="col-md-12">
               <div class="row">
-                <div class="col-md-5 text-md-center d-flex align-items-center">
-                  <label class="amount mr-2 text-white font-weight-bold"
-                    >SMS UNITS</label
-                  >
+                <div
+                  class="col-md-3 d-flex align-items-center justify-content-md-end"
+                >
+                  <label for="">SMS Units:</label>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-6">
                   <input
                     type="text"
                     v-model="totalSMSUnits"
-                    class="form-control inp-field"
+                    class="form-control flat-left-border"
                   />
                 </div>
+                <div class="col-md-3"></div>
               </div>
             </div>
+          </div>
 
-            <div class="col-md-3 d-flex">
+          <div class="row my-3">
+            <div class="col-md-12">
               <div class="row">
-                <div class="col-md-4 text-md-center d-flex align-items-center">
-                  <label class="amount mr-2 text-white font-weight-bold"
-                    >TOTAL</label
-                  >
+                <div
+                  class="col-md-3 d-flex align-items-center justify-content-md-end"
+                >
+                  <label for="">Total:</label>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-6">
                   <input
-                    type="number"
+                    type="text"
                     v-model="totalAmount"
-                    class="form-control inp-field"
+                    class="form-control flat-left-border"
                   />
                 </div>
+                <div class="col-md-3"></div>
               </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div
+              class="col-md-12 py-3 d-sm-flex flex-column align-items-center"
+            >
+              <p class="text-danger font-weight-700 mb-1" v-if="invalidAmount">
+                Please enter amount
+              </p>
+              <button
+                class="primary-btn px-4 outline-none"
+                @click="payWithPaystack"
+              >
+                Buy SMS Unit
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-12 py-3 d-sm-flex flex-column align-items-end">
-            <p class="text-danger font-weight-700 mb-1" v-if="invalidAmount">Please enter amount</p>
-          <button class="primary-btn px-4 outline-none" @click="payWithPaystack">Buy SMS Unit</button>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-12 py-3 d-sm-flex justify-content-start">
+        <div class="col-lg-8 offset-lg-2 py-3 d-sm-flex justify-content-start">
           <h4 class="font-weight-700">Bank Payment</h4>
         </div>
       </div>
 
-      <div class="row d-md-flex justify-content-around mb-5">
-        <div class="col-md-4 my-2 bank-details px-0">
+      <div class="row d-md-flex mb-5">
+        <div class="col-lg-8 offset-lg-2">
+          <div class="row">
+            <div class="col-md-6 my-2 bank-details">
           <div class="row">
             <div class="col-md-4 d-flex align-items-center">
-              <img src="../../assets/gtbank.png" class="px-1" alt="Image" />
+              
+              <div class="image-box" style="height: 80px">
+                <img src="../../assets/gtbank.png" class="px-1" alt="Image" />
+              </div>
             </div>
             <div class="col-md-8 px-md-1">
               <p class="font-weight-600 pt-2">Guarantee Trust Bank</p>
@@ -202,27 +231,16 @@
           </div>
         </div>
 
-        <div class="col-md-5 my-2 bank-details px-0">
+        <div class="col-md-4 my-2">
           <div class="row">
-            <div class="col-md-4 d-flex align-items-center">
-              <img src="../../assets/diamondbank.png" class="px-1" alt="Image" />
+            <div class="col-md-12">
+              <img src="../../assets/mastercard.png" class="master-card" alt="Image" />
             </div>
-            <div class="col-md-8 px-md-1">
-              <p class="font-weight-600 pt-2">Diamond Bank</p>
-              <p class="mb-0">Account Name: Complustech Limited</p>
-              <p class="mb-0">Account Number: 0017934252</p>
+            <div class="col-md-12">
+              <img src="../../assets/visacard.png" class="px-1 visa-card" alt="Image" />
             </div>
           </div>
         </div>
-
-        <div class="col-md-2 my-2 px-0">
-          <div class="row">
-            <div class="col-md-12">
-              <img src="../../assets/mastercard.png" alt="Image" />
-            </div>
-            <div class="col-md-12">
-              <img src="../../assets/visacard.png" class="px-1" alt="Image" />
-            </div>
           </div>
         </div>
       </div>
@@ -231,74 +249,78 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 
 export default {
-    setup() {
-        const amount = ref(0)
-        const smsUnits = ref(0);
-        const invalidAmount = ref(false);
+  setup() {
+    const amount = ref(0);
+    const smsUnits = ref(0);
+    const invalidAmount = ref(false);
 
-        const totalSMSUnits = computed(() => {
-            if (amount.value <= 0) return "";
-            return Math.ceil(amount.value / 2);
-        })
+    // setTimeout(() => NProgress.start(), 3000)
+    // setTimeout(() => NProgress.done(), 6000)
 
-        const totalAmount = computed(() => {
-            if (amount.value <= 0) return "";
-            return Math.ceil(amount.value);
-        })
+    const totalSMSUnits = computed(() => {
+      if (amount.value <= 0) return "";
+      return Math.ceil(amount.value / 2);
+    });
 
-        const payWithPaystack = (e) => {
-            e.preventDefault();
-            invalidAmount.value = false;
-            if (amount.value <= 0) {
-                invalidAmount.value = true;
-                return false;
-            }
+    const totalAmount = computed(() => {
+      if (amount.value <= 0) return "";
+      return Math.ceil(amount.value);
+    });
 
-            /*eslint no-undef: "warn"*/
-            let handler = PaystackPop.setup({
-                key: "pk_test_9a8895ede03716b9a0474fea6da11ec5bc1c7033",
-                email: "stgodstar@gmail.com",
-                amount: amount.value * 100,
-                firstname: "Godstar",
-                lastname: "Gerrald",
-                onClose: function () {
-                    swal("Transaction Canceled!", { icon: "error" });
-                },
-                callback: function (response) {
-                //Route to where you confirm payment status
-                    console.log(response, "response");
-                    var returnres = {
-                        smsUnit: totalSMSUnits.value,
-                        transaction_Reference: response.reference,
-                        amount: amount.value * 100,
-                    };
-                    //Route to where you confirm payment status
+    const payWithPaystack = (e) => {
+      e.preventDefault();
+      invalidAmount.value = false;
+      if (amount.value <= 0) {
+        invalidAmount.value = true;
+        return false;
+      }
 
-                    axios.post('/api/Payment/buySms', returnres)
-                        .then(res => {
-                        console.log(res, "success data");
-                        })
-                        .catch(err => {
-                        console.log(err, "error confirming payment");
-                        })
-                },
+      /*eslint no-undef: "warn"*/
+      let handler = PaystackPop.setup({
+        key: "pk_test_9a8895ede03716b9a0474fea6da11ec5bc1c7033",
+        email: "stgodstar@gmail.com",
+        amount: amount.value * 100,
+        firstname: "Godstar",
+        lastname: "Gerrald",
+        onClose: function () {
+          swal("Transaction Canceled!", { icon: "error" });
+        },
+        callback: function (response) {
+          //Route to where you confirm payment status
+          console.log(response, "response");
+          var returnres = {
+            smsUnit: totalSMSUnits.value,
+            transaction_Reference: response.reference,
+            amount: amount.value * 100,
+          };
+          //Route to where you confirm payment status
+
+          axios
+            .post("/api/Payment/buySms", returnres)
+            .then((res) => {
+              console.log(res, "success data");
+            })
+            .catch((err) => {
+              console.log(err, "error confirming payment");
             });
-            handler.openIframe();
-    }
+        },
+      });
+      handler.openIframe();
+    };
 
-        return {
-            amount,
-            smsUnits,
-            totalAmount,
-            totalSMSUnits,
-            payWithPaystack,
-            invalidAmount,
-        }
-    }
+    return {
+      amount,
+      smsUnits,
+      totalAmount,
+      totalSMSUnits,
+      payWithPaystack,
+      invalidAmount,
+    };
+  },
 };
 </script>
 
@@ -308,7 +330,8 @@ export default {
 }
 
 .plan-header {
-  color: #136acd;
+  font-size: 20px;
+  color: #000;
 }
 
 .plan-box {
@@ -324,8 +347,10 @@ export default {
 
 .calc-con {
   background: #136acd;
-  padding: 30px 20px;
-  border-radius: 25px;
+  border-radius: 15px 15px 0 0;
+      height: 66px;
+    display: flex;
+    align-items: center;
 }
 
 .inp-field {
@@ -346,10 +371,40 @@ export default {
   background: #ebeff4 0% 0% no-repeat padding-box;
   border: 1px solid #dde2e6;
   border-radius: 10px;
+  height: fit-content;
 }
 
 .hidden-label {
   display: none;
+}
+
+
+.buy-box {
+  border: 1px solid #DDE2E6;
+  border-radius: 15px;
+}
+
+.visa-card {
+  max-height: 45px;
+}
+
+.master-card {
+  max-height: 45px;
+}
+
+.flat-left-border {
+  border-radius: 0px 4px 4px 0;
+}
+
+.flat-right-border {
+  border-radius: 4px 0 0 4px;
+}
+
+@media screen and (max-width: 501px) {
+  .intro-text {
+    font-size: 24px;
+    margin-top: 20px;
+  }
 }
 
 @media screen and (max-width: 767px) {

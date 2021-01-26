@@ -2,7 +2,8 @@
   <div class="my-con">
     <div class="summary px-3">
       <p class="summary-header">Summary</p>
-      
+      <ConfirmDialog />
+        <Toast />
       <!-- <hr class="hr" /> -->
 
       <div class="boards">
@@ -235,25 +236,25 @@
                 aria-expanded="false"
               ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" v-if="person.mobilePhone">
+                <a class="dropdown-item elipsis-items" v-if="person.mobilePhone">
                   <router-link
                     :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
                     >Send SMS</router-link
                   >
                 </a>
-                <a class="dropdown-item" v-if="person.email">
+                <a class="dropdown-item elipsis-items" v-if="person.email">
                   <router-link
                     :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
                     >Send Email</router-link
                   >
                 </a>
-                <a class="dropdown-item">
+                <a class="dropdown-item elipsis-items">
                   <router-link :to="`/tenant/people/add-person/${person.id}`"
                     >Edit</router-link
                   >
                 </a>
                 <a
-                  class="dropdown-item"
+                  class="dropdown-item elipsis-items"
                   href="#"
                   @click.prevent="showConfirmModal(person.id)"
                   >Delete</a
@@ -262,8 +263,7 @@
             </div>
           </div>
         </div>
-        <ConfirmDialog />
-        <Toast />
+        
         <hr class="row-divider" />
         <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
@@ -351,25 +351,25 @@
                 aria-expanded="false"
               ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" v-if="person.mobilePhone">
+                <a class="dropdown-item elipsis-items" v-if="person.mobilePhone">
                   <router-link
                     :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
                     >Send SMS</router-link
                   >
                 </a>
-                <a class="dropdown-item" v-if="person.email">
+                <a class="dropdown-item elipsis-items" v-if="person.email">
                   <router-link
                     :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
                     >Send Email</router-link
                   >
                 </a>
-                <a class="dropdown-item">
+                <a class="dropdown-item elipsis-items">
                   <router-link :to="`/tenant/people/add-person/${person.id}`"
                     >Edit</router-link
                   >
                 </a>
                 <a
-                  class="dropdown-item"
+                  class="dropdown-item elipsis-items"
                   href="#"
                   @click.prevent="showConfirmModal(person.id)"
                   >Delete</a
@@ -378,8 +378,6 @@
             </div>
           </div>
         </div>
-        <ConfirmDialog />
-        <Toast />
         <hr class="row-divider" />
         <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
@@ -414,6 +412,7 @@ export default {
   },
 
   setup(props) {
+   
     const churchMembers = ref([]);
     const filterFormIsVissible = ref(false);
     const filter = ref({});
@@ -785,6 +784,11 @@ a {
   height: 130px;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
+}
+
+.elipsis-items a {
+  display: flex;
+  justify-content: stretch;
 }
 
 .no-record {

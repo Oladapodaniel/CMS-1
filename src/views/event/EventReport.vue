@@ -165,7 +165,7 @@
             </h2>
             <span class="evt-date text-danger">{{ eventDateString }}.</span>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-5 pl-0">
             <div class="row">
               <div class="col-md-6 d-md-flex justify-content-end">
                 <span class="bold-700">Preacher: </span>
@@ -916,7 +916,7 @@ a {
 }
 
 .def-btn {
-  height: 43px;
+  height: 40px;
   border-radius: 22px;
   /* padding: 0 24px; */
   padding: 8px 10px;

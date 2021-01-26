@@ -6,6 +6,7 @@
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
           <h4 class="font-weight-bold">Compose New SMS</h4>
           <Toast />
+
           <!-- <Dialog
             header="Header"
             v-model:visible="display"
@@ -25,7 +26,7 @@
           <Dialog
             header="Select Date nad Time"
             v-model:visible="display"
-            :style="{ width: '50vw' }"
+            :style="{ width: '50vw', maxWidth: '600px' }"
             :modal="true"
           >
             <div class="row">
@@ -43,8 +44,12 @@
                 label="Cancel"
                 icon="pi pi-times"
                 @click="() => (display = false)"
-                class="p-button-text"
-                style="color: #136acd"
+                class="p-button-raised p-button-text p-button-plain mr-3"
+                style="
+                  color: #136acd;
+                  background: #fff !important;
+                  border-radius: 22px;
+                "
               />
               <Button
                 label="Schedule"
@@ -58,7 +63,7 @@
       </div>
 
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
       </div>
@@ -76,6 +81,7 @@
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
+              @click="closeDropdownIfOpen"
             >
               Select Destination
             </button>
@@ -84,7 +90,7 @@
               aria-labelledby="dropdownMenuButton"
             >
               <a
-                class="dropdown-item"
+                class="dropdown-item c-pointer"
                 v-for="(destination, index) in possibleSMSDestinations"
                 :key="index"
                 @click="showSection(index)"
@@ -96,89 +102,62 @@
       </div>
 
       <div class="row mb-1">
-        <div class="col-md-12">
+        <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
       </div>
 
-      <!-- Select Group -->
-      <div class="col-md-12 px-0" v-if="groupSelectionTab">
-        <div class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-10 py-2 px-0 grey-rounded-border">
-            <span
-              class="email-destination m-1"
+      <!-- Start TEst -->
+      <div class="row mb-2" v-if="groupSelectionTab">
+        <div class="col-md-2"></div>
+        <div class="col-md-10 px-0 grey-rounded-border">
+          <ul class="d-flex flex-wrap pl-1 mb-0 dd-item" @click="() => groupSelectInput.focus()">
+            <li style="list-style: none;min-width: 100px" 
               v-for="(group, index) in selectedGroups"
               :key="index"
+              class="email-destination d-flex justify-content-between m-1"
             >
+              <!-- <span
+              class="email-destination m-1"
+              
+            > -->
               <span>{{ group.name }}</span>
               <span class="ml-2 remove-email" @click="removeGroup(index)"
                 >x</span
               >
-            </span>
-
-            <div class="dropdown">
+            <!-- </span> -->
+            </li>
+            <li style="list-style: none" class="">
               <input
-                placeholder="Grouped contacts in the database"
-                class="border-none dropdown-toggle px-1"
                 type="text"
-                id="dropdownMenu"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+                class="border-0 dd-item"
+                ref="groupSelectInput"
+                :class="{
+                  'w-100': selectedGroups.length === 0,
+                  'minimized-input-width': selectedGroups.length > 0,
+                }"
+                @focus="showGroupList"
+                @click="showGroupList"
+                style="padding:.5rem"
+                :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups'}`"
               />
-
-              <div class="dropdown-menu w-100" aria-labelledby="dropdownMenu">
-                <div class="col-md-12 groups">
-                  <div
-                    class="row"
-                    v-for="(category, index) in categories"
-                    :key="index"
-                  >
-                    <div class="col-md-12" v-if="allGroups[index].length > 0">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <h6 class="text-uppercase font-weight-bold">
-                            {{ category }}
-                          </h6>
-                          <a
-                            class="dropdown-item px-1 c-pointer"
-                            v-for="(group, indx) in allGroups[index]"
-                            @click="
-                              selectGroup(
-                                group.category,
-                                group.id,
-                                group.name,
-                                index,
-                                indx
-                              )
-                            "
-                            :key="indx"
-                          >
-                            {{ group.name }}
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            </li>
+          </ul>
+          <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
+            <div class="row dd-item" v-if="categories.length === 0">
+              <div class="col-md-12 dd-item">
+                <p>No groups yet</p>
               </div>
             </div>
-          </div>
-          <div
-            class="col-md-12 grey-rounded-border groups"
-            :class="{ hide: !groupsAreVissible }"
-          >
-            <div
-              class="row"
-              v-for="(category, index) in categories"
-              :key="index"
-            >
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-12">
-                    <h4>{{ category }}</h4>
-                    <p
+            <div class="row dd-item" v-for="(category, index) in categories" :key="index">
+              <div class="col-md-12 dd-item" v-if="allGroups[index].length > 0">
+                <div class="row dd-item">
+                  <div class="col-md-12 dd-item">
+                    <h6 class="text-uppercase dd-item font-weight-bold">
+                      {{ category }}
+                    </h6>
+                    <a
+                      class="dropdown-item px-1 c-pointer dd-item"
                       v-for="(group, indx) in allGroups[index]"
                       @click="
                         selectGroup(
@@ -192,17 +171,102 @@
                       :key="indx"
                     >
                       {{ group.name }}
-                    </p>
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
+        </div>
+        </div>
+        
+      </div>
+      <!-- End TEst -->
+
+      <!-- Start member TEst -->
+      <div class="row" v-if="membershipSelectionTab">
+        <div class="col-md-2"></div>
+        <div class="col-md-10 pl-0 grey-rounded-border">
+          <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
+            <li style="list-style: none;min-width: 100px" 
+              v-for="(member, indx) in selectedMembers"
+              :key="indx"
+              class="email-destination d-flex justify-content-between m-1"
+            >
+              <!-- <span
+              class="email-destination m-1"
+              
+            > -->
+              <span>{{ member.name }}</span>
+              <span class="ml-2 remove-email" @click="removeMember(indx)"
+                >x</span
+              >
+            <!-- </span> -->
+            </li>
+            <li style="list-style: none" class=" m-dd-item">
+              <input
+                type="text"
+                class="border-0 m-dd-item text"
+                ref="memberSelectInput"
+                @input="searchForPerson"
+                :class="{
+                  'w-100': selectedMembers.length === 0,
+                  'minimized-input-width': selectedMembers.length > 0,
+                }"
+                @focus="showMemberList"
+                @click="showMemberList"
+                v-model="searchText"
+                style="padding:.5rem"
+                :placeholder="`${selectedMembers.length > 0 ? '' : 'Select from members'}`"
+              />
+            </li>
+          </ul>
+          <div class="col-md-12 px-0 select-groups-dropdown m-dd-item" v-if="memberListShown">
+            <div
+                class="dropdownmenu pt-0 w-100 m-dd-item"
+              >
+                <a
+                  class="dropdown-item px-1 c-pointer m-dd-item"
+                  v-for="(member, index) in memberSearchResults"
+                  :key="index"
+                  @click="selectMember(member, index)"
+                  >{{ member.name }}</a
+                >
+                <p
+                  class="bg-secondary p-1 mb-0 disable m-dd-item"
+                  v-if="
+                    searchText.length < 3 &&
+                    loading == false &&
+                    memberSearchResults.length === 0
+                  "
+                >
+                  Enter 3 or more characters
+                </p>
+                <p
+                  aria-disabled="true"
+                  class="btn btn-default p-1 mb-0 disable m-dd-item"
+                  v-if="
+                    memberSearchResults.length === 0 &&
+                    searchText.length >= 3 &&
+                    !loading
+                  "
+                >
+                  No match found
+                </p>
+                <p
+                  class="btn btn-default p-1 mb-0 disable m-dd-item"
+                  v-if="loading && searchText.length >= 3"
+                >
+                  <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
+                </p>
+              </div>
           </div>
         </div>
+        
       </div>
+      <!-- End member TEst -->
 
-      <!-- Select Person from DB -->
-      <div class="col-md-12 my-1 px-0" v-if="membershipSelectionTab">
+    <!-- Select Person from DB -->
+      <div class="col-md-12 my-1 px-0" v-if="false">
         <div class="row">
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0 grey-rounded-border">
@@ -305,7 +369,7 @@
           <div class="col-md-2"></div>
           <div class="col-md-10 py-2 px-0">
             <textarea
-              class="form-control w-100 px-1"
+              class="form-control w-100 px-1 grey-rounded-border"
               placeholder="Enter phone number(s)"
               v-model="phoneNumber"
             ></textarea>
@@ -344,7 +408,7 @@
           phoneNumberSelectionTab || membershipSelectionTab || groupSelectionTab
         "
       >
-        <div class="col-md-12">
+        <div class="col-md-12 pr-0">
           <hr class="hr my-1" />
         </div>
       </div>
@@ -374,7 +438,11 @@
             v-model="editorData"
           ></textarea>
           <div class="col-md-12 px-0">
-            <p class="bg-success mb-0 p-1" v-if="editorData.length > 0" :class="{ 'amber': charactersCount > 160 }">
+            <p
+              class="bg-success mb-0 p-1"
+              v-if="editorData.length > 0"
+              :class="{ amber: charactersCount > 160 }"
+            >
               <span>Characters count {{ charactersCount }}</span>
               <span class="float-right">Page {{ pageCount }}</span>
             </p>
@@ -384,99 +452,47 @@
 
       <div class="row my-3">
         <div class="col-md-12 form-group">
-          <input
-            type="checkbox"
-            v-model="isPersonalized"
-            class="mr-3"
-          />
-          <span class="font-weight-600">Personal Message</span>
+          <div class="row">
+            <div class="col-md-2">
+              
+            </div>
+            <div class="col-md-10 pl-0">
+              <input type="checkbox" v-model="isPersonalized" class="mr-3" />
+              <span class="font-weight-600">Personal Message</span>
+            </div>
+          </div>
         </div>
         <div class="col-md-12">
-          <span class="hint"
-            >Insert #name# any where you want the contact name to appear in the
-            message, it will be replaced by the actual name of the member when
-            sending the message.</span
-          >
+          <div class="row">
+            <div class="col-md-2">
+              
+            </div>
+            <div class="col-md-10 pl-0">
+              <span class="hint"
+                >Insert #name# any where you want the contact name to appear in the
+                message, it will be replaced by the actual name of the member when
+                sending the message.</span
+              >
+                </div>
+          </div>
         </div>
       </div>
 
       <div class="row mt-4 mb-5">
+        <div class="col-md-12">
+          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidDestination">Please select destination</p>
+          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidMessage">Enter your message </p>
+        </div>
         <div class="col-md-12 d-flex justify-content-end">
           <span>
-            <button
-              class="btn send-btn px-4"
+            <SplitButton
+              label="Send"
+              :model="sendOptions"
               data-toggle="modal"
               data-target="#sendsmsbtn"
-            >
-              Send
-            </button>
-            <a
-              class="send-btn-options dd-item"
-              @click="toggleSendOptionsDisplay"
-              ><i class="pi pi-caret-down dd-item text-white"></i
-            ></a>
-            <div
-              class="send-dropdown d-flex py-1 flex-column dd-item"
-              :class="{ 'hide-dd': !sendOptionsIsShown }"
-            >
-              <a class="font-weight-600 px-1 py-1 dd-item">Save as draft</a>
-              <a
-                class="font-weight-600 px-1 py-1 dd-item"
-                data-toggle="modal"
-                data-target="#schedulemodal"
-                @click="showDateTimeSelectionModal"
-                >Schedule send</a
-              >
-              <!-- Datetime modal -->
-
-              <!-- <div
-                class="modal fade"
-                id="schedulemodal"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">
-                        Modal title
-                      </h5>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <input type="datetime-local" id="birthdaytime" class="form-control" name="birthdaytime">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button type="button" class="btn btn-primary">
-                        Save changes
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-            </div>
+            ></SplitButton>
           </span>
-          <button class="btn discard-btn ml-3 px-3">Discard</button>
+          <button class="default-btn d-flex justify-content-center short-btn align-items-center ml-3">Discard</button>
         </div>
 
         <div class="row">
@@ -535,7 +551,7 @@
                               class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
                             >
                               <button
-                                class="primary-btn px-4 my-2 font-weight-600 outline-none"
+                                class="primary-btn default-btn primary-bg border-0 px-4 my-2 font-weight-600 outline-none"
                                 data-dismiss="modal"
                                 @click="sendSMS('hostedsms')"
                               >
@@ -575,7 +591,7 @@
                             >
                               <!-- hostedsms_instant -->
                               <button
-                                class="primary-btn px-4 my-2 grey-background text-grey outline-none"
+                                class="primary-btn default-btn border-0 px-4 my-2 grey-background text-grey outline-none"
                                 data-dismiss="modal"
                                 @click="sendSMS('')"
                               >
@@ -656,7 +672,13 @@ export default {
     const closeDropdownIfOpen = (e) => {
       if (!e.target.classList.contains("dd-item")) {
         sendOptionsIsShown.value = false;
+        groupListShown.value = false;
       }
+
+      if (!e.target.classList.contains("m-dd-item")) {
+        memberListShown.value = false;
+      }
+      console.log(e.target);
     };
 
     const selectGroup = (
@@ -670,6 +692,7 @@ export default {
       selectedGroups.value.push({ data: `${category}_${id}`, name });
       groupsAreVissible.value = false;
       allGroups.value[indexInCategories].splice(indexInGroup, 1);
+      groupListShown.value = false;
       console.log(selectedGroups);
     };
 
@@ -684,7 +707,11 @@ export default {
     const selectedMembers = ref([]);
     const selectMember = (selectedMember, index) => {
       selectedMembers.value.push(selectedMember);
+      console.log(memberSearchResults.value, "search members");
       memberSearchResults.value.splice(index, 1);
+      memberListShown.value = false;
+      searchText.value = "";
+      memberSearchResults.value = [ ];
       console.log(selectedMembers, "selected members");
     };
     const removeMember = (index) => {
@@ -705,7 +732,13 @@ export default {
           .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
           .then((res) => {
             loading.value = false;
-            memberSearchResults.value = res;
+            memberSearchResults.value = res.filter(i => {
+              const memberInExistingCollection = selectedMembers.value.find(j => j.id === i.id);
+              console.log(memberInExistingCollection, "em");
+              if (memberInExistingCollection && memberInExistingCollection.id) return false;
+              return true;
+            });
+            console.log(memberSearchResults.value, "res");
           });
         console.log(memberSearchResults.value);
       } else {
@@ -723,8 +756,23 @@ export default {
 
     const isoCode = ref("");
     const isPersonalized = ref(false);
+    const invalidMessage = ref(false);
+    const invalidDestination = ref(false);
 
     const sendSMS = (gateway) => {
+      invalidDestination.value = false;
+      invalidMessage.value = false;
+
+      if (selectedGroups.value.length === 0 && !phoneNumber.value && selectedMembers.value.length === 0) {
+        invalidDestination.value = true;
+        return false;
+      }
+
+      if (!editorData.value) {
+        invalidMessage.value = true;
+        return false;
+      }
+
       toast.add({
         severity: "info",
         summary: "Sending SMS",
@@ -762,7 +810,6 @@ export default {
       }
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
-
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
@@ -784,15 +831,45 @@ export default {
           console.log(res);
         })
         .catch((err) => {
-          console.log(err);
-          toast.add({
+          toast.removeAllGroups();
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "You 're Offline",
+              detail: "Please ensure you have internet access",
+              life: 2500,
+            });
+          } else {
+            toast.add({
             severity: "error",
             summary: "Failed operation",
             detail: "SMS sending failed",
             life: 2500,
           });
+          }
         });
     };
+
+    const draftMessage = async () => {
+      try {
+        const response = await composerObj.svaeDraft({ body: editorData.value, isDefaultBirthDayMessage: false });
+        console.log(response, "draft response");
+        toast.add({
+          severity: "success",
+          summary: "Draft Saved",
+          detail: "Message saved as draft",
+          life: 2500,
+        });
+      } catch (error) {
+        console.log(error, "drafting error");
+        toast.add({
+          severity: "warn",
+          summary: "Missing implementation",
+          detail: "Can't draft message now",
+          life: 2500,
+        });
+      }
+    }
 
     const route = useRoute();
     if (route.query.phone) {
@@ -810,6 +887,28 @@ export default {
         })
         .catch((err) => console.log(err));
     }
+
+    const sendOptions = [
+      {
+        label: "Schedule",
+        icon: "pi pi-clock",
+        command: () => {
+          display.value = true;
+        },
+      },
+      {
+        label: "Save as Draft",
+        icon: "pi pi-save",
+        command: () => {
+          draftMessage();
+        },
+      },
+      // {
+      //   label: "Upload",
+      //   icon: "pi pi-upload",
+      //   to: "/fileupload",
+      // },
+    ];
 
     const allGroups = ref([]);
     const categories = ref([]);
@@ -839,6 +938,19 @@ export default {
         life: 2500,
       });
     };
+
+    const groupListShown = ref(false);
+    const showGroupList = () => {
+      groupListShown.value = true;
+      console.log(groupSelectInput.value);
+    };
+
+    const memberListShown = ref(false);
+    const showMemberList = () => {
+      memberListShown.value = true;
+    };
+    const groupSelectInput = ref(null);
+    const memberSelectInput = ref(null);
 
     return {
       editor,
@@ -875,6 +987,17 @@ export default {
       display,
       showDateTimeSelectionModal,
       scheduleMessage,
+      sendOptions,
+      draftMessage,
+      groupListShown,
+      showGroupList,
+      groupSelectInput,
+      memberListShown,
+      showMemberList,
+      memberSelectInput,
+      invalidDestination,
+      invalidMessage,
+
     };
   },
 };
@@ -906,7 +1029,7 @@ input:focus {
   border-radius: 111px;
   color: #fff;
   outline: transparent;
-  max-height: 38px;
+  max-height: 40px;
 }
 
 .send-btn {
@@ -968,12 +1091,13 @@ input:focus {
 
 .email-destination {
   padding: 0.1rem 0.4rem;
-  border: 1px solid #02172e30;
-  border-radius: 30px;
+  border: 1px solid #02172e0d;
+  border-radius: 8px;
+  background: #02172e14;
 }
 
 .remove-email {
-  color: #a9adb1;
+  color: #000;
   font-weight: bold;
 }
 
@@ -1071,12 +1195,17 @@ input:focus {
 }
 
 .hint {
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .amber {
   background: #ffbf00 !important;
 }
+
+/* Start SplitButton */
+
+/* End SplitButton */
 
 @media screen and (max-width: 630px) {
   .send-btn-options {
