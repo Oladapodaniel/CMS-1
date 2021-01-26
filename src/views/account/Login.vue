@@ -42,25 +42,39 @@
              <span></span>
           </button>
         </div>
-        <div v-if="false">
-          <button class="facebook-btn btn-logo sign-in-btn" @click="loginWithFacebook">
+        <div>
+          <button class="facebook-btn btn-logo sign-in-btn" >
             <img src="../../assets/facebook-small.png" class="fb-icon" alt="Google Icon">
-             <span>Sign up with Facebook</span>
+             <span>Sign in with Facebook</span>
              <span></span>
           </button>
         </div>
 
         <!-- <button  onclick="alert('it works')">Love you</button> -->
         <!-- <div @click="facebookSignIn"> -->
-          <!-- <fb:login-button scope="public_profile,email"
+          <!-- < scope="public_profile,email"
                      onlogin="checkLoginState();" ref="loginFacebook">
           </fb:login-button> -->
           <!--Display access token-->
           <!-- <div id="authstatus">   </div> -->
         <!-- </div> -->
+        <!-- <div class="face-parent"> -->
+          
+        <!-- </div> -->
+        
 
-        <div class="fb-login-button" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></div>
+<!-- <button class="_5h0i _88va" onclick="checkLoginState();">Facebook</button> -->
+<!-- <a href="#" onclick="fb_login();"><img src="images/fb_login_awesome.jpg" border="0" alt="dapoface">dapo</a>
+<div id="fb-root"></div> -->
 
+
+  <!-- <VFacebookLogin app-id="966242223397117" /> -->
+  <!-- <div>
+    <v-facebook-login v-model="model" @sdk-init="handleSdkInit" />
+    <button >
+      Logout
+    </button>
+  </div> -->
       </div>
 
       <div class="bottom-container">
@@ -68,6 +82,7 @@
           <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p>
         </div>
       </div>
+      <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a>
     </div>
   </div>
 </template>
@@ -77,8 +92,13 @@ import axios from '@/gateway/backendapi';
 import { reactive, ref } from 'vue';
 import store from '../../store/store'
 import router from '../../router/index';
+// import FB from '../../services/guards/facebook-sdk/face'
+// import VFacebookLogin from 'vue-facebook-login-component'
 
 export default {
+  // components: {
+  //     VFacebookLogin,
+  //   },
     setup() {
 
       const state = reactive({
@@ -137,7 +157,54 @@ export default {
           console.log(loginFacebook.value)
             loginFacebook.value.click()
       }
-      
+
+    
+
+
+        // const handleSdkInit = () => {
+        //   FB.value = FB
+        //   scope.value = scope
+        // }
+
+//       const checkLoginState = () => {
+// /*eslint no-undef: "warn"*/
+//               FB.getLoginStatus(function (response) {
+//                   // $("#authstatus").html("<code>" + response + "</code>");
+//                   // console.log(response)
+//                   // fetch('https://churchplusv3coreapi.azurewebsites.net/api/People/GetMembershipSummary')
+//                   //   .then(response => response.json())
+//                   //   .then(data => console.log(data));
+//                   // fetch('https://churchplusv3coreapi.azurewebsites.net/api/People/GetMembershipSummary', {
+//                   //       method: 'post',
+//                   //       files: {}
+//                   //     }).then(function(res) {
+//                   //       return res.json();
+//                   //     }).then(function(data) {
+//                   //       console.log(data)
+//                   //       // ChromeSamples.log('Created Gist:', data.html_url);
+//                   //     })
+//                   let token = {
+//                     accessToken: response.authResponse.accessToken
+//                   }
+//                   console.log(response.authResponse.accessToken)
+//                   axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
+//                     .then(res => {
+//                       console.log(res.data)
+//                       if (res.data.isOnboarded) {
+//                         localStorage.setItem("email", res.data.username)
+//                         localStorage.setItem("token", res.data.token);
+//                         window.location.href = "/tenant";
+//                       } else {
+//                         localStorage.setItem("email", res.data.username)
+//                         localStorage.setItem("token", res.data.token);
+//                         window.location.href = "/onboarding";
+//                       }
+                      
+//                     })
+//                       .catch(err => console.log(err))
+//               });
+//               // statusChangeCallback(response);
+//       }
 
       return {
         state,
@@ -145,7 +212,7 @@ export default {
         loading,
         itemSelected,
         loginWithFacebook,
-        loginFacebook
+        loginFacebook,
         // checkLoginState
       };
     }
@@ -323,5 +390,38 @@ export default {
     color: #b52626;
     margin-bottom: 0;
 }
+
+/* ._5h0i._88va {
+    background-color: #3B5998 !important;
+    border: 2px solid red !important;
+} */
+
+ ._5h0i._88va {
+        border: 2px solid red !important;
+      }
+
+    .fb_iframe_widget iframe {
+    opacity: 0;
+}
+
+    .fb_iframe_widget {
+      /* background-image: url(../../assets/facebook-small.png);
+      background-repeat: no-repeat;  */
+      /* background: #3B5998; */
+      /* border: 2px solid #3b5998; */
+      border-radius: 500px;
+      position: relative;
+      top: -155px;
+      left: 1px;
+      padding: 8px;
+      width: 100%;
+    }
+
+    @media (max-width: 273px) {
+      .fb_iframe_widget {
+      top: -173px;
+  
+    }
+    }
 
 </style>

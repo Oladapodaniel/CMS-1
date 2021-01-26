@@ -9,7 +9,8 @@
       <div class="header">
         <div class="top-con">
           <div class="header">
-            <h1>Your all in one church management solution</h1>
+            <!-- <h1>Your all in one church management solution</h1> -->
+            <h1>Get started for <span class="free">FREE</span></h1>
             <h3 class="intro">
               A church software that automates your entire  <br />
               church management processes.
@@ -72,7 +73,15 @@
             <span></span>
           </button>
         </div>
-        <div class="fb-login-button" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></div>
+
+         <div>
+          <button class="facebook-btn btn-logo sign-in-btn" >
+            <img src="../../assets/facebook-small.png" class="fb-icon" alt="Google Icon">
+             <span>Sign up with Facebook</span>
+             <span></span>
+          </button>
+        </div>
+        <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a>
         
         <div class="terms">
           <p>
@@ -252,7 +261,7 @@ export default {
   border: 1px solid transparent;
   margin-top: 8px;
   width: 100%;
-  padding: 8px 20px;
+  /* padding: 8px 20px; */
   box-sizing: border-box;
   text-align: center;
   min-width: 100px;
@@ -316,7 +325,7 @@ export default {
 }
 
 .facebook-btn {
-  background: #410093;
+  background: #3B5998;
 }
 
 .bottom-container {
@@ -339,7 +348,13 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1px;
+}
+
+.fb-icon {
+  background: #fff;
+  padding: 0.23rem .6rem;
+  border-radius: 50%;
+  margin: .25rem;
 }
 
 /* Signup */
@@ -417,5 +432,28 @@ export default {
 
 .error-message {
   color: #b52626;
+}
+
+.fb_iframe_widget iframe {
+    /* opacity: 0; */
+     border: 2px solid #3b5998;
+}
+
+.fb_iframe_widget {
+  /* background-image: url(../../assets/facebook-small.png);
+  background-repeat: no-repeat;  */
+  /* background: #3B5998; */
+  border: 2px solid #3b5998;
+  border-radius: 500px;
+  position: relative;
+  top: -155px;
+  left: 1px;
+  padding: 8px;
+  width: 100%;
+}
+
+.free {
+  font-weight: 800;
+  color: #10898f
 }
 </style>

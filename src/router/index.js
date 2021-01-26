@@ -1,10 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+
+import Pagination from '@/components/pagination/PaginationButtons.vue';
+import Payment from '../components/payment/Payment.vue';
+// import TermsOfService from '@/views/account/TermsOfService.vue'
 import ConnectionStatus from '@/components/connectivity/ConnectionStatus.vue';
 
 
 
 const routes = [{
+        path: '/pagination',
+        name: 'Pagination',
+        component: Pagination
+    },
+    // {
+    //     path: '/termsofservice',
+    //     name: 'TermsOfService',
+    //     component: TermsOfService,
+    // },
+    {
+        path: '/payment',
+        name: 'Payment',
+        component: Payment
+    },
+    {
         path: '/online',
         name: 'online',
         component: ConnectionStatus
@@ -75,23 +94,33 @@ const routes = [{
                 children: [
 
 
-          { path: '', component: () => import(/* webpackChunkName: "peopleempty" */ '../views/people/PeopleEmpty.vue') },
-          {
-            path: 'import', component: () => import(/* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'), name: 'ImportPeople'
-          },
-          {
-            path: 'add-first-timer',
-            name: 'AddFirstTimer',
-            component: () => import(/* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
-          },
-          {
-            path: 'add-person/:personId?',
-            component: () => import(/* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
-          },
-          {
-            path: 'add-first-timer/:firstTimerId?',
-            component: () => import(/* webpackChunkName: "addperson" */ '../views/people/AddFirstTimer.vue')
-          },
+                    {
+                        path: '',
+                        component: () =>
+                            import ( /* webpackChunkName: "peopleempty" */ '../views/people/PeopleEmpty.vue')
+                    },
+                    {
+                        path: 'import',
+                        component: () =>
+                            import ( /* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'),
+                        name: 'ImportPeople'
+                    },
+                    {
+                        path: 'add-first-timer',
+                        name: 'AddFirstTimer',
+                        component: () =>
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
+                    },
+                    {
+                        path: 'add-person/:personId?',
+                        component: () =>
+                            import ( /* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
+                    },
+                    {
+                        path: 'add-first-timer/:firstTimerId?',
+                        component: () =>
+                            import ( /* webpackChunkName: "addperson" */ '../views/people/AddFirstTimer.vue')
+                    },
 
                 ]
             },
@@ -286,6 +315,12 @@ const routes = [{
                         component: () =>
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/AddDefaultMessage')
                     },
+                    // {
+                    //     path: 'details',
+                    //     name: 'Details',
+                    //     component: () =>
+                    //         import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/Details')
+                    // },
                 ]
             }
         ]
@@ -313,7 +348,7 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("token")
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && !token) return next("/")
     if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
-    // if ((to.name === "StartingPoint" && localStorage.getItem("userSetup"))) return next(true)
+        // if ((to.name === "StartingPoint" && localStorage.getItem("userSetup"))) return next(true)
     next(true)
 })
 

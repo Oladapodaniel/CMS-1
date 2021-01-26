@@ -482,9 +482,9 @@ span .select2-selection--single {
     width: 100% !important;
   }
 
-  /* form {
-    width: 100%;
-  } */
+  .main-title {
+    margin-top: 20px;
+  }
 
   #onboarding-visuals {
     display: none !important;
