@@ -134,6 +134,7 @@ export default {
           }
         } catch (err) { 
           /*eslint no-undef: "warn"*/
+          console.log(err.response, "login error");
           NProgress.done();
           loading.value = false;
           
@@ -141,7 +142,6 @@ export default {
           const { onboarded } = err.response.data;
           if (status && status == 400 && onboarded === false)
           {
-            console.log("redirecting");
             router.push('/onboarding');
           } else {
             state.errorMessage = err.response.data.message;
