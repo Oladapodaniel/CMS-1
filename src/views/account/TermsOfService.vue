@@ -376,4 +376,14 @@ width: 55.2%;
     right:15px;
 }
 }
+@media (min-width: 2001px) and (max-width:2050px) {
+.buton{
+width: 54.0%;
+
+
+}
+.p-button{
+    right:15px;
+}
+}
 </style>
