@@ -108,6 +108,7 @@ This Service does not use these “cookies” explicitly. However, the app may u
                 <p class="ml-4" style="text-align:justify; margin-bottom: 90px;">
                     If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us.
                 </p>
+                
                  
             </div>
             <div class="buton">
