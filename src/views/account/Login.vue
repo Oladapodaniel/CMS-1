@@ -82,7 +82,7 @@
           <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p>
         </div>
       </div>
-      <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" @click="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a>
+      <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a>
     </div>
   </div>
 </template>
