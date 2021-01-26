@@ -76,6 +76,8 @@ import axios from "@/gateway/backendapi";export default {
                   }
                 })
                 .catch(error => {
+                  /*eslint no-undef: "warn"*/
+                  NProgress.done();
                   console.log(error);
                 })
         },

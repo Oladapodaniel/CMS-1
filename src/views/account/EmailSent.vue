@@ -4,7 +4,7 @@
       <div class="logo-con">
         <a href="" class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"></a>
       </div>
-      <div class="fp-form-con">
+      <div class="fp-form-con mt-5">
         <div class="confirm-text">
             <h3>Check Your Email</h3>
         </div>
