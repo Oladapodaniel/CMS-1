@@ -1,14 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import ConnectionStatus from '@/components/connectivity/ConnectionStatus.vue';
+
+import Pagination from '@/components/pagination/PaginationButtons.vue';
+
+import TermsOfUse from '@/views/account/TermsOfService.vue'
 
 
 
 const routes = [{
-        path: '/online',
-        name: 'online',
-        component: ConnectionStatus
+        path: '/pagination',
+        name: 'Pagination',
+        component: Pagination
     },
+
+    {
+        path: '/termsofuse',
+        name: 'TermsOfUse',
+        component: TermsOfUse,
+    },
+
     {
         path: '/',
         name: 'Login',
@@ -52,10 +62,16 @@ const routes = [{
             import ( /* webpackChunkName: "forgotpassword" */ '../views/account/ForgotPassword.vue')
     },
     {
-        path: '/reset-password/:token',
+        path: '/reset-password',
         name: 'ResetPassword',
         component: () =>
             import ( /* webpackChunkName: "resetpassword" */ '../views/account/ResetPassword.vue')
+    },
+    {
+        path: '/emailsent/:email',
+        name: 'EmailSent',
+        component: () =>
+            import ( /* webpackChunkName: "emailsent" */ '../views/account/EmailSent.vue')
     },
     {
         path: '/tenant',
@@ -75,23 +91,33 @@ const routes = [{
                 children: [
 
 
-          { path: '', component: () => import(/* webpackChunkName: "peopleempty" */ '../views/people/PeopleEmpty.vue') },
-          {
-            path: 'import', component: () => import(/* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'), name: 'ImportPeople'
-          },
-          {
-            path: 'add-first-timer',
-            name: 'AddFirstTimer',
-            component: () => import(/* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
-          },
-          {
-            path: 'add-person/:personId?',
-            component: () => import(/* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
-          },
-          {
-            path: 'add-first-timer/:firstTimerId?',
-            component: () => import(/* webpackChunkName: "addperson" */ '../views/people/AddFirstTimer.vue')
-          },
+                    {
+                        path: '',
+                        component: () =>
+                            import ( /* webpackChunkName: "peopleempty" */ '../views/people/PeopleEmpty.vue')
+                    },
+                    {
+                        path: 'import',
+                        component: () =>
+                            import ( /* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'),
+                        name: 'ImportPeople'
+                    },
+                    {
+                        path: 'add-first-timer',
+                        name: 'AddFirstTimer',
+                        component: () =>
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
+                    },
+                    {
+                        path: 'add-person/:personId?',
+                        component: () =>
+                            import ( /* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
+                    },
+                    {
+                        path: 'add-first-timer/:firstTimerId?',
+                        component: () =>
+                            import ( /* webpackChunkName: "addperson" */ '../views/people/AddFirstTimer.vue')
+                    },
 
                 ]
             },
@@ -286,6 +312,12 @@ const routes = [{
                         component: () =>
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/AddDefaultMessage')
                     },
+                    // {
+                    //     path: 'details',
+                    //     name: 'Details',
+                    //     component: () =>
+                    //         import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/Details')
+                    // },
                 ]
             }
         ]
@@ -310,9 +342,14 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
+    if ((to.name === "TermsOfUse")) return next(true)
+    if ((to.name === "ResetPassword" || to.name === "EmailSent") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
-    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && !token) return next("/")
-    if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
+
+    const tokenIsValid = token && token.length > 30 ? true : false;
+    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name === "ResetPassword" && (!token || token.length < 30)) return next("/")
+    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
+    // if ((to.name === "StartingPoint" && localStorage.getItem("userSetup"))) return next(true)
     next(true)
 })
 
