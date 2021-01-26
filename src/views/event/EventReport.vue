@@ -8,7 +8,9 @@
         <a class="def-btn mr-3 px-md-4 my-sm-1"
           >More Actions <i class="fad fa-caret-circle-down"></i
         ></a>
-        <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
+        <router-link :to="{ name: 'Event', path: '/tenant/event' }">
+          <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
+        </router-link>
       </div>
     </div>
     <hr class="mb-4" />
@@ -26,7 +28,7 @@
         <span class="theader">Event</span>
         <div class="my-3">
           <span class="evt-name">
-            {{ eventData.preEvent.name }} <i class="fa fa-info-circle"></i>
+            {{ eventDataResponse.name }} <i class="fa fa-info-circle"></i>
           </span>
         </div>
       </div>
@@ -158,12 +160,12 @@
         <div class="row py-5 px-5">
           <div class="col-md-7">
             <span class="evt-label grey-text">Event Name</span>
-            <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-              {{ eventData.preEvent.name }}
+            <h2 class="font-weight-bold mb-3" style="font-size: 25px;">
+              {{ eventDataResponse.name }}
             </h2>
             <span class="evt-date text-danger">{{ eventDateString }}.</span>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-5 pl-0">
             <div class="row">
               <div class="col-md-6 d-md-flex justify-content-end">
                 <span class="bold-700">Preacher: </span>
@@ -709,7 +711,7 @@
                 </button>
               </div>
               <div class="modal-body pt-0 px-0">
-                <ReportModal :eventName="eventData.preEvent.name"/>
+                <ReportModal :eventName="eventDataResponse.name"/>
               </div>
               <!-- <div class="modal-footer">
                 <button
@@ -750,6 +752,7 @@ export default {
     const status = ref("Draft");
     const markedAsSent = ref(false);
     const sendBtnText = ref("Send report");
+    const eventDataResponse = ref({})
 
     const toggleReportState = () => {
       reportApproved.value = !reportApproved.value;
@@ -779,7 +782,7 @@ export default {
     });
 
     const eventDateString = computed(() => {
-      return new Date(eventData.value.date)
+      return new Date(eventData.value.activity.date)
         .toString()
         .split(" ")
         .slice(0, 4)
@@ -789,12 +792,15 @@ export default {
     eventData.value = JSON.parse(localStorage.getItem("eventData"));
     if (eventData.value) {
       console.log(eventData.value, "ED");
-      console.log(eventData.value.preEvent.name)
+      // console.log(eventData.value.preEvent.name)
       attendanceArr.value = eventData.value.attendances;
       offeringArr.value = eventData.value.offerings;
     }
     onMounted(async () => {
       const activityId = route.params.id;
+
+      eventDataResponse.value = JSON.parse(localStorage.getItem("eventDataResponse"))
+      console.log(eventDataResponse.value)
 
       try {
         const res = await axios.post(
@@ -822,6 +828,7 @@ export default {
       eventData,
       tottalOfferings,
       eventDateString,
+      eventDataResponse
     };
   },
 };
@@ -909,7 +916,7 @@ a {
 }
 
 .def-btn {
-  height: 43px;
+  height: 40px;
   border-radius: 22px;
   /* padding: 0 24px; */
   padding: 8px 10px;

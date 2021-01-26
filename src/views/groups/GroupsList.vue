@@ -6,10 +6,10 @@
           <h2>Groups</h2>
           <ConfirmDialog />
         </div>
-        <div class="col-md-4 mt-2 link">
+        <div class="col-md-4 mt-2 my-1 link">
           <router-link
             to="/tenant/create-people-group"
-            class="grey-border primary-btn"
+            class="grey-border primary-btn default-btn primary-bg border-0"
             >Add New Group</router-link
           >
         </div>
@@ -20,7 +20,7 @@
 
       <div class="row mt-4 grey-rounded-border">
         <div class="col-md-12">
-          <div class="row main-header">
+          <div class="row main-header bg-secondary">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-sm-2 d-md-flex align-items-center">

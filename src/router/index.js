@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+
 import Pagination from '@/components/pagination/PaginationButtons.vue';
 import Payment from '../components/payment/Payment.vue';
 import TermsOfService from '@/views/account/TermsOfService.vue'
+import ConnectionStatus from '@/components/connectivity/ConnectionStatus.vue';
 
 
 
@@ -19,7 +21,10 @@ const routes = [{
     {
         path: '/payment',
         name: 'Payment',
-        component: Payment
+        component: Payment,
+        path: '/online',
+        name: 'online',
+        component: ConnectionStatus
     },
     {
         path: '/',
@@ -86,6 +91,7 @@ const routes = [{
                     import ( /* webpackChunkName: "people" */ '../views/people/People.vue'),
                 children: [
 
+
                     {
                         path: '',
                         component: () =>
@@ -107,6 +113,11 @@ const routes = [{
                         path: 'add-person/:personId?',
                         component: () =>
                             import ( /* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
+                    },
+                    {
+                        path: 'add-first-timer/:firstTimerId?',
+                        component: () =>
+                            import ( /* webpackChunkName: "addperson" */ '../views/people/AddFirstTimer.vue')
                     },
 
                 ]
@@ -333,8 +344,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("token")
-    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && !token) return next("/")
+    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && !token) return next("/")
     if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
+        // if ((to.name === "StartingPoint" && localStorage.getItem("userSetup"))) return next(true)
     next(true)
 })
 

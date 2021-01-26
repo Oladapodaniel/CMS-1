@@ -1,7 +1,9 @@
 <template>
   <div class="my-con">
-    <div class="summary px-0">
+    <div class="summary px-3">
       <p class="summary-header">Summary</p>
+      <ConfirmDialog />
+        <Toast />
       <!-- <hr class="hr" /> -->
 
       <div class="boards">
@@ -14,38 +16,127 @@
               alt=""
             />
           </div>
-          <h4 class="total">123,456</h4>
+          <h4 class="total">{{ membershipSummary.totalMember }}</h4>
           <p>
-            <span class="percent">+3.48% </span>
+            <span class="percent"
+              >+{{ membershipSummary.percentageGrowth }}%
+            </span>
             <span class="percent-text"> Since last month</span>
           </p>
         </div>
 
         <div class="chart-con">
           <div style="width: 45%" class="ml-md-4 chart1">
-            <ByGenderChart domId="chart" title="By Gender" distance="5" :titleMargin="10" />
+            <ByGenderChart
+              domId="chart"
+              title="By Gender"
+              distance="5"
+              :titleMargin="10"
+              :summary="membershipSummary.genders"
+            />
           </div>
           <div style="width: 45%" class="chart2">
-            <ByMaritalStatusChart domId="second" title="By Marital Status" :titleMargin="10" />
+            <ByMaritalStatusChart
+              domId="second"
+              title="By Marital Status"
+              :titleMargin="10"
+              :summary="membershipSummary.maritalStatus"
+            />
           </div>
         </div>
       </div>
     </div>
 
     <div class="table mx-0">
-      <div class="table-top py-2 font-weight-bold">
-        <div class="select-all d-flex align-items-center">
-          <input type="checkbox" name="all" id="all" />
-          <label for="all" class="mb-0">SELECT ALL</label>
+      <div class="table-top my-3">
+        <div class="select-all">
+          <input type="checkbox" name="all" id="all" @click="toggleSelect" v-model="selectAll"/>
+          <label>SELECT ALL</label>
         </div>
-        <div class="filter d-flex align-items-center">
-          <p class="mb-0">FILTER</p>
+        <div class="filter">
+          <p @click="toggleFilterFormVissibility">
+            <i class="fas fa-filter"></i>
+            FILTER
+          </p>
         </div>
-        <div class="sort d-flex align-items-center">
-          <p class="mb-0">SORT</p>
+        <p @click="toggleSearch" class="search-text">
+            <i class="fa fa-search"></i> SEARCH
+          </p>
+        <div class="search d-flex" >
+          <label 
+            class="label-search d-flex"
+            :class="{ 'show-search': searchIsVisible }"
+          >
+            <input type="text" placeholder="Search..." v-model="searchText" />
+            <span class="empty-btn">x</span>
+            <span class="search-btn">
+              <i class="fa fa-search"></i>
+            </span>
+          </label>
         </div>
-        <div class="search d-flex align-items-center">
-          <p class="mb-0">SEARCH</p>
+      </div>
+      <div
+        class="filter-options"
+        :class="{ 'filter-options-shown': filterFormIsVissible }"
+      >
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-9">
+              <div class="row">
+                <div class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100">
+                  <!-- <div class="input-field"> -->
+
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="First Name"
+                    v-model="filter.filterFirstName"
+                  />
+                  <!-- </div> -->
+                </div>
+
+                <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="date"
+                    class="form-control input inp w-100"
+                    v-model="filter.filterDate"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="Last Name"
+                    v-model="filter.filterLastName"
+                  />
+                </div>
+
+                <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="Phone Number"
+                    v-model="filter.phoneNumber"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 d-flex flex-column align-items-center">
+              <button class="apply-btn text-white" @click="applyFilter" :disabled="disableBtn">
+                Apply
+              </button>
+              <span class="mt-2">
+                <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                <span class="mx-2"
+                  ><i class="fas fa-circle" style="font-size: 4px"></i></span
+                ><a class="hide-link ml-2" @click="hide">Hide</a>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -66,10 +157,11 @@
         <div class="action"></div>
       </div>
 
-      <div class="table-body" v-for="person in churchMembers" :key="person.id">
+      <div v-if="filterResult.length > 0 && (filter.filterFirstName || filter.filterLastName || filter.phoneNumber)">
+        <div class="table-body" v-for="person in filterResult" :key="person.id">
         <div class="data-row">
           <div class="check data">
-            <input type="checkbox" name="" id="" />
+            <input type="checkbox" name="" id="" v-model="selectAll"/>
           </div>
           <div class="picture data">
             <div class="data-con">
@@ -78,7 +170,22 @@
               </div>
               <div class="data-value">
                 <div class="image-con">
-                  <img src="../../assets/people/phone-import.svg" alt="" />
+                  <div v-if="person.gender == 'Male'">
+                    <img
+                      src="../../assets/people/avatar-male.png"
+                      alt=""
+                      style="border-radius: 50%"
+                    />
+                  </div>
+                  <div v-else-if="person.gender == 'Female'">
+                    <img src="../../assets/people/avatar-female.png" alt="" />
+                  </div>
+                  <div v-else>
+                    <img
+                      src="../../assets/people/no-gender-avatar.png"
+                      alt=""
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -86,7 +193,7 @@
           <div class="firstname data">
             <div class="data-con">
               <div class="data-text">
-                <p>Firstnmae</p>
+                <p>Firstname</p>
               </div>
               <router-link
                 :to="`/tenant/people/add-person/${person.id}`"
@@ -129,29 +236,155 @@
                 aria-expanded="false"
               ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" v-if="person.mobilePhone">
+                <a class="dropdown-item elipsis-items" v-if="person.mobilePhone">
                   <router-link
                     :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
                     >Send SMS</router-link
                   >
                 </a>
-                <a class="dropdown-item" v-if="person.email">
+                <a class="dropdown-item elipsis-items" v-if="person.email">
                   <router-link
                     :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
                     >Send Email</router-link
                   >
                 </a>
-                <a class="dropdown-item">
+                <a class="dropdown-item elipsis-items">
                   <router-link :to="`/tenant/people/add-person/${person.id}`"
                     >Edit</router-link
                   >
                 </a>
-                <a class="dropdown-item" href="#">Delete</a>
+                <a
+                  class="dropdown-item elipsis-items"
+                  href="#"
+                  @click.prevent="showConfirmModal(person.id)"
+                  >Delete</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <hr class="row-divider" />
+        <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
+      </div>
+      </div>
+      <div v-else-if="filterResult.length == 0 && noRecords">
+        <div class="no-record text-center my-4">No member found</div>
+      </div>
+      <div v-else>
+        <div v-if="searchMember.length > 0">
+          <div class="table-body" v-for="person in searchMember" :key="person.id">
+        <div class="data-row">
+          <div class="check data">
+            <input type="checkbox" name="" id="" v-model="selecteAll"/>
+          </div>
+          <div class="picture data">
+            <div class="data-con">
+              <div class="data-text">
+                <p>Picture</p>
+              </div>
+              <div class="data-value">
+                <div class="image-con">
+                  <div v-if="person.gender == 'Male'">
+                    <img
+                      src="../../assets/people/avatar-male.png"
+                      alt=""
+                      style="border-radius: 50%"
+                    />
+                  </div>
+                  <div v-else-if="person.gender == 'Female'">
+                    <img src="../../assets/people/avatar-female.png" alt="" />
+                  </div>
+                  <div v-else>
+                    <img
+                      src="../../assets/people/no-gender-avatar.png"
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="firstname data">
+            <div class="data-con">
+              <div class="data-text">
+                <p>Firstname</p>
+              </div>
+              <router-link
+                :to="`/tenant/people/add-person/${person.id}`"
+                class="data-value itemroute-color"
+                >{{ person.firstName }}</router-link
+              >
+            </div>
+          </div>
+          <div class="lastname data">
+            <div class="data-con">
+              <div class="data-text">
+                <p>Lastname</p>
+              </div>
+              <router-link
+                :to="`/tenant/people/add-person/${person.id}`"
+                class="data-value itemroute-color"
+                >{{ person.lastName }}</router-link
+              >
+            </div>
+          </div>
+          <div class="phone data">
+            <div class="data-con">
+              <div class="data-text">
+                <p>Phone</p>
+              </div>
+              <router-link
+                :to="`/tenant/people/add-person/${person.id}`"
+                class="data-value itemroute-color"
+                >{{ person.mobilePhone }}</router-link
+              >
+            </div>
+          </div>
+          <div class="action data action-icon">
+            <div class="dropdown">
+              <i
+                class="fas fa-ellipsis-v cursor-pointer"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></i>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item elipsis-items" v-if="person.mobilePhone">
+                  <router-link
+                    :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
+                    >Send SMS</router-link
+                  >
+                </a>
+                <a class="dropdown-item elipsis-items" v-if="person.email">
+                  <router-link
+                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    >Send Email</router-link
+                  >
+                </a>
+                <a class="dropdown-item elipsis-items">
+                  <router-link :to="`/tenant/people/add-person/${person.id}`"
+                    >Edit</router-link
+                  >
+                </a>
+                <a
+                  class="dropdown-item elipsis-items"
+                  href="#"
+                  @click.prevent="showConfirmModal(person.id)"
+                  >Delete</a
+                >
               </div>
             </div>
           </div>
         </div>
         <hr class="row-divider" />
+        <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
+      </div>
+        </div>
+        <div v-else>
+          <div class="no-record text-center my-4">No member found</div>
+        </div>
       </div>
 
       <div class="table-footer">
@@ -162,12 +395,13 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
-
 import axios from "@/gateway/backendapi";
+import { useConfirm } from "primevue/useConfirm"
+import { useToast } from 'primevue/usetoast';
 
 export default {
   props: ["list"],
@@ -178,27 +412,184 @@ export default {
   },
 
   setup(props) {
+   
     const churchMembers = ref([]);
+    const filterFormIsVissible = ref(false);
+    const filter = ref({});
+    const searchIsVisible = ref(false)
+    const filterResult = ref([])
+    const selectAll = ref(false)
+    const noRecords = ref(false)
+    const searchText = ref("")
+    // const selected = ref([])
+    // const count = ref(churchMembers.length)
 
-    const getPeopleByPage = async (e) => {
-      try {
-        const { data } = await axios.get(
-          `/api/People/GetPeopleBasicInfo?page=${e}`
-        );
-        churchMembers.value = data;
-      } catch (error) {
-        console.log(error);
-      }
+    // const selectAll = computed(() => {
+      // selectedAll: {
+      // set(val) {
+      //   selected.value = []
+        // if (val) {
+          // for(let i = 1; i <= churchMembers.value; i++) {
+          //   selected.value.push(i)
+          // }
+    //     }
+    //   }
+    //   get() {
+    //     return selected.value.length === churchMembers.value
+    //   // }
+    // }
+    // })
+    
+
+    const toggleFilterFormVissibility = () =>
+      (filterFormIsVissible.value = !filterFormIsVissible.value);
+    const membershipSummary = ref([]);
+
+    const deleteMember = (id) => {
+      //  , { params: { id: id } }
+      axios
+        .delete(`/api/People/DeleteOnePerson/${id}`)
+        .then((res) => {
+          console.log(res);
+          churchMembers.value = churchMembers.value.filter(item => item.id !== id )
+        })
+        .catch((err) => console.log(err));
     };
+
+    const applyFilter = () => {
+        // console.log(filter.value.phoneNumber)
+
+        noRecords.value = true
+
+
+        filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
+        filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
+        filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
+    
+         let url = "/api/People/FilterMembers?firstname="+filter.value.filterFirstName +"&lastname="+filter.value.filterLastName +"&phone_number="+ filter.value.phoneNumber +"&page=1"
+      axios.get(url).then((res) => {
+        
+        filterResult.value = res.data
+        console.log(res.data);
+      }) .catch(err => console.log(err))
+
+      
+    };
+
+    const clearAll = () => {
+       filter.value.filterFirstName = ""
+       filter.value.filterLastName = ""
+       filter.value.filterDate = ""
+       filter.value.phoneNumber = ""
+      }
+
+   const hide = () => {
+      filterFormIsVissible.value = false
+   }
+
+   const disableBtn = computed(() => {
+      if (!filter.value.filterFirstName && !filter.value.filterLastName && !filter.value.phoneNumber) return true;
+      return false;
+   })
+
+   const toggleSearch = () => {
+      searchIsVisible.value = !searchIsVisible.value
+   }
+
+   // onMounted(() => {
+   //    console.log('working')
+   //    confirm.require({
+   //       message: "Are you sure?"
+   //    })
+   // })
+
+    const confirm = useConfirm();
+    let toast = useToast();
+        const showConfirmModal = (id) => {
+           
+           confirm.require({
+               message: 'Are you sure you want to proceed?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                accept: () => {
+                    deleteMember(id)
+                    toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+                },
+                reject: () => {
+                    toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+                }
+
+        });
+        }
+        
+
+    // const getPeopleByPage = async (e) => {
+
+    //   try {
+    //     const { data } = await axios.get(
+    //       `/api/People/GetPeopleBasicInfo?page=${e}`
+    //     );
+    //     churchMembers.value = data;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    // const getMemberSummary = () => {
+
+    // }
+
+    // onBeforeUnmount(() => {
+    axios
+      .get(`/api/People/GetMembershipSummary`)
+      .then((res) => {
+        membershipSummary.value = res.data;
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+    // })
 
     onMounted(() => {
       console.log(props.list, "props");
       churchMembers.value = props.list;
     });
 
+    const toggleSelect = () => {
+      selectAll.value = !selectAll.value
+      console.log(selectAll.value)
+    }
+
+    const searchMember = computed(() => {
+        if (searchText.value !== "") {
+          return churchMembers.value.filter(i => {
+            return i.firstName.toLowerCase().includes(searchText.value.toLowerCase())
+          })
+        } else {
+          return churchMembers.value
+        }
+      })
+
     return {
       churchMembers,
-      getPeopleByPage,
+      // getPeopleByPage,
+      filterFormIsVissible,
+      toggleFilterFormVissibility,
+      membershipSummary,
+      deleteMember,
+      filter,
+      applyFilter,
+      clearAll,
+      hide,
+      disableBtn,
+      toggleSearch,
+      searchIsVisible,
+      showConfirmModal,
+      // filterChurchMembers,
+      filterResult,
+      selectAll,
+      toggleSelect,
+      noRecords,
+      searchText,
+      searchMember
     };
   },
 };
@@ -230,11 +621,13 @@ a {
   /* box-shadow: 0px 3px 6px #2c28281c; */
   padding: 24px 10px;
   background: #fff;
+  box-shadow: 0px 3px 6px #2c28281c;
+  border: 1px solid #00204424;
 }
 
 .table {
-  box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6;
+  box-shadow: 0px 3px 6px #2c28281c;
+  /* border: 1px solid #00204424; */
   border-radius: 30px;
   width: 100% !important;
 }
@@ -254,11 +647,11 @@ a {
 .board {
   width: 30%;
   border-radius: 10px;
-  border: 0.4000000059604645px solid #dde2e6;
+  /* border: 0.4000000059604645px solid #dde2e6; */
   padding: 0 8px;
+  /* box-shadow: 0px 1px 4px #02172e45;
   box-shadow: 0px 1px 4px #02172e45;
-  box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6;
+  border: 1px solid #dde2e6; */
 }
 
 .chart-con {
@@ -311,13 +704,99 @@ a {
 
 .chart1,
 .chart2 {
-  border: 0.4000000059604645px solid #dde2e6;
-  box-shadow: 0px 1px 4px #02172e45;
   border-radius: 10px;
 }
 
-@media screen and (max-width: 500px) {
+.picture .data-value {
+  margin-left: 22px;
+  width: 50%;
+}
 
+.firstname .data-value {
+  margin-left: -32px;
+  margin-right: 3px;
+}
+
+.lastname .data-value {
+  margin-left: -41px;
+  margin-right: 2px;
+}
+
+.phone .data-value {
+  margin-left: 38px;
+}
+
+.label-search {
+  width: 0;
+  background: transparent;
+  padding: 4px;
+  overflow: hidden;
+  transition: all 0.5 ease-in-out;
+}
+.label-search input {
+  border: transparent;
+  background: transparent;
+  width: 70%;
+  outline: none;
+}
+
+.label-search .search-btn {
+  display: flex;
+  align-items: center;
+  background: #7894a6;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+.label-search .empty-btn {
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+}
+
+.table-top {
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.table-top label:hover,
+.table-top p:hover {
+  cursor: pointer;
+}
+
+.show-search {
+  width: 174px;
+  overflow: hidden;
+  transition: all 0.5 ease-in-out;
+  border: 1px solid #dde2e6;
+  border-radius: 5px 0px 0px 5px;
+  background: #ebeff4;
+  transition: all 0.5s ease-in-out;
+}
+
+.filter-options {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+
+.filter-options-shown {
+  height: 130px;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+
+.elipsis-items a {
+  display: flex;
+  justify-content: stretch;
+}
+
+.no-record {
+  color: rgba(184, 5, 5, 0.726);
+  font-size: 1.1em;
+}
+
+@media screen and (max-width: 500px) {
   .chart1,
   .chart2,
   .board,
@@ -384,6 +863,12 @@ a {
   .action {
     width: 20%;
   }
+}
+
+@media (max-width: 767px) {
+   .filter-options-shown {
+      height: 150px;
+   }
 }
 
 @media screen and (max-width: 768px) {

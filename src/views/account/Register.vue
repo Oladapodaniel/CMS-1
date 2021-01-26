@@ -11,8 +11,8 @@
           <div class="header">
             <h1>Your all in one church management solution</h1>
             <h3 class="intro">
-              Wave helps freelancers, consultants, and small businesses <br />
-              around the world simplify their finances.
+              A church software that automates your entire  <br />
+              church management processes.
             </h3>
           </div>
         </div>
@@ -65,13 +65,14 @@
           <span class="or">or</span>
         </div>
 
-        <div>
+        <div v-if="false">
           <button class="facebook-btn btn-logo sign-in-btn google-sign-up">
             <img src="../../assets/google.png" alt="Google Icon" />
             <span>Sign in with Google</span>
             <span></span>
           </button>
         </div>
+        <div class="fb-login-button" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></div>
         
         <div class="terms">
           <p>
@@ -165,7 +166,7 @@ export default {
 .header {
   text-align: center;
   margin-bottom: 30px;
-  margin-top: 4px;
+  margin-top: 3em;
 }
 
 .header h1 {

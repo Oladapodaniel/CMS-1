@@ -1,5 +1,12 @@
 <template >
   <!-- <transition name="fade" mode="out-in"> -->
+  <div class="container-fluid connectionbar">
+      <div class="row">
+        <div class="col-md-12 px-0">
+          <ConnectionBar />
+        </div>
+      </div>
+    </div>
   <router-view class="view" />
   <!-- </transition> -->
 </template>
@@ -9,9 +16,12 @@ import axios from "@/gateway/backendapi";
 import store from "@/store/store.js";
 import router from "@/router/index";
 // import Multiselect from '@vueform/multiselect'
+import ConnectionBar from "@/components/connectivity/ConnectionStatus.vue";
 
 export default {
   name: "App",
+
+  components: { ConnectionBar },
 
   data() {
     return {
@@ -37,8 +47,10 @@ export default {
 
   created() {
     // this.$toast.show(`Hey! I'm here`, { position: 'top-right', type: 'success'});
-    this.getCurrentUser();
-    store.dispatch("getMembers");
+    if (localStorage.getItem("token")) {
+      this.getCurrentUser();
+      store.dispatch("getMembers");
+    }
     // setTimeout(this.$toast.clear, 3000)
   },
 };
@@ -56,6 +68,11 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.connectionbar {
+  position: fixed;
+  z-index: 9;
 }
 
 /* .fade-enter-active{

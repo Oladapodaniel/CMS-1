@@ -7,12 +7,12 @@
             <h2>{{ header }}</h2>
           </div>
           <div class="actions">
-            <button class="more-btn button">
+            <button class="more-btn align-items-center default-btn border-0">
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
             <router-link :to="`/tenant/people/add-person`" class="">
-            <button class="button add-person-btn">
+            <button class="add-person-btn default-btn border-0 ml-3">
               Add Member
             </button>
             </router-link>
@@ -134,6 +134,17 @@ export default {
 .hr {
   border: 0.8px solid #0020440a;
   margin: 0 4px;
+}
+
+@media (max-width: 545px) {
+  .top {
+    display: block;
+    text-align: center;
+    }
+
+  .more-btn.button, .add-person-btn.button {
+    margin-top: 20px;
+  }
 }
 
 @media screen and (min-width: 990px) {

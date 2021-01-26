@@ -897,7 +897,7 @@
                 aria-hidden="true"
               >
                 <div class="modal-dialog" role="document">
-                  <div class="modal-content py-5 px-3">
+                  <div class="modal-content py-2 px-2">
                     <div class="modal-header">
                       <h5
                         class="modal-title font-weight-bold"
@@ -915,8 +915,8 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <div class="row my-5">
-                        <div class="col-md-4 text-md-center">
+                      <div class="row my-4">
+                        <div class="col-md-4 text-md-right align-self-center">
                           <label for="" class="label font-weight-bold"
                             >Event name</label
                           >
@@ -925,12 +925,12 @@
                           <input
                             type="text"
                             class="form-control"
-                            v-model="newEvent.preEvent.name"
+                            v-model="newEvent.activity.newEventCategoryName"
                           />
                         </div>
                       </div>
-                      <div class="row mt-5 mb-4">
-                        <div class="col-md-4 text-md-center">
+                      <div class="row mt-4 mb-4">
+                        <div class="col-md-4 text-md-right align-self-center">
                           <label for="" class="label font-weight-bold"
                             >Event date</label
                           >
@@ -939,7 +939,7 @@
                           <input
                             type="date"
                             class="form-control"
-                            v-model="newEvent.date"
+                            v-model="newEvent.activity.date"
                           />
                         </div>
                       </div>
@@ -956,7 +956,7 @@
                               <div class="col-md-12 text-md-right">
                                 <p class="mb-1 text-danger" v-if="invalidEventDetails">Enter event name and date</p>
                               </div>
-                              <div class="col-md-12 d-md-flex justify-content-between">
+                              <div class="col-md-12 d-md-flex justify-content-end">
                                 <button
                                   type="button"
                                   class="btn secondary-btn px-4"
@@ -970,7 +970,7 @@
                                   @click="createNewEvent"
                                   data-dismiss="modal"
                                 >
-                                  Save changes
+                                  Save
                                 </button>
                               </div>
                             </div>
@@ -1103,8 +1103,8 @@ export default {
     const loading = ref(false);
 
     const onSubmit = () => {
-      firstTimersObj.value.followUpTypeId =
-        "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.followUpTypeId =
+      //   "00000000-0000-0000-0000-000000000000";
       firstTimersObj.value.genderId = selectedGender.value
         ? selectedGender.value.id
         : 0;
@@ -1114,9 +1114,9 @@ export default {
       firstTimersObj.value.activityID = selectedEventAttended.value
         ? selectedEventAttended.value.activityID
         : "00000000-0000-0000-0000-000000000000";
-      firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
-        ? selectedAboutUsSource.value.id
-        : "00000000-0000-0000-0000-000000000000";
+      // firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
+      //   ? selectedAboutUsSource.value.id
+      //   : "00000000-0000-0000-0000-000000000000";
       firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
         ? comMeansArr.value.indexOf(selectedCommunicationMeans.value)
         : 0;
@@ -1179,7 +1179,7 @@ export default {
         .then((res) => {
           console.log(res.data);
           loading.value = false;
-          // $toast.show(`Saving successful`, {
+          // toast.show(`Saving successful`, {
           //   position: "top-right",
           //   type: "success",
           // });
@@ -1187,7 +1187,7 @@ export default {
         })
         .catch((err) => {
           loading.value = false;
-          // $toast.show(`Saving failed`, {
+          // toast.show(`Saving failed`, {
           //   position: "top-right",
           //   type: "error",
           // });
@@ -1220,57 +1220,83 @@ export default {
       eventsSearchString.value = "";
     };
 
-    const newEvent = ref({
-      date: "",
-      topic: "",
-      preacher: "",
-      preEvent: {
-        name: "",
-        topic: "",
-        details: "",
-        preActivityId: "00000000-0000-0000-0000-000000000000",
-        isPaidFor: false,
-        amount: "",
-        eventRules: "",
-        enableRegistration: false,
-        venue: "",
-        emailRegistration: "",
-        smsRegistraion: "",
-        banner: "",
-        isPublic: false,
-      },
-      eventCategoryId: "00000000-0000-0000-0000-000000000000",
-      attendances: [],
-      offerings: [],
-      activityFirstTimers: [],
-    });
+    // const createdEventName = ref("")
+
+    // const newEvent = ref({
+    //   date: "",
+    //   topic: "",
+    //   preacher: "",
+    //   preEvent: {
+    //     name: "",
+    //     topic: "",
+    //     details: "",
+    //     preActivityId: "00000000-0000-0000-0000-000000000000",
+    //     isPaidFor: false,
+    //     amount: "",
+    //     eventRules: "",
+    //     enableRegistration: false,
+    //     venue: "",
+    //     emailRegistration: "",
+    //     smsRegistraion: "",
+    //     banner: "",
+    //     isPublic: false,
+    //   },
+    //   eventCategoryId: "00000000-0000-0000-0000-000000000000",
+    //   attendances: [],
+    //   offerings: [],
+    //   activityFirstTimers: [],
+    // });
+
+     const newEvent = ref({
+            activity: { }
+      })
+      // activit: selectedEventAttended.value.activityID ? selectedEventAttended.value.activityID : "00000000-0000-0000-0000-000000000000"
+      // this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
+
+      
 
     const invalidEventDetails = ref(false);
     const savingNewEvent = ref(false);
+    
     const createNewEvent = async () => {
       // console.log(eventsAttended.value);
       invalidEventDetails.value = false;
-      if (newEvent.value.preEvent.name && newEvent.value.date) {
+      if (newEvent.value.activity.date) {
         try {
           savingNewEvent.value = true;
+          console.log(newEvent.value)
           const { data } = await axios.post(
             "/api/Events/CreateActivity",
             newEvent.value
           );
+          
           selectedEventAttended.value.activityID = data.currentEvent.id;
           selectedEventAttended.value.name = data.currentEvent.name ? data.currentEvent.name : "New event selected";
-          console.log(selectedEventAttended, "SAE");
-          toast.add({
+          // console.log(selectedEventAttended, "SAE");
+
+          
+
+            toast.add({
             severity: "success",
             summary: "Event created",
             detail: "Your new event was created successfully",
             life: 2500,
           });
-          newEvent.value.date = "";
-          newEvent.value.preEvent.name = "";
+          // newEvent.value.date = "";
+          // newEvent.value.preEvent.name = "";
 
           console.log(data, "data");
         } catch (error) {
+          if (error.response.data == "An Event with this name already exist") {
+              toast.add({
+                severity: "error",
+                summary: "Event exist already",
+                detail: error.response.data,
+                life: 2500,
+              });
+          }
+          /*eslint no-undef: "warn"*/
+          NProgress.done();
           savingNewEvent.value = false;
           console.log(error.response);
         }

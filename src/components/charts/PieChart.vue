@@ -5,18 +5,43 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-    props: [ "title", "subtitle", "distance", "domId", "titleMargin", "titleMarginLeft", "height"],
+  props: [
+    "title",
+    "subtitle",
+    "distance",
+    "domId",
+    "titleMargin",
+    "titleMarginLeft",
+    "height",
+    "summary",
+  ],
   setup(props) {
     const chart = ref(null);
+    const getSummary = ref([]);
     // let elemId = "";
-    
 
-    onMounted(() => {
-      // elemId = props.domId;
+    // onMounted(() => {
+    // elemId = props.domId;
+
+    console.log(props);
+
+    onUpdated(() => {
+      try {
+        props.summary.forEach((i) => {
+          let summaryObj = {
+            name: i.name,
+            y: i.value,
+          };
+          getSummary.value.push(summaryObj);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      
       var highchartsOptions = {
         chart: {
           type: "pie",
@@ -30,17 +55,17 @@ export default {
           enabled: false,
         },
         title: {
-          text: `<b style="font-weight:normal">${props.title}</b>`,
-          align: 'left',
+          text: `<b style="font-weight:normal;font-size:10px">${props.title}</b>`,
+          align: "left",
           x: props.titleMarginLeft ? props.titleMarginLeft : 20,
           y: props.titleMargin ? props.titleMargin : 20,
           margin: 0,
         },
         subtitle: {
           text: props.subtitle,
-          align: 'left',
+          align: "left",
           x: props.titleMarginLeft ? props.titleMarginLeft : 20,
-          y: 50
+          y: 50,
         },
         xAxis: {
           allowDecimals: false,
@@ -61,20 +86,21 @@ export default {
         },
         plotOptions: {
           pie: {
-            colors: [
-              '#0f0221', 
-              '#136acd', 
-              '#dde2e6'
-            ],
+            colors: ["#0f0221", "#136acd", "#dde2e6"],
             // allowPointSelect: true,
             cursor: "pointer",
             dataLabels: {
               enabled: true,
-              formatter: function() {
-                return this.point.name + ': ' + Math.round(this.percentage*100)/100 + ' %';
+              formatter: function () {
+                return (
+                  this.point.name +
+                  ": " +
+                  Math.round(this.percentage * 100) / 100 +
+                  " %"
+                );
               },
               // format: '{point.name}: {point.y:.1f}%',
-              distance: props.distance ? props.distance : -50,
+              distance: props.distance ? props.distance : 3,
             },
             size: 180,
           },
@@ -83,22 +109,7 @@ export default {
           {
             name: "Brands",
             colorByPoint: true,
-            data: [
-              {
-                name: "Male",
-                y: 61.41,
-                sliced: true,
-                selected: true,
-              },
-              {
-                name: "Female",
-                y: 11.84,
-              },
-              {
-                name: "Not sure",
-                y: 10.85,
-              }
-            ],
+            data: getSummary.value,
           },
         ],
         //   credits: false,
@@ -106,37 +117,38 @@ export default {
       chart.value = new Highcharts.chart(highchartsOptions);
     });
     Highcharts.setOptions({
-     colors: ['brown', 'purple', '#DDDF00']
+      colors: ["brown", "purple", "#DDDF00"],
     });
+    // })
 
-    return { chart, };
+    return { chart, getSummary };
   },
 };
 </script>
 
 <style scoped>
-    .con {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
+.con {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 
-    .chart {
-      display: flex;
-      align-items: center;
-      width: 100% !important;
-    }
+.chart {
+  display: flex;
+  align-items: center;
+  width: 100% !important;
+}
 
-    .chart div {
-      width: 100%;
-    }
+.chart div {
+  width: 100%;
+}
 
-    .summary-chart {
-      width: 100% !important;
-      /* box-shadow: 0px 1px 4px #02172E45; */
-      /* border: 1px solid #DDE2E6; */
-      border-radius: 22px;
-      /* margin-bottom: 24px; */
-    }
+.summary-chart {
+  width: 100% !important;
+  /* box-shadow: 0px 1px 4px #02172E45; */
+  /* border: 1px solid #DDE2E6; */
+  border-radius: 22px;
+  /* margin-bottom: 24px; */
+}
 </style>

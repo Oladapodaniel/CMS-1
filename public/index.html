@@ -72,9 +72,23 @@
       #eventCategorySelectElem .select2-selection__arrow {
         display: none;
       }
+
+      .p-button {
+      background: #136acd !important;
+      font-weight: 600 !important;
+    }
+
+    .p-splitbutton-menubutton {
+      /* background: red !important; */
+      border-radius: 0 22px 22px 0 !important;
+    }
+
+    .p-splitbutton-defaultbutton {
+      border-radius: 22px 0 0 22px !important;
+    }
     </style>
-    <!-- <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" /> -->
-    <!-- <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script> -->
+    <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" />
+    <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
 
     <script src="https://unpkg.com/jquery@3.1.1/dist/jquery.js"></script>
     <script src="https://unpkg.com/select2@4.0.3/dist/js/select2.js"></script>
@@ -89,6 +103,11 @@
     
   </head>
   <body>
+    <!-- <div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v9.0&appId=725655091722748&autoLogAppEvents=1" nonce="BTlgsgIj"></script> -->
+
+
+
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
@@ -103,5 +122,70 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
+
+<!-- Facebook SDK for Javascript -->
+<script>
+  window.fbAsyncInit = function() {
+          
+          FB.init({
+              appId: '725655091722748',
+            cookie     : true,
+            xfbml      : true,
+              version: 'v9.0'
+          });
+
+          FB.AppEvents.logPageView();
+
+        };
+
+        (function(d, s, id){
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "https://connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+
+          const checkLoginState = () => {
+
+              FB.getLoginStatus(function (response) {
+                  // $("#authstatus").html("<code>" + response + "</code>");
+                  // console.log(response)
+                  // fetch('https://churchplusv3coreapi.azurewebsites.net/api/People/GetMembershipSummary')
+                  //   .then(response => response.json())
+                  //   .then(data => console.log(data));
+                  // fetch('https://churchplusv3coreapi.azurewebsites.net/api/People/GetMembershipSummary', {
+                  //       method: 'post',
+                  //       files: {}
+                  //     }).then(function(res) {
+                  //       return res.json();
+                  //     }).then(function(data) {
+                  //       console.log(data)
+                  //       // ChromeSamples.log('Created Gist:', data.html_url);
+                  //     })
+                  let token = {
+                    accessToken: response.authResponse.accessToken
+                  }
+                  console.log(response.authResponse.accessToken)
+                  axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
+                    .then(res => {
+                      console.log(res.data)
+                      if (res.data.isOnboarded) {
+                        localStorage.setItem("email", res.data.username)
+                        localStorage.setItem("token", res.data.token);
+                        window.location.href = "http://localhost:8080/tenant";
+                      } else {
+                        localStorage.setItem("email", res.data.username)
+                        localStorage.setItem("token", res.data.token);
+                        window.location.href = "http://localhost:8080/onboarding";
+                      }
+                      
+                    })
+                      .catch(err => console.log(err))
+              });
+              // statusChangeCallback(response);
+        }
+</script>
   </body>
 </html>
