@@ -126,6 +126,7 @@ import Button from 'primevue/button';
         components:{Button},
         data() {
             return {
+               
                 
                 
             }
@@ -198,6 +199,8 @@ padding: 20px 0px;
 bottom: 0;
 position: fixed;
 width: 58.1%;
+max-width:1106px;
+
 /* max-width: 58.1%; */
 }
 @media only screen and (max-width: 760px) {
@@ -208,18 +211,10 @@ width: 100%;
     right:15px;
 }
 .contain{
-width: 100%;
-/* background: #136ACD; */
+width: 100%; 
 
 }
 }
-/* @media only screen and (max-width: 1920px) {
-.buton{
-width: 70%;
-}
-.p-button{
-    right:15px;
-} */
 @media (min-width: 761px) and (max-width:1230px) {
 .buton{
 width: 90%;
@@ -293,9 +288,9 @@ width: 80%;
     right:15px;
 }
 }
-@media (min-width: 1400px) and (max-width:1448px) {
+@media (min-width: 1400px) and (max-width:1507px) {
 .buton{
-width: 77.7%;
+width: 90.7%;
 
 }
 .p-button{
@@ -361,7 +356,27 @@ width: 67.4%;
     right:15px;
 }
 }
-@media (min-width: 1640px) and (max-width:1920px) {
+@media (min-width: 1670px) and (max-width:1777px) {
+.buton{
+width: 70.4%;
+
+
+}
+.p-button{
+    right:15px;
+}
+}
+@media (min-width: 1780px) and (max-width:1795px) {
+.buton{
+width: 70.4%;
+
+
+}
+.p-button{
+    right:15px;
+}
+}
+@media (min-width: 1880px) and (max-width:1920px) {
 .buton{
 width: 57.5%;
 
