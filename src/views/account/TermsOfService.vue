@@ -94,6 +94,7 @@ This Service does not use these “cookies” explicitly. However, the app may u
                 </div>
                 <p class="ml-4" style="text-align:justify">
                     These Services do not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do necessary actions.
+
                 </p>
                 <div class="cirle-container">
                 <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Changes to This Privacy Policy</h1>
