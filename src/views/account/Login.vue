@@ -93,6 +93,7 @@ import axios from '@/gateway/backendapi';
 import { reactive, ref } from 'vue';
 import store from '../../store/store'
 import router from '../../router/index';
+import authService from "@/services/auth/authservice"
 // import FB from '../../services/guards/facebook-sdk/face'
 // import VFacebookLogin from 'vue-facebook-login-component'
 
@@ -120,8 +121,27 @@ export default {
         try {
           loading.value = true;
           const res = await axios.post("/login", state.credentials)
-          loading.value = false;
           const { data } = res;
+          console.log(data, "data");
+          if (data.token === "Need Reset") {
+            authService.resetPassword(state.credentials.userName)
+              .then(res => {
+                loading.value = false;
+                router.push({
+                  name: "ResetPassword",
+                  query: {
+                    resetToken: res.resetToken,
+                    email: state.credentials.userName
+                  }
+                })
+                console.log(res, "Need reset response");
+              })
+              .catch(err => {
+                loading.value = false;
+                console.log(err);
+              })
+              return false;
+          }
           console.log(data, "On login");
           
           store.dispatch("setUserData", data);
@@ -135,6 +155,7 @@ export default {
         } catch (err) { 
           /*eslint no-undef: "warn"*/
           console.log(err.response, "login error");
+          console.log(err, "login error");
           NProgress.done();
           loading.value = false;
           
