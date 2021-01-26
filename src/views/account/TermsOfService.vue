@@ -208,6 +208,13 @@ width: 90%;
     right:15px;
 }
 }
+/* @media only screen and (max-width: 1920px) {
+.buton{
+width: 70%;
+}
+.p-button{
+    right:15px;
+} */
 @media (min-width: 761px) and (max-width:1230px) {
 .buton{
 width: 90%;
@@ -226,7 +233,7 @@ width: 88%;
 }
 @media (min-width: 1257px) and (max-width:1304px) {
 .buton{
-width: 87.6%;
+width: 85.6%;
 }
 .p-button{
     right:15px;
@@ -342,6 +349,26 @@ width: 67.9%;
 @media (min-width: 1630px) and (max-width:1639px) {
 .buton{
 width: 67.4%;
+
+
+}
+.p-button{
+    right:15px;
+}
+}
+@media (min-width: 1640px) and (max-width:1920px) {
+.buton{
+width: 57.5%;
+
+
+}
+.p-button{
+    right:15px;
+}
+}
+@media (min-width: 1921px) and (max-width:2000px) {
+.buton{
+width: 55.2%;
 
 
 }
