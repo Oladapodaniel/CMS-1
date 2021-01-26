@@ -42,7 +42,7 @@
              <span></span>
           </button>
         </div>
-        <div v-if="false">
+        <div>
           <button class="facebook-btn btn-logo sign-in-btn" >
             <img src="../../assets/facebook-small.png" class="fb-icon" alt="Google Icon">
              <span>Sign up with Facebook</span>
@@ -52,23 +52,29 @@
 
         <!-- <button  onclick="alert('it works')">Love you</button> -->
         <!-- <div @click="facebookSignIn"> -->
-          <!-- <fb:login-button scope="public_profile,email"
+          <!-- < scope="public_profile,email"
                      onlogin="checkLoginState();" ref="loginFacebook">
           </fb:login-button> -->
           <!--Display access token-->
           <!-- <div id="authstatus">   </div> -->
         <!-- </div> -->
+        <!-- <div class="face-parent"> -->
+          
+        <!-- </div> -->
+        
 
-        <div class="fb-login-button" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></div>
+<!-- <button class="_5h0i _88va" onclick="checkLoginState();">Facebook</button> -->
+<!-- <a href="#" onclick="fb_login();"><img src="images/fb_login_awesome.jpg" border="0" alt="dapoface">dapo</a>
+<div id="fb-root"></div> -->
 
 
   <!-- <VFacebookLogin app-id="966242223397117" /> -->
-  <div>
+  <!-- <div>
     <v-facebook-login v-model="model" @sdk-init="handleSdkInit" />
     <button >
       Logout
     </button>
-  </div>
+  </div> -->
       </div>
 
       <div class="bottom-container">
@@ -76,21 +82,22 @@
           <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p>
         </div>
       </div>
+      <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a>
     </div>
   </div>
 </template>
 
 <script>
 import axios from '@/gateway/backendapi';
-import { reactive, ref } from 'vue';
+import { onBeforeUpdate, onMounted, reactive, ref } from 'vue';
 import store from '../../store/store'
 import router from '../../router/index';
-import VFacebookLogin from 'vue-facebook-login-component'
+// import VFacebookLogin from 'vue-facebook-login-component'
 
 export default {
-  components: {
-      VFacebookLogin,
-    },
+  // components: {
+  //     VFacebookLogin,
+  //   },
     setup() {
 
       const state = reactive({
@@ -149,10 +156,19 @@ export default {
             loginFacebook.value.click()
       }
 
-        const handleSdkInit = () => {
-          FB.value = FB
-          scope.value = scope
-        }
+      onMounted(() => {
+          console.log('mounted')
+      })
+
+       onBeforeUpdate (() => {
+          console.log('updated')
+      })
+
+
+        // const handleSdkInit = () => {
+        //   FB.value = FB
+        //   scope.value = scope
+        // }
 
 //       const checkLoginState = () => {
 // /*eslint no-undef: "warn"*/
@@ -379,9 +395,37 @@ export default {
     margin-bottom: 0;
 }
 
-._5h0i._88va {
+/* ._5h0i._88va {
     background-color: #3B5998 !important;
     border: 2px solid red !important;
+} */
+
+ ._5h0i._88va {
+        border: 2px solid red !important;
+      }
+
+    .fb_iframe_widget iframe {
+    opacity: 0;
 }
+
+    .fb_iframe_widget {
+      /* background-image: url(../../assets/facebook-small.png);
+      background-repeat: no-repeat;  */
+      /* background: #3B5998; */
+      /* border: 2px solid #3b5998; */
+      border-radius: 500px;
+      position: relative;
+      top: -155px;
+      left: 1px;
+      padding: 8px;
+      width: 100%;
+    }
+
+    @media (max-width: 273px) {
+      .fb_iframe_widget {
+      top: -173px;
+  
+    }
+    }
 
 </style>
