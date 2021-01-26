@@ -161,6 +161,10 @@ export default {
 
     }
   },
+
+  created() {
+    console.log(checkLoginState())
+  }
 };
 </script>
 
