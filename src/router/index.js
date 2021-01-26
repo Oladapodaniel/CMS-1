@@ -4,7 +4,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Pagination from '@/components/pagination/PaginationButtons.vue';
 import Payment from '../components/payment/Payment.vue';
 import TermsOfService from '@/views/account/TermsOfService.vue'
-import ConnectionStatus from '@/components/connectivity/ConnectionStatus.vue';
 
 
 
@@ -22,10 +21,9 @@ const routes = [{
         path: '/payment',
         name: 'Payment',
         component: Payment,
-        path: '/online',
-        name: 'online',
-        component: ConnectionStatus
+
     },
+
     {
         path: '/',
         name: 'Login',

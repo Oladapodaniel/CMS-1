@@ -36,7 +36,7 @@ Link to privacy policy of third party service providers used by the app
                 
                 </p>
                 <div class="cirle-container ml-5">
-                 <span class="dot1 mt-2"></span><h1 style="font-size:16px; font-weight:bold" class="ml-2">Google Play Services</h1>
+                 <span class="dot1 mt-2"></span><router-link to=""><h1 style="font-size:16px; font-weight:bold; text-decoration:underline" class="ml-2">Google Play Services</h1></router-link>
                 </div>
                  <div class="cirle-container">
                 <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Log Data</h1>
@@ -59,19 +59,19 @@ This Service does not use these “cookies” explicitly. However, the app may u
                     We may employ third-party companies and individuals due to the following reasons:
                 </p>
                 <div class="cirle-container ml-5">
-                 <span class="dot1 mt-2"></span><h1 style="font-size:16px; font-weight:bold" class="ml-2">To facilitate our Service;</h1>
+                 <span class="dot1 mt-2"></span><h1 style="font-size:16px;" class="ml-2">To facilitate our Service;</h1>
                  
                 </div>
                 <div class="cirle-container ml-5">
-                 <span class="dot1 mt-2"></span><h1 style="font-size:16px; font-weight:bold" class="ml-2">To provide the Service on our behalf;</h1>
+                 <span class="dot1 mt-2"></span><h1 style="font-size:16px;" class="ml-2">To provide the Service on our behalf;</h1>
                  
                 </div>
                 <div class="cirle-container ml-5">
-                 <span class="dot1 mt-2"></span><h1 style="font-size:16px; font-weight:bold" class="ml-2">To perform Service-related services; or</h1>
+                 <span class="dot1 mt-2"></span><h1 style="font-size:16px;" class="ml-2">To perform Service-related services; or</h1>
                  
                 </div>
                 <div class="cirle-container ml-5">
-                 <span class="dot1 mt-2"></span><h1 style="font-size:16px; font-weight:bold" class="ml-2">To assist us in analyzing how our Service is used.</h1>
+                 <span class="dot1 mt-2"></span><h1 style="font-size:16px;" class="ml-2">To assist us in analyzing how our Service is used.</h1>
                 
                 </div>
                  <p class="ml-4" style="text-align:justify">
@@ -104,7 +104,7 @@ This Service does not use these “cookies” explicitly. However, the app may u
                 <div class="cirle-container">
                 <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Contact Us</h1>
                 </div>
-                <p class="ml-4" style="text-align:justify">
+                <p class="ml-4" style="text-align:justify; margin-bottom: 90px;">
                     If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us.
                 </p>
                  
@@ -195,8 +195,8 @@ justify-content:flex-end;
 padding: 20px 0px;
 bottom: 0;
 position: fixed;
-width: 64%;
-max-width: 58.1%;
+width: 58.1%;
+/* max-width: 58.1%; */
 }
 @media only screen and (max-width: 760px) {
 .buton{
@@ -224,7 +224,7 @@ width: 88%;
 }
 @media (min-width: 1257px) and (max-width:1304px) {
 .buton{
-width: 85%;
+width: 87.6%;
 }
 .p-button{
     right:15px;
@@ -281,7 +281,7 @@ width: 80%;
 }
 @media (min-width: 1400px) and (max-width:1448px) {
 .buton{
-width: 76.3%;
+width: 77.7%;
 
 }
 .p-button{
@@ -340,6 +340,7 @@ width: 67.9%;
 @media (min-width: 1630px) and (max-width:1639px) {
 .buton{
 width: 67.4%;
+
 
 }
 .p-button{
