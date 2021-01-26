@@ -202,10 +202,15 @@ width: 58.1%;
 }
 @media only screen and (max-width: 760px) {
 .buton{
-width: 90%;
+width: 100%;
 }
 .p-button{
     right:15px;
+}
+.contain{
+width: 100%;
+/* background: #136ACD; */
+
 }
 }
 /* @media only screen and (max-width: 1920px) {
