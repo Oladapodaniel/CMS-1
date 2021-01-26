@@ -21,6 +21,7 @@
                         <div class="col-auto w-75">
                             <Dropdown v-model="selectCategory" :options="Membership" optionLabel="name" placeholder="Select category" :filter="true" filterPlaceholder="Membership Information Update Message" style="width:100%; text-align:left" />
                         </div>
+                       
                 </div>
                 <div class="row g-3 align-items-center">
                         <div class="col-auto w-25">

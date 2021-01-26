@@ -12,32 +12,100 @@
             </div>
             <div class="terms-body container pb-5 pl-5 pr-5">
                 <div class="cirle-container">
-                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Terms Of Service</h1>
+                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Privacy Policy</h1>
                 </div>
-                <p class="ml-4" style="text-align:justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
+                <p class="ml-4" style="text-align:justify">
+                    Complustech Limited built the ChurchPlus app as a Free app. This SERVICE is provided by Complustech Limited at no cost and is intended for use as is.
+
+This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.
+
+If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy.
+
+The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is accessible at ChurchPlus unless otherwise defined in this Privacy Policy.
+                
                 </p>
                 <div class="cirle-container">
-                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Terms Of Service</h1>
+                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Information Collection and Use</h1>
                 </div>
-                <p class="ml-4" style="text-align:justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
+                <p class="ml-4" style="text-align:justify">
+                    For a better experience, while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to Email, Username, Phone Number. The information that we request will be retained by us and used as described in this privacy policy.
+
+The app does use third party services that may collect information used to identify you.
+
+Link to privacy policy of third party service providers used by the app
+                
+                </p>
+                <div class="cirle-container ml-5">
+                 <span class="dot1 mt-2"></span><h1 style="font-size:16px; font-weight:bold" class="ml-2">Google Play Services</h1>
+                </div>
+                 <div class="cirle-container">
+                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Log Data</h1>
+                </div>
+                <p class="ml-4" style="text-align:justify">
+                    We want to inform you that whenever you use our Service, in a case of an error in the app we collect data and information (through third party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics.
                 </p>
                  <div class="cirle-container">
-                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Terms Of Service</h1>
+                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Cookies</h1>
                 </div>
-                <p class="ml-4" style="text-align:justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam.
-                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum impedit corporis consectetur molestias ipsa sint blanditiis, dicta maiores! Laudantium debitis blanditiis voluptatum error quis deserunt quasi quos eum sapiente totam
+                <p class="ml-4" style="text-align:justify">
+                    Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device's internal memory.
+
+This Service does not use these “cookies” explicitly. However, the app may use third party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service.
+                </p>
+                 <div class="cirle-container">
+                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Service Providers</h1>
+                </div>
+                <p class="ml-4" style="text-align:justify">
+                    We may employ third-party companies and individuals due to the following reasons:
+                </p>
+                <div class="cirle-container ml-5">
+                 <span class="dot1 mt-2"></span><h1 style="font-size:16px; font-weight:bold" class="ml-2">To facilitate our Service;</h1>
+                 
+                </div>
+                <div class="cirle-container ml-5">
+                 <span class="dot1 mt-2"></span><h1 style="font-size:16px; font-weight:bold" class="ml-2">To provide the Service on our behalf;</h1>
+                 
+                </div>
+                <div class="cirle-container ml-5">
+                 <span class="dot1 mt-2"></span><h1 style="font-size:16px; font-weight:bold" class="ml-2">To perform Service-related services; or</h1>
+                 
+                </div>
+                <div class="cirle-container ml-5">
+                 <span class="dot1 mt-2"></span><h1 style="font-size:16px; font-weight:bold" class="ml-2">To assist us in analyzing how our Service is used.</h1>
+                
+                </div>
+                 <p class="ml-4" style="text-align:justify">
+                   We want to inform users of this Service that these third parties have access to your Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose.
+                </p>
+                 <div class="cirle-container">
+                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Security</h1>
+                </div>
+                <p class="ml-4" style="text-align:justify">
+                    We value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security.
+                </p>
+                 <div class="cirle-container">
+                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Links to Other Sites</h1>
+                </div>
+                <p class="ml-4" style="text-align:justify">
+                    This Service may contain links to other sites. If you click on a third-party link, you will be directed to that site. Note that these external sites are not operated by us. Therefore, we strongly advise you to review the Privacy Policy of these websites. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.
+                </p>
+                <div class="cirle-container">
+                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Children’s Privacy</h1>
+                </div>
+                <p class="ml-4" style="text-align:justify">
+                    These Services do not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do necessary actions.
+                </p>
+                <div class="cirle-container">
+                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Changes to This Privacy Policy</h1>
+                </div>
+                <p class="ml-4" style="text-align:justify">
+                    We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.
+                </p>
+                <div class="cirle-container">
+                <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Contact Us</h1>
+                </div>
+                <p class="ml-4" style="text-align:justify">
+                    If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us.
                 </p>
                  
             </div>
@@ -56,8 +124,18 @@ import Button from 'primevue/button';
         components:{Button},
         data() {
             return {
+                
+                
             }
+             
         },
+        methods:{
+            
+        },
+        created() {
+       
+        },
+        
         
     }
 </script>
@@ -97,6 +175,13 @@ opacity: 1;
   border-radius: 50%;
   display: inline-block;
 }
+.dot1 {
+  height: 6px;
+  width: 6px;
+  background-color:#070707;
+  border-radius: 50%;
+  display: inline-block;
+}
 .cirle-container{
 display: flex;
 }
@@ -111,6 +196,7 @@ padding: 20px 0px;
 bottom: 0;
 position: fixed;
 width: 64%;
+max-width: 58.1%;
 }
 @media only screen and (max-width: 760px) {
 .buton{
@@ -193,9 +279,9 @@ width: 80%;
     right:15px;
 }
 }
-@media (min-width: 1400px) and (max-width:1509px) {
+@media (min-width: 1400px) and (max-width:1448px) {
 .buton{
-width: 73.6%;
+width: 76.3%;
 
 }
 .p-button{
@@ -245,6 +331,15 @@ width: 69%;
 @media (min-width: 1601px) and (max-width:1629px) {
 .buton{
 width: 67.9%;
+
+}
+.p-button{
+    right:15px;
+}
+}
+@media (min-width: 1630px) and (max-width:1639px) {
+.buton{
+width: 67.4%;
 
 }
 .p-button{
