@@ -9,7 +9,8 @@
       <div class="header">
         <div class="top-con">
           <div class="header">
-            <h1>Your all in one church management solution</h1>
+            <!-- <h1>Your all in one church management solution</h1> -->
+            <h1>Get started for <span class="free">FREE</span></h1>
             <h3 class="intro">
               A church software that automates your entire  <br />
               church management processes.
@@ -432,5 +433,10 @@ export default {
   left: 1px;
   padding: 8px;
   width: 100%;
+}
+
+.free {
+  font-weight: 800;
+  color: #10898f
 }
 </style>
