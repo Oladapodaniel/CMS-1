@@ -96,7 +96,8 @@
         <div>
           <p class="sign-up-prompt">
             Already have an account?
-            <router-link to="/" class="sign-up"><strong> Sign in now</strong></router-link>
+            <a href="/" class="sign-up"><strong> Sign in now</strong></a>
+            <!-- <router-link to="/" class="sign-up"><strong> Sign in now</strong></router-link> -->
           </p>
         </div>
       </div>
@@ -170,10 +171,6 @@ export default {
 
     }
   },
-
-  created() {
-    console.log(checkLoginState())
-  }
 };
 </script>
 
@@ -443,10 +440,10 @@ export default {
   /* background-image: url(../../assets/facebook-small.png);
   background-repeat: no-repeat;  */
   /* background: #3B5998; */
-  border: 2px solid #3b5998;
+  /* border: 2px solid #3b5998; */
   border-radius: 500px;
   position: relative;
-  top: -155px;
+  top: -60px;
   left: 1px;
   padding: 8px;
   width: 100%;
