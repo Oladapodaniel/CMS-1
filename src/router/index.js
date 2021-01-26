@@ -350,6 +350,7 @@ router.beforeEach((to, from, next) => {
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name === "ResetPassword" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
     // if ((to.name === "StartingPoint" && localStorage.getItem("userSetup"))) return next(true)
+    // if (!tokenIsValid) return next("/");
     next(true)
 })
 
