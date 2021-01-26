@@ -45,7 +45,7 @@
         <div>
           <button class="facebook-btn btn-logo sign-in-btn" >
             <img src="../../assets/facebook-small.png" class="fb-icon" alt="Google Icon">
-             <span>Sign up with Facebook</span>
+             <span>Sign in with Facebook</span>
              <span></span>
           </button>
         </div>
@@ -82,16 +82,17 @@
           <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p>
         </div>
       </div>
-      <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a>
+      <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" @click="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a>
     </div>
   </div>
 </template>
 
 <script>
 import axios from '@/gateway/backendapi';
-import { onBeforeUpdate, onMounted, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 import store from '../../store/store'
 import router from '../../router/index';
+// import FB from '../../services/guards/facebook-sdk/face'
 // import VFacebookLogin from 'vue-facebook-login-component'
 
 export default {
@@ -156,13 +157,7 @@ export default {
             loginFacebook.value.click()
       }
 
-      onMounted(() => {
-          console.log('mounted')
-      })
-
-       onBeforeUpdate (() => {
-          console.log('updated')
-      })
+    
 
 
         // const handleSdkInit = () => {
