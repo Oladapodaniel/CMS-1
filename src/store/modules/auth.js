@@ -55,6 +55,8 @@ export default {
             commit("setCurrentUser", res.data)
               router.push(`/tenant/${res.data.tenantId}`)
           } catch(err) {
+            /*eslint no-undef: "warn"*/
+            NProgress.done();
             console.log(err, "in store");
           }
           
