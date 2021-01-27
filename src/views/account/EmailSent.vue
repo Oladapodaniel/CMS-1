@@ -4,12 +4,12 @@
       <div class="logo-con">
         <a href="" class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"></a>
       </div>
-      <div class="fp-form-con">
+      <div class="fp-form-con mt-5">
         <div class="confirm-text">
             <h3>Check Your Email</h3>
         </div>
         <div class="confirm-desc">
-            <p>If we find {{ email }} in our system, we will send you an email with a link to reset your password.</p>
+            <p>If we find <span class="primary-text font-weight-bold">{{ email }}</span> in our system, we will send you an email with a link to reset your password.</p>
             <p class="contact-us">If you don't receive the email, check your spam folder or <a href="" class="contact-link">contact us</a></p>
             <p class="or-reset">Or try password reset using a different email address.</p>
         </div>

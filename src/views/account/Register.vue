@@ -9,9 +9,10 @@
       <div class="header">
         <div class="top-con">
           <div class="header">
-            <h1>Your all in one church management solution</h1>
+            <!-- <h1>Your all in one church management solution</h1> -->
+            <h1>Get started for <span class="free">FREE</span></h1>
             <h3 class="intro">
-              A church software that automates your entire  <br />
+              A church software that automates your entire <br />
               church management processes.
             </h3>
           </div>
@@ -20,7 +21,19 @@
 
       <div class="form-container">
         <div class="error-div" v-if="showError">
-          <p class="error-message">{{ errorMessage }}</p>
+          <p class="error-message">
+            {{ errorMessage }}
+            <span
+              >OR
+              <span>
+                <a
+                  class="font-weight-bold text-decoration-none c-pointer"
+                  @click="resetPassword"
+                  >click here to reset your password</a
+                ></span
+              ></span
+            >
+          </p>
         </div>
 
         <form @submit.prevent="register">
@@ -39,7 +52,7 @@
               v-model="credentials.password"
               class="input"
               placeholder="Password"
-              pattern=".{6,}" 
+              pattern=".{6,}"
               required
             />
           </div>
@@ -54,7 +67,10 @@
             >
           </div>
 
-          <button class="submit-btn sign-in-btn get-started" :class="{ 'btn-loading': loading }">
+          <button
+            class="submit-btn sign-in-btn get-started"
+            :class="{ 'btn-loading': loading }"
+          >
             <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
             <span>Get Started</span>
             <span></span>
@@ -72,23 +88,55 @@
             <span></span>
           </button>
         </div>
-        <div class="fb-login-button" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></div>
-        
+
+        <div>
+          <button class="facebook-btn btn-logo sign-in-btn">
+            <img
+              src="../../assets/facebook-small.png"
+              class="fb-icon"
+              alt="Google Icon"
+            />
+            <span>Sign up with Facebook</span>
+            <span></span>
+          </button>
+        </div>
+
         <div class="terms">
           <p>
             By signing up, you are indicating that you have read and agree to
-            the <a href="" class="terms-link">Terms of Use</a> and
-            <a href="" class="terms-link">Privacy Policy.</a>
+            the
+            <router-link to="/termsofuse" class="terms-link"
+              >Terms of Use</router-link
+            >
+            and
+            <router-link to="/termsofuse" class="terms-link"
+              >Privacy Policy.</router-link
+            >
           </p>
         </div>
-      </div>
 
-      <div class="bottom-container">
-        <div>
-          <p class="sign-up-prompt">
-            Already have an account?
-            <router-link to="/" class="sign-up"><strong> Sign in now</strong></router-link>
-          </p>
+        <div class="bottom-container">
+          <div>
+            <p class="sign-up-prompt">
+              Already have an account?
+              <a href="/" class="sign-up"><strong> Sign in now</strong></a>
+              <!-- <router-link to="/" class="sign-up"><strong> Sign in now</strong></router-link> -->
+            </p>
+          </div>
+          <a
+            class="fb-login-button"
+            id="fb"
+            data-width="380px"
+            data-size="large"
+            scope="public_profile,email"
+            onlogin="checkLoginState();"
+            data-button-type="continue_with"
+            data-layout="rounded"
+            data-auto-logout-link="false"
+            data-use-continue-as="false"
+            ref="loginFacebook"
+            style="margin-top: 10px"
+          ></a>
         </div>
       </div>
     </div>
@@ -127,25 +175,52 @@ export default {
 
     register() {
       this.loading = true;
-      // this.showError = false;
+      this.showError = false;
       axios
         .post("/initialsignup", this.credentials)
         .then((res) => {
           this.loading = false;
           console.log(res, "register response");
           this.$store.dispatch("setUserEmail", this.credentials.email);
-          localStorage.setItem("email", this.credentials.email)
+          localStorage.setItem("email", this.credentials.email);
           this.$router.push("/onboarding");
         })
         .catch((err) => {
+          /*eslint no-undef: "warn"*/
+          NProgress.done();
           this.loading = false;
           console.log(err.response);
+          localStorage.setItem("email", this.credentials.email)
           if (err.response.status === 400) {
+            if (err.response.data === false) {
+              this.$router.push("/onboarding")
+              return false;
+            }
             const { message } = err.response.data;
             this.errorMessage = message ? message : "An error occurred";
             this.showError = true;
           }
         });
+    },
+
+    async resetPassword() {
+      try {
+        const { data } = await axios.post(
+          `/forgotpassword/${this.credentials.email}`
+        );
+        console.log(data.id, "reset data");
+        this.$router.push({
+          name: "EmailSent",
+          params: { email: this.credentials.email }
+        });
+        // this.$router.push({
+        //   name: "ResetPassword",
+        //   params: { token: data.resetToken },
+        //   query: {email: this.credentials.email}
+        // });
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
 };
@@ -204,11 +279,11 @@ export default {
   border: 1px solid #b2c2cd;
   margin: 4px 0;
 }
-  .input::placeholder {
-    font-style: italic;
-    color: #b2c2cd;
-    letter-spacing: 1.5px;
-  }
+.input::placeholder {
+  font-style: italic;
+  color: #b2c2cd;
+  letter-spacing: 1.5px;
+}
 
 .forgot-password {
   /* font-family: Averta, sans-serif; */
@@ -235,7 +310,7 @@ export default {
   border: 1px solid transparent;
   margin-top: 8px;
   width: 100%;
-  padding: 8px 20px;
+  /* padding: 8px 20px; */
   box-sizing: border-box;
   text-align: center;
   min-width: 100px;
@@ -249,19 +324,19 @@ export default {
 }
 
 .sign-in-btn:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .input:focus {
   box-shadow: 0 0 0 3px rgba(19, 106, 205, 0.2);
 }
 
-  .input::placeholder {
-    font-style: italic;
-    color: #b2c2cd;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-  }
+.input::placeholder {
+  font-style: italic;
+  color: #b2c2cd;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
 
 /* .input:not(:focus) {
   font-style: italic;
@@ -299,7 +374,7 @@ export default {
 }
 
 .facebook-btn {
-  background: #410093;
+  background: #3b5998;
 }
 
 .bottom-container {
@@ -322,7 +397,13 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1px;
+}
+
+.fb-icon {
+  background: #fff;
+  padding: 0.23rem 0.6rem;
+  border-radius: 50%;
+  margin: 0.25rem;
 }
 
 /* Signup */
@@ -400,5 +481,29 @@ export default {
 
 .error-message {
   color: #b52626;
+}
+
+.fb_iframe_widget iframe {
+  /* opacity: 0; */
+  border: 2px solid #3b5998;
+}
+
+.fb_iframe_widget {
+  /* background-image: url(../../assets/facebook-small.png);
+  background-repeat: no-repeat;  */
+  /* background: #3B5998; */
+  /* border: 2px solid #3b5998; */
+  border-radius: 500px;
+  position: relative;
+  top: -196px;
+  left: 1px;
+  padding: 8px;
+  width: 100%;
+  max-height: 40px;
+}
+
+.free {
+  font-weight: 800;
+  color: #10898f;
 }
 </style>

@@ -8,7 +8,7 @@
           <h2>Enter a New Password</h2>
       </div>
       <div class="fp-form-con">
-        <form action="" @submit="resetPassword">
+        <form action="" @submit.prevent="resetPassword">
           <div>
             <input
               class="input"
@@ -37,6 +37,7 @@
               placeholder="Confirm Password"
               required
             />
+            <span v-if="mismatch" class="text-danger">Password do not match</span>
           </div>
           
 
@@ -48,19 +49,37 @@
 </template>
 
 <script>
-// import axios from 'axios'
-export default {
+import axios from "@/gateway/backendapi";export default {
+
     data() {
         return {
             credentials: { },
             passwordType: "password",
             showBtnText: "Show",
+            mismatch: false,
         }
     },
 
     methods: {
         resetPassword() {
-            
+            if (this.credentials.password !== this.credentials.confirmPassword) {
+              this.mismatch = true;
+              return false;
+            }
+              axios.post(`/passwordreset/${this.credentials}`)
+                .then(res => {
+                  localStorage.setItem("token", res.data.token);
+                  if (res.data.churchSize > 0) {
+                    this.$router.push("/tenant");
+                  } else {
+                    this.$router.push("/next");
+                  }
+                })
+                .catch(error => {
+                  /*eslint no-undef: "warn"*/
+                  NProgress.done();
+                  console.log(error);
+                })
         },
 
         showPassword(e) {
@@ -70,6 +89,11 @@ export default {
             this.passwordIsVissible = !this.passwordIsVissible;
             this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
         }
+    },
+
+    created() {
+      this.credentials.email = this.$route.query.email;
+      this.credentials.resetToken = this.$route.params.token;
     }
 };
 </script>

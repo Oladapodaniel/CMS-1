@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 
 import Pagination from '@/components/pagination/PaginationButtons.vue';
-import Payment from '../components/payment/Payment.vue';
-import TermsOfService from '@/views/account/TermsOfService.vue'
+
+import TermsOfUse from '@/views/account/TermsOfService.vue'
 
 
 
@@ -12,16 +12,11 @@ const routes = [{
         name: 'Pagination',
         component: Pagination
     },
-    {
-        path: '/termsofservice',
-        name: 'TermsOfService',
-        component: TermsOfService,
-    },
-    {
-        path: '/payment',
-        name: 'Payment',
-        component: Payment,
 
+    {
+        path: '/termsofuse',
+        name: 'TermsOfUse',
+        component: TermsOfUse,
     },
 
     {
@@ -71,6 +66,12 @@ const routes = [{
         name: 'ResetPassword',
         component: () =>
             import ( /* webpackChunkName: "resetpassword" */ '../views/account/ResetPassword.vue')
+    },
+    {
+        path: '/emailsent/:email',
+        name: 'EmailSent',
+        component: () =>
+            import ( /* webpackChunkName: "emailsent" */ '../views/account/EmailSent.vue')
     },
     {
         path: '/tenant',
@@ -182,7 +183,7 @@ const routes = [{
                             import ( /* webpackChunkName: "contactlist" */ '@/views/communication/ContactList')
                     },
                     {
-                        path: 'message-details',
+                        path: 'sent/:messageId',
                         name: 'MessageDetails',
                         component: () =>
                             import ( /* webpackChunkName: "contactlist" */ '@/views/communication/MessageDetails')
@@ -317,12 +318,12 @@ const routes = [{
                         component: () =>
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/AddDefaultMessage')
                     },
-                    {
-                        path: 'details',
-                        name: 'Details',
-                        component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/Details')
-                    },
+                    // {
+                    //     path: 'details',
+                    //     name: 'Details',
+                    //     component: () =>
+                    //         import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/Details')
+                    // },
                 ]
             }
         ]
@@ -347,10 +348,13 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
+    if ((to.name === "TermsOfUse")) return next(true)
+    if ((to.name === "ResetPassword" || to.name === "EmailSent") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
-    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && !token) return next("/")
-    if ((to.name === "Login" || to.name === "Register") && token) return next("/next")
-        // if ((to.name === "StartingPoint" && localStorage.getItem("userSetup"))) return next(true)
+    const tokenIsValid = token && token.length > 30 ? true : false;
+    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name === "ResetPassword" && (!token || token.length < 30)) return next("/")
+    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
+    // if (!tokenIsValid) return next("/");
     next(true)
 })
 
