@@ -1,9 +1,9 @@
 import axios from "@/gateway/backendapi";
 
 const authService = {
-    resetPassword(email) {
+    resetPassword(data) {
         return new Promise((resolve, reject) => {
-            axios.post(`/existingUserPasswordReset/${email}`)
+            axios.post(`/PasswordReset`, data)
                 .then(res => {
                     resolve(res.data);
                 })

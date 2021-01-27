@@ -16,6 +16,7 @@
               :type="passwordType"
               placeholder="New Password"
               required
+              @input="clearErrorMessage"
             />
           </div>
           <div class="password-help">
@@ -36,6 +37,7 @@
               type="password"
               placeholder="Confirm Password"
               required
+               @input="clearErrorMessage"
             />
             <span v-if="mismatch" class="text-danger">Password do not match</span>
           </div>
@@ -49,7 +51,9 @@
 </template>
 
 <script>
-import axios from "@/gateway/backendapi";export default {
+import authService from "@/services/auth/authservice";
+
+export default {
 
     data() {
         return {
@@ -66,34 +70,55 @@ import axios from "@/gateway/backendapi";export default {
               this.mismatch = true;
               return false;
             }
-              axios.post(`/passwordreset/${this.credentials}`)
-                .then(res => {
-                  localStorage.setItem("token", res.data.token);
-                  if (res.data.churchSize > 0) {
-                    this.$router.push("/tenant");
-                  } else {
-                    this.$router.push("/next");
-                  }
-                })
-                .catch(error => {
-                  /*eslint no-undef: "warn"*/
-                  NProgress.done();
-                  console.log(error);
-                })
+              // axios.post(`/passwordreset/${this.credentials}`)
+              //   .then(res => {
+              //     localStorage.setItem("token", res.data.token);
+              //     if (res.data.churchSize > 0) {
+              //       this.$router.push("/tenant");
+              //     } else {
+              //       this.$router.push("/next");
+              //     }
+              //   })
+              //   .catch(error => {
+              //     /*eslint no-undef: "warn"*/
+              //     NProgress.done();
+              //     console.log(error);
+              //   })
+          
+          authService.resetPassword(this.credentials)
+            .then(res => {
+              console.log(res.result, "res.res");
+              console.log(res.result.value, "res.res.value");
+              console.log(res.value, "res.value");
+              localStorage.setItem("token", res.result.value.token);
+              if (res.result.value.churchSize > 0) {
+                this.$router.push("/tenant");
+              } else {
+                this.$router.push("/next");
+              }
+            })
+            .catch(error => {
+              console.log("Hallo");
+              console.log(error);
+            })
         },
 
         showPassword(e) {
-            e.preventDefault();
-            if (!this.credentials.password) return false;
-            this.passwordType = this.passwordIsVissible ? "password" : "text";
-            this.passwordIsVissible = !this.passwordIsVissible;
-            this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
+          e.preventDefault();
+          if (!this.credentials.password) return false;
+          this.passwordType = this.passwordIsVissible ? "password" : "text";
+          this.passwordIsVissible = !this.passwordIsVissible;
+          this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
+        },
+
+        clearErrorMessage() {
+          this.mismatch = false;
         }
     },
 
     created() {
       this.credentials.email = this.$route.query.email;
-      this.credentials.resetToken = this.$route.params.token;
+      this.credentials.resetToken = this.$route.query.resetToken;
     }
 };
 </script>
