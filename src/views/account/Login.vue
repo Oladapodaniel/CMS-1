@@ -9,9 +9,13 @@
       </div>
 
       <div class="form-container">
-        <div class="error-div" v-if="state.showError">
-              <p class="error-message">{{ state.errorMessage }}</p>
-          </div>
+        <div class="error-div" v-if="state.showError && !state.notAUser">
+          <p class="error-message">{{ state.errorMessage }}</p>
+        </div>
+
+        <div class="error-div" v-if="state.notAUser">
+          <p class="error-message">Not a registered user, <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a></p>
+        </div>
 
         <form @submit="login">
           <div>
@@ -93,7 +97,7 @@ import axios from '@/gateway/backendapi';
 import { reactive, ref } from 'vue';
 import store from '../../store/store'
 import router from '../../router/index';
-import authService from "@/services/auth/authservice"
+// import authService from "@/services/auth/authservice"
 // import FB from '../../services/guards/facebook-sdk/face'
 // import VFacebookLogin from 'vue-facebook-login-component'
 
@@ -108,6 +112,7 @@ export default {
         credentials: { },
         showError: false,
         errorMessage: "",
+        notAUser: false,
       });
       const loading = ref(false)
       // NProgress.start()
@@ -118,29 +123,17 @@ export default {
         e.preventDefault();
         localStorage.setItem("email", state.credentials.userName)
         state.showError = false;
+        state.notUser = false;
         try {
           loading.value = true;
           const res = await axios.post("/login", state.credentials)
           const { data } = res;
           console.log(data, "data");
-          if (data.token === "Need Reset") {
-            authService.resetPassword(state.credentials.userName)
-              .then(res => {
-                loading.value = false;
-                router.push({
-                  name: "ResetPassword",
-                  query: {
-                    resetToken: res.resetToken,
-                    email: state.credentials.userName
-                  }
-                })
-                console.log(res, "Need reset response");
-              })
-              .catch(err => {
-                loading.value = false;
-                console.log(err);
-              })
-              return false;
+          if (!data || !data.token) {
+            router.push({
+              name: "EmailSent"
+            })
+            return false;
           }
           console.log(data, "On login");
           
@@ -165,7 +158,11 @@ export default {
           {
             router.push('/onboarding');
           } else {
-            state.errorMessage = err.response.data.message;
+            if (status === 404) {
+              state.notAUser = true;
+            } else {
+              state.errorMessage = err.response.data.message;
+            }
             state.showError = true;
           }
         }
