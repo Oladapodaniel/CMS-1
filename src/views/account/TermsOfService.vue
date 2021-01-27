@@ -10,7 +10,7 @@
               </div>
             
             </div>
-            <div class="terms-body container pb-5 pl-5 pr-5">
+            <div class="terms-body container pb-lg--5 pl-lg-5 pr-lg-5">
                 <div class="cirle-container">
                 <span class="dot mt-2"></span> <h1 class="ml-2" style="font-size:22px; font-weight:bold">Privacy Policy</h1>
                 </div>
@@ -111,9 +111,14 @@ This Service does not use these “cookies” explicitly. However, the app may u
                 
                  
             </div>
-            <div class="buton">
-                 <Button label="UNDERSTOOD" class="p-button-raised p-button-rounded"  style="font-size:14px; opacity:1; color:#ffffff; background:#136ACD; border-color: #136ACD;width:156px; height:45px" />
-                 
+            <div class="" style="height:60px">
+                 <div class="container">
+                     <div class="row bottom-button">
+                         <div class="col-md-12 d-flex justify-content-end py-2">
+                            <Button label="UNDERSTOOD" class="p-button-raised p-button-rounded"  style="font-size:14px; opacity:1; color:#ffffff; background:#136ACD; border-color: #136ACD;width:156px; height:45px" />
+                         </div>
+                     </div>
+                 </div>
              </div>
         </div>
 
@@ -126,6 +131,7 @@ import Button from 'primevue/button';
         components:{Button},
         data() {
             return {
+               
                 
                 
             }
@@ -198,9 +204,31 @@ padding: 20px 0px;
 bottom: 0;
 position: fixed;
 width: 58.1%;
+max-width:1106px;
+
 /* max-width: 58.1%; */
 }
-@media only screen and (max-width: 760px) {
+
+.bottom-button {
+    border-top: 1px solid #EBEFF4;
+}
+
+.terms-body {
+    max-height: calc(100vh - 260px);
+    overflow: scroll;
+}
+
+@media screen and (max-width: 768px) {
+    .contain {
+        border: none;
+        width: 100%;
+    }
+
+    .terms-body {
+        width: 100%;
+    }
+}
+/* @media only screen and (max-width: 760px) {
 .buton{
 width: 100%;
 }
@@ -208,141 +236,132 @@ width: 100%;
     right:15px;
 }
 .contain{
-width: 100%;
-/* background: #136ACD; */
+width: 100%; 
 
 }
-}
-/* @media only screen and (max-width: 1920px) {
-.buton{
-width: 70%;
-}
-.p-button{
-    right:15px;
 } */
-@media (min-width: 761px) and (max-width:1230px) {
+/* @media (min-width: 761px) and (max-width:1230px) {
 .buton{
 width: 90%;
 }
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1231px) and (max-width:1256px) {
+} */
+/* @media (min-width: 1231px) and (max-width:1256px) {
 .buton{
 width: 88%;
 }
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1257px) and (max-width:1304px) {
+} */
+/* @media (min-width: 1257px) and (max-width:1304px) {
 .buton{
 width: 85.6%;
 }
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1305px) and (max-width:1378px) {
+} */
+/* @media (min-width: 1305px) and (max-width:1378px) {
 .buton{
 width: 85%;
 }
 .p-button{
     right:15px;
 }
-} 
-@media (min-width: 1306px) and (max-width:1315px) {
+}  */
+/* @media (min-width: 1306px) and (max-width:1315px) {
 .buton{
 width: 84.4%;
 }
 .p-button{
     right:15px;
 }
-} 
-@media (min-width: 1316px) and (max-width:1336px) {
+}  */
+/* @media (min-width: 1316px) and (max-width:1336px) {
 .buton{
 width: 82.9%;
 }
 .p-button{
     right:15px;
 }
-} 
-@media (min-width: 1337px) and (max-width:1362px) {
+}  */
+/* @media (min-width: 1337px) and (max-width:1362px) {
 .buton{
 width: 81%;
 }
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1363px) and (max-width:1379px) {
+} */
+/* @media (min-width: 1363px) and (max-width:1379px) {
 .buton{
 width: 80.9%;
 }
 .p-button{
     right:15px;
 }
+} */
+/* @media (min-width: 1380px) and (max-width:1400px) {
+    .buton{
+        width: 80%;
+    }
+.p-button{
+    right:15px;
 }
-@media (min-width: 1380px) and (max-width:1400px) {
+} */
+/* @media (min-width: 1400px) and (max-width:1507px) {
 .buton{
-width: 80%;
+width: 90.7%;
 
 }
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1400px) and (max-width:1448px) {
-.buton{
-width: 77.7%;
-
-}
-.p-button{
-    right:15px;
-}
-}
-@media (min-width: 1510px) and (max-width:1517px) {
+} */
+/* @media (min-width: 1510px) and (max-width:1517px) {
 .buton{
 width: 73%;
 }
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1519px) and (max-width:1539px) {
+} */
+/* @media (min-width: 1519px) and (max-width:1539px) {
 .buton{
 width: 72.8%;
 }
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1540px) and (max-width:1542px) {
+} */
+/* @media (min-width: 1540px) and (max-width:1542px) {
 .buton{
 width: 71.8%;
 }
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1543px) and (max-width:1569px) {
+} */
+/* @media (min-width: 1543px) and (max-width:1569px) {
 .buton{
 width: 70.9%;
 }
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1569px) and (max-width:1600px) {
+} */
+/* @media (min-width: 1569px) and (max-width:1600px) {
 .buton{
 width: 69%;
 }
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1601px) and (max-width:1629px) {
+} */
+/* @media (min-width: 1601px) and (max-width:1629px) {
 .buton{
 width: 67.9%;
 
@@ -350,8 +369,8 @@ width: 67.9%;
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1630px) and (max-width:1639px) {
+} */
+/* @media (min-width: 1630px) and (max-width:1639px) {
 .buton{
 width: 67.4%;
 
@@ -360,8 +379,28 @@ width: 67.4%;
 .p-button{
     right:15px;
 }
+} */
+/* @media (min-width: 1670px) and (max-width:1777px) {
+.buton{
+width: 70.4%;
+
+
 }
-@media (min-width: 1640px) and (max-width:1920px) {
+.p-button{
+    right:15px;
+}
+} */
+/* @media (min-width: 1780px) and (max-width:1795px) {
+.buton{
+width: 70.4%;
+
+
+}
+.p-button{
+    right:15px;
+}
+} */
+/* @media (min-width: 1880px) and (max-width:1920px) {
 .buton{
 width: 57.5%;
 
@@ -370,8 +409,8 @@ width: 57.5%;
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 1921px) and (max-width:2000px) {
+} */
+/* @media (min-width: 1921px) and (max-width:2000px) {
 .buton{
 width: 55.2%;
 
@@ -380,8 +419,8 @@ width: 55.2%;
 .p-button{
     right:15px;
 }
-}
-@media (min-width: 2001px) and (max-width:2050px) {
+} */
+/* @media (min-width: 2001px) and (max-width:2050px) {
 .buton{
 width: 54.0%;
 
@@ -390,5 +429,5 @@ width: 54.0%;
 .p-button{
     right:15px;
 }
-}
+} */
 </style>

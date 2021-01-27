@@ -4,7 +4,7 @@
       <div class="logo-con">
         <a href="" class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"></a>
       </div>
-      <div class="fp-header">
+      <div class="fp-header mt-5">
           <h2>Forgot Your Password?</h2>
       </div>
       <div class="fp-form-con">
@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import authService from "@/services/auth/authservice"
+
 export default {
     data() {
         return {
@@ -42,15 +43,23 @@ export default {
     methods: {
         resetPassword(e) {
             e.preventDefault()
-            axios.post(`/forgotpassword/${this.credentials.email}`)
-                .then(res => {
-                    console.log(res);
-                    // this.$router.push({name: "ResetPassword", params: { token: res.data.accessToken }})
+            authService.forgotPassword(this.credentials.email)
+              .then(res => {
+                console.log(res.id);
+                this.$router.push({
+                  name: "EmailSent",
+                  params: { email: this.credentials.email }
                 })
-                .catch(err => {
-                    console.log(err);
-                    // this.$router.push({name: "EmailSent", params: { email: this.credentials.email }})
-                })
+              })
+              .catch(err => {
+                console.log(err);
+                if (err.response.status) {
+                  this.$router.push({
+                    name: "EmailSent",
+                    params: { email: this.credentials.email }
+                  })
+                }
+              })
         }
     },
 };
