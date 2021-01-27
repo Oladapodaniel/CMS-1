@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 
-import Pagination from '@/components/pagination/PaginationButtons.vue';
+import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
 import TermsOfUse from '@/views/account/TermsOfService.vue'
 

@@ -131,7 +131,8 @@ export default {
           console.log(data, "data");
           if (!data || !data.token) {
             router.push({
-              name: "EmailSent"
+              name: "EmailSent",
+              params: { email: state.credentials.userName }
             })
             return false;
           }
