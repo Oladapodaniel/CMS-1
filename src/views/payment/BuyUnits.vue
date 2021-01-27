@@ -2,107 +2,35 @@
   <div class="px-sm-2 slim-container">
     <div class="container">
       <div class="row text-center">
-        <div class="col-md-12 mb-4 mt-3">
+        <div class="col-md-12 mb-4 mt-3" id="successDialog">
           <h2 class="font-weight-bold intro-text">
             Choose a plan that's right for your church
           </h2>
+          <Dialog
+            :modal="true"
+            v-model:visible="purchaseIsSuccessful"
+            :style="{ maxWidth: '900px', }"
+          >
+            <template #header style="d-none">
+              <h3>Header</h3>
+            </template>
+            <PaymentSuccessModal />
+          </Dialog>
         </div>
       </div>
-      
 
       <div class="row text-center mb-4">
         <div class="col-lg-8 offset-lg-2">
           <p class="font-weight-noraml small-text">
-            There is no maximum limit or expiry date for your units which you may purchase at any time. With our pricing system you get more SMS units the more you buy.
+            There is no maximum limit or expiry date for your units which you
+            may purchase at any time. With our pricing system you get more SMS
+            units the more you buy.
           </p>
           <p class="font-weight-600">
             Note that we charge 1 unit per SMS to all GSM networks in Nigeria.
           </p>
         </div>
       </div>
-
-      <!-- <div class="row d-md-flex justify-content-around mb-3">
-        <div class="col-md-2 d-flex flex-column justify-content-end">
-          <div class="row labels-box">
-            <div class="col-md-12"></div>
-            <div class="col-md-12 px-0 plan-items">
-              <p class="mb-1 py-2 px-1">SMS Volume</p>
-              <p class="mb-1 py-2 px-1">Price (₦)</p>
-              <p class="mb-1 py-2 px-1">Price ($)</p>
-              <p class="mb-1 py-2 px-1">Minimum Payment</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-2 plan-box">
-          <div class="row text-center">
-            <div class="col-md-12 my-3 mb-4">
-              <h4 class="mb-1 plan-header font-weight-700">Basic Plan</h4>
-              <span class="small-text">Lorem ipsum dolor sit</span>
-            </div>
-            <div class="col-md-12 px-0 plan-items">
-              <p class="mb-1 py-2 font-weight-700">
-                <span class="hidden-label">SMS Volume: </span> 50 - 333
-              </p>
-              <p class="mb-1 py-2 font-weight-700">
-                <span class="hidden-label">Price (₦): </span> ₦3.00
-              </p>
-              <p class="mb-1 py-2 font-weight-700">
-                <span class="hidden-label">Price ($): </span> $0.01
-              </p>
-              <p class="mb-1 py-2 font-weight-700">
-                <span class="hidden-label">Minimum Payment: </span> ₦380.00
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-2 plan-box">
-          <div class="row text-center">
-            <div class="col-md-12 my-3 mb-4">
-              <h4 class="mb-1 plan-header font-weight-700">Basic Plan</h4>
-              <span class="small-text">Lorem ipsum dolor sit</span>
-            </div>
-            <div class="col-md-12 px-0 plan-items">
-              <p class="mb-1 py-2 font-weight-700">50 - 333</p>
-              <p class="mb-1 py-2 font-weight-700">₦3.00</p>
-              <p class="mb-1 py-2 font-weight-700">$0.01</p>
-              <p class="mb-1 py-2 font-weight-700">₦380.00</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-2 plan-box">
-          <div class="row text-center">
-            <div class="col-md-12 my-3 mb-4">
-              <h4 class="mb-1 plan-header font-weight-700">Basic Plan</h4>
-              <span class="small-text">Lorem ipsum dolor sit</span>
-            </div>
-            <div class="col-md-12 px-0 plan-items">
-              <p class="mb-1 py-2 font-weight-700">50 - 333</p>
-              <p class="mb-1 py-2 font-weight-700">₦3.00</p>
-              <p class="mb-1 py-2 font-weight-700">$0.01</p>
-              <p class="mb-1 py-2 font-weight-700">₦380.00</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-2 plan-box">
-          <div class="row text-center">
-            <div class="col-md-12 my-3 mb-4">
-              <h4 class="mb-1 plan-header font-weight-700">Basic Plan</h4>
-              <span class="small-text">Lorem ipsum dolor sit</span>
-            </div>
-            <div class="col-md-12 px-0 plan-items">
-              <p class="mb-1 py-2 font-weight-700">50 - 333</p>
-              <p class="mb-1 py-2 font-weight-700">₦3.00</p>
-              <p class="mb-1 py-2 font-weight-700">$0.01</p>
-              <p class="mb-1 py-2 font-weight-700">₦380.00</p>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
 
       <div class="row mb-4">
         <div class="col-lg-8 offset-lg-2 buy-box">
@@ -116,7 +44,6 @@
 
           <div class="row my-3">
             <div class="col-md-12">
-              
               <div class="row">
                 <div
                   class="col-md-3 d-flex align-items-center justify-content-md-end"
@@ -216,31 +143,42 @@
         <div class="col-lg-8 offset-lg-2">
           <div class="row">
             <div class="col-md-6 my-2 bank-details">
-          <div class="row">
-            <div class="col-md-4 d-flex align-items-center">
-              
-              <div class="image-box" style="height: 80px">
-                <img src="../../assets/gtbank.png" class="px-1" alt="Image" />
+              <div class="row">
+                <div class="col-md-4 d-flex align-items-center">
+                  <div class="image-box" style="height: 80px">
+                    <img
+                      src="../../assets/gtbank.png"
+                      class="px-1"
+                      alt="Image"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-8 px-md-1">
+                  <p class="font-weight-600 pt-2">Guarantee Trust Bank</p>
+                  <p class="mb-0">Account Name:</p>
+                  <p class="mb-0">Account Number:</p>
+                </div>
               </div>
             </div>
-            <div class="col-md-8 px-md-1">
-              <p class="font-weight-600 pt-2">Guarantee Trust Bank</p>
-              <p class="mb-0">Account Name:</p>
-              <p class="mb-0">Account Number:</p>
-            </div>
-          </div>
-        </div>
 
-        <div class="col-md-4 my-2">
-          <div class="row">
-            <div class="col-md-12">
-              <img src="../../assets/mastercard.png" class="master-card" alt="Image" />
+            <div class="col-md-4 my-2">
+              <div class="row">
+                <div class="col-md-12">
+                  <img
+                    src="../../assets/mastercard.png"
+                    class="master-card"
+                    alt="Image"
+                  />
+                </div>
+                <div class="col-md-12">
+                  <img
+                    src="../../assets/visacard.png"
+                    class="px-1 visa-card"
+                    alt="Image"
+                  />
+                </div>
+              </div>
             </div>
-            <div class="col-md-12">
-              <img src="../../assets/visacard.png" class="px-1 visa-card" alt="Image" />
-            </div>
-          </div>
-        </div>
           </div>
         </div>
       </div>
@@ -251,12 +189,16 @@
 <script>
 import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
+import PaymentSuccessModal from "@/components/payment/PaymentSuccessful.vue"
 
 export default {
+  components: { PaymentSuccessModal },
+
   setup() {
     const amount = ref(0);
     const smsUnits = ref(0);
     const invalidAmount = ref(false);
+    const purchaseIsSuccessful = ref(false);
 
     // setTimeout(() => NProgress.start(), 3000)
     // setTimeout(() => NProgress.done(), 6000)
@@ -303,6 +245,7 @@ export default {
             .post("/api/Payment/buySms", returnres)
             .then((res) => {
               console.log(res, "success data");
+              purchaseIsSuccessful.value = true
             })
             .catch((err) => {
               console.log(err, "error confirming payment");
@@ -319,6 +262,7 @@ export default {
       totalSMSUnits,
       payWithPaystack,
       invalidAmount,
+      purchaseIsSuccessful,
     };
   },
 };
@@ -348,9 +292,9 @@ export default {
 .calc-con {
   background: #136acd;
   border-radius: 15px 15px 0 0;
-      height: 66px;
-    display: flex;
-    align-items: center;
+  height: 66px;
+  display: flex;
+  align-items: center;
 }
 
 .inp-field {
@@ -378,9 +322,8 @@ export default {
   display: none;
 }
 
-
 .buy-box {
-  border: 1px solid #DDE2E6;
+  border: 1px solid #dde2e6;
   border-radius: 15px;
 }
 
@@ -398,6 +341,14 @@ export default {
 
 .flat-right-border {
   border-radius: 4px 0 0 4px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+   display: none !important;
+}
+
+.container .p-dialog-header {
+  background: olivedrab !important;
 }
 
 @media screen and (max-width: 501px) {
