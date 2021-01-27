@@ -282,6 +282,12 @@ const routes = [{
                             import ( /* webpackChunkName: "ministryusers" */ '@/views/settings/MinistryUsers')
                     },
                     {
+                        path: 'invitenewuser',
+                        name: 'InviteNewUser',
+                        component: () =>
+                            import ( /* webpackChunkName: "ministryusers" */ '@/views/settings/InviteNewUser')
+                    },
+                    {
                         path: 'profile',
                         name: 'ChurchProfile',
                         component: () =>
