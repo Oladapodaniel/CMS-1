@@ -7,7 +7,7 @@
 
       <div class="col-sm-8 d-flex head-button">
         <button class="more default-btn">More <i class="fa fa-angle-down ml-2"></i></button>
-        <router-link to="/tenant/people/add-first-timer" class="add-btn default-btn">
+        <router-link to="/tenant/people/add-first-timer" class="add-btn">
           Add First timer
         </router-link>
       </div>
@@ -504,8 +504,121 @@
               <hr class="row-divider" />
             </div>
               </div>
-              <div v-else>
+              <div v-else-if="searchMember.length == 0 && searchText != '' ">
                 <div class="no-record text-center my-4">No records found</div>
+              </div>
+              <div v-else>
+                <div v-if="churchMembers.length == 0">
+                  <div class="text-center mt-4">No First timers yet, <router-link to="/tenant/people/add-first-timer" class="text-primary">Click to Add First Timer</router-link></div>
+                </div>
+                <div v-else-if="!noRecords">
+                  <div
+              class="table-body"
+              v-for="person in churchMembers"
+              :key="person.personID"
+            >
+              <div class="data-row">
+                <div class="check data">
+                  <input type="checkbox" name="" id="" />
+                </div>
+                <div class="picture data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Name</p>
+                    </div>
+                    <div class="data-value">
+                      <router-link :to="{name: 'AddFirstTimer', params: { id: person.personID}}">{{ person.fullName }}</router-link>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="firstname data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Phone Number</p>
+                    </div>
+                    <router-link
+                      :to="``"
+                      class="data-value">
+                      {{ person.phoneNumber }}
+                    </router-link>
+                  </div>
+                </div>
+                <div class="lastname data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Source</p>
+                    </div>
+                    <div
+                      class="data-value">
+                      Social media
+                      </div>
+                  </div>
+                </div>
+                <div class="phone data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Interested</p>
+                    </div>
+                    <a class="data-value">
+                      {{ person.interestedInJoining === "Not_Specified" ? "Not Specified" : person.interestedInJoining }}
+                    </a>
+
+                  </div>
+                </div>
+                <div class="phone data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Date</p>
+                    </div>
+                    <div class="data-value">
+                      {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}
+                    </div>
+
+                  </div>
+                </div>
+                <div class="phone data">
+                  <div class="data-con">
+                    <div class="data-text">
+                      <p>Status</p>
+                    </div>
+                    <router-link
+                      :to="`/tenant/people/add-first-timer/${person.personID}`"
+                      class="data-value itemroute-color">
+                    {{ person.status }}
+                    </router-link>
+                  </div>
+                </div>
+                <div class="action data action-icon">
+                  <div class="dropdown">
+                    <i
+                      class="fas fa-ellipsis-v"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    ></i>
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <a class="dropdown-item" href="#">Convert to member</a>
+                      <a class="dropdown-item" href="#">Assign to follow-up</a>
+                      <a class="dropdown-item" v-if="person.phoneNumber">
+                        <router-link
+                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          >Send SMS</router-link
+                        >
+                      </a>
+                      <a class="dropdown-item" href="#">Send Email</a>
+                      <a class="dropdown-item" href="#">Delete</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr class="row-divider" />
+            </div>
+                </div>
               </div>
             </div>
 
@@ -619,6 +732,7 @@ export default {
         
         filterResult.value = res.data
         console.log(filterResult.value);
+        noRecords.value = false
       }) .catch(err => console.log(err))
     }
 
