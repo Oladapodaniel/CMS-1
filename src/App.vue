@@ -14,7 +14,9 @@
 <script>
 import axios from "@/gateway/backendapi";
 import store from "@/store/store.js";
+// import { createNamespacedHelpers } from 'vuex';
 import router from "@/router/index";
+// import { mapAction } from createNamespacedHelpers("lookups");
 // import Multiselect from '@vueform/multiselect'
 import ConnectionBar from "@/components/connectivity/ConnectionStatus.vue";
 
@@ -51,7 +53,9 @@ export default {
     // this.$toast.show(`Hey! I'm here`, { position: 'top-right', type: 'success'});
     if (localStorage.getItem("token")) {
       this.getCurrentUser();
+      store.dispatch("lookups/setup");
       store.dispatch("getMembers");
+      store.dispatch("getFirstTimers");
     }
     // setTimeout(this.$toast.clear, 3000)
   },

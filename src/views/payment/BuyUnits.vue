@@ -6,10 +6,12 @@
           <h2 class="font-weight-bold intro-text">
             Choose a plan that's right for your church
           </h2>
+          <Toast />
           <Dialog
             :modal="true"
             v-model:visible="purchaseIsSuccessful"
             :style="{ maxWidth: '900px', }"
+            ariaCloseLabel="X"
           >
             <template #header style="d-none">
               <h3>Header</h3>
@@ -187,9 +189,12 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import PaymentSuccessModal from "@/components/payment/PaymentSuccessful.vue"
+import store from '../../store/store'
+import userService from '../../services/user/userservice'
+import { useToast } from "primevue/usetoast";
 
 export default {
   components: { PaymentSuccessModal },
@@ -199,6 +204,7 @@ export default {
     const smsUnits = ref(0);
     const invalidAmount = ref(false);
     const purchaseIsSuccessful = ref(false);
+    const toast = useToast();
 
     // setTimeout(() => NProgress.start(), 3000)
     // setTimeout(() => NProgress.done(), 6000)
@@ -213,6 +219,26 @@ export default {
       return Math.ceil(amount.value);
     });
 
+
+    const getUserEmail = async () => {
+      userService.getCurrentUser()
+        .then(res => {
+          userEmail.value = res.userEmail;
+          churchName.value = res.churchName;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
+    console.log(getUserEmail(), "UserEmail");
+
+
+    const userEmail = ref("");
+    const churchName = ref("");
+    // const userEmail = ref("");
+    if (store.getters.currentUser) userEmail.value = store.getters.currentUser.userEmail;
+    if (!store.getters.currentUser) getUserEmail();
+
     const payWithPaystack = (e) => {
       e.preventDefault();
       invalidAmount.value = false;
@@ -221,15 +247,17 @@ export default {
         return false;
       }
 
+      
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: "pk_test_9a8895ede03716b9a0474fea6da11ec5bc1c7033",
-        email: "stgodstar@gmail.com",
+        email: userEmail.value,
         amount: amount.value * 100,
-        firstname: "Godstar",
-        lastname: "Gerrald",
+        firstname: churchName.value,
+        lastname: "",
         onClose: function () {
-          swal("Transaction Canceled!", { icon: "error" });
+          // swal("Transaction Canceled!", { icon: "error" });
+          toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
         },
         callback: function (response) {
           //Route to where you confirm payment status
@@ -254,6 +282,10 @@ export default {
       });
       handler.openIframe();
     };
+
+    onMounted(() => {
+      console.log(store.getters.currentUser, "user");
+    })
 
     return {
       amount,

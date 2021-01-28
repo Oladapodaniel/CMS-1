@@ -8,11 +8,12 @@ const authService = {
                     resolve(res.data);
                 })
                 .catch(error => {
+                    /*eslint no-undef: "warn"*/
                     NProgress.done();
                     if (error.response) {
                         resolve(error.response)
                     } else {
-                        /*eslint no-undef: "warn"*/
+                        
                         reject(error)
                     }
                 })

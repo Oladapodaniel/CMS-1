@@ -87,9 +87,6 @@ export default {
           
           authService.resetPassword(this.credentials)
             .then(res => {
-              console.log(res.result, "res.res");
-              console.log(res.result.value, "res.res.value");
-              console.log(res.value, "res.value");
               localStorage.setItem("token", res.result.value.token);
               if (res.result.value.churchSize > 0) {
                 this.$router.push("/tenant");
