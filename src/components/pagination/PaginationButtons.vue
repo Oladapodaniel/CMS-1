@@ -3,17 +3,18 @@
     <div class="container">
       <div class="row mt-4" style="margin-top: 10px">
         <div class="col-md-12 d-flex">
-          <a class="p-2 mx-1 page-btn rounded-circle"
+          <a class="p-2 mx-1 page-btn rounded-circle" @click="getPageContent(+currentPage - 1)"
             ><i class="fa fa-angle-left"></i>
           </a>
           <a
             class="p-2 mx-1 page-btn rounded-circle"
+            :class="{ 'primary-bg text-white': i === currentPage}"
             v-for="i in 10"
             :key="i"
             @click="getPageContent(i)"
             >{{ i }}</a
           >
-          <a class="p-2 mx-1 page-btn rounded-circle"
+          <a class="p-2 mx-1 page-btn rounded-circle" @click="getPageContent(+currentPage + 1)"
             ><i class="fa fa-angle-right"></i
           ></a>
         </div>
@@ -24,6 +25,8 @@
 
 <script>
 export default {
+  props: [ "itemsCount", "currentPage" ],
+
   data() {
     return {
       test: "",
@@ -32,6 +35,7 @@ export default {
 
   methods: {
     getPageContent(page) {
+      if (page < 1) return false;
       this.$emit("getcontent", page);
     },
   },

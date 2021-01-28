@@ -4,7 +4,7 @@ import lookupService from '../../services/membership/membershipservice'
 
 
 export default {
-//   namespaced: true,
+  namespaced: true,
   state: {
     members: [ ],
     firstTimers: [ ],
@@ -18,6 +18,12 @@ export default {
     setFirstTimers(state, payload) {
       state.firstTimers = payload;
     },
+
+    updateMember(state, payload) {
+        const targetMembersIndex = state.members.findIndex(i => i.id === payload.id);
+        state.members[targetMembersIndex] = payload;
+
+    }
   },
 
   actions: {
@@ -33,7 +39,6 @@ export default {
         console.log("getting");
       try {
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
-        console.log(data, "mbs");
         commit("setMembers", data)
       } catch (err) {
         /*eslint no-undef: "warn"*/
@@ -45,7 +50,6 @@ export default {
     async getFirstTimers({ commit }) {
       try {
         const { data } = await axios.get("/api/People/FirstTimer");
-        console.log(data, "fts");
         commit("setFirstTimers", data)
       } catch (err) {
         /*eslint no-undef: "warn"*/
@@ -66,6 +70,10 @@ export default {
                 NProgrss.done();
                 console.log(err);
             })
+    },
+
+    updateMember({ commit }, payload) {
+        commit("updateMember", payload);
     }
 
   },
@@ -75,6 +83,6 @@ export default {
     
     getMemberById: (state) => (id) => {
         return state.members.find(i => i.id === id)
-    }
+    },
   },
 }
