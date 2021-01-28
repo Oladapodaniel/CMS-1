@@ -74,6 +74,7 @@ const composerObj = {
             NProgress.start();
             axios.get(`/api/Messaging/getSentSMSbyId?id=${id}`)
                 .then(res => {
+                    console.log(res);
                     resolve(res.data);
                 })
                 .catch(error => {
