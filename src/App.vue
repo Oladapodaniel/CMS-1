@@ -54,8 +54,10 @@ export default {
     if (localStorage.getItem("token")) {
       this.getCurrentUser();
       store.dispatch("lookups/setup");
-      store.dispatch("getMembers");
-      store.dispatch("getFirstTimers");
+      store.dispatch("lookups/getPeopleClassifications");
+      store.dispatch("lookups/getUserSources");
+      store.dispatch("membership/getMembers");
+      store.dispatch("membership/getFirstTimers");
     }
     // setTimeout(this.$toast.clear, 3000)
   },

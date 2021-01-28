@@ -418,12 +418,15 @@ import { useRoute } from "vue-router";
 // import { getCurrentInstance } from "vue";
 import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
+import { useStore } from "vuex";
+import membershipService from "../../services/membership/membershipservice"
 
 export default {
   components: { Dropdown },
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
     const toast = useToast();
+    const store = useStore();
     const hideCelebTab = ref(false);
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
@@ -521,7 +524,7 @@ export default {
     };
 
     //Person
-    const peopleClassifications = ref([]); //null
+    const peopleClassifications = ref([ ]); //null
     const selectedMembership = ref(null);
     let person = reactive({
       monthOfBirth: null,
@@ -604,6 +607,7 @@ export default {
           );
 
           if (response.status === 200 || response.status === 201) {
+            store.dispatch("membership/getMembers")
             loading.value = false;
             router.push("/tenant/people");
           }
@@ -642,6 +646,7 @@ export default {
           );
 
           if (response.status === 200 || response.status === 201) {
+            store.dispatch("membership/getMembers")
             loading.value = false;
             router.push("/tenant/people");
           }
@@ -672,70 +677,32 @@ export default {
       }
     };
 
-    let genders = ref([]);
-    let maritalStatus = ref([]);
+    let genders = ref(store.getters["lookups/genders"]);
+    let maritalStatus = ref(store.getters["lookups/maritalStatus"]);
+    let ageGroups = ref(store.getters["lookups/ageGroups"]);
+    let memberships = ref(store.getters['lookups/peopleClassifications']);
+
     const selectedMaritalStatus = ref(null);
     const selectedGender = ref(null);
+    const selectedAgeGroup = ref(null);
 
     const getLookUps = () => {
       axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
+          console.log(res, "lksa");
           genders.value = res.data.find(
             (i) => i.type.toLowerCase() === "gender"
           ).lookUps;
           maritalStatus.value = res.data.find(
-            (i) => i.type.toLowerCase() === "marital status"
+            (i) => i.type.toLowerCase() === "maritalstatus"
           ).lookUps;
-          console.log(maritalStatus);
+          console.log(maritalStatus, "MS");
         })
         .catch((err) => console.log(err.response));
     };
 
-    let ageGroups = ref([]);
-    const selectedAgeGroup = ref(null);
-    const getAgeGroups = () => {
-      axios
-        .get("/api/Settings/GetTenantAgeGroups")
-        .then((res) => {
-          ageGroups.value = res.data;
-          console.log(ageGroups.value);
-        })
-        .catch((err) => console.log(err.response));
-    };
-    const gendersArr = computed(() => {
-      return genders.value.map((i) => i.value);
-    });
-    const maritalStatusArr = computed(() => {
-      return maritalStatus.value.map((i) => i.value);
-    });
-
-    let memberships = ref([]);
-    const route = useRoute();
-    const memberToEdit = ref(null);
-
-    if (route.params.personId) {
-      axios
-        .get(
-          `/api/People/GetPersonInfoWithAssignments/${route.params.personId}`
-        )
-        .then((res) => {
-          memberToEdit.value = res.data;
-          console.log(res.data, "p");
-          person.firstName = res.data.firstName;
-          person.email = res.data.email;
-          person.lastName = res.data.lastName;
-          person.firstName = res.data.firstName;
-          person.mobilePhone = res.data.mobilePhone;
-          person.address = res.data.homeAddress;
-          person.occupation = res.data.occupation;
-        });
-    }
-
-    
-    onMounted(async () => {
-      getLookUps();
-      getAgeGroups();
+    const getPeopleClassifications = async () => {
       try {
         const response = await axios.get(
           "/api/Settings/GetTenantPeopleClassification"
@@ -746,20 +713,79 @@ export default {
         peopleClassifications.value = data.map((i) => i.name);
       } catch (err) {
         if (err.response && err.response.status === 401) {
-          localStorage.setItem("token", "");
+          localStorage.removeItem("token")
 
           router.push("/");
         }
         console.log(err);
       }
+    }
 
-      if (memberToEdit.value) {
+    const getAgeGroups = () => {
+      axios
+        .get("/api/Settings/GetTenantAgeGroups")
+        .then((res) => {
+          ageGroups.value = res.data;
+          console.log(ageGroups.value);
+        })
+        .catch((err) => console.log(err.response));
+    };
+
+    if (!genders.value || genders.value.length === 0) getLookUps();
+    if (!ageGroups.value || ageGroups.value.length === 0) getAgeGroups();
+    if (!memberships.value || memberships.value.length === 0) getPeopleClassifications();
+
+    const gendersArr = computed(() => {
+      return genders.value.map((i) => i.value);
+    });
+    const maritalStatusArr = computed(() => {
+      return maritalStatus.value.map((i) => i.value);
+    });
+
+    const route = useRoute();
+    const memberToEdit = ref(null);
+
+    const populatePersonDetails = (data) => {
+      console.log(data, "data passed");
+      person.firstName = data.firstName;
+      person.email = data.email;
+      person.lastName = data.lastName;
+      person.firstName = data.firstName;
+      person.mobilePhone = data.mobilePhone;
+      person.address = data.homeAddress;
+      person.occupation = data.occupation;
+    }
+
+    const getMemberToEdit = () => {
+      membershipService.getMemberById(route.params.personId)
+        .then(res => {
+          memberToEdit.value = res;
+          populatePersonDetails(res);
+        })
+    }
+
+    if (route.params.personId) {
+      console.log(store.getters[`membership/getMemberById`](route.params.personId), "lll");
+      memberToEdit.value = store.getters[`membership/getMemberById`](route.params.personId);
+      
+      if (!memberToEdit.value || !memberToEdit.value.id) {
+        getMemberToEdit(route.params.personId)
+      } else {
+        populatePersonDetails(memberToEdit.value);
+      }
+    }
+
+    
+    onMounted(async () => {
+      if (memberToEdit.value && memberToEdit.value.id) {
         selectedMaritalStatus.value = maritalStatus.value.find(
           (i) => i.id === memberToEdit.value.maritalStatusID
         );
+        
         selectedGender.value = genders.value.find(
           (i) => i.id === memberToEdit.value.genderID
         );
+        
         selectedMembership.value = memberships.value.find(
           (i) => i.id === memberToEdit.value.peopleClassificationID
         );
@@ -808,6 +834,7 @@ export default {
       memberships,
       selectedAgeGroup,
       ageGroups,
+      getAgeGroups,
       showError,
     };
   },

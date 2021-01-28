@@ -388,7 +388,7 @@
       </div>
 
       <div class="table-footer">
-        <PaginationButtons @getcontent="getPeopleByPage" />
+        <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="peopleCount" :currentPage="currentPage" />
       </div>
     </div>
   </div>
@@ -404,7 +404,7 @@ import { useConfirm } from "primevue/useConfirm"
 import { useToast } from 'primevue/usetoast';
 
 export default {
-  props: ["list"],
+  props: ["list", "peopleCount"],
   components: {
     ByGenderChart,
     ByMaritalStatusChart,
@@ -522,18 +522,22 @@ export default {
         });
         }
         
-
-    // const getPeopleByPage = async (e) => {
-
-    //   try {
-    //     const { data } = await axios.get(
-    //       `/api/People/GetPeopleBasicInfo?page=${e}`
-    //     );
-    //     churchMembers.value = data;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
+    const currentPage = ref(1);
+    const getPeopleByPage = async (page) => {
+      if (page < 1) return false;
+      try {
+        const { data } = await axios.get(
+          `/api/People/GetPeopleBasicInfo?page=${page}`
+        );
+        filterResult.value = [ ];
+        searchMember.value = [ ];
+        noRecords.value = false;
+        churchMembers.value = data;
+        currentPage.value = page;
+      } catch (error) {
+        console.log(error);
+      }
+    };
     // const getMemberSummary = () => {
 
     // }
@@ -570,7 +574,8 @@ export default {
 
     return {
       churchMembers,
-      // getPeopleByPage,
+      getPeopleByPage,
+      currentPage,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       membershipSummary,
