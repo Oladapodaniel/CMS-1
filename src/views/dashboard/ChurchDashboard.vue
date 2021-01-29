@@ -314,7 +314,7 @@
 </template>
 
 <script>
-import PieChart from "@/components/charts/PieChart.vue";
+import PieChart from "@/components/charts/DashboardPie.vue";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
 import { ref } from "vue";
 // import { useRoute } from 'vue-router';
