@@ -294,7 +294,8 @@
               subtitle="Overview"
               distance="5"
               :titleMarginLeft="70"
-              :height="400"
+               height="400"
+               :summary="offering"
             />
           </div>
 
@@ -305,7 +306,8 @@
               subtitle="Overview"
               distance="1"
               :titleMarginLeft="70"
-              :height="400"
+               height="400"
+               :summary="offering"
             />
           </div>
         </div>
@@ -333,7 +335,7 @@ export default {
   setup() {
     const moreLinksVissible = ref(false);
     const firstTimerArr = ref([])
-
+    const offering = ref([23, 45, 65, 78, 89])
 
 
     const toggleMoreLinkVissibility = () => {
@@ -398,7 +400,8 @@ export default {
       toggleMoreLinkVissibility,
       firstTimer,
       firstTimerArr,
-      subPlan
+      subPlan,
+      offering
     };
   },
 };
