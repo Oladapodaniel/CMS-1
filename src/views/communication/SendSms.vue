@@ -107,6 +107,16 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col-md-12">
+            <input
+              class="border-none dropdown-toggle my-1 px-1"
+              type="text"
+              id="dropdownMenu"
+            />
+        </div>
+      </div>
+
       <!-- Start TEst -->
       <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
@@ -663,6 +673,9 @@ export default {
       if (index === 0) groupSelectionTab.value = true;
       if (index === 1) membershipSelectionTab.value = true;
       if (index === 2) phoneNumberSelectionTab.value = true;
+      if (index === 3) {
+        //
+      }
     };
 
     const sendOptionsIsShown = ref(false);

@@ -12,7 +12,8 @@ const composerObj = {
     possibleSMSDestinations: [
         "Select group from database",
         "Select person from membership database",
-        "Phone numbers"
+        "Phone numbers",
+        "All contacts"
     ],
 
     getCommunicationGroups() {

@@ -583,7 +583,7 @@ export default {
         selectedMembership.value ? selectedMembership.value.id : ""
       );
       formData.append("address", personObj.address ? personObj.address : "");
-      formData.append("picture", image);
+      formData.append("picture", image ? image : "");
       formData.append(
         "maritalStatusID",
         selectedMaritalStatus.value ? selectedMaritalStatus.value.id : ""
