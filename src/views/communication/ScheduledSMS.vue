@@ -18,19 +18,7 @@
                   </div>
                 </div>
                 <div class="col-sm-5 col-md-3 mt-sm-2 units-container">
-                  <div class="row d-sm-flex align-items-center units-div">
-                    <div class="col-sm-12">
-                      <h4 class="font-weight-bold mb-0 center-flexed">302</h4>
-                      <p class="font-weight-bold mb-0 center-flexed">SMS Units</p>
-                    </div>
-                    <div class="col-sm-12 d-sm-flex justify-content-center">
-                      <button class="btn buy-btn center-flexed">
-                        <span class="btn-text">
-                            BUY UNITS
-                        </span>
-                      </button>
-                    </div>
-                  </div>
+                  <UnitsArea />
                 </div>
               </div>
 
@@ -124,49 +112,6 @@
                     </div>
                   </div>
 
-                  <!-- <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-5 d-md-flex flex-column">
-                          <span
-                            class="d-flex justify-content-between msg-n-time"
-                          >
-                            <span class="font-weight-bold">message</span>
-                            <span class="timestamp">Today | 08:45 PM</span>
-                          </span>
-                          <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
-                          >
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span class="view-btn">View</span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -180,8 +125,10 @@
 <script>
 import axios from "@/gateway/backendapi";
 import { onMounted, ref } from 'vue';
+import UnitsArea from "../../components/units/UnitsArea"
 
 export default {
+  components: { UnitsArea },
   setup() {
     const sentSMS = ref([ ]);
     const loading = ref(false);

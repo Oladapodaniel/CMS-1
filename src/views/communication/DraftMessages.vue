@@ -18,19 +18,7 @@
                   </div>
                 </div>
                 <div class="col-sm-5 col-md-4 mt-sm-2 units-container">
-                  <div class="row d-sm-flex align-items-center jsutify-content-between units-div">
-                    <div class="col-sm-12">
-                      <h4 class="font-weight-bold mb-0 center-flexed">302</h4>
-                      <p class="font-weight-bold mb-0 center-flexed">SMS Units</p>
-                    </div>
-                    <div class="col-sm-12 d-sm-flex justify-content-center">
-                      <button class="btn buy-btn center-flexed" @click="payWithPaystack">
-                        <span class="btn-text">
-                            BUY UNITS
-                        </span>
-                      </button>
-                    </div>
-                  </div>
+                  <UnitsArea />
                 </div>
               </div>
 
@@ -149,7 +137,11 @@
 
 <script>
 import router from "@/router/index";
+import UnitsArea from "../../components/units/UnitsArea"
+
 export default {
+  components: { UnitsArea },
+
   data() {
     return {
 

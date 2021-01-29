@@ -480,14 +480,7 @@
             </div> -->
 
             <div class="table-footer">
-              <!-- <button class="tbl-footer-btn">
-                <i class="fa fa-angle-left"></i>
-              </button>
-              <button class="tbl-footer-btn">A</button>
-              <button class="tbl-footer-btn">A</button>
-              <button class="tbl-footer-btn">
-                <i class="fa fa-angle-right"></i>
-              </button> -->
+              
               <Pagination />
             </div>
           </div>

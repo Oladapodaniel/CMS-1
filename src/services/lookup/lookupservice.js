@@ -1,5 +1,8 @@
 import axios from "@/gateway/backendapi";
 // import store from '../../store/store'
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const lookupService = {
     lookupsSetUp() {
@@ -13,31 +16,22 @@ const lookupService = {
         } catch (error) {
             console.log(error);
         }
-        try {
-            this.getLookUps();
-        } catch (error) {
-            console.log(error);
-        }
-    },
-
-    getAgeGroups() {
-        /*eslint no-undef: "warn"*/
-        // NProgress.done();
-        axios
-            .get("/api/Settings/GetTenantAgeGroups")
-            .then((res) => {
-                console.log(res.data, "agegroups");
-            })
-            .catch((err) => console.log(err.response));
     },
 
     getPeopleClassifications() {
-        axios
-            .get("/api/Settings/GetTenantPeopleClassification")
-            .then((res) => {
-                console.log(res.data, "classes");
-            })
-            .catch((err) => console.log(err.response));
+        return new Promise((resolve, reject) => {
+            axios
+                .get("/api/Settings/GetTenantPeopleClassification")
+                .then((res) => {
+                    store.dispatch("lookups/setPeopleClassifcations", res.data);
+                    resolve(res.data)
+                    console.log(res.data, "classes");
+                })
+                .catch((err) => {
+                    reject(err)
+                    console.log(err.response)
+                });
+        })
 
     },
 
@@ -46,15 +40,17 @@ const lookupService = {
             axios.get("/api/membership/howyouheardaboutus").then((res) => {
                 // console.log(res.data, 'about us')
                 const howDidYouAboutUs = res.data.map((i) => {
-                  return { name: i.name, id: i.id };
+                    return { name: i.name, id: i.id };
                 });
 
                 resolve(howDidYouAboutUs);
-              })
-              .catch(error => {
-                  if (error.response) reject(error.response)
-                  if (!error.response) reject(error)
-              })
+            })
+                .catch(error => {
+                    /*eslint no-undef: "warn"*/
+                    // NProgress.done();
+                    if (error.response) reject(error.response)
+                    if (!error.response) reject(error)
+                })
         });
 
     },
@@ -62,22 +58,36 @@ const lookupService = {
     getLookUps() {
         return new Promise((resolve, reject) => {
             axios
-            .get("/api/LookUp/GetAllLookUps")
-            .then((res) => {
-                console.log(res, "lookups");
-                const genders = res.data.find(
-                    (i) => i.type.toLowerCase() === "gender"
-                ).lookUps;
-                const maritalStatus = res.data.find(
-                    (i) => i.type.toLowerCase() === "marital status"
-                ).lookUps;
-                resolve({ genders, maritalStatus })
-            })
-            .catch((err) => {
-                console.log(err)
-                reject(err);
-            });
+                .get("/api/LookUp/GetAllLookUps")
+                .then((res) => {
+                    console.log(res, "lookups");
+                    const genders = res.data.find(
+                        (i) => i.type.toLowerCase() === "gender"
+                    ).lookUps;
+                    const maritalStatus = res.data.find(
+                        (i) => i.type.toLowerCase() === "maritalstatus"
+                    ).lookUps;
+                    resolve({ genders, maritalStatus })
+                })
+                .catch((err) => {
+                    console.log(err)
+                    reject(err);
+                });
         })
+    },
+
+    getAgeGroups() {
+        return new Promise((resolve, reject) => {
+            axios.get("/api/Settings/GetTenantAgeGroups").then((res) => {
+                    resolve(res.data);
+                    console.log(ageGroups.value, "age groups");
+                    store.dispatch("lookups/setAgeGroups", res.data);
+                }).catch((err) => {
+                    console.log(err.response)
+                    if (err.response) reject(err.response)
+                    if (!err.response) reject(err)
+                });
+                })
     }
 }
 

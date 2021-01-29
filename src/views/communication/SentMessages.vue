@@ -19,7 +19,8 @@
                   </div>
                 </div>
                 <div class="col-sm-5 col-md-3 mt-sm-2 units-container">
-                  <div class="row d-sm-flex align-items-center units-div">
+                  <UnitsArea />
+                  <!-- <div class="row d-sm-flex align-items-center units-div">
                     <div class="col-sm-12">
                       <h4 class="font-weight-bold mb-0 center-flexed">302</h4>
                       <p class="font-weight-bold mb-0 center-flexed">
@@ -34,7 +35,7 @@
                         <span class="btn-text"> BUY UNITS </span>
                       </button>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -146,24 +147,29 @@
 </template>
 
 <script>
-import axios from "@/gateway/backendapi";
-import { onMounted, ref } from "vue";
+// import axios from "@/gateway/backendapi";
+import { ref } from "vue";
 import router from "@/router/index";
+import communicationService from "../../services/communication/communicationservice"
+import { useStore } from "vuex";
+import UnitsArea from "../../components/units/UnitsArea"
 
 export default {
+  components: { UnitsArea },
+  
   setup() {
-    const sentSMS = ref([]);
     const loading = ref(false);
+    const store = useStore();
+    const sentSMS = ref(store.getters["communication/allSentSMS"]);
 
     const getSentSMS = async () => {
       try {
         loading.value = true;
         /*eslint no-undef: "warn"*/
         NProgress.start();
-        const res = await axios.get("/api/Messaging/getAllSentSms");
+        const data = await communicationService.getAllSentSMS()
         loading.value = false;
-        sentSMS.value = res.data;
-        console.log(sentSMS.value);
+        sentSMS.value = data;
       } catch (error) {
         NProgress.done();
         console.log(error);
@@ -174,10 +180,9 @@ export default {
       router.push("/tenant/units");
     };
 
-    onMounted(() => {
-      console.log("Hello");
-      getSentSMS();
-    });
+    console.log(sentSMS.value);
+
+    if (!sentSMS.value || sentSMS.value.length === 0) getSentSMS();
 
     return {
       sentSMS,

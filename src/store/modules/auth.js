@@ -12,6 +12,7 @@ export default {
     userStartPoint: "",
     settingUserUp: false,
     churchMembers: {},
+    smsBalance: 0,
   },
 
   mutations: {
@@ -102,5 +103,7 @@ export default {
     initialSignUpDetails: state => state.initialSignUpDetails,
     userStartPoint: state => state.userStartPoint,
     settingUserUp: state => state.settingUserUp,
+    smsBalance: state => state.smsBalance,
+    currency: state => state.currentUser.currency,
   },
 }

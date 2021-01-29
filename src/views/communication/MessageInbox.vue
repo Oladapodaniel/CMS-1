@@ -21,7 +21,8 @@
                   </div>
                 </div>
                 <div class="col-sm-5 col-md-3 ml-2 mt-sm-2 units-container">
-                  <div class="row d-sm-flex align-items-center units-div">
+                  <UnitsArea />
+                  <!-- <div class="row d-sm-flex align-items-center units-div">
                     <div class="col-sm-12">
                       <h4 class="font-weight-bold mb-0 center-flexed">302</h4>
                       <p class="font-weight-bold mb-0 center-flexed">
@@ -36,7 +37,7 @@
                         <span class="btn-text"> BUY UNITS </span>
                       </button>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -174,9 +175,12 @@
 <script>
 // import axios from "@/gateway/backendapi";
 import router from "@/router/index";
+import UnitsArea from "../../components/units/UnitsArea"
+
 // import { onMounted } from 'vue';
 
 export default {
+  components: { UnitsArea },
   // setup() {
   //   const getSentSMS = async () => {
   //     try {

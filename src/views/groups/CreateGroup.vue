@@ -476,6 +476,7 @@ import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
+import store from '../../store/store';
 
 export default {
   setup() {
@@ -591,6 +592,7 @@ export default {
         .then((res) => {
           savingGroup.value = false;
           console.log(res.data, "saved");
+          store.dispatch("groups/getGroups")
           if (redirect) {
             router.push("/tenant/people-groups");
           } else {
@@ -621,6 +623,7 @@ export default {
         .post("/api/CreateGroup", data)
         .then((res) => {
           console.log(res);
+          store.dispatch("groups/getGroups")
           savingGroup.value = false;
           router.push("/tenant/people-groups");
         })
