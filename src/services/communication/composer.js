@@ -67,6 +67,22 @@ const composerObj = {
                     if (!error.response) reject(error);
                 })
         })
+    },
+
+    getSMSById(id) {
+        return new Promise((resolve, reject) => {
+            NProgress.start();
+            axios.get(`/api/Messaging/getSentSMSbyId?id=${id}`)
+                .then(res => {
+                    console.log(res);
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    NProgress.done();
+                    if (error.response) reject(error.response);
+                    if (!error.response) reject(error);
+                })
+        })
     }
 }
 

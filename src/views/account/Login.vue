@@ -9,9 +9,13 @@
       </div>
 
       <div class="form-container">
-        <div class="error-div" v-if="state.showError">
-              <p class="error-message">{{ state.errorMessage }}</p>
-          </div>
+        <div class="error-div" v-if="state.showError && !state.notAUser">
+          <p class="error-message">{{ state.errorMessage }}</p>
+        </div>
+
+        <div class="error-div" v-if="state.notAUser">
+          <p class="error-message">Not a registered user, <a href="/register" class="primary-text font-weight-bold text-decoration-none">Register now</a></p>
+        </div>
 
         <form @submit="login">
           <div>
@@ -79,7 +83,8 @@
 
       <div class="bottom-container">
         <div>
-          <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p>
+          <p class="sign-up-prompt">Don't have an account yet? <a href="/register" class="sign-up"><strong>Sign up now</strong></a></p>
+          <!-- <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p> -->
         </div>
       </div>
       <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a>
@@ -92,6 +97,7 @@ import axios from '@/gateway/backendapi';
 import { reactive, ref } from 'vue';
 import store from '../../store/store'
 import router from '../../router/index';
+// import authService from "@/services/auth/authservice"
 // import FB from '../../services/guards/facebook-sdk/face'
 // import VFacebookLogin from 'vue-facebook-login-component'
 
@@ -106,6 +112,7 @@ export default {
         credentials: { },
         showError: false,
         errorMessage: "",
+        notAUser: false,
       });
       const loading = ref(false)
       // NProgress.start()
@@ -116,11 +123,19 @@ export default {
         e.preventDefault();
         localStorage.setItem("email", state.credentials.userName)
         state.showError = false;
+        state.notUser = false;
         try {
           loading.value = true;
           const res = await axios.post("/login", state.credentials)
-          loading.value = false;
           const { data } = res;
+          console.log(data, "data");
+          if (!data || !data.token) {
+            router.push({
+              name: "EmailSent",
+              params: { email: state.credentials.userName }
+            })
+            return false;
+          }
           console.log(data, "On login");
           
           store.dispatch("setUserData", data);
@@ -132,17 +147,23 @@ export default {
             router.push("/next")
           }
         } catch (err) { 
-          
+          /*eslint no-undef: "warn"*/
+          console.log(err.response, "login error");
+          console.log(err, "login error");
+          NProgress.done();
           loading.value = false;
           
           const { status } = err.response;
           const { onboarded } = err.response.data;
           if (status && status == 400 && onboarded === false)
           {
-            console.log("redirecting");
             router.push('/onboarding');
           } else {
-            state.errorMessage = err.response.data.message;
+            if (status === 404) {
+              state.notAUser = true;
+            } else {
+              state.errorMessage = err.response.data.message;
+            }
             state.showError = true;
           }
         }

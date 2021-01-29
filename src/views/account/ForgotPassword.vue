@@ -4,14 +4,14 @@
       <div class="logo-con">
         <a href="" class="logo-link"><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"></a>
       </div>
-      <div class="fp-header">
+      <div class="fp-header mt-5">
           <h2>Forgot Your Password?</h2>
       </div>
       <div class="fp-form-con">
           <div class="fp-desc">
             <p class="fp-desc-text">Enter your primary email and we'll send you instructions on how to reset your password.</p>
           </div>
-        <form action="" @submit="login">
+        <form action="" @submit.prevent="resetPassword">
           <div>
             <input
               class="input"
@@ -23,7 +23,7 @@
           </div>
           
 
-          <button class="submit-btn sign-in-btn">Send Reset Instructions</button>
+          <button class="submit-btn sign-in-btn mt-2">Send Reset Instructions</button>
         </form>
       </div>
     </div>
@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import authService from "@/services/auth/authservice"
+
 export default {
     data() {
         return {
@@ -40,19 +41,27 @@ export default {
     },
 
     methods: {
-        login(e) {
+        resetPassword(e) {
             e.preventDefault()
-            axios.post(`/forgotpassword/${this.credentials.email}`)
-                .then(res => {
-                    console.log(res);
-                    this.$router.push({name: "EmailSent", params: { email: this.credentials.email }})
+            authService.forgotPassword(this.credentials.email)
+              .then(res => {
+                console.log(res.id);
+                this.$router.push({
+                  name: "EmailSent",
+                  params: { email: this.credentials.email }
                 })
-                .catch(err => {
-                    console.log(err);
-                    this.$router.push({name: "EmailSent", params: { email: this.credentials.email }})
-                })
+              })
+              .catch(err => {
+                console.log(err);
+                if (err.response.status) {
+                  this.$router.push({
+                    name: "EmailSent",
+                    params: { email: this.credentials.email }
+                  })
+                }
+              })
         }
-    }
+    },
 };
 </script>
 

@@ -205,6 +205,8 @@ export default {
           this.$router.push("/onboarding/step2");
         })
         .catch((err) => {
+          /*eslint no-undef: "warn"*/
+          NProgress.done();
           this.loading = false;
           console.log(err.response);
         });

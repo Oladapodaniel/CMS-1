@@ -33,7 +33,7 @@
                     class="row menu-item-con py-2"
                     :class="{
                       'active-link':
-                        route.path === '/tenant/sms-communications/sent',
+                        route.path.includes('/tenant/sms-communications/sent'),
                     }"
                   >
                     <div class="col-md-12 menu-item-div m-auto">

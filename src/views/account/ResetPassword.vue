@@ -8,7 +8,7 @@
           <h2>Enter a New Password</h2>
       </div>
       <div class="fp-form-con">
-        <form action="" @submit="resetPassword">
+        <form action="" @submit.prevent="resetPassword">
           <div>
             <input
               class="input"
@@ -16,6 +16,7 @@
               :type="passwordType"
               placeholder="New Password"
               required
+              @input="clearErrorMessage"
             />
           </div>
           <div class="password-help">
@@ -36,7 +37,9 @@
               type="password"
               placeholder="Confirm Password"
               required
+               @input="clearErrorMessage"
             />
+            <span v-if="mismatch" class="text-danger">Password do not match</span>
           </div>
           
 
@@ -48,28 +51,71 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import authService from "@/services/auth/authservice";
+
 export default {
+
     data() {
         return {
             credentials: { },
             passwordType: "password",
             showBtnText: "Show",
+            mismatch: false,
         }
     },
 
     methods: {
         resetPassword() {
-            
+            if (this.credentials.password !== this.credentials.confirmPassword) {
+              this.mismatch = true;
+              return false;
+            }
+              // axios.post(`/passwordreset/${this.credentials}`)
+              //   .then(res => {
+              //     localStorage.setItem("token", res.data.token);
+              //     if (res.data.churchSize > 0) {
+              //       this.$router.push("/tenant");
+              //     } else {
+              //       this.$router.push("/next");
+              //     }
+              //   })
+              //   .catch(error => {
+              //     /*eslint no-undef: "warn"*/
+              //     NProgress.done();
+              //     console.log(error);
+              //   })
+          
+          authService.resetPassword(this.credentials)
+            .then(res => {
+              localStorage.setItem("token", res.result.value.token);
+              if (res.result.value.churchSize > 0) {
+                this.$router.push("/tenant");
+              } else {
+                this.$router.push("/next");
+              }
+            })
+            .catch(error => {
+              console.log("Hallo");
+              console.log(error);
+            })
         },
 
         showPassword(e) {
-            e.preventDefault();
-            if (!this.credentials.password) return false;
-            this.passwordType = this.passwordIsVissible ? "password" : "text";
-            this.passwordIsVissible = !this.passwordIsVissible;
-            this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
+          e.preventDefault();
+          if (!this.credentials.password) return false;
+          this.passwordType = this.passwordIsVissible ? "password" : "text";
+          this.passwordIsVissible = !this.passwordIsVissible;
+          this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
+        },
+
+        clearErrorMessage() {
+          this.mismatch = false;
         }
+    },
+
+    created() {
+      this.credentials.email = this.$route.query.email;
+      this.credentials.resetToken = this.$route.query.resetToken;
     }
 };
 </script>

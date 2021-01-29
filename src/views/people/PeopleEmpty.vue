@@ -70,6 +70,7 @@ import { ref, onMounted } from "vue";
 import axios from "@/gateway/backendapi";
 import PeopleList from "@/views/people/PeopleList.vue";
 import ImportPeople from "@/views/people/ImportPeople.vue";
+import store from '../../store/store'
 
 export default {
   components: { PeopleList, ImportPeople },
@@ -78,7 +79,8 @@ export default {
     const people = ref([]);
     const loading = ref(false);
     const errorGettingPeople = ref(false);
-    onMounted(async () => {
+
+    const getMembers = async () => {
       try {
         loading.value = true;
          /*eslint no-undef: "warn"*/
@@ -92,6 +94,17 @@ export default {
         errorGettingPeople.value = true;
         console.log(err);
       }
+    }
+
+    onMounted(() => {
+      console.log(store.getters.members, "from store");
+      if (store.getters.members && store.getters.members.length > 0) {
+        
+        people.value = store.getters.members;
+      } else {
+        getMembers()
+      }
+
     });
 
     return {

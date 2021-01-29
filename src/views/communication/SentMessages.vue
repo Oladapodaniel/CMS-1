@@ -73,7 +73,8 @@
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-5 d-md-flex flex-column">
-                          <span
+                          <router-link :to="{name: 'MessageDetails', params: { messageId: sms.id}}" style="color:#000" class="text-decoration-none">
+                            <span
                             class="d-flex justify-content-between msg-n-time"
                           >
                             <span class="font-weight-bold">{{
@@ -81,9 +82,12 @@
                             }}</span>
                             <span class="timestamp">{{ sms.dateSent }}</span>
                           </span>
-                          <span class="brief-message font-weight-600"
+                          </router-link>
+                          <router-link :to="{name: 'MessageDetails', params: { messageId: sms.id}}" class="text-decoration-none">
+                            <span class="brief-message font-weight-600"
                             >{{ sms.message && sms.message.length > 25 ? `${sms.message.split('').slice(0, 25).join("")}...` : sms.message ? sms.message : '' }}</span
                           >
+                          </router-link>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
@@ -91,7 +95,7 @@
                           <span class="hidden-header font-weight-bold"
                             >SENT BY:
                           </span>
-                          <span>{{ sms.sender }}</span>
+                          <span>{{ sms.sentByUser && sms.sentByUser.length > 10 ? `${sms.sentByUser.slice(0, 10)}...` : sms.sentByUser }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
@@ -131,50 +135,6 @@
                       <i class="fas fa-circle-notch fa-spin"></i>
                     </div>
                   </div>
-
-                  <!-- <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-5 d-md-flex flex-column">
-                          <span
-                            class="d-flex justify-content-between msg-n-time"
-                          >
-                            <span class="font-weight-bold">message</span>
-                            <span class="timestamp">Today | 08:45 PM</span>
-                          </span>
-                          <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
-                          >
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span class="view-btn">View</span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -203,6 +163,7 @@ export default {
         const res = await axios.get("/api/Messaging/getAllSentSms");
         loading.value = false;
         sentSMS.value = res.data;
+        console.log(sentSMS.value);
       } catch (error) {
         NProgress.done();
         console.log(error);
