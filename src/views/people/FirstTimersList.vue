@@ -215,7 +215,14 @@
                 </tbody>
                 <tbody v-else-if="filterResult.length == 0 && noRecords">
                   <tr>
-                    <td class="no-record text-center my-4">No records found</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                     <td class="no-record text-center my-4">No record found</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                   </tr>
                 </tbody>
               <!-- <div v-else-if="filterResult.length == 0 && noRecords">
