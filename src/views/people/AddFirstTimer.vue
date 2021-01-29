@@ -447,14 +447,15 @@
               <div class="input-field">
                 <label for="" class="label">Event or Service Attended</label>
                 <i class="pi pi-chevron-down manual-dd-icon"></i>
-                <input
+                <!-- <input
                   type="text"
                   class="input dd"
                   placeholder=""
                   v-model="selectedEventAttended.name"
                   @click="selectEventAttended"
                   @keydown="preventTying"
-                />
+                /> -->
+                <button @click.prevent="selectEventAttended" class="form-control input dd">{{ selectedEventAttended.name }}</button>
               </div>
               <div class="input-field manual-dd-con" v-if="showEventList">
                 <div class="manual-dd dd">
@@ -914,7 +915,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body new-event-modal">
                       <div class="row my-4">
                         <div class="col-md-4 text-md-right align-self-center">
                           <label for="" class="label font-weight-bold"
@@ -922,11 +923,107 @@
                           >
                         </div>
                         <div class="col-md-7">
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="newEvent.activity.newEventCategoryName"
-                          />
+                          
+                          <!-- <Dropdown
+                            v-model="selectedVisitOption"
+                            :options="eventName"
+                             placeholder="Select Event" 
+                             :filter="true" 
+                             filterPlaceholder="Search..."
+                            style="width: 100%"
+                          /> -->
+                          <!-- <select class="form-control select-dropdown">
+                            <option>Select Event</option>
+                            <option v-for="event in newEvents" :key="event.id" class="create-option">{{ event.name }}</option>
+                            <option class="create-new-event text-center">Create new event</option>
+                          </select> -->
+                           <!-- <input
+                                        type="text"
+                                        class="form-control"
+                                        v-model="newEvent.activity.newEventCategoryName"
+                                      /> -->
+                          <div
+                            class="select-elem-con pointer d-flex justify-content-space-between"
+                            @click="showCategory = !showCategory"
+                          >
+                            <span class="ofering"
+                              >{{ selectEvent }}</span
+                            ><span>
+                              <i
+                                class="pi pi-angle-down"
+                                :class="{ roll3: showForm3 }"
+                                aria-hidden="true"
+                              ></i
+                            ></span>
+                          </div>
+                          <div
+                            class="ofering"
+                            :class="{ 'style-category': showCategory }"
+                            v-if="showCategory"
+                          >
+                            <input
+                              type="text"
+                              placeholder="Search..."
+                              class="form-control ofering mb-3"
+                              v-model="eventText"
+                            />
+                            <div
+                              v-for="(eventCategory, index) in filterEventCategory"
+                              :key="index"
+                              class="ofering"
+                            >
+                              <div class="ofering py-1" @click="individualEvent(eventCategory)">
+                                {{ eventCategory.name }}
+                              </div>
+                            </div> 
+                            <div
+                              v-if="filterEventCategory.length >= 1"
+                              @click="openModal"
+                              class="create cat ofering"
+                            >
+                              Add New Event
+                            </div>
+                            <div v-else class="create mt-3" @click="createNewCat(1)">
+                              Create "{{ eventText }}" event
+                            </div>
+                          </div>
+
+                              <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
+                                <Dialog header="Add New Event" v-model:visible="displayModal" :style="{width: '50vw'}" :modal="true">
+                                    <div class="row">
+                                      <div class="col-sm-3 align-self-center">Event Name</div>
+                                      <div class="col-sm-9">
+                                        <input
+                                        type="text"
+                                        class="form-control"
+                                        v-model="newEventCategoryName"
+                                      />
+                                      </div>
+                                    </div>
+                                    <template #footer>
+                                        <!-- <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
+                                        <Button label="Yes" icon="pi pi-check" @click="closeModal" autofocus /> -->
+                                        <div class="col-md-12 d-md-flex justify-content-end p-0">
+                                          <button
+                                            type="button"
+                                            class="btn secondary-btn px-4"
+                                            @click="closeModal"
+                                          >
+                                            Close
+                                          </button>
+                                          <button
+                                            type="button"
+                                            class="btn primary-btn px-4 mr-0 text-white"
+                                            @click="createNewCat(2)"
+                                          >
+                                            Save
+                                          </button>
+                                        </div>
+                                    </template>
+                                </Dialog>
+
+
+
                         </div>
                       </div>
                       <div class="row mt-4 mb-4">
@@ -967,8 +1064,8 @@
                                 <button
                                   type="button"
                                   class="btn primary-btn px-4 text-white"
-                                  @click="createNewEvent"
                                   data-dismiss="modal"
+                                  @click="createNewEvent"
                                 >
                                   Save
                                 </button>
@@ -994,11 +1091,12 @@ import { ref, onMounted, computed } from "vue";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
-// import { getCurrentInstance } from "vue";
+import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
+import Dialog from 'primevue/dialog';
 
 export default {
-  components: { Dropdown },
+  components: { Dropdown, Dialog },
 
   setup() {
     // const $toast = getCurrentInstance().ctx.$toast;
@@ -1008,6 +1106,9 @@ export default {
     const selectEventAttended = () => {
       showEventList.value = !showEventList.value;
     };
+    const showError = ref(false)
+    const newEvents = ref([])
+
     const preventTying = (e) => {
       e.preventDefault();
     };
@@ -1082,7 +1183,7 @@ export default {
     const selectedFollowUp = ref(null);
 
     const firstTimersObj = ref({
-      // howDidYouAboutUsId: "00000000-0000-0000-0000-000000000000",
+      // howDidYouAboutUsId: selectedAboutUsSource.id,
       // maritalStatusId: "00000000-0000-0000-0000-000000000000",
       // genderId: "00000000-0000-0000-0000-000000000000",
       // maritalStatusId: "00000000-0000-0000-0000-000000000000",
@@ -1090,6 +1191,46 @@ export default {
       sendWelcomeSMS: false,
       sendWelcomeEmail: true,
     });
+
+    const eventName = computed(() => {
+      return newEvents.value.map(i => i.name)
+    })
+
+    const showCategory = ref(false)
+    const eventText = ref("")
+    const displayModal = ref(false)
+    const selectEvent = ref("Select Event")
+
+    const filterEventCategory = computed(() => {
+      // let x;
+      let arr = [];
+      if (newEvents.value.length > 0) {
+        console.log(newEvents.value, "new events");
+        arr = newEvents.value.filter((i) => {
+          return i.name.toLowerCase().includes(eventText.value.toLowerCase());
+        });
+      } else {
+        return newEvents.value;
+      }
+      return arr;
+    })
+
+    const openModal = () => {
+      displayModal.value = true
+    }
+
+    const closeModal = () => {
+      displayModal.value = false
+    }
+
+    const newEventCategoryName = ref("")
+    
+    const individualEvent = (obj) => {
+      selectEvent.value = obj.name
+      newEvent.value.activity.eventCategoryId = obj.id
+      showCategory.value = false
+      console.log(obj)
+    }
 
     const birthMonth = ref(null);
 
@@ -1102,7 +1243,8 @@ export default {
 
     const loading = ref(false);
 
-    const onSubmit = () => {
+
+    const onSubmit = async() => {
       // firstTimersObj.value.followUpTypeId =
       //   "00000000-0000-0000-0000-000000000000";
       firstTimersObj.value.genderId = selectedGender.value
@@ -1114,9 +1256,9 @@ export default {
       firstTimersObj.value.activityID = selectedEventAttended.value
         ? selectedEventAttended.value.activityID
         : "00000000-0000-0000-0000-000000000000";
-      // firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
-      //   ? selectedAboutUsSource.value.id
-      //   : "00000000-0000-0000-0000-000000000000";
+      firstTimersObj.value.howDidYouAboutUsId = selectedAboutUsSource.value
+        ? selectedAboutUsSource.value.id
+        : "00000000-0000-0000-0000-000000000000";
       firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
         ? comMeansArr.value.indexOf(selectedCommunicationMeans.value)
         : 0;
@@ -1126,7 +1268,7 @@ export default {
       firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
         ? wantVisitArr.value.indexOf(selectedVisitOption.value)
         : 0;
-
+// console.log(selectedAboutUsSource.value.id)
       switch (birthMonth.value) {
         case "January":
           firstTimersObj.value.birthMonth = "1";
@@ -1174,7 +1316,44 @@ export default {
 
       console.log(firstTimersObj.value);
       loading.value = true;
-      axios
+
+      if (route.params.firstTimerId) {
+        try {
+          loading.value = true;
+          const response = await axios.put(
+            `/api/People/EditFirstTimer/${route.params.firstTimerId}`,
+            firstTimersObj.value
+          );
+
+          if (response.status === 200 || response.status === 201) {
+            loading.value = false;
+            router.push("/tenant/first-timers");
+            console.log(firstTimersObj)
+          }
+        } catch (err) {
+          loading.value = false;
+          NProgress.done();
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "You 're Offline",
+              detail: "Please ensure you have internet access",
+              life: 2500,
+            });
+          } else {
+            showError.value = true;
+            toast.add({
+              severity: "error",
+              summary: "Update Failed",
+              detail: err.response && err.response.data.messsage ? err.response.data.messsage  : "Update operation was not succesfull",
+              life: 2500,
+            });
+          }
+          showError.value = true;
+          console.log(err.response);
+        } 
+      } else {
+        axios
         .post("/api/people/firsttimer", firstTimersObj.value)
         .then((res) => {
           console.log(res.data);
@@ -1193,7 +1372,10 @@ export default {
           // });
           console.log(err);
         });
-    };
+      }
+    }
+
+    
 
     const onCancel = () => {
       router.back();
@@ -1215,49 +1397,49 @@ export default {
     });
 
     const eventAttendedSelected = (eventObj) => {
+      console.log(eventObj)
       selectedEventAttended.value = eventObj;
       showEventList.value = false;
       eventsSearchString.value = "";
     };
 
-    // const createdEventName = ref("")
-
-    // const newEvent = ref({
-    //   date: "",
-    //   topic: "",
-    //   preacher: "",
-    //   preEvent: {
-    //     name: "",
-    //     topic: "",
-    //     details: "",
-    //     preActivityId: "00000000-0000-0000-0000-000000000000",
-    //     isPaidFor: false,
-    //     amount: "",
-    //     eventRules: "",
-    //     enableRegistration: false,
-    //     venue: "",
-    //     emailRegistration: "",
-    //     smsRegistraion: "",
-    //     banner: "",
-    //     isPublic: false,
-    //   },
-    //   eventCategoryId: "00000000-0000-0000-0000-000000000000",
-    //   attendances: [],
-    //   offerings: [],
-    //   activityFirstTimers: [],
-    // });
-
      const newEvent = ref({
             activity: { }
       })
-      // activit: selectedEventAttended.value.activityID ? selectedEventAttended.value.activityID : "00000000-0000-0000-0000-000000000000"
-      // this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
-
-      
 
     const invalidEventDetails = ref(false);
     const savingNewEvent = ref(false);
+    const firstTimer = ref({})
     
+    const createNewCat = async(eventParams) => {
+      try {
+        let data;
+        const theText = eventParams === 1 ? eventText.value : newEventCategoryName.value;
+          data = await axios.post(`/api/EventCategory?name=${theText}`)
+        console.log(data.data)
+        newEvents.value = data.data
+
+        toast.add({
+            severity: "success",
+            summary: "Event created",
+            detail: "Your new event was created successfully",
+            life: 2500,
+          });
+      }
+      catch (error) {
+        toast.add({
+                severity: "error",
+                summary: "Opps! Sorry Try again",
+                detail: error.response.data,
+                life: 2500,
+              });
+      }
+      displayModal.value = false;
+      console.log(newEventCategoryName.value)
+      newEventCategoryName.value = ""
+    }
+
+
     const createNewEvent = async () => {
       // console.log(eventsAttended.value);
       invalidEventDetails.value = false;
@@ -1269,7 +1451,7 @@ export default {
             "/api/Events/CreateActivity",
             newEvent.value
           );
-          
+          console.log(data)
           selectedEventAttended.value.activityID = data.currentEvent.id;
           selectedEventAttended.value.name = data.currentEvent.name ? data.currentEvent.name : "New event selected";
           // console.log(selectedEventAttended, "SAE");
@@ -1303,11 +1485,22 @@ export default {
       } else {
         invalidEventDetails.value = true;
       }
+
+      displayModal.value = false;
     };
+    const route = useRoute();
+
 
     onMounted(() => {
       axios.get("/api/Events/EventActivity").then((res) => {
         eventsAttended.value = res.data;
+      });
+
+      axios.get("/api/EventCategory").then((res) => {
+        newEvents.value = res.data.map((i) => {
+          return { id: i.id, name: i.name };
+        });
+
       });
 
       axios
@@ -1332,11 +1525,23 @@ export default {
         });
 
       axios.get("/api/membership/howyouheardaboutus").then((res) => {
-        // console.log(res.data, 'about us')
         howDidYouAboutUs.value = res.data.map((i) => {
           return { name: i.name, id: i.id };
         });
       });
+
+      console.log(route.params.firstTimerId)
+      axios.get("/api/People/FirstTimer")
+          .then(res => {
+            console.log(res.data)
+            for (let i = 0; i < res.data.length; i++) {
+                if (res.data[i].id == route.params.firstTimerId) {
+                console.log(res.data[i])
+                firstTimersObj.value = res.data[i]
+              }
+              
+            }
+          })
     });
 
     const year = computed(() => {
@@ -1388,6 +1593,21 @@ export default {
       createNewEvent,
       invalidEventDetails,
       savingNewEvent,
+      route,
+      firstTimer,
+      showError,
+      newEvents,
+      eventName,
+      showCategory,
+      filterEventCategory,
+      eventText,
+      displayModal,
+      openModal,
+      closeModal,
+      createNewCat,
+      newEventCategoryName,
+      selectEvent,
+      individualEvent
     };
   },
 };
@@ -1398,6 +1618,7 @@ export default {
   box-sizing: border-box;
   color: #02172e;
 }
+
 
 .show-tab {
   transition: all 0.5s ease-in-out;
@@ -1463,9 +1684,68 @@ export default {
   text-decoration: none;
 }
 
+.create-new-event {
+  text-align: center;
+  font: normal normal bold 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #136acd;
+}
+
 .create-event a:hover {
   cursor: pointer;
   padding: 8px;
+}
+
+.create {
+  text-align: center;
+  font: normal normal bold 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #136acd;
+}
+
+/* .select-dropdown option{
+  padding: 20px 10px;
+  border: none
+}
+
+.select-dropdown option:hover{
+  background: rgb(162, 197, 238)
+} */
+
+.select-elem-con {
+  padding: 5px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  justify-content: space-between
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.style-category {
+  padding: 10px;
+  box-shadow: 0px 3px 15px #797e8159;
+  position: absolute;
+  /* top: 10px; */
+  background: white;
+  z-index: 1;
+  width: 80%;
+  max-height: 20em;
+  overflow-y: scroll;
+}
+.style-category div:hover {
+  background-color: #ecf0f3;
+  cursor: pointer;
+}
+
+.cat {
+  padding: 5px;
+  border-top: 1px solid #ecf0f3;
+}
+
+.form-control.input.dd {
+  text-align: left;
 }
 
 .manual-dd-icon {
@@ -1611,6 +1891,10 @@ template.p-dropdown-parent {
 
 .required {
   color: #ef0535;
+}
+
+.modal-body.new-event-modal {
+  padding: 0;
 }
 
 @media screen and (max-width: 767px) {
