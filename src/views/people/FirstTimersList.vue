@@ -22,61 +22,6 @@
     <div class="row">
       <div class="col-md-12">
         <div class="my-con">
-          <!-- <div class="summary">
-            <p class="summary-header">Summary</p>
-           
-
-            <div class="boards mb-4">
-              <div class="board members-count">
-                <div class="board-top">
-                  <p class="total-text mb-0 font-weight-700">TOTAL MEMBERS</p>
-                  <img
-                    class="trend-icon"
-                    src="../../assets/dashboardlinks/trend-icon.svg"
-                    alt=""
-                  />
-                </div>
-                <h4 class="total">{{ getFirstTimerSummary.totalFirstTimer }}</h4>
-                <p>
-                  <span class="percent">+{{ getFirstTimerSummary.firstTimerPercentageGrowth }}% </span>
-                  <span class="percent-text"> Since last month</span>
-                </p>
-              </div>
-
-        
-              <div class="board fig">
-                <ByGenderChart
-                  domId="chart"
-                  title="Invitation Source"
-                  distance="5"
-                  :titleMargin="10"
-                  :summary="getFirstTimerSummary.invitationSource"
-                />
-              </div>
-              <div class="board fig">
-                <ByMaritalStatusChart
-                  domId="second"
-                  title="Interested In Joining"
-                  :titleMargin="10"
-                  :summary="getFirstTimerSummary.interestedInJoining"
-                />
-              </div>
-              <div class="board fig">
-                <ByMaritalStatusChart
-                  domId="set"
-                  title="To Be Contacted"
-                  style="height: 100%"
-                  :titleMargin="10"
-                  :summary="getFirstTimerSummary.toBeContacted"
-                />
-              </div> -->
-              <!-- <div  class="board fig">
-          <ByMaritalStatusChart domId="third" title="TO BE CONTACTED" distance="5" />
-        </div> -->
-
-              <!-- </div> -->
-            <!-- </div>
-          </div> -->
 
           <div class="summary px-3">
       <p class="summary-header">Summary</p>
@@ -103,7 +48,7 @@
           <div style="width: 45%" class="ml-md-4 chart1">
             <ByGenderChart
               domId="chart"
-              title="Invitation"
+              title="Invitation Source"
               distance="5"
               :titleMargin="10"
               :summary="getFirstTimerSummary.invitationSource"
@@ -112,7 +57,7 @@
           <div style="width: 45%;" class="chart2">
             <ByMaritalStatusChart
               domId="second"
-              title="Interested"
+              title="Interested In Joining"
               :titleMargin="10"
               :summary="getFirstTimerSummary.interestedInJoining"
             />
@@ -151,65 +96,7 @@
           </label>
         </div>
       </div>
-              <!-- <div
-                class="filter-options"
-                :class="{ 'filter-options-shown': filterFormIsVissible }"
-              >
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-9">
-                      <div class="row">
-                        <div class="col-md-5 form-group inp">
-                          <input
-                              type="text"
-                              class="input"
-                              placeholder="Name"
-                              v-model="filter.filterName"
-                            />
-                        </div>
-
-                        <div class="col-md-5 offset-md-2 form-group">
-                          <input type="date" class="form-control inp" v-model="filter.filterDate"/>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-md-5 form-group">
-                          <input
-                              type="text"
-                              class="input"
-                              placeholder="Source"
-                              v-model="filter.filterSource"
-                            />
-                        </div>
-
-                        <div class="col-md-5 offset-md-2 form-group">
-                          <input
-                              type="text"
-                              class="input"
-                              placeholder="Status"
-                              v-model="filter.filterStatus"
-                            />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-3 d-flex flex-column align-items-end">
-                      <button class="apply-btn" @click="applyFilter">Apply</button>
-                      <span class="mt-2">
-                        <a class="clear-link mr-2">Clear all</a>
-                        <span class="mx-2"
-                          ><i
-                            class="fas fa-circle"
-                            style="font-size: 4px"
-                          ></i></span
-                        ><a class="hide-link ml-2">Hide</a>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-            </div>
+      </div>
             <div
         class="filter-options"
         :class="{ 'filter-options-shown': filterFormIsVissible }"
@@ -275,30 +162,107 @@
         </div>
       </div>
 
-            <div class="table-header font-weight-700">
-              <div class="check"></div>
-              <div class="picture theader">
-                <p>NAME</p>
-              </div>
-              <div class="picture theader">
-                <p>PHONE NUMBER</p>
-              </div>
-              <div class="picture theader">
-                <p>SOURCE</p>
-              </div>
-              <div class="firstname theader">
-                <p>INTERESTED</p>
-              </div>
-              <div class="lastname theader">
-                <p>DATE</p>
-              </div>
-              <div class="phone theader">
-                <p>STATUS</p>
-              </div>
-              <div class="action"></div>
+            
+            <div class="table-responsive">
+              <table class=" table-borderless w-100">
+              <thead class="header"> 
+                <tr>
+                  <th></th>
+                  <th>NAME</th>
+                  <th>PHONE NUMBER</th>
+                  <th>SOURCE</th>
+                  <th>INTERESTED</th>
+                  <th>DATE</th>
+                  <th>STATUS</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody v-if="filterResult.length > 0 && ( filter.filterFirstName || filter.filterLastName || filter.phoneNumber )">
+              <tr v-for="person in filterResult" :key="person.id">
+                  <td><input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/></td>
+                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`">{{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}</router-link></td>
+                  <td><router-link :to="``" class="data-value">{{ person.phoneNumber }}</router-link></td>
+                  <td> Social media</td>
+                  <td>{{ person.interestedInJoining === "Not_Specified" ? "Not Specified" : person.interestedInJoining }}</td>
+                  <td> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
+                  <td><router-link :to="`/tenant/people/add-first-timer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
+                  <td><div class="dropdown">
+                    <i
+                      class="fas fa-ellipsis-v"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    ></i>
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <a class="dropdown-item" href="#">Convert to member</a>
+                      <a class="dropdown-item" href="#">Assign to follow-up</a>
+                      <a class="dropdown-item" v-if="person.phoneNumber">
+                        <router-link
+                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          >Send SMS</router-link
+                        >
+                      </a>
+                      <a class="dropdown-item" href="#">Send Email</a>
+                      <a class="dropdown-item" href="#">Delete</a>
+                    </div>
+                  </div>
+                  </td>
+                </tr>
+                </tbody>
+                <tbody v-else-if="filterResult.length == 0 && noRecords">
+                  <tr>
+                    <td class="no-record text-center my-4">No records found</td>
+                  </tr>
+                </tbody>
+              <!-- <div v-else-if="filterResult.length == 0 && noRecords">
+                <div class="no-record text-center my-4">No records found</div>
+              </div> -->
+              <tbody v-else-if="searchMember.length > 0">
+                <tr v-for="person in searchMember" :key="person.id">
+                  <td><input type="checkbox" name="all" id="all" @click="toggleSelect"/></td>
+                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`">{{ person.fullName }}</router-link></td>
+                  <td><router-link :to="``" class="data-value">{{ person.phoneNumber }}</router-link></td>
+                  <td> Social media</td>
+                  <td>{{ person.interestedInJoining === "Not_Specified" ? "Not Specified" : person.interestedInJoining }}</td>
+                  <td> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
+                  <td><router-link :to="`/tenant/people/add-first-timer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
+                  <td><div class="dropdown">
+                    <i
+                      class="fas fa-ellipsis-v"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    ></i>
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <a class="dropdown-item" href="#">Convert to member</a>
+                      <a class="dropdown-item" href="#">Assign to follow-up</a>
+                      <a class="dropdown-item" v-if="person.phoneNumber">
+                        <router-link
+                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          >Send SMS</router-link
+                        >
+                      </a>
+                      <a class="dropdown-item" href="#">Send Email</a>
+                      <a class="dropdown-item" href="#">Delete</a>
+                    </div>
+                  </div>
+                  </td>
+                
+              </tr>
+              </tbody>
+              
+            </table>
             </div>
 
-            <div v-if="filterResult.length > 0 && ( filter.filterFirstName || filter.filterLastName || filter.phoneNumber )">
+            <!-- <div v-if="filterResult.length > 0 && ( filter.filterFirstName || filter.filterLastName || filter.phoneNumber )">
               <div
               class="table-body"
               v-for="person in filterResult"
@@ -391,8 +355,8 @@
               </div>
               <hr class="row-divider" />
             </div>
-            </div>
-            <div v-else-if="filterResult.length == 0 && noRecords">
+            </div> -->
+            <!-- <div v-else-if="filterResult.length == 0 && noRecords">
               <div class="no-record text-center my-4">No records found</div>
             </div>
             <div v-else>
@@ -400,7 +364,7 @@
                 <div
               class="table-body"
               v-for="person in searchMember"
-              :key="person.personID"
+              :key="person.id"
             >
               <div class="data-row">
                 <div class="check data">
@@ -412,7 +376,7 @@
                       <p>Name</p>
                     </div>
                     <div class="data-value">
-                      <router-link :to="{name: 'AddFirstTimer', params: { id: person.personID}}">{{ person.fullName }}</router-link>
+                      <router-link :to="`/tenant/people/add-first-timer/${person.id}`">{{ person.fullName }}</router-link>
                     </div>
 
                   </div>
@@ -469,8 +433,7 @@
                     </div>
                     <router-link
                       :to="`/tenant/people/add-first-timer/${person.personID}`"
-                      class="data-value itemroute-color">
-                    {{ person.status }}
+                   
                     </router-link>
                   </div>
                 </div>
@@ -504,123 +467,10 @@
               <hr class="row-divider" />
             </div>
               </div>
-              <div v-else-if="searchMember.length == 0 && searchText != '' ">
-                <div class="no-record text-center my-4">No records found</div>
-              </div>
-              <div v-else>
-                <div v-if="churchMembers.length == 0">
-                  <div class="text-center mt-4">No First timers yet, <router-link to="/tenant/people/add-first-timer" class="text-primary">Click to Add First Timer</router-link></div>
-                </div>
-                <div v-else-if="!noRecords">
-                  <div
-              class="table-body"
-              v-for="person in churchMembers"
-              :key="person.personID"
-            >
-              <div class="data-row">
-                <div class="check data">
-                  <input type="checkbox" name="" id="" />
-                </div>
-                <div class="picture data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Name</p>
-                    </div>
-                    <div class="data-value">
-                      <router-link :to="{name: 'AddFirstTimer', params: { id: person.personID}}">{{ person.fullName }}</router-link>
-                    </div>
-
-                  </div>
-                </div>
-                <div class="firstname data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Phone Number</p>
-                    </div>
-                    <router-link
-                      :to="``"
-                      class="data-value">
-                      {{ person.phoneNumber }}
-                    </router-link>
-                  </div>
-                </div>
-                <div class="lastname data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Source</p>
-                    </div>
-                    <div
-                      class="data-value">
-                      Social media
-                      </div>
-                  </div>
-                </div>
-                <div class="phone data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Interested</p>
-                    </div>
-                    <a class="data-value">
-                      {{ person.interestedInJoining === "Not_Specified" ? "Not Specified" : person.interestedInJoining }}
-                    </a>
-
-                  </div>
-                </div>
-                <div class="phone data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Date</p>
-                    </div>
-                    <div class="data-value">
-                      {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}
-                    </div>
-
-                  </div>
-                </div>
-                <div class="phone data">
-                  <div class="data-con">
-                    <div class="data-text">
-                      <p>Status</p>
-                    </div>
-                    <router-link
-                      :to="`/tenant/people/add-first-timer/${person.personID}`"
-                      class="data-value itemroute-color">
-                    {{ person.status }}
-                    </router-link>
-                  </div>
-                </div>
-                <div class="action data action-icon">
-                  <div class="dropdown">
-                    <i
-                      class="fas fa-ellipsis-v"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    ></i>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <a class="dropdown-item" href="#">Convert to member</a>
-                      <a class="dropdown-item" href="#">Assign to follow-up</a>
-                      <a class="dropdown-item" v-if="person.phoneNumber">
-                        <router-link
-                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
-                          >Send SMS</router-link
-                        >
-                      </a>
-                      <a class="dropdown-item" href="#">Send Email</a>
-                      <a class="dropdown-item" href="#">Delete</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr class="row-divider" />
-            </div>
-                </div>
-              </div>
-            </div>
+           
+             
+              
+            </div> -->
 
             <div class="table-footer">
               <!-- <button class="tbl-footer-btn">
@@ -716,23 +566,21 @@ export default {
         axios.get("/api/People/FirstTimer")
           .then(res => {
             churchMembers.value = res.data;
-            console.log(res.data)
+            console.log(churchMembers.value)
           })
     });
 
     const applyFilter = () => {
-        noRecords.value = true
-
         filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
         filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
         filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
     
          let url = "/api/People/FilterMembers?firstname="+filter.value.filterFirstName +"&lastname="+filter.value.filterLastName +"&phone_number="+ filter.value.phoneNumber +"&page=1"
       axios.get(url).then((res) => {
-        
+        noRecords.value = true
         filterResult.value = res.data
         console.log(filterResult.value);
-        noRecords.value = false
+        
       }) .catch(err => console.log(err))
     }
 
@@ -765,6 +613,7 @@ export default {
 .data-value a {
   color: #136acd;
   text-decoration: none;
+  width: 241px;
 }
 
 .page-header {
@@ -797,10 +646,29 @@ export default {
   margin-bottom: auto !important;
   /* padding: 0 21px; */
 }
+/* 
+.
 
-.table-header {
-  padding: 0 30px;
+.table-header p.name {
+  width: 20em;
+  margin-left: 0;
 }
+
+.picture .phoneNum {
+  margin-left: 14px;
+}
+
+.picture .source, .firstname .interested {
+  margin-left: 17px;
+}
+
+.lastname .date {
+  margin-left: 19px;
+}
+
+.phone .status {
+  margin-left: 20px;
+} */
 
 .summary-header {
   color: #136acd !important;
@@ -816,7 +684,7 @@ export default {
 }
 
 .board {
-  width: 30%;
+  width: 28%;
   border-radius: 10px;
   /* padding: 0 8px; */
   /* box-shadow: 0px 1px 4px #02172e45; */
@@ -843,7 +711,8 @@ export default {
 }
 
 .total-text {
-  font-size: 12px;
+  font-size: 15px;
+  font-weight: 700;
 }
 
 .percent {
@@ -951,10 +820,20 @@ export default {
   transition: all 0.5s ease-in-out;
 }
 
-/* .filter,
-.search {
-    width: 25% !important
-} */
+  .header{
+    background: #f1f3f9;
+
+    
+    
+    /*
+    ; */
+  }
+
+  .header tr {
+    color: #8898aa;
+    font-size: 11px;
+    box-shadow: 0px 3px 6px #2c28281c;
+  }
 
 .select-all input {
   margin: 0 8px 0 -5px !important;
@@ -1076,9 +955,9 @@ export default {
     text-align: right;
   }
 
-  .table-header {
+  /* .table-header {
     display: none;
-  }
+  } */
 }
 
 @media screen and (max-width: 500px) {

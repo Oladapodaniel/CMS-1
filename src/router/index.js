@@ -151,6 +151,12 @@ const routes = [{
                     import ( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimersList.vue')
             },
             {
+                path: 'first-timer-empty',
+                name: 'FirstTimerEmpty',
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
+            },
+            {
                 path: 'report/:id',
                 name: 'Report',
                 component: () =>

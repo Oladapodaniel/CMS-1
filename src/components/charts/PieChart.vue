@@ -33,7 +33,7 @@ export default {
       try {
         props.summary.forEach((i) => {
           let summaryObj = {
-            name: i.name,
+            name: i.name === 'Not_Specified' ? `<div style="font-weight: 500">Not Sure</div>` : `<div style="font-weight: 500">${i.name}</div>`,
             y: i.value,
           };
           getSummary.value.push(summaryObj);
@@ -42,83 +42,190 @@ export default {
         console.log(error);
       }
       
-      var highchartsOptions = {
-        chart: {
-          type: "pie",
-          renderTo: props.domId,
-          height: props.height ? props.height : 216,
-        },
-        credits: {
-          enabled: false,
-        },
-        tooltip: {
-          enabled: false,
-        },
-        title: {
-          text: `<b style="font-weight:normal;font-size:10px">${props.title}</b>`,
-          align: "left",
-          x: props.titleMarginLeft ? props.titleMarginLeft : 20,
-          y: props.titleMargin ? props.titleMargin : 20,
-          margin: 0,
-        },
-        subtitle: {
-          text: props.subtitle,
-          align: "left",
-          x: props.titleMarginLeft ? props.titleMarginLeft : 20,
-          y: 50,
-        },
-        xAxis: {
-          allowDecimals: false,
-          title: {
-            text: "Age",
-          },
-        },
-        yAxis: {
-          title: {
-            text: "Pot Value",
-          },
-          labels: {
-            formatter: function () {
-              return "£" + this.value / 1000 + "k";
-            },
-          },
-          opposite: false,
-        },
-        plotOptions: {
-          pie: {
-            colors: ["#0f0221", "#136acd", "#dde2e6"],
-            // allowPointSelect: true,
-            cursor: "pointer",
+      // var highchartsOptions = {
+      //   chart: {
+      //     type: "pie",
+      //     renderTo: props.domId,
+      //     height: props.height ? props.height : 216,
+      //   },
+      //   credits: {
+      //     enabled: false,
+      //   },
+      //   tooltip: {
+      //     enabled: false,
+      //   },
+      //   title: {
+      //     text: `<b style="font-weight:normal;font-size:10px">${props.title}</b>`,
+      //     align: "left",
+      //     x: props.titleMarginLeft ? props.titleMarginLeft : 20,
+      //     y: props.titleMargin ? props.titleMargin : 20,
+      //     margin: 0,
+      //   },
+      //   legend: {
+      //     align: 'right',
+      //     layout: 'vertical'
+      //   },
+      //   subtitle: {
+      //     text: props.subtitle,
+      //     align: "left",
+      //     x: props.titleMarginLeft ? props.titleMarginLeft : 20,
+      //     y: 50,
+      //   },
+      //   xAxis: {
+      //     allowDecimals: false,
+      //     title: {
+      //       text: "Age",
+      //     },
+      //   },
+      //   yAxis: {
+      //     title: {
+      //       text: "Pot Value",
+      //     },
+      //     labels: {
+      //       formatter: function () {
+      //         return "£" + this.value / 1000 + "k";
+      //       },
+      //     },
+      //     opposite: false,
+      //   },
+      //   plotOptions: {
+      //     pie: {
+      //       colors: ["#0f0221", "#136acd", "#dde2e6"],
+      //       // allowPointSelect: true,
+      //       cursor: "pointer",
+      //       dataLabels: {
+      //         enabled: true,
+      //         formatter: function () {
+      //           return (
+      //             this.point.name +
+      //             ": " +
+      //             Math.round(this.percentage * 100) / 100 +
+      //             " %"
+      //           );
+      //         },
+      //         // format: '{point.name}: {point.y:.1f}%',
+      //         distance: props.distance ? props.distance : 3,
+      //       },
+      //       size: 180,
+      //       showInLegend: true,
+      //     },
+      //   },
+      //   series: [
+      //     {
+      //       name: "Brands",
+      //       colorByPoint: true,
+      //       data: getSummary.value,
+      //     },
+      //   ],
+      //   //   credits: false,
+      // };
+//       var highchartsOptions =  {
+//   chart: {
+//     plotBackgroundColor: null,
+//     plotBorderWidth: null,
+//     plotShadow: false,
+//     type: 'pie',
+//     renderTo: props.domId,
+//     height: props.height ? props.height : 216,
+//   },
+//   title: {
+//     text: `<b style="font-weight:normal;font-size:20px">${props.title}</b>`
+//   },
+//   legend:{
+//     layout: 'vertical',
+//     align: 'right'
+//     // verticalAlign: 'top',
+//     // floating: true,
+//   },
+//   tooltip: {
+//     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+//   },
+//   accessibility: {
+//     point: {
+//       valueSuffix: '%'
+//     }
+//   },
+//   plotOptions: {
+//     pie: {
+//       allowPointSelect: true,
+//       cursor: 'pointer',
+//       size: '100%',
+//       dataLabels: {
+//         enabled: false
+//       },
+//       showInLegend: true
+//     }
+//   },
+//   series: [{
+//     name: 'Brands',
+//     colorByPoint: true,
+//     data: getSummary.value
+//   }]
+// }
+
+  // Make monochrome colors
+var pieColors = (function () {
+    var colors = [],
+        base = Highcharts.getOptions().colors[0],
+        i;
+
+    for (i = 0; i < 10; i += 1) {
+        // Start out with a darkened base color (negative brighten), and end
+        // up with a much brighter color
+        colors.push(Highcharts.color(base).brighten((i - 3) / 7).get());
+    }
+    return colors;
+}());
+
+// Build the chart
+var highchartsOptions = {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie',
+        renderTo: props.domId,
+        height: 250
+    },
+    title: {
+        text: props.title
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            colors: pieColors,
             dataLabels: {
-              enabled: true,
-              formatter: function () {
-                return (
-                  this.point.name +
-                  ": " +
-                  Math.round(this.percentage * 100) / 100 +
-                  " %"
-                );
-              },
-              // format: '{point.name}: {point.y:.1f}%',
-              distance: props.distance ? props.distance : 3,
-            },
-            size: 180,
-          },
-        },
-        series: [
-          {
-            name: "Brands",
-            colorByPoint: true,
-            data: getSummary.value,
-          },
-        ],
-        //   credits: false,
-      };
+                enabled: true,
+                format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                distance: -50,
+                filter: {
+                    property: 'percentage',
+                    operator: '>',
+                    value: 4
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'Share',
+        data: getSummary.value
+    }]
+}
+
       chart.value = new Highcharts.chart(highchartsOptions);
     });
-    Highcharts.setOptions({
-      colors: ["brown", "purple", "#DDDF00"],
-    });
+    // Highcharts.setOptions({
+    //   colors: ["brown", "purple", "#DDDF00"],
+    // });
     // })
 
     return { chart, getSummary };
