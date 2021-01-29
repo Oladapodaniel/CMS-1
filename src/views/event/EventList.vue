@@ -21,44 +21,44 @@
       </div>
     </div>
   </div> -->
-        <!-- <hr class="hr" /> -->
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="avg">Overall Average</div>
-            </div>
-          </div>
-                 
-            <div class="row avg-table">
-                <div class="col-6 col-md-3 first-row">
-                    <div>Attendance</div>
-                    <div>{{ eventSummary.attendance }}</div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div>Offering</div>
-                    <div>${{ eventSummary.offerings }}</div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div>First Timers</div>
-                    <div>{{ eventSummary.firstTimers }}</div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div>New Converts</div>
-                    <div>{{ eventSummary.newConverts }}</div>
-                </div>
-                <div class="col-12">
-                  <div>Last Updated 2 hours ago</div>
-                </div>
-            </div>
-            </div>
-          <hr class="hr" />
-        <!-- </div> -->
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="table table-responsive">
-            <div class="top-con">
-              <!-- <div class="table-top my-2">
+  <!-- <hr class="hr" /> -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="avg">Overall Average</div>
+      </div>
+    </div>
+
+    <div class="row avg-table">
+      <div class="col-6 col-md-3 first-row">
+        <div>Attendance</div>
+        <div>{{ eventSummary.attendance }}</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div>Offering</div>
+        <div><span style="font-size:24px" class="font-weight-700">{{ userCurrency }}</span> {{ eventSummary.offerings }}</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div>First Timers</div>
+        <div>{{ eventSummary.firstTimers }}</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div>New Converts</div>
+        <div>{{ eventSummary.newConverts }}</div>
+      </div>
+      <div class="col-12">
+        <div>Last Updated 2 hours ago</div>
+      </div>
+    </div>
+  </div>
+  <hr class="hr" />
+  <!-- </div> -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="table table-responsive">
+          <div class="top-con">
+            <!-- <div class="table-top my-2">
                 <div class="select-all">
                   <input type="checkbox" name="all" id="all" />
                   <label>SELECT ALL</label>
@@ -91,34 +91,40 @@
                   </p>
                 </div>
               </div> -->
-              <div class="table-top my-3">
-                  <div class="select-all">
-                    <input type="checkbox" name="all" id="all" @click="toggleSelect" v-model="selectAll"/>
-                    <label>SELECT ALL</label>
-                  </div>
-                  <div class="filter">
-                    <p @click="toggleFilterFormVissibility">
-                      <i class="fas fa-filter"></i>
-                      FILTER
-                    </p>
-                  </div>
-                  <p @click="toggleSearch" class="search-text">
-                      <i class="fa fa-search"></i> SEARCH
-                    </p>
-                  <div class="search d-flex" >
-                    <label 
-                      class="label-search d-flex"
-                      :class="{ 'show-search': searchIsVisible }"
-                    >
-                      <input type="text" placeholder="Search..." />
-                      <span class="empty-btn">x</span>
-                      <span class="search-btn">
-                        <i class="fa fa-search"></i>
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              <!-- <div
+            <div class="table-top my-3">
+              <div class="select-all">
+                <input
+                  type="checkbox"
+                  name="all"
+                  id="all"
+                  @click="toggleSelect"
+                  v-model="selectAll"
+                />
+                <label>SELECT ALL</label>
+              </div>
+              <div class="filter">
+                <p @click="toggleFilterFormVissibility">
+                  <i class="fas fa-filter"></i>
+                  FILTER
+                </p>
+              </div>
+              <p @click="toggleSearch" class="search-text">
+                <i class="fa fa-search"></i> SEARCH
+              </p>
+              <div class="search d-flex">
+                <label
+                  class="label-search d-flex"
+                  :class="{ 'show-search': searchIsVisible }"
+                >
+                  <input type="text" placeholder="Search..." />
+                  <span class="empty-btn">x</span>
+                  <span class="search-btn">
+                    <i class="fa fa-search"></i>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <!-- <div
                 class="filter-options"
                 :class="{ 'filter-options-shown': filterFormIsVissible }"
               >
@@ -165,177 +171,206 @@
                   </div>
                 </div>
               </div> -->
-              <div
-        class="filter-options"
-        :class="{ 'filter-options-shown': filterFormIsVissible }"
-      >
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-9">
-              <div class="row">
-                <div class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100">
-                  <!-- <div class="input-field"> -->
+            <div
+              class="filter-options"
+              :class="{ 'filter-options-shown': filterFormIsVissible }"
+            >
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-md-9">
+                    <div class="row">
+                      <div
+                        class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                      >
+                        <!-- <div class="input-field"> -->
 
-                  <input
-                    type="text"
-                    class="input w-100"
-                    placeholder="First Name"
-                  />
-                  <!-- </div> -->
-                </div>
+                        <input
+                          type="text"
+                          class="input w-100"
+                          placeholder="First Name"
+                        />
+                        <!-- </div> -->
+                      </div>
 
-                    <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <input
-                        type="date"
-                        class="form-control input inp w-100"
-                      />
+                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                        <input
+                          type="date"
+                          class="form-control input inp w-100"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                        <input
+                          type="text"
+                          class="input w-100"
+                          placeholder="Last Name"
+                        />
+                      </div>
+
+                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                        <input
+                          type="text"
+                          class="input w-100"
+                          placeholder="Phone Number"
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <input
-                        type="text"
-                        class="input w-100"
-                        placeholder="Last Name"
-                      />
-                    </div>
-
-                    <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                      <input
-                        type="text"
-                        class="input w-100"
-                        placeholder="Phone Number"
-                      />
-                    </div>
+                  <div class="col-md-3 d-flex flex-column align-items-center">
+                    <button
+                      class="apply-btn text-white"
+                      @click="applyFilter"
+                      :disabled="disableBtn"
+                    >
+                      Apply
+                    </button>
+                    <span class="mt-2">
+                      <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                      <span class="mx-2"
+                        ><i
+                          class="fas fa-circle"
+                          style="font-size: 4px"
+                        ></i></span
+                      ><a class="hide-link ml-2" @click="hide">Hide</a>
+                    </span>
                   </div>
-                </div>
-
-                <div class="col-md-3 d-flex flex-column align-items-center">
-                  <button class="apply-btn text-white" @click="applyFilter" :disabled="disableBtn">
-                    Apply
-                  </button>
-                  <span class="mt-2">
-                    <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                    <span class="mx-2"
-                      ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                    ><a class="hide-link ml-2" @click="hide">Hide</a>
-                  </span>
                 </div>
               </div>
             </div>
           </div>
-            </div>
 
-            
-            <table class="w-100" >
-                <thead class="thead">
-                <tr>
-                  <th>STATUS</th>
-                  <th>EVENT NAME</th>
-                  <th>TITLE</th>
-                  <th>DATE</th>
-                  <th>ATTENDANCE</th>
-                  <th>FIRST TIMERS</th>
-                  <th>NEW CONVERTS</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(event,index) in events"
-              :key="index">
-                  <td> <div class="td-first">Unsent</div></td>
-                  <td>{{ event.eventName }}</td>
-                  <td>{{ event.title }}</td>
-                  <td>{{ moment.parseZone(new Date(event.activityDate).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
-                  <td>{{ event.attendances }}</td>
-                  <td>{{ event.firstTimers }}</td>
-                  <td>{{ event.newConverts }}</td>
+          <table class="w-100">
+            <thead class="thead">
+              <tr>
+                <th>STATUS</th>
+                <th>EVENT NAME</th>
+                <th>TITLE</th>
+                <th>DATE</th>
+                <th>ATTENDANCE</th>
+                <th>FIRST TIMERS</th>
+                <th>NEW CONVERTS</th>
               </tr>
-              </tbody>
-              </table>
+            </thead>
+            <tbody>
+              <tr v-for="(event, index) in events" :key="index">
+                <td><div class="td-first">Unsent</div></td>
+                <td>{{ event.eventName }}</td>
+                <td>{{ event.title }}</td>
+                <td>
+                  {{
+                    moment.parseZone(
+                      new Date(event.activityDate).toLocaleDateString(),
+                      "YYYY MM DD HH ZZ"
+                    )._i
+                  }}
+                </td>
+                <td>{{ event.attendances }}</td>
+                <td>{{ event.firstTimers }}</td>
+                <td>{{ event.newConverts }}</td>
+              </tr>
+            </tbody>
+          </table>
 
-            <div class="table-footer">
-              <button class="tbl-footer-btn">
-                <i class="fa fa-angle-left"></i>
-              </button>
-              <button class="tbl-footer-btn">A</button>
-              <button class="tbl-footer-btn">A</button>
-              <button class="tbl-footer-btn">
-                <i class="fa fa-angle-right"></i>
-              </button>
-            </div>
-          </div>
-            </div>
+          <div class="table-footer">
+            <button class="tbl-footer-btn">
+              <i class="fa fa-angle-left"></i>
+            </button>
+            <button class="tbl-footer-btn">A</button>
+            <button class="tbl-footer-btn">A</button>
+            <button class="tbl-footer-btn">
+              <i class="fa fa-angle-right"></i>
+            </button>
           </div>
         </div>
-
-        
-
-
-    
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from '@/gateway/backendapi'
-import { ref } from 'vue'
-import moment from 'moment'
+import axios from "@/gateway/backendapi";
+import { ref } from "vue";
+import moment from "moment";
+import { useStore } from "vuex";
+import userService from "../../services/user/userservice"
 export default {
-    setup() {
-      const events = ref(getEventList())
-      const  filterFormIsVissible = ref(false)
-      const searchIsVisible = ref(false)
-      // const attendanceAverage = ref(null)
-      // const firstTimerAverage = ref(null)
-      // const newConvertAverage = ref(null)
-      const eventSummary = ref({})
+  setup() {
+    const events = ref(getEventList());
+    const filterFormIsVissible = ref(false);
+    const searchIsVisible = ref(false);
+    // const attendanceAverage = ref(null)
+    // const firstTimerAverage = ref(null)
+    // const newConvertAverage = ref(null)
+    const eventSummary = ref({});
+    const store = useStore();
+    const userCurrency = ref(store.getters.currency);
 
-      async function getEventList () {
-        return await axios.get('/api/eventreports/eventReports')
-          .then(res => {
-            events.value = res.data
-            console.log(res.data)
-            // attendanceAverage.value = res.data.map(i => { return i.attendances }).reduce((a, b) => { return a + b })
-            // firstTimerAverage.value = res.data.map(i => { return i.firstTimers }).reduce((a, b) => { return a + b })
-            // newConvertAverage.value = res.data.map(i => { return i.newConverts }).reduce((a, b) => { return a + b })
-          })
-          .catch(err => console.log(err))
-      }
-
-      const getEventSummary = async () => {
-        try {
-          const { data } = await axios.get("/api/Events/Eventsummary")
-          console.log(data)
-          eventSummary.value = data
-        }
-        catch (err) {
-          console.log(err.response)
-        }
-      }
-      getEventSummary()
-
-      const toggleFilterFormVissibility = () => {
-         filterFormIsVissible.value = ! filterFormIsVissible.value
-      }
-
-
-      const toggleSearch = () => {
-      searchIsVisible.value = !searchIsVisible.value
-   }
-
-      // const attendanceAverage = computed(() => {
-        // return events.value.reduce( (a, b) => { return a.attendances + b.attendances })
-        // return events.value
-        // return events.value.map(i => { return i.attendances })
-        // return events.value.forEach(i => {return i.attendances })
-      // })
-
-      return { events,  filterFormIsVissible, toggleFilterFormVissibility, searchIsVisible, toggleSearch, eventSummary, moment }
+    async function getEventList() {
+      return await axios
+        .get("/api/eventreports/eventReports")
+        .then((res) => {
+          events.value = res.data;
+          console.log(res.data);
+          // attendanceAverage.value = res.data.map(i => { return i.attendances }).reduce((a, b) => { return a + b })
+          // firstTimerAverage.value = res.data.map(i => { return i.firstTimers }).reduce((a, b) => { return a + b })
+          // newConvertAverage.value = res.data.map(i => { return i.newConverts }).reduce((a, b) => { return a + b })
+        })
+        .catch((err) => console.log(err));
     }
-}
+
+    const getEventSummary = async () => {
+      try {
+        const { data } = await axios.get("/api/Events/Eventsummary");
+        console.log(data);
+        eventSummary.value = data;
+      } catch (err) {
+        console.log(err.response);
+      }
+    };
+    getEventSummary();
+
+    const toggleFilterFormVissibility = () => {
+      filterFormIsVissible.value = !filterFormIsVissible.value;
+    };
+
+    const toggleSearch = () => {
+      searchIsVisible.value = !searchIsVisible.value;
+    };
+
+    const getUserCurrency = async () => {
+      const user = await userService.getCurrentUser();
+      console.log(user, "user");
+      userCurrency.value = user.currency;
+    }
+
+    if (!userCurrency.value) getUserCurrency();
+
+    // const attendanceAverage = computed(() => {
+    // return events.value.reduce( (a, b) => { return a.attendances + b.attendances })
+    // return events.value
+    // return events.value.map(i => { return i.attendances })
+    // return events.value.forEach(i => {return i.attendances })
+    // })
+
+    return {
+      events,
+      filterFormIsVissible,
+      toggleFilterFormVissibility,
+      searchIsVisible,
+      toggleSearch,
+      eventSummary,
+      moment,
+      userCurrency,
+    };
+  },
+};
 </script>
 
 <style scoped>
-    * {
+* {
   box-sizing: border-box;
 }
 
@@ -410,8 +445,8 @@ export default {
 }
 
 .page-header {
-    font-weight: 800;
-    font-size: 40px;
+  font-weight: 800;
+  font-size: 40px;
 }
 .more-btn {
   background: #dde2e6;
@@ -608,33 +643,33 @@ export default {
 } */
 
 .select-all input {
-    margin: 0 8px 0 -5px !important;
+  margin: 0 8px 0 -5px !important;
 }
 
 .add-btn {
-    width: 180px;
-    background: #136ACD;
-    border-radius: 22px;
-    color: #ffffff;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 42px;
+  width: 180px;
+  background: #136acd;
+  border-radius: 22px;
+  color: #ffffff;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
 }
 
 .more {
-    background: #DDE2E6;
-    border-radius: 22px;
-    width: 180px;
-    font-weight: bold;
-    border: transparent;
-    outline: transparent;
-    height: 42px;
+  background: #dde2e6;
+  border-radius: 22px;
+  width: 180px;
+  font-weight: bold;
+  border: transparent;
+  outline: transparent;
+  height: 42px;
 }
 
 .average {
-    box-shadow: 0px 1px 4px #02172e45;
+  box-shadow: 0px 1px 4px #02172e45;
   border: 1px solid #dde2e6;
   border-radius: 30px;
   padding: 10px;
@@ -644,7 +679,7 @@ export default {
 .avg {
   font: normal normal bold 24px/32px Nunito Sans;
   letter-spacing: 0px;
-  color: #136ACD;
+  color: #136acd;
   margin-top: 1em;
 }
 
@@ -671,8 +706,8 @@ export default {
 
 .avg-table > div:nth-child(5) {
   font: normal normal normal 14px/13px Nunito Sans;
-letter-spacing: 0px;
-color: #002044;
+  letter-spacing: 0px;
+  color: #002044;
 }
 
 .thead {
@@ -683,12 +718,12 @@ color: #002044;
 
 .td-first {
   font: normal normal 800 14px/19px Nunito Sans;
-letter-spacing: 0px;
-color: #700303;
-border-top-left-radius: 25px;
-border-bottom-left-radius: 25px;
-background: #da320870;
-padding: 7px;
+  letter-spacing: 0px;
+  color: #700303;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  background: #da320870;
+  padding: 7px;
 }
 
 .top-con {

@@ -104,5 +104,6 @@ export default {
     userStartPoint: state => state.userStartPoint,
     settingUserUp: state => state.settingUserUp,
     smsBalance: state => state.smsBalance,
+    currency: state => state.currentUser.currency,
   },
 }

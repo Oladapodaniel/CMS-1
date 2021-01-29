@@ -183,10 +183,10 @@
             :class="{ 'dd-hide-list': !accLinkDropped }"
           >
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="">Offerings</router-link>
+              <router-link class="dd-link-item routelink" to="">Dashboard</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="">Expenses</router-link>
+              <router-link class="dd-link-item routelink" to="">Offerings</router-link>
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="">Pledges</router-link>
@@ -197,9 +197,7 @@
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to=""
-                >Expense Approval</router-link
-              >
+              <router-link class="dd-link-item routelink" to="">Expense workflow</router-link>
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to=""
