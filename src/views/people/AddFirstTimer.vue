@@ -1512,7 +1512,7 @@ export default {
               genderArr.value = i.lookUps;
               console.log(genderArr.value);
             }
-            if (i.type.toLowerCase() === "marital status") {
+            if (i.type.toLowerCase() === "maritalstatus") {
               maritalStatusArr.value = i.lookUps;
             }
           });
