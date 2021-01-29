@@ -388,7 +388,7 @@
       </div>
 
       <div class="table-footer">
-        <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="peopleCount" :currentPage="currentPage" />
+        <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage" />
       </div>
     </div>
   </div>
@@ -547,7 +547,7 @@ export default {
       .get(`/api/People/GetMembershipSummary`)
       .then((res) => {
         membershipSummary.value = res.data;
-        console.log(res.data);
+        console.log(res.data, "Processing");
       })
       .catch((err) => console.log(err));
     // })
@@ -572,6 +572,11 @@ export default {
         }
       })
 
+    const membersCount = computed(() => {
+      if (membershipSummary.value.totalMember > 20) return Math.ceil(membershipSummary.value.totalMember / 20);
+      return 0;
+    })
+
     return {
       churchMembers,
       getPeopleByPage,
@@ -594,7 +599,8 @@ export default {
       toggleSelect,
       noRecords,
       searchText,
-      searchMember
+      searchMember,
+      membersCount,
     };
   },
 };

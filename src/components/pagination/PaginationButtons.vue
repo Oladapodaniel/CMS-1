@@ -7,12 +7,13 @@
             ><i class="fa fa-angle-left"></i>
           </a>
           <a
-            class="p-2 mx-1 page-btn rounded-circle"
-            :class="{ 'primary-bg text-white': i === currentPage}"
-            v-for="i in 10"
+            class="p-2 mx-1 rounded-circle"
+            :class="{ 'primary-bg text-white': i === currentPage, 'page-btn': i <= startButton + buttonsCount, 'd-none': i < startButton || i > startButton + buttonsCount }"
+            v-for="i in itemsCount"
             :key="i"
             @click="getPageContent(i)"
-            >{{ i }}</a
+            
+            ><span v-if="i >= startButton && i <= (startButton + buttonsCount)">{{ i }}</span></a
           >
           <a class="p-2 mx-1 page-btn rounded-circle" @click="getPageContent(+currentPage + 1)"
             ><i class="fa fa-angle-right"></i
@@ -30,6 +31,7 @@ export default {
   data() {
     return {
       test: "",
+      buttonsCount: 5,
     };
   },
 
@@ -39,6 +41,24 @@ export default {
       this.$emit("getcontent", page);
     },
   },
+
+  computed: {
+    startButton() {
+      if (this.currentPage < this.buttonsCount) return 1;
+      let start = 1;
+      if (this.currentPage % this.buttonsCount === 0) start = this.currentPage;
+      if (!this.currentPage % this.buttonsCount === 0) start = Math.floor(this.currentPage / this.buttonsCount) * this.buttonsCount;
+      return start;
+    }
+  },
+
+  created() {
+    console.log(this.itemsCount, "itemsCount");
+  },
+
+  updated() {
+    console.log(this.startButton, "startButton");
+  }
 };
 </script>
 

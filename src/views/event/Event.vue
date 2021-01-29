@@ -1824,7 +1824,7 @@ export default {
           this.loading = false;
           if (err.response) {
             const { data, status } = err.response;
-            if (status === 400) this.errorMessage = typeof data === "string" ? data : "Failed! ensure you provide activity name and date";
+            if (status === 400) this.errorMessage = typeof data !== "string" ?  "Failed! ensure you provide activity name and date" : data.length < 100 ? data : "An error occurred, please check the fields and try again";
           }
           console.log(err.response);
         });

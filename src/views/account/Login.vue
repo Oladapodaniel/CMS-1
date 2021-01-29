@@ -54,31 +54,6 @@
           </button>
         </div>
 
-        <!-- <button  onclick="alert('it works')">Love you</button> -->
-        <!-- <div @click="facebookSignIn"> -->
-          <!-- < scope="public_profile,email"
-                     onlogin="checkLoginState();" ref="loginFacebook">
-          </fb:login-button> -->
-          <!--Display access token-->
-          <!-- <div id="authstatus">   </div> -->
-        <!-- </div> -->
-        <!-- <div class="face-parent"> -->
-          
-        <!-- </div> -->
-        
-
-<!-- <button class="_5h0i _88va" onclick="checkLoginState();">Facebook</button> -->
-<!-- <a href="#" onclick="fb_login();"><img src="images/fb_login_awesome.jpg" border="0" alt="dapoface">dapo</a>
-<div id="fb-root"></div> -->
-
-
-  <!-- <VFacebookLogin app-id="966242223397117" /> -->
-  <!-- <div>
-    <v-facebook-login v-model="model" @sdk-init="handleSdkInit" />
-    <button >
-      Logout
-    </button>
-  </div> -->
       </div>
 
       <div class="bottom-container">
@@ -97,14 +72,9 @@ import axios from '@/gateway/backendapi';
 import { reactive, ref } from 'vue';
 import store from '../../store/store'
 import router from '../../router/index';
-// import authService from "@/services/auth/authservice"
-// import FB from '../../services/guards/facebook-sdk/face'
-// import VFacebookLogin from 'vue-facebook-login-component'
+import setupService from "../../services/setup/setupservice"
 
 export default {
-  // components: {
-  //     VFacebookLogin,
-  //   },
     setup() {
 
       const state = reactive({
@@ -136,7 +106,7 @@ export default {
             })
             return false;
           }
-          console.log(data, "On login");
+          setupService.setup();
           
           store.dispatch("setUserData", data);
           localStorage.setItem("token", data.token);

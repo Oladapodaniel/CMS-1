@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { onMounted, onUpdated, ref } from "vue";
+import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
@@ -40,22 +40,7 @@ export default {
       },
     ];
 
-    onUpdated(() => {
-      try {
-        if (props.summary && props.summary.length > 0) {
-          props.summary.forEach((i) => {
-            let summaryObj = {
-              name: i.name,
-              y: i.value,
-            };
-            getSummary.value.push(summaryObj);
-          });
-        } else {
-          getSummary.value = datum.value;
-        }
-      } catch (error) {
-        console.log(error);
-      }
+    onMounted(() => {
 
       var highchartsOptions = {
         chart: {
@@ -70,7 +55,7 @@ export default {
           enabled: false,
         },
         title: {
-          text: `<b style="font-weight:normal;font-size:10px">${props.title}</b>`,
+          text: `<b style="font-weight:normal;font-size:18px">${props.title}</b>`,
           align: "left",
           x: props.titleMarginLeft ? props.titleMarginLeft : 20,
           y: props.titleMargin ? props.titleMargin : 20,
@@ -124,8 +109,17 @@ export default {
           {
             name: "Brands",
             colorByPoint: true,
-            
-            data: getSummary.value,
+
+            data: [
+              {
+                name: "Male",
+                y: 50,
+              },
+              {
+                name: "Female",
+                y: 50,
+              },
+            ],
           },
         ],
         //   credits: false,
@@ -136,19 +130,6 @@ export default {
       colors: ["brown", "purple", "#DDDF00"],
     });
     // })
-
-    onMounted(() => {
-      getSummary.value = [
-      {
-        name: "Male",
-        y: 50,
-      },
-      {
-        name: "Female",
-        y: 50,
-      },
-    ];
-    });
 
     return { chart, getSummary, datum };
   },
