@@ -207,7 +207,7 @@ const routes = [{
                             import ( /* webpackChunkName: "editcontactlist" */ '@/views/communication/EditContactList')
                     },
                     {
-                        path: 'report',
+                        path: 'report/:messageId',
                         name: 'DeliveryReport',
                         component: () =>
                             import ( /* webpackChunkName: "deliveryreport" */ '@/views/communication/DeliveryReport')
