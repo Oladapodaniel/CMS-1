@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="row">
-                    <div class="col-sm-3 pr-sm-0 d-flex align-items-center">
+                    <div class="col-sm-4 pr-sm-0 d-flex align-items-center">
                       <select
                         name=""
                         id=""
@@ -63,7 +63,7 @@
                         <option value="">Naira(N)</option>
                       </select>
                     </div>
-                    <div class="col-sm-9 pl-sm-0 d-flex align-items-center">
+                    <div class="col-sm-8 pl-sm-0 d-flex align-items-center">
                       <input
                         type="text"
                         v-model="amount"
@@ -89,6 +89,7 @@
                   <input
                     type="text"
                     v-model="totalSMSUnits"
+                    disabled
                     class="form-control flat-left-border"
                   />
                 </div>
@@ -109,6 +110,7 @@
                   <input
                     type="text"
                     v-model="totalAmount"
+                    disabled
                     class="form-control flat-left-border"
                   />
                 </div>
@@ -127,6 +129,7 @@
               <button
                 class="primary-btn px-4 outline-none"
                 @click="payWithPaystack"
+                v-if="false"
               >
                 Buy SMS Unit
               </button>

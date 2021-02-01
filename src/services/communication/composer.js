@@ -10,10 +10,10 @@ const composerObj = {
     ],
 
     possibleSMSDestinations: [
+        "All contacts",
         "Select group from database",
         "Select person from membership database",
-        "Phone numbers",
-        "All contacts"
+        "Phone numbers"
     ],
 
     getCommunicationGroups() {
