@@ -11,9 +11,8 @@ const authService = {
                     /*eslint no-undef: "warn"*/
                     NProgress.done();
                     if (error.response) {
-                        resolve(error.response)
+                        reject(error.response)
                     } else {
-                        
                         reject(error)
                     }
                 })

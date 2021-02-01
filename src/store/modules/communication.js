@@ -10,7 +10,7 @@ export default {
     mutations: {
         setAllSentSMS(state, payload) {
             state.allSentSMS = payload;
-        }
+        },
     },
 
     actions: {
@@ -20,7 +20,7 @@ export default {
 
         async getAllSentSMS({ commit }) {
             try {
-                const { data } = await axios.get("/api/Messaging/getAllSentSms");
+                const { data } = await axios.get("/api/Messaging/getAllSentSms/1");
                 commit("setAllSentSMS", data);
             } catch (error) {
                 console.log(error);

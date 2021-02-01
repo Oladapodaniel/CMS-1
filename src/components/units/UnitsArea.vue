@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import userService from "../../services/user/userservice"
 import router from "@/router/index";
 import { useStore } from "vuex"
@@ -29,23 +29,24 @@ import { useStore } from "vuex"
         setup() {
             const store = useStore();
             
-            const currentUser = ref(store.getters.smsBalance);
+            const currentUser = computed(() => store.getters.smsBalance ? store.getters.smsBalance : 0)
 
             const getCurrentUserBalance = async () => {
                 try {
                     
                     const data = await userService.getCurrentUser();
-                    currentUser.value = data;
+                    currentUser.value = data.smsBalance;
+                    // currentUser.value = data;
                 } catch (error) {
                     console.log(error);
                 }
             }
 
-            if (!currentUser.value || currentUser.value.smsBalance === 0) getCurrentUserBalance();
+            if (!currentUser.value || currentUser.value === 0) getCurrentUserBalance();
             
             const balance = computed(() => {
-                if (!currentUser.value || currentUser.value.smsBalance === 0) return 0;
-                return currentUser.value.smsBalance;
+                if (!currentUser.value) return 0;
+                return currentUser.value;
             })
 
             const  payWithPaystack = () => {

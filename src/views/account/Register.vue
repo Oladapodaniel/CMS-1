@@ -191,7 +191,7 @@ export default {
           this.loading = false;
           console.log(err.response);
           localStorage.setItem("email", this.credentials.email)
-          if (err.response.status === 400) {
+          if (err.response && err.response.status === 400) {
             if (err.response.data === false) {
               this.$router.push("/onboarding")
               return false;
@@ -199,6 +199,8 @@ export default {
             const { message } = err.response.data;
             this.errorMessage = message ? message : "An error occurred";
             this.showError = true;
+          } else {
+            this.errorMessage = "An error occurred, ensure you are connected to the internet";
           }
         });
     },
