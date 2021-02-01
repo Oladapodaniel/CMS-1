@@ -96,7 +96,7 @@
                           <span class="hidden-header font-weight-bold"
                             >SENT BY:
                           </span>
-                          <span>{{ sms.sentByUser && sms.sentByUser.length > 10 ? `${sms.sentByUser.slice(0, 10)}...` : sms.sentByUser }}</span>
+                          <span>{{ sms.sentBy && sms.sentBy.length > 10 ? `${sms.sentBy.slice(0, 10)}...` : sms.sentBy }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
@@ -104,7 +104,7 @@
                           <span class="hidden-header font-weight-bold"
                             >UNITS:
                           </span>
-                          <span>{{ sms.units }}</span>
+                          <span>{{ sms.unitsUsed }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 my-2 d-flex justify-content-between cursor-pointer"
@@ -112,7 +112,7 @@
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
                           </span>
-                          <router-link to="/message-details" class="view-item-btn"
+                          <router-link :to="{ name: 'DeliveryReport', params: { messageId: sms.id}}" class="view-item-btn"
                             >View</router-link
                           >
                         </div>

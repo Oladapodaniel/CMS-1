@@ -107,7 +107,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-12">
             <input
               class="border-none dropdown-toggle my-1 px-1"
@@ -115,7 +115,7 @@
               id="dropdownMenu"
             />
         </div>
-      </div>
+      </div> -->
 
       <!-- Start TEst -->
       <div class="row mb-2" v-if="groupSelectionTab">
@@ -292,7 +292,7 @@
             </span>
 
             <div class="dropdown">
-              <input
+              <!-- <input
                 placeholder="Select persons"
                 class="border-none dropdown-toggle my-1 px-1"
                 type="text"
@@ -302,7 +302,7 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
-              />
+              /> -->
 
               <div
                 class="dropdown-menu pt-0 w-100"
@@ -839,6 +839,7 @@ export default {
               detail: "SMS was sent successfully",
               life: 2500,
             });
+            store.dispatch("removeSMSUnitCharge", pageCount.value);
           }
           console.log(res);
         })

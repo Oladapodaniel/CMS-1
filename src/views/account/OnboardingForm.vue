@@ -168,8 +168,7 @@ export default {
       myOptions: ['op1', 'op2', 'op3'],
 
       selectedCountry: {
-        flagUrl: "https://restcountries.eu/data/nga.svg",
-        phoneCode: 234
+      
       },
       countries: [{country: "Zambia", phoneCode: "234"}, {country: "Nigeria", phoneCode: "234"}, {country: "Congo", phoneCode: "235"}],
       loading: false,
@@ -246,17 +245,17 @@ export default {
     },
 
     countryCodes() {
-      let cook = []
+      let codeFlag = []
       // if (this.searchText ===  "") {
-      cook = this.countries.map(i => {
+      codeFlag = this.countries.map(i => {
         return {
           phoneCode: i.phoneCode,
           flagUrl: i.flagUrl,
           id: i.id
         }        
       })
-      console.log(this.searchText)
-      if (this.searchText) return cook.filter(i => i.phoneCode && i.phoneCode.includes(this.searchText))
+
+      if (this.searchText) return codeFlag.filter(i => i.phoneCode && i.phoneCode.includes(this.searchText))
       // } else {
       //   cook = this.countries.filter(i => {
       //     if (i.phone){
@@ -265,7 +264,7 @@ export default {
       //   })
       // }
       // console.log(cook)
-      return cook
+      return codeFlag
         
     },
     // searchCode () {
@@ -283,6 +282,8 @@ export default {
     axios.get("/api/GetAllCountries").then((res) => {
       this.countries = res.data;
       console.log(res)
+      this.selectedCountry = res.data.find(i => i.phoneCode &&  i.phoneCode.includes("234"))
+        console.log(this.selectedCountry)
     });
   },
 };

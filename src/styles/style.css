@@ -213,7 +213,7 @@
   }
   
   .data-con {
-    text-align: center;
+    /* text-align: center; */
   }
   
   
@@ -326,7 +326,7 @@
   }
   
   .data-con {
-    text-align: center;
+    /* text-align: center; */
   }
   
   .select-all {
@@ -339,7 +339,7 @@
   .firstname,
   .lastname,
   .phone {
-    text-align: center;
+    text-align: left;
   }
 
   .c-pointer {
@@ -370,7 +370,7 @@
     }
   
     .data-con {
-      text-align: center;
+      /* text-align: center; */
       display: flex;
       justify-content: space-between;
     }
@@ -426,7 +426,7 @@
     .firstname,
     .lastname,
     .phone {
-      width: 19%;
+      width: 40%;
     }
   
     .table-body .check {

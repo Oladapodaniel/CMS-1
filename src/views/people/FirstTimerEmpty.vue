@@ -8,7 +8,8 @@
         <div class="col-sm-12">
         <div class="top mt-3">
           <div class="header">
-            <h2>Events</h2>
+            <h2>First Timers
+            </h2>
           </div>
           <div class="actions">
             <button class="more-btn button">
@@ -17,7 +18,7 @@
             </button>
               <router-link :to="{ name: 'Event' }">
                 <button class="button add-person-btn">
-                  Add Event
+                  Add First Timers
                 </button>
               </router-link>
           </div>
@@ -38,14 +39,14 @@
         <hr class="hr" />
 <!-- v-if="!loading && people.length === 0" -->
 <!-- v-if="!loading && people.length > 0" -->
-        <div v-if="eventList.length === 0" class="no-person" >
+        <div v-if="firstTimersList.length === 0" class="no-person" >
         <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't added any event yet</p>
+            <p class="tip">You haven't added any first timer yet</p>
         </div>
         </div>
         <div v-else class="event-list">
-            <EventList />
+            <FirstTimersList />
         </div>
 
         <!-- Transitio area -->
@@ -68,41 +69,26 @@
 
 <script>
     import axios from '@/gateway/backendapi'
-    import { ref } from 'vue'
-    import EventList from './EventList'
+    import FirstTimersList from './FirstTimersList'
+    import { ref } from 'vue';
 // import store from "@/store/index";
 // import router from "@/router/index";
 // import { useRoute } from "vue-router";
 
 export default {
-       components: { EventList },
+       components: { FirstTimersList },
   setup() {
-
-      const eventList = ref(getEventList())
-
-
-      function getEventList () {
-        return axios.get('/api/eventreports/eventReports')
+      const firstTimersList = ref([])
+      const getFirstTmersList = () => {
+          axios.get("/api/People/FirstTimer")
           .then(res => {
-            eventList.value = res.data
+            firstTimersList.value = res.data;
             console.log(res.data)
           })
-          .catch(err => console.log(err))
       }
-    // const people = ref([]);
-    // const loading = ref(true);
-    // onMounted(async () => {
-    //   try {
-    //     const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
-    //     people.value = data;
-    //     loading.value = false;
-    //   } catch (err) {
-    //     loading.value = false;
-    //     console.log(err);
-    //   }
-    // });
+      getFirstTmersList()
   
-    return { eventList, getEventList };
+    return { firstTimersList, getFirstTmersList };
 
   },
 };
@@ -207,6 +193,11 @@ export default {
     margin: 0 auto;
   }
 }
+@media (max-width: 1500px) {
+    .table {
+        border: 2px solid red;
+    }
+}
 
 @media screen and (min-width: 1400px) {
   .main-con {
@@ -221,6 +212,35 @@ export default {
   .no-person {
     height: calc(100% - 90px);
   }
+}
+
+@media (max-width: 640px) {
+    .top {
+  display: flex;;
+  align-items: center;
+  flex-direction: column;
+    }
+    .actions {
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 566px) {
+    .button {
+        width: 160px;
+    }
+}
+
+@media (max-width: 399px) {
+    .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button {
+        margin-top: 10px;
+    }
 }
 
 /* Route Transition */
