@@ -52,7 +52,7 @@
               >
             </div>
             <div class="col-md-12 my-2">
-              <router-link class="font-weight-bold link" to=""
+              <router-link class="font-weight-bold link" to="/tenant/settings/attendance"
                 >Attendance Category</router-link
               >
             </div>

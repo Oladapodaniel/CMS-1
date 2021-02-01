@@ -307,6 +307,12 @@ const routes = [{
                             import ( /* webpackChunkName: "membership" */ '@/views/settings/MembershipCategory')
                     },
                     {
+                        path: 'attendance',
+                        name: 'AttendanceCategory',
+                        component: () =>
+                            import ( /* webpackChunkName: "membership" */ '@/views/settings/AttendanceCategory')
+                    },
+                    {
                         path: 'giving',
                         name: 'OnlineGiving',
                         component: () =>
@@ -354,7 +360,7 @@ router.beforeEach((to, from, next) => {
     const tokenIsValid = token && token.length > 30 ? true : false;
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name === "ResetPassword" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
-    // if (!tokenIsValid) return next("/");
+        // if (!tokenIsValid) return next("/");
     next(true)
 })
 
