@@ -1356,6 +1356,7 @@ export default {
         axios
         .post("/api/people/firsttimer", firstTimersObj.value)
         .then((res) => {
+          // NProgress.done();
           console.log(res.data);
           loading.value = false;
           // toast.show(`Saving successful`, {
@@ -1365,6 +1366,7 @@ export default {
           router.push("/tenant/first-timers");
         })
         .catch((err) => {
+          // NProgress.done();
           loading.value = false;
           // toast.show(`Saving failed`, {
           //   position: "top-right",

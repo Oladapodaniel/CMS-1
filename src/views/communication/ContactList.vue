@@ -27,16 +27,16 @@
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-3">
-                          <span class="th">NAME</span>
+                          <span class="th small-text">NAME</span>
                         </div>
                         <div class="col-md-4">
-                          <span class="th">TOTAL PHONE NUMBER</span>
+                          <span class="th small-text">TOTAL PHONE NUMBER</span>
                         </div>
                         <div class="col-md-3">
-                          <span class="th">DATE CREATED</span>
+                          <span class="th small-text">DATE CREATED</span>
                         </div>
                         <div class="col-md-1">
-                          <span class="th"></span>
+                          <span class="th small-text"></span>
                         </div>
                       </div>
                     </div>

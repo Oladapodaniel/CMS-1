@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container">
+        <div class="container pb-5">
             <div class="row mt-3 mb-4">
                 <div class="col-md-12">
                     <router-link to="/tenant/sms-communications/sent" class="d-flex">

@@ -138,7 +138,7 @@
 <script>
 import router from "@/router/index";
 import UnitsArea from "../../components/units/UnitsArea"
-// import communicationService from "../../services/communication/communicationservice"
+import communicationService from "../../services/communication/communicationservice"
 
 export default {
   components: { UnitsArea },
@@ -154,9 +154,18 @@ export default {
       router.push("/tenant/units")
     },
 
-    getDrafts() {
-
+    async getDrafts() {
+      try {
+        const data = await communicationService.getDrafts();
+        console.log(data, "Drafts");
+      } catch (error) {
+        console.log(error);
+      }
     }
+  },
+
+  created() {
+    this.getDrafts();
   }
 };
 </script>

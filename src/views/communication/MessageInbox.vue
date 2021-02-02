@@ -59,7 +59,7 @@
                           <span class="th">UNITS</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">DELIVERY REPORT</span>
+                          <span class="th">REPORT</span>
                         </div>
                       </div>
                     </div>
@@ -106,7 +106,7 @@
                           class="col-md-2 my-2 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >DELIVER REPORT:
+                            >REPORT:
                           </span>
                           <span class="view-btn">View</span>
                         </div>

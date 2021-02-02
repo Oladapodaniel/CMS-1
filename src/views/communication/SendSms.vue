@@ -107,15 +107,19 @@
         </div>
       </div>
 
-      <!-- <div class="row">
-        <div class="col-md-12">
+      <div class="row" v-if="sendToAll">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-10 px-0">
             <input
-              class="border-none dropdown-toggle my-1 px-1"
+              class="form-control dropdown-toggle my-1 px-1"
               type="text"
               id="dropdownMenu"
+              value="All Contacts"
+              disabled
             />
         </div>
-      </div> -->
+      </div>
 
       <!-- Start TEst -->
       <div class="row mb-2" v-if="groupSelectionTab">
@@ -647,6 +651,7 @@ import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
+import stopProgressBar from "../../services/progressbar/progress"
 
 export default {
   setup() {
@@ -664,17 +669,18 @@ export default {
     const membershipSelectionTab = ref(false);
     const phoneNumberSelectionTab = ref(false);
     const selectedGroups = ref([]);
+    const sendToAll = ref(false);
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
     };
 
     const showSection = (index) => {
-      if (index === 0) groupSelectionTab.value = true;
-      if (index === 1) membershipSelectionTab.value = true;
-      if (index === 2) phoneNumberSelectionTab.value = true;
-      if (index === 3) {
-        //
+      if (index === 1) groupSelectionTab.value = true;
+      if (index === 2) membershipSelectionTab.value = true;
+      if (index === 3) phoneNumberSelectionTab.value = true;
+      if (index === 0) {
+        sendToAll.value = true;
       }
     };
 
@@ -775,7 +781,7 @@ export default {
       invalidDestination.value = false;
       invalidMessage.value = false;
 
-      if (selectedGroups.value.length === 0 && !phoneNumber.value && selectedMembers.value.length === 0) {
+      if (selectedGroups.value.length === 0 && !phoneNumber.value && selectedMembers.value.length === 0 && !sendToAll.value) {
         invalidDestination.value = true;
         return false;
       }
@@ -800,7 +806,7 @@ export default {
         // contacts: selectedMembers.value,
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        toContacts: "",
+        toContacts: sendToAll.value ? "allcontacts" : "",
         // toOthers: phoneNumber.value,
         isoCode: isoCode.value,
         // isoCode: "NG",
@@ -821,6 +827,8 @@ export default {
           .join();
       }
 
+      console.log(data, "SMS Data");
+
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
@@ -839,11 +847,13 @@ export default {
               detail: "SMS was sent successfully",
               life: 2500,
             });
-            store.dispatch("removeSMSUnitCharge", pageCount.value);
+            store.dispatch("removeSMSUnitCharge", (pageCount.value * 2));
+            console.log(pageCount, "Page count ");
           }
           console.log(res);
         })
         .catch((err) => {
+          stopProgressBar();
           toast.removeAllGroups();
           if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
@@ -1010,6 +1020,7 @@ export default {
       memberSelectInput,
       invalidDestination,
       invalidMessage,
+      sendToAll,
 
     };
   },
