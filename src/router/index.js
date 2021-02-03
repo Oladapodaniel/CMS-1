@@ -207,7 +207,7 @@ const routes = [{
                             import ( /* webpackChunkName: "editcontactlist" */ '@/views/communication/EditContactList')
                     },
                     {
-                        path: 'report',
+                        path: 'report/:messageId',
                         name: 'DeliveryReport',
                         component: () =>
                             import ( /* webpackChunkName: "deliveryreport" */ '@/views/communication/DeliveryReport')
@@ -361,7 +361,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
-    if ((to.name === "ResetPassword" || to.name === "EmailSent") && !tokenIsValid) return next(true)
+
+    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
     const tokenIsValid = token && token.length > 30 ? true : false;
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")

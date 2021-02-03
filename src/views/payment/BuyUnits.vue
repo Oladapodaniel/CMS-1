@@ -16,7 +16,7 @@
             <template #header style="d-none">
               <h3>Header</h3>
             </template>
-            <PaymentSuccessModal />
+            <PaymentSuccessModal :amount="amount" />
           </Dialog>
         </div>
       </div>
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="row">
-                    <div class="col-sm-3 pr-sm-0 d-flex align-items-center">
+                    <div class="col-sm-4 pr-sm-0 d-flex align-items-center">
                       <select
                         name=""
                         id=""
@@ -63,7 +63,7 @@
                         <option value="">Naira(N)</option>
                       </select>
                     </div>
-                    <div class="col-sm-9 pl-sm-0 d-flex align-items-center">
+                    <div class="col-sm-8 pl-sm-0 d-flex align-items-center">
                       <input
                         type="text"
                         v-model="amount"
@@ -89,6 +89,7 @@
                   <input
                     type="text"
                     v-model="totalSMSUnits"
+                    disabled
                     class="form-control flat-left-border"
                   />
                 </div>
@@ -109,6 +110,7 @@
                   <input
                     type="text"
                     v-model="totalAmount"
+                    disabled
                     class="form-control flat-left-border"
                   />
                 </div>
@@ -127,6 +129,7 @@
               <button
                 class="primary-btn px-4 outline-none"
                 @click="payWithPaystack"
+                v-if="false"
               >
                 Buy SMS Unit
               </button>
@@ -195,6 +198,7 @@ import PaymentSuccessModal from "@/components/payment/PaymentSuccessful.vue"
 import store from '../../store/store'
 import userService from '../../services/user/userservice'
 import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress"
 
 export default {
   components: { PaymentSuccessModal },
@@ -219,6 +223,8 @@ export default {
       return Math.ceil(amount.value);
     });
 
+    const userEmail = ref(store.getters.email);
+    const churchName = ref("");
 
     const getUserEmail = async () => {
       userService.getCurrentUser()
@@ -230,14 +236,12 @@ export default {
           console.log(err);
         })
     }
-    console.log(getUserEmail(), "UserEmail");
 
 
-    const userEmail = ref("");
-    const churchName = ref("");
+    
+    
     // const userEmail = ref("");
-    if (store.getters.currentUser) userEmail.value = store.getters.currentUser.userEmail;
-    if (!store.getters.currentUser) getUserEmail();
+    if (!userEmail.value) getUserEmail();
 
     const payWithPaystack = (e) => {
       e.preventDefault();
@@ -247,10 +251,10 @@ export default {
         return false;
       }
 
-      
+      console.log(userEmail.value, "UE");
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: "pk_test_9a8895ede03716b9a0474fea6da11ec5bc1c7033",
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: userEmail.value,
         amount: amount.value * 100,
         firstname: churchName.value,
@@ -273,9 +277,12 @@ export default {
             .post("/api/Payment/buySms", returnres)
             .then((res) => {
               console.log(res, "success data");
-              purchaseIsSuccessful.value = true
+              purchaseIsSuccessful.value = true;
+              store.dispatch("addPurchasedUnits", totalSMSUnits.value);
             })
             .catch((err) => {
+              stopProgressBar();
+              toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
               console.log(err, "error confirming payment");
             });
         },
@@ -284,7 +291,7 @@ export default {
     };
 
     onMounted(() => {
-      console.log(store.getters.currentUser, "user");
+      console.log();
     })
 
     return {

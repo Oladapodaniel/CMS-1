@@ -138,6 +138,7 @@
 <script>
 import router from "@/router/index";
 import UnitsArea from "../../components/units/UnitsArea"
+import communicationService from "../../services/communication/communicationservice"
 
 export default {
   components: { UnitsArea },
@@ -152,6 +153,19 @@ export default {
     payWithPaystack() {
       router.push("/tenant/units")
     },
+
+    async getDrafts() {
+      try {
+        const data = await communicationService.getDrafts();
+        console.log(data, "Drafts");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  },
+
+  created() {
+    this.getDrafts();
   }
 };
 </script>

@@ -67,7 +67,8 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row" v-for="(sms, index) in sentSMS" :key="index">
+                  <div class="row" v-for="(sms, index) in testData" :key="index">
+                  <!-- <div class="row" v-for="(sms, index) in sentSMS" :key="index"> -->
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
@@ -96,7 +97,7 @@
                           <span class="hidden-header font-weight-bold"
                             >SENT BY:
                           </span>
-                          <span>{{ sms.sentByUser && sms.sentByUser.length > 10 ? `${sms.sentByUser.slice(0, 10)}...` : sms.sentByUser }}</span>
+                          <span>{{ sms.sentBy && sms.sentBy.length > 10 ? `${sms.sentBy.slice(0, 10)}...` : sms.sentBy }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
@@ -104,7 +105,7 @@
                           <span class="hidden-header font-weight-bold"
                             >UNITS:
                           </span>
-                          <span>{{ sms.units }}</span>
+                          <span>{{ sms.unitsUsed }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 my-2 d-flex justify-content-between cursor-pointer"
@@ -112,7 +113,7 @@
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
                           </span>
-                          <router-link to="/message-details" class="view-item-btn"
+                          <router-link :to="{ name: 'DeliveryReport', params: { messageId: sms.id}}" class="view-item-btn"
                             >View</router-link
                           >
                         </div>
@@ -141,6 +142,14 @@
             </div>
           </div>
         </div>
+
+        <div class="conatiner">
+          <div class="row">
+            <div class="col-md-12 mb-3 pagination-container">
+              <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage" />
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   </div>
@@ -148,26 +157,29 @@
 
 <script>
 // import axios from "@/gateway/backendapi";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import router from "@/router/index";
 import communicationService from "../../services/communication/communicationservice"
 import { useStore } from "vuex";
 import UnitsArea from "../../components/units/UnitsArea"
+import PaginationButtons from "../../components/pagination/PaginationButtons"
 
 export default {
-  components: { UnitsArea },
+  components: { UnitsArea, PaginationButtons },
   
   setup() {
     const loading = ref(false);
     const store = useStore();
     const sentSMS = ref(store.getters["communication/allSentSMS"]);
 
+    const currentPage = ref(1);
+
     const getSentSMS = async () => {
       try {
         loading.value = true;
         /*eslint no-undef: "warn"*/
         NProgress.start();
-        const data = await communicationService.getAllSentSMS()
+        const data = await communicationService.getAllSentSMS(1)
         loading.value = false;
         sentSMS.value = data;
       } catch (error) {
@@ -176,18 +188,48 @@ export default {
       }
     };
 
+    // const testData = ref([
+    //   {id: 1, message: "Hello", sentBy: "Me"},
+    //   {id: 2, message: "Hi", sentBy: "You"},
+    //   {id: 3, message: "Hey", sentBy: "Him"},
+    //   {id: 4, message: "SUp", sentBy: "Her"}
+    // ])
+    // const copyData = [
+    //   {id: 1, message: "Hello", sentBy: "Me"},
+    //   {id: 2, message: "Hi", sentBy: "You"},
+    //   {id: 3, message: "Hey", sentBy: "Him"},
+    //   {id: 4, message: "SUp", sentBy: "Her"}
+    // ];
+
     const payWithPaystack = () => {
       router.push("/tenant/units");
     };
+
+    const getSMSByPage = (page) => {
+      try {
+        const data = communicationService.getAllSentSMS(page);
+        sentSMS.value = data;
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     console.log(sentSMS.value);
 
     if (!sentSMS.value || sentSMS.value.length === 0) getSentSMS();
 
+    const itemsCount = computed(() => {
+      if (!sentSMS.value || sentSMS.value.length === 0) return 0;
+      return sentSMS.value.length;
+    })
+
     return {
       sentSMS,
       loading,
       payWithPaystack,
+      itemsCount,
+      currentPage,
+      getSMSByPage,
     };
   },
 };

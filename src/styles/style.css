@@ -133,6 +133,11 @@
   .small-text {
     font-size: 14px;
   }
+
+  .pagination-container {
+    display: flex;
+    justify-content: flex-end;
+  }
 /* 
   #chart {
     width: 48%;

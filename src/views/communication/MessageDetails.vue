@@ -165,7 +165,6 @@ export default {
         .then(res => {
           loading.value = false;
           message.value = res;
-          console.log(res, "message");
         })
         .catch(err => {
           loading.value = false;

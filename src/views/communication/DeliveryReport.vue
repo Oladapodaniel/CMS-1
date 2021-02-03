@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div class="container">
+        <div class="container pb-5">
             <div class="row mt-3 mb-4">
                 <div class="col-md-12">
-                    <router-link to="" class="d-flex">
+                    <router-link to="/tenant/sms-communications/sent" class="d-flex">
                         <span class="mr-2"><i class="fa fa-arrow-left back-icon"></i></span>
                         <span>  Back</span>
                     </router-link>
@@ -35,15 +35,15 @@
 
             <div class="row mt-4">
                 <div class="col-md-12">
-                    <div class="row theader light-grey-bg py-2">
+                    <div class="row theader light-grey-bg py-2 font-weight-700">
                         <div class="col-md-3">
                             <span>RECIPIENT NAME</span>
                         </div>
                         <div class="col-md-3">
-                            <span>RECIPIENT NUMBER</span>
+                            <span>NUMBER</span>
                         </div>
                         <div class="col-md-3">
-                            <span>DELIVERY STATUS</span>
+                            <span>STATUS</span>
                         </div>
                         <div class="col-md-3">
                             <span>DATE & TIME</span>
@@ -51,13 +51,13 @@
                     </div>
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-12 px-0">
                     <hr class="hr mt-0">
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 py-2">
                     <div class="row">
                         <div class="col-md-3">
                             <span class="hidden-header">RECIPIENT NAME</span>
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12 px-0">
                     <hr class="hr">
                 </div>
             </div>
@@ -87,9 +87,30 @@
 
 <script>
     import ReportChart from "@/components/charts/BarChart.vue";
+    import { useRoute } from "vue-router";
+    import communicationService from "../../services/communication/communicationservice"
 
     export default {
-        components: { ReportChart }
+        components: { ReportChart },
+
+        setup() {
+            const route = useRoute();
+
+            const getMessageReport = async () => {
+                try {
+                    const reportData = await communicationService.getMessageReport(route.params.messageId);
+                    console.log(reportData, "ReportData");
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            getMessageReport();
+
+            return {
+                
+            }
+        }
     }
 </script>
 

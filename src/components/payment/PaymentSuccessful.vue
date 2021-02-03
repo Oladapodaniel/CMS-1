@@ -15,7 +15,7 @@
                     </div>
                     <div class="row action-message py-4">
                         <div class="col-md-12">
-                            <p class="text-center">$ 1000 worth of SMS units have been succefully added to your SMS unit balance</p>
+                            <p class="text-center">{{ currency }} {{ amount }} worth of SMS units have been succefully added to your SMS unit balance</p>
                         </div>
                     </div>
                     <div class="row">
@@ -30,8 +30,32 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import userService from "../../services/user/userservice"
+import { useStore } from "vuex";
     export default {
-        
+        props: [ "amount" ],
+
+        setup() {
+            const store = useStore();
+            const currency = ref(store.getters.currency);
+
+            const getUserCurrency = async () => {
+                try {
+                    const user = await userService.getCurrentUser();
+                    currency.value = user.currency;
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            if (!currency.value) getUserCurrency();
+
+            return {
+                currency,
+
+            }
+        }
     }
 </script>
 

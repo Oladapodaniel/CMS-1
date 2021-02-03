@@ -22,23 +22,8 @@ export default {
   setup(props) {
     const chart = ref(null);
     const getSummary = ref([]);
-    // let elemId = "";
-
-    // onMounted(() => {
-    // elemId = props.domId;
 
     console.log(props);
-
-    const datum = [
-      {
-        name: "Male",
-        y: 50,
-      },
-      {
-        name: "Female",
-        y: 50,
-      },
-    ];
 
     onUpdated(() => {
       try {
@@ -241,19 +226,19 @@ var highchartsOptions = {
     // })
 
     onMounted(() => {
-      getSummary.value = [
-      {
-        name: "Male",
-        y: 50,
-      },
-      {
-        name: "Female",
-        y: 50,
-      },
-    ];
+    //   getSummary.value = [
+    //   {
+    //     name: "Male",
+    //     y: 50,
+    //   },
+    //   {
+    //     name: "Female",
+    //     y: 50,
+    //   },
+    // ];
     });
 
-    return { chart, getSummary, datum };
+    return { chart, getSummary };
   },
 };
 </script>

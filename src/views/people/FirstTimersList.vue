@@ -65,8 +65,6 @@
         </div>
       </div>
     </div>
-
-
           <div class="table">
             <div class="top-con">
               <div class="table-top my-4 px-4">
@@ -180,11 +178,11 @@
               <tbody v-if="filterResult.length > 0 && ( filter.filterFirstName || filter.filterLastName || filter.phoneNumber )">
               <tr v-for="person in filterResult" :key="person.id">
                   <td><input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/></td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`">{{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}</router-link></td>
-                  <td><router-link :to="``" class="data-value">{{ person.phoneNumber }}</router-link></td>
-                  <td> Social media</td>
-                  <td>{{ person.interestedInJoining === "Not_Specified" ? "Not Specified" : person.interestedInJoining }}</td>
-                  <td> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
+                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`" class="itemroute-color">{{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}</router-link></td>
+                  <td><router-link :to="``" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
+                  <td class="itemroute-color">{{ person.howDidYouAboutUsName }}</td>
+                  <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining }}</td>
+                  <td class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
                   <td><router-link :to="`/tenant/people/add-first-timer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
                   <td><div class="dropdown">
                     <i
@@ -231,11 +229,11 @@
               <tbody v-else-if="searchMember.length > 0">
                 <tr v-for="person in searchMember" :key="person.id">
                   <td><input type="checkbox" name="all" id="all" @click="toggleSelect"/></td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`">{{ person.fullName }}</router-link></td>
-                  <td><router-link :to="``" class="data-value">{{ person.phoneNumber }}</router-link></td>
-                  <td> Social media</td>
-                  <td>{{ person.interestedInJoining === "Not_Specified" ? "Not Specified" : person.interestedInJoining }}</td>
-                  <td> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
+                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`" class="itemroute-color">{{ person.fullName }}</router-link></td>
+                  <td><router-link :to="``" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
+                  <td class="itemroute-color"> {{ person.howDidYouAboutUsName }}</td>
+                  <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining }}</td>
+                  <td class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
                   <td><router-link :to="`/tenant/people/add-first-timer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
                   <td><div class="dropdown">
                     <i

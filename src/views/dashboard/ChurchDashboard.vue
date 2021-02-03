@@ -114,10 +114,10 @@
             <div class="bottom">
               <div class="box-bottom">
                 <span class="plan-text"></span>
-                <router-link :to=" { name: 'BuyUnits', path: '/tenant/units' } ">
-                <button class="upgrade-btn buy-btn">
-                  <h4 class="box-btn-text">BUY UNIT</h4>
-                </button>
+                <router-link :to="{ name: 'BuyUnits', path: '/tenant/units' }">
+                  <button class="upgrade-btn buy-btn">
+                    <h4 class="box-btn-text">BUY UNIT</h4>
+                  </button>
                 </router-link>
               </div>
             </div>
@@ -223,27 +223,68 @@
         <table class="w-100">
           <thead>
             <tr>
-              <th>PICTURE</th>
-              <th>FIRSTNAME</th>
-              <th>LASTNAME</th>
+              <th>NAME</th>
+              <th>DATE</th>
+              <th>TYPE</th>
               <th>PHONE</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><img src="../../assets/people/phone-import.svg" alt="" /></td>
-              <td>FirstName</td>
-              <td>Lastname</td>
-              <td>mobilePhne</td>
-              <td><i class="fas fa-ellipsis-v"></i></td>
-            </tr>
-            <tr>
-              <td><img src="../../assets/people/phone-import.svg" alt="" /></td>
-              <td>Firstname</td>
-              <td>Lastname</td>
-              <td>mobilePhne</td>
-              <td><i class="fas fa-ellipsis-v"></i></td>
+            <tr
+              v-for="celebration in tenantInfo.celebrations"
+              :key="celebration.id" 
+            >
+              <td>
+                <img src="../../assets/people/phone-import.svg" alt="" /><span
+                  class="project-name"
+                  >{{ celebration.name }}</span
+                >
+              </td>
+              <td>
+                {{
+                  moment.parseZone(
+                    new Date(celebration.date).toLocaleDateString(),
+                    "YYYY MM DD HH ZZ"
+                  )._i
+                }}
+              </td>
+              <td>{{ celebration.celebration }}</td>
+              <td>{{ celebration.phone }}</td>
+              <td>
+                <i class="fas fa-ellipsis-v cursor-pointer"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"></i>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <!-- v-if="person.mobilePhone" -->
+                <a class="dropdown-item elipsis-items">
+                  <router-link
+                    :to="`/tenant/sms-communications/compose-message?phone=${celebration.phone}`"
+                    >Send SMS</router-link
+                  >
+                </a>
+                <!-- v-if="person.email" -->
+                <!-- <a class="dropdown-item elipsis-items" >
+                  <router-link
+                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    >Send Email</router-link
+                  >
+                </a> -->
+                <!-- <a class="dropdown-item elipsis-items">
+                  <router-link :to="`/tenant/people/add-person/${person.id}`"
+                    >Edit</router-link
+                  >
+                </a> -->
+                <!-- <a
+                  class="dropdown-item elipsis-items"
+                  href="#"
+                  @click.prevent="showConfirmModal(person.id)"
+                  >Delete</a 
+               > -->
+              </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -251,39 +292,116 @@
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-left"></i>
           </button>
-          <button class="tbl-footer-btn">A</button>
-          <button class="tbl-footer-btn">A</button>
+          <button class="tbl-footer-btn">1</button>
+          <button class="tbl-footer-btn">2</button>
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-right"></i>
           </button>
         </div>
       </div>
       <div class="charts" id="plot">
-        <div>
-          <ColumnChart
-            domId="chart1"
-            title="Event Attendance"
-            subtitle="Weekly Attendance of Events"
-            header="Members Attendance"
-          />
-        </div>
+        <div v-if="tenantInfo.eventAttendanceChartData">
+          <div class="adjust-view">
+            <div class="view-report">View Reports</div>
+            <div class="weekly">
+              <span
+                @click="weeklyAttendance"
+                :class="{ active: attendanceBoolean }"
+                >Weekly</span
+              >&nbsp;&nbsp;&nbsp;<span
+                @click="monthlyAttendance"
+                :class="{ active: !attendanceBoolean }"
+                >Monthly</span
+              >
+            </div>
+          </div>
 
-        <div>
+          <div v-if="attendanceBoolean">
+            <ColumnChart
+              domId="chart1"
+              title="Event Attendance"
+              subtitle="Weekly Attendance of Events"
+              header="Members Attendance"
+              :data="chartData"
+              :series="series"
+              :attendanceSeries="attendanceSeries"
+            />
+          </div>
+          <div v-else>
+            <ColumnChart
+              domId="chart1"
+              title="Event Attendance"
+              subtitle="Monthly Attendance of Events"
+              header="Members Attendance"
+              :data="monthlyAttendanceObj"
+              :series="series"
+              :attendanceSeries="attendanceSeries"
+            />
+          </div>
+        </div>
+        <div>{{ attendanceSeries }}</div>
+<!-- <div>{{ monthlyAttendanceObj }}</div>
+        <div class="adjust-view two">
+          <div class="view-report">View Reports</div>
+          <div class="weekly">
+            <span
+              @click="weeklyFirstTimer"
+              :class="{ active: firstTimerBoolean }"
+              >Weekly</span
+            >&nbsp;&nbsp;&nbsp;<span
+              @click="monthlyFirstTimer"
+              :class="{ active: !firstTimerBoolean }"
+              >Monthly</span
+            >
+          </div>
+        </div> -->
+
+        <!-- <div v-if="firstTimerBoolean">
           <ColumnChart
             domId="chart2"
-            title="Event Attendance"
-            subtitle="Weekly Attendance of Events"
+            title="First Timer And New Convert Inflow"
+            subtitle="How First Timer Come to Church"
             header=""
           />
         </div>
+        <div v-else>
+          <ColumnChart
+            domId="chart2"
+            title="First Timer And New Convert Inflow"
+            subtitle="How First Timer Come to Church"
+            header=""
+            :data="chartData"
+          />
+        </div> -->
 
         <div>
           <ColumnChart
+          v-if="false"
             domId="chart3"
             title="Event Attendance"
             subtitle="Weekly Attendance of Events"
             header="Members Attendance"
           />
+        </div>
+
+        <div class="chart-con">
+          <div style="width: 45%" class="ml-md-4 chart1">
+            <ByGenderChart
+              domId="chart"
+              title="Invitation Source"
+              distance="5"
+              titleMargin="10"
+              
+            />
+          </div>
+          <div style="width: 45%;" class="chart2">
+            <ByMaritalStatusChart
+              domId="second"
+              title="Interested In Joining"
+              titleMargin="10"
+              
+            />
+          </div>
         </div>
 
         <div class="pies">
@@ -294,8 +412,8 @@
               subtitle="Overview"
               distance="5"
               :titleMarginLeft="70"
-               height="400"
-               :summary="offering"
+              height="400"
+              :summary="offering"
             />
           </div>
 
@@ -306,8 +424,8 @@
               subtitle="Overview"
               distance="1"
               :titleMarginLeft="70"
-               height="400"
-               :summary="offering"
+              height="400"
+              :summary="offering"
             />
           </div>
         </div>
@@ -318,80 +436,127 @@
 </template>
 
 <script>
+// import InterestedJoin from "@/components/charts/PieChart.vue";
+// import InvitationSource from "@/components/charts/PieChart.vue";
+import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
+import ByGenderChart from "@/components/charts/PieChart.vue";
 import PieChart from "@/components/charts/DashboardPie.vue";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
 // import store from "@/store/store.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
+import moment from "moment";
 
 export default {
   components: {
     PieChart,
     ColumnChart,
+    ByMaritalStatusChart,
+    ByGenderChart
+    
   },
 
   setup() {
     const moreLinksVissible = ref(false);
-    const firstTimerArr = ref([])
-    const offering = ref([23, 45, 65, 78, 89])
+    const firstTimerArr = ref([]);
+    const offering = ref([23, 45, 65, 78, 89]);
+    const attendanceBoolean = ref(true);
+    const firstTimerBoolean = ref(true);
 
+    // const attendance
 
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
 
-    const celebrations = [
-      {
-        firstName: "FirstName",
-        lastName: "lastName",
-        mobilePhone: "mobilePhone",
-      },
-      {
-        firstName: "FirstName",
-        lastName: "lastName",
-        mobilePhone: "mobilePhone",
-      },
-    ];
-
+    const celebrations = [];
     // const route = useRoute();
 
     const tenantInfo = ref({});
+    const attendanceSeries = ref("weekly");
+
+    const monthlyAttendanceObj = ref({})
+    const xAxis = ref([1, 2, 3, 4,5, 6, 7, 8, 9, 10])
+    const monthXaxis = ref(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
+
+    const series = computed(() => {
+      if (attendanceSeries.value === "weekly") return xAxis.value;
+      return monthXaxis.value;
+    })
 
     axios
       .get("/dashboard")
       .then((res) => {
         tenantInfo.value = res.data;
-        console.log(res.data)
+        // celebrations.value = res.data
+        console.log(res.data);
       })
       .catch((err) => {
-        console.log(err.respone);
+        console.log(err.response);
         if (err.response.status === 401) {
           localStorage.removeItem("token");
           router.push("/");
         }
       });
 
-      const firstTimer = () => {
-        axios.get("/api/People/FirstTimer")
-          .then(res => {
-            firstTimerArr.value = res.data;
-            console.log(res.data)
-          })
-      }
-      firstTimer()
+    const firstTimer = () => {
+      axios.get("/api/People/FirstTimer").then((res) => {
+        firstTimerArr.value = res.data;
+        console.log(res.data);
+      });
+    };
+    firstTimer();
 
-      
+    onMounted(() => {
+      console.log(tenantInfo.value.eventAttendanceChartData);
+    });
 
-      const subPlan = () => {
-        axios.get("/api/GetAllSubscriptionPlans")
-          .then(res => {
-            console.log(res.data)
-          })
-      }
-      subPlan()
+    const subPlan = () => {
+      axios.get("/api/GetAllSubscriptionPlans").then((res) => {
+        console.log(res.data);
+      });
+    };
+    subPlan();
 
+    const weeklyAttendance = () => {
+      console.log("weekly");
+      attendanceSeries.value = "weekly";
+      attendanceBoolean.value = true;
+    };
+
+    const monthlyAttendance = () => {
+      console.log("monthly");
+      attendanceBoolean.value = false;
+      attendanceSeries.value = "monthly";
+
+      axios.get('/Dashboard/period?period=Months')
+        .then(res => {
+          monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
+          // monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
+          // tenantInfo.value = res.data;
+
+       })
+    };
+
+    const weeklyFirstTimer = () => {
+      console.log("weekly");
+      firstTimerBoolean.value = true;
+    };
+
+    const monthlyFirstTimer = () => {
+      console.log("monthly");
+      firstTimerBoolean.value = false;
+    };
+
+    const chartData = computed(() => {
+      if (!tenantInfo.value.eventAttendanceChartData) return [];
+      return tenantInfo.value.eventAttendanceChartData[0]
+      // }
+    });
+
+    
 
     return {
       celebrations,
@@ -401,7 +566,19 @@ export default {
       firstTimer,
       firstTimerArr,
       subPlan,
-      offering
+      offering,
+      moment,
+      attendanceBoolean,
+      weeklyAttendance,
+      monthlyAttendance,
+      firstTimerBoolean,
+      weeklyFirstTimer,
+      monthlyFirstTimer,
+      chartData,
+      monthlyAttendanceObj,
+      xAxis,
+      monthXaxis,
+      series,
     };
   },
 };
@@ -597,7 +774,8 @@ export default {
   width: 80px;
 }
 
-.upgrade-btn:hover, .buy-btn:hover {
+.upgrade-btn:hover,
+.buy-btn:hover {
   background: #136acd91;
   /* font-weight: 600; */
 }
@@ -721,7 +899,7 @@ tbody tr:nth-child(even) {
   margin: 0px;
   font-size: 12px;
   font-weight: 700;
-  color: #136ACD;
+  color: #136acd;
 }
 
 .size-text {
@@ -760,6 +938,40 @@ tbody tr:nth-child(even) {
   border: 0.4000000059604645px solid #dde2e6;
   box-shadow: 0px 1px 4px #02172e45;
   border-radius: 10px;
+}
+
+.project-name {
+  margin-left: 10px;
+  font-weight: 700;
+}
+
+.adjust-view {
+  position: relative;
+  top: 12em;
+  z-index: 1;
+}
+
+.view-report {
+  font: normal normal 800 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #2b6ecd;
+  text-align: right;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+.weekly {
+  text-align: right;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+.adjust-view.two {
+  top: 5em;
+}
+
+.active {
+  color: #2b6ecd;
 }
 /* WIP */
 

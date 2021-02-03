@@ -42,6 +42,14 @@ export default {
 
     getMembers(state, payload) {
       state.churchMembers = payload;
+    },
+
+    removeSMSUnitCharge(state, payload) {
+      state.currentUser.smsBalance = state.currentUser.smsBalance - payload;
+    },
+
+    addPurchasedUnits(state, payload) {
+      state.currentUser.smsBalance = state.currentUser.smsBalance + payload;
     }
   },
 
@@ -91,19 +99,28 @@ export default {
 
     setUserUp({ commit }, payload) {
       commit("setUserUp", payload)
-    }
+    },
+
+    removeSMSUnitCharge({ commit }, payload) {
+      commit("removeSMSUnitCharge", payload)
+    },
+
+    addPurchasedUnits({ commit }, payload) {
+      commit("addPurchasedUnits", payload)
+    },
   },
 
   getters: {
     currentUser: state => state.currentUser,
     userEmail: state => state.userEmail,
+    email: state => state.currentUser.email,
     onboardingData: state => state.onboardingData,
     userRole: state => state.userRole,
     userData: state => state.userData,
     initialSignUpDetails: state => state.initialSignUpDetails,
     userStartPoint: state => state.userStartPoint,
     settingUserUp: state => state.settingUserUp,
-    smsBalance: state => state.smsBalance,
+    smsBalance: state => state.currentUser.smsBalance,
     currency: state => state.currentUser.currency,
   },
 }

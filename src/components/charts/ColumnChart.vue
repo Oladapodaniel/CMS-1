@@ -15,12 +15,12 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 export default {
   components: {},
 
-  props: [ "domId", "title", "subtitle", "header" ],
+  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries" ],
   
   setup(props) {
     const chart = ref(null);
@@ -57,11 +57,11 @@ export default {
           title: {
             text: "Age",
           },
-          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+          categories: props.series
         },
         yAxis: {
           title: {
-            text: "Pot Value",
+            // text: "Pot Value",
           },
           labels: {
             formatter: function () {
@@ -81,25 +81,38 @@ export default {
     },
         series: [
           {
-            name: "Male",
-            color: "#EBEFF4",
-            data: [2, 6, 3, 1, 1, 6],
-          },
-          {
-            name: "Female",
+            name: props.attendanceSeries,
             color: "#136ACD",
-            data: [1, 4, 1, 6, 5, 4],
-          },
-          {
-            name: "Others",
-            color: "#002044",
-            data: [5, 2, 5, 4, 6, 2],
-          },
+            data: props.data.data
+            // data: props.data ? props.data.data : props.data
+            // data: [127, 335, 400, 345, 307, 0, 0]
+            // [2, 6, 3, 1, 1, 6],
+          }
+          // {
+          //   name: "Female",
+          //   color: "#136ACD","#EBEFF4"
+          //   data: [1, 4, 1, 6, 5, 4],
+          // },
+          // {
+          //   name: "Others",
+          //   color: "#002044",
+          //   data: [5, 2, 5, 4, 6, 2],
+          // },
         ],
         //   credits: false,
       };
       chart.value = new Highcharts.chart(highchartsOptions);
     });
+
+    onMounted(() => {
+      console.log(props.series, "passed data")
+      console.log(props.data, "passed data")
+    })
+
+    onUpdated(() => {
+      console.log(props.series, "passed data")
+      console.log(props.data, "passed data")
+    })
 
 
     return {
@@ -123,7 +136,7 @@ export default {
 
 .chart-header {
     display: flex;
-    margin-top: 45px;
+    /* margin-top: 45px; */
 }
 
 .icon-div img {
