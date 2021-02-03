@@ -30,7 +30,7 @@ export default {
 
         props.summary.forEach((i) => {
           let summaryObj = {
-            name: i.name === 'Not_Specified' ? `<div style="font-weight: 500">Not Sure</div>` : `<div style="font-weight: 500">${i.name}</div>`,
+            name: i.name === 'Not_Specified' ? `<div style="font-weight: 200; color: red;">Not Sure</div>` : i.name === null ? 'Not Sure' : `<div style="font-weight: 200; color: red;">${i.name}</div>`,
             y: i.value,
           };
           getSummary.value.push(summaryObj);
@@ -203,7 +203,7 @@ var highchartsOptions = {
             dataLabels: {
                 enabled: true,
                 format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-                distance: -50,
+                distance: -40,
                 filter: {
                     property: 'percentage',
                     operator: '>',
