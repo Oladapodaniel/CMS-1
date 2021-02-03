@@ -115,7 +115,7 @@ This Service does not use these “cookies” explicitly. However, the app may u
                  <div class="container">
                      <div class="row bottom-button">
                          <div class="col-md-12 d-flex justify-content-end py-2">
-                            <Button label="UNDERSTOOD" class="p-button-raised p-button-rounded"  style="font-size:14px; opacity:1; color:#ffffff; background:#136ACD; border-color: #136ACD;width:156px; height:45px" />
+                           <router-link to="/register"> <Button label="UNDERSTOOD" class="p-button-raised p-button-rounded"  style="font-size:14px; opacity:1; color:#ffffff; background:#136ACD; border-color: #136ACD;width:156px; height:45px" /></router-link>
                          </div>
                      </div>
                  </div>

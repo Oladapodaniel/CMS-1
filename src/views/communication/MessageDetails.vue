@@ -1,6 +1,7 @@
 <template>
   <article>
     <div class="container">
+      
       <div class="main mx-3">
         <div class="row mt-lg-5" v-if="false">
           <div class="col-md-5 ml-md-5 mt-2">
@@ -38,23 +39,28 @@
         </div>
 
         <!-- Section two -->
-        <div class="row mt-md-3 main2 pt-md-3 mb-4 bg-white rounded">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="font-weight-600">{{ message.subject }}</h4>
+          </div>
+        </div>
+        <div class="row main2 pt-md-3 mb-4 bg-white rounded" v-if="!loading">
           <div class="col-md-1 px-0 img">
             <img src="../../assets/add-member-big.svg" alt="" class="img" />
           </div>
           <div class="col-md-5">
             <div class="name">
-              <h4 class="font-weight-700 pl-md-2">Molle Houston</h4>
-              <p class="nam">To Me <i class="pi pi-caret-down to-icon"></i></p>
+              <h4 class="font-weight-700 pl-md-2">{{ message.sentByUser }}</h4>
+              <p class="nam mb-0 font-weight-600">To Me <i class="pi pi-caret-down to-icon"></i></p>
             </div>
           </div>
 
-          <div class="col-md-6 d-md-flex mt-3">
-            <div class="row">
-              <div class="col-lg-6 d-md-flex justify-content-end">
-                <p class="">May 8, 2018, 11:18 AM</p>
+          <div class="col-md-6 d-md-flex">
+            <div class="row w-100">
+              <div class="col-lg-8 d-md-flex justify-content-end">
+                <p class="">{{ message.dateSent }}</p>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-4">
                 <div class="icons d-md-flex justify-content-end">
                   <span><i class="fas fa-star mx-2 icons"></i></span>
                   <span><i class="fas fa-trash mx-2 icons"></i></span>
@@ -71,18 +77,9 @@
 
           </div>
           <div class="col-md-11">
-            <p class="">Hello Madam</p>
-            <p class="mt-md-3 ptext">
-              Thank you for such a good conversation.
-              <br />
-              <br />
-              I learnt a lot from you. Let keep in touch
-              <br />
-              <br />
-              Best Regards,
-              <br />
-              <br />
-              Mollie.
+            <!-- <p class="">Hello Madam</p> -->
+            <p class="ptext text-justify" style="line-height: 2.5rem;">
+              {{ message.message }}
             </p>
           </div>
         </div>
@@ -159,21 +156,26 @@ import { useRoute } from 'vue-router';
 export default {
   setup() {
     const message = ref({ });
+    const loading = ref(false);
     const route = useRoute();
 
     if (route.params.messageId) {
+      loading.value = true;
       composeService.getSMSById(route.params.messageId)
-        .then(message => {
-          this.message.value = message;
-          console.log(message, "message");
+        .then(res => {
+          loading.value = false;
+          message.value = res;
+          console.log(res, "message");
         })
         .catch(err => {
+          loading.value = false;
           console.log(err);
         })
     }
 
     return {
       message,
+      loading,
     }
   }
 };
@@ -195,107 +197,14 @@ export default {
   padding-left: 2px;
 }
 
-/* .main2 {
-  position: relative;
-  height: 26rem;
-} */
-
-/* .main3 {
-  position: relative;
-  height: 24rem;
-} */
-
-/* .mailText {
-  position: absolute;
-  top: 8rem;
-  left: 4.9rem;
-} */
-
-/* .mailText2 {
-  position: absolute;
-  top: 4rem;
-  left: 4.9rem;
-} */
-
-/* .btn1,
-.btn2 {
-  width: 100px;
-  height: 35px;
-} */
-
-/* .btn1 {
-  border: 1px solid #02172e;
-  color: #02172e;
-} */
-
 .img {
   width: 40px;
   height: 40px;
 }
 
-/* .name2 {
-  display: inline-block;
-  position: absolute;
-  top: 1.45rem;
-  left: 7.4rem;
-} */
-
-/* .nam {
-  margin-left: -0.01rem;
-} */
-
-/* article
-  > div
-  > div
-  > div.row.mt-md-1.main3.shadow.pt-md-3.mb-5.bg-white.rounded
-  > div.col-md-5.ml-lg-5.mt-2
-  > h4 {
-  margin: 0;
-} */
-
-/* .icons {
-  color: #dde2e6;
-} */
-
-/* h3 {
-  font-family: "Nunito Sans";
-  font-size: 18px;
-  color: var(--font-color);
-} */
-/* p,
-h5 {
-  font-family: "Nunito Sans";
-  font-size: 15px;
-  margin-left: 3.5rem;
-  color: var(--font-color);
-} */
-
-/* .icon1 {
-  font-size: 90px;
-  font-weight: bolder;
-} */
-
-/* .btnbase {
-  position: absolute;
-  width: 100px;
-  height: 35px;
-  background-color: #4285f4;
-  top: 20.5rem;
-  left: 4.7rem;
-} */
-
-/* .mailtex3 {
-  margin-top: -4rem;
+.icons {
+  font-size: 14px;
 }
-
-article > div > div > div:nth-child(3) {
-  margin-top: -4rem;
-}
-
-article > div > div > div:nth-child(3) > div.col-md-5.ml-lg-5.img.mt-2 {
-  position: absolute;
-  top: 1.6rem;
-} */
 
 
 </style>

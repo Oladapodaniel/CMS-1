@@ -40,15 +40,21 @@
               <div class="input-div">
                 <label class="mb-0">What's your phone number?</label>
                 <div class="phone-input">
-                  <div style="width: 100px; margin-top:4px">
-                    <Dropdown
+                  
+                  <div style="width: 200px; margin-top:4px;">
+                    <div class="country-code form-control" @click="toggleCode"><div style="margin-top: -14px;"><span><img :src="selectedCountry.flagUrl"  style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span><span style="display: inline-block">{{ selectedCountry.phoneCode }}</span></div></div>
+                    <!-- <div ><img :src="country.flagUrl" width="20px"></div> -->
+                    <!-- <Dropdown
                       v-model="selectedCountry"
                       :options="countryCodes"
                       optionLabel="phoneCode"
                       placeholder="Zip code"
                       style="width: 100%;max-height:40px"
                       :filter="true"
-                    />
+                    /> -->
+                  
+                    
+                    <!-- <img src=> -->
                     <!-- <Dropdown :options="countryCodes" optionLabel="phoneCode" placeholder="Zip code" v-model="zipCode" style="width:100%;max-height:40px" /> -->
                     <!-- <SelectElem :typ="'code'" name="code" :options="countryCodes" value="-Select size range" @input="itemSelected"/> -->
                   </div>
@@ -99,6 +105,12 @@
                 <span></span>
               </button>
             </form>
+            <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } ">
+                <input class="codeInput input" v-model="searchText">
+              <div v-for="country in countryCodes" :key="country.id" >
+                <div class="col-sm-3" @click="selectCode(country)"><span style="display: inline-block"><img :src="country.flagUrl"  style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span><span style="display: inline-block">{{ country.phoneCode }}</span></div>
+              </div>
+            </div>
           </div>
           <!-- <SelectElem name="test" :options="[1, 2, 3]" value="2" v-if="false"/> -->
         </div>
@@ -123,6 +135,11 @@
         </div>
       </div>
     </div>
+    
+    <!-- <select>
+      <option v-for="country in countryCodes" :key="country.id">{{ countryCodes }}</option>
+    </select> -->
+    
   </div>
 </template>
 
@@ -150,9 +167,14 @@ export default {
       myValue: '',
       myOptions: ['op1', 'op2', 'op3'],
 
-      selectedCountry: {},
+      selectedCountry: {
+      
+      },
       countries: [{country: "Zambia", phoneCode: "234"}, {country: "Nigeria", phoneCode: "234"}, {country: "Congo", phoneCode: "235"}],
       loading: false,
+      showCode: false,
+      codeUrl: {},
+      searchText: ""
     };
   },
   methods: {
@@ -183,6 +205,8 @@ export default {
           this.$router.push("/onboarding/step2");
         })
         .catch((err) => {
+          /*eslint no-undef: "warn"*/
+          NProgress.done();
           this.loading = false;
           console.log(err.response);
         });
@@ -190,6 +214,15 @@ export default {
       // this.$store.dispatch("setOnboardingData", this.userDetails);
       // this.$router.push("/onboarding/step2");
     },
+    toggleCode () {
+      this.showCode = !this.showCode
+      console.log(this.showCode)
+    },
+    selectCode (country) {
+      console.log(country)
+      this.selectedCountry = country
+      this.showCode = false
+    }
   },
 
   computed: {
@@ -212,12 +245,32 @@ export default {
     },
 
     countryCodes() {
-      const codes = [ ]
-      this.countries.forEach(i => {
-        if (i.phoneCode) codes.push(i);
-      });
-      return codes;
+      let codeFlag = []
+      // if (this.searchText ===  "") {
+      codeFlag = this.countries.map(i => {
+        return {
+          phoneCode: i.phoneCode,
+          flagUrl: i.flagUrl,
+          id: i.id
+        }        
+      })
+
+      if (this.searchText) return codeFlag.filter(i => i.phoneCode && i.phoneCode.includes(this.searchText))
+      // } else {
+      //   cook = this.countries.filter(i => {
+      //     if (i.phone){
+      //       return i.phoneCode.includes(this.searchText)
+      //     }
+      //   })
+      // }
+      // console.log(cook)
+      return codeFlag
+        
     },
+    // searchCode () {
+    //  
+    //   } 
+    
   },
 
   beforeCreate() {
@@ -228,6 +281,9 @@ export default {
     this.userDetails.email = localStorage.getItem("email");
     axios.get("/api/GetAllCountries").then((res) => {
       this.countries = res.data;
+      console.log(res)
+      this.selectedCountry = res.data.find(i => i.phoneCode &&  i.phoneCode.includes("234"))
+        console.log(this.selectedCountry)
     });
   },
 };
@@ -472,6 +528,27 @@ span .select2-selection--single {
   flex-direction: column;
 }
 
+.flagCode {
+    width: 140px;
+    max-height: 15em;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-shadow: -3px 3px 15px #797e8159;
+    position: absolute;
+    top: 49.5%;
+    /* left: 48px; */
+    background: white;
+    
+    /* display: block; */
+
+}
+.flagCode div{
+  /* border: 2px solid green; */
+  width: 35em;      
+}
+.flagCode div:hover {
+  background: rgb(238, 238, 238)
+}
 
 @media screen and (max-width: 990px) {
   #onboarding {
@@ -489,11 +566,44 @@ span .select2-selection--single {
   #onboarding-visuals {
     display: none !important;
   }
+
+  .flagCode {
+    position: absolute;
+    top: 34.4%;
+  }
 }
 
 @media screen and (min-width: 480) {
   .main-title {
     font-size: 33px;
   }
+}
+
+@media (max-width: 504px) {
+  .flagCode {
+    margin-top: 11%;
+  }
+}
+@media (max-width: 341px) {
+  .flagCode {
+    margin-top: 23%;
+  }
+}
+
+button.country-code {
+  /* border: 2px solid red; */
+}
+
+ input.codeInput {
+  width: 80%;
+  margin-left: 12px;
+  margin-top: 5px;
+}
+
+.hide-code {
+  /* display: none */
+  height: 0;
+  overflow: hidden;
+  /* transition: all 0.4s ease-in-out */
 }
 </style>

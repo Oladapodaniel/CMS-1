@@ -3,17 +3,19 @@
     <div class="container">
       <div class="row mt-4" style="margin-top: 10px">
         <div class="col-md-12 d-flex">
-          <a class="p-2 mx-1 page-btn rounded-circle"
+          <a class="p-2 mx-1 page-btn rounded-circle" @click="getPageContent(+currentPage - 1)"
             ><i class="fa fa-angle-left"></i>
           </a>
           <a
-            class="p-2 mx-1 page-btn rounded-circle"
-            v-for="i in 10"
+            class="p-2 mx-1 rounded-circle"
+            :class="{ 'primary-bg text-white': i === currentPage, 'page-btn': i <= startButton + buttonsCount, 'd-none': i < startButton || i > startButton + buttonsCount }"
+            v-for="i in itemsCount"
             :key="i"
             @click="getPageContent(i)"
-            >{{ i }}</a
+            
+            ><span v-if="i >= startButton && i <= (startButton + buttonsCount)">{{ i }}</span></a
           >
-          <a class="p-2 mx-1 page-btn rounded-circle"
+          <a class="p-2 mx-1 page-btn rounded-circle" @click="getPageContent(+currentPage + 1)"
             ><i class="fa fa-angle-right"></i
           ></a>
         </div>
@@ -24,17 +26,39 @@
 
 <script>
 export default {
+  props: [ "itemsCount", "currentPage" ],
+
   data() {
     return {
       test: "",
+      buttonsCount: 5,
     };
   },
 
   methods: {
     getPageContent(page) {
+      if (page < 1) return false;
       this.$emit("getcontent", page);
     },
   },
+
+  computed: {
+    startButton() {
+      if (this.currentPage < this.buttonsCount) return 1;
+      let start = 1;
+      if (this.currentPage % this.buttonsCount === 0) start = this.currentPage;
+      if (!this.currentPage % this.buttonsCount === 0) start = Math.floor(this.currentPage / this.buttonsCount) * this.buttonsCount;
+      return start;
+    }
+  },
+
+  created() {
+    console.log(this.itemsCount, "itemsCount");
+  },
+
+  updated() {
+    console.log(this.startButton, "startButton");
+  }
 };
 </script>
 

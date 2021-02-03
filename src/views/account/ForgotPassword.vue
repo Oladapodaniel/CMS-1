@@ -53,6 +53,12 @@ export default {
               })
               .catch(err => {
                 console.log(err);
+                if (err.response.status) {
+                  this.$router.push({
+                    name: "EmailSent",
+                    params: { email: this.credentials.email }
+                  })
+                }
               })
         }
     },

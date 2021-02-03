@@ -63,7 +63,7 @@
                       <button class="btn secondary-btn py-1 px-4" @click="openClassification(index)">View</button>
                     </div>
                     <div class="col-md-6">
-                      <button class="btn btn-danger py-1 primary-btn">Delete</button>
+                      <button class="btn btn-danger py-1 danger-btn">Delete</button>
                     </div>
                   </div>
                 </div>

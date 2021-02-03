@@ -431,14 +431,14 @@
       <div class="form">
         <!-- <div class="container"> -->
         <div class="row second-form first-row">
-          <div class="col-sm-5 dropdown-container">
+          <div class="col-12 col-sm-7 offset-sm-3 offset-md-0 col-md-5 dropdown-container">
             <div
               class="select-elem-con pointer ofering"
               id="eventCategorySelectElem"
               @click="showCategory = !showCategory"
               v-if="!selectedEventCategoryId && !showEditEventCategory"
             >
-              <span class="offset-sm-2 ofering"
+              <span class="ofering"
                 ><i class="fa fa-calendar ofering"></i>&nbsp;&nbsp;&nbsp;Select
                 Category</span
               ><span>
@@ -457,7 +457,7 @@
             >
               <input
                 type="text"
-                placeholder="Search ..."
+                placeholder="Search..."
                 class="form-control ofering mb-3"
                 v-model="eventText"
               />
@@ -511,12 +511,12 @@
             </div>
           </div>
 
-          <div class="offset-sm-1 col-sm-6">
+          <div class="col-12 text-center col-md-7 mt-sm-5">
             <div class="row nested-row">
-              <div class="col-sm-6">
+              <div class=" col-2 col-md-5">
                 <label for="date">Date</label>
               </div>
-              <div class="col-sm-6">
+              <div class=" col-10 col-md-7">
                 <input
                   type="date"
                   v-model="eventDate"
@@ -525,16 +525,17 @@
                   required
                 />
               </div>
-              <div class="col-sm-6">
+              <div class=" col-2 col-md-5">
                 <label for="topic">Topic</label>
               </div>
-              <div class="col-sm-6">
+              <div class=" col-10 col-md-7">
                 <input type="text" v-model="topic" class="form-control" />
               </div>
-              <div class="col-sm-6">
+              
+              <div class=" col-2 col-md-5">
                 <label for="preacher">Preacher</label>
               </div>
-              <div class="col-sm-6">
+              <div class="col-10 col-md-7">
                 <input type="text" v-model="preacher" class="form-control" />
               </div>
             </div>
@@ -653,9 +654,9 @@
         <div class="attendance-header d-none d-lg-block">
           <div class="row">
             <div class="col-sm-3">Offering Item</div>
-            <div class="col-sm-2" style="margin-left: -35px">Channel</div>
-            <div class="col-sm-3" style="margin-left: 35px">Amount</div>
-            <div class="col-sm-2 offset-sm-1">Total</div>
+            <div class="col-sm-2" >Channel</div>
+            <div class="col-sm-3" >Amount</div>
+            <div class="col-sm-2 offset-sm-1" style="margin-left: 74px">Total</div>
           </div>
         </div>
 
@@ -668,7 +669,7 @@
           :key="index"
         >
           <div class="row">
-            <div class="col-8 col-sm-8 col-lg-2">
+            <div class="col-12 col-sm-8 col-lg-3">
               <select class="form-control" v-if="item.offeringTypeId">
                 <option
                   v-for="(newOffering, index) in newOfferings"
@@ -690,7 +691,7 @@
                 ref="offeringInput"
               />
             </div>
-            <div class="col-4 col-sm-3 col-lg-2 offset-sm-1 offset-md-0">
+            <div class="col-3 col-sm-4 col-lg-2">
               <select class="w-100 form-control" v-model="item.channel">
                 <option :value="select">Select</option>
                 <option value="Cheque">Cheque</option>
@@ -702,7 +703,7 @@
                 <option value="Text">Text</option>
               </select>
             </div>
-            <div class="col-2 col-sm-2 offset-sm-1 col-lg-1">
+            <div class="col-3 col-sm-2 col-lg-1">
               <select class="currency" v-model="item.currency">
                 <option value="NGN">NGN</option>
                 <option value="USD">USD</option>
@@ -713,7 +714,7 @@
                 <option value="GHS">GHS</option>
               </select>
             </div>
-            <div class="col-6 col-sm-5 col-lg-2">
+            <div class="col-6 col-lg-2">
               <input
                 type="number"
                 class="form-control"
@@ -722,88 +723,25 @@
               />
             </div>
             <div
-              class="col-1 col-sm-1 offset-sm-1 offset-lg-1 d-block d-sm-none d-lg-block"
+              class="col-1 offset-lg-1 d-none d-lg-block"
             >
               {{ item.amount }}
             </div>
             <div
-              class="col-1 col-sm-1 offset-1 offset-sm-2 offset-lg-0"
+              class="col-2"
               @click="delOffering(index)"
             >
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
 
-            <!-- Giver Modal Button -->
-    <button
-    hidden
-          ref="modalTogglerGiver"
-          type="button"
-          id="modalTogglerGiver"
-          class="btn btn-primary"
-          data-toggle="modal"
-          data-target="#exampleGiver"
-        >
-          Launch demo modal
-      </button>
+          
 
-    <!-- Giver Modal -->
-    <div
-      class="modal fade"
-      id="exampleGiver"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <div class="modal-title" id="exampleModalLabel">Add Giver</div>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">Name</div>
-              <div class="col-sm-7">
-                <input type="text" v-model="item.addGiver" class="form-control"/>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-second" data-dismiss="modal">
-              Cancel
-            </button>
-            <button
-              type="button"
-              class="apply-btn"
-              id="closeEvent"
-              @click="addDonor"
-              ref="closeDonorModal"
-            >
-              Save
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-            
-            <div class="col-sm-3 offset-sm-5 donor-text pt-0" :class="{ 'donor-text-name': donorBoolean }" @click="triggerGiverModal">{{ item.addGiver }}</div>
+            <div v-if="item.giver == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center mt-2">Add Giver</div>
+            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.giver }}     <span class="donor-text">edit</span></div>
             <!-- <div v-else>{{ item.addGiver }}</div> -->
-            <span v-if="donorBoolean" @click="triggerGiverModal" class="mr-4"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span>
-            
-          </div>
-            
+               </div>
         </div>
-        <!-- <div>{{ offeringItem }}</div> -->
-        <!-- Bring up offerings modal -->
+
         <div
           class="col-sm-12 text-center add-attendance ofering"
           id="addOffering"
@@ -1145,6 +1083,67 @@
               @click="createNewOffering"
               id="closeOffering"
               class="apply-btn"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- Giver Modal Button -->
+    <button
+    hidden
+          ref="modalTogglerGiver"
+          type="button"
+          id="modalTogglerGiver"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#exampleGiver"
+        >
+          Launch demo modal
+      </button>
+
+    <!-- Giver Modal -->
+    <div
+      class="modal fade"
+      id="exampleGiver"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title" id="exampleModalLabel">Add Giver</div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">Name</div>
+              <div class="col-sm-7">
+                <input type="text" v-model="donorText" class="form-control"/>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-second" data-dismiss="modal">
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="apply-btn"
+              id="closeEvent"
+              @click="addDonor"
+              ref="closeDonorModal"
             >
               Save
             </button>
@@ -1544,7 +1543,8 @@ export default {
       firstTimerNameIsInValid: false,
       donorText: "",
       // addGiver: "Add Giver",
-      donorBoolean: false
+      donorBoolean: false,
+      offeringToAddDonor: 0,
     };
   },
   methods: {
@@ -1571,6 +1571,7 @@ export default {
           offeringTypeId: offObj.id,
           channel: "",
           currency: offObj.currency == undefined ? "NGN" : offObj.currency,
+          giver: ""
         });
       } else {
         this.offeringItem.push({
@@ -1626,7 +1627,8 @@ export default {
     createFirstTimers() {
       document.querySelector("#modalTogglerFirstTimers").click();
     },
-    triggerGiverModal () {
+    triggerGiverModal (index) {
+      this.offeringToAddDonor = index;
       this.$refs.modalTogglerGiver.click()
     },
     save() {
@@ -1702,11 +1704,12 @@ export default {
         .setAttribute("data-dismiss", "modal");
     },
     addDonor () {
-      console.log(this.donorText)
-      // this.addGiver = this.donorText
+      let donorName = this.donorText
+      this.offeringItem[this.offeringToAddDonor].giver = donorName
       this.$refs.closeDonorModal.setAttribute("data-dismiss", "modal");
       this.donorBoolean = true
       this.donorText = ""
+      console.log(this.offeringItem)
     },
     delAttendance(index) {
       this.attendanceItem.splice(index, 1);
@@ -1824,7 +1827,7 @@ export default {
           this.loading = false;
           if (err.response) {
             const { data, status } = err.response;
-            if (status === 400) this.errorMessage = typeof data === "string" ? data : "Failed! ensure you provide activity name and date";
+            if (status === 400) this.errorMessage = typeof data !== "string" ?  "Failed! ensure you provide activity name and date" : data.length < 100 ? data : "An error occurred, please check the fields and try again";
           }
           console.log(err.response);
         });
@@ -2146,7 +2149,6 @@ export default {
   color: #02172e;
   margin-top: 10px;
   width: 100%;
-  text-align: right;
 }
 .nested-row input {
   margin: 5px;
@@ -2285,6 +2287,8 @@ export default {
   padding: 10px 15px;
   background: #ecf0f3;
   border-radius: 10px 10px 0px 0px;
+  position: relative;
+  top: -8px;
 }
 .textarea {
   border: none;
@@ -2584,6 +2588,7 @@ tr.event-list td {
   border-radius: 8px;
   font-size: 1.2em;
   font-weight: 600;
+  text-align: center;
 }
 .edit-category {
   border: 1px solid #ebeff4;
@@ -2621,7 +2626,7 @@ tr.event-list td {
   padding: 10px;
   box-shadow: 0px 3px 15px #797e8159;
   position: absolute;
-  top: 10px;
+  /* top: 10px; */
   background: white;
   z-index: 1;
   width: 80%;
@@ -2643,7 +2648,6 @@ tr.event-list td {
 .donor-text {
   height: 28px;
   color: #136acd;
-  text-decoration: underline;
   cursor: pointer;
   font-weight: 600px;
   font-size: 0.9em;
@@ -2681,6 +2685,9 @@ tr.event-list td {
 @media (max-width: 991px) {
   .row.form-body.reg .row div {
     margin-top: 2em;
+  }
+  .attendance-body.stretch {
+    height: 135px;
   }
 }
 </style>

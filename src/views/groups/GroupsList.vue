@@ -14,7 +14,7 @@
           >
         </div>
         <div class="col-md-12 px-0">
-          <hr class="hr" />
+          <hr class="hr my-3" />
         </div>
       </div>
 
@@ -141,22 +141,26 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
-import axios from "@/gateway/backendapi";
-// import router from "@/router/index";
-// import { getCurrentInstance } from "vue";
+import { ref } from "vue";
+import groupsService from "../../services/groups/groupsservice"
+import { useStore } from "vuex";
+
 export default {
   setup() {
     //   const $confirm = getCurrentInstance().ctx.$confirm;
-    const groups = ref([]);
     const loading = ref(false);
     const displayConfirmModal = ref(false);
+    const store = useStore();
+    const groups = ref(store.getters["groups/groups"]);
+
+
     const getgroups = async () => {
       try {
+        console.log("calling");
         loading.value = true;
-        const res = await axios.get("/api/GetAllGroupBasicInformation");
+        const data = await groupsService.getGroups();
         (loading.value = false),
-          (groups.value = res.data.map((i) => {
+          (groups.value = data.map((i) => {
             return {
               dateCreated: i.dateCreated,
               description: i.description,
@@ -171,9 +175,8 @@ export default {
         (loading.value = false), console.log(error.response);
       }
     };
-    onMounted(() => {
-      getgroups();
-    });
+    
+    if (!groups.value || groups.value.length === 0) getgroups();
 
     return {
       groups,

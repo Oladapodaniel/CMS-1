@@ -14,9 +14,12 @@
 <script>
 import axios from "@/gateway/backendapi";
 import store from "@/store/store.js";
+// import { createNamespacedHelpers } from 'vuex';
 import router from "@/router/index";
+// import { mapAction } from createNamespacedHelpers("lookups");
 // import Multiselect from '@vueform/multiselect'
 import ConnectionBar from "@/components/connectivity/ConnectionStatus.vue";
+import setupService from "./services/setup/setupservice"
 
 export default {
   name: "App",
@@ -36,6 +39,8 @@ export default {
         store.dispatch("setCurrentUser", res.data);
         console.log(res.data);
       } catch (err) {
+        /*eslint no-undef: "warn"*/
+        NProgress.done();
         console.log(err.response);
         if (err.response && err.response.status === 401) {
           localStorage.setItem("token", "");
@@ -46,12 +51,12 @@ export default {
   },
 
   created() {
-    // this.$toast.show(`Hey! I'm here`, { position: 'top-right', type: 'success'});
     if (localStorage.getItem("token")) {
+
       this.getCurrentUser();
-      store.dispatch("getMembers");
+
+      setupService.setup();
     }
-    // setTimeout(this.$toast.clear, 3000)
   },
 };
 </script>

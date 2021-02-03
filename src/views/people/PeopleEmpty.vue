@@ -61,7 +61,7 @@
     class="people-list"
     v-if="!loading && (people.length > 0 || errorGettingPeople)"
   >
-    <PeopleList :list="people" />
+    <PeopleList :list="people" :peopleCount="people.length" />
   </div>
 </template>
 
@@ -70,6 +70,7 @@ import { ref, onMounted } from "vue";
 import axios from "@/gateway/backendapi";
 import PeopleList from "@/views/people/PeopleList.vue";
 import ImportPeople from "@/views/people/ImportPeople.vue";
+import { useStore } from 'vuex';
 
 export default {
   components: { PeopleList, ImportPeople },
@@ -78,7 +79,9 @@ export default {
     const people = ref([]);
     const loading = ref(false);
     const errorGettingPeople = ref(false);
-    onMounted(async () => {
+    const dataStore = useStore();
+
+    const getMembers = async () => {
       try {
         loading.value = true;
          /*eslint no-undef: "warn"*/
@@ -92,10 +95,25 @@ export default {
         errorGettingPeople.value = true;
         console.log(err);
       }
+    }
+
+    const peopleInStore =  ref(dataStore.getters['membership/members'])
+
+    onMounted(() => {
+      if (peopleInStore.value.length > 0) {
+      // if (store.getters.members && store.getters.members.length > 0) {
+        console.log(peopleInStore, 'pis');
+        people.value = peopleInStore.value;
+        // people.value = store.getters.members;
+      } else {
+        getMembers()
+      }
+
     });
 
     return {
       people,
+      peopleInStore,
       loading,
       errorGettingPeople,
     };

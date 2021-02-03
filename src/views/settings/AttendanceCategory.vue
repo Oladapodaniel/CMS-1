@@ -6,17 +6,14 @@
           <h2>Attendance Category</h2>
         </div>
       </div>
-
       <div class="row grey-rounded-border pt-1 pb-5">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-12">
-                  <h4>Attendance Categories</h4>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
@@ -25,10 +22,11 @@
                         type="text"
                         class="form-control"
                         placeholder="Attendance category name"
+                        v-model="attendanceName"
                       />
                     </div>
                     <div class="col-md-3">
-                      <button class="btn primary-btn px-5">Save</button>
+                      <button class="btn primary-btn px-5" @click="saveAttendant">Save</button>
                     </div>
                   </div>
                 </div>
@@ -63,7 +61,7 @@
                       <button class="btn secondary-btn py-1 px-4" @click="openType(index)">View</button>
                     </div>
                     <div class="col-md-6">
-                      <button class="btn btn-danger py-1 primary-btn" @click="del(index)">Delete</button>
+                      <button class="btn btn-danger py-1 primary-btn" @click="deleteAttendant(type.id)">Delete</button>
                     </div>
                   </div>
                 </div>
@@ -114,6 +112,8 @@ export default {
       types: [ ],
       vissibleTab: "",
       typeName: "",
+      attendanceName: "",
+      ageGroup: "",
     }
   },
 
@@ -126,7 +126,24 @@ export default {
         console.log(error);
       }
     },
-
+    
+    async deleteAttendant(id){
+      try {
+        await axios.delete('/api/Settings/Delete/'+id);
+        
+        this.types = this.types.filter(i => i.id !== id);
+      } catch (error){
+        console.log(error);
+      }
+    },
+    async saveAttendant(){
+      try{
+         await axios.post('/api/Settings/NewAttendanceType/'+ this.attendanceName);
+        this.getTypes()
+      }catch (error) {
+        console.log(error)
+      }
+    },
     openType(index) {
       this.vissibleTab = `tab_${index}`;
       this.typeName = this.types[index].name;

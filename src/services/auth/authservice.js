@@ -1,18 +1,19 @@
 import axios from "@/gateway/backendapi";
 
 const authService = {
-    resetPassword(email) {
+    resetPassword(data) {
         return new Promise((resolve, reject) => {
-            axios.post(`/existingUserPasswordReset/${email}`)
+            axios.post(`/PasswordReset`, data)
                 .then(res => {
                     resolve(res.data);
                 })
                 .catch(error => {
+                    /*eslint no-undef: "warn"*/
                     NProgress.done();
                     if (error.response) {
                         resolve(error.response)
                     } else {
-                        /*eslint no-undef: "warn"*/
+                        
                         reject(error)
                     }
                 })

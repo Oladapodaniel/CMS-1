@@ -12,7 +12,7 @@
                     to="/tenant/sms-communications/add-group"
                     class="create-btn font-weigth-bold border-0"
                   >
-                    <span class="mr-2" style="font-size: 22px">+</span> Create
+                    <span class="mr-2 font-weight-600" style="font-size: 22px">+</span> Create
                     new group
                   </router-link>
                 </div>
@@ -22,7 +22,7 @@
                 <div class="col-md-12">
                   <div class="row header-row">
                     <div class="col-md-12">
-                      <div class="row light-grey-bg py-2">
+                      <div class="row light-grey-bg py-2 font-weight-600">
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
@@ -33,7 +33,7 @@
                           <span class="th">TOTAL PHONE NUMBER</span>
                         </div>
                         <div class="col-md-3">
-                          <span class="th">DATE & TIME CREATED</span>
+                          <span class="th">DATE CREATED</span>
                         </div>
                         <div class="col-md-1">
                           <span class="th"></span>
@@ -42,11 +42,61 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12 gName">
-                      <h3 class="ml-md-n3 mb-n2">Group Name</h3>
+                    <div class="col-md-12 gName px-0">
+                      <!-- <h3 class="ml-md-n3 mb-n2">Group Name</h3> -->
+                      <hr class="hr">
                     </div>
                   </div>
 
+                  <!-- <div
+                    class="row"
+                  >
+                    <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-1 py-2">
+                          <input type="checkbox" />
+                        </div>
+
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">
+                          <span class="hidden-header font-weight-bold">NAME: </span>
+                          <span>
+                            <router-link
+                              class="link"
+                              to=""
+                              >test</router-link
+                            >
+                          </span>
+                        </div>
+
+                        <div
+                          class="col-md-4 col-ms-12 d-flex justify-content-between align-items-center"
+                        >
+                          <span class="hidden-header font-weight-bold"
+                            >TOTAL PHONE NUMBER:
+                          </span>
+                          <span>09073576353</span>
+                        </div>
+
+                        <div
+                          class="col-md-3 col-ms-12 d-flex justify-content-between align-items-center"
+                        >
+                          <span class="hidden-header font-weight-bold"
+                            >DATE CREATED
+                          </span>
+                          <span>11/23/63563</span>
+                        </div>
+
+                        <div class="col-md-1 col-ms-12 d-flex justify-content-center align-items-center">
+                          <span><i class="fa fa-trash delete-icon"></i></span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12 px-0">
+                          <hr class="hr" />
+                        </div>
+                      </div>
+                    </div>
+                  </div> -->
                   <div
                     class="row"
                     v-for="(group, index) in groups"
@@ -54,11 +104,11 @@
                   >
                     <div class="col-md-12">
                       <div class="row">
-                        <div class="col-md-1">
+                        <div class="col-md-1 py-2">
                           <input type="checkbox" />
                         </div>
 
-                        <div class="col-md-3 d-md-flex justify-content-between">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">
                           <span class="hidden-header">NAME: </span>
                           <span>
                             <router-link
@@ -73,7 +123,7 @@
                         </div>
 
                         <div
-                          class="col-md-4 col-ms-12 d-flex justify-content-between"
+                          class="col-md-4 col-ms-12 d-flex justify-content-between align-items-center"
                         >
                           <span class="hidden-header font-weight-bold"
                             >TOTAL PHONE NUMBER:
@@ -82,17 +132,17 @@
                         </div>
 
                         <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between"
+                          class="col-md-3 col-ms-12 d-flex justify-content-between align-items-center"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >DATE & TIME CREATED
+                            >DATE CREATED
                           </span>
                           <span>{{
                             new Date(group.dateEntered).toLocaleDateString()
                           }}</span>
                         </div>
 
-                        <div class="col-md-1 col-ms-12">
+                        <div class="col-md-1 col-ms-12 d-flex justify-content-center align-items-center">
                           <span><i class="fa fa-trash delete-icon"></i></span>
                         </div>
                       </div>
@@ -105,14 +155,14 @@
                   </div>
 
                   <div class="row" v-if="groups.length === 0 && !loading">
-                    <div class="col-md-12 d-flex justify-content-center">
+                    <div class="col-md-12 d-flex justify-content-center align-items-center">
                       <span class="my-4 font-weight-bold">No groups</span>
                     </div>
                   </div>
 
                   <div class="row" v-if="groups.length === 0 && loading">
-                    <div class="col-md-12 py-2 d-flex justify-content-center">
-                      <i class="fas fa-circle-notch fa-spin"></i>
+                    <div class="col-md-12 py-2 d-flex justify-content-center align-items-center">
+                      <i class="fas fa-circle-notch fa-spin my-2"></i>
                     </div>
                   </div>
 
@@ -338,6 +388,38 @@ h4 {
 
 #groupName {
   margin-left: 1rem;
+}
+
+.hidden-header {
+    display: none;
+  }
+
+@media screen and (max-width: 767px) {
+  .hidden-header {
+    display: inline-block;
+    font-size: 12px;
+  }
+
+  .header-row {
+    display: none;
+  }
+
+  /* #menu-items {
+    flex-direction: row !important;
+  }
+
+  .search-div {
+    width: 100%;
+  }
+
+  .units-div {
+    width: 100%;
+  }
+
+  .units-container {
+    margin-left: 0;
+    margin: auto;
+  } */
 }
 /* } */
 </style>

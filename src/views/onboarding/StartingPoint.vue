@@ -75,7 +75,7 @@
               </div>
             </router-link>
 
-            <router-link class="start-option" to="/next">
+            <router-link class="start-option" :to="{ name: 'ProcessRequest', params: { option: '/next' }}">
               <div class="icon">
                 <img
                   class="link-icon"

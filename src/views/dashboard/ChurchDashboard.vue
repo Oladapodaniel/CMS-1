@@ -107,16 +107,18 @@
                 <div class="box-top-text"></div>
               </div>
               <div class="box-middle">
-                <h1>{{ tenantInfo.memberCount }}</h1>
-                <span class="size-text">Church Size</span>
+                <h1>{{ tenantInfo.smsUnit }}</h1>
+                <span class="size-text">SMS Units</span>
               </div>
             </div>
             <div class="bottom">
               <div class="box-bottom">
                 <span class="plan-text"></span>
+                <router-link :to=" { name: 'BuyUnits', path: '/tenant/units' } ">
                 <button class="upgrade-btn buy-btn">
                   <h4 class="box-btn-text">BUY UNIT</h4>
                 </button>
+                </router-link>
               </div>
             </div>
           </div>
@@ -292,7 +294,8 @@
               subtitle="Overview"
               distance="5"
               :titleMarginLeft="70"
-              :height="400"
+               height="400"
+               :summary="offering"
             />
           </div>
 
@@ -303,7 +306,8 @@
               subtitle="Overview"
               distance="1"
               :titleMarginLeft="70"
-              :height="400"
+               height="400"
+               :summary="offering"
             />
           </div>
         </div>
@@ -314,7 +318,7 @@
 </template>
 
 <script>
-import PieChart from "@/components/charts/PieChart.vue";
+import PieChart from "@/components/charts/DashboardPie.vue";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
 import { ref } from "vue";
 // import { useRoute } from 'vue-router';
@@ -331,7 +335,7 @@ export default {
   setup() {
     const moreLinksVissible = ref(false);
     const firstTimerArr = ref([])
-
+    const offering = ref([23, 45, 65, 78, 89])
 
 
     const toggleMoreLinkVissibility = () => {
@@ -359,6 +363,7 @@ export default {
       .get("/dashboard")
       .then((res) => {
         tenantInfo.value = res.data;
+        console.log(res.data)
       })
       .catch((err) => {
         console.log(err.respone);
@@ -387,6 +392,7 @@ export default {
       }
       subPlan()
 
+
     return {
       celebrations,
       tenantInfo,
@@ -394,7 +400,8 @@ export default {
       toggleMoreLinkVissibility,
       firstTimer,
       firstTimerArr,
-      subPlan
+      subPlan,
+      offering
     };
   },
 };
@@ -439,10 +446,7 @@ export default {
 }
 .create-btn-div {
   display: flex;
-  /* width: fit-content; */
-  /* margin-left: auto; */
   padding: 0 10px 10px 0;
-  /* margin: 10px 0 15px auto; */
   justify-content: space-between;
   margin-bottom: 24px;
 }
@@ -537,9 +541,8 @@ export default {
 }
 
 .second-col .number-boxes {
-  width: 100%;
+  /* width: 100%; */
   max-width: 450px;
-  /* margin-left: auto; */
   display: flex;
   justify-content: flex-end;
 }
@@ -594,17 +597,13 @@ export default {
   width: 80px;
 }
 
-.upgrade-btn:hover {
+.upgrade-btn:hover, .buy-btn:hover {
   background: #136acd91;
   /* font-weight: 600; */
 }
 
 .buy-btn {
   width: 109.5px;
-}
-
-.buy-btn:hover {
-  background: #136acd;
 }
 
 .plan-text {
@@ -622,9 +621,9 @@ export default {
   align-items: start;
 }
 
-.box-middle {
+/* .box-middle {
   padding: 24px 0;
-}
+} */
 
 .box-top-text h4,
 .box-top-text p {
@@ -639,7 +638,7 @@ export default {
 
 .box-middle h1 {
   margin: 0;
-  font-size: 54px;
+  font-size: 39px;
   font-weight: 400;
 }
 
@@ -822,7 +821,7 @@ tbody tr:nth-child(even) {
 
 @media screen and (min-width: 1300px) {
   .box-middle {
-    padding: 43px 0;
+    /* padding: 43px 0; */
   }
 }
 
@@ -844,6 +843,22 @@ tbody tr:nth-child(even) {
 
   .number-boxes {
     flex-direction: column;
+    width: 70%;
+    align-self: center;
+    margin-top: 10px;
+  }
+
+  .create-btn-div {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .second-col .create-btn-div .create-btn {
+    margin-top: 10px;
+  }
+
+  .top-row {
+    margin-top: 40px;
   }
 }
 </style>

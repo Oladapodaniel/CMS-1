@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 
-import Pagination from '@/components/pagination/PaginationButtons.vue';
+import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
 import TermsOfUse from '@/views/account/TermsOfService.vue'
 
@@ -146,6 +146,12 @@ const routes = [{
                 name: 'FirstTimers',
                 component: () =>
                     import ( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimersList.vue')
+            },
+            {
+                path: 'first-timer-empty',
+                name: 'FirstTimerEmpty',
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
             },
             {
                 path: 'report/:id',
@@ -354,13 +360,13 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
-    if ((to.name === "TermsOfUse")) return next(true)
+
     if ((to.name === "ResetPassword" || to.name === "EmailSent") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
     const tokenIsValid = token && token.length > 30 ? true : false;
-    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name === "ResetPassword" && (!token || token.length < 30)) return next("/")
+    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
-        // if (!tokenIsValid) return next("/");
+
     next(true)
 })
 

@@ -12,7 +12,8 @@ const composerObj = {
     possibleSMSDestinations: [
         "Select group from database",
         "Select person from membership database",
-        "Phone numbers"
+        "Phone numbers",
+        "All contacts"
     ],
 
     getCommunicationGroups() {
@@ -74,6 +75,7 @@ const composerObj = {
             NProgress.start();
             axios.get(`/api/Messaging/getSentSMSbyId?id=${id}`)
                 .then(res => {
+                    console.log(res);
                     resolve(res.data);
                 })
                 .catch(error => {

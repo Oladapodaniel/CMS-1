@@ -39,7 +39,7 @@
             <ByMaritalStatusChart
               domId="second"
               title="By Marital Status"
-              :titleMargin="10"
+              :titleMargin="5"
               :summary="membershipSummary.maritalStatus"
             />
           </div>
@@ -139,7 +139,7 @@
           </div>
         </div>
       </div>
-
+<div v-if="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
       <div class="table-header font-weight-700">
         <div class="check"></div>
         <div class="picture">
@@ -268,9 +268,11 @@
         <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
       </div>
+      
       <div v-else-if="filterResult.length == 0 && noRecords">
         <div class="no-record text-center my-4">No member found</div>
       </div>
+      <!-- <div v-else-if="loading">searching for memer</div> -->
       <div v-else>
         <div v-if="searchMember.length > 0">
           <div class="table-body" v-for="person in searchMember" :key="person.id">
@@ -388,7 +390,7 @@
       </div>
 
       <div class="table-footer">
-        <PaginationButtons @getcontent="getPeopleByPage" />
+        <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage" />
       </div>
     </div>
   </div>
@@ -402,9 +404,10 @@ import PaginationButtons from "../../components/pagination/PaginationButtons.vue
 import axios from "@/gateway/backendapi";
 import { useConfirm } from "primevue/useConfirm"
 import { useToast } from 'primevue/usetoast';
+import store from '../../store/modules/people.js'
 
 export default {
-  props: ["list"],
+  props: ["list", "peopleCount"],
   components: {
     ByGenderChart,
     ByMaritalStatusChart,
@@ -457,10 +460,8 @@ export default {
     };
 
     const applyFilter = () => {
-        // console.log(filter.value.phoneNumber)
-
-        noRecords.value = true
-
+        // filterBoolean.value = false
+        
 
         filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
         filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
@@ -468,14 +469,14 @@ export default {
     
          let url = "/api/People/FilterMembers?firstname="+filter.value.filterFirstName +"&lastname="+filter.value.filterLastName +"&phone_number="+ filter.value.phoneNumber +"&page=1"
       axios.get(url).then((res) => {
-        
+        noRecords.value = true
         filterResult.value = res.data
         console.log(res.data);
       }) .catch(err => console.log(err))
-
       
     };
 
+    
     const clearAll = () => {
        filter.value.filterFirstName = ""
        filter.value.filterLastName = ""
@@ -522,18 +523,22 @@ export default {
         });
         }
         
-
-    // const getPeopleByPage = async (e) => {
-
-    //   try {
-    //     const { data } = await axios.get(
-    //       `/api/People/GetPeopleBasicInfo?page=${e}`
-    //     );
-    //     churchMembers.value = data;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
+    const currentPage = ref(1);
+    const getPeopleByPage = async (page) => {
+      if (page < 1) return false;
+      try {
+        const { data } = await axios.get(
+          `/api/People/GetPeopleBasicInfo?page=${page}`
+        );
+        filterResult.value = [ ];
+        searchMember.value = [ ];
+        noRecords.value = false;
+        churchMembers.value = data;
+        currentPage.value = page;
+      } catch (error) {
+        console.log(error);
+      }
+    };
     // const getMemberSummary = () => {
 
     // }
@@ -543,7 +548,7 @@ export default {
       .get(`/api/People/GetMembershipSummary`)
       .then((res) => {
         membershipSummary.value = res.data;
-        console.log(res.data);
+        console.log(res.data, "Processing");
       })
       .catch((err) => console.log(err));
     // })
@@ -551,6 +556,8 @@ export default {
     onMounted(() => {
       console.log(props.list, "props");
       churchMembers.value = props.list;
+      // store.dispatch('churchMembers', props.list)
+      console.log(store.churchMembers)
     });
 
     const toggleSelect = () => {
@@ -568,9 +575,15 @@ export default {
         }
       })
 
+    const membersCount = computed(() => {
+      if (membershipSummary.value.totalMember > 20) return Math.ceil(membershipSummary.value.totalMember / 20);
+      return 0;
+    })
+
     return {
       churchMembers,
-      // getPeopleByPage,
+      getPeopleByPage,
+      currentPage,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       membershipSummary,
@@ -589,7 +602,9 @@ export default {
       toggleSelect,
       noRecords,
       searchText,
-      searchMember
+      searchMember,
+      membersCount,
+
     };
   },
 };
@@ -645,7 +660,7 @@ a {
 }
 
 .board {
-  width: 30%;
+  width: 28%;
   border-radius: 10px;
   /* border: 0.4000000059604645px solid #dde2e6; */
   padding: 0 8px;
@@ -675,7 +690,8 @@ a {
 }
 
 .total-text {
-  font-size: 12px;
+  font-size: 15px;
+  font-weight: 700
 }
 
 .percent {
@@ -708,22 +724,22 @@ a {
 }
 
 .picture .data-value {
-  margin-left: 22px;
+  /* margin-left: 22px; */
   width: 50%;
 }
 
 .firstname .data-value {
-  margin-left: -32px;
-  margin-right: 3px;
+  /* margin-left: -32px;
+  margin-right: 3px; */
 }
 
 .lastname .data-value {
-  margin-left: -41px;
-  margin-right: 2px;
+  /* margin-left: -41px;
+  margin-right: 2px; */
 }
 
 .phone .data-value {
-  margin-left: 38px;
+  /* margin-left: 38px; */
 }
 
 .label-search {
@@ -831,7 +847,7 @@ a {
   }
 
   .data-con {
-    text-align: center;
+    /* text-align: center; */
     display: flex;
     justify-content: space-between;
   }
@@ -853,7 +869,11 @@ a {
   .firstname,
   .lastname,
   .phone {
-    width: 19%;
+    /* width: 19%; */
+  }
+
+  .picture > p{
+    margin-left: 43px;
   }
 
   .table-body .check {
