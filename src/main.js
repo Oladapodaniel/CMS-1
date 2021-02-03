@@ -56,3 +56,4 @@ app.component("Button", Button);
 app.component("OverlayPanel", OverlayPanel);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("SplitButton", SplitButton);
+

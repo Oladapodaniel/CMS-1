@@ -20,10 +20,18 @@ export default {
     },
 
     updateMember(state, payload) {
+      console.log(payload, "payload");
         const targetMembersIndex = state.members.findIndex(i => i.id === payload.id);
+        console.log(targetMembersIndex, "target");
         state.members[targetMembersIndex] = payload;
+        console.log(state.members[targetMembersIndex] , "targeted");
 
-    }
+    },
+
+    addMember(state, payload) {
+        state.members.push(payload);
+
+    },
   },
 
   actions: {
@@ -74,7 +82,11 @@ export default {
 
     updateMember({ commit }, payload) {
         commit("updateMember", payload);
-    }
+    },
+
+    addMember({ commit }, payload) {
+        commit("addMember", payload);
+    },
 
   },
 
