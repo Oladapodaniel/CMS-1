@@ -20,7 +20,7 @@ import Highcharts from "highcharts";
 export default {
   components: {},
 
-  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series" ],
+  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries" ],
   
   setup(props) {
     const chart = ref(null);
@@ -81,7 +81,7 @@ export default {
     },
         series: [
           {
-            name: "Week",
+            name: props.attendanceSeries,
             color: "#136ACD",
             data: props.data.data
             // data: props.data ? props.data.data : props.data

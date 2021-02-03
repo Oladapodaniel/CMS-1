@@ -1318,18 +1318,52 @@ export default {
       loading.value = true;
 
       if (route.params.firstTimerId) {
+
+        let updateMember = {
+          firstName: firstTimersObj.value.firstName,
+          lastName: firstTimersObj.value.lastName,
+          phoneNumber: firstTimersObj.value.phoneNumber,
+          email: firstTimersObj.value.email,
+          // maritalStatusId: firstTimersObj.value.maritalStatusId,
+          // genderId: firstTimersObj.value.genderId,
+          activityID: firstTimersObj.value.activityID,
+          address: firstTimersObj.value.address,
+          birthday: firstTimersObj.value.birthday,
+          birthMonth: firstTimersObj.value.birthMonth,
+          birthYear: firstTimersObj.value.birthYear,
+          howDidYouAboutUsId: firstTimersObj.value.howDidYouAboutUsId,
+          communicationMeans: firstTimersObj.value.communicationMeans,
+          interestedInJoining: firstTimersObj.value.interestedInJoining,
+          wantsToBeVisited: firstTimersObj.value.wantToBeVisited,
+          personId: firstTimersObj.value.personId,
+          sendWelcomeEmail: firstTimersObj.value.sendWelcomeEmail,
+          sendWelcomeSMS: firstTimersObj.value.sendWelcomeSMS
+        }
+
+        if (firstTimersObj.value.genderId) updateMember.genderId = firstTimersObj.value.genderId
+        if (firstTimersObj.value.maritalStatusId) updateMember.maritalStatusId = firstTimersObj.value.maritalStatusId
+
         try {
           loading.value = true;
           const response = await axios.put(
-            `/api/People/EditFirstTimer/${route.params.firstTimerId}`,
-            firstTimersObj.value
+            `/api/People/EditFirstTimer`,
+            // {firstName: "Baba", personId: firstTimersObj.value.personId}
+            updateMember
+            // firstTimersObj.value
           );
 
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
             router.push("/tenant/first-timers");
             console.log(firstTimersObj)
+            toast.add({
+              severity: "success",
+              summary: "Update Succesful",
+              detail: "Update operation was succesful",
+              life: 2500,
+            });
           }
+          
         } catch (err) {
           loading.value = false;
           NProgress.done();
@@ -1345,7 +1379,7 @@ export default {
             toast.add({
               severity: "error",
               summary: "Update Failed",
-              detail: err.response && err.response.data.messsage ? err.response.data.messsage  : "Update operation was not succesfull",
+              detail: err.response && err.response.data.messsage ? err.response.data.messsage  : "Update operation was not succesful",
               life: 2500,
             });
           }
@@ -1533,17 +1567,13 @@ export default {
       });
 
       console.log(route.params.firstTimerId)
-      axios.get("/api/People/FirstTimer")
+      if (route.params.firstTimerId) {
+        axios.get(`/api/People/firstTimer/${route.params.firstTimerId}`)
           .then(res => {
-            console.log(res.data)
-            for (let i = 0; i < res.data.length; i++) {
-                if (res.data[i].id == route.params.firstTimerId) {
-                console.log(res.data[i])
-                firstTimersObj.value = res.data[i]
-              }
-              
-            }
+            console.log(res.data, "DFGHG")
+            firstTimersObj.value = res.data
           })
+      }
     });
 
     const year = computed(() => {

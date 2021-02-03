@@ -607,11 +607,13 @@ export default {
           );
 
           if (response.status === 200 || response.status === 201) {
-            store.dispatch("membership/getMembers")
+            membershipService.updatePersonInStore(response.data.person, route.params.personId)
+            // store.dispatch("membership/getMembers")
             loading.value = false;
             router.push("/tenant/people");
           }
         } catch (err) {
+          console.log(err);
           loading.value = false;
           NProgress.done();
           if (err.toString().toLowerCase().includes("network error")) {
@@ -646,7 +648,8 @@ export default {
           );
 
           if (response.status === 200 || response.status === 201) {
-            store.dispatch("membership/getMembers")
+            // store.dispatch("membership/getMembers")
+            membershipService.addPersonToStore(response.data.person)
             loading.value = false;
             router.push("/tenant/people");
           }
@@ -676,6 +679,18 @@ export default {
         }
       }
     };
+
+    // const addPersonToStore = (data) => {
+    //   const person = {
+    //     personId: data.personId,
+    //     firstName: data.firstName,
+    //     lastName: data.lastName,
+    //     mobilePhone: data.mobilePhone,
+    //     pictureUrl: data.pictureUrl
+    //   }
+
+    //   store.dispatch("membership/addMember", person);
+    // }
 
     let genders = ref(store.getters["lookups/genders"]);
     let maritalStatus = ref(store.getters["lookups/maritalStatus"]);
@@ -746,7 +761,6 @@ export default {
     const memberToEdit = ref(null);
 
     const populatePersonDetails = (data) => {
-      console.log(data, "data passed");
       person.firstName = data.firstName;
       person.email = data.email;
       person.lastName = data.lastName;

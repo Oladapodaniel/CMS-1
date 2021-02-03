@@ -402,7 +402,7 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useConfirm"
+import { useConfirm } from "primevue/useConfirm";
 import { useToast } from 'primevue/usetoast';
 import store from '../../store/modules/people.js'
 
@@ -512,12 +512,14 @@ export default {
                message: 'Are you sure you want to proceed?',
                 header: 'Confirmation',
                 icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'confirm-delete',
+                rejectClass: 'cancel-delete',
                 accept: () => {
                     deleteMember(id)
                     toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
                 },
                 reject: () => {
-                    toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+                    // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
                 }
 
         });

@@ -24,6 +24,7 @@
           <p class="error-message">
             {{ errorMessage }}
             <span
+              v-if="showResetLink"
               >OR
               <span>
                 <a
@@ -33,6 +34,9 @@
                 ></span
               ></span
             >
+            <span v-else>
+              <a href="mailto:support@churchplus.co" class="font-weight-700 primary-text">Contact Support</a>
+            </span>
           </p>
         </div>
 
@@ -161,6 +165,7 @@ export default {
       errorMessage: "",
       show: false,
       loading: false,
+      showResetLink: true,
     };
   },
 
@@ -196,8 +201,15 @@ export default {
               this.$router.push("/onboarding")
               return false;
             }
+
+            
             const { message } = err.response.data;
-            this.errorMessage = message ? message : "An error occurred";
+            if (message.includes("Sequence contains more than one element")) {
+              this.errorMessage = "There seems to be a problem with this account, please";
+              this.showResetLink = false;
+            } else {
+              this.errorMessage = message ? message : "An error occurred";
+            }
             this.showError = true;
           } else {
             this.errorMessage = "An error occurred, ensure you are connected to the internet";

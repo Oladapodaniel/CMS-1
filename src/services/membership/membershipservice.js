@@ -1,5 +1,5 @@
 import axios from "@/gateway/backendapi";
-// import store from '../../store/store'
+import store from '../../store/store'
 
 const membershipService = {
     getMembers() {
@@ -57,7 +57,32 @@ const membershipService = {
                   console.log(err);
               })
         })
+    },
+
+    addPersonToStore (data) {
+        const person = {
+          id: data.personId,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          mobilePhone: data.mobilePhone,
+          pictureUrl: data.pictureUrl
+        }
+  
+        store.dispatch("membership/addMember", person);
+    },
+
+    updatePersonInStore (data, personId) {
+        const person = {
+          id: personId,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          mobilePhone: data.mobilePhone,
+          pictureUrl: data.pictureUrl
+        }
+  
+        store.dispatch("membership/updateMember", person);
     }
+
 }
 
 export default membershipService;

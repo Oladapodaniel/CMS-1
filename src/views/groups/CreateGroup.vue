@@ -6,6 +6,7 @@
           <h2 v-if="!route.params.groupId">Add Group</h2>
           <h2 v-else>Update Group</h2>
           <Toast />
+          <ConfirmDialog />
         </div>
         <div class="col-md-12 my-3 px-0">
           <hr class="hr" />
@@ -201,7 +202,7 @@
                                             ) in memberSearchResults"
                                             :key="index"
                                             @click="selectMember(member, index)"
-                                            >{{ member.name }}</a
+                                            >{{ member.nameResult }}</a
                                           >
                                           <p
                                             class="bg-secondary p-1 mb-0 disable m-dd-item"
@@ -390,7 +391,7 @@
                       }}</span>
                     </div>
                     <div
-                      class="col-md-2 d-flex justify-content-between align-items-center"
+                      class="col-md-2 px-0 d-flex justify-content-between align-items-center"
                     >
                       <span class="py-2 hidden-header">PHONE</span>
                       <span class="py-2">{{ member.phone }}</span>
@@ -422,7 +423,7 @@
                               >Send Email</router-link
                             >
                           </a>
-                          <a class="dropdown-item" href="#">Delete</a>
+                          <a class="dropdown-item c-pointer" @click="confirmDelete(member.personID, index)">Delete</a>
                         </div>
                       </div>
                     </div>
@@ -477,6 +478,9 @@ import router from "@/router/index";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import store from '../../store/store';
+import { useConfirm } from "primevue/useConfirm";
+import groupsService from "../../services/groups/groupsservice";
+
 
 export default {
   setup() {
@@ -487,6 +491,32 @@ export default {
     const memberSearchResults = ref([]);
     const position = ref("");
     const memberSelectInput = ref(null);
+
+    const confirm = useConfirm();
+
+    const confirmDelete = (id, index) => {
+      confirm.require({
+          message: 'Do you want to remove this member?',
+          header: 'Remove Confirmation',
+          icon: 'pi pi-info-circle',
+          acceptClass: 'confirm-delete',
+          rejectClass: 'cancel-delete',
+          accept: () => {
+            groupsService.removeFromGroup(route.params.groupId, { groupId: route.params.id, personIds:  [ `${id}`]})
+              .then(res => {
+                console.log(res);
+                if (res !== false) {
+                  groupMembers.value.splice(index, 1);
+                  toast.add({severity:'success', summary:'Confirmed', detail:'The member was removed', life: 2500});
+                }
+              })
+            
+          },
+          reject: () => {
+            // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+          }
+      });
+    }
 
     const searchForMembers = (e) => {
       if (e.target.value.length >= 3) {
@@ -622,7 +652,7 @@ export default {
       axios
         .post("/api/CreateGroup", data)
         .then((res) => {
-          console.log(res);
+          console.log(res, "create res");
           store.dispatch("groups/getGroups")
           savingGroup.value = false;
           router.push("/tenant/people-groups");
@@ -723,6 +753,7 @@ export default {
       memberListShown,
       inputBlurred,
       closeDropdownIfOpen,
+      confirmDelete,
     };
   },
 };
@@ -735,6 +766,11 @@ export default {
 
 .mid-header-row {
   border-bottom: 1px solid #dde2e6;
+}
+
+.remove-btn {
+  background: red !important;
+  padding: 10px 20px;
 }
 
 .mid-header-text {
