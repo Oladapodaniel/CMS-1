@@ -40,7 +40,7 @@
                           <span class="th">UNITS</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">DELIVERY REPORT</span>
+                          <span class="th">REPORT</span>
                         </div>
                       </div>
                     </div>
@@ -136,7 +136,7 @@ export default {
     const getSentSMS = async () => {
       try {
         loading.value = true;
-        const res = await axios.get("/api/Messaging/getAllSentSms");
+        const res = await axios.get("/api/Messaging/getAllSentSms/1");
         loading.value = false;
         sentSMS.value = res.data;
       } catch (error) {
@@ -144,7 +144,6 @@ export default {
       }
     }
     onMounted(() => {
-      console.log("Hello");
       getSentSMS()
     })
 

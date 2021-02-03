@@ -8,7 +8,7 @@
     <div class="main-con">
       <div class="main-section">
         <div class="intro-div">
-          <h1 class="intro-header">Welcome {{ data.churchName }} Ministry</h1>
+          <h1 class="intro-header">Welcome {{ data.churchName }}</h1>
           <p class="intro-subtext">Where do you want to start ?</p>
         </div>
         <div class="boxes-con">
@@ -81,6 +81,14 @@
               </div>
             </div>
           </router-link>
+        </div>
+      </div>
+    </div>
+
+    <div class="rcontainer">
+      <div class="row">
+        <div class="col-md-10 offset-2 text-center mt-4 text-lg-right" style="max-width: 900px; margin: auto"> 
+          <router-link to="/tenant" class="font-weight-bold text-decoration-none">Skip To Dashboard  >>></router-link>
         </div>
       </div>
     </div>

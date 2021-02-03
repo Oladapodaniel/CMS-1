@@ -153,6 +153,11 @@ export default {
     if (userEmail) localStorage.removeItem("email");
   },
 
+  beforeRouteEnter() {
+    if (localStorage.getItem("token")) this.$router.push("/next")
+    // return next(false);
+  },
+
   data() {
     return {
       toggle: false,
