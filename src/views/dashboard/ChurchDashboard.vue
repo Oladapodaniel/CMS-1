@@ -233,7 +233,7 @@
           <tbody>
             <tr
               v-for="celebration in tenantInfo.celebrations"
-              :key="celebration.id"
+              :key="celebration.id" 
             >
               <td>
                 <img src="../../assets/people/phone-import.svg" alt="" /><span
@@ -251,7 +251,40 @@
               </td>
               <td>{{ celebration.celebration }}</td>
               <td>{{ celebration.phone }}</td>
-              <td><i class="fas fa-ellipsis-v"></i></td>
+              <td>
+                <i class="fas fa-ellipsis-v cursor-pointer"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"></i>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <!-- v-if="person.mobilePhone" -->
+                <a class="dropdown-item elipsis-items">
+                  <router-link
+                    :to="`/tenant/sms-communications/compose-message?phone=${celebration.phone}`"
+                    >Send SMS</router-link
+                  >
+                </a>
+                <!-- v-if="person.email" -->
+                <!-- <a class="dropdown-item elipsis-items" >
+                  <router-link
+                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    >Send Email</router-link
+                  >
+                </a> -->
+                <!-- <a class="dropdown-item elipsis-items">
+                  <router-link :to="`/tenant/people/add-person/${person.id}`"
+                    >Edit</router-link
+                  >
+                </a> -->
+                <!-- <a
+                  class="dropdown-item elipsis-items"
+                  href="#"
+                  @click.prevent="showConfirmModal(person.id)"
+                  >Delete</a 
+               > -->
+              </div>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -291,6 +324,7 @@
               header="Members Attendance"
               :data="chartData"
               :series="series"
+              :attendanceSeries="attendanceSeries"
             />
           </div>
           <div v-else>
@@ -301,10 +335,11 @@
               header="Members Attendance"
               :data="monthlyAttendanceObj"
               :series="series"
-              
+              :attendanceSeries="attendanceSeries"
             />
           </div>
         </div>
+        <div>{{ attendanceSeries }}</div>
 <!-- <div>{{ monthlyAttendanceObj }}</div>
         <div class="adjust-view two">
           <div class="view-report">View Reports</div>
@@ -349,25 +384,25 @@
           />
         </div>
 
-        <!-- <div class="chart-con">
+        <div class="chart-con">
           <div style="width: 45%" class="ml-md-4 chart1">
             <ByGenderChart
               domId="chart"
               title="Invitation Source"
               distance="5"
-              :titleMargin="10"
-              :summary="getFirstTimerSummary.invitationSource"
+              titleMargin="10"
+              
             />
           </div>
           <div style="width: 45%;" class="chart2">
             <ByMaritalStatusChart
               domId="second"
               title="Interested In Joining"
-              :titleMargin="10"
-              :summary="getFirstTimerSummary.interestedInJoining"
+              titleMargin="10"
+              
             />
           </div>
-        </div> -->
+        </div>
 
         <div class="pies">
           <div class="pie-con">
@@ -403,6 +438,8 @@
 <script>
 // import InterestedJoin from "@/components/charts/PieChart.vue";
 // import InvitationSource from "@/components/charts/PieChart.vue";
+import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
+import ByGenderChart from "@/components/charts/PieChart.vue";
 import PieChart from "@/components/charts/DashboardPie.vue";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
 import { computed, onMounted, ref } from "vue";
@@ -416,8 +453,9 @@ export default {
   components: {
     PieChart,
     ColumnChart,
-    // InterestedJoin,
-    // InvitationSource
+    ByMaritalStatusChart,
+    ByGenderChart
+    
   },
 
   setup() {
@@ -456,7 +494,7 @@ export default {
         console.log(res.data);
       })
       .catch((err) => {
-        console.log(err.respone);
+        console.log(err.response);
         if (err.response.status === 401) {
           localStorage.removeItem("token");
           router.push("/");
