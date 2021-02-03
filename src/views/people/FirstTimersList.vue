@@ -232,9 +232,9 @@
                   <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`" class="itemroute-color">{{ person.fullName }}</router-link></td>
                   <td><router-link :to="``" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
                   <td class="itemroute-color"> {{ person.howDidYouAboutUsName }}</td>
-                  <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining }}</td>
+                  <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining == "On_Transit" ? "On Transit" : person.interestedInJoining }}</td>
                   <td class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
+                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`" class="data-value itemroute-color"></router-link></td>
                   <td><div class="dropdown">
                     <i
                       class="fas fa-ellipsis-v"
@@ -256,7 +256,7 @@
                         >
                       </a>
                       <a class="dropdown-item" href="#">Send Email</a>
-                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item" href="#" @click.prevent="showConfirmModal(person.id)">Delete</a>
                     </div>
                   </div>
                   </td>
@@ -476,6 +476,8 @@
              
               
             </div> -->
+            <ConfirmDialog />
+            <Toast />
 
             <div class="table-footer">
               
@@ -496,6 +498,8 @@ import axios from "@/gateway/backendapi";
 import Pagination from "../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
 import moment from 'moment'
+import { useConfirm } from "primevue/useConfirm"
+import { useToast } from 'primevue/usetoast';
 
 export default {
   props: ["list"],
@@ -545,6 +549,46 @@ export default {
           return churchMembers.value
         }
       })
+
+
+      const deleteMember = (id) => {
+        //  delete firtimer
+        axios
+          .delete(`/api/People/DeleteOnePerson/${id}`)
+          .then((res) => {
+            console.log(res);
+            churchMembers.value = churchMembers.value.filter(item => item.id !== id )
+
+// update first timer summary while deleting
+            axios.get("/api/People/GetFirsttimerSummary")
+              .then(res => {
+                getFirstTimerSummary.value = res.data;
+                console.log(res.data)
+              })
+              .catch(err => console.log(err))            
+          })
+          .catch((err) => console.log(err));
+      };
+
+
+
+      const confirm = useConfirm();
+      let toast = useToast();
+      const showConfirmModal = (id) => {
+           confirm.require({
+               message: 'Are you sure you want to proceed?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                accept: () => {
+                    deleteMember(id)
+                    toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+                },
+                reject: () => {
+                    toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+                }
+
+        });
+        }
 
     // const getFirstTimers = async () => {
     //   try {
@@ -596,7 +640,9 @@ export default {
       filterResult,
       noRecords,
       searchText,
-      searchMember
+      searchMember,
+      showConfirmModal,
+      deleteMember
     };
   },
 };

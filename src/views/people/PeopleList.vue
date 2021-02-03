@@ -455,6 +455,13 @@ export default {
         .then((res) => {
           console.log(res);
           churchMembers.value = churchMembers.value.filter(item => item.id !== id )
+
+          axios
+            .get(`/api/People/GetMembershipSummary`)
+            .then((res) => {
+              membershipSummary.value = res.data;
+            })
+            .catch((err) => console.log(err));
         })
         .catch((err) => console.log(err));
     };
