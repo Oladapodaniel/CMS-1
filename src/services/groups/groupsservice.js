@@ -1,5 +1,6 @@
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress"
+import store from '../../store/store';
 
 const grousService = {
     async getGroups() {
@@ -31,6 +32,40 @@ const grousService = {
             stopProgressBar();
             console.log(error);
             return false;
+        }
+    },
+
+    async editGroupInStore(data, peopleCount) {
+        try {
+            const group = {
+                id: data.id,
+                name: data.name,
+                peopleInGroupsCount: peopleCount,
+            }
+            store.dispatch("groups/updateGroup", group);
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    async removeGroupFromStore(id) {
+        try {
+            store.dispatch("groups/removeGroup", id);
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    async addGroupToStore(data, peopleCount) {
+        try {
+            const group = {
+                id: data.id,
+                name: data.name,
+                peopleInGroupsCount: peopleCount,
+            }
+            store.dispatch("groups/addGroup", group);
+        } catch (error) {
+            console.log(error);
         }
     }
 }

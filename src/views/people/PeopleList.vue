@@ -158,7 +158,7 @@
       </div>
 
       <div v-if="filterResult.length > 0 && (filter.filterFirstName || filter.filterLastName || filter.phoneNumber)">
-        <div class="table-body" v-for="person in filterResult" :key="person.id">
+        <div class="table-body" v-for="(person, index) in filterResult" :key="person.id">
         <div class="data-row">
           <div class="check data">
             <input type="checkbox" name="" id="" v-model="selectAll"/>
@@ -255,8 +255,7 @@
                 </a>
                 <a
                   class="dropdown-item elipsis-items"
-                  href="#"
-                  @click.prevent="showConfirmModal(person.id)"
+                  @click.prevent="showConfirmModal(person.id, index)"
                   >Delete</a
                 >
               </div>
@@ -275,7 +274,7 @@
       <!-- <div v-else-if="loading">searching for memer</div> -->
       <div v-else>
         <div v-if="searchMember.length > 0">
-          <div class="table-body" v-for="person in searchMember" :key="person.id">
+          <div class="table-body" v-for="(person, index) in searchMember" :key="person.id">
         <div class="data-row">
           <div class="check data">
             <input type="checkbox" name="" id="" v-model="selecteAll"/>
@@ -373,7 +372,7 @@
                 <a
                   class="dropdown-item elipsis-items"
                   href="#"
-                  @click.prevent="showConfirmModal(person.id)"
+                  @click.prevent="showConfirmModal(person.id, index)"
                   >Delete</a
                 >
               </div>
@@ -404,7 +403,8 @@ import PaginationButtons from "../../components/pagination/PaginationButtons.vue
 import axios from "@/gateway/backendapi";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from 'primevue/usetoast';
-import store from '../../store/modules/people.js'
+import { useStore } from 'vuex';
+import stopProgressBar from "../../services/progressbar/progress";
 
 export default {
   props: ["list", "peopleCount"],
@@ -424,6 +424,7 @@ export default {
     const selectAll = ref(false)
     const noRecords = ref(false)
     const searchText = ref("")
+    const store = useStore();
     // const selected = ref([])
     // const count = ref(churchMembers.length)
 
@@ -448,15 +449,32 @@ export default {
       (filterFormIsVissible.value = !filterFormIsVissible.value);
     const membershipSummary = ref([]);
 
-    const deleteMember = (id) => {
+    const deleteMember = (id, index) => {
       //  , { params: { id: id } }
+      console.log(index, "ic compo");
       axios
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
           console.log(res);
           churchMembers.value = churchMembers.value.filter(item => item.id !== id )
+          toast.add({severity:'success', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+          store.dispatch("membership/removeMember", id)
+          axios
+            .get(`/api/People/GetMembershipSummary`)
+            .then((res) => {
+              console.log(res, "new chart");
+              membershipSummary.value = res.data;
+            })
+            .catch((err) => {
+              console.log(err)
+              
+            });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          stopProgressBar();
+          toast.add({severity:'error', summary:'Delete Error', detail:'Deleting member failed', life: 3000});
+          console.log(err)
+        });
     };
 
     const applyFilter = () => {
@@ -506,7 +524,7 @@ export default {
 
     const confirm = useConfirm();
     let toast = useToast();
-        const showConfirmModal = (id) => {
+        const showConfirmModal = (id, index) => {
            
            confirm.require({
                message: 'Are you sure you want to proceed?',
@@ -515,8 +533,8 @@ export default {
                 acceptClass: 'confirm-delete',
                 rejectClass: 'cancel-delete',
                 accept: () => {
-                    deleteMember(id)
-                    toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+                    deleteMember(id, index)
+                    
                 },
                 reject: () => {
                     // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
