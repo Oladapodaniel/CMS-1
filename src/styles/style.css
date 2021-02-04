@@ -118,6 +118,17 @@
     color: #136ACD;
   }
 
+  .cancel-delete {
+    background: #ced4da !important;
+    max-height: 40px;
+  }
+
+  .confirm-delete {
+    background: #dc3545 !important;
+    outline: transparent !important;
+    max-height: 40px;
+  }
+
   .outline-none {
     outline: none !important;
   }

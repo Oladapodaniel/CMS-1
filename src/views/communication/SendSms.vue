@@ -108,16 +108,15 @@
       </div>
 
       <div class="row" v-if="sendToAll">
-        <div class="col-md-2">
-        </div>
+        <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
-            <input
-              class="form-control dropdown-toggle my-1 px-1"
-              type="text"
-              id="dropdownMenu"
-              value="All Contacts"
-              disabled
-            />
+          <input
+            class="form-control dropdown-toggle my-1 px-1"
+            type="text"
+            id="dropdownMenu"
+            value="All Contacts"
+            disabled
+          />
         </div>
       </div>
 
@@ -125,8 +124,12 @@
       <div class="row mb-2" v-if="groupSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0 grey-rounded-border">
-          <ul class="d-flex flex-wrap pl-1 mb-0 dd-item" @click="() => groupSelectInput.focus()">
-            <li style="list-style: none;min-width: 100px" 
+          <ul
+            class="d-flex flex-wrap pl-1 mb-0 dd-item"
+            @click="() => groupSelectInput.focus()"
+          >
+            <li
+              style="list-style: none; min-width: 100px"
               v-for="(group, index) in selectedGroups"
               :key="index"
               class="email-destination d-flex justify-content-between m-1"
@@ -139,7 +142,7 @@
               <span class="ml-2 remove-email" @click="removeGroup(index)"
                 >x</span
               >
-            <!-- </span> -->
+              <!-- </span> -->
             </li>
             <li style="list-style: none" class="">
               <input
@@ -152,18 +155,27 @@
                 }"
                 @focus="showGroupList"
                 @click="showGroupList"
-                style="padding:.5rem"
-                :placeholder="`${selectedGroups.length > 0 ? '' : 'Select groups'}`"
+                style="padding: 0.5rem"
+                :placeholder="`${
+                  selectedGroups.length > 0 ? '' : 'Select groups'
+                }`"
               />
             </li>
           </ul>
-          <div class="col-md-12 px-2 select-groups-dropdown dd-item pt-2" v-if="groupListShown">
+          <div
+            class="col-md-12 px-2 select-groups-dropdown dd-item pt-2"
+            v-if="groupListShown"
+          >
             <div class="row dd-item" v-if="categories.length === 0">
               <div class="col-md-12 dd-item">
                 <p>No groups yet</p>
               </div>
             </div>
-            <div class="row dd-item" v-for="(category, index) in categories" :key="index">
+            <div
+              class="row dd-item"
+              v-for="(category, index) in categories"
+              :key="index"
+            >
               <div class="col-md-12 dd-item" v-if="allGroups[index].length > 0">
                 <div class="row dd-item">
                   <div class="col-md-12 dd-item">
@@ -190,9 +202,8 @@
                 </div>
               </div>
             </div>
+          </div>
         </div>
-        </div>
-        
       </div>
       <!-- End TEst -->
 
@@ -200,8 +211,12 @@
       <div class="row" v-if="membershipSelectionTab">
         <div class="col-md-2"></div>
         <div class="col-md-10 pl-0 grey-rounded-border">
-          <ul class="d-flex flex-wrap px-1 mb-0 m-dd-item" @click="() => memberSelectInput.focus()">
-            <li style="list-style: none;min-width: 100px" 
+          <ul
+            class="d-flex flex-wrap px-1 mb-0 m-dd-item"
+            @click="() => memberSelectInput.focus()"
+          >
+            <li
+              style="list-style: none; min-width: 100px"
               v-for="(member, indx) in selectedMembers"
               :key="indx"
               class="email-destination d-flex justify-content-between m-1"
@@ -214,9 +229,9 @@
               <span class="ml-2 remove-email" @click="removeMember(indx)"
                 >x</span
               >
-            <!-- </span> -->
+              <!-- </span> -->
             </li>
-            <li style="list-style: none" class=" m-dd-item">
+            <li style="list-style: none" class="m-dd-item">
               <input
                 type="text"
                 class="border-0 m-dd-item text"
@@ -229,57 +244,59 @@
                 @focus="showMemberList"
                 @click="showMemberList"
                 v-model="searchText"
-                style="padding:.5rem"
-                :placeholder="`${selectedMembers.length > 0 ? '' : 'Select from members'}`"
+                style="padding: 0.5rem"
+                :placeholder="`${
+                  selectedMembers.length > 0 ? '' : 'Select from members'
+                }`"
               />
             </li>
           </ul>
-          <div class="col-md-12 px-0 select-groups-dropdown m-dd-item" v-if="memberListShown">
-            <div
-                class="dropdownmenu pt-0 w-100 m-dd-item"
+          <div
+            class="col-md-12 px-0 select-groups-dropdown m-dd-item"
+            v-if="memberListShown"
+          >
+            <div class="dropdownmenu pt-0 w-100 m-dd-item">
+              <a
+                class="dropdown-item px-1 c-pointer m-dd-item"
+                v-for="(member, index) in memberSearchResults"
+                :key="index"
+                @click="selectMember(member, index)"
+                >{{ member.name }}</a
               >
-                <a
-                  class="dropdown-item px-1 c-pointer m-dd-item"
-                  v-for="(member, index) in memberSearchResults"
-                  :key="index"
-                  @click="selectMember(member, index)"
-                  >{{ member.name }}</a
-                >
-                <p
-                  class="bg-secondary p-1 mb-0 disable m-dd-item"
-                  v-if="
-                    searchText.length < 3 &&
-                    loading == false &&
-                    memberSearchResults.length === 0
-                  "
-                >
-                  Enter 3 or more characters
-                </p>
-                <p
-                  aria-disabled="true"
-                  class="btn btn-default p-1 mb-0 disable m-dd-item"
-                  v-if="
-                    memberSearchResults.length === 0 &&
-                    searchText.length >= 3 &&
-                    !loading
-                  "
-                >
-                  No match found
-                </p>
-                <p
-                  class="btn btn-default p-1 mb-0 disable m-dd-item"
-                  v-if="loading && searchText.length >= 3"
-                >
-                  <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
-                </p>
-              </div>
+              <p
+                class="bg-secondary p-1 mb-0 disable m-dd-item"
+                v-if="
+                  searchText.length < 3 &&
+                  loading == false &&
+                  memberSearchResults.length === 0
+                "
+              >
+                Enter 3 or more characters
+              </p>
+              <p
+                aria-disabled="true"
+                class="btn btn-default p-1 mb-0 disable m-dd-item"
+                v-if="
+                  memberSearchResults.length === 0 &&
+                  searchText.length >= 3 &&
+                  !loading
+                "
+              >
+                No match found
+              </p>
+              <p
+                class="btn btn-default p-1 mb-0 disable m-dd-item"
+                v-if="loading && searchText.length >= 3"
+              >
+                <i class="fas fa-circle-notch fa-spin m-dd-item"></i>
+              </p>
+            </div>
           </div>
         </div>
-        
       </div>
       <!-- End member TEst -->
 
-    <!-- Select Person from DB -->
+      <!-- Select Person from DB -->
       <div class="col-md-12 my-1 px-0" v-if="false">
         <div class="row">
           <div class="col-md-2"></div>
@@ -467,9 +484,7 @@
       <div class="row my-3">
         <div class="col-md-12 form-group">
           <div class="row">
-            <div class="col-md-2">
-              
-            </div>
+            <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
               <input type="checkbox" v-model="isPersonalized" class="mr-3" />
               <span class="font-weight-600">Personal Message</span>
@@ -478,24 +493,32 @@
         </div>
         <div class="col-md-12">
           <div class="row">
-            <div class="col-md-2">
-              
-            </div>
+            <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
               <span class="hint"
-                >Insert #name# any where you want the contact name to appear in the
-                message, it will be replaced by the actual name of the member when
-                sending the message.</span
+                >Insert #name# any where you want the contact name to appear in
+                the message, it will be replaced by the actual name of the
+                member when sending the message.</span
               >
-                </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="row mt-4 mb-5">
         <div class="col-md-12">
-          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidDestination">Please select destination</p>
-          <p class="mb-1 text-danger text-right font-weight-700" v-if="invalidMessage">Enter your message </p>
+          <p
+            class="mb-1 text-danger text-right font-weight-700"
+            v-if="invalidDestination"
+          >
+            Please select destination
+          </p>
+          <p
+            class="mb-1 text-danger text-right font-weight-700"
+            v-if="invalidMessage"
+          >
+            Enter your message
+          </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end">
           <span>
@@ -506,7 +529,11 @@
               data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
-          <button class="default-btn d-flex justify-content-center short-btn align-items-center ml-3">Discard</button>
+          <button
+            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3"
+          >
+            Discard
+          </button>
         </div>
 
         <div class="row">
@@ -523,7 +550,7 @@
                   <div class="modal-header grey-background">
                     <h5 class="modal-title" id="exampleModalLabel">
                       <i class="pi pi-user mr-2"></i>
-                      Send SMS Alternative
+                      {{ sendModalHeader }}
                     </h5>
                     <button
                       type="button"
@@ -535,94 +562,111 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <div class="row">
-                      <div class="col-md-12 px-1">
-                        <p>
-                          We are providing more options to reach and communicate
-                          with your members
-                        </p>
+                    <div class="row" v-if="!nigerian">
+                      <div class="col-md-12 text-center">
+                        <button
+                          class="primary-btn default-btn border-0 px-4 my-2 primary-bg text-white outline-none extra-btn"
+                          data-dismiss="modal"
+                          @click="sendSMS('')"
+                        >
+                          Send SMS Now {{ `${nigerian}`}}
+                        </button>
                       </div>
                     </div>
 
-                    <div class="row">
-                      <div class="col-md-12 px-1">
-                        <hr class="hr" />
-                      </div>
-                    </div>
-
-                    <div class="row d-flex justify-content-between">
-                      <div class="col-md-6 px-1">
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-md-12">
-                              <label
-                                for=""
-                                class="small-text font-weight-600 py-2"
-                                >NEW** BULK SMS - 100% SMS DELIVERY</label
-                              >
-                            </div>
-                            <div
-                              class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
-                            >
-                              <button
-                                class="primary-btn default-btn primary-bg border-0 px-4 my-2 font-weight-600 outline-none"
-                                data-dismiss="modal"
-                                @click="sendSMS('hostedsms')"
-                              >
-                                Send SMS Now
-                              </button>
-                            </div>
-                            <div class="col-md-12 px-0">
-                              <hr class="hr my-2" />
-                            </div>
-                            <div class="col-md-12 px-0 d-flex flex-column">
-                              <span>Please note:</span>
-                              <span
-                                >100% delivery to all valid phone numbers.</span
-                              >
-                              <span>Not Affected by DND.</span>
-                              <span
-                                >Dedicated phone number: No sender
-                                customization.</span
-                              >
-                            </div>
+                    <div class="row" v-else>
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-12 px-1">
+                            <p>
+                              We are providing more options to reach and
+                              communicate with your members
+                            </p>
                           </div>
                         </div>
-                      </div>
 
-                      <div class="col-md-6 px-1">
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-md-12">
-                              <label
-                                for=""
-                                class="small-text font-weight-600 py-2"
-                                >REGULAR BULK SMS- PROVIDER</label
-                              >
+                        <div class="row">
+                          <div class="col-md-12 px-1">
+                            <hr class="hr" />
+                          </div>
+                        </div>
+
+                        <div class="row d-flex justify-content-between">
+                          <div class="col-md-6 px-1">
+                            <div class="container">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <label
+                                    for=""
+                                    class="small-text font-weight-600 py-2"
+                                    >NEW** BULK SMS - 100% SMS DELIVERY</label
+                                  >
+                                </div>
+                                <div
+                                  class="col-md-12 send-now-div py-2 my-2 d-flex justify-content-center"
+                                >
+                                  <button
+                                    class="primary-btn default-btn primary-bg border-0 px-4 my-2 font-weight-600 outline-none"
+                                    data-dismiss="modal"
+                                    @click="sendSMS('hostedsms')"
+                                  >
+                                    Send SMS Now
+                                  </button>
+                                </div>
+                                <div class="col-md-12 px-0">
+                                  <hr class="hr my-2" />
+                                </div>
+                                <div class="col-md-12 px-0 d-flex flex-column">
+                                  <span>Please note:</span>
+                                  <span
+                                    >100% delivery to all valid phone
+                                    numbers.</span
+                                  >
+                                  <span>Not Affected by DND.</span>
+                                  <span
+                                    >Dedicated phone number: No sender
+                                    customization.</span
+                                  >
+                                </div>
+                              </div>
                             </div>
-                            <div
-                              class="col-md-12 my-2 send-now-div py-2 d-flex justify-content-center"
-                            >
-                              <!-- hostedsms_instant -->
-                              <button
-                                class="primary-btn default-btn border-0 px-4 my-2 grey-background text-grey outline-none"
-                                data-dismiss="modal"
-                                @click="sendSMS('')"
-                              >
-                                Send SMS Now
-                              </button>
-                            </div>
-                            <div class="col-md-12 px-0">
-                              <hr class="hr my-2" />
-                            </div>
-                            <div class="col-md-12 px-0 d-flex flex-column">
-                              <span>Please note:</span>
-                              <span>Uses the regular bulk sms engine</span>
-                              <span
-                                >Delivery rate varies and is affected by DND
-                                number.</span
-                              >
-                              <span>Sender Name can be customized.</span>
+                          </div>
+
+                          <div class="col-md-6 px-1">
+                            <div class="container">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <label
+                                    for=""
+                                    class="small-text font-weight-600 py-2"
+                                    >REGULAR BULK SMS- PROVIDER</label
+                                  >
+                                </div>
+                                <div
+                                  class="col-md-12 my-2 send-now-div py-2 d-flex justify-content-center"
+                                >
+                                  <!-- hostedsms_instant -->
+                                  <button
+                                    class="primary-btn default-btn border-0 px-4 my-2 grey-background text-grey outline-none"
+                                    data-dismiss="modal"
+                                    @click="sendSMS('')"
+                                  >
+                                    Send SMS Now
+                                  </button>
+                                </div>
+                                <div class="col-md-12 px-0">
+                                  <hr class="hr my-2" />
+                                </div>
+                                <div class="col-md-12 px-0 d-flex flex-column">
+                                  <span>Please note:</span>
+                                  <span>Uses the regular bulk sms engine</span>
+                                  <span
+                                    >Delivery rate varies and is affected by DND
+                                    number.</span
+                                  >
+                                  <span>Sender Name can be customized.</span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -651,7 +695,7 @@ import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
-import stopProgressBar from "../../services/progressbar/progress"
+import stopProgressBar from "../../services/progressbar/progress";
 
 export default {
   setup() {
@@ -706,7 +750,6 @@ export default {
       indexInCategories,
       indexInGroup
     ) => {
-      console.log(allGroups.value, "Cats");
       selectedGroups.value.push({ data: `${category}_${id}`, name });
       groupsAreVissible.value = false;
       allGroups.value[indexInCategories].splice(indexInGroup, 1);
@@ -729,7 +772,7 @@ export default {
       memberSearchResults.value.splice(index, 1);
       memberListShown.value = false;
       searchText.value = "";
-      memberSearchResults.value = [ ];
+      memberSearchResults.value = [];
       console.log(selectedMembers, "selected members");
     };
     const removeMember = (index) => {
@@ -750,10 +793,13 @@ export default {
           .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
           .then((res) => {
             loading.value = false;
-            memberSearchResults.value = res.filter(i => {
-              const memberInExistingCollection = selectedMembers.value.find(j => j.id === i.id);
+            memberSearchResults.value = res.filter((i) => {
+              const memberInExistingCollection = selectedMembers.value.find(
+                (j) => j.id === i.id
+              );
               console.log(memberInExistingCollection, "em");
-              if (memberInExistingCollection && memberInExistingCollection.id) return false;
+              if (memberInExistingCollection && memberInExistingCollection.id)
+                return false;
               return true;
             });
             console.log(memberSearchResults.value, "res");
@@ -781,7 +827,12 @@ export default {
       invalidDestination.value = false;
       invalidMessage.value = false;
 
-      if (selectedGroups.value.length === 0 && !phoneNumber.value && selectedMembers.value.length === 0 && !sendToAll.value) {
+      if (
+        selectedGroups.value.length === 0 &&
+        !phoneNumber.value &&
+        selectedMembers.value.length === 0 &&
+        !sendToAll.value
+      ) {
         invalidDestination.value = true;
         return false;
       }
@@ -847,7 +898,7 @@ export default {
               detail: "SMS was sent successfully",
               life: 2500,
             });
-            store.dispatch("removeSMSUnitCharge", (pageCount.value * 2));
+            store.dispatch("removeSMSUnitCharge", pageCount.value * 2);
             console.log(pageCount, "Page count ");
           }
           console.log(res);
@@ -864,18 +915,21 @@ export default {
             });
           } else {
             toast.add({
-            severity: "error",
-            summary: "Failed operation",
-            detail: "SMS sending failed",
-            life: 2500,
-          });
+              severity: "error",
+              summary: "Failed operation",
+              detail: "SMS sending failed",
+              life: 2500,
+            });
           }
         });
     };
 
     const draftMessage = async () => {
       try {
-        const response = await composerObj.svaeDraft({ body: editorData.value, isDefaultBirthDayMessage: false });
+        const response = await composerObj.svaeDraft({
+          body: editorData.value,
+          isDefaultBirthDayMessage: false,
+        });
         console.log(response, "draft response");
         toast.add({
           severity: "success",
@@ -892,7 +946,9 @@ export default {
           life: 2500,
         });
       }
-    }
+    };
+
+    const userCountry = ref("");
 
     const route = useRoute();
     if (route.query.phone) {
@@ -900,16 +956,34 @@ export default {
       phoneNumberSelectionTab.value = true;
     }
 
-    if (store.getters.currentUser) {
+    if (route.query.group) {
+      groupSelectionTab.value = true;
+      selectedGroups.value.push({ data: `group_~${route.query.group}`, name: route.query.group});
+      phoneNumberSelectionTab.value = true;
+    }
+
+    if (store.getters.currentUser && store.getters.currentUser.isoCode) {
       isoCode.value = store.getters.currentUser.isoCode;
+      userCountry.value = store.getters.currentUser.country;
     } else {
       axios
         .get("/api/Membership/GetCurrentSignedInUser")
         .then((res) => {
           isoCode.value = res.data.isoCode;
+          userCountry.value = res.data.country;
         })
         .catch((err) => console.log(err));
     }
+
+    const sendModalHeader = computed(() => {
+      if (userCountry.value !== "Nigeria") return "Confirm Send";
+      return "Send SMS Alternative";
+    });
+
+    const nigerian = computed(() => {
+      if (userCountry.value === "Nigeria") return true;
+      return false;
+    })
 
     const sendOptions = [
       {
@@ -932,6 +1006,8 @@ export default {
       //   to: "/fileupload",
       // },
     ];
+
+    
 
     const allGroups = ref([]);
     const categories = ref([]);
@@ -1021,7 +1097,8 @@ export default {
       invalidDestination,
       invalidMessage,
       sendToAll,
-
+      sendModalHeader,
+      nigerian,
     };
   },
 };
@@ -1227,6 +1304,10 @@ input:focus {
   background: #ffbf00 !important;
 }
 
+.extra-btn {
+    width: 100%;
+  }
+
 /* Start SplitButton */
 
 /* End SplitButton */
@@ -1234,6 +1315,12 @@ input:focus {
 @media screen and (max-width: 630px) {
   .send-btn-options {
     padding: 1px 10px 7px;
+  }
+}
+
+@media screen and (min-width: 400px) {
+  .extra-btn {
+    width: 80%;
   }
 }
 </style>
