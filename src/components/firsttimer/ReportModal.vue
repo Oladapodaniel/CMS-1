@@ -28,12 +28,12 @@
                 </div>
             </div>
             <div class="main-row">
-                <div class="row">
+                <div class="row" v-for="(recipient, index) in recipients" :key="index">
                     <div class="col-sm-4 d-flex justify-content-end align-items-center text-sm-right label-text">
                         <span>To</span>
                     </div>
-                    <div class="col-sm-6 form-group">
-                        <input type="email" class="form-control inp" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'">
+                    <div class="col-sm-6 form-group" >
+                        <input type="email" class="form-control inp"  v-model="recipient.email" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'">
                         <input type="text" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
@@ -41,21 +41,21 @@
                     </div>
                 </div>
             </div>
-            <div class="main-row">
-                <div class="row" v-for="recipient in recipients" :key="recipient.id">
+            <!-- <div class="main-row">
+                <div class="row" v-for="(recipient, index) in recipients" :key="index">
                     <div class="col-sm-4 d-flex justify-content-end align-items-center text-sm-right label-text">
                         <span>From</span>
                     </div>
                     <div class="col-sm-6 form-group">
-                        <input type="email" v-model="recipient.to" class="form-control inp" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'">
-                        <input type="text" v-model="recipient.to" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
+                        <input type="email" v-model="recipient.email" class="form-control inp" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'">
+                        <input type="text" v-model="recipient.phone" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
                         <span class="text-danger">Enter {{ activeTab === 'sms' ? 'phone number' : 'email address' }}</span>
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
                         <i class="fa fa-times inp-icon my-1 remove-icon" @click="removeRecipient(recipient)"></i>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- Subject -->
             <div class="main-row">
                 <div class="row">
@@ -65,6 +65,7 @@
                     <div class="col-sm-5 form-group">
                         <input type="text" class="form-control border-0 inp evt-name" name="" :value="`Report For ${eventName}`"
                             style="margin-top: -5px"
+                            ref="subject"
                         >
                     </div>
                     <div class="col-sm-3 d-flex justify-content-start align-items-center">
@@ -80,7 +81,7 @@
                         <span class="">Message</span>
                     </div>
                     <div class="col-sm-6 form-group">
-                        <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Enter you message"></textarea>
+                        <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Enter you message" v-model="message"></textarea>
                     </div>
                     <div class="col-sm-2">
                         
@@ -97,7 +98,7 @@
                     <div class="col-sm-8 form-group" v-show="activeTab === 'churchplus'">
                         <div class="row">
                             <div class="col-sm-1">
-                                <input type="checkbox" name="" id="">
+                                <input type="checkbox" v-model="sendToMyself" name="" id="" @change="test">
                             </div>
                             <div class="col-sm-10">
                                 <span>Send a copy to myself at {{ userEmail }}</span>
@@ -133,7 +134,7 @@
                     <div class="col-sm-12 d-flex justify-content-end">
                         <a class="action-btn mx-2 my-1" data-dismiss="modal">Cancel</a>
                         <a class="action-btn mx-2 my-1">Preview</a>
-                        <a class="action-btn mx-2 my-1 save-action-btn mr-sm-5">Send</a>
+                        <a class="action-btn mx-2 my-1 save-action-btn mr-sm-5" @click="sendReport">Send</a>
                     </div>
                 <!-- </div> -->
             </div>
@@ -148,25 +149,46 @@ import axios from "@/gateway/backendapi";
     
     export default {
         props: ['eventName'],
-        setup(props) {
+        setup(props, { emit }) {
             const activeTab = ref("churchplus");
-            const recipients = ref([ { phone: "01234567890", email: "test@example.com" } ])
-            const count = 0;
+            const recipients = ref([ { email: ""} ])
+            // const count = 0;
             const userEmail = ref("")
+            const message = ref("")
+            const sendToMysef = ref(false);
+            const subject = ref(null);
 
             const changeTab = (tab) => activeTab.value = tab;
 
             const addRecipient = () => {
-                recipients.value.push({ id: count.value })
-                count.value = count.value + 1;
+                recipients.value.push({ email: ""})
+                console.log(recipients);
             }
             const removeRecipient = (rep) => {
                 const recipient = recipients.value.find(i => i.id === rep.id)
                 const index = recipients.value.indexOf(recipient);
                 recipients.value.splice(index, 1);
+                
+            }
+
+            const test = (e) => {
+                console.log(e.target.value, "bool");
             }
 
             const event = ref(props.eventName)
+
+            const sendReport = () => {
+                const messageObj = {
+                    contacts: recipients.value,
+                    message: message.value,
+                    subject: subject.value.value,
+                }
+
+                if (sendToMysef.value) {
+                    messageObj.contacts.push({ email: userEmail.value });
+                }
+                emit("sendreport", messageObj);
+            }
 
             const getUserEmail = () => {
                 axios.get("/api/Membership/GetCurrentSignedInUser")
@@ -178,7 +200,12 @@ import axios from "@/gateway/backendapi";
             }
             getUserEmail()
 
-            return { changeTab, activeTab,  recipients, removeRecipient, addRecipient, event, userEmail, getUserEmail }
+            return { changeTab, activeTab,  recipients, removeRecipient, addRecipient, event, userEmail, getUserEmail, sendReport,
+                message,
+                sendToMysef,
+                subject,
+                test,
+            }
         }
     }
 </script>
