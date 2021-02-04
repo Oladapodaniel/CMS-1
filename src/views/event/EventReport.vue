@@ -160,7 +160,7 @@
       <div class="row py-5 px-5" ref="middle">
         <div class="col-md-7">
           <span class="evt-label grey-text">Event Name</span>
-          <h2 class="font-weight-bold mb-3" style="font-size: 25px;color:red">
+          <h2 class="font-weight-bold mb-3" style="font-size: 25px;">
             {{ eventDataResponse.name }}
           </h2>
           <span class="evt-date text-danger">{{ eventDateString }}.</span>
