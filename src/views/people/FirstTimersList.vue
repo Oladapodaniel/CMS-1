@@ -1,6 +1,6 @@
 <template>
-  <div class="container-wide container-top">
-    <div class="row my-3">
+  <div class="">
+    <!-- <div class="row my-3">
       <div class="col-sm-4 first-timers-text">
         <h2 class="page-header">First Timers</h2>
       </div>
@@ -11,13 +11,13 @@
           Add First timer
         </router-link>
       </div>
-    </div>
+    </div> -->
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-12">
         <hr class="hr" />
       </div>
-    </div>
+    </div> -->
 
     <div class="row">
       <div class="col-md-12">
@@ -668,7 +668,6 @@ export default {
 .my-con {
   /* display: flex; */
   justify-content: space-between;
-  margin: 18px 0;
 }
 
 .summary {
