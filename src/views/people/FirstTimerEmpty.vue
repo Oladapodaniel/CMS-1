@@ -16,7 +16,7 @@
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
-              <router-link :to="{ name: 'Event' }">
+              <router-link :to="{ name: 'AddFirstTimer' }">
                 <button class="button add-person-btn">
                   Add First Timers
                 </button>

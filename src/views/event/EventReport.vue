@@ -171,7 +171,7 @@
                 <span class="bold-700">Preacher: </span>
               </div>
               <div class="col-md-6 pl-md-0">
-                <span>{{ eventData.preacher }}</span>
+                <span>{{ eventDataResponse.preacher }}</span>
               </div>
             </div>
             <div class="row">
@@ -179,7 +179,7 @@
                 <span class="bold-700">Topic: </span>
               </div>
               <div class="col-md-6 pl-md-0">
-                <span>{{ eventData.topic }}</span>
+                <span>{{ eventDataResponse.topic }}</span>
               </div>
             </div>
             <div class="row">
@@ -195,7 +195,7 @@
                 <span class="bold-700">New converts: </span>
               </div>
               <div class="col-md-6 pl-md-0">
-                <span>23</span>
+                <span>{{ eventDataResponse.newConvertsCount }}</span>
               </div>
             </div>
           </div>
@@ -419,7 +419,7 @@
                       <div class="ana-item-text">
                         <p class="ana-item-header">Attendance</p>
                         <p class="ana-item-percentage">
-                          {{ stats.todayVsLastWeekAttendancePercentage }}%
+                          {{ stats.todayVsLastWeekAttendancePercentage ? stats.todayVsLastWeekAttendancePercentage.toFixed(2) : 0 }}%
                         </p>
                         <p>
                           <span class="ana-item-value">{{
@@ -433,10 +433,18 @@
                       </div>
                       <div class="ana-item-icon">
                         <div class="item-image">
-                          <img
+                          <div v-if="stats.todayVsLastWeekAttendancePercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
                             src="../../assets/dashboardlinks/trend-icon.svg"
                             alt=""
                           />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -444,7 +452,7 @@
                       <div class="ana-item-text">
                         <p class="ana-item-header">Offering</p>
                         <p class="ana-item-percentage">
-                          {{ stats.todayVsLastWeekAttendancePercentage }}%
+                          {{ stats.todayVsLastweekOfferingPercentage ? stats.todayVsLastweekOfferingPercentage.toFixed(2) : 0 }}%
                         </p>
                         <p>
                           <span class="ana-item-value">{{
@@ -458,20 +466,28 @@
                       </div>
                       <div class="ana-item-icon">
                         <div class="item-image">
-                          <img
+                          <div v-if="stats.todayVsLastweekOfferingPercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
                             src="../../assets/dashboardlinks/trend-icon.svg"
                             alt=""
                           />
+                          </div>
+                          
                         </div>
                       </div>
                     </div>
                     <div class="ana-item">
                       <div class="ana-item-text">
                         <p class="ana-item-header">First timers</p>
-                        <p class="ana-item-percentage">10.3%</p>
+                        <p class="ana-item-percentage">{{ stats.lastWeekFirstTimer }}</p>
                         <p>
-                          <span class="ana-item-value">10103</span> vs
-                          <span class="ana-item-value">123</span>
+                          <span class="ana-item-value">Since last week</span>
                         </p>
                       </div>
                       <div class="ana-item-icon">
@@ -501,7 +517,7 @@
                       <div class="ana-item-text">
                         <p class="ana-item-header">Attendance</p>
                         <p class="ana-item-percentage">
-                          {{ stats.todayVsLastMonthAttendancePercentage }}%
+                          {{ stats.todayVsLastMonthAttendancePercentage ? stats.todayVsLastMonthAttendancePercentage.toFixed(2) : 0 }}%
                         </p>
                         <p>
                           <span class="ana-item-value">{{
@@ -515,10 +531,18 @@
                       </div>
                       <div class="ana-item-icon">
                         <div class="item-image">
-                          <img
+                          <div v-if="stats.todayVsLastMonthAttendancePercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
                             src="../../assets/dashboardlinks/trend-icon.svg"
                             alt=""
                           />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -526,7 +550,7 @@
                       <div class="ana-item-text">
                         <p class="ana-item-header">Offering</p>
                         <p class="ana-item-percentage">
-                          {{ stats.todayVsLastMonthOfferingPercentage }}%
+                          {{ stats.todayVsLastMonthOfferingPercentage ? stats.todayVsLastMonthOfferingPercentage.toFixed(2) : 0 }}%
                         </p>
                         <p>
                           <span class="ana-item-value">{{
@@ -540,20 +564,27 @@
                       </div>
                       <div class="ana-item-icon">
                         <div class="item-image">
-                          <img
+                          <div v-if="stats.todayVsLastMonthOfferingPercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
                             src="../../assets/dashboardlinks/trend-icon.svg"
                             alt=""
                           />
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="ana-item">
                       <div class="ana-item-text">
                         <p class="ana-item-header">First timers</p>
-                        <p class="ana-item-percentage">10.3%</p>
+                        <p class="ana-item-percentage">{{ stats.lastMonthFirstTimer }}</p>
                         <p>
-                          <span class="ana-item-value">10103</span> vs
-                          <span class="ana-item-value">123</span>
+                          <span class="ana-item-value">Since last month</span>
                         </p>
                       </div>
                       <div class="ana-item-icon">
@@ -583,7 +614,7 @@
                       <div class="ana-item-text">
                         <p class="ana-item-header">Attendance</p>
                         <p class="ana-item-percentage">
-                          {{ stats.todayVsLastYearAttendancePercentage }}%
+                          {{ stats.todayVsLastYearAttendancePercentage ? stats.todayVsLastYearAttendancePercentage.toFixed(2) : 0 }}%
                         </p>
                         <p>
                           <span class="ana-item-value">{{
@@ -597,10 +628,18 @@
                       </div>
                       <div class="ana-item-icon">
                         <div class="item-image">
-                          <img
+                          <div v-if="stats.todayVsLastYearAttendancePercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
                             src="../../assets/dashboardlinks/trend-icon.svg"
                             alt=""
                           />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -608,7 +647,7 @@
                       <div class="ana-item-text">
                         <p class="ana-item-header">Offering</p>
                         <p class="ana-item-percentage">
-                          {{ stats.todayVsLastYearOfferingPercentage }}%
+                          {{ stats.todayVsLastYearOfferingPercentage ? stats.todayVsLastYearOfferingPercentage.toFixed(2) : 0}}%
                         </p>
                         <p>
                           <span class="ana-item-value">{{
@@ -622,20 +661,27 @@
                       </div>
                       <div class="ana-item-icon">
                         <div class="item-image">
-                          <img
+                          <div v-if="stats.todayVsLastYearOfferingPercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
                             src="../../assets/dashboardlinks/trend-icon.svg"
                             alt=""
                           />
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="ana-item">
                       <div class="ana-item-text">
                         <p class="ana-item-header">First timers</p>
-                        <p class="ana-item-percentage">10.3%</p>
+                        <p class="ana-item-percentage">{{ stats.lastYearFirstTimer }}</p>
                         <p>
-                          <span class="ana-item-value">10103</span> vs
-                          <span class="ana-item-value">123</span>
+                          <span class="ana-item-value">Since last year</span>
                         </p>
                       </div>
                       <div class="ana-item-icon">
@@ -803,9 +849,8 @@ export default {
       console.log(eventDataResponse.value)
 
       try {
-        const res = await axios.post(
-          `/api/Events/GetAnalysis?activityId=${activityId}`,
-          { name: "gukfeau" }
+        const res = await axios.get(
+          `/api/Events/GetAnalysis?activityId=${activityId}`
         );
         console.log(res.data);
         stats.value = res.data;
