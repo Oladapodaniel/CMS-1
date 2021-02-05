@@ -13,7 +13,6 @@
         </router-link>
       </div>
     </div>
-    <Toast />
     <hr class="mb-4" />
   </div>
   <div class="container" style="width: 80%">
@@ -108,26 +107,27 @@
                     <div class="row">
                       <div class="col-6">
                         <a
-                          class="def-btn approve-btn"
-                          data-toggle="modal"
-                          data-target="#sendReport"
-                          :data-dismiss="btnState"
-                          :class="{ 'resend-btn': markedAsSent }"
-                        >
-                          {{ sendBtnText }}
-                        </a>
+                      class="def-btn approve-btn"
+                      data-toggle="modal"
+                      data-target="#sendReport"
+                      :class="{ 'resend-btn': markedAsSent }"
+                    >
+                      {{ sendBtnText }}
+                    </a>
                       </div>
                       <div class="col-6">
                         <a class="def-btn edit-btn">Get share link</a>
                       </div>
                     </div>
+                    
+                    
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 offset-md-1" style="">
                     <span class="mr-2">or</span>
                     <a
-                      style="color: #136acd; cursor: pointer"
+                      style="color: #136acd; cursor: pointer;"
                       @click="markAsSent"
                       >mark as sent</a
                     >
@@ -141,125 +141,125 @@
     </div>
 
     <div class="container-fluid bottom-section px-0">
-      <div class="row mx-0 topmost" ref="topmost">
-        <div class="col-md-8 dark-red-section pl-5 topmost-box">
-          <h2 class="evt-report">Event and Report</h2>
+      <div class="row mx-0">
+          <div class="col-md-8 dark-red-section pl-5">
+            <h2 class="evt-report">Event and Report</h2>
+          </div>
+          <div class="col-md-4 d-flex flex-column light-red-section pr-5">
+            <span>
+              <span>Total Attendance: </span>
+              <span>{{ stats.todayAttendance }}</span>
+            </span>
+            <span>
+              <span>Total Offering: </span>
+              <span>{{ stats.todayOffering }}</span>
+            </span>
+          </div>
         </div>
-        <div class="col-md-4 d-flex flex-column light-red-section pr-5 topmost-box">
-          <span>
-            <span>Total Attendance: </span>
-            <span>{{ stats.todayAttendance }}</span>
-          </span>
-          <span>
-            <span>Total Offering: </span>
-            <span>{{ stats.todayOffering }}</span>
-          </span>
-        </div>
-      </div>
 
-      <div class="row py-5 px-5" ref="middle">
-        <div class="col-md-7">
-          <span class="evt-label grey-text">Event Name</span>
-          <h2 class="font-weight-bold mb-3" style="font-size: 25px;">
-            {{ eventDataResponse.name }}
-          </h2>
-          <span class="evt-date text-danger">{{ eventDateString }}.</span>
-        </div>
-        <div class="col-md-5 pl-0">
-          <div class="row">
-            <div class="col-md-6 d-md-flex justify-content-end">
-              <span class="bold-700">Preacher: </span>
-            </div>
-            <div class="col-md-6 pl-md-0">
-              <span>{{ eventData.preacher }}</span>
-            </div>
+        <div class="row py-5 px-5">
+          <div class="col-md-7">
+            <span class="evt-label grey-text">Event Name</span>
+            <h2 class="font-weight-bold mb-3" style="font-size: 25px;">
+              {{ eventDataResponse.name }}
+            </h2>
+            <span class="evt-date text-danger">{{ eventDateString }}.</span>
           </div>
-          <div class="row">
-            <div class="col-md-6 d-md-flex justify-content-end">
-              <span class="bold-700">Topic: </span>
+          <div class="col-md-5 pl-0">
+            <div class="row">
+              <div class="col-md-6 d-md-flex justify-content-end">
+                <span class="bold-700">Preacher: </span>
+              </div>
+              <div class="col-md-6 pl-md-0">
+                <span>{{ eventDataResponse.preacher }}</span>
+              </div>
             </div>
-            <div class="col-md-6 pl-md-0">
-              <span>{{ eventData.topic }}</span>
+            <div class="row">
+              <div class="col-md-6 d-md-flex justify-content-end">
+                <span class="bold-700">Topic: </span>
+              </div>
+              <div class="col-md-6 pl-md-0">
+                <span>{{ eventDataResponse.topic }}</span>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 d-md-flex justify-content-end">
-              <span class="bold-700">First timers: </span>
+            <div class="row">
+              <div class="col-md-6 d-md-flex justify-content-end">
+                <span class="bold-700">First timers: </span>
+              </div>
+              <div class="col-md-6 pl-md-0">
+                <span>{{ eventData.activityFirstTimers.length }}</span>
+              </div>
             </div>
-            <div class="col-md-6 pl-md-0">
-              <span>{{ eventData.activityFirstTimers.length }}</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 d-md-flex justify-content-end">
-              <span class="bold-700">New converts: </span>
-            </div>
-            <div class="col-md-6 pl-md-0">
-              <span>23</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mb-5" ref="bottom">
-        <div class="col-md-12">
-          <div class="row mb-4">
-            <div class="col-md-12">
-              <span class="attendance-header">Attendance</span>
-            </div>
-          </div>
-          <div class="row px-5">
-            <div class="col-md-12">
-              <div class="row">
-                <div class="col-sm-4">
-                  <span class="bold-700">Attendance Item</span>
-                </div>
-                <div class="col-sm-4">
-                  <span class="bold-700">Count</span>
-                </div>
-                <div class="col-sm-4 text-sm-center">
-                  <span class="bold-700">Total</span>
-                </div>
+            <div class="row">
+              <div class="col-md-6 d-md-flex justify-content-end">
+                <span class="bold-700">New converts: </span>
+              </div>
+              <div class="col-md-6 pl-md-0">
+                <span>{{ eventDataResponse.newConvertsCount }}</span>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <hr class="hr-dark" />
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <div class="row mb-4">
+              <div class="col-md-12">
+                <span class="attendance-header">Attendance</span>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div
-              class="col-sm-12"
-              v-for="(attendance, index) in eventData.attendances"
-              :key="index"
-            >
-              <div class="row px-5">
-                <div class="col-sm-12">
-                  <div class="row">
-                    <div class="col-sm-4">
-                      <span class="bold-700">{{
-                        attendance.attendanceTypeName
-                      }}</span>
-                    </div>
-                    <div class="col-sm-4">
-                      <span class="bold-700">{{ attendance.number }}</span>
-                    </div>
-                    <div class="col-sm-4 text-sm-center">
-                      <span class="bold-700">{{ attendance.number }}</span>
-                    </div>
+            <div class="row px-5">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <span class="bold-700">Attendance Item</span>
+                  </div>
+                  <div class="col-sm-4">
+                    <span class="bold-700">Count</span>
+                  </div>
+                  <div class="col-sm-4 text-sm-center">
+                    <span class="bold-700">Total</span>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <hr class="hr" />
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <hr class="hr-dark" />
+              </div>
+            </div>
+            <div class="row">
+              <div
+                class="col-sm-12"
+                v-for="(attendance, index) in eventData.attendances"
+                :key="index"
+              >
+                <div class="row px-5">
+                  <div class="col-sm-12">
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <span class="bold-700">{{
+                          attendance.attendanceTypeName
+                        }}</span>
+                      </div>
+                      <div class="col-sm-4">
+                        <span class="bold-700">{{ attendance.number }}</span>
+                      </div>
+                      <div class="col-sm-4 text-sm-center">
+                        <span class="bold-700">{{ attendance.number }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <hr class="hr" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- <div class="row px-5">
+            <!-- <div class="row px-5">
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-4">
@@ -274,12 +274,12 @@
             </div>
           </div>
         </div> -->
-          <!-- <div class="row">
+            <!-- <div class="row">
           <div class="col-sm-12">
             <hr class="hr" />
           </div>
         </div> -->
-          <!-- <div class="row px-5">
+            <!-- <div class="row px-5">
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-4">
@@ -294,12 +294,12 @@
             </div>
           </div>
         </div> -->
-          <!-- <div class="row">
+            <!-- <div class="row">
           <div class="col-sm-12">
             <hr class="hr-dark" />
           </div>
         </div> -->
-          <!-- <div class="row px-5">
+            <!-- <div class="row px-5">
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-4"></div>
@@ -312,378 +312,424 @@
             </div>
           </div>
         </div> -->
-        </div>
-      </div>
-
-      <div class="row mb-5">
-        <div class="col-md-12">
-          <div class="row mb-4">
-            <div class="col-md-12">
-              <span class="attendance-header">Offering</span>
-            </div>
           </div>
-          <div class="row px-5">
-            <div class="col-md-12">
-              <div class="row">
-                <div class="col-sm-3">
-                  <span class="bold-700">Offering Item</span>
-                </div>
-                <div class="col-sm-3">
-                  <span class="bold-700">Channel</span>
-                </div>
-                <div class="col-sm-3">
-                  <span class="bold-700">Amount</span>
-                </div>
-                <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700">Total</span>
-                </div>
+        </div>
+
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <div class="row mb-4">
+              <div class="col-md-12">
+                <span class="attendance-header">Offering</span>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <hr class="hr-dark" />
-            </div>
-          </div>
-          <div
-            class="row"
-            v-for="(offering, index) in eventData.offerings"
-            :key="index"
-          >
-            <div class="col-md-12">
-              <div class="row px-5">
-                <div class="col-sm-12">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <span class="bold-700">{{ offering.name }}</span>
-                    </div>
-                    <div class="col-sm-3">
-                      <span class="bold-700">{{ offering.channel }}</span>
-                    </div>
-                    <div class="col-sm-3">
-                      <span class="bold-700">{{ offering.amount }}</span>
-                    </div>
-                    <div class="col-sm-3 text-sm-center">
-                      <span class="bold-700">{{ offering.amount }}</span>
-                    </div>
+            <div class="row px-5">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-sm-3">
+                    <span class="bold-700">Offering Item</span>
+                  </div>
+                  <div class="col-sm-3">
+                    <span class="bold-700">Channel</span>
+                  </div>
+                  <div class="col-sm-3">
+                    <span class="bold-700">Amount</span>
+                  </div>
+                  <div class="col-sm-3 text-sm-center">
+                    <span class="bold-700">Total</span>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <hr class="hr" />
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <hr class="hr-dark" />
+              </div>
+            </div>
+            <div
+              class="row"
+              v-for="(offering, index) in eventData.offerings"
+              :key="index"
+            >
+              <div class="col-md-12">
+                <div class="row px-5">
+                  <div class="col-sm-12">
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <span class="bold-700">{{ offering.name }}</span>
+                      </div>
+                      <div class="col-sm-3">
+                        <span class="bold-700">{{ offering.channel }}</span>
+                      </div>
+                      <div class="col-sm-3">
+                        <span class="bold-700">{{ offering.amount }}</span>
+                      </div>
+                      <div class="col-sm-3 text-sm-center">
+                        <span class="bold-700">{{ offering.amount }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <hr class="hr" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <hr class="hr-dark" v-if="eventData.offerings.length > 0" />
+            <div class="row">
+              <div class="col-sm-12">
+                <hr class="hr-dark" v-if="eventData.offerings.length > 0" />
+              </div>
             </div>
-          </div>
-          <div class="row px-5" v-if="eventData.offerings.length > 0">
-            <div class="col-sm-12">
-              <div class="row">
-                <div class="col-sm-3"></div>
-                <div class="col-sm-3"></div>
-                <div class="col-sm-3 text-sm-right">
-                  <span class="bold-700">Total</span>
-                </div>
-                <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700">{{ tottalOfferings }}</span>
+            <div class="row px-5" v-if="eventData.offerings.length > 0">
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-3"></div>
+                  <div class="col-sm-3 text-sm-right">
+                    <span class="bold-700">Total</span>
+                  </div>
+                  <div class="col-sm-3 text-sm-center">
+                    <span class="bold-700">{{ tottalOfferings }}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- <div class="stats">
+        <!-- <div class="stats">
           <EventReportStats />
       </div> -->
-      <div class="row">
-        <div class="col-md-12">
-          <div class="pg-content">
-            <h4 class="analytics">Analytics</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="pg-content">
+              <h4 class="analytics">Analytics</h4>
 
-            <div class="analytics-container first-con">
-              <div class="ana-group">
-                <div class="ana-header">
-                  <h5>
-                    <span class="today-text">Today </span>
-                    <span class="versus"> vs Lastweek</span>
-                  </h5>
+              <div class="analytics-container first-con">
+                <div class="ana-group">
+                  <div class="ana-header">
+                    <h5>
+                      <span class="today-text">Today </span>
+                      <span class="versus"> vs Lastweek</span>
+                    </h5>
+                    <hr class="hr" />
+                  </div>
+                  <div class="ana-items">
+                    <div class="ana-item">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">Attendance</p>
+                        <p class="ana-item-percentage">
+                          {{ stats.todayVsLastWeekAttendancePercentage ? stats.todayVsLastWeekAttendancePercentage.toFixed(2) : 0 }}%
+                        </p>
+                        <p>
+                          <span class="ana-item-value">{{
+                            stats.todayAttendance
+                          }}</span>
+                          vs
+                          <span class="ana-item-value">{{
+                            stats.lastWeekAttendance
+                          }}</span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <div v-if="stats.todayVsLastWeekAttendancePercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ana-item">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">Offering</p>
+                        <p class="ana-item-percentage">
+                          {{ stats.todayVsLastweekOfferingPercentage ? stats.todayVsLastweekOfferingPercentage.toFixed(2) : 0 }}%
+                        </p>
+                        <p>
+                          <span class="ana-item-value">{{
+                            stats.todayOffering
+                          }}</span>
+                          vs
+                          <span class="ana-item-value">{{
+                            stats.lastWeekOffering
+                          }}</span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <div v-if="stats.todayVsLastweekOfferingPercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ana-item">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">First timers</p>
+                        <p class="ana-item-percentage">{{ stats.lastWeekFirstTimer }}</p>
+                        <p>
+                          <span class="ana-item-value">Since last week</span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <hr class="hr" />
                 </div>
-                <div class="ana-items">
-                  <div class="ana-item">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">Attendance</p>
-                      <p class="ana-item-percentage">
-                        {{ stats.todayVsLastWeekAttendancePercentage }}%
-                      </p>
-                      <p>
-                        <span class="ana-item-value">{{
-                          stats.todayAttendance
-                        }}</span>
-                        vs
-                        <span class="ana-item-value">{{
-                          stats.lastWeekAttendance
-                        }}</span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="ana-item">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">Offering</p>
-                      <p class="ana-item-percentage">
-                        {{ stats.todayVsLastWeekAttendancePercentage }}%
-                      </p>
-                      <p>
-                        <span class="ana-item-value">{{
-                          stats.todayOffering
-                        }}</span>
-                        vs
-                        <span class="ana-item-value">{{
-                          stats.lastWeekOffering
-                        }}</span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="ana-item">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">First timers</p>
-                      <p class="ana-item-percentage">10.3%</p>
-                      <p>
-                        <span class="ana-item-value">10103</span> vs
-                        <span class="ana-item-value">123</span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr class="hr" />
               </div>
-            </div>
-            <div class="analytics-container">
-              <div class="ana-group">
-                <div class="ana-header">
-                  <h5>
-                    <span class="today-text">Today </span>
-                    <span class="versus"> vs Same time last month</span>
-                  </h5>
+              <div class="analytics-container">
+                <div class="ana-group">
+                  <div class="ana-header">
+                    <h5>
+                      <span class="today-text">Today </span>
+                      <span class="versus"> vs Same time last month</span>
+                    </h5>
+                    <hr class="hr" />
+                  </div>
+                  <div class="ana-items">
+                    <div class="ana-item">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">Attendance</p>
+                        <p class="ana-item-percentage">
+                          {{ stats.todayVsLastMonthAttendancePercentage ? stats.todayVsLastMonthAttendancePercentage.toFixed(2) : 0 }}%
+                        </p>
+                        <p>
+                          <span class="ana-item-value">{{
+                            stats.todayAttendance
+                          }}</span>
+                          vs
+                          <span class="ana-item-value">{{
+                            stats.lastMonthAttendance
+                          }}</span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <div v-if="stats.todayVsLastMonthAttendancePercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ana-item">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">Offering</p>
+                        <p class="ana-item-percentage">
+                          {{ stats.todayVsLastMonthOfferingPercentage ? stats.todayVsLastMonthOfferingPercentage.toFixed(2) : 0 }}%
+                        </p>
+                        <p>
+                          <span class="ana-item-value">{{
+                            stats.todayOffering
+                          }}</span>
+                          vs
+                          <span class="ana-item-value">{{
+                            stats.lastMonthOffering
+                          }}</span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <div v-if="stats.todayVsLastMonthOfferingPercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ana-item">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">First timers</p>
+                        <p class="ana-item-percentage">{{ stats.lastMonthFirstTimer }}</p>
+                        <p>
+                          <span class="ana-item-value">Since last month</span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <hr class="hr" />
                 </div>
-                <div class="ana-items">
-                  <div class="ana-item">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">Attendance</p>
-                      <p class="ana-item-percentage">
-                        {{ stats.todayVsLastMonthAttendancePercentage }}%
-                      </p>
-                      <p>
-                        <span class="ana-item-value">{{
-                          stats.todayAttendance
-                        }}</span>
-                        vs
-                        <span class="ana-item-value">{{
-                          stats.lastMonthAttendance
-                        }}</span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="ana-item">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">Offering</p>
-                      <p class="ana-item-percentage">
-                        {{ stats.todayVsLastMonthOfferingPercentage }}%
-                      </p>
-                      <p>
-                        <span class="ana-item-value">{{
-                          stats.todayOffering
-                        }}</span>
-                        vs
-                        <span class="ana-item-value">{{
-                          stats.lastMonthOffering
-                        }}</span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="ana-item">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">First timers</p>
-                      <p class="ana-item-percentage">10.3%</p>
-                      <p>
-                        <span class="ana-item-value">10103</span> vs
-                        <span class="ana-item-value">123</span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr class="hr" />
               </div>
-            </div>
-            <div class="analytics-container">
-              <div class="ana-group">
-                <div class="ana-header">
-                  <h5>
-                    <span class="today-text">Today </span>
-                    <span class="versus"> vs Same time last year</span>
-                  </h5>
+              <div class="analytics-container">
+                <div class="ana-group">
+                  <div class="ana-header">
+                    <h5>
+                      <span class="today-text">Today </span>
+                      <span class="versus"> vs Same time last year</span>
+                    </h5>
+                    <hr class="hr" />
+                  </div>
+                  <div class="ana-items">
+                    <div class="ana-item">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">Attendance</p>
+                        <p class="ana-item-percentage">
+                          {{ stats.todayVsLastYearAttendancePercentage ? stats.todayVsLastYearAttendancePercentage.toFixed(2) : 0 }}%
+                        </p>
+                        <p>
+                          <span class="ana-item-value">{{
+                            stats.todayAttendance
+                          }}</span>
+                          vs
+                          <span class="ana-item-value">{{
+                            stats.lastYearAttendance
+                          }}</span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <div v-if="stats.todayVsLastYearAttendancePercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ana-item">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">Offering</p>
+                        <p class="ana-item-percentage">
+                          {{ stats.todayVsLastYearOfferingPercentage ? stats.todayVsLastYearOfferingPercentage.toFixed(2) : 0}}%
+                        </p>
+                        <p>
+                          <span class="ana-item-value">{{
+                            stats.todayOffering
+                          }}</span>
+                          vs
+                          <span class="ana-item-value">{{
+                            stats.lastYearOffering
+                          }}</span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <div v-if="stats.todayVsLastYearOfferingPercentage < 0">
+                            <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                          <div v-else>
+                            <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ana-item">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">First timers</p>
+                        <p class="ana-item-percentage">{{ stats.lastYearFirstTimer }}</p>
+                        <p>
+                          <span class="ana-item-value">Since last year</span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <hr class="hr" />
                 </div>
-                <div class="ana-items">
-                  <div class="ana-item">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">Attendance</p>
-                      <p class="ana-item-percentage">
-                        {{ stats.todayVsLastYearAttendancePercentage }}%
-                      </p>
-                      <p>
-                        <span class="ana-item-value">{{
-                          stats.todayAttendance
-                        }}</span>
-                        vs
-                        <span class="ana-item-value">{{
-                          stats.lastYearAttendance
-                        }}</span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="ana-item">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">Offering</p>
-                      <p class="ana-item-percentage">
-                        {{ stats.todayVsLastYearOfferingPercentage }}%
-                      </p>
-                      <p>
-                        <span class="ana-item-value">{{
-                          stats.todayOffering
-                        }}</span>
-                        vs
-                        <span class="ana-item-value">{{
-                          stats.lastYearOffering
-                        }}</span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="ana-item">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">First timers</p>
-                      <p class="ana-item-percentage">10.3%</p>
-                      <p>
-                        <span class="ana-item-value">10103</span> vs
-                        <span class="ana-item-value">123</span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <hr class="hr" />
               </div>
-            </div>
 
-            <div class="area-charts analytics-container mb-5">
-              <!-- <div id="chart" style="width:50%;height:500px"></div> -->
-              <div class="area-chart mt-5">
-                <ReportAreaChart
-                  elemId="chart"
-                  domId="areaChart1"
-                  title="OFFERING"
-                  subtitle="This month"
-                  lineColor="#50AB00"
-                />
-              </div>
-              <div class="area-chart mt-5">
-                <ReportAreaChart
-                  elemId="chart"
-                  domId="areaChart2"
-                  title="ATTENDANCE"
-                  subtitle="This month"
-                  lineColor="#1F78B4"
-                />
-              </div>
-              <div class="area-chart mt-5">
-                <ReportAreaChart
-                  elemId="chart"
-                  domId="areaChart3"
-                  title="FIRST TIMERS PERFORMANCE"
-                  lineColor="#1F78B4"
-                />
+              <div class="area-charts analytics-container mb-5">
+                <!-- <div id="chart" style="width:50%;height:500px"></div> -->
+                <div class="area-chart mt-5">
+                  <ReportAreaChart
+                    elemId="chart"
+                    domId="areaChart1"
+                    title="OFFERING"
+                    subtitle="This month"
+                    lineColor="#50AB00"
+                  />
+                </div>
+                <div class="area-chart mt-5">
+                  <ReportAreaChart
+                    elemId="chart"
+                    domId="areaChart2"
+                    title="ATTENDANCE"
+                    subtitle="This month"
+                    lineColor="#1F78B4"
+                  />
+                </div>
+                <div class="area-chart mt-5">
+                  <ReportAreaChart
+                    elemId="chart"
+                    domId="areaChart3"
+                    title="FIRST TIMERS PERFORMANCE"
+                    lineColor="#1F78B4"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
     </div>
 
     <div class="row">
@@ -711,8 +757,21 @@
                 </button>
               </div>
               <div class="modal-body pt-0 px-0">
+                <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
                 <ReportModal :eventName="eventDataResponse.name" @sendreport="sendReport" />
               </div>
+              <!-- <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div> -->
             </div>
           </div>
         </div>
@@ -720,6 +779,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 // import { onMounted, ref } from "vue";
@@ -834,8 +894,7 @@ export default {
 
       try {
         const res = await axios.get(
-          `/api/Events/GetAnalysis?activityId=${activityId}`,
-          { name: "gukfeau" }
+          `/api/Events/GetAnalysis?activityId=${activityId}`
         );
         console.log(res.data);
         stats.value = res.data;

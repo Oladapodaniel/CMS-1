@@ -921,6 +921,32 @@ a {
   }
 }
 
+@media screen and (min-width: 501px) and (max-width: 768px) {
+  /* .boards {
+    flex-direction: column;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .chart-con {
+    width: 85% !important;
+  }
+
+  .chart-con div {
+    width: 40%;
+  } */
+
+  .board {
+    width: 50% !important;
+    margin-bottom: 10px;
+  }
+
+  .summary-header {
+    width: 50%;
+    margin-left: 26.5%
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .my-con {
     flex-direction: column;

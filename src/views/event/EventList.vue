@@ -32,11 +32,13 @@
     <div class="row avg-table">
       <div class="col-6 col-md-3 first-row">
         <div>Attendance</div>
-        <div>{{ eventSummary.attendance }}</div>
+        <div @mouseover="hoverEvent1" @mouseleave="leaveEvent1" style="cursor: help;">{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 3 ? eventSummary.attendance.toString().slice(0, 3) : eventSummary.attendance : "" }}{{ kBoolean ? "k" : "" }}</div>
+        <div class="hover-eventsum" v-if="isHovering1">{{ eventSummary.attendance }}</div>
       </div>
       <div class="col-6 col-md-3">
-        <div>Offering</div>
-        <div><span style="font-size:24px" class="font-weight-700">{{ userCurrency }}</span> {{ eventSummary.offerings }}</div>
+        <div>Offering <span style="font-size: 10px" class="font-weight-700">({{ userCurrency }})</span></div>
+        <div @mouseover="hoverEvent2" @mouseleave="leaveEvent2" style="cursor: help;">{{ eventSummary.offerings ? eventSummary.offerings.toString().length > 3 ? `${eventSummary.offerings.toString().slice(0, 3)}k` : eventSummary.offerings : ""}}</div>
+        <div class="hover-eventsum" v-if="isHovering2">{{ eventSummary.offerings }}</div>
       </div>
       <div class="col-6 col-md-3">
         <div>First Timers</div>
@@ -116,7 +118,7 @@
                   class="label-search d-flex"
                   :class="{ 'show-search': searchIsVisible }"
                 >
-                  <input type="text" placeholder="Search..." />
+                  <input type="text" placeholder="Search..." v-model="searchText" />
                   <span class="empty-btn">x</span>
                   <span class="search-btn">
                     <i class="fa fa-search"></i>
@@ -241,7 +243,6 @@
               </div>
             </div>
           </div>
-
           <table class="w-100">
             <thead class="thead">
               <tr>
@@ -255,7 +256,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(event, index) in events" :key="index">
+              <tr v-for="(event, index) in filterEvents" :key="index">
                 <td><div class="td-first">Unsent</div></td>
                 <td>{{ event.eventName }}</td>
                 <td>{{ event.title }}</td>
@@ -292,7 +293,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import moment from "moment";
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice"
@@ -307,6 +308,10 @@ export default {
     const eventSummary = ref({});
     const store = useStore();
     const userCurrency = ref(store.getters.currency);
+    const kBoolean = ref(false)
+    const isHovering1 = ref(false)
+    const isHovering2 = ref(false)
+    const searchText = ref("")
 
     async function getEventList() {
       return await axios
@@ -326,6 +331,7 @@ export default {
         const { data } = await axios.get("/api/Events/Eventsummary");
         console.log(data);
         eventSummary.value = data;
+        kBoolean.value = true
       } catch (err) {
         console.log(err.response);
       }
@@ -348,6 +354,33 @@ export default {
 
     if (!userCurrency.value) getUserCurrency();
 
+  const hoverEvent1 = () => {
+    isHovering1.value = true
+  }
+
+  const leaveEvent1 = () => {
+    isHovering1.value = false
+  }
+
+  const hoverEvent2 = () => {
+    isHovering2.value = true
+  }
+
+  const leaveEvent2 = () => {
+    isHovering2.value = false
+  }
+
+  const filterEvents = computed(() => {
+    if (searchText.value !== "") {
+          return events.value.filter(i => {
+            return i.eventName.toLowerCase().includes(searchText.value.toLowerCase())
+          })
+        } else {
+          return events.value
+        }
+  })
+
+
     // const attendanceAverage = computed(() => {
     // return events.value.reduce( (a, b) => { return a.attendances + b.attendances })
     // return events.value
@@ -364,6 +397,15 @@ export default {
       eventSummary,
       moment,
       userCurrency,
+      kBoolean,
+      isHovering1,
+      isHovering2,
+      hoverEvent1,
+      leaveEvent1,
+      hoverEvent2,
+      leaveEvent2,
+      filterEvents,
+      searchText
     };
   },
 };
@@ -728,6 +770,15 @@ export default {
 
 .top-con {
   padding: 0px 25px;
+}
+
+.hover-eventsum {
+  position: absolute;
+  font-weight: 800;
+  padding: 10px;
+  background-color: white;
+  z-index: 1;
+  box-shadow: 0px 1px 4px #02172e45;
 }
 
 @media screen and (max-width: 500px) {

@@ -220,7 +220,8 @@
         <div class="table-top">
           <router-link to="" class="view-all">View all</router-link>
         </div>
-        <table class="w-100">
+        
+          <table class="w-100">
           <thead>
             <tr>
               <th>NAME</th>
@@ -230,7 +231,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
             <tr
               v-for="celebration in tenantInfo.celebrations"
               :key="celebration.id" 
@@ -287,8 +288,16 @@
               </td>
             </tr>
           </tbody>
+          <tbody>
+            <tr>
+              
+              
+              <td colspan="5"><div class=" text-center p-3" style="font-weight: 700; font-size: 1.2em;">No Celebrations Yet</div></td>
+              
+            </tr>
+          </tbody>
         </table>
-        <div class="table-footer">
+        <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-left"></i>
           </button>
@@ -298,6 +307,7 @@
             <i class="fa fa-angle-right"></i>
           </button>
         </div>
+        
       </div>
       <div class="charts" id="plot">
         <div v-if="tenantInfo.eventAttendanceChartData">
@@ -339,7 +349,6 @@
             />
           </div>
         </div>
-        <div>{{ attendanceSeries }}</div>
 <!-- <div>{{ monthlyAttendanceObj }}</div>
         <div class="adjust-view two">
           <div class="view-report">View Reports</div>
@@ -387,24 +396,24 @@
         <div class="chart-con">
           <div style="width: 45%" class="ml-md-4 chart1">
             <ByGenderChart
-              domId="chart"
+              domId="source"
               title="Invitation Source"
               distance="5"
-              titleMargin="10"
-              
+              :titleMargin="10"
+              :summary="tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.invitationSource : [] "
             />
           </div>
           <div style="width: 45%;" class="chart2">
             <ByMaritalStatusChart
-              domId="second"
+              domId="join"
               title="Interested In Joining"
-              titleMargin="10"
-              
+              :titleMargin="10"
+              :summary="tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.interestedInJoining : [] "
             />
           </div>
         </div>
 
-        <div class="pies">
+        <!-- <div class="pies">
           <div class="pie-con">
             <PieChart
               domId="pichart"
@@ -428,7 +437,7 @@
               :summary="offering"
             />
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- </div> -->
@@ -438,9 +447,9 @@
 <script>
 // import InterestedJoin from "@/components/charts/PieChart.vue";
 // import InvitationSource from "@/components/charts/PieChart.vue";
-import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
-import ByGenderChart from "@/components/charts/PieChart.vue";
-import PieChart from "@/components/charts/DashboardPie.vue";
+import ByMaritalStatusChart from "@/components/charts/PieChart";
+import ByGenderChart from "@/components/charts/PieChart";
+// import PieChart from "@/components/charts/DashboardPie.vue";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
 import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
@@ -451,7 +460,7 @@ import moment from "moment";
 
 export default {
   components: {
-    PieChart,
+    // PieChart,
     ColumnChart,
     ByMaritalStatusChart,
     ByGenderChart
@@ -486,7 +495,8 @@ export default {
       return monthXaxis.value;
     })
 
-    axios
+    const getDashboard = () => {
+      axios
       .get("/dashboard")
       .then((res) => {
         tenantInfo.value = res.data;
@@ -500,6 +510,8 @@ export default {
           router.push("/");
         }
       });
+    }
+    getDashboard()
 
     const firstTimer = () => {
       axios.get("/api/People/FirstTimer").then((res) => {
@@ -508,6 +520,11 @@ export default {
       });
     };
     firstTimer();
+
+    const showPieChart = computed(() => {
+      if (!tenantInfo.value || tenantInfo.value.firstTimerSummary) return [];
+      return tenantInfo.value.firstTimerSummary;
+    })
 
     onMounted(() => {
       console.log(tenantInfo.value.eventAttendanceChartData);
@@ -579,6 +596,7 @@ export default {
       xAxis,
       monthXaxis,
       series,
+      showPieChart,
     };
   },
 };
@@ -973,6 +991,19 @@ tbody tr:nth-child(even) {
 .active {
   color: #2b6ecd;
 }
+
+.chart-con {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 1px 4px #02172e45;
+  border: 1px solid #DDE2E6;
+  border-radius: 30px;
+  margin: 0 0 24px 0;
+  padding: 25px 0
+}
+
+
 /* WIP */
 
 /* @media screen and (max-width: 376px) {
