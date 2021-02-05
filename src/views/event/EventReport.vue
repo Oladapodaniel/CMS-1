@@ -701,22 +701,24 @@
 
               <div class="area-charts analytics-container mb-5">
                 <!-- <div id="chart" style="width:50%;height:500px"></div> -->
-                <div class="area-chart mt-5">
+                <div class="area-chart mt-5" v-if="stats.attendanceSoFar && stats.attendanceSoFar.length > 0">
                   <ReportAreaChart
                     elemId="chart"
                     domId="areaChart1"
                     title="OFFERING"
                     subtitle="This month"
                     lineColor="#50AB00"
+                    :series="stats.attendanceSoFar"
                   />
                 </div>
-                <div class="area-chart mt-5">
+                <div class="area-chart mt-5" v-if="stats.offeringSoFar && stats.offeringSoFar.length > 0">
                   <ReportAreaChart
                     elemId="chart"
                     domId="areaChart2"
                     title="ATTENDANCE"
                     subtitle="This month"
                     lineColor="#1F78B4"
+                    :series="stats.offeringSoFar"
                   />
                 </div>
                 <div class="area-chart mt-5">
@@ -741,6 +743,7 @@
           tabindex="-1"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
+          :show="true"
         >
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -757,7 +760,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body pt-0 px-0">
+              <div class="modal-body pt-0 px-0" :data-dismiss="btnState">
                 <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
                 <ReportModal :eventName="eventDataResponse.name" @sendreport="sendReport" />
               </div>
@@ -783,14 +786,13 @@
 
 
 <script>
-// import { onMounted, ref } from "vue";
-// import Highcharts from "highcharts";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
 import { onMounted, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
 import composerObj from '../../services/communication/composer';
+import stopProgressBar from "../../services/progressbar/progress"
 // import EventReportStats from "@/components/eventreports/EventReportStats";
 import { useToast } from "primevue/usetoast";
 
@@ -831,9 +833,7 @@ export default {
       if (eventData.value.offerings && eventData.value.offerings.length <= 0)
         return 0;
       const amounts = eventData.value.offerings.map((i) => i.amount);
-      console.log(amounts, "amounts");
       const sum = amounts.length > 0 ? amounts.reduce((a, b) => a + b) : 0;
-      console.log(sum, "sum");
       return sum;
     });
 
@@ -847,7 +847,6 @@ export default {
 
     eventData.value = JSON.parse(localStorage.getItem("eventData"));
     if (eventData.value) {
-      console.log(eventData.value, "ED");
       // console.log(eventData.value.preEvent.name)
       attendanceArr.value = eventData.value.attendances;
       offeringArr.value = eventData.value.offerings;
@@ -874,30 +873,31 @@ export default {
 
       composerObj.sendMessage("/api/Messaging/sendEmail", body)
         .then(res => {
+          btnState.value = "";
           console.log(res, "report response");
           toast.add({severity:'success', summary:'Send Success', detail:'Your report has been sent', life: 3000});
         })
         .catch(err => {
+          btnState.value = "";
           console.log(err);
+          stopProgressBar()
           toast.add({severity:'error', summary:'Sending Failed', detail:'Report was not sent, please try again', life: 3000});
         })
         btnState.value = "modal";
+        
     };
 
     onMounted(async () => {
-      console.log(typeof topmost.value.innerHTML);
       const activityId = route.params.id;
 
       eventDataResponse.value = JSON.parse(
         localStorage.getItem("eventDataResponse")
       );
-      console.log(eventDataResponse.value);
 
       try {
         const res = await axios.get(
           `/api/Events/GetAnalysis?activityId=${activityId}`
         );
-        console.log(res.data);
         stats.value = res.data;
       } catch (err) {
         console.log(err.response);
