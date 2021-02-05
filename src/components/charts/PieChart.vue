@@ -203,7 +203,7 @@ var highchartsOptions = {
             dataLabels: {
                 enabled: true,
                 format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-                distance: -60,
+                distance: -40,
                 filter: {
                     property: 'percentage',
                     operator: '>',
