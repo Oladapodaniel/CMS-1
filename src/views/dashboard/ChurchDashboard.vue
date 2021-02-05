@@ -307,10 +307,9 @@
             <i class="fa fa-angle-right"></i>
           </button>
         </div>
-        
       </div>
       <div class="charts" id="plot">
-        <div v-if="tenantInfo.eventAttendanceChartData">
+        <div v-if="tenantInfo.eventAttendanceChartData && attendanceDataExist">
           <div class="adjust-view">
             <div class="view-report">View Reports</div>
             <div class="weekly">
@@ -349,8 +348,10 @@
             />
           </div>
         </div>
-<!-- <div>{{ monthlyAttendanceObj }}</div>
-        <div class="adjust-view two">
+
+
+      <div v-if="tenantInfo.eventAttendanceChartData && firstTimerDataExist">
+        <div class="adjust-view">
           <div class="view-report">View Reports</div>
           <div class="weekly">
             <span
@@ -363,37 +364,39 @@
               >Monthly</span
             >
           </div>
-        </div> -->
+        </div>
 
-        <!-- <div v-if="firstTimerBoolean">
-          <ColumnChart
-            domId="chart2"
+        <div v-if="firstTimerBoolean">
+          <ColumnChart2
+            domId="chart3"
             title="First Timer And New Convert Inflow"
             subtitle="How First Timer Come to Church"
-            header=""
+            header="First Timer Attendence"
+            :data="chartData2"
+            :chartDataNewConvert="chartDataNewConvert"
+            :series2="series2"
           />
         </div>
         <div v-else>
-          <ColumnChart
-            domId="chart2"
+          <ColumnChart2
+            domId="chart4"
             title="First Timer And New Convert Inflow"
             subtitle="How First Timer Come to Church"
-            header=""
-            :data="chartData"
-          />
-        </div> -->
-
-        <div>
-          <ColumnChart
-          v-if="false"
-            domId="chart3"
-            title="Event Attendance"
-            subtitle="Weekly Attendance of Events"
-            header="Members Attendance"
+            header="First Timer Attendence"
+            :data="monthlyFirstTimerObj"
+            :chartDataNewConvert="chartDataNewConvert"
+            :series2="series2"
           />
         </div>
+      </div>
+    </div>
+      <!-- <div>{{ chartData2 }}</div>
+      <div>{{ monthlyFirstTimerObj }}</div>
+      <div>{{ chartDataNewConvert }}</div> -->
+      <!-- <div>{{ series2 }}</div> -->
 
-        <div class="chart-con">
+
+        <div class="chart-con" v-if="firstTimerPieExist">
           <div style="width: 45%" class="ml-md-4 chart1">
             <ByGenderChart
               domId="source"
@@ -412,6 +415,8 @@
             />
           </div>
         </div>
+        <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
+        <!-- <div>{{ chartData2 }}</div> -->
 
         <!-- <div class="pies">
           <div class="pie-con">
@@ -438,19 +443,18 @@
             />
           </div>
         </div> -->
-      </div>
-    </div>
+      <!-- </div> -->
     <!-- </div> -->
+    </div>
   </main>
 </template>
 
 <script>
-// import InterestedJoin from "@/components/charts/PieChart.vue";
-// import InvitationSource from "@/components/charts/PieChart.vue";
+
 import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ByGenderChart from "@/components/charts/PieChart";
-// import PieChart from "@/components/charts/DashboardPie.vue";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
+import ColumnChart2 from "@/components/charts/ColumnChart2.vue";
 import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
 // import store from "@/store/store.js"
@@ -462,6 +466,7 @@ export default {
   components: {
     // PieChart,
     ColumnChart,
+    ColumnChart2,
     ByMaritalStatusChart,
     ByGenderChart
     
@@ -473,6 +478,9 @@ export default {
     const offering = ref([23, 45, 65, 78, 89]);
     const attendanceBoolean = ref(true);
     const firstTimerBoolean = ref(true);
+    const attendanceDataExist = ref(false)
+    const firstTimerDataExist = ref(false)
+    const firstTimerPieExist = ref(false)
 
     // const attendance
 
@@ -485,13 +493,21 @@ export default {
 
     const tenantInfo = ref({});
     const attendanceSeries = ref("weekly");
+    const firstTimerSeries = ref("weekly")
 
     const monthlyAttendanceObj = ref({})
-    const xAxis = ref([1, 2, 3, 4,5, 6, 7, 8, 9, 10])
+    const monthlyFirstTimerObj = ref({})
+
+    const xAxis = ref([])
     const monthXaxis = ref(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
 
     const series = computed(() => {
       if (attendanceSeries.value === "weekly") return xAxis.value;
+      return monthXaxis.value;
+    })
+
+    const series2 = computed(() => {
+      if (firstTimerSeries.value === "weekly") return xAxis.value;
       return monthXaxis.value;
     })
 
@@ -502,6 +518,22 @@ export default {
         tenantInfo.value = res.data;
         // celebrations.value = res.data
         console.log(res.data);
+        tenantInfo.value.eventAttendanceChartData[0].data.forEach(element => {
+          if (element > 0) {
+            attendanceDataExist.value = true
+          }
+        });
+        tenantInfo.value.eventAttendanceChartData[1].data.forEach(element => {
+          if (element > 0) {
+            firstTimerDataExist.value = true
+          }
+        });
+        tenantInfo.value.firstTimerSummary.invitationSource.forEach(element => {
+          if (element > 0) {
+            firstTimerPieExist.value = true
+          }
+        });
+
       })
       .catch((err) => {
         console.log(err.response);
@@ -528,6 +560,11 @@ export default {
 
     onMounted(() => {
       console.log(tenantInfo.value.eventAttendanceChartData);
+
+      
+      for (let i = 1; i <= 52; i++) {
+        xAxis.value.push(i)
+      }
     });
 
     const subPlan = () => {
@@ -544,33 +581,47 @@ export default {
     };
 
     const monthlyAttendance = () => {
-      console.log("monthly");
+      
       attendanceBoolean.value = false;
       attendanceSeries.value = "monthly";
 
       axios.get('/Dashboard/period?period=Months')
         .then(res => {
           monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
-          // monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
-          // tenantInfo.value = res.data;
-
+          
        })
     };
 
     const weeklyFirstTimer = () => {
       console.log("weekly");
+      firstTimerSeries.value = "weekly"
       firstTimerBoolean.value = true;
     };
 
     const monthlyFirstTimer = () => {
-      console.log("monthly");
-      firstTimerBoolean.value = false;
+
+        firstTimerBoolean.value = false;
+          firstTimerSeries.value = "monthly"
+      axios.get('/Dashboard/period?period=Months')
+        .then(res => {
+          monthlyFirstTimerObj.value = res.data.eventAttendanceChartData[1]  
+       })
+      console.log(monthlyFirstTimerObj.value)
     };
 
     const chartData = computed(() => {
       if (!tenantInfo.value.eventAttendanceChartData) return [];
       return tenantInfo.value.eventAttendanceChartData[0]
-      // }
+    });
+    
+    const chartData2 = computed(() => {
+      if (!tenantInfo.value.eventAttendanceChartData) return [];
+      return tenantInfo.value.eventAttendanceChartData[1]
+    });
+
+    const chartDataNewConvert = computed(() => {
+      if (!tenantInfo.value.eventAttendanceChartData) return [];
+      return tenantInfo.value.eventAttendanceChartData[2]
     });
 
     
@@ -597,6 +648,14 @@ export default {
       monthXaxis,
       series,
       showPieChart,
+      chartData2,
+      series2,
+      monthlyFirstTimerObj,
+      chartDataNewConvert,
+      firstTimerSeries,
+      attendanceDataExist,
+      firstTimerDataExist,
+      firstTimerPieExist
     };
   },
 };
@@ -984,9 +1043,6 @@ tbody tr:nth-child(even) {
   cursor: pointer;
 }
 
-.adjust-view.two {
-  top: 5em;
-}
 
 .active {
   color: #2b6ecd;

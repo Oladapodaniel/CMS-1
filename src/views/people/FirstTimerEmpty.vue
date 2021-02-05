@@ -5,10 +5,10 @@
   <div class="whole-con">
     <div class="main-con">
       <div class="main-body">
-        <div v-if="firstTimersList.length === 0 && !loading" class="no-person" >
+       
         
         <div class="col-sm-12">
-        <div class="top mt-3">
+        <div class="top container-wide mt-3">
           <div class="header">
             <h2>First Timers
             </h2>
@@ -27,6 +27,7 @@
         </div>
       </div>
         <hr class="hr" />
+         <div v-if="firstTimersList.length === 0 && !loading" class="no-person" >
         <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any first timer yet</p>
