@@ -423,7 +423,7 @@
                               >Send Email</router-link
                             >
                           </a>
-                          <a class="dropdown-item c-pointer" @click="confirmDelete(member.personID, index)">Delete</a>
+                          <a class="dropdown-item c-pointer" @click="confirmDelete(member.personID, index)">Remove</a>
                         </div>
                       </div>
                     </div>
@@ -477,7 +477,6 @@ import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
-import store from '../../store/store';
 import { useConfirm } from "primevue/useConfirm";
 import groupsService from "../../services/groups/groupsservice";
 
@@ -508,6 +507,7 @@ export default {
                 if (res !== false) {
                   groupMembers.value.splice(index, 1);
                   toast.add({severity:'success', summary:'Confirmed', detail:'The member was removed', life: 2500});
+                  groupsService.editGroupInStore({name: groupData.value.name, id: route.params.groupId }, groupMembers.value.length);
                 }
               })
             
@@ -621,8 +621,9 @@ export default {
         .put(`/api/UpdateGroup/${route.params.groupId}`, data)
         .then((res) => {
           savingGroup.value = false;
+          groupsService.editGroupInStore(res.data, groupMembers.value.length);
           console.log(res.data, "saved");
-          store.dispatch("groups/getGroups")
+          // store.dispatch("groups/getGroups")
           if (redirect) {
             router.push("/tenant/people-groups");
           } else {
@@ -653,7 +654,8 @@ export default {
         .post("/api/CreateGroup", data)
         .then((res) => {
           console.log(res, "create res");
-          store.dispatch("groups/getGroups")
+          groupsService.addGroupToStore(res.data,  groupMembers.value.length);
+          // store.dispatch("groups/getGroups")
           savingGroup.value = false;
           router.push("/tenant/people-groups");
         })

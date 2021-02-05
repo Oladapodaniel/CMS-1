@@ -65,7 +65,11 @@ const membershipService = {
           firstName: data.firstName,
           lastName: data.lastName,
           mobilePhone: data.mobilePhone,
-          pictureUrl: data.pictureUrl
+          pictureUrl: data.pictureUrl,
+          peopleClassificationID: data.peopleClassificationID,
+          genderID: data.genderID,
+          maritalStatusID: data.maritalStatusID,
+          ageGroupID: data.ageGroupID
         }
   
         store.dispatch("membership/addMember", person);
@@ -77,7 +81,11 @@ const membershipService = {
           firstName: data.firstName,
           lastName: data.lastName,
           mobilePhone: data.mobilePhone,
-          pictureUrl: data.pictureUrl
+          pictureUrl: data.pictureUrl,
+          peopleClassificationID: data.peopleClassificationID,
+          genderID: data.genderID,
+          maritalStatusID: data.maritalStatusID,
+          ageGroupID: data.ageGroupID
         }
   
         store.dispatch("membership/updateMember", person);

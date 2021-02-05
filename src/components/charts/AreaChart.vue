@@ -9,11 +9,11 @@ import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-  props: ["elemId", "domId", "title", "subtitle", "lineColor"],
+  props: ["elemId", "domId", "title", "subtitle", "lineColor", "series"],
   setup(props) {
     const chart = ref(null);
     onMounted(() => {
-      console.log(props.elemId);
+      console.log(props.series, "series");
       let highchartsOptions = {
         chart: {
           type: "line",
@@ -69,7 +69,7 @@ export default {
 
         yAxis: {
           labels: {
-            enabled: false,
+            enabled: true,
           },
         },
 
@@ -77,7 +77,8 @@ export default {
           {
               color: props.lineColor,
             name: "",
-            data: [29.9, 71.5, 106.4, 23, 34, 24, 56, 12, 23, 32, 45, 38],
+            data: props.series || [29.9, 71.5, 106.4, 23, 34, 24, 56, 12, 23, 32, 45, 38],
+            // data: [29.9, 71.5, 106.4, 23, 34, 24, 56, 12, 23, 32, 45, 38],
           },
         ],
       };

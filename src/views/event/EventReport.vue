@@ -12,6 +12,7 @@
           <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
         </router-link>
       </div>
+      <Toast />
     </div>
     <hr class="mb-4" />
   </div>
@@ -141,7 +142,7 @@
     </div>
 
     <div class="container-fluid bottom-section px-0">
-      <div class="row mx-0">
+      <div class="row mx-0" ref="topmost">
           <div class="col-md-8 dark-red-section pl-5">
             <h2 class="evt-report">Event and Report</h2>
           </div>
@@ -157,7 +158,7 @@
           </div>
         </div>
 
-        <div class="row py-5 px-5">
+        <div class="row py-5 px-5" ref="middle">
           <div class="col-md-7">
             <span class="evt-label grey-text">Event Name</span>
             <h2 class="font-weight-bold mb-3" style="font-size: 25px;">
@@ -201,7 +202,7 @@
           </div>
         </div>
 
-        <div class="row mb-5">
+        <div class="row mb-5" ref="bottom">
           <div class="col-md-12">
             <div class="row mb-4">
               <div class="col-md-12">
@@ -230,7 +231,7 @@
             </div>
             <div class="row">
               <div
-                class="col-sm-12"
+                class="col-sm-12 py-2"
                 v-for="(attendance, index) in eventData.attendances"
                 :key="index"
               >
@@ -252,7 +253,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-12 pt-2">
                     <hr class="hr" />
                   </div>
                 </div>
@@ -350,7 +351,7 @@
               v-for="(offering, index) in eventData.offerings"
               :key="index"
             >
-              <div class="col-md-12">
+              <div class="col-md-12 py-2">
                 <div class="row px-5">
                   <div class="col-sm-12">
                     <div class="row">
@@ -369,8 +370,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-sm-12">
+                <div class="row" v-if="index !== eventData.offerings.length - 1">
+                  <div class="col-sm-12 pt-2">
                     <hr class="hr" />
                   </div>
                 </div>
@@ -700,22 +701,24 @@
 
               <div class="area-charts analytics-container mb-5">
                 <!-- <div id="chart" style="width:50%;height:500px"></div> -->
-                <div class="area-chart mt-5">
+                <div class="area-chart mt-5" v-if="stats.attendanceSoFar && stats.attendanceSoFar.length > 0">
                   <ReportAreaChart
                     elemId="chart"
                     domId="areaChart1"
                     title="OFFERING"
                     subtitle="This month"
                     lineColor="#50AB00"
+                    :series="stats.attendanceSoFar"
                   />
                 </div>
-                <div class="area-chart mt-5">
+                <div class="area-chart mt-5" v-if="stats.offeringSoFar && stats.offeringSoFar.length > 0">
                   <ReportAreaChart
                     elemId="chart"
                     domId="areaChart2"
                     title="ATTENDANCE"
                     subtitle="This month"
                     lineColor="#1F78B4"
+                    :series="stats.offeringSoFar"
                   />
                 </div>
                 <div class="area-chart mt-5">
@@ -740,6 +743,7 @@
           tabindex="-1"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
+          :show="true"
         >
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -756,8 +760,9 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body pt-0 px-0">
-                <ReportModal :eventName="eventDataResponse.name"/>
+              <div class="modal-body pt-0 px-0" :data-dismiss="btnState">
+                <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
+                <ReportModal :eventName="eventDataResponse.name" @sendreport="sendReport" />
               </div>
               <!-- <div class="modal-footer">
                 <button
@@ -779,15 +784,17 @@
   </div>
 </template>
 
+
 <script>
-// import { onMounted, ref } from "vue";
-// import Highcharts from "highcharts";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
 import { onMounted, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
+import composerObj from '../../services/communication/composer';
+import stopProgressBar from "../../services/progressbar/progress"
 // import EventReportStats from "@/components/eventreports/EventReportStats";
+import { useToast } from "primevue/usetoast";
 
 export default {
   components: { ReportAreaChart, ReportModal },
@@ -798,7 +805,12 @@ export default {
     const status = ref("Draft");
     const markedAsSent = ref(false);
     const sendBtnText = ref("Send report");
-    const eventDataResponse = ref({})
+    const eventDataResponse = ref({});
+    const topmost = ref(null);
+    const middle = ref(null);
+    const bottom = ref(null);
+    const btnState = ref("")
+    const toast = useToast();
 
     const toggleReportState = () => {
       reportApproved.value = !reportApproved.value;
@@ -821,9 +833,7 @@ export default {
       if (eventData.value.offerings && eventData.value.offerings.length <= 0)
         return 0;
       const amounts = eventData.value.offerings.map((i) => i.amount);
-      console.log(amounts, "amounts");
       const sum = amounts.length > 0 ? amounts.reduce((a, b) => a + b) : 0;
-      console.log(sum, "sum");
       return sum;
     });
 
@@ -837,22 +847,57 @@ export default {
 
     eventData.value = JSON.parse(localStorage.getItem("eventData"));
     if (eventData.value) {
-      console.log(eventData.value, "ED");
       // console.log(eventData.value.preEvent.name)
       attendanceArr.value = eventData.value.attendances;
       offeringArr.value = eventData.value.offerings;
     }
+
+    const sendReport = (data) => {
+      console.log(data, "Message body");
+      const x = topmost.value.innerHTML;
+      const y = middle.value.innerHTML;
+      const z = bottom.value.innerHTML;
+      const body = {
+        // message: topmost.value.innerHTMl.toString(),
+        message: `
+                  ${data.message} <br>
+
+                  ${x}
+                  ${y}
+                  ${z}
+                  `,
+        ispersonalized: true,
+        contacts: data.contacts,
+        subject: data.subject
+      };
+
+      composerObj.sendMessage("/api/Messaging/sendEmail", body)
+        .then(res => {
+          btnState.value = "";
+          console.log(res, "report response");
+          toast.add({severity:'success', summary:'Send Success', detail:'Your report has been sent', life: 3000});
+        })
+        .catch(err => {
+          btnState.value = "";
+          console.log(err);
+          stopProgressBar()
+          toast.add({severity:'error', summary:'Sending Failed', detail:'Report was not sent, please try again', life: 3000});
+        })
+        btnState.value = "modal";
+        
+    };
+
     onMounted(async () => {
       const activityId = route.params.id;
 
-      eventDataResponse.value = JSON.parse(localStorage.getItem("eventDataResponse"))
-      console.log(eventDataResponse.value)
+      eventDataResponse.value = JSON.parse(
+        localStorage.getItem("eventDataResponse")
+      );
 
       try {
         const res = await axios.get(
           `/api/Events/GetAnalysis?activityId=${activityId}`
         );
-        console.log(res.data);
         stats.value = res.data;
       } catch (err) {
         console.log(err.response);
@@ -873,13 +918,28 @@ export default {
       eventData,
       tottalOfferings,
       eventDateString,
-      eventDataResponse
+      eventDataResponse,
+      topmost,
+      middle,
+      bottom,
+      sendReport,
+      btnState,
     };
   },
 };
 </script>
 
 <style scoped>
+.topmost {
+  display: flex;
+
+}
+
+.topmost-box {
+  width: 50%;
+}
+
+
 * {
   color: #1c252c;
   box-sizing: border-box;
@@ -1118,7 +1178,7 @@ a {
 
 .bottom-section {
   box-shadow: 0px 3px 10px #00000029;
-  border: 1px solid #DDE2E6;
+  border: 1px solid #dde2e6;
   border-radius: 5px;
 }
 

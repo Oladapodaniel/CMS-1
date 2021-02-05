@@ -176,6 +176,7 @@ export default {
                   groups.value.splice(index, 1);
                   store.dispatch("groups/getGroups")
                   toast.add({severity:'success', summary:'Deleted', detail:'Group was deleted', life: 3000});
+                  groupsService.removeGroupFromStore(id);
                 }
               })
             } catch (error) {
