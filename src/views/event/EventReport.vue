@@ -12,6 +12,7 @@
           <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
         </router-link>
       </div>
+      <Toast />
     </div>
     <hr class="mb-4" />
   </div>
@@ -141,7 +142,7 @@
     </div>
 
     <div class="container-fluid bottom-section px-0">
-      <div class="row mx-0">
+      <div class="row mx-0" ref="topmost">
           <div class="col-md-8 dark-red-section pl-5">
             <h2 class="evt-report">Event and Report</h2>
           </div>
@@ -157,7 +158,7 @@
           </div>
         </div>
 
-        <div class="row py-5 px-5">
+        <div class="row py-5 px-5" ref="middle">
           <div class="col-md-7">
             <span class="evt-label grey-text">Event Name</span>
             <h2 class="font-weight-bold mb-3" style="font-size: 25px;">
@@ -201,7 +202,7 @@
           </div>
         </div>
 
-        <div class="row mb-5">
+        <div class="row mb-5" ref="bottom">
           <div class="col-md-12">
             <div class="row mb-4">
               <div class="col-md-12">
@@ -230,7 +231,7 @@
             </div>
             <div class="row">
               <div
-                class="col-sm-12"
+                class="col-sm-12 py-2"
                 v-for="(attendance, index) in eventData.attendances"
                 :key="index"
               >
@@ -252,7 +253,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-12 pt-2">
                     <hr class="hr" />
                   </div>
                 </div>
@@ -350,7 +351,7 @@
               v-for="(offering, index) in eventData.offerings"
               :key="index"
             >
-              <div class="col-md-12">
+              <div class="col-md-12 py-2">
                 <div class="row px-5">
                   <div class="col-sm-12">
                     <div class="row">
@@ -369,8 +370,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-sm-12">
+                <div class="row" v-if="index !== eventData.offerings.length - 1">
+                  <div class="col-sm-12 pt-2">
                     <hr class="hr" />
                   </div>
                 </div>

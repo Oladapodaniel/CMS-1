@@ -557,7 +557,7 @@ export default {
           .delete(`/api/People/DeleteOnePerson/${id}`)
           .then((res) => {
             console.log(res);
-            toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+            toast.add({severity:'success', summary:'Confirmed', detail:'Member Deleted', life: 3000});
             churchMembers.value = churchMembers.value.filter(item => item.id !== id )
 
 // update first timer summary while deleting
@@ -572,7 +572,9 @@ export default {
             /*eslint no-undef: "warn"*/
             NProgress.done();
             if (err.response.status === 400) {
-              toast.add({severity:'info', summary:'Unable to delete', detail:'Delete from group', life: 3000});
+              toast.add({severity:'error', summary:'Unable to delete', detail:'Ensure this member is not in any group', life: 3000});
+            } else {
+              toast.add({severity:'error', summary:'Unable to delete', detail:'An error occurred, please try again', life: 3000});
             }
           });
       };
@@ -586,6 +588,8 @@ export default {
                message: 'Are you sure you want to proceed?',
                 header: 'Confirmation',
                 icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'confirm-delete',
+                rejectClass: 'cancel-delete',
                 accept: () => {
                     deleteMember(id)
                     // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
