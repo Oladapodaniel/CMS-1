@@ -20,7 +20,7 @@ import Highcharts from "highcharts";
 export default {
   components: {},
 
-  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries" ],
+  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series2", "attendanceSeries", "chartDataNewConvert" ],
   
   setup(props) {
     const chart = ref(null);
@@ -55,9 +55,9 @@ export default {
         xAxis: {
           allowDecimals: false,
           title: {
-            text: props.series[0] == 1 ? "Weekly" : "Monthly",
+            text:  props.series2[0] == 1 ? "Weekly" : "Monthly",
           },
-          categories: props.series
+          categories: props.series2
         },
         yAxis: {
           title: {
@@ -81,23 +81,23 @@ export default {
     },
         series: [
           {
-            name: "Church Attendance Data",
+            name: "First Timer",
             color: "#136ACD",
-            data: props.data.data
+            // data: props.data.data
             // data: props.data ? props.data.data : props.data
-            // data: [127, 335, 400, 345, 307, 0, 0]
-            // [2, 6, 3, 1, 1, 6],
+            // data: [12, 33, 40, 34, 300, 0, 0]
+            data: props.data ? props.data.data : props.data
+          },
+          {
+            name: "New Convert",
+            color: "#002044",
+            data: props.data ? props.chartDataNewConvert.data : props.data
           }
-          // {
-          //   name: "Female",
-          //   color: "#136ACD","#EBEFF4"
-          //   data: [1, 4, 1, 6, 5, 4],
-          // },
-          // {
-          //   name: "Others",
-          //   color: "#002044",
-          //   data: [5, 2, 5, 4, 6, 2],
-          // },
+        //   {
+        //     name: "Others",
+        //     color: "#002044",
+        //     data: [59, 22, 51, 84, 61, 12],
+        //   },
         ],
         //   credits: false,
       };
@@ -105,14 +105,14 @@ export default {
     });
 
     onMounted(() => {
-      console.log(props.series, "passed data")
-      console.log(props.data, "passed data")
-      console.log(props.attendanceSeries)
+    //   console.log(props.series, "passed data")
+    //   console.log(props.data, "passed data")
+    //   console.log(props.attendanceSeries)
     })
 
     onUpdated(() => {
-      console.log(props.series, "passed data")
-      console.log(props.data, "passed data")
+    //   console.log(props.series, "passed data")
+    //   console.log(props.data, "passed data")
       
     })
 
