@@ -140,6 +140,11 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
             },
+            {
+                path: 'event/:event?',
+                component: () =>
+                    import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+            },
 
             {
                 path: 'firsttimers',

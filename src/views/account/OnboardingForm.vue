@@ -1,5 +1,5 @@
 <template>
-  <div class="top-most">
+  <div class="top-most" @click="hideModal">
     <div>
       <div id="onboarding">
         <div
@@ -41,8 +41,8 @@
                 <label class="mb-0">What's your phone number?</label>
                 <div class="phone-input">
                   
-                  <div style="width: 200px; margin-top:4px;">
-                    <div class="country-code form-control" @click="toggleCode"><div style="margin-top: -14px;"><span><img :src="selectedCountry.flagUrl"  style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span><span style="display: inline-block">{{ selectedCountry.phoneCode }}</span></div></div>
+                  <div style="width: 200px; margin-top:4px;" class="codeModal">
+                    <div class="country-code form-control codeModal" @click="toggleCode"><div style="margin-top: -14px;" class="codeModal"><span class="codeModal"><img :src="selectedCountry.flagUrl" class="codeModal" style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span><span style="display: inline-block" class="codeModal">{{ selectedCountry.phoneCode }}</span></div></div>
                     <!-- <div ><img :src="country.flagUrl" width="20px"></div> -->
                     <!-- <Dropdown
                       v-model="selectedCountry"
@@ -96,19 +96,19 @@
               
               <button
                 type="submit"
-                class="submit-btn sign-in-btn get-started default-btn font-weight-700"
+                class="submit-btn sign-in-btn get-started default-btn font-weight-700 codeModal"
                 :class="{ disabled: !isValid, 'btn-loading': loading }"
                 :disabled="!isValid"
               >
-                <i class="fas fa-circle-notch fa-spin" v-if="loading"></i>
-                <span>Next</span>
-                <span></span>
+                <i class="fas fa-circle-notch fa-spin codeModal" v-if="loading"></i>
+                <span class="codeModal">Next</span>
+                <span class="codeModal"></span>
               </button>
             </form>
-            <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } ">
-                <input class="codeInput input" v-model="searchText">
-              <div v-for="country in countryCodes" :key="country.id" >
-                <div class="col-sm-3" @click="selectCode(country)"><span style="display: inline-block"><img :src="country.flagUrl"  style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span><span style="display: inline-block">{{ country.phoneCode }}</span></div>
+            <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal">
+                <input class="codeInput input codeModal" v-model="searchText">
+              <div v-for="country in countryCodes" :key="country.id" class="codeModal" >
+                <div class="col-sm-3 codeModal" @click="selectCode(country)"><span style="display: inline-block"><img :src="country.flagUrl"  style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span><span style="display: inline-block">{{ country.phoneCode }}</span></div>
               </div>
             </div>
           </div>
@@ -227,7 +227,14 @@ export default {
       console.log(country)
       this.selectedCountry = country
       this.showCode = false
+    },
+    hideModal (e) {
+    console.log(this.showCode)
+    if (!e.target.classList.contains("codeModal")){
+      // console.log(e.target)
+      this.showCode = false
     }
+  }
   },
 
   computed: {
@@ -256,11 +263,15 @@ export default {
         return {
           phoneCode: i.phoneCode,
           flagUrl: i.flagUrl,
-          id: i.id
+          id: i.id,
+          name: i.name,
+          currency: i.currency
         }        
       })
 
-      if (this.searchText) return codeFlag.filter(i => i.phoneCode && i.phoneCode.includes(this.searchText))
+      if (this.searchText)  return codeFlag.filter(i => i.phoneCode && i.phoneCode.includes(this.searchText.toLowerCase()) || i.phoneCode && i.name.toLowerCase().includes(this.searchText.toLowerCase()))
+      // codeFlag.filter(i => console.log(i.name.toLowerCase()))
+      
       // } else {
       //   cook = this.countries.filter(i => {
       //     if (i.phone){
@@ -289,6 +300,7 @@ export default {
       console.log(res)
       this.selectedCountry = res.data.find(i => i.phoneCode &&  i.phoneCode.includes("234"))
         console.log(this.selectedCountry)
+        console.log(this.countries)
     });
   },
 };
