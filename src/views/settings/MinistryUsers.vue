@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-4 mt-2 link">
           <router-link
-            to="/tenant/create-people-group"
+            to="/tenant/createpeoplegroup"
             class="grey-border primary-btn"
             >Add New User</router-link
           >

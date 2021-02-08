@@ -25,12 +25,12 @@
                   class="col-md-12 d-flex flex-column border rounded more-links px-4"
                 >
                   <router-link
-                    to="/tenant/people/add-person"
+                    to="/tenant/people/add"
                     class="font-weight-bold mt-3 text-dec-none"
                     >Member</router-link
                   >
                   <router-link
-                    to="/tenant/people/add-first-timer"
+                    to="/tenant/people/addfirsttimer"
                     class="font-weight-bold text-dec-none"
                     >First timer</router-link
                   >
@@ -58,13 +58,13 @@
           <div class="can-do">
             <h4>Things You Can Do</h4>
             <div class="can-do-links">
-              <router-link to="/tenant/people/add-person"
+              <router-link to="/tenant/people/add"
                 >Add member</router-link
               >
-              <router-link to="/tenant/sms-communications/compose-message"
+              <router-link to="/tenant/sms/compose"
                 >Send SMS</router-link
               >
-              <router-link to="/tenant/people/add-first-timer"
+              <router-link to="/tenant/people/addfirsttimer"
                 >Add First Timer</router-link
               >
               <router-link to="">Add Follow-up</router-link>
@@ -262,19 +262,19 @@
                     <!-- v-if="person.mobilePhone" -->
                 <a class="dropdown-item elipsis-items">
                   <router-link
-                    :to="`/tenant/sms-communications/compose-message?phone=${celebration.phone}`"
+                    :to="`/tenant/sms/compose?phone=${celebration.phone}`"
                     >Send SMS</router-link
                   >
                 </a>
                 <!-- v-if="person.email" -->
                 <!-- <a class="dropdown-item elipsis-items" >
                   <router-link
-                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    :to="`/tenant/email/compose?phone=${person.email}`"
                     >Send Email</router-link
                   >
                 </a> -->
                 <!-- <a class="dropdown-item elipsis-items">
-                  <router-link :to="`/tenant/people/add-person/${person.id}`"
+                  <router-link :to="`/tenant/people/add/${person.id}`"
                     >Edit</router-link
                   >
                 </a> -->

@@ -158,6 +158,8 @@
           </div>
         </div>
 
+
+
         <div class="row py-5 px-5" ref="middle">
           <div class="col-md-7">
             <span class="evt-label grey-text">Event Name</span>
@@ -781,6 +783,176 @@
         </div>
       </div>
     </div>
+
+    <div class="row email-data" ref="emaildata">
+      <table align="center" style="border-collapse:collapse;width:540.8000pt;margin-left:-50.9000pt;padding:0.0000pt 5.4000pt 0.0000pt 5.4000pt ;">
+    <tbody>
+        <tr>
+            <td colspan="3" style="width: 337.5pt;padding: 0pt 5.4pt;background: rgb(255, 27, 27);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="color:rgb(255,255,255);font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp; &nbsp; &nbsp; &nbsp;</span><span style="font-weight:bold;font-size:29px;font-family:'Times New Roman';">&nbsp;</span><span style="color:rgb(255,255,255);font-weight:bold;font-size:29px;font-family:'Times New Roman';">Event&nbsp;and&nbsp;Report</span></p>
+            </td>
+            <td colspan="3" style="width: 203.3pt;padding: 0pt 5.4pt;background: rgb(175, 31, 31);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="color:rgb(255,255,255);font-weight:bold;font-size:16px;font-family:'Times New Roman';">Total&nbsp;Attendance: {{ stats.todayAttendance }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="color:rgb(255,255,255);font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="color:rgb(255,255,255);font-weight:bold;font-size:16px;font-family:'Times New Roman';">Total&nbsp;Offering: {{ stats.todayOffering }}</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="width: 337.5pt;padding: 0pt 5.4pt;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+                <p style="text-indent:20.0000pt;margin-bottom:0pt;margin-top:0pt;"><span style="color:rgb(192,192,192);font-weight:bold;font-size:13px;font-family:'Times New Roman';">Event&nbsp;Name</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:24px;font-family:'Times New Roman';">&nbsp; {{ eventDataResponse.name }} <br> <span style="font-size:14px;color:red;padding-left:20px">{{ eventDateString }}.</span></span></p>
+            </td>
+            <td colspan="3" style="width: 203.3pt;padding: 0pt 5.4pt;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">Preacher: {{ eventDataResponse.preacher }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">Topic: {{ eventDataResponse.topic }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">First&nbsp;timers: {{ eventData.activityFirstTimers.length }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">New&nbsp;Converts: {{ eventDataResponse.newConvertsCount }}</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;background: rgb(0, 0, 0);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:normal;font-size:21px;font-family:'Times New Roman';color:rgb(255,255,255);">Attendance</span></p>
+            </td>
+            <td colspan="5" style="width: 388.5pt;padding: 0pt 5.4pt;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:normal;font-size:21px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+            <td colspan="5" style="width: 388.5pt;padding: 0pt 5.4pt;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;border-bottom: 2.25pt solid rgb(0, 0, 0);vertical-align: top;">
+                <p style="text-indent:21.0000pt;margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">Attendance&nbsp;item</span></p>
+            </td>
+            <td colspan="3" style="width: 188.2pt;padding: 0pt 5.4pt;border-bottom: 2.25pt solid rgb(0, 0, 0);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">Count</span></p>
+            </td>
+            <td colspan="2" style="width: 200.3pt;padding: 0pt 5.4pt;border-bottom: 2.25pt solid rgb(0, 0, 0);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">Total</span></p>
+            </td>
+        </tr>
+        <tr 
+          v-for="(attendance, index) in eventData.attendances"
+            :key="index"
+        >
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="text-indent:21.0000pt;margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">{{ attendance.attendanceTypeName }}</span></p>
+            </td>
+            <td colspan="3" style="width: 188.2pt;padding: 0pt 5.4pt;border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">{{ attendance.number }}</span></p>
+            </td>
+            <td colspan="2" style="width: 200.3pt;padding: 0pt 5.4pt;border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">{{ attendance.number }}</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;border-top: none;vertical-align: top;">
+                <p style="text-indent:21.0000pt;margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+            <td colspan="3" style="width: 188.2pt;padding: 0pt 5.4pt;border-top: none;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+            <td colspan="2" style="width: 200.3pt;padding: 0pt 5.4pt;border-top: none;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;background: rgb(0, 0, 0);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-size:21px;font-family:'Times New Roman';color:rgb(255,255,255);">Offering</span></p>
+            </td>
+            <td colspan="3" style="width: 188.2pt;padding: 0pt 5.4pt;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+            <td colspan="2" style="width: 200.3pt;padding: 0pt 5.4pt;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-size:21px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+            <td colspan="3" style="width: 188.2pt;padding: 0pt 5.4pt;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+            <td colspan="2" style="width: 200.3pt;padding: 0pt 5.4pt;vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;border-right: 31.875pt none rgb(255, 255, 255);border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">Offering&nbsp;Item</span></p>
+            </td>
+            <td style="width: 126.75pt;padding: 0pt 5.4pt;border-left: none;border-right: 31.875pt none rgb(255, 255, 255);border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">Channel</span></p>
+            </td>
+            <td colspan="3" style="width: 155.25pt;padding: 0pt 5.4pt;border-left: none;border-right: 31.875pt none rgb(255, 255, 255);border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">Amount</span></p>
+            </td>
+            <td style="width: 106.5pt;padding: 0pt 5.4pt;border-left: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">Total</span></p>
+            </td>
+        </tr>
+        <tr
+          v-for="(offering, index) in eventData.offerings"
+              :key="index"
+        >
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">{{ offering.name }}</span></p>
+            </td>
+            <td style="width: 126.75pt;padding: 0pt 5.4pt;border-left: none;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">{{ offering.channel }}</span></p>
+            </td>
+            <td colspan="3" style="width: 155.25pt;padding: 0pt 5.4pt;border-left: none;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">{{ offering.amount }}</span></p>
+            </td>
+            <td style="width: 106.5pt;padding: 0pt 5.4pt;border-left: none;border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">{{ offering.amount }}</span></p>
+            </td>
+        </tr>
+        <tr
+        >
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+            <td style="width: 126.75pt;padding: 0pt 5.4pt;border-left: none;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+            <td colspan="3" style="width: 155.25pt;padding: 0pt 5.4pt;border-left: none;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+            <td style="width: 106.5pt;padding: 0pt 5.4pt;border-left: none;border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';">&nbsp;</span></p>
+            </td>
+        </tr>
+        <tr
+        >
+            <td style="width: 152.3pt;padding: 0pt 5.4pt;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';"></span></p>
+            </td>
+            <td style="width: 126.75pt;padding: 0pt 5.4pt;border-left: none;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';"></span></p>
+            </td>
+            <td colspan="3" style="width: 155.25pt;padding: 0pt 5.4pt;border-left: none;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';"></span></p>
+            </td>
+            <td style="width: 106.5pt;padding: 0pt 5.4pt;border-left: none;border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;font-family:'Times New Roman';"><a :href="url" style="color:blue;font-weight:bold">View full report</a></span></p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+    </div>
   </div>
 </template>
 
@@ -808,9 +980,11 @@ export default {
     const eventDataResponse = ref({});
     const topmost = ref(null);
     const middle = ref(null);
+    const emaildata = ref(null);
     const bottom = ref(null);
     const btnState = ref("")
     const toast = useToast();
+    const url = ref("");
 
     const toggleReportState = () => {
       reportApproved.value = !reportApproved.value;
@@ -854,17 +1028,40 @@ export default {
 
     const sendReport = (data) => {
       console.log(data, "Message body");
-      const x = topmost.value.innerHTML;
-      const y = middle.value.innerHTML;
-      const z = bottom.value.innerHTML;
+      const emailData = ref(emaildata.value.innerHTML);
       const body = {
         // message: topmost.value.innerHTMl.toString(),
         message: `
+                <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                <html xmlns="http://www.w3.org/1999/xhtml" style="box-sizing: border-box; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; margin: 0; padding: 0;">
+                  <head>
+                    <meta name="viewport" content="width=device-width"/>
+                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+                    <title>#title#</title>
+                    <style>
+                      .topmost {
+                        display: flex;
+                      }
+
+                      .topmost-box1 {
+                        width: 70%;
+                        height:133px;
+                        display:flex;
+                        align-items:center;
+                        padding:10px
+                      }
+
+                      .topmost-box2{
+                        width: 30%;display:flex;flex-direction:column;height:133px;align-items:center;justify-content:center
+                      }
+                    </style>
+                  </head>
+                  <body style="-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; background: #f6f6f6; box-sizing: border-box; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; height: 100%; line-height: 1.6; margin: 0; padding: 0; width: 100% !important;">
+                  
                   ${data.message} <br>
 
-                  ${x}
-                  ${y}
-                  ${z}
+                  ${emailData.value}
+                  </body>
                   `,
         ispersonalized: true,
         contacts: data.contacts,
@@ -888,6 +1085,7 @@ export default {
     };
 
     onMounted(async () => {
+      url.value = window.location.href;
       const activityId = route.params.id;
 
       eventDataResponse.value = JSON.parse(
@@ -924,6 +1122,8 @@ export default {
       bottom,
       sendReport,
       btnState,
+      emaildata,
+      url,
     };
   },
 };
@@ -933,6 +1133,11 @@ export default {
 .topmost {
   display: flex;
 
+}
+
+.email-data {
+  height: 0 !important;
+  overflow: hidden !important;
 }
 
 .topmost-box {

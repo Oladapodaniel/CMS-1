@@ -21,7 +21,7 @@
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
                   <router-link
-                    to="/tenant/sms-communications/compose-message"
+                    to="/tenant/sms/compose"
                     class="btn compose-btn border-0 font-weight-bold default-btn border-none"
                     >Compose SMS</router-link
                   >
@@ -33,7 +33,7 @@
                     class="row menu-item-con py-2"
                     :class="{
                       'active-link':
-                        route.path.includes('/tenant/sms-communications/sent'),
+                        route.path.includes('/tenant/sms/sent'),
                     }"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
@@ -41,7 +41,7 @@
                         <span class="menu-item">
                           <router-link
                             class="r-link"
-                            to="/tenant/sms-communications/sent"
+                            to="/tenant/sms/sent"
                           >
                             <i class="fa fa-location-arrow mr-3 menu-icon"></i>
                             <span class="active">Sent</span>
@@ -55,7 +55,7 @@
                     class="row menu-item-con py-2"
                     :class="{
                       'active-link':
-                        route.path === '/tenant/sms-communications',
+                        route.path === '/tenant/sms',
                     }"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
@@ -63,7 +63,7 @@
                         <span class="menu-item"
                           ><router-link
                             class="r-link"
-                            to="/tenant/sms-communications"
+                            to="/tenant/sms"
                           >
                             <i class="fas fa-inbox mr-3 menu-icon"></i>
                             <span class="active">Replies</span>
@@ -78,7 +78,7 @@
                     class="row menu-item-con py-2"
                     :class="{
                       'active-link':
-                        route.path === '/tenant/sms-communications/draft',
+                        route.path === '/tenant/sms/draft',
                     }"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
@@ -86,7 +86,7 @@
                         <span class="menu-item">
                           <router-link
                             class="r-link"
-                            to="/tenant/sms-communications/draft"
+                            to="/tenant/sms/draft"
                           >
                             <i class="fa fa-envelope-open mr-3 menu-icon"></i>
                             <span class="active">Draft</span>
@@ -100,7 +100,7 @@
                     class="row menu-item-con py-2"
                     :class="{
                       'active-link':
-                        route.path === '/tenant/sms-communications/contacts',
+                        route.path === '/tenant/sms/contacts',
                     }"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
@@ -108,7 +108,7 @@
                         <span class="menu-item">
                           <router-link
                             class="r-link"
-                            to="/tenant/sms-communications/contacts"
+                            to="/tenant/sms/contacts"
                           >
                             <i class="fa fa-list-alt mr-3 menu-icon"></i>
                             <span class="active">Contact List</span>
@@ -122,7 +122,7 @@
                     class="row menu-item-con py-2"
                     :class="{
                       'active-link':
-                        route.path === '/tenant/sms-communications/scheduled',
+                        route.path === '/tenant/sms/scheduled',
                     }"
                   >
                     <div class="col-md-12 menu-item-div m-auto">
@@ -130,7 +130,7 @@
                         <span class="menu-item">
                           <router-link
                             class="r-link"
-                            to="/tenant/sms-communications/scheduled"
+                            to="/tenant/sms/scheduled"
                           >
                             <!-- <i class="fa fa-list-alt mr-3 menu-icon"></i> -->
                             <i

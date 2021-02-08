@@ -225,7 +225,7 @@ export default {
         .then((res) => {
           this.loading = false;
           console.log(res);
-          router.push("/tenant/sms-communications/contacts");
+          router.push("/tenant/sms/contacts");
         })
         .catch((err) => {
           this.loading = false;

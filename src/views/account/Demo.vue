@@ -21,7 +21,7 @@
             <input class="input" v-model="credentials.password" type="password" placeholder="Password" required/>
           </div>
           <div class="f-password-div">
-            <router-link to="/forgot-password" class="forgot-password">Forgot it?</router-link>
+            <router-link to="/forgotpassword" class="forgot-password">Forgot it?</router-link>
           </div>
 
           <button class="submit-btn sign-in-btn" @click="login">Sign in</button>

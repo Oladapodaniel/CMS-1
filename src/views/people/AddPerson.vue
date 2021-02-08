@@ -227,9 +227,9 @@
                     <div class="cstm-select">
                       <div class="cs-select day">
                         <Dropdown
+                          placeholder="Day"
                           v-model="person.dayOfWedding"
                           :options="annDaysArr"
-                          placeholder="Day"
                           style="width: 100%"
                         />
                         <!-- <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/> -->
@@ -496,9 +496,7 @@ export default {
     const anniversaryDate = moment();
     const daysInAnnMonth = ref(anniversaryDate.daysInMonth());
     const annDaysArr = computed(() => {
-      console.log(anniversaryDate.month(), "month");
       const arrOfDays = [];
-      console.log(daysInAnnMonth.value, "dm");
       for (let i = 1; i <= daysInAnnMonth.value; i++) {
         arrOfDays.push(i);
       }
@@ -532,7 +530,7 @@ export default {
       dayOfBirth: null,
       yearOfBirth: null,
       monthOfWedding: null,
-      dayOfWedding: null,
+      dayOfWedding: 31,
       yearOfWedding: null,
     });
 
@@ -830,6 +828,12 @@ export default {
       person.mobilePhone = data.mobilePhone;
       person.address = data.homeAddress;
       person.occupation = data.occupation;
+      person.dayOfBirth = data.dayOfBirth;
+      person.monthOfBirth = data.monthOfBirth ? months[data.monthOfBirth - 1] : null;
+      person.dayOfWedding = data.dayOfWedding;
+      person.yearOfBirth = data.yearOfBirth;
+      person.monthOfWedding = data.monthOfWedding ? months[data.monthOfWedding - 1] : null;
+      person.yearOfWedding = data.yearOfWedding;
     };
 
     const getMemberToEdit = () => {
