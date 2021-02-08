@@ -4,9 +4,9 @@ const composerObj = {
     searchingMembers: true,
 
     possibleEmailDestinations: [
+        "All contacts",
         "Select group from database",
         "Select person from membership database",
-        "Phone numbers"
     ],
 
     possibleSMSDestinations: [
@@ -73,7 +73,7 @@ const composerObj = {
     getSMSById(id) {
         return new Promise((resolve, reject) => {
             NProgress.start();
-            axios.get(`/api/Messaging/getSentSMSbyId?id=${id}`)
+            axios.get(`/api/Messaging/getSentSMSbyId?CommReportId=${id}`)
                 .then(res => {
                     console.log(res);
                     resolve(res.data);

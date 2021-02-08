@@ -898,7 +898,7 @@ export default {
               detail: "SMS was sent successfully",
               life: 2500,
             });
-            store.dispatch("removeSMSUnitCharge", pageCount.value * 2);
+            store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
             console.log(pageCount, "Page count ");
           }
           console.log(res);

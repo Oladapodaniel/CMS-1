@@ -5,17 +5,21 @@ import stopProgressBar from "../../services/progressbar/progress"
 const communicationService = {
     async getAllSentSMS(page) {
         try {
-            const { data } = await axios.get(`/api/Messaging/getAllSentSms/${page}`);
+            const { data } = await axios.get(`/api/Messaging/getAllSentSms?page=${page}`);
             return data;
         } catch (error) {
+            
             stopProgressBar();
             console.log(error);
+            return false;
         }
     },
 
-    async getMessageReport(messageId) {
+    async getMessageReport() {
+    // async getMessageReport(messageId) {
         try {
-            const { data } = await axios.get(`/api/Messaging/GetSentMessageDetails?messageID=${messageId}`);
+            const { data } = await axios.get(`/api/Messaging/GetSentMessageDetails?CommReportId=43A29ED8-89BA-48AF-A956-000108891176`);
+            // const { data } = await axios.get(`/api/Messaging/GetSentMessageDetails?CommReportId=${messageId}`);
             return data;
         } catch (error) {
             console.log(error);

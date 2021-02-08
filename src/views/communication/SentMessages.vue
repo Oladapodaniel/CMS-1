@@ -67,7 +67,7 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row" v-for="(sms, index) in testData" :key="index">
+                  <div class="row" v-for="(sms, index) in messages" :key="index">
                   <!-- <div class="row" v-for="(sms, index) in sentSMS" :key="index"> -->
                     <div class="col-md-12">
                       <div class="row">
@@ -158,7 +158,7 @@
 <script>
 // import axios from "@/gateway/backendapi";
 import { computed, ref } from "vue";
-import router from "@/router/index";
+// import router from "@/router/index";
 import communicationService from "../../services/communication/communicationservice"
 import { useStore } from "vuex";
 import UnitsArea from "../../components/units/UnitsArea"
@@ -180,9 +180,13 @@ export default {
         /*eslint no-undef: "warn"*/
         NProgress.start();
         const data = await communicationService.getAllSentSMS(1)
+        console.log(data, "all sms");
         loading.value = false;
-        sentSMS.value = data;
+        if (data) {
+          sentSMS.value = data;
+        }
       } catch (error) {
+        loading.value = false;
         NProgress.done();
         console.log(error);
       }
@@ -201,14 +205,12 @@ export default {
     //   {id: 4, message: "SUp", sentBy: "Her"}
     // ];
 
-    const payWithPaystack = () => {
-      router.push("/tenant/units");
-    };
 
-    const getSMSByPage = (page) => {
+    const getSMSByPage = async (page) => {
       try {
-        const data = communicationService.getAllSentSMS(page);
+        const data = await communicationService.getAllSentSMS(page);
         sentSMS.value = data;
+        console.log(data, "SMS");
       } catch (error) {
         console.log(error);
       }
@@ -223,13 +225,18 @@ export default {
       return sentSMS.value.length;
     })
 
+    const messages = computed(() => {
+      if (!sentSMS.value || sentSMS.value.length === 0) return [ ];
+      return sentSMS.value;
+    })
+
     return {
       sentSMS,
       loading,
-      payWithPaystack,
       itemsCount,
       currentPage,
       getSMSByPage,
+      messages,
     };
   },
 };
