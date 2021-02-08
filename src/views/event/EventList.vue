@@ -253,6 +253,7 @@
                 <th>ATTENDANCE</th>
                 <th>FIRST TIMERS</th>
                 <th>NEW CONVERTS</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -271,6 +272,42 @@
                 <td>{{ event.attendances }}</td>
                 <td>{{ event.firstTimers }}</td>
                 <td>{{ event.newConverts }}</td>
+                <td>
+                  <div class="dropdown">
+              <i
+                class="fas fa-ellipsis-v cursor-pointer"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></i>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <!-- <a class="dropdown-item elipsis-items" v-if="pers.mobilePhone">
+                  <router-link
+                    :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
+                    >Send SMS</router-link
+                  >
+                </a> -->
+                <!-- <a class="dropdown-item elipsis-items" v-if="person.email">
+                  <router-link
+                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    >Send Email</router-link
+                  >
+                </a> -->
+                <a class="dropdown-item elipsis-items">
+                  <router-link :to="`/tenant/people/add-person/${event.activityId}`"
+                    >Edit</router-link
+                  >
+                </a>
+                <!-- <a
+                  class="dropdown-item elipsis-items"
+                  href="#"
+                  @click.prevent="showConfirmModal(person.id, index)"
+                  >Delete</a
+                > -->
+              </div>
+            </div>
+                </td>
               </tr>
             </tbody>
           </table>
