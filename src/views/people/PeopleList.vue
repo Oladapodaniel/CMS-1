@@ -196,7 +196,7 @@
                 <p>Firstname</p>
               </div>
               <router-link
-                :to="`/tenant/people/add-person/${person.id}`"
+                :to="`/tenant/people/add/${person.id}`"
                 class="data-value itemroute-color"
                 >{{ person.firstName }}</router-link
               >
@@ -208,7 +208,7 @@
                 <p>Lastname</p>
               </div>
               <router-link
-                :to="`/tenant/people/add-person/${person.id}`"
+                :to="`/tenant/people/add/${person.id}`"
                 class="data-value itemroute-color"
                 >{{ person.lastName }}</router-link
               >
@@ -220,7 +220,7 @@
                 <p>Phone</p>
               </div>
               <router-link
-                :to="`/tenant/people/add-person/${person.id}`"
+                :to="`/tenant/people/add/${person.id}`"
                 class="data-value itemroute-color"
                 >{{ person.mobilePhone }}</router-link
               >
@@ -238,18 +238,18 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item elipsis-items" v-if="person.mobilePhone">
                   <router-link
-                    :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
+                    :to="`/tenant/sms/compose?phone=${person.mobilePhone}`"
                     >Send SMS</router-link
                   >
                 </a>
                 <a class="dropdown-item elipsis-items" v-if="person.email">
                   <router-link
-                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    :to="`/tenant/email/compose?phone=${person.email}`"
                     >Send Email</router-link
                   >
                 </a>
                 <a class="dropdown-item elipsis-items">
-                  <router-link :to="`/tenant/people/add-person/${person.id}`"
+                  <router-link :to="`/tenant/people/add/${person.id}`"
                     >Edit</router-link
                   >
                 </a>
@@ -312,7 +312,7 @@
                 <p>Firstname</p>
               </div>
               <router-link
-                :to="`/tenant/people/add-person/${person.id}`"
+                :to="`/tenant/people/add/${person.id}`"
                 class="data-value itemroute-color"
                 >{{ person.firstName }}</router-link
               >
@@ -324,7 +324,7 @@
                 <p>Lastname</p>
               </div>
               <router-link
-                :to="`/tenant/people/add-person/${person.id}`"
+                :to="`/tenant/people/add/${person.id}`"
                 class="data-value itemroute-color"
                 >{{ person.lastName }}</router-link
               >
@@ -336,7 +336,7 @@
                 <p>Phone</p>
               </div>
               <router-link
-                :to="`/tenant/people/add-person/${person.id}`"
+                :to="`/tenant/people/add/${person.id}`"
                 class="data-value itemroute-color"
                 >{{ person.mobilePhone }}</router-link
               >
@@ -354,18 +354,18 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item elipsis-items" v-if="person.mobilePhone">
                   <router-link
-                    :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
+                    :to="`/tenant/sms/compose?phone=${person.mobilePhone}`"
                     >Send SMS</router-link
                   >
                 </a>
                 <a class="dropdown-item elipsis-items" v-if="person.email">
                   <router-link
-                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    :to="`/tenant/email/compose?phone=${person.email}`"
                     >Send Email</router-link
                   >
                 </a>
                 <a class="dropdown-item elipsis-items">
-                  <router-link :to="`/tenant/people/add-person/${person.id}`"
+                  <router-link :to="`/tenant/people/add/${person.id}`"
                     >Edit</router-link
                   >
                 </a>

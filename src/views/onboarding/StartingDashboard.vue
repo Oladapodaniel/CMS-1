@@ -14,7 +14,7 @@
         <div class="boxes-con">
           <router-link
             class="box"
-            to="/tenant/people/add-person"
+            to="/tenant/people/add"
             style="text-decoration: none"
           >
             <div class="inner-box">
@@ -37,7 +37,7 @@
 
           <router-link
             class="box can-do"
-            to="/tenant/sms-communications/compose-message"
+            to="/tenant/sms/compose"
             style="text-decoration: none"
           >
             <div class="inner-box">
@@ -60,7 +60,7 @@
 
           <router-link
             class="box"
-            to="/tenant/people/add-first-timer"
+            to="/tenant/people/addfirsttimer"
             style="text-decoration: none"
           >
             <div class="inner-box">

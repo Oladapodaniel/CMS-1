@@ -11,7 +11,7 @@
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
-            <router-link :to="`/tenant/people/add-person`" class="">
+            <router-link :to="`/tenant/people/add`" class="">
             <button class="add-person-btn default-btn border-0 ml-3">
               Add Member
             </button>
@@ -45,7 +45,7 @@ export default {
 
     const addPersonClicked = () => {
       if (route.name === "ImportPeople") {
-        router.push("/tenant/people/add-person");
+        router.push("/tenant/people/add");
       } else {
         router.push("/people/import");
       }
@@ -53,7 +53,7 @@ export default {
 
     const header = computed(() => {
       console.log(route.path, "path");
-      if (route.path.includes("/people/add-first-timer")) return "First Timers";
+      if (route.path.includes("/people/addfirsttimer")) return "First Timers";
       return "Members";
     })
 

@@ -3,7 +3,7 @@
         <div class="container pb-5">
             <div class="row mt-3 mb-4">
                 <div class="col-md-12">
-                    <router-link to="/tenant/sms-communications/sent" class="d-flex">
+                    <router-link to="/tenant/sms/sent" class="d-flex">
                         <span class="mr-2"><i class="fa fa-arrow-left back-icon"></i></span>
                         <span>  Back</span>
                     </router-link>

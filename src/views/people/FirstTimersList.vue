@@ -7,7 +7,7 @@
 
       <div class="col-sm-8 d-flex head-button">
         <button class="more default-btn">More <i class="fa fa-angle-down ml-2"></i></button>
-        <router-link to="/tenant/people/add-first-timer" class="add-btn">
+        <router-link to="/tenant/people/addfirsttimer" class="add-btn">
           Add First timer
         </router-link>
       </div>
@@ -178,12 +178,12 @@
               <tbody v-if="filterResult.length > 0 && ( filter.filterFirstName || filter.filterLastName || filter.phoneNumber )">
               <tr v-for="person in filterResult" :key="person.id">
                   <td><input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/></td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`" class="itemroute-color">{{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}</router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}</router-link></td>
                   <td><router-link :to="``" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
                   <td class="itemroute-color">{{ person.howDidYouAboutUsName }}</td>
                   <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining }}</td>
                   <td class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
                   <td><div class="dropdown">
                     <i
                       class="fas fa-ellipsis-v"
@@ -200,7 +200,7 @@
                       <a class="dropdown-item" href="#">Assign to follow-up</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
-                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
                           >Send SMS</router-link
                         >
                       </a>
@@ -229,12 +229,12 @@
               <tbody v-else-if="searchMember.length > 0">
                 <tr v-for="person in searchMember" :key="person.id">
                   <td><input type="checkbox" name="all" id="all" @click="toggleSelect"/></td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`" class="itemroute-color">{{ person.fullName }}</router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName }}</router-link></td>
                   <td><router-link :to="``" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
                   <td class="itemroute-color"> {{ person.howDidYouAboutUsName }}</td>
                   <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining == "On_Transit" ? "On Transit" : person.interestedInJoining }}</td>
                   <td class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`" class="data-value itemroute-color"></router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color"></router-link></td>
                   <td><div class="dropdown">
                     <i
                       class="fas fa-ellipsis-v"
@@ -251,7 +251,7 @@
                       <a class="dropdown-item" href="#">Assign to follow-up</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
-                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
                           >Send SMS</router-link
                         >
                       </a>
@@ -348,7 +348,7 @@
                       <a class="dropdown-item" href="#">Assign to follow-up</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
-                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
                           >Send SMS</router-link
                         >
                       </a>
@@ -381,7 +381,7 @@
                       <p>Name</p>
                     </div>
                     <div class="data-value">
-                      <router-link :to="`/tenant/people/add-first-timer/${person.id}`">{{ person.fullName }}</router-link>
+                      <router-link :to="`/tenant/people/addfirsttimer/${person.id}`">{{ person.fullName }}</router-link>
                     </div>
 
                   </div>
@@ -437,7 +437,7 @@
                       <p>Status</p>
                     </div>
                     <router-link
-                      :to="`/tenant/people/add-first-timer/${person.personID}`"
+                      :to="`/tenant/people/addfirsttimer/${person.personID}`"
                    
                     </router-link>
                   </div>
@@ -459,7 +459,7 @@
                       <a class="dropdown-item" href="#">Assign to follow-up</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
-                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
                           >Send SMS</router-link
                         >
                       </a>

@@ -413,13 +413,13 @@
                         >
                           <a class="dropdown-item" v-if="member.phone">
                             <router-link
-                              :to="`/tenant/sms-communications/compose-message?phone=${member.phone}`"
+                              :to="`/tenant/sms/compose?phone=${member.phone}`"
                               >Send SMS</router-link
                             >
                           </a>
                           <a class="dropdown-item" v-if="member.email">
                             <router-link
-                              :to="`/tenant/email-communications/compose-message?phone=${member.email}`"
+                              :to="`/tenant/email/compose?phone=${member.email}`"
                               >Send Email</router-link
                             >
                           </a>
@@ -452,7 +452,7 @@
         </div>
         <div class="col-md-12 d-flex justify-content-end action-btns">
           <router-link
-            to="/tenant/people-groups"
+            to="/tenant/peoplegroups"
             class="secondary-btn bg-white text-dark"
             >Discard</router-link
           >
@@ -625,7 +625,7 @@ export default {
           console.log(res.data, "saved");
           // store.dispatch("groups/getGroups")
           if (redirect) {
-            router.push("/tenant/people-groups");
+            router.push("/tenant/peoplegroups");
           } else {
             toast.add({
               severity: "success",
@@ -657,7 +657,7 @@ export default {
           groupsService.addGroupToStore(res.data,  groupMembers.value.length);
           // store.dispatch("groups/getGroups")
           savingGroup.value = false;
-          router.push("/tenant/people-groups");
+          router.push("/tenant/peoplegroups");
         })
         .catch((err) => {
           NProgress.done();

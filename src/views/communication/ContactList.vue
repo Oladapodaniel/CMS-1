@@ -9,7 +9,7 @@
               <div class="row d-md-flex align-items-center mt-2 mb-4">
                 <div class="col-md-12">
                   <router-link
-                    to="/tenant/sms-communications/add-group"
+                    to="/tenant/sms/addgroup"
                     class="create-btn font-weigth-bold border-0"
                   >
                     <span class="mr-2 font-weight-600" style="font-size: 22px">+</span> Create
