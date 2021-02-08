@@ -319,6 +319,12 @@ const routes = [{
                             import ( /* webpackChunkName: "membership" */ '@/views/settings/AttendanceCategory')
                     },
                     {
+                        path: 'ageGroup',
+                        name: 'AgeGroupCategory',
+                        component: () =>
+                            import ( /* webpackChunkName: "membership" */ '@/views/settings/AgeGroupCategory')
+                    },
+                    {
                         path: 'giving',
                         name: 'OnlineGiving',
                         component: () =>
