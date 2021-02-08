@@ -56,16 +56,17 @@
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/first-timers`"
+              <router-link class="dd-link-item routelink" :to="`/tenant/firsttimersempty`"
                 >First Timers</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/people-groups"
+              <router-link class="dd-link-item routelink" to="/tenant/peoplegroups"
                 >Groups</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <!-- Hidden -->
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" to="">Families</router-link>
             </li>
           </ul>
@@ -95,21 +96,22 @@
           </a>
           <ul class="dd-list" :class="{ 'dd-hide-list': !commLinkDropped }">
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/sms-communications/sent"
+              <router-link class="dd-link-item routelink" to="/tenant/sms/sent"
                 >SMS</router-link
               >
             </li>
+            <!-- Hidden -->
             <li class="dd-list-item">
               <router-link
                 class="dd-link-item routelink"
-                to="/tenant/email-communications"
+                to="/tenant/email"
                 >Email</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" to="">Whatsapp</router-link>
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item" v-if="false">
               <router-link class="dd-link-item routelink" to="">Voice</router-link>
             </li>
           </ul>
@@ -142,11 +144,12 @@
             :class="{ 'dd-hide-list': !eventsLinkDropped }"
           >
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/empty-event`"
+              <router-link class="dd-link-item routelink" :to="`/tenant/emptyevent`"
                 >Events</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <!-- Hidden -->
+            <li class="dd-list-item d-none">
               <router-link class="dd-link-item routelink" to=""
                 >Attendance & Checkin</router-link
               >
@@ -154,6 +157,7 @@
           </ul>
           <!-- </a> -->
 
+          <!-- Hidden -->
           <a
             class="link dd"
             :class="{
@@ -161,6 +165,7 @@
                 'tenant/accounting'
               ),
             }"
+            v-if="false"
           >
             <span @click="toggleAccDropDown">
               <img
@@ -181,6 +186,7 @@
           <ul
             class="dd-list acc-list"
             :class="{ 'dd-hide-list': !accLinkDropped }"
+            v-if="false"
           >
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="">Dashboard</router-link>
@@ -206,16 +212,18 @@
             </li>
           </ul>
 
-          <a class="link routelink">
+          <!-- Hidden -->
+          <a class="link routelink" v-if="false">
             <img
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"
               alt=""
+              
             />
             Reports
           </a>
 
-          <div>
+          <div v-if="false">
             <div>
               <p @click="showMore" class="more-tab">
                 <span>{{ dropDownText }}...</span>
@@ -269,7 +277,8 @@
 
           <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
 
-          <a class="link routelink"> Integration </a>
+          <!-- Hidden -->
+          <a class="link routelink" v-if="false"> Integration </a>
         </div>
       </div>
     </div>
@@ -532,7 +541,8 @@ export default {
   margin-bottom: 0;
   margin-left: 20px !important;
   overflow: hidden;
-  height: 180px;
+  /* Change to 180px */
+  height: 125px;
   transition: all 0.3s ease-in-out;
 }
 

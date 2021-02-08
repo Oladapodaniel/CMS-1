@@ -25,12 +25,12 @@
                   class="col-md-12 d-flex flex-column border rounded more-links px-4"
                 >
                   <router-link
-                    to="/tenant/people/add-person"
+                    to="/tenant/people/add"
                     class="font-weight-bold mt-3 text-dec-none"
                     >Member</router-link
                   >
                   <router-link
-                    to="/tenant/people/add-first-timer"
+                    to="/tenant/people/addfirsttimer"
                     class="font-weight-bold text-dec-none"
                     >First timer</router-link
                   >
@@ -58,13 +58,13 @@
           <div class="can-do">
             <h4>Things You Can Do</h4>
             <div class="can-do-links">
-              <router-link to="/tenant/people/add-person"
+              <router-link to="/tenant/people/add"
                 >Add member</router-link
               >
-              <router-link to="/tenant/sms-communications/compose-message"
+              <router-link to="/tenant/sms/compose"
                 >Send SMS</router-link
               >
-              <router-link to="/tenant/people/add-first-timer"
+              <router-link to="/tenant/people/addfirsttimer"
                 >Add First Timer</router-link
               >
               <router-link to="">Add Follow-up</router-link>
@@ -220,7 +220,8 @@
         <div class="table-top">
           <router-link to="" class="view-all">View all</router-link>
         </div>
-        <table class="w-100">
+        
+          <table class="w-100">
           <thead>
             <tr>
               <th>NAME</th>
@@ -230,7 +231,7 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
             <tr
               v-for="celebration in tenantInfo.celebrations"
               :key="celebration.id" 
@@ -261,19 +262,19 @@
                     <!-- v-if="person.mobilePhone" -->
                 <a class="dropdown-item elipsis-items">
                   <router-link
-                    :to="`/tenant/sms-communications/compose-message?phone=${celebration.phone}`"
+                    :to="`/tenant/sms/compose?phone=${celebration.phone}`"
                     >Send SMS</router-link
                   >
                 </a>
                 <!-- v-if="person.email" -->
                 <!-- <a class="dropdown-item elipsis-items" >
                   <router-link
-                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    :to="`/tenant/email/compose?phone=${person.email}`"
                     >Send Email</router-link
                   >
                 </a> -->
                 <!-- <a class="dropdown-item elipsis-items">
-                  <router-link :to="`/tenant/people/add-person/${person.id}`"
+                  <router-link :to="`/tenant/people/add/${person.id}`"
                     >Edit</router-link
                   >
                 </a> -->
@@ -287,8 +288,16 @@
               </td>
             </tr>
           </tbody>
+          <tbody>
+            <tr>
+              
+              
+              <td colspan="5"><div class=" text-center p-3" style="font-weight: 700; font-size: 1.2em;">No Celebrations Yet</div></td>
+              
+            </tr>
+          </tbody>
         </table>
-        <div class="table-footer">
+        <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-left"></i>
           </button>
@@ -300,7 +309,7 @@
         </div>
       </div>
       <div class="charts" id="plot">
-        <div v-if="tenantInfo.eventAttendanceChartData">
+        <div v-if="tenantInfo.eventAttendanceChartData && attendanceDataExist">
           <div class="adjust-view">
             <div class="view-report">View Reports</div>
             <div class="weekly">
@@ -339,9 +348,10 @@
             />
           </div>
         </div>
-        <div>{{ attendanceSeries }}</div>
-<!-- <div>{{ monthlyAttendanceObj }}</div>
-        <div class="adjust-view two">
+
+
+      <div v-if="tenantInfo.eventAttendanceChartData && firstTimerDataExist">
+        <div class="adjust-view">
           <div class="view-report">View Reports</div>
           <div class="weekly">
             <span
@@ -354,57 +364,61 @@
               >Monthly</span
             >
           </div>
-        </div> -->
+        </div>
 
-        <!-- <div v-if="firstTimerBoolean">
-          <ColumnChart
-            domId="chart2"
+        <div v-if="firstTimerBoolean">
+          <ColumnChart2
+            domId="chart3"
             title="First Timer And New Convert Inflow"
             subtitle="How First Timer Come to Church"
-            header=""
+            header="First Timer Attendence"
+            :data="chartData2"
+            :chartDataNewConvert="chartDataNewConvert"
+            :series2="series2"
           />
         </div>
         <div v-else>
-          <ColumnChart
-            domId="chart2"
+          <ColumnChart2
+            domId="chart4"
             title="First Timer And New Convert Inflow"
             subtitle="How First Timer Come to Church"
-            header=""
-            :data="chartData"
-          />
-        </div> -->
-
-        <div>
-          <ColumnChart
-          v-if="false"
-            domId="chart3"
-            title="Event Attendance"
-            subtitle="Weekly Attendance of Events"
-            header="Members Attendance"
+            header="First Timer Attendence"
+            :data="monthlyFirstTimerObj"
+            :chartDataNewConvert="chartDataNewConvert"
+            :series2="series2"
           />
         </div>
+      </div>
+    </div>
+      <!-- <div>{{ chartData2 }}</div>
+      <div>{{ monthlyFirstTimerObj }}</div>
+      <div>{{ chartDataNewConvert }}</div> -->
+      <!-- <div>{{ series2 }}</div> -->
 
-        <div class="chart-con">
+
+        <div class="chart-con" v-if="firstTimerPieExist">
           <div style="width: 45%" class="ml-md-4 chart1">
             <ByGenderChart
-              domId="chart"
+              domId="source"
               title="Invitation Source"
               distance="5"
-              titleMargin="10"
-              
+              :titleMargin="10"
+              :summary="tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.invitationSource : [] "
             />
           </div>
           <div style="width: 45%;" class="chart2">
             <ByMaritalStatusChart
-              domId="second"
+              domId="join"
               title="Interested In Joining"
-              titleMargin="10"
-              
+              :titleMargin="10"
+              :summary="tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.interestedInJoining : [] "
             />
           </div>
         </div>
+        <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
+        <!-- <div>{{ chartData2 }}</div> -->
 
-        <div class="pies">
+        <!-- <div class="pies">
           <div class="pie-con">
             <PieChart
               domId="pichart"
@@ -428,20 +442,19 @@
               :summary="offering"
             />
           </div>
-        </div>
-      </div>
-    </div>
+        </div> -->
+      <!-- </div> -->
     <!-- </div> -->
+    </div>
   </main>
 </template>
 
 <script>
-// import InterestedJoin from "@/components/charts/PieChart.vue";
-// import InvitationSource from "@/components/charts/PieChart.vue";
-import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
-import ByGenderChart from "@/components/charts/PieChart.vue";
-import PieChart from "@/components/charts/DashboardPie.vue";
+
+import ByMaritalStatusChart from "@/components/charts/PieChart";
+import ByGenderChart from "@/components/charts/PieChart";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
+import ColumnChart2 from "@/components/charts/ColumnChart2.vue";
 import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
 // import store from "@/store/store.js"
@@ -451,8 +464,9 @@ import moment from "moment";
 
 export default {
   components: {
-    PieChart,
+    // PieChart,
     ColumnChart,
+    ColumnChart2,
     ByMaritalStatusChart,
     ByGenderChart
     
@@ -464,6 +478,9 @@ export default {
     const offering = ref([23, 45, 65, 78, 89]);
     const attendanceBoolean = ref(true);
     const firstTimerBoolean = ref(true);
+    const attendanceDataExist = ref(false)
+    const firstTimerDataExist = ref(false)
+    const firstTimerPieExist = ref(false)
 
     // const attendance
 
@@ -476,9 +493,12 @@ export default {
 
     const tenantInfo = ref({});
     const attendanceSeries = ref("weekly");
+    const firstTimerSeries = ref("weekly")
 
     const monthlyAttendanceObj = ref({})
-    const xAxis = ref([1, 2, 3, 4,5, 6, 7, 8, 9, 10])
+    const monthlyFirstTimerObj = ref({})
+
+    const xAxis = ref([])
     const monthXaxis = ref(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
 
     const series = computed(() => {
@@ -486,12 +506,34 @@ export default {
       return monthXaxis.value;
     })
 
-    axios
+    const series2 = computed(() => {
+      if (firstTimerSeries.value === "weekly") return xAxis.value;
+      return monthXaxis.value;
+    })
+
+    const getDashboard = () => {
+      axios
       .get("/dashboard")
       .then((res) => {
         tenantInfo.value = res.data;
         // celebrations.value = res.data
         console.log(res.data);
+        tenantInfo.value.eventAttendanceChartData[0].data.forEach(element => {
+          if (element > 0) {
+            attendanceDataExist.value = true
+          }
+        });
+        tenantInfo.value.eventAttendanceChartData[1].data.forEach(element => {
+          if (element > 0) {
+            firstTimerDataExist.value = true
+          }
+        });
+        tenantInfo.value.firstTimerSummary.invitationSource.forEach(element => {
+          if (element > 0) {
+            firstTimerPieExist.value = true
+          }
+        });
+
       })
       .catch((err) => {
         console.log(err.response);
@@ -500,6 +542,8 @@ export default {
           router.push("/");
         }
       });
+    }
+    getDashboard()
 
     const firstTimer = () => {
       axios.get("/api/People/FirstTimer").then((res) => {
@@ -509,8 +553,18 @@ export default {
     };
     firstTimer();
 
+    const showPieChart = computed(() => {
+      if (!tenantInfo.value || tenantInfo.value.firstTimerSummary) return [];
+      return tenantInfo.value.firstTimerSummary;
+    })
+
     onMounted(() => {
       console.log(tenantInfo.value.eventAttendanceChartData);
+
+      
+      for (let i = 1; i <= 52; i++) {
+        xAxis.value.push(i)
+      }
     });
 
     const subPlan = () => {
@@ -527,33 +581,47 @@ export default {
     };
 
     const monthlyAttendance = () => {
-      console.log("monthly");
+      
       attendanceBoolean.value = false;
       attendanceSeries.value = "monthly";
 
       axios.get('/Dashboard/period?period=Months')
         .then(res => {
           monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
-          // monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
-          // tenantInfo.value = res.data;
-
+          
        })
     };
 
     const weeklyFirstTimer = () => {
       console.log("weekly");
+      firstTimerSeries.value = "weekly"
       firstTimerBoolean.value = true;
     };
 
     const monthlyFirstTimer = () => {
-      console.log("monthly");
-      firstTimerBoolean.value = false;
+
+        firstTimerBoolean.value = false;
+          firstTimerSeries.value = "monthly"
+      axios.get('/Dashboard/period?period=Months')
+        .then(res => {
+          monthlyFirstTimerObj.value = res.data.eventAttendanceChartData[1]  
+       })
+      console.log(monthlyFirstTimerObj.value)
     };
 
     const chartData = computed(() => {
       if (!tenantInfo.value.eventAttendanceChartData) return [];
       return tenantInfo.value.eventAttendanceChartData[0]
-      // }
+    });
+    
+    const chartData2 = computed(() => {
+      if (!tenantInfo.value.eventAttendanceChartData) return [];
+      return tenantInfo.value.eventAttendanceChartData[1]
+    });
+
+    const chartDataNewConvert = computed(() => {
+      if (!tenantInfo.value.eventAttendanceChartData) return [];
+      return tenantInfo.value.eventAttendanceChartData[2]
     });
 
     
@@ -579,6 +647,15 @@ export default {
       xAxis,
       monthXaxis,
       series,
+      showPieChart,
+      chartData2,
+      series2,
+      monthlyFirstTimerObj,
+      chartDataNewConvert,
+      firstTimerSeries,
+      attendanceDataExist,
+      firstTimerDataExist,
+      firstTimerPieExist
     };
   },
 };
@@ -966,13 +1043,23 @@ tbody tr:nth-child(even) {
   cursor: pointer;
 }
 
-.adjust-view.two {
-  top: 5em;
-}
 
 .active {
   color: #2b6ecd;
 }
+
+.chart-con {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 1px 4px #02172e45;
+  border: 1px solid #DDE2E6;
+  border-radius: 30px;
+  margin: 0 0 24px 0;
+  padding: 25px 0
+}
+
+
 /* WIP */
 
 /* @media screen and (max-width: 376px) {

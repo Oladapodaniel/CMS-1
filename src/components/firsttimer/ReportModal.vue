@@ -33,7 +33,7 @@
                         <span>To</span>
                     </div>
                     <div class="col-sm-6 form-group" >
-                        <input type="email" class="form-control inp"  v-model="recipient.email" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'">
+                        <input type="email" class="form-control inp"  v-model="recipient.email" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'" @input="hideErrorMessage">
                         <input type="text" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
@@ -98,7 +98,9 @@
                     <div class="col-sm-8 form-group" v-show="activeTab === 'churchplus'">
                         <div class="row">
                             <div class="col-sm-1">
-                                <input type="checkbox" v-model="sendToMyself" name="" id="" @change="test">
+                                <!-- <input type="checkbox" v-model="sendToMyself" name="" id="" @change="test"> -->
+                                <!-- <input type="checkbox" name="" id="" @click="test"> -->
+                                <Checkbox id="binary" v-model="sendToMysef" :binary="true"/>
                             </div>
                             <div class="col-sm-10">
                                 <span>Send a copy to myself at {{ userEmail }}</span>
@@ -106,7 +108,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-1">
-                                <input type="checkbox" name="" id="">
+                                 <Checkbox id="binary" :binary="true"/>
                             </div>
                             <div class="col-sm-10">
                                 <span>Attach the report as a PDF</span>
@@ -116,7 +118,7 @@
                     <div class="col-sm-8 form-group" v-if="activeTab === 'sms'">
                         <div class="row">
                             <div class="col-sm-1">
-                                <input type="checkbox" name="" id="">
+                                 <Checkbox id="binary" :binary="true"/>
                             </div>
                             <div class="col-sm-10">
                                 <span>Send a copy to myself at 08132182990</span>
@@ -131,6 +133,9 @@
                     <hr class="hr">
                 </div>
                 <!-- <div class="row"> -->
+                    <div class="col-md-12 text-right py-2" v-if="invalidDestination">
+                        <p class="text-danger mb-0 pr-md-5">Enter at least a destination for the mail</p>
+                    </div>
                     <div class="col-sm-12 d-flex justify-content-end">
                         <a class="action-btn mx-2 my-1" data-dismiss="modal">Cancel</a>
                         <a class="action-btn mx-2 my-1">Preview</a>
@@ -157,6 +162,7 @@ import axios from "@/gateway/backendapi";
             const message = ref("")
             const sendToMysef = ref(false);
             const subject = ref(null);
+            const invalidDestination = ref(false);
 
             const changeTab = (tab) => activeTab.value = tab;
 
@@ -175,6 +181,10 @@ import axios from "@/gateway/backendapi";
                 console.log(e.target.value, "bool");
             }
 
+            const hideErrorMessage = () => {
+                if (invalidDestination.value) invalidDestination.value = false;
+            }
+
             const event = ref(props.eventName)
 
             const sendReport = () => {
@@ -182,6 +192,13 @@ import axios from "@/gateway/backendapi";
                     contacts: recipients.value,
                     message: message.value,
                     subject: subject.value.value,
+                }
+
+                const validDestination = messageObj.contacts.find(i => i.email);
+                console.log(validDestination, "validDestination");
+                if (!validDestination) {
+                    invalidDestination.value = true;
+                    return false;
                 }
 
                 if (sendToMysef.value) {
@@ -205,6 +222,8 @@ import axios from "@/gateway/backendapi";
                 sendToMysef,
                 subject,
                 test,
+                invalidDestination,
+                hideErrorMessage,
             }
         }
     }

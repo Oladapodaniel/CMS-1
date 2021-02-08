@@ -9,7 +9,7 @@
         </div>
         <div class="col-md-4 mt-2 my-1 link">
           <router-link
-            to="/tenant/create-people-group"
+            to="/tenant/createpeoplegroup"
             class="grey-border primary-btn default-btn primary-bg border-0"
             >Add New Group</router-link
           >
@@ -91,7 +91,7 @@
                     <span class="hidden-header font-sm-weight-600">GROUP NAME</span>
                     <span class="f-right">
                       <router-link
-                      :to="`/tenant/create-people-group/${group.id}`"
+                      :to="`/tenant/createpeoplegroup/${group.id}`"
                       >{{ group.name }}</router-link
                     >
                     </span>
@@ -116,7 +116,7 @@
                     >
                       <a class="dropdown-item">
                         <router-link
-                          :to="`/tenant/sms-communications/compose-message?group=${group.name}&groupId=${group.id}`"
+                          :to="`/tenant/sms/compose?group=${group.name}&groupId=${group.id}`"
                           >Send SMS</router-link
                         >
                       </a>

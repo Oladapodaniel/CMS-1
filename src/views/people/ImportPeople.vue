@@ -4,7 +4,7 @@
       <p class="header-text">You haven't added any member yet</p>
     </div>
     <div class="options">
-      <router-link class="option text-decoration-none" to="/tenant/people/add-person">
+      <router-link class="option text-decoration-none" to="/tenant/people/add">
         <div class="option-img">
           <img src="../../assets/people/phone-import.svg" alt="Phone Import" />
         </div>

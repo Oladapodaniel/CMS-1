@@ -1354,7 +1354,7 @@ export default {
 
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
-            router.push("/tenant/first-timers");
+            router.push("/tenant/firsttimersempty");
             console.log(firstTimersObj)
             toast.add({
               severity: "success",
@@ -1397,7 +1397,7 @@ export default {
           //   position: "top-right",
           //   type: "success",
           // });
-          router.push("/tenant/first-timers");
+          router.push("/tenant/firsttimersempty");
         })
         .catch((err) => {
           // NProgress.done();
