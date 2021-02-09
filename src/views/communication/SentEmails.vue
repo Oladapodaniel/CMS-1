@@ -28,10 +28,10 @@
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-7">
-                          <span class="th">MESSAGE</span>
+                          <span class="th">Message</span>
                         </div>
                         <div class="col-md-4">
-                          <span class="th">SENT BY</span>
+                          <span class="th">Sent By</span>
                         </div>
                       </div>
                     </div>
@@ -41,7 +41,8 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row">
+
+                  <div class="row" v-for="(email, index) in emails" :key="index">
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
@@ -49,22 +50,30 @@
                         </div>
                         <div class="col-md-7 d-md-flex flex-column">
                           <span
-                            class="d-flex justify-content-between msg-n-time"
+                            class="msg-n-time"
                           >
-                            <span class="font-weight-bold">message</span>
-                            <span class="timestamp">Today | 08:45 PM</span>
+                            <router-link :to="{ name: 'MessageDetails', params: { messageId: email.id } }" class="text-decoration-none d-flex justify-content-between small-text">
+                              <span class="font-weight-bold text-dark text-capitalize">{{ email.subject.toLowerCase() }}</span>
+                              <span class="timestamp small-text">{{ email.dateSent }}</span>
+                            </router-link>
                           </span>
                           <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
+                            >
+                              <router-link :to="{ name: 'MessageDetails', params: { messageId: email.id } }" class="text-decoration-none small-text"><article>
+                                {{
+                                  formatMessage(email.message)
+                                }}
+                              </article></router-link>
+                            </span
                           >
                         </div>
                         <div
                           class="col-md-4 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >SENT BY:
+                            >Sent By:
                           </span>
-                          <span>test@example.com</span>
+                          <span class="small-text">{{ email.sentByUser }}</span>
                         </div>
                       </div>
                       <div class="row">
@@ -75,37 +84,30 @@
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-7 d-md-flex flex-column">
-                          <span
-                            class="d-flex justify-content-between msg-n-time"
-                          >
-                            <span class="font-weight-bold">message</span>
-                            <span class="timestamp">Today | 08:45 PM</span>
-                          </span>
-                          <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
-                          >
-                        </div>
-                        <div
-                          class="col-md-4 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>test@example.com</span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
-                        </div>
+                  <div class="row" v-if="emails.length === 0 && !loading">
+                    <div class="col-md-12 d-flex justify-content-center">
+                      <span class="my-4 font-weight-bold">No sent mesages</span>
+                    </div>
+                  </div>
+
+                  <div class="row" v-if="emails.length === 0 && loading">
+                    <div class="col-md-12 py-2 d-flex justify-content-center">
+                      <i class="fas fa-circle-notch fa-spin"></i>
+                    </div>
+                  </div>
+
+                  <div class="conatiner">
+                    <div class="row">
+                      <div class="col-md-12 mb-3 pagination-container">
+                        <PaginationButtons
+                          @getcontent="getEmailsByPage"
+                          :itemsCount="itemsCount"
+                          :currentPage="currentPage"
+                        />
                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -117,10 +119,72 @@
 </template>
 
 <script>
-export default {};
+import { computed, ref } from 'vue';
+import communicationService from "../../services/communication/communicationservice"
+import PaginationButtons from "../../components/pagination/PaginationButtons";
+
+
+export default {
+  components: { PaginationButtons },
+  setup() {
+    const emails = ref([ ]);
+    const currentPage = ref(0);
+    const loading = ref(false)
+
+    const getSentEmails = async () => {
+      loading.value = true;
+      const data = await communicationService.getSentEmails(0);
+      loading.value = false;
+      if (data && data.length > 0) {
+        emails.value = data;
+        console.log(emails.value, "sent mails");
+        console.log(data, "sent emails");
+      }
+    }
+
+    getSentEmails();
+
+    const formatMessage = (message) => {
+      const formatted = message && message.length > 25 ? `${message.split("").slice(0, 25).join("")}...` : message;
+
+      return `${formatted}`;
+    }
+
+    const getEmailsByPage = async (page) => {
+      try {
+        const data = await communicationService.getSentEmails(page);
+        if (data) {
+          emails.value = data;
+          currentPage.value = page;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const itemsCount = computed(() => {
+      if (!emails.value || emails.value.length === 0) return 0;
+      return emails.value.length;
+    });
+
+    return {
+      emails,
+      formatMessage,
+      getEmailsByPage,
+      itemsCount,
+      currentPage,
+      loading,
+    }
+  }
+};
 </script>
 
 <style scoped>
+* {
+  box-sizing: border-box;
+  /* color: #02172e; */
+}
+
 .search-div {
   width: fit-content;
   padding: 10px;

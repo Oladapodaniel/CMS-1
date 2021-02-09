@@ -54,11 +54,11 @@ const composerObj = {
         // return members;
     },
 
-    svaeDraft(data) {
+    svaeDraft(data, url) {
         return new Promise((resolve, reject) => {
             /*eslint no-undef: "warn"*/
             NProgress.start();
-            axios.post("/api/Messaging/PostSmsDraft", data)
+            axios.post(url, data)
                 .then(res => {
                     resolve(res.data);
                 })

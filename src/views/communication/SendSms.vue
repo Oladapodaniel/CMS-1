@@ -930,7 +930,7 @@ export default {
         const response = await composerObj.svaeDraft({
           body: editorData.value,
           isDefaultBirthDayMessage: false,
-        });
+        }, "/api/Messaging/PostSmsDraft");
         console.log(response, "draft response");
         toast.add({
           severity: "success",

@@ -28,7 +28,7 @@
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-7">
-                          <span class="th">MESSAGE</span>
+                          <span class="th">Message</span>
                         </div>
                         <div class="col-md-4">
                           <span class="th"></span>
@@ -41,21 +41,25 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row" v-for="(draft, index) in drafts" :key="index">
                     <div class="col-md-12">
-                      <div class="row">
+                      <div class="row py-1">
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-7 d-md-flex flex-column">
-                          <span
+                        <div class="col-md-7 d-md-flex flex-column pl-0 small-text">
+                          <router-link :to="{ name: 'ComposeEmail', query: { emaildraft: draft.id } }"  class="text-decoration-none">
+                            <span
                             class="d-flex justify-content-between msg-n-time"
                           >
-                            <span class="font-weight-bold">message</span>
-                            <span class="timestamp">Today | 08:45 PM</span>
+                            <span class="font-weight-600 small-text text-capitalize">{{ draft.subject.toLowerCase() }}</span>
+                            <span class="timestamp">{{ new Date(draft.dateModified).toLocaleString()}}</span>
                           </span>
-                          <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
+                          </router-link>
+                          <span class="brief-message text-capitalize small-text"
+                            ><router-link :to="{ name: 'ComposeEmail', query: { emaildraft: draft.id } }" class="text-decoration-none">
+                                {{ draft.body && draft.body.length > 25 ? `${draft.body.toLowerCase().slice(0, 25)}...` : draft.sentBy }}
+                              </router-link></span
                           >
                         </div>
                         <div
@@ -75,37 +79,7 @@
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-7 d-md-flex flex-column">
-                          <span
-                            class="d-flex justify-content-between msg-n-time"
-                          >
-                            <span class="font-weight-bold">message</span>
-                            <span class="timestamp">Today | 08:45 PM</span>
-                          </span>
-                          <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
-                          >
-                        </div>
-                        <div
-                          class="col-md-4 col-ms-12 d-flex justify-content-between"
-                        >
-                          <!-- <span class="hidden-header">message: </span> -->
-                          <!-- <span>test@example.com</span> -->
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -117,7 +91,28 @@
 </template>
 
 <script>
-export default {};
+import { ref } from 'vue';
+import communicationService from "../../services/communication/communicationservice"
+
+export default {
+  setup() {
+    const drafts = ref([ ]);
+    const getEmailDrafts = async () => {
+      const data = await communicationService.getEmailDrafts();
+
+      console.log(data, "Email drafts");
+      if (data) {
+        drafts.value = data;
+      }
+    }
+
+    getEmailDrafts();
+
+    return {
+      drafts,
+    }
+  }
+};
 </script>
 
 <style scoped>

@@ -22,7 +22,13 @@
           <div class="row mb-2">
             <div class="col-md-12 d-flex flex-column">
               <span class="font-weight-bold units-used">{{ units }}</span>
-              <span class="units-text">SMS UNIT USED</span>
+              <span class="units-text">SMS Unit Used</span>
+            </div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-md-12 d-flex flex-column">
+              <span class="font-weight-bold units-used">{{ messages.length }}</span>
+              <span class="units-text">Contacts</span>
             </div>
           </div>
         </div>
@@ -38,16 +44,16 @@
         <div class="col-md-12">
           <div class="row theader light-grey-bg py-2 font-weight-700">
             <div class="col-md-3">
-              <span>RECIPIENT NAME</span>
+              <span>Number</span>
             </div>
             <div class="col-md-3">
-              <span>NUMBER</span>
+              <span>Recipient</span>
             </div>
             <div class="col-md-3">
-              <span>STATUS</span>
+              <span>Status</span>
             </div>
             <div class="col-md-3">
-              <span>DATE & TIME</span>
+              <span>Date</span>
             </div>
           </div>
         </div>
@@ -61,42 +67,42 @@
         <div class="col-md-12 py-2">
           <div class="row">
             <div class="col-md-3">
-              <span class="hidden-header">RECIPIENT NAME</span>
-              <span>{{ message.name }}</span>
+              <span class="hidden-header">Number</span>
+              <span class="small-text">{{ message.recipient }}</span>
             </div>
             <div class="col-md-3">
-              <span class="hidden-header">RECIPIENT NUMBER</span>
-              <span>{{ message.recipient }}</span>
+              <span class="hidden-header">Recipient</span>
+              <span class="small-text">{{ message.name }}</span>
             </div>
-            <div class="col-md-3 text-md-center">
-              <span class="hidden-header">DELIVERY STATUS</span>
-              <span v-if="message.deliveryReport === 'sent'">
-                <Tag
+            <div class="col-md-3">
+              <span class="hidden-header">Status</span>
+              <span class="small-text" v-if="message.deliveryReport.includes('sent')">
+                <!-- <Tag
                   class="p-mr-2"
                   severity="success"
                   :value="message.deliveryReport"
                   rounded
-                ></Tag>
+                ></Tag> -->
+                sent
               </span>
-              <span v-else-if="message.deliveryReport === 'failed'">
-                <Tag
+              <span class="small-text text-danger" v-else-if="message.deliveryReport === 'failed'">
+                <!-- <Tag
                   class="p-mr-2"
                   severity="error"
                   :value="message.deliveryReport"
                   rounded
-                ></Tag>
+                ></Tag> -->
+                failed
               </span>
-              <span v-else>
-                <Tag
-                  class="p-mr-2"
-                  severity="warning"
-                  :value="message.deliveryReport"
-                  rounded
-                ></Tag>
+              <span class="small-text" v-if="message.deliveryReport === 'sms queued'">
+                queued
+              </span>
+              <span class="small-text" v-if="message.deliveryReport === 'sms processed'">
+                processed
               </span>
             </div>
-            <div class="col-md-3">
-              <span class="hidden-header">DATE & TIME</span>
+            <div class="col-md-3 small-text">
+              <span class="hidden-header">Date</span>
               <span>{{ new Date(message.date).toLocaleString() }}</span>
             </div>
           </div>
@@ -124,6 +130,7 @@ export default {
     const messages = ref([]);
     const units = route.query.units;
     const loading = ref(false);
+    const statuses = ["sent", "failed", "sms queued", "sms processed"];
 
     const getMessageReport = async () => {
       try {
@@ -131,6 +138,7 @@ export default {
         const reportData = await communicationService.getMessageReport(
           route.params.messageId
         );
+        console.log(reportData, "xxx");
         messages.value = reportData;
       } catch (error) {
           loading.value = false;
@@ -142,7 +150,6 @@ export default {
 
     const doSMSAnalysis = (allSMS) => {
       const chartData = [];
-      const statuses = ["sent", "failed", "sms queued"];
       for (let status of statuses) {
           const count = allSMS.filter(i => i.deliveryReport === status).length;
         chartData.push({
@@ -155,9 +162,8 @@ export default {
 
     const getSMSStats = (allSMS) => {
       const chartData = [];
-      const statuses = ["sent", "failed", "sms queued"];
       for (let status of statuses) {
-          const count = allSMS.filter(i => i.deliveryReport === status).length;
+          const count = allSMS.filter(i => i.deliveryReport.includes(status)).length;
         chartData.push({
           name: status.includes("queued") ? "queued" : status,
           y: count,

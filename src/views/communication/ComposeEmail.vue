@@ -857,26 +857,23 @@ export default {
         }),
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        toContacts: sendToAll.value ? "allcontacts" : "",
-        // toOthers: phoneNumber.value,
-        isoCode: isoCode.value,
-        // isoCode: "NG",
-        category: "",
-        emailAddress: "",
-        emailDisplayName: "",
-        gateWayToUse: gateway,
+        // toContacts: sendToAll.value ? "allcontacts" : "",
+        // emailAddress: "",
+        // emailDisplayName: "",
+        // gateWayToUse: gateway,
       };
+      console.log(gateway);
 
-      data.toOthers = phoneNumber.value;
-      if (selectedMembers.value.length > 0) {
-        data.toOthers += data.toOthers.length > 0 ? "," : "";
-        data.toOthers += selectedMembers.value
-          .map((i) => {
-            if (i.phone) return i.phone;
-            return false;
-          })
-          .join();
-      }
+      // data.toOthers = phoneNumber.value;
+      // if (selectedMembers.value.length > 0) {
+      //   data.toOthers += data.toOthers.length > 0 ? "," : "";
+      //   data.toOthers += selectedMembers.value
+      //     .map((i) => {
+      //       if (i.email) return i.email;
+      //       // return false;
+      //     })
+      //     .join();
+      // }
 
       console.log(data, "SMS Data");
 
@@ -929,7 +926,7 @@ export default {
         const response = await composerObj.svaeDraft({
           body: editorData.value,
           isDefaultBirthDayMessage: false,
-        });
+        }, "/api/Messaging/PostEmailDraft");
         console.log(response, "draft response");
         toast.add({
           severity: "success",

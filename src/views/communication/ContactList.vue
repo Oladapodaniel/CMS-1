@@ -12,7 +12,7 @@
                     to="/tenant/sms/addgroup"
                     class="create-btn font-weigth-bold border-0"
                   >
-                    <span class="mr-2 font-weight-600" style="font-size: 22px">+</span> Create
+                    <span class="mr-2 font-weight-700" style="font-size: 22px">+</span> Create
                     new group
                   </router-link>
                 </div>
@@ -22,18 +22,18 @@
                 <div class="col-md-12">
                   <div class="row header-row">
                     <div class="col-md-12">
-                      <div class="row light-grey-bg py-2 font-weight-600">
+                      <div class="row light-grey-bg py-2 font-weight-600 small-text">
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-3">
-                          <span class="th small-text">NAME</span>
+                          <span class="th small-text">Name</span>
                         </div>
                         <div class="col-md-4">
-                          <span class="th small-text">TOTAL PHONE NUMBER</span>
+                          <span class="th small-text">Total Numbers</span>
                         </div>
                         <div class="col-md-3">
-                          <span class="th small-text">DATE CREATED</span>
+                          <span class="th small-text">Date Created</span>
                         </div>
                         <div class="col-md-1">
                           <span class="th small-text"></span>
@@ -112,7 +112,7 @@
                           <span class="hidden-header">NAME: </span>
                           <span>
                             <router-link
-                              class="link"
+                              class="link small-text"
                               :to="{
                                 name: 'EditContactList',
                                 params: { groupId: group.id },
@@ -126,18 +126,18 @@
                           class="col-md-4 col-ms-12 d-flex justify-content-between align-items-center"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >TOTAL PHONE NUMBER:
+                            >Total Numbers:
                           </span>
-                          <span>{{ group.numbers }}</span>
+                          <span class="small-text">{{ group.numbers }}</span>
                         </div>
 
                         <div
                           class="col-md-3 col-ms-12 d-flex justify-content-between align-items-center"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >DATE CREATED
+                            >Date Created
                           </span>
-                          <span>{{
+                          <span class="small-text">{{
                             new Date(group.dateEntered).toLocaleDateString()
                           }}</span>
                         </div>

@@ -35,7 +35,8 @@
                             <i class="fas fa-inbox mr-3 menu-icon"></i>
                             <span class="active">Inbox</span>
                           </router-link>
-                          <span class="inbox-count ml-md-2">3</span></span
+                          <!-- <span class="inbox-count ml-md-2">3</span> -->
+                          </span
                         >
                       </a>
                     </div>

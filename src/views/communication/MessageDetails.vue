@@ -40,7 +40,8 @@
 
         <!-- Section two -->
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-1"></div>
+          <div class="col-md-11 mt-3">
             <h4 class="font-weight-600">{{message ? message.subject : "" }}</h4>
           </div>
         </div>
@@ -48,19 +49,22 @@
           <div class="col-md-1 px-0 img">
             <img src="../../assets/add-member-big.svg" alt="" class="img" />
           </div>
-          <div class="col-md-5">
+          <div class="col-md-10">
             <div class="name">
               <h4 class="font-weight-700 pl-md-2">{{ message && message.sentByUser ? message.sentByUser : "" }}</h4>
               <p class="nam mb-0 font-weight-600">To Me <i class="pi pi-caret-down to-icon"></i></p>
             </div>
           </div>
 
-          <div class="col-md-6 d-md-flex">
+          <div class="col-md-12 d-md-flex">
             <div class="row w-100">
-              <div class="col-lg-8 d-md-flex justify-content-end">
+              <div class="col-md-1">
+
+              </div>
+              <div class="col-lg-8 d-md-flex justify-content-start small-text">
                 <p class="">{{ message && message.dateSent ? message.dateSent : "" }}</p>
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-3">
                 <div class="icons d-md-flex justify-content-end">
                   <span><i class="fas fa-star mx-2 icons"></i></span>
                   <span><i class="fas fa-trash mx-2 icons"></i></span>
@@ -76,7 +80,7 @@
           <div class="col-md-1">
 
           </div>
-          <div class="col-md-11">
+          <div class="col-md-11" ref="body" style="overflow-x:hidden">
             <!-- <p class="">Hello Madam</p> -->
             <p class="ptext text-justify" style="line-height: 2.5rem;">
               {{ message ? message.message : "" }}
@@ -149,7 +153,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import composeService from "../../services/communication/composer";
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -161,6 +165,7 @@ export default {
     const loading = ref(false);
     const route = useRoute();
     const store = useStore();
+    const body = ref(null)
 
     if (route.params.messageId) {
       loading.value = true;
@@ -182,9 +187,14 @@ export default {
         })
     }
 
+    onMounted(() => {
+      setTimeout(() => console.log(body.value.innerText, "text"), 5000)
+    })
+
     return {
       message,
       loading,
+      body,
     }
   }
 };

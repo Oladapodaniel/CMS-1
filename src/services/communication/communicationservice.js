@@ -15,11 +15,9 @@ const communicationService = {
         }
     },
 
-    async getMessageReport() {
-    // async getMessageReport(messageId) {
+    async getMessageReport(messageId) {
         try {
-            const { data } = await axios.get(`/api/Messaging/GetSentMessageDetails?CommReportId=43A29ED8-89BA-48AF-A956-000108891176`);
-            // const { data } = await axios.get(`/api/Messaging/GetSentMessageDetails?CommReportId=${messageId}`);
+            const { data } = await axios.get(`/api/Messaging/GetSentMessageDetails?CommReportId=${messageId}`);
             return data;
         } catch (error) {
             console.log(error);
@@ -33,12 +31,48 @@ const communicationService = {
         } catch (error) {
             stopProgressBar();
             console.log(error);
+            return false;
+        }
+    },
+
+    async getEmailDrafts() {
+        try {
+            const { data } = await axios.get(`/api/Messaging/getEmailDrafts`);
+            return data;
+        } catch (error) {
+            stopProgressBar();
+            console.log(error);
+            return false;
         }
     },
 
     async getDraftsById(id) {
         try {
             const { data } = await axios.get(`/api/Messaging/getSMSDraftByID?id=${id}`);
+            return data;
+        } catch (error) {
+            stopProgressBar();
+            console.log(error);
+            return false;
+        }
+    },
+
+    async getSentEmails(page) {
+        try {
+            console.log(page);
+            const { data } = await axios.get(`/api/Messaging/getAllSentEmails`);
+            // const { data } = await axios.get(`/api/Messaging/getAllSentEmails?page=${page}`);
+            return data;
+        } catch (error) {
+            stopProgressBar();
+            console.log(error);
+            return false;
+        }
+    },
+
+    async getSMSReplies(page) {
+        try {
+            const { data } = await axios.get(`/api/Messaging/GetAllSmsReplies?page=${page}`);
             return data;
         } catch (error) {
             stopProgressBar();

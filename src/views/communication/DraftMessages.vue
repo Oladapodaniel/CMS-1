@@ -30,14 +30,14 @@
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-2">
-                          <span class="th">SENDER</span>
-                        </div>
                         <div class="col-md-5">
-                          <span class="th">MESSAGE</span>
+                          <span class="th">Message</span>
+                        </div>
+                        <div class="col-md-2">
+                          <span class="th">Sender</span>
                         </div>
                         <div class="col-md-3">
-                          <span class="th">DATE & TIME CREATED</span>
+                          <span class="th">Date & Time</span>
                         </div>
                         <div class="col-md-1">
                           <span class="th"></span>
@@ -56,30 +56,30 @@
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-2 d-md-flex justify-content-between">
-                           <span class="hidden-header">SENDER: </span>
-                          <span><router-link :to="{ name: 'SendMessage', query: { draftId: draft.id } }">{{ draft.sender }}</router-link></span>
-                        </div>
                         <div
                           class="col-md-5 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >MESSAGE:
+                            >Message:
                           </span>
-                          <span><router-link :to="{ name: 'SendMessage', query: { draftId: draft.id } }">{{ draft.body }}</router-link></span>
+                          <span><router-link class="small-text" :to="{ name: 'SendMessage', query: { draftId: draft.id } }">{{ draft.body }}</router-link></span>
+                        </div>
+                        <div class="col-md-2 d-md-flex justify-content-between">
+                           <span class="hidden-header">Sender: </span>
+                          <span><router-link class="small-text" :to="{ name: 'SendMessage', query: { draftId: draft.id } }">{{ draft.sender }}</router-link></span>
                         </div>
                         <div
                           class="col-md-3 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >DATE CREATED
+                            >Date & Time
                           </span>
-                          <span>{{ new Date(draft.dateModified).toLocaleDateString()}}</span>
+                          <span class="small-text">{{ new Date(draft.dateModified).toLocaleDateString()}}</span>
                         </div>
                         <div
                           class="col-md-1 col-ms-12 d-flex justify-content-between"
                         >
-                          <span><i class="fa fa-trash delete-icon"></i></span>
+                          <span class="small-text"><i class="fa fa-trash delete-icon"></i></span>
                         </div>
                       </div>
                       <div class="row">
@@ -123,7 +123,9 @@ export default {
       try {
         const data = await communicationService.getDrafts();
         console.log(data, "Drafts");
-        this.drafts = data;
+        if (data) {
+          this.drafts = data;
+        }
       } catch (error) {
         console.log(error);
       }

@@ -52,7 +52,6 @@
                   </div>
 
                   <div
-                    v-if="false"
                     class="row menu-item-con py-2"
                     :class="{
                       'active-link':
@@ -69,8 +68,8 @@
                             <i class="fas fa-inbox mr-3 menu-icon"></i>
                             <span class="active">Replies</span>
                           </router-link>
-                          <span class="inbox-count ml-md-2">3</span></span
-                        >
+                          <!-- <span class="inbox-count ml-md-2">3</span> -->
+                        </span>
                       </a>
                     </div>
                   </div>

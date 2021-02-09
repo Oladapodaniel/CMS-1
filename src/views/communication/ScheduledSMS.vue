@@ -26,21 +26,21 @@
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg">
                     <div class="col-md-12">
-                      <div class="row light-grey-bg">
+                      <div class="row light-grey-bg py-1">
                         <div class="col-md-1 text-md-right text-lg-center">
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-5">
-                          <span class="th">MESSAGE</span>
+                          <span class="th">Message</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">SENT BY</span>
+                          <span class="th">Sent By</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">UNITS</span>
+                          <span class="th">Units</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">REPORT</span>
+                          <span class="th">Report</span>
                         </div>
                       </div>
                     </div>
@@ -201,7 +201,7 @@ export default {
 }
 
 .th {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 700;
 }
 
