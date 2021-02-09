@@ -57,7 +57,7 @@ export default {
           pie: {
             allowPointSelect: true,
             cursor: "pointer",
-            colors: ["#89b4e6", "#e7f0fa", "#333", "red"],
+            colors: ["#89b4e6", "#e7f0fa", "red",  "#e7f0fa"],
             // colors: ["#136acd",  "#708eb1", "#0f0221", "#dde2e6", "#67a9cf"],
             dataLabels: {
               enabled: true,
