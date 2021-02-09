@@ -2,24 +2,24 @@
     <!-- <div>Chart of Accounts</div> -->
     <div class="container-wide container-top">
         <div class="row">
-            <div class="col-sm-6 p-0">
+            <div class="col-12 col-md-6 p-0 text-center text-md-left">
                 <div>
                     <span class="chart-head">Charts of Accounts</span>
-                    <span class="help"><i class="fa fa-question" aria-hidden="true"></i></span>
+                    <span class="help"><i class="fa fa-question-circle-o" aria-hidden="true"></i></span>
                 </div>
             </div>
-            <div class="col-sm-6 text-right p-0">
+            <div class="col-12 col-md-6 text-center text-md-right mt-3 mt-md-0 p-0">
                 <span><i class="fa fa-gift" aria-hidden="true"></i></span>
-                <span class="what-new">What's new</span>
+                <span class="what-new ml-2">What's new</span>
                 <span class="primary-bg default-btn border-0 text-white ml-3">Add a New Account</span>
             </div>
         </div>
         <div class="row mt-4 row-border">
-            <div class="col-sm-2 pt-2 pb-2 pl-0" :class="{ 'active': tab == 'assets' }" @click="assets">Assets <span class="count">7</span></div>
-            <div class="col-sm-3 p-2" :class="{ 'active': tab == 'liabilities' }" @click="liabilities">Liabilities and Credit Cards <span class="count">2</span></div>
-            <div class="col-sm-2 p-2" :class="{ 'active': tab == 'income' }" @click="income">income <span class="count">6</span></div>
-            <div class="col-sm-2 p-2" :class="{ 'active': tab == 'expenses' }" @click="expenses">Expenses <span class="count">3</span></div>
-            <div class="col-sm-2 p-2" :class="{ 'active': tab == 'equity' }" @click="equity">Equity <span class="count">5</span></div>
+            <div class="col-sm-3 col-md-2 py-2 pointer" :class="{ 'active': tab == 'assets' }" @click="assets">Assets <span class="count">7</span></div>
+            <div class="col-sm-6 col-md-5 col-lg-4 col-xl-3 p-2 pointer" :class="{ 'active': tab == 'liabilities' }" @click="liabilities">Liabilities and Credit Cards <span class="count">2</span></div>
+            <div class="col-sm-3 col-md-2 p-2 pointer" :class="{ 'active': tab == 'income' }" @click="income">income <span class="count">6</span></div>
+            <div class="col-sm-6 col-md-2 p-2 pointer" :class="{ 'active': tab == 'expenses' }" @click="expenses">Expenses <span class="count">3</span></div>
+            <div class="col-sm-6 col-md-2 p-2 pointer" :class="{ 'active': tab == 'equity' }" @click="equity">Equity <span class="count">5</span></div>
         </div>
         <div class="row">
             <div class="col-12">
@@ -27,7 +27,9 @@
                     <Assets />
                 </div>
                 <div v-else-if="tab == 'liabilities'">
-                    <div>liabiliies</div>
+                    <div>
+                        <Liabilities />
+                    </div>
                 </div>
                 <div v-else-if="tab == 'income'">
                     <div>income</div>
@@ -46,8 +48,9 @@
 <script>
 import { ref } from 'vue'
 import Assets from '@/views/accounting/chartOfAccount/Assets'
+import Liabilities from '@/views/accounting/chartOfAccount/Liabilities'
 export default {
-    components: { Assets },
+    components: { Assets, Liabilities },
     setup () {
         const tab = ref('assets')
 
@@ -87,7 +90,6 @@ export default {
     .help {
         color: rgb(100, 100, 100);
         margin: 5px;
-        font-size: 12px;
     }
 
     .active {
@@ -103,5 +105,9 @@ export default {
 
     .row-border {
         border-bottom: 1px solid rgb(225, 225, 225);
+    }
+
+    .pointer {
+        cursor: pointer;
     }
 </style>
