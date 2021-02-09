@@ -1260,13 +1260,13 @@ export default {
         ? selectedAboutUsSource.value.id
         : "00000000-0000-0000-0000-000000000000";
       firstTimersObj.value.communicationMeans = selectedCommunicationMeans.value
-        ? comMeansArr.value.indexOf(selectedCommunicationMeans.value)
+        ? comMeansArr.value.indexOf(selectedCommunicationMeans.value) + 1
         : 0;
       firstTimersObj.value.interestedInJoining = selectedJoinInterest.value
-        ? joinInterestArr.value.indexOf(selectedJoinInterest.value)
+        ? joinInterestArr.value.indexOf(selectedJoinInterest.value) + 1
         : 0;
       firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
-        ? wantVisitArr.value.indexOf(selectedVisitOption.value)
+        ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
         : 0;
 // console.log(selectedAboutUsSource.value.id)
       switch (birthMonth.value) {
@@ -1354,7 +1354,7 @@ export default {
 
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
-            router.push("/tenant/first-timers");
+            router.push("/tenant/firsttimersempty");
             console.log(firstTimersObj)
             toast.add({
               severity: "success",
@@ -1397,7 +1397,7 @@ export default {
           //   position: "top-right",
           //   type: "success",
           // });
-          router.push("/tenant/first-timers");
+          router.push("/tenant/firsttimersempty");
         })
         .catch((err) => {
           // NProgress.done();
@@ -1564,6 +1564,7 @@ export default {
         howDidYouAboutUs.value = res.data.map((i) => {
           return { name: i.name, id: i.id };
         });
+        // console.log(res.data)
       });
 
       console.log(route.params.firstTimerId)

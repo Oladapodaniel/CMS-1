@@ -22,8 +22,15 @@ export default {
     updateMember(state, payload) {
         const targetMembersIndex = state.members.findIndex(i => i.id === payload.id);
         state.members[targetMembersIndex] = payload;
+    },
 
-    }
+    addMember(state, payload) {
+        state.members.push(payload);
+    },
+
+    removeMember(state, payload) {
+        state.members = state.members.filter(i => i.id !== payload);
+    },
   },
 
   actions: {
@@ -39,6 +46,7 @@ export default {
         console.log("getting");
       try {
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
+        console.log(data, "members");
         commit("setMembers", data)
       } catch (err) {
         /*eslint no-undef: "warn"*/
@@ -74,7 +82,15 @@ export default {
 
     updateMember({ commit }, payload) {
         commit("updateMember", payload);
-    }
+    },
+
+    addMember({ commit }, payload) {
+        commit("addMember", payload);
+    },
+
+    removeMember({ commit }, payload) {
+        commit("removeMember", payload);
+    },
 
   },
 

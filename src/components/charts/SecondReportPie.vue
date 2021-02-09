@@ -24,6 +24,14 @@ export default {
     const chart = ref(null);
     const getSummary = ref([]);
 
+    // const pointFormat = computed(() => {
+    //   if (props.percentage) return "<b>{point.name}</b><br>{point.percentage:.1f} %";
+    //   return "<b>{point.name}</b><br>";
+    // })
+
+    const pointFormat = props.percentage ? "<b>{point.name}</b><br>{point.y}" : "<b>{point.name}</b><br>{point.percentage:.1f} %";
+    console.log(pointFormat, props.percentage);
+
     onUpdated(() => {
       var highchartsOptions = {
         chart: {
@@ -38,7 +46,7 @@ export default {
           text: props.title,
         },
         tooltip: {
-          pointFormat: "<b>{point.name}</b><br>{point.percentage:.1f} %",
+          pointFormat: "{series.name}: <b>{point.percentage:.1f}¿</b>",
         },
         accessibility: {
           point: {
@@ -52,7 +60,7 @@ export default {
             colors: ["#136acd", "#0f0221", "#dde2e6", "#67a9cf", "#708eb1"],
             dataLabels: {
               enabled: true,
-              format: "<b>{point.name}</b><br>{point.y}",
+              format: "<b>{point.name}</b><br>{point.percentage:.1f} %",
               distance: -40,
               filter: {
                 property: "percentage",
@@ -85,6 +93,7 @@ export default {
     return { 
       chart,
       getSummary,
+      pointFormat,
     };
   },
 };

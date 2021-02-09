@@ -4,11 +4,12 @@
       <div class="row d-md-flex justify-content-between yu mt-5">
         <div class="col-md-4">
           <h2>Groups</h2>
+          <Toast />
           <ConfirmDialog />
         </div>
         <div class="col-md-4 mt-2 my-1 link">
           <router-link
-            to="/tenant/create-people-group"
+            to="/tenant/createpeoplegroup"
             class="grey-border primary-btn default-btn primary-bg border-0"
             >Add New Group</router-link
           >
@@ -90,7 +91,7 @@
                     <span class="hidden-header font-sm-weight-600">GROUP NAME</span>
                     <span class="f-right">
                       <router-link
-                      :to="`/tenant/create-people-group/${group.id}`"
+                      :to="`/tenant/createpeoplegroup/${group.id}`"
                       >{{ group.name }}</router-link
                     >
                     </span>
@@ -115,14 +116,14 @@
                     >
                       <a class="dropdown-item">
                         <router-link
-                          :to="`/tenant/sms-communications/compose-message?group=${group.name}groupId=${group.id}`"
+                          :to="`/tenant/sms/compose?group=${group.name}&groupId=${group.id}`"
                           >Send SMS</router-link
                         >
                       </a>
                       <a class="dropdown-item">
                         <router-link to="">Send Email</router-link>
                       </a>
-                      <a class="dropdown-item" @click="() => displayConfirmModal = true">Delete</a>
+                      <a class="dropdown-item" @click="confirmDelete(group.id, index)">Delete</a>
                     </div>
                   </div>
                 </div>
@@ -144,6 +145,9 @@
 import { ref } from "vue";
 import groupsService from "../../services/groups/groupsservice"
 import { useStore } from "vuex";
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+
 
 export default {
   setup() {
@@ -152,6 +156,38 @@ export default {
     const displayConfirmModal = ref(false);
     const store = useStore();
     const groups = ref(store.getters["groups/groups"]);
+    const toast = useToast();
+
+    const confirm = useConfirm();
+
+    const confirmDelete = (id, index) => {
+      confirm.require({
+          message: 'Do you want to delete this group?',
+          header: 'Delete Confirmation',
+          icon: 'pi pi-info-circle',
+          acceptClass: 'confirm-delete',
+          rejectClass: 'cancel-delete',
+          accept: () => {
+            try {
+              groupsService.deleteGroup(id)
+              .then(res => {
+                console.log(res, "Delete Response");
+                if (res !== false) {
+                  groups.value.splice(index, 1);
+                  store.dispatch("groups/getGroups")
+                  toast.add({severity:'success', summary:'Deleted', detail:'Group was deleted', life: 3000});
+                  groupsService.removeGroupFromStore(id);
+                }
+              })
+            } catch (error) {
+              console.log(error);
+            }
+          },
+          reject: () => {
+            // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+          }
+      });
+    }
 
 
     const getgroups = async () => {
@@ -182,6 +218,7 @@ export default {
       groups,
       loading,
       displayConfirmModal,
+      confirmDelete,
     };
   },
 };

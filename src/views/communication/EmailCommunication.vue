@@ -20,18 +20,18 @@
             <div class="col-md-3" id="side-menu">
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                  <router-link to="/tenant/email-communications/compose-message" class="btn compose-btn">Compose new Email</router-link>
+                  <router-link to="/tenant/email/compose" class="btn compose-btn">Compose new Email</router-link>
                 </div>
               </div>
               <div class="row mb-3">
                 <div
                   class="col-md-12"
                 >
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email-communications'}">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item"
-                          ><router-link class="r-link" to="/tenant/email-communications">
+                          ><router-link class="r-link" to="/tenant/email">
                             <i class="fas fa-inbox mr-3 menu-icon"></i>
                             <span class="active">Inbox</span>
                           </router-link>
@@ -41,11 +41,11 @@
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email-communications/sent'}">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email/sent'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/email-communications/sent">
+                            <router-link class="r-link" to="/tenant/email/sent">
                               <i class="fa fa-location-arrow mr-3 menu-icon"></i>
                               <span class="active">Sent</span>
                             </router-link>
@@ -54,11 +54,11 @@
                     </div>
                   </div>
 
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email-communications/draft'}">
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email/draft'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/email-communications/draft">
+                            <router-link class="r-link" to="/tenant/email/draft">
                               <i class="fa fa-envelope-open mr-3 menu-icon"></i>
                               <span class="active">Draft</span>
                             </router-link>

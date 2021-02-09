@@ -56,13 +56,13 @@ const routes = [{
             import ( /* webpackChunkName: "processrequest" */ '../views/onboarding/ProcessRequest.vue')
     },
     {
-        path: '/forgot-password',
+        path: '/forgotpassword',
         name: 'ForgotPassword',
         component: () =>
             import ( /* webpackChunkName: "forgotpassword" */ '../views/account/ForgotPassword.vue')
     },
     {
-        path: '/reset-password',
+        path: '/resetpassword',
         name: 'ResetPassword',
         component: () =>
             import ( /* webpackChunkName: "resetpassword" */ '../views/account/ResetPassword.vue')
@@ -103,20 +103,20 @@ const routes = [{
                         name: 'ImportPeople'
                     },
                     {
-                        path: 'add-first-timer',
+                        path: 'addfirsttimer',
                         name: 'AddFirstTimer',
                         component: () =>
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
                     },
                     {
-                        path: 'add-person/:personId?',
+                        path: 'add/:personId?',
                         component: () =>
                             import ( /* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
                     },
                     {
-                        path: 'add-first-timer/:firstTimerId?',
+                        path: 'addfirsttimer/:firstTimerId?',
                         component: () =>
-                            import ( /* webpackChunkName: "addperson" */ '../views/people/AddFirstTimer.vue')
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
                     },
 
                 ]
@@ -129,26 +129,31 @@ const routes = [{
                     import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
             },
             {
-                path: 'empty-event',
+                path: 'emptyevent',
                 name: 'EmptyEvent',
                 component: () =>
                     import ( /* webpackChunkName: "emptyevent" */ '@/views/event/EmptyEvent.vue')
             },
             {
-                path: 'event-list',
+                path: 'events',
                 name: 'EventList',
                 component: () =>
                     import ( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
             },
+            {
+                path: 'event/:event?',
+                component: () =>
+                    import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+            },
 
             {
-                path: 'first-timers',
+                path: 'firsttimers',
                 name: 'FirstTimers',
                 component: () =>
                     import ( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimersList.vue')
             },
             {
-                path: 'first-timer-empty',
+                path: 'firsttimersempty',
                 name: 'FirstTimerEmpty',
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
@@ -160,7 +165,7 @@ const routes = [{
                     import ( /* webpackChunkName: "report" */ '@/views/event/EventReport.vue')
             },
             {
-                path: 'sms-communications',
+                path: 'sms',
                 name: 'SmsCommunication',
                 component: () =>
                     import ( /* webpackChunkName: "smscommunication" */ '@/views/communication/SmsCommunication'),
@@ -195,16 +200,16 @@ const routes = [{
                             import ( /* webpackChunkName: "contactlist" */ '@/views/communication/MessageDetails')
                     },
                     {
-                        path: 'add-group',
+                        path: 'addgroup',
                         name: 'Phongroup',
                         component: () =>
                             import ( /* webpackChunkName: "phonegroup" */ '@/views/communication/PhoneGroup')
                     },
                     {
-                        path: 'edit-contact/:groupId',
+                        path: 'editcontact/:groupId',
                         name: 'EditContactList',
                         component: () =>
-                            import ( /* webpackChunkName: "editcontactlist" */ '@/views/communication/EditContactList')
+                            import ( /* webpackChunkName: "editcontactlist" */ '@/views/communication/EditGroup')
                     },
                     {
                         path: 'report/:messageId',
@@ -213,7 +218,7 @@ const routes = [{
                             import ( /* webpackChunkName: "deliveryreport" */ '@/views/communication/DeliveryReport')
                     },
                     {
-                        path: 'compose-message',
+                        path: 'compose',
                         name: 'SendMessage',
                         component: () =>
                             import ( /* webpackChunkName: "sendmessage" */ '@/views/communication/SendSms')
@@ -227,7 +232,7 @@ const routes = [{
                 ]
             },
             {
-                path: 'email-communications',
+                path: 'email',
                 name: 'EmailCommunication',
                 component: () =>
                     import ( /* webpackChunkName: "emailcommunication" */ '@/views/communication/EmailCommunication'),
@@ -252,21 +257,21 @@ const routes = [{
                     // { path: 'contacts', name: 'ContactList', component: ContactList },
                     // { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
                     {
-                        path: 'compose-message',
+                        path: 'compose',
                         name: 'ComposeEmail',
                         component: () =>
-                            import ( /* webpackChunkName: "composemessage" */ '@/views/communication/ComposeEmail')
+                            import ( /* webpackChunkName: "compose" */ '@/views/communication/ComposeEmail')
                     }
                 ]
             },
             {
-                path: 'people-groups',
+                path: 'peoplegroups',
                 name: 'Groups',
                 component: () =>
                     import ( /* webpackChunkName: "groups" */ '@/views/groups/GroupsList')
             },
             {
-                path: 'create-people-group/:groupId?',
+                path: 'createpeoplegroup/:groupId?',
                 name: 'CreateGroup',
                 component: () =>
                     import ( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/CreateGroup')
@@ -343,6 +348,12 @@ const routes = [{
                     //         import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/Details')
                     // },
                 ]
+            },
+            {
+                path: 'chartofaccount',
+                name: 'ChartOfAccount',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
             }
         ]
     },

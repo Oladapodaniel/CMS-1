@@ -41,7 +41,7 @@
         <!-- Section two -->
         <div class="row">
           <div class="col-md-12">
-            <h4 class="font-weight-600">{{ message.subject }}</h4>
+            <h4 class="font-weight-600">{{message ? message.subject : "" }}</h4>
           </div>
         </div>
         <div class="row main2 pt-md-3 mb-4 bg-white rounded" v-if="!loading">
@@ -50,7 +50,7 @@
           </div>
           <div class="col-md-5">
             <div class="name">
-              <h4 class="font-weight-700 pl-md-2">{{ message.sentByUser }}</h4>
+              <h4 class="font-weight-700 pl-md-2">{{ message && message.sentByUser ? message.sentByUser : "" }}</h4>
               <p class="nam mb-0 font-weight-600">To Me <i class="pi pi-caret-down to-icon"></i></p>
             </div>
           </div>
@@ -58,7 +58,7 @@
           <div class="col-md-6 d-md-flex">
             <div class="row w-100">
               <div class="col-lg-8 d-md-flex justify-content-end">
-                <p class="">{{ message.dateSent }}</p>
+                <p class="">{{ message && message.dateSent ? message.dateSent : "" }}</p>
               </div>
               <div class="col-lg-4">
                 <div class="icons d-md-flex justify-content-end">
@@ -79,7 +79,7 @@
           <div class="col-md-11">
             <!-- <p class="">Hello Madam</p> -->
             <p class="ptext text-justify" style="line-height: 2.5rem;">
-              {{ message.message }}
+              {{ message ? message.message : "" }}
             </p>
           </div>
         </div>
@@ -152,12 +152,21 @@
 import { ref } from 'vue';
 import composeService from "../../services/communication/composer";
 import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+
 
 export default {
   setup() {
     const message = ref({ });
     const loading = ref(false);
     const route = useRoute();
+    const store = useStore();
+
+    if (route.params.messageId) {
+      loading.value = true;
+      message.value = store.getters["communication/getById"](route.params.messageId);
+      console.log(message.value, "Details");
+    }
 
     if (route.params.messageId) {
       loading.value = true;
@@ -165,6 +174,7 @@ export default {
         .then(res => {
           loading.value = false;
           message.value = res;
+          console.log(res, "on load");
         })
         .catch(err => {
           loading.value = false;

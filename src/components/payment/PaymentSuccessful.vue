@@ -20,7 +20,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-center mt-5">
-                            <router-link to="/tenant/sms-communications/compose-message" class="default-btn primary-bg border-0 text-white text-decoration-none">Send SMS Now!</router-link>
+                            <router-link to="/tenant/sms/compose" class="default-btn primary-bg border-0 text-white text-decoration-none">Send SMS Now!</router-link>
                         </div>
                     </div>
                 </div>

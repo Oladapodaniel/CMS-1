@@ -227,9 +227,9 @@
                     <div class="cstm-select">
                       <div class="cs-select day">
                         <Dropdown
+                          placeholder="Day"
                           v-model="person.dayOfWedding"
                           :options="annDaysArr"
-                          placeholder="Day"
                           style="width: 100%"
                         />
                         <!-- <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/> -->
@@ -419,7 +419,8 @@ import { useRoute } from "vue-router";
 import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
-import membershipService from "../../services/membership/membershipservice"
+import membershipService from "../../services/membership/membershipservice";
+// import lookupService from "../../services/lookup/lookupservice";
 
 export default {
   components: { Dropdown },
@@ -495,9 +496,7 @@ export default {
     const anniversaryDate = moment();
     const daysInAnnMonth = ref(anniversaryDate.daysInMonth());
     const annDaysArr = computed(() => {
-      console.log(anniversaryDate.month(), "month");
       const arrOfDays = [];
-      console.log(daysInAnnMonth.value, "dm");
       for (let i = 1; i <= daysInAnnMonth.value; i++) {
         arrOfDays.push(i);
       }
@@ -524,14 +523,14 @@ export default {
     };
 
     //Person
-    const peopleClassifications = ref([ ]); //null
+    const peopleClassifications = ref([]); //null
     const selectedMembership = ref(null);
     let person = reactive({
       monthOfBirth: null,
       dayOfBirth: null,
       yearOfBirth: null,
       monthOfWedding: null,
-      dayOfWedding: null,
+      dayOfWedding: 31,
       yearOfWedding: null,
     });
 
@@ -607,11 +606,16 @@ export default {
           );
 
           if (response.status === 200 || response.status === 201) {
-            store.dispatch("membership/getMembers")
+            membershipService.updatePersonInStore(
+              response.data.person,
+              route.params.personId
+            );
+            // store.dispatch("membership/getMembers")
             loading.value = false;
             router.push("/tenant/people");
           }
         } catch (err) {
+          console.log(err);
           loading.value = false;
           NProgress.done();
           if (err.toString().toLowerCase().includes("network error")) {
@@ -630,7 +634,9 @@ export default {
             toast.add({
               severity: "error",
               summary: "Update Failed",
-              detail: errMessage.value ? errMessage.value : "Update operation failed",
+              detail: errMessage.value
+                ? errMessage.value
+                : "Update operation failed",
               life: 2500,
             });
           }
@@ -646,7 +652,9 @@ export default {
           );
 
           if (response.status === 200 || response.status === 201) {
-            store.dispatch("membership/getMembers")
+            // store.dispatch("membership/getMembers")
+            console.log(response, "response");
+            membershipService.addPersonToStore(response.data.person);
             loading.value = false;
             router.push("/tenant/people");
           }
@@ -669,7 +677,9 @@ export default {
             toast.add({
               severity: "error",
               summary: "Saving Failed",
-              detail: errMessage.value ? errMessage.value : "Save operation failed",
+              detail: errMessage.value
+                ? errMessage.value
+                : "Save operation failed",
               life: 2500,
             });
           }
@@ -677,10 +687,11 @@ export default {
       }
     };
 
+
     let genders = ref(store.getters["lookups/genders"]);
     let maritalStatus = ref(store.getters["lookups/maritalStatus"]);
     let ageGroups = ref(store.getters["lookups/ageGroups"]);
-    let memberships = ref(store.getters['lookups/peopleClassifications']);
+    let memberships = ref(store.getters["lookups/peopleClassifications"]);
 
     const selectedMaritalStatus = ref(null);
     const selectedGender = ref(null);
@@ -694,9 +705,25 @@ export default {
           genders.value = res.data.find(
             (i) => i.type.toLowerCase() === "gender"
           ).lookUps;
+          try {
+            selectedGender.value = genders.value.find(
+              (i) => i.id === memberToEdit.value.genderID
+            );
+          } catch (error) {
+            console.log(error);
+          }
+
+          
           maritalStatus.value = res.data.find(
             (i) => i.type.toLowerCase() === "maritalstatus"
           ).lookUps;
+          try {
+            selectedMaritalStatus.value = maritalStatus.value.find(
+              (i) => i.id === memberToEdit.value.maritalStatusID
+            );
+          } catch (error) {
+            console.log(error);
+          }
           console.log(maritalStatus, "MS");
         })
         .catch((err) => console.log(err.response));
@@ -711,21 +738,24 @@ export default {
         memberships.value = data;
         console.log(memberships.value, "ms");
         peopleClassifications.value = data.map((i) => i.name);
+        getPersonPeopleClassificationId();
       } catch (err) {
         if (err.response && err.response.status === 401) {
-          localStorage.removeItem("token")
+          localStorage.removeItem("token");
 
           router.push("/");
         }
         console.log(err);
       }
-    }
+    };
 
     const getAgeGroups = () => {
+      console.log("Calling age");
       axios
         .get("/api/Settings/GetTenantAgeGroups")
         .then((res) => {
           ageGroups.value = res.data;
+          getPersonAgeGroupId();
           console.log(ageGroups.value);
         })
         .catch((err) => console.log(err.response));
@@ -733,7 +763,8 @@ export default {
 
     if (!genders.value || genders.value.length === 0) getLookUps();
     if (!ageGroups.value || ageGroups.value.length === 0) getAgeGroups();
-    if (!memberships.value || memberships.value.length === 0) getPeopleClassifications();
+    if (!memberships.value || memberships.value.length === 0)
+      getPeopleClassifications();
 
     const gendersArr = computed(() => {
       return genders.value.map((i) => i.value);
@@ -745,8 +776,52 @@ export default {
     const route = useRoute();
     const memberToEdit = ref(null);
 
+    const getPersonGenderId = () => {
+      if (memberToEdit.value && memberToEdit.value.personId) {
+        if (genders.value && genders.value.length > 0) {
+          selectedGender.value = genders.value.find(
+          (i) => i.id === memberToEdit.value.genderID
+        );
+        } else {
+          getLookUps();
+        }
+      }
+    }
+
+    const getPersonMaritalStatusId = () => {
+      if (memberToEdit.value && memberToEdit.value.personId) {
+      selectedMaritalStatus.value = maritalStatus.value.find(
+          (i) => i.id === memberToEdit.value.maritalStatusID
+        );
+      }
+    }
+
+    const getPersonPeopleClassificationId = () => {
+      if (memberToEdit.value && memberToEdit.value.personId) {
+        if (memberships.value && memberships.value.length > 0) {
+          selectedMembership.value = memberships.value.find(
+            (i) => i.id === memberToEdit.value.peopleClassificationID
+          );
+        } else {
+          getPeopleClassifications();
+        }
+      }
+      
+    }
+
+    const getPersonAgeGroupId = () => {
+      if (memberToEdit.value && memberToEdit.value.personId) {
+        if (ageGroups.value && ageGroups.value.length > 0) {
+          selectedAgeGroup.value = ageGroups.value.find(
+            (i) => i.id === memberToEdit.value.ageGroupID
+          );
+        } else {
+          getAgeGroups();
+        }
+      }
+    }
+
     const populatePersonDetails = (data) => {
-      console.log(data, "data passed");
       person.firstName = data.firstName;
       person.email = data.email;
       person.lastName = data.lastName;
@@ -754,42 +829,37 @@ export default {
       person.mobilePhone = data.mobilePhone;
       person.address = data.homeAddress;
       person.occupation = data.occupation;
-    }
+      person.dayOfBirth = data.dayOfBirth;
+      person.monthOfBirth = data.monthOfBirth ? months[data.monthOfBirth - 1] : null;
+      person.dayOfWedding = data.dayOfWedding;
+      person.yearOfBirth = data.yearOfBirth;
+      person.monthOfWedding = data.monthOfWedding ? months[data.monthOfWedding - 1] : null;
+      person.yearOfWedding = data.yearOfWedding;
+    };
 
     const getMemberToEdit = () => {
-      membershipService.getMemberById(route.params.personId)
-        .then(res => {
-          memberToEdit.value = res;
-          populatePersonDetails(res);
-        })
-    }
+      membershipService.getMemberById(route.params.personId).then((res) => {
+        memberToEdit.value = res;
+         populatePersonDetails(res);
+        getPersonGenderId();
+        getPersonMaritalStatusId();
+        getPersonPeopleClassificationId();
+        getPersonAgeGroupId();
+      });
+    };
 
     if (route.params.personId) {
-      console.log(store.getters[`membership/getMemberById`](route.params.personId), "lll");
-      memberToEdit.value = store.getters[`membership/getMemberById`](route.params.personId);
-      
-      if (!memberToEdit.value || !memberToEdit.value.id) {
-        getMemberToEdit(route.params.personId)
-      } else {
-        populatePersonDetails(memberToEdit.value);
-      }
+      getMemberToEdit(route.params.personId);
     }
 
-    
+
+ 
+
     onMounted(async () => {
-      if (memberToEdit.value && memberToEdit.value.id) {
-        selectedMaritalStatus.value = maritalStatus.value.find(
-          (i) => i.id === memberToEdit.value.maritalStatusID
-        );
-        
-        selectedGender.value = genders.value.find(
-          (i) => i.id === memberToEdit.value.genderID
-        );
-        
-        selectedMembership.value = memberships.value.find(
-          (i) => i.id === memberToEdit.value.peopleClassificationID
-        );
-      }
+      
+      
+      
+      // getPersonAgeGroupId();
     });
 
     const areaInView = ref("groups");

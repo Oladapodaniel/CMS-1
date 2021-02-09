@@ -27,7 +27,7 @@
           </div>
 
           <div class="all-options">
-            <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms-communications/compose-message' }}" class="start-option">
+            <router-link :to="{ name: 'ProcessRequest', params: { option: '/tenant/sms/compose' }}" class="start-option">
               <div class="icon">
                 <img
                   class="link-icon"
@@ -43,7 +43,7 @@
 
             <router-link
               class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add-person' }}"
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add' }}"
             >
               <div class="icon">
                 <img
@@ -60,7 +60,7 @@
 
             <router-link
               class="start-option"
-              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/add-first-timer' }}"
+              :to="{ name: 'ProcessRequest', params: { option: '/tenant/people/addfirsttimer' }}"
             >
               <div class="icon">
                 <img

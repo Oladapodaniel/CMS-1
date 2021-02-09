@@ -33,7 +33,7 @@
                     <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
                     <!-- <div class="col-md-7 form-group px-0"> <input type="text"
 class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="groupNameDisabled"ref="groupName"/></div> -->
-                    <div class="col-md-6 form-group px-0">
+                    <div class="col-md-6 mt-3 form-group px-0">
                       <input
                         type="text"
                         class="form-control"
@@ -43,8 +43,8 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                       />
                     </div>
 
-                    <div class="col-lg-5 col-sm-4 mr-lg-n5 amazingE">
-                      <button
+                    <div class="col-md-6 col-sm-4 mr-lg-n5 amazingE">
+                      <!-- <button
                         v-on:click="enableGroupName"
                         class="btn btnIcons btn-secondary"
                       >
@@ -53,7 +53,7 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                           aria-hidden="true"
                         ></i>
                         Add
-                      </button>
+                      </button> -->
                     </div>
                   </div>
 
@@ -62,13 +62,10 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                   </div>
                   <div class="row d-flex flex-row justify-content-between mdiv">
                     <div class="col-md-6 form-group px-0">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="phoneNumber"
+                      <textarea name="" id="" class="w-100 grey-rounded-border form-control" rows="5"
                         v-model="enteredValue"
                         required
-                      />
+                      ></textarea>
                     </div>
                     <div class="col-md-5 mr-lg-n5 addIconarea">
                       <button
@@ -225,7 +222,7 @@ export default {
         .then((res) => {
           this.loading = false;
           console.log(res);
-          router.push("/tenant/sms-communications/contacts");
+          router.push("/tenant/sms/contacts");
         })
         .catch((err) => {
           this.loading = false;

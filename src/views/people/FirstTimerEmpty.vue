@@ -5,8 +5,10 @@
   <div class="whole-con">
     <div class="main-con">
       <div class="main-body">
+       
+        
         <div class="col-sm-12">
-        <div class="top mt-3">
+        <div class="top container-wide mt-3">
           <div class="header">
             <h2>First Timers
             </h2>
@@ -16,7 +18,7 @@
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
-              <router-link :to="{ name: 'Event' }">
+              <router-link :to="{ name: 'AddFirstTimer' }">
                 <button class="button add-person-btn">
                   Add First Timers
                 </button>
@@ -24,30 +26,62 @@
           </div>
         </div>
       </div>
-        <!-- <div class="top">
-          <div class="header">
-            <h2>Event</h2>
-          </div>
-          <div class="actions">
-            <router-link :to="{ name: 'Event' }">
-            <button class="button add-person-btn">
-              Add Event
-            </button>
-            </router-link>
-          </div>
-        </div> -->
         <hr class="hr" />
-<!-- v-if="!loading && people.length === 0" -->
-<!-- v-if="!loading && people.length > 0" -->
-        <div v-if="firstTimersList.length === 0" class="no-person" >
+         <div v-if="firstTimersList.length === 0 && !loading" class="no-person" >
         <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any first timer yet</p>
         </div>
-        </div>
-        <div v-else class="event-list">
+      </div>
+      <div v-else-if="firstTimersList.length > 0 && !loading" class="event-list">
             <FirstTimersList />
         </div>
+
+        <div class="row" v-if="loading">
+    <div class="col-md-12">
+      <div class="row my-2 d-md-flex justify-content-between">
+        <div class="col-md-4">
+          <Skeleton width="100%" height="200px" shape="circle" />
+        </div>
+        <div class="col-md-4">
+          <Skeleton width="100%" height="200px" shape="circle" />
+        </div>
+        <div class="col-md-4">
+          <Skeleton width="100%" height="200px" shape="circle" />
+        </div>
+      </div>
+
+      <div
+        class="row my-2 d-md-flex justify-content-center"
+        v-for="i in 10"
+        :key="i"
+      >
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
+        </div>
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
+        </div>
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
+        </div>
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
+        </div>
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
+        </div>
+        <div class="col-md-2 my-2">
+          <Skeleton width="100%" height="2rem" />
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- v-if="!loading && people.length === 0" -->
+<!-- v-if="!loading && people.length > 0" -->
+       
+        
+         
 
         <!-- Transitio area -->
         <!-- <transition
@@ -79,16 +113,20 @@ export default {
        components: { FirstTimersList },
   setup() {
       const firstTimersList = ref([])
+      const loading = ref(false)
+
       const getFirstTmersList = () => {
+        loading.value = true
           axios.get("/api/People/FirstTimer")
           .then(res => {
             firstTimersList.value = res.data;
+            loading.value = false
             console.log(res.data)
           })
       }
       getFirstTmersList()
   
-    return { firstTimersList, getFirstTmersList };
+    return { firstTimersList, getFirstTmersList, loading };
 
   },
 };

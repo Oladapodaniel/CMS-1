@@ -1,23 +1,23 @@
 <template>
-  <div class="container-wide container-top">
-    <div class="row my-3">
+  <div class="container-wide">
+    <!-- <div class="row my-3">
       <div class="col-sm-4 first-timers-text">
         <h2 class="page-header">First Timers</h2>
       </div>
 
       <div class="col-sm-8 d-flex head-button">
         <button class="more default-btn">More <i class="fa fa-angle-down ml-2"></i></button>
-        <router-link to="/tenant/people/add-first-timer" class="add-btn">
+        <router-link to="/tenant/people/addfirsttimer" class="add-btn">
           Add First timer
         </router-link>
       </div>
-    </div>
+    </div> -->
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-12">
         <hr class="hr" />
       </div>
-    </div>
+    </div> -->
 
     <div class="row">
       <div class="col-md-12">
@@ -161,7 +161,7 @@
       </div>
 
             
-            <div class="table-responsive">
+            <div class="responsive-table">
               <table class=" table-borderless w-100">
               <thead class="header"> 
                 <tr>
@@ -178,12 +178,12 @@
               <tbody v-if="filterResult.length > 0 && ( filter.filterFirstName || filter.filterLastName || filter.phoneNumber )">
               <tr v-for="person in filterResult" :key="person.id">
                   <td><input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/></td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`" class="itemroute-color">{{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}</router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}</router-link></td>
                   <td><router-link :to="``" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
                   <td class="itemroute-color">{{ person.howDidYouAboutUsName }}</td>
                   <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining }}</td>
                   <td class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
                   <td><div class="dropdown">
                     <i
                       class="fas fa-ellipsis-v"
@@ -200,12 +200,12 @@
                       <a class="dropdown-item" href="#">Assign to follow-up</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
-                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
                           >Send SMS</router-link
                         >
                       </a>
                       <a class="dropdown-item" href="#">Send Email</a>
-                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item" href="#"  @click.prevent="showConfirmModal(person.id)">Delete</a>
                     </div>
                   </div>
                   </td>
@@ -229,12 +229,12 @@
               <tbody v-else-if="searchMember.length > 0">
                 <tr v-for="person in searchMember" :key="person.id">
                   <td><input type="checkbox" name="all" id="all" @click="toggleSelect"/></td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.id}`" class="itemroute-color">{{ person.fullName }}</router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName }}</router-link></td>
                   <td><router-link :to="``" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
                   <td class="itemroute-color"> {{ person.howDidYouAboutUsName }}</td>
-                  <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining }}</td>
+                  <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining == "On_Transit" ? "On Transit" : person.interestedInJoining }}</td>
                   <td class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
-                  <td><router-link :to="`/tenant/people/add-first-timer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color"></router-link></td>
                   <td><div class="dropdown">
                     <i
                       class="fas fa-ellipsis-v"
@@ -251,12 +251,12 @@
                       <a class="dropdown-item" href="#">Assign to follow-up</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
-                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
                           >Send SMS</router-link
                         >
                       </a>
                       <a class="dropdown-item" href="#">Send Email</a>
-                      <a class="dropdown-item" href="#">Delete</a>
+                      <a class="dropdown-item" href="#" @click.prevent="showConfirmModal(person.id)">Delete</a>
                     </div>
                   </div>
                   </td>
@@ -348,7 +348,7 @@
                       <a class="dropdown-item" href="#">Assign to follow-up</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
-                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
                           >Send SMS</router-link
                         >
                       </a>
@@ -381,7 +381,7 @@
                       <p>Name</p>
                     </div>
                     <div class="data-value">
-                      <router-link :to="`/tenant/people/add-first-timer/${person.id}`">{{ person.fullName }}</router-link>
+                      <router-link :to="`/tenant/people/addfirsttimer/${person.id}`">{{ person.fullName }}</router-link>
                     </div>
 
                   </div>
@@ -437,7 +437,7 @@
                       <p>Status</p>
                     </div>
                     <router-link
-                      :to="`/tenant/people/add-first-timer/${person.personID}`"
+                      :to="`/tenant/people/addfirsttimer/${person.personID}`"
                    
                     </router-link>
                   </div>
@@ -459,7 +459,7 @@
                       <a class="dropdown-item" href="#">Assign to follow-up</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
-                          :to="`/tenant/sms-communications/compose-message?phone=${person.phoneNumber}`"
+                          :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
                           >Send SMS</router-link
                         >
                       </a>
@@ -476,10 +476,12 @@
              
               
             </div> -->
+            <ConfirmDialog />
+            <Toast />
 
             <div class="table-footer">
               
-              <Pagination />
+              <Pagination  @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage"/>
             </div>
           </div>
         </div>
@@ -496,6 +498,8 @@ import axios from "@/gateway/backendapi";
 import Pagination from "../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
 import moment from 'moment'
+import { useConfirm } from "primevue/useConfirm"
+import { useToast } from 'primevue/usetoast';
 
 export default {
   props: ["list"],
@@ -546,6 +550,57 @@ export default {
         }
       })
 
+
+      const deleteMember = (id) => {
+        //  delete firtimer
+        axios
+          .delete(`/api/People/DeleteOnePerson/${id}`)
+          .then((res) => {
+            console.log(res);
+            toast.add({severity:'success', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+            churchMembers.value = churchMembers.value.filter(item => item.id !== id )
+
+// update first timer summary while deleting
+            axios.get("/api/People/GetFirsttimerSummary")
+              .then(res => {
+                getFirstTimerSummary.value = res.data;
+                console.log(res.data)
+              })
+              .catch(err => console.log(err))            
+          })
+          .catch((err) => {
+            /*eslint no-undef: "warn"*/
+            NProgress.done();
+            if (err.response.status === 400) {
+              toast.add({severity:'error', summary:'Unable to delete', detail:'Ensure this member is not in any group', life: 3000});
+            } else {
+              toast.add({severity:'error', summary:'Unable to delete', detail:'An error occurred, please try again', life: 3000});
+            }
+          });
+      };
+
+
+
+      const confirm = useConfirm();
+      let toast = useToast();
+      const showConfirmModal = (id) => {
+           confirm.require({
+               message: 'Are you sure you want to proceed?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'confirm-delete',
+                rejectClass: 'cancel-delete',
+                accept: () => {
+                    deleteMember(id)
+                    // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+                },
+                reject: () => {
+                    toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+                }
+
+        });
+        }
+
     // const getFirstTimers = async () => {
     //   try {
     //     const { data } = await axios.get(
@@ -582,6 +637,28 @@ export default {
       }) .catch(err => console.log(err))
     }
 
+    const membersCount = computed(() => {
+      if (getFirstTimerSummary.value.totalFirstTimer > 20) return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 20);
+      return 0;
+    })
+
+    const currentPage = ref(1);
+    const getPeopleByPage = async (page) => {
+      if (page < 1) return false;
+      try {
+        const { data } = await axios.get(
+          `/api/People/GetPeopleBasicInfo?page=${page}`
+        );
+        filterResult.value = [ ];
+        searchMember.value = [ ];
+        noRecords.value = false;
+        churchMembers.value = data;
+        currentPage.value = page;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     return {
       churchMembers,
       filterFormIsVissible,
@@ -596,7 +673,12 @@ export default {
       filterResult,
       noRecords,
       searchText,
-      searchMember
+      searchMember,
+      showConfirmModal,
+      deleteMember,
+      membersCount,
+      currentPage,
+      getPeopleByPage
     };
   },
 };
@@ -622,7 +704,6 @@ export default {
 .my-con {
   /* display: flex; */
   justify-content: space-between;
-  margin: 18px 0;
 }
 
 .summary {
@@ -953,6 +1034,21 @@ export default {
     text-align: right;
   }
 
+
+
+
+  /* @media (max-width: 767px) {
+    .table-responsive .dropdown-menu {
+        position: static !important;
+    }
+}
+@media (min-width: 768px) {
+    .table-responsive {
+        overflow: visible;
+    }
+} */
+
+
   /* .table-header {
     display: none;
   } */
@@ -1007,7 +1103,7 @@ export default {
 }
 
 @media screen and (min-width: 501px) and (max-width: 768px) {
-  .boards {
+  /* .boards {
     flex-direction: column;
     align-items: center !important;
     flex-wrap: nowrap !important;
@@ -1019,17 +1115,22 @@ export default {
 
   .chart-con div {
     width: 40%;
-  }
+  } */
 
   .board {
-    width: 100% !important;
+    width: 50% !important;
     margin-bottom: 10px;
+  }
+
+  .summary-header {
+    width: 50%;
+    margin-left: 25%
   }
 }
 
 @media screen and (max-width: 768px) {
   .filter-options-shown {
-    height: 300px !important;
+    height: 150px !important;
     overflow: hidden;
     transition: all 0.5s ease-in-out;
   }
@@ -1037,6 +1138,11 @@ export default {
   .boards {
     flex-wrap: nowrap;
   }
+
+  .responsive-table {
+      max-width: 100%;
+      overflow-x: scroll;
+    }
 }
 
 @media screen and (max-width: 1024px) {
