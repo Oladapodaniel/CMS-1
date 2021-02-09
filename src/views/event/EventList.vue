@@ -253,6 +253,7 @@
                 <th>ATTENDANCE</th>
                 <th>FIRST TIMERS</th>
                 <th>NEW CONVERTS</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -271,9 +272,48 @@
                 <td>{{ event.attendances }}</td>
                 <td>{{ event.firstTimers }}</td>
                 <td>{{ event.newConverts }}</td>
+                <td>
+                  <div class="dropdown">
+              <i
+                class="fas fa-ellipsis-v cursor-pointer"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></i>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <!-- <a class="dropdown-item elipsis-items" v-if="pers.mobilePhone">
+                  <router-link
+                    :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
+                    >Send SMS</router-link
+                  >
+                </a> -->
+                <!-- <a class="dropdown-item elipsis-items" v-if="person.email">
+                  <router-link
+                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    >Send Email</router-link
+                  >
+                </a> -->
+                <a class="dropdown-item elipsis-items">
+                  <router-link :to="`/tenant/event/${event.activityId}`"
+                    >Edit</router-link
+                  >
+                </a>
+                <a
+                  class="dropdown-item elipsis-items"
+                  href="#"
+                  @click.prevent="showConfirmModal(event.activityId)"
+                  >Delete</a
+                >
+              </div>
+            </div>
+                </td>
               </tr>
             </tbody>
           </table>
+
+            <ConfirmDialog />
+            <Toast />
 
           <div class="table-footer">
             <button class="tbl-footer-btn">
@@ -295,6 +335,8 @@
 import axios from "@/gateway/backendapi";
 import { ref, computed } from "vue";
 import moment from "moment";
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from 'primevue/usetoast';
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice"
 export default {
@@ -381,6 +423,58 @@ export default {
   })
 
 
+const deleteMember = (id) => {
+        //  delete firtimer
+        axios
+          .delete(`/api/People/DeleteOnePerson/${id}`)
+          .then((res) => {
+            console.log(res);
+            toast.add({severity:'success', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+            churchMembers.value = churchMembers.value.filter(item => item.id !== id )
+
+// update first timer summary while deleting
+          //   axios.get("/api/People/GetFirsttimerSummary")
+          //     .then(res => {
+          //       getFirstTimerSummary.value = res.data;
+          //       console.log(res.data)
+          //     })
+          //     .catch(err => console.log(err))            
+          // })
+          // .catch((err) => {
+            /*eslint no-undef: "warn"*/
+            NProgress.done();
+            if (err.response.status === 400) {
+              toast.add({severity:'error', summary:'Unable to delete', detail:'Ensure this member is not in any group', life: 3000});
+            } else {
+              toast.add({severity:'error', summary:'Unable to delete', detail:'An error occurred, please try again', life: 3000});
+            }
+          });
+      };
+
+
+  const confirm = useConfirm();
+    let toast = useToast();
+        const showConfirmModal = (id) => {
+           
+           confirm.require({
+               message: 'Are you sure you want to proceed?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'confirm-delete',
+                rejectClass: 'cancel-delete',
+                accept: () => {
+                    deleteMember(id)
+                    
+                },
+                reject: () => {
+                    // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+                }
+
+        });
+        }
+        
+
+
     // const attendanceAverage = computed(() => {
     // return events.value.reduce( (a, b) => { return a.attendances + b.attendances })
     // return events.value
@@ -405,7 +499,9 @@ export default {
       hoverEvent2,
       leaveEvent2,
       filterEvents,
-      searchText
+      searchText,
+      showConfirmModal,
+      deleteMember
     };
   },
 };
