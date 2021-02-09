@@ -1,10 +1,9 @@
 <template>
   <div>
-    <div class="container">
+    <div class="contain">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
         <div class="col-md-12">
           <h2>Age Group Category</h2>
-
         </div>
       </div>
       <div class="row grey-rounded-border pt-1 pb-5">
