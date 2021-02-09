@@ -653,6 +653,7 @@ export default {
 
           if (response.status === 200 || response.status === 201) {
             // store.dispatch("membership/getMembers")
+            console.log(response, "response");
             membershipService.addPersonToStore(response.data.person);
             loading.value = false;
             router.push("/tenant/people");

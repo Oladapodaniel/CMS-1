@@ -52,6 +52,7 @@
                   </div>
 
                   <div
+                    v-if="false"
                     class="row menu-item-con py-2"
                     :class="{
                       'active-link':

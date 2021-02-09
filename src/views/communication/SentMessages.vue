@@ -67,7 +67,7 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row" v-for="(sms, index) in testData" :key="index">
+                  <div class="row" v-for="(sms, index) in messages" :key="index">
                   <!-- <div class="row" v-for="(sms, index) in sentSMS" :key="index"> -->
                     <div class="col-md-12">
                       <div class="row">
@@ -97,7 +97,7 @@
                           <span class="hidden-header font-weight-bold"
                             >SENT BY:
                           </span>
-                          <span>{{ sms.sentBy && sms.sentBy.length > 10 ? `${sms.sentBy.slice(0, 10)}...` : sms.sentBy }}</span>
+                          <span>{{ sms.sentByUser && sms.sentByUser.length > 10 ? `${sms.sentByUser.slice(0, 10)}...` : sms.sentBy }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
@@ -105,7 +105,7 @@
                           <span class="hidden-header font-weight-bold"
                             >UNITS:
                           </span>
-                          <span>{{ sms.unitsUsed }}</span>
+                          <span>{{ sms.smsUnitsUsed }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 my-2 d-flex justify-content-between cursor-pointer"
@@ -113,7 +113,7 @@
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
                           </span>
-                          <router-link :to="{ name: 'DeliveryReport', params: { messageId: sms.id}}" class="view-item-btn"
+                          <router-link :to="{ name: 'DeliveryReport', params: { messageId: sms.id}, query: { units: sms.smsUnitsUsed }}" class="view-item-btn text-decoration-none"
                             >View</router-link
                           >
                         </div>
@@ -158,7 +158,7 @@
 <script>
 // import axios from "@/gateway/backendapi";
 import { computed, ref } from "vue";
-import router from "@/router/index";
+// import router from "@/router/index";
 import communicationService from "../../services/communication/communicationservice"
 import { useStore } from "vuex";
 import UnitsArea from "../../components/units/UnitsArea"
@@ -181,40 +181,26 @@ export default {
         NProgress.start();
         const data = await communicationService.getAllSentSMS(1)
         loading.value = false;
-        sentSMS.value = data;
+        if (data) {
+          sentSMS.value = data;
+        }
       } catch (error) {
+        loading.value = false;
         NProgress.done();
         console.log(error);
       }
     };
 
-    // const testData = ref([
-    //   {id: 1, message: "Hello", sentBy: "Me"},
-    //   {id: 2, message: "Hi", sentBy: "You"},
-    //   {id: 3, message: "Hey", sentBy: "Him"},
-    //   {id: 4, message: "SUp", sentBy: "Her"}
-    // ])
-    // const copyData = [
-    //   {id: 1, message: "Hello", sentBy: "Me"},
-    //   {id: 2, message: "Hi", sentBy: "You"},
-    //   {id: 3, message: "Hey", sentBy: "Him"},
-    //   {id: 4, message: "SUp", sentBy: "Her"}
-    // ];
-
-    const payWithPaystack = () => {
-      router.push("/tenant/units");
-    };
-
-    const getSMSByPage = (page) => {
+    const getSMSByPage = async (page) => {
       try {
-        const data = communicationService.getAllSentSMS(page);
+        const data = await communicationService.getAllSentSMS(page);
         sentSMS.value = data;
+        currentPage.value = page;
       } catch (error) {
         console.log(error);
       }
     }
 
-    console.log(sentSMS.value);
 
     if (!sentSMS.value || sentSMS.value.length === 0) getSentSMS();
 
@@ -223,13 +209,18 @@ export default {
       return sentSMS.value.length;
     })
 
+    const messages = computed(() => {
+      if (!sentSMS.value || sentSMS.value.length === 0) return [ ];
+      return sentSMS.value;
+    })
+
     return {
       sentSMS,
       loading,
-      payWithPaystack,
       itemsCount,
       currentPage,
       getSMSByPage,
+      messages,
     };
   },
 };

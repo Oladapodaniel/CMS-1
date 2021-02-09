@@ -200,7 +200,7 @@ var highchartsOptions = {
             allowPointSelect: true,
             cursor: 'pointer',
             // colors: pieColors,
-            colors: ["#0f0221", "#136acd", "#dde2e6"],
+            colors: ["#0f0221", "#136acd", "#dde2e6", '#67a9cf', '#708eb1'],
             dataLabels: {
                 enabled: true,
                 format: '<b>{point.name}</b><br>{point.percentage:.1f} %',

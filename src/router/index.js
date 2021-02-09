@@ -140,6 +140,11 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
             },
+            {
+                path: 'event/:event?',
+                component: () =>
+                    import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+            },
 
             {
                 path: 'firsttimers',
@@ -204,7 +209,7 @@ const routes = [{
                         path: 'editcontact/:groupId',
                         name: 'EditContactList',
                         component: () =>
-                            import ( /* webpackChunkName: "editcontactlist" */ '@/views/communication/EditContactList')
+                            import ( /* webpackChunkName: "editcontactlist" */ '@/views/communication/EditGroup')
                     },
                     {
                         path: 'report/:messageId',
@@ -325,6 +330,12 @@ const routes = [{
                     //         import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/Details')
                     // },
                 ]
+            },
+            {
+                path: 'chartofaccount',
+                name: 'ChartOfAccount',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
             }
         ]
     },

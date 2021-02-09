@@ -50,15 +50,15 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row" v-for="(draft, index) in drafts" :key="index">
                     <div class="col-md-12 py-2">
-                      <div class="row">
+                      <div class="row py-1">
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-2 d-md-flex justify-content-between">
                            <span class="hidden-header">SENDER: </span>
-                          <span>message</span>
+                          <span><router-link :to="{ name: 'SendMessage', query: { draftId: draft.id } }">{{ draft.sender }}</router-link></span>
                         </div>
                         <div
                           class="col-md-5 col-ms-12 d-flex justify-content-between"
@@ -66,7 +66,7 @@
                           <span class="hidden-header font-weight-bold"
                             >MESSAGE:
                           </span>
-                          <span>message</span>
+                          <span><router-link :to="{ name: 'SendMessage', query: { draftId: draft.id } }">{{ draft.body }}</router-link></span>
                         </div>
                         <div
                           class="col-md-3 col-ms-12 d-flex justify-content-between"
@@ -74,7 +74,7 @@
                           <span class="hidden-header font-weight-bold"
                             >DATE CREATED
                           </span>
-                          <span>message</span>
+                          <span>{{ new Date(draft.dateModified).toLocaleDateString()}}</span>
                         </div>
                         <div
                           class="col-md-1 col-ms-12 d-flex justify-content-between"
@@ -90,41 +90,6 @@
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-md-12 py-2">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-2 d-md-flex justify-content-between">
-                           <span class="hidden-header">SENDER: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-5 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-1 col-ms-12"
-                        >
-                          <span><i class="fa fa-trash delete-icon"></i></span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -145,7 +110,7 @@ export default {
 
   data() {
     return {
-
+      drafts: [ ],
     }
   },
 
@@ -158,6 +123,7 @@ export default {
       try {
         const data = await communicationService.getDrafts();
         console.log(data, "Drafts");
+        this.drafts = data;
       } catch (error) {
         console.log(error);
       }
