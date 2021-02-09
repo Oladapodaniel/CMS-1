@@ -231,7 +231,6 @@ export default {
     hideModal (e) {
     console.log(this.showCode)
     if (!e.target.classList.contains("codeModal")){
-      // console.log(e.target)
       this.showCode = false
     }
   }

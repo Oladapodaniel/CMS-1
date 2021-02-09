@@ -330,6 +330,12 @@ const routes = [{
                     //         import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/Details')
                     // },
                 ]
+            },
+            {
+                path: 'chartofaccount',
+                name: 'ChartOfAccount',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
             }
         ]
     },
