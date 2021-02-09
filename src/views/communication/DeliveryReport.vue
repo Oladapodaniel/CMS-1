@@ -103,7 +103,7 @@
             </div>
             <div class="col-md-3 small-text">
               <span class="hidden-header">Date</span>
-              <span>{{ new Date(message.date).toLocaleString() }}</span>
+              <span>{{ formatDate(message.date) }}</span>
             </div>
           </div>
         </div>
@@ -172,6 +172,16 @@ export default {
       return chartData;
     };
 
+    const formatDate = (date) => {
+      let formattedDate = " ";
+      if (date) {
+        const monthDay = new Date(date).toString().split(" ").slice(1, 3).join(" ");
+        const time = new Date(date).toString().split(" ").slice(4, 5).join(" ").slice(0, 5);
+        formattedDate = `${monthDay}, ${time}`;
+      }
+      return formattedDate;
+    }
+
     const chartData = computed(() => {
         const data = doSMSAnalysis(messages.value);
         return data;
@@ -197,6 +207,7 @@ export default {
       loading,
       finished,
       statsData,
+      formatDate,
     };
   },
 };
