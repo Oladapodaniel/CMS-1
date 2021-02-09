@@ -51,14 +51,6 @@ export default {
       return start;
     }
   },
-
-  created() {
-    console.log(this.itemsCount, "itemsCount");
-  },
-
-  updated() {
-    console.log(this.startButton, "startButton");
-  }
 };
 </script>
 

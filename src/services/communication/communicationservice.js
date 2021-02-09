@@ -34,6 +34,17 @@ const communicationService = {
             stopProgressBar();
             console.log(error);
         }
+    },
+
+    async getDraftsById(id) {
+        try {
+            const { data } = await axios.get(`/api/Messaging/getSMSDraftByID?id=${id}`);
+            return data;
+        } catch (error) {
+            stopProgressBar();
+            console.log(error);
+            return false;
+        }
     }
 }
 

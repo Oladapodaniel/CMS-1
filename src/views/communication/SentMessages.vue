@@ -97,7 +97,7 @@
                           <span class="hidden-header font-weight-bold"
                             >SENT BY:
                           </span>
-                          <span>{{ sms.sentBy && sms.sentBy.length > 10 ? `${sms.sentBy.slice(0, 10)}...` : sms.sentBy }}</span>
+                          <span>{{ sms.sentByUser && sms.sentByUser.length > 10 ? `${sms.sentByUser.slice(0, 10)}...` : sms.sentBy }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
@@ -105,7 +105,7 @@
                           <span class="hidden-header font-weight-bold"
                             >UNITS:
                           </span>
-                          <span>{{ sms.unitsUsed }}</span>
+                          <span>{{ sms.smsUnitsUsed }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 my-2 d-flex justify-content-between cursor-pointer"
@@ -113,7 +113,7 @@
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
                           </span>
-                          <router-link :to="{ name: 'DeliveryReport', params: { messageId: sms.id}}" class="view-item-btn"
+                          <router-link :to="{ name: 'DeliveryReport', params: { messageId: sms.id}, query: { units: sms.smsUnitsUsed }}" class="view-item-btn text-decoration-none"
                             >View</router-link
                           >
                         </div>
@@ -180,7 +180,6 @@ export default {
         /*eslint no-undef: "warn"*/
         NProgress.start();
         const data = await communicationService.getAllSentSMS(1)
-        console.log(data, "all sms");
         loading.value = false;
         if (data) {
           sentSMS.value = data;
@@ -192,31 +191,16 @@ export default {
       }
     };
 
-    // const testData = ref([
-    //   {id: 1, message: "Hello", sentBy: "Me"},
-    //   {id: 2, message: "Hi", sentBy: "You"},
-    //   {id: 3, message: "Hey", sentBy: "Him"},
-    //   {id: 4, message: "SUp", sentBy: "Her"}
-    // ])
-    // const copyData = [
-    //   {id: 1, message: "Hello", sentBy: "Me"},
-    //   {id: 2, message: "Hi", sentBy: "You"},
-    //   {id: 3, message: "Hey", sentBy: "Him"},
-    //   {id: 4, message: "SUp", sentBy: "Her"}
-    // ];
-
-
     const getSMSByPage = async (page) => {
       try {
         const data = await communicationService.getAllSentSMS(page);
         sentSMS.value = data;
-        console.log(data, "SMS");
+        currentPage.value = page;
       } catch (error) {
         console.log(error);
       }
     }
 
-    console.log(sentSMS.value);
 
     if (!sentSMS.value || sentSMS.value.length === 0) getSentSMS();
 
