@@ -26,11 +26,11 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-md-4">
-                    <ReportChart domId="reportChart" title="" />
-                </div> -->
         <div class="col-md-4">
-          <ReportChart domId="reportBarChart" title="By Status" :height="400" :summary="chartData" />
+            <ReportChart domId="reportChart" title="" :height="400" :summary="statsData" :percentage="false" />
+        </div>
+        <div class="col-md-4">
+          <SecondChart domId="reportBarChart" title="" :height="400" :summary="chartData" :percentage="true" />
         </div>
       </div>
 
@@ -111,12 +111,13 @@
 
 <script>
 import ReportChart from "@/components/charts/BarChart.vue";
+import SecondChart from "@/components/charts/SecondReportPie.vue";
 import { useRoute } from "vue-router";
 import communicationService from "../../services/communication/communicationservice";
 import { computed, ref } from "vue";
 
 export default {
-  components: { ReportChart },
+  components: { ReportChart, SecondChart },
 
   setup() {
     const route = useRoute();
@@ -152,8 +153,27 @@ export default {
       return chartData;
     };
 
+    const getSMSStats = (allSMS) => {
+      const chartData = [];
+      const statuses = ["sent", "failed", "sms queued"];
+      for (let status of statuses) {
+          const count = allSMS.filter(i => i.deliveryReport === status).length;
+        chartData.push({
+          name: status.includes("queued") ? "queued" : status,
+          y: count,
+        });
+      }
+      return chartData;
+    };
+
     const chartData = computed(() => {
         const data = doSMSAnalysis(messages.value);
+        return data;
+    })
+
+    const statsData = computed(() => {
+        const data = getSMSStats(messages.value);
+        console.log(data, "stats data");
         return data;
     })
 
@@ -170,6 +190,7 @@ export default {
       chartData,
       loading,
       finished,
+      statsData,
     };
   },
 };

@@ -209,7 +209,7 @@ const routes = [{
                         path: 'editcontact/:groupId',
                         name: 'EditContactList',
                         component: () =>
-                            import ( /* webpackChunkName: "editcontactlist" */ '@/views/communication/EditContactList')
+                            import ( /* webpackChunkName: "editcontactlist" */ '@/views/communication/EditGroup')
                     },
                     {
                         path: 'report/:messageId',
