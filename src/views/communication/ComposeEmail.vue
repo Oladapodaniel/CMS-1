@@ -54,12 +54,12 @@
 
       <div class="row">
         <div class="col-3 col-lg-2 align-self-center">
-          <span>Send to : </span>
+          <span class="small-text">Send to : </span>
         </div>
         <div class="col-9 col-lg-10 form-group mb-0">
           <div class="dropdown">
             <button
-              class="btn btn-default dropdown-toggle"
+              class="btn btn-default dropdown-toggle small-text"
               type="button"
               id="dropdownMenuButton"
               data-toggle="dropdown"
@@ -74,7 +74,7 @@
               aria-labelledby="dropdownMenuButton"
             >
               <a
-                class="dropdown-item c-pointer"
+                class="dropdown-item c-pointer small-text"
                 v-for="(destination, index) in possibleEmailDestinations"
                 :key="index"
                 @click="showSection(index)"
@@ -95,7 +95,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <input
-            class="form-control dropdown-toggle my-1 px-1"
+            class="form-control dropdown-toggle my-1 px-1 small-text"
             type="text"
             id="dropdownMenu"
             value="All Contacts"
@@ -116,13 +116,13 @@
               style="list-style: none; min-width: 100px"
               v-for="(group, index) in selectedGroups"
               :key="index"
-              class="email-destination d-flex justify-content-between m-1"
+              class="email-destination d-flex justify-content-between m-1 small-text"
             >
               <!-- <span
               class="email-destination m-1"
               
             > -->
-              <span>{{ group.name }}</span>
+              <span class="small-text">{{ group.name }}</span>
               <span class="ml-2 remove-email" @click="removeGroup(index)"
                 >x</span
               >
@@ -152,7 +152,7 @@
           >
             <div class="row dd-item" v-if="categories.length === 0">
               <div class="col-md-12 dd-item">
-                <p>No groups yet</p>
+                <p class="small-text">No groups yet</p>
               </div>
             </div>
             <div
@@ -163,7 +163,7 @@
               <div class="col-md-12 dd-item" v-if="allGroups[index].length > 0">
                 <div class="row dd-item">
                   <div class="col-md-12 dd-item">
-                    <h6 class="text-uppercase dd-item font-weight-bold">
+                    <h6 class="text-uppercase dd-item font-weight-bold px-14">
                       {{ category }}
                     </h6>
                     <a
@@ -196,7 +196,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-10 pl-0 grey-rounded-border">
           <ul
-            class="d-flex flex-wrap px-1 mb-0 m-dd-item"
+            class="d-flex flex-wrap px-1 mb-0 m-dd-item small-text"
             @click="() => memberSelectInput.focus()"
           >
             <li
@@ -236,7 +236,7 @@
             </li>
           </ul>
           <div
-            class="col-md-12 px-0 select-groups-dropdown m-dd-item"
+            class="col-md-12 px-0 select-groups-dropdown m-dd-item small-text"
             v-if="memberListShown"
           >
             <div class="dropdownmenu pt-0 w-100 m-dd-item">
@@ -290,7 +290,7 @@
               v-for="(member, indx) in selectedMembers"
               :key="indx"
             >
-              <span>{{ member.name }}</span>
+              <span class="small-text">{{ member.name }}</span>
               <span class="ml-2 remove-email" @click="removeMember(indx)"
                 >x</span
               >
@@ -314,14 +314,14 @@
                 aria-labelledby="dropdownMenu"
               >
                 <a
-                  class="dropdown-item px-1 c-pointer"
+                  class="dropdown-item px-1 c-pointer small-text"
                   v-for="(member, index) in memberSearchResults"
                   :key="index"
                   @click="selectMember(member, index)"
                   >{{ member.name }}</a
                 >
                 <p
-                  class="bg-secondary p-1 mb-0 disable"
+                  class="bg-secondary p-1 mb-0 disable small-text"
                   v-if="
                     searchText.length < 3 &&
                     loading == false &&
@@ -332,7 +332,7 @@
                 </p>
                 <p
                   aria-disabled="true"
-                  class="btn btn-default p-1 mb-0 disable"
+                  class="btn btn-default p-1 mb-0 disable small-text"
                   v-if="
                     memberSearchResults.length === 0 &&
                     searchText.length >= 3 &&
@@ -361,7 +361,7 @@
             >
               <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-12">
+                  <div class="col-md-12 small-text">
                     <h4>{{ category }}</h4>
                     <p
                       v-for="(group, indx) in allGroups[index]"
@@ -430,12 +430,12 @@
 
       <div class="row">
         <div class="col-md-2">
-          <span class="font-weight-600">Subject: </span>
+          <span class="font-weight-600 small-text">Subject: </span>
         </div>
         <div class="col-md-10 px-0">
           <input
             type="text"
-            class="input p-0 mx-0 grey-rounded-border"
+            class="input p-0 mx-0 grey-rounded-border pl-2 px-14"
             style="border-radius: 4px"
             v-model="subject"
           />
@@ -444,7 +444,7 @@
 
       <div class="row">
         <div class="col-md-2">
-          <span class="font-weight-600">Message: </span>
+          <span class="font-weight-600 small-text">Message: </span>
         </div>
         <div class="col-md-10 px-0">
           <!-- <textarea
@@ -465,16 +465,16 @@
             </div>
           </div>
 
-          <div class="col-md-12 px-0">
+          <!-- <div class="col-md-12 px-0">
             <p
-              class="bg-success mb-0 p-1 text-white font-weight-700"
+              class="bg-success mb-0 p-1 text-white font-weight-700 small-text"
               v-if="editorData.length > 0"
               :class="{ amber: charactersCount > 160 }"
             >
               <span>Characters count {{ charactersCount }}</span>
               <span class="float-right">Page {{ pageCount }}</span>
             </p>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -484,7 +484,7 @@
             <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
               <input type="checkbox" v-model="isPersonalized" class="mr-3" />
-              <span class="font-weight-600">Personal Message</span>
+              <span class="font-weight-700 px-14">Personal Message</span>
             </div>
           </div>
         </div>
@@ -492,7 +492,7 @@
           <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
-              <span class="hint"
+              <span class="hint small-text"
                 >Insert #name# any where you want the contact name to appear in
                 the message, it will be replaced by the actual name of the
                 member when sending the message.</span
@@ -690,7 +690,7 @@
 
 <script>
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUpdated, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -698,6 +698,7 @@ import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
+import communicationService from '../../services/communication/communicationservice';
 
 export default {
   setup() {
@@ -708,6 +709,7 @@ export default {
       // The configuration of the editor.
       height: "800",
     };
+    const ckeditor = ref(null);
 
     const possibleEmailDestinations = composeService.possibleEmailDestinations;
     const groupsAreVissible = ref(false);
@@ -813,8 +815,6 @@ export default {
       }
     };
 
-    const charactersCount = computed(() => editorData.value.length);
-    const pageCount = computed(() => Math.ceil(editorData.value.length / 160));
 
     const subject = ref("");
     const phoneNumber = ref("");
@@ -879,29 +879,15 @@ export default {
       //     .join();
       // }
 
-      console.log(data, "SMS Data");
-
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
       composeService
         .sendMessage("/api/Messaging/sendEmail", data)
         .then((res) => {
-          if (!res.status) {
-            toast.add({
-              severity: "error",
-              summary: "Failed operation",
-              detail: typeof res === "object" ? "SMS sending failed" : res,
-              life: 2500,
-            });
-          } else {
-            toast.add({
+          toast.add({
               severity: "success",
               summary: "Successful operation",
-              detail: "SMS was sent successfully",
-              life: 2500,
+              detail: "Email was sent successfully",
             });
-            store.dispatch("removeSMSUnitCharge", pageCount.value * 2);
-            console.log(pageCount, "Page count ");
-          }
           console.log(res);
         })
         .catch((err) => {
@@ -918,7 +904,7 @@ export default {
             toast.add({
               severity: "error",
               summary: "Failed operation",
-              detail: "SMS sending failed",
+              detail: "Email sending failed",
               life: 2500,
             });
           }
@@ -927,10 +913,12 @@ export default {
 
     const draftMessage = async () => {
       try {
-        const response = await composerObj.svaeDraft({
+        const response = await composerObj.saveDraft({
+          subject: subject.value,
           body: editorData.value,
           isDefaultBirthDayMessage: false,
-        }, "/api/Messaging/PostEmailDraft");
+        }, "/api/Messaging/saveEmaillDraft");
+        store.dispatch("communication/getEmailDrafts");
         console.log(response, "draft response");
         toast.add({
           severity: "success",
@@ -942,8 +930,8 @@ export default {
         console.log(error, "drafting error");
         toast.add({
           severity: "warn",
-          summary: "Missing implementation",
-          detail: "Can't draft message now",
+          summary: "Error",
+          detail: "Message not saved as draft",
           life: 2500,
         });
       }
@@ -964,6 +952,22 @@ export default {
         name: route.query.group,
       });
       phoneNumberSelectionTab.value = true;
+    }
+
+    
+
+    const onEditorReady = () => {
+      if (route.query.emaildraft) {
+        communicationService.getEmailDraftById(route.query.emaildraft)
+          .then(res => {
+            if (res) {
+              subject.value = res.subject;
+              console.log(res, "RES");
+              console.log(editorData.value, "CKE");
+              editorData.value = res.body;
+            }
+          })
+      }
     }
 
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {
@@ -1014,6 +1018,7 @@ export default {
     const allGroups = ref([]);
     const categories = ref([]);
     onMounted(() => {
+      onEditorReady()
       composeService
         .getCommunicationGroups()
         .then((res) => {
@@ -1074,8 +1079,6 @@ export default {
       selectMember,
       searchText,
       filteredMembers,
-      charactersCount,
-      pageCount,
       sendSMS,
       phoneNumber,
       searchForPerson,
@@ -1101,6 +1104,7 @@ export default {
       sendToAll,
       sendModalHeader,
       nigerian,
+      onEditorReady,
     };
   },
 };
@@ -1298,8 +1302,7 @@ input:focus {
 }
 
 .hint {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
 }
 
 .amber {

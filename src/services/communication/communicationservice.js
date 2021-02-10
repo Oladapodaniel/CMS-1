@@ -1,5 +1,6 @@
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress"
+import store from "../../store/store"
 
 
 const communicationService = {
@@ -49,6 +50,19 @@ const communicationService = {
     async getDraftsById(id) {
         try {
             const { data } = await axios.get(`/api/Messaging/getSMSDraftByID?id=${id}`);
+            return data;
+        } catch (error) {
+            stopProgressBar();
+            console.log(error);
+            return false;
+        }
+    },
+
+    async getEmailDraftById(id) {
+        try {
+            // const email = store.getters["communication/getEmailDraftById"](id);
+            // if (email && email.id) return email;
+            const { data } = await axios.get(`/api/Messaging/getEmailDraftByID?id=${id}`);
             return data;
         } catch (error) {
             stopProgressBar();

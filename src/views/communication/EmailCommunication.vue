@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row mt-4">
         <div class="col-md-12">
-          <h1 class="font-weight-bold">Email</h1>
+          <h1 class="font-weight-bold px-30">Email</h1>
         </div>
       </div>
       <div class="row">
@@ -27,26 +27,12 @@
                 <div
                   class="col-md-12"
                 >
-                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email'}">
-                    <div class="col-md-12 menu-item-div m-auto">
-                      <a class="btn btn-default font-weight-bold">
-                        <span class="menu-item"
-                          ><router-link class="r-link" to="/tenant/email">
-                            <i class="fas fa-inbox mr-3 menu-icon"></i>
-                            <span class="active">Inbox</span>
-                          </router-link>
-                          <!-- <span class="inbox-count ml-md-2">3</span> -->
-                          </span
-                        >
-                      </a>
-                    </div>
-                  </div>
 
                   <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email/sent'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/email/sent">
+                            <router-link class="r-link text-decoration-none" to="/tenant/email/sent">
                               <i class="fa fa-location-arrow mr-3 menu-icon"></i>
                               <span class="active">Sent</span>
                             </router-link>
@@ -59,12 +45,27 @@
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
-                            <router-link class="r-link" to="/tenant/email/draft">
+                            <router-link class="r-link text-decoration-none" to="/tenant/email/draft">
                               <i class="fa fa-envelope-open mr-3 menu-icon"></i>
                               <span class="active">Draft</span>
                             </router-link>
                         </span>
                     </a>
+                    </div>
+                  </div>
+
+                  <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email'}">
+                    <div class="col-md-12 menu-item-div m-auto">
+                      <a class="btn btn-default font-weight-bold">
+                        <span class="menu-item"
+                          ><router-link class="r-link text-decoration-none" to="/tenant/email">
+                            <i class="fas fa-inbox mr-3 menu-icon"></i>
+                            <span class="active">Inbox</span>
+                          </router-link>
+                          <!-- <span class="inbox-count ml-md-2">3</span> -->
+                          </span
+                        >
+                      </a>
                     </div>
                   </div>
 

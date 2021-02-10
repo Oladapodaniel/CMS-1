@@ -54,7 +54,7 @@ const composerObj = {
         // return members;
     },
 
-    svaeDraft(data, url) {
+    saveDraft(data, url) {
         return new Promise((resolve, reject) => {
             /*eslint no-undef: "warn"*/
             NProgress.start();

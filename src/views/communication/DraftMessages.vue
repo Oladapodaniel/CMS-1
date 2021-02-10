@@ -62,11 +62,11 @@
                           <span class="hidden-header font-weight-bold"
                             >Message:
                           </span>
-                          <span><router-link class="small-text" :to="{ name: 'SendMessage', query: { draftId: draft.id } }">{{ draft.body }}</router-link></span>
+                          <span><router-link class="small-text text-decoration-none" :to="{ name: 'SendMessage', query: { draftId: draft.id } }">{{ draft.body }}</router-link></span>
                         </div>
                         <div class="col-md-2 d-md-flex justify-content-between">
                            <span class="hidden-header">Sender: </span>
-                          <span><router-link class="small-text" :to="{ name: 'SendMessage', query: { draftId: draft.id } }">{{ draft.sender }}</router-link></span>
+                          <span><router-link class="small-text text-decoration-none" :to="{ name: 'SendMessage', query: { draftId: draft.id } }">{{ draft.sender }}</router-link></span>
                         </div>
                         <div
                           class="col-md-3 col-ms-12 d-flex justify-content-between"
@@ -104,6 +104,7 @@
 import router from "@/router/index";
 import UnitsArea from "../../components/units/UnitsArea"
 import communicationService from "../../services/communication/communicationservice"
+import store from "../../store/store"
 
 export default {
   components: { UnitsArea },
@@ -133,7 +134,8 @@ export default {
   },
 
   created() {
-    this.getDrafts();
+    this.drafts = store.getters["communication/smsDrafts"];
+    if (!this.drafts || this.drafts === 0) this.getDrafts();
   }
 };
 </script>

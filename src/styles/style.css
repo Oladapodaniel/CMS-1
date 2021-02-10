@@ -955,6 +955,17 @@
     font-weight: 700;
     cursor: pointer;
   }
+
+  /* Typo Start */
+
+  .px-14 {
+    font-size: 14px !important;
+  }
+
+  .px-30 {
+    font-size: 30px !important;
+  }
+  /* End Typo */
   
   @media screen and (max-width: 620px) {
     .inputs {

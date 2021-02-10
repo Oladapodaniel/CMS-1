@@ -184,13 +184,16 @@ import { computed, ref } from "vue";
 import UnitsArea from "../../components/units/UnitsArea";
 import communicationService from "../../services/communication/communicationservice";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
+import { useStore } from "vuex";
 
 export default {
   components: { UnitsArea, PaginationButtons },
   setup() {
-    const replies = ref([]);
+    const store = useStore();
+    const replies = ref(store.getters["communication/smsReplies"]);
     const currentPage = ref(0);
     const loading = ref(false);
+
 
     const getSMSReplies = async () => {
       try {
@@ -199,13 +202,14 @@ export default {
         loading.value = false;
         if (data) {
           replies.value = data;
+          store.dispatch("communication/getSMSReplies");
         }
       } catch (error) {
         console.log(error);
       }
     };
 
-    getSMSReplies();
+    if (!replies.value || replies.value.length === 0) getSMSReplies();
 
     const getRepliesByPage = async (page) => {
       try {

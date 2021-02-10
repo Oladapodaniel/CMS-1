@@ -48,7 +48,7 @@
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-7 d-md-flex flex-column pl-0 small-text">
-                          <router-link :to="{ name: 'ComposeEmail', query: { emaildraft: draft.id } }"  class="text-decoration-none">
+                          <router-link :to="{ name: 'ComposeEmail', query: { emaildraft: draft.id } }"  class="text-decoration-none text-dark font-weight-700">
                             <span
                             class="d-flex justify-content-between msg-n-time"
                           >
@@ -79,6 +79,18 @@
                     </div>
                   </div>
 
+                  <div class="row" v-if="drafts.length === 0 && !loading">
+                    <div class="col-md-12 d-flex justify-content-center">
+                      <span class="my-4 font-weight-bold">No sent mesages</span>
+                    </div>
+                  </div>
+
+                  <div class="row" v-if="drafts.length === 0 && loading">
+                    <div class="col-md-12 py-2 d-flex justify-content-center">
+                      <i class="fas fa-circle-notch fa-spin"></i>
+                    </div>
+                  </div>
+
 
                 </div>
               </div>
@@ -92,24 +104,30 @@
 
 <script>
 import { ref } from 'vue';
-import communicationService from "../../services/communication/communicationservice"
+import communicationService from "../../services/communication/communicationservice";
+import { useStore } from "vuex";
 
 export default {
   setup() {
-    const drafts = ref([ ]);
-    const getEmailDrafts = async () => {
-      const data = await communicationService.getEmailDrafts();
+    const store = useStore();
+    const drafts = ref(store.getters["communication/emailDrafts"]);
+    const loading = ref(false);
 
-      console.log(data, "Email drafts");
+    const getEmailDrafts = async () => {
+      loading.value = true;
+      const data = await communicationService.getEmailDrafts();
+      loading.value = false;
+
       if (data) {
         drafts.value = data;
       }
     }
 
-    getEmailDrafts();
+    if (!drafts.value || drafts.value === drafts.value.length === 0) getEmailDrafts();
 
     return {
       drafts,
+      loading,
     }
   }
 };

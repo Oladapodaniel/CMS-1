@@ -249,6 +249,12 @@ const routes = [{
                             import ( /* webpackChunkName: "sentemails" */ '@/views/communication/SentEmails')
                     },
                     {
+                        path: 'sent/:messageId',
+                        name: 'EmailDetails',
+                        component: () =>
+                            import ( /* webpackChunkName: "emaildetails" */ '@/views/communication/EmailDetails')
+                    },
+                    {
                         path: 'draft',
                         name: 'EmailDraft',
                         component: () =>

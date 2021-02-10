@@ -4,25 +4,9 @@
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
-          <h4 class="font-weight-bold">Compose New SMS</h4>
+          <h4 class="font-weight-bold">Compose SMS</h4>
           <Toast />
 
-          <!-- <Dialog
-            header="Header"
-            v-model:visible="display"
-            style="width: 500px"
-          >
-            <div class="row">
-              <div class="col-md-12">
-                <input
-                  type="datetime-local"
-                  id="birthdaytime"
-                  class="form-control"
-                  name="birthdaytime"
-                />
-              </div>
-            </div>
-          </Dialog> -->
           <Dialog
             header="Select Date nad Time"
             v-model:visible="display"
@@ -70,12 +54,12 @@
 
       <div class="row">
         <div class="col-3 col-lg-2 align-self-center">
-          <span>Send to : </span>
+          <span class="small-text">Send to : </span>
         </div>
         <div class="col-9 col-lg-10 form-group mb-0">
           <div class="dropdown">
             <button
-              class="btn btn-default dropdown-toggle"
+              class="btn btn-default dropdown-toggle small-text"
               type="button"
               id="dropdownMenuButton"
               data-toggle="dropdown"
@@ -90,7 +74,7 @@
               aria-labelledby="dropdownMenuButton"
             >
               <a
-                class="dropdown-item c-pointer"
+                class="dropdown-item c-pointer small-text"
                 v-for="(destination, index) in possibleSMSDestinations"
                 :key="index"
                 @click="showSection(index)"
@@ -111,7 +95,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
           <input
-            class="form-control dropdown-toggle my-1 px-1"
+            class="form-control dropdown-toggle my-1 px-1 small-text"
             type="text"
             id="dropdownMenu"
             value="All Contacts"
@@ -125,7 +109,7 @@
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0 grey-rounded-border">
           <ul
-            class="d-flex flex-wrap pl-1 mb-0 dd-item"
+            class="d-flex flex-wrap pl-1 mb-0 dd-item small-text"
             @click="() => groupSelectInput.focus()"
           >
             <li
@@ -168,7 +152,7 @@
           >
             <div class="row dd-item" v-if="categories.length === 0">
               <div class="col-md-12 dd-item">
-                <p>No groups yet</p>
+                <p class="small-text">No groups yet</p>
               </div>
             </div>
             <div
@@ -183,7 +167,7 @@
                       {{ category }}
                     </h6>
                     <a
-                      class="dropdown-item px-1 c-pointer dd-item"
+                      class="dropdown-item px-1 c-pointer dd-item small-text"
                       v-for="(group, indx) in allGroups[index]"
                       @click="
                         selectGroup(
@@ -306,7 +290,7 @@
               v-for="(member, indx) in selectedMembers"
               :key="indx"
             >
-              <span>{{ member.name }}</span>
+              <span class="small-text">{{ member.name }}</span>
               <span class="ml-2 remove-email" @click="removeMember(indx)"
                 >x</span
               >
@@ -337,7 +321,7 @@
                   >{{ member.name }}</a
                 >
                 <p
-                  class="bg-secondary p-1 mb-0 disable"
+                  class="bg-secondary p-1 mb-0 disable small-text"
                   v-if="
                     searchText.length < 3 &&
                     loading == false &&
@@ -348,7 +332,7 @@
                 </p>
                 <p
                   aria-disabled="true"
-                  class="btn btn-default p-1 mb-0 disable"
+                  class="btn btn-default p-1 mb-0 disable small-text"
                   v-if="
                     memberSearchResults.length === 0 &&
                     searchText.length >= 3 &&
@@ -378,11 +362,12 @@
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
-                    <h4>{{ category }}</h4>
+                    <h4 class="px-14">{{ category }}</h4>
                     <p
                       v-for="(group, indx) in allGroups[index]"
                       @click="selectGroup(group.category, group.id, group.name)"
                       :key="indx"
+                      class="small-text"
                     >
                       {{ group.name }}
                     </p>
@@ -417,11 +402,12 @@
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
-                    <h4>{{ category }}</h4>
+                    <h4 class="px-14">{{ category }}</h4>
                     <p
                       v-for="(group, indx) in allGroups[index]"
                       @click="selectGroup(group.category, group.id, group.name)"
                       :key="indx"
+                      class="small-text"
                     >
                       {{ group.name }}
                     </p>
@@ -446,7 +432,7 @@
 
       <div class="row">
         <div class="col-md-2">
-          <span class="font-weight-600">Subject: </span>
+          <span class="font-weight-600 small-text">Subject: </span>
         </div>
         <div class="col-md-10 px-0">
           <input
@@ -460,15 +446,15 @@
 
       <div class="row">
         <div class="col-md-2">
-          <span class="font-weight-600">Message: </span>
+          <span class="font-weight-600 small-text">Message: </span>
         </div>
         <div class="col-md-10 px-0">
           <textarea
             rows="10"
-            class="text-area my-2"
+            class="text-area my-2 small-text"
             v-model="editorData"
           ></textarea>
-          <div class="col-md-12 px-0">
+          <div class="col-md-12 px-0 small-text">
             <p
               class="bg-success mb-0 p-1"
               v-if="editorData.length > 0"
@@ -487,7 +473,7 @@
             <div class="col-md-2"></div>
             <div class="col-md-10 pl-0">
               <input type="checkbox" v-model="isPersonalized" class="mr-3" />
-              <span class="font-weight-600">Personal Message</span>
+              <span class="font-weight-700 px-14">Personal Message</span>
             </div>
           </div>
         </div>
@@ -927,10 +913,11 @@ export default {
 
     const draftMessage = async () => {
       try {
-        const response = await composerObj.svaeDraft({
+        const response = await composerObj.saveDraft({
           body: editorData.value,
           isDefaultBirthDayMessage: false,
         }, "/api/Messaging/PostSmsDraft");
+        store.dispatch("communication/getSMSDrafts")
         console.log(response, "draft response");
         toast.add({
           severity: "success",
@@ -942,8 +929,8 @@ export default {
         console.log(error, "drafting error");
         toast.add({
           severity: "warn",
-          summary: "Missing implementation",
-          detail: "Can't draft message now",
+          summary: "Failed",
+          detail: "Message not saved as draft",
           life: 2500,
         });
       }
@@ -1309,8 +1296,7 @@ input:focus {
 }
 
 .hint {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 13px;
 }
 
 .amber {

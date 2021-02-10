@@ -52,14 +52,14 @@
                           <span
                             class="msg-n-time"
                           >
-                            <router-link :to="{ name: 'MessageDetails', params: { messageId: email.id } }" class="text-decoration-none d-flex justify-content-between small-text">
-                              <span class="font-weight-bold text-dark text-capitalize">{{ email.subject.toLowerCase() }}</span>
+                            <router-link :to="{ name: 'EmailDetails', params: { messageId: email.id } }" class="text-decoration-none d-flex justify-content-between small-text">
+                              <span class="font-weight-bold text-dark text-capitalize">{{ email.subject ? email.subject.toLowerCase() :  ''}}</span>
                               <span class="timestamp small-text">{{ email.dateSent }}</span>
                             </router-link>
                           </span>
                           <span class="brief-message"
                             >
-                              <router-link :to="{ name: 'MessageDetails', params: { messageId: email.id } }" class="text-decoration-none small-text"><article>
+                              <router-link :to="{ name: 'EmailDetails', params: { messageId: email.id } }" class="text-decoration-none small-text"><article>
                                 {{
                                   formatMessage(email.message)
                                 }}
@@ -95,7 +95,7 @@
                       <i class="fas fa-circle-notch fa-spin"></i>
                     </div>
                   </div>
-
+                  
                   <div class="conatiner">
                     <div class="row">
                       <div class="col-md-12 mb-3 pagination-container">
@@ -122,12 +122,17 @@
 import { computed, ref } from 'vue';
 import communicationService from "../../services/communication/communicationservice"
 import PaginationButtons from "../../components/pagination/PaginationButtons";
+import { useStore } from "vuex";
 
 
 export default {
   components: { PaginationButtons },
   setup() {
-    const emails = ref([ ]);
+    const store = useStore();
+    const emails = ref([]);
+    const emailsInStore = ref(store.getters["communication/sentEmails"]);
+    emails.value = emailsInStore.value && emailsInStore.value.length > 0 ? emailsInStore.value[0] : [ ];
+    // console.log(emails.value[0], "from store");
     const currentPage = ref(0);
     const loading = ref(false)
 
@@ -136,13 +141,12 @@ export default {
       const data = await communicationService.getSentEmails(0);
       loading.value = false;
       if (data && data.length > 0) {
+        console.log(data, "compo");
         emails.value = data;
-        console.log(emails.value, "sent mails");
-        console.log(data, "sent emails");
       }
     }
 
-    getSentEmails();
+    if (!emails.value || emails.value.length === 0) getSentEmails();
 
     const formatMessage = (message) => {
       const formatted = message && message.length > 25 ? `${message.split("").slice(0, 25).join("")}...` : message;
