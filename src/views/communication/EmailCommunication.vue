@@ -20,7 +20,7 @@
             <div class="col-md-3" id="side-menu">
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
-                  <router-link to="/tenant/email/compose" class="btn compose-btn">Compose new Email</router-link>
+                  <router-link to="/tenant/email/compose" class="btn compose-btn">Compose Email</router-link>
                 </div>
               </div>
               <div class="row mb-3">

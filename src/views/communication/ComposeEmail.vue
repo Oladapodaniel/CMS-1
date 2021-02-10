@@ -4,7 +4,7 @@
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
         <div class="col-md-12 mb-3 mt-3 offset-3 offset-md-0">
-          <h4 class="font-weight-bold">Compose New SMS</h4>
+          <h4 class="font-weight-bold">Compose Email</h4>
           <Toast />
 
           <Dialog
@@ -522,9 +522,14 @@
             <SplitButton
               label="Send"
               :model="sendOptions"
+              @click="sendSMS"
+            ></SplitButton>
+            <!-- <SplitButton
+              label="Send"
+              :model="sendOptions"
               data-toggle="modal"
               data-target="#sendsmsbtn"
-            ></SplitButton>
+            ></SplitButton> -->
           </span>
           <button
             class="default-btn d-flex justify-content-center short-btn align-items-center ml-3"
@@ -821,7 +826,7 @@ export default {
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
 
-    const sendSMS = (gateway) => {
+    const sendSMS = () => {
       invalidDestination.value = false;
       invalidMessage.value = false;
 
@@ -862,7 +867,6 @@ export default {
         // emailDisplayName: "",
         // gateWayToUse: gateway,
       };
-      console.log(gateway);
 
       // data.toOthers = phoneNumber.value;
       // if (selectedMembers.value.length > 0) {
