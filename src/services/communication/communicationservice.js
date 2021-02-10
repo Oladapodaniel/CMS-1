@@ -1,6 +1,6 @@
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress"
-import store from "../../store/store"
+// import store from "../../store/store"
 
 
 const communicationService = {

@@ -690,7 +690,7 @@
 
 <script>
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { computed, onMounted, onUpdated, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
@@ -709,7 +709,6 @@ export default {
       // The configuration of the editor.
       height: "800",
     };
-    const ckeditor = ref(null);
 
     const possibleEmailDestinations = composeService.possibleEmailDestinations;
     const groupsAreVissible = ref(false);
