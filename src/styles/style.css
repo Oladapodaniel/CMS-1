@@ -956,6 +956,11 @@
     cursor: pointer;
   }
 
+  .mark-box {
+    height: 12px;
+    width: 12px;
+  }
+
   /* Typo Start */
 
   .px-14 {

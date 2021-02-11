@@ -238,9 +238,9 @@ const routes = [{
                     import ( /* webpackChunkName: "emailcommunication" */ '@/views/communication/EmailCommunication'),
                 children: [{
                         path: '',
-                        name: 'EmailInbox',
+                        name: 'Sent',
                         component: () =>
-                            import ( /* webpackChunkName: "emailinbox" */ '@/views/communication/EmailInbox')
+                            import ( /* webpackChunkName: "sentemails" */ '@/views/communication/SentEmails')
                     },
                     {
                         path: 'sent',
@@ -267,6 +267,12 @@ const routes = [{
                         name: 'ComposeEmail',
                         component: () =>
                             import ( /* webpackChunkName: "compose" */ '@/views/communication/ComposeEmail')
+                    },
+                    {
+                        path: 'schedules',
+                        name: 'Schedules',
+                        component: () =>
+                            import ( /* webpackChunkName: "compose" */ '@/views/communication/ScheduledEmails')
                     }
                 ]
             },

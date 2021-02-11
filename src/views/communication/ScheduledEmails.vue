@@ -8,7 +8,7 @@
           <div class="row px-0">
             <div class="col-md-12 px-0">
               <div class="row d-md-flex align-items-center justify-content-between mt-3 mb-4">
-                <div class="col-md-8 col-sm-12 pl-0">
+                <div class="col-md-12 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
                     <input type="text" placeholder="Search here..." />
@@ -17,9 +17,9 @@
                     <span class="font-weight-bold"> Newest</span>
                   </div>
                 </div>
-                <div class="col-sm-5 col-md-3 mt-sm-2 units-container">
+                <!-- <div class="col-sm-5 col-md-3 mt-sm-2 units-container">
                   <UnitsArea />
-                </div>
+                </div> -->
               </div>
 
               <div class="row table-box mb-4">
@@ -41,8 +41,8 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row" v-for="(sms, index) in schedules" :key="index">
-                    <div class="col-md-12">
+                  <div class="row" v-for="(email, index) in schedules" :key="index">
+                    <div class="col-md-12 py-1">
                       <div class="row">
                         <div class="col-md-1">
                           <input type="checkbox" class="mark-box" />
@@ -51,8 +51,8 @@
                           <router-link to="" class="text-decoration-none"><span
                             class="msg-n-time"
                           >
-                            <span class="font-weight-bold mr-2 text-dark">{{ !sms.subject ? '(no subject)' : sms.subject }}</span>
-                          <span class="brief-message font-weight-600 ml-2">{{ `${sms.message.split('').slice(0, 50).join("")}...` }}</span>
+                            <span class="font-weight-bold mr-2 text-dark">{{ !email.subject ? '(no subject)' : email.subject }}</span>
+                          <span class="brief-message font-weight-600 ml-2">{{ `${email.message.split('').slice(0, 50).join("")}...` }}</span>
                           </span></router-link>
                         </div>
 
@@ -60,35 +60,10 @@
                           <span
                             class="msg-n-time"
                           >
-                            <span class="timestamp ml-4 small-text">{{ formattedDate(sms.date) }}</span>
+                            <span class="timestamp ml-4 small-text">{{ formattedDate(email.date) }}</span>
                           </span>
                         </div>
 
-                         <!-- <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >Date
-                          </span>
-                          <span>{{ sms.dateSent }}</span>
-                        </div> -->
-                        <!-- 
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >UNITS:
-                          </span>
-                          <span>{{ sms.units }}</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >DELIVER REPORT:
-                          </span>
-                          <span class="view-btn">View</span>
-                        </div> -->
                       </div>
                       <div class="row" v-if="index !== schedules.length - 1">
                         <div class="col-md-12 px-0">
@@ -122,13 +97,13 @@
 
 <script>
 import { onMounted, ref } from 'vue';
-import UnitsArea from "../../components/units/UnitsArea"
+// import UnitsArea from "../../components/units/UnitsArea"
 import communicationService from "../../services/communication/communicationservice";
 import dateFormatter from '../../services/dates/dateformatter'
 
 
 export default {
-  components: { UnitsArea },
+//   components: { UnitsArea },
   setup() {
     const schedules = ref([ ]);
     const loading = ref(false);
@@ -136,7 +111,7 @@ export default {
     const getScheduledSMS = async () => {
       try {
         loading.value = true;
-        const res = await communicationService.getSchedules(`/api/Messaging/getSmsSchedules`);
+        const res = await communicationService.getSchedules("/api/Messaging/getEmailSchedules");
         loading.value = false;
         schedules.value = res;
       } catch (error) {

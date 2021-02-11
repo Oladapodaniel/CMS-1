@@ -20,6 +20,7 @@
                   id="birthdaytime"
                   class="form-control"
                   name="birthdaytime"
+                  v-model="executionDate"
                 />
               </div>
             </div>
@@ -39,7 +40,7 @@
                 label="Schedule"
                 class="p-button-rounded"
                 style="background: #136acd"
-                @click="scheduleMessage"
+                @click="contructScheduleMessageBody(2)"
               />
             </template>
           </Dialog>
@@ -522,7 +523,7 @@
             <SplitButton
               label="Send"
               :model="sendOptions"
-              @click="sendSMS"
+              @click="contructScheduleMessageBody(1)"
             ></SplitButton>
             <!-- <SplitButton
               label="Send"
@@ -699,6 +700,8 @@ import store from "../../store/store";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
 import communicationService from '../../services/communication/communicationservice';
+import dateFormatter from "../../services/dates/dateformatter";
+
 
 export default {
   setup() {
@@ -717,6 +720,7 @@ export default {
     const phoneNumberSelectionTab = ref(false);
     const selectedGroups = ref([]);
     const sendToAll = ref(false);
+    const executionDate = ref('');
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
@@ -825,7 +829,8 @@ export default {
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
 
-    const sendSMS = () => {
+    const sendSMS = (data) => {
+      console.log(data, "DATA");
       invalidDestination.value = false;
       invalidMessage.value = false;
 
@@ -852,31 +857,16 @@ export default {
       });
 
       console.log(selectedMembers.value, "sm");
-      const data = {
-        subject: subject.value,
-        message: editorData.value,
-        // contacts: [],
-        contacts: selectedMembers.value.map(i => {
-          return { email: i.email }
-        }),
-        isPersonalized: isPersonalized.value,
-        groupedContacts: selectedGroups.value.map((i) => i.data),
-        // toContacts: sendToAll.value ? "allcontacts" : "",
-        // emailAddress: "",
-        // emailDisplayName: "",
-        // gateWayToUse: gateway,
-      };
-
-      // data.toOthers = phoneNumber.value;
-      // if (selectedMembers.value.length > 0) {
-      //   data.toOthers += data.toOthers.length > 0 ? "," : "";
-      //   data.toOthers += selectedMembers.value
-      //     .map((i) => {
-      //       if (i.email) return i.email;
-      //       // return false;
-      //     })
-      //     .join();
-      // }
+      // const data = {
+      //   subject: subject.value,
+      //   message: editorData.value,
+      //   // contacts: [],
+      //   contacts: selectedMembers.value.map(i => {
+      //     return { email: i.email }
+      //   }),
+      //   isPersonalized: isPersonalized.value,
+      //   groupedContacts: selectedGroups.value.map((i) => i.data),
+      // };
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
       composeService
@@ -908,6 +898,57 @@ export default {
             });
           }
         });
+    };
+
+    const contructScheduleMessageBody = (sendOrSchedule) => {
+      const data = {
+        subject: subject.value,
+        message: editorData.value,
+        // contacts: [],
+        contacts: selectedMembers.value.map(i => {
+          return { email: i.email }
+        }),
+        isPersonalized: isPersonalized.value,
+        groupedContacts: selectedGroups.value.map((i) => i.data),
+      };
+
+      if (sendOrSchedule == 2) {
+        data.executionDate = executionDate.value;
+        scheduleMessage(data);
+      } else {
+        sendSMS(data);
+      }
+    };
+
+    const showScheduleModal = () => {
+      display.value = true;
+    };
+
+    const scheduleMessage = async (data) => {
+      console.log(data, "DATA SCHEDULE");
+      display.value = false;
+      const formattedDate = dateFormatter.monthDayTime(data.executionDate);
+      console.log(formattedDate, "Formatted Date");
+      try {
+        const response = await composerObj.sendMessage(
+          "/api/Messaging/saveEmailSchedule",
+          data
+        );
+        console.log(response, "response");
+        toast.add({
+          severity: "success",
+          summary: "message Scheduled",
+          detail: `Message scheduled for ${formattedDate}`,
+        });
+        console.log(response, "Schedule response");
+      } catch (error) {
+        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: "Schedule Failed",
+          detail: "Could not schedule message",
+        });
+      }
     };
 
     const draftMessage = async () => {
@@ -997,7 +1038,7 @@ export default {
         label: "Schedule",
         icon: "pi pi-clock",
         command: () => {
-          display.value = true;
+          showScheduleModal();
         },
       },
       {
@@ -1033,15 +1074,6 @@ export default {
     const display = ref(false);
     const showDateTimeSelectionModal = () => {
       display.value = !display.value;
-    };
-    const scheduleMessage = () => {
-      display.value = false;
-      toast.add({
-        severity: "info",
-        summary: "Missing implementation",
-        detail: "Can't schedule message now",
-        life: 2500,
-      });
     };
 
     const groupListShown = ref(false);
@@ -1104,6 +1136,8 @@ export default {
       sendModalHeader,
       nigerian,
       onEditorReady,
+      contructScheduleMessageBody,
+      executionDate,
     };
   },
 };

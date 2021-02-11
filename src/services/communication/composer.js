@@ -37,6 +37,17 @@ const composerObj = {
         })
     },
 
+    schduleMessage(url, data) {
+        return new Promise((resolve, reject) => {
+            axios.post(url, data)
+                .then(res => {
+                    console.log(res, "schedule sms response");
+                    resolve(res.data);
+                })
+                .catch(err => reject(err))
+        })
+    },
+
     async searchMemberDB(url, query) {
         let members = [ ];
         try {

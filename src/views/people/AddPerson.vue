@@ -604,7 +604,7 @@ export default {
             `/api/People/UpdatePerson/${route.params.personId}`,
             formData
           );
-
+          console.log(response, "response");
           if (response.status === 200 || response.status === 201) {
             membershipService.updatePersonInStore(
               response.data.person,

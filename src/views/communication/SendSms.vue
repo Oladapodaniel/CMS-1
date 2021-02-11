@@ -20,6 +20,7 @@
                   id="birthdaytime"
                   class="form-control"
                   name="birthdaytime"
+                  v-model="executionDate"
                 />
               </div>
             </div>
@@ -39,7 +40,7 @@
                 label="Schedule"
                 class="p-button-rounded"
                 style="background: #136acd"
-                @click="scheduleMessage"
+                @click="contructScheduleMessageBody(2, '')"
               />
             </template>
           </Dialog>
@@ -437,7 +438,7 @@
         <div class="col-md-10 px-0">
           <input
             type="text"
-            class="input p-0 mx-0 grey-rounded-border"
+            class="input p-0 mx-0 grey-rounded-border pl-2"
             style="border-radius: 4px"
             v-model="subject"
           />
@@ -553,9 +554,9 @@
                         <button
                           class="primary-btn default-btn border-0 px-4 my-2 primary-bg text-white outline-none extra-btn"
                           data-dismiss="modal"
-                          @click="sendSMS('')"
+                          @click="contructScheduleMessageBody(1, '')"
                         >
-                          Send SMS Now {{ `${nigerian}`}}
+                          Send SMS Now {{ `${nigerian}` }}
                         </button>
                       </div>
                     </div>
@@ -594,7 +595,12 @@
                                   <button
                                     class="primary-btn default-btn primary-bg border-0 px-4 my-2 font-weight-600 outline-none"
                                     data-dismiss="modal"
-                                    @click="sendSMS('hostedsms')"
+                                    @click="
+                                      contructScheduleMessageBody(
+                                        1,
+                                        'hostedsms'
+                                      )
+                                    "
                                   >
                                     Send SMS Now
                                   </button>
@@ -635,7 +641,7 @@
                                   <button
                                     class="primary-btn default-btn border-0 px-4 my-2 grey-background text-grey outline-none"
                                     data-dismiss="modal"
-                                    @click="sendSMS('')"
+                                    @click="contructScheduleMessageBody(1, '')"
                                   >
                                     Send SMS Now
                                   </button>
@@ -682,7 +688,8 @@ import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
-import communicationService from '../../services/communication/communicationservice';
+import communicationService from "../../services/communication/communicationservice";
+import dateFormatter from "../../services/dates/dateformatter";
 
 export default {
   setup() {
@@ -701,6 +708,7 @@ export default {
     const phoneNumberSelectionTab = ref(false);
     const selectedGroups = ref([]);
     const sendToAll = ref(false);
+    const executionDate = ref("");
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
@@ -810,7 +818,7 @@ export default {
     const invalidMessage = ref(false);
     const invalidDestination = ref(false);
 
-    const sendSMS = (gateway) => {
+    const sendSMS = (data) => {
       invalidDestination.value = false;
       invalidMessage.value = false;
 
@@ -837,35 +845,33 @@ export default {
       });
 
       console.log(selectedMembers.value, "sm");
-      const data = {
-        subject: subject.value,
-        message: editorData.value,
-        contacts: [],
-        // contacts: selectedMembers.value,
-        isPersonalized: isPersonalized.value,
-        groupedContacts: selectedGroups.value.map((i) => i.data),
-        toContacts: sendToAll.value ? "allcontacts" : "",
-        // toOthers: phoneNumber.value,
-        isoCode: isoCode.value,
-        // isoCode: "NG",
-        category: "",
-        emailAddress: "",
-        emailDisplayName: "",
-        gateWayToUse: gateway,
-      };
+      // const data = {
+      //   subject: subject.value,
+      //   message: editorData.value,
+      //   contacts: [],
+      //   // contacts: selectedMembers.value,
+      //   isPersonalized: isPersonalized.value,
+      //   groupedContacts: selectedGroups.value.map((i) => i.data),
+      //   toContacts: sendToAll.value ? "allcontacts" : "",
+      //   // toOthers: phoneNumber.value,
+      //   isoCode: isoCode.value,
+      //   // isoCode: "NG",
+      //   category: "",
+      //   emailAddress: "",
+      //   emailDisplayName: "",
+      //   gateWayToUse: gateway,
+      // };
 
-      data.toOthers = phoneNumber.value;
-      if (selectedMembers.value.length > 0) {
-        data.toOthers += data.toOthers.length > 0 ? "," : "";
-        data.toOthers += selectedMembers.value
-          .map((i) => {
-            if (i.phone) return i.phone;
-            return false;
-          })
-          .join();
-      }
-
-      console.log(data, "SMS Data");
+      // data.toOthers = phoneNumber.value;
+      // if (selectedMembers.value.length > 0) {
+      //   data.toOthers += data.toOthers.length > 0 ? "," : "";
+      //   data.toOthers += selectedMembers.value
+      //     .map((i) => {
+      //       if (i.phone) return i.phone;
+      //       return false;
+      //     })
+      //     .join();
+      // }
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
       composeService
@@ -913,11 +919,14 @@ export default {
 
     const draftMessage = async () => {
       try {
-        const response = await composerObj.saveDraft({
-          body: editorData.value,
-          isDefaultBirthDayMessage: false,
-        }, "/api/Messaging/PostSmsDraft");
-        store.dispatch("communication/getSMSDrafts")
+        const response = await composerObj.saveDraft(
+          {
+            body: editorData.value,
+            isDefaultBirthDayMessage: false,
+          },
+          "/api/Messaging/PostSmsDraft"
+        );
+        store.dispatch("communication/getSMSDrafts");
         console.log(response, "draft response");
         toast.add({
           severity: "success",
@@ -936,6 +945,72 @@ export default {
       }
     };
 
+    const contructScheduleMessageBody = (sendOrSchedule, gateway) => {
+      const data = {
+        subject: subject.value,
+        message: editorData.value,
+        contacts: [],
+        // contacts: selectedMembers.value,
+        isPersonalized: isPersonalized.value,
+        groupedContacts: selectedGroups.value.map((i) => i.data),
+        toContacts: sendToAll.value ? "allcontacts" : "",
+        // toOthers: phoneNumber.value,
+        isoCode: isoCode.value,
+        // isoCode: "NG",
+        category: "",
+        emailAddress: "",
+        emailDisplayName: "",
+        gateWayToUse: gateway,
+      };
+
+      data.toOthers = phoneNumber.value;
+      if (selectedMembers.value.length > 0) {
+        data.toOthers += data.toOthers.length > 0 ? "," : "";
+        data.toOthers += selectedMembers.value
+          .map((i) => {
+            console.log(i, "person");
+            if (i.phone) return i.phone;
+          })
+          .join();
+      }
+
+      if (sendOrSchedule == 2) {
+        data.executionDate = executionDate.value;
+        scheduleMessage(data);
+      } else {
+        sendSMS(data);
+      }
+    };
+
+    const showScheduleModal = () => {
+      display.value = true;
+    };
+
+    const scheduleMessage = async (data) => {
+      display.value = false;
+      const formattedDate = dateFormatter.monthDayTime(data.executionDate);
+      console.log(formattedDate, "Formatted Date");
+      try {
+        const response = await composerObj.sendMessage(
+          "/api/Messaging/saveSmsSchedule",
+          data
+        );
+        toast.add({
+          severity: "success",
+          summary: "message Scheduled",
+          detail: `Message scheduled for ${formattedDate}`,
+        });
+        console.log(response, "Schedule response");
+      } catch (error) {
+        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: "Schedule Failed",
+          detail: "Could not schedule message",
+        });
+      }
+    };
+
     const userCountry = ref("");
 
     const route = useRoute();
@@ -946,20 +1021,22 @@ export default {
 
     if (route.query.group) {
       groupSelectionTab.value = true;
-      selectedGroups.value.push({ data: `group_~${route.query.group}`, name: route.query.group});
+      selectedGroups.value.push({
+        data: `group_~${route.query.group}`,
+        name: route.query.group,
+      });
       phoneNumberSelectionTab.value = true;
     }
 
     if (route.query.draftId) {
-      communicationService.getDraftsById(route.query.draftId)
-        .then(res => {
-          if (res) {
-            console.log(res, "Draft");
-            editorData.value = res.body;
-          } else {
-            console.log(res, "error response");
-          }
-        })
+      communicationService.getDraftsById(route.query.draftId).then((res) => {
+        if (res) {
+          console.log(res, "Draft");
+          editorData.value = res.body;
+        } else {
+          console.log(res, "error response");
+        }
+      });
     }
 
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {
@@ -983,14 +1060,15 @@ export default {
     const nigerian = computed(() => {
       if (userCountry.value === "Nigeria") return true;
       return false;
-    })
+    });
 
     const sendOptions = [
       {
         label: "Schedule",
         icon: "pi pi-clock",
         command: () => {
-          display.value = true;
+          console.log("Hello");
+          showScheduleModal();
         },
       },
       {
@@ -1006,8 +1084,6 @@ export default {
       //   to: "/fileupload",
       // },
     ];
-
-    
 
     const allGroups = ref([]);
     const categories = ref([]);
@@ -1027,15 +1103,6 @@ export default {
     const display = ref(false);
     const showDateTimeSelectionModal = () => {
       display.value = !display.value;
-    };
-    const scheduleMessage = () => {
-      display.value = false;
-      toast.add({
-        severity: "info",
-        summary: "Missing implementation",
-        detail: "Can't schedule message now",
-        life: 2500,
-      });
     };
 
     const groupListShown = ref(false);
@@ -1099,6 +1166,8 @@ export default {
       sendToAll,
       sendModalHeader,
       nigerian,
+      contructScheduleMessageBody,
+      executionDate,
     };
   },
 };
@@ -1304,8 +1373,8 @@ input:focus {
 }
 
 .extra-btn {
-    width: 100%;
-  }
+  width: 100%;
+}
 
 /* Start SplitButton */
 
