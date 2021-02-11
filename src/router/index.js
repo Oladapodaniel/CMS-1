@@ -341,6 +341,18 @@ const routes = [{
                         component: () =>
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/AddDefaultMessage')
                     },
+                    {
+                        path: 'firsttimersettings',
+                        name: 'FirstTimerSettings',
+                        component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/FirstTimerSettings')
+                    },
+                    {
+                        path: 'followupstatus',
+                        name: 'FollowUpStatus',
+                        component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/FollowUpStatus')
+                    },
                     // {
                     //     path: 'details',
                     //     name: 'Details',
@@ -353,7 +365,7 @@ const routes = [{
                 path: 'chartofaccount',
                 name: 'ChartOfAccount',
                 component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
             }
         ]
     },

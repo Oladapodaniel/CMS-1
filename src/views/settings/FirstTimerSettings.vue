@@ -3,17 +3,20 @@
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
         <div class="col-md-12">
-          <h2>Age Group Category</h2>
+          <h2 class="mt-5 mb-5">First Timer Settings</h2>
         </div>
       </div>
+
       <div class="row grey-rounded-border pt-1 pb-5">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-12">
+                  <h4 class="mt-2 mb-2 ml-5">How Did You Hear About Us</h4>
                 </div>
               </div>
+
               <div class="row">
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
@@ -21,12 +24,11 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Age Group category"
-                        v-model="attendanceName"
+                        placeholder="How Did You Hear About Us"
                       />
                     </div>
                     <div class="col-md-3">
-                      <button class="btn primary-btn px-5" @click="saveAttendant">Save</button>
+                      <button class="btn primary-btn px-5">Save</button>
                     </div>
                   </div>
                 </div>
@@ -43,14 +45,14 @@
             </div>
           </div>
 
-          <div class="row py-2" v-for="(type, index) in types" :key="index">
+          <div class="row py-2" v-for="(classification, index) in classifications" :key="index">
             <div class="col-md-12">
               <div class="row">
                 <div
                   class="col-md-7 d-flex justify-content-between align-items-center"
                 >
                   <span class="py-2 hidden-header">NAME</span>
-                  <span class="py-2 text-xs-left">{{ type.name }}</span>
+                  <span class="py-2 text-xs-left">{{ classification.name }}</span>
                 </div>
                 <div
                   class="col-md-5 d-flex justify-content-between align-items-center"
@@ -58,7 +60,7 @@
                   <span class="py-4 hidden-header">ACTION</span>
                   <div class="row">
                     <div class="col-md-6">
-                      <button class="btn secondary-btn py-1 px-4" @click="openType(index)">View</button>
+                      <button class="btn secondary-btn py-1 px-4" @click="openClassification(index)">View</button>
                     </div>
                     <div class="col-md-6">
                       <button class="btn btn-danger py-1 primary-btn">Delete</button>
@@ -73,7 +75,7 @@
                 >
                   <label for="" class="d-flex">
                     <span class="mr-2">Name</span>
-                    <input type="text" class="form-control" v-model="typeName">
+                    <input type="text" class="form-control" v-model="classificationName">
                   </label>
                 </div>
                 <div
@@ -109,39 +111,35 @@ import axios from "@/gateway/backendapi";
 export default {
   data() {
     return {
-      types: [ ],
+      classifications: [ ],
       vissibleTab: "",
-      typeName: "",
-      attendanceName: "",
-      ageGroup: "",
+      classificationName: "",
     }
   },
 
   methods: {
-    async getGroup() {
+    async getClassifications() {
       try {
-        const { data } = await axios.get("/api/Settings/GetTenantAgeGroups");
-        this.types = data;
+        const { data } = await axios.get("");
+        this.classifications = data;
       } catch (error) {
         console.log(error);
       }
     },
-    openType(index) {
+
+    openClassification(index) {
       this.vissibleTab = `tab_${index}`;
-      this.typeName = this.types[index].name;
+      this.classificationName = this.classifications[index].name;
     },
 
     discard() {
       this.vissibleTab = "";
-    },
+    }
   },
-  
 
   created() {
-    this.getGroup();
-    
-
-  },
+    this.getClassifications();
+  }
 };
 </script>
 

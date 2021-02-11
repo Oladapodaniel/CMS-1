@@ -692,8 +692,8 @@
               />
             </div>
             <div class="col-3 col-sm-4 col-lg-2">
-              <select class="w-100 form-control channel"  v-bind="channel">
-                <!-- <option value="Select">Select</option> -->
+              <select class="w-100 form-control"  v-model="item.channel">
+                <option :value="Select">Select</option>
                 <option value="Cash">Cash</option>
                 <option value="Cheque">Cheque</option>
                 <option value="POS">POS</option>
@@ -702,15 +702,6 @@
                 <option value="USSD">USSD</option>
                 <option value="Text">Text</option>
               </select>
-               <!-- <select class="w-100 form-control" v-model="item.currency">
-                <option value="NGN">NGN</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="ZAR">ZAR</option>
-                <option value="GBP">GBP</option>
-                <option value="CAD">CAD</option>
-                <option value="GHS">GHS</option>
-              </select> -->
             </div>
             <div class="col-3 col-sm-2 col-lg-1">
               <select class="currency" v-model="item.currency">

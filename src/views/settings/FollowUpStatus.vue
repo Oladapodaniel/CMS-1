@@ -3,17 +3,56 @@
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
         <div class="col-md-12">
-          <h2>Age Group Category</h2>
+          <h2 class="mt-5 mb-5">Follow Up Status</h2>
         </div>
       </div>
+      <!--practice-->
+      <div >
+        <ol>
+          <Li v-for="(todo,index) in todos" :key="index">
+               {{todo.text}}
+
+          </Li>
+        </ol>
+       
+
+      </div>
+      <div>
+        <ol>
+          <li v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id">
+            {{item.text}}
+          </li>
+        </ol>
+      </div>
+       <h2>{{message}}</h2>
+       <input v-model="message" type="text">
+       <span v-if="seen">Now You See Me</span>
+        <h4>{{counter}}</h4>
+        <button v-on:click="reverseMessage">Reverse</button>
+       <button v-bind="clearInterval">Stop Timer</button>
+      <div class="row">
+          
+          <div class="col-sm-12 col-md-6 col-lg-9 col-xl-2 bg-danger">
+              let get dey
+
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3 col-xl-10 bg-secondary">
+              money maker
+          </div>
+
+      </div>
+      <!--practice-->
+
       <div class="row grey-rounded-border pt-1 pb-5">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-12">
+                  <h4 class="mt-2 mb-2 ml-5">Follow up Status</h4>
                 </div>
               </div>
+
               <div class="row">
                 <div class="col-md-12 py-5 grey-background">
                   <div class="row d-md-flex justify-content-around">
@@ -21,12 +60,11 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Age Group category"
-                        v-model="attendanceName"
+                        placeholder="Add follow up status name"
                       />
                     </div>
                     <div class="col-md-3">
-                      <button class="btn primary-btn px-5" @click="saveAttendant">Save</button>
+                      <button class="btn primary-btn px-5">Save</button>
                     </div>
                   </div>
                 </div>
@@ -43,14 +81,14 @@
             </div>
           </div>
 
-          <div class="row py-2" v-for="(type, index) in types" :key="index">
+          <div class="row py-2" v-for="(classification, index) in classifications" :key="index">
             <div class="col-md-12">
               <div class="row">
                 <div
                   class="col-md-7 d-flex justify-content-between align-items-center"
                 >
                   <span class="py-2 hidden-header">NAME</span>
-                  <span class="py-2 text-xs-left">{{ type.name }}</span>
+                  <span class="py-2 text-xs-left">{{ classification.name }}</span>
                 </div>
                 <div
                   class="col-md-5 d-flex justify-content-between align-items-center"
@@ -58,7 +96,7 @@
                   <span class="py-4 hidden-header">ACTION</span>
                   <div class="row">
                     <div class="col-md-6">
-                      <button class="btn secondary-btn py-1 px-4" @click="openType(index)">View</button>
+                      <button class="btn secondary-btn py-1 px-4" @click="openClassification(index)">View</button>
                     </div>
                     <div class="col-md-6">
                       <button class="btn btn-danger py-1 primary-btn">Delete</button>
@@ -73,7 +111,7 @@
                 >
                   <label for="" class="d-flex">
                     <span class="mr-2">Name</span>
-                    <input type="text" class="form-control" v-model="typeName">
+                    <input type="text" class="form-control" v-model="classificationName">
                   </label>
                 </div>
                 <div
@@ -107,40 +145,74 @@
 import axios from "@/gateway/backendapi";
 
 export default {
+    props: ['tod'],
+  template: `<li>{{ todo.text }}</li>`,
   data() {
     return {
-      types: [ ],
+        //pratice
+        message: 'update',
+        counter: 0,
+        seen: true,
+        todos: [
+            {text: 'Learn JavaScript'},
+            {text: 'Learn Html'},
+            {text: 'Learn Vue'},
+        ],
+        groceryList:[
+          {id:0, text: 'Vegetable'},
+          {id:1, text: 'Cheese'},
+          {id:2, text: 'Fruit'},
+          
+        ],
+        //pratice
+      classifications: [ ],
       vissibleTab: "",
-      typeName: "",
-      attendanceName: "",
-      ageGroup: "",
+      classificationName: "",
     }
   },
+  
+
 
   methods: {
-    async getGroup() {
+      //practice
+      reverseMessage(){
+          this.message = this.message
+          .split('')
+          .reverse()
+          .join('')
+
+
+
+      },
+      //practice
+    async getClassifications() {
       try {
-        const { data } = await axios.get("/api/Settings/GetTenantAgeGroups");
-        this.types = data;
+        const { data } = await axios.get("");
+        this.classifications = data;
       } catch (error) {
         console.log(error);
       }
     },
-    openType(index) {
+
+    openClassification(index) {
       this.vissibleTab = `tab_${index}`;
-      this.typeName = this.types[index].name;
+      this.classificationName = this.classifications[index].name;
     },
 
     discard() {
       this.vissibleTab = "";
-    },
+    }
   },
-  
 
   created() {
-    this.getGroup();
-    
-
+    this.getClassifications();
+  },
+  mounted() {
+       //pratice
+     setInterval(()=>{
+         this.counter++
+     },1000)
+      //pratice
   },
 };
 </script>
