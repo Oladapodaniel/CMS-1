@@ -41,21 +41,7 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="main-row">
-                <div class="row" v-for="(recipient, index) in recipients" :key="index">
-                    <div class="col-sm-4 d-flex justify-content-end align-items-center text-sm-right label-text">
-                        <span>From</span>
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        <input type="email" v-model="recipient.email" class="form-control inp" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'">
-                        <input type="text" v-model="recipient.phone" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
-                        <span class="text-danger">Enter {{ activeTab === 'sms' ? 'phone number' : 'email address' }}</span>
-                    </div>
-                    <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
-                        <i class="fa fa-times inp-icon my-1 remove-icon" @click="removeRecipient(recipient)"></i>
-                    </div>
-                </div>
-            </div> -->
+           
             <!-- Subject -->
             <div class="main-row">
                 <div class="row">
