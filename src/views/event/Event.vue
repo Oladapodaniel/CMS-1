@@ -2338,9 +2338,10 @@ export default {
   border: 1px solid #b2c2cd;
   border-radius: 5px;
 }
-.container.first-pane {
-  /* margin-top: 5px; */
-}
+/* .container.first-pane {
+  margin-top: 5px; 
+} */
+
 .event-category {
   display: inline-block;
   background: #ffffff 0% 0% no-repeat padding-box;

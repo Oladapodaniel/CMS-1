@@ -455,11 +455,20 @@
                   @click="selectEventAttended"
                   @keydown="preventTying"
                 /> -->
-                <button @click.prevent="selectEventAttended" class="form-control input dd">{{ selectedEventAttended.name }}</button>
+                <button
+                  @click.prevent="selectEventAttended"
+                  class="form-control input dd"
+                >
+                  {{ selectedEventAttended.name }}
+                  {{ newEvent.activity.date }}
+                </button>
               </div>
               <div class="input-field manual-dd-con" v-if="showEventList">
                 <div class="manual-dd dd">
-                  <div class="container-fluid dd dd-search-con" v-if="eventsAttended.length > 5">
+                  <div
+                    class="container-fluid dd dd-search-con"
+                    v-if="eventsAttended.length > 5"
+                  >
                     <div class="row dd">
                       <div class="col-md-12 dd px-0 py-1">
                         <input
@@ -496,7 +505,10 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-12 py-2 px-0" v-if="eventsAttended.length > 0">
+                      <div
+                        class="col-md-12 py-2 px-0"
+                        v-if="eventsAttended.length > 0"
+                      >
                         <hr class="hr" />
                       </div>
                       <div class="col-md-12 create-event py-2 text-center">
@@ -875,7 +887,11 @@
               Cancel
             </button>
 
-            <button class="submit-btn ml-5 outline-none" :class="{ 'btn-loading': loading }" :disabled="loading">
+            <button
+              class="submit-btn ml-5 outline-none"
+              :class="{ 'btn-loading': loading }"
+              :disabled="loading"
+            >
               <i
                 class="fas fa-circle-notch fa-spin mr-2 text-white"
                 v-if="loading"
@@ -923,7 +939,6 @@
                           >
                         </div>
                         <div class="col-md-7">
-                          
                           <!-- <Dropdown
                             v-model="selectedVisitOption"
                             :options="eventName"
@@ -937,7 +952,7 @@
                             <option v-for="event in newEvents" :key="event.id" class="create-option">{{ event.name }}</option>
                             <option class="create-new-event text-center">Create new event</option>
                           </select> -->
-                           <!-- <input
+                          <!-- <input
                                         type="text"
                                         class="form-control"
                                         v-model="newEvent.activity.newEventCategoryName"
@@ -946,8 +961,7 @@
                             class="select-elem-con pointer d-flex justify-content-space-between"
                             @click="showCategory = !showCategory"
                           >
-                            <span class="ofering"
-                              >{{ selectEvent }}</span
+                            <span class="ofering">{{ selectEvent }}</span
                             ><span>
                               <i
                                 class="pi pi-angle-down"
@@ -968,14 +982,19 @@
                               v-model="eventText"
                             />
                             <div
-                              v-for="(eventCategory, index) in filterEventCategory"
+                              v-for="(
+                                eventCategory, index
+                              ) in filterEventCategory"
                               :key="index"
                               class="ofering"
                             >
-                              <div class="ofering py-1" @click="individualEvent(eventCategory)">
+                              <div
+                                class="ofering py-1"
+                                @click="individualEvent(eventCategory)"
+                              >
                                 {{ eventCategory.name }}
                               </div>
-                            </div> 
+                            </div>
                             <div
                               v-if="filterEventCategory.length >= 1"
                               @click="openModal"
@@ -983,47 +1002,57 @@
                             >
                               Add New Event
                             </div>
-                            <div v-else class="create mt-3" @click="createNewCat(1)">
+                            <div
+                              v-else
+                              class="create mt-3"
+                              @click="createNewCat(1)"
+                            >
                               Create "{{ eventText }}" event
                             </div>
                           </div>
 
-                              <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
-                                <Dialog header="Add New Event" v-model:visible="displayModal" :style="{width: '50vw'}" :modal="true">
-                                    <div class="row">
-                                      <div class="col-sm-3 align-self-center">Event Name</div>
-                                      <div class="col-sm-9">
-                                        <input
-                                        type="text"
-                                        class="form-control"
-                                        v-model="newEventCategoryName"
-                                      />
-                                      </div>
-                                    </div>
-                                    <template #footer>
-                                        <!-- <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
+                          <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
+                          <Dialog
+                            header="Add New Event"
+                            v-model:visible="displayModal"
+                            :style="{ width: '50vw' }"
+                            :modal="true"
+                          >
+                            <div class="row">
+                              <div class="col-sm-3 align-self-center">
+                                Event Name
+                              </div>
+                              <div class="col-sm-9">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  v-model="newEventCategoryName"
+                                />
+                              </div>
+                            </div>
+                            <template #footer>
+                              <!-- <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
                                         <Button label="Yes" icon="pi pi-check" @click="closeModal" autofocus /> -->
-                                        <div class="col-md-12 d-md-flex justify-content-end p-0">
-                                          <button
-                                            type="button"
-                                            class="btn secondary-btn px-4"
-                                            @click="closeModal"
-                                          >
-                                            Close
-                                          </button>
-                                          <button
-                                            type="button"
-                                            class="btn primary-btn px-4 mr-0 text-white"
-                                            @click="createNewCat(2)"
-                                          >
-                                            Save
-                                          </button>
-                                        </div>
-                                    </template>
-                                </Dialog>
-
-
-
+                              <div
+                                class="col-md-12 d-md-flex justify-content-end p-0"
+                              >
+                                <button
+                                  type="button"
+                                  class="btn secondary-btn px-4"
+                                  @click="closeModal"
+                                >
+                                  Close
+                                </button>
+                                <button
+                                  type="button"
+                                  class="btn primary-btn px-4 mr-0 text-white"
+                                  @click="createNewCat(2)"
+                                >
+                                  Save
+                                </button>
+                              </div>
+                            </template>
+                          </Dialog>
                         </div>
                       </div>
                       <div class="row mt-4 mb-4">
@@ -1044,16 +1073,20 @@
                     <div class="modal-footer">
                       <div class="container">
                         <div class="row">
-                          <div class="col-md-4">
-                          </div>
-                          <div
-                            class="col-md-7"
-                          >
+                          <div class="col-md-4"></div>
+                          <div class="col-md-7">
                             <div class="row">
                               <div class="col-md-12 text-md-right">
-                                <p class="mb-1 text-danger" v-if="invalidEventDetails">Enter event name and date</p>
+                                <p
+                                  class="mb-1 text-danger"
+                                  v-if="invalidEventDetails"
+                                >
+                                  Enter event name and date
+                                </p>
                               </div>
-                              <div class="col-md-12 d-md-flex justify-content-end">
+                              <div
+                                class="col-md-12 d-md-flex justify-content-end"
+                              >
                                 <button
                                   type="button"
                                   class="btn secondary-btn px-4"
@@ -1093,7 +1126,7 @@ import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
-import Dialog from 'primevue/dialog';
+import Dialog from "primevue/dialog";
 
 export default {
   components: { Dropdown, Dialog },
@@ -1106,8 +1139,8 @@ export default {
     const selectEventAttended = () => {
       showEventList.value = !showEventList.value;
     };
-    const showError = ref(false)
-    const newEvents = ref([])
+    const showError = ref(false);
+    const newEvents = ref([]);
 
     const preventTying = (e) => {
       e.preventDefault();
@@ -1193,13 +1226,13 @@ export default {
     });
 
     const eventName = computed(() => {
-      return newEvents.value.map(i => i.name)
-    })
+      return newEvents.value.map((i) => i.name);
+    });
 
-    const showCategory = ref(false)
-    const eventText = ref("")
-    const displayModal = ref(false)
-    const selectEvent = ref("Select Event")
+    const showCategory = ref(false);
+    const eventText = ref("");
+    const displayModal = ref(false);
+    const selectEvent = ref("Select Event");
 
     const filterEventCategory = computed(() => {
       // let x;
@@ -1213,24 +1246,24 @@ export default {
         return newEvents.value;
       }
       return arr;
-    })
+    });
 
     const openModal = () => {
-      displayModal.value = true
-    }
+      displayModal.value = true;
+    };
 
     const closeModal = () => {
-      displayModal.value = false
-    }
+      displayModal.value = false;
+    };
 
-    const newEventCategoryName = ref("")
-    
+    const newEventCategoryName = ref("");
+
     const individualEvent = (obj) => {
-      selectEvent.value = obj.name
-      newEvent.value.activity.eventCategoryId = obj.id
-      showCategory.value = false
-      console.log(obj)
-    }
+      selectEvent.value = obj.name;
+      newEvent.value.activity.eventCategoryId = obj.id;
+      showCategory.value = false;
+      console.log(obj);
+    };
 
     const birthMonth = ref(null);
 
@@ -1243,8 +1276,7 @@ export default {
 
     const loading = ref(false);
 
-
-    const onSubmit = async() => {
+    const onSubmit = async () => {
       // firstTimersObj.value.followUpTypeId =
       //   "00000000-0000-0000-0000-000000000000";
       firstTimersObj.value.genderId = selectedGender.value
@@ -1268,7 +1300,7 @@ export default {
       firstTimersObj.value.wantToBeVisited = selectedVisitOption.value
         ? wantVisitArr.value.indexOf(selectedVisitOption.value) + 1
         : 0;
-// console.log(selectedAboutUsSource.value.id)
+      // console.log(selectedAboutUsSource.value.id)
       switch (birthMonth.value) {
         case "January":
           firstTimersObj.value.birthMonth = "1";
@@ -1318,7 +1350,6 @@ export default {
       loading.value = true;
 
       if (route.params.firstTimerId) {
-
         let updateMember = {
           firstName: firstTimersObj.value.firstName,
           lastName: firstTimersObj.value.lastName,
@@ -1337,11 +1368,13 @@ export default {
           wantsToBeVisited: firstTimersObj.value.wantToBeVisited,
           personId: firstTimersObj.value.personId,
           sendWelcomeEmail: firstTimersObj.value.sendWelcomeEmail,
-          sendWelcomeSMS: firstTimersObj.value.sendWelcomeSMS
-        }
+          sendWelcomeSMS: firstTimersObj.value.sendWelcomeSMS,
+        };
 
-        if (firstTimersObj.value.genderId) updateMember.genderId = firstTimersObj.value.genderId
-        if (firstTimersObj.value.maritalStatusId) updateMember.maritalStatusId = firstTimersObj.value.maritalStatusId
+        if (firstTimersObj.value.genderId)
+          updateMember.genderId = firstTimersObj.value.genderId;
+        if (firstTimersObj.value.maritalStatusId)
+          updateMember.maritalStatusId = firstTimersObj.value.maritalStatusId;
 
         try {
           loading.value = true;
@@ -1354,8 +1387,8 @@ export default {
 
           if (response.status === 200 || response.status === 201) {
             loading.value = false;
-            router.push("/tenant/firsttimersempty");
-            console.log(firstTimersObj)
+            router.push("/tenant/firsttimerslist");
+            console.log(firstTimersObj);
             toast.add({
               severity: "success",
               summary: "Update Succesful",
@@ -1363,7 +1396,6 @@ export default {
               life: 2500,
             });
           }
-          
         } catch (err) {
           loading.value = false;
           NProgress.done();
@@ -1379,39 +1411,40 @@ export default {
             toast.add({
               severity: "error",
               summary: "Update Failed",
-              detail: err.response && err.response.data.messsage ? err.response.data.messsage  : "Update operation was not succesful",
+              detail:
+                err.response && err.response.data.messsage
+                  ? err.response.data.messsage
+                  : "Update operation was not succesful",
               life: 2500,
             });
           }
           showError.value = true;
           console.log(err.response);
-        } 
+        }
       } else {
         axios
-        .post("/api/people/firsttimer", firstTimersObj.value)
-        .then((res) => {
-          // NProgress.done();
-          console.log(res.data);
-          loading.value = false;
-          // toast.show(`Saving successful`, {
-          //   position: "top-right",
-          //   type: "success",
-          // });
-          router.push("/tenant/firsttimersempty");
-        })
-        .catch((err) => {
-          // NProgress.done();
-          loading.value = false;
-          // toast.show(`Saving failed`, {
-          //   position: "top-right",
-          //   type: "error",
-          // });
-          console.log(err);
-        });
+          .post("/api/people/firsttimer", firstTimersObj.value)
+          .then((res) => {
+            // NProgress.done();
+            console.log(res.data);
+            loading.value = false;
+            // toast.show(`Saving successful`, {
+            //   position: "top-right",
+            //   type: "success",
+            // });
+            router.push("/tenant/firsttimerslist");
+          })
+          .catch((err) => {
+            // NProgress.done();
+            loading.value = false;
+            // toast.show(`Saving failed`, {
+            //   position: "top-right",
+            //   type: "error",
+            // });
+            console.log(err);
+          });
       }
-    }
-
-    
+    };
 
     const onCancel = () => {
       router.back();
@@ -1433,48 +1466,47 @@ export default {
     });
 
     const eventAttendedSelected = (eventObj) => {
-      console.log(eventObj)
+      console.log(eventObj);
       selectedEventAttended.value = eventObj;
       showEventList.value = false;
       eventsSearchString.value = "";
     };
 
-     const newEvent = ref({
-            activity: { }
-      })
+    const newEvent = ref({
+      activity: {},
+    });
 
     const invalidEventDetails = ref(false);
     const savingNewEvent = ref(false);
-    const firstTimer = ref({})
-    
-    const createNewCat = async(eventParams) => {
+    const firstTimer = ref({});
+
+    const createNewCat = async (eventParams) => {
       try {
         let data;
-        const theText = eventParams === 1 ? eventText.value : newEventCategoryName.value;
-          data = await axios.post(`/api/EventCategory?name=${theText}`)
-        console.log(data.data)
-        newEvents.value = data.data
+        const theText =
+          eventParams === 1 ? eventText.value : newEventCategoryName.value;
+        data = await axios.post(`/api/EventCategory?name=${theText}`);
+        console.log(data.data);
+        newEvents.value = data.data;
 
         toast.add({
-            severity: "success",
-            summary: "Event created",
-            detail: "Your new event was created successfully",
-            life: 2500,
-          });
-      }
-      catch (error) {
+          severity: "success",
+          summary: "Event created",
+          detail: "Your new event was created successfully",
+          life: 2500,
+        });
+      } catch (error) {
         toast.add({
-                severity: "error",
-                summary: "Opps! Sorry Try again",
-                detail: error.response.data,
-                life: 2500,
-              });
+          severity: "error",
+          summary: "Opps! Sorry Try again",
+          detail: error.response.data,
+          life: 2500,
+        });
       }
       displayModal.value = false;
-      console.log(newEventCategoryName.value)
-      newEventCategoryName.value = ""
-    }
-
+      console.log(newEventCategoryName.value);
+      newEventCategoryName.value = "";
+    };
 
     const createNewEvent = async () => {
       // console.log(eventsAttended.value);
@@ -1482,19 +1514,19 @@ export default {
       if (newEvent.value.activity.date) {
         try {
           savingNewEvent.value = true;
-          console.log(newEvent.value)
+          console.log(newEvent.value);
           const { data } = await axios.post(
             "/api/Events/CreateActivity",
             newEvent.value
           );
-          console.log(data)
+          console.log(data);
           selectedEventAttended.value.activityID = data.currentEvent.id;
-          selectedEventAttended.value.name = data.currentEvent.name ? data.currentEvent.name : "New event selected";
+          selectedEventAttended.value.name = data.currentEvent.name
+            ? data.currentEvent.name
+            : "New event selected";
           // console.log(selectedEventAttended, "SAE");
 
-          
-
-            toast.add({
+          toast.add({
             severity: "success",
             summary: "Event created",
             detail: "Your new event was created successfully",
@@ -1506,12 +1538,12 @@ export default {
           console.log(data, "data");
         } catch (error) {
           if (error.response.data == "An Event with this name already exist") {
-              toast.add({
-                severity: "error",
-                summary: "Event exist already",
-                detail: error.response.data,
-                life: 2500,
-              });
+            toast.add({
+              severity: "error",
+              summary: "Event exist already",
+              detail: error.response.data,
+              life: 2500,
+            });
           }
           /*eslint no-undef: "warn"*/
           NProgress.done();
@@ -1526,7 +1558,6 @@ export default {
     };
     const route = useRoute();
 
-
     onMounted(() => {
       axios.get("/api/Events/EventActivity").then((res) => {
         eventsAttended.value = res.data;
@@ -1536,7 +1567,6 @@ export default {
         newEvents.value = res.data.map((i) => {
           return { id: i.id, name: i.name };
         });
-
       });
 
       axios
@@ -1567,13 +1597,14 @@ export default {
         // console.log(res.data)
       });
 
-      console.log(route.params.firstTimerId)
+      console.log(route.params.firstTimerId);
       if (route.params.firstTimerId) {
-        axios.get(`/api/People/firstTimer/${route.params.firstTimerId}`)
-          .then(res => {
-            console.log(res.data, "DFGHG")
-            firstTimersObj.value = res.data
-          })
+        axios
+          .get(`/api/People/firstTimer/${route.params.firstTimerId}`)
+          .then((res) => {
+            console.log(res.data, "DFGHG");
+            firstTimersObj.value = res.data;
+          });
       }
     });
 
@@ -1640,7 +1671,7 @@ export default {
       createNewCat,
       newEventCategoryName,
       selectEvent,
-      individualEvent
+      individualEvent,
     };
   },
 };
@@ -1651,7 +1682,6 @@ export default {
   box-sizing: border-box;
   color: #02172e;
 }
-
 
 .show-tab {
   transition: all 0.5s ease-in-out;
@@ -1749,7 +1779,7 @@ export default {
   padding: 5px 10px;
   border: 1px solid #ced4da;
   border-radius: 4px;
-  justify-content: space-between
+  justify-content: space-between;
 }
 
 .pointer {

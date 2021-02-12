@@ -165,7 +165,7 @@ const routes = [{
                     import ( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimersList.vue')
             },
             {
-                path: 'firsttimersempty',
+                path: 'firsttimerslist',
                 name: 'FirstTimerEmpty',
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')

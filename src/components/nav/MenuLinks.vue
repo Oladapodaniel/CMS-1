@@ -56,7 +56,7 @@
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/firsttimersempty`"
+              <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
                 >First Timers</router-link
               >
             </li>
