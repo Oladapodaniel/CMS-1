@@ -785,7 +785,7 @@
     </div>
 
     <div class="row email-dat" ref="emaildata">
-      <table align="center" style="border-collapse:collapse;width:100%;padding:0.0000pt 0.0000pt 0.0000pt 0.0000pt ; box-shadow: 0px 3px 15px #00000029;
+      <table align="center" style="border-collapse:collapse;max-width:800px;padding:0.0000pt 0.0000pt 0.0000pt 0.0000pt ; box-shadow: 0px 3px 15px #00000029;
     border: 1px solid #dde2e6;
 border-radius: 5px;">
     <tbody>
@@ -849,13 +849,13 @@ border-radius: 5px;">
             :key="index"
         >
             <td style="width: 152.3pt;padding: 0pt 5.4pt;border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
-                <p style="color:red;text-indent:21.0000pt;margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;">{{ attendance.attendanceTypeName }}</span></p>
+                <p style="text-indent:21.0000pt;margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:normal;font-size:13px;">{{ attendance.attendanceTypeName }}</span></p>
             </td>
             <td colspan="3" style="width: 188.2pt;padding: 0pt 5.4pt;border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
-                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;">{{ attendance.number }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:normal;font-size:13px;">{{ attendance.number }}</span></p>
             </td>
             <td colspan="2" style="width: 200.3pt;padding: 0pt 5.4pt;border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
-                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;">{{ attendance.number }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:normal;font-size:13px;">{{ attendance.number }}</span></p>
             </td>
         </tr>
          <tr style="border-top:3px solid">
@@ -866,7 +866,7 @@ border-radius: 5px;">
                 <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;">Total</span></p>
             </td>
             <td colspan="2" style="width: 200.3pt;padding: 0pt 5.4pt;border-top: none;vertical-align: top;">
-                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;">{{ eventData.attendances.map(i => +i.number).reduce((a, b) => a + b) }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;">{{ eventData.attendances.length > 0 ? eventData.attendances.map(i => +i.number).reduce((a, b) => a + b) : 0 }}</span></p>
             </td>
         </tr>
         
@@ -917,21 +917,21 @@ border-radius: 5px;">
                 <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:18px; color:#000">Total</span></p>
             </td>
         </tr>
-        <tr style="font-weight: normal; color: #fff;"
+        <tr style="font-weight: normal;font-size:13px;"
           v-for="(offering, index) in eventData.offerings"
               :key="index"
         >
             <td style="width: 152.3pt;padding: 0pt 5.4pt;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
-                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;">{{ offering.name }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:normal;font-size:13px;">{{ offering.name }}</span></p>
             </td>
             <td style="width: 126.75pt;padding: 0pt 5.4pt;border-left: none;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
-                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;">{{ offering.channel }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:normal;font-size:13px;">{{ offering.channel }}</span></p>
             </td>
             <td colspan="3" style="width: 155.25pt;padding: 0pt 5.4pt;border-left: none;border-right: 31.875pt none rgb(255, 255, 255);border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
-                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;">{{ offering.amount }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:normal;font-size:13px;">{{ offering.amount }}</span></p>
             </td>
             <td style="width: 106.5pt;padding: 0pt 5.4pt;border-left: none;border-top: none;border-bottom: 31.875pt none rgb(255, 255, 255);vertical-align: top;">
-                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:bold;font-size:16px;">{{ offering.amount }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;text-align:center;"><span style="font-weight:normal;font-size:13px;">{{ offering.amount }}</span></p>
             </td>
         </tr>
         <tr

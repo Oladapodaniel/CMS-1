@@ -584,7 +584,7 @@
                 class="form-control"
                 name=""
                 id=""
-                v-else-if="!attendanceTypeID"
+                v-else-if="!item.attendanceTypeID"
                 v-model="item.attendanceTypeName"
                 placeholder="Enter Attendance Item"
                 ref="attendanceInput"
@@ -1807,7 +1807,10 @@ export default {
 
         this.eventObj = {
         attendances: this.attendanceItem,
-        offerings: this.offeringItem,
+        offerings: this.offeringItem.map(i => {
+          i.currency = i.currency.split(" ")[0]
+          return i
+        }),
         activityFirstTimers: this.firstTimers,
       };
 
@@ -1861,7 +1864,10 @@ export default {
         },
         activityFirstTimers: this.firstTimers,
         attendances: this.attendanceItem,
-        offerings: this.offeringItem,
+        offerings: this.offeringItem.map(i => {
+          i.currency = i.currency.split(" ")[0]
+          return i
+        }),
         preEvent: this.updatePreEvent
       }
 
