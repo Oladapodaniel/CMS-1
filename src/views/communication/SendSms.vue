@@ -877,7 +877,7 @@ export default {
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
-          if (!res.status) {
+          if (res.status === false) {
             toast.add({
               severity: "error",
               summary: "Failed operation",

@@ -863,7 +863,7 @@
       </div>
     </div>
 
-    <div class="row email-dat" ref="emaildata">
+    <div class="row email-data" ref="emaildata">
       <table align="center" style="border-collapse:collapse;max-width:800px;padding:0.0000pt 0.0000pt 0.0000pt 0.0000pt ; box-shadow: 0px 3px 15px #00000029;
     border: 1px solid #dde2e6;
 border-radius: 5px;">
