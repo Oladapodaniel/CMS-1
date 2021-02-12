@@ -696,6 +696,7 @@ import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
+import communicationService from '../../services/communication/communicationservice';
 
 export default {
   setup() {
@@ -898,7 +899,7 @@ export default {
               detail: "SMS was sent successfully",
               life: 2500,
             });
-            store.dispatch("removeSMSUnitCharge", pageCount.value * 2);
+            store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
             console.log(pageCount, "Page count ");
           }
           console.log(res);
@@ -960,6 +961,18 @@ export default {
       groupSelectionTab.value = true;
       selectedGroups.value.push({ data: `group_~${route.query.group}`, name: route.query.group});
       phoneNumberSelectionTab.value = true;
+    }
+
+    if (route.query.draftId) {
+      communicationService.getDraftsById(route.query.draftId)
+        .then(res => {
+          if (res) {
+            console.log(res, "Draft");
+            editorData.value = res.body;
+          } else {
+            console.log(res, "error response");
+          }
+        })
     }
 
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {

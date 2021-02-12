@@ -518,9 +518,9 @@
               </div>
               <div class=" col-10 col-md-7">
                 <input
-                  type="date"
+                  placeholder=""
                   v-model="eventDate"
-                  placeholder="Helo"
+                  type="date"
                   class="form-control"
                   required
                 />
@@ -705,7 +705,7 @@
                 id=""
                 v-else-if="!item.offeringTypeId"
                 v-model="item.name"
-                placeholder="Enter Attendance Item"
+                placeholder="Enter Offering Item"
                 ref="offeringInput"
               />
             </div>
@@ -714,6 +714,7 @@
                 <!-- <option :value="select">Select</option> -->
                 <option value="Cheque">Cheque</option>
                 <option value="Cash">Cash</option>
+                <option value="Cheque">Cheque</option>
                 <option value="POS">POS</option>
                 <option value="Online">Online</option>
                 <option value="Bank Transfer">Bank Transfer</option>
@@ -1462,6 +1463,7 @@ export default {
   },
   data() {
     return {
+      currDate: "",
       type: null,
       //   currency: '',
       amount: null,
@@ -1582,6 +1584,12 @@ export default {
     };
   },
   methods: {
+    currentDate(){
+      this.currDate= this.eventDate
+      console.log(this.currDate)
+      
+
+    },
     hideModals(e) {
       if (!e.target.classList.contains("ofering")) {
         this.$refs.offeringDrop.classList.remove("offering-drop");
@@ -2161,6 +2169,8 @@ export default {
     }
   },
   created() {
+    this.currentDate()
+
     axios.get("/api/offering").then((res) => {
       this.newOfferings = res.data.map((i) => {
         return { id: i.id, name: i.name };

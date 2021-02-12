@@ -20,7 +20,7 @@ export default {
 
         async getAllSentSMS({ commit }) {
             try {
-                const { data } = await axios.get("/api/Messaging/getAllSentSms/1");
+                const { data } = await axios.get("/api/Messaging/getAllSentSms?page=1");
                 commit("setAllSentSMS", data);
             } catch (error) {
                 console.log(error);
@@ -30,5 +30,6 @@ export default {
 
       getters: {
         allSentSMS: state => state.allSentSMS,
+        getById: (state) => (id) => state.allSentSMS.find(i => i.id === id),
       },
 }

@@ -102,7 +102,7 @@
 
                   <div class="row" v-if="sentSMS.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
-                      <span class="my-4 font-weight-bold">No sent mesages</span>
+                      <span class="my-4 font-weight-bold">No scheduled mesages</span>
                     </div>
                   </div>
 
@@ -144,12 +144,13 @@ export default {
       }
     }
     onMounted(() => {
-      getSentSMS()
+      // getSentSMS()
     })
 
     return {
       sentSMS,
       loading,
+      getSentSMS,
     }
   }
 };

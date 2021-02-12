@@ -19,6 +19,7 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import OverlayPanel from 'primevue/overlaypanel';
 import SplitButton from 'primevue/splitbutton';
 import Checkbox from 'primevue/checkbox';
+import Tag from 'primevue/tag';
 
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
@@ -58,4 +59,5 @@ app.component("OverlayPanel", OverlayPanel);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
+app.component("Tag", Tag);
 
