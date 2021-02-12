@@ -4,7 +4,7 @@
             <div class="row mt-4">
                 <div class="col-sm-12 py-2">
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'churchplus'}" @click="changeTab('churchplus')">Churchplus</a>
-                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sms'}" @click="changeTab('sms')">SMS</a>
+                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sms'}" @click="changeTab('sms')" v-if="false">SMS</a>
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'sharelink'}">Share link</a>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-sm-6 form-group" >
                         <input type="email" class="form-control inp"  v-model="recipient.email" name="" id="" v-show="activeTab === 'churchplus'" @input="hideErrorMessage">
-                        <input type="text" class="form-control inp" v-model="recipient.phone" name="" id="" v-show="activeTab === 'sms'">
+                        <input type="text" class="form-control inp" v-model="recipient.phone" name="" id="" v-show="activeTab === 'sms'" @input="hideErrorMessage">
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
                         <i class="fa fa-plus-circle inp-icon plus-icon my-1" @click="addRecipient"></i>
@@ -134,7 +134,7 @@
                 </div>
                 <!-- <div class="row"> -->
                     <div class="col-md-12 text-right py-2" v-if="invalidDestination">
-                        <p class="text-danger mb-0 pr-md-5">Enter at least a destination for the mail</p>
+                        <p class="text-danger mb-0 pr-md-5">Enter at least a destination for the report</p>
                     </div>
                     <div class="col-sm-12 d-flex justify-content-end">
                         <a class="action-btn mx-2 my-1" data-dismiss="modal">Cancel</a>
@@ -196,9 +196,9 @@ import axios from "@/gateway/backendapi";
                     subject: subject.value.value,
                 }
 
-                const validDestination = messageObj.contacts.find(i => i.email);
+                const validDestination = messageObj.contacts.find(i => i.phone);
                 console.log(validDestination, "validDestination");
-                if (!validDestination) {
+                if (activeTab.value === "sms" && !validDestination) {
                     invalidDestination.value = true;
                     return false;
                 }
@@ -206,7 +206,7 @@ import axios from "@/gateway/backendapi";
                 if (sendToMysef.value) {
                     messageObj.contacts.push({ email: userEmail.value });
                 }
-                emit("sendreport", messageObj);
+                emit("sendreport", { data: messageObj, medium: activeTab.value });
             }
 
             const getUserEmail = () => {

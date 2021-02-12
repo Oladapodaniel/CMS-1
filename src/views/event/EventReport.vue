@@ -1160,12 +1160,10 @@ export default {
       offeringArr.value = eventData.value.offerings;
     }
 
-    const sendReport = (data) => {
-      console.log(data, "Message body");
+    const sendReport = (messageObj) => {
+      console.log(messageObj, "Message body");
       const emailData = ref(emaildata.value.innerHTML);
-      const body = {
-        // message: topmost.value.innerHTMl.toString(),
-        message: `
+      const message = `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml" style="box-sizing: border-box; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; margin: 0; padding: 0;">
                   <head>
@@ -1192,27 +1190,43 @@ export default {
                   </head>
                   <body style="-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; background: #f6f6f6; box-sizing: border-box; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; height: 100%; line-height: 1.6; margin: 0; padding: 0; width: 100% !important;">
                   
-                  ${data.message} <br>
+                  ${messageObj.data.message} <br>
 
                   ${emailData.value}
                   </body>
-                  `,
+                  `;
+      const body = {
+        // message: topmost.value.innerHTMl.toString(),
+        
         ispersonalized: true,
-        contacts: data.contacts,
-        subject: data.subject,
+        contacts: messageObj.data.contacts,
+        subject: messageObj.data.subject,
       };
 
+      body.message = messageObj.medium === "sms" ? messageObj.data.message : message;
+
+      const url = messageObj.medium === "sms" ? "/api/Messaging/sendSms" : "/api/Messaging/sendEmail";
+
       composerObj
-        .sendMessage("/api/Messaging/sendEmail", body)
+        .sendMessage(url, body)
         .then((res) => {
           btnState.value = "";
           console.log(res, "report response");
-          toast.add({
+          if (res.status === false) {
+            toast.add({
+              severity: "error",
+              summary: "Sending Failed",
+              detail: res.message,
+              life: 3000,
+            });
+          } else {
+            toast.add({
             severity: "success",
             summary: "Send Success",
             detail: "Your report has been sent",
             life: 3000,
           });
+          }
         })
         .catch((err) => {
           btnState.value = "";
