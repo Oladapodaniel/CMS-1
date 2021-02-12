@@ -37,7 +37,7 @@
       <div class="col-md-3">
         <span class="theader">Date</span>
         <div class="my-3">
-          <span class="date">{{ eventData.date }}</span>
+          <span class="date">{{ eventData.activity.date }}</span>
         </div>
       </div>
     </div>

@@ -443,7 +443,7 @@
                 Category</span
               ><span>
                 <i
-                  class="fa fa-angle-down offset-sm-2 ofering"
+                  class="pi pi-angle-down offset-sm-2 ofering"
                   :class="{ roll3: showForm3 }"
                   aria-hidden="true"
                 ></i
@@ -558,7 +558,7 @@
         >
           <div class="row">
             <div class="col-6 col-md-3">
-              <select class="form-control" v-if="item.attendanceTypeID">
+              <select class="form-control" v-if="item.attendanceTypeID && !routeParams" >
                 <option
                   v-for="(newAttendance, index) in newAttendances"
                   :key="index"
@@ -570,12 +570,21 @@
                   {{ newAttendance.name }}
                 </option>
               </select>
+              <select class="form-control" v-if="item.attendanceTypeID && routeParams" v-model="item.attendanceTypeID" @change="updateAttendanceId" >
+                <option
+                  v-for="(newAttendance, index) in newAttendances"
+                  :key="index"
+                  :value="newAttendance.attendanceTypeID"
+                >
+                  {{ newAttendance.name }}
+                </option>
+              </select>
               <input
                 type="text"
                 class="form-control"
                 name=""
                 id=""
-                v-else
+                v-else-if="!attendanceTypeID"
                 v-model="item.attendanceTypeName"
                 placeholder="Enter Attendance Item"
                 ref="attendanceInput"
@@ -661,7 +670,6 @@
         </div>
 
         <!-- Selected offerings -->
-
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -670,7 +678,7 @@
         >
           <div class="row">
             <div class="col-12 col-sm-8 col-lg-3">
-              <select class="form-control" v-if="item.offeringTypeId">
+              <select class="form-control" v-if="item.offeringTypeId && !routeParams">
                 <option
                   v-for="(newOffering, index) in newOfferings"
                   :key="index"
@@ -680,12 +688,22 @@
                   {{ newOffering.name }}
                 </option>
               </select>
+            
+              <select class="form-control" v-else-if="item.offeringTypeId && routeParams" v-model="item.offeringTypeId" @change="updateOfferingId">
+                <option
+                  v-for="(newOffering, index) in newOfferings"
+                  :key="index"
+                  :value="newOffering.id"
+                >
+                  <p>{{ newOffering.name }}</p>
+                </option>
+              </select>
               <input
                 type="text"
                 class="form-control"
                 name=""
                 id=""
-                v-else
+                v-else-if="!item.offeringTypeId"
                 v-model="item.name"
                 placeholder="Enter Attendance Item"
                 ref="offeringInput"
@@ -693,7 +711,7 @@
             </div>
             <div class="col-3 col-sm-4 col-lg-2">
               <select class="w-100 form-control" v-model="item.channel">
-                <option :value="select">Select</option>
+                <!-- <option :value="select">Select</option> -->
                 <option value="Cheque">Cheque</option>
                 <option value="Cash">Cash</option>
                 <option value="POS">POS</option>
@@ -703,16 +721,25 @@
                 <option value="Text">Text</option>
               </select>
             </div>
+            
             <div class="col-3 col-sm-2 col-lg-1">
-              <select class="currency" v-model="item.currency">
-                <option value="NGN">NGN</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="ZAR">ZAR</option>
-                <option value="GBP">GBP</option>
-                <option value="CAD">CAD</option>
-                <option value="GHS">GHS</option>
-              </select>
+              <!-- <select class="currency" v-model="item.currency">
+                <option v-for="currency in currencyList" :key="currency.id">{{ currency.name }}</option>
+              </select> -->
+              <!-- <div class="codeModal">
+                <div class="currency country-code form-control codeModal" @click="toggleCode"><div class="d-flex justify-content-between align-items-center"><span class="codeModal">{{ item.currency }}</span><i class="pi pi-angle-down"></i></div></div>
+            </div>
+
+                <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal ">
+                    <input class="codeInput input form-control codeModal" v-model="currencyText">
+                <div v-for="currency in filterCurrency" :key="currency.id" class="codeModal" >
+                    <div class="col-sm-3"><span style="display: inline-block;" @click="getCurrency">{{ currency.name }}</span>&nbsp;&nbsp;<span style="font-size: 0.8em">{{ currency.country }}</span></div>
+                </div>
+                <div v-if="filterCurrency.length == 0">No match found</div>
+                </div> -->
+                <Dropdown v-model="item.currency" :options="currencyList" :filter="true" class="currency p-0" placeholder="NGN" :showClear="false">
+                    
+                </Dropdown>
             </div>
             <div class="col-6 col-lg-2">
               <input
@@ -736,7 +763,7 @@
 
           
 
-            <div v-if="item.giver == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center mt-2">Add Giver</div>
+            <div v-if="item.giver == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Giver</div>
             <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.giver }}     <span class="donor-text">edit</span></div>
             <!-- <div v-else>{{ item.addGiver }}</div> -->
                </div>
@@ -1428,9 +1455,10 @@ import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
 // import store from "@/store/store.js"
 // import { useToast } from 'primevue/usetoast';
+import Dropdown from 'primevue/dropdown';
 export default {
   components: {
-    SelectElem,
+    SelectElem, Dropdown
   },
   data() {
     return {
@@ -1519,10 +1547,11 @@ export default {
       preacher: "",
       preEventAmount: "",
       preEventName: "",
+      updatePreEvent: {},
       eventCategories: [],
       selectedEventCategory: {},
       selectedEventCategoryId: "",
-      eventDate: new Date(Date.now()).toLocaleDateString(),
+      eventDate: new Date().toISOString().substr(0, 10),
       showEditEventCategory: false,
       gender: [],
       comMeansArr: ["Call", "Email", "Visit", "SMS"],
@@ -1545,6 +1574,11 @@ export default {
       // addGiver: "Add Giver",
       donorBoolean: false,
       offeringToAddDonor: 0,
+      currencyList: [],
+      showCode: false,
+      currencyText: "",
+      eventObj: {},
+      routeParams: null
     };
   },
   methods: {
@@ -1569,13 +1603,14 @@ export default {
         this.offeringItem.push({
           name: offObj.name,
           offeringTypeId: offObj.id,
-          channel: "",
-          currency: offObj.currency == undefined ? "NGN" : offObj.currency,
+          channel: offObj.channel == undefined || offObj.channel == "" || offObj.channel == null ? "Cash" : offObj.channel,
+          currency: offObj.currency == undefined || offObj.currency == "" || offObj.currency == null ? "NGN" : offObj.currency,
           giver: ""
         });
       } else {
         this.offeringItem.push({
-          // convertedAmount: 5000,
+          currency: "NGN",
+          channel: "Cash"
         });
         this.$nextTick(() => {
           this.$refs.offeringInput.focus();
@@ -1762,7 +1797,7 @@ export default {
       //   activityFirstTimers: this.firstTimers,
       // };
 
-      let event = {
+        this.eventObj = {
         attendances: this.attendanceItem,
         offerings: this.offeringItem,
         activityFirstTimers: this.firstTimers,
@@ -1770,7 +1805,7 @@ export default {
 
       // If preactivity id is empty, dont send preevent as part of the event object, else send it
       if (this.preActivityId) {
-        event.preEvent = {
+        this.eventObj.preEvent = {
           name: this.preEventName,
           topic: this.preEventTopic,
           details: this.details,
@@ -1789,7 +1824,7 @@ export default {
           isPublic: this.isPublic,
         };
       } else {
-        event.activity = {
+        this.eventObj.activity = {
           date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,
           topic: this.topic,
           preacher: this.preacher,
@@ -1801,21 +1836,68 @@ export default {
             "00000000-0000-0000-0000-000000000000" ||
           this.selectedEventCategoryId == this.newEvents.length
         ) {
-          event.activity.newEventCategoryName = this.selectedEventCategoryName;
+          this.eventObj.activity.newEventCategoryName = this.selectedEventCategoryName;
         } else {
-          event.activity.eventCategoryId = this.selectedEventCategoryId;
+          this.eventObj.activity.eventCategoryId = this.selectedEventCategoryId;
         }
       }
 
-      console.log(event);
+
+
+      let updateEvent = {
+        activity: {
+          date: this.eventDate,
+          topic: this.topic,
+          preacher: this.preacher,
+          eventCategoryId: this.selectedEventCategoryId
+        },
+        activityFirstTimers: this.firstTimers,
+        attendances: this.attendanceItem,
+        offerings: this.offeringItem,
+        preEvent: this.updatePreEvent
+      }
+
+      let currentEvent = {
+        name: this.selectedEventCategoryName,
+        preacher: this.preacher,
+        topic: this.topic,
+        newConvertsCount: 0
+      }
+
+
+      console.log(this.eventObj);
       this.loading = true;
+      if (this.$route.params.event) {
+        axios.put('/api/events/updateActivity', updateEvent)
+          .then(res => {
+            this.loading = false
+                const activityId = this.$route.params.event
+              localStorage.setItem("eventData", JSON.stringify(updateEvent));
+              localStorage.setItem(
+                "eventDataResponse",
+                JSON.stringify(currentEvent )
+              );
+              this.$router.push({ name: "Report", params: { id: activityId } });
+              console.log(res.data, currentEvent, 'markers')
+          })
+          .catch(err => {
+             NProgress.done();
+          this.loading = false;
+          if (err.response) {
+            const { data, status } = err.response;
+            if (status === 400) this.errorMessage = typeof data !== "string" ?  "Failed! ensure you provide activity name and date" : data.length < 100 ? data : "An error occurred, please check the fields and try again";
+          }
+            console.log(err)
+          })  
+      }
+      else {
       axios
-        .post("api/Events/CreateActivity", event)
+        .post("api/Events/CreateActivity", this.eventObj)
         .then((res) => {
           this.loading = false;
           console.log(res, "main post");
           const activityId = res.data.currentEvent.id;
-          localStorage.setItem("eventData", JSON.stringify(event));
+          localStorage.setItem("eventData", JSON.stringify(this.eventObj));
           localStorage.setItem(
             "eventDataResponse",
             JSON.stringify(res.data.currentEvent)
@@ -1831,6 +1913,7 @@ export default {
           }
           console.log(err.response);
         });
+      }
     },
     getEventCategories() {
       axios.get("/api/EventCategory").then((res) => {
@@ -2009,6 +2092,73 @@ export default {
         });
       });
     },
+    getEventById () {
+      if (this.$route.params.event) {
+        axios.get(`/api/Events/${this.$route.params.event}`)
+          .then(res => {
+            this.routeParams = this.$route.params.event
+          
+
+            this.eventDate = res.data.activity.date.substr(0, 10)
+                // let date = new Date(res.data.activity.date)
+                // this.eventDate = (date.getMonth()+1) + '/'+date.getDate()+ '/' + date.getFullYear()
+                // .toLocaleDateString("sq-AL",{ month: '2-digit', day: '2-digit', year: 'numeric' })
+                // .toISOString().substr(0, 10);
+            //.toISOString().substr(0, 10)
+            this.topic = res.data.activity.topic
+            this.preacher = res.data.activity.preacher
+            this.selectedEventCategoryId = res.data.activity.eventCategoryId
+            this.attendanceItem = res.data.attendances
+            this.offeringItem = res.data.offerings
+            this.firstTimers = res.data.activityFirstTimers
+            this.updatePreEvent = res.data.preEvent
+            console.log(this.eventDate)
+            console.log(res.data)
+          })
+          .catch (err => console.log(err.response, "get by id error"))
+      }
+    },
+    getCurrenciesFromCountries () {
+      let url = "/api/getallcountries"
+      axios.get(url)
+        .then(res => {
+          this.currencyList = res.data.map(i => {
+              return `${i.currency} ${i.name}`
+            //   {
+            //   name: i.currency,
+            //   id: i.id,
+            //   country: i.name
+            // }
+            
+          })
+        })
+        .catch(err => console.log(err))
+    },
+    toggleCode () {
+      this.showCode = !this.showCode
+    },
+    getCurrency (e) {
+      console.log(e.target.innerHTML)
+      this.showCode = false
+    },
+    updateOfferingId (e) {
+      // this.offeringItem[index].offeringTypeId = id
+      
+          let index = this.offeringItem.findIndex(i => i.offeringTypeId === e.target.value)
+          console.log(e.target.value, index, 'target', e.target.textContent)
+           let offText = this.newOfferings.find(i => i.id === e.target.value).name
+           console.log(offText)
+           this.offeringItem[index].name = offText
+    },
+    updateAttendanceId (e) {
+      
+          let index = this.attendanceItem.findIndex(i => i.attendanceTypeID === e.target.value)
+          console.log(e.target.value, index, 'target', e.target.textContent)
+          console.log(this.newAttendances, 'new attendances')
+           let attText = this.newAttendances.find(i => i.attendanceTypeID === e.target.value).name
+           
+           this.attendanceItem[index].attendanceTypeName = attText
+    }
   },
   created() {
     axios.get("/api/offering").then((res) => {
@@ -2025,6 +2175,11 @@ export default {
     this.getEventCategories();
     this.getLookUps();
     this.getHowDidYouAboutUsId();
+    this.getEventById();
+    this.getCurrenciesFromCountries();
+
+
+
   },
   computed: {
     filterAttendance() {
@@ -2096,8 +2251,9 @@ export default {
     selectedEventCategoryName() {
       console.log(this.selectedEventCategoryId);
       if (!this.selectedEventCategoryId) return "";
-      return this.newEvents.find((i) => i.id === this.selectedEventCategoryId)
-        .name;
+      if (!this.newEvents.find((i) => i.id === this.selectedEventCategoryId)) return ""
+      return this.newEvents.find((i) => i.id === this.selectedEventCategoryId).name
+        
     },
     eventCategoriesArr() {
       const arr = this.newEvents.map((i) => i.name);
@@ -2118,6 +2274,15 @@ export default {
         return i.name;
       });
     },
+    filterCurrency () {
+      if (this.currencyText !== "" && this.currencyList.length > 0) {
+        return this.currencyList.filter((i) => {
+          if (i.name) return i.name.toLowerCase().includes(this.currencyText.toLowerCase()) || i.country.toLowerCase().includes(this.currencyText.toLowerCase())
+        })
+      } else {
+        return this.currencyList
+      }
+    }
   },
 };
 </script>
@@ -2320,13 +2485,19 @@ export default {
   border-radius: 111px;
 }
 .currency {
-  width: 120%;
-  height: 100%;
+  width: 163%;
+  height: 94%;
   font-size: 0.8em;
   background: rgba(207, 207, 207, 0.651);
   border: none;
   outline: none;
+  /* margin-top: -4px; */
 }
+
+/* .p-dropdown .p-dropdown-label.p-placeholder {
+  padding: 0;
+} */
+
 .drop-box {
   border: 2px dotted rgb(211, 211, 211);
   display: inline-block;
@@ -2583,13 +2754,23 @@ tr.event-list td {
   cursor: pointer;
 }
 .select-elem-con {
-  padding: 47px 0;
+  /* padding: 47px 0; */
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid #ebeff4;
   border-radius: 8px;
   font-size: 1.2em;
   font-weight: 600;
-  text-align: center;
+  
 }
+
+.select-elem-con:hover {
+  background: rgba(166, 200, 232, 0.302);
+  transition: all 0.4s ease-in-out
+}
+
 .edit-category {
   border: 1px solid #ebeff4;
   border-radius: 8px;
@@ -2661,6 +2842,41 @@ tr.event-list td {
 .modal-header, .modal-footer {
   border: none;
 }
+
+.flagCode {
+    width: 160px;
+    max-height: 15em;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-shadow: -3px 3px 15px #797e8159;
+    position: absolute;
+    /* top: 49.5%; */
+    background: white;
+    z-index: 10;
+    display: block;
+    margin-top: -4px
+}
+
+.flagCode div{
+        width: 35em;      
+    }
+    .flagCode div:hover {
+        background: rgb(238, 238, 238)
+    }
+
+    .hide-code {
+  display: none;
+  height: 0;
+  overflow: hidden;
+  /* transition: all 0.4s ease-in-out */
+}
+
+input.codeInput {
+  width: 80%;
+  margin-left: 12px;
+  margin-top: 5px;
+}
+
 
 @media (min-width: 576px) {
   .offset-sm-1 {

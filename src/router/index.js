@@ -145,6 +145,18 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
             },
+            {
+                path: 'attendancecheckin',
+                name: 'Attendance',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceCheckin')
+            },
+            {
+                path: 'addattendancecheckin',
+                name: 'AddAttendance',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AddAttendance')
+            },
 
             {
                 path: 'firsttimers',
@@ -336,7 +348,13 @@ const routes = [{
                 name: 'ChartOfAccount',
                 component: () =>
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
-            }
+            },
+            {
+                path: 'offeringlist',
+                name: 'OfferingList',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingList')
+            },
         ]
     },
     {

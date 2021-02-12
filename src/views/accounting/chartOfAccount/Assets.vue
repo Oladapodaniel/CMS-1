@@ -21,7 +21,7 @@
         <div class="col-6 col-md-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
     </div>
     <div class="row">
-        <div class="col-10 offset-md-2 text-center text-md-left">
+        <div class="col-10 offset-md-2 text-center text-md-left" @click="openModal">
             <div class="add-account py-2"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
         </div>
     </div>
@@ -211,15 +211,102 @@
             <div class="add-account py-2"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
         </div>
     </div>
+
+    <!-- Primevue modal to add new account-->
+    <!-- <h5>Modal</h5>
+    <Button label="Show" icon="pi pi-external-link" /> -->
+    <Dialog header="Add an Account" v-model:visible="displayModal" class="col-12 col-sm-10 col-md-6 p-0" :modal="true">
+        <div class="row mt-2">
+            <div class="col-12 col-md-4 align-self-center text-md-right">Account Type</div>
+            <div class="col-12 col-md-6">
+
+            <div class="codeModal">
+                <div class="country-code form-control codeModal" @click="toggleCode"><div class="d-flex justify-content-between align-items-center"><span class="codeModal">Select Account Type</span><i class="pi pi-angle-down"></i></div></div>
+            </div>
+
+                <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal ">
+                    <input class="codeInput input codeModal" v-model="searchText">
+                <div v-for="country in countries" :key="country.id" class="codeModal" >
+                    <div class="col-sm-3"><span style="display: inline-block">{{ country.name }}</span></div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 col-md-4 align-self-center text-md-right">Account Name</div>
+            <div class="col-12 col-md-6">
+            <input type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 col-md-4 align-self-center text-md-right">Account Currency</div>
+            <div class="col-12 col-md-6">
+            <input type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 col-md-4 align-self-center text-md-right">Account ID</div>
+            <div class="col-12 col-md-6">
+            <input type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 col-md-4 align-self-center text-md-right">Description</div>
+            <div class="col-12 col-md-6">
+            <input type="text" class="form-control" />
+            </div>
+        </div>
+         <template #footer>
+           <!-- <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
+            <Button label="Yes" icon="pi pi-check" @click="closeModal" autofocus /> -->
+            <div class="col-md-12 d-md-flex justify-content-end p-0">
+                <button type="button" class="btn secondary-btn px-4" @click="closeModal">
+                    Close
+                </button>
+                <button type="button" class="btn primary-btn px-4 mr-0 text-white">
+                    Save
+                </button>
+            </div>
+        </template>
+    </Dialog>
+
+    
 </template>
 
 <script>
 import { ref } from 'vue'
+import Dialog from 'primevue/dialog';
 export default {
+    components: { Dialog },
     setup () {
         const view = ref('view')
+        const displayModal = ref(false)
+        const showCode = ref(false)
+
+        const toggleCode = () => {
+            showCode.value = !showCode.value
+        }
+        const countries = ref( [
+                {name: 'Australia', code: 'AU'},
+                {name: 'Brazil', code: 'BR'},
+                {name: 'China', code: 'CN'},
+                {name: 'Egypt', code: 'EG'},
+                {name: 'France', code: 'FR'},
+                {name: 'Germany', code: 'DE'},
+                {name: 'India', code: 'IN'},
+                {name: 'Japan', code: 'JP'},
+                {name: 'Spain', code: 'ES'},
+                {name: 'United States', code: 'US'}
+            ])
+       const openModal = () => {
+            displayModal.value = true
+        }
+        const closeModal = () => {
+            displayModal.value = false
+        }
+
         return {
-            view
+            view, displayModal, openModal, closeModal, countries, showCode, toggleCode
         }
     }
 }
@@ -253,4 +340,36 @@ export default {
         color: #136ACD;
         font-weight: 800
     }
+
+    .flagCode {
+        width: 140px;
+        max-height: 15em;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        box-shadow: -3px 3px 15px #797e8159;
+        position: absolute;
+        /* top: 49.5%; */
+        background: white;
+        z-index: 10;
+
+    }
+    .flagCode div{
+        width: 35em;      
+    }
+    .flagCode div:hover {
+        background: rgb(238, 238, 238)
+    }
+
+    .hide-code {
+  /* display: none */
+  height: 0;
+  overflow: hidden;
+  /* transition: all 0.4s ease-in-out */
+}
+
+input.codeInput {
+  width: 80%;
+  margin-left: 12px;
+  margin-top: 5px;
+}
 </style>

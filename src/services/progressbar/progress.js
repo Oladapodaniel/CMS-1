@@ -1,6 +1,6 @@
 const finish = () => {
     /*eslint no-undef: "warn"*/
-    NProgress.start();
+    // NProgress.start();
     NProgress.done();
 }
 

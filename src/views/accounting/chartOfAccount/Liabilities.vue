@@ -1,28 +1,211 @@
 <template>
     <div class="row">
-        <div class="col-12 py-2 mt-4 account-head">Cash and Bank<i class="fa fa-question-circle-o help" aria-hidden="true"></i></div>
+        <div class="col-12 py-2 mt-4 account-head">Credit Card<i class="fa fa-question-circle-o help" aria-hidden="true"></i></div>
     </div>
     <div class="row row-border align-items-center py-2">
-        <div class="col-sm-2">1202</div>
-        <div class="col-sm-3">
+        <div class="col-10 offset-md-2 text-center text-md-left">You haven't added any credit card  yet.</div>
+    </div>
+    <div v-if="false" class="row row-border align-items-center py-2">
+        <div class="col-6 col-md-2">1202</div>
+        <div class="col-6 col-md-3">
             <div class="desc-head">asset bank (USD)</div>
             <div class="desc">No transaction for this account</div>
         </div>
-        <div class="col-sm-5">Test Account</div>
-        <div class="col-sm-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+        <div class="col-6 col-md-5">Test Account</div>
+        <div class="col-6 col-md-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
     </div>
-    <div class="row row-border align-items-center">
-        <div class="col-sm-2 pl-0"></div>
-        <div class="col-sm-3">
-            <div>Cash on Hand</div>
-            <div>Last Trasaction on Jan 21st, 2021</div>
-        </div>
-        <div class="col-sm-5">Cash you haven't deposited in the bank. Add your bank and credit card accounts to accurately categorixe transactions that aren't cash</div>
-        <div class="col-sm-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
-    </div>
+    
     <div class="row">
-        <div class="col-10 offset-sm-2">
-            <div class="add-account py-2"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
+        <div class="col-10 offset-md-2 text-center text-md-left">
+            <div class="add-account py-3"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 py-2 account-head">Loan and Line of Credit<i class="fa fa-question-circle-o help" aria-hidden="true"></i></div>
+    </div>
+    <div class="row row-border align-items-center py-2">
+        <div class="col-10 offset-md-2 text-center text-md-left">You haven't added anyLoan of Line Credit yet.</div>
+    </div>
+    <div v-if="false" class="row row-border align-items-center py-2">
+        <div class="col-6 col-md-2">1202</div>
+        <div class="col-6 col-md-3">
+            <div class="desc-head">asset bank (USD)</div>
+            <div class="desc">No transaction for this account</div>
+        </div>
+        <div class="col-6 col-md-5">Test Account</div>
+        <div class="col-6 col-md-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+            <div class="add-account py-3"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 py-2 account-head">Expected Payments to Vendors<i class="fa fa-question-circle-o help" aria-hidden="true"></i></div>
+    </div>
+    <div v-if="false" class="row row-border align-items-center py-2">
+        <div class="col-10 offset-md-2 text-center text-md-left">You haven't added any Credit Card yet.</div>
+    </div>
+    <div class="row row-border align-items-center py-2">
+        <div class="col-6 col-md-2"></div>
+        <div class="col-6 col-md-3">
+            <div class="desc-head">Accounts Payable</div>
+            <div class="desc">No transaction for this account yet</div>
+        </div>
+        <div class="col-6 col-md-5">Test Account</div>
+        <div class="col-6 col-md-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+            <div class="add-account py-3"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-12 py-2 account-head">Sales Taxes<i class="fa fa-question-circle-o help" aria-hidden="true"></i></div>
+    </div>
+    <div class="row row-border align-items-center py-2">
+        <div class="col-10 offset-md-2 text-center text-md-left">You haven't added any Sales Taxes yet.</div>
+    </div>
+    <div v-if="false" class="row row-border align-items-center py-2">
+        <div class="col-6 col-md-2"></div>
+        <div class="col-6 col-md-3">
+            <div class="desc-head">Accounts Payable</div>
+            <div class="desc">No transaction for this account yet</div>
+        </div>
+        <div class="col-6 col-md-5">Test Account</div>
+        <div class="col-6 col-md-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+            <div class="add-account py-3"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 py-2 account-head">Due For Payroll<i class="fa fa-question-circle-o help" aria-hidden="true"></i></div>
+    </div>
+    <div class="row row-border align-items-center py-2">
+        <div class="col-10 offset-md-2 text-center text-md-left">You haven't added any Due For Payroll yet.</div>
+    </div>
+    <div v-if="false" class="row row-border align-items-center py-2">
+        <div class="col-6 col-md-2"></div>
+        <div class="col-6 col-md-3">
+            <div class="desc-head">Accounts Payable</div>
+            <div class="desc">No transaction for this account yet</div>
+        </div>
+        <div class="col-6 col-md-5">Test Account</div>
+        <div class="col-6 col-md-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+            <div class="add-account py-3"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 py-2 account-head">Due to You and Other Business Owners<i class="fa fa-question-circle-o help" aria-hidden="true"></i></div>
+    </div>
+    <div class="row row-border align-items-center py-2">
+        <div class="col-10 offset-md-2 text-center text-md-left">You haven't added any Due to You and Other Business Owners yet.</div>
+    </div>
+    <div v-if="false" class="row row-border align-items-center py-2">
+        <div class="col-6 col-md-2"></div>
+        <div class="col-6 col-md-3">
+            <div class="desc-head">Accounts Payable</div>
+            <div class="desc">No transaction for this account yet</div>
+        </div>
+        <div class="col-6 col-md-5">Test Account</div>
+        <div class="col-6 col-md-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+            <div class="add-account py-3"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 py-2 account-head">Customer Prepayments and Customer Credit<i class="fa fa-question-circle-o help" aria-hidden="true"></i></div>
+    </div>
+    <div class="row row-border align-items-center py-2">
+        <div class="col-10 offset-md-2 text-center text-md-left">You haven't added any Customer Prepayments and Customer Credit yet.</div>
+    </div>
+    <div v-if="false" class="row row-border align-items-center py-2">
+        <div class="col-6 col-md-2"></div>
+        <div class="col-6 col-md-3">
+            <div class="desc-head">Accounts Payable</div>
+            <div class="desc">No transaction for this account yet</div>
+        </div>
+        <div class="col-6 col-md-5">Test Account</div>
+        <div class="col-6 col-md-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+            <div class="add-account py-3"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-12 py-2 account-head">Other Short-Term Liability<i class="fa fa-question-circle-o help" aria-hidden="true"></i></div>
+    </div>
+    <div class="row row-border align-items-center py-2">
+        <div class="col-10 offset-md-2 text-center text-md-left">You haven't added any Other Short-Term Liability Credit yet.</div>
+    </div>
+    <div v-if="false" class="row row-border align-items-center py-2">
+        <div class="col-6 col-md-2"></div>
+        <div class="col-6 col-md-3">
+            <div class="desc-head">Accounts Payable</div>
+            <div class="desc">No transaction for this account yet</div>
+        </div>
+        <div class="col-6 col-md-5">Test Account</div>
+        <div class="col-6 col-md-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+            <div class="add-account py-3"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-12 py-2 account-head">Other Long-Term Liability<i class="fa fa-question-circle-o help" aria-hidden="true"></i></div>
+    </div>
+    <div class="row row-border align-items-center py-2">
+        <div class="col-10 offset-md-2 text-center text-md-left">You haven't added any Other Long-Term Liability Credit yet.</div>
+    </div>
+    <div v-if="false" class="row row-border align-items-center py-2">
+        <div class="col-6 col-md-2"></div>
+        <div class="col-6 col-md-3">
+            <div class="desc-head">Accounts Payable</div>
+            <div class="desc">No transaction for this account yet</div>
+        </div>
+        <div class="col-6 col-md-5">Test Account</div>
+        <div class="col-6 col-md-2 text-right"><i class="fa fa-pencil" aria-hidden="true"></i></div>
+    </div>
+    
+    <div class="row">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+            <div class="add-account py-3"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</div>
         </div>
     </div>
 </template>
