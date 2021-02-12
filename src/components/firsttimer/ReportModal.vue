@@ -19,7 +19,7 @@
                             <option value="">{{ userEmail }}</option>
                         </select>
                         <select name="" class="form-control inp" v-show="activeTab === 'sms'">
-                            <option value="">0123456789</option>
+                            <option value="">{{ churchName }}</option>
                         </select>
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
@@ -33,8 +33,8 @@
                         <span>To</span>
                     </div>
                     <div class="col-sm-6 form-group" >
-                        <input type="email" class="form-control inp"  v-model="recipient.email" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'" @input="hideErrorMessage">
-                        <input type="text" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
+                        <input type="email" class="form-control inp"  v-model="recipient.email" name="" id="" v-show="activeTab === 'churchplus'" @input="hideErrorMessage">
+                        <input type="text" class="form-control inp" v-model="recipient.phone" name="" id="" v-show="activeTab === 'sms'">
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
                         <i class="fa fa-plus-circle inp-icon plus-icon my-1" @click="addRecipient"></i>
@@ -81,7 +81,7 @@
                         <span class="">Message</span>
                     </div>
                     <div class="col-sm-6 form-group">
-                        <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Enter you message" v-model="message"></textarea>
+                        <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Enter your message" v-model="message"></textarea>
                     </div>
                     <div class="col-sm-2">
                         
@@ -107,8 +107,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-1">
-                                 <Checkbox id="binary" :binary="true"/>
+                            <div class="col-sm-1" v-if="false">
+                                 <Checkbox id="binary" v-model="attachReport" :binary="true"/>
                             </div>
                             <div class="col-sm-10">
                                 <span>Attach the report as a PDF</span>
@@ -118,10 +118,10 @@
                     <div class="col-sm-8 form-group" v-if="activeTab === 'sms'">
                         <div class="row">
                             <div class="col-sm-1">
-                                 <Checkbox id="binary" :binary="true"/>
+                                 <Checkbox id="binary" v-model="sendCopy" :binary="true"/>
                             </div>
                             <div class="col-sm-10">
-                                <span>Send a copy to myself at 08132182990</span>
+                                <span>Send a copy to myself at {{ churchName }}</span>
                             </div>
                         </div>
                     </div>
@@ -156,13 +156,15 @@ import axios from "@/gateway/backendapi";
         props: ['eventName'],
         setup(props, { emit }) {
             const activeTab = ref("churchplus");
-            const recipients = ref([ { email: ""} ])
             // const count = 0;
             const userEmail = ref("")
             const message = ref("")
             const sendToMysef = ref(false);
             const subject = ref(null);
             const invalidDestination = ref(false);
+            const recipients = ref([  ])
+            const churchName = ref("")
+            const sendCopy = ref("")
 
             const changeTab = (tab) => activeTab.value = tab;
 
@@ -212,6 +214,8 @@ import axios from "@/gateway/backendapi";
                     .then(res => {
                         console.log(res.data)
                         userEmail.value = res.data.userEmail
+                        churchName.value = res.data.churchName
+                        recipients.value.push({ email: res.data.userEmail, phone: "" })
                     })
                     .catch(err => console.log(err))
             }
@@ -224,6 +228,8 @@ import axios from "@/gateway/backendapi";
                 test,
                 invalidDestination,
                 hideErrorMessage,
+                churchName,
+                sendCopy
             }
         }
     }

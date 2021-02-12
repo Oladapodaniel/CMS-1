@@ -145,6 +145,18 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
             },
+            {
+                path: 'attendancecheckin',
+                name: 'Attendance',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceCheckin')
+            },
+            {
+                path: 'addattendancecheckin',
+                name: 'AddAttendance',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AddAttendance')
+            },
 
             {
                 path: 'firsttimers',
@@ -153,7 +165,7 @@ const routes = [{
                     import ( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimersList.vue')
             },
             {
-                path: 'firsttimersempty',
+                path: 'firsttimerslist',
                 name: 'FirstTimerEmpty',
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
@@ -306,6 +318,12 @@ const routes = [{
                             import ( /* webpackChunkName: "ministryusers" */ '@/views/settings/MinistryUsers')
                     },
                     {
+                        path: 'invitenewuser',
+                        name: 'InviteNewUser',
+                        component: () =>
+                            import ( /* webpackChunkName: "ministryusers" */ '@/views/settings/InviteNewUser')
+                    },
+                    {
                         path: 'profile',
                         name: 'ChurchProfile',
                         component: () =>
@@ -324,6 +342,18 @@ const routes = [{
                             import ( /* webpackChunkName: "membership" */ '@/views/settings/MembershipCategory')
                     },
                     {
+                        path: 'attendance',
+                        name: 'AttendanceCategory',
+                        component: () =>
+                            import ( /* webpackChunkName: "membership" */ '@/views/settings/AttendanceCategory')
+                    },
+                    {
+                        path: 'ageGroup',
+                        name: 'AgeGroupCategory',
+                        component: () =>
+                            import ( /* webpackChunkName: "membership" */ '@/views/settings/AgeGroupCategory')
+                    },
+                    {
                         path: 'giving',
                         name: 'OnlineGiving',
                         component: () =>
@@ -334,6 +364,18 @@ const routes = [{
                         name: 'AddDefaultMessage',
                         component: () =>
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/AddDefaultMessage')
+                    },
+                    {
+                        path: 'firsttimersettings',
+                        name: 'FirstTimerSettings',
+                        component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/FirstTimerSettings')
+                    },
+                    {
+                        path: 'followupstatus',
+                        name: 'FollowUpStatus',
+                        component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/settings/FollowUpStatus')
                     },
                     // {
                     //     path: 'details',
@@ -348,7 +390,13 @@ const routes = [{
                 name: 'ChartOfAccount',
                 component: () =>
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
-            }
+            },
+            {
+                path: 'offeringlist',
+                name: 'OfferingList',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingList')
+            },
         ]
     },
     {
@@ -371,14 +419,14 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
-    
+
+
     if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
     const tokenIsValid = token && token.length > 30 ? true : false;
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
 
-    // if (!tokenIsValid) return next("/");
     next(true)
 })
 
