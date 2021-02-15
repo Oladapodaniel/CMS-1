@@ -51,7 +51,7 @@
                           <span class="th">Message</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">Status <i class="fa fa-question-circle-o c-pointer"  v-tooltip="'Sent | Processed | Failed'"></i></span>
+                          <span class="th">Status <i class="fa fa-question-circle-o c-pointer"  v-tooltip.top="'Sent | Processed | Failed'"></i></span>
                         </div>
                         <div class="col-md-1">
                           <span class="th">Units</span>

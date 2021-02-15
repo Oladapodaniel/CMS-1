@@ -82,8 +82,8 @@
           </div>
           <div class="col-md-11" ref="body" style="overflow-x:hidden">
             <!-- <p class="">Hello Madam</p> -->
-            <p class="ptext text-justify" style="line-height: 2.5rem;">
-              {{ message ? message.message : "" }}
+            <p class="ptext text-justify" style="line-height: 2.5rem;" ref="messageText">
+              
             </p>
           </div>
         </div>
@@ -166,6 +166,7 @@ export default {
     const route = useRoute();
     const store = useStore();
     const body = ref(null)
+    const messageText = ref(null)
 
     if (route.params.messageId) {
       loading.value = true;
@@ -179,6 +180,7 @@ export default {
         .then(res => {
           loading.value = false;
           message.value = res;
+          messageText.value.innerHTML = res.message;
           console.log(res, "on load");
         })
         .catch(err => {
@@ -195,6 +197,7 @@ export default {
       message,
       loading,
       body,
+      messageText,
     }
   }
 };

@@ -42,7 +42,9 @@
                     </div>
                   </div>
 
-                  <div class="row" v-for="(email, index) in emails" :key="index">
+                  <div class="row" v-if="emails.length > 0">
+                    <div class="col-md-12">
+                      <div class="row" v-for="(email, index) in emails" :key="index">
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
@@ -81,6 +83,8 @@
                           <hr class="hr" />
                         </div>
                       </div>
+                    </div>
+                  </div>
                     </div>
                   </div>
 
@@ -167,8 +171,9 @@ export default {
     };
 
     const itemsCount = computed(() => {
-      if (!emails.value || emails.value.length === 0) return 0;
-      return emails.value.length;
+      const allEmails = emails.value;
+      if (!allEmails.value || allEmails.value.length === 0) return 0;
+      return allEmails.value.length;
     });
 
     return {
