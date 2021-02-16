@@ -457,7 +457,7 @@
                 /> -->
                 <button
                   @click.prevent="selectEventAttended"
-                  class="form-control input dd"
+                  class="form-control input dd small-text"
                 >
                   {{ selectedEventAttended.name }}
                   {{ newEvent.activity.date }}
@@ -1557,6 +1557,7 @@ export default {
       displayModal.value = false;
     };
     const route = useRoute();
+    const ftimerId = ref("");
 
     onMounted(() => {
       axios.get("/api/Events/EventActivity").then((res) => {
@@ -1572,14 +1573,17 @@ export default {
       axios
         .get("/api/LookUp/GetAllLookUps")
         .then((res) => {
-          // console.log(res.data, 'all lkups')
+          console.log(res.data, 'all lkups')
           res.data.find((i) => {
             if (i.type.toLowerCase() === "gender") {
               genderArr.value = i.lookUps;
-              console.log(genderArr.value);
             }
             if (i.type.toLowerCase() === "maritalstatus") {
               maritalStatusArr.value = i.lookUps;
+              if (ftimerId.value) {
+                selectedMaritalStatus.value = maritalStatusArr.value.find(i => i.id === firstTimersObj.value.maritalStatusId);
+                selectedGender.value = genderArr.value.find(i => i.id === firstTimersObj.value.genderId);
+              }
             }
           });
         })
@@ -1594,7 +1598,7 @@ export default {
         howDidYouAboutUs.value = res.data.map((i) => {
           return { name: i.name, id: i.id };
         });
-        // console.log(res.data)
+        console.log(res.data, "HYH")
       });
 
       console.log(route.params.firstTimerId);
@@ -1603,7 +1607,17 @@ export default {
           .get(`/api/People/firstTimer/${route.params.firstTimerId}`)
           .then((res) => {
             console.log(res.data, "DFGHG");
+            ftimerId.value = res.data.personId;
+
             firstTimersObj.value = res.data;
+            selectedGender.value = res.data.genderId ? genderArr.value.find(i => i.id === res.data.genderId) : { };
+            selectedMaritalStatus.value = res.data.maritalStatusId ? maritalStatusArr.value.find(i => i.id === res.data.maritalStatusId) : { };
+            selectedAboutUsSource.value = res.data.howDidYouAboutUsId ? howDidYouAboutUs.value.find(i => i.id === res.data.howDidYouAboutUsId) : { }
+            firstTimersObj.value.birthday = res.data.birthday ? Number(res.data.birthday) : "";
+            firstTimersObj.value.birthYear = res.data.birthYear ? +res.data.birthYear : "";
+            birthMonth.value = res.data.birthMont ? month.value[Number(res.data.birthMonth) - 1] : "";
+            console.log(eventsAttended.value, "EA");
+            selectedEventAttended.value = !res.data.activityID ? { } : eventsAttended.value.find(i => i.activityID === res.data.activityID) ? eventsAttended.value.find(i => i.activityID === res.data.activityID) : { }
           });
       }
     });

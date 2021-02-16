@@ -192,7 +192,7 @@ export default {
         loading.value = true;
         /*eslint no-undef: "warn"*/
         NProgress.start();
-        const data = await communicationService.getAllSentSMS(1)
+        const data = await communicationService.getAllSentSMS(0)
         loading.value = false;
         if (data) {
           sentSMS.value = data;
