@@ -114,7 +114,7 @@
                           data-target="#sendReport"
                           :class="{ 'resend-btn': markedAsSent }"
                         >
-                          {{ sendBtnText }}
+                          sendBtnText
                         </a>
                       </div>
                       <div class="col-6">
@@ -566,13 +566,36 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 export default {
-    components: { ReportAreaChart }
+    components: { ReportAreaChart },
+    setup () {
+        const reportApproved = ref(false)
+
+
+        const toggleReportState = () => {
+        reportApproved.value = !reportApproved.value;
+        status.value = "Unsent";
+        };
+        return {
+            reportApproved, toggleReportState
+        }
+    }
 }
 </script>
 
 <style scoped>
+    * {
+    color: #1c252c;
+    box-sizing: border-box;
+    }
+
+    a {
+    text-decoration: none;
+    font-weight: 700;
+    }
+
     .page-hder {
     font-size: 28px;
     }
@@ -790,5 +813,10 @@ export default {
 
     .hr-dark {
     border: 1px solid #000;
+    }
+
+    .approve-btn {
+    background: #136acd;
+    color: white;
     }
 </style>

@@ -4,9 +4,9 @@
       <div class="main-body">
         <div class="col-sm-12">
         <div class="top container-wide mt-3">
-          <div class="header">
-            <h2>Attendance & Checkin
-            </h2>
+          <div class="events">
+            <div>Attendance & Checkin
+            </div>
           </div>
           <div class="actions">
             
@@ -45,6 +45,10 @@ export default {
 </script>
 
 <style scoped>
+    .events {
+    font: normal normal 800 29px Nunito sans;
+    }
+
     .whole-con {
         display: flex;
         height: 100vh;
