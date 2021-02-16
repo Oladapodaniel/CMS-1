@@ -457,11 +457,12 @@
           <div class="row">
             <div class="col-md-12">
               <div id="app">
-                <ckeditor
+                <!-- <ckeditor
                   :editor="editor"
                   v-model="editorData"
                   :config="editorConfig"
-                ></ckeditor>
+                ></ckeditor> -->
+                <Editor v-model="editorData" editorStyle="height: 320px" />
               </div>
             </div>
           </div>
@@ -701,9 +702,10 @@ import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
 import communicationService from '../../services/communication/communicationservice';
 import dateFormatter from "../../services/dates/dateformatter";
-
+import Editor from 'primevue/editor';
 
 export default {
+  components: { Editor },
   setup() {
     const toast = useToast();
     const editor = ClassicEditor;
@@ -851,8 +853,8 @@ export default {
 
       toast.add({
         severity: "info",
-        summary: "Sending SMS",
-        detail: "SMS is being sent....",
+        summary: "Sending Email",
+        detail: "Email is being sent....",
         life: 2500,
       });
 
