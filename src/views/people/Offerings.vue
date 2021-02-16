@@ -366,7 +366,7 @@ import { ref, onMounted, computed } from "vue";
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 // import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
-import Pagination from "../../../components/pagination/PaginationButtons";
+import Pagination from "../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
 import moment from "moment";
 import { useConfirm } from "primevue/useConfirm";

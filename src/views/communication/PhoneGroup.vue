@@ -62,13 +62,17 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                   </div>
                   <div class="row d-flex flex-row justify-content-between mdiv">
                     <div class="col-md-6 form-group px-0">
-                      <textarea name="" id="" class="w-100 grey-rounded-border form-control" rows="5"
+                      <textarea
+                        name=""
+                        id=""
+                        class="w-100 grey-rounded-border form-control"
+                        rows="5"
                         v-model="enteredValue"
                         required
                       ></textarea>
                     </div>
                     <div class="col-md-5 mr-lg-n5 addIconarea">
-                      <button
+                      <!-- <button
                         v-on:click="addPhoneNumber"
                         class="btn btnIcons align-self-end btn-secondary mb-2"
                       >
@@ -77,7 +81,7 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                           aria-hidden="true"
                         ></i>
                         Add
-                      </button>
+                      </button> -->
                     </div>
                   </div>
 
@@ -110,11 +114,11 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                   <!-- Button Area -->
                   <div class="row mt-md-5 mb-4">
                     <div class="col-md-7">
-                      <div class="row d-md-flex align-items-center">
+                      <div class="row d-md-flex align-items-center ml-n5">
                         <div class="col-md-6 basebtns">
                           <button
                             v-on:click="resetInputFields"
-                            class="btn btnBase1 btnBase"
+                            class="btn default-btn"
                           >
                             Cancel
                           </button>
@@ -122,13 +126,13 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                         <div class="col-md-6 basebtns">
                           <button
                             v-on:click="saveGroupDetails"
-                            class="btn btnBase btn-primary ml-md-4"
+                            class="btn default-btn ml-md-4"
                           >
                             <i
                               class="fas fa-circle-notch fa-spin"
                               v-if="loading"
                             ></i>
-                            <span>Save</span>
+                            <span class="basebtni">Save</span>
                             <span></span>
                           </button>
                         </div>
@@ -328,6 +332,11 @@ h4 {
   width: 108px;
   height: 44px;
   border-radius: 50px;
+}
+
+.basebtni:hover {
+  background: #136acd;
+  color: #f9f9fa;
 }
 
 .icons {
