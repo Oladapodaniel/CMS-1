@@ -80,7 +80,6 @@ export default {
         getPeopleClassifications({ commit }) {
             axios.get("/api/Settings/GetTenantPeopleClassification")
                 .then((res) => {
-                    console.log(res.data, 'our classes')
                     commit("setPeopleClassifcations", res.data);
                 })
                 .catch(error => {
@@ -92,7 +91,6 @@ export default {
         getUserSources({ commit }) {
             axios.get("/api/membership/howyouheardaboutus")
                 .then((res) => {
-                    console.log(res.data, 'about us')
                     const howDidYouAboutUs = res.data.map((i) => {
                         return { name: i.name, id: i.id };
                     });
@@ -109,7 +107,6 @@ export default {
             axios
                 .get("/api/Settings/GetTenantAgeGroups")
                 .then((res) => {
-                    console.log(res.data, "SOurces");
                     commit("setAgeGroups", res.data);
                 })
                 .catch((err) => {

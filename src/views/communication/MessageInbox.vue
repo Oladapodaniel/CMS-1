@@ -44,22 +44,22 @@
               <div class="row table-box mb-4">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg py-2">
-                    <div class="col-md-12 px-0">
+                    <div class="col-md-12">
                       <div class="row">
-                        <div class="col-md-1 text-md-right text-lg-center px-0">
+                        <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-5">
-                          <span class="th">MESSAGE</span>
+                          <span class="th">Message</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">SENT BY</span>
+                          <span class="th">Sent By</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">UNITS</span>
+                          <span class="th">Units</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">REPORT</span>
+                          <span class="th">reports</span>
                         </div>
                       </div>
                     </div>
@@ -69,7 +69,12 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row">
+
+                  <div
+                    class="row"
+                    v-for="(reply, index) in replies"
+                    :key="index"
+                  >
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
@@ -79,36 +84,50 @@
                           <span
                             class="d-flex justify-content-between msg-n-time"
                           >
-                            <span class="font-weight-bold">message</span>
+                            <span class="font-weight-bold">
+                              <router-link class="text-decoration-none text-dark" :to="{name: 'MessageDetails', params: { messageId: reply.id}}">
+                                  {{
+                              reply.subject
+                            }}
+                                </router-link></span>
                             <span class="timestamp">Today | 08:45 PM</span>
                           </span>
-                          <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
-                          >
+                          <span class="brief-message small-text">
+                            <router-link class="text-decoration-none"  :to="{name: 'MessageDetails', params: { messageId: reply.id}}">
+                              {{
+                            reply.message && reply.message.length > 25
+                              ? `${reply.message
+                                  .split("")
+                                  .slice(0, 25)
+                                  .join("")}...`
+                              : reply.message
+                          }}
+                            </router-link>
+                          </span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >SENT BY:
+                            >Sent By:
                           </span>
-                          <span>message</span>
+                          <span class="small-text">{{ reply.sentByUser }}</span>
                         </div>
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >UNITS:
+                            >Units:
                           </span>
-                          <span>message</span>
+                          <span class="small-text">{{ reply.smsUnitsUsed }}</span>
                         </div>
                         <div
                           class="col-md-2 my-2 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >REPORT:
+                            >Report:
                           </span>
-                          <span class="view-btn">View</span>
+                          <span class="c-pointer small-text primary-text">View</span>
                         </div>
                       </div>
                       <div class="row">
@@ -121,45 +140,33 @@
 
                   <div class="row">
                     <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-5 d-md-flex flex-column">
-                          <span
-                            class="d-flex justify-content-between msg-n-time"
+                      <div class="row" v-if="replies.length === 0 && !loading">
+                        <div class="col-md-12 d-flex justify-content-center">
+                          <span class="my-4 font-weight-bold small-text"
+                            >No sent mesages</span
                           >
-                            <span class="font-weight-bold">message</span>
-                            <span class="timestamp">Today | 08:45 PM</span>
-                          </span>
-                          <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
-                          >
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-2 col-ms-12 my-2 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span class="view-btn">View</span>
                         </div>
                       </div>
-                      <!-- <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
+
+                      <div class="row" v-if="replies.length === 0 && loading">
+                        <div
+                          class="col-md-12 py-2 d-flex justify-content-center"
+                        >
+                          <i class="fas fa-circle-notch fa-spin"></i>
                         </div>
-                      </div> -->
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="conatiner">
+                    <div class="row">
+                      <div class="col-md-12 mb-3 pagination-container">
+                        <PaginationButtons
+                          @getcontent="getRepliesByPage"
+                          :itemsCount="itemsCount"
+                          :currentPage="currentPage"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -173,33 +180,61 @@
 </template>
 
 <script>
-// import axios from "@/gateway/backendapi";
-import router from "@/router/index";
-import UnitsArea from "../../components/units/UnitsArea"
-
-// import { onMounted } from 'vue';
+import { computed, ref } from "vue";
+import UnitsArea from "../../components/units/UnitsArea";
+import communicationService from "../../services/communication/communicationservice";
+import PaginationButtons from "../../components/pagination/PaginationButtons";
+import { useStore } from "vuex";
 
 export default {
-  components: { UnitsArea },
-  // setup() {
-  //   const getSentSMS = async () => {
-  //     try {
-  //       const res = await axios.get("/api/Messaging/getAllSentSms");
-  //       console.log(res, "sent sms");
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   onMounted(() => {
-  //     console.log("Hello");
-  //     getSentSMS()
-  //   })
-  // }
+  components: { UnitsArea, PaginationButtons },
+  setup() {
+    const store = useStore();
+    const replies = ref(store.getters["communication/smsReplies"]);
+    const currentPage = ref(0);
+    const loading = ref(false);
 
-  methods: {
-    payWithPaystack() {
-      router.push("/tenant/units")
-    },
+
+    const getSMSReplies = async () => {
+      try {
+        loading.value = true;
+        const data = await communicationService.getSMSReplies(currentPage.value);
+        loading.value = false;
+        if (data) {
+          replies.value = data;
+          store.dispatch("communication/getSMSReplies");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (!replies.value || replies.value.length === 0) getSMSReplies();
+
+    const getRepliesByPage = async (page) => {
+      try {
+        const data = await communicationService.getAllSentSMS(page);
+        if (data) {
+          replies.value = data;
+          currentPage.value = page;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const itemsCount = computed(() => {
+      if (!replies.value || replies.value.length === 0) return 0;
+      return replies.value.length;
+    });
+
+    return {
+      replies,
+      getRepliesByPage,
+      itemsCount,
+      currentPage,
+      loading,
+    };
   },
 };
 </script>
@@ -291,7 +326,7 @@ export default {
   background: #ebeff4;
   border-radius: 21px;
   padding: 4px 18px;
-  height: 40px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;

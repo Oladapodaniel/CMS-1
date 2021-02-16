@@ -21,17 +21,17 @@
 
       <div class="row mt-4 grey-rounded-border">
         <div class="col-md-12">
-          <div class="row main-header bg-secondary">
+          <div class="row main-header">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-sm-2 d-md-flex align-items-center">
                   <input class="my-2" type="checkbox" />
                 </div>
                 <div class="col-sm-4 d-md-flex align-items-center">
-                  <span class="my-2 font-weight-bold">GROUP NAME</span>
+                  <span class="my-2 font-weight-bold">Group Name</span>
                 </div>
                 <div class="col-sm-4 d-md-flex align-items-center">
-                  <span class="my-2 font-weight-bold">MEMBERSHIP SIZE</span>
+                  <span class="my-2 font-weight-bold">Membership Size</span>
                 </div>
                 <div class="col-sm-2 d-md-flex align-items-center"></div>
               </div>
@@ -80,7 +80,7 @@
             </div>
           </div>
 
-          <div class="row" v-for="(group, index) in groups" :key="index">
+          <div class="row  small-text" v-for="(group, index) in groups" :key="index">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-sm-2 d-md-flex align-items-center">
@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-sm-4 d-md-flex align-items-center">
                   <span class="my-2 name-link">
-                    <span class="hidden-header font-sm-weight-600">GROUP NAME</span>
+                    <span class="hidden-header font-sm-weight-600">Group Name</span>
                     <span class="f-right">
                       <router-link
                       :to="`/tenant/createpeoplegroup/${group.id}`"
@@ -98,10 +98,10 @@
                   </span>
                 </div>
                 <div class="col-sm-4 d-md-flex align-items-center">
-                  <span class="hidden-header font-weight-600">GROUP SIZE</span>
+                  <span class="hidden-header font-weight-600">Group Size</span>
                   <span class="my-2 f-right">{{ group.peopleInGroupsCount }}</span>
                 </div>
-                <div class="col-sm-2 d-md-flex align-items-center text-right">
+                <div class="col-sm-2 d-md-flex align-items-center text-right small-text">
                   <div class="dropdown">
                     <i
                       class="fas fa-ellipsis-v cursor-pointer"
@@ -243,6 +243,10 @@ export default {
 
 .link a {
   text-decoration: none;
+}
+
+.main-header {
+  background: #e9ecef;
 }
 
 .link a:hover {

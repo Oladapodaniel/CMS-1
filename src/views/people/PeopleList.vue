@@ -449,9 +449,8 @@ export default {
       (filterFormIsVissible.value = !filterFormIsVissible.value);
     const membershipSummary = ref([]);
 
-    const deleteMember = (id, index) => {
-      //  , { params: { id: id } }
-      console.log(index, "ic compo");
+    const deleteMember = (id) => {
+      
       axios
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
@@ -543,9 +542,9 @@ export default {
         });
         }
         
-    const currentPage = ref(1);
+    const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
-      if (page < 1) return false;
+      if (page < 0) return false;
       try {
         const { data } = await axios.get(
           `/api/People/GetPeopleBasicInfo?page=${page}`
@@ -568,7 +567,6 @@ export default {
       .get(`/api/People/GetMembershipSummary`)
       .then((res) => {
         membershipSummary.value = res.data;
-        console.log(res.data, "Processing");
       })
       .catch((err) => console.log(err));
     // })
@@ -577,12 +575,10 @@ export default {
       console.log(props.list, "props");
       churchMembers.value = props.list;
       // store.dispatch('churchMembers', props.list)
-      console.log(store.churchMembers)
     });
 
     const toggleSelect = () => {
       selectAll.value = !selectAll.value
-      console.log(selectAll.value)
     }
 
     const searchMember = computed(() => {
@@ -596,8 +592,8 @@ export default {
       })
 
     const membersCount = computed(() => {
-      if (membershipSummary.value.totalMember > 20) return Math.ceil(membershipSummary.value.totalMember / 20);
-      return 0;
+      if (membershipSummary.value.totalMember > 100) return Math.ceil(membershipSummary.value.totalMember / 100);
+      return 1;
     })
 
     return {

@@ -6,42 +6,7 @@
           <h2 class="mt-5 mb-5">Follow Up Status</h2>
         </div>
       </div>
-      <!--practice-->
-      <div >
-        <ol>
-          <Li v-for="(todo,index) in todos" :key="index">
-               {{todo.text}}
-
-          </Li>
-        </ol>
-       
-
-      </div>
-      <div>
-        <ol>
-          <li v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id">
-            {{item.text}}
-          </li>
-        </ol>
-      </div>
-       <h2>{{message}}</h2>
-       <input v-model="message" type="text">
-       <span v-if="seen">Now You See Me</span>
-        <h4>{{counter}}</h4>
-        <button v-on:click="reverseMessage">Reverse</button>
-       <button v-bind="clearInterval">Stop Timer</button>
-      <div class="row">
-          
-          <div class="col-sm-12 col-md-6 col-lg-9 col-xl-2 bg-danger">
-              let get dey
-
-          </div>
-          <div class="col-sm-12 col-md-6 col-lg-3 col-xl-10 bg-secondary">
-              money maker
-          </div>
-
-      </div>
-      <!--practice-->
+      
 
       <div class="row grey-rounded-border pt-1 pb-5">
         <div class="col-md-12">
@@ -205,7 +170,7 @@ export default {
   },
 
   created() {
-    this.getClassifications();
+    // this.getClassifications();
   },
   mounted() {
        //pratice
