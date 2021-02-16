@@ -8,7 +8,7 @@
           </a>
           <a
             class="p-2 mx-1 rounded-circle"
-            :class="{ 'primary-bg text-white': i === currentPage, 'page-btn': i <= startButton + buttonsCount, 'd-none': i < startButton || i > startButton + buttonsCount }"
+            :class="{ 'primary-bg text-white': i === currentPage + 1, 'page-btn': i <= startButton + buttonsCount, 'd-none': i < startButton || i > startButton + buttonsCount }"
             v-for="i in itemsCount"
             :key="i"
             @click="getPageContent(i)"
@@ -38,7 +38,7 @@ export default {
   methods: {
     getPageContent(page) {
       if (page < 1) return false;
-      this.$emit("getcontent", page);
+      this.$emit("getcontent", page - 1);
     },
   },
 
@@ -51,14 +51,6 @@ export default {
       return start;
     }
   },
-
-  created() {
-    console.log(this.itemsCount, "itemsCount");
-  },
-
-  updated() {
-    console.log(this.startButton, "startButton");
-  }
 };
 </script>
 

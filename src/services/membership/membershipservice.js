@@ -60,35 +60,39 @@ const membershipService = {
     },
 
     addPersonToStore (data) {
-        const person = {
-          id: data.personId,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          mobilePhone: data.mobilePhone,
-          pictureUrl: data.pictureUrl,
-          peopleClassificationID: data.peopleClassificationID,
-          genderID: data.genderID,
-          maritalStatusID: data.maritalStatusID,
-          ageGroupID: data.ageGroupID
+        if (data) {
+            const person = {
+                id: data.personId,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                mobilePhone: data.mobilePhone,
+                pictureUrl: data.pictureUrl,
+                peopleClassificationID: data.peopleClassificationID,
+                genderID: data.genderID,
+                maritalStatusID: data.maritalStatusID,
+                ageGroupID: data.ageGroupID
+            }
+    
+            store.dispatch("membership/addMember", person);
         }
-  
-        store.dispatch("membership/addMember", person);
     },
 
     updatePersonInStore (data, personId) {
-        const person = {
-          id: personId,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          mobilePhone: data.mobilePhone,
-          pictureUrl: data.pictureUrl,
-          peopleClassificationID: data.peopleClassificationID,
-          genderID: data.genderID,
-          maritalStatusID: data.maritalStatusID,
-          ageGroupID: data.ageGroupID
+        if (data) {
+            const person = {
+                id: personId,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                mobilePhone: data.mobilePhone,
+                pictureUrl: data.pictureUrl,
+                peopleClassificationID: data.peopleClassificationID,
+                genderID: data.genderID,
+                maritalStatusID: data.maritalStatusID,
+                ageGroupID: data.ageGroupID
+              }
+        
+              store.dispatch("membership/updateMember", person);
         }
-  
-        store.dispatch("membership/updateMember", person);
     }
 
 }

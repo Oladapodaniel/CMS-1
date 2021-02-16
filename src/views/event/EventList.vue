@@ -32,12 +32,12 @@
     <div class="row avg-table">
       <div class="col-6 col-md-3 first-row">
         <div>Attendance</div>
-        <div @mouseover="hoverEvent1" @mouseleave="leaveEvent1" style="cursor: help;">{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 3 ? eventSummary.attendance.toString().slice(0, 3) : eventSummary.attendance : "" }}{{ kBoolean ? "k" : "" }}</div>
+        <div @mouseover="hoverEvent1" @mouseleave="leaveEvent1" style="cursor: help;">{{ eventSummary.attendance }}</div><!-- {{ eventSummary.attendance ? eventSummary.attendance.toString().length > 3 ? eventSummary.attendance.toString().slice(0, 3) : eventSummary.attendance : "" }}{{ kBoolean ? "k" : "" }}-->
         <div class="hover-eventsum" v-if="isHovering1">{{ eventSummary.attendance }}</div>
       </div>
       <div class="col-6 col-md-3">
-        <div>Offering <span style="font-size: 10px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div @mouseover="hoverEvent2" @mouseleave="leaveEvent2" style="cursor: help;">{{ eventSummary.offerings ? eventSummary.offerings.toString().length > 3 ? `${eventSummary.offerings.toString().slice(0, 3)}k` : eventSummary.offerings : ""}}</div>
+        <div>Offering</div>
+        <div @mouseover="hoverEvent2" @mouseleave="leaveEvent2" style="cursor: help;"> <span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span>{{eventSummary.offerings}}</div><!--{{ eventSummary.offerings ? eventSummary.offerings.toString().length > 3 ? `${eventSummary.offerings.toString().slice(0, 3)}k` : eventSummary.offerings : ""}}-->
         <div class="hover-eventsum" v-if="isHovering2">{{ eventSummary.offerings }}</div>
       </div>
       <div class="col-6 col-md-3">
@@ -48,9 +48,9 @@
         <div>New Converts</div>
         <div>{{ eventSummary.newConverts }}</div>
       </div>
-      <div class="col-12">
+      <!-- <div class="col-12">
         <div>Last Updated 2 hours ago</div>
-      </div>
+      </div> -->
     </div>
   </div>
   <hr class="hr" />
@@ -253,14 +253,15 @@
                 <th>ATTENDANCE</th>
                 <th>FIRST TIMERS</th>
                 <th>NEW CONVERTS</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(event, index) in filterEvents" :key="index">
-                <td><div class="td-first">Unsent</div></td>
-                <td>{{ event.eventName }}</td>
-                <td>{{ event.title }}</td>
-                <td>
+                <td class="itemroute-color"><div class="td-first">Unsent</div></td>
+                <td><router-link :to="`/tenant/event/${event.activityId}`" class="itemroute-color">{{ event.eventName }}</router-link></td>
+                <td class="itemroute-color">{{ event.title }}</td>
+                <td class="itemroute-color">
                   {{
                     moment.parseZone(
                       new Date(event.activityDate).toLocaleDateString(),
@@ -268,19 +269,58 @@
                     )._i
                   }}
                 </td>
-                <td>{{ event.attendances }}</td>
-                <td>{{ event.firstTimers }}</td>
-                <td>{{ event.newConverts }}</td>
+                <td class="itemroute-color">{{ event.attendances }}</td>
+                <td class="itemroute-color">{{ event.firstTimers }}</td>
+                <td class="itemroute-color">{{ event.newConverts }}</td>
+                <td class="itemroute-color">
+                  <div class="dropdown">
+              <i
+                class="fas fa-ellipsis-v cursor-pointer"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></i>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <!-- <a class="dropdown-item elipsis-items" v-if="pers.mobilePhone">
+                  <router-link
+                    :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
+                    >Send SMS</router-link
+                  >
+                </a> -->
+                <!-- <a class="dropdown-item elipsis-items" v-if="person.email">
+                  <router-link
+                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
+                    >Send Email</router-link
+                  >
+                </a> -->
+                <a class="dropdown-item elipsis-items">
+                  <router-link :to="`/tenant/event/${event.activityId}`"
+                    >Edit</router-link
+                  >
+                </a>
+                <!-- <a
+                  class="dropdown-item elipsis-items"
+                  href="#"
+                  @click.prevent="showConfirmModal(event.activityId)"
+                  >Delete</a
+                > -->
+              </div>
+            </div>
+                </td>
               </tr>
             </tbody>
           </table>
+
+            <ConfirmDialog />
+            <Toast />
 
           <div class="table-footer">
             <button class="tbl-footer-btn">
               <i class="fa fa-angle-left"></i>
             </button>
-            <button class="tbl-footer-btn">A</button>
-            <button class="tbl-footer-btn">A</button>
+            <button class="tbl-footer-btn">1</button>
+            <button class="tbl-footer-btn">2</button>
             <button class="tbl-footer-btn">
               <i class="fa fa-angle-right"></i>
             </button>
@@ -295,8 +335,11 @@
 import axios from "@/gateway/backendapi";
 import { ref, computed } from "vue";
 import moment from "moment";
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from 'primevue/usetoast';
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice"
+import stopProgressBar from "../../services/progressbar/progress";
 export default {
   setup() {
     const events = ref(getEventList());
@@ -323,7 +366,10 @@ export default {
           // firstTimerAverage.value = res.data.map(i => { return i.firstTimers }).reduce((a, b) => { return a + b })
           // newConvertAverage.value = res.data.map(i => { return i.newConverts }).reduce((a, b) => { return a + b })
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          stopProgressBar();
+          console.log(err)
+        });
     }
 
     const getEventSummary = async () => {
@@ -381,6 +427,58 @@ export default {
   })
 
 
+const deleteMember = (id) => {
+        //  delete firtimer
+        axios
+          .delete(`/api/People/DeleteOnePerson/${id}`)
+          .then((res) => {
+            console.log(res);
+            toast.add({severity:'success', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+            churchMembers.value = churchMembers.value.filter(item => item.id !== id )
+
+// update first timer summary while deleting
+          //   axios.get("/api/People/GetFirsttimerSummary")
+          //     .then(res => {
+          //       getFirstTimerSummary.value = res.data;
+          //       console.log(res.data)
+          //     })
+          //     .catch(err => console.log(err))            
+          // })
+          // .catch((err) => {
+            /*eslint no-undef: "warn"*/
+            NProgress.done();
+            if (err.response.status === 400) {
+              toast.add({severity:'error', summary:'Unable to delete', detail:'Ensure this member is not in any group', life: 3000});
+            } else {
+              toast.add({severity:'error', summary:'Unable to delete', detail:'An error occurred, please try again', life: 3000});
+            }
+          });
+      };
+
+
+  const confirm = useConfirm();
+    let toast = useToast();
+        const showConfirmModal = (id) => {
+           
+           confirm.require({
+               message: 'Are you sure you want to proceed?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'confirm-delete',
+                rejectClass: 'cancel-delete',
+                accept: () => {
+                    deleteMember(id)
+                    
+                },
+                reject: () => {
+                    // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+                }
+
+        });
+        }
+        
+
+
     // const attendanceAverage = computed(() => {
     // return events.value.reduce( (a, b) => { return a.attendances + b.attendances })
     // return events.value
@@ -405,7 +503,9 @@ export default {
       hoverEvent2,
       leaveEvent2,
       filterEvents,
-      searchText
+      searchText,
+      showConfirmModal,
+      deleteMember
     };
   },
 };
@@ -688,6 +788,10 @@ export default {
   margin: 0 8px 0 -5px !important;
 }
 
+ .itemroute-color {
+    color: #136acd;
+  }
+  
 .add-btn {
   width: 180px;
   background: #136acd;

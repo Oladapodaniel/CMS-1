@@ -26,21 +26,12 @@
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg">
                     <div class="col-md-12">
-                      <div class="row light-grey-bg">
-                        <div class="col-md-1 text-md-right text-lg-center">
-                          <input type="checkbox" />
+                      <div class="row light-grey-bg py-1">
+                        <div class="col-md-1">
+                          <input type="checkbox" class="mark-box" />
                         </div>
-                        <div class="col-md-5">
-                          <span class="th">MESSAGE</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">SENT BY</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">UNITS</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">REPORT</span>
+                        <div class="col-md-11">
+                          <span class="th">Message</span>
                         </div>
                       </div>
                     </div>
@@ -50,31 +41,38 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row" v-for="(sms, index) in sentSMS" :key="index">
+                  <div class="row" v-for="(sms, index) in schedules" :key="index">
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
-                          <input type="checkbox" />
+                          <input type="checkbox" class="mark-box" />
                         </div>
-                        <div class="col-md-5 d-md-flex flex-column">
+                        <div class="col-md-8 d-md-flex flex-column small-text">
+                          <router-link to="" class="text-decoration-none"><span
+                            class="msg-n-time"
+                          >
+                            <span class="font-weight-bold mr-2 text-dark">{{ !sms.subject ? '(no subject)' : sms.subject }}</span>
+                          <span class="brief-message font-weight-600 ml-2">{{ `${sms.message.split('').slice(0, 50).join("")}...` }}</span>
+                          </span></router-link>
+                        </div>
+
+                        <div class="col-md-3 d-md-flex flex-column small-text">
                           <span
-                            class="d-flex justify-content-between msg-n-time"
+                            class="msg-n-time"
                           >
-                            <span class="font-weight-bold">{{ !sms.subject ? '(no subject)' : sms.subject }}</span>
-                            <span class="timestamp">{{ sms.dateSent }}</span>
+                            <span class="timestamp ml-4 small-text">{{ formattedDate(sms.date) }}</span>
                           </span>
-                          <span class="brief-message font-weight-600"
-                            >{{ `${sms.message.split('').slice(0, 25).join("")}...` }}</span
-                          >
                         </div>
-                        <div
-                          class="col-md-2 col-ms-12 d-flex justify-content-between"
+
+                         <!-- <div
+                          class="col-md-3 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >SENT BY:
+                            >Date
                           </span>
-                          <span>{{ sms.sender }}</span>
-                        </div>
+                          <span>{{ sms.dateSent }}</span>
+                        </div> -->
+                        <!-- 
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
                         >
@@ -90,9 +88,9 @@
                             >DELIVER REPORT:
                           </span>
                           <span class="view-btn">View</span>
-                        </div>
+                        </div> -->
                       </div>
-                      <div class="row" v-if="index !== sentSMS.length - 1">
+                      <div class="row" v-if="index !== schedules.length - 1">
                         <div class="col-md-12 px-0">
                           <hr class="hr" />
                         </div>
@@ -100,13 +98,13 @@
                     </div>
                   </div>
 
-                  <div class="row" v-if="sentSMS.length === 0 && !loading">
+                  <div class="row" v-if="schedules.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
-                      <span class="my-4 font-weight-bold">No sent mesages</span>
+                      <span class="my-4 font-weight-bold">No scheduled mesages</span>
                     </div>
                   </div>
 
-                  <div class="row" v-if="sentSMS.length === 0 && loading">
+                  <div class="row" v-if="schedules.length === 0 && loading">
                     <div class="col-md-12 py-2 d-flex justify-content-center">
                       <i class="fas fa-circle-notch fa-spin"></i>
                     </div>
@@ -123,33 +121,41 @@
 </template>
 
 <script>
-import axios from "@/gateway/backendapi";
 import { onMounted, ref } from 'vue';
 import UnitsArea from "../../components/units/UnitsArea"
+import communicationService from "../../services/communication/communicationservice";
+import dateFormatter from '../../services/dates/dateformatter'
+
 
 export default {
   components: { UnitsArea },
   setup() {
-    const sentSMS = ref([ ]);
+    const schedules = ref([ ]);
     const loading = ref(false);
 
-    const getSentSMS = async () => {
+    const getScheduledSMS = async () => {
       try {
         loading.value = true;
-        const res = await axios.get("/api/Messaging/getAllSentSms/1");
+        const res = await communicationService.getSchedules(`/api/Messaging/getSmsSchedules`);
         loading.value = false;
-        sentSMS.value = res.data;
+        schedules.value = res;
       } catch (error) {
         console.log(error);
       }
     }
+
+    const formattedDate = (date) => {
+      return dateFormatter.monthDayTime(date);
+    }
+
     onMounted(() => {
-      getSentSMS()
+      getScheduledSMS()
     })
 
     return {
-      sentSMS,
+      schedules,
       loading,
+      formattedDate,
     }
   }
 };
@@ -200,7 +206,7 @@ export default {
 }
 
 .th {
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 700;
 }
 

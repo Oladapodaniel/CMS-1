@@ -1,128 +1,119 @@
 <template>
   <div class="con">
-    <div :id="domId" class="chart summary-chart"></div>
+    <div :id="domId" class="chart summary-chart" style="height: 100%"></div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-    props: [ "title", "subtitle", "distance", "domId", "titleMargin", "titleMarginLeft"],
+  props: [
+    "title",
+    "subtitle",
+    "distance",
+    "domId",
+    "titleMargin",
+    "titleMarginLeft",
+    "height",
+    "summary",
+    "percentage"
+  ],
   setup(props) {
     const chart = ref(null);
-    // let elemId = "";
-    
+    const getSummary = ref([]);
 
-    onMounted(() => {
-      // elemId = props.domId;
+    onUpdated(() => {
       var highchartsOptions = {
         chart: {
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false,
           type: "pie",
           renderTo: props.domId,
-        },
-        credits: {
-          enabled: false,
-        },
-        tooltip: {
-          enabled: false,
+          height: 250,
         },
         title: {
-          text: ``,
-         
+          text: props.title,
         },
-        // subtitle: {
-        //   text: props.subtitle,
-        //   align: 'left',
-        //   x: props.titleMarginLeft ? props.titleMarginLeft : 20,
-        //   y: 50
-        // },
-        xAxis: {
-          allowDecimals: false,
-          title: {
-            text: "Age",
-          },
+        tooltip: {
+          pointFormat: "<b>{point.name}</b><br>{point.percentage:.1f} %",
         },
-        yAxis: {
-          title: {
-            text: "Pot Value",
+        accessibility: {
+          point: {
+            valueSuffix: "%",
           },
-          labels: {
-            formatter: function () {
-              return "£" + this.value / 1000 + "k";
-            },
-          },
-          opposite: false,
         },
         plotOptions: {
           pie: {
-            // allowPointSelect: true,
+            allowPointSelect: true,
             cursor: "pointer",
+            colors: ["#89b4e6", "#e7f0fa", "red",  "#e7f0fa"],
+            // colors: ["#136acd", "#0f0221", "#dde2e6", "#67a9cf", "#708eb1"],
             dataLabels: {
               enabled: true,
-              formatter: function() {
-                return this.point.name + ':\n ' + Math.round(this.percentage*100)/100 + ' %';
+              format: "<b>{point.name}</b><br>{point.y}",
+              distance: -40,
+              filter: {
+                property: "percentage",
+                operator: ">",
+                value: 4,
               },
-              // format: '{point.name}: {point.y:.1f}%',
-              distance: props.distance ? props.distance : -20,
             },
-            size: 180,
           },
         },
         series: [
           {
-            name: "Brands",
-            colorByPoint: true,
-            data: [
+            name: "Share",
+            data: props.summary ? props.summary : [
               {
                 name: "Male",
-                y: 61.41,
-                sliced: true,
-                selected: true,
+                y: 50,
               },
               {
                 name: "Female",
-                y: 11.84,
+                y: 50,
               },
-              {
-                name: "Not sure",
-                y: 10.85,
-              }
             ],
           },
         ],
-        //   credits: false,
       };
+
       chart.value = new Highcharts.chart(highchartsOptions);
     });
 
-    return { chart, };
+    return { 
+      chart,
+      getSummary,
+    };
   },
 };
 </script>
 
 <style scoped>
-    .con {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
+.con {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 
-    .chart {
-      display: flex;
-      height: 200px;
-      align-items: center;
-      width: 100% !important;
-    }
+.chart {
+  display: flex;
+  align-items: center;
+  width: 100% !important;
+}
 
-    .chart div {
-      width: 100%;
-    }
+.chart div {
+  width: 100%;
+}
 
-    .summary-chart {
-      width: 100% !important;
-      box-shadow: none !important;
-    }
+.summary-chart {
+  width: 100% !important;
+  /* box-shadow: 0px 1px 4px #02172E45; */
+  /* border: 1px solid #DDE2E6; */
+  border-radius: 22px;
+  /* margin-bottom: 24px; */
+}
 </style>

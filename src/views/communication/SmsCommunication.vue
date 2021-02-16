@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row mt-4">
         <div class="col-md-12">
-          <h1 class="font-weight-bold">SMS</h1>
+          <h1 class="font-weight-bold px-30">SMS</h1>
         </div>
       </div>
       <div class="row">
@@ -40,7 +40,7 @@
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                           <router-link
-                            class="r-link"
+                            class="r-link text-decoration-none"
                             to="/tenant/sms/sent"
                           >
                             <i class="fa fa-location-arrow mr-3 menu-icon"></i>
@@ -62,14 +62,14 @@
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item"
                           ><router-link
-                            class="r-link"
+                            class="r-link text-decoration-none"
                             to="/tenant/sms"
                           >
                             <i class="fas fa-inbox mr-3 menu-icon"></i>
                             <span class="active">Replies</span>
                           </router-link>
-                          <span class="inbox-count ml-md-2">3</span></span
-                        >
+                          <!-- <span class="inbox-count ml-md-2">3</span> -->
+                        </span>
                       </a>
                     </div>
                   </div>
@@ -85,7 +85,7 @@
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                           <router-link
-                            class="r-link"
+                            class="r-link text-decoration-none"
                             to="/tenant/sms/draft"
                           >
                             <i class="fa fa-envelope-open mr-3 menu-icon"></i>
@@ -107,7 +107,7 @@
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                           <router-link
-                            class="r-link"
+                            class="r-link text-decoration-none"
                             to="/tenant/sms/contacts"
                           >
                             <i class="fa fa-list-alt mr-3 menu-icon"></i>
@@ -129,7 +129,7 @@
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                           <router-link
-                            class="r-link"
+                            class="r-link text-decoration-none"
                             to="/tenant/sms/scheduled"
                           >
                             <!-- <i class="fa fa-list-alt mr-3 menu-icon"></i> -->
