@@ -9,10 +9,10 @@
       <!--practice-->
       <div >
         <ol>
-          <Li v-for="(todo,index) in todos" :key="index">
+          <div v-for="(todo,index) in todos" :key="index">
                {{todo.text}}
 
-          </Li>
+          </div>
         </ol>
        
 
