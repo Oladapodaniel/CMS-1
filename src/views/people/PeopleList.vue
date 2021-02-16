@@ -559,10 +559,7 @@ export default {
 
     const toggleSelect = () => {
       selectAll.value = !selectAll.value
-<<<<<<< HEAD
       console.log(selectAll.value,"let")
-=======
->>>>>>> main
     }
 
     const searchMember = computed(() => {
