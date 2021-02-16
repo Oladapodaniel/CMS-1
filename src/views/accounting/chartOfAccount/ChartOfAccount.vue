@@ -89,7 +89,7 @@ export default {
 
 <style scoped>
     .chart-head {
-        font: normal normal 500 28px Nunito sans;
+        font: normal normal 800 29px Nunito sans;
     }
 
     .what-new {

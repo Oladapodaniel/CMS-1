@@ -638,8 +638,8 @@ export default {
     }
 
     const membersCount = computed(() => {
-      if (getFirstTimerSummary.value.totalFirstTimer > 20) return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 20);
-      return 0;
+      if (getFirstTimerSummary.value.totalFirstTimer > 100) return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 100);
+      return 1;
     })
 
     const currentPage = ref(1);
@@ -647,7 +647,7 @@ export default {
       if (page < 1) return false;
       try {
         const { data } = await axios.get(
-          `/api/People/GetPeopleBasicInfo?page=${page}`
+          `/api/people/getPaginatedFirstTimer?page=${page}`
         );
         filterResult.value = [ ];
         searchMember.value = [ ];

@@ -511,7 +511,7 @@
             </div>
           </div>
 
-          <div class="col-12 text-center col-md-7 mt-sm-5">
+          <div class="col-12 text-md-right col-md-7">
             <div class="row nested-row">
               <div class=" col-2 col-md-5">
                 <label for="date">Date</label>
