@@ -8,299 +8,76 @@ import TermsOfUse from '@/views/account/TermsOfService.vue'
 
 
 const routes = [{
-    path: '/pagination',
-    name: 'Pagination',
-    component: Pagination
-},
-
-{
-    path: '/termsofuse',
-    name: 'TermsOfUse',
-    component: TermsOfUse,
-},
-
-{
-    path: '/',
-    name: 'Login',
-    component: () =>
-        import( /* webpackChunkName: "login" */ '../views/account/Login.vue')
-},
-{
-    path: '/register',
-    name: 'Register',
-    component: () =>
-        import( /* webpackChunkName: "register" */ '../views/account/Register.vue')
-},
-{
-    path: '/onboarding',
-    name: 'Onboarding',
-    component: () =>
-        import( /* webpackChunkName: "onboarding" */ '../views/account/OnboardingForm.vue')
-},
-{
-    path: '/onboarding/step2',
-    name: 'StartingPoint',
-    component: () =>
-        import( /* webpackChunkName: "startingpoint" */ '../views/onboarding/StartingPoint.vue')
-},
-{
-    path: '/next',
-    name: 'StartingDashboard',
-    component: () =>
-        import( /* webpackChunkName: "startingdashboard" */ '../views/onboarding/StartingDashboard.vue')
-},
-{
-    path: '/processing/:option',
-    name: 'ProcessRequest',
-    component: () =>
-        import( /* webpackChunkName: "processrequest" */ '../views/onboarding/ProcessRequest.vue')
-},
-{
-    path: '/forgotpassword',
-    name: 'ForgotPassword',
-    component: () =>
-        import( /* webpackChunkName: "forgotpassword" */ '../views/account/ForgotPassword.vue')
-},
-{
-    path: '/resetpassword',
-    name: 'ResetPassword',
-    component: () =>
-        import( /* webpackChunkName: "resetpassword" */ '../views/account/ResetPassword.vue')
-},
-{
-    path: '/emailsent/:email',
-    name: 'EmailSent',
-    component: () =>
-        import( /* webpackChunkName: "emailsent" */ '../views/account/EmailSent.vue')
-},
-{
-    path: '/tenant',
-    name: 'Home',
-    component: () =>
-        import( /* webpackChunkName: "home" */ '../views/dashboard/Home.vue'),
-    children: [{
-        path: '',
-        name: 'Dashboard',
-        component: () =>
-            import( /* webpackChunkName: "dashboard" */ '../views/dashboard/ChurchDashboard.vue')
-    },
-    {
-        path: 'people',
-        component: () =>
-            import( /* webpackChunkName: "people" */ '../views/people/People.vue'),
-        children: [
-
-
-            {
-                path: '',
-                component: () =>
-                    import( /* webpackChunkName: "peopleempty" */ '../views/people/PeopleEmpty.vue')
-            },
-            {
-                path: 'import',
-                component: () =>
-                    import( /* webpackChunkName: "importpeople" */ '../views/people/ImportPeople.vue'),
-                name: 'ImportPeople'
-            },
-            {
-                path: 'addfirsttimer',
-                name: 'AddFirstTimer',
-                component: () =>
-                    import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
-            },
-            {
-                path: 'add/:personId?',
-                component: () =>
-                    import( /* webpackChunkName: "addperson" */ '../views/people/AddPerson.vue')
-            },
-            {
-                path: 'addfirsttimer/:firstTimerId?',
-                component: () =>
-                    import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
-            },
-
-        ]
+        path: '/pagination',
+        name: 'Pagination',
+        component: Pagination
     },
 
     {
-        path: 'event',
-        name: 'Event',
-        component: () =>
-            import( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
-    },
-    {
-        path: 'emptyevent',
-        name: 'EmptyEvent',
-        component: () =>
-            import( /* webpackChunkName: "emptyevent" */ '@/views/event/EmptyEvent.vue')
-    },
-    {
-        path: 'events',
-        name: 'EventList',
-        component: () =>
-            import( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
-    },
-    {
-        path: 'event/:event?',
-        component: () =>
-            import( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+        path: '/termsofuse',
+        name: 'TermsOfUse',
+        component: TermsOfUse,
     },
 
     {
-        path: 'firsttimers',
-        name: 'FirstTimers',
+        path: '/',
+        name: 'Login',
         component: () =>
-            import( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimersList.vue')
+            import ( /* webpackChunkName: "login" */ '../views/account/Login.vue')
     },
     {
-        path: 'firsttimerslist',
-        name: 'FirstTimerEmpty',
+        path: '/register',
+        name: 'Register',
         component: () =>
-            import( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
-    },
-    //tosin
-    {
-        path: 'offerings',
-        name: 'Offerings',
-        component: () =>
-            import( /* webpackChunkName: "addfirsttimer" */ '../views/people/Offerings.vue'),
+            import ( /* webpackChunkName: "register" */ '../views/account/Register.vue')
     },
     {
-        path: 'offeringincomeacct',
-        name: 'Offeringincomeacct',
+        path: '/onboarding',
+        name: 'Onboarding',
         component: () =>
-            import( /* webpackChunkName: "addfirsttimer" */ '../views/people/Offeringincomeacct.vue'),
-    },
-    //tosin
-    {
-        path: 'report/:id',
-        name: 'Report',
-        component: () =>
-            import( /* webpackChunkName: "report" */ '@/views/event/EventReport.vue')
+            import ( /* webpackChunkName: "onboarding" */ '../views/account/OnboardingForm.vue')
     },
     {
-        path: 'sms',
-        name: 'SmsCommunication',
+        path: '/onboarding/step2',
+        name: 'StartingPoint',
         component: () =>
-            import( /* webpackChunkName: "smscommunication" */ '@/views/communication/SmsCommunication'),
-        children: [{
-            path: '',
-            name: 'Inbox',
-            component: () =>
-                import( /* webpackChunkName: "inbox" */ '@/views/communication/MessageInbox')
-        },
-        {
-            path: 'sent',
-            name: 'SentMessages',
-            component: () =>
-                import( /* webpackChunkName: "sentmessages" */ '@/views/communication/SentMessages')
-        },
-        {
-            path: 'draft',
-            name: 'DraftMessages',
-            component: () =>
-                import( /* webpackChunkName: "draftmessages" */ '@/views/communication/DraftMessages')
-        },
-        {
-            path: 'contacts',
-            name: 'ContactList',
-            component: () =>
-                import( /* webpackChunkName: "contactlist" */ '@/views/communication/ContactList')
-        },
-        {
-            path: 'sent/:messageId',
-            name: 'MessageDetails',
-            component: () =>
-                import( /* webpackChunkName: "contactlist" */ '@/views/communication/MessageDetails')
-        },
-        {
-            path: 'addgroup',
-            name: 'Phongroup',
-            component: () =>
-                import( /* webpackChunkName: "phonegroup" */ '@/views/communication/PhoneGroup')
-        },
-        {
-            path: 'editcontact/:groupId',
-            name: 'EditContactList',
-            component: () =>
-                import( /* webpackChunkName: "editcontactlist" */ '@/views/communication/EditGroup')
-        },
-        {
-            path: 'report/:messageId',
-            name: 'DeliveryReport',
-            component: () =>
-                import( /* webpackChunkName: "deliveryreport" */ '@/views/communication/DeliveryReport')
-        },
-        {
-            path: 'compose',
-            name: 'SendMessage',
-            component: () =>
-                import( /* webpackChunkName: "sendmessage" */ '@/views/communication/SendSms')
-        },
-        {
-            path: 'scheduled',
-            name: 'ScheduledSMS',
-            component: () =>
-                import( /* webpackChunkName: "scheduled" */ '@/views/communication/ScheduledSMS')
-        }
-        ]
+            import ( /* webpackChunkName: "startingpoint" */ '../views/onboarding/StartingPoint.vue')
     },
     {
-        path: 'email',
-        name: 'EmailCommunication',
+        path: '/next',
+        name: 'StartingDashboard',
         component: () =>
-            import( /* webpackChunkName: "emailcommunication" */ '@/views/communication/EmailCommunication'),
-        children: [{
-            path: '',
-            name: 'EmailInbox',
-            component: () =>
-                import( /* webpackChunkName: "emailinbox" */ '@/views/communication/EmailInbox')
-        },
-        {
-            path: 'sent',
-            name: 'SentEmails',
-            component: () =>
-                import( /* webpackChunkName: "sentemails" */ '@/views/communication/SentEmails')
-        },
-        {
-            path: 'draft',
-            name: 'EmailDraft',
-            component: () =>
-                import( /* webpackChunkName: "emaildraft" */ '@/views/communication/EmailDraft')
-        },
-        // { path: 'contacts', name: 'ContactList', component: ContactList },
-        // { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
-        {
-            path: 'compose',
-            name: 'ComposeEmail',
-            component: () =>
-                import( /* webpackChunkName: "compose" */ '@/views/communication/ComposeEmail')
-        }
-        ]
+            import ( /* webpackChunkName: "startingdashboard" */ '../views/onboarding/StartingDashboard.vue')
     },
     {
-        path: 'peoplegroups',
-        name: 'Groups',
+        path: '/processing/:option',
+        name: 'ProcessRequest',
         component: () =>
-            import( /* webpackChunkName: "groups" */ '@/views/groups/GroupsList')
+            import ( /* webpackChunkName: "processrequest" */ '../views/onboarding/ProcessRequest.vue')
     },
     {
-        path: 'createpeoplegroup/:groupId?',
-        name: 'CreateGroup',
+        path: '/forgotpassword',
+        name: 'ForgotPassword',
         component: () =>
-            import( /* webpackChunkName: "createpeoplegroup" */ '@/views/groups/CreateGroup')
+            import ( /* webpackChunkName: "forgotpassword" */ '../views/account/ForgotPassword.vue')
     },
     {
-        path: 'units',
-        name: 'BuyUnits',
+        path: '/resetpassword',
+        name: 'ResetPassword',
         component: () =>
-            import( /* webpackChunkName: "buyunits" */ '@/views/payment/BuyUnits')
+            import ( /* webpackChunkName: "resetpassword" */ '../views/account/ResetPassword.vue')
     },
     {
-        path: 'settings',
-        name: 'ChurchSettings',
+        path: '/emailsent/:email',
+        name: 'EmailSent',
         component: () =>
-            import( /* webpackChunkName: "settings" */ '@/views/settings/ChurchSettings'),
+            import ( /* webpackChunkName: "emailsent" */ '../views/account/EmailSent.vue')
+    },
+    {
+        path: '/tenant',
+        name: 'Home',
+        component: () =>
+            import ( /* webpackChunkName: "home" */ '../views/dashboard/Home.vue'),
         children: [{
                 path: '',
                 name: 'Dashboard',
@@ -621,6 +398,12 @@ const routes = [{
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingList')
             },
             {
+                path: 'offeringcat',
+                name: 'OfferingCategory',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/SelectOffCat')
+            },
+            {
                 path: 'addoffering',
                 name: 'AddOffering',
                 component: () =>
@@ -635,22 +418,14 @@ const routes = [{
         ]
     },
     {
-        path: 'chartofaccount',
-        name: 'ChartOfAccount',
+        path: '/about',
+        name: 'About',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
         component: () =>
-            import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
+            import ( /* webpackChunkName: "about" */ '../views/About.vue')
     }
-    ]
-},
-{
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-        import( /* webpackChunkName: "about" */ '../views/About.vue')
-}
 ]
 
 
@@ -662,6 +437,7 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
+
 
     if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
