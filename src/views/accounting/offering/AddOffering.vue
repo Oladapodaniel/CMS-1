@@ -516,15 +516,9 @@
             <div class="col-sm-3">
               <!-- <div>Total Attendance</div>
                                 <div>Total Offering</div> -->
-              <SelectElem
-                :options="[
-                  'NGN - Naira',
-                  'CAD - Canadian dollar',
-                  'AFN - Afghanistan',
-                ]"
-                name="NGN - Naira"
-                value="NGN - Naira"
-              />
+              <Dropdown :options="['NGN - Naira', 'CAD - Canadian dollar', 'AFN - Afghanistan']" :filter="true" placeholder="NGN - Naira" :showClear="false">
+                    
+                </Dropdown>
             </div>
             <div class="col-sm-2 align-self-center offset-sm-1">
               {{ addOfferingTotal }}
