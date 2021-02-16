@@ -59,15 +59,18 @@
                               <span class="timestamp small-text">{{ email.dateSent }}</span>
                             </router-link>
                           </span>
-                          <span class="brief-message"
-                            >
+                          <!-- <span class="brief-message">
+                              <router-link :to="{ name: 'EmailDetails', params: { messageId: email.id } }" class="text-decoration-none small-text"><article :ref="`messageBody_${email.id}`">
+                                {{ createElementFromHTML(email.message) }}
+                              </article></router-link>
+                          </span> -->
+                          <span class="brief-message">
                               <router-link :to="{ name: 'EmailDetails', params: { messageId: email.id } }" class="text-decoration-none small-text"><article>
                                 {{
                                   formatMessage(email.message)
                                 }}
                               </article></router-link>
-                            </span
-                          >
+                          </span>
                         </div>
                         <div
                           class="col-md-4 col-ms-12 d-flex justify-content-between"
@@ -153,7 +156,7 @@ export default {
     if (!emails.value || emails.value.length === 0) getSentEmails();
 
     const formatMessage = (message) => {
-      const formatted = message && message.length > 25 ? `${message.split("").slice(0, 25).join("")}...` : message;
+      const formatted = message && message.length > 25 ? `${createElementFromHTML(message).split("").slice(0, 25).join("")}...` : createElementFromHTML(message);
 
       return `${formatted}`;
     }
@@ -176,6 +179,12 @@ export default {
       return allEmails.value.length;
     });
 
+    const createElementFromHTML = (htmlString) => {
+      var div = document.createElement('div');
+      div.innerHTML = htmlString;
+      return div.textContent; 
+    }
+
     return {
       emails,
       formatMessage,
@@ -183,6 +192,7 @@ export default {
       itemsCount,
       currentPage,
       loading,
+      createElementFromHTML,
     }
   }
 };

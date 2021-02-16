@@ -205,6 +205,7 @@ export default {
     };
 
     const getSMSByPage = async (page) => {
+      alert(`passed ${page}`,)
       try {
         const data = await communicationService.getAllSentSMS(page);
         if (data) {

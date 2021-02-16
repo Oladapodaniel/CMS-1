@@ -58,7 +58,7 @@
                           </router-link>
                           <span class="brief-message text-capitalize small-text"
                             ><router-link :to="{ name: 'ComposeEmail', query: { emaildraft: draft.id } }" class="text-decoration-none">
-                                {{ draft.body && draft.body.length > 25 ? `${draft.body.toLowerCase().slice(0, 25)}...` : draft.sentBy }}
+                                {{ formatMessage(draft.body )}}
                               </router-link></span
                           >
                         </div>
@@ -123,11 +123,25 @@ export default {
       }
     }
 
+    const formatMessage = (message) => {
+      const formatted = message && message.length > 25 ? `${createElementFromHTML(message).split("").slice(0, 25).join("")}...` : createElementFromHTML(message);
+
+      return `${formatted}`;
+    }
+
+    const createElementFromHTML = (htmlString) => {
+      var div = document.createElement('div');
+      div.innerHTML = htmlString;
+      return div.textContent; 
+    }
+
     if (!drafts.value || drafts.value === drafts.value.length === 0) getEmailDrafts();
 
     return {
       drafts,
       loading,
+      createElementFromHTML,
+      formatMessage,
     }
   }
 };

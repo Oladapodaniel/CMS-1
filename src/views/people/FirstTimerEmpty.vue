@@ -10,8 +10,8 @@
         <div class="col-sm-12">
         <div class="top container-wide mt-3">
           <div class="header">
-            <h2>First Timers
-            </h2>
+            <div class="events">First Timers
+            </div>
           </div>
           <div class="actions">
             <button class="more-btn button">
@@ -137,6 +137,9 @@ export default {
 * {
   box-sizing: border-box;
 }
+.events {
+      font: normal normal 800 29px Nunito sans;
+      }
 
 .whole-con {
   display: flex;

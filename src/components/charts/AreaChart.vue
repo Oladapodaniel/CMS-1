@@ -46,10 +46,12 @@ export default {
           },
         },
         subtitle: {
-          text: `<span style="color: #136ACD;font-size:16px">${props.subtitle ? props.subtitle : " "}</span>`,
-          align: 'left',
+          text: `<span style="color: #136ACD;font-size:16px">${
+            props.subtitle ? props.subtitle : " "
+          }</span>`,
+          align: "left",
           x: 20,
-          y: 40
+          y: 40,
         },
         // plotOptions: {
         //   series: {
@@ -75,14 +77,30 @@ export default {
 
         series: [
           {
-              color: props.lineColor,
+            color: props.lineColor,
             name: "",
-            data: props.series || [29.9, 71.5, 106.4, 23, 34, 24, 56, 12, 23, 32, 45, 38],
+            data: props.series || [
+              29.9,
+              71.5,
+              106.4,
+              23,
+              34,
+              24,
+              56,
+              12,
+              23,
+              32,
+              45,
+              38,
+            ],
             // data: [29.9, 71.5, 106.4, 23, 34, 24, 56, 12, 23, 32, 45, 38],
           },
         ],
       };
       chart.value = new Highcharts.chart(highchartsOptions);
+    });
+    onMounted(() => {
+      console.log(props.series);
     });
   },
 };

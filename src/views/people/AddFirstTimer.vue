@@ -1461,7 +1461,7 @@ export default {
     const filteredEvents = computed(() => {
       if (!eventsSearchString.value) return eventsAttended.value;
       return eventsAttended.value.filter((i) =>
-        i.name.includes(eventsSearchString.value)
+        i.name.toLowerCase().includes(eventsSearchString.value.toLowerCase())
       );
     });
 
