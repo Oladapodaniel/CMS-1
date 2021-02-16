@@ -149,7 +149,21 @@ const routes = [{
                 path: 'attendancecheckin',
                 name: 'Attendance',
                 component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceCheckin')
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/Attendance'),
+                children: [
+                    {
+                        path: '',
+                        name: 'AttendanceList',
+                        component: () =>
+                            import ( /* webpackChunkName: "attendance" */ '@/views/event/attendance&checkin/AttendanceCheckin'),
+                    },
+                    {
+                        path: 'add',
+                        name: 'AddCheckin',
+                        component: () =>
+                            import ( /* webpackChunkName: "addcheckin" */ '@/views/event/attendance&checkin/AddAttendance'),
+                    }
+                ]
             },
             {
                 path: 'addattendancecheckin',
