@@ -554,13 +554,13 @@
 <script>
 import { ref, onMounted, computed, nextTick } from 'vue'
 import axios from "@/gateway/backendapi";
-import SelectElem from "@/components/select/SelectElement.vue";
+// import SelectElem from "@/components/select/SelectElement.vue";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import Dropdown from 'primevue/dropdown';
 export default {
     components: {
-        SelectElem, Dialog, Dropdown
+        Dialog, Dropdown
     },
     setup () {
         const toast = useToast();
