@@ -511,7 +511,7 @@
             </div>
           </div>
 
-          <div class="col-12 text-center col-md-7 mt-sm-5">
+          <div class="col-12 text-md-right col-md-7">
             <div class="row nested-row">
               <div class=" col-2 col-md-5">
                 <label for="date">Date</label>
@@ -826,7 +826,7 @@
             <div class="col-sm-3">
               <!-- <div>Total Attendance</div>
                                 <div>Total Offering</div> -->
-              <SelectElem
+              <!-- <SelectElem
                 :options="[
                   'NGN - Naira',
                   'CAD - Canadian dollar',
@@ -834,7 +834,10 @@
                 ]"
                 name="NGN - Naira"
                 value="NGN - Naira"
-              />
+              /> -->
+              <Dropdown :options="['NGN - Naira', 'CAD - Canadian dollar', 'AFN - Afghanistan']" :filter="true" placeholder="NGN - Naira" :showClear="false">
+                    
+                </Dropdown>
             </div>
             <div class="col-sm-2 align-self-center offset-sm-1">
               {{ addOfferingTotal }}

@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row d-md-flex justify-content-between yu mt-5">
         <div class="col-md-4">
-          <h2>Groups</h2>
+          <div class="events">Groups</div>
           <Toast />
           <ConfirmDialog />
         </div>
@@ -229,6 +229,10 @@ export default {
   box-sizing: border-box;
 }
 
+.events {
+      font: normal normal 800 29px Nunito sans;
+      }
+      
 .yu {
   margin-top: 5rem !important;
 }
