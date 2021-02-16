@@ -37,6 +37,17 @@ const composerObj = {
         })
     },
 
+    schduleMessage(url, data) {
+        return new Promise((resolve, reject) => {
+            axios.post(url, data)
+                .then(res => {
+                    console.log(res, "schedule sms response");
+                    resolve(res.data);
+                })
+                .catch(err => reject(err))
+        })
+    },
+
     async searchMemberDB(url, query) {
         let members = [ ];
         try {
@@ -54,11 +65,11 @@ const composerObj = {
         // return members;
     },
 
-    svaeDraft(data) {
+    saveDraft(data, url) {
         return new Promise((resolve, reject) => {
             /*eslint no-undef: "warn"*/
             NProgress.start();
-            axios.post("/api/Messaging/PostSmsDraft", data)
+            axios.post(url, data)
                 .then(res => {
                     resolve(res.data);
                 })

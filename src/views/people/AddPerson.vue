@@ -310,7 +310,7 @@
 
         <!-- DISABLED -->
         <div
-          v-if="false"
+          v-if="true"
           class="add-info--con"
           :class="{
             'hide-tab': hideAddInfoTab,
@@ -410,7 +410,7 @@
 
 <script>
 import moment from "moment";
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, reactive, computed } from "vue";
 import router from "@/router/index";
 // import store from "../../store/store"
 import axios from "@/gateway/backendapi";
@@ -604,7 +604,7 @@ export default {
             `/api/People/UpdatePerson/${route.params.personId}`,
             formData
           );
-
+          console.log(response, "response");
           if (response.status === 200 || response.status === 201) {
             membershipService.updatePersonInStore(
               response.data.person,
@@ -851,16 +851,6 @@ export default {
     if (route.params.personId) {
       getMemberToEdit(route.params.personId);
     }
-
-
- 
-
-    onMounted(async () => {
-      
-      
-      
-      // getPersonAgeGroupId();
-    });
 
     const areaInView = ref("groups");
 

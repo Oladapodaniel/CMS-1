@@ -145,6 +145,32 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
             },
+            {
+                path: 'attendancecheckin',
+                name: 'Attendance',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/Attendance'),
+                children: [
+                    {
+                        path: '',
+                        name: 'AttendanceList',
+                        component: () =>
+                            import ( /* webpackChunkName: "attendance" */ '@/views/event/attendance&checkin/AttendanceCheckin'),
+                    },
+                    {
+                        path: 'add',
+                        name: 'AddCheckin',
+                        component: () =>
+                            import ( /* webpackChunkName: "addcheckin" */ '@/views/event/attendance&checkin/AddAttendance'),
+                    }
+                ]
+            },
+            {
+                path: 'addattendancecheckin',
+                name: 'AddAttendance',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AddAttendance')
+            },
 
             {
                 path: 'firsttimers',
@@ -153,7 +179,7 @@ const routes = [{
                     import ( /* webpackChunkName: "firsttimers" */ '@/views/people/FirstTimersList.vue')
             },
             {
-                path: 'firsttimersempty',
+                path: 'firsttimerslist',
                 name: 'FirstTimerEmpty',
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/FirstTimerEmpty.vue')
@@ -238,15 +264,21 @@ const routes = [{
                     import ( /* webpackChunkName: "emailcommunication" */ '@/views/communication/EmailCommunication'),
                 children: [{
                         path: '',
-                        name: 'EmailInbox',
+                        name: 'Sent',
                         component: () =>
-                            import ( /* webpackChunkName: "emailinbox" */ '@/views/communication/EmailInbox')
+                            import ( /* webpackChunkName: "sentemails" */ '@/views/communication/SentEmails')
                     },
                     {
                         path: 'sent',
                         name: 'SentEmails',
                         component: () =>
                             import ( /* webpackChunkName: "sentemails" */ '@/views/communication/SentEmails')
+                    },
+                    {
+                        path: 'sent/:messageId',
+                        name: 'EmailDetails',
+                        component: () =>
+                            import ( /* webpackChunkName: "emaildetails" */ '@/views/communication/EmailDetails')
                     },
                     {
                         path: 'draft',
@@ -261,6 +293,12 @@ const routes = [{
                         name: 'ComposeEmail',
                         component: () =>
                             import ( /* webpackChunkName: "compose" */ '@/views/communication/ComposeEmail')
+                    },
+                    {
+                        path: 'schedules',
+                        name: 'Schedules',
+                        component: () =>
+                            import ( /* webpackChunkName: "compose" */ '@/views/communication/ScheduledEmails')
                     }
                 ]
             },
@@ -365,7 +403,31 @@ const routes = [{
                 path: 'chartofaccount',
                 name: 'ChartOfAccount',
                 component: () =>
-                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
+            },
+            {
+                path: 'offeringlist',
+                name: 'OfferingList',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingList')
+            },
+            {
+                path: 'offeringcat',
+                name: 'OfferingCategory',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/SelectOffCat')
+            },
+            {
+                path: 'addoffering',
+                name: 'AddOffering',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/AddOffering')
+            },
+            {
+                path: 'offeringreport/:report',
+                name: 'OfferingReport',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
             }
         ]
     },

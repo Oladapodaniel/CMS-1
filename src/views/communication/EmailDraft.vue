@@ -28,7 +28,7 @@
                           <input type="checkbox" />
                         </div>
                         <div class="col-md-7">
-                          <span class="th">MESSAGE</span>
+                          <span class="th">Message</span>
                         </div>
                         <div class="col-md-4">
                           <span class="th"></span>
@@ -41,21 +41,25 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row" v-for="(draft, index) in drafts" :key="index">
                     <div class="col-md-12">
-                      <div class="row">
+                      <div class="row py-1">
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-7 d-md-flex flex-column">
-                          <span
+                        <div class="col-md-7 d-md-flex flex-column pl-0 small-text">
+                          <router-link :to="{ name: 'ComposeEmail', query: { emaildraft: draft.id } }"  class="text-decoration-none text-dark font-weight-700">
+                            <span
                             class="d-flex justify-content-between msg-n-time"
                           >
-                            <span class="font-weight-bold">message</span>
-                            <span class="timestamp">Today | 08:45 PM</span>
+                            <span class="font-weight-600 small-text text-capitalize">{{ draft.subject.toLowerCase() }}</span>
+                            <span class="timestamp">{{ new Date(draft.dateModified).toLocaleString()}}</span>
                           </span>
-                          <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
+                          </router-link>
+                          <span class="brief-message text-capitalize small-text"
+                            ><router-link :to="{ name: 'ComposeEmail', query: { emaildraft: draft.id } }" class="text-decoration-none">
+                                {{ formatMessage(draft.body )}}
+                              </router-link></span
                           >
                         </div>
                         <div
@@ -75,37 +79,19 @@
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-7 d-md-flex flex-column">
-                          <span
-                            class="d-flex justify-content-between msg-n-time"
-                          >
-                            <span class="font-weight-bold">message</span>
-                            <span class="timestamp">Today | 08:45 PM</span>
-                          </span>
-                          <span class="brief-message"
-                            >Lorem ipsum dolor sit amet...</span
-                          >
-                        </div>
-                        <div
-                          class="col-md-4 col-ms-12 d-flex justify-content-between"
-                        >
-                          <!-- <span class="hidden-header">message: </span> -->
-                          <!-- <span>test@example.com</span> -->
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
-                        </div>
-                      </div>
+                  <div class="row" v-if="drafts.length === 0 && !loading">
+                    <div class="col-md-12 d-flex justify-content-center">
+                      <span class="my-4 font-weight-bold">No sent mesages</span>
                     </div>
                   </div>
+
+                  <div class="row" v-if="drafts.length === 0 && loading">
+                    <div class="col-md-12 py-2 d-flex justify-content-center">
+                      <i class="fas fa-circle-notch fa-spin"></i>
+                    </div>
+                  </div>
+
+
                 </div>
               </div>
             </div>
@@ -117,7 +103,48 @@
 </template>
 
 <script>
-export default {};
+import { ref } from 'vue';
+import communicationService from "../../services/communication/communicationservice";
+import { useStore } from "vuex";
+
+export default {
+  setup() {
+    const store = useStore();
+    const drafts = ref(store.getters["communication/emailDrafts"]);
+    const loading = ref(false);
+
+    const getEmailDrafts = async () => {
+      loading.value = true;
+      const data = await communicationService.getEmailDrafts();
+      loading.value = false;
+
+      if (data) {
+        drafts.value = data;
+      }
+    }
+
+    const formatMessage = (message) => {
+      const formatted = message && message.length > 25 ? `${createElementFromHTML(message).split("").slice(0, 25).join("")}...` : createElementFromHTML(message);
+
+      return `${formatted}`;
+    }
+
+    const createElementFromHTML = (htmlString) => {
+      var div = document.createElement('div');
+      div.innerHTML = htmlString;
+      return div.textContent; 
+    }
+
+    if (!drafts.value || drafts.value === drafts.value.length === 0) getEmailDrafts();
+
+    return {
+      drafts,
+      loading,
+      createElementFromHTML,
+      formatMessage,
+    }
+  }
+};
 </script>
 
 <style scoped>

@@ -44,26 +44,26 @@
                   <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12">
                       <div class="row light-grey-bg">
-                        <div class="col-md-1 text-md-right text-lg-center">
+                        <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-5">
-                          <span class="th">MESSAGE</span>
+                        <div class="col-md-7">
+                          <span class="th">Message</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">SENT BY</span>
+                          <span class="th">Status <i class="fa fa-question-circle-o c-pointer"  v-tooltip.top="'Sent | Processed | Failed'"></i></span>
                         </div>
-                        <div class="col-md-2">
-                          <span class="th">UNITS</span>
+                        <div class="col-md-1">
+                          <span class="th">Units</span>
                         </div>
-                        <div class="col-md-2">
-                          <span class="th">REPORT</span>
+                        <div class="col-md-1">
+                          <span class="th">Report</span>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12 px-0">
+                    <div class="col-md-12">
                       <hr class="hr mt-0" />
                     </div>
                   </div>
@@ -74,46 +74,55 @@
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-5 d-md-flex flex-column">
+                        <div class="col-md-7 d-md-flex flex-column">
                           <router-link :to="{name: 'MessageDetails', params: { messageId: sms.id}}" style="color:#000" class="text-decoration-none">
                             <span
                             class="d-flex justify-content-between msg-n-time"
                           >
-                            <span class="font-weight-bold">{{
+                            <!-- <span class="font-weight-bold">{{
                               !sms.subject ? "(no subject)" : sms.subject
-                            }}</span>
-                            <span class="timestamp">{{ sms.dateSent }}</span>
+                            }}</span> -->
+                            <!-- <span class="timestamp">{{ sms.dateSent }}</span> -->
                           </span>
                           </router-link>
-                          <router-link :to="{name: 'MessageDetails', params: { messageId: sms.id}}" class="text-decoration-none">
-                            <span class="brief-message font-weight-600"
+                          <router-link :to="{name: 'MessageDetails', params: { messageId: sms.id}}" class="text-decoration-none" >
+                            <span class="brief-message font-weight-600 "
                             >{{ sms.message && sms.message.length > 25 ? `${sms.message.split('').slice(0, 25).join("")}...` : sms.message ? sms.message : '' }}</span
                           >
+                          <span class="timestamp ml-1">{{ sms.dateSent }}</span>
                           </router-link>
                         </div>
-                        <div
+                        <!-- <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
                             >SENT BY:
                           </span>
                           <span>{{ sms.sentByUser && sms.sentByUser.length > 10 ? `${sms.sentByUser.slice(0, 10)}...` : sms.sentBy }}</span>
-                        </div>
+                        </div> -->
                         <div
                           class="col-md-2 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
-                            >UNITS:
+                            >Status:
                           </span>
-                          <span>{{ sms.smsUnitsUsed }}</span>
+                          <span class="small-text">{{ sms.deliveryReport.filter(i => i.report.includes("sent")).length  }} | {{ sms.deliveryReport.filter(i => i.report.includes("processed")).length  }} | {{ sms.deliveryReport.filter(i => i.report.includes("failed")).length  }}</span>
                         </div>
                         <div
-                          class="col-md-2 col-ms-12 my-2 d-flex justify-content-between cursor-pointer"
+                          class="col-md-1 col-ms-12 d-flex justify-content-between"
+                        >
+                          <span class="hidden-header font-weight-bold"
+                            >UNITS:
+                          </span>
+                          <span class="small-text">{{ sms.smsUnitsUsed }}</span>
+                        </div>
+                        <div
+                          class="col-md-1 col-ms-12 my-2 d-flex justify-content-between cursor-pointer"
                         >
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
                           </span>
-                          <router-link :to="{ name: 'DeliveryReport', params: { messageId: sms.id}, query: { units: sms.smsUnitsUsed }}" class="view-item-btn text-decoration-none"
+                          <router-link :to="{ name: 'DeliveryReport', params: { messageId: sms.id}, query: { units: sms.smsUnitsUsed }}" class="small-text text-decoration-none"
                             >View</router-link
                           >
                         </div>
@@ -163,23 +172,27 @@ import communicationService from "../../services/communication/communicationserv
 import { useStore } from "vuex";
 import UnitsArea from "../../components/units/UnitsArea"
 import PaginationButtons from "../../components/pagination/PaginationButtons"
+import Tooltip from 'primevue/tooltip';
 
 export default {
   components: { UnitsArea, PaginationButtons },
+  directives: {
+      'tooltip': Tooltip
+  },
   
   setup() {
     const loading = ref(false);
     const store = useStore();
     const sentSMS = ref(store.getters["communication/allSentSMS"]);
 
-    const currentPage = ref(1);
+    const currentPage = ref(0);
 
     const getSentSMS = async () => {
       try {
         loading.value = true;
         /*eslint no-undef: "warn"*/
         NProgress.start();
-        const data = await communicationService.getAllSentSMS(1)
+        const data = await communicationService.getAllSentSMS(0)
         loading.value = false;
         if (data) {
           sentSMS.value = data;
@@ -192,10 +205,14 @@ export default {
     };
 
     const getSMSByPage = async (page) => {
+      alert(`passed ${page}`,)
       try {
         const data = await communicationService.getAllSentSMS(page);
-        sentSMS.value = data;
-        currentPage.value = page;
+        if (data) {
+          sentSMS.value = data;
+          console.log(data, "SMS");
+          currentPage.value = page;
+        }
       } catch (error) {
         console.log(error);
       }

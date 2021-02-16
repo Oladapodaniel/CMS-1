@@ -3,19 +3,19 @@
     <div class="container">
       <div class="row mt-4" style="margin-top: 10px">
         <div class="col-md-12 d-flex">
-          <a class="p-2 mx-1 page-btn rounded-circle" @click="getPageContent(+currentPage - 1)"
+          <a class="p-2 mx-1 page-btn rounded-circle" @click="prevPage"
             ><i class="fa fa-angle-left"></i>
           </a>
           <a
             class="p-2 mx-1 rounded-circle"
-            :class="{ 'primary-bg text-white': i === currentPage, 'page-btn': i <= startButton + buttonsCount, 'd-none': i < startButton || i > startButton + buttonsCount }"
+            :class="{ 'primary-bg text-white': i === currentPage + 1, 'page-btn': i <= startButton + buttonsCount, 'd-none': i < startButton || i > startButton + buttonsCount }"
             v-for="i in itemsCount"
             :key="i"
             @click="getPageContent(i)"
             
             ><span v-if="i >= startButton && i <= (startButton + buttonsCount)">{{ i }}</span></a
           >
-          <a class="p-2 mx-1 page-btn rounded-circle" @click="getPageContent(+currentPage + 1)"
+          <a class="p-2 mx-1 page-btn rounded-circle" @click="nextPage"
             ><i class="fa fa-angle-right"></i
           ></a>
         </div>
@@ -37,9 +37,20 @@ export default {
 
   methods: {
     getPageContent(page) {
+      alert(page)
       if (page < 1) return false;
-      this.$emit("getcontent", page);
+      this.$emit("getcontent", page - 1);
     },
+
+    nextPage() {
+      const next = this.currentPage + 1;
+      this.getPageContent(next + 1);
+    },
+
+    prevPage() {
+      const prev = this.currentPage - 1;
+      this.getPageContent(prev + 1);
+    }
   },
 
   computed: {

@@ -4,7 +4,7 @@
             <div class="row mt-4">
                 <div class="col-sm-12 py-2">
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'churchplus'}" @click="changeTab('churchplus')">Churchplus</a>
-                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sms'}" @click="changeTab('sms')">SMS</a>
+                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sms'}" @click="changeTab('sms')" v-if="false">SMS</a>
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'sharelink'}">Share link</a>
                 </div>
             </div>
@@ -19,7 +19,7 @@
                             <option value="">{{ userEmail }}</option>
                         </select>
                         <select name="" class="form-control inp" v-show="activeTab === 'sms'">
-                            <option value="">0123456789</option>
+                            <option value="">{{ churchName }}</option>
                         </select>
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
@@ -33,29 +33,15 @@
                         <span>To</span>
                     </div>
                     <div class="col-sm-6 form-group" >
-                        <input type="email" class="form-control inp"  v-model="recipient.email" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'" @input="hideErrorMessage">
-                        <input type="text" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
+                        <input type="email" class="form-control inp"  v-model="recipient.email" name="" id="" v-show="activeTab === 'churchplus'" @input="hideErrorMessage">
+                        <input type="text" class="form-control inp" v-model="recipient.phone" name="" id="" v-show="activeTab === 'sms'" @input="hideErrorMessage">
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
                         <i class="fa fa-plus-circle inp-icon plus-icon my-1" @click="addRecipient"></i>
                     </div>
                 </div>
             </div>
-            <!-- <div class="main-row">
-                <div class="row" v-for="(recipient, index) in recipients" :key="index">
-                    <div class="col-sm-4 d-flex justify-content-end align-items-center text-sm-right label-text">
-                        <span>From</span>
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        <input type="email" v-model="recipient.email" class="form-control inp" name="" id="" placeholder="email@gmail.com" v-show="activeTab === 'churchplus'">
-                        <input type="text" v-model="recipient.phone" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
-                        <span class="text-danger">Enter {{ activeTab === 'sms' ? 'phone number' : 'email address' }}</span>
-                    </div>
-                    <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
-                        <i class="fa fa-times inp-icon my-1 remove-icon" @click="removeRecipient(recipient)"></i>
-                    </div>
-                </div>
-            </div> -->
+           
             <!-- Subject -->
             <div class="main-row">
                 <div class="row">
@@ -81,7 +67,7 @@
                         <span class="">Message</span>
                     </div>
                     <div class="col-sm-6 form-group">
-                        <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Enter you message" v-model="message"></textarea>
+                        <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Enter your message" v-model="message"></textarea>
                     </div>
                     <div class="col-sm-2">
                         
@@ -107,8 +93,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-1">
-                                 <Checkbox id="binary" :binary="true"/>
+                            <div class="col-sm-1" v-if="false">
+                                 <Checkbox id="binary" v-model="attachReport" :binary="true"/>
                             </div>
                             <div class="col-sm-10">
                                 <span>Attach the report as a PDF</span>
@@ -118,10 +104,10 @@
                     <div class="col-sm-8 form-group" v-if="activeTab === 'sms'">
                         <div class="row">
                             <div class="col-sm-1">
-                                 <Checkbox id="binary" :binary="true"/>
+                                 <Checkbox id="binary" v-model="sendCopy" :binary="true"/>
                             </div>
                             <div class="col-sm-10">
-                                <span>Send a copy to myself at 08132182990</span>
+                                <span>Send a copy to myself at {{ churchName }}</span>
                             </div>
                         </div>
                     </div>
@@ -134,7 +120,7 @@
                 </div>
                 <!-- <div class="row"> -->
                     <div class="col-md-12 text-right py-2" v-if="invalidDestination">
-                        <p class="text-danger mb-0 pr-md-5">Enter at least a destination for the mail</p>
+                        <p class="text-danger mb-0 pr-md-5">Enter at least a destination for the report</p>
                     </div>
                     <div class="col-sm-12 d-flex justify-content-end">
                         <a class="action-btn mx-2 my-1" data-dismiss="modal">Cancel</a>
@@ -156,13 +142,15 @@ import axios from "@/gateway/backendapi";
         props: ['eventName'],
         setup(props, { emit }) {
             const activeTab = ref("churchplus");
-            const recipients = ref([ { email: ""} ])
             // const count = 0;
             const userEmail = ref("")
             const message = ref("")
             const sendToMysef = ref(false);
             const subject = ref(null);
             const invalidDestination = ref(false);
+            const recipients = ref([  ])
+            const churchName = ref("")
+            const sendCopy = ref("")
 
             const changeTab = (tab) => activeTab.value = tab;
 
@@ -194,9 +182,9 @@ import axios from "@/gateway/backendapi";
                     subject: subject.value.value,
                 }
 
-                const validDestination = messageObj.contacts.find(i => i.email);
+                const validDestination = messageObj.contacts.find(i => i.phone);
                 console.log(validDestination, "validDestination");
-                if (!validDestination) {
+                if (activeTab.value === "sms" && !validDestination) {
                     invalidDestination.value = true;
                     return false;
                 }
@@ -204,7 +192,7 @@ import axios from "@/gateway/backendapi";
                 if (sendToMysef.value) {
                     messageObj.contacts.push({ email: userEmail.value });
                 }
-                emit("sendreport", messageObj);
+                emit("sendreport", { data: messageObj, medium: activeTab.value });
             }
 
             const getUserEmail = () => {
@@ -212,6 +200,8 @@ import axios from "@/gateway/backendapi";
                     .then(res => {
                         console.log(res.data)
                         userEmail.value = res.data.userEmail
+                        churchName.value = res.data.churchName
+                        recipients.value.push({ email: res.data.userEmail, phone: "" })
                     })
                     .catch(err => console.log(err))
             }
@@ -224,6 +214,8 @@ import axios from "@/gateway/backendapi";
                 test,
                 invalidDestination,
                 hideErrorMessage,
+                churchName,
+                sendCopy
             }
         }
     }

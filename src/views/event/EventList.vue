@@ -32,12 +32,12 @@
     <div class="row avg-table">
       <div class="col-6 col-md-3 first-row">
         <div>Attendance</div>
-        <div @mouseover="hoverEvent1" @mouseleave="leaveEvent1" style="cursor: help;">{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 3 ? eventSummary.attendance.toString().slice(0, 3) : eventSummary.attendance : "" }}{{ kBoolean ? "k" : "" }}</div>
+        <div @mouseover="hoverEvent1" @mouseleave="leaveEvent1" style="cursor: help;">{{ eventSummary.attendance }}</div><!-- {{ eventSummary.attendance ? eventSummary.attendance.toString().length > 3 ? eventSummary.attendance.toString().slice(0, 3) : eventSummary.attendance : "" }}{{ kBoolean ? "k" : "" }}-->
         <div class="hover-eventsum" v-if="isHovering1">{{ eventSummary.attendance }}</div>
       </div>
       <div class="col-6 col-md-3">
-        <div>Offering <span style="font-size: 10px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div @mouseover="hoverEvent2" @mouseleave="leaveEvent2" style="cursor: help;">{{ eventSummary.offerings ? eventSummary.offerings.toString().length > 3 ? `${eventSummary.offerings.toString().slice(0, 3)}k` : eventSummary.offerings : ""}}</div>
+        <div>Offering</div>
+        <div @mouseover="hoverEvent2" @mouseleave="leaveEvent2" style="cursor: help;"> <span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span>{{eventSummary.offerings}}</div><!--{{ eventSummary.offerings ? eventSummary.offerings.toString().length > 3 ? `${eventSummary.offerings.toString().slice(0, 3)}k` : eventSummary.offerings : ""}}-->
         <div class="hover-eventsum" v-if="isHovering2">{{ eventSummary.offerings }}</div>
       </div>
       <div class="col-6 col-md-3">
@@ -48,9 +48,9 @@
         <div>New Converts</div>
         <div>{{ eventSummary.newConverts }}</div>
       </div>
-      <div class="col-12">
+      <!-- <div class="col-12">
         <div>Last Updated 2 hours ago</div>
-      </div>
+      </div> -->
     </div>
   </div>
   <hr class="hr" />
@@ -258,10 +258,10 @@
             </thead>
             <tbody>
               <tr v-for="(event, index) in filterEvents" :key="index">
-                <td><div class="td-first">Unsent</div></td>
-                <td>{{ event.eventName }}</td>
-                <td>{{ event.title }}</td>
-                <td>
+                <td class="itemroute-color"><div class="td-first">Unsent</div></td>
+                <td><router-link :to="`/tenant/event/${event.activityId}`" class="itemroute-color">{{ event.eventName }}</router-link></td>
+                <td class="itemroute-color">{{ event.title }}</td>
+                <td class="itemroute-color">
                   {{
                     moment.parseZone(
                       new Date(event.activityDate).toLocaleDateString(),
@@ -269,10 +269,10 @@
                     )._i
                   }}
                 </td>
-                <td>{{ event.attendances }}</td>
-                <td>{{ event.firstTimers }}</td>
-                <td>{{ event.newConverts }}</td>
-                <td>
+                <td class="itemroute-color">{{ event.attendances }}</td>
+                <td class="itemroute-color">{{ event.firstTimers }}</td>
+                <td class="itemroute-color">{{ event.newConverts }}</td>
+                <td class="itemroute-color">
                   <div class="dropdown">
               <i
                 class="fas fa-ellipsis-v cursor-pointer"
@@ -299,12 +299,12 @@
                     >Edit</router-link
                   >
                 </a>
-                <a
+                <!-- <a
                   class="dropdown-item elipsis-items"
                   href="#"
                   @click.prevent="showConfirmModal(event.activityId)"
                   >Delete</a
-                >
+                > -->
               </div>
             </div>
                 </td>
@@ -319,8 +319,8 @@
             <button class="tbl-footer-btn">
               <i class="fa fa-angle-left"></i>
             </button>
-            <button class="tbl-footer-btn">A</button>
-            <button class="tbl-footer-btn">A</button>
+            <button class="tbl-footer-btn">1</button>
+            <button class="tbl-footer-btn">2</button>
             <button class="tbl-footer-btn">
               <i class="fa fa-angle-right"></i>
             </button>
@@ -339,6 +339,7 @@ import { useConfirm } from "primevue/useConfirm";
 import { useToast } from 'primevue/usetoast';
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice"
+import stopProgressBar from "../../services/progressbar/progress";
 export default {
   setup() {
     const events = ref(getEventList());
@@ -365,7 +366,10 @@ export default {
           // firstTimerAverage.value = res.data.map(i => { return i.firstTimers }).reduce((a, b) => { return a + b })
           // newConvertAverage.value = res.data.map(i => { return i.newConverts }).reduce((a, b) => { return a + b })
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          stopProgressBar();
+          console.log(err)
+        });
     }
 
     const getEventSummary = async () => {
@@ -784,6 +788,10 @@ const deleteMember = (id) => {
   margin: 0 8px 0 -5px !important;
 }
 
+ .itemroute-color {
+    color: #136acd;
+  }
+  
 .add-btn {
   width: 180px;
   background: #136acd;

@@ -4,7 +4,7 @@
       <div class="main-body">
         <div class="top mt-3" v-if="!isFormPage">
           <div class="header">
-            <h2>{{ header }}</h2>
+            <div class="events">{{ header }}</div>
           </div>
           <div class="actions">
             <button class="more-btn align-items-center default-btn border-0">
@@ -79,6 +79,9 @@ export default {
   box-sizing: border-box;
 }
 
+.events {
+    font: normal normal 800 29px Nunito sans;
+    }
 .whole-con {
   display: flex;
   /* background: #f1f5f8; */

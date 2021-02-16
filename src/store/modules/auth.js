@@ -76,7 +76,7 @@ export default {
         const res = await axios.get("/api/People/FirstTimer");
         commit("setCurrentUser", res.data)
       } catch (err) {
-        console.log(err, "error getting church members");
+        console.log(err);
       }
 
     },

@@ -8,7 +8,7 @@
         <div class="col-sm-12">
         <div class="top mt-3">
           <div class="header">
-            <h2>Events</h2>
+            <div class="events">Events</div>
           </div>
           <div class="actions">
             <button class="more-btn button">
@@ -113,6 +113,10 @@ export default {
 * {
   box-sizing: border-box;
 }
+
+.events {
+    font: normal normal 800 28px Nunito sans;
+    }
 
 .whole-con {
   display: flex;
