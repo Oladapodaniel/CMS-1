@@ -149,9 +149,8 @@ const routes = [{
                 path: 'attendancecheckin',
                 name: 'Attendance',
                 component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/Attendance'),
-                children: [
-                    {
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/Attendance'),
+                children: [{
                         path: '',
                         name: 'AttendanceList',
                         component: () =>
@@ -169,7 +168,13 @@ const routes = [{
                 path: 'addattendancecheckin',
                 name: 'AddAttendance',
                 component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AddAttendance')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AddAttendance')
+            },
+            {
+                path: 'groupcategoryattendance',
+                name: 'GroupCategoryAttendance',
+                component: () =>
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/GroupCategoryAttendance')
             },
 
             {
@@ -403,31 +408,31 @@ const routes = [{
                 path: 'chartofaccount',
                 name: 'ChartOfAccount',
                 component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
             },
             {
                 path: 'offeringlist',
                 name: 'OfferingList',
                 component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingList')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingList')
             },
             {
                 path: 'offeringcat',
                 name: 'OfferingCategory',
                 component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/SelectOffCat')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/SelectOffCat')
             },
             {
                 path: 'addoffering',
                 name: 'AddOffering',
                 component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/AddOffering')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/AddOffering')
             },
             {
                 path: 'offeringreport/:report',
                 name: 'OfferingReport',
                 component: () =>
-                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
             }
         ]
     },
