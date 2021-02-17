@@ -49,7 +49,7 @@
                 <a class="dropdown-item font-weight-700 small-text" href="#"
                   >Something else here</a
                 >
-                <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none" style="border-top: 1px solid #002044;" href="#">
+                <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text" style="border-top: 1px solid #002044;color: #136ACD;" href="#">
                     <i class="pi pi-plus-circle mr-3"></i>
                   Create new event
                   </a>
@@ -106,4 +106,8 @@ export default {
 </script>
 
 <style scoped>
+* {
+    color: #02172e;
+    font-family: Nunito Sans !important;
+}
 </style>

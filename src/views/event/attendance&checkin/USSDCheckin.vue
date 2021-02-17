@@ -39,7 +39,7 @@
 <style scoped>
  * {
     color: #02172E;
-    font-family: Nunito sans-serif;
+    font-family: Nunito Sans !important;
  }
 
  .image-box {

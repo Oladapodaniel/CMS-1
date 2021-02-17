@@ -46,7 +46,8 @@ export default {
 <style scoped>
 * {
     color: #02172E;
-    font-family: Nunito sans-serif;
+    /* font: normal normal 600 ¿16px/22px Nunito Sans; */
+    font-family: Nunito Sans !important;
  }
 
     .events {
