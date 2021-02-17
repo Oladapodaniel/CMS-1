@@ -3,7 +3,7 @@
     <div class="main-con">
       <div class="main-body container-wide">
         <div class="col-sm-12">
-        <div class="top mt-3">
+        <div class="top mt-3 pl-0">
           <div class="events">
             <div>Attendance & Checkin
             </div>
@@ -44,8 +44,14 @@ export default {
 </script>
 
 <style scoped>
+* {
+    color: #02172E;
+    /* font: normal normal 600 ¿16px/22px Nunito Sans; */
+    font-family: Nunito Sans !important;
+ }
+
     .events {
-    font: normal normal 800 29px Nunito sans;
+        font: normal normal 800 29px Nunito sans;
     }
 
     .whole-con {

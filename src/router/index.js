@@ -162,6 +162,24 @@ const routes = [{
                         name: 'AddCheckin',
                         component: () =>
                             import ( /* webpackChunkName: "addcheckin" */ '@/views/event/attendance&checkin/AddAttendance'),
+                    },
+                    {
+                        path: 'ussd',
+                        name: 'USSDCheckin',
+                        component: () =>
+                            import ( /* webpackChunkName: "ussdcheckin" */ '@/views/event/attendance&checkin/USSDCheckin'),
+                    },
+                    {
+                        path: 'sms',
+                        name: 'SMSCheckin',
+                        component: () =>
+                            import ( /* webpackChunkName: "smscheckin" */ '@/views/event/attendance&checkin/SMSCheckin'),
+                    },
+                    {
+                        path: 'mark',
+                        name: 'MarkAttendance',
+                        component: () =>
+                            import ( /* webpackChunkName: "markattendance" */ '@/views/event/attendance&checkin/MarkAttendance'),
                     }
                 ]
             },

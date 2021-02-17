@@ -39,7 +39,7 @@ export default {
 
 <style scoped>
 .events {
-  font: normal normal 800 29px Nunito sans;
+  font-family: Nunito Sans !important;
 }
 
 .whole-con {
