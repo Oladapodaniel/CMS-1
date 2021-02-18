@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-8 offset-2">
+                    <div class="ccol-md-12 col-lg-8 offset-lg-2">
                         <div class="row">
                             <div class="col-md-3 image-box px-0 d-none d-md-block">
                                 <img src="../../../assets/google.png" class="mobile-img" alt="">

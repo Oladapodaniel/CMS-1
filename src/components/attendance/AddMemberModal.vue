@@ -1,10 +1,5 @@
 <template>
   <div class="container-fluid mt-5">
-    <div class="row mb-4">
-      <div class="col-md-12">
-        <h4>Add Attendance</h4>
-      </div>
-    </div>
     <div class="row">
       <div class="col-lg-9 col-md-11">
 
@@ -39,7 +34,7 @@
                     <input type="text" class="form-control" placeholder="Find event" />
                   </div>
                 </div>
-
+  
                 <a class="dropdown-item font-weight-700 small-text" href="#"
                   >Action</a
                 >
@@ -50,36 +45,13 @@
                   >Something else here</a
                 >
                 <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text" style="border-top: 1px solid #002044;color: #136ACD;" href="#">
-                    <i class="pi pi-plus-circle mr-2 d-flex align-items-center" style="color: #136ACD;"></i>
+                    <i class="pi pi-plus-circle mr-3"></i>
                   Create new event
                   </a>
               </div>
             </div>
 
             
-          </div>
-        </div>
-
-        <div class="row my-3">
-          <div class="col-md-5 text-md-right">
-            <label for="" class="font-weight-600">Group</label>
-          </div>
-          <div class="col-md-6">
-            <Dropdown
-              v-model="selectedEVent"
-              :options="['Sunday', 'Monday']"
-              placeholder="Select group"
-              :filter="true"
-              filterPlaceholder="Search grouped contacts"
-              style="width: 100%"
-            />
-            <div class="row mt-5">
-              <div class="col-md-12 d-flex justify-content-center">
-                <button class="default-btn primary-bg text-white border-0">
-                  Save and Continue
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>

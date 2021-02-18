@@ -180,6 +180,18 @@ const routes = [{
                         name: 'MarkAttendance',
                         component: () =>
                             import ( /* webpackChunkName: "markattendance" */ '@/views/event/attendance&checkin/MarkAttendance'),
+                    },
+                    {
+                        path: 'childcheckin',
+                        name: 'ChildCheckin',
+                        component: () =>
+                            import ( /* webpackChunkName: "childcheckin" */ '@/views/event/attendance&checkin/ChildCheckin'),
+                    },
+                    {
+                        path: 'report',
+                        name: 'AttendanceReport',
+                        component: () =>
+                            import ( /* webpackChunkName: "childcheckin" */ '@/views/event/attendance&checkin/AttendanceReport'),
                     }
                 ]
             },

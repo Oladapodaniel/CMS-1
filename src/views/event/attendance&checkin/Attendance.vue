@@ -10,7 +10,7 @@
           </div>
           <div class="actions">
             
-              <router-link :to="{ name: 'AddCheckin' }" v-if="!route.path.includes('attendancecheckin/add')">
+              <router-link :to="{ name: 'AddCheckin' }" v-if="route.path === '/tenant/attendancecheckin'">
                 <button class="buttonn add-person-btn">
                   Add New Attendance
                 </button>
