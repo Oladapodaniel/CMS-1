@@ -176,6 +176,12 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/GroupCategoryAttendance')
             },
+            {
+                path: 'newmember',
+                name: 'NewMember',
+                component: () =>
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/NewMember')
+            },
 
             {
                 path: 'firsttimers',
