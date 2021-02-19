@@ -13,7 +13,7 @@
                     <div class="col-md-12 col-lg-8 offset-lg-2">
                         <div class="row">
                             <div class="col-md-3 image-box px-0 d-none d-md-block">
-                                <img src="../../../assets/google.png" class="mobile-img" alt="">
+                                <img src="../../../assets/attendance/attendance-ussd.svg" class="mobile-img" alt="">
                             </div>
                             <div class="col-md-9 px-0 d-flex align-items-center ml-md-n5">
                                 <div class="card border-0 w-100">
