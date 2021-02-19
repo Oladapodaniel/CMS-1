@@ -44,7 +44,7 @@
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/facebook.png" alt="marked Attendance image">
+                                <img src="../../../assets/group.svg" alt="marked Attendance image">
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
@@ -61,7 +61,7 @@
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/facebook.png" alt="marked Attendance image">
+                                <img src="../../../assets/group1.svg" alt="marked Attendance image">
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
@@ -78,7 +78,7 @@
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/facebook.png" alt="marked Attendance image">
+                                <img src="../../../assets/group1.svg" alt="marked Attendance image">
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
@@ -95,7 +95,7 @@
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/facebook.png" alt="marked Attendance image">
+                                <img src="../../../assets/group2.svg" alt="marked Attendance image">
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
@@ -112,7 +112,7 @@
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/facebook.png" alt="marked Attendance image">
+                                <img src="../../../assets/group2.svg" alt="marked Attendance image">
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
@@ -129,7 +129,7 @@
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/facebook.png" alt="marked Attendance image">
+                                <img src="../../../assets/group.svg" alt="marked Attendance image">
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
