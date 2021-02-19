@@ -161,6 +161,36 @@ const routes = [{
                         name: 'AddCheckin',
                         component: () =>
                             import ( /* webpackChunkName: "addcheckin" */ '@/views/event/attendance&checkin/AddAttendance'),
+                    },
+                    {
+                        path: 'ussd',
+                        name: 'USSDCheckin',
+                        component: () =>
+                            import ( /* webpackChunkName: "ussdcheckin" */ '@/views/event/attendance&checkin/USSDCheckin'),
+                    },
+                    {
+                        path: 'sms',
+                        name: 'SMSCheckin',
+                        component: () =>
+                            import ( /* webpackChunkName: "smscheckin" */ '@/views/event/attendance&checkin/SMSCheckin'),
+                    },
+                    {
+                        path: 'mark',
+                        name: 'MarkAttendance',
+                        component: () =>
+                            import ( /* webpackChunkName: "markattendance" */ '@/views/event/attendance&checkin/MarkAttendance'),
+                    },
+                    {
+                        path: 'childcheckin',
+                        name: 'ChildCheckin',
+                        component: () =>
+                            import ( /* webpackChunkName: "childcheckin" */ '@/views/event/attendance&checkin/ChildCheckin'),
+                    },
+                    {
+                        path: 'report',
+                        name: 'AttendanceReport',
+                        component: () =>
+                            import ( /* webpackChunkName: "childcheckin" */ '@/views/event/attendance&checkin/AttendanceReport'),
                     }
                 ]
             },
@@ -466,6 +496,7 @@ router.beforeEach((to, from, next) => {
 
     if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
+
     const tokenIsValid = token && token.length > 30 ? true : false;
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")

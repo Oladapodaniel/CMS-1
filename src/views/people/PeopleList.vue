@@ -47,10 +47,16 @@
       </div>
     </div>
 
-    <div class="table mx-0">
-      <div class="table-top my-3">
+    <div class="row mt-3">
+      <div class="col-md-10 pl-5">
+        <i class="pi pi-trash c-pointer" style="font-size: 24px" v-if="marked.length > 0" @click="deleteMarked"></i>
+      </div>
+    </div>
+
+    <div class="table mx-0" :class="{ 'mt-0': marked.length > 0}">
+      <div class="table-top mb-3">
         <div class="select-all">
-          <input type="checkbox" name="all" id="all" @click="toggleSelect" v-model="selectAll"/>
+          <input type="checkbox" name="all" id="all" @change="markAll" :checked="marked.length === churchMembers.length"/>
           <label>SELECT ALL</label>
         </div>
         <div class="filter">
@@ -161,7 +167,8 @@
         <div class="table-body" v-for="(person, index) in filterResult" :key="person.id">
         <div class="data-row">
           <div class="check data">
-            <input type="checkbox" name="" id=""   v-model="selectAll"/>
+
+            <input type="checkbox" name="" id="" />
           </div>
           <div class="picture data">
             <div class="data-con">
@@ -277,7 +284,7 @@
           <div class="table-body" v-for="(person, index) in searchMember" :key="person.id">
         <div class="data-row">
           <div class="check data">
-            <input type="checkbox" name="" id="" v-model="selecteAll"/>
+            <input type="checkbox" name="" id="" @change="mark(person)" :checked="marked.findIndex(i => i.id === person.id) >= 0"/>
           </div>
           <div class="picture data">
             <div class="data-con">
@@ -314,7 +321,7 @@
               <router-link
                 :to="`/tenant/people/add/${person.id}`"
                 class="data-value itemroute-color"
-                >{{ person.firstName }}</router-link
+                >{{ person.firstName }} </router-link
               >
             </div>
           </div>
@@ -405,6 +412,7 @@ import { useConfirm } from "primevue/useConfirm";
 import { useToast } from 'primevue/usetoast';
 import { useStore } from 'vuex';
 import stopProgressBar from "../../services/progressbar/progress";
+import membershipservice from "../../services/membership/membershipservice";
 
 export default {
   props: ["list", "peopleCount"],
@@ -551,6 +559,45 @@ export default {
       .catch((err) => console.log(err));
     // })
 
+    const marked = ref([ ]);
+    const mark = (member) => {
+      const memberIndex = marked.value.findIndex(i => i.id === member.id);
+      if (memberIndex < 0) {
+        marked.value.push(member)
+      } else {
+        marked.value.splice(memberIndex, 1);
+      }
+      console.log(marked.value, "marked");
+    }
+
+    const markAll = () => {
+      if (marked.value.length < churchMembers.value.length) {
+        churchMembers.value.forEach(i => {
+          const memberInmarked = marked.value.findIndex(j => j.id === i.id);
+          if (memberInmarked < 0) {
+            marked.value.push(i);
+          }
+        })
+      } else {
+        marked.value = [ ];
+      }
+      console.log(marked.value, "all");
+    }
+
+    const deleteMarked = async () => {
+      const arr = [ ];
+      for (let member of marked.value) {
+        
+        arr.push( { personId: member.id });
+      }
+      try {
+        const response = await membershipservice.deletePeople(marked.value.map(i => i.id));
+        console.log(response, "RESPONSE");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     onMounted(() => {
       console.log(props.list, "props");
       churchMembers.value = props.list;
@@ -601,6 +648,11 @@ export default {
       searchText,
       searchMember,
       membersCount,
+
+      marked,
+      mark,
+      markAll,
+      deleteMarked,
     };
   },
 };

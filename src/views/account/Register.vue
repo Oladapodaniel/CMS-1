@@ -227,12 +227,8 @@ export default {
           name: "EmailSent",
           params: { email: this.credentials.email }
         });
-        // this.$router.push({
-        //   name: "ResetPassword",
-        //   params: { token: data.resetToken },
-        //   query: {email: this.credentials.email}
-        // });
       } catch (error) {
+        NProgress.done();
         console.log(error);
       }
     },

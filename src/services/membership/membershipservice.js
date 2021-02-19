@@ -40,6 +40,26 @@ const membershipService = {
         })
     },
 
+    deletePeople(data) {
+        console.log(data, "DATA");
+        return new Promise((resolve, reject) => {
+            axios.delete("/api/People/DeletePeoples", data)
+                .then(res => {
+                    resolve(res.data);
+                    // store.dispatch("setFirstTimers", res.data);
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
     getMemberById(id) {
         return new Promise((resolve, reject) => {
             axios.get(
