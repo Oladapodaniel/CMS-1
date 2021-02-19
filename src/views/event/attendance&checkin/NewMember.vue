@@ -1,53 +1,57 @@
 <template>
     <div>
         <div class="container main">
-         <div class="row  m-auto">
+         <div class="row">
              <div class="col">
                 <div class="row">
-                        <div class="col md-4 text-md-right">
+                        <div class="col-md-4 text-md-right">
                             <h4 class="header4 text-md-right">Surname</h4>
                         </div>
-                        <div class="col-md-8 px-0">
-                            <InputText type="text" class="w-100 rounded" v-model="value" required />
+                        <div class="col-md-7 px-0">
+                            <input type="text" class="form-control">
+                            <!-- <InputText type="text" style="border-radius:8px" class="w-100 rounded" v-model="value" required /> -->
                         </div>
                 </div> 
                 <div class="mt-4">
                 </div> 
              <div class="row">
-                <div class="col md-4 text-md-right">
+                <div class="col-md-4 text-md-right">
                     <h4 class="header4 text-md-right">Firstname</h4>
                  </div>
-                 <div class="col-md-8 px-0">
-                     <InputText type="text" class="w-100 rounded" v-model="value" required />
+                 <div class="col-md-7 px-0">
+                     <input type="text" class="form-control">
+                     <!-- <InputText type="text" class="w-100 rounded" v-model="value" required /> -->
                  </div>
             </div> 
             <div class="mt-4">
             </div> 
              <div class="row">
-                <div class="col md-4 text-md-right">
+                <div class="col-md-4 text-md-right">
                     <h4 class="header4 text-md-right">Phone number</h4>
                  </div>
-                 <div class="col-md-8 px-0">
-                     <InputText type="number" class="w-100 rounded" v-model="value" required />
+                 <div class="col-md-7 px-0">
+                     <input type="text" class="form-control">
+                     <!-- <InputText type="number" class="w-100 rounded" v-model="value" required /> -->
                  </div>
             </div> 
             <div class="mt-4">
             </div> 
              <div class="row">
-                <div class="col md-4 text-md-right">
+                <div class="col-md-4 text-md-right">
                     <h4 class="header4 text-md-right">Email</h4>
                  </div>
-                 <div class="col-md-8 px-0">
-                     <InputText type="email" class="w-100 rounded" v-model="value" required />
+                 <div class="col-md-7 px-0">
+                     <input type="text" class="form-control">
+                     <!-- <InputText type="email" class="w-100 rounded" v-model="value" required /> -->
                  </div>
             </div>
             <div class="mt-4">
             </div> 
              <div class="row">
-                <div class="col md-4 text-md-right">
+                <div class="col-md-4 text-md-right">
                     <h4 class="header4 text-md-right"></h4>
                  </div>
-                 <div class="col-md-8 px-0 d-flex justify-content-center">
+                 <div class="col-md-7 px-0 d-flex justify-content-center">
                      <Button label="Cancel" class="p-button-outlined p-button-secondary mr-3 px-5 p-button-rounded" />
                      <Button label="Save"  class="p-button-primary p-button-rounded px-5 mr-3 max" />
                      
@@ -61,19 +65,19 @@
 </template>
 
 <script>
-import InputText from 'primevue/inputtext';
+// import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'
     export default {
-        components:{ InputText, Button}
+        components:{ Button}
         
     }
 </script>
 
 <style scoped>
-.main{
+/* .main{
     margin-top: 300px;
     margin-bottom: 300px;
-}
+} */
 .p-button-outlined{
     background-color:#fff9f9!Important;
     color: black!important;

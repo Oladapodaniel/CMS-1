@@ -191,7 +191,24 @@ const routes = [{
                     import( /* webpackChunkName: "childcheckin" */ '@/views/event/attendance&checkin/ChildCheckin'),
             },
 
-
+            {
+                path: 'type',
+                name: 'CheckinType',
+                component: () =>
+                    import( /* webpackChunkName: "childcheckin" */ '@/views/event/attendance&checkin/GroupCategoryAttendance'),
+            },
+            {
+                path: 'tag',
+                name: 'AttendanceTag',
+                component: () =>
+                    import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceTag')
+            },
+            {
+                path: 'checkins',
+                name: 'AttendanceAndCheckinList',
+                component: () =>
+                    import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceAndCheckinList')
+            },
 
             {
                 path: 'report',
@@ -202,17 +219,12 @@ const routes = [{
         ]
     },
     {
-        path: 'attendanceandcheckinlist',
+        path: 'checkins',
         name: 'AttendanceAndCheckinList',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceAndCheckinList')
     },
-    {
-        path: 'attendancetag',
-        name: 'AttendanceTag',
-        component: () =>
-            import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceTag')
-    },
+    
     {
         path: 'addattendancecheckin',
         name: 'AddAttendance',

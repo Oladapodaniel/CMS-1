@@ -10,27 +10,11 @@
       
       <div class="row">
           <div class="col-md-12">
-              <h1>Add member form</h1>
+              <NewMember />
           </div>
       </div>
       
-      <template #footer>
-        <Button
-          label="Cancel"
-          @click="() => (display = false)"
-          class="p-button-raised p-button-text p-button-plain mr-3 default-btn mt-3"
-          style="
-            color: #136acd;
-            background: #fff !important;
-            border-radius: 22px;
-          "
-        />
-        <Button
-          label="Save"
-          class="p-button-rounded default-btn mt-3"
-          style="background: #136acd"
-        />
-      </template>
+    
     </Dialog>
     <div class="row my-5" :class="{ 'd-none': isKioskMode }">
       <div class="col-md-12">
@@ -90,7 +74,7 @@
           <div class="col-md-5" :class="{ 'order-3': isKioskMode }">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Name</span>
-              <span>name</span>
+              <span><router-link to="/tenant/attendancecheckin/tag">name</router-link></span>
             </span>
           </div>
           <div class="col-md-3" :class="{ 'order-4': isKioskMode }">
@@ -258,8 +242,10 @@
 <script>
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
+import NewMember from "../../../views/event/attendance&checkin/NewMember";
 
 export default {
+  components: { NewMember },
   setup() {
     const isKioskMode = ref(false);
     const route = useRoute();

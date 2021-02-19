@@ -25,12 +25,20 @@
           </div>
         </div>
       </div>
+
+      <div class="row" v-if="false">
+        <div class="col-md-12">
+          <List />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import List from "../../../views/event/attendance&checkin/AttendanceAndCheckinList";
 export default {
+  components: { List },
   setup() {
     return {};
   },

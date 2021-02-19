@@ -1,7 +1,7 @@
 
 <template>
   <div class="container-wide">
-    <div class="row d-flex my-3">
+    <!-- <div class="row d-flex my-3">
       <div class="col-sm-4 mt-4">
         <h2 class="page-header">Attendance and Checkin</h2>
       </div>
@@ -14,7 +14,7 @@
       <div class="col-md-12">
         <hr />
       </div>
-    </div>
+    </div> -->
 
     <!-- table area -->
     <div class="table mx-0">
@@ -61,7 +61,7 @@
 
         <div class="col-md-2" @click="toggleEllips">
           <i
-            class="d-flex fas fa-ellipsis-v ion ion2"
+            class="d-flex fas fa-ellipsis-v ion ion2 c-pointer"
             id="dropdownMenuButton"
             data-toggle="dropdown"
             aria-haspopup="true"

@@ -75,7 +75,7 @@
             />
             <div class="row mt-5">
               <div class="col-md-12 d-flex justify-content-center">
-                <button class="default-btn primary-bg text-white border-0">
+                <button class="default-btn primary-bg text-white border-0" @click="onContinue">
                   Save and Continue
                 </button>
               </div>
@@ -92,14 +92,21 @@
 <script>
 import Dropdown from "primevue/dropdown";
 import { ref } from "vue";
+import router from "@/router/index";
 
 export default {
   components: { Dropdown },
 
   setup() {
     const selectedEVent = ref("");
+
+    const onContinue = () => {
+      router.push("/tenant/attendancecheckin/type");
+    }
+
     return {
       selectedEVent,
+      onContinue,
     };
   },
 };
