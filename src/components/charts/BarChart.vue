@@ -32,7 +32,7 @@ export default {
           plotShadow: false,
           type: "pie",
           renderTo: props.domId,
-          height: 250,
+          height: props.height ? props.height : 250,
         },
         title: {
           text: props.title,

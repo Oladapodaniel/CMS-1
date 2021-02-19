@@ -193,6 +193,7 @@ export default {
         /*eslint no-undef: "warn"*/
         NProgress.start();
         const data = await communicationService.getAllSentSMS(0)
+        console.log(data, "data");
         loading.value = false;
         if (data) {
           sentSMS.value = data;
@@ -205,7 +206,6 @@ export default {
     };
 
     const getSMSByPage = async (page) => {
-      alert(`passed ${page}`,)
       try {
         const data = await communicationService.getAllSentSMS(page);
         if (data) {
@@ -228,8 +228,9 @@ export default {
 
     const messages = computed(() => {
       if (!sentSMS.value || sentSMS.value.length === 0) return [ ];
-      return sentSMS.value;
+      return sentSMS.value.filter(i => !i.message.toLowerCase().startsWith("sms reply"));
     })
+     console.log(sentSMS.value, "data");
 
     return {
       sentSMS,
