@@ -22,23 +22,22 @@
     </div>
   </div> -->
   <!-- <hr class="hr" /> -->
-  <div class="container">
-    <div class="row">
+  <!-- <div class="container">
+    <div class="row"> -->
       <div class="col-sm-12">
         <div class="avg">Overall Average</div>
       </div>
-    </div>
+    <!-- </div> -->
 
     <div class="row avg-table">
-      <div class="col-6 col-md-3 first-row">
+      <div class="col-6 col-md-3 first-row" v-tooltip.bottom="`${eventSummary.attendance ? eventSummary.attendance : 0 }`">
         <div>Attendance</div>
-        <div @mouseover="hoverEvent1" @mouseleave="leaveEvent1" style="cursor: help;">{{ eventSummary.attendance }}</div><!-- {{ eventSummary.attendance ? eventSummary.attendance.toString().length > 3 ? eventSummary.attendance.toString().slice(0, 3) : eventSummary.attendance : "" }}{{ kBoolean ? "k" : "" }}-->
-        <div class="hover-eventsum" v-if="isHovering1">{{ eventSummary.attendance }}</div>
+        <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 8 ? `${eventSummary.attendance.toString().slice(0, 8)}...` : eventSummary.attendance : 0}}</div>
+        
       </div>
-      <div class="col-6 col-md-3">
-        <div>Offering</div>
-        <div @mouseover="hoverEvent2" @mouseleave="leaveEvent2" style="cursor: help;"> <span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span>{{eventSummary.offerings}}</div><!--{{ eventSummary.offerings ? eventSummary.offerings.toString().length > 3 ? `${eventSummary.offerings.toString().slice(0, 3)}k` : eventSummary.offerings : ""}}-->
-        <div class="hover-eventsum" v-if="isHovering2">{{ eventSummary.offerings }}</div>
+      <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
+        <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
+        <div> {{eventSummary.offerings ? eventSummary.offerings.toString().length > 8 ? `${ eventSummary.offerings.toString().slice(0, 8) }...` : eventSummary.offerings : 0}}</div>
       </div>
       <div class="col-6 col-md-3">
         <div>First Timers</div>
@@ -52,7 +51,7 @@
         <div>Last Updated 2 hours ago</div>
       </div> -->
     </div>
-  </div>
+  <!-- </div> -->
   <hr class="hr" />
   <!-- </div> -->
   <div class="container">
@@ -340,7 +339,11 @@ import { useToast } from 'primevue/usetoast';
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice"
 import stopProgressBar from "../../services/progressbar/progress";
+import Tooltip from 'primevue/tooltip';
 export default {
+  directives: {
+      'tooltip': Tooltip
+  },
   setup() {
     const events = ref(getEventList());
     const filterFormIsVissible = ref(false);
@@ -350,10 +353,7 @@ export default {
     // const newConvertAverage = ref(null)
     const eventSummary = ref({});
     const store = useStore();
-    const userCurrency = ref(store.getters.currency);
-    const kBoolean = ref(false)
-    const isHovering1 = ref(false)
-    const isHovering2 = ref(false)
+    const userCurrency = ref(store.getters.currency)
     const searchText = ref("")
 
     async function getEventList() {
@@ -400,21 +400,6 @@ export default {
 
     if (!userCurrency.value) getUserCurrency();
 
-  const hoverEvent1 = () => {
-    isHovering1.value = true
-  }
-
-  const leaveEvent1 = () => {
-    isHovering1.value = false
-  }
-
-  const hoverEvent2 = () => {
-    isHovering2.value = true
-  }
-
-  const leaveEvent2 = () => {
-    isHovering2.value = false
-  }
 
   const filterEvents = computed(() => {
     if (searchText.value !== "") {
@@ -495,13 +480,6 @@ const deleteMember = (id) => {
       eventSummary,
       moment,
       userCurrency,
-      kBoolean,
-      isHovering1,
-      isHovering2,
-      hoverEvent1,
-      leaveEvent1,
-      hoverEvent2,
-      leaveEvent2,
       filterEvents,
       searchText,
       showConfirmModal,
@@ -831,10 +809,11 @@ const deleteMember = (id) => {
 
 .avg-table {
   margin-top: 2em;
-  border: 1px solid #00204445;
+  border: 1px solid #dde2e6;
   border-radius: 10px;
   margin: 2em 10px;
   padding: 10px;
+  border-radius: 30px;
 }
 .avg-table > div > div:first-child {
   font: normal normal 600 16px/13px Nunito Sans;
@@ -874,15 +853,6 @@ const deleteMember = (id) => {
 
 .top-con {
   padding: 0px 25px;
-}
-
-.hover-eventsum {
-  position: absolute;
-  font-weight: 800;
-  padding: 10px;
-  background-color: white;
-  z-index: 1;
-  box-shadow: 0px 1px 4px #02172e45;
 }
 
 @media screen and (max-width: 500px) {

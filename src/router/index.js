@@ -428,6 +428,12 @@ const routes = [{
                 name: 'OfferingReport',
                 component: () =>
                             import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
+            },
+            {
+                path: 'transactionlist',
+                name: 'TransactionList',
+                component: () =>
+                            import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
             }
         ]
     },

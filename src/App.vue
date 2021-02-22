@@ -75,6 +75,10 @@ export default {
   align-items: center;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .connectionbar {
   position: fixed;
   z-index: 9;

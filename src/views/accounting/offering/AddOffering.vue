@@ -200,7 +200,6 @@
                             ><span>
                               <i
                                 class="pi pi-angle-down"
-                                :class="{ roll3: showForm3 }"
                                 aria-hidden="true"
                               ></i
                             ></span>
@@ -249,7 +248,7 @@
                           <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
                           <Dialog
                             header="Add New Event"
-                            v-model:visible="displayModal"
+                            :visible="displayModal"
                             :style="{ width: '50vw' }"
                             :modal="true"
                           >
