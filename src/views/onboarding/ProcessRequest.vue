@@ -22,8 +22,7 @@
           <div class="desc-text">
             <h4>All-in-one Church management software</h4>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Et odit
-              voluptates voluptate.
+              Get your church administrative activities and processes automated without hassle.
             </p>
           </div>
         </div>

@@ -12,6 +12,7 @@ const communicationService = {
             
             stopProgressBar();
             console.log(error);
+            console.log(error.response, "ERROR");
             return false;
         }
     },

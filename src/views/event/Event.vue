@@ -668,7 +668,8 @@
             <div class="col-sm-2 offset-sm-1" style="margin-left: 74px">Total</div>
           </div>
         </div>
-
+<!-- <div>{{ offeringItem }}</div>
+<div>{{ newOfferings }}</div> -->
         <!-- Selected offerings -->
         <div
           class="attendance-body stretch"
@@ -738,9 +739,49 @@
                 </div>
                 <div v-if="filterCurrency.length == 0">No match found</div>
                 </div> -->
-                <Dropdown v-model="item.currency" :options="currencyList" :filter="true" class="currency p-0" placeholder="NGN" :showClear="false">
+                <!-- <Dropdown v-model="item.currency" :options="currencyList" :filter="true" class="currency p-0" placeholder="NGN" :showClear="false">
                     
-                </Dropdown>
+                </Dropdown> -->
+
+                <div
+                class="currency pointer d-flex justify-content-around align-items-center close-modal"
+                @click="item.showCurrency = !item.showCurrency"
+                >
+                <span class="ofering close-modal">{{ item.currency }}</span
+                ><span style="margin-top: 4px">
+                    <i
+                    class="pi pi-angle-down close-modal"
+                    aria-hidden="true"
+                    ></i
+                ></span>
+                </div>
+                <div
+                  class="ofering close-modal"
+                  :class="{ 'style-account': item.showCurrency }"
+                  v-if="item.showCurrency"
+                  >
+                  <div class="p-2">
+                      <input
+                      type="text"
+                      placeholder="Search"
+                      class="form-control close-modal ofering mb-1"
+                      v-model="currencyText"
+                      
+                  />
+                  </div>
+                        <div class="header-border close-modal" v-if="filterCurrency.length > 0">
+                          <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
+                              <div class="d-flex justify-content-between p-1 close-modal">
+                                  <div class="close-modal offset-sm-1" @click="addCurrency($event, index)">{{ item.name }} - {{ item.country }}</div>      
+                              </div>                      
+                          </div>
+                        </div>
+                        <div class="header-border close-modal" v-else>
+                          <div class="p-3 text-center text-danger">No Match Found</div>
+                        </div>
+                  
+                  
+                  </div>
             </div>
             <div class="col-6 col-lg-2">
               <input
@@ -1583,7 +1624,8 @@ export default {
       showCode: false,
       currencyText: "",
       eventObj: {},
-      routeParams: null
+      routeParams: null,
+      showCurrency: false
     };
   },
   methods: {
@@ -1757,6 +1799,12 @@ export default {
       this.donorText = ""
       console.log(this.offeringItem)
     },
+    addCurrency (e, index) {
+        console.log(e.target.innerHTML, index)
+        this.offeringItem[index].currency = e.target.innerHTML.split(" ")[0]
+        this.offeringItem[index].showCurrency = false
+
+    },
     delAttendance(index) {
       this.attendanceItem.splice(index, 1);
     },
@@ -1810,10 +1858,15 @@ export default {
 
         this.eventObj = {
         attendances: this.attendanceItem,
+        // offerings: this.offeringItem,
         offerings: this.offeringItem.map(i => {
-          i.currency = i.currency.split(" ")[0]
-          return i
+           delete i.showCurrency
+           return i
         }),
+        // offerings: this.offeringItem.map(i => {
+        //   i.currency = i.currency.split(" ")[0]
+        //   return i
+        // }),
         activityFirstTimers: this.firstTimers,
       };
 
@@ -1867,10 +1920,11 @@ export default {
         },
         activityFirstTimers: this.firstTimers,
         attendances: this.attendanceItem,
-        offerings: this.offeringItem.map(i => {
-          i.currency = i.currency.split(" ")[0]
-          return i
-        }),
+        offerings: this.offeringItem,
+        // offerings: this.offeringItem.map(i => {
+        //   i.currency = i.currency.split(" ")[0]
+        //   return i
+        // }),
         preEvent: this.updatePreEvent
       }
 
@@ -2140,12 +2194,12 @@ export default {
       axios.get(url)
         .then(res => {
           this.currencyList = res.data.map(i => {
-              return `${i.currency} ${i.name}`
-            //   {
-            //   name: i.currency,
-            //   id: i.id,
-            //   country: i.name
-            // }
+              // return `${i.currency} ${i.name}`
+              return {
+              name: i.currency,
+              id: i.id,
+              country: i.name
+            }
             
           })
         })
@@ -2505,8 +2559,8 @@ export default {
   border-radius: 111px;
 }
 .currency {
-  width: 163%;
-  height: 94%;
+  width: 123%;
+  height: 100%;
   font-size: 0.8em;
   background: rgba(207, 207, 207, 0.651);
   border: none;
@@ -2897,6 +2951,19 @@ input.codeInput {
   margin-top: 5px;
 }
 
+.style-account {
+    box-shadow: 0px 3px 15px #797e8159;
+    position: absolute;
+    background: white;
+    z-index: 1;
+    width: 284%;
+    max-height: 14em;
+    overflow-y: scroll;
+    }
+    .style-account div div:hover {
+    background-color: #ecf0f3;
+    cursor: pointer;
+    }
 
 @media (min-width: 576px) {
   .offset-sm-1 {

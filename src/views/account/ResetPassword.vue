@@ -91,7 +91,7 @@ export default {
       }
 
       authService
-        .resetPassword(this.credentials)
+        .resetPassword({ email: this.credentials.email, password: this.credentials.password, resetToken: this.credentials.resetToken })
         .then((res) => {
           localStorage.setItem("token", res.result.value.token);
           if (res.result.value.churchSize > 0) {

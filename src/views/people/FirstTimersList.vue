@@ -19,8 +19,8 @@
       </div>
     </div> -->
 
-    <div class="row">
-      <div class="col-md-12">
+    <!-- <div class="row">
+      <div class="col-md-12"> -->
         <div class="my-con">
 
           <div class="summary px-3">
@@ -485,8 +485,8 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      <!-- </div>
+    </div> -->
   </div>
 </template>
 
@@ -704,6 +704,7 @@ export default {
 .my-con {
   /* display: flex; */
   justify-content: space-between;
+  margin: 24px 0;
 }
 
 .summary {
