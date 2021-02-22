@@ -14,7 +14,7 @@
             </button>
 
             <button class="more-btn align-items-center default-btn border-0">
-              <a href="#section">More</a>
+              More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
           </div>
@@ -341,7 +341,7 @@
       </div>
         </div>
         <!-- :class="{ 'slide-form' : showEditTransaction, 'hide-form' : !showEditTransaction }" -->
-        <div class="table edit-transac" v-if="showEditTransaction" id="section">
+        <div class="table edit-transac" v-if="showEditTransaction">
             <TransactionForm @close-it="closeIt" @transac-obj="transacObj" :transacProp="transacPropsValue" :showEditTransaction="showEditTransaction"/>
         </div>
         </div>
