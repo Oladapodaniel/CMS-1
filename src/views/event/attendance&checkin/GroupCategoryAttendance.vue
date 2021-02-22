@@ -144,7 +144,6 @@
                 <div class="col-md-12 mb-3">
                 </div>
             </div>
-
         </div>
 
     </div>
@@ -241,5 +240,7 @@ opacity: 0.8;
 .container{
     margin-bottom: 40px;
 }
-
+.progress-bar{
+    height: 30%!important;
+}
 </style>
