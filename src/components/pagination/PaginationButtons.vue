@@ -37,7 +37,6 @@ export default {
 
   methods: {
     getPageContent(page) {
-      alert(page)
       if (page < 1) return false;
       this.$emit("getcontent", page - 1);
     },
