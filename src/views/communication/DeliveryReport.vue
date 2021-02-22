@@ -33,10 +33,10 @@
           </div>
         </div>
         <div class="col-md-4">
-            <ReportChart domId="reportChart" title="" :height="400" :summary="statsData" :percentage="false" />
+            <ReportChart domId="reportChart" title="" :height="250" :summary="statsData" :percentage="false" />
         </div>
         <div class="col-md-4">
-          <SecondChart domId="reportBarChart" title="" :height="400" :summary="chartData" :percentage="true" />
+          <SecondChart domId="reportBarChart" title="" :height="250" :summary="chartData" :percentage="true" />
         </div>
       </div>
 

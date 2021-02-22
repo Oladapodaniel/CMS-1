@@ -334,13 +334,6 @@
                 <a class="tab">Groups</a>
               </div>
               <div
-                class="house-fel box"
-                @click.prevent="() => (areaInView = 'fellowship')"
-                :class="{ 'white-bg': areaInView === 'fellowship' }"
-              >
-                <a class="tab">House fellowship</a>
-              </div>
-              <div
                 class="notes box"
                 @click.prevent="() => (areaInView = 'notes')"
                 :class="{ 'white-bg': areaInView === 'notes' }"
@@ -348,6 +341,7 @@
                 <a class="tab">Notes</a>
               </div>
               <div
+                v-if="false"
                 class="follow-up box"
                 @click.prevent="() => (areaInView = 'followup')"
                 :class="{ 'white-bg': areaInView === 'followup' }"
@@ -355,11 +349,13 @@
                 <a class="tab">Follow-up</a>
               </div>
             </div>
-            <div class="info-box-body">
+            <div class="info-box-body py-3">
               <button
                 @click.prevent="uploadImage"
                 class="info-btn"
                 v-if="areaInView === 'groups'"
+                data-toggle="modal"
+                data-target="#addToGroup"
               >
                 Add to Group
               </button>
@@ -405,6 +401,87 @@
         </div>
       </form>
     </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="addToGroup"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addToGroup"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header" style="background: #ebeff4;
+">
+            <h5 class="modal-title font-weight-bold" id="addToGroup">
+              Group Membership
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row my-4">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Name</label>
+              </div>
+              <div class="col-md-7">
+                <Dropdown
+                  v-model="groupToAddTo"
+                  :options="allGroups"
+                  style="width: 100%"
+                  :filter="true"
+                  placeholder="Select a group"
+                  optionLabel="name"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 text-md-right">
+                <label for="" class="font-weight-600">Position</label>
+              </div>
+              <div class="col-md-7">
+                <input type="text" v-model="position" class="form-control" placeholder="e.g Member" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <label for="" class="font-weight-600"></label>
+              </div>
+              
+              <div class="col-md-7">
+                <div class="col-md-12 mt-3 text-center">
+                  <p class="my-1 text-danger" v-if="addToGroupError">Please select a group</p>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6 d-md-flex justify-content-end">
+                    <button class="default-btn">Cancel</button>
+                  </div>
+                  <div class="col-md-6">
+                    <button
+                      class="default-btn primary-bg border-0 text-white"
+                      :data-dismiss="dismissAddToGroupModal"
+                      @click="addMemberToGroup"
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -420,6 +497,7 @@ import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
 import membershipService from "../../services/membership/membershipservice";
+import grousService from "../../services/groups/groupsservice";
 // import lookupService from "../../services/lookup/lookupservice";
 
 export default {
@@ -687,7 +765,6 @@ export default {
       }
     };
 
-
     let genders = ref(store.getters["lookups/genders"]);
     let maritalStatus = ref(store.getters["lookups/maritalStatus"]);
     let ageGroups = ref(store.getters["lookups/ageGroups"]);
@@ -713,7 +790,6 @@ export default {
             console.log(error);
           }
 
-          
           maritalStatus.value = res.data.find(
             (i) => i.type.toLowerCase() === "maritalstatus"
           ).lookUps;
@@ -780,21 +856,21 @@ export default {
       if (memberToEdit.value && memberToEdit.value.personId) {
         if (genders.value && genders.value.length > 0) {
           selectedGender.value = genders.value.find(
-          (i) => i.id === memberToEdit.value.genderID
-        );
+            (i) => i.id === memberToEdit.value.genderID
+          );
         } else {
           getLookUps();
         }
       }
-    }
+    };
 
     const getPersonMaritalStatusId = () => {
       if (memberToEdit.value && memberToEdit.value.personId) {
-      selectedMaritalStatus.value = maritalStatus.value.find(
+        selectedMaritalStatus.value = maritalStatus.value.find(
           (i) => i.id === memberToEdit.value.maritalStatusID
         );
       }
-    }
+    };
 
     const getPersonPeopleClassificationId = () => {
       if (memberToEdit.value && memberToEdit.value.personId) {
@@ -806,8 +882,7 @@ export default {
           getPeopleClassifications();
         }
       }
-      
-    }
+    };
 
     const getPersonAgeGroupId = () => {
       if (memberToEdit.value && memberToEdit.value.personId) {
@@ -819,7 +894,7 @@ export default {
           getAgeGroups();
         }
       }
-    }
+    };
 
     const populatePersonDetails = (data) => {
       person.firstName = data.firstName;
@@ -830,17 +905,21 @@ export default {
       person.address = data.homeAddress;
       person.occupation = data.occupation;
       person.dayOfBirth = data.dayOfBirth;
-      person.monthOfBirth = data.monthOfBirth ? months[data.monthOfBirth - 1] : null;
+      person.monthOfBirth = data.monthOfBirth
+        ? months[data.monthOfBirth - 1]
+        : null;
       person.dayOfWedding = data.dayOfWedding;
       person.yearOfBirth = data.yearOfBirth;
-      person.monthOfWedding = data.monthOfWedding ? months[data.monthOfWedding - 1] : null;
+      person.monthOfWedding = data.monthOfWedding
+        ? months[data.monthOfWedding - 1]
+        : null;
       person.yearOfWedding = data.yearOfWedding;
     };
 
     const getMemberToEdit = () => {
       membershipService.getMemberById(route.params.personId).then((res) => {
         memberToEdit.value = res;
-         populatePersonDetails(res);
+        populatePersonDetails(res);
         getPersonGenderId();
         getPersonMaritalStatusId();
         getPersonPeopleClassificationId();
@@ -853,6 +932,47 @@ export default {
     }
 
     const areaInView = ref("groups");
+    const position = ref("");
+    const groupToAddTo = ref({});
+    const allGroups = ref([]);
+
+    const getGroups = async () => {
+      try {
+        let groups = store.getters["groups/groups"];
+
+        if (groups && groups.length === 0) {
+          allGroups.value = groups;
+          return true;
+        } else {
+          groups = await grousService.getGroups();
+          if (groups) {
+            allGroups.value =groups;
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getGroups();
+
+    const addToGroupError = ref(false);
+    const dismissAddToGroupModal = ref("");
+
+    const addMemberToGroup = async () => {
+      addToGroupError.value = false;
+      if (!groupToAddTo.value || !groupToAddTo.value.id) {
+        addToGroupError.value = true;
+        return false;
+      }
+      dismissAddToGroupModal.value = "modal";
+      try {
+        const response = await membershipService.addMemberToGroup({ personId: route.params.personId, groupId: groupToAddTo.value.id }, groupToAddTo.value.id);
+        console.log(response, "RESPONSE");
+        toast.add({severity:'success', summary:'Added Successfully', detail:`Member add to ${groupToAddTo.value.name}`, life: 3000});
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     return {
       months,
@@ -896,6 +1016,12 @@ export default {
       ageGroups,
       getAgeGroups,
       showError,
+      groupToAddTo,
+      position,
+      allGroups,
+      addMemberToGroup,
+      addToGroupError,
+      dismissAddToGroupModal,
     };
   },
 };
@@ -917,6 +1043,10 @@ export default {
 
 .cs-select.year {
   width: 113px;
+}
+
+.modal-lg {
+  max-width: 600px;
 }
 
 @media (min-width: 663px) and (max-width: 667px) {
