@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <div class="row" v-if="loading && people.length === 0">
+  <div class="row container-wide" v-if="loading && people.length === 0">
     <div class="col-md-12">
       <div class="row my-2 d-md-flex justify-content-between">
         <div class="col-md-4">
@@ -58,7 +58,7 @@
   </div>
 
   <div
-    class="people-list"
+    class="container-wide"
     v-if="!loading && (people.length > 0 || errorGettingPeople)"
   >
     <PeopleList :list="people" :peopleCount="people.length" />

@@ -849,7 +849,7 @@
   
   .error-div {
     text-align: center;
-    color: red;
+    color: #b52626;
   }
   
   .celeb-tab {
@@ -907,6 +907,7 @@
   .show-tab {
     transition: all 0.5s ease-in-out;
     height: 108px;
+    overflow: hidden;
   }
   
   .show-addinfo-tab {
@@ -914,10 +915,10 @@
     height: 223px;
   }
   
-  .show-occ-tab {
+  /* .show-occ-tab {
     transition: all 0.5s ease-in-out;
     min-height: 113px;
-  }
+  } */
   
   .cs-input {
     border: 1px solid #b9c5cf;

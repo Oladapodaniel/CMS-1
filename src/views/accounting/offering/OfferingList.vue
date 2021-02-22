@@ -2,13 +2,13 @@
   <div class="container-wide">
     <div class="row my-3">
       <div class="col-sm-4 first-timers-text">
-        <h2 class="page-header"><bold>Offerings</bold></h2>
+        <h2 class="page-header"><bold>Contributions</bold></h2>
       </div>
 
       <div class="col-sm-8 d-flex head-button">
-        <button class="default-btn mr-5">Add Offering Category</button>
+        <button class="default-btn mr-5">Add Contribution Category</button>
         <router-link to="/tenant/people/addfirsttimer" class="add-btn">
-          Add Offering
+          Add Contribution
         </router-link>
       </div>
     </div>
@@ -25,7 +25,7 @@
           <div class="table">
             <div class="top-con">
               <div class="table-top my-4 px-4">
-                <div class="filter offset-md-9">
+                <div class="filter offset-md-8">
                   <p @click="toggleFilterFormVissibility">
                     <i class="fas fa-filter"></i>
                     FILTER
@@ -69,7 +69,7 @@
                           type="text"
                           class="input w-100"
                           placeholder="First Name"
-                          v-model="filter.filterFirstName"
+                      
                         />
                         <!-- </div> -->
                       </div>
@@ -78,7 +78,7 @@
                         <input
                           type="date"
                           class="form-control input inp w-100"
-                          v-model="filter.filterDate"
+                     
                         />
                       </div>
                     </div>
@@ -89,7 +89,7 @@
                           type="text"
                           class="input w-100"
                           placeholder="Last Name"
-                          v-model="filter.filterLastName"
+            
                         />
                       </div>
 
@@ -98,7 +98,7 @@
                           type="text"
                           class="input w-100"
                           placeholder="Phone Number"
-                          v-model="filter.phoneNumber"
+                  
                         />
                       </div>
                     </div>
@@ -137,14 +137,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="">
-                    <div class="row">
-                      <td>2/02/2021</td>
-                      <td>Sunday Service</td>
-                      <td class="">Tithe</td>
+                  <tr v-for="(offering, index) in offerings" :key="index">
+                  
+                      <td>{{ offering.date }}</td>
+                      <td>{{ offering.event }}</td>
+                      <td class="">{{ offering.contribution }}</td>
 
-                      <td class="itemroute-color" style="display: flex">
-                        <select class="currency" style="padding: 0.2rem">
+                      <td style="display: flex">
+                        <select class="currency">
                           <option value="NGN">NGN</option>
                           <option value="USD">USD</option>
                           <option value="EUR">EUR</option>
@@ -158,9 +158,10 @@
                           type=""
                           class="form-control"
                           style="width: 100px"
+                          v-model="offering.amount"
                         />
                       </td>
-                      <td class="">Ogunmuyiwa David</td>
+                      <td class="">{{ offering.contact }}</td>
                       <td>
                         <i
                           class="fa fa-trash"
@@ -168,7 +169,7 @@
                           aria-hidden="true"
                         ></i>
                       </td>
-                    </div>
+               
                   </tr>
                 </tbody>
 
@@ -362,36 +363,42 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref } from "vue";
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 // import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
-import axios from "@/gateway/backendapi";
-import Pagination from "../../../components/pagination/PaginationButtons";
-import { useRoute } from "vue-router";
-import moment from "moment";
-import { useConfirm } from "primevue/useConfirm";
-import { useToast } from "primevue/usetoast";
+// import axios from "@/gateway/backendapi";
+// import Pagination from "../../../components/pagination/PaginationButtons";
+// import { useRoute } from "vue-router";
+// import moment from "moment";
+// import { useConfirm } from "primevue/useConfirm";
+// import { useToast } from "primevue/usetoast";
 
 export default {
-  props: ["list"],
+  // props: ["list"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
-    Pagination,
+    // Pagination,
   },
 
   setup() {
-    const churchMembers = ref([]);
-    const getFirstTimerSummary = ref({});
+    const offerings = ref([
+      { date: '2/12/2020', event: 'Men service', contribution: 'Tithe', amount: 3000, contact: 'Ogunmuyiwa David' },
+      { date: '2/12/2020', event: 'Men service', contribution: 'Tithe', amount: 3000, contact: 'Ogunmuyiwa David' },
+      { date: '2/12/2020', event: 'Men service', contribution: 'Tithe', amount: 3000, contact: 'Ogunmuyiwa David' },
+      { date: '2/12/2020', event: 'Men service', contribution: 'Tithe', amount: 3000, contact: 'Ogunmuyiwa David' },
+      { date: '2/12/2020', event: 'Men service', contribution: 'Tithe', amount: 3000, contact: 'Ogunmuyiwa David' }
+    ]);
+    // const getFirstTimerSummary = ref({});
     const filter = ref({});
     const searchIsVisible = ref(false);
-    const filterResult = ref([]);
-    const noRecords = ref(false);
+    // const filterResult = ref([]);
+    // const noRecords = ref(false);
     const searchText = ref("");
 
     // if ()
 
-    const route = useRoute();
+    // const route = useRoute();
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -400,192 +407,193 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const firstTimerSummary = () => {
-      axios
-        .get("/api/People/GetFirsttimerSummary")
-        .then((res) => {
-          getFirstTimerSummary.value = res.data;
-          console.log(res.data);
-        })
-        .catch((err) => console.log(err));
-    };
-    firstTimerSummary();
+    // const firstTimerSummary = () => {
+    //   axios
+    //     .get("/api/People/GetFirsttimerSummary")
+    //     .then((res) => {
+    //       getFirstTimerSummary.value = res.data;
+    //       console.log(res.data);
+    //     })
+    //     .catch((err) => console.log(err));
+    // };
+    // firstTimerSummary();
 
-    const searchMember = computed(() => {
-      if (searchText.value !== "") {
-        return churchMembers.value.filter((i) => {
-          return i.fullName
-            .toLowerCase()
-            .includes(searchText.value.toLowerCase());
-        });
-      } else {
-        return churchMembers.value;
-      }
-    });
+    // const searchMember = computed(() => {
+    //   if (searchText.value !== "") {
+    //     return churchMembers.value.filter((i) => {
+    //       return i.fullName
+    //         .toLowerCase()
+    //         .includes(searchText.value.toLowerCase());
+    //     });
+    //   } else {
+    //     return churchMembers.value;
+    //   }
+    // });
 
-    const deleteMember = (id) => {
-      //  delete firtimer
-      axios
-        .delete(`/api/People/DeleteOnePerson/${id}`)
-        .then((res) => {
-          console.log(res);
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Member Deleted",
-            life: 3000,
-          });
-          churchMembers.value = churchMembers.value.filter(
-            (item) => item.id !== id
-          );
+    // const deleteMember = (id) => {
+    //   //  delete firtimer
+    //   axios
+    //     .delete(`/api/People/DeleteOnePerson/${id}`)
+    //     .then((res) => {
+    //       console.log(res);
+    //       toast.add({
+    //         severity: "success",
+    //         summary: "Confirmed",
+    //         detail: "Member Deleted",
+    //         life: 3000,
+    //       });
+    //       churchMembers.value = churchMembers.value.filter(
+    //         (item) => item.id !== id
+    //       );
 
-          // update first timer summary while deleting
-          axios
-            .get("/api/People/GetFirsttimerSummary")
-            .then((res) => {
-              getFirstTimerSummary.value = res.data;
-              console.log(res.data);
-            })
-            .catch((err) => console.log(err));
-        })
-        .catch((err) => {
-          /*eslint no-undef: "warn"*/
-          NProgress.done();
-          if (err.response.status === 400) {
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: "Ensure this member is not in any group",
-              life: 3000,
-            });
-          } else {
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: "An error occurred, please try again",
-              life: 3000,
-            });
-          }
-        });
-    };
+    //       // update first timer summary while deleting
+    //       axios
+    //         .get("/api/People/GetFirsttimerSummary")
+    //         .then((res) => {
+    //           getFirstTimerSummary.value = res.data;
+    //           console.log(res.data);
+    //         })
+    //         .catch((err) => console.log(err));
+    //     })
+    //     .catch((err) => {
+    //       /*eslint no-undef: "warn"*/
+    //       NProgress.done();
+    //       if (err.response.status === 400) {
+    //         toast.add({
+    //           severity: "error",
+    //           summary: "Unable to delete",
+    //           detail: "Ensure this member is not in any group",
+    //           life: 3000,
+    //         });
+    //       } else {
+    //         toast.add({
+    //           severity: "error",
+    //           summary: "Unable to delete",
+    //           detail: "An error occurred, please try again",
+    //           life: 3000,
+    //         });
+    //       }
+    //     });
+    // };
 
-    const confirm = useConfirm();
-    let toast = useToast();
-    const showConfirmModal = (id) => {
-      confirm.require({
-        message: "Are you sure you want to proceed?",
-        header: "Confirmation",
-        icon: "pi pi-exclamation-triangle",
-        acceptClass: "confirm-delete",
-        rejectClass: "cancel-delete",
-        accept: () => {
-          deleteMember(id);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-        },
-        reject: () => {
-          toast.add({
-            severity: "info",
-            summary: "Rejected",
-            detail: "You have rejected",
-            life: 3000,
-          });
-        },
-      });
-    };
+    // const confirm = useConfirm();
+    // let toast = useToast();
+    // const showConfirmModal = (id) => {
+    //   confirm.require({
+    //     message: "Are you sure you want to proceed?",
+    //     header: "Confirmation",
+    //     icon: "pi pi-exclamation-triangle",
+    //     acceptClass: "confirm-delete",
+    //     rejectClass: "cancel-delete",
+    //     accept: () => {
+    //       deleteMember(id);
+    //       // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+    //     },
+    //     reject: () => {
+    //       toast.add({
+    //         severity: "info",
+    //         summary: "Rejected",
+    //         detail: "You have rejected",
+    //         life: 3000,
+    //       });
+    //     },
+    //   });
+    // };
 
-    // const getFirstTimers = async () => {
+    // // const getFirstTimers = async () => {
+    // //   try {
+    // //     const { data } = await axios.get(
+    // //       `/api/People/FirstTimer`
+    // //     );
+    // //     churchMembers.value = data;
+    // //     console.log(data)
+    // //   } catch (error) {
+    // //     console.log(error);
+    // //   }
+    // // };
+
+    // onMounted(() => {
+    //   console.log(route, "route");
+    //   axios.get("/api/People/FirstTimer").then((res) => {
+    //     churchMembers.value = res.data;
+    //     console.log(churchMembers.value);
+    //   });
+    // });
+
+    // const applyFilter = () => {
+    //   filter.value.filterFirstName =
+    //     filter.value.filterFirstName == undefined
+    //       ? ""
+    //       : filter.value.filterFirstName;
+    //   filter.value.filterLastName =
+    //     filter.value.filterLastName == undefined
+    //       ? ""
+    //       : filter.value.filterLastName;
+    //   filter.value.phoneNumber =
+    //     filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
+
+    //   let url =
+    //     "/api/People/FilterMembers?firstname=" +
+    //     filter.value.filterFirstName +
+    //     "&lastname=" +
+    //     filter.value.filterLastName +
+    //     "&phone_number=" +
+    //     filter.value.phoneNumber +
+    //     "&page=1";
+    //   axios
+    //     .get(url)
+    //     .then((res) => {
+    //       noRecords.value = true;
+    //       filterResult.value = res.data;
+    //       console.log(filterResult.value);
+    //     })
+    //     .catch((err) => console.log(err));
+    // };
+
+    // const membersCount = computed(() => {
+    //   if (getFirstTimerSummary.value.totalFirstTimer > 20)
+    //     return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 20);
+    //   return 0;
+    // });
+
+    // const currentPage = ref(1);
+    // const getPeopleByPage = async (page) => {
+    //   if (page < 1) return false;
     //   try {
     //     const { data } = await axios.get(
-    //       `/api/People/FirstTimer`
+    //       `/api/People/GetPeopleBasicInfo?page=${page}`
     //     );
+    //     filterResult.value = [];
+    //     searchMember.value = [];
+    //     noRecords.value = false;
     //     churchMembers.value = data;
-    //     console.log(data)
+    //     currentPage.value = page;
     //   } catch (error) {
     //     console.log(error);
     //   }
     // };
 
-    onMounted(() => {
-      console.log(route, "route");
-      axios.get("/api/People/FirstTimer").then((res) => {
-        churchMembers.value = res.data;
-        console.log(churchMembers.value);
-      });
-    });
-
-    const applyFilter = () => {
-      filter.value.filterFirstName =
-        filter.value.filterFirstName == undefined
-          ? ""
-          : filter.value.filterFirstName;
-      filter.value.filterLastName =
-        filter.value.filterLastName == undefined
-          ? ""
-          : filter.value.filterLastName;
-      filter.value.phoneNumber =
-        filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
-
-      let url =
-        "/api/People/FilterMembers?firstname=" +
-        filter.value.filterFirstName +
-        "&lastname=" +
-        filter.value.filterLastName +
-        "&phone_number=" +
-        filter.value.phoneNumber +
-        "&page=1";
-      axios
-        .get(url)
-        .then((res) => {
-          noRecords.value = true;
-          filterResult.value = res.data;
-          console.log(filterResult.value);
-        })
-        .catch((err) => console.log(err));
-    };
-
-    const membersCount = computed(() => {
-      if (getFirstTimerSummary.value.totalFirstTimer > 20)
-        return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 20);
-      return 0;
-    });
-
-    const currentPage = ref(1);
-    const getPeopleByPage = async (page) => {
-      if (page < 1) return false;
-      try {
-        const { data } = await axios.get(
-          `/api/People/GetPeopleBasicInfo?page=${page}`
-        );
-        filterResult.value = [];
-        searchMember.value = [];
-        noRecords.value = false;
-        churchMembers.value = data;
-        currentPage.value = page;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     return {
-      churchMembers,
+      offerings,
+      // churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,
-      moment,
-      firstTimerSummary,
-      getFirstTimerSummary,
-      applyFilter,
+      // moment,
+      // firstTimerSummary,
+      // getFirstTimerSummary,
+      // applyFilter,
       filter,
       toggleSearch,
       searchIsVisible,
-      filterResult,
-      noRecords,
+      // filterResult,
+      // noRecords,
       searchText,
-      searchMember,
-      showConfirmModal,
-      deleteMember,
-      membersCount,
-      currentPage,
-      getPeopleByPage,
+      // searchMember,
+      // showConfirmModal,
+      // deleteMember,
+      // membersCount,
+      // currentPage,
+      // getPeopleByPage,
     };
   },
 };
@@ -781,20 +789,30 @@ export default {
 }
 
 .header {
-  background: #f1f3f9;
-
-  /*
-    ; */
+  background: #DDE2E6 0% 0% no-repeat padding-box;
+  font: normal normal bold 13px/13px Nunito Sans;
+  letter-spacing: 0px;
+  color: #002044;
 }
 
 .header tr {
   color: #8898aa;
   font-size: 11px;
   box-shadow: 0px 3px 6px #2c28281c;
+  background: #DDE2E6 0% 0% no-repeat padding-box;
 }
 
 .select-all input {
   margin: 0 8px 0 -5px !important;
+}
+
+.currency {
+  background: #DDE2E6 0% 0% no-repeat padding-box;
+  border: 1px solid #C5D9F2;
+  border-radius: 5px;
+  font: normal normal 800 14px/19px Nunito Sans;
+  letter-spacing: 0px;
+  color: #1C252C;
 }
 
 .head-button {
