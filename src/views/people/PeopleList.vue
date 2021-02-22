@@ -167,7 +167,6 @@
         <div class="table-body" v-for="(person, index) in filterResult" :key="person.id">
         <div class="data-row">
           <div class="check data">
-
             <input type="checkbox" name="" id="" />
           </div>
           <div class="picture data">
@@ -432,7 +431,27 @@ export default {
     const selectAll = ref(false)
     const noRecords = ref(false)
     const searchText = ref("")
-    const store = useStore()
+    const store = useStore();
+    // const selected = ref([])
+    // const count = ref(churchMembers.length)
+
+    // const selectAll = computed(() => {
+      // selectedAll: {
+      // set(val) {
+      //   selected.value = []
+        // if (val) {
+          // for(let i = 1; i <= churchMembers.value; i++) {
+          //   selected.value.push(i)
+          // }
+    //     }
+    //   }
+    //   get() {
+    //     return selected.value.length === churchMembers.value
+    //   // }
+    // }
+    // })
+    
+
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
     const membershipSummary = ref([]);
@@ -606,7 +625,6 @@ export default {
 
     const toggleSelect = () => {
       selectAll.value = !selectAll.value
-      console.log(selectAll.value,"let")
     }
 
     const searchMember = computed(() => {
@@ -648,7 +666,6 @@ export default {
       searchText,
       searchMember,
       membersCount,
-
       marked,
       mark,
       markAll,
@@ -1004,6 +1021,3 @@ a {
   border-radius: 0px 0px 22px 22px;
 }
 </style>
-
-
-

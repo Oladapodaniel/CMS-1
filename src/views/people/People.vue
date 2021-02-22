@@ -2,23 +2,23 @@
   <div class="whole-con">
     <div class="main-con">
       <div class="main-body">
-        <div class="top mt-3" v-if="!isFormPage">
+        <div class="top container-wide mt-3" v-if="!isFormPage">
           <div class="header">
             <div class="events">{{ header }}</div>
           </div>
           <div class="actions">
-            <button class="more-btn align-items-center default-btn border-0">
+            <button class="more-btn button align-items-center default-btn border-0">
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
             <router-link :to="`/tenant/people/add`" class="">
-            <button class="add-person-btn default-btn border-0 ml-3">
+            <button class="add-person-btn button default-btn border-0 ml-3">
               Add Member
             </button>
             </router-link>
           </div>
         </div>
-        <hr class="hr" v-if="!isFormPage"/>
+        <hr class="hr container-wide" v-if="!isFormPage"/>
 
         <!-- <transition name="fade" mode="out-in"> -->
           <router-view class="view" />
@@ -136,7 +136,7 @@ export default {
 
 .hr {
   border: 0.8px solid #0020440a;
-  margin: 0 4px;
+  margin: 0 45px;
 }
 
 @media (max-width: 545px) {

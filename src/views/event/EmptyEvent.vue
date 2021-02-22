@@ -5,8 +5,8 @@
   <div class="whole-con">
     <div class="main-con">
       <div class="main-body">
-        <div class="col-sm-12">
-        <div class="top mt-3">
+        <!-- <div class="col-sm-12"> -->
+        <div class="top container-wide mt-3">
           <div class="header">
             <div class="events">Events</div>
           </div>
@@ -22,7 +22,7 @@
               </router-link>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
         <!-- <div class="top">
           <div class="header">
             <h2>Event</h2>
@@ -35,7 +35,7 @@
             </router-link>
           </div>
         </div> -->
-        <hr class="hr" />
+        <hr class="hr container-wide" />
 <!-- v-if="!loading && people.length === 0" -->
 <!-- v-if="!loading && people.length > 0" -->
         <div v-if="eventList.length === 0" class="no-person" >
@@ -44,7 +44,7 @@
             <p class="tip">You haven't added any event yet</p>
         </div>
         </div>
-        <div v-else class="event-list">
+        <div v-else class="container-wide">
             <EventList />
         </div>
 
@@ -195,7 +195,7 @@ export default {
 
 .hr {
   border: 0.8px solid #0020440a;
-  margin: 0 4px;
+  margin: 0 45px;
 }
 
 @media(max-width: 566px) {

@@ -1,6 +1,6 @@
 <template>
     <!-- <div>Chart of Accounts</div> -->
-    <div class="container-wide container-top">
+    <div class="container-wide container-top" style="border: 2px solid red">
         <div class="row">
             <div class="col-12 col-md-6 p-0 text-center text-md-left">
                 <div>
@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import axios from "@/gateway/backendapi";
 import Assets from '@/views/accounting/chartOfAccount/Assets'
 import Liabilities from '@/views/accounting/chartOfAccount/Liabilities'
 import Income from '@/views/accounting/chartOfAccount/Income'
@@ -78,8 +79,16 @@ export default {
         const equity = () => {
             tab.value = 'equity'
         }
+
+        const getChartOfAccounts = ref([])
+
+        onMounted(() => {
+            axios.get('/api/Financials/GetChartOfAccounts')
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+        })
         return{
-            tab, assets, liabilities, income, expenses, equity
+            tab, assets, liabilities, income, expenses, equity, getChartOfAccounts
         }
     }
 }
