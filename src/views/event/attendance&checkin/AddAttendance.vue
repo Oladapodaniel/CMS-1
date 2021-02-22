@@ -4,6 +4,19 @@
       <div class="col-md-12">
         <h4>Add Attendance</h4>
       </div>
+      <Dialog
+        header="Create Event"
+        v-model:visible="display"
+        :style="{ width: '70vw', maxWidth: '600px' }"
+        :modal="true"
+        position="top"
+      >
+        <div class="row">
+          <div class="col-md-12">
+            <CreateEventModal @closeeventmodal="closeModal" />
+          </div>
+        </div>
+      </Dialog>
     </div>
     <div class="row">
       <div class="col-lg-9 col-md-11">
@@ -27,29 +40,27 @@
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                Select from events and activities
-                <div class="pi pi-chevron-down manual-dd-icon float-right pr-1"></div>
+                {{ !selectedEvent.name ? "Select from events and activities" : selectedEvent.name.length > 30 ? `${selectedEvent.name.slice(0, 30)}...` : selectedEvent.name }}
+                <i class="pi pi-chevron-down manual-dd-icon float-right pr-1"></i>
               </button>
               <div
                 class="dropdown-menu w-100"
                 aria-labelledby="dropdownMenuButton"
               >
-                <div class="row w-100 mx-auto">
+                <div class="row w-100 mx-auto" v-if="events.length > 5">
                   <div class="col-md-12">
                     <input type="text" class="form-control" placeholder="Find event" />
                   </div>
                 </div>
 
-                <a class="dropdown-item font-weight-700 small-text" href="#"
-                  >Action</a
+                <a class="dropdown-item font-weight-700 small-text py-2 c-pointer"
+                  v-for="(event, index) in events" :key="index"
+                  @click="selectEvent(event)"
+                  >{{ event.name }}</a
                 >
-                <a class="dropdown-item font-weight-700 small-text" href="#"
-                  >Another action</a
+                <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text" style="border-top: 1px solid #002044;color: #136ACD;" href="#"
+                  @click="() => display = true"
                 >
-                <a class="dropdown-item font-weight-700 small-text" href="#"
-                  >Something else here</a
-                >
-                <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text" style="border-top: 1px solid #002044;color: #136ACD;" href="#">
                     <i class="pi pi-plus-circle mr-2 d-flex align-items-center" style="color: #136ACD;"></i>
                   Create new event
                   </a>
@@ -66,8 +77,9 @@
           </div>
           <div class="col-md-6">
             <Dropdown
-              v-model="selectedEVent"
-              :options="['Sunday', 'Monday']"
+              v-model="selectedGroup"
+              :options="groups"
+              optionLabel="name"
               placeholder="Select group"
               :filter="true"
               filterPlaceholder="Search grouped contacts"
@@ -93,20 +105,71 @@
 import Dropdown from "primevue/dropdown";
 import { ref } from "vue";
 import router from "@/router/index";
+import groupService from "../../../services/groups/groupsservice";
+import eventsService from "../../../services/events/eventsservice";
+import CreateEventModal from "../../../components/attendance/AttendanceEventModal";
 
 export default {
-  components: { Dropdown },
+  components: { Dropdown, CreateEventModal  },
 
   setup() {
-    const selectedEVent = ref("");
+    const groups = ref([ ]);
+    const display = ref(false);
+
+    const selectedGroup = ref({ });
+    const getGroups = async () => {
+      try {
+        const response = await groupService.getGroups();
+        if (response && response.length > 0) {
+          groups.value = response.map(i => {
+            return { id: i.id, name: i.name }
+          })
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    const events = ref([ ]);
+    const getEvents = async () => {
+      try {
+        const response = await eventsService.getEvents();
+        console.log(response, "RESPONSE");
+        if (response && response.length > 0) {
+          events.value = response.map(i => {
+            return { id: i.activityID, name: i.name }
+          })
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    const selectedEvent = ref({ });
+    const selectEvent = (selected) => {
+      selectedEvent.value = selected;
+    }
+
+    const closeModal = () => {
+      display.value = false;
+    }
+
+    getEvents();
+    getGroups();
 
     const onContinue = () => {
-      router.push("/tenant/attendancecheckin/type");
+      router.push({name: "CheckinType", query: { activityID: selectedEvent.value.id, activityName: selectedEvent.value.name, groupId: selectedGroup.value.id, groupName: selectedGroup.value.name, x: 2 } });
     }
 
     return {
-      selectedEVent,
+      selectedEvent,
       onContinue,
+      groups,
+      events,
+      selectEvent,
+      display,
+      selectedGroup,
+      closeModal,
     };
   },
 };
