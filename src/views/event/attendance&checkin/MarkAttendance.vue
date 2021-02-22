@@ -70,7 +70,7 @@
           </div>
         </div>
 
-        <div class="row py-2 tb-row" :class="{ 'kiosk-tb-size': isKioskMode }">
+        <!-- <div class="row py-2 tb-row" :class="{ 'kiosk-tb-size': isKioskMode }">
           <div class="col-md-5" :class="{ 'order-3': isKioskMode }">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Name</span>
@@ -115,6 +115,10 @@
               <span><Checkbox id="binary" :binary="true" /></span>
             </span>
           </div>
+        </div> -->
+
+        <div class="row py-2 tb-row" :class="{ 'kiosk-tb-size': isKioskMode }">
+          <DataRow :isKioskMode="isKioskMode"/>
         </div>
 
         <div class="row py-4">
@@ -243,9 +247,10 @@
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import NewMember from "../../../views/event/attendance&checkin/NewMember";
+import DataRow from "../../../components/attendance/MarkAttendanceRow";
 
 export default {
-  components: { NewMember },
+  components: { NewMember, DataRow },
   setup() {
     const isKioskMode = ref(false);
     const route = useRoute();

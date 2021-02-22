@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid main">
     <div
-      class="container-fluid child col-lg-12 col-sm-6 shadow-sm p-3 mb-5 bg-body rounded"
+      class="container-fluid bg-white child col-lg-12 col-sm-6 shadow-sm p-3 mb-5 bg-body rounded"
     >
       <!--  top area -->
       <div class="col-lg-12 p-0 d-flex">
