@@ -20,15 +20,14 @@
                                 <h5 class="event mt-3"> Event</h5>
                             </div>
                             <div class="col-md-10 col-sm-12">
-                                <Dropdown v-model="selectedCountry" :options="countries"  style="width:100%" optionLabel="name" :filter="true" placeholder="Workers Meeting(12th Oct, 2020)" :showClear="true">
+                                <Dropdown v-model="selectedEvent" :options="events"  style="width:100%" optionLabel="name" :filter="true">
                                 </Dropdown>
                             </div>
                             <div class="col-md-2 col-sm-12">
                                 <h5 class="event mt-4"> Group</h5>
                             </div>
                             <div class="col-md-10 mt-3 col-sm-12">
-                                <MultiSelect v-model="selectedGroup" :options="groups" style="width:100%" optionLabel="name" placeholder="Choir" display="chip"/>
-                                    
+                                <MultiSelect v-model="selectedGroups" :options="groups" style="width:100%" optionLabel="name" placeholder="" display="chip"/>
                             </div>
                         </div>
                     </div>
@@ -48,7 +47,7 @@
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <a href=""><h4 class="header4">Registration Link</h4></a>
+                                <a class="c-pointer text-decoration-none"><h4 class="header4">Registration Link</h4></a>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>
@@ -153,30 +152,67 @@
 // import Button from 'primevue/button';
 import Dropdown from 'primevue/dropdown';
 import MultiSelect from 'primevue/multiselect';
+import { useRoute } from 'vue-router';
+import { ref } from 'vue';
+
     export default {
         components: { Dropdown, MultiSelect},
-     data() {
-        return {
-            selectedCity1: null,
-            selectedCity2: null,
-            selectedCountry: null,
-            countries: [
-                {name: 'workers meeting(12th Oct, 2020)'},
-                {name: 'Sunday service (12th Oct, 2020)'},
-                {name: 'Create New Event'},
-            ],
-            selectedGroup: null,
-            selectedCountries: null,
-            groups: [
-                {name: 'choir', code: 'NY'},
-                {name: 'Prayer', code: 'RM'},
-                {name: 'Thankgiving', code: 'LDN'},
-                {name: 'song', code: 'IST'},
-                {name: 'Giving', code: 'PRS'}
-            ],
-           
+
+        setup() {
+            const route = useRoute();
+            const groups = ref([]);
+            const selectedEvent = ref({ });
+            const events = ref([ ]);
+            const selectedGroups = ref([ ]);
+
+            if (route.query.activityID) {
+                events.value.push({ name: route.query.activityName, id: route.query.activityID })
+                selectedEvent.value = { name: route.query.activityName, id: route.query.activityID }
+            }
+
+            if (route.query.groupId) {
+                groups.value.push({ name: route.query.groupName, id: route.query.groupId })
+                selectedGroups.value.push({ name: route.query.groupName, id: route.query.groupId })
+            }
+
+            return {
+                groups,
+                selectedEvent,
+                events,
+                selectedGroups,
+            }
         }
-    },
+
+    //  data() {
+
+
+
+    //     return {
+    //         selectedCity1: null,
+    //         selectedCity2: null,
+    //         selectedCountry: null,
+    //         countries: [
+    //             // {name: 'workers meeting(12th Oct, 2020)'},
+    //             // {name: 'Sunday service (12th Oct, 2020)'},
+    //             // {name: 'Create New Event'},
+    //             {name: 'choir', code: 'NY', id: 1},
+    //             {name: 'Prayer', code: 'RM', id: 2},
+    //         ],
+    //         selectedGroup: [
+    //             {name: 'choir', code: 'NY', id: 1},
+    //             {name: 'Prayer', code: 'RM', id: 2},
+    //         ],
+    //         selectedCountries: null,
+    //         groups: [
+    //             {name: 'choir', code: 'NY', id: 1},
+    //             {name: 'Prayer', code: 'RM', id: 2},
+    //             {name: 'Thankgiving', code: 'LDN', id: 3},
+    //             {name: 'song', code: 'IST', id: 4},
+    //             {name: 'Giving', code: 'PRS', id: 5}
+    //         ],
+           
+    //     }
+    // },
         
     }
     
