@@ -8,7 +8,7 @@
               <span class="hidden-header hide font-weight-700">Name</span>
               <span
                 ><a
-                  >name</a
+                  >{{ person.name }}</a
                 ></span
               >
             </span>
@@ -18,19 +18,22 @@
               <span class="hidden-header hide font-weight-700"
                 >Phone Number</span
               >
-              <span>09887654434444</span>
+              <span>{{ person.phone }}</span>
             </span>
           </div>
           <div class="col-md-2" :class="{ 'order-1': isKioskMode }">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Check-in</span>
               <span>
-                <Checkbox
+                <!-- <Checkbox
                   id="binary"
-                  v-model="checkedIn"
+                  :value="person.isPresent"
                   @change="checkin"
                   :binary="true"
-                />
+                /> -->
+                <input type="checkbox" name="" class="custom-checkbox" :checked="person.isPresent" id=""
+                  @change="checkin($event, 1)"
+                >
               </span>
             </span>
           </div>
@@ -53,13 +56,13 @@
           <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Check-out</span>
-              <span
-                ><Checkbox
+              <span>
+                <!-- <Checkbox
                   id="binary"
-                  v-model="checkedOut"
-                  @change="checkout"
-                  :binary="true"
-              /></span>
+                  :value="person.isCheckedOut"
+                  :binary="true"/> -->
+                  <input type="checkbox" name="" class="custom-checkbox" id="" :checked="person.isCheckedOut" @change="checkin($event, 2)">
+                  </span>
             </span>
           </div>
         </div>
@@ -79,6 +82,7 @@
                 </div>
               </div>
             </Dialog>
+            <Toast />
           </div>
         </div>
       </div>
@@ -89,17 +93,45 @@
 <script>
 import { ref } from "vue";
 import MemberTag from "../../views/event/attendance&checkin/AttendanceTag";
+import attendanceservice from '../../services/attendance/attendanceservice';
+import { useToast } from 'primevue/usetoast';
+
 
 export default {
-  props: ["isKioskMode"],
+  props: [ "isKioskMode", "person" ],
   components: { MemberTag },
-  setup() {
+  setup(props, { emit }) {
     const checkedIn = ref(false);
     const checkedOut = ref(false);
     const display = ref(false);
+    const toast = useToast();
 
-    const checkin = () => {
-      console.log(checkedIn.value, "checked in");
+    const checkin = async (e, option) => {
+
+      console.log(e.target.checked, "checked in");
+      let response = { };
+      if (option === 1) {
+        response = await attendanceservice.checkin({ checkInAttendanceID: props.person.attendanceID, personAttendanceID: props.person.id })
+        if (!response) {
+          toast.add({severity:'error', summary:'Checkin Error', detail:'Checkin was not successful', life: 3000});
+          emit("togglecheckin", { value: props.person.isPresent, id: props.person.id })
+        } else {
+          emit("togglecheckin", { value: !props.person.isPresent, id: props.person.id })
+          toast.add({severity:`${e.target.checked ? 'success' : 'info'}`, summary:'Check Successful', detail:`Member marked ${e.target.checked ? "present" : "absent"}`, life: 3000});
+        }
+      } else {
+        response = await attendanceservice.checkout({ checkInAttendanceID: props.person.attendanceID, personAttendanceID: props.person.id })
+        if (!response) {
+          
+          toast.add({severity:'error', summary:'Checkin Error', detail:'Checkin was not successful', life: 3000});
+          emit("togglecheckout", { value: props.person.isCheckedOut, id: props.person.id })
+        } else {
+          emit("togglecheckout", { value: !props.person.isCheckedOut, id: props.person.id })
+          toast.add({severity:`${e.target.checked ? 'success' : 'info'}`, summary:'Checkin Successful', detail:`Member has ${e.target.checked ? "been checked out" : "not checked out"}`, life: 3000});
+        }
+      }
+      console.log(response, "rrr");
+      
     };
 
     const checkout = () => {
@@ -180,5 +212,15 @@ export default {
 
 .modal-lg {
   max-width: 600px;
+}
+
+.custom-checkbox {
+  border: 2px solid red !important;
+  background: #ffffff;
+  width: 20px;
+  height: 20px;
+  color: #495057;
+  border-radius: 3px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 </style>

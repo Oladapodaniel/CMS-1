@@ -1,47 +1,29 @@
 <template>
-  <div class="whole-con">
-    <div class="main-con">
-      <div class="main-body container-wide">
-        <!-- <div class="col-sm-12">
-          <div class="top mt-3">
-            <div class="events">
-              <div>Attendance & Checkin</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 px-0">
+        <Suspense>
+          <template #default>
+            <CheckinList />
+          </template>
+          <template #fallback>
+            <div class="row">
+              <div class="col-md-12 px-4">Loading...</div>
             </div>
-            <div class="actions">
-              <router-link :to="{ name: 'AddFirstTimer' }">
-                <button class="buttonn add-person-btn">
-                  Add New Attendance
-                </button>
-              </router-link>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- <hr class="hr" /> -->
-        <div class="no-person">
-          <div class="empty-img">
-            <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't Attendance yet</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="row" v-if="false">
-        <div class="col-md-12">
-          <List />
-        </div>
+          </template>
+        </Suspense>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import List from "../../../views/event/attendance&checkin/AttendanceAndCheckinList";
+import CheckinList from "./CheckinItems";
+
 export default {
-  components: { List },
-  setup() {
-    return {};
-  },
+  components: { CheckinList },
+
+  setup() {},
 };
 </script>
 

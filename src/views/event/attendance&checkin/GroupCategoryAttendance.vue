@@ -1,14 +1,6 @@
 <template>
     <div>
         <div class="container">
-            <!-- <div class="row  mb-4 mt-3">
-                <div class="col-md-7 col-lg-7 col-sm-12 mb-4">
-                    <h1 class="aten">Attendance & Checkin</h1>
-                </div>
-                 <div class="col-md-5 col-lg-3 col-sm-12 mb-4">
-                    <Button label="Add New Attendance" class="p-button-rounded" />
-                </div>
-            </div> -->
             <div class="row mt-4 border mx-sm-0 rounded sub-con">
                 <div class="col-md-12 col-sm-12 col-lg-12 mt-3 mb-5 border-bottom">
                     <h5 class="header5">Group Category Attendance</h5>
@@ -20,14 +12,14 @@
                                 <h5 class="event mt-3"> Event</h5>
                             </div>
                             <div class="col-md-10 col-sm-12">
-                                <Dropdown v-model="selectedEvent" :options="events"  style="width:100%" optionLabel="name" :filter="true">
+                                <Dropdown v-model="selectedEvent" :options="events"  style="width:100%" optionLabel="name" :filter="true" :disable="true">
                                 </Dropdown>
                             </div>
                             <div class="col-md-2 col-sm-12">
                                 <h5 class="event mt-4"> Group</h5>
                             </div>
                             <div class="col-md-10 mt-3 col-sm-12">
-                                <MultiSelect v-model="selectedGroups" :options="groups" style="width:100%" optionLabel="name" placeholder="" display="chip"/>
+                                <MultiSelect v-model="selectedGroups" :options="groups" style="width:100%" optionLabel="name" placeholder="" display="chip" :disable="true"/>
                             </div>
                         </div>
                     </div>
@@ -64,7 +56,7 @@
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" to="/tenant/attendancecheckin/mark">Marked Attendance</router-link></h4>
+                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" :to="{ name: 'MarkAttendance', query: { id: route.query.id }}">Marked Attendance</router-link></h4>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>
@@ -115,7 +107,7 @@
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" to="">QR</router-link> </h4>
+                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" to="/tenant/attendancecheckin/qr">QR</router-link> </h4>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>
@@ -181,6 +173,7 @@ import { ref } from 'vue';
                 selectedEvent,
                 events,
                 selectedGroups,
+                route,
             }
         }
 

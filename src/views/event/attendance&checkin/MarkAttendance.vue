@@ -7,14 +7,11 @@
       :modal="true"
       position="top"
     >
-      
       <div class="row">
-          <div class="col-md-12">
-              <NewMember />
-          </div>
+        <div class="col-md-12">
+          <NewMember @cancel="() => display = false"/>
+        </div>
       </div>
-      
-    
     </Dialog>
     <div class="row my-5" :class="{ 'd-none': isKioskMode }">
       <div class="col-md-12">
@@ -37,6 +34,7 @@
                 type="text"
                 class="search-control"
                 placeholder="Type name to filter list..."
+                v-model="searchText"
               />
             </p>
           </div>
@@ -70,70 +68,17 @@
           </div>
         </div>
 
-        <!-- <div class="row py-2 tb-row" :class="{ 'kiosk-tb-size': isKioskMode }">
-          <div class="col-md-5" :class="{ 'order-3': isKioskMode }">
-            <span class="d-flex justify-content-between">
-              <span class="hidden-header hide font-weight-700">Name</span>
-              <span><router-link to="/tenant/attendancecheckin/tag">name</router-link></span>
-            </span>
-          </div>
-          <div class="col-md-3" :class="{ 'order-4': isKioskMode }">
-            <span class="d-flex justify-content-between">
-              <span class="hidden-header hide font-weight-700"
-                >Phone Number</span
-              >
-              <span>09887654434444</span>
-            </span>
-          </div>
-          <div class="col-md-2" :class="{ 'order-1': isKioskMode }">
-            <span class="d-flex justify-content-between">
-              <span class="hidden-header hide font-weight-700">Check-in</span>
-              <span>
-                <Checkbox id="binary" :binary="true" />
-              </span>
-            </span>
-          </div>
-          <div
-            class="col-md-2 d-none"
-            :class="{ 'order-1 d-flex': isKioskMode }"
-          >
-            <span class="d-flex justify-content-between">
-              <span class="hidden-header hide font-weight-700">Picture</span>
-              <span
-                style="
-                  width: 35px;
-                  height: 35px;
-                  border: 1px solid;
-                  border-radius: 50%;
-                "
-              ></span>
-            </span>
-          </div>
-          <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
-            <span class="d-flex justify-content-between">
-              <span class="hidden-header hide font-weight-700">Check-out</span>
-              <span><Checkbox id="binary" :binary="true" /></span>
-            </span>
-          </div>
-        </div> -->
-
-        <div class="row py-2 tb-row" :class="{ 'kiosk-tb-size': isKioskMode }">
-          <DataRow :isKioskMode="isKioskMode"/>
-        </div>
-
-        <div class="row py-4">
-          <div class="col-md-12 text-center">
-            <p class="my-2">No records found</p>
-          </div>
-          <div class="col-md-12 d-flex justify-content-center mt-4">
-            <button
-              class="default-btn primary-bg border-0 text-white"
-              data-toggle="modal"
-              data-target="#exampleModal"
-            >
-              Add member
-            </button>
-          </div>
+        <div class="row pt-2" :class="{ 'kiosk-tb-size': isKioskMode }">
+              <Suspense>
+                <template #default>
+                    <TableData :isKiosk="isKioskMode" :searchText="searchText" />
+                </template>
+                <template #fallback>
+                    <div class="row">
+                      <div class="col-md-12">Loading...</div>
+                    </div>
+                </template>
+            </Suspense>
         </div>
 
         <!-- Modal -->
@@ -148,7 +93,9 @@
           <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Add Member</h5>
+                <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
+                  Add Member
+                </h5>
                 <button
                   type="button"
                   class="close"
@@ -165,29 +112,20 @@
                   </div>
                   <div class="col-md-7">
                     <div class="dropdown">
-                      <button
-                        class="default-btn w-100 text-left pr-1"
-                        type="button"
-                        style="
-                          border-radius: 4px;
-                          border: 1px solid #ced4da;
-                          color: #6c757d;
-                        "
+                      
+                      <input
+                        type="text"
+                        class="form-control"
                         id="dropdownMenuButton"
                         data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        Select member from the database
-                        <div
-                          class="pi pi-chevron-down manual-dd-icon float-right pr-1"
-                        ></div>
-                      </button>
+                        v-model="userSearchString"
+                        @input="searchForUsers"
+                      />
                       <div
                         class="dropdown-menu w-100"
                         aria-labelledby="dropdownMenuButton"
                       >
-                        <div class="row w-100 mx-auto">
+                        <div class="row w-100 mx-auto" v-if="false">
                           <div class="col-md-12">
                             <input
                               type="text"
@@ -200,37 +138,56 @@
                         <a
                           class="dropdown-item font-weight-700 small-text"
                           href="#"
-                          >Action</a
+                          v-for="(member, index) in searchedMembers"
+                          :key="index"
+                          @click="addExistingMember(member)"
+                          >{{ member.name }}</a
                         >
                         <a
                           class="dropdown-item font-weight-700 small-text"
                           href="#"
-                          >Another action</a
+                          v-if="
+                            searchingForMembers && searchedMembers.length === 0
+                          "
+                          ><i class="pi pi-spin pi-spinner"></i
+                        ></a>
+                        <p
+                          class="modal-promt pl-1 bg-secondary m-0"
+                          v-if="
+                            userSearchString.length < 3 &&
+                            searchedMembers.length === 0
+                          "
                         >
-                        <a
-                          class="dropdown-item font-weight-700 small-text"
-                          href="#"
-                          >Something else here</a
-                        >
+                          Enter 3 or moore characters
+                        </p>
                         <a
                           class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
                           style="border-top: 1px solid #002044; color: #136acd"
-                           @click="showAddMemberForm"
-                           data-dismiss="modal"
+                          @click="showAddMemberForm"
+                          data-dismiss="modal"
                         >
-                          <i class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center" style="color: #136acd"></i>
+                          <i
+                            class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
+                            style="color: #136acd"
+                          ></i>
                           Create new event
                         </a>
                       </div>
                     </div>
 
                     <div class="row mt-4">
-                        <div class="col-md-6 d-md-flex justify-content-end">
-                            <button class="default-btn">Cancel</button>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="default-btn primary-bg border-0 text-white" data-dismiss="modal">Save</button>
-                        </div>
+                      <div class="col-md-6 d-md-flex justify-content-end">
+                        <button class="default-btn" data-dismiss="modal">Cancel</button>
+                      </div>
+                      <div class="col-md-6">
+                        <button
+                          class="default-btn primary-bg border-0 text-white"
+                          data-dismiss="modal"
+                          @click="sendExistingUser"
+                        >
+                          Save
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -247,14 +204,18 @@
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import NewMember from "../../../views/event/attendance&checkin/NewMember";
-import DataRow from "../../../components/attendance/MarkAttendanceRow";
+import TableData from "../../../components/attendance/EventAttendanceList";
+import membershipService from "../../../services/membership/membershipservice";
+import attendanceservice from '../../../services/attendance/attendanceservice';
 
 export default {
-  components: { NewMember, DataRow },
+  components: { NewMember, TableData },
   setup() {
     const isKioskMode = ref(false);
     const route = useRoute();
     const display = ref(false);
+    const searchingForMembers = ref(false);
+    const searchText = ref("");
 
     const enterKioskMode = () => {
       isKioskMode.value = !isKioskMode.value;
@@ -266,8 +227,58 @@ export default {
     });
 
     const showAddMemberForm = () => {
-        display.value = true;
+      display.value = true;
     };
+
+    const searchedMembers = ref([]);
+
+    const userSearchString = ref("");
+    const searchForUsers = () => {
+      if (userSearchString.value.length >= 3) {
+        startSearch(userSearchString.value);
+      }
+    };
+
+    const startSearch = async (str) => {
+      try {
+        searchingForMembers.value = true;
+        const response = await membershipService.searchMembers(str);
+        searchingForMembers.value = false;
+        searchedMembers.value = response;
+      } catch (error) {
+        searchingForMembers.value = false;
+        console.log(error);
+      }
+    };
+    
+    const personData = ref({ });
+    const addExistingMember = (member) => {
+      userSearchString.value = member.name;
+      personData.value = {
+        person: {
+          personId: member.id
+        },
+        checkInChannel: 0,
+        checkInAttendanceID: route.query.id
+      }
+      console.log(personData);
+    }
+
+    const sendExistingUser = () => {
+      attendanceservice.checkin(personData);
+    }
+
+    // const getRegisteredPeople = async (id) => {
+    //   try {
+    //     const response = await attendanceservice.getReport(id);
+    //     console.log(response, "REPORT");
+    //     people.value = response.peopoleAttendancesDTOs;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+
+    // getRegisteredPeople(route.query.id);
 
     return {
       isKioskMode,
@@ -275,6 +286,14 @@ export default {
       kioskButtonText,
       display,
       showAddMemberForm,
+      searchForUsers,
+      userSearchString,
+      searchedMembers,
+      searchingForMembers,
+      searchText,
+      // member,
+      addExistingMember,
+      sendExistingUser,
     };
   },
 };
@@ -342,6 +361,6 @@ export default {
 }
 
 .modal-lg {
-    max-width: 600px;
+  max-width: 600px;
 }
 </style>

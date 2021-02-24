@@ -8,7 +8,7 @@
                             <h4 class="header4 text-md-right">Surname</h4>
                         </div>
                         <div class="col-md-7 px-0">
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" v-model="personDetails.lastName">
                             <!-- <InputText type="text" style="border-radius:8px" class="w-100 rounded" v-model="value" required /> -->
                         </div>
                 </div> 
@@ -19,7 +19,7 @@
                     <h4 class="header4 text-md-right">Firstname</h4>
                  </div>
                  <div class="col-md-7 px-0">
-                     <input type="text" class="form-control">
+                     <input type="text" class="form-control" v-model="personDetails.firstName">
                      <!-- <InputText type="text" class="w-100 rounded" v-model="value" required /> -->
                  </div>
             </div> 
@@ -30,7 +30,7 @@
                     <h4 class="header4 text-md-right">Phone number</h4>
                  </div>
                  <div class="col-md-7 px-0">
-                     <input type="text" class="form-control">
+                     <input type="text" class="form-control" v-model="personDetails.mobilePhone">
                      <!-- <InputText type="number" class="w-100 rounded" v-model="value" required /> -->
                  </div>
             </div> 
@@ -41,7 +41,7 @@
                     <h4 class="header4 text-md-right">Email</h4>
                  </div>
                  <div class="col-md-7 px-0">
-                     <input type="text" class="form-control">
+                     <input type="text" class="form-control"  v-model="personDetails.email">
                      <!-- <InputText type="email" class="w-100 rounded" v-model="value" required /> -->
                  </div>
             </div>
@@ -52,9 +52,8 @@
                     <h4 class="header4 text-md-right"></h4>
                  </div>
                  <div class="col-md-7 px-0 d-flex justify-content-center">
-                     <Button label="Cancel" class="p-button-outlined p-button-secondary mr-3 px-5 p-button-rounded" />
-                     <Button label="Save"  class="p-button-primary p-button-rounded px-5 mr-3 max" />
-                     
+                     <Button label="Cancel" class="p-button-outlined p-button-secondary mr-3 px-5 p-button-rounded" @click="onCancel" />
+                     <Button label="Save"  class="p-button-primary p-button-rounded px-5 mr-3 max" @click="savePerson" />
                  </div>
             </div>
              </div>
@@ -67,9 +66,35 @@
 <script>
 // import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'
+import { reactive } from 'vue'
+import attendanceservice from '../../../services/attendance/attendanceservice';
+import { useRoute } from "vue-router";
     export default {
-        components:{ Button}
-        
+        components:{ Button },
+
+        setup(props, { emit }) {
+            const route = useRoute();
+            const personDetails = reactive({ });
+
+            const savePerson = async () => {
+                emit("cancel");
+                try {
+                    console.log({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 }, "body");
+                    const response = await attendanceservice.checkin({ person: personDetails.value, checkInAttendanceID: route.query.id, checkInChannel: 0 });
+                    console.log(response, "create person");
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            const onCancel = () => emit("cancel")
+
+            return {
+                personDetails,
+                savePerson,
+                onCancel,
+            }
+        }
     }
 </script>
 
