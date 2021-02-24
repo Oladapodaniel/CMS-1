@@ -75,7 +75,7 @@
                 </template>
                 <template #fallback>
                     <div class="row">
-                      <div class="col-md-12">Loading...</div>
+                      <div class="col-md-12 pl-4">Loading...</div>
                     </div>
                 </template>
             </Suspense>
@@ -265,7 +265,7 @@ export default {
     }
 
     const sendExistingUser = () => {
-      attendanceservice.checkin(personData);
+      attendanceservice.checkin(personData.value);
     }
 
     // const getRegisteredPeople = async (id) => {

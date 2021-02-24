@@ -18,7 +18,7 @@
         </div> -->
 
         <!-- <hr class="hr" /> -->
-        <div class="no-person" v-if="items.length === 0">
+        <div class="no-person" v-if="items.length === 0 && !errorOccurred">
           <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't Attendance yet</p>
@@ -27,7 +27,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            <List :list="items" />
+            <List :list="items" :errorOcurred="errorOccurred" />
           </div>
         </div>
       </div>
@@ -47,6 +47,7 @@ export default {
   async setup() {
     const items = ref([ ]);
     const loading = ref(false);
+    const errorOccurred = ref(false);
 
     // const getAttendanceItems = async () => {
       try {
@@ -54,19 +55,20 @@ export default {
         const response = await attendanceservice.getItems();
         console.log(response, "checkins");
         items.value = items.value ? response : [ ];
-        // const response = await attendanceservice.getItems();
         loading.value = false;
-        // items.value = response;
       } catch (error) {
         console.log(error);
         loading.value = false;
+        errorOccurred.value = true;
       }
+      console.log(errorOccurred.value);
     // }
     // getAttendanceItems();
 
     return {
       items,
       loading,
+      errorOccurred,
     };
   },
 };

@@ -80,7 +80,7 @@ import { useRoute } from "vue-router";
                 emit("cancel");
                 try {
                     console.log({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 }, "body");
-                    const response = await attendanceservice.checkin({ person: personDetails.value, checkInAttendanceID: route.query.id, checkInChannel: 0 });
+                    const response = await attendanceservice.checkin({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 });
                     console.log(response, "create person");
                 } catch (error) {
                     console.log(error);

@@ -127,7 +127,7 @@ export default {
           emit("togglecheckout", { value: props.person.isCheckedOut, id: props.person.id })
         } else {
           emit("togglecheckout", { value: !props.person.isCheckedOut, id: props.person.id })
-          toast.add({severity:`${e.target.checked ? 'success' : 'info'}`, summary:'Checkin Successful', detail:`Member has ${e.target.checked ? "been checked out" : "not checked out"}`, life: 3000});
+          toast.add({severity:`${e.target.checked ? 'success' : 'info'}`, summary:'Checkin Successful', detail:`Member has ${e.target.checked ? "checked out" : "not checked out"}`, life: 3000});
         }
       }
       console.log(response, "rrr");

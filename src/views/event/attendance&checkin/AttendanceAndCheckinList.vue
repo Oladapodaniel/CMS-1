@@ -58,7 +58,7 @@
           ></i>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item elipsis-items"> <router-link class="text-decoration-none text-dark" :to="{ name: 'AttendanceReport', params: { id: item.id }}">View Details</router-link> </a>
-            <a class="dropdown-item elipsis-items"> <router-link class="text-decoration-none text-dark" :to="{ name: 'MarkAttendance', query: { id: item.id }}">Checkin</router-link>  </a>
+            <a class="dropdown-item elipsis-items"> <router-link class="text-decoration-none text-dark" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id } }">Checkin</router-link>  </a>
             <a
               class="dropdown-item elipsis-items"
               href="#"
@@ -66,6 +66,12 @@
               >Delete</a
             >
           </div>
+        </div>
+      </div>
+
+      <div class="row" v-if="errorOccurred">
+        <div class="col-md-12 text-center">
+          <p>Error getting items</p>
         </div>
       </div>
     </div>
@@ -78,9 +84,9 @@ import { ref } from "vue";
 import dateFormatter from '../../../services/dates/dateformatter';
 
 export default {
-  props: [ "list" ],
+  props: [ "list", "errorOccurred" ],
 
-  setup() {
+  setup(props) {
     const expose = ref(false);
 
     const toggleEllips = () => {
@@ -90,6 +96,7 @@ export default {
     const formatDate = (date) => {
       return dateFormatter.normalDate(date);
     }
+    console.log(props.errorOccurred, "error cooo");
 
     return {
       expose,
