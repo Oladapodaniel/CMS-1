@@ -7,7 +7,31 @@
           <div class="col-md-7">
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
-                <button class="default-btn">Preview</button>
+                <div class="dropdown">
+                <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <span><i class="fa fa-angle-down btn-icon"></i></span></button>
+                    <!-- <i
+                      class="fas fa-ellipsis-v"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    ></i> -->
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <a class="dropdown-item" href="#">Add Offering Category</a>
+                      <!-- <a class="dropdown-item" href="#">Assign to follow-up</a>
+                      <a class="dropdown-item">
+                        <router-link
+                          :to="`/tenant/sms/compose`"
+                          >Send SMS</router-link
+                        >
+                      </a>
+                      <a class="dropdown-item" href="#">Send Email</a>
+                      <a class="dropdown-item" href="#" >Delete</a> -->
+                    </div>
+                  </div>
                 <button
                   class="default-btn primary-bg border-0 ml-3"
                   @click="post"
@@ -27,10 +51,10 @@
         <div class="form">
         <!-- <div class="container"> -->
         <div class="row second-form first-row">
-          <div class="col-12 col-md-6 dropdown-container">
+          <div class="col-12 col-md-6">
               <!-- <button>Select Category</button> -->
               <div class="row nested-row d-flex align-items-end">
-              <div class=" col-2 col-md-3">
+              <div class=" col-2 col-md-2 text-right px-0">
                 <label for="date">Event</label>
               </div>
               <div class=" col-10 col-md-9">
@@ -38,7 +62,7 @@
                   @click.prevent="selectEventAttended"
                   class="form-control dd"
                 >
-                  {{ selectedEventAttended.name }}
+                  {{ selectedEventAttended.name ? selectedEventAttended.name.length > 20 ? `${selectedEventAttended.name.slice(0, 20)}...` : selectedEventAttended.name : "Select Event" }}
                   <!-- {{ newEvent.activity.date }}
                    -->
                 </button>
@@ -111,7 +135,7 @@
 
           <div class="col-12 col-md-6">
             <div class="row nested-row align-items-end">
-              <div class=" col-2 col-md-3">
+              <div class=" col-2 col-md-1 px-0">
                 <label for="date">Date</label>
               </div>
               <div class=" col-10 col-md-9">
@@ -148,7 +172,7 @@
                 aria-labelledby="eventModalLabel"
                 aria-hidden="true"
               >
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content py-2 px-2">
                     <div class="modal-header">
                       <h5
@@ -346,7 +370,6 @@
                 </div>
               </div>
 
-
        
         <div class="col-12 offset-sm-1 add">Contribution</div>
         <div class="attendance-header d-none d-lg-block">
@@ -354,11 +377,44 @@
             <div class="col-sm-3">Contribution Item</div>
             <div class="col-sm-2" >Channel</div>
             <div class="col-sm-3" >Amount</div>
-            <div class="col-sm-2 offset-sm-1" style="margin-left: 74px">Total</div>
+            <div class="col-sm-2 offset-sm-2" style="margin-left: 74px">Total</div>
           </div>
         </div>
+        <!-- <div class="attendance-body"> -->
+            <!-- <div v-for="(item, index) in remitance" :key="index" class="row">
+         
+            <div class="col-sm-3 col-12">
+            <Dropdown v-model="item.account" class="w-100 p-0" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+
+                  </Dropdown>
+            </div>
+
+            <div class="col-sm-5 col-12">
+              <div>
+                <input type="text" v-model="item.percentage" class="form-control textbox-height" placeholder="" />
+              </div>
+            </div> -->
+
+            <!-- <div class="col-sm-2 col-12 mt-4 mt-sm-0">
+              <button
+                v-on:click="addRemittance"
+                class="btn btnIcons btn-secondary"
+              >
+                <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
+                Add
+              </button>
+            </div> -->
+            <!-- <div class="col-sm-1 mt-1 align-self-center offset-sm-1" @click="deleteItem(index)">
+              <i class="pi pi-trash"></i>
+            </div>
+    
+          </div> -->
+        <!-- </div> -->
 
         <!-- Selected offerings -->
+        <div>{{ offeringItem }}</div>
+        <!-- <div>{{newOfferings}}</div>
+        <div>{{ currencyList }}</div> -->
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -367,18 +423,18 @@
         >
           <div class="row">
             <div class="col-12 col-sm-8 col-lg-3">
-              <select class="form-control" v-if="item.offeringTypeId && !routeParams">
+              <select class="form-control" v-if="item.financialContributionID && !routeParams">
                 <option
                   v-for="(newOffering, index) in newOfferings"
                   :key="index"
                   :value="newOffering.id"
-                  :selected="newOffering.id === item.offeringTypeId"
+                  :selected="newOffering.id === item.financialContributionID"
                 >
                   {{ newOffering.name }}
                 </option>
               </select>
             
-              <select class="form-control" v-else-if="item.offeringTypeId && routeParams" v-model="item.offeringTypeId" @change="updateOfferingId">
+              <select class="form-control" v-else-if="item.financialContributionID && routeParams" v-model="item.financialContributionID" @change="updateOfferingId">
                 <option
                   v-for="(newOffering, index) in newOfferings"
                   :key="index"
@@ -392,15 +448,15 @@
                 class="form-control"
                 name=""
                 id=""
-                v-else-if="!item.offeringTypeId"
+                v-else-if="!item.financialContributionID"
                 v-model="item.name"
                 placeholder="Enter Offering Item"
                 ref="offeringInput"
               />
             </div>
             <div class="col-3 col-sm-4 col-lg-2">
-              <select class="w-100 form-control" v-model="item.channel">
-                <!-- <option :value="select">Select</option> -->
+              <select class="w-100 form-control" v-model="item.paymentChannel">
+   
                 <option value="Cheque">Cheque</option>
                 <option value="Cash">Cash</option>
                 <option value="Cheque">Cheque</option>
@@ -408,30 +464,53 @@
                 <option value="Online">Online</option>
                 <option value="Bank Transfer">Bank Transfer</option>
                 <option value="USSD">USSD</option>
-                <!-- <option value="Text">Text</option> -->
+             
               </select>
             </div>
             
             <div class="col-3 col-sm-2 col-lg-1">
-              <!-- <select class="currency" v-model="item.currency">
-                <option v-for="currency in currencyList" :key="currency.id">{{ currency.name }}</option>
-              </select> -->
-              <!-- <div class="codeModal">
-                <div class="currency country-code form-control codeModal" @click="toggleCode"><div class="d-flex justify-content-between align-items-center"><span class="codeModal">{{ item.currency }}</span><i class="pi pi-angle-down"></i></div></div>
-            </div>
-
-                <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal ">
-                    <input class="codeInput input form-control codeModal" v-model="currencyText">
-                <div v-for="currency in filterCurrency" :key="currency.id" class="codeModal" >
-                    <div class="col-sm-3"><span style="display: inline-block;" @click="getCurrency">{{ currency.name }}</span>&nbsp;&nbsp;<span style="font-size: 0.8em">{{ currency.country }}</span></div>
+              
+                <div
+                class="currency pointer d-flex justify-content-around align-items-center close-modal"
+                @click="item.showCurrency = !item.showCurrency"
+                >
+                <span class="ofering close-modal">{{ currencyList ? currencyList.find(i => i.id == item.currencyID) ?  currencyList.find(i => i.id == item.currencyID).name : "NGN" : "" }}</span
+                ><span style="margin-top: 4px">
+                    <i
+                    class="pi pi-angle-down close-modal"
+                    aria-hidden="true"
+                    ></i
+                ></span>
                 </div>
-                <div v-if="filterCurrency.length == 0">No match found</div>
-                </div> -->
-                <Dropdown v-model="item.currency" :options="currencyList" :filter="true" class="currency p-0" placeholder="NGN" :showClear="false">
-                    
-                </Dropdown>
+                <div
+                  class="ofering close-modal"
+                  :class="{ 'style-account': item.showCurrency }"
+                  v-if="item.showCurrency"
+                  >
+                  <div class="p-2">
+                      <input
+                      type="text"
+                      placeholder="Search"
+                      class="form-control close-modal ofering mb-1"
+                      v-model="currencyText"
+                      
+                  />
+                  </div>
+                        <div class="header-border close-modal" v-if="filterCurrency.length > 0">
+                          <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
+                              <div class="d-flex justify-content-between p-1 close-modal">
+                                  <div class="close-modal offset-sm-1" @click="addCurrency(index, item)">{{ item.name }} - {{ item.country }}</div>      
+                              </div>                      
+                          </div>
+                        </div>
+                        <div class="header-border close-modal" v-else>
+                          <div class="p-3 text-center text-danger">No Match Found</div>
+                        </div>
+                  
+                  
+                  </div>
             </div>
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-3">
               <input
                 type="number"
                 class="form-control"
@@ -440,7 +519,7 @@
               />
             </div>
             <div
-              class="col-1 offset-lg-1 d-none d-lg-block"
+              class="col-1 d-none d-lg-block"
             >
               {{ item.amount }}
             </div>
@@ -453,9 +532,9 @@
 
           
 
-            <div v-if="item.giver == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Giver</div>
-            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.giver }}     <span class="donor-text">edit</span></div>
-            <!-- <div v-else>{{ item.addGiver }}</div> -->
+            <div v-if="item.donor == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Donor</div>
+            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.donor }}     <span class="donor-text">edit</span></div>
+   
                </div>
         </div>
 
@@ -483,9 +562,10 @@
           >
             {{ newOffering.name }}
           </div>
+           <!-- @click="offering(null)" -->
           <div
             v-if="filterOffering.length >= 1"
-            @click="offering(null)"
+           type="button" data-toggle="modal" data-target="#exampleModalCenter"
             class="create ofering pointer"
           >
             Create New Contribution Item
@@ -509,6 +589,245 @@
           Launch demo modal
         </button>
 
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="border: none">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Contribution</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm-4 text-right pr-0 align-self-center">
+                      <label>Name</label>
+                    </div>
+                  <div class="col-lg-5 col-sm-12 my-auto">
+                      <input type="text" class="form-control textbox-height"  placeholder="" v-model="name" required /> 
+                  </div>
+                  <div class="col-sm-4 mt-3 text-right pr-0 align-self-center">
+                      <label>Income Account</label>
+                  </div>
+                  <div class="col-lg-5 col-sm-12 mt-3">
+                      <Dropdown v-model="selectedIncomeAccount" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+                      </Dropdown>
+                  </div>
+                  <div class="col-sm-4 mt-3 text-right pr-0">
+                      <label>Cash Account</label>
+                    </div>
+                  <div class="col-lg-5 col-sm-12 mt-3">
+                    <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
+                    </Dropdown>
+                  </div>
+                  <div class="col-sm-12 d-flex" @click="toggleRem">
+                      <i class="check-it mr-2">
+                      <span class="child" v-if="applyRem"></span>
+                    </i>
+                    <h6>Apply Remitance</h6>
+                  </div>
+                  <div class="col-sm-12 mt-3" v-if="applyRem">
+                    <hr class="hr"/>
+                  </div>
+                </div>
+
+                <div v-if="applyRem">
+                  <div class="row" v-for="(item, index) in remitance" :key="index">
+                  <div class="col-sm-4 mt-5 text-right pr-0 align-self-center">
+                      <label>Income Account</label>
+                  </div>
+                  <div class="col-lg-5 col-sm-12 mt-5">
+                      <Dropdown v-model="item.account" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+                      </Dropdown>
+                  </div>
+
+                  <div class="col-sm-4 text-right pr-0 align-self-center mt-3">
+                      <label>Percentage %</label>
+                    </div>
+                  <div class="col-lg-5 col-sm-12 mt-3">
+                      <input type="text" class="form-control textbox-height"  placeholder="" v-model="item.percentage" required /> 
+                  </div>
+
+                  <div class="col-sm-2 col-12 adjust-down">
+                    <button
+                      v-on:click="addRemittance"
+                      class="btn btnIcons btn-secondary"
+                    >
+                      <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
+                      Add
+                    </button>
+                  </div>
+                  <div class="col-sm-1 adjust-down" @click="deleteItem(index)">
+                    <i class="pi pi-trash"></i>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+              <div class="modal-footer d-flex justify-content-center mt-4  ml-5" style="border: none">
+                <button type="button" class="btn secondary-btn px-5" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+               
+        <button class="add-person-btn button default-btn border-0" @click="createNewCon">
+          Save
+        </button>
+    
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" />
+          <Dialog header="Header" v-model:visible="displayModal" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" >
+              <p class="p-m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+              <template #footer>
+                  <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
+                  <Button label="Yes" icon="pi pi-check" @click="closeModal" autofocus />
+              </template>
+          </Dialog> -->
+
+<!-- 
+          <Dialog header="Add offering type" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '50vw'}">
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-4 text-right">
+                    <label for="" class="label">Name</label>
+                  </div>
+                <div class="col-lg-5 col-sm-12 my-auto">
+          
+                  
+                    <input
+                      type="text"
+                      class="form-control textbox-height"
+                      placeholder=""
+                      v-model="name"
+                      required
+                    /> -->
+
+
+                  
+                    <!-- <button class="form-control input transaction-button close-modal text-right" @click="toggleAccount">
+                          <i class="pi pi-angle-down arrow-icon close-modal" @click="toggleAccount"></i>
+                      </button> -->
+                        
+
+                  
+                    <!-- <button class="form-control input transaction-button close-modal text-right" @click="toggleAccount">
+                        <i class="pi pi-angle-down arrow-icon close-modal" @click="toggleAccount"></i>
+                    </button> -->
+                    
+          
+                <!-- </div>
+                <div class="col-sm-4 my-3 text-right">
+                    <label for="" class="label">Income Account</label>
+                </div>
+                <div class="col-lg-5 col-sm-12 my-3">
+                    <Dropdown v-model="selectedIncomeAccount" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+
+                        </Dropdown>
+                </div>
+                <div class="col-sm-4 my-3 text-right">
+                    <label for="" class="label">Cash Account</label>
+                  </div>
+                <div class="col-lg-5 col-sm-12 my-auto">
+          
+                  
+                    <Dropdown v-model="selectedCashAccount" :options=cashBankAccount optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
+                      
+                    </Dropdown>
+                  </div>
+                </div>
+              </div>
+              <template #footer>
+                  <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/>
+                  <Button label="Yes" icon="pi pi-check" @click="closeResponsive" autofocus />
+              </template>
+          </Dialog> -->
+          <!-- Giver Modal Button -->
+    <button
+    hidden
+      ref="modalTogglerGiver"
+      type="button"
+      id="modalTogglerGiver"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#exampleGiver"
+    >
+      Launch demo modal
+  </button>
+          <!-- Giver Modal -->
+      <div
+        class="modal fade"
+        id="exampleGiver"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header" style="border: none">
+              <div class="modal-title" id="exampleModalLabel">Add Donor</div>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- <div class="row">
+                <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">Name</div>
+                <div class="col-sm-7">
+                  <input type="text" v-model="donorText" class="form-control"/>
+                </div>
+              </div> -->
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-4 text-right pr-0 align-self-center">
+                      <label>Name <span class="text-danger">*</span></label>
+                    </div>
+                  <div class="col-lg-5 col-sm-12 my-auto">
+                      <input type="text" class="form-control textbox-height"  placeholder="" v-model="donorText" required /> 
+                  </div>
+                  <div class="col-sm-4 mt-3 text-right pr-0 align-self-center">
+                      <label>Phone Number</label>
+                  </div>
+                  <div class="col-lg-5 col-sm-12 my-auto">
+                      <input type="text" class="form-control textbox-height"  placeholder="" v-model="donorPhone" required /> 
+                  </div>
+                  <div class="col-sm-4 mt-3 text-right pr-0 align-self-center">
+                      <label>Email</label>
+                  </div>
+                  <div class="col-lg-5 col-sm-12 my-auto">
+                      <input type="text" class="form-control textbox-height"  placeholder="" v-model="donorEmail" required /> 
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer" style="border: none">
+              <button type="button" class="btn btn-second" data-dismiss="modal">
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="apply-btn"
+                id="closeEvent"
+                @click="addDonor"
+                ref="closeDonorModal"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
         <div class="col-sm-12 empty">
           <div class="row">
             <div class="col-sm-5 total-2 offset-sm-1">TOTAL</div>
@@ -519,7 +838,7 @@
                     
                 </Dropdown>
             </div>
-            <div class="col-sm-2 align-self-center offset-sm-1">
+            <div class="col-sm-2 align-self-center">
               {{ addOfferingTotal }}
             </div>
           </div>
@@ -571,7 +890,8 @@ export default {
         const selectedEventAttended = ref({});
         const selectEvent = ref("Select Event");
         const showCategory = ref(false);
-        const eventText = ref("")
+        const eventText = ref("");
+        const eventDate = ref("")
         const newEventCategoryName = ref("");
         const displayModal = ref(false);
         const invalidEventDetails = ref(false);
@@ -579,7 +899,24 @@ export default {
         const newOfferings = ref([]);
         const offeringText = ref("");
         const offeringItem = ref([]);
-        const offeringInput = ref("")
+        const offeringInput = ref("");
+        const currencyText = ref("");
+        const currencyList = ref([]);
+        const routeParams = ref("");
+        const remitance = ref([{}])
+        const incomeAccount = ref([])
+        const applyRem = ref(false)
+        const selectedIncomeAccount = ref("")
+        const name = ref("")
+        const selectedCashAccount = ref("")
+        const cashBankAccount = ref([])
+        const offeringToAddDonor = ref(0)
+        const donorBoolean = ref(false)
+        const modalTogglerGiver = ref("")
+        const donorText = ref("")
+        const closeDonorModal = ref("")
+        
+
 
         const addOffering = () => {
             offeringDrop.value.classList.toggle("offering-drop");
@@ -588,6 +925,7 @@ export default {
         const hideModals = (e) => {
             if (!e.target.classList.contains("ofering")) {
                 offeringDrop.value.classList.remove("offering-drop");
+
             }
             }
 
@@ -777,10 +1115,11 @@ export default {
             };
 
         const getOffering = () => {
-              axios.get("/api/offering").then((res) => {
-              newOfferings.value = res.data.map((i) => {
-                return { id: i.id, name: i.name };
-              });
+              axios.get("/api/financials/contributions/items").then((res) => {
+              newOfferings.value = res.data
+              //.map((i) => {
+              //   return { id: i.id, name: i.name };
+              // });
               console.log(res.data, "offerings on load");
             });
             }
@@ -800,27 +1139,217 @@ export default {
       if (offObj) {
             offeringItem.value.push({
               name: offObj.name,
-              offeringTypeId: offObj.id,
-              channel: offObj.channel == undefined || offObj.channel == "" || offObj.channel == null ? "Cash" : offObj.channel,
-              currency: offObj.currency == undefined || offObj.currency == "" || offObj.currency == null ? "NGN" : offObj.currency,
-              giver: ""
+              financialContributionID: offObj.id,
+              paymentChannel: offObj.paymentChannel == undefined || offObj.paymentChannel == "" || offObj.paymentChannel == null ? "Cash" : offObj.paymentChannel,
+              donor: "",
+              date: eventDate.value,
+              activityID: selectedEventAttended.value.activityID,
+              currencyID: 721
+              // currencyID: currencyList.value ? currencyList.value.find(i => i.name === "NGN") ? currencyList.value.find(i => i.name === "NGN") : "" : ""
             });
-          } else {
-            offeringItem.value.push({
-              currency: "NGN",
-              channel: "Cash"
-            });
+          } 
+          // else {
+          //   offeringItem.value.push({
+          //     currency: "NGN",
+          //     channel: "Cash"
+          //   });
+
             nextTick(() => {
-              offeringInput.value.focus();
+              // offeringInput.value.focus();
             });
-          }
-          offeringDrop.value.classList.toggle("offering-drop")
+
+          // }
+          // offeringDrop.value.classList.toggle("offering-drop")
+          
         }
+
+        const delOffering = (index) => {
+          offeringItem.value.splice(index, 1)
+        }
+
+        const getCurrenciesFromCountries = () => {
+      let url = "/api/getallcountries"
+      axios.get(url)
+        .then(res => {
+          currencyList.value = res.data.map(i => {
+              // return `${i.currency} ${i.name}`
+              return {
+              name: i.currency,
+              id: i.id,
+              country: i.name
+            }
+            
+          })
+        })
+        .catch(err => console.log(err))
+    }
+    getCurrenciesFromCountries()
+
+        const filterCurrency = computed(() => {
+          if (currencyText.value !== "" && currencyList.value.length > 0) {
+            return currencyList.value.filter((i) => {
+              if (i.name) return i.name.toLowerCase().includes(currencyText.value.toLowerCase()) || i.country.toLowerCase().includes(currencyText.value.toLowerCase())
+            })
+          } else {
+            return currencyList.value
+          }
+        })
+
+      const addOfferingTotal= computed(() => {
+        if (offeringItem.value.length <= 0) return 0;
+        if (offeringItem.value.length === 1) return offeringItem.value[0].amount;
+        const amounts = offeringItem.value.map((i) => +i.amount);
+        return amounts.reduce((a, b) => {
+          return (a || 0) + (b || 0);
+        });
+      })
+
+      const addRemittance = () => {
+        remitance.value.push({})
+      }
+
+      const deleteItem = (index) => {
+        remitance.value.splice(index, 1)
+      }
+
+      const getIncomeAccount = ()=> {
+          axios.get('/api/Financials/Accounts/GetIncomeAccounts')
+            .then(res => {
+                /*eslint no-undef: "warn"*/
+                NProgress.done();
+                console.log(res)
+              incomeAccount.value = res.data
+            })
+            .catch(err => {
+                NProgress.done();
+                console.log(err)
+            })
+        }
+        getIncomeAccount()
+
+
+        const getCashBankAccount = () => {
+            axios.get('/api/financials/accounts/getcashbankaccounts')
+              .then(res => {
+                console.log(res.data)
+                cashBankAccount.value = res.data
+              })
+              .catch (err => {
+                console.log(err)
+              })
+        }
+        getCashBankAccount()
+
+        const toggleRem = () => {
+          applyRem.value = !applyRem.value
+        }
+
+        const createNewCon = (e) => {
+          let contributionCategory = {
+            name: name.value,
+            // isPublic: true,
+            // incomeAccount: {
+                // id: selectedIncomeAccount.value.id,
+              //   name: selectedIncomeAccount.value.text,
+              //   accountType: incomeAccount.value.findIndex(i => i.id === selectedIncomeAccount.value.id),
+              //   code: selectedIncomeAccount.value.code,
+              //   isGroupAccount: selectedIncomeAccount.value.isGroupAccount,
+              //   financialFundID: selectedIncomeAccount.value.financialFundID
+              // },
+            incomeAccountId: selectedIncomeAccount.value.id,
+            // cashAccount: {
+                // id: selectedCashAccount.value.id,
+              //   name: selectedCashAccount.value.text,
+              //   accountType: cashBankAccount.value.findIndex(i => i.id === selectedCashAccount.value.id),
+              //   code: selectedCashAccount.value.code,
+              //   isGroupAccount: selectedCashAccount.value.isGroupAccount,
+              //   financialFundID: selectedCashAccount.value.financialFundID
+              // },
+            cashAccountId: selectedCashAccount.value.id,
+            
+          }
+              if (applyRem.value) {
+                contributionCategory.incomeRemittance = remitance.value
+              } else {
+                contributionCategory.incomeRemittance = null
+              }
+          console.log(contributionCategory)
+          axios.post('/api/financials/contributions/items/save', contributionCategory)
+                  .then(res => {
+                    offeringItem.value.push({
+                      name: name.value,
+                      paymentChannel: "Cash",
+                      financialContributionID: res.data.id,
+                      
+                      donor:  "",
+                      date: eventDate.value,
+                      activityID: selectedEventAttended.value.activityID
+                    })
+
+                    newOfferings.value.push({
+                      name: name.value
+                    })
+                    toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
+                    console.log(res)
+                    
+                  })
+                  .catch(err => {
+                    toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
+                    console.log(err)
+                  })
+                  e.target.setAttribute('data-dismiss', 'modal')
+        }
+
+        const post = () => {
+              // let financialContributionTrasaction = {
+              //   id: 123,
+              //   financialContributionID:123,
+              //   date: 123,
+              //   tenantID: 123,
+              //   activityID: 123,
+                
+              // }
+
+          axios.post('/api/Financials/Contributions/Transactions/Save', offeringItem)
+            .then(res => {
+              console.log(res)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+
+        const addCurrency = (index, item) => {
+        // console.log(e.target.innerHTML, index)
+        // offeringItem.value[index].currency = e.target.innerHTML.split(" ")[0]
+          // if (item.id) {
+                offeringItem.value[index].currencyID = item.id
+                offeringItem.value[index].showCurrency = false
+                console.log(item, index)
+          // } else {
+          //       offeringItem.value[index].currencyID = 721
+          // }
+
+      }
+       const addDonor = () => {
+            let donorName = donorText.value
+            offeringItem.value[offeringToAddDonor.value].donor = donorName
+            closeDonorModal.value.setAttribute("data-dismiss", "modal");
+            donorBoolean.value = true
+            donorText.value = ""
+            console.log(offeringItem)
+          }
+
+        const triggerGiverModal = (index) =>  {
+          offeringToAddDonor.value = index;
+          modalTogglerGiver.value.click()
+        }
+
         return {
             addOffering, offeringDrop, hideModals, selectEventAttended, showEventList, eventsAttended, filteredEvents, closeManualModalIfOpen, eventAttendedSelected,
-            newEvents, selectedEventAttended, eventsSearchString, selectEvent, individualEvent, newEvent, showCategory, filterEventCategory, eventText, createNewCat,
+            newEvents, selectedEventAttended, eventsSearchString, selectEvent, individualEvent, newEvent, showCategory, filterEventCategory, eventText, eventDate, createNewCat,
             newEventCategoryName, displayModal, openModal, closeModal, toast, createNewEvent, invalidEventDetails, savingNewEvent, newOfferings, filterOffering, offeringText,
-            offering, offeringItem, offeringInput
+            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, triggerGiverModal, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, closeDonorModal
     }
   }
 }
@@ -1050,12 +1579,91 @@ export default {
         }
 
         .currency {
-          width: 163%;
-          height: 94%;
+          width: 120%;
+          height: 100%;
           font-size: 0.8em;
           background: rgba(207, 207, 207, 0.651);
           border: none;
           outline: none;
           /* margin-top: -4px; */
         }
+
+        .more-btn {
+          background: #dde2e6;
+        }
+
+        .style-account {
+          box-shadow: 0px 3px 15px #797e8159;
+          position: absolute;
+          background: white;
+          z-index: 1;
+          width: 382%;
+          max-height: 16em;
+          overflow-y: auto;
+          }
+          .style-account div div:hover {
+          background-color: #ecf0f3;
+          cursor: pointer;
+          }
+
+          .btnIcons {
+        width: 110px;
+        height: 41px;
+        color: #136acd;
+        background-color: #dde2e6;
+        border-radius: 40px;
+        border: none;
+      }
+
+      .textbox-height {
+        height: 41px;
+        margin-top: -4px;
+      }
+        
+        .check-it {
+          border: 2px solid #136acd;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          margin-top: -1px;
+        }
+
+        .check-it .child {
+          /* border: 2px solid red; */
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: #136acd;
+          position: relative;
+          left: 3px;
+          top: -4px;
+        }
+
+        .hr {
+          border: 0.8px solid #0020440a;
+          /* margin: 0 45px; */
+        }
+
+        .adjust-down {
+            align-self: flex-end;
+        }
+
+        .add-person-btn {
+          background: #136acd;
+          color: #fff;
+        }
+
+        .donor-text {
+        height: 28px;
+        color: #136acd;
+        cursor: pointer;
+        font-weight: 600px;
+        font-size: 0.9em;
+      }
+      .donor-text-name {
+        color: black;
+        text-decoration:none;
+        font-weight: 700;
+      }
 </style>

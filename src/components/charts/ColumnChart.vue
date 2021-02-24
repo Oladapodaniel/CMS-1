@@ -83,21 +83,21 @@ export default {
           {
             name: "Church Attendance Data",
             color: "#136ACD",
-            data: props.data.data
+            // data: props.data.data
             // data: props.data ? props.data.data : props.data
             // data: [127, 335, 400, 345, 307, 0, 0]
-            // [2, 6, 3, 1, 1, 6],
-          }
-          // {
-          //   name: "Female",
-          //   color: "#136ACD","#EBEFF4"
-          //   data: [1, 4, 1, 6, 5, 4],
-          // },
-          // {
-          //   name: "Others",
-          //   color: "#002044",
-          //   data: [5, 2, 5, 4, 6, 2],
-          // },
+               data: [2, 6, 3, 1, 1, 6],
+          },
+          {
+            name: "Female",
+            color: "#EBEFF4",
+            data: [1, 4, 1, 6, 5, 4],
+          },
+          {
+            name: "Others",
+            color: "#002044",
+            data: [5, 2, 5, 4, 6, 2],
+          },
         ],
         //   credits: false,
       };
