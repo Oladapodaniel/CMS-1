@@ -1021,6 +1021,3 @@ a {
   border-radius: 0px 0px 22px 22px;
 }
 </style>
-
-
-

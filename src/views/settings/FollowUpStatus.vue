@@ -6,8 +6,6 @@
           <h2 class="mt-5 mb-5">Follow Up Status</h2>
         </div>
       </div>
-      
-
       <div class="row grey-rounded-border pt-1 pb-5">
         <div class="col-md-12">
           <div class="row">
@@ -139,17 +137,6 @@ export default {
 
 
   methods: {
-      //practice
-      reverseMessage(){
-          this.message = this.message
-          .split('')
-          .reverse()
-          .join('')
-
-
-
-      },
-      //practice
     async getClassifications() {
       try {
         const { data } = await axios.get("");
@@ -171,13 +158,6 @@ export default {
 
   created() {
     // this.getClassifications();
-  },
-  mounted() {
-       //pratice
-     setInterval(()=>{
-         this.counter++
-     },1000)
-      //pratice
   },
 };
 </script>

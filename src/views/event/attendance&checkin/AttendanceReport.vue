@@ -5,36 +5,36 @@
         <div class="col-md-3">
             <h6 class="font-weight-bold">Status</h6>
             <p><span class="small-text status-p font-weight-700">
-                Ended
+                {{ reportData.status }}
             </span></p>
         </div>
         <div class="col-md-7">
             <h6 class="font-weight-bold">Event</h6>
-            <p class="small-text font-weight-bold d-flex align-items-center" style="color: #136ACD;">Grace and Power <i class="pi pi-info-circle ml-2"></i></p>
+            <p class="small-text font-weight-bold d-flex align-items-center" style="color: #136ACD;">{{ reportData.eventName }} <i class="pi pi-info-circle ml-2"></i></p>
         </div>
         <div class="col-md-2">
             <h6 class="font-weight-bold">Date</h6>
-            <p class="small-text">Absentees</p>
+            <p class="small-text">{{ formatDate(reportData.eventDate) }}</p>
         </div>
     </div>
 
     <div class="row mt-3 mb-4 stats-box d-flex align-items-center">
         <div class="col-md-3">
-            <h2 class="font-weight-600">1234</h2>
+            <h2 class="font-weight-600">{{ totalAttendance }}</h2>
             <p class="small-text font-weight-700" style="color: #136ACD;">
                 People registered for the event
             </p>
         </div>
         <div class="col-md-3">
-            <h2 class="font-weight-700">1234</h2>
+            <h2 class="font-weight-700">{{ attendees }}</h2>
             <p class="small-text font-weight-700" style="color: #136ACD;">Attendees</p>
         </div>
         <div class="col-md-2">
-            <h2>1234</h2>
+            <h2>{{ absentees}}</h2>
             <p class="small-text font-weight-700" style="color: #136ACD;">Absentees</p>
         </div>
         <div class="col-md-4">
-           <ReportChart domId="reportChart" title="" height="180" :summary="data" />
+           <ReportChart domId="reportChart" title="" height="180" :summary="chartData" />
         </div>
     </div>
 
@@ -61,17 +61,17 @@
           <div class="col-md-2">Check-in</div>
         </div>
 
-        <div class="row py-2 tb-row small-text">
+        <div class="row py-2 tb-row small-text" v-for="(person, index) in reportData.peopoleAttendancesDTOs" :key="index">
           <div class="col-md-4">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Name</span>
-              <span>name</span>
+              <span>{{ person.name }}</span>
             </span>
           </div>
           <div class="col-md-4">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Address</span>
-              <span>address</span>
+              <span>{{ person.address }}</span>
             </span>
           </div>
           <div class="col-md-2">
@@ -79,14 +79,14 @@
               <span class="hidden-header hide font-weight-700"
                 >Phone Number</span
               >
-              <span>09887654434444</span>
+              <span>{{ person.phone }}</span>
             </span>
           </div>
           <div class="col-md-2">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Check-in Option</span>
               <span>
-                QR
+                {{ person.checkedinOption }}
               </span>
             </span>
           </div>
@@ -97,30 +97,88 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
-import ReportChart from "../../../components/charts/SecondReportPie"
+import { computed, onMounted, ref } from 'vue';
+import ReportChart from "../../../components/charts/SecondReportPie";
+import attendanceservice from '../../../services/attendance/attendanceservice';
+import { useRoute } from "vue-router";
+import dateFormatter from '../../../services/dates/dateformatter';
 
 export default {
     components: { ReportChart, },
 
     setup() {
+        const route = useRoute();
         const data = ref([]);
 
-        onMounted(() => {
-            data.value = [
+        const reportData = ref({ });
+
+        const getReportData = async () => {
+          try {
+            const response = await attendanceservice.getReport(route.params.id);
+            console.log(response, "REPORT");
+            reportData.value = response;
+          } catch (error) {
+            console.log(error);
+          }
+        }
+
+        const formatDate = (date) => {
+          return dateFormatter.normalDate(date);
+        }
+
+        const absentees = computed(() => {
+          if (reportData.value.status && reportData.value.status.toLowerCase() !== "ended") return 0;
+          if (!reportData.value || !reportData.value.peopoleAttendancesDTOs || reportData.value.peopoleAttendancesDTOs.length === 0) return 0;
+          return reportData.value.peopoleAttendancesDTOs.filter(i => !i.isPresent).length;
+        })
+
+        const attendees = computed(() => {
+          if (reportData.value.status && reportData.value.status.toLowerCase() !== "ended") return 0;
+          if (!reportData.value || !reportData.value.peopoleAttendancesDTOs || reportData.value.peopoleAttendancesDTOs.length === 0) return 0;
+          return reportData.value.peopoleAttendancesDTOs.filter(i => i.isPresent).length;
+        })
+
+        const totalAttendance = computed(() => {
+          if (!reportData.value || !reportData.value.peopoleAttendancesDTOs || reportData.value.peopoleAttendancesDTOs.length === 0) return 0;
+          return reportData.value.peopoleAttendancesDTOs.length;
+        })
+
+        const chartData = computed(() => {
+          return [
               {
                 name: "Present",
-                y: 50,
+                y: Math.floor(( attendees.value / totalAttendance.value ) * 100),
               },
               {
                 name: "Absent",
-                y: 50,
+                y: Math.floor(( absentees.value / totalAttendance.value ) * 100),
               },
             ]
         })
 
+        getReportData();
+
+        onMounted(() => {
+            // data.value = [
+            //   {
+            //     name: "Present",
+            //     y: Math.floor(( attendees.value / totalAttendance.value ) * 100),
+            //   },
+            //   {
+            //     name: "Absent",
+            //     y: Math.floor(( absentees.value / totalAttendance.value ) * 100),
+            //   },
+            // ]
+        })
+
         return {
             data,
+            reportData,
+            formatDate,
+            totalAttendance,
+            absentees,
+            attendees,
+            chartData,
         }
     }
 };

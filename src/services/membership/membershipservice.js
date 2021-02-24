@@ -21,6 +21,24 @@ const membershipService = {
         })
     },
 
+    searchMembers(searchString) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/membership/getsearchedusers?searchText=${searchString}`)
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
     getFirstTimers() {
         return new Promise((resolve, reject) => {
             axios.get("/api/People/FirstTimer")
