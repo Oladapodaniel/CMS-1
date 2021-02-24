@@ -51,7 +51,9 @@ export default {
     // const getAttendanceItems = async () => {
       try {
         loading.value = true;
-        items.value = await attendanceservice.getItems();
+        const response = await attendanceservice.getItems();
+        console.log(response, "checkins");
+        items.value = items.value ? response : [ ];
         // const response = await attendanceservice.getItems();
         loading.value = false;
         // items.value = response;
