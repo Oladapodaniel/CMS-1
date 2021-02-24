@@ -208,6 +208,12 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceAndCheckinList')
     },
     {
+        path: 'markinattendance/e/:code',
+        name: 'MarkinAttendance',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/MarkinAttendance')
+    },
+    {
         path: 'attendancetag',
         name: 'AttendanceTag',
         component: () =>
