@@ -326,8 +326,19 @@ export default {
     };
     getDateAndEvent();
 
+    //email, name and address masking is
+    const maskEmail = function (number) {
+      const str = number + "";
+      const last = str.slice(-4);
+      return last.padStart(str.length, "*");
+    };
+
     //not me button
     const notMe = () => {};
+
+    console.log(maskEmail("Ajose Tosin"));
+    console.log(maskEmail("tosinajose@gmail.com"));
+    console.log(maskEmail("1 imam dauda Lagos State"));
 
     return {
       toggleBase,
@@ -351,6 +362,7 @@ export default {
       notMe,
       dateFormatter,
       checkedIn,
+      maskEmail,
     };
   },
 };
