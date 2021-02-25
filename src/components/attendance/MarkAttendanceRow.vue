@@ -117,17 +117,27 @@ export default {
           emit("togglecheckin", { value: props.person.isPresent, id: props.person.id })
         } else {
           emit("togglecheckin", { value: !props.person.isPresent, id: props.person.id })
-          toast.add({severity:`${e.target.checked ? 'success' : 'info'}`, summary:'Check Successful', detail:`Member marked ${e.target.checked ? "present" : "absent"}`, life: 3000});
+          toast.add({severity:`${e.target.checked ? 'success' : 'info'}`, summary:`${e.target.checked ? 'Checked' : "Unchecked"} Successfully`, detail:`Member marked ${e.target.checked ? "present" : "absent"}`, life: 3000});
         }
       } else {
         response = await attendanceservice.checkout({ checkInAttendanceID: props.person.attendanceID, personAttendanceID: props.person.id })
+          
         if (!response) {
+          console.log(response, "RESPONSE");
           
           toast.add({severity:'error', summary:'Checkin Error', detail:'Checkin was not successful', life: 3000});
           emit("togglecheckout", { value: props.person.isCheckedOut, id: props.person.id })
         } else {
-          emit("togglecheckout", { value: !props.person.isCheckedOut, id: props.person.id })
-          toast.add({severity:`${e.target.checked ? 'success' : 'info'}`, summary:'Checkin Successful', detail:`Member has ${e.target.checked ? "checked out" : "not checked out"}`, life: 3000});
+          if (response.trim() === "User Was Not Checked In Earlier") {
+            console.log(response, "RESPE");
+            toast.add({severity:'info', summary:'Checkin Error', detail:response, life: 3000})
+
+            emit("togglecheckout", { value: false, id: props.person.id })
+          } else {
+            emit("togglecheckout", { value: !props.person.isCheckedOut, id: props.person.id })
+            toast.add({severity:`${e.target.checked ? 'success' : 'info'}`, summary:'Checkin Successful', detail:`Member has ${e.target.checked ? "checked out" : "not checked out"}`, life: 3000});
+          }
+          
         }
       }
       console.log(response, "rrr");

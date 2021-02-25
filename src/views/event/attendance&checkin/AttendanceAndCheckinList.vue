@@ -27,7 +27,7 @@
       <!-- <hr class="mt-n4" /> -->
       <!-- table body starts here -->
 
-      <div class="row font-weight-700 justify-content-between small-text tr-border-bottom" v-for="(item, index) in list" :key="index">
+      <div class="row font-weight-700 justify-content-between small-text tr-border-bottom mx-1" v-for="(item, index) in list" :key="index">
          <div class="col-md-3">
           <p class="d-flex justify-content-between mb-0">
             <span class="d-flex d-md-none tattendance2">Date Created</span>

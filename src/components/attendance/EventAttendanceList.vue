@@ -49,13 +49,23 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 if (userIndex >= 0) {
                     people.value[userIndex].isPresent = data.value;
                 }
+                
             }
 
             const toggleCheckout = data => {
                 const userIndex = people.value.findIndex(i => i.id === data.id);
                 if (userIndex >= 0) {
-                    people.value[userIndex].ischeckedOut = data.value;
+                    people.value[userIndex].isCheckedOut = data.value;
                 }
+                attendanceservice.getReport(route.query.id)
+                    .then(res => {
+                        people.value = res.peopoleAttendancesDTOs;
+                        console.log(res);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                
             }
 
             return {

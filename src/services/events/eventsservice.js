@@ -17,6 +17,24 @@ const eventsService = {
                     }
                 })
         })
+    },
+
+    createNewEventCategory() {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/EventCategory?name=${theText}`)
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
     }
 }
 
