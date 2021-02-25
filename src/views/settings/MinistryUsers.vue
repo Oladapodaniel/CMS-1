@@ -2,13 +2,13 @@
   <div>
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
-        <div class="col-md-8">
+        <div class="col-md-8 col-lg-7">
           <h2>Grace Ministry Settings</h2>
         </div>
-        <div class="col-md-4 mt-2 link">
+        <div class="col-md-4 col-md-5 mt-2 link">
           <router-link
-            to="/tenant/createpeoplegroup"
-            class="grey-border primary-btn"
+            to="/tenant/settings/invitenewuser"
+            class="grey-border primary-bg border-0 text-white addnew default-btn"
             >Add New User</router-link
           >
         </div>
@@ -124,6 +124,12 @@ export default {};
 
 .hidden-header {
   display: none;
+}
+.addnew{
+  text-decoration: none!important;
+}
+.addnew:hover{
+color: white!important;
 }
 
 @media screen and (max-width: 1280px) {
