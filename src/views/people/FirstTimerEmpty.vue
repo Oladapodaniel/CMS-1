@@ -7,7 +7,7 @@
       <div class="main-body">
        
         
-        <div class="col-sm-12">
+        <!-- <div class="col-sm-12"> -->
         <div class="top container-wide mt-3">
           <div class="header">
             <div class="events">First Timers
@@ -25,8 +25,8 @@
               </router-link>
           </div>
         </div>
-      </div>
-        <hr class="hr" />
+      <!-- </div> -->
+        <hr class="hr container-wide" />
          <div v-if="firstTimersList.length === 0 && !loading" class="no-person" >
         <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
@@ -37,7 +37,7 @@
             <FirstTimersList />
         </div>
 
-        <div class="row" v-if="loading">
+        <div class="row container-wide" v-if="loading">
     <div class="col-md-12">
       <div class="row my-2 d-md-flex justify-content-between">
         <div class="col-md-4">
@@ -218,7 +218,7 @@ export default {
 
 .hr {
   border: 0.8px solid #0020440a;
-  margin: 0 4px;
+  margin: 0 45px;
 }
 
 @media(max-width: 566px) {

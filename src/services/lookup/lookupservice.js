@@ -25,7 +25,6 @@ const lookupService = {
                 .then((res) => {
                     store.dispatch("lookups/setPeopleClassifcations", res.data);
                     resolve(res.data)
-                    console.log(res.data, "classes");
                 })
                 .catch((err) => {
                     reject(err)
@@ -38,7 +37,6 @@ const lookupService = {
     getUserSource() {
         return new Promise((resolve, reject) => {
             axios.get("/api/membership/howyouheardaboutus").then((res) => {
-                // console.log(res.data, 'about us')
                 const howDidYouAboutUs = res.data.map((i) => {
                     return { name: i.name, id: i.id };
                 });
@@ -60,7 +58,6 @@ const lookupService = {
             axios
                 .get("/api/LookUp/GetAllLookUps")
                 .then((res) => {
-                    console.log(res, "lookups");
                     const genders = res.data.find(
                         (i) => i.type.toLowerCase() === "gender"
                     ).lookUps;
@@ -80,7 +77,6 @@ const lookupService = {
         return new Promise((resolve, reject) => {
             axios.get("/api/Settings/GetTenantAgeGroups").then((res) => {
                     resolve(res.data);
-                    console.log(ageGroups.value, "age groups");
                     store.dispatch("lookups/setAgeGroups", res.data);
                 }).catch((err) => {
                     console.log(err.response)

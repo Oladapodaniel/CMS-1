@@ -21,7 +21,7 @@
     <!--end top Address -->
 
     <!-- top area -->
-    <div class="row" v-if="!applyBase && !checkedIn">
+    <div class="row">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       >
@@ -43,7 +43,7 @@
     </div>
     <!-- end of top area -->
     <!-- name area -->
-    <div class="row mt-3" v-if="!applyBase && !checkedIn">
+    <div class="row mt-3">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       >
@@ -64,11 +64,11 @@
     <!--end name area -->
 
     <!-- tosin -->
-    <div class="row" v-if="!applyBase && !checkedIn">
+    <div class="row">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       ></div>
-      <div class="col-md-5 mt-2 pl-0" @click="toggleBase">
+      <div class="col-md-5 mt-2 pl-0">
         <i
           class="pi pi-spin pi-spinner"
           style="fontsize: 2rem"
@@ -90,10 +90,10 @@
     <!-- tosin -->
 
     <!--start of top area button -->
-    <div class="row mb-4" v-if="!applyBase && !checkedIn">
+    <div class="row mb-4">
       <div class="col-md-3 text-md-right"></div>
       <div class="col-md-5 mt-4 text-center col-sm-2" @click="toggleBase">
-        <button class="default-btn add-btn">
+        <button class="default-btn add-btn" @click="populateInputfields">
           <!-- <i class="fas fa-circle-notch fa-spin" v-if="loading"></i> -->
           Submit
         </button>
@@ -118,7 +118,7 @@
                 type="text"
                 aria-required=""
                 v-model="person.name"
-                @keydown="disableEdit"
+                :disabled="disabled"
               />
             </span>
           </div>
@@ -138,7 +138,7 @@
                 type="text"
                 aria-required=""
                 v-model="person.email"
-                @keydown="disableEdit"
+                :disabled="person.personId"
               />
             </span>
           </div>
@@ -158,7 +158,7 @@
                 type="text"
                 aria-required=""
                 v-model="person.address"
-                @keydown="disableEdit"
+                :disabled="person.personId"
               />
             </span>
           </div>
@@ -175,7 +175,13 @@
         <button class="default-btn" @click="notMe">Not Me</button>
       </div>
       <div class="col-md-4 mt-4 text-md-left col-6">
-        <button class="default-btn add-btn" @click="confirm">Confirm</button>
+        <button
+          class="default-btn add-btn"
+          @click="confirmCheck"
+          :disabled="!person.name || person.name.length < 1"
+        >
+          Confirm
+        </button>
       </div>
     </div>
     <!--end of button area -->
@@ -212,7 +218,7 @@
 
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 // import router from "../../router/index";
 import InputText from "primevue/inputtext";
@@ -242,7 +248,9 @@ export default {
         autosearch.value = true;
         axios
           .get(
-            `/api/CheckInAttendance/SearchMemberByPhone?searchText=${e.target.value}`
+            `/api/CheckInAttendance/SearchMemberByPhone?searchText=${
+              e.target.value
+            }&&attendanceCode=${+route.params.code}`
           )
           .then((res) => {
             loading.value = false;
@@ -264,8 +272,14 @@ export default {
     // populate input fields
     const populateInputfields = (obj) => {
       person.value = obj;
+      // toggleBase();
       console.log(person);
     };
+
+    const disabled = computed(() => {
+      if (person.value.name) return true;
+      return false;
+    });
 
     // function to disable edit
     const disableEdit = (e) => {
@@ -276,9 +290,7 @@ export default {
     // confirm status
     const confirm = () => {
       const newPerson = {
-        person: {
-          personId: person.value.personId,
-        },
+        person: person.value,
       };
       console.log(person.value);
       console.log(newPerson);
@@ -299,6 +311,11 @@ export default {
           autosearch.value = false;
           console.log(err, "ajose");
         });
+    };
+
+    // confirm button check
+    const confirmCheck = () => {
+      confirm();
     };
 
     // function to clear input
@@ -326,19 +343,8 @@ export default {
     };
     getDateAndEvent();
 
-    //email, name and address masking is
-    const maskEmail = function (number) {
-      const str = number + "";
-      const last = str.slice(-4);
-      return last.padStart(str.length, "*");
-    };
-
     //not me button
-    const notMe = () => {};
-
-    console.log(maskEmail("Ajose Tosin"));
-    console.log(maskEmail("tosinajose@gmail.com"));
-    console.log(maskEmail("1 imam dauda Lagos State"));
+    // const notMe = () => {};
 
     return {
       toggleBase,
@@ -359,10 +365,13 @@ export default {
       getDateAndEvent,
       route,
       eventData,
-      notMe,
       dateFormatter,
       checkedIn,
-      maskEmail,
+      confirmCheck,
+      disabled,
+      // notMe,
+      // submit,
+      // maskEmail,
     };
   },
 };

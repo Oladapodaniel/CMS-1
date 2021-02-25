@@ -21,6 +21,24 @@ const membershipService = {
         })
     },
 
+    searchMembers(searchString) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/membership/getsearchedusers?searchText=${searchString}`)
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
     getFirstTimers() {
         return new Promise((resolve, reject) => {
             axios.get("/api/People/FirstTimer")
@@ -41,12 +59,29 @@ const membershipService = {
     },
 
     deletePeople(data) {
-        console.log(data, "DATA");
         return new Promise((resolve, reject) => {
             axios.delete("/api/People/DeletePeoples", data)
                 .then(res => {
                     resolve(res.data);
                     // store.dispatch("setFirstTimers", res.data);
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
+    addMemberToGroup(data, groupId) {
+        return new Promise((resolve, reject) => {
+            axios.put(`/api/AssignPeopleToGroup/${groupId}`, data)
+                .then(res => {
+                    resolve(res.data);
                 })
                 .catch(error => {
                      /*eslint no-undef: "warn"*/

@@ -13,6 +13,23 @@ const grousService = {
         }
     },
 
+    getGroupById(groupId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/GetGroupsFromId/${groupId}`)
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    stopProgressBar();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
     async removeFromGroup(id, body) {
         try {
             const { data } = await axios.put(`/api/RemovePeopleFromGroup/${id}`, body);

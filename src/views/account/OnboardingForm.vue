@@ -17,7 +17,7 @@
             </div>
 
             <form style="width: 100%" @submit.prevent="next">
-              <div class="input-div">
+              <!-- <div class="input-div">
                 <label class="mb-0">What's your name?</label>
                 <div class="name-input">
                   <input
@@ -35,39 +35,7 @@
                     required
                   />
                 </div>
-              </div>
-
-              <div class="input-div">
-                <label class="mb-0">What's your phone number?</label>
-                <div class="phone-input">
-                  
-                  <div style="width: 200px; margin-top:4px;" class="codeModal">
-                    <div class="country-code form-control codeModal" @click="toggleCode"><div style="margin-top: -14px;" class="codeModal"><span class="codeModal"><img :src="selectedCountry.flagUrl" class="codeModal" style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span><span style="display: inline-block" class="codeModal">{{ selectedCountry.phoneCode }}</span></div></div>
-                    <!-- <div ><img :src="country.flagUrl" width="20px"></div> -->
-                    <!-- <Dropdown
-                      v-model="selectedCountry"
-                      :options="countryCodes"
-                      optionLabel="phoneCode"
-                      placeholder="Zip code"
-                      style="width: 100%;max-height:40px"
-                      :filter="true"
-                    /> -->
-                  
-                    
-                    <!-- <img src=> -->
-                    <!-- <Dropdown :options="countryCodes" optionLabel="phoneCode" placeholder="Zip code" v-model="zipCode" style="width:100%;max-height:40px" /> -->
-                    <!-- <SelectElem :typ="'code'" name="code" :options="countryCodes" value="-Select size range" @input="itemSelected"/> -->
-                  </div>
-
-                  <input
-                    v-model.trim="userDetails.phoneNumber"
-                    type="text"
-                    class="input phone-num"
-                    placeholder="Phone number"
-                    required
-                  />
-                </div>
-              </div>
+              </div> -->
 
               <div class="input-div">
                 <label class="mb-0">What's the name of your ministry?</label>
@@ -79,6 +47,42 @@
                   required
                 />
               </div>
+              
+              <div class="input-div">
+                <label class="mb-0">What's your phone number?</label>
+                <div class="phone-input">
+                  
+                  <div style="width: 200px; margin-top:4px; cursor: pointer;" class="codeModal" @click="toggleCode">
+                    <div class="country-code form-control codeModal">
+                      <div style="margin-top: -14px;" class="codeModal">
+                        <span class="codeModal"><img :src="selectedCountry.flagUrl" class="codeModal" style="width: 30px;height: 30px; margin: 10px; border-radius: 5px; position: relative; top: 2px;">
+                        </span>
+                        <span style="display: inline-block; position: relative; top: 3px; width: 30%" class="codeModal">{{ selectedCountry.phoneCode ? selectedCountry.phoneCode.includes('+') ? selectedCountry.phoneCode : `+${selectedCountry.phoneCode}` : "" }}
+                        </span>
+                        <i class="pi pi-angle-down" style="position: relative; top: 5px; right: -13px; z-index: -1"></i>
+ 
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="w-100">
+                    <input
+                    v-model.trim="userDetails.phoneNumber"
+                    type="text"
+                    class="input phone-num form-control"
+                    :class="{ 'is-invalid' : !isValid, 'is-valid' : valid }"
+                    placeholder="Phone number"
+                    required
+                  />
+                  <div class="invalid-feedback">
+                    Please provide a valid phone number.
+                  </div>
+                  </div>
+
+                </div>
+              </div>
+
+              
 
               <div class="input-div cstm-select w-100" id="myInput">
                 <label class="mb-0"
@@ -108,7 +112,11 @@
             <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal">
                 <input class="codeInput input codeModal" v-model="searchText">
               <div v-for="country in countryCodes" :key="country.id" class="codeModal" >
-                <div class="col-sm-3 codeModal" @click="selectCode(country)"><span style="display: inline-block"><img :src="country.flagUrl"  style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span><span style="display: inline-block">{{ country.phoneCode }}</span></div>
+                <div class="codeModal" @click="selectCode(country)">
+                  <span style="display: inline-block"><img :src="country.flagUrl"  style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span>
+                  <span style="font-weight:700">{{ country.name }}</span> &nbsp;
+                  <span style="display: inline-block; color: #6b6b6b;">{{ country.phoneCode ? country.phoneCode.includes('+') ? `(${country.phoneCode})` : `(+${country.phoneCode})`: "" }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -223,6 +231,10 @@ export default {
       this.showCode = !this.showCode
       console.log(this.showCode)
     },
+    tobby (){
+      console.log("Its working")
+      this.showCode = !this.showCode
+    },
     selectCode (country) {
       console.log(country)
       this.selectedCountry = country
@@ -246,13 +258,17 @@ export default {
 
     isValid() {
       return (
-        this.userDetails.firstName &&
-        this.userDetails.lastName &&
-        this.userDetails.phoneNumber &&
-        this.userDetails.churchName &&
-        this.userDetails.churchSize &&
-        this.selectedCountry.id
+        // this.userDetails.firstName &&
+        // this.userDetails.lastName &&
+        this.userDetails.phoneNumber
+        // this.userDetails.churchName 
+        // this.userDetails.churchSize &&
+        // this.selectedCountry.id
       );
+    },
+    valid () {
+      let regex  = /[0-9]{11}/
+      return regex.test(this.userDetails.phoneNumber)
     },
 
     countryCodes() {
@@ -545,23 +561,23 @@ span .select2-selection--single {
 }
 
 .flagCode {
-    width: 140px;
-    max-height: 15em;
+    width: 330px;
+    max-height: 19em;
     overflow-y: scroll;
     overflow-x: hidden;
     box-shadow: -3px 3px 15px #797e8159;
     position: absolute;
-    top: 49.5%;
+    top: 54%;
     /* left: 48px; */
     background: white;
     
     /* display: block; */
 
 }
-.flagCode div{
+/* .flagCode > div:first-of-type{ */
   /* border: 2px solid green; */
-  width: 35em;      
-}
+  /* width: 35em;      
+} */
 .flagCode div:hover {
   background: rgb(238, 238, 238)
 }
@@ -585,7 +601,7 @@ span .select2-selection--single {
 
   .flagCode {
     position: absolute;
-    top: 34.4%;
+    top: 30%;
   }
 }
 
@@ -606,12 +622,13 @@ span .select2-selection--single {
   }
 }
 
-button.country-code {
-  /* border: 2px solid red; */
+div.country-code {
+  height: 40.9px;
+  background: transparent
 }
 
  input.codeInput {
-  width: 80%;
+  width: 93%;
   margin-left: 12px;
   margin-top: 5px;
 }

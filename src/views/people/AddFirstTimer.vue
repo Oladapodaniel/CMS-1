@@ -1699,12 +1699,14 @@ export default {
 
 .show-tab {
   transition: all 0.5s ease-in-out;
-  height: 200px;
+  height: 220px;
+  overflow: hidden;
 }
 
 .show-occ-tab {
   transition: all 0.5s ease-in-out;
   height: 100px;
+  overflow: hidden;
 }
 
 .submit-div {

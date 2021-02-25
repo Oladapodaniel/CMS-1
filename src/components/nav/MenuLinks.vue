@@ -148,9 +148,8 @@
                 >Events</router-link
               >
             </li>
-            <!-- Hidden -->
-            <li class="dd-list-item d-none">
-              <router-link class="dd-link-item routelink" to=""
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/attendancecheckin"
                 >Attendance & Checkin</router-link
               >
             </li>
