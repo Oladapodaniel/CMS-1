@@ -1,7 +1,7 @@
 <template>
-  <div class="whole-con">
-    <div class="main-con">
-      <div class="main-body container-wide">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
         <!-- <div class="col-sm-12">
           <div class="top mt-3">
             <div class="events">
@@ -26,7 +26,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12 px-0">
             <List :list="items" :errorOcurred="errorOccurred" />
           </div>
         </div>
