@@ -18,7 +18,7 @@
                             <div class="col-md-8 px-0 d-flex align-items-center ml-n5">
                                 <div class="card border-0 w-100">
                                     <div class="card-body shadow-lg border-0 pl-5 text-center">
-                                        <p class="my-3 text-color">Dial <span class="font-weight-700 text-color">PRESENT</span> to 121</p>
+                                        <p class="my-3 text-color">Send <span class="font-weight-700 text-color">{{ code }}</span> to {{ smsNumber }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -31,8 +31,20 @@
 </template>
 
 <script>
+    import { useStore } from "vuex";
     export default {
-        
+        setup() {
+            const store = useStore();
+
+            const attendanceData = store.getters["attendance/attendanceItemData"];
+            const smsNumber = attendanceData ? attendanceData.smsNumber : "";
+            const code = attendanceData ? attendanceData.attendanceCode : "";
+
+            return {
+                smsNumber,
+                code,
+            }
+        }
     }
 </script>
 

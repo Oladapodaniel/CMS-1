@@ -18,7 +18,7 @@
                             <div class="col-md-9 px-0 d-flex align-items-center ml-md-n5">
                                 <div class="card border-0 w-100">
                                     <div class="card-body shadow-lg border-0 pl-5 text-center">
-                                        <p class="my-3 text-color">Dial <span class="font-weight-700 text-color">*888# </span>to mark attendance</p>
+                                        <p class="my-3 text-color">Dial <span class="font-weight-700 text-color">{{ ussd }} </span> to mark attendance</p>
                                     </div>
                                 </div>
                             </div>
@@ -31,8 +31,18 @@
 </template>
 
 <script>
+    import { useStore } from "vuex";
     export default {
-        
+        setup() {
+            const store = useStore();
+
+            const attendanceData = store.getters["attendance/attendanceItemData"];
+            const ussd = attendanceData ? attendanceData.ussdCode : "";
+
+            return {
+                ussd,
+            }
+        }
     }
 </script>
 

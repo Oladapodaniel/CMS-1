@@ -108,11 +108,14 @@ import router from "@/router/index";
 import groupService from "../../../services/groups/groupsservice";
 import eventsService from "../../../services/events/eventsservice";
 import CreateEventModal from "../../../components/attendance/AttendanceEventModal";
+import attendanceservice from '../../../services/attendance/attendanceservice';
+import { useStore } from "vuex";
 
 export default {
   components: { Dropdown, CreateEventModal  },
 
   setup() {
+    const store = useStore();
     const groups = ref([ ]);
     const display = ref(false);
 
@@ -134,7 +137,6 @@ export default {
     const getEvents = async () => {
       try {
         const response = await eventsService.getEvents();
-        console.log(response, "RESPONSE");
         if (response && response.length > 0) {
           events.value = response.map(i => {
             return { id: i.activityID, name: i.name }
@@ -157,8 +159,15 @@ export default {
     getEvents();
     getGroups();
 
-    const onContinue = () => {
-      router.push({name: "CheckinType", query: { activityID: selectedEvent.value.id, activityName: selectedEvent.value.name, groupId: selectedGroup.value.id, groupName: selectedGroup.value.name, x: 2 } });
+    const onContinue = async () => {
+      try {
+        const response = await attendanceservice.saveCheckAttendanceItem({ activityID: selectedEvent.value.id, groupId: selectedGroup.value.id })
+        console.log(response, "RESPONSE P");
+        store.dispatch("attendance/setItemData", response);
+        router.push({name: "CheckinType", query: { activityID: selectedEvent.value.id, activityName: selectedEvent.value.name, groupId: selectedGroup.value.id, groupName: selectedGroup.value.name, id: response.id } });
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     return {

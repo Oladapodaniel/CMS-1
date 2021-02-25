@@ -1,4 +1,4 @@
-
+import moment from "moment";
 
 const dateFormatter = {
     monthDayTime(date) {
@@ -11,6 +11,13 @@ const dateFormatter = {
             formattedDate = `${isTodaysDate ? 'Today' :  monthDay}, ${time}`;
         }
         return formattedDate;
+    },
+
+    normalDate(date) {
+        return moment.parseZone(
+            new Date(date).toLocaleDateString(),
+            "YYYY MM DD HH ZZ"
+          )._i;
     }
 }
 

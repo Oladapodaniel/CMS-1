@@ -201,17 +201,23 @@ const routes = [{
                 path: 'tag',
                 name: 'AttendanceTag',
                 component: () =>
-                    import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceTag')
+                    import( /* webpackChunkName: "tag" */ '@/views/event/attendance&checkin/AttendanceTag')
             },
             {
                 path: 'checkins',
                 name: 'AttendanceAndCheckinList',
                 component: () =>
-                    import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceAndCheckinList')
+                    import( /* webpackChunkName: "checkins" */ '@/views/event/attendance&checkin/AttendanceAndCheckinList')
+            },
+            {
+                path: 'qr',
+                name: 'AttendanceQR',
+                component: () =>
+                    import( /* webpackChunkName: "attendaceqr" */ '@/views/event/attendance&checkin/AttendanceQR')
             },
 
             {
-                path: 'report',
+                path: 'report/:id',
                 name: 'AttendanceReport',
                 component: () =>
                     import( /* webpackChunkName: "childcheckin" */ '@/views/event/attendance&checkin/AttendanceReport'),
