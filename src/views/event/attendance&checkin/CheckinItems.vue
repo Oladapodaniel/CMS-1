@@ -25,9 +25,14 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="items.length > 0 && !loading">
           <div class="col-md-12 px-0">
             <List :list="items" :errorOcurred="errorOccurred" />
+          </div>
+        </div>
+        <div class="row" v-if="cantGetItems">
+          <div class="col-md-12">
+            <p>Error getting items, please reload</p>
           </div>
         </div>
       </div>
@@ -48,15 +53,18 @@ export default {
     const items = ref([ ]);
     const loading = ref(false);
     const errorOccurred = ref(false);
+    const cantGetItems = ref(true);
 
     // const getAttendanceItems = async () => {
       try {
+        cantGetItems.value = false;
         loading.value = true;
         const response = await attendanceservice.getItems();
         console.log(response, "checkins");
         items.value = items.value ? response : [ ];
         loading.value = false;
       } catch (error) {
+        cantGetItems.value = true;
         console.log(error);
         loading.value = false;
         errorOccurred.value = true;
@@ -69,6 +77,7 @@ export default {
       items,
       loading,
       errorOccurred,
+      cantGetItems
     };
   },
 };
