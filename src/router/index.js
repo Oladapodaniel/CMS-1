@@ -230,12 +230,7 @@ const routes = [{
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceAndCheckinList')
     },
-    {
-        path: 'markinattendance/e/:code',
-        name: 'MarkinAttendance',
-        component: () =>
-            import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/MarkinAttendance')
-    },
+    
     {
         path: 'attendancetag',
         name: 'AttendanceTag',
@@ -510,6 +505,12 @@ const routes = [{
     ]
 },
 {
+    path: '/checkin/e/:code',
+    name: 'WebCheckin',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/MarkinAttendance')
+},
+{
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -531,7 +532,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 
 
-    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm") && !tokenIsValid) return next(true)
+    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;

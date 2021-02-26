@@ -1,6 +1,6 @@
 
 <template>
-  <div class="container-wide shadow p-3 mb-5 bg-body rounded mt-5">
+  <div class="container-wide shadow p-3 mb-5 bg-body rounded mt-5" style="max-width:700px">
     <div class="row mt-5">
       <div class="col-md-6 offset-md-3 mb-3"></div>
     </div>

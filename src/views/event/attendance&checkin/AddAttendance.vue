@@ -167,7 +167,7 @@ export default {
         const response = await attendanceservice.saveCheckAttendanceItem({ activityID: selectedEvent.value.id, groupID: selectedGroup.value.id })
         console.log(response, "RESPONSE P");
         store.dispatch("attendance/setItemData", response);
-        router.push({name: "CheckinType", query: { activityID: selectedEvent.value.id, activityName: selectedEvent.value.name, groupId: selectedGroup.value.id, groupName: selectedGroup.value.name, id: response.id } });
+        router.push({name: "CheckinType", query: { activityID: selectedEvent.value.id, activityName: selectedEvent.value.name, groupId: selectedGroup.value.id, groupName: selectedGroup.value.name, id: response.id, code: response.attendanceCode } });
       } catch (error) {
         console.log(error);
       }
