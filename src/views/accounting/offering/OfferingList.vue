@@ -2,12 +2,13 @@
   <div class="container-wide">
     <div class="row my-3">
       <div class="col-sm-4 first-timers-text">
-        <h2 class="page-header"><bold>Contributions</bold></h2>
+        <h2 class="page-header">Contributions</h2>
       </div>
 
       <div class="col-sm-8 d-flex head-button">
-        <button class="default-btn mr-5">Add Contribution Category</button>
-        <router-link to="/tenant/people/addfirsttimer" class="add-btn">
+        <router-link to="/tenant/offeringcategory">
+        <button class="default-btn mr-5">Add Contribution Category</button></router-link>
+        <router-link to="/tenant/addoffering" class="add-btn">
           Add Contribution
         </router-link>
       </div>
@@ -137,10 +138,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(offering, index) in offerings" :key="index">
+                  <tr v-for="(offering, index) in contributionTransactions" :key="index">
                   
                       <td>{{ offering.date }}</td>
-                      <td>{{ offering.event }}</td>
+                      <td>{{ offering.eventName }}</td>
                       <td class="">{{ offering.contribution }}</td>
 
                       <td style="display: flex">
@@ -161,7 +162,7 @@
                           v-model="offering.amount"
                         />
                       </td>
-                      <td class="">{{ offering.contact }}</td>
+                      <td class="">{{ offering.donor }}</td>
                       <td>
                         <i
                           class="fa fa-trash"
@@ -349,11 +350,12 @@
             <Toast />
 
             <div class="table-footer">
-              <Pagination
-                @getcontent="getPeopleByPage"
+              <!-- <Pagination
+                
+              /> -->
+              <!-- @getcontent="getPeopleByPage"
                 :itemsCount="membersCount"
-                :currentPage="currentPage"
-              />
+                :currentPage="currentPage" -->
             </div>
           </div>
         </div>
@@ -364,9 +366,9 @@
 
 <script>
 import { ref } from "vue";
-// import ByGenderChart from "@/components/charts/PieChart.vue";
-// import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
-// import axios from "@/gateway/backendapi";
+import axios from "@/gateway/backendapi";
+// import { useStore } from 'vuex'
+// import { store } from "../../../store/store"
 // import Pagination from "../../../components/pagination/PaginationButtons";
 // import { useRoute } from "vue-router";
 // import moment from "moment";
@@ -382,13 +384,7 @@ export default {
   },
 
   setup() {
-    const offerings = ref([
-      { date: '2/12/2020', event: 'Men service', contribution: 'Tithe', amount: 3000, contact: 'Ogunmuyiwa David' },
-      { date: '2/12/2020', event: 'Men service', contribution: 'Tithe', amount: 3000, contact: 'Ogunmuyiwa David' },
-      { date: '2/12/2020', event: 'Men service', contribution: 'Tithe', amount: 3000, contact: 'Ogunmuyiwa David' },
-      { date: '2/12/2020', event: 'Men service', contribution: 'Tithe', amount: 3000, contact: 'Ogunmuyiwa David' },
-      { date: '2/12/2020', event: 'Men service', contribution: 'Tithe', amount: 3000, contact: 'Ogunmuyiwa David' }
-    ]);
+    const contributionTransactions = ref([]);
     // const getFirstTimerSummary = ref({});
     const filter = ref({});
     const searchIsVisible = ref(false);
@@ -407,16 +403,21 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    // const firstTimerSummary = () => {
-    //   axios
-    //     .get("/api/People/GetFirsttimerSummary")
-    //     .then((res) => {
-    //       getFirstTimerSummary.value = res.data;
-    //       console.log(res.data);
-    //     })
-    //     .catch((err) => console.log(err));
-    // };
-    // firstTimerSummary();
+    const getContributionTranactions = () => {
+      // let store = useStore()
+      axios
+        .get("/api/Financials/Contributions/Transactions")
+        .then((res) => {
+          contributionTransactions.value = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+    // get from  to store
+    // console.log(store.getters['contributions/contributionList'])
+    // savev to sstore
+    // store.dispatch('contributions/contributionList')
+    };
+    getContributionTranactions();
 
     // const searchMember = computed(() => {
     //   if (searchText.value !== "") {
@@ -574,7 +575,7 @@ export default {
     // };
 
     return {
-      offerings,
+      contributionTransactions,
       // churchMembers,
       filterFormIsVissible,
       toggleFilterFormVissibility,

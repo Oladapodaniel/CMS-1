@@ -107,26 +107,8 @@
       <div class="col-sm-12 mt-3" v-if="applyRem">
         <hr class="hr"/>
       </div>
-  
-        <div class="col-lg-12" v-if="applyRem">
-        <div v-for="(item, index) in remitance" :key="index">
-        <div class="row mt-3 mb-4">
-          <div class="col-sm-4 col-12">
-            <div class="">Account</div>
-          <Dropdown v-model="item.account" class="w-100 p-0 mt-2" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-
-                </Dropdown>
-          </div>
-
-          <div class="col-sm-5 col-12 mt-3 mt-sm-0">
-            <div class="">Percentage %</div>
-
-            <div class="mt-2">
-              <input type="text" v-model="item.percentage" class="form-control textbox-height" placeholder="" />
-            </div>
-          </div>
-
-          <div class="col-sm-2 col-12 mt-3 mt-sm-0">
+      <div class="col-12">
+        <div class="col-sm-2 col-12 mt-3 mt-sm-0 offset-6 align-button">
             <button
               v-on:click="addRemittance"
               class="btn btnIcons btn-secondary"
@@ -135,6 +117,27 @@
               Add
             </button>
           </div>
+      </div>
+  
+        <div class="col-lg-12" v-if="applyRem">
+        <div v-for="(item, index) in remitance" :key="index">
+        <div class="row mt-3 mb-4 offset-4">
+          <div class="offset-4 col-sm-4 pr-0 col-12 m-0">
+            <div class="">Account</div>
+          <Dropdown v-model="item.account" class="w-100  mt-2" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+
+                </Dropdown>
+          </div>
+
+          <div class=" col-sm-3 col-12 mt-3 m-0 pl-0 mt-sm-0">
+            <div class="">Percentage %</div>
+
+            <div class="mt-2">
+              <input type="text" v-model="item.percentage" class="form-control textbox-height" placeholder="" />
+            </div>
+          </div>
+
+          
           <div class="col-sm-1 mt-4 align-self-center" @click="deleteItem(index)">
             <i class="pi pi-trash"></i>
           </div>
@@ -236,27 +239,39 @@ export default {
     const save = () => {
       let contributionCategory = {
         name: name.value,
-        isPublic: true,
-        incomeAccount: {
-            id: selectedIncomeAccount.value.id,
-            name: selectedIncomeAccount.value.text,
-            accountType: incomeAccount.value.findIndex(i => i.id === selectedIncomeAccount.value.id),
-            code: selectedIncomeAccount.value.code,
-            isGroupAccount: selectedIncomeAccount.value.isGroupAccount,
-            financialFundID: selectedIncomeAccount.value.financialFundID
-          },
+        // isPublic: true,
+        // incomeAccount: {
+        //     id: selectedIncomeAccount.value.id,
+        //     name: selectedIncomeAccount.value.text,
+        //     accountType: incomeAccount.value.findIndex(i => i.id === selectedIncomeAccount.value.id),
+        //     code: selectedIncomeAccount.value.code,
+        //     isGroupAccount: selectedIncomeAccount.value.isGroupAccount,
+        //     financialFundID: selectedIncomeAccount.value.financialFundID
+        //   },
         incomeAccountId: selectedIncomeAccount.value.id,
-        cashAccount: {
-            id: selectedCashAccount.value.id,
-            name: selectedCashAccount.value.text,
-            accountType: cashBankAccount.value.findIndex(i => i.id === selectedCashAccount.value.id),
-            code: selectedCashAccount.value.code,
-            isGroupAccount: selectedCashAccount.value.isGroupAccount,
-            financialFundID: selectedCashAccount.value.financialFundID
-          },
+        // cashAccount: {
+        //     id: selectedCashAccount.value.id,
+        //     name: selectedCashAccount.value.text,
+        //     accountType: cashBankAccount.value.findIndex(i => i.id === selectedCashAccount.value.id),
+        //     code: selectedCashAccount.value.code,
+        //     isGroupAccount: selectedCashAccount.value.isGroupAccount,
+        //     financialFundID: selectedCashAccount.value.financialFundID
+        //   },
         cashAccountId: selectedCashAccount.value.id,
         incomeRemittance: remitance.value
       }
+
+        if (applyRem.value) {
+                contributionCategory.incomeRemittance = remitance.value.map(i => {
+                  return {
+                    financialFundID: i.account.financialFundID,
+                    distinationIncomeAccount: i.account.id,
+                    percentage: i.percentage
+                  }
+                })
+              } else {
+                contributionCategory.incomeRemittance = null
+              }
       console.log(contributionCategory)
        axios.post('/api/financials/contributions/items/save', contributionCategory)
               .then(res => {
@@ -350,6 +365,10 @@ export default {
 .p-dialog.p-component {
   border-radius: 0 !important;
 }
+
+/* .align-button {
+  margin-left: 26px;
+} */
 
 </style>
 

@@ -478,7 +478,7 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingList')
     },
     {
-        path: 'offeringcat',
+        path: 'offeringcategory',
         name: 'OfferingCategory',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/SelectOffCat')
@@ -494,8 +494,26 @@ const routes = [{
         name: 'OfferingReport',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
+    },
+    {
+        path: 'transactionlist',
+        name: 'TransactionList',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
+    },
+    {
+        path: 'payments',
+        name: 'PaymentTransaction',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentTransaction')
+    },
+    {
+        path: 'paymentoptions',
+        name: 'PaymentOption',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentOption')
     }
-    ]
+    ],
 },
 {
     path: '/about',

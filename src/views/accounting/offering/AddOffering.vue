@@ -8,7 +8,8 @@
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
                 <div class="dropdown">
-                <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <span><i class="fa fa-angle-down btn-icon"></i></span></button>
+                <router-link to="/tenant/offeringcategory">
+                <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <span><i class="fa fa-angle-down btn-icon"></i></span></button></router-link>
                     <!-- <i
                       class="fas fa-ellipsis-v"
                       id="dropdownMenuButton"
@@ -20,7 +21,8 @@
                       class="dropdown-menu"
                       aria-labelledby="dropdownMenuButton"
                     >
-                      <a class="dropdown-item" href="#">Add Offering Category</a>
+                      <a class="dropdown-item">
+                        <router-link to="/tenant/addoffering">Add Offering Category</router-link></a>
                       <!-- <a class="dropdown-item" href="#">Assign to follow-up</a>
                       <a class="dropdown-item">
                         <router-link
@@ -47,6 +49,7 @@
             </div>
           </div>
         </div>
+      
 
         <div class="form">
         <!-- <div class="container"> -->
@@ -412,7 +415,7 @@
         <!-- </div> -->
 
         <!-- Selected offerings -->
-        <div>{{ offeringItem }}</div>
+        <!-- <div>{{ offeringItem }}</div> -->
         <!-- <div>{{newOfferings}}</div>
         <div>{{ currencyList }}</div> -->
         <div
@@ -474,7 +477,7 @@
                 class="currency pointer d-flex justify-content-around align-items-center close-modal"
                 @click="item.showCurrency = !item.showCurrency"
                 >
-                <span class="ofering close-modal">{{ currencyList ? currencyList.find(i => i.id == item.currencyID) ?  currencyList.find(i => i.id == item.currencyID).name : "NGN" : "" }}</span
+                <span class="ofering close-modal">{{ currencyList ? currencyList.find(i => i.id == item.currencyID) ?  currencyList.find(i => i.id == item.currencyID).name : tenantCurrency : "" }}</span
                 ><span style="margin-top: 4px">
                     <i
                     class="pi pi-angle-down close-modal"
@@ -532,8 +535,10 @@
 
           
 
-            <div v-if="item.donor == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Donor</div>
-            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.donor }}     <span class="donor-text">edit</span></div>
+            <div v-if="item.donor == '' " data-toggle="modal" data-target="#exampleModal" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">Add Donor</div>
+            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal" >{{ item.donor }}     <span class="donor-text">edit</span></div>
+            <!-- <div v-if="item.donor == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Donor</div>
+            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.donor }}     <span class="donor-text">edit</span></div> -->
    
                </div>
         </div>
@@ -643,7 +648,7 @@
                       </Dropdown>
                   </div>
 
-                  <div class="col-sm-4 text-right pr-0 align-self-center mt-3">
+                  <div class="col-sm-5 text-right align-self-center mt-3">
                       <label>Percentage %</label>
                     </div>
                   <div class="col-lg-5 col-sm-12 mt-3">
@@ -746,6 +751,136 @@
                   <Button label="Yes" icon="pi pi-check" @click="closeResponsive" autofocus />
               </template>
           </Dialog> -->
+          
+    <!-- Modal -->
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
+                  Add Donor
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row my-4">
+                  <div class="col-md-4 text-md-right">
+                    <label for="" class="font-weight-600">Search Name</label>
+                  </div>
+                  <div class="col-md-7">
+                    <div class="dropdown">
+                      
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        v-model="userSearchString"
+                        @input="searchForUsers"
+                      />
+                      <div
+                        class="dropdown-menu w-100"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        <div class="row w-100 mx-auto" v-if="false">
+                          <div class="col-md-12">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Find event"
+                            />
+                          </div>
+                        </div>
+
+                        <a
+                          class="dropdown-item font-weight-700 small-text"
+                          href="#"
+                          v-for="(member, index) in searchedMembers"
+                          :key="index"
+                           @click="addExistingMember(member)"
+                          >{{ member.name }}</a
+                        >
+                        <a
+                          class="dropdown-item font-weight-700 small-text"
+                          href="#"
+                          v-if="
+                            searchingForMembers && searchedMembers.length === 0
+                          "
+                          ><i class="pi pi-spin pi-spinner"></i
+                        ></a>
+                        <p
+                          class="modal-promt pl-1 bg-secondary m-0"
+                          v-if="
+                            userSearchString.length < 3 &&
+                            searchedMembers.length === 0
+                          "
+                        >
+                          Enter 3 or moore characters
+                        </p>
+                        <a
+                          class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                          style="border-top: 1px solid #002044; color: #136acd"
+                          @click="showAddMemberForm"
+                          data-dismiss="modal"
+                        >
+                          <i
+                            class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
+                            style="color: #136acd"
+                          ></i>
+                            Add new donor
+                        </a>
+                      </div>
+                    </div>
+
+                    <div class="row mt-4">
+                      <div class="col-md-6 d-md-flex justify-content-end">
+                        <button class="default-btn" data-dismiss="modal">Cancel</button>
+                      </div>
+                      <div class="col-md-6">
+                        <button
+                          class="default-btn primary-bg border-0 text-white"
+                          data-dismiss="modal"
+                          @click="addDonor"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Dialog
+      header="Create New Member"
+      v-model:visible="display"
+      :style="{ width: '70vw', maxWidth: '600px' }"
+      :modal="true"
+      position="top"
+    >
+      <div class="row">
+        <div class="col-md-12">
+          <NewDonor @cancel="() => display = false" @person-id="getPersonId($event)"/>
+        </div>
+      </div>
+    </Dialog>
+
           <!-- Giver Modal Button -->
     <button
     hidden
@@ -759,7 +894,7 @@
       Launch demo modal
   </button>
           <!-- Giver Modal -->
-      <div
+      <!-- <div
         class="modal fade"
         id="exampleGiver"
         tabindex="-1"
@@ -781,12 +916,12 @@
               </button>
             </div>
             <div class="modal-body">
-              <!-- <div class="row">
+               <div class="row">
                 <div class="offset-sm-1 col-sm-3 text-sm-right align-self-center">Name</div>
                 <div class="col-sm-7">
                   <input type="text" v-model="donorText" class="form-control"/>
                 </div>
-              </div> -->
+              </div> 
               <div class="container">
                 <div class="row">
                   <div class="col-sm-4 text-right pr-0 align-self-center">
@@ -818,7 +953,7 @@
                 type="button"
                 class="apply-btn"
                 id="closeEvent"
-                @click="addDonor"
+                
                 ref="closeDonorModal"
               >
                 Save
@@ -826,7 +961,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
         <div class="col-sm-12 empty">
           <div class="row">
@@ -876,9 +1011,11 @@ import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import Dropdown from 'primevue/dropdown';
+import NewDonor from './NewDonor';
+import membershipService from "../../../services/membership/membershipservice";
 export default {
     components: {
-        Dialog, Dropdown
+        Dialog, Dropdown, NewDonor
     },
     setup () {
         const toast = useToast();
@@ -914,8 +1051,13 @@ export default {
         const donorBoolean = ref(false)
         const modalTogglerGiver = ref("")
         const donorText = ref("")
-        const closeDonorModal = ref("")
-        
+        const userSearchString = ref("");
+        const searchedMembers = ref([]);
+        const searchingForMembers = ref(false)
+        const display = ref(false);
+        const personId = ref("")
+        const tenantCurrency = ref("")
+  
 
 
         const addOffering = () => {
@@ -1144,10 +1286,30 @@ export default {
               donor: "",
               date: eventDate.value,
               activityID: selectedEventAttended.value.activityID,
-              currencyID: 721
+              currencyID: currencyList.value.find(i => i.name === tenantCurrency.value).id
               // currencyID: currencyList.value ? currencyList.value.find(i => i.name === "NGN") ? currencyList.value.find(i => i.name === "NGN") : "" : ""
             });
           } 
+
+          // const currentSignedIn = () => {
+              // try {
+              //   const res = axios.get("/api/Membership/GetCurrentSignedInUser");
+              //   // store.dispatch("setCurrentUser", res.data);
+              //   console.log(res.data);
+              // } catch (err) {
+              //   /*eslint no-undef: "warn"*/
+              //   NProgress.done();
+              //   console.log(err.response);
+              //   // if (err.response && err.response.status === 401) {
+              //     // localStorage.setItem("token", "");
+              //     // router.push("/");
+              //   // }
+              // }
+              // axios.get('/api/Membership/GetCurrentSignedInUser')
+              //   .then(res => console.log(res.data))
+              //   .catch(err => console.log(err))
+              // }
+              // currentSignedIn()
           // else {
           //   offeringItem.value.push({
           //     currency: "NGN",
@@ -1159,7 +1321,7 @@ export default {
             });
 
           // }
-          // offeringDrop.value.classList.toggle("offering-drop")
+          offeringDrop.value.classList.remove("offering-drop")
           
         }
 
@@ -1167,23 +1329,47 @@ export default {
           offeringItem.value.splice(index, 1)
         }
 
-        const getCurrenciesFromCountries = () => {
-      let url = "/api/getallcountries"
-      axios.get(url)
-        .then(res => {
-          currencyList.value = res.data.map(i => {
-              // return `${i.currency} ${i.name}`
-              return {
-              name: i.currency,
-              id: i.id,
-              country: i.name
-            }
+    //     const getCurrenciesFromCountries = () => {
+    //   let url = "/api/getallcountries"
+    //   axios.get(url)
+    //     .then(res => {
+    //       currencyList.value = res.data.map(i => {
+    //           // return `${i.currency} ${i.name}`
+    //           return {
+    //           name: i.currency,
+    //           id: i.id,
+    //           country: i.name
+    //         }
             
-          })
-        })
-        .catch(err => console.log(err))
-    }
-    getCurrenciesFromCountries()
+    //       })
+    //     })
+    //     .catch(err => console.log(err))
+    // }
+    // getCurrenciesFromCountries()
+
+      const getTenantCurrency = () => {
+        axios.get("/api/financials/api/lookup/tenantcurrency")
+              .then(res => {
+                tenantCurrency.value = res.data.currency
+              })
+              .catch(err => console.log(err))
+      }
+      getTenantCurrency()
+
+      const getAllCurrencies = () => {
+          axios.get('/api/lookup/getallcurrencies')
+            .then(res => {
+              currencyList.value = res.data.map(i => {
+                return {
+                  name:  i.shortCode,
+                  id: i.id,
+                  country: i.country
+                }
+              })
+            })
+            .catch(err => console.log(err))
+      }
+      getAllCurrencies()
 
         const filterCurrency = computed(() => {
           if (currencyText.value !== "" && currencyList.value.length > 0) {
@@ -1269,7 +1455,13 @@ export default {
             
           }
               if (applyRem.value) {
-                contributionCategory.incomeRemittance = remitance.value
+                contributionCategory.incomeRemittance = remitance.value.map(i => {
+                  return {
+                    financialFundID: i.account.financialFundID,
+                    distinationIncomeAccount: i.account.id,
+                    percentage: i.percentage
+                  }
+                })
               } else {
                 contributionCategory.incomeRemittance = null
               }
@@ -1280,7 +1472,6 @@ export default {
                       name: name.value,
                       paymentChannel: "Cash",
                       financialContributionID: res.data.id,
-                      
                       donor:  "",
                       date: eventDate.value,
                       activityID: selectedEventAttended.value.activityID
@@ -1309,8 +1500,22 @@ export default {
               //   activityID: 123,
                 
               // }
+        let contributions = offeringItem.value.map(i => {
+                return {
+                  name: i.name,
+                  financialContributionID: i.financialContributionID,
+                  date: i.date,
+                  amount: i.amount ? i.amount : 0,
+                  paymentChannel: i.paymentChannel,
+                  activityID: i.activityID,
+                  // personID: i.personID,
+                  currencyID: i.currencyID
+                }
+              })
 
-          axios.post('/api/Financials/Contributions/Transactions/Save', offeringItem)
+              console.log(contributions)
+
+          axios.post('/api/Financials/Contributions/Transactions/Save', contributions)
             .then(res => {
               console.log(res)
             })
@@ -1331,25 +1536,58 @@ export default {
           // }
 
       }
+
+      const setAddToDonor = (index) => {
+        offeringToAddDonor.value = index
+      }
+
        const addDonor = () => {
-            let donorName = donorText.value
+            let donorName = userSearchString.value
             offeringItem.value[offeringToAddDonor.value].donor = donorName
-            closeDonorModal.value.setAttribute("data-dismiss", "modal");
             donorBoolean.value = true
-            donorText.value = ""
-            console.log(offeringItem)
+            userSearchString.value = ""
           }
 
-        const triggerGiverModal = (index) =>  {
-          offeringToAddDonor.value = index;
-          modalTogglerGiver.value.click()
+        const searchForUsers = () => {
+          if (userSearchString.value.length >= 3) {
+            startSearch(userSearchString.value);
+          }
+        };
+
+        const startSearch = async (str) => {
+          try {
+            searchingForMembers.value = true;
+            const response = await membershipService.searchMembers(str);
+            searchingForMembers.value = false;
+            searchedMembers.value = response;
+          } catch (error) {
+            searchingForMembers.value = false;
+            console.log(error);
+          }
+        };
+
+        const showAddMemberForm = () => {
+          display.value = true;
+        };
+
+        
+        const addExistingMember = (member) => {
+          userSearchString.value = member.name;
+          offeringItem.value[offeringToAddDonor.value].personID = member.id
+          console.log(userSearchString.value, member)
+        }
+
+        const getPersonId = (payload) => {
+          personId.value = payload
+          offeringItem.value[offeringToAddDonor.value].donor = payload.personFirstName
+          offeringItem.value[offeringToAddDonor.value].personID = payload.personId
         }
 
         return {
             addOffering, offeringDrop, hideModals, selectEventAttended, showEventList, eventsAttended, filteredEvents, closeManualModalIfOpen, eventAttendedSelected,
             newEvents, selectedEventAttended, eventsSearchString, selectEvent, individualEvent, newEvent, showCategory, filterEventCategory, eventText, eventDate, createNewCat,
             newEventCategoryName, displayModal, openModal, closeModal, toast, createNewEvent, invalidEventDetails, savingNewEvent, newOfferings, filterOffering, offeringText,
-            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, triggerGiverModal, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, closeDonorModal
+            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency
     }
   }
 }
@@ -1616,8 +1854,9 @@ export default {
       }
 
       .textbox-height {
-        height: 41px;
+        height: 42px;
         margin-top: -4px;
+        width: 176px;
       }
         
         .check-it {
