@@ -308,7 +308,6 @@ export default {
       searchedMembers,
       searchingForMembers,
       searchText,
-      // member,
       addExistingMember,
       sendExistingUser,
       refresh,

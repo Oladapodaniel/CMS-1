@@ -25,7 +25,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="items.length > 0 && !loading">
           <div class="col-md-12 px-0">
             <List :list="items" :errorOcurred="errorOccurred" />
           </div>
