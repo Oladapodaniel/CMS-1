@@ -414,7 +414,8 @@ export default {
     };
 
     const notme = () => {
-      toggleBase();
+      person.value = {};
+      enteredValue.value = "";
     };
 
     // getting events and date
