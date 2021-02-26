@@ -41,66 +41,21 @@
         <i
           class="pi pi-spin pi-spinner"
           style="fontsize: 2rem"
-          v-if="autosearch"
+          v-if="autosearch && !person.name"
         ></i>
       </div>
     </div>
     <!-- end of top area -->
-    <!-- name area -->
-    <!-- <div class="row mt-3">
-      <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
-      >
-        <label for="">Name</label>
-      </div>
-      <div class="col-md-5">
-        <span class="p-input-icon-left w-100">
-          <i class="pi pi-users icon" />
-          <InputText
-            class="w-100"
-            type="text"
-            aria-required=""
-            v-model="person.name"
-          />
-        </span>
-      </div>
-    </div> -->
-    <!--end name area -->
-
-    <!-- tosin -->
-    <!-- <div class="row">
-      <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
-      ></div>
-      <div class="col-md-5 mt-2 pl-0">
-        <i
-          class="pi pi-spin pi-spinner"
-          style="fontsize: 2rem"
-          v-if="autosearch"
-        ></i>
-        <div
-          class="col-md-12 d-flex flex-column"
-          v-for="(person, index) in names"
-          :key="index"
-        >
-          <a
-            class="d-flex text-decoration-none c-pointer mb-2"
-            @click="populateInputfields(person)"
-            >{{ person.name }}</a
-          >
-        </div>
-      </div>
-    </div> -->
-    <!-- tosin -->
+  
 
     <!--start of top area button -->
-    <div class="row mb-4" v-if="!person.name">
+    <div class="row mb-4">
       <div class="col-md-3 text-md-right"></div>
       <div class="col-md-5 mt-4 text-center col-sm-2">
         <p class="my-1 text-danger" v-if="showNoPhoneError">
           Please enter your phone number
         </p>
-        <button class="default-btn add-btn" @click="checkCharacter">
+        <button class="default-btn add-btn" @click="checkCharacter" ref="submitBtn">
           <!-- <i class="fas fa-circle-notch fa-spin" v-if="loading"></i> -->
           Submit
         </button>
@@ -244,10 +199,12 @@ export default {
     const enteredValue = ref("");
     const loading = ref(false);
     const autosearch = ref(false);
+    const noError = ref(true);
     const person = ref({});
     const checkedIn = ref(false);
     const route = useRoute();
     const toast = useToast();
+    const submitBtn = ref(null);
 
     const toggleBase = () => {
       appltoggle.value = !appltoggle.value;
@@ -369,6 +326,7 @@ export default {
       console.log(newPerson);
       loading.value = true;
       autosearch.value = true;
+      noError.value = true;
       axios
         .post("/api/CheckInAttendance/MarkAttendance", newPerson)
         .then((res) => {
@@ -388,18 +346,19 @@ export default {
           });
         })
         .catch((err) => {
-          appltoggle.value = false;
+          // appltoggle.value = false;
           loading.value = false;
           autosearch.value = false;
           console.log(err, "ajose");
+          noError.value = false;
+          toast.add({
+            severity: "error",
+            summary: "Checkin Error",
+            detail: "Member Checkin failed",
+            life: 3000,
+          });
         });
-
-      toast.add({
-        severity: "error",
-        summary: "Checkin Error",
-        detail: "Member Checkin failed",
-        life: 3000,
-      });
+      
     };
 
     // confirm button check
@@ -416,6 +375,7 @@ export default {
     const notme = () => {
       person.value = {};
       enteredValue.value = "";
+      submitBtn.value.classList.add('d-none')
     };
 
     // getting events and date
@@ -512,6 +472,8 @@ export default {
       userAddress,
       showNoPhoneError,
       notme,
+      noError,
+      submitBtn,
     };
   },
 };
