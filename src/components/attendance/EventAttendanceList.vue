@@ -34,10 +34,8 @@ import attendanceservice from '../../services/attendance/attendanceservice';
             const route = useRoute();
             const people = ref([ ])
             const response = await attendanceservice.getReport(route.query.id);
-            console.log(response, "REPORT");
             people.value = response ? response.peopoleAttendancesDTOs : [ ];
-
-            console.log(people.value, "p");
+            
 
             const listOfPeople = computed(() => {
                 if (!props.searchText) return people.value;
@@ -57,6 +55,7 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 if (userIndex >= 0) {
                     people.value[userIndex].isCheckedOut = data.value;
                 }
+                
                 attendanceservice.getReport(route.query.id)
                     .then(res => {
                         people.value = res.peopoleAttendancesDTOs;

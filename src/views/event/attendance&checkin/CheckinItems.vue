@@ -19,9 +19,9 @@
 
         <!-- <hr class="hr" /> -->
         <div class="no-person" v-if="items.length === 0 && !errorOccurred">
-          <div class="empty-img">
+          <div class="empty-img mt-5">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't Attendance yet</p>
+            <p class="tip">You have no attendance yet</p>
           </div>
         </div>
 

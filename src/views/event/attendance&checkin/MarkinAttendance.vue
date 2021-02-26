@@ -189,6 +189,8 @@ import InputText from "primevue/inputtext";
 import { useRoute } from "vue-router";
 import dateFormatter from "@/services/dates/dateformatter";
 import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../../services/progressbar/progress"
+
 export default {
   setup() {
     const connectName = ref("");
@@ -255,11 +257,6 @@ export default {
           personData.value.personId = res.data[0].personId;
           personData.value.mobilePhone = enteredValue.value;
           person.value = res.data[0];
-
-          // let obj = {
-          //   name: formatString(person.value.name),
-          //   name: formatString(person.value.name),
-          // }
 
           if (person.value.name) {
             person.value.name = formatString(person.value.name, 2, 4);
@@ -347,6 +344,7 @@ export default {
         })
         .catch((err) => {
           // appltoggle.value = false;
+          stopProgressBar();
           loading.value = false;
           autosearch.value = false;
           console.log(err, "ajose");
