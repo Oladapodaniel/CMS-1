@@ -21,7 +21,7 @@
     <!--end top Address -->
 
     <!-- top area -->
-    <div class="row">
+    <div class="row mb-4">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       >
@@ -31,19 +31,23 @@
         <span class="p-input-icon-left w-100">
           <i class="pi pi-phone icon" />
           <InputText
-            @blur="checkCharacter"
-            @input="clearNames"
+            @input="checkCharacter"
             class="w-100"
             type="text"
-            v-model="enteredvalue"
+            v-model="enteredValue"
             aria-required=""
           />
         </span>
+        <i
+          class="pi pi-spin pi-spinner"
+          style="fontsize: 2rem"
+          v-if="autosearch"
+        ></i>
       </div>
     </div>
     <!-- end of top area -->
     <!-- name area -->
-    <div class="row mt-3">
+    <!-- <div class="row mt-3">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       >
@@ -60,11 +64,11 @@
           />
         </span>
       </div>
-    </div>
+    </div> -->
     <!--end name area -->
 
     <!-- tosin -->
-    <div class="row">
+    <!-- <div class="row">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       ></div>
@@ -86,14 +90,17 @@
           >
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- tosin -->
 
     <!--start of top area button -->
-    <div class="row mb-4">
+    <div class="row mb-4" v-if="!person.name">
       <div class="col-md-3 text-md-right"></div>
-      <div class="col-md-5 mt-4 text-center col-sm-2" @click="toggleBase">
-        <button class="default-btn add-btn" @click="populateInputfields">
+      <div class="col-md-5 mt-4 text-center col-sm-2">
+        <p class="my-1 text-danger" v-if="showNoPhoneError">
+          Please enter your phone number
+        </p>
+        <button class="default-btn add-btn" @click="checkCharacter">
           <!-- <i class="fas fa-circle-notch fa-spin" v-if="loading"></i> -->
           Submit
         </button>
@@ -102,7 +109,7 @@
     <!--end of top area button -->
 
     <!-- start of bottom area -->
-    <div class="row" v-if="applyBase">
+    <div class="row" v-if="appltoggle">
       <div class="col-md-12">
         <div class="row mt-n2 my-2">
           <div
@@ -169,16 +176,16 @@
     <!-- end of bottom area -->
 
     <!-- button area -->
-    <div class="row mt-n2 my-2" v-if="applyBase">
+    <div class="row mt-n2 my-2" v-if="appltoggle">
       <div class="col-md-2 text-md-right d-flex ml-md-n5"></div>
       <div class="col-md-4 mt-4 text-md-right col-6 d-flex justify-content-end">
-        <button class="default-btn" @click="notMe">Not Me</button>
+        <button class="default-btn" @click="notme">Not Me</button>
       </div>
       <div class="col-md-4 mt-4 text-md-left col-6">
         <button
           class="default-btn add-btn"
           @click="confirmCheck"
-          :disabled="!person.name || person.name.length < 1"
+          :disabled="!person.name || person.length < 1"
         >
           Confirm
         </button>
@@ -212,6 +219,8 @@
           Powered by CHURCHPLUS
         </p>
       </div>
+
+      <Toast />
     </div>
   </div>
 </template>
@@ -224,60 +233,109 @@ import axios from "@/gateway/backendapi";
 import InputText from "primevue/inputtext";
 import { useRoute } from "vue-router";
 import dateFormatter from "@/services/dates/dateformatter";
+import { useToast } from "primevue/usetoast";
 export default {
   setup() {
-    const applyBase = ref(false);
-    const names = ref([]);
-    const emails = ref([]);
-    const address = ref([]);
+    const connectName = ref("");
+    const appltoggle = ref(false);
+    const names = ref("");
+    const emails = ref("");
+    const address = ref("");
     const enteredValue = ref("");
     const loading = ref(false);
     const autosearch = ref(false);
     const person = ref({});
-    const route = useRoute();
     const checkedIn = ref(false);
+    const route = useRoute();
+    const toast = useToast();
 
     const toggleBase = () => {
-      applyBase.value = !applyBase.value;
+      appltoggle.value = !appltoggle.value;
     };
 
-    // searching through the attendancedetails
+    const email = computed(() => {
+      if (person.value.email) return maskEmail(person.value.email);
+      return "";
+    });
+    const name = computed(() => {
+      if (person.value.name) return formatString(person.value.name);
+      return "";
+    });
+    const userAddress = computed(() => {
+      if (person.value.email) return formatString(address.value.name);
+      return "";
+    });
+
+    // searching through the attendance details
+    const showNoPhoneError = ref(false);
+    const personData = ref({});
     const checkCharacter = (e) => {
-      if (e.target.value.length > 0) {
-        loading.value = true;
-        autosearch.value = true;
-        axios
-          .get(
-            `/api/CheckInAttendance/SearchMemberByPhone?searchText=${
-              e.target.value
-            }&&attendanceCode=${+route.params.code}`
-          )
-          .then((res) => {
-            loading.value = false;
-            autosearch.value = false;
-            names.value = res.data;
-            person.value = res.data[0];
-            console.log(names.value);
-
-            if (person.value) applyBase.value = true;
-          })
-          .catch((err) => {
-            loading.value = false;
-            autosearch.value = false;
-            console.log(err);
-          });
+      if (e.target.value.length < 11) {
+        person.value = {};
+        return false;
       }
+      showNoPhoneError.value = false;
+      if (!enteredValue.value) {
+        showNoPhoneError.value = true;
+        return false;
+      }
+      // if (e.target.value.length > 0) {
+      loading.value = true;
+      autosearch.value = true;
+      axios
+        .get(
+          `/api/CheckInAttendance/SearchMemberByPhone?searchText=${
+            e.target.value
+          }&&attendanceCode=${+route.params.code}`
+        )
+        .then((res) => {
+          loading.value = false;
+          autosearch.value = false;
+          names.value = res.data;
+          personData.value.firstName = res.data[0].name;
+          personData.value.email = res.data[0].email;
+          personData.value.homeAddress = res.data[0].address;
+          personData.value.personId = res.data[0].personId;
+          personData.value.mobilePhone = enteredValue.value;
+          person.value = res.data[0];
+
+          // let obj = {
+          //   name: formatString(person.value.name),
+          //   name: formatString(person.value.name),
+          // }
+
+          if (person.value.name) {
+            person.value.name = formatString(person.value.name, 2, 4);
+          }
+          if (person.value.email) {
+            person.value.email = maskEmail(person.value.email, 2, 4);
+          }
+          if (person.value.address) {
+            person.value.address = formatString(person.value.address, 2, 4);
+          }
+          populateInputfields(person.value);
+          console.log(names.value);
+
+          if (person.value) appltoggle.value = true;
+        })
+        .catch((err) => {
+          loading.value = false;
+          autosearch.value = false;
+          appltoggle.value = true;
+          console.log(err);
+        });
+      // }
     };
+    //end of searching through the attendance details
 
     // populate input fields
     const populateInputfields = (obj) => {
       person.value = obj;
-      // toggleBase();
       console.log(person);
     };
 
     const disabled = computed(() => {
-      if (person.value.name) return true;
+      if (person.value.personId) return true;
       return false;
     });
 
@@ -289,10 +347,25 @@ export default {
 
     // confirm status
     const confirm = () => {
-      const newPerson = {
-        person: person.value,
-      };
-      console.log(person.value);
+      // person.value.attendanceCode = +route.params.code;
+      let newPerson = {};
+      if (person.value.personId) {
+        newPerson = {
+          person: personData.value,
+          attendanceCode: +route.params.code,
+        };
+      } else {
+        newPerson = {
+          person: {
+            firstName: person.value.name,
+            email: person.value.email,
+            homeAddress: person.value.address,
+            mobilePhone: enteredValue.value,
+          },
+          attendanceCode: +route.params.code,
+        };
+      }
+      console.log(personData.value, "p data");
       console.log(newPerson);
       loading.value = true;
       autosearch.value = true;
@@ -304,16 +377,33 @@ export default {
           console.log(res, "tosin");
 
           if (newPerson) checkedIn.value = true;
-          applyBase.value = false;
+          appltoggle.value = false;
+          checkedIn.value = true;
+
+          toast.add({
+            severity: "success",
+            summary: "Checkin Successful",
+            detail: "Member Checkin Successful",
+            life: 3000,
+          });
         })
         .catch((err) => {
+          appltoggle.value = false;
           loading.value = false;
           autosearch.value = false;
           console.log(err, "ajose");
         });
+
+      toast.add({
+        severity: "error",
+        summary: "Checkin Error",
+        detail: "Member Checkin failed",
+        life: 3000,
+      });
     };
 
     // confirm button check
+
     const confirmCheck = () => {
       confirm();
     };
@@ -321,6 +411,10 @@ export default {
     // function to clear input
     const clearNames = () => {
       names.value = [];
+    };
+
+    const notme = () => {
+      toggleBase();
     };
 
     // getting events and date
@@ -343,6 +437,46 @@ export default {
     };
     getDateAndEvent();
 
+    /* start masking functions */
+
+    // function mask email
+    const maskEmail = (str, numToShowInFront) => {
+      if (str.length > 3) {
+        const firstX = str.slice(0, numToShowInFront);
+        const midPoint = str.split("").indexOf("@");
+        let x = str.split("");
+        x.forEach((i, j) => {
+          if (j < midPoint) {
+            x[j] = "*";
+          }
+        });
+        x = x.join("");
+        return firstX + x.slice(numToShowInFront);
+      } else {
+        return str[0] + "*" + str[2];
+      }
+    };
+
+    const formatString = (str, numToShowInFront, numToHide) => {
+      if (str.length > 3) {
+        const firstX = str.slice(0, numToShowInFront);
+        // const midPoint = str.split('').indexOf('@')
+        const midPoint = numToShowInFront + numToHide;
+        let x = str.split("");
+        x.forEach((i, j) => {
+          if (j < midPoint) {
+            x[j] = "*";
+          }
+        });
+        x = x.join("");
+        return firstX + x.slice(numToShowInFront);
+      } else {
+        return str[0] + "*" + str[2];
+      }
+    };
+
+    /*end of masking functions */
+
     //not me button
     // const notMe = () => {};
 
@@ -351,7 +485,7 @@ export default {
       checkCharacter,
       populateInputfields,
       InputText,
-      applyBase,
+      appltoggle,
       names,
       emails,
       address,
@@ -369,9 +503,14 @@ export default {
       checkedIn,
       confirmCheck,
       disabled,
-      // notMe,
-      // submit,
-      // maskEmail,
+      connectName,
+      formatString,
+      maskEmail,
+      name,
+      email,
+      userAddress,
+      showNoPhoneError,
+      notme,
     };
   },
 };
