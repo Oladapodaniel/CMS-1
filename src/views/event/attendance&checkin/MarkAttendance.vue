@@ -9,7 +9,7 @@
     >
       <div class="row">
         <div class="col-md-12">
-          <NewMember @cancel="() => display = false"/>
+          <NewMember @cancel="() => display = false" @refresh="refresh"/>
         </div>
       </div>
     </Dialog>
@@ -21,6 +21,12 @@
           nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
           sed diam voluptua
         </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-">
+        <Toast />
       </div>
     </div>
 
@@ -75,7 +81,7 @@
                 </template>
                 <template #fallback>
                     <div class="row">
-                      <div class="col-md-12">Loading...</div>
+                      <div class="col-md-12 pl-4">Loading...</div>
                     </div>
                 </template>
             </Suspense>
@@ -207,10 +213,12 @@ import NewMember from "../../../views/event/attendance&checkin/NewMember";
 import TableData from "../../../components/attendance/EventAttendanceList";
 import membershipService from "../../../services/membership/membershipservice";
 import attendanceservice from '../../../services/attendance/attendanceservice';
+import { useToast } from 'primevue/usetoast';
 
 export default {
   components: { NewMember, TableData },
   setup() {
+    const toast = useToast();
     const isKioskMode = ref(false);
     const route = useRoute();
     const display = ref(false);
@@ -264,8 +272,14 @@ export default {
       console.log(personData);
     }
 
-    const sendExistingUser = () => {
-      attendanceservice.checkin(personData);
+    const sendExistingUser = async () => {
+      const response = await attendanceservice.checkin(personData.value);
+      if (response) {
+        searchText.value = "";
+        toast.add({severity:'success', summary:'Checked-in', detail:'Checkin was successful', life: 3000});
+      } else {
+        toast.add({severity:'error', summary:'Checkin Error', detail:'Checkin was not successful', life: 3000});
+      }
     }
 
     // const getRegisteredPeople = async (id) => {
@@ -279,6 +293,9 @@ export default {
     // };
 
     // getRegisteredPeople(route.query.id);
+    const refresh = () => {
+      searchText.value = "";
+    }
 
     return {
       isKioskMode,
@@ -291,9 +308,9 @@ export default {
       searchedMembers,
       searchingForMembers,
       searchText,
-      // member,
       addExistingMember,
       sendExistingUser,
+      refresh,
     };
   },
 };

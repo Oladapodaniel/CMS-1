@@ -7,9 +7,7 @@
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Name</span>
               <span
-                ><a
-                  >{{ person.name }}</a
-                ></span
+                ><a>{{ person.name }}</a></span
               >
             </span>
           </div>
@@ -31,9 +29,15 @@
                   @change="checkin"
                   :binary="true"
                 /> -->
-                <input type="checkbox" name="" class="custom-checkbox" :checked="person.isPresent" id=""
+                <input
+                  type="checkbox"
+                  name=""
+                  class="custom-checkbox"
+                  :checked="person.isPresent"
+                  id=""
                   @change="checkin($event, 1)"
-                >
+                  :disabled="checking"
+                />
               </span>
             </span>
           </div>
@@ -61,8 +65,16 @@
                   id="binary"
                   :value="person.isCheckedOut"
                   :binary="true"/> -->
-                  <input type="checkbox" name="" class="custom-checkbox" id="" :checked="person.isCheckedOut" @change="checkin($event, 2)">
-                  </span>
+                <input
+                  type="checkbox"
+                  name=""
+                  class="custom-checkbox"
+                  id=""
+                  :checked="person.isCheckedOut"
+                  @change="checkin($event, 2)"
+                  :disabled="checking"
+                />
+              </span>
             </span>
           </div>
         </div>
@@ -93,45 +105,99 @@
 <script>
 import { ref } from "vue";
 import MemberTag from "../../views/event/attendance&checkin/AttendanceTag";
-import attendanceservice from '../../services/attendance/attendanceservice';
-import { useToast } from 'primevue/usetoast';
-
+import attendanceservice from "../../services/attendance/attendanceservice";
+import { useToast } from "primevue/usetoast";
 
 export default {
-  props: [ "isKioskMode", "person" ],
+  props: ["isKioskMode", "person"],
   components: { MemberTag },
   setup(props, { emit }) {
     const checkedIn = ref(false);
     const checkedOut = ref(false);
     const display = ref(false);
     const toast = useToast();
+    const checking = ref(false);
 
     const checkin = async (e, option) => {
-
-      console.log(e.target.checked, "checked in");
-      let response = { };
+      let response = {};
       if (option === 1) {
-        response = await attendanceservice.checkin({ checkInAttendanceID: props.person.attendanceID, personAttendanceID: props.person.id })
-        if (!response) {
-          toast.add({severity:'error', summary:'Checkin Error', detail:'Checkin was not successful', life: 3000});
-          emit("togglecheckin", { value: props.person.isPresent, id: props.person.id })
-        } else {
-          emit("togglecheckin", { value: !props.person.isPresent, id: props.person.id })
-          toast.add({severity:`${e.target.checked ? 'success' : 'info'}`, summary:'Check Successful', detail:`Member marked ${e.target.checked ? "present" : "absent"}`, life: 3000});
+        try {
+          response = await attendanceservice.checkin({
+            checkInAttendanceID: props.person.attendanceID,
+            personAttendanceID: props.person.id,
+          });
+          emit("togglecheckin", {
+            value: !props.person.isPresent,
+            id: props.person.id,
+          });
+          toast.add({
+            severity: `${e.target.checked ? "success" : "info"}`,
+            summary: `${
+              e.target.checked ? "Checked" : "Unchecked"
+            } Successfully`,
+            detail: `Member marked ${e.target.checked ? "present" : "absent"}`,
+            life: 3000,
+          });
+        } catch (error) {
+          toast.add({
+            severity: "error",
+            summary: "Checkin Error",
+            detail: "Checkin was not successful",
+            life: 3000,
+          });
+          emit("togglecheckin", {
+            value: props.person.isPresent,
+            id: props.person.id,
+          });
         }
       } else {
-        response = await attendanceservice.checkout({ checkInAttendanceID: props.person.attendanceID, personAttendanceID: props.person.id })
-        if (!response) {
-          
-          toast.add({severity:'error', summary:'Checkin Error', detail:'Checkin was not successful', life: 3000});
-          emit("togglecheckout", { value: props.person.isCheckedOut, id: props.person.id })
-        } else {
-          emit("togglecheckout", { value: !props.person.isCheckedOut, id: props.person.id })
-          toast.add({severity:`${e.target.checked ? 'success' : 'info'}`, summary:'Checkin Successful', detail:`Member has ${e.target.checked ? "been checked out" : "not checked out"}`, life: 3000});
+        try {
+          checking.value = true;
+          response = await attendanceservice.checkout({
+            checkInAttendanceID: props.person.attendanceID,
+            personAttendanceID: props.person.id,
+          });
+          checking.value = false;
+
+          if (response.trim() === "User Was Not Checked In Earlier") {
+            console.log(response, "RESPE");
+            toast.add({
+              severity: "info",
+              summary: "Checkin Error",
+              detail: response,
+              life: 3000,
+            });
+
+            emit("togglecheckout", { value: false, id: props.person.id });
+          } else {
+            emit("togglecheckout", {
+              value: !props.person.isCheckedOut,
+              id: props.person.id,
+            });
+            toast.add({
+              severity: `${e.target.checked ? "success" : "info"}`,
+              summary: "Checkin Successful",
+              detail: `Member has ${
+                e.target.checked ? "checked out" : "not checked out"
+              }`,
+              life: 3000,
+            });
+          }
+        } catch (error) {
+          checking.value = false;
+          toast.add({
+            severity: "error",
+            summary: "Checkin Error",
+            detail: "Checkin was not successful",
+            life: 3000,
+          });
+          emit("togglecheckout", {
+            value: props.person.isCheckedOut,
+            id: props.person.id,
+          });
         }
       }
       console.log(response, "rrr");
-      
     };
 
     const checkout = () => {
@@ -144,6 +210,7 @@ export default {
       checkedOut,
       checkout,
       display,
+      checking,
     };
   },
 };
@@ -221,6 +288,7 @@ export default {
   height: 20px;
   color: #495057;
   border-radius: 3px;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+    box-shadow 0.2s;
 }
 </style>

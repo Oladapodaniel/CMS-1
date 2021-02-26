@@ -156,7 +156,7 @@
           </span>
           <div
             class="bio-info celeb-info"
-            :class="{ 'hide-tab': hideCelebTab, 'show-tab': !hideCelebTab }"
+            :class="{ 'hide-tab': hideCelebTab, 'showtab': !hideCelebTab }"
           >
             <div class="inputs">
               <div class="input-field">
@@ -1047,6 +1047,12 @@ export default {
 
 .modal-lg {
   max-width: 600px;
+}
+
+.showtab {
+  transition: all 0.5s ease-in-out;
+  height: 108px;
+  overflow: hidden;
 }
 
 @media (min-width: 663px) and (max-width: 667px) {

@@ -58,8 +58,10 @@
                   @click="selectEvent(event)"
                   >{{ event.name }}</a
                 >
+                <!-- Hidden -->
                 <a class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text" style="border-top: 1px solid #002044;color: #136ACD;" href="#"
                   @click="() => display = true"
+                  v-if="false"
                 >
                     <i class="pi pi-plus-circle mr-2 d-flex align-items-center" style="color: #136ACD;"></i>
                   Create new event
@@ -87,7 +89,7 @@
             />
             <div class="row mt-5">
               <div class="col-md-12 d-flex justify-content-center">
-                <button class="default-btn primary-bg text-white border-0" @click="onContinue">
+                <button class="default-btn primary-bg text-white border-0 contn-btn" @click="onContinue" :disabled="!selectedEvent.id || !selectedGroup.id">
                   Save and Continue
                 </button>
               </div>
@@ -160,11 +162,12 @@ export default {
     getGroups();
 
     const onContinue = async () => {
+      
       try {
-        const response = await attendanceservice.saveCheckAttendanceItem({ activityID: selectedEvent.value.id, groupId: selectedGroup.value.id })
+        const response = await attendanceservice.saveCheckAttendanceItem({ activityID: selectedEvent.value.id, groupID: selectedGroup.value.id })
         console.log(response, "RESPONSE P");
         store.dispatch("attendance/setItemData", response);
-        router.push({name: "CheckinType", query: { activityID: selectedEvent.value.id, activityName: selectedEvent.value.name, groupId: selectedGroup.value.id, groupName: selectedGroup.value.name, id: response.id } });
+        router.push({name: "CheckinType", query: { activityID: selectedEvent.value.id, activityName: selectedEvent.value.name, groupId: selectedGroup.value.id, groupName: selectedGroup.value.name, id: response.id, code: response.attendanceCode } });
       } catch (error) {
         console.log(error);
       }
@@ -188,5 +191,9 @@ export default {
 * {
     color: #02172e;
     /* font-family: Nunito Sans !important; */
+}
+
+.contn-btn:disabled {
+  opacity: 0.3;
 }
 </style>

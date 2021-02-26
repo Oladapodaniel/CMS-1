@@ -12,14 +12,14 @@
                                 <h5 class="event mt-3"> Event</h5>
                             </div>
                             <div class="col-md-10 col-sm-12">
-                                <Dropdown v-model="selectedEvent" :options="events"  style="width:100%" optionLabel="name" :filter="true" :disable="true">
+                                <Dropdown v-model="selectedEvent" :options="events"  style="width:100%" optionLabel="name" :filter="true" :disabled="true">
                                 </Dropdown>
                             </div>
                             <div class="col-md-2 col-sm-12">
                                 <h5 class="event mt-4"> Group</h5>
                             </div>
                             <div class="col-md-10 mt-3 col-sm-12">
-                                <MultiSelect v-model="selectedGroups" :options="groups" style="width:100%" optionLabel="name" placeholder="" display="chip" :disable="true"/>
+                                <MultiSelect v-model="selectedGroups" :options="groups" style="width:100%" optionLabel="name" placeholder="" display="chip" disabled/>
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <a class="c-pointer text-decoration-none"><h4 class="header4">Registration Link</h4></a>
+                                <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>

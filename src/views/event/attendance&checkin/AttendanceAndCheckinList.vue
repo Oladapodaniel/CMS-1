@@ -1,22 +1,22 @@
 
 <template>
-  <div class="container-wide">
+  <div class="mt-4">
 
     <!-- table area -->
-    <div class="table mx-0">
+    <div class="mx-0 t-border small-text">
       <div
         class="d-none d-md-flex table-header font-weight-700 justify-content-between"
       >
       <div class="col-md-3 dcreated">
-          <p>Date</p>
+          <p style="font-size:14px">Date</p>
         </div>
 
         <div class="col-md-4 alist">
-          <p>Event Name</p>
+          <p style="font-size:14px">Event Name</p>
         </div>
         
         <div class="col-md-3 tattendance">
-          <p>Group Name</p>
+          <p style="font-size:14px">Group Name</p>
         </div>
         <div class="col-md-2"></div>
       </div>
@@ -27,30 +27,42 @@
       <!-- <hr class="mt-n4" /> -->
       <!-- table body starts here -->
 
-      <div class="row font-weight-700 justify-content-between small-text" v-for="(item, index) in list" :key="index">
+      <div class="row font-weight-700 justify-content-between small-text tr-border-bottom mx-1" v-for="(item, index) in list" :key="index">
          <div class="col-md-3">
           <p class="d-flex justify-content-between mb-0">
             <span class="d-flex d-md-none tattendance2">Date Created</span>
-            <span class="edate edate2">{{ formatDate(item.eventDate) }}</span>
+            <span class="edate edate2">
+              <router-link class="text-decoration-none text-dark font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id } }">
+                {{ formatDate(item.eventDate) }}
+              </router-link>
+            </span>
           </p>
         </div>
 
         <div class="col-md-4">
           <p class="d-flex ml-2 justify-content-between mb-0">
             <span class="d-flex d-md-none alist2">Event Name</span>
-            <span class="elist elist2">{{ item.fullEventName }}</span>
+            <span class="elist elist2">
+              <router-link class="text-decoration-none text-dark font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id } }">
+                {{ item.fullEventName }}
+              </router-link>
+            </span>
           </p>
         </div>
        
         <div class="col-md-3">
           <p class="d-flex justify-content-between mb-0">
             <span class="d-flex d-md-none dcreated2">Group Name</span>
-            <span class="eattendance eattendance2">{{ item.fullGroupName }}</span>
+            <span class="eattendance eattendance2">
+              <router-link class="text-decoration-none text-dark font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id } }">
+                {{ item.fullGroupName }}
+              </router-link>
+            </span>
           </p>
         </div>
         <div class="col-md-2" @click="toggleEllips">
           <i
-            class="d-flex fas fa-ellipsis-v ion ion2 c-pointer"
+            class="d-flex justify-content-end fas fa-ellipsis-v ion ion2 c-pointer"
             id="dropdownMenuButton"
             data-toggle="dropdown"
             aria-haspopup="true"
@@ -58,7 +70,7 @@
           ></i>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item elipsis-items"> <router-link class="text-decoration-none text-dark" :to="{ name: 'AttendanceReport', params: { id: item.id }}">View Details</router-link> </a>
-            <a class="dropdown-item elipsis-items"> <router-link class="text-decoration-none text-dark" :to="{ name: 'MarkAttendance', query: { id: item.id }}">Checkin</router-link>  </a>
+            <a class="dropdown-item elipsis-items"> <router-link class="text-decoration-none text-dark" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id } }">Checkin</router-link>  </a>
             <a
               class="dropdown-item elipsis-items"
               href="#"
@@ -66,6 +78,12 @@
               >Delete</a
             >
           </div>
+        </div>
+      </div>
+
+      <div class="row" v-if="errorOccurred">
+        <div class="col-md-12 text-center">
+          <p>Error getting items</p>
         </div>
       </div>
     </div>
@@ -78,9 +96,9 @@ import { ref } from "vue";
 import dateFormatter from '../../../services/dates/dateformatter';
 
 export default {
-  props: [ "list" ],
+  props: [ "list", "errorOccurred" ],
 
-  setup() {
+  setup(props) {
     const expose = ref(false);
 
     const toggleEllips = () => {
@@ -90,6 +108,7 @@ export default {
     const formatDate = (date) => {
       return dateFormatter.normalDate(date);
     }
+    console.log(props.errorOccurred, "error cooo");
 
     return {
       expose,
@@ -131,7 +150,6 @@ export default {
   border-radius: 22px;
   color: #ffffff;
   font-weight: bold;
-  font-size: 1rem;
   outline: none;
   display: flex;
   align-items: center;
@@ -143,13 +161,11 @@ export default {
 .dcreated,
 .tattendance,
 .alist {
-  /* font-size: 1.3rem; */
   font-weight: 700;
   color: #212529;
 }
 
 .dropdown-item {
-  /* font-size: 1rem; */
   font-weight: 600;
   color: #212529;
   cursor: pointer;
@@ -158,7 +174,6 @@ export default {
 .dcreated2,
 .tattendance2,
 .alist2 {
-  font-size: 0.8rem;
   font-weight: 700;
   color: #212529;
   margin: 0.8rem 0.8rem;
@@ -167,29 +182,24 @@ export default {
 .elist,
 .eattendance,
 .edate {
-  /* font-size: 1rem; */
-  font-weight: 300;
+  font-weight: 500;
   color: #212529;
 }
 
 .elist2,
 .eattendance2,
 .edate2 {
-  /* font-size: 1rem; */
-  font-weight: 300;
   color: #212529;
   margin: 0.8rem 0.8rem;
 }
 
 .ion {
-  /* font-size: 1.1rem; */
   font-weight: 600;
   display: flex;
   justify-content: start;
 }
 
 .ion2 {
-  /* font-size: 1.1rem; */
   font-weight: 600;
   display: flex;
   justify-content: end;
@@ -224,7 +234,6 @@ export default {
     border-radius: 20px;
     color: #ffffff;
     font-weight: bold;
-    font-size: 0.8rem;
     outline: none;
     display: flex;
     align-items: center;

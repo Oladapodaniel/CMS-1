@@ -69,21 +69,27 @@ import Button from 'primevue/button'
 import { reactive } from 'vue'
 import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useRoute } from "vue-router";
+import { useToast } from 'primevue/usetoast';
+
     export default {
         components:{ Button },
 
         setup(props, { emit }) {
             const route = useRoute();
             const personDetails = reactive({ });
+            const toast = useToast();
 
             const savePerson = async () => {
                 emit("cancel");
                 try {
                     console.log({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 }, "body");
-                    const response = await attendanceservice.checkin({ person: personDetails.value, checkInAttendanceID: route.query.id, checkInChannel: 0 });
+                    const response = await attendanceservice.checkin({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 });
+                    toast.add({severity:'success', summary:'Check-in Successful', detail:'Member added and checked-in was successful', life: 3000});
                     console.log(response, "create person");
+                    emit("refresh")
                 } catch (error) {
                     console.log(error);
+                    toast.add({severity:'error', summary:'Check-in Failed', detail:'Member adding and checked-in was not successful', life: 3000});
                 }
             }
 
@@ -103,7 +109,7 @@ import { useRoute } from "vue-router";
     margin-top: 300px;
     margin-bottom: 300px;
 } */
-.p-button-outlined{
+/* .p-button-outlined{
     background-color:#fff9f9!Important;
     color: black!important;
     font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) var(--unnamed-font-size-15)/20px var(--unnamed-font-family-nunito-sans)!important;
@@ -111,7 +117,7 @@ import { useRoute } from "vue-router";
     font: normal normal bold 15px/20px Nunito Sans!important;
     letter-spacing: 0px!important;
    
-}
+} */
 .max{
 font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) var(--unnamed-font-size-15)/20px var(--unnamed-font-family-nunito-sans)!important;
 letter-spacing: var(--unnamed-character-spacing-0)!important;
