@@ -2,20 +2,6 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <!-- <div class="col-sm-12">
-          <div class="top mt-3">
-            <div class="events">
-              <div>Attendance & Checkin</div>
-            </div>
-            <div class="actions">
-              <router-link :to="{ name: 'AddFirstTimer' }">
-                <button class="buttonn add-person-btn">
-                  Add New Attendance
-                </button>
-              </router-link>
-            </div>
-          </div>
-        </div> -->
 
         <!-- <hr class="hr" /> -->
         <div class="no-person" v-if="items.length === 0 && !errorOccurred">
