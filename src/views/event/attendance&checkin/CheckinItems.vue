@@ -144,7 +144,6 @@ export default {
 @media screen and (min-width: 990px) {
   .main-body {
     width: 95%;
-    /* max-width: 1021px; */
     margin: 0 auto;
   }
 }
