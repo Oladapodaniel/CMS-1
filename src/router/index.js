@@ -485,6 +485,12 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingList')
     },
     {
+        path: 'offering',
+        name: 'Offering',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/Offering')
+    },
+    {
         path: 'offeringcategory',
         name: 'OfferingCategory',
         component: () =>
