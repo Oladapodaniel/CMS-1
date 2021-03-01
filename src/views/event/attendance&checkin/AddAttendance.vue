@@ -71,13 +71,14 @@
                               type="text"
                               class="form-control"
                               placeholder="Find event"
+                              v-model="categorySearchText"
                             />
                           </div>
                         </div>
 
                         <a
                           class="dropdown-item font-weight-700 small-text py-2 c-pointer"
-                          v-for="(category, index) in eventCategories"
+                          v-for="(category, index) in filteredCategories"
                           :key="index"
                           @click="selectCategory(category)"
                           >{{ category.name }}</a
@@ -173,6 +174,7 @@
               <div
                 class="dropdown-menu w-100"
                 aria-labelledby="dropdownMenuButton"
+                style="max-height: 350px;overflow-y:auto"
               >
                 <div class="row w-100 mx-auto" v-if="events.length > 5">
                   <div class="col-md-12">
@@ -180,13 +182,14 @@
                       type="text"
                       class="form-control"
                       placeholder="Find event"
+                      v-model="eventSearchText"
                     />
                   </div>
                 </div>
 
                 <a
                   class="dropdown-item font-weight-700 small-text py-2 c-pointer"
-                  v-for="(event, index) in events"
+                  v-for="(event, index) in filteredEvents"
                   :key="index"
                   @click="selectEvent(event)"
                   >{{ event.name }}</a
@@ -346,6 +349,18 @@ export default {
       display.value = false;
     }
 
+    const categorySearchText = ref("");
+    const filteredCategories = computed(() => {
+      if (!categorySearchText.value) return eventCategories.value;
+      return eventCategories.value.filter(i => i.name.toLowerCase().includes(categorySearchText.value.toLowerCase()));
+    })
+
+    const eventSearchText = ref("");
+    const filteredEvents= computed(() => {
+      if (!eventSearchText.value) return events.value;
+      return events.value.filter(i => i.name.toLowerCase().includes(eventSearchText.value.toLowerCase()));
+    })
+
     getEvents();
     getGroups();
 
@@ -392,6 +407,10 @@ export default {
       newCategoryCreated,
       showBtModal,
       popModal,
+      filteredCategories,
+      categorySearchText,
+      eventSearchText,
+      filteredEvents,
     };
   },
 };
