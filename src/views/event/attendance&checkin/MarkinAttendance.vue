@@ -248,7 +248,7 @@ export default {
       // if (e.target.value.length > 0) {
       loading.value = true;
       autosearch.value = true;
-      axios.get(`/api/checkinattendance/searchmemberbyphone?searchtext=${enteredValue.value}&&attendanceCode=${route.params.code}`)
+      axios.get(`/searchmemberbyphone?searchtext=${enteredValue.value}&&attendanceCode=${route.params.code}`)
       // axios
       //   .get(
       //     `/api/CheckInAttendance/SearchMemberByPhone?searchText=${
@@ -259,10 +259,10 @@ export default {
           loading.value = false;
           autosearch.value = false;
           names.value = res.data;
-          personData.value.firstName = res.data[0].name;
-          personData.value.email = res.data[0].email;
-          personData.value.homeAddress = res.data[0].address;
-          personData.value.personId = res.data[0].personId;
+          personData.value.firstName = res.data[0] ? res.data[0].name : "";
+          personData.value.email = res.data[0] ? res.data[0].email : "";
+          personData.value.homeAddress = res.data[0] ? res.data[0].address : "";
+          personData.value.personId = res.data[0] ? res.data[0].personId : "";
           personData.value.mobilePhone = enteredValue.value;
           person.value = res.data[0];
 
@@ -333,7 +333,7 @@ export default {
       autosearch.value = true;
       noError.value = true;
       axios
-        .post("/api/CheckInAttendance/MarkAttendance", newPerson)
+        .post("/MarkAttendance", newPerson)
         .then((res) => {
           loading.value = false;
           autosearch.value = false;
