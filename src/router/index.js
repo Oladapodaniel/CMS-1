@@ -232,6 +232,13 @@ const routes = [{
     },
     
     {
+        path: 'attendancetag',
+        name: 'AttendanceTag',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceTag')
+    },
+    
+    {
         path: 'addattendancecheckin',
         name: 'AddAttendance',
         component: () =>
@@ -478,7 +485,13 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingList')
     },
     {
-        path: 'offeringcat',
+        path: 'offering',
+        name: 'Offering',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/Offering')
+    },
+    {
+        path: 'offeringcategory',
         name: 'OfferingCategory',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/SelectOffCat')
@@ -494,8 +507,32 @@ const routes = [{
         name: 'OfferingReport',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
+    },
+    {
+        path: 'transactionlist',
+        name: 'TransactionList',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
+    },
+    {
+        path: 'payments',
+        name: 'PaymentTransaction',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentTransaction')
+    },
+    {
+        path: 'paymentoptions',
+        name: 'PaymentOption',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentOption')
     }
-    ]
+    ],
+},
+{
+    path: '/checkin/e/:code',
+    name: 'WebCheckin',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/MarkinAttendance')
 },
 {
     path: '/about',
@@ -519,7 +556,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 
 
-    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm") && !tokenIsValid) return next(true)
+    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;

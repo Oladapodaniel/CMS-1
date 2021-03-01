@@ -59,7 +59,7 @@
             <h4>Things You Can Do</h4>
             <div class="can-do-links">
               <router-link to="/tenant/people/add"
-                >Add member</router-link
+                >Add Member</router-link
               >
               <router-link to="/tenant/sms/compose"
                 >Send SMS</router-link

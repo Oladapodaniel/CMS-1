@@ -163,15 +163,6 @@ export default {};
 }
 
 @media screen and (min-width: 500px) {
-  /* .main {
-    background: #0f529f;
-    border-radius: 1rem;
-    margin-top: 3rem;
-    height: 40rem;
-    width: 24rem;
-    overflow: hidden;
-  } */
-
   .child {
     background: rgb(255, 251, 251);
     margin: 4rem auto;

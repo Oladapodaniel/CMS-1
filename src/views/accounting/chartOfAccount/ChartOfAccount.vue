@@ -1,6 +1,9 @@
 <template>
     <!-- <div>Chart of Accounts</div> -->
-    <div class="container-wide container-top" style="border: 2px solid red">
+    <div class="whole-con">
+        <div  class="main-con">
+            <div class="main-body">
+                <div class="container-wide container-top">
         <div class="row">
             <div class="col-12 col-md-6 p-0 text-center text-md-left">
                 <div>
@@ -24,7 +27,7 @@
         <div class="row">
             <div class="col-12">
                 <div v-if="tab == 'assets'">
-                    <Assets />
+                    <Assets :assets="chartOfAccounts.find(i => i.key === 0) ? chartOfAccounts.find(i => i.key === 0).accounts : ''"/>
                 </div>
                 <div v-else-if="tab == 'liabilities'">
                     <div>
@@ -49,10 +52,13 @@
             </div>
         </div>
     </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import axios from "@/gateway/backendapi";
 import Assets from '@/views/accounting/chartOfAccount/Assets'
 import Liabilities from '@/views/accounting/chartOfAccount/Liabilities'
@@ -80,15 +86,24 @@ export default {
             tab.value = 'equity'
         }
 
-        const getChartOfAccounts = ref([])
+        const chartOfAccounts = ref([])
 
-        onMounted(() => {
-            axios.get('/api/Financials/GetChartOfAccounts')
-                .then(res => console.log(res))
-                .catch(err => console.log(err))
-        })
+        const getChartOfAccounts = () => {
+            axios.get('/api/financials/getchartofaccounts')
+                .then(res => {
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
+                    chartOfAccounts.value = res.data
+                    console.log(res)
+                })
+                .catch(err => {
+                    NProgress.done();
+                    console.log(err)
+                })
+        }
+        getChartOfAccounts()
         return{
-            tab, assets, liabilities, income, expenses, equity, getChartOfAccounts
+            tab, assets, liabilities, income, expenses, equity, chartOfAccounts
         }
     }
 }
@@ -131,5 +146,29 @@ export default {
 
     .pointer {
         cursor: pointer;
+    }
+
+    .main-con {
+    width: 100%;
+    height: 70%;
+    }
+
+    .main-body {
+    height: 100%;
+    }
+
+    @media screen and (min-width: 1400px) {
+  .main-con {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+    @media screen and (min-width: 990px) {
+    .main-body {
+        width: 95%;
+        /* max-width: 1021px; */
+        margin: 0 auto;
+    }
     }
 </style>

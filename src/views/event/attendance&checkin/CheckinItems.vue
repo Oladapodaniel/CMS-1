@@ -2,32 +2,23 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <!-- <div class="col-sm-12">
-          <div class="top mt-3">
-            <div class="events">
-              <div>Attendance & Checkin</div>
-            </div>
-            <div class="actions">
-              <router-link :to="{ name: 'AddFirstTimer' }">
-                <button class="buttonn add-person-btn">
-                  Add New Attendance
-                </button>
-              </router-link>
-            </div>
-          </div>
-        </div> -->
 
         <!-- <hr class="hr" /> -->
         <div class="no-person" v-if="items.length === 0 && !errorOccurred">
-          <div class="empty-img">
+          <div class="empty-img mt-5">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't Attendance yet</p>
+            <p class="tip">You have no attendance yet</p>
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="items.length > 0 && !loading">
           <div class="col-md-12 px-0">
             <List :list="items" :errorOcurred="errorOccurred" />
+          </div>
+        </div>
+        <div class="row" v-if="cantGetItems">
+          <div class="col-md-12">
+            <p>Error getting items, please reload</p>
           </div>
         </div>
       </div>
@@ -48,15 +39,18 @@ export default {
     const items = ref([ ]);
     const loading = ref(false);
     const errorOccurred = ref(false);
+    const cantGetItems = ref(true);
 
     // const getAttendanceItems = async () => {
       try {
+        cantGetItems.value = false;
         loading.value = true;
         const response = await attendanceservice.getItems();
         console.log(response, "checkins");
         items.value = items.value ? response : [ ];
         loading.value = false;
       } catch (error) {
+        cantGetItems.value = true;
         console.log(error);
         loading.value = false;
         errorOccurred.value = true;
@@ -69,6 +63,7 @@ export default {
       items,
       loading,
       errorOccurred,
+      cantGetItems
     };
   },
 };
@@ -149,7 +144,6 @@ export default {
 @media screen and (min-width: 990px) {
   .main-body {
     width: 95%;
-    /* max-width: 1021px; */
     margin: 0 auto;
   }
 }

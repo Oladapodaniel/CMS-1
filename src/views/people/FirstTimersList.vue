@@ -73,18 +73,18 @@
           <label>SELECT ALL</label>
         </div>
         <div class="filter">
-          <p @click="toggleFilterFormVissibility">
+          <p @click="toggleFilterFormVissibility" class="mt-2">
             <i class="fas fa-filter"></i>
             FILTER
           </p>
         </div>
-        <p @click="toggleSearch" class="search-text">
+        <p @click="toggleSearch" class="search-text mt-2">
             <i class="fa fa-search"></i> SEARCH
           </p>
         <div class="search d-flex" >
           <label 
             class="label-search d-flex"
-            :class="{ 'show-search': searchIsVisible }"
+            :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
           >
             <input type="text" placeholder="Search..." v-model="searchText" />
             <span class="empty-btn">x</span>
@@ -650,7 +650,7 @@ export default {
 .table-top p:hover {
   cursor: pointer;
 }
-
+/* 
 .label-search {
   width: 0;
   background: transparent;
@@ -687,7 +687,7 @@ export default {
   border-radius: 5px 0px 0px 5px;
   background: #ebeff4;
   transition: all 0.5s ease-in-out;
-}
+} */
 
   .header{
     background: #f1f3f9;

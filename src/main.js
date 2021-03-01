@@ -38,6 +38,7 @@ axios.interceptors.request.use((config) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // config.headers.Authorization = `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}`
     /*eslint no-undef: "warn"*/
     NProgress.start()
     return config;
@@ -49,7 +50,6 @@ axios.interceptors.request.use((config) => {
     return response
   })
 
-// axios.defaults.baseURL = "https://churchplusv3coreapi.azurewebsites.net/";
 const app = createApp(App);
 app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')
 // createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).mount('#app')

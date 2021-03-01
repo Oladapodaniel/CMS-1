@@ -104,18 +104,18 @@
                 <label>SELECT ALL</label>
               </div>
               <div class="filter">
-                <p @click="toggleFilterFormVissibility">
+                <p @click="toggleFilterFormVissibility" class="mt-2">
                   <i class="fas fa-filter"></i>
                   FILTER
                 </p>
               </div>
-              <p @click="toggleSearch" class="search-text">
+              <p @click="toggleSearch" class="search-text  mt-2">
                 <i class="fa fa-search"></i> SEARCH
               </p>
               <div class="search d-flex">
                 <label
                   class="label-search d-flex"
-                  :class="{ 'show-search': searchIsVisible }"
+                  :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
                 >
                   <input type="text" placeholder="Search..." v-model="searchText" />
                   <span class="empty-btn">x</span>
@@ -748,14 +748,13 @@ const deleteMember = (id) => {
 }
 
 .show-search {
-  width: 174px;
-  overflow: hidden;
-  transition: all 0.5 ease-in-out;
-  border: 1px solid #dde2e6;
-  border-radius: 5px 0px 0px 5px;
-  background: #ebeff4;
-  transition: all 0.5s ease-in-out;
-}
+    width: 174px;
+    overflow: hidden;
+    border: 1px solid #dde2e6;
+    border-radius: 5px 0px 0px 5px;
+    background: #ebeff4;
+    transition: all 0.9s cubic-bezier(.38,.77,.2,-0.54);
+  }
 
 /* .filter,
 .search {

@@ -3,25 +3,26 @@
         <div class="container">
             <div class="row mt-4 border mx-sm-0 rounded sub-con">
                 <div class="col-md-12 col-sm-12 col-lg-12 mt-3 mb-5 border-bottom">
-                    <h5 class="header5">Group Category Attendance</h5>
+                    <h5 class="page-header">Payment Options</h5>
                 </div>
                 <div class="row m-auto">
-                    <div class="col-md-8 offset">
-                        <div class="row">
+                    <div class="col-md-12">
+                        <!-- <div class="row">
                             <div class="col-md-2 col-sm-12">
                                 <h5 class="event mt-3"> Event</h5>
                             </div>
                             <div class="col-md-10 col-sm-12">
-                                <Dropdown v-model="selectedEvent" :options="events"  style="width:100%" optionLabel="name" :filter="true" :disabled="true">
+                                <Dropdown v-model="selectedEvent" :options="events"  style="width:100%" optionLabel="name" :filter="true" :disable="true">
                                 </Dropdown>
                             </div>
                             <div class="col-md-2 col-sm-12">
                                 <h5 class="event mt-4"> Group</h5>
                             </div>
                             <div class="col-md-10 mt-3 col-sm-12">
-                                <MultiSelect v-model="selectedGroups" :options="groups" style="width:100%" optionLabel="name" placeholder="" display="chip" disabled/>
+                                <MultiSelect v-model="selectedGroups" :options="groups" style="width:100%" optionLabel="name" placeholder="" display="chip" :disable="true"/>
                             </div>
-                        </div>
+                        </div> -->
+                        <div class="contri-type">Contribution Type Name</div>
                     </div>
                 
                 </div>
@@ -29,34 +30,62 @@
                 
                 </div>
                  <div class="col-md-12 mb-1">
-                      <h5 class="check">Check in options</h5>
+                      <h5 class="check">Available options for payment</h5>
                 </div>
                 <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded" @click="toggleLink">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/group.svg" alt="marked Attendance image">
+                                <img src="../../assets/group.svg" alt="marked Attendance image">
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a>
+                                <a class="c-pointer text-decoration-none"><h4 class="header4">Direct Payment Link</h4></a>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>
+                        </div>
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 d-flex align-items-center justify-content-center" :class="{ 'show' : displayLink, 'hide' : !displayLink }">
+                            <div>https://mylordmylove.com</div>
                         </div>
                     
                 </div>
                 <div class="col-md-12 mb-3">
                 </div>
-                <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
+             
+
+               
+                <div class="col-md-12 mb-3">
+                </div>
+                   <div class="row w-100">
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded" @click="toggleQr">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/group1.svg" alt="marked Attendance image">
+                                <img src="../../assets/group2.svg" alt="marked Attendance image">
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" :to="{ name: 'MarkAttendance', query: { id: route.query.id }}">Marked Attendance</router-link></h4>
+                                <h4 class="header4"> QR </h4>
+                                <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 d-flex align-items-center justify-content-center" :class="{ 'show-qr' : displayQr, 'hide' : !displayQr }">
+                            <div><img src="../../assets/qrcode.png"></div>
+                        </div>
+                    
+                </div>
+                 <div class="col-md-12 mb-3">
+                </div>
+                   <div class="row w-100">
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
+                            <div class="row">
+                            <div class="col-md-2 col-sm-2 image mt-3">
+                                <img src="../../assets/group2.svg" alt="marked Attendance image">
+
+                            </div>
+                            <div class="col-md-10 col-sm-10  mt-3">
+                                <h4 class="header4">Wordpress Plugin</h4>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>
@@ -66,68 +95,20 @@
                 <div class="col-md-12 mb-3">
                 </div>
                    <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded" @click="toggleIFrame">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/group1.svg" alt="marked Attendance image">
+                                <img src="../../assets/group.svg" alt="marked Attendance image">
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" to="/tenant/attendancecheckin/childcheckin">Child Checking</router-link></h4>
+                                <h4 class="header4">iFrame</h4>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>
                         </div>
-                    
-                </div>
-                <div class="col-md-12 mb-3">
-                </div>
-                   <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
-                            <div class="row">
-                            <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/group2.svg" alt="marked Attendance image">
-
-                            </div>
-                            <div class="col-md-10 col-sm-10  mt-3">
-                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" to="/tenant/attendancecheckin/ussd">Ussd</router-link> </h4>
-                                <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
-                            </div>
-                            </div>
-                        </div>
-                    
-                </div>
-                <div class="col-md-12 mb-3">
-                </div>
-                   <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
-                            <div class="row">
-                            <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/group2.svg" alt="marked Attendance image">
-
-                            </div>
-                            <div class="col-md-10 col-sm-10  mt-3">
-                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" to="/tenant/attendancecheckin/qr">QR</router-link> </h4>
-                                <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
-                            </div>
-                            </div>
-                        </div>
-                    
-                </div>
-                <div class="col-md-12 mb-3">
-                </div>
-                   <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
-                            <div class="row">
-                            <div class="col-md-2 col-sm-2 image mt-3">
-                                <img src="../../../assets/group.svg" alt="marked Attendance image">
-
-                            </div>
-                            <div class="col-md-10 col-sm-10  mt-3">
-                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" to="/tenant/attendancecheckin/sms">Sms</router-link></h4>
-                                <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
-                            </div>
-                            </div>
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 d-flex align-items-center justify-content-center" :class="{ 'show-iFrame' : displayIFrame, 'hide' : !displayIFrame }">
+                            <div>https://mylordmylove.com</div>
                         </div>
                     
                 </div>
@@ -135,6 +116,7 @@
                 <div class="col-md-12 mb-3">
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -142,37 +124,51 @@
 
 <script>
 // import Button from 'primevue/button';
-import Dropdown from 'primevue/dropdown';
-import MultiSelect from 'primevue/multiselect';
+// import Dropdown from 'primevue/dropdown';
+// import MultiSelect from 'primevue/multiselect';
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
 
     export default {
-        components: { Dropdown, MultiSelect},
+        // components: { Dropdown, MultiSelect},
 
         setup() {
             const route = useRoute();
-            const groups = ref([]);
-            const selectedEvent = ref({ });
-            const events = ref([ ]);
-            const selectedGroups = ref([ ]);
+ 
+            const displayLink = ref(false)
+            const displayQr = ref(false)
+            const displayIFrame = ref(false)
 
-            if (route.query.activityID) {
-                events.value.push({ name: route.query.activityName, id: route.query.activityID })
-                selectedEvent.value = { name: route.query.activityName, id: route.query.activityID }
+            const toggleLink = () => {
+                displayLink.value = !displayLink.value
+                displayQr.value = false
+                displayIFrame.value = false
             }
 
-            if (route.query.groupId) {
-                groups.value.push({ name: route.query.groupName, id: route.query.groupId })
-                selectedGroups.value.push({ name: route.query.groupName, id: route.query.groupId })
+            const toggleQr = () => {
+                displayQr.value = !displayQr.value
+                displayLink.value = false
+                displayIFrame.value = false
             }
+
+            const toggleIFrame = () => {
+                displayIFrame.value = !displayIFrame.value
+                displayLink.value = false
+                displayQr.value = false
+            }
+
+            // if (route.query.activityID) {
+            //     events.value.push({ name: route.query.activityName, id: route.query.activityID })
+            //     selectedEvent.value = { name: route.query.activityName, id: route.query.activityID }
+            // }
+
+            // if (route.query.groupId) {
+            //     groups.value.push({ name: route.query.groupName, id: route.query.groupId })
+            //     selectedGroups.value.push({ name: route.query.groupName, id: route.query.groupId })
+            // }
 
             return {
-                groups,
-                selectedEvent,
-                events,
-                selectedGroups,
-                route,
+                displayLink, route, toggleLink, displayQr, toggleQr, toggleIFrame, displayIFrame
             }
         }
 
@@ -220,15 +216,7 @@ color: #02172E;
 opacity: 1;
     
 }
-.header5{
- font: var(--unnamed-font-style-normal) normal 600 24px/32px var(--unnamed-font-family-nunito-sans);
-letter-spacing: var(--unnamed-character-spacing-0);
-text-align: left;
-font: normal normal 600 24px/32px Nunito Sans;
-letter-spacing: 0px;
-color: #02172E;
-opacity: 1;
-}
+
 .event{
  font: var(--unnamed-font-style-normal) normal normal 16px/22px var(--unnamed-font-family-nunito-sans);
 letter-spacing: var(--unnamed-character-spacing-0);
@@ -269,7 +257,49 @@ opacity: 0.8;
 .container{
     margin-bottom: 40px;
 }
-.progress-bar{
-    height: 30%!important;
+
+.contri-type {
+    font-size: 1.7em;
 }
+
+.page-header {
+  font: normal normal 800 29px Nunito sans;
+}
+
+.hide {
+    height: 0;
+    overflow: hidden;
+    border: 0px solid #dee2e6;
+    transition: all 0.5s ease-in-out;
+}
+
+.show {
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    padding: 10px;
+    transition: all 0.5s ease-in-out;
+    height: 100px;
+    overflow: hidden;
+}
+
+.show-qr {
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    padding: 10px;
+    transition: all 0.5s ease-in-out;
+    height: 300px;
+    overflow: hidden;
+
+}
+
+.show-iFrame {
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    padding: 10px;
+    transition: all 0.5s ease-in-out;
+    height: 200px;
+    overflow: hidden;
+
+}
+
 </style>

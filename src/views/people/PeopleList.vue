@@ -60,18 +60,18 @@
           <label>SELECT ALL</label>
         </div>
         <div class="filter">
-          <p @click="toggleFilterFormVissibility">
+          <p @click="toggleFilterFormVissibility" class="mt-2">
             <i class="fas fa-filter"></i>
             FILTER
           </p>
         </div>
-        <p @click="toggleSearch" class="search-text">
+        <p @click="toggleSearch" class="search-text mt-2">
             <i class="fa fa-search"></i> SEARCH
           </p>
         <div class="search d-flex" >
           <label 
             class="label-search d-flex"
-            :class="{ 'show-search': searchIsVisible }"
+            :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
           >
             <input type="text" placeholder="Search..." v-model="searchText" />
             <span class="empty-btn">x</span>
@@ -806,7 +806,7 @@ a {
 .phone .data-value {
   /* margin-left: 38px; */
 }
-
+/* 
 .label-search {
   width: 0;
   background: transparent;
@@ -833,7 +833,7 @@ a {
   display: flex;
   align-items: center;
   padding: 0 5px;
-}
+} */
 
 .table-top {
   font-weight: 800;
@@ -845,7 +845,7 @@ a {
   cursor: pointer;
 }
 
-.show-search {
+/* .show-search {
   width: 174px;
   overflow: hidden;
   transition: all 0.5 ease-in-out;
@@ -853,7 +853,7 @@ a {
   border-radius: 5px 0px 0px 5px;
   background: #ebeff4;
   transition: all 0.5s ease-in-out;
-}
+} */
 
 .filter-options {
   height: 0;

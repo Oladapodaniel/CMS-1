@@ -1,93 +1,123 @@
 <template>
-  <div class="container-wide">
-    <div class="row my-3">
-      <div class="col-sm-4 first-timers-text">
-        <h2 class="page-header"><bold>Offerings</bold></h2>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <hr class="hr" />
-      </div>
-    </div>
+  <!-- <div class="container-wide container-top"> -->
+        <div class="top container-wide mt-3">
+          <div class="row">
+              <div class="col-sm-12">
+                <div class="page-header">Contribution Category</div>
+                <hr class="hr"/>
+              </div>
+            </div>
+        </div>
 
     <!-- input area -->
-    <div class="row my-5 mx-auto">
-      <div class="col-lg-9 col-sm-12 my-auto">
-        <div class="input-field">
-          <label for="" class="label">Name</label>
+    <div class="container-wide">
+      <div class="row my-5 mx-auto">
+        <div class="col-sm-4 text-sm-right">
+           <label for="" class="label">Name</label>
+        </div>
+      <div class="col-sm-5 mt-sm-3">
+ 
+         
           <input
             type="text"
-            class="input form-control"
+            class="form-control textbox-height"
             placeholder=""
+            v-model="name"
             required
           />
+ 
+      </div>
+      <div class="col-sm-4 mt-3 my-sm-3 text-sm-right">
+           <label for="" class="label">Income Account</label>
+      </div>
+      <div class="col-sm-5 my-sm-3">
+          <Dropdown v-model="selectedIncomeAccount" class="w-100 p-0" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+
+              </Dropdown>
+      </div>
+      <div class="col-sm-4 mt-3 my-sm-3 text-sm-right">
+           <label for="" class="label">Cash Account</label>
         </div>
-        <div class="input-field">
-          <label for="" class="label">Income Account</label>
-          <input type="text" class="input form-control" placeholder="" />
+      <div class="col-sm-5 my-sm-3">
+ 
+         
+          <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
+            
+          </Dropdown>
         </div>
-        <div class="input-field">
-          <label for="" class="label">Cash Account</label>
-          <input type="text" class="input form-control" placeholder="" />
+
+        <div class="col-sm-12 mt-4" @click="toggleRem">
+          <div class="row">
+              <div class="col-sm-12 d-flex">
+                  <i class="check-it mr-2">
+                  <span class="child" v-if="applyRem"></span>
+                </i>
+                <h6>Apply Remitance</h6>
+              </div>
+          </div>
+        </div>
+      <div class="col-sm-12 mt-3" v-if="applyRem">
+        <hr class="hr"/>
+      </div>
+      <div class="col-12 pl-0" v-if="applyRem">
+       
+      </div>
+  
+        <div class="col-lg-6 offset-lg-4" v-if="applyRem">
+        <div v-for="(item, index) in remitance" :key="index">
+        <div class="row mt-3 mb-4">
+          <div class="col-5 col-sm-6">
+            <div class="">Account</div>
+          <Dropdown v-model="item.account" class="w-100  mt-2" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+          </Dropdown>
+          </div>
+
+          <div class="col-5 col-sm-4 pl-sm-0">
+            <div class="">Percentage %</div>
+
+            <div class="mt-2">
+              <input type="text" v-model="item.percentage" class="form-control textbox-height" placeholder="" />
+            </div>
+          </div>
+          <div class="col-1 mt-4 align-self-center" @click="deleteItem(index)">
+            <i class="pi pi-trash"></i>
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-2 mt-3 mb-3">
+          <button
+              v-on:click="addRemittance"
+              class="btn btnIcons btn-secondary"
+            >
+              <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
+              Add
+            </button>
+          </div>
+          <div class="col-2 mt-3 mb-3 offset-3 offset-4">
+          <button class="add-person-btn button default-btn border-0" @click="save">
+            Save
+          </button>
+        </div>
         </div>
       </div>
+      <!--end of diisplay bottom area -->
+      
     </div>
+    </div>
+    
     <!-- End input area -->
 
     <!-- elipse Area -->
-    <div class="col-sm-12 ml-2" @click="toggleRem">
-      <span class="row">
-        <!-- <input type="checkbox" class="form-check" /> -->
-        <i class="check-it mr-2">
-          <span class="child" v-if="applyRem"></span>
-        </i>
-        <h6>Apply Remitance</h6>
-      </span>
-    </div>
+  
     <!-- End of elipse Area -->
 
     <!-- diisplay bottom area -->
-    <div class="row my-3" v-if="applyRem">
-      <div class="col-md-12">
-        <hr />
-      </div>
-    </div>
+    
 
-    <div class="col-lg-12" v-if="applyRem">
-      <div class="row">
-        <div class="col-sm-4 col-12 offset-sm-1">
-          <div class="">Account</div>
-          <select class="form-control mt-2">
-            <option selected>Select</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
-
-        <div class="col-sm-4 col-12 mt-3 mt-sm-0">
-          <div class="">Percentage %</div>
-
-          <div class="mt-2">
-            <input type="text" class="form-control" placeholder="" />
-          </div>
-        </div>
-
-        <div class="col col-sm-2 col-12 mt-3 mt-sm-0">
-          <button
-            v-on:click="enableGroupName"
-            class="btn btnIcons btn-secondary"
-          >
-            <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
-            Add
-          </button>
-        </div>
-      </div>
-    </div>
-    <!--end of diisplay bottom area -->
-  </div>
+    
+    <Toast />
+  <!-- </div> -->
 </template>
 
 
@@ -100,17 +130,114 @@
 
 <script>
 import { ref } from "vue";
+import axios from "@/gateway/backendapi";
+import Dropdown from 'primevue/dropdown';
+import Toast from 'primevue/toast';
+import { useToast } from "primevue/usetoast";
 export default {
+  components: {
+    Dropdown, Toast
+  },
   setup() {
     const applyRem = ref(false);
+    const cashBankAccount = ref([]);
+    const remitance = ref([{}])
+    const incomeAccount = ref([])
+    const selectedIncomeAccount = ref(null)
+    const selectedCashAccount = ref(null)
+    const name = ref("")
+    const toast = useToast();
+      
+
 
     const toggleRem = () => {
       applyRem.value = !applyRem.value;
     };
 
+    const getCashBankAccount = () => {
+        axios.get('/api/financials/accounts/getcashbankaccounts')
+          .then(res => {
+            console.log(res.data)
+            cashBankAccount.value = res.data
+          })
+          .catch (err => {
+            console.log(err)
+          })
+    }
+    getCashBankAccount()
+
+    const deleteItem = (index) => {
+      remitance.value.splice(index, 1)
+    }
+
+    const addRemittance = () => {
+      remitance.value.push({})
+    }
+
+    const getIncomeAccount = ()=> {
+      axios.get('/api/Financials/Accounts/GetIncomeAccounts')
+        .then(res => {
+            /*eslint no-undef: "warn"*/
+            NProgress.done();
+            console.log(res)
+          incomeAccount.value = res.data
+        })
+        .catch(err => {
+            NProgress.done();
+            console.log(err)
+        })
+    }
+    getIncomeAccount()
+
+    const save = () => {
+      let contributionCategory = {
+        name: name.value,
+        // isPublic: true,
+        // incomeAccount: {
+        //     id: selectedIncomeAccount.value.id,
+        //     name: selectedIncomeAccount.value.text,
+        //     accountType: incomeAccount.value.findIndex(i => i.id === selectedIncomeAccount.value.id),
+        //     code: selectedIncomeAccount.value.code,
+        //     isGroupAccount: selectedIncomeAccount.value.isGroupAccount,
+        //     financialFundID: selectedIncomeAccount.value.financialFundID
+        //   },
+        incomeAccountId: selectedIncomeAccount.value.id,
+        // cashAccount: {
+        //     id: selectedCashAccount.value.id,
+        //     name: selectedCashAccount.value.text,
+        //     accountType: cashBankAccount.value.findIndex(i => i.id === selectedCashAccount.value.id),
+        //     code: selectedCashAccount.value.code,
+        //     isGroupAccount: selectedCashAccount.value.isGroupAccount,
+        //     financialFundID: selectedCashAccount.value.financialFundID
+        //   },
+        cashAccountId: selectedCashAccount.value.id,
+        incomeRemittance: remitance.value
+      }
+
+        if (applyRem.value) {
+                contributionCategory.incomeRemittance = remitance.value.map(i => {
+                  return {
+                    financialFundID: i.account.financialFundID,
+                    distinationIncomeAccount: i.account.id,
+                    percentage: i.percentage
+                  }
+                })
+              } else {
+                contributionCategory.incomeRemittance = null
+              }
+      console.log(contributionCategory)
+       axios.post('/api/financials/contributions/items/save', contributionCategory)
+              .then(res => {
+                toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
+                console.log(res)
+              })
+              .catch(err => {
+                toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
+                console.log(err)
+              })
+    }
     return {
-      applyRem,
-      toggleRem,
+      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem
     };
   },
 };
@@ -119,11 +246,12 @@ export default {
 <style scoped>
 .btnIcons {
   width: 110px;
-  height: 35px;
+  /* height: 35px; */
   color: #136acd;
   background-color: #dde2e6;
   border-radius: 40px;
   border: none;
+  padding: .5rem 1.25rem;
 }
 
 .check-it {
@@ -149,495 +277,40 @@ export default {
   top: -4px;
 }
 
-@media (min-width: 576px) {
-  .btnIcons {
-    margin-top: 33px;
-  }
-}
-
 * {
   box-sizing: border-box;
   color: #02172e;
 }
-
-.data-value a {
-  color: #136acd;
-  text-decoration: none;
-  width: 241px;
-}
-
 .page-header {
-  font-weight: 700;
-  font-size: 2rem;
-}
-
-.my-con {
-  /* display: flex; */
-  justify-content: space-between;
-}
-
-.summary {
-  /* width: 20%; */
-  border-radius: 30px;
-  /* box-shadow: 0px 3px 6px #2c28281c; */
-  padding: 24px 10px;
-  background: #fff;
-  box-shadow: 0px 3px 6px #2c28281c;
-  border: 1px solid #00204424;
-}
-
-.table {
-  width: 100% !important;
-  box-shadow: 0px 1px 4px #02172e45;
-  border: 1px solid #dde2e6;
-  border-radius: 30px;
-  text-align: left;
-  margin-bottom: auto !important;
-  /* padding: 0 21px; */
-}
-/* 
-.
-
-.table-header p.name {
-  width: 20em;
-  margin-left: 0;
-}
-
-.picture .phoneNum {
-  margin-left: 14px;
-}
-
-.picture .source, .firstname .interested {
-  margin-left: 17px;
-}
-
-.lastname .date {
-  margin-left: 19px;
-}
-
-.phone .status {
-  margin-left: 20px;
-} */
-
-.summary-header {
-  color: #136acd !important;
-  margin: 0 10px;
-  color: #02172e;
-  opacity: 0.8;
-  font-size: 22px;
-  font-weight: 600;
-}
-
-.boards {
-  display: flex;
-}
-
-.board {
-  width: 28%;
-  border-radius: 10px;
-  /* padding: 0 8px; */
-  /* box-shadow: 0px 1px 4px #02172e45; */
-}
-
-.chart-con {
-  width: 70%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.board-top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 40px;
-  align-items: center;
-  box-shadow: 0px 3px 6px #2c28281c;
-  padding: 4px;
-}
-
-.total {
-  margin-bottom: 40px;
-  font-size: 37px;
-}
-
-.total-text {
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.percent {
-  color: #136acd;
+  font: normal normal 800 29px Nunito sans;
 }
 
 .hr {
-  border: 1px solid #0020440a;
-  margin: 0 4px 10px 0;
+  border: 0.8px solid #0020440a;
+  /* margin: 0 45px; */
 }
 
-.tbl-footer-btn {
-  background: transparent;
-  padding: 4px;
-  margin: 4px 8px;
-  border-radius: 50%;
-  width: 29px;
-  border: none;
-  border: 1px solid #8898aa80;
-  outline: transparent;
-}
-
-.action-icon {
-  text-align: center;
-}
-
-.list-body {
-  padding: 0 21px;
-}
-
-.data-value {
-  display: flex;
-  padding-left: 6px;
-}
-
-.theader {
-  padding-left: 2px;
-  text-align: left;
-}
-
-.filter-options {
-  height: 0;
-  overflow: hidden;
-  transition: all 0.5s ease-in-out;
-}
-
-.filter-options-shown {
-  height: 120px !important;
-  overflow: hidden;
-  transition: all 0.5s ease-in-out;
-}
-
-.clear-link,
-.hide-link {
-  color: #136acd;
-}
-
-.table-top {
-  font-weight: 800;
-  font-size: 12px;
-}
-
-.table-top label:hover,
-.table-top p:hover {
-  cursor: pointer;
-}
-
-.label-search {
-  width: 0;
-  background: transparent;
-  padding: 4px;
-  overflow: hidden;
-  transition: all 0.5 ease-in-out;
-}
-.label-search input {
-  border: transparent;
-  background: transparent;
-  width: 70%;
-  outline: none;
-}
-
-.label-search .search-btn {
-  display: flex;
-  align-items: center;
-  background: #7894a6;
-  padding: 4px;
-  border-radius: 5px;
-}
-
-.label-search .empty-btn {
-  display: flex;
-  align-items: center;
-  padding: 0 5px;
-}
-
-.show-search {
-  width: 174px;
-  overflow: hidden;
-  transition: all 0.5 ease-in-out;
-  border: 1px solid #dde2e6;
-  border-radius: 5px 0px 0px 5px;
-  background: #ebeff4;
-  transition: all 0.5s ease-in-out;
-}
-
-.header {
-  background: #f1f3f9;
-
-  /*
-    ; */
-}
-
-.header tr {
-  color: #8898aa;
-  font-size: 11px;
-  box-shadow: 0px 3px 6px #2c28281c;
-}
-
-.select-all input {
-  margin: 0 8px 0 -5px !important;
-}
-
-.head-button {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.add-btn {
-  width: 180px;
+.add-person-btn {
   background: #136acd;
-  border-radius: 22px;
-  color: #ffffff;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 42px;
-  text-decoration: none;
+  color: #fff;
 }
 
-.more {
-  background: #dde2e6;
-  border-radius: 22px;
-  width: 180px;
-  font-weight: bold;
-  border: transparent;
-  outline: transparent;
-  height: 42px;
-  margin-right: 1rem;
-}
-
-.fa-ellipsis-v:hover {
-  cursor: pointer;
-}
-
-#chart {
-  width: 48%;
-  max-height: 310px;
-  border-radius: 10px;
-}
-
-/* .boards { */
-/* flex-direction: column; */
-/* flex-wrap: wrap;
-    justify-content: space-between;
-  } */
-
-/* .board {
-    width: 45%;
-    margin: 10px 0;
-    max-height: 310px;
-  } */
-
-.board.members-count {
-  padding: 24px;
-}
-
-.page-header {
-  font-size: 1.7rem;
-}
-
-.no-record {
-  color: rgba(184, 5, 5, 0.726);
-  font-size: 1.1em;
-}
-
-.chart1,
-.chart2 {
-  border-radius: 10px;
-}
-
-.itemroute-color {
-  color: #136acd;
-}
-
-@media screen and (max-width: 500px) {
-  .picture,
-  .firstname,
-  .lastname,
-  .phone {
-    width: 100%;
+@media screen and (min-width: 1400px) {
+  .main-con {
+    width: 90%;
+    margin: 0 auto;
   }
 
-  .chart1,
-  .chart2,
-  .board,
-  .chart-con {
-    width: 100% !important;
-  }
-
-  .table-body .check {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin: 10px 0;
-  }
-
-  .data-text {
-    display: inline-block;
-  }
-
-  .data-row {
-    flex-direction: column;
-  }
-
-  .data-con {
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .action-icon {
-    width: 100%;
-    text-align: right;
-  }
-
-  /* @media (max-width: 767px) {
-    .table-responsive .dropdown-menu {
-        position: static !important;
-    }
-}
-@media (min-width: 768px) {
-    .table-responsive {
-        overflow: visible;
-    }
-} */
-
-  /* .table-header {
-    display: none;
-  } */
-}
-
-@media screen and (max-width: 500px) {
-  .board {
-    width: 100% !important;
+  .top {
+    height: 90%
   }
 }
 
-@media screen and (min-width: 500px) {
-  .theader {
-    width: 23%;
-  }
-
-  .table-body .check {
-    width: 3%;
-  }
-
-  .action {
-    width: 5%;
-  }
+.textbox-height {
+  height: 41px
 }
 
-@media (max-width: 414px) {
-  .head-button {
-    flex-direction: column;
-    align-items: center;
-  }
 
-  .more {
-    margin-right: 0;
-  }
-}
-
-@media (max-width: 575px) {
-  .head-button {
-    display: flex;
-    /* flex-direction: row; */
-    /* align-items: center; */
-    justify-content: center;
-  }
-
-  .add-btn,
-  .more {
-    margin-top: 10px;
-  }
-
-  .first-timers-text {
-    text-align: center;
-  }
-}
-
-@media screen and (min-width: 501px) and (max-width: 768px) {
-  /* .boards {
-    flex-direction: column;
-    align-items: center !important;
-    flex-wrap: nowrap !important;
-  }
-
-  .chart-con {
-    width: 85% !important;
-  }
-
-  .chart-con div {
-    width: 40%;
-  } */
-
-  .board {
-    width: 50% !important;
-    margin-bottom: 10px;
-  }
-
-  .summary-header {
-    width: 50%;
-    margin-left: 25%;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .filter-options-shown {
-    height: 150px !important;
-    overflow: hidden;
-    transition: all 0.5s ease-in-out;
-  }
-
-  .boards {
-    flex-wrap: nowrap;
-  }
-
-  .responsive-table {
-    max-width: 100%;
-    overflow-x: scroll;
-  }
-}
-
-@media screen and (max-width: 1024px) {
-  .my-con {
-    flex-direction: column;
-  }
-
-  .table {
-    width: 98%;
-    margin: 24px auto;
-  }
-
-  .summary {
-    width: 98%;
-    margin: auto;
-  }
-}
-
-.row-divider {
-  border: 1px solid #0020440a;
-  margin: 0;
-}
-
-.table-footer {
-  display: flex;
-  justify-content: flex-end;
-  background: #fff;
-  padding: 10px 0;
-  border-radius: 0px 0px 22px 22px;
-}
-
-.board.members-count {
-  max-height: 216px;
-}
 </style>
 
 

@@ -27,25 +27,37 @@
       <!-- <hr class="mt-n4" /> -->
       <!-- table body starts here -->
 
-      <div class="row font-weight-700 justify-content-between small-text tr-border-bottom" v-for="(item, index) in list" :key="index">
+      <div class="row font-weight-700 justify-content-between small-text tr-border-bottom mx-1" v-for="(item, index) in list" :key="index">
          <div class="col-md-3">
           <p class="d-flex justify-content-between mb-0">
             <span class="d-flex d-md-none tattendance2">Date Created</span>
-            <span class="edate edate2">{{ formatDate(item.eventDate) }}</span>
+            <span class="edate edate2">
+              <router-link class="text-decoration-none text-dark font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id } }">
+                {{ formatDate(item.eventDate) }}
+              </router-link>
+            </span>
           </p>
         </div>
 
         <div class="col-md-4">
           <p class="d-flex ml-2 justify-content-between mb-0">
             <span class="d-flex d-md-none alist2">Event Name</span>
-            <span class="elist elist2">{{ item.fullEventName }}</span>
+            <span class="elist elist2">
+              <router-link class="text-decoration-none text-dark font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id } }">
+                {{ item.fullEventName }}
+              </router-link>
+            </span>
           </p>
         </div>
        
         <div class="col-md-3">
           <p class="d-flex justify-content-between mb-0">
             <span class="d-flex d-md-none dcreated2">Group Name</span>
-            <span class="eattendance eattendance2">{{ item.fullGroupName }}</span>
+            <span class="eattendance eattendance2">
+              <router-link class="text-decoration-none text-dark font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id } }">
+                {{ item.fullGroupName }}
+              </router-link>
+            </span>
           </p>
         </div>
         <div class="col-md-2" @click="toggleEllips">

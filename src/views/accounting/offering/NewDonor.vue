@@ -3,26 +3,30 @@
         <div class="container main">
          <div class="row">
              <div class="col">
-                <div class="row">
-                        <div class="col-md-4 text-md-right">
-                            <h4 class="header4 text-md-right">Surname</h4>
-                        </div>
-                        <div class="col-md-7 px-0">
-                            <input type="text" class="form-control" v-model="personDetails.lastName">
-                            <!-- <InputText type="text" style="border-radius:8px" class="w-100 rounded" v-model="value" required /> -->
-                        </div>
-                </div> 
+        
                 <div class="mt-4">
-                </div> 
+               
              <div class="row">
                 <div class="col-md-4 text-md-right">
-                    <h4 class="header4 text-md-right">Firstname</h4>
+                    <h4 class="header4 text-md-right">First Name <span class="text-danger">*</span></h4>
                  </div>
                  <div class="col-md-7 px-0">
-                     <input type="text" class="form-control" v-model="personDetails.firstName">
+                     <input type="text" class="form-control" v-model="donor.firstName" required>
                      <!-- <InputText type="text" class="w-100 rounded" v-model="value" required /> -->
                  </div>
             </div> 
+            </div> 
+            <div class="mt-4">
+             <div class="row">
+                <div class="col-md-4 text-md-right">
+                    <h4 class="header4 text-md-right">Last Name</h4>
+                 </div>
+                 <div class="col-md-7 px-0">
+                     <input type="text" class="form-control" v-model="donor.lastName">
+                     <!-- <InputText type="text" class="w-100 rounded" v-model="value" required /> -->
+                 </div>
+            </div> 
+            </div>
             <div class="mt-4">
             </div> 
              <div class="row">
@@ -30,7 +34,7 @@
                     <h4 class="header4 text-md-right">Phone number</h4>
                  </div>
                  <div class="col-md-7 px-0">
-                     <input type="text" class="form-control" v-model="personDetails.mobilePhone">
+                     <input type="text" class="form-control" v-model="donor.mobilePhone">
                      <!-- <InputText type="number" class="w-100 rounded" v-model="value" required /> -->
                  </div>
             </div> 
@@ -41,7 +45,7 @@
                     <h4 class="header4 text-md-right">Email</h4>
                  </div>
                  <div class="col-md-7 px-0">
-                     <input type="text" class="form-control"  v-model="personDetails.email">
+                     <input type="text" class="form-control"  v-model="donor.email">
                      <!-- <InputText type="email" class="w-100 rounded" v-model="value" required /> -->
                  </div>
             </div>
@@ -53,7 +57,7 @@
                  </div>
                  <div class="col-md-7 px-0 d-flex justify-content-center">
                      <Button label="Cancel" class="p-button-outlined p-button-secondary mr-3 px-5 p-button-rounded" @click="onCancel" />
-                     <Button label="Save"  class="p-button-primary p-button-rounded px-5 mr-3 max" @click="savePerson" />
+                     <Button label="Save"  class="p-button-primary p-button-rounded px-5 mr-3 max" @click="saveDonor" />
                  </div>
             </div>
              </div>
@@ -67,37 +71,48 @@
 // import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'
 import { reactive } from 'vue'
-import attendanceservice from '../../../services/attendance/attendanceservice';
-import { useRoute } from "vue-router";
-import { useToast } from 'primevue/usetoast';
-
+// import { useRoute } from "vue-router";
+import axios from "@/gateway/backendapi";
     export default {
         components:{ Button },
 
         setup(props, { emit }) {
-            const route = useRoute();
-            const personDetails = reactive({ });
-            const toast = useToast();
+            // const route = useRoute();
+            const donor = reactive({ });
 
-            const savePerson = async () => {
+            const saveDonor = async () => {
                 emit("cancel");
                 try {
-                    console.log({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 }, "body");
-                    const response = await attendanceservice.checkin({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 });
-                    toast.add({severity:'success', summary:'Check-in Successful', detail:'Member added and checked-in was successful', life: 3000});
-                    console.log(response, "create person");
-                    emit("refresh")
+                     return new Promise((resolve, reject) => {
+                        axios.post("/api/People/createPerson", donor)
+                            .then(res => {
+                                console.log(res)
+                                emit('person-id', {personId: res.data.personId, personFirstName: donor.firstName})
+                                resolve(res.data);
+                                
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                /*eslint no-undef: "warn"*/
+                                NProgress.done();
+                                if (error.response) {
+                                    reject(error.response);
+                                } else {
+                                    reject(error);
+                                }
+                            })
+                    })
+    
                 } catch (error) {
                     console.log(error);
-                    toast.add({severity:'error', summary:'Check-in Failed', detail:'Member adding and checked-in was not successful', life: 3000});
                 }
             }
 
             const onCancel = () => emit("cancel")
 
             return {
-                personDetails,
-                savePerson,
+                donor,
+                saveDonor,
                 onCancel,
             }
         }
@@ -109,7 +124,7 @@ import { useToast } from 'primevue/usetoast';
     margin-top: 300px;
     margin-bottom: 300px;
 } */
-/* .p-button-outlined{
+.p-button-outlined{
     background-color:#fff9f9!Important;
     color: black!important;
     font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) var(--unnamed-font-size-15)/20px var(--unnamed-font-family-nunito-sans)!important;
@@ -117,7 +132,7 @@ import { useToast } from 'primevue/usetoast';
     font: normal normal bold 15px/20px Nunito Sans!important;
     letter-spacing: 0px!important;
    
-} */
+}
 .max{
 font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) var(--unnamed-font-size-15)/20px var(--unnamed-font-family-nunito-sans)!important;
 letter-spacing: var(--unnamed-character-spacing-0)!important;

@@ -164,7 +164,7 @@
                 'tenant/accounting'
               ),
             }"
-            v-if="false"
+          
           >
             <span @click="toggleAccDropDown">
               <img
@@ -185,27 +185,27 @@
           <ul
             class="dd-list acc-list"
             :class="{ 'dd-hide-list': !accLinkDropped }"
-            v-if="false"
+           
           >
-            <li class="dd-list-item">
+            <li class="dd-list-item"  v-if="false">
               <router-link class="dd-link-item routelink" to="">Dashboard</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="">Offerings</router-link>
+              <router-link class="dd-link-item routelink" to="/tenant/offeringlist">Offerings</router-link>
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item"  v-if="false">
               <router-link class="dd-link-item routelink" to="">Pledges</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to=""
+              <router-link class="dd-link-item routelink" to="/tenant/transactionlist"
                 >Transactions</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <li class="dd-list-item"  v-if="false">
               <router-link class="dd-link-item routelink" to="">Expense workflow</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to=""
+              <router-link class="dd-link-item routelink" to="/tenant/chartofaccount"
                 >Charts of Account</router-link
               >
             </li>
