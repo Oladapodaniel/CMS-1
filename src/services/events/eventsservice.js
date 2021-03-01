@@ -19,11 +19,50 @@ const eventsService = {
         })
     },
 
-    createNewEventCategory() {
+    createNewEventCategory(name) {
         return new Promise((resolve, reject) => {
-            axios.post(`/api/EventCategory?name=${theText}`)
+            axios.post(`/api/EventCategory?name=${name}`)
                 .then(res => {
                     resolve(res.data);
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
+    getEventCategories() {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/EventCategory`)
+                .then(res => {
+                    const data = res.data.map(i => {
+                        return { id: i.id, name: i.name }
+                    })
+                    resolve( data );
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
+    createNewActivity(body) {
+        return new Promise((resolve, reject) => {
+            axios.post(`/api/Events/CreateActivity`, body)
+                .then(res => {
+                    resolve( res.data );
                 })
                 .catch(error => {
                      /*eslint no-undef: "warn"*/
