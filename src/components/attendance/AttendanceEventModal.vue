@@ -1,5 +1,6 @@
 <template>
     <div class="container-fluid">
+        <!-- <Toast /> -->
         <div class="row py-4">
             <div class="col-md-3 text-md-right">
                 <label for="name">Name</label>
@@ -23,17 +24,23 @@
 <script>
 import { ref } from 'vue';
 import eventsService from '../../services/events/eventsservice';
+import { useToast } from 'primevue/usetoast';
+
     export default {
         setup(props, { emit }) {
             const eventName = ref("");
+            const toast = useToast();
 
             const createCategory = async () => {
                 try {
                     const response =  await eventsService.createNewEventCategory(eventName.value);
+                    toast.add({severity:'success', summary:'Operation Successful', detail:'Category created successfully', life: 3000});
                     emit('new-created', response.map(i => {
                         return { id: i.id, name: i.name }
                     }));
                 } catch (error) {
+                    emit("closeeventmodal");
+                    toast.add({severity:'error', summary:'Operation Failed', detail:'Category could not be created', life: 3000});
                     console.log(error);
                 }
             }

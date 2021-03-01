@@ -240,7 +240,9 @@
           </div>
         </div>
 
-        <div class="row"></div>
+        <div class="row">
+          <Toast />
+        </div>
       </div>
 
       <div class="col-lg-3 col-md-1"></div>
@@ -257,6 +259,7 @@ import eventsService from "../../../services/events/eventsservice";
 import CreateEventModal from "../../../components/attendance/AttendanceEventModal";
 import attendanceservice from "../../../services/attendance/attendanceservice";
 import { useStore } from "vuex";
+import { useToast } from 'primevue/usetoast';
 
 
 export default {
@@ -269,6 +272,7 @@ export default {
     const newActModal = ref(false);
     const showBtModal = ref("");
     const popModal = ref(null);
+    const toast = useToast();
 
     const selectedGroup = ref({});
     const getGroups = async () => {
@@ -333,8 +337,9 @@ export default {
         const newActivity = { id: response.currentEvent.id, name: response.currentEvent.name };
         selectedEvent.value = newActivity;
         events.value.push(newActivity);
-        console.log(response, "Created");
+        toast.add({severity:'success', summary:'Operation Successful', detail:'Event created successfully', life: 3000});
       } catch (error) {
+        toast.add({severity:'error', summary:'Operation Failed', detail:'Could not create event', life: 3000});
         console.log(error);
       }
     }
