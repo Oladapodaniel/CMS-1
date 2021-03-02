@@ -6,7 +6,7 @@
                     <h5 class="page-header">Payment Options</h5>
                 </div>
                 <div class="col-4 offset-md-2 header-contri">Contribution Type</div>
-                <div class="col-5">Amount</div>
+                <div class="col-5 header-contri">Amount</div>
                 <div class="col-12 mb-3">
                     <div class="row" v-for="(item, index) in contributionItems" :key="index">
                     <div class="col-md-4 offset-md-2 pt-2">
@@ -23,7 +23,7 @@
                 
                 </div>
                  <div class="col-md-6 offset-md-2 mb-1">
-                      <h5 class="check">Available options for payment</h5>
+                      <h5 class="header-contri my-4">Available options for payment</h5>
                 </div>
                 <div class="row w-100">
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded" @click="toggleLink">

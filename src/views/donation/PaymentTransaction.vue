@@ -22,7 +22,6 @@
                         >
                     </div>
                 </div> -->
-                <div>{{ selectedBank }}</div>
             </div>
         </div>
         <form class="form">
@@ -31,7 +30,7 @@
             </div>
             
             <div class="row mt-4" v-for="(item, index) in newContribution"  :key="index">
-                <div class="col-4 offset-sm-1  col-md-3 pl-0 offset-md-4">
+                <div class="col-sm-5 offset-sm-1  col-md-3 pl-0 offset-md-4">
                     <!-- <Dropdown v-model="newContribution.selectedAccount" class="w-100" :options="incomeAccount" optionLabel="name" :filter="true" placeholder="Select" :showClear="true">
                         
                     </Dropdown> -->
@@ -75,18 +74,19 @@
                   </a>
               </div>
                 </div>
-                <div class="col-4 col-md-2">
+                <div class="col-10 mt-2 mt-sm-0 pl-0 col-sm-4 col-md-2">
                     <input type="number" class="form-control h-100" v-model="item.amount" placeholder="amount">
                 </div>
                 
                 <!-- <div class="col-1 align-self-center offset-1 text-center" v-tooltip.bottom="'add'" v-on:click="addContribution"><i class="pi pi-plus" aria-hidden="true"></i> -->
                 <!-- </div> -->
-                <div class="col-1 offset-1 offset-md-0 align-self-center">
+                <div class="col-1 align-self-center">
                     <i class="pi pi-trash" v-tooltip.bottom="'delete'" @click="deleteContribution(index)"></i>
                 </div>
             </div>
             <div class="col-8 col-md-5 offset-sm-1 pl-0 offset-md-4 mt-3">
                     <button
+                        style="margin-left: -3px"
                         v-on:click.prevent="addContribution"
                         class="btn btnIcons btn-secondary"
                         >
@@ -114,17 +114,28 @@
                     <div style="height: 43%"><input class="form-control h-100" placeholder="1234567890" type="number" v-model="accountNumber" @blur="resolveCustomerDetail"></div>
                 </div>
             </div>
+            <div class="col-10 col-md-12">
+                    <hr class="mt-5"/>
+                </div>
             <div class="row">
-                <div class="col-md-10 mt-3 text-right">
-                    
+            
+                <div class="col-sm-10 offset-sm-1 offset-md-4 col-md-5 mt-3 pl-0">
+                    <div class="pb-2">Account Name: <em style="font-size: 0.9em; font-weight: 700">This will automatically come up, kindly confirm before clicking on save</em></div>
+                    <input type="text" v-model="accountName" placeholder="account name" ref="accNameRef" class="form-control" />
+                </div>
+                <div class="col-md-3 align-self-end" v-if="loading">
+                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 
-                <div class="col-12 offset-sm-1 offset-md-4 mt-3 p-0">
+                <div class="col-12 col-sm-10 col-md-5 offset-sm-1 offset-md-4 pl-0 mt-4">
                 <button
-                  class="button primary-bg border-0 "
+                  class="button primary-bg border-0 w-100"
                   @click.prevent="saveAndContinue"
+                  style="margin-left: 2px"
                 >
                   <!-- <i
                     class="fas fa-circle-notch fa-spin mr-2 text-white"
@@ -135,11 +146,12 @@
                 </button>
                
             </div>
-            <div class="col-12 col-sm-10 offset-sm-1 col-md-6 offset-md-4 mt-5">
+            <div class="col-12 col-sm-10 offset-sm-1 col-md-5 offset-md-4 mt-5">
                     <img src="../../assets/payment-options.png" class="w-100" style="opacity: 0.9">
                 </div>
             </div>
         </form>
+        <Toast />
     </div>
 </template>
 
@@ -153,6 +165,9 @@ import axio from  'axios'
 // import { useStore } from 'vuex'
 import router from "@/router/index";
 import store from "../../store/store"
+// import Toast from 'primevue/toast';
+// import { defineComponent } from "vue";
+import { useToast } from "primevue/usetoast";
 
 export default {
     components: {
@@ -168,6 +183,11 @@ export default {
         const selectedBank = ref("")
         const accountNumber = ref("")
         const selectedContribution = ref("")
+        const accountName = ref("")
+        const accNameRef = ref("")
+        const toast = useToast()
+        const loading = ref(false)
+        
 
         const addContribution = () => {
             newContribution.value.push({})
@@ -208,16 +228,28 @@ export default {
         }
 
         const resolveCustomerDetail = async() => {
+            loading.value = true
             try {
                 let header = { headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` }}
                 console.log(header, "header");
 
-                let data = await axio.get(`https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`, header)
+                let { data } = await axio.get(`https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`, header)
                 console.log(data)
+                accountName.value = data.data.account_name
+                accNameRef.value.focus()
+
+                loading.value = false
+     
+                toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 3000});
+
             }
             catch (error) {
                 finish()
                 console.log(error)
+
+                loading.value = false
+                
+                toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
             }
             console.log(selectedBank.value.code, accountNumber.value)
         }
@@ -236,7 +268,7 @@ export default {
 
         
         return {
-            incomeAccount, newContribution, addContribution, deleteContribution, nigerianBanks, selectedBank, resolveCustomerDetail, accountNumber, saveAndContinue, selectContribution, selectedContribution
+            incomeAccount, newContribution, addContribution, deleteContribution, nigerianBanks, selectedBank, resolveCustomerDetail, accountNumber, saveAndContinue, selectContribution, selectedContribution, accountName, accNameRef, loading
         }
     }
 }
