@@ -39,8 +39,9 @@
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a>
-                                <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
+                                <a class="text-decoration-none"><h4 class="header4">Registration Link</h4></a>
+                                <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+                                <p class="para">Check-in link <span class="font-weight-700">{{ `https://my.churchplus.co/checkin/e/${route.query.code}` }}</span></p>
                             </div>
                             </div>
                         </div>
