@@ -148,6 +148,7 @@ import Dropdown from 'primevue/dropdown';
 import MultiSelect from 'primevue/multiselect';
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
+import attendanceservice from '../../../services/attendance/attendanceservice';
 
     export default {
         components: { Dropdown, MultiSelect},
@@ -168,6 +169,18 @@ import { ref } from 'vue';
                 groups.value.push({ name: route.query.groupName, id: route.query.groupId })
                 selectedGroups.value.push({ name: route.query.groupName, id: route.query.groupId })
             }
+
+            const getDetails = async () => {
+                try {
+                    console.log(route.query.activityID, "id");
+                    const response = await attendanceservice.getReport(route.query.id);
+                    console.log(response, "RESPONSE");
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            getDetails()
 
             return {
                 groups,

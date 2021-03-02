@@ -251,6 +251,7 @@ export default {
       axios.get(`/searchmemberbyphone?searchtext=${enteredValue.value}&&attendanceCode=${route.params.code}`)
       
         .then((res) => {
+          console.log(res, "RESPONSE");
           loading.value = false;
           autosearch.value = false;
           names.value = res.data;
@@ -259,7 +260,7 @@ export default {
           personData.value.homeAddress = res.data[0] ? res.data[0].address : "";
           personData.value.personId = res.data[0] ? res.data[0].personId : "";
           personData.value.mobilePhone = enteredValue.value;
-          person.value = res.data[0];
+          person.value = res.data[0] ? res.data[0] : { };
 
           if (person.value.name) {
             person.value.name = formatString(person.value.name, 2, 4);
@@ -270,12 +271,14 @@ export default {
           if (person.value.address) {
             person.value.address = formatString(person.value.address, 2, 4);
           }
+          console.log(res, "RPONSE");
           populateInputfields(person.value);
           console.log(names.value);
 
           if (person.value) appltoggle.value = true;
         })
         .catch((err) => {
+          person.value = { };
           loading.value = false;
           autosearch.value = false;
           appltoggle.value = true;
@@ -308,7 +311,7 @@ export default {
       let newPerson = {};
       if (person.value.personId) {
         newPerson = {
-          person: { personId: personData.value.personId },
+          person: { personId: personData.value.personId, mobilePhone: enteredValue.value },
           attendanceCode: +route.params.code,
         };
       } else {

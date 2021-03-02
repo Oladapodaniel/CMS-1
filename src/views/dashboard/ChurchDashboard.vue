@@ -461,6 +461,7 @@ import { computed, onMounted, ref } from "vue";
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import moment from "moment";
+import stopProgressBar from "../../services/progressbar/progress"
 
 export default {
   components: {
@@ -536,8 +537,9 @@ export default {
 
       })
       .catch((err) => {
+        stopProgressBar();
         console.log(err.response);
-        if (err.response.status === 401) {
+        if (err.response && err.response.status === 401) {
           localStorage.removeItem("token");
           router.push("/");
         }
