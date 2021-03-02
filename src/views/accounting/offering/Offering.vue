@@ -1,5 +1,5 @@
 <template>
-    <div class="container-wide">
+    <div class="container-wide container-top">
       <div class="row my-3">
       <div class="col-md-4 first-timers-text">
         <h2 class="page-header">Contributions</h2>
@@ -22,19 +22,70 @@
         <hr class="hr" />
       </div>
     </div>
-<!-- v-if="firstTimersList.length === 0 && !loading" -->
-    <div class="no-person" >
+
+    <div v-if="loading">
+        <Loader />
+    </div>
+    
+
+    <div class="no-person"  v-if="contributionTransactions.length === 0 && !loading">
         <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't added any first timer yet</p>
+            <p class="tip">You haven't added any contribution transaction yet</p>
         </div>
     </div>
+    <div v-else>
+        <OfferingList :contributionTransactions="contributionTransactions" />
+    </div> 
 </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useStore } from 'vuex'
+// import { store } from "../../../store/store"
+import axios from "@/gateway/backendapi"
+import OfferingList from './OfferingList'
+import Loader from './SkeletonLoader'
 export default {
+    components: {
+        OfferingList, Loader
+    },
+    setup () {
+        const contributionTransactions = ref([])
+        const loading = ref(false)
+
+
+        const getContributionTransactions = () => {
+            let store = useStore()
+            console.log(store.getters['contributions/contributionList'])
+            if (store.getters['contributions/contributionList'].length > 0) {
+                contributionTransactions.value = store.getters['contributions/contributionList']
+            } else {
+                loading.value = true
+                axios
+                    .get("/api/Financials/Contributions/Transactions")
+                    .then((res) => {
+                        loading.value = false
+                    contributionTransactions.value = res.data;
+                    console.log(res.data);
+                    })
+                    .catch((err) => {
+                        loading.value = false
+                        console.log(err)
+                    });
+            }
     
+    // get from  to store
+    
+    // savev to sstore
+    // store.dispatch('contributions/contributionList')
+    };
+    getContributionTransactions();
+        return {
+            contributionTransactions, loading
+        }
+    }
 }
 </script>
 
@@ -93,7 +144,7 @@ export default {
 }
 
 .no-person {
-  height: 100%;
+  height: 80vh;
   display: flex;
   text-align: center;
 }
@@ -121,9 +172,4 @@ export default {
   }
  }
 
-@media (min-width: 1400px) {
- .no-person {
-    height: calc(100% - 90px);
-  }
-}
 </style>

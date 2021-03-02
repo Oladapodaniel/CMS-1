@@ -1,7 +1,7 @@
 <template>
-  <div class="container-wide container-top">
-    <div class="container-wide">
-      <div class="row my-3">
+  <!-- <div class="container-wide container-top"> -->
+    <!-- <div class="container-wide"> -->
+      <!-- <div class="row my-3">
       <div class="col-md-4 first-timers-text">
         <h2 class="page-header">Contributions</h2>
       </div>
@@ -14,15 +14,15 @@
           Add Contribution
         </router-link>
       </div>
-    </div>
-    </div>
+    </div> -->
+    <!-- </div> -->
 
-    <div class="container-wide">
-      <div class="row">
+    <!-- <div class="container-wide"> -->
+      <!-- <div class="row">
       <div class="col-md-12">
         <hr class="hr" />
       </div>
-    </div>
+    </div> -->
 
     <div class="row">
       <div class="col-md-12">
@@ -183,8 +183,8 @@
         </div>
       </div>
     </div>
-    </div>
-  </div>
+    <!-- </div> -->
+  <!-- </div> -->
 </template>
 
 <script>
@@ -200,15 +200,15 @@ import { useToast } from "primevue/usetoast";
 import finish from '../../../services/progressbar/progress'
 
 export default {
-  // props: ["list"],
+  props: ["contributionTransactions"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
     // Pagination,
   },
 
-  setup() {
-    const contributionTransactions = ref([]);
+  setup(props) {
+    // const contributionTransactions = ref([]);
     // const getFirstTimerSummary = ref({});
     const filter = ref({});
     const searchIsVisible = ref(false);
@@ -227,31 +227,31 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const getContributionTranactions = () => {
-      // let store = useStore()
-      axios
-        .get("/api/Financials/Contributions/Transactions")
-        .then((res) => {
-          contributionTransactions.value = res.data;
-          console.log(res.data);
-        })
-        .catch((err) => console.log(err));
-    // get from  to store
-    // console.log(store.getters['contributions/contributionList'])
-    // savev to sstore
-    // store.dispatch('contributions/contributionList')
-    };
-    getContributionTranactions();
+    // const getContributionTranactions = () => {
+    //   // let store = useStore()
+    //   axios
+    //     .get("/api/Financials/Contributions/Transactions")
+    //     .then((res) => {
+    //       contributionTransactions.value = res.data;
+    //       console.log(res.data);
+    //     })
+    //     .catch((err) => console.log(err));
+    // // get from  to store
+    // // console.log(store.getters['contributions/contributionList'])
+    // // savev to sstore
+    // // store.dispatch('contributions/contributionList')
+    // };
+    // getContributionTranactions();
 
     const searchContribution = computed(() => {
       if (searchText.value !== "") {
-        return contributionTransactions.value.filter((i) => {
+        return props.contributionTransactions.filter((i) => {
           return i.contribution
             .toLowerCase()
             .includes(searchText.value.toLowerCase());
         });
       } else {
-        return contributionTransactions.value;
+        return props.contributionTransactions;
       }
     });
 
@@ -267,9 +267,9 @@ export default {
             detail: "Member Deleted",
             life: 3000,
           });
-          contributionTransactions.value = contributionTransactions.value.filter(
-            (item) => item.id !== id
-          );
+          // props.contributionTransactions = props.contributionTransactions.filter(
+          //   (item) => item.id !== id
+          // );
         })
         .catch((err) => {
           finish()
@@ -389,7 +389,7 @@ export default {
     // };
 
     return {
-      contributionTransactions,
+      // contributionTransactions,
       deleteOffering,
       filterFormIsVissible,
       toggleFilterFormVissibility,

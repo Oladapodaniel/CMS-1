@@ -27,18 +27,18 @@
           />
  
       </div>
-      <div class="col-sm-4 mt-3 my-sm-3 text-sm-right">
+      <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
            <label for="" class="label">Income Account</label>
       </div>
-      <div class="col-sm-5 my-sm-3">
+      <div class="col-sm-5 mt-sm-3">
           <Dropdown v-model="selectedIncomeAccount" class="w-100 p-0" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
 
               </Dropdown>
       </div>
-      <div class="col-sm-4 mt-3 my-sm-3 text-sm-right">
+      <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
            <label for="" class="label">Cash Account</label>
         </div>
-      <div class="col-sm-5 my-sm-3">
+      <div class="col-sm-5 mt-sm-3">
  
          
           <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
