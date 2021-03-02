@@ -249,12 +249,7 @@ export default {
       loading.value = true;
       autosearch.value = true;
       axios.get(`/searchmemberbyphone?searchtext=${enteredValue.value}&&attendanceCode=${route.params.code}`)
-      // axios
-      //   .get(
-      //     `/api/CheckInAttendance/SearchMemberByPhone?searchText=${
-      //       e.target.value
-      //     }&&attendanceCode=${+route.params.code}`
-      //   )
+      
         .then((res) => {
           loading.value = false;
           autosearch.value = false;
@@ -313,7 +308,7 @@ export default {
       let newPerson = {};
       if (person.value.personId) {
         newPerson = {
-          person: personData.value,
+          person: { personId: personData.value.personId },
           attendanceCode: +route.params.code,
         };
       } else {
