@@ -308,7 +308,7 @@ export default {
       let newPerson = {};
       if (person.value.personId) {
         newPerson = {
-          person: { personId: personData.value.personId },
+          person: { personId: personData.value.personId, mobilePhone: enteredValue.value },
           attendanceCode: +route.params.code,
         };
       } else {
