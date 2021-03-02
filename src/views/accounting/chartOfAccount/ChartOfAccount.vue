@@ -65,7 +65,7 @@ import Liabilities from '@/views/accounting/chartOfAccount/Liabilities'
 import Income from '@/views/accounting/chartOfAccount/Income'
 import Expenses from '@/views/accounting/chartOfAccount/Expenses'
 import Equity from '@/views/accounting/chartOfAccount/Equity'
-import chartsOfAccountService from "../../../services/financials/chart_of_accounts"
+// import chartsOfAccountService from "../../../services/financials/chart_of_accounts"
 
 export default {
     components: { Assets, Liabilities, Income, Expenses, Equity },
