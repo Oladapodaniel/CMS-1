@@ -12,7 +12,7 @@
     <!-- input area -->
     <div class="container-wide">
       <div class="row my-5 mx-auto">
-        <div class="col-sm-4 text-sm-right">
+        <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
            <label for="" class="label">Name</label>
         </div>
       <div class="col-sm-5 mt-sm-3">
@@ -299,10 +299,6 @@ export default {
   .main-con {
     width: 90%;
     margin: 0 auto;
-  }
-
-  .top {
-    height: 90%
   }
 }
 

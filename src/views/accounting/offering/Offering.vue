@@ -34,7 +34,7 @@
             <p class="tip">You haven't added any contribution transaction yet</p>
         </div>
     </div>
-    <div v-else>
+    <div v-if="contributionTransactions.length > 0 && !loading">
         <OfferingList :contributionTransactions="contributionTransactions" />
     </div> 
 </div>

@@ -35,7 +35,7 @@
           <Skeleton width="100%" height="2rem" borderRadius="16px" />
         </div>
         <div class="col-md-2 my-2">
-          <Skeleton width="100%" height="2rem" />
+          <Skeleton width="100%" height="2rem" borderRadius="16px" />
         </div>
       </div>
     </div>
