@@ -1,7 +1,7 @@
 <template>
     <div>
         <div container>
-            <h1 class="mt-3 pl-3 mb-3 font-weight-bolder" style="font-size:34px">Grace Ministry Users</h1>
+            <h1 class="mt-3 pl-3 mb-3 font-weight-bolder" style="font-size:34px">{{ name }}</h1>
             <p class="pl-3" style="font-size:16px" >You can invite a new user to access your ChurchPlus account. Only give access to people you trust, since users can see your transactions and other business information.</p>
             <div class="invite-container" style="font-size:14px">
                 <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">Invite New User</h4>
@@ -50,11 +50,11 @@
                         
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Answers</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" class="form-control" v-model="value" /></div>
+                            <div class="col-lg-8 col-sm-12"> <InputText type="text" class="form-control" v-model="value" /></div>
                         </div>
                    </div>
 
-                   <div class="col-lg-5 col-sm-12 mt-lg-0 mt-sm-5 mt-md-5 mt-lg-0 pl-lg-5 pr-lg-5 pl-sm-3 pr-3 pr-sm-2">
+                   <div class="col-lg-5 col-sm-12 mt-lg-0 mt-sm-5 mt-md-5 mt-lg-0 mt-5 pl-lg-5 pr-lg-5 pl-sm-3 pr-3 pr-sm-2">
                        <div class="row">
                             <div class="col-12">
                                 <h4 class="mt-sm-5 mt-5 mt-xl-0 mt-md-5 mt-lg-0">Admin Permission</h4>
@@ -168,15 +168,24 @@ import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
 import axios from "@/gateway/backendapi";
+import store from "@/store/store";
     export default {
         components:{InputText, Password, Checkbox},
         data() {
 		return {
             roles: [],
-            info: null
-            
+            info: null,
+            currentUser: store.getters.currentUser
 		}
 	} ,
+
+    computed: {
+        name() {
+            if (!this.currentUser.churchName) return "";
+            return this.currentUser.churchName;
+        }
+    },
+
     mounted(){
         axios
       .get(`/api/Settings/GetTenantPeopleClassification`)
@@ -187,8 +196,13 @@ import axios from "@/gateway/backendapi";
     // .get('https://api.coindesk.com/v1/bpi/currentprice.json')
     // .then(response => (this.info = response.data.bpi))
     // .catch(error=> console.log(error))
-
+    console.log(store.getters.currentUser)
+    
     }
+    // const: getCurrentName = computed(() => {
+    //   return store.getters.churchName ;
+    //   console.log(getCurrentName)
+    // }),
     }
 </script>
 
