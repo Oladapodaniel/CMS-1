@@ -539,7 +539,7 @@ export default {
       .catch((err) => {
         stopProgressBar();
         console.log(err.response);
-        if (error.response && err.response.status === 401) {
+        if (err.response && err.response.status === 401) {
           localStorage.removeItem("token");
           router.push("/");
         }
