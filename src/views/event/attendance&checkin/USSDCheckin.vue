@@ -32,12 +32,29 @@
 
 <script>
     import { useStore } from "vuex";
+import attendanceservice from '../../../services/attendance/attendanceservice';
+import { useRoute } from "vue-router";
+import { computed, ref } from 'vue';
+
     export default {
         setup() {
             const store = useStore();
+            const route = useRoute();
 
-            const attendanceData = store.getters["attendance/attendanceItemData"];
-            const ussd = attendanceData ? attendanceData.ussdCode : "";
+            const attendanceData = ref(store.getters["attendance/attendanceItemData"]);
+            const ussd = computed(() => attendanceData.value && attendanceData.value.ussdCode ? attendanceData.value.ussdCode : "")
+
+            const getDetails = async () => {
+                try {
+                    const response = await attendanceservice.getItemByCode(route.query.id);
+                    console.log(response, "Item details");
+                    attendanceData.value = response;
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            if (!attendanceData.value || !attendanceData.value.ussdCode) getDetails();
 
             return {
                 ussd,
