@@ -2,35 +2,28 @@
     <div>
         <div class="container">
             <div class="row mt-4 border mx-sm-0 rounded sub-con">
-                <div class="col-md-12 col-sm-12 col-lg-12 mt-3 mb-5 border-bottom">
+                <div class="col-md-12 col-sm-12 col-lg-12 my-3 border-bottom">
                     <h5 class="page-header">Payment Options</h5>
                 </div>
-                <div class="row m-auto">
-                    <div class="col-md-12">
-                        <!-- <div class="row">
-                            <div class="col-md-2 col-sm-12">
-                                <h5 class="event mt-3"> Event</h5>
-                            </div>
-                            <div class="col-md-10 col-sm-12">
-                                <Dropdown v-model="selectedEvent" :options="events"  style="width:100%" optionLabel="name" :filter="true" :disable="true">
-                                </Dropdown>
-                            </div>
-                            <div class="col-md-2 col-sm-12">
-                                <h5 class="event mt-4"> Group</h5>
-                            </div>
-                            <div class="col-md-10 mt-3 col-sm-12">
-                                <MultiSelect v-model="selectedGroups" :options="groups" style="width:100%" optionLabel="name" placeholder="" display="chip" :disable="true"/>
-                            </div>
-                        </div> -->
-                        <div class="contri-type">Contribution Type Name</div>
+                <div class="col-4 offset-md-2 header-contri">Contribution Type</div>
+                <div class="col-5 header-contri">Amount</div>
+                <div class="col-12 mb-3">
+                    <div class="row" v-for="(item, index) in contributionItems" :key="index">
+                    <div class="col-md-4 offset-md-2 pt-2">
+                        <div>{{ item.offType }}</div>
                     </div>
-                
+                    <div class="col-md-5">{{ item.amount }}</div>
+                    </div>
                 </div>
+            </div>
+                
+                
+                <div>
                 <div class="col-md-12 mt-5 mb-2 border-bottom">
                 
                 </div>
-                 <div class="col-md-12 mb-1">
-                      <h5 class="check">Available options for payment</h5>
+                 <div class="col-md-6 offset-md-2 mb-1">
+                      <h5 class="header-contri my-4">Available options for payment</h5>
                 </div>
                 <div class="row w-100">
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded" @click="toggleLink">
@@ -127,13 +120,16 @@
 // import Dropdown from 'primevue/dropdown';
 // import MultiSelect from 'primevue/multiselect';
 import { useRoute } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+
 
     export default {
         // components: { Dropdown, MultiSelect},
 
         setup() {
             const route = useRoute();
+            const contributionItems = ref([])
  
             const displayLink = ref(false)
             const displayQr = ref(false)
@@ -167,8 +163,13 @@ import { ref } from 'vue';
             //     selectedGroups.value.push({ name: route.query.groupName, id: route.query.groupId })
             // }
 
+            onMounted(() => {
+                let store = useStore()
+                console.log(store.getters['contributions/contributionItems'])
+                contributionItems.value = store.getters['contributions/contributionItems']
+            })
             return {
-                displayLink, route, toggleLink, displayQr, toggleQr, toggleIFrame, displayIFrame
+                displayLink, route, toggleLink, displayQr, toggleQr, toggleIFrame, displayIFrame, contributionItems
             }
         }
 
@@ -300,6 +301,11 @@ opacity: 0.8;
     height: 200px;
     overflow: hidden;
 
+}
+
+.header-contri {
+     font-size: 20px; 
+     font-weight: 700;
 }
 
 </style>

@@ -13,25 +13,27 @@
 
 <script>
     import { useStore } from "vuex";
+    import { useRoute } from "vue-router";
 import attendanceservice from '../../../services/attendance/attendanceservice';
+import { computed, ref } from 'vue';
     export default {
         setup() {
             const store = useStore();
+            const route = useRoute();
 
-            const attendanceData = store.getters["attendance/attendanceItemData"];
-            const qrCode = attendanceData ? attendanceData.qrCode : "";
+            const attendanceData = ref(store.getters["attendance/attendanceItemData"]);
+            const qrCode = computed(() => attendanceData.value && attendanceData.value.qrCode ? attendanceData.value.qrCode : "")
 
             const getAttendanceByCode = async () => {
-                console.log("calling");
                 try {
-                    const response = await attendanceservice.getItemByCode(44);
-                    console.log(response, "By code");
+                    const response = await attendanceservice.getItemByCode(route.query.id);
+                    attendanceData.value = response;
                 } catch (error) {
                     console.log(error);
                 }
             }
 
-            if (!attendanceData || !attendanceData.qrCode) getAttendanceByCode();
+            if (!attendanceData.value || !attendanceData.value.qrCode) getAttendanceByCode();
 
             return {
                 qrCode,

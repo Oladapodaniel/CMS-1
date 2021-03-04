@@ -63,13 +63,13 @@
               <div class=" col-10 col-md-9">
                 <button
                   @click.prevent="selectEventAttended"
-                  class="form-control dd"
+                  class="form-control dd text-left close-modal"
                 >
                   {{ selectedEventAttended.name ? selectedEventAttended.name.length > 20 ? `${selectedEventAttended.name.slice(0, 20)}...` : selectedEventAttended.name : "Select Event" }}
                   <!-- {{ newEvent.activity.date }}
                    -->
                 </button>
-                <i class="pi pi-chevron-down manual-dd-icon align-self-center"></i>
+                <i class="pi pi-chevron-down manual-dd-icon align-self-center close-modal"></i>
                 <div class="input-field manual-dd-con" v-if="showEventList">
                 <div class="manual-dd dd">
                   <div
@@ -92,9 +92,9 @@
 
                   <div class="container-fluid dd-list-con">
                     <div class="row">
-                      <div class="col-md-12">
+                      <div class="col-md-12  px-0">
                         <p
-                          class="px-1 manual-dd-item mb-0 py-2 dd"
+                          class="px-1 manual-dd-item mb-0 py-2 px-3 dd"
                           v-for="(event, index) in filteredEvents"
                           :key="index"
                           @click="eventAttendedSelected(event)"
@@ -557,7 +557,9 @@
             class="form-control mb-3 ofering"
             v-model="offeringText"
             placeholder="Search Offering item"
+            ref="focusInp"
           />
+          <i class="pi pi-search" style="position: absolute; right: 20px; margin-top: -42px"></i>
 
           <div
             class="ofering pointer"
@@ -611,7 +613,7 @@
                       <label>Name</label>
                     </div>
                   <div class="col-lg-5 col-sm-12 my-auto">
-                      <input type="text" class="form-control textbox-height"  placeholder="" v-model="name" required /> 
+                      <input type="text" class="form-control textbox-height w-100"  placeholder="" v-model="name" required /> 
                   </div>
                   <div class="col-sm-4 mt-3 text-right pr-0 align-self-center">
                       <label>Income Account</label>
@@ -648,11 +650,11 @@
                       </Dropdown>
                   </div>
 
-                  <div class="col-sm-5 text-right align-self-center mt-3">
+                  <div class="col-sm-4 text-right align-self-center mt-3">
                       <label>Percentage %</label>
                     </div>
                   <div class="col-lg-5 col-sm-12 mt-3">
-                      <input type="text" class="form-control textbox-height"  placeholder="" v-model="item.percentage" required /> 
+                      <input type="text" class="form-control textbox-height w-100"  placeholder="" v-model="item.percentage" required /> 
                   </div>
 
                   <div class="col-sm-2 col-12 adjust-down">
@@ -1013,6 +1015,7 @@ import Dialog from "primevue/dialog";
 import Dropdown from 'primevue/dropdown';
 import NewDonor from './NewDonor';
 import membershipService from "../../../services/membership/membershipservice";
+import router from '../../../router';
 export default {
     components: {
         Dialog, Dropdown, NewDonor
@@ -1057,19 +1060,24 @@ export default {
         const display = ref(false);
         const personId = ref("")
         const tenantCurrency = ref("")
+        const loading = ref(false)
+        const focusInp = ref("")
   
 
 
         const addOffering = () => {
             offeringDrop.value.classList.toggle("offering-drop");
+            focusInp.value.focus()
             }
 
         const hideModals = (e) => {
             if (!e.target.classList.contains("ofering")) {
                 offeringDrop.value.classList.remove("offering-drop");
-
+              }
+            if (!e.target.classList.contains("close-modal") ) {
+              showEventList.value = false
             }
-            }
+          }
 
         const selectEventAttended = () => {
             showEventList.value = !showEventList.value;
@@ -1454,7 +1462,7 @@ export default {
             cashAccountId: selectedCashAccount.value.id,
             
           }
-              if (applyRem.value) {
+              if (remitance.value[0].account || remitance.value[0].percentage) {
                 contributionCategory.incomeRemittance = remitance.value.map(i => {
                   return {
                     financialFundID: i.account.financialFundID,
@@ -1468,14 +1476,14 @@ export default {
           console.log(contributionCategory)
           axios.post('/api/financials/contributions/items/save', contributionCategory)
                   .then(res => {
-                    offeringItem.value.push({
-                      name: name.value,
-                      paymentChannel: "Cash",
-                      financialContributionID: res.data.id,
-                      donor:  "",
-                      date: eventDate.value,
-                      activityID: selectedEventAttended.value.activityID
-                    })
+                    // offeringItem.value.push({
+                    //   name: 'dapoo',
+                    //   paymentChannel: "Cash",
+                    //   financialContributionID: res.data.id,
+                    //   donor:  "",
+                    //   date: eventDate.value,
+                    //   activityID: selectedEventAttended.value.activityID
+                    // })
 
                     newOfferings.value.push({
                       name: name.value
@@ -1485,13 +1493,14 @@ export default {
                     
                   })
                   .catch(err => {
-                    toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
+                    toast.add({severity:'error', summary: 'Error', detail:'Not Successful', life: 3000});
                     console.log(err)
                   })
                   e.target.setAttribute('data-dismiss', 'modal')
         }
 
         const post = () => {
+          loading.value = true
               // let financialContributionTrasaction = {
               //   id: 123,
               //   financialContributionID:123,
@@ -1517,9 +1526,16 @@ export default {
 
           axios.post('/api/Financials/Contributions/Transactions/Save', contributions)
             .then(res => {
+              // toast.add({severity:'success', summary: 'Successful', detail:'Contribution added', life: 3000})
               console.log(res)
+              localStorage.setItem('contriTransact', JSON.stringify(res.data.returnObject))
+              router.push({ name: 'OfferingReport', params: { report: res.data.returnObject.find(i => i).id } })
+              loading.value = false
+              ;
             })
             .catch(err => {
+              loading.value = false
+              toast.add({severity:'error', summary: 'Error', detail:'Please try again', life: 3000});
               console.log(err)
             })
         }
@@ -1587,7 +1603,7 @@ export default {
             addOffering, offeringDrop, hideModals, selectEventAttended, showEventList, eventsAttended, filteredEvents, closeManualModalIfOpen, eventAttendedSelected,
             newEvents, selectedEventAttended, eventsSearchString, selectEvent, individualEvent, newEvent, showCategory, filterEventCategory, eventText, eventDate, createNewCat,
             newEventCategoryName, displayModal, openModal, closeModal, toast, createNewEvent, invalidEventDetails, savingNewEvent, newOfferings, filterOffering, offeringText,
-            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency
+            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp
     }
   }
 }
@@ -1663,6 +1679,8 @@ export default {
         width: 90%;
         background: white;
         display: block;
+        max-height: 300px;
+        overflow: auto;
         }
         .offering-drop div {
         padding: 3px;
@@ -1699,7 +1717,7 @@ export default {
         }
 
         .manual-dd {
-        width: 280px;
+        width: 100%;
         border: 1px solid #b9c5cf;
         position: absolute;
         background: white;
@@ -1732,7 +1750,8 @@ export default {
         }
 
         .dd-search-field {
-        border-radius: 20px;
+          margin: 10px;
+          width: calc(100%  - 20px);
         }
 
         .form-control.input.dd {

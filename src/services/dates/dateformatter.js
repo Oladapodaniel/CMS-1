@@ -13,12 +13,24 @@ const dateFormatter = {
         return formattedDate;
     },
 
+    monthDayYear(date) {
+        let formattedDate = " ";
+        if (date) {
+            const monthDay = new Date(date).toString().split(" ").slice(1, 3).join(" ");
+            const year = new Date(date).getFullYear();
+
+            formattedDate = `${monthDay}, ${year}`;
+        }
+        return formattedDate;
+    },
+
     normalDate(date) {
         return moment.parseZone(
             new Date(date).toLocaleDateString(),
             "YYYY MM DD HH ZZ"
           )._i;
-    }
+    },
+
 }
 
 export default dateFormatter;

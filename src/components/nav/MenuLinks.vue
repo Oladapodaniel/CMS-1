@@ -191,7 +191,7 @@
               <router-link class="dd-link-item routelink" to="">Dashboard</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/offeringlist">Offerings</router-link>
+              <router-link class="dd-link-item routelink" to="/tenant/offering">Contributions</router-link>
             </li>
             <li class="dd-list-item"  v-if="false">
               <router-link class="dd-link-item routelink" to="">Pledges</router-link>

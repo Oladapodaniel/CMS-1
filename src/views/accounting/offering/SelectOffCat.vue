@@ -1,56 +1,21 @@
 <template>
-  <div class="container-wide container-top">
-    <!-- <div class="container-wide">
-      
-      <div class="col-sm-4 first-timers-text">
-        <h2 class="page-header"><bold>Contribution Category</bold></h2>
-      </div>
-   
-
-    <div class="row">
-      <div class="col-md-12">
-        <hr class="hr" />
-      </div>
-    </div>
-    </div> -->
- 
-
+  <!-- <div class="container-wide container-top"> -->
         <div class="top container-wide mt-3">
-   
-            <div class="row">
+          <div class="row">
               <div class="col-sm-12">
                 <div class="page-header">Contribution Category</div>
                 <hr class="hr"/>
               </div>
             </div>
-   
-          <!-- <div class="actions">
-            <button class="more-btn button align-items-center default-btn border-0">
-              More
-              <span><i class="fa fa-angle-down btn-icon"></i></span>
-            </button>
-            <router-link :to="`/tenant/people/add`" class="">
-            <button class="add-person-btn button default-btn border-0 ml-3">
-              Add Member
-            </button>
-            </router-link>
-          </div> -->
         </div>
-        
-        <!-- <div>{{ incomeAccount }}</div> -->
-
-        <!-- <transition name="fade" mode="out-in"> -->
-          <router-view class="view" />
-
-
 
     <!-- input area -->
     <div class="container-wide">
       <div class="row my-5 mx-auto">
-        <div class="col-sm-4 text-right">
+        <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
            <label for="" class="label">Name</label>
         </div>
-      <div class="col-lg-5 col-sm-12 my-auto">
+      <div class="col-sm-5 mt-sm-3">
  
          
           <input
@@ -60,33 +25,20 @@
             v-model="name"
             required
           />
-
-
-         
-          <!-- <button class="form-control input transaction-button close-modal text-right" @click="toggleAccount">
-                <i class="pi pi-angle-down arrow-icon close-modal" @click="toggleAccount"></i>
-            </button> -->
-              
-
-         
-          <!-- <button class="form-control input transaction-button close-modal text-right" @click="toggleAccount">
-              <i class="pi pi-angle-down arrow-icon close-modal" @click="toggleAccount"></i>
-          </button> -->
-          
  
       </div>
-      <div class="col-sm-4 my-3 text-right">
+      <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
            <label for="" class="label">Income Account</label>
       </div>
-      <div class="col-lg-5 col-sm-12 my-3">
+      <div class="col-sm-5 mt-sm-3">
           <Dropdown v-model="selectedIncomeAccount" class="w-100 p-0" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
 
               </Dropdown>
       </div>
-      <div class="col-sm-4 my-3 text-right">
+      <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
            <label for="" class="label">Cash Account</label>
         </div>
-      <div class="col-lg-5 col-sm-12 my-auto">
+      <div class="col-sm-5 mt-sm-3">
  
          
           <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
@@ -94,7 +46,7 @@
           </Dropdown>
         </div>
 
-        <div class="col-sm-12" @click="toggleRem">
+        <div class="col-sm-12 mt-4" @click="toggleRem">
           <div class="row">
               <div class="col-sm-12 d-flex">
                   <i class="check-it mr-2">
@@ -107,9 +59,34 @@
       <div class="col-sm-12 mt-3" v-if="applyRem">
         <hr class="hr"/>
       </div>
-      <div class="col-12">
-        <div class="col-sm-2 col-12 mt-3 mt-sm-0 offset-6 align-button">
-            <button
+      <div class="col-12 pl-0" v-if="applyRem">
+       
+      </div>
+  
+        <div class="col-lg-6 offset-lg-4" v-if="applyRem">
+        <div v-for="(item, index) in remitance" :key="index">
+        <div class="row mt-3 mb-4">
+          <div class="col-5 col-sm-6">
+            <div class="">Account</div>
+          <Dropdown v-model="item.account" class="w-100  mt-2" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+          </Dropdown>
+          </div>
+
+          <div class="col-5 col-sm-4 pl-sm-0">
+            <div class="">Percentage %</div>
+
+            <div class="mt-2">
+              <input type="text" v-model="item.percentage" class="form-control textbox-height" placeholder="" />
+            </div>
+          </div>
+          <div class="col-1 mt-4 align-self-center" @click="deleteItem(index)">
+            <i class="pi pi-trash"></i>
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-2 mt-3 mb-3">
+          <button
               v-on:click="addRemittance"
               class="btn btnIcons btn-secondary"
             >
@@ -117,39 +94,15 @@
               Add
             </button>
           </div>
-      </div>
-  
-        <div class="col-lg-12" v-if="applyRem">
-        <div v-for="(item, index) in remitance" :key="index">
-        <div class="row mt-3 mb-4 offset-4">
-          <div class="offset-4 col-sm-4 pr-0 col-12 m-0">
-            <div class="">Account</div>
-          <Dropdown v-model="item.account" class="w-100  mt-2" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-
-                </Dropdown>
-          </div>
-
-          <div class=" col-sm-3 col-12 mt-3 m-0 pl-0 mt-sm-0">
-            <div class="">Percentage %</div>
-
-            <div class="mt-2">
-              <input type="text" v-model="item.percentage" class="form-control textbox-height" placeholder="" />
-            </div>
-          </div>
-
-          
-          <div class="col-sm-1 mt-4 align-self-center" @click="deleteItem(index)">
-            <i class="pi pi-trash"></i>
-          </div>
+          <div class="col-2 mt-3 mb-3 offset-3 offset-4">
+          <button class="add-person-btn button default-btn border-0" @click="save">
+            Save
+          </button>
         </div>
         </div>
       </div>
       <!--end of diisplay bottom area -->
-      <div class="col-sm-2 offset-sm-4">
-        <button class="add-person-btn button default-btn border-0" @click="save">
-          Save
-        </button>
-      </div>
+      
     </div>
     </div>
     
@@ -164,7 +117,7 @@
 
     
     <Toast />
-  </div>
+  <!-- </div> -->
 </template>
 
 
@@ -261,7 +214,7 @@ export default {
         incomeRemittance: remitance.value
       }
 
-        if (applyRem.value) {
+        if (remitance.value[0].account || remitance.value[0].percentage) {
                 contributionCategory.incomeRemittance = remitance.value.map(i => {
                   return {
                     financialFundID: i.account.financialFundID,
@@ -293,11 +246,12 @@ export default {
 <style scoped>
 .btnIcons {
   width: 110px;
-  height: 35px;
+  /* height: 35px; */
   color: #136acd;
   background-color: #dde2e6;
   border-radius: 40px;
   border: none;
+  padding: .5rem 1.25rem;
 }
 
 .check-it {
@@ -323,12 +277,6 @@ export default {
   top: -4px;
 }
 
-@media (min-width: 576px) {
-  .btnIcons {
-    margin-top: 33px;
-  }
-}
-
 * {
   box-sizing: border-box;
   color: #02172e;
@@ -352,23 +300,12 @@ export default {
     width: 90%;
     margin: 0 auto;
   }
-
-  .top {
-    height: 90%
-  }
 }
 
 .textbox-height {
   height: 41px
 }
 
-.p-dialog.p-component {
-  border-radius: 0 !important;
-}
-
-/* .align-button {
-  margin-left: 26px;
-} */
 
 </style>
 

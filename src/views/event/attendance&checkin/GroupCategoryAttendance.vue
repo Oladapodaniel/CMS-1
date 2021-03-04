@@ -39,8 +39,9 @@
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a>
-                                <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
+                                <a class="text-decoration-none"><h4 class="header4">Registration Link</h4></a>
+                                <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+                                <p class="para"><span class="d-flex align-items-center"><input type="text" ref="checkinLink" @keydown="preventChangingOfCheckinLink" @click="copyLink" :value="`https://my.churchplus.co/checkin/e/${route.query.code}`" class="form-control" style="width: 95%"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
                             </div>
                             </div>
                         </div>
@@ -90,7 +91,7 @@
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" to="/tenant/attendancecheckin/ussd">Ussd</router-link> </h4>
+                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" :to="{ name: 'USSDCheckin', query: { id: route.query.id }}">Ussd</router-link> </h4>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>
@@ -107,7 +108,7 @@
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" to="/tenant/attendancecheckin/qr">QR</router-link> </h4>
+                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" :to="{ name: 'AttendanceQR', query: { id: route.query.id }}">QR</router-link> </h4>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>
@@ -124,7 +125,7 @@
 
                             </div>
                             <div class="col-md-10 col-sm-10  mt-3">
-                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" to="/tenant/attendancecheckin/sms">Sms</router-link></h4>
+                                <h4 class="header4"> <router-link class="text-dark text-decoration-none" :to="{ name: 'SMSCheckin', query: { id: route.query.id }}">Sms</router-link></h4>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>
@@ -135,7 +136,7 @@
                 <div class="col-md-12 mb-3">
                 </div>
             </div>
-
+            <Toast />
         </div>
 
     </div>
@@ -147,6 +148,9 @@ import Dropdown from 'primevue/dropdown';
 import MultiSelect from 'primevue/multiselect';
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
+import attendanceservice from '../../../services/attendance/attendanceservice';
+import { useStore } from 'vuex';
+import { useToast } from "primevue/usetoast";
 
     export default {
         components: { Dropdown, MultiSelect},
@@ -157,6 +161,9 @@ import { ref } from 'vue';
             const selectedEvent = ref({ });
             const events = ref([ ]);
             const selectedGroups = ref([ ]);
+            const store = useStore();
+            const checkinLink = ref(null);
+            const toast = useToast();
 
             if (route.query.activityID) {
                 events.value.push({ name: route.query.activityName, id: route.query.activityID })
@@ -168,45 +175,59 @@ import { ref } from 'vue';
                 selectedGroups.value.push({ name: route.query.groupName, id: route.query.groupId })
             }
 
+            // const getDetails = async () => {
+            //     try {
+            //         const response = await attendanceservice.getReport(route.query.id);
+            //         console.log(response);
+            //     } catch (error) {
+            //         console.log(error);
+            //     }
+            // }
+
+            const attendanceCheckinInStore = ref(store.getters["attendance/attendanceItemData"]);
+
+            const initCheckinAttendanceInStore = async () => {
+                try {
+                    const response = await attendanceservice.getItemByCode(route.query.id);
+                    store.dispatch("attendance/setItemData", response);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            const copyLink = () => {
+                checkinLink.value.select();
+                checkinLink.value.setSelectionRange(0, checkinLink.value.value.length); /* For mobile devices */
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+                toast.add({
+                    severity: "info",
+                    summary: "Link Copied",
+                    detail: "Checkin link copied to your clipboard",
+                    life: 3000,
+                });
+            }
+
+            const preventChangingOfCheckinLink = (e) => {
+                e.preventDefault();
+            }
+            
+            if (!attendanceCheckinInStore.value || attendanceCheckinInStore.value.id !== route.query.id) initCheckinAttendanceInStore();
+
+            // getDetails()
+
             return {
                 groups,
                 selectedEvent,
                 events,
                 selectedGroups,
                 route,
+                checkinLink,
+                copyLink,
+                preventChangingOfCheckinLink,
             }
         }
-
-    //  data() {
-
-
-
-    //     return {
-    //         selectedCity1: null,
-    //         selectedCity2: null,
-    //         selectedCountry: null,
-    //         countries: [
-    //             // {name: 'workers meeting(12th Oct, 2020)'},
-    //             // {name: 'Sunday service (12th Oct, 2020)'},
-    //             // {name: 'Create New Event'},
-    //             {name: 'choir', code: 'NY', id: 1},
-    //             {name: 'Prayer', code: 'RM', id: 2},
-    //         ],
-    //         selectedGroup: [
-    //             {name: 'choir', code: 'NY', id: 1},
-    //             {name: 'Prayer', code: 'RM', id: 2},
-    //         ],
-    //         selectedCountries: null,
-    //         groups: [
-    //             {name: 'choir', code: 'NY', id: 1},
-    //             {name: 'Prayer', code: 'RM', id: 2},
-    //             {name: 'Thankgiving', code: 'LDN', id: 3},
-    //             {name: 'song', code: 'IST', id: 4},
-    //             {name: 'Giving', code: 'PRS', id: 5}
-    //         ],
-           
-    //     }
-    // },
         
     }
     

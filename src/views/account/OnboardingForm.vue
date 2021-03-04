@@ -72,6 +72,7 @@
                     class="input phone-num form-control"
                     :class="{ 'is-invalid' : !isValid, 'is-valid' : valid }"
                     placeholder="Phone number"
+                    @blur="invalidResponse"
                     required
                   />
                   <div class="invalid-feedback">
@@ -101,8 +102,8 @@
               <button
                 type="submit"
                 class="submit-btn sign-in-btn get-started default-btn font-weight-700 codeModal"
-                :class="{ disabled: !isValid, 'btn-loading': loading }"
-                :disabled="!isValid"
+                :class="{ disabled: !disableNext, 'btn-loading': loading }"
+                :disabled="!disableNext"
               >
                 <i class="fas fa-circle-notch fa-spin codeModal" v-if="loading"></i>
                 <span class="codeModal">Next</span>
@@ -187,7 +188,9 @@ export default {
       loading: false,
       showCode: false,
       codeUrl: {},
-      searchText: ""
+      searchText: "",
+      isValid: true,
+      disableNext: false
     };
   },
   methods: {
@@ -245,7 +248,17 @@ export default {
     if (!e.target.classList.contains("codeModal")){
       this.showCode = false
     }
-  }
+  },
+  invalidResponse () {
+      if (!this.userDetails.phoneNumber) {
+        this.isValid = false
+        
+      } else {
+        this.isValid = true
+        this.disableNext = true
+      }
+    },
+
   },
 
   computed: {
@@ -255,17 +268,16 @@ export default {
         ? this.userDetails.churchName
         : this.userDetails.churchName.slice(0, 20) + "...";
     },
-
-    isValid() {
-      return (
+    // isValid() {
+    //   return (
         // this.userDetails.firstName &&
         // this.userDetails.lastName &&
-        this.userDetails.phoneNumber
+        // this.userDetails.phoneNumber
         // this.userDetails.churchName 
         // this.userDetails.churchSize &&
         // this.selectedCountry.id
-      );
-    },
+    //   );
+    // },
     valid () {
       let regex  = /[0-9]{11}/
       return regex.test(this.userDetails.phoneNumber)

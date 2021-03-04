@@ -1,6 +1,9 @@
 
 <template>
-  <div class="container-wide shadow p-3 mb-5 bg-body rounded mt-5" style="max-width:700px">
+  <div
+    class="container-wide shadow p-3 mb-5 bg-body rounded mt-5"
+    style="max-width: 700px"
+  >
     <div class="row mt-5">
       <div class="col-md-6 offset-md-3 mb-3"></div>
     </div>
@@ -46,7 +49,6 @@
       </div>
     </div>
     <!-- end of top area -->
-  
 
     <!--start of top area button -->
     <div class="row mb-4">
@@ -55,7 +57,12 @@
         <p class="my-1 text-danger" v-if="showNoPhoneError">
           Please enter your phone number
         </p>
-        <button class="default-btn add-btn" @click="checkCharacter" ref="submitBtn">
+        <button
+          class="default-btn add-btn"
+          @click="checkCharacter"
+          ref="submitBtn"
+          v-if="!appltoggle"
+        >
           <!-- <i class="fas fa-circle-notch fa-spin" v-if="loading"></i> -->
           Submit
         </button>
@@ -189,7 +196,7 @@ import InputText from "primevue/inputtext";
 import { useRoute } from "vue-router";
 import dateFormatter from "@/services/dates/dateformatter";
 import { useToast } from "primevue/usetoast";
-import stopProgressBar from "../../../services/progressbar/progress"
+import stopProgressBar from "../../../services/progressbar/progress";
 
 export default {
   setup() {
@@ -241,22 +248,19 @@ export default {
       // if (e.target.value.length > 0) {
       loading.value = true;
       autosearch.value = true;
-      axios
-        .get(
-          `/api/CheckInAttendance/SearchMemberByPhone?searchText=${
-            e.target.value
-          }&&attendanceCode=${+route.params.code}`
-        )
+      axios.get(`/searchmemberbyphone?searchtext=${enteredValue.value}&&attendanceCode=${route.params.code}`)
+      
         .then((res) => {
+          console.log(res, "RESPONSE");
           loading.value = false;
           autosearch.value = false;
           names.value = res.data;
-          personData.value.firstName = res.data[0].name;
-          personData.value.email = res.data[0].email;
-          personData.value.homeAddress = res.data[0].address;
-          personData.value.personId = res.data[0].personId;
+          personData.value.firstName = res.data[0] ? res.data[0].name : "";
+          personData.value.email = res.data[0] ? res.data[0].email : "";
+          personData.value.homeAddress = res.data[0] ? res.data[0].address : "";
+          personData.value.personId = res.data[0] ? res.data[0].personId : "";
           personData.value.mobilePhone = enteredValue.value;
-          person.value = res.data[0];
+          person.value = res.data[0] ? res.data[0] : { };
 
           if (person.value.name) {
             person.value.name = formatString(person.value.name, 2, 4);
@@ -267,12 +271,14 @@ export default {
           if (person.value.address) {
             person.value.address = formatString(person.value.address, 2, 4);
           }
+          console.log(res, "RPONSE");
           populateInputfields(person.value);
           console.log(names.value);
 
           if (person.value) appltoggle.value = true;
         })
         .catch((err) => {
+          person.value = { };
           loading.value = false;
           autosearch.value = false;
           appltoggle.value = true;
@@ -305,7 +311,7 @@ export default {
       let newPerson = {};
       if (person.value.personId) {
         newPerson = {
-          person: personData.value,
+          person: { personId: personData.value.personId, mobilePhone: enteredValue.value },
           attendanceCode: +route.params.code,
         };
       } else {
@@ -325,7 +331,7 @@ export default {
       autosearch.value = true;
       noError.value = true;
       axios
-        .post("/api/CheckInAttendance/MarkAttendance", newPerson)
+        .post("/MarkAttendance", newPerson)
         .then((res) => {
           loading.value = false;
           autosearch.value = false;
@@ -356,7 +362,6 @@ export default {
             life: 3000,
           });
         });
-      
     };
 
     // confirm button check
@@ -373,7 +378,6 @@ export default {
     const notme = () => {
       person.value = {};
       enteredValue.value = "";
-      submitBtn.value.classList.add('d-none')
     };
 
     // getting events and date
@@ -381,7 +385,7 @@ export default {
     const getDateAndEvent = () => {
       axios
         .get(
-          `/api/CheckInAttendance/WebCheckInGetEventDetails?attendanceCode=${route.params.code}`
+          `/api/publiccontent/WebCheckInGetEventDetails?attendanceCode=${+route.params.code}`
         )
         .then((res) => {
           eventData.value.name = res.data.fullEventName;

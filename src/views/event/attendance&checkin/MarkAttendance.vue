@@ -77,7 +77,7 @@
         <div class="row pt-2" :class="{ 'kiosk-tb-size': isKioskMode }">
               <Suspense>
                 <template #default>
-                    <TableData :isKiosk="isKioskMode" :searchText="searchText" />
+                    <TableData :isKiosk="isKioskMode" @refreshed="refreshed" :fetchUsers="fetchUsers" :searchText="searchText" />
                 </template>
                 <template #fallback>
                     <div class="row">
@@ -176,7 +176,7 @@
                             class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
                             style="color: #136acd"
                           ></i>
-                          Create new event
+                          Add new member
                         </a>
                       </div>
                     </div>
@@ -224,6 +224,7 @@ export default {
     const display = ref(false);
     const searchingForMembers = ref(false);
     const searchText = ref("");
+    const fetchUsers = ref(false);
 
     const enterKioskMode = () => {
       isKioskMode.value = !isKioskMode.value;
@@ -277,6 +278,7 @@ export default {
       if (response) {
         searchText.value = "";
         toast.add({severity:'success', summary:'Checked-in', detail:'Checkin was successful', life: 3000});
+        refresh();
       } else {
         toast.add({severity:'error', summary:'Checkin Error', detail:'Checkin was not successful', life: 3000});
       }
@@ -295,6 +297,11 @@ export default {
     // getRegisteredPeople(route.query.id);
     const refresh = () => {
       searchText.value = "";
+      fetchUsers.value = true;
+    }
+
+    const refreshed = () => {
+      fetchUsers.value = false;
     }
 
     return {
@@ -311,6 +318,8 @@ export default {
       addExistingMember,
       sendExistingUser,
       refresh,
+      fetchUsers,
+      refreshed,
     };
   },
 };

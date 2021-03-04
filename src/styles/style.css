@@ -191,9 +191,6 @@
     align-items: center;
   }
   
-  .select-all input {
-    margin: 0 8px;
-  }
   .table-top {
     background: #fff;
     color: #172b4d;
@@ -218,33 +215,66 @@
     text-align: center;
   }
   
-  .table-header p {
-    margin: 8px;
-  }
   
   .table-body {
     background: #fff;
     color: #172b4d;
   }
   
-  .image-con {
-    width: 40px;
-    margin: auto;
-  }
-  
-  .image-con img {
-    width: 100%;
-  }
-  
   .filter,
   .search-text {
-    width: 12%;
+    width: 10%;
   }
 
 
   .search {
-    width: 15%
+    width: 20%
   }
+
+  .label-search {
+    width: 0;
+    background: transparent;
+    padding: 4px;
+    overflow: hidden;
+    transition: all 0.5 ease-in-out;
+  }
+  .label-search input {
+    border: transparent;
+    background: transparent;
+    width: 76%;
+    outline: none;
+  }
+  
+  .label-search .search-btn {
+    display: flex;
+    align-items: center;
+    background: #7894a6;
+    padding: 4px;
+    border-radius: 5px;
+  }
+  
+  .label-search .empty-btn {
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+  }
+  
+  .show-search {
+    width: 174px;
+    overflow: hidden;
+    border: 1px solid #dde2e6;
+    border-radius: 5px 0px 0px 5px;
+    background: #ebeff4;
+    transition: all 0.9s cubic-bezier(.38,.77,.2,-0.54);
+  }
+  
+  .hide-search {
+    width: 0;
+    overflow: hidden;
+    transition: all 0.9s cubic-bezier(.38,.77,.2,-0.54);
+    border: none;
+  }
+  
   
   .data-text {
     font-weight: bold;
@@ -266,20 +296,6 @@
   .action-icon {
     text-align: center;
   }
-
-  /* #chart {
-    width: 48%;
-    max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
-    border-radius: 10px;
-  } */
-  
-  /* #second {
-    width: 48%;
-    max-height: 310px;
-    border: 0.4000000059604645px solid #dde2e6;
-    border-radius: 10px;
-  } */
   
   .table {
     width: 100%;
@@ -288,14 +304,7 @@
     border-radius: 30px;
   }
   
-  .table-top,
-  .table-header,
-  .table-body .data-row {
-    display: flex;
-    padding: 4px;
-    align-items: center;
-  }
-  
+
   .select-all input {
     margin: 0 8px;
   }
@@ -305,31 +314,13 @@
     font-size: 11px;
     border-radius: 22px 22px 0px 0px;
   }
-  .table-header {
-    background: #f1f3f9;
-    color: #8898aa;
-    font-size: 11px;
-    text-align: left;
-    box-shadow: 0px 3px 6px #2c28281c;
-  }
-  
-  .table-header .check {
-    width: 22px;
-    text-align: center;
-  }
-  
-  .check.data {
-    text-align: center;
-  }
+
+
   
   .table-header p {
     margin: 8px;
   }
   
-  .table-body {
-    background: #fff;
-    color: #172b4d;
-  }
   
   .image-con {
     width: 40px;
@@ -340,19 +331,15 @@
     width: 100%;
   }
   
-  .data-con {
-    /* text-align: center; */
-  }
-  
   .select-all {
-    width: 60%;
+    width: 58%;
     padding: 0 10px;
   }
 
   @media (max-width: 660px) {
     .table-top {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr ;
       text-align: center
     }
     .table-top p, .table-top .search {
@@ -360,15 +347,11 @@
     }
 
     .filter {
-      width: 100%
+      width: 100%;
     }
    .select-all {
-      width: 100%
+      width: 100%;
     }
-    .search {
-      /* margin-left: 50px; */
-    }
-
   }
 
   @media (min-width: 661px) and (max-width: 767px) {
@@ -383,6 +366,13 @@
     .search-text{
       width: 15%;
     }
+  }
+
+  @media (min-width: 768px) and (max-width: 883px) {
+    .filter, .search-text {
+      width: 13%;
+    }
+
   }
   
   
@@ -539,16 +529,16 @@
   }
   
   .bio-div {
-    margin-top: 50px;
+    /* margin-top: 20px; */
   }
   
   .bio-info {
     display: flex;
   }
   
-  .celeb-info {
+  /* .celeb-info {
     margin-bottom: 24px;
-  }
+  } */
   
   .inputs {
     width: 62%;
@@ -649,7 +639,7 @@
     padding: .5rem 1.25rem;
     width: auto;
     outline: transparent !important;
-    max-height: 40px;
+    max-height: 42px;
     background: #fff;
     min-width: 121px;
   }
@@ -1010,7 +1000,7 @@
   
     .bio-info {
       flex-direction: column-reverse;
-      margin-top: 24px;
+      /* margin-top: 24px; */
     }
   
     .inputs {

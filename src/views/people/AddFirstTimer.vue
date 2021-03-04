@@ -408,15 +408,17 @@
                   />
                 </span>
 
-                <label for="welcomeEmail">Send welcome email</label>
-                <input
-                  type="checkbox"
-                  checked
-                  class="check-box"
-                  name=""
-                  v-model="firstTimersObj.sendWelcomeEmail"
-                  id="welcomeEmail"
-                />
+                <span>
+                  <label for="welcomeEmail">Send welcome email</label>
+                  <input
+                    type="checkbox"
+                    checked
+                    class="check-box"
+                    name=""
+                    v-model="firstTimersObj.sendWelcomeEmail"
+                    id="welcomeEmail"
+                  />
+                </span>
               </div>
 
               <div class="input-field">
@@ -1340,6 +1342,12 @@ export default {
   overflow: hidden;
 }
 
+ @media (max-width: 620px) {
+    .show-occ-tab {
+      height: 144px;
+    }
+  }
+
 .submit-div {
   margin-left: 18em;
 }
@@ -1479,6 +1487,11 @@ export default {
 @media (max-width: 620px) {
   .submit-div {
     margin-left: 1em;
+  }
+
+  .manual-dd-icon {
+    margin-right: -18rem;
+    margin-top: 2rem;
   }
 }
 

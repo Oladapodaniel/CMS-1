@@ -1,24 +1,28 @@
 <template>
-  <div class="container-wide">
-    <div class="row my-3">
-      <div class="col-sm-4 first-timers-text">
+  <!-- <div class="container-wide container-top"> -->
+    <!-- <div class="container-wide"> -->
+      <!-- <div class="row my-3">
+      <div class="col-md-4 first-timers-text">
         <h2 class="page-header">Contributions</h2>
       </div>
 
-      <div class="col-sm-8 d-flex head-button">
+      <div class="col-md-8 d-flex head-button">
         <router-link to="/tenant/offeringcategory">
-        <button class="default-btn mr-5">Add Contribution Category</button></router-link>
+          <button class="default-btn mr-3">Add Contribution Category</button>
+        </router-link>
         <router-link to="/tenant/addoffering" class="add-btn">
           Add Contribution
         </router-link>
       </div>
-    </div>
+    </div> -->
+    <!-- </div> -->
 
-    <div class="row">
+    <!-- <div class="container-wide"> -->
+      <!-- <div class="row">
       <div class="col-md-12">
         <hr class="hr" />
       </div>
-    </div>
+    </div> -->
 
     <div class="row">
       <div class="col-md-12">
@@ -26,19 +30,20 @@
           <div class="table">
             <div class="top-con">
               <div class="table-top my-4 px-4">
-                <div class="filter offset-md-8">
-                  <p @click="toggleFilterFormVissibility">
+                <div class="select-all"></div>
+                <div class="filter">
+                  <p @click="toggleFilterFormVissibility" class="mt-2">
                     <i class="fas fa-filter"></i>
                     FILTER
                   </p>
                 </div>
-                <p @click="toggleSearch" class="search-text text-right">
+                <p @click="toggleSearch" class="search-text text-right mt-2">
                   <i class="fa fa-search"></i> SEARCH
                 </p>
-                <div class="search d-flex">
+                <div class="search d-flex ml-2">
                   <label
                     class="label-search d-flex"
-                    :class="{ 'show-search': searchIsVisible }"
+                    :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
                   >
                     <input
                       type="text"
@@ -69,7 +74,7 @@
                         <input
                           type="text"
                           class="input w-100"
-                          placeholder="First Name"
+                          placeholder="Contribution"
                       
                         />
                         <!-- </div> -->
@@ -89,7 +94,7 @@
                         <input
                           type="text"
                           class="input w-100"
-                          placeholder="Last Name"
+                          placeholder="event"
             
                         />
                       </div>
@@ -98,7 +103,7 @@
                         <input
                           type="text"
                           class="input w-100"
-                          placeholder="Phone Number"
+                          placeholder="donor"
                   
                         />
                       </div>
@@ -123,7 +128,7 @@
               </div>
             </div>
 
-            <div class="responsive-table">
+            <div class="table-responsive">
               <table class="table-borderless w-100">
                 <thead class="header">
                   <tr class="">
@@ -132,35 +137,21 @@
                     <th class="">EVENT</th>
                     <th>CONTRIBUTION</th>
                     <th>AMOUNT</th>
-                    <th>CONTACT</th>
+                    <th>DONOR</th>
                     <!-- <th>STATUS</th> -->
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(offering, index) in contributionTransactions" :key="index">
+                  <tr v-for="offering in searchContribution" :key="offering.id">
                   
-                      <td>{{ offering.date }}</td>
+                      <td>{{ moment.parseZone(new Date(offering.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
                       <td>{{ offering.eventName }}</td>
                       <td class="">{{ offering.contribution }}</td>
 
                       <td style="display: flex">
-                        <select class="currency">
-                          <option value="NGN">NGN</option>
-                          <option value="USD">USD</option>
-                          <option value="EUR">EUR</option>
-                          <option value="ZAR">ZAR</option>
-                          <option value="GBP">GBP</option>
-                          <option value="CAD">CAD</option>
-                          <option value="GHS">GHS</option>
-                        </select>
-
-                        <input
-                          type=""
-                          class="form-control"
-                          style="width: 100px"
-                          v-model="offering.amount"
-                        />
+                        <div class="currency">NGN</div>
+                        <div class="offering-amount">{{ offering.amount }}</div>
                       </td>
                       <td class="">{{ offering.donor }}</td>
                       <td>
@@ -168,182 +159,13 @@
                           class="fa fa-trash"
                           style="color: #adadad"
                           aria-hidden="true"
+                          @click="showConfirmModal(offering.id)"
                         ></i>
                       </td>
                
                   </tr>
                 </tbody>
 
-                <!-- <tbody
-                  v-if="
-                    filterResult.length > 0 &&
-                    (filter.filterFirstName ||
-                      filter.filterLastName ||
-                      filter.phoneNumber)
-                  "
-                >
-                  <tr v-for="person in filterResult" :key="person.id">
-                     <td>
-                      <input
-                        type="checkbox"
-                        name="all"
-                        id="all"
-                        v-model="selectAll"
-                        @click="toggleSelect"
-                      />
-                    </td> 
-                    <td>
-                      <router-link
-                        :to="`/tenant/people/addfirsttimer/${person.id}`"
-                        class="itemroute-color"
-                        >{{
-                          person.fullName
-                            ? person.fullName
-                            : `${person.firstName} ${person.lastName}`
-                        }}</router-link
-                      >
-                    </td>
-                    <td>
-                      <router-link
-                        :to="``"
-                        class="data-value itemroute-color"
-                        >{{ person.phoneNumber }}</router-link
-                      >
-                    </td>
-                    <td class="itemroute-color">
-                      {{ person.howDidYouAboutUsName }}
-                    </td>
-                    <td class="itemroute-color">
-                      {{
-                        person.interestedInJoining === "Not_Specified"
-                          ? "Not Sure"
-                          : person.interestedInJoining
-                      }}
-                    </td>
-                    <td class="itemroute-color">
-                      {{
-                        moment.parseZone(
-                          new Date(person.date).toLocaleDateString(),
-                          "YYYY MM DD HH ZZ"
-                        )._i
-                      }}
-                    </td>
-                    <td>
-                      <router-link
-                        :to="`/tenant/people/addfirsttimer/${person.personID}`"
-                        class="data-value itemroute-color"
-                      ></router-link>
-                    </td>
-                    <td>
-                      <div class="dropdown">
-                        <div class="col-2" @click="delOffering(index)">
-                          <i class="fa fa-trash" aria-hidden="true"></i>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody> -->
-
-                <!-- <tbody v-else-if="filterResult.length == 0 && noRecords">
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="no-record text-center my-4">No record found</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody> -->
-
-                <!--
-                <tbody v-else-if="searchMember.length > 0">
-                  <tr v-for="person in searchMember" :key="person.id">
-                      <input
-                        type="checkbox"
-                        name="all"
-                        id="all"
-                        @click="toggleSelect"
-                      />
-                    </td> 
-                    <td>
-                      <router-link
-                        :to="`/tenant/people/addfirsttimer/${person.id}`"
-                        class="itemroute-color"
-                        >{{ person.fullName }}</router-link
-                      >
-                    </td>
-                    <td>
-                      <router-link
-                        :to="``"
-                        class="data-value itemroute-color"
-                        >{{ person.phoneNumber }}</router-link
-                      >
-                    </td>
-                    <td class="itemroute-color">
-                      {{ person.howDidYouAboutUsName }}
-                    </td>
-                    <td class="itemroute-color">
-                      {{
-                        person.interestedInJoining === "Not_Specified"
-                          ? "Not Sure"
-                          : person.interestedInJoining == "On_Transit"
-                          ? "On Transit"
-                          : person.interestedInJoining
-                      }}
-                    </td>
-                    <td class="itemroute-color">
-                      {{
-                        moment.parseZone(
-                          new Date(person.date).toLocaleDateString(),
-                          "YYYY MM DD HH ZZ"
-                        )._i
-                      }}
-                    </td>
-                    <td>
-                      <router-link
-                        :to="`/tenant/people/addfirsttimer/${person.id}`"
-                        class="data-value itemroute-color"
-                      ></router-link>
-                    </td>
-                    <td>
-                      <div class="dropdown">
-                        <i
-                          class="fas fa-ellipsis-v"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <a class="dropdown-item" href="#"
-                            >Convert to member</a
-                          >
-                          <a class="dropdown-item" href="#"
-                            >Assign to follow-up</a
-                          >
-                          <a class="dropdown-item" v-if="person.phoneNumber">
-                            <router-link
-                              :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
-                              >Send SMS</router-link
-                            >
-                          </a>
-                          <a class="dropdown-item" href="#">Send Email</a>
-                          <a
-                            class="dropdown-item"
-                            href="#"
-                            @click.prevent="showConfirmModal(person.id)"
-                            >Delete</a
-                          >
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody> -->
               </table>
             </div>
             <ConfirmDialog />
@@ -361,30 +183,32 @@
         </div>
       </div>
     </div>
-  </div>
+    <!-- </div> -->
+  <!-- </div> -->
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import axios from "@/gateway/backendapi";
 // import { useStore } from 'vuex'
 // import { store } from "../../../store/store"
 // import Pagination from "../../../components/pagination/PaginationButtons";
 // import { useRoute } from "vue-router";
-// import moment from "moment";
-// import { useConfirm } from "primevue/useConfirm";
-// import { useToast } from "primevue/usetoast";
+import moment from "moment";
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import finish from '../../../services/progressbar/progress'
 
 export default {
-  // props: ["list"],
+  props: ["contributionTransactions"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
     // Pagination,
   },
 
-  setup() {
-    const contributionTransactions = ref([]);
+  setup(props) {
+    // const contributionTransactions = ref([]);
     // const getFirstTimerSummary = ref({});
     const filter = ref({});
     const searchIsVisible = ref(false);
@@ -403,103 +227,93 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const getContributionTranactions = () => {
-      // let store = useStore()
-      axios
-        .get("/api/Financials/Contributions/Transactions")
-        .then((res) => {
-          contributionTransactions.value = res.data;
-          console.log(res.data);
-        })
-        .catch((err) => console.log(err));
-    // get from  to store
-    // console.log(store.getters['contributions/contributionList'])
-    // savev to sstore
-    // store.dispatch('contributions/contributionList')
-    };
-    getContributionTranactions();
-
-    // const searchMember = computed(() => {
-    //   if (searchText.value !== "") {
-    //     return churchMembers.value.filter((i) => {
-    //       return i.fullName
-    //         .toLowerCase()
-    //         .includes(searchText.value.toLowerCase());
-    //     });
-    //   } else {
-    //     return churchMembers.value;
-    //   }
-    // });
-
-    // const deleteMember = (id) => {
-    //   //  delete firtimer
+    // const getContributionTranactions = () => {
+    //   // let store = useStore()
     //   axios
-    //     .delete(`/api/People/DeleteOnePerson/${id}`)
+    //     .get("/api/Financials/Contributions/Transactions")
     //     .then((res) => {
-    //       console.log(res);
-    //       toast.add({
-    //         severity: "success",
-    //         summary: "Confirmed",
-    //         detail: "Member Deleted",
-    //         life: 3000,
-    //       });
-    //       churchMembers.value = churchMembers.value.filter(
-    //         (item) => item.id !== id
-    //       );
-
-    //       // update first timer summary while deleting
-    //       axios
-    //         .get("/api/People/GetFirsttimerSummary")
-    //         .then((res) => {
-    //           getFirstTimerSummary.value = res.data;
-    //           console.log(res.data);
-    //         })
-    //         .catch((err) => console.log(err));
+    //       contributionTransactions.value = res.data;
+    //       console.log(res.data);
     //     })
-    //     .catch((err) => {
-    //       /*eslint no-undef: "warn"*/
-    //       NProgress.done();
-    //       if (err.response.status === 400) {
-    //         toast.add({
-    //           severity: "error",
-    //           summary: "Unable to delete",
-    //           detail: "Ensure this member is not in any group",
-    //           life: 3000,
-    //         });
-    //       } else {
-    //         toast.add({
-    //           severity: "error",
-    //           summary: "Unable to delete",
-    //           detail: "An error occurred, please try again",
-    //           life: 3000,
-    //         });
-    //       }
-    //     });
+    //     .catch((err) => console.log(err));
+    // // get from  to store
+    // // console.log(store.getters['contributions/contributionList'])
+    // // savev to sstore
+    // // store.dispatch('contributions/contributionList')
     // };
+    // getContributionTranactions();
 
-    // const confirm = useConfirm();
-    // let toast = useToast();
-    // const showConfirmModal = (id) => {
-    //   confirm.require({
-    //     message: "Are you sure you want to proceed?",
-    //     header: "Confirmation",
-    //     icon: "pi pi-exclamation-triangle",
-    //     acceptClass: "confirm-delete",
-    //     rejectClass: "cancel-delete",
-    //     accept: () => {
-    //       deleteMember(id);
-    //       // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-    //     },
-    //     reject: () => {
-    //       toast.add({
-    //         severity: "info",
-    //         summary: "Rejected",
-    //         detail: "You have rejected",
-    //         life: 3000,
-    //       });
-    //     },
-    //   });
-    // };
+    const searchContribution = computed(() => {
+      if (searchText.value !== "") {
+        return props.contributionTransactions.filter((i) => {
+          return i.contribution
+            .toLowerCase()
+            .includes(searchText.value.toLowerCase());
+        });
+      } else {
+        return props.contributionTransactions;
+      }
+    });
+
+    const deleteOffering = (id) => {
+
+      axios
+        .delete(`/api/Financials/Contributions/Transactions/Delete/${id}`)
+        .then((res) => {
+          console.log(res);
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Member Deleted",
+            life: 3000,
+          });
+          // props.contributionTransactions = props.contributionTransactions.filter(
+          //   (item) => item.id !== id
+          // );
+        })
+        .catch((err) => {
+          finish()
+          if (err.response.status === 400) {
+            toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: "Ensure this member is not in any group",
+              life: 3000,
+            });
+          } else {
+            toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: "An error occurred, please try again",
+              life: 3000,
+            });
+          }
+        });
+    };
+
+    const confirm = useConfirm();
+    let toast = useToast();
+    const showConfirmModal = (id) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteOffering(id);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
 
     // // const getFirstTimers = async () => {
     // //   try {
@@ -575,11 +389,11 @@ export default {
     // };
 
     return {
-      contributionTransactions,
-      // churchMembers,
+      // contributionTransactions,
+      deleteOffering,
       filterFormIsVissible,
       toggleFilterFormVissibility,
-      // moment,
+      moment,
       // firstTimerSummary,
       // getFirstTimerSummary,
       // applyFilter,
@@ -589,8 +403,8 @@ export default {
       // filterResult,
       // noRecords,
       searchText,
-      // searchMember,
-      // showConfirmModal,
+      searchContribution,
+      showConfirmModal,
       // deleteMember,
       // membersCount,
       // currentPage,
@@ -614,7 +428,7 @@ export default {
 
 .page-header {
   font-weight: 700;
-  font-size: 2rem;
+  font-size: 1.7rem;
 }
 
 .my-con {
@@ -751,7 +565,13 @@ export default {
   cursor: pointer;
 }
 
-.label-search {
+@media (max-width: 660px) {
+  .select-all {
+    display: none;
+  }
+}
+
+/* .label-search {
   width: 0;
   background: transparent;
   padding: 4px;
@@ -761,7 +581,7 @@ export default {
 .label-search input {
   border: transparent;
   background: transparent;
-  width: 70%;
+  width: 76%;
   outline: none;
 }
 
@@ -782,12 +602,18 @@ export default {
 .show-search {
   width: 174px;
   overflow: hidden;
-  transition: all 0.5 ease-in-out;
   border: 1px solid #dde2e6;
   border-radius: 5px 0px 0px 5px;
   background: #ebeff4;
   transition: all 0.5s ease-in-out;
 }
+
+.hide-search {
+  width: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  border: none;
+} */
 
 .header {
   background: #DDE2E6 0% 0% no-repeat padding-box;
@@ -811,9 +637,16 @@ export default {
   background: #DDE2E6 0% 0% no-repeat padding-box;
   border: 1px solid #C5D9F2;
   border-radius: 5px;
-  font: normal normal 800 14px/19px Nunito Sans;
+  font-weight: 700;
   letter-spacing: 0px;
   color: #1C252C;
+  padding: 5px;
+}
+
+.offering-amount {
+  border: 1px solid #00204424;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .head-button {
@@ -871,9 +704,7 @@ export default {
   padding: 24px;
 }
 
-.page-header {
-  font-size: 1.7rem;
-}
+
 
 .no-record {
   color: rgba(184, 5, 5, 0.726);
@@ -944,7 +775,19 @@ export default {
   /* .table-header {
     display: none;
   } */
+  
 }
+
+ @media (max-width: 767px) {
+ 
+   .first-timers-text {
+    text-align: center;
+  }
+  .head-button {
+    display: flex;
+    justify-content: center
+  }
+ }
 
 @media screen and (max-width: 500px) {
   .board {
@@ -966,7 +809,7 @@ export default {
   }
 }
 
-@media (max-width: 414px) {
+@media (max-width: 577px) {
   .head-button {
     flex-direction: column;
     align-items: center;
@@ -975,6 +818,10 @@ export default {
   .more {
     margin-right: 0;
   }
+
+  .add-btn {
+    margin-top: 10px
+  } 
 }
 
 @media (max-width: 575px) {
@@ -985,14 +832,12 @@ export default {
     justify-content: center;
   }
 
-  .add-btn,
+  /* .add-btn,
   .more {
     margin-top: 10px;
-  }
+  } */
 
-  .first-timers-text {
-    text-align: center;
-  }
+  
 }
 
 @media screen and (min-width: 501px) and (max-width: 768px) {
