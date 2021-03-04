@@ -41,7 +41,7 @@
                             <div class="col-md-10 col-sm-10  mt-3">
                                 <a class="text-decoration-none"><h4 class="header4">Registration Link</h4></a>
                                 <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
-                                <p class="para"><span class="font-weight-700">{{ `https://my.churchplus.co/checkin/e/${route.query.code}` }}</span></p>
+                                <p class="para"><span class="d-flex align-items-center"><input type="text" ref="checkinLink" @keydown="preventChangingOfCheckinLink" @click="copyLink" :value="`https://my.churchplus.co/checkin/e/${route.query.code}`" class="form-control" style="width: 95%"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
                             </div>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                 <div class="col-md-12 mb-3">
                 </div>
             </div>
-
+            <Toast />
         </div>
 
     </div>
@@ -150,6 +150,7 @@ import { useRoute } from 'vue-router';
 import { ref } from 'vue';
 import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useStore } from 'vuex';
+import { useToast } from "primevue/usetoast";
 
     export default {
         components: { Dropdown, MultiSelect},
@@ -161,6 +162,8 @@ import { useStore } from 'vuex';
             const events = ref([ ]);
             const selectedGroups = ref([ ]);
             const store = useStore();
+            const checkinLink = ref(null);
+            const toast = useToast();
 
             if (route.query.activityID) {
                 events.value.push({ name: route.query.activityName, id: route.query.activityID })
@@ -191,6 +194,24 @@ import { useStore } from 'vuex';
                     console.log(error);
                 }
             }
+
+            const copyLink = () => {
+                checkinLink.value.select();
+                checkinLink.value.setSelectionRange(0, checkinLink.value.value.length); /* For mobile devices */
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+                toast.add({
+                    severity: "info",
+                    summary: "Link Copied",
+                    detail: "Checkin link copied to your clipboard",
+                    life: 3000,
+                });
+            }
+
+            const preventChangingOfCheckinLink = (e) => {
+                e.preventDefault();
+            }
             
             if (!attendanceCheckinInStore.value || attendanceCheckinInStore.value.id !== route.query.id) initCheckinAttendanceInStore();
 
@@ -202,6 +223,9 @@ import { useStore } from 'vuex';
                 events,
                 selectedGroups,
                 route,
+                checkinLink,
+                copyLink,
+                preventChangingOfCheckinLink,
             }
         }
         
