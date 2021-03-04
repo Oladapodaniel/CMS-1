@@ -41,7 +41,7 @@
                             <div class="col-md-10 col-sm-10  mt-3">
                                 <a class="text-decoration-none"><h4 class="header4">Registration Link</h4></a>
                                 <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
-                                <p class="para"><span class="d-flex align-items-center"><input type="text" ref="checkinLink" @keydown="preventChangingOfCheckinLink" @click="copyLink" :value="`https://my.churchplus.co/checkin/e/${route.query.code}`" class="form-control" style="width: 95%"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
+                                <p class="para"><span class="d-flex align-items-center"><input type="text" ref="checkinLink" @keydown="preventChangingOfCheckinLink" @click="copyLink" :value="link" class="form-control" style="width: 95%"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
                             </div>
                             </div>
                         </div>
@@ -147,7 +147,7 @@
 import Dropdown from 'primevue/dropdown';
 import MultiSelect from 'primevue/multiselect';
 import { useRoute } from 'vue-router';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useStore } from 'vuex';
 import { useToast } from "primevue/usetoast";
@@ -190,6 +190,7 @@ import { useToast } from "primevue/usetoast";
                 try {
                     const response = await attendanceservice.getItemByCode(route.query.id);
                     store.dispatch("attendance/setItemData", response);
+                    attendanceCheckinInStore.value = response;
                 } catch (error) {
                     console.log(error);
                 }
@@ -209,6 +210,11 @@ import { useToast } from "primevue/usetoast";
                 });
             }
 
+            const link = computed(() => {
+                if (!attendanceCheckinInStore.value || !attendanceCheckinInStore.value.attendanceRegistrationLink) return "";
+                return attendanceCheckinInStore.value.attendanceRegistrationLink;
+            })
+
             const preventChangingOfCheckinLink = (e) => {
                 e.preventDefault();
             }
@@ -226,6 +232,7 @@ import { useToast } from "primevue/usetoast";
                 checkinLink,
                 copyLink,
                 preventChangingOfCheckinLink,
+                link,
             }
         }
         

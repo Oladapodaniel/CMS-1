@@ -52,7 +52,7 @@
                     <h4 class="header4 text-md-right"></h4>
                  </div>
                  <div class="col-md-7 px-0 d-flex justify-content-center">
-                     <Button label="Cancel" class="p-button-outlined p-button-secondary mr-3 px-5 p-button-rounded" @click="onCancel" />
+                     <button class="default-btn mr-3" @click="onCancel">Cancel</button>
                      <Button label="Save"  class="p-button-primary p-button-rounded px-5 mr-3 max" @click="savePerson" />
                  </div>
             </div>
@@ -80,17 +80,24 @@ import { useToast } from 'primevue/usetoast';
             const toast = useToast();
 
             const savePerson = async () => {
-                emit("cancel");
-                try {
-                    console.log({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 }, "body");
-                    const response = await attendanceservice.checkin({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 });
-                    toast.add({severity:'success', summary:'Check-in Successful', detail:'Member added and checked-in was successful', life: 3000});
-                    console.log(response, "create person");
-                    emit("refresh")
-                } catch (error) {
-                    console.log(error);
-                    toast.add({severity:'error', summary:'Check-in Failed', detail:'Member adding and checked-in was not successful', life: 3000});
+                console.log(personDetails.lastName, personDetails.firstName, "before");
+                if (!personDetails.lastName && !personDetails.firstName) {
+                    return false;
+                } else {
+                    emit("cancel");
+                    try {
+                        console.log({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 }, "body");
+                        const response = await attendanceservice.checkin({ person: personDetails, checkInAttendanceID: route.query.id, checkInChannel: 0 });
+                        toast.add({severity:'success', summary:'Check-in Successful', detail:'Member added and checked-in was successful', life: 3000});
+                        console.log(response, "create person");
+                        emit("refresh")
+                    } catch (error) {
+                        console.log(error);
+                        toast.add({severity:'error', summary:'Check-in Failed', detail:'Member adding and checked-in was not successful', life: 3000});
+                    }
                 }
+                console.log(personDetails.lastName, personDetails.firstName, "afetr");
+                
             }
 
             const onCancel = () => emit("cancel")
