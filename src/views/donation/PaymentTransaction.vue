@@ -133,9 +133,11 @@
                 
                 <div class="col-12 col-sm-10 col-md-5 offset-sm-1 offset-md-4 pl-0 mt-4">
                 <button
-                  class="button primary-bg border-0 w-100"
+                  class="button border-0 w-100"
+                  :class="{ 'disabled-bg' : disabled, 'primary-bg' : !disabled }"
                   @click.prevent="saveAndContinue"
                   style="margin-left: 2px"
+                  :disabled="disabled"
                 >
                   <!-- <i
                     class="fas fa-circle-notch fa-spin mr-2 text-white"
@@ -187,6 +189,7 @@ export default {
         const accNameRef = ref("")
         const toast = useToast()
         const loading = ref(false)
+        const disabled = ref(true)
         
 
         const addContribution = () => {
@@ -237,6 +240,7 @@ export default {
                 console.log(data)
                 accountName.value = data.data.account_name
                 accNameRef.value.focus()
+                disabled.value = false
 
                 loading.value = false
      
@@ -268,7 +272,7 @@ export default {
 
         
         return {
-            incomeAccount, newContribution, addContribution, deleteContribution, nigerianBanks, selectedBank, resolveCustomerDetail, accountNumber, saveAndContinue, selectContribution, selectedContribution, accountName, accNameRef, loading
+            incomeAccount, newContribution, addContribution, deleteContribution, nigerianBanks, selectedBank, resolveCustomerDetail, accountNumber, saveAndContinue, selectContribution, selectedContribution, accountName, accNameRef, loading, disabled
         }
     }
 }
@@ -300,5 +304,10 @@ export default {
 .contri-item {
     padding: 20px 0 0 0;
     font: normal normal 700 20px Nunito Sans;
+}
+
+.disabled-bg {
+    background: #136acda8;
+    cursor: not-allowed;
 }
 </style>

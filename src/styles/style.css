@@ -529,16 +529,16 @@
   }
   
   .bio-div {
-    margin-top: 50px;
+    /* margin-top: 20px; */
   }
   
   .bio-info {
     display: flex;
   }
   
-  .celeb-info {
+  /* .celeb-info {
     margin-bottom: 24px;
-  }
+  } */
   
   .inputs {
     width: 62%;
@@ -1000,7 +1000,7 @@
   
     .bio-info {
       flex-direction: column-reverse;
-      margin-top: 24px;
+      /* margin-top: 24px; */
     }
   
     .inputs {

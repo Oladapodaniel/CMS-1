@@ -214,7 +214,7 @@ export default {
         incomeRemittance: remitance.value
       }
 
-        if (applyRem.value) {
+        if (remitance.value[0].account || remitance.value[0].percentage) {
                 contributionCategory.incomeRemittance = remitance.value.map(i => {
                   return {
                     financialFundID: i.account.financialFundID,

@@ -1030,6 +1030,20 @@ tbody tr:nth-child(even) {
   z-index: 1;
 }
 
+@media (max-width: 500px) {
+  .adjust-view {
+    position: absolute;
+    left: 5em;
+    top: 82.7em
+  }
+}
+
+@media (max-width: 305px) {
+  .adjust-view {
+    top: 85.5em;
+  }
+}
+
 .view-report {
   font: normal normal 800 16px/22px Nunito Sans;
   letter-spacing: 0px;
