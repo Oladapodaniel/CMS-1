@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
         <div class="col-md-8 col-lg-7">
-          <h2>Grace Ministry Settings</h2>
+          <h2 class="font-weight-bolder">{{  churchProfile }}</h2>
         </div>
         <div class="col-md-4 col-md-5 mt-2 link">
           <router-link
@@ -111,7 +111,36 @@
 </template>
 
 <script>
-export default {};
+import store from '@/store/store'
+import axios from "@/gateway/backendapi";
+export default {
+  data(){
+    return{
+      getCurrentUser: store.getters.currentUser
+
+    }
+  },
+  computed:{
+    churchProfile(){
+      if(!this.getCurrentUser.churchName) return "";
+      return this.getCurrentUser.churchName
+    }
+
+  },
+  mounted(){
+    console.log(store.getters.currentUser)
+    if(!store.getters.currentUser.churchName){
+      axios
+      .get(`/api/Membership/GetCurrentSignedInUser`)
+      .then((response)=>{
+        this.getCurrentUser = response.data;
+      console.log(response.data)
+      .catch((error)=>console.log(error))
+
+      })
+    }
+  }
+};
 </script>
 
 <style scoped>

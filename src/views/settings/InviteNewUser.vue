@@ -22,35 +22,35 @@
                        <div class="row mb-3">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Username</label> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12"> <InputText type="text" class="form-control" v-model="value" /></div>
+                            <div class="col-lg-8 col-sm-12"> <InputText type="text" class="form-control" /></div>
                         </div>
                          <div class="row mb-3">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password v-model="value" class="form-control" /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" /></div>
                         </div>
                         <div class="row mb-3">
                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password v-model="value" class="form-control" /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" /></div>
                         </div>
                          <div class="row mb-3">
                         
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" class="form-control" v-model="value" /></div>
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" class="form-control"/></div>
                         </div>
                         <div class="row mb-3">
                         
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Questions</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" class="form-control" v-model="value" /></div>
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" class="form-control"/></div>
                         </div>
                         <div class="row mb-3">
                         
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Answers</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12"> <InputText type="text" class="form-control" v-model="value" /></div>
+                            <div class="col-lg-8 col-sm-12"> <InputText type="text" class="form-control" /></div>
                         </div>
                    </div>
 
@@ -65,7 +65,6 @@
                             <div class="col-12">
                                 <p>Best for a business partner, family member or trusted accountant</p>
                             </div>
-
                         </div>
                         <div class="row">
                             <div class="col-12">
@@ -73,27 +72,28 @@
                                     <tbody>
                                         <tr>
                                         <td>First timers</td>
-                                        <td>Full Access</td>
+                                        <td>
+                                             {{ canAccessFT ? "Full Access" : "No Access"}}</td>
                                         </tr>
                                         <tr>
                                         <td>New Converts</td>
-                                        <td>Full Access</td>
+                                        <td>{{ canAccessFT ? "Full Access" : "No Access" }}</td>
                                         </tr>
                                          <tr>
                                         <td>FollowUps</td>
-                                        <td>Full Access</td>
+                                        <td>{{  canAccessFu ? "Full Access" : "No Access" }}</td>
                                         </tr>
                                          <tr>
                                         <td>Center Leader</td>
-                                        <td>Full Access</td>
+                                        <td>{{  canAccessCl ? "Full Access" : "No Access"  }}</td>
                                         </tr>
                                          <tr>
                                         <td>Financial Account</td>
-                                        <td>Full Access</td>
+                                        <td>{{ canAccessFa ? "Full Access" : "No Access" }}</td>
                                         </tr>
                                          <tr>
                                         <td>Reports</td>
-                                        <td>Full Access</td>
+                                        <td>{{ canAccessRe ? "Full Access" : "No Access"  }}</td>
                                         </tr>
                                     </tbody>
                                     </table>
@@ -132,6 +132,8 @@
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="Reports" v-model="roles" /> Reports</div>
                             </div>
+                            <br>
+
                         </div>
                     </div>
                     <div class="col-lg-5 ">
@@ -169,13 +171,21 @@ import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
+// import ref from 'Vue'
     export default {
         components:{InputText, Password, Checkbox},
         data() {
 		return {
             roles: [],
             info: null,
-            currentUser: store.getters.currentUser
+            currentUser: store.getters.currentUser,
+            FtRoles: [ "Admin","BasicUser",],
+            FuRoles: [ "Admin", "CanAccessFollowUps" ],
+            ClRoles: [ "Admin", "CenterLeader" ],
+            FaRoles: [ "Admin","FinancialAccount"],
+            ReRoles: [ "Admin", "Reports"]
+
+
 		}
 	} ,
 
@@ -183,20 +193,85 @@ import store from "@/store/store";
         name() {
             if (!this.currentUser.churchName) return "";
             return this.currentUser.churchName;
+        },
+
+        canAccessFT() {
+            let result = false;
+            this.roles.forEach(i => {
+                if (this.FtRoles.indexOf(i) !== -1) {
+                    result = true;
+                    return true;
+                }
+            })
+            return result;
+        },
+        canAccessFu() {
+            let result = false;
+            this.roles.forEach(i => {
+                if (this.FuRoles.indexOf(i) !== -1) {
+                    result = true;
+                    return true;
+                }
+            })
+            return result;
+        },
+        canAccessCl() {
+            let result = false;
+            this.roles.forEach(i => {
+                if (this.ClRoles.indexOf(i) !== -1) {
+                    result = true;
+                    return true;
+                }
+            })
+            return result;
+        },
+         canAccessFa() {
+            let result = false;
+            this.roles.forEach(i => {
+                if (this.FaRoles.indexOf(i) !== -1) {
+                    result = true;
+                    return true;
+                }
+            })
+            return result;
+        },
+        canAccessRe(){
+            let result= false;
+            this.roles.forEach(i => {
+                if( this.ReRoles.indexOf(i) !== -1){
+                    result = true;
+                    return true;
+
+                }
+            })
+            return result
+
         }
     },
 
     mounted(){
-        axios
-      .get(`/api/Settings/GetTenantPeopleClassification`)
-      .then((res) => {res.data;
-        console.log(res.data);
-      })
-      .catch((err) => console.log(err));
-    // .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-    // .then(response => (this.info = response.data.bpi))
-    // .catch(error=> console.log(error))
-    console.log(store.getters.currentUser)
+        //     axios
+        // .get(`/api/Settings/GetTenantPeopleClassification`)
+        // .then((res) => {res.data;
+        //     console.log(res.data);
+        // })
+        // .catch((err) => console.log(err));
+        // .get('https://api.coindesk.com/v1/bpi/currentprice.json')
+        // .then(response => (this.info = response.data.bpi))
+        // .catch(error=> console.log(error))
+        console.log(store.getters.currentUser)
+        if(!store.getters.currentUser.churchName){
+            axios
+            .get(`/api/Membership/GetCurrentSignedInUser`)
+            .then((response) =>{
+                this.currentUser = response.data;
+            console.log(response.data)
+        
+        })
+            .catch((error)=> console.log(error))
+            
+        }
+     
     
     }
     // const: getCurrentName = computed(() => {
