@@ -127,13 +127,13 @@ export default {
         }
 
         const absentees = computed(() => {
-          if (reportData.value.status && reportData.value.status.toLowerCase() !== "ended") return 0;
+          // if (reportData.value.status && reportData.value.status.toLowerCase() !== "ended") return 0;
           if (!reportData.value || !reportData.value.peopoleAttendancesDTOs || reportData.value.peopoleAttendancesDTOs.length === 0) return 0;
           return reportData.value.peopoleAttendancesDTOs.filter(i => !i.isPresent).length;
         })
 
         const attendees = computed(() => {
-          if (reportData.value.status && reportData.value.status.toLowerCase() !== "ended") return 0;
+          // if (reportData.value.status && reportData.value.status.toLowerCase() !== "ended") return 0;
           if (!reportData.value || !reportData.value.peopoleAttendancesDTOs || reportData.value.peopoleAttendancesDTOs.length === 0) return 0;
           return reportData.value.peopoleAttendancesDTOs.filter(i => i.isPresent).length;
         })
