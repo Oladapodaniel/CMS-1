@@ -172,12 +172,7 @@
             <Toast />
 
             <div class="table-footer">
-              <!-- <Pagination
-                
-              /> -->
-              <!-- @getcontent="getPeopleByPage"
-                :itemsCount="membersCount"
-                :currentPage="currentPage" -->
+              <Pagination  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
             </div>
           </div>
         </div>
@@ -207,7 +202,7 @@ export default {
     // Pagination,
   },
 
-  setup(props) {
+  setup(props, { emit }) {
     // const contributionTransactions = ref([]);
     // const getFirstTimerSummary = ref({});
     const filter = ref({});
@@ -314,18 +309,29 @@ export default {
         },
       });
     };
+    const currentPage = ref(1);
 
-    // // const getFirstTimers = async () => {
-    // //   try {
-    // //     const { data } = await axios.get(
-    // //       `/api/People/FirstTimer`
-    // //     );
-    // //     churchMembers.value = data;
-    // //     console.log(data)
-    // //   } catch (error) {
-    // //     console.log(error);
-    // //   }
-    // // };
+    const getPeopleByPage = async (page) => {
+      if (page < 1) return false;
+      try {
+        const { data } = await axios.get(
+          `/api/people/getPaginatedFirstTimer?page=${page}`
+        );
+        // filterResult.value = [ ];
+        // searchMember.value = [ ];
+        // noRecords.value = false;
+        // props.contributionTransactions = data;
+        emit('get-pages', data)
+        currentPage.value = page;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const offeringCount = computed(() => {
+      if (props.contributionTransactions.length > 100) return Math.ceil(props.contributionTransactions.length / 100);
+      return 1;
+    })
 
     // onMounted(() => {
     //   console.log(route, "route");
@@ -371,22 +377,6 @@ export default {
     //   return 0;
     // });
 
-    // const currentPage = ref(1);
-    // const getPeopleByPage = async (page) => {
-    //   if (page < 1) return false;
-    //   try {
-    //     const { data } = await axios.get(
-    //       `/api/People/GetPeopleBasicInfo?page=${page}`
-    //     );
-    //     filterResult.value = [];
-    //     searchMember.value = [];
-    //     noRecords.value = false;
-    //     churchMembers.value = data;
-    //     currentPage.value = page;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
 
     return {
       // contributionTransactions,
@@ -406,9 +396,9 @@ export default {
       searchContribution,
       showConfirmModal,
       // deleteMember,
-      // membersCount,
-      // currentPage,
-      // getPeopleByPage,
+      offeringCount,
+      currentPage,
+      getPeopleByPage
     };
   },
 };

@@ -1031,7 +1031,7 @@ export default {
         const selectEvent = ref("Select Event");
         const showCategory = ref(false);
         const eventText = ref("");
-        const eventDate = ref("")
+        const eventDate = ref(new Date().toISOString().substr(0, 10))
         const newEventCategoryName = ref("");
         const displayModal = ref(false);
         const invalidEventDetails = ref(false);

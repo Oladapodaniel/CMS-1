@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="container">
-            <div class="row mt-4 border mx-sm-0 rounded sub-con">
-                <div class="col-md-12 col-sm-12 col-lg-12 my-3 border-bottom">
+        <div class="container-wide">
+            <div class="row mt-4 mx-sm-0 sub-con">
+                <div class="col-md-12 col-sm-12 col-lg-12 my-3 pb-3 border-bottom">
                     <h5 class="page-header">Payment Options</h5>
                 </div>
                 <div class="col-4 offset-md-2 header-contri">Contribution Type</div>
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 d-flex align-items-center justify-content-center" :class="{ 'show' : displayLink, 'hide' : !displayLink }">
-                            <div>https://mylordmylove.com</div>
+                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="checkinLink"  @click="copyLink" :value="`https://my.churchplus.co/checkin/e/${route.query.code}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
                         </div>
                     
                 </div>
@@ -50,7 +50,7 @@
                
                 <div class="col-md-12 mb-3">
                 </div>
-                   <div class="row w-100">
+                   <!-- <div class="row w-100">
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded" @click="toggleQr">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
@@ -67,10 +67,10 @@
                             <div><img src="../../assets/qrcode.png"></div>
                         </div>
                     
-                </div>
+                </div> -->
                  <div class="col-md-12 mb-3">
                 </div>
-                   <div class="row w-100">
+                   <!-- <div class="row w-100">
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
@@ -84,10 +84,10 @@
                             </div>
                         </div>
                     
-                </div>
+                </div> -->
                 <div class="col-md-12 mb-3">
                 </div>
-                   <div class="row w-100">
+                   <!-- <div class="row w-100">
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded" @click="toggleIFrame">
                             <div class="row">
                             <div class="col-md-2 col-sm-2 image mt-3">
@@ -104,7 +104,7 @@
                             <div>https://mylordmylove.com</div>
                         </div>
                     
-                </div>
+                </div> -->
                 
                 <div class="col-md-12 mb-3">
                 </div>
@@ -306,6 +306,10 @@ opacity: 0.8;
 .header-contri {
      font-size: 20px; 
      font-weight: 700;
+}
+
+.para {
+    width: 95%;
 }
 
 </style>

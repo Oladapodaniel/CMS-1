@@ -5,9 +5,9 @@
         <h2 class="font-weight-bold page-hder">New Contribution and Report</h2>
       </div>
       <div class="col-md-7 d-sm-flex justify-content-md-end">
-        <a class="def-btn mr-3 px-md-4 my-sm-1"
+        <!-- <a class="def-btn mr-3 px-md-4 my-sm-1"
           >More Actions <i class="fad fa-caret-circle-down"></i
-        ></a>
+        ></a> -->
         <router-link :to="{ name: 'AddOffering', path: '/tenant/addoffering' }">
           <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
         </router-link>
@@ -365,7 +365,7 @@
       <!-- <div class="stats">
           <EventReportStats />
       </div> -->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-12">
           <div class="pg-content">
             <h4 class="analytics min">Ministry Performance</h4>
@@ -374,8 +374,7 @@
               <div class="ana-group">
                 <div class="ana-header">
                   
-                 
-                  <!-- <hr class="hr" /> -->
+ 
                 </div>
                 <div class="ana-items">
                  
@@ -388,11 +387,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                        <!-- {{
-                          stats.todayVsLastweekOfferingPercentage
-                            ? stats.todayVsLastweekOfferingPercentage.toFixed(2)
-                            : 0
-                        }}% -->12
+                 
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -407,18 +402,13 @@
                     <div class="ana-item-icon">
                       <div class="item-image">
                         <div >
-                            <!-- v-if="stats.todayVsLastweekOfferingPercentage < 0" -->
+    
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
                           />
                         </div>
-                        <!-- <div v-else>
-                          <img
-                            src="../../../assets/dashboardlinks/trend-icon.svg"
-                            alt=""
-                          />
-                        </div> -->
+                  
                       </div>
                     </div>
                   </div>
@@ -433,13 +423,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                        <!-- {{
-                          stats.todayVsLastMonthOfferingPercentage
-                            ? stats.todayVsLastMonthOfferingPercentage.toFixed(
-                                2
-                              )
-                            : 0
-                        }}% -->54
+                   
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -456,19 +440,13 @@
                         <div
                           
                         >
-                        <!-- v-if="stats.todayVsLastMonthOfferingPercentage < 0" -->
+  
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
                           />
                         </div>
-                        <!-- <div v-else>
-                          <img
-                            src="../../../assets/dashboardlinks/trend-icon.svg"
-                            alt=""
-                          />
-                        </div> -->
-                      </div>
+                                            </div>
                     </div>
                   </div>
                   </div>
@@ -482,11 +460,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                        <!-- {{
-                          stats.todayVsLastYearOfferingPercentage
-                            ? stats.todayVsLastYearOfferingPercentage.toFixed(2)
-                            : 0
-                        }}% -->32
+                  32
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -501,18 +475,13 @@
                     <div class="ana-item-icon">
                       <div class="item-image">
                         <div >
-                            <!-- v-if="stats.todayVsLastYearOfferingPercentage < 0" -->
+             
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
                           />
                         </div>
-                        <!-- <div v-else>
-                          <img
-                            src="../../../assets/dashboardlinks/trend-icon.svg"
-                            alt=""
-                          />
-                        </div> -->
+                        
                       </div>
                     </div>
                   </div>
@@ -526,32 +495,7 @@
            
 
           <div class="area-charts analytics-container mb-5">
-             <!-- <div
-                class="area-chart mt-5"
-                v-if="stats.attendanceSoFar && stats.attendanceSoFar.length > 0"
-              >
-                <ReportAreaChart
-                  elemId="chart"
-                  domId="areaChart1"
-                  title="OFFERING"
-                  subtitle="This month"
-                  lineColor="#50AB00"
-                  :series="stats.attendanceSoFar"
-                />
-              </div>
-              <div
-                class="area-chart mt-5"
-                v-if="stats.offeringSoFar && stats.offeringSoFar.length > 0"
-              >
-                <ReportAreaChart
-                  elemId="chart"
-                  domId="areaChart2"
-                  title="ATTENDANCE"
-                  subtitle="This month"
-                  lineColor="#1F78B4"
-                  :series="stats.offeringSoFar"
-                />
-              </div> -->
+            
               <div class="area-chart mt-5">
                 <ReportAreaChart
                   elemId="chart"
@@ -564,20 +508,20 @@
             </div> 
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     </div>
 </template>
 
 <script>
 import { ref } from 'vue'
-import ReportAreaChart from "@/components/charts/AreaChart.vue";
+// import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import eventsService from '../../../services/events/eventsservice';
 // // import { useStore } from 'vuex'
 // import { useRoute } from 'vue-router'
 // import axios from "@/gateway/backendapi";
 export default {
-    components: { ReportAreaChart },
+    // components: { ReportAreaChart },
     setup () {
         const reportApproved = ref(false)
         const contributionReport = ref([])
