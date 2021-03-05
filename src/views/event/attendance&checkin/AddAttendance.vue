@@ -163,8 +163,8 @@
                 {{
                   !selectedEvent.name
                     ? "Select from events and activities"
-                    : selectedEvent.name.length > 30
-                    ? `${selectedEvent.name.slice(0, 30)}...`
+                    : selectedEvent.name.length > 27
+                    ? `${selectedEvent.name.slice(0, 27)}...`
                     : selectedEvent.name
                 }}
                 <i
@@ -334,7 +334,7 @@ export default {
       if (!newAcctivityDate.value && !selectedCategory.value) return false;
       try {
         const response = await eventsService.createNewActivity({ activity: { date: newAcctivityDate.value, eventCategoryId: selectedCategory.value.id } });
-        const newActivity = { id: response.currentEvent.id, name: response.currentEvent.name };
+        const newActivity = { id: response.currentEvent.id, name: `${response.currentEvent.name} (${ new Date(response.currentEvent.activityDate).toDateString() })` };
         selectedEvent.value = newActivity;
         events.value.push(newActivity);
         toast.add({severity:'success', summary:'Operation Successful', detail:'Event created successfully', life: 3000});
