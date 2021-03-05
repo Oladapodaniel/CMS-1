@@ -269,7 +269,6 @@
             <Toast />
 
             <div class="table-footer">
-              
               <Pagination  @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage"/>
             </div>
           </div>

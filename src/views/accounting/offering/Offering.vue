@@ -35,7 +35,7 @@
         </div>
     </div>
     <div v-if="contributionTransactions.length > 0 && !loading">
-        <OfferingList :contributionTransactions="contributionTransactions" />
+        <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages"/>
     </div> 
 </div>
 </template>
@@ -82,8 +82,12 @@ export default {
     // store.dispatch('contributions/contributionList')
     };
     getContributionTransactions();
+
+    const getOfferingPages = (payload) => {
+      contributionTransactions.value = payload
+    }
         return {
-            contributionTransactions, loading
+            contributionTransactions, loading, getOfferingPages
         }
     }
 }

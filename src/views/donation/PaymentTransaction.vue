@@ -7,26 +7,11 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <!-- <div>Here's a link to preview</div>
-                 <div class="input-group mt-3 col-sm-7">
-                    <input
-                        type="text"
-                        class="form-control"
-                
-                        aria-label="Recipient's username"
-                        aria-describedby="basic-addon2"
-                    />
-                    <div class="input-group-append">
-                        <span class="input-group-text" id="basic-addon2"
-                        >COPY</span
-                        >
-                    </div>
-                </div> -->
             </div>
         </div>
         <form class="form">
             <div class="row">
-                <div class="col-12 col-sm-10 offset-sm-1 contri-item">Add Contribution Item</div>
+                <div class="col-12 col-sm-10 offset-sm-4 contri-item">Add Contribution Item</div>
             </div>
             
             <div class="row mt-4" v-for="(item, index) in newContribution"  :key="index">
