@@ -905,7 +905,7 @@
   .show-tab {
     transition: all 0.5s ease-in-out;
     height: 108px;
-    overflow: hidden;
+    /* overflow: hidden; */
   }
   
   .show-addinfo-tab {
