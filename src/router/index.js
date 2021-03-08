@@ -230,14 +230,14 @@ const routes = [{
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceAndCheckinList')
     },
-    
+
     {
         path: 'attendancetag',
         name: 'AttendanceTag',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceTag')
     },
-    
+
     {
         path: 'addattendancecheckin',
         name: 'AddAttendance',
@@ -536,7 +536,19 @@ const routes = [{
     // which is lazy-loaded when the route is visited.
     component: () =>
         import( /* webpackChunkName: "about" */ '../views/About.vue')
-}
+},
+{
+    path: '/onlinegivingform1',
+    name: 'OnlineGiving',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/onlinegivingform1')
+},
+{
+    path: '/onlinegivingform2',
+    name: 'OnlineGiving',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/onlinegivingform2')
+},
 ]
 
 
