@@ -268,7 +268,7 @@
             </template>
           </Dialog>
 
-          <TransactionTable :showEditTransaction="showEditTransaction" :transactionDetails="transacPropsValue" :selectedTransactionType="selectedTransactionType" @toggle-edit-form="closeIt" />
+          <TransactionTable :showEditTransaction="showEditTransaction" :transactionDetails="transacPropsValue" :selectedTransactionType="selectedTransactionType" @toggle-edit-form="closeIt" @select-row="selectRow" />
         </div>
       </div>
     </div>
@@ -575,6 +575,12 @@ export default {
         console.log(error);
       }
     }
+
+    const selectRow = (rowData) => {
+      showEditTransaction.value = true;
+      transacPropsValue.value = rowData;
+      console.log(rowData, "row Data");
+    }
     // saveAccount()
 
     // const get
@@ -620,6 +626,7 @@ export default {
       selectedTransactionType,
       newAccount,
       saveAccount,
+      selectRow,
     };
   },
 };
