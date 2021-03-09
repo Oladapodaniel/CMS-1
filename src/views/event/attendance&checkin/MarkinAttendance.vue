@@ -315,7 +315,30 @@ export default {
           loaded.value = true;
           loading.value = false;
           autosearch.value = false;
-          appltoggle.value = true;
+          
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "error",
+              summary: "Checkin Error",
+              detail: "Ensure you have internet access and try again",
+              life: 3000,
+            });
+          } else if (err.message.includes("timeout")) {
+            toast.add({
+              severity: "error",
+              summary: "Checkin Error",
+              detail: "The request was taking too long, please reload and try again",
+              life: 3000,
+            });
+          } else {
+            toast.add({
+              severity: "error",
+              summary: "Checkin Error",
+              detail: "An error occurred, reload and try again",
+              life: 3000,
+            });
+          }
+          // appltoggle.value = true;
           console.log(err);
         });
       // }

@@ -121,9 +121,10 @@
                 <div>MARK</div>
               </div>
               <div
-                class="col-12 parent-desc p-2 pl-4 c-pointer"
+                class="col-12 parent-desc p-2 pl-4 c-pointer tr-border-bottom"
                 v-for="(item, index) in selectedTransactions"
                 :key="index"
+                @click="rowSelected(item)"
               >
                 <div>
                   <input
@@ -159,7 +160,7 @@
   </div>
 </template>
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import axios from "@/gateway/backendapi";
 import TransactionForm from "../../views/accounting/transaction/EditTransaction";
 import transaction_service from '../../services/financials/transaction_service';
@@ -352,6 +353,20 @@ export default {
         return dateFormatter.monthDayYear(date);
     }
 
+    const rowSelected = (item) => {
+      console.log(item, "selected row")
+      const data = {
+        amount: item.amount,
+        date: item.date,
+        memo: item.narration
+      }
+      emit("select-row", data);
+    }
+
+    watch(() => props.transactionDetails, (data) => {
+      console.log(data, "in watch");
+    })
+
     return {
       transactions,
       filterFormIsVissible,
@@ -385,6 +400,7 @@ export default {
       transacObj,
       selectedTransactions,
       formatDate,
+      rowSelected,
     };
   },
 };
