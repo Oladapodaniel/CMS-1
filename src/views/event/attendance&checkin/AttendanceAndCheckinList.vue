@@ -32,7 +32,7 @@
           <p class="d-flex justify-content-between mb-0">
             <span class="d-flex d-md-none tattendance2">Date Created</span>
             <span class="edate edate2">
-              <router-link class="text-decoration-none text-dark font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id, code: item.attendanceCode } }">
+              <router-link class="text-decoration-none font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id, code: item.attendanceCode } }">
                 {{ formatDate(item.eventDate) }}
               </router-link>
             </span>
@@ -43,7 +43,7 @@
           <p class="d-flex ml-2 justify-content-between mb-0">
             <span class="d-flex d-md-none alist2">Event Name</span>
             <span class="elist elist2">
-              <router-link class="text-decoration-none text-dark font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id, code: item.attendanceCode } }">
+              <router-link class="text-decoration-none font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id, code: item.attendanceCode } }">
                 {{ item.fullEventName }}
               </router-link>
             </span>
@@ -54,7 +54,7 @@
           <p class="d-flex justify-content-between mb-0">
             <span class="d-flex d-md-none dcreated2">Group Name</span>
             <span class="eattendance eattendance2">
-              <router-link class="text-decoration-none text-dark font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id, code: item.attendanceCode } }">
+              <router-link class="text-decoration-none font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id, code: item.attendanceCode } }">
                 {{ item.fullGroupName }}
               </router-link>
             </span>

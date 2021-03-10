@@ -22,7 +22,7 @@
         <div class="col-md-3">
             <h2 class="font-weight-600">{{ totalAttendance }}</h2>
             <p class="small-text font-weight-700" style="color: #136ACD;">
-                People registered for the event
+                Total registered
             </p>
         </div>
         <div class="col-md-3">
@@ -47,31 +47,32 @@
               <input
                 type="text"
                 class="search-control"
-                placeholder="Type name to filter list..."
+                placeholder="Search"
               />
             </p>
           </div>
           <div class="col-md-4 d-md-flex justify-content-end d-none"></div>
         </div>
 
-        <div class="row mt-2 main-th font-weight-700 py-2 grey-rounded-bg">
+        <div class="row mt-2 main-th font-weight-700 py-2 small-text grey-rounded-bg">
           <div class="col-md-4">Name</div>
           <div class="col-md-4">Address</div>
           <div class="col-md-2">Phone</div>
-          <div class="col-md-2">Check-in</div>
+          <div class="col-md-1">Present</div>
+          <div class="col-md-1">Option</div>
         </div>
 
         <div class="row py-2 tb-row small-text" v-for="(person, index) in reportData.peopoleAttendancesDTOs" :key="index">
           <div class="col-md-4">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Name</span>
-              <span>{{ person.name }}</span>
+              <span class="small-text">{{ person.name }}</span>
             </span>
           </div>
           <div class="col-md-4">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Address</span>
-              <span>{{ person.address }}</span>
+              <span class="small-text">{{ person.address }}</span>
             </span>
           </div>
           <div class="col-md-2">
@@ -79,14 +80,24 @@
               <span class="hidden-header hide font-weight-700"
                 >Phone Number</span
               >
-              <span>{{ person.phone }}</span>
+              <span class="small-text">{{ person.phone }}</span>
             </span>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-1">
             <span class="d-flex justify-content-between">
-              <span class="hidden-header hide font-weight-700">Check-in Option</span>
+              <span class="hidden-header hide font-weight-700">Checked-in</span>
               <span>
-                {{ person.checkedinOption }}
+                <i class="pi pi-check" style="font-size: 10px;" v-if="person.isPresent"></i>
+                <i class="pi pi-times" style="font-size: 10px;" v-else></i>
+                <!-- <span v-else>--</span> -->
+              </span>
+            </span>
+          </div>
+          <div class="col-md-1" style="overflow-x:hidden">
+            <span class="d-flex justify-content-between">
+              <span class="hidden-header hide font-weight-700">Option</span>
+              <span>
+                {{ person.checkedinOption  }}
               </span>
             </span>
           </div>

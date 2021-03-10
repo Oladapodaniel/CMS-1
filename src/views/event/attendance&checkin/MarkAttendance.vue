@@ -15,11 +15,9 @@
     </Dialog>
     <div class="row my-5" :class="{ 'd-none': isKioskMode }">
       <div class="col-md-12">
-        <h4 class="font-weight-bold">Marked Attendance</h4>
+        <h4 class="font-weight-bold">Manual Checkin and Checkout</h4>
         <p class="small-text">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua
+          Checkin members by clicking on the check-in box and check-out box to checkout, search for members in group and use kiosk mode on mobile phones and tablets
         </p>
       </div>
     </div>
@@ -39,7 +37,7 @@
               <input
                 type="text"
                 class="search-control"
-                placeholder="Type name to filter list..."
+                placeholder="Search"
                 v-model="searchText"
               />
             </p>

@@ -360,9 +360,10 @@ export default {
         date: item.date,
         memo: item.narration
       }
+      console.log("Hello");
       emit("select-row", data);
     }
-
+    
     watch(() => props.transactionDetails, (data) => {
       console.log(data, "in watch");
     })

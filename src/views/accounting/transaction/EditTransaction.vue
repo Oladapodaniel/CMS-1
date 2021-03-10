@@ -12,6 +12,11 @@
       ></i>
     </div>
     <div class="container">
+      <div class="row mt-3" v-if="gettingIcomeAccounts || gettingExpenseAccounts">
+        <div class="col-md-12 text-center">
+          <i class="pi pi-spin pi-spinner" style="fontSize: 3rem"></i>
+        </div>
+      </div>
       <div class="row mt-4">
         <div class="col-12">
           <!-- <label for="description">Write a Description</label> -->
@@ -559,22 +564,30 @@ export default {
       // }
     });
 
+    const gettingIncomeAccounts = ref(false);
     const getIncomeAccounts = async () => {
       try {
+        gettingIncomeAccounts.value = true;
         const response = await transaction_service.getIncomeAccounts();
         accountType.value = response;
+        gettingIncomeAccounts.value = false;
       } catch (error) {
         console.log(error);
+        gettingIncomeAccounts.value = false;
       }
     };
 
     const expenseAccounts = ref([ ]);
+    const gettingExpenseAccounts = ref(false);
     const getExpenseAccounts = async () => {
       try {
+        gettingExpenseAccounts.value = true;
         const response = await transaction_service.getExpenseAccounts();
         expenseAccounts.value = response;
+        gettingExpenseAccounts.value = false;
       } catch (error) {
         console.log(error);
+        gettingExpenseAccounts.value = false;
       }
     };
 
@@ -601,13 +614,18 @@ export default {
     const newIncome = ref({ });
     const saveIncome = async () => {
         try {
-          // if (selectedCashAccount.value.financialFundID) {
-          //   transacObj.value.financialFundID = selectedCashAccount.value.financialFundID;
-          // }
           if (props.transactionDetails.account === "Income Account") {
+             const x = {
+              amount: "999.999",
+              creditAccountID: "2029221a-c943-4af0-a9f1-4cfda7d79ac4",
+              date: "2021-03-11",
+              debitAccountID: "e2cb7851-57b6-45d2-bc8d-66830926fadd",
+              memo: "hoooootttttt"
+            }
             transacObj.value.creditAccountID = selectedIncomeOrExpenseAccount.value.id;
             transacObj.value.debitAccountID = selectedCashAccount.value.id;
-            const response = await transaction_service.saveIncome(transacObj.value);
+            const response = await transaction_service.saveIncome(x);
+            // const response = await transaction_service.saveIncome(transacObj.value);
             console.log(response, "Save income response");
           } else {
             transacObj.value.debitAccountID = selectedIncomeOrExpenseAccount.value.id;
@@ -663,6 +681,8 @@ export default {
       newIncome,
       selectedCashAccount,
       selectedIncomeOrExpenseAccount,
+      gettingIncomeAccounts,
+      gettingExpenseAccounts,
     };
   },
 };
@@ -711,7 +731,7 @@ export default {
   overflow-y: scroll;
 }
 .style-uncategorized div div div:hover {
-  background-color: #ecf0f3;
+  /* background-color: #ecf0f3; */
   cursor: pointer;
 }
 
