@@ -1,8 +1,8 @@
 <template>
-  <div class="whole-con container-wide container-top" @click="hideModals">
-    <div class="main-con">
-      <div class="main-body">
-        <div class="top container-wide mt-3">
+  <div class="whole-co container-wid container-top" @click="hideModals">
+    <div class="main-co">
+      <div class="main-bod">
+        <div class="top container-wid mt-3">
           <div class="header">
             <div class="events">Transaction</div>
           </div>
@@ -700,6 +700,10 @@ html {
   margin: 0 4px;
 }
 
+.table {
+  width: 100% !important; margin: 0;
+}
+
 .table-top {
   font-weight: 800;
   font-size: 12px;
@@ -943,4 +947,9 @@ html {
       overflow-y: auto
     }
   } */
+
+  .row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
 </style>

@@ -387,7 +387,7 @@
           Transaction last modified on February 18th,2021
         </div>
         <div class="col-6 offset-sm-3 mb-2 mt-3" @click="saveTransac">
-          <div class=" text-center cpon"><button class="default-btn" @click="saveIncome">Save</button></div>
+          <div class=" text-center cpon"><button class="default-btn primary-bg text-white border-0" @click="saveIncome">Save</button></div>
         </div>
       </div>
     </div>
@@ -611,28 +611,33 @@ export default {
       }
     };
 
+    const constructSaveTransactionReqBody = () => {
+      const reqBody = {
+        amount: transacObj.value.amount,
+        creditAccountID: selectedIncomeOrExpenseAccount.value.id,
+        date: transacObj.value.date,
+        debitAccountID: selectedCashAccount.value.id,
+        memo: transacObj.value.memo
+      }
+      return reqBody;
+    }
+
     const newIncome = ref({ });
     const saveIncome = async () => {
         try {
+          let reqBody = constructSaveTransactionReqBody();
           if (props.transactionDetails.account === "Income Account") {
             
             transacObj.value.creditAccountID = selectedIncomeOrExpenseAccount.value.id;
             transacObj.value.debitAccountID = selectedCashAccount.value.id;
-          
-             const reqBody = {
-              amount: transacObj.value.amount,
-              creditAccountID:transacObj.value.creditAccountID,
-              date: transacObj.value.date,
-              debitAccountID: transacObj.value.debitAccountID,
-              memo: transacObj.value.memo
-            }
+             
             const response = await transaction_service.saveIncome(reqBody);
             // const response = await transaction_service.saveIncome(transacObj.value);
             console.log(response, "Save income response");
           } else {
             transacObj.value.debitAccountID = selectedIncomeOrExpenseAccount.value.id;
-            transacObj.value.creditAccountID = selectedCashAccount.value.id;      
-            const response = await transaction_service.saveExpense(transacObj.value);
+            transacObj.value.creditAccountID = selectedCashAccount.value.id;
+            const response = await transaction_service.saveExpense(reqBody);
             console.log(response, "Save expense response");
           }
         } catch (error) {
