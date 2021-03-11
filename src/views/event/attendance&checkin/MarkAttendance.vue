@@ -15,7 +15,7 @@
     </Dialog>
     <div class="row my-5" :class="{ 'd-none': isKioskMode }">
       <div class="col-md-12">
-        <h4 class="font-weight-bold">Manual Checkin and Checkout</h4>
+        <h4 class="font-weight-bold">Manual Check-in and Checkout</h4>
         <p class="small-text">
           Checkin members by clicking on the check-in box and check-out box to checkout, search for members in group and use kiosk mode on mobile phones and tablets
         </p>
@@ -65,10 +65,10 @@
             Picture
           </div>
           <div class="col-md-2" :class="{ 'order-1': isKioskMode }">
-            Check-in
+            Check in
           </div>
           <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
-            Check-out
+            Check out
           </div>
         </div>
 

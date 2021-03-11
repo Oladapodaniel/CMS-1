@@ -387,7 +387,7 @@
           Transaction last modified on February 18th,2021
         </div>
         <div class="col-6 offset-sm-3 mb-2 mt-3" @click="saveTransac">
-          <div class="primary-btn text-center" @click="saveIncome">Save</div>
+          <div class=" text-center cpon"><button class="default-btn" @click="saveIncome">Save</button></div>
         </div>
       </div>
     </div>
@@ -615,16 +615,18 @@ export default {
     const saveIncome = async () => {
         try {
           if (props.transactionDetails.account === "Income Account") {
-             const x = {
-              amount: "999.999",
-              creditAccountID: "2029221a-c943-4af0-a9f1-4cfda7d79ac4",
-              date: "2021-03-11",
-              debitAccountID: "e2cb7851-57b6-45d2-bc8d-66830926fadd",
-              memo: "hoooootttttt"
-            }
+            
             transacObj.value.creditAccountID = selectedIncomeOrExpenseAccount.value.id;
             transacObj.value.debitAccountID = selectedCashAccount.value.id;
-            const response = await transaction_service.saveIncome(x);
+          
+             const reqBody = {
+              amount: transacObj.value.amount,
+              creditAccountID:transacObj.value.creditAccountID,
+              date: transacObj.value.date,
+              debitAccountID: transacObj.value.debitAccountID,
+              memo: transacObj.value.memo
+            }
+            const response = await transaction_service.saveIncome(reqBody);
             // const response = await transaction_service.saveIncome(transacObj.value);
             console.log(response, "Save income response");
           } else {

@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row mt-4 border mx-sm-0 rounded sub-con">
         <div class="col-md-12 col-sm-12 col-lg-12 mt-3 mb-5 border-bottom">
-          <h5 class="header5">Attendance and Checkin Details</h5>
+          <h5 class="header5">Attendance and Check-in Details</h5>
         </div>
         <div class="row m-auto">
           <div class="col-md-8 offset">
@@ -100,10 +100,10 @@
                       name: 'MarkAttendance',
                       query: { id: route.query.id },
                     }"
-                    >Marked Attendance</router-link
+                    >Manual Attendance Check-in</router-link
                   >
                 </h4>
-                <p class="para">Manually check-in registered members.</p>
+                <p class="para">Manually check in registered members.</p>
               </div>
             </div>
           </div>
@@ -169,7 +169,7 @@
             <!-- <hr class="tr-border-bottom"> -->
         </div>
 
-        <div class="col-md-12" style="opacity:.4">
+        <div class="col-md-12 py-2" style="opacity:.4">
           <h5 class="check">Not Currently Available</h5>
         </div>
         <div class="row w-100" style="opacity:.3">

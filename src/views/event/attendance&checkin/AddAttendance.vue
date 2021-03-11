@@ -35,7 +35,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" data-toggle="modal">
                 <div class="row my-4">
                   <div class="col-md-4 text-md-right">
                     <label for="" class="font-weight-600">Event category</label>
@@ -83,6 +83,7 @@
                           @click="selectCategory(category)"
                           >{{ category.name }}</a
                         >
+
                         <!-- Hidden -->
                         <a
                           class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
@@ -199,7 +200,7 @@
                   class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
                   style="border-top: 1px solid #002044; color: #136acd"
                   href="#"
-                  data-toggle="modal" data-target="#newActModal"
+                  data-toggle="modal" data-target="#newActModal" ref="openModalBtn"
                 >
                   <i
                     class="pi pi-plus-circle mr-2 d-flex align-items-center"
@@ -273,6 +274,8 @@ export default {
     const showBtModal = ref("");
     const popModal = ref(null);
     const toast = useToast();
+    const openModalBtn = ref(null)
+
 
     const selectedGroup = ref({});
     const getGroups = async () => {
@@ -349,8 +352,10 @@ export default {
       return selectedCategory.value.name.length > 17 ? `${selectedCategory.value.name.slice(0, 16)}...` : selectedCategory.value.name;
     })
 
-    const newCategoryCreated = (categories) => {
+    const newCategoryCreated = (categories, eventName) => {
       eventCategories.value = categories;
+      selectedCategory.value = categories.find(i => i.name.toLowerCase() === eventName.toLowerCase());
+      openModalBtn.value.click();
       display.value = false;
     }
 
@@ -375,7 +380,7 @@ export default {
           activityID: selectedEvent.value.id,
           groupID: selectedGroup.value.id,
         });
-        console.log(response, "RESPONSE P");
+        
         store.dispatch("attendance/setItemData", response);
         router.push({
           name: "CheckinType",
@@ -416,6 +421,7 @@ export default {
       categorySearchText,
       eventSearchText,
       filteredEvents,
+      openModalBtn,
     };
   },
 };
