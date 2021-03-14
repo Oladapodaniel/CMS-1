@@ -87,8 +87,8 @@
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Checked-in</span>
               <span>
-                <i class="pi pi-check" style="font-size: 10px;" v-if="person.isPresent"></i>
-                <i class="pi pi-times" style="font-size: 10px;" v-else></i>
+                <i class="pi pi-check" v-if="person.isPresent"></i>
+                <i class="pi pi-times" v-else></i>
                 <!-- <span v-else>--</span> -->
               </span>
             </span>

@@ -126,6 +126,10 @@
     color: #136ACD;
   }
 
+  .px-14 {
+    font-size: 14px;
+  }
+
   .cancel-delete {
     background: #ced4da !important;
     max-height: 40px;

@@ -160,7 +160,7 @@
               <div class="container-fluid d-none d-md-block">
                 <div class="row t-header">
                   <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
-                    <div class="col-md-1 px-3"><input type="checkbox" class="form-check" /></div>
+                    <div class="col-md-1 px-3"></div>
                     <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
                     <div class="small-text text-capitalize col-md-3 font-weight-bold">Description</div>
                     <div class="small-text text-capitalize col-md-2 font-weight-bold">Amount</div>

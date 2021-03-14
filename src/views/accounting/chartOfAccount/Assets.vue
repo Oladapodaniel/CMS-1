@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12 py-2 mt-4 account-head">
-      Cash and Bank<i
+      Cash and Bank <small class="font-weight-normal">current assets</small><i
         class="fa fa-question-circle-o help"
         aria-hidden="true"
       ></i>
@@ -37,38 +37,9 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left" @click="openModal">
-      <div class="add-account py-2">
-        <i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Money in Transit<i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
-      </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2">Jewwewe</div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Test3</div>
-      <div class="desc">Last Trasaction on Jan 21st, 2021</div>
-    </div>
-    <div class="col-6 col-md-5">wewe</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -76,7 +47,7 @@
   <div class="row">
     <div class="col-12 py-2 account-head">
       <div>
-        Expected Payments from Customers<i
+        Account Receivable <small class="font-weight-normal">current assets</small><i
           class="fa fa-question-circle-o help"
           aria-hidden="true"
         ></i>
@@ -97,7 +68,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account
+        <a class="primary-text text-decoration-none c-pointer" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -105,7 +76,7 @@
   <div class="row">
     <div class="col-12 py-2 account-head">
       <div>
-        Inventory<i class="fa fa-question-circle-o help" aria-hidden="true"></i>
+        Inventory <small class="font-weight-normal">current assets</small><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
       </div>
     </div>
   </div>
@@ -128,7 +99,80 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <i class="fa fa-plus-circle"></i> &nbsp; &nbsp;Add a new Account
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+      </div>
+    </div>
+  </div>
+
+  
+
+  
+
+  <div class="row">
+    <div class="col-12 py-2 account-head">
+      <div>
+        Prepaid Expenses <small class="font-weight-normal">current assets</small><i
+          class="fa fa-question-circle-o help"
+          aria-hidden="true"
+        ></i>
+      </div>
+    </div>
+  </div>
+  <div class="row row-border align-items-center py-2">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      You haven't added any Vendor Prepayments and Vendor Credits accounts yet.
+    </div>
+  </div>
+  <div v-if="false" class="row row-border align-items-center py-2">
+    <div class="col-6 col-md-2">12345</div>
+    <div class="col-6 col-sm-3">
+      <div class="desc-head">Depreciation</div>
+      <div class="desc">No transaction for this account</div>
+    </div>
+    <div class="col-6 col-md-5">Asset Description</div>
+    <div class="col-6 col-md-2 text-right">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      <div class="add-account py-2">
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="row">
+    <div class="col-12 py-2 account-head">
+      <div>
+        Investment <small class="font-weight-normal">current assets</small><i
+          class="fa fa-question-circle-o help"
+          aria-hidden="true"
+        ></i>
+      </div>
+    </div>
+  </div>
+  <div class="row row-border align-items-center py-2">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      You haven't added any Vendor Prepayments and Vendor Credits accounts yet.
+    </div>
+  </div>
+  <div v-if="false" class="row row-border align-items-center py-2">
+    <div class="col-6 col-md-2">12345</div>
+    <div class="col-6 col-sm-3">
+      <div class="desc-head">Depreciation</div>
+      <div class="desc">No transaction for this account</div>
+    </div>
+    <div class="col-6 col-md-5">Asset Description</div>
+    <div class="col-6 col-md-2 text-right">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      <div class="add-account py-2">
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -136,7 +180,78 @@
   <div class="row">
     <div class="col-12 py-2 account-head">
       <div>
-        Property, Plant, Equipment<i
+         Accumulated Depreciation <small class="font-weight-normal">current assets</small><i
+          class="fa fa-question-circle-o help"
+          aria-hidden="true"
+        ></i>
+      </div>
+    </div>
+  </div>
+  <div class="row row-border align-items-center py-2">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      You haven't added any Vendor Prepayments and Vendor Credits accounts yet.
+    </div>
+  </div>
+  <div v-if="false" class="row row-border align-items-center py-2">
+    <div class="col-6 col-md-2">12345</div>
+    <div class="col-6 col-sm-3">
+      <div class="desc-head">Depreciation</div>
+      <div class="desc">No transaction for this account</div>
+    </div>
+    <div class="col-6 col-md-5">Asset Description</div>
+    <div class="col-6 col-md-2 text-right">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      <div class="add-account py-2">
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 py-2 account-head">
+      <div>
+        Other Current Assets <small class="font-weight-normal">current assets</small><i
+          class="fa fa-question-circle-o help"
+          aria-hidden="true"
+        ></i>
+      </div>
+    </div>
+  </div>
+  <div class="row row-border align-items-center py-2">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      You haven't added any Vendor Payments and Vendor Credits accounts yet.
+    </div>
+  </div>
+  <div v-if="false" class="row row-border align-items-center py-2">
+    <div class="col-6 col-md-2"></div>
+    <div class="col-6 col-md-3">
+      <div class="desc-head">Taxes Recoverable/Refundable</div>
+      <div class="desc">No transaction for this account</div>
+    </div>
+    <div class="col-6 col-md-5">
+      A tax is recoverable if ypu can deduct the tax you've paidfrom the tax
+      you've collected. Many sales taxes are considered recoverable
+    </div>
+    <div class="col-6 col-md-2 text-right">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      <div class="add-account py-2">
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 py-2 account-head">
+      <div>
+        Land and Buildings <small class="font-weight-normal">fixed assets</small><i
           class="fa fa-question-circle-o help"
           aria-hidden="true"
         ></i>
@@ -162,7 +277,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -170,7 +285,7 @@
   <div class="row">
     <div class="col-12 py-2 account-head">
       <div>
-        Depreciation and Amortization<i
+        Furniture and Equipment <small class="font-weight-normal">fixed assets</small><i
           class="fa fa-question-circle-o help"
           aria-hidden="true"
         ></i>
@@ -202,7 +317,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -210,7 +325,7 @@
   <div class="row">
     <div class="col-12 py-2 account-head">
       <div>
-        Vendor Payments and Vendor Credits<i
+        Vehicles <small class="font-weight-normal">fixed assets</small><i
           class="fa fa-question-circle-o help"
           aria-hidden="true"
         ></i>
@@ -218,13 +333,8 @@
     </div>
   </div>
   <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You haven't added any Vendor Payments and Vendor Credits accounts yet.
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
     <div class="col-6 col-md-2">12345</div>
-    <div class="col-6 col-sm-3">
+    <div class="col-6 col-md-3">
       <div class="desc-head">Depreciation</div>
       <div class="desc">No transaction for this account</div>
     </div>
@@ -233,10 +343,21 @@
       <i class="fa fa-pencil" aria-hidden="true"></i>
     </div>
   </div>
+  <div class="row row-border align-items-center py-2">
+    <div class="col-6 col-md-2">2002</div>
+    <div class="col-6 col-md-3">
+      <div class="desc-head">Test4</div>
+      <div class="desc">No transaction for this account</div>
+    </div>
+    <div class="col-6 col-md-5">21212</div>
+    <div class="col-6 col-md-2 text-right">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </div>
+  </div>
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -244,7 +365,7 @@
   <div class="row">
     <div class="col-12 py-2 account-head">
       <div>
-        One Short-Term Asset<i
+        Other Fixed Assets <small class="font-weight-normal">fixed assets</small><i
           class="fa fa-question-circle-o help"
           aria-hidden="true"
         ></i>
@@ -273,265 +394,53 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Other Long-Term Asset<i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
+  <!-- BT MODAL -->
+  <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Add an account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <CreateAccountModal :transactionalAccounts="transactionalAccounts" :accountTypes="accountTypes" :currencies="currencyList" />
+        </div>
+
+         <div class="modal-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12 d-flex justify-content-end ">
+                <button class="default-btn mr-3" data-dismiss="modal">Cancel</button>
+                <button class="default-btn primary-bg border-0 text-white">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You haven't added any Vendor Payments and Vendor Credits accounts yet.
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2"></div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Taxes Recoverable/Refundable</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">
-      A tax is recoverable if ypu can deduct the tax you've paidfrom the tax
-      you've collected. Many sales taxes are considered recoverable
-    </div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account
-      </div>
-    </div>
-  </div>
+  <!-- END BT -->
 
   <!-- Primevue modal to add new account-->
   <!-- <h5>Modal</h5>
     <Button label="Show" icon="pi pi-external-link" /> -->
-  <Dialog
-    header="Add an Account"
-    v-model:visible="displayModal"
-    class="col-12 col-sm-10 col-md-6 p-0"
-    :modal="true"
-  >
-    <div class="row mt-2">
-      <div class="col-12 col-md-4 align-self-center text-md-right">
-        Account Type
-      </div>
-      <div class="col-12 col-md-6">
-        <!-- <Dropdown v-model="selectedGroupedCity" :options="groupedCities" 
-                        optionLabel="label" optionGroupLabel="label" optionGroupChildren="items">
-                </Dropdown>
-                {{ selectedGroupedCity }} -->
-
-        <!-- <Dropdown v-model="selectedGroupedCity" :options="groupedCities" 
-                        optionLabel="label" optionGroupLabel="label" optionGroupChildren="items">
-                </Dropdown> -->
-
-        <!-- <div class="codeModal">
-                <div class="country-code form-control codeModal" @click="toggleCode"><div class="d-flex justify-content-between align-items-center"><span class="codeModal">Select Account Type</span><i class="pi pi-angle-down"></i></div></div>
-            </div>
-
-                <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal ">
-                    <input class="codeInput input codeModal" v-model="searchText">
-                <div v-for="country in countries" :key="country.id" class="codeModal" >
-                    <div class="col-sm-3"><span style="display: inline-block">{{ country.name }}</span></div>
-                </div>
-                </div> -->
-        <div
-          class="select-elem-con pointer form-control d-flex justify-content-between align-items-center close-modal"
-          @click="toggleAccountType"
-        >
-          <span class="ofering close-modal">Select</span
-          ><span>
-            <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
-          ></span>
-        </div>
-        <div
-          class="ofering close-modal"
-          :class="{ 'style-account': showAccount }"
-          v-if="showAccount"
-          ref="selectAccount"
-        >
-          <i
-            class="pi pi-search"
-            style="position: absolute; top: 22px; left: 25px"
-          ></i>
-          <div class="p-2 close-modal">
-            <input
-              type="text"
-              placeholder="Search"
-              class="form-control ofering mb-1 close-modal pl-5"
-              v-model="accountText"
-              ref="inpFocus2"
-            />
-          </div>
-          <div class="desc-head py-1 px-2 close-modal">Assets</div>
-          <div class="header-border close-modal">
-            <div v-if="filterAccount.length > 0">
-              <div
-                @click="accountFlow"
-                class="manual-dd-item close-modal"
-                v-for="(item, index) in filterAccount"
-                :key="index"
-              >
-                <div
-                  class="d-flex justify-content-between py-2 px-3 close-modal"
-                >
-                  <div class="close-modal offset-sm-1">{{ item }}</div>
-                </div>
-              </div>
-            </div>
-            <div v-else>
-              <div class="text-center px-3 py-2 text-danger">
-                No Match Found
-              </div>
-            </div>
-          </div>
-          <div class="desc-head px-3 pt-2 close-modal">
-            Liabilities and Credit Cards
-          </div>
-          <div class="header-border close-modal">
-            <div v-if="filterLiabilities.length > 0">
-              <div
-                @click="accountFlow"
-                class="manual-dd-item close-modal"
-                v-for="(item, index) in filterLiabilities"
-                :key="index"
-              >
-                <div
-                  class="d-flex justify-content-between py-2 px-3 close-modal"
-                >
-                  <div class="close-modal offset-sm-1">{{ item }}</div>
-                </div>
-              </div>
-            </div>
-            <div v-else>
-              <div class="px-3 py-2 text-center text-danger">
-                No Match Found
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-12 col-md-4 align-self-center text-md-right">
-        Account Name
-      </div>
-      <div class="col-12 col-md-6">
-        <input type="text" class="form-control" />
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-12 col-md-4 align-self-center text-md-right">
-        Account Currency
-      </div>
-      <div class="col-12 col-md-6">
-        <div
-          class="currency pointer form-control d-flex justify-content-between align-items-center close-modal"
-          @click="toggleCurrency"
-        >
-          <span class="ofering close-modal">Select</span
-          ><span style="margin-top: 4px">
-            <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
-          ></span>
-        </div>
-        <div
-          class="ofering close-modal"
-          :class="{ 'style-account': showCurrency }"
-          v-if="showCurrency"
-        >
-          <i
-            class="pi pi-search"
-            style="position: absolute; top: 22px; left: 25px"
-          ></i>
-          <div class="p-2">
-            <input
-              type="text"
-              placeholder="Search"
-              class="form-control close-modal ofering mb-1 pl-5"
-              v-model="currencyText"
-              ref="inpFocus"
-            />
-          </div>
-          <div
-            class="header-border close-modal"
-            v-if="filterCurrency.length > 0"
-          >
-            <div
-              class="manual-dd-item close-modal"
-              v-for="item in filterCurrency"
-              :key="item.id"
-            >
-              <div class="d-flex justify-content-between p-1 close-modal">
-                <div
-                  class="close-modal offset-sm-1"
-                  @click="addCurrency($event, index)"
-                >
-                  {{ item.name }} - {{ item.country }}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="header-border close-modal" v-else>
-            <div class="p-3 text-center text-danger">No Match Found</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-12 col-md-4 align-self-center text-md-right">
-        Account ID
-      </div>
-      <div class="col-12 col-md-6">
-        <input type="text" class="form-control" />
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-12 col-md-4 align-self-center text-md-right">
-        Description
-      </div>
-      <div class="col-12 col-md-6">
-        <input type="text" class="form-control" />
-      </div>
-    </div>
-    <template #footer>
-      <!-- <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
-            <Button label="Yes" icon="pi pi-check" @click="closeModal" autofocus /> -->
-      <div class="col-md-12 d-md-flex justify-content-end p-0">
-        <button
-          type="button"
-          class="btn secondary-btn px-4"
-          @click="closeModal"
-        >
-          Close
-        </button>
-        <button type="button" class="btn primary-btn px-4 mr-0 text-white">
-          Save
-        </button>
-      </div>
-    </template>
-  </Dialog>
 </template>
 
 <script>
 import { ref, computed, nextTick } from "vue";
-import Dialog from "primevue/dialog";
 import axios from "@/gateway/backendapi";
-// import Dropdown from 'primevue/dropdown';
+import transaction_service from '../../../services/financials/transaction_service';
+import CreateAccountModal from "./components/CreateAccountForm";
+
 export default {
-  components: { Dialog },
+  components: {CreateAccountModal },
   props: ["assets"],
   setup() {
     const view = ref("view");
@@ -634,6 +543,57 @@ export default {
       });
     };
 
+    const transactionalAccounts = ref([]);
+    const accountTypes = ["assets", "liability", "income", "expense", "equity"];
+    const getTransactionalAccounts = async () => {
+      try {
+        const response = await transaction_service.getTransactionalAccounts();
+        for (let group of accountTypes) {
+          const groupItems = response.filter(
+            (i) => i.accountType.toLowerCase() === group
+          );
+          transactionalAccounts.value.push(groupItems);
+        }
+        console.log(response, "account");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getTransactionalAccounts();
+
+    // const selectedAccountType = ref({ });
+    // const selectAccountType = (account) => {
+    //   selectedAccountType.value = account;
+    // }
+
+    const cities = ref([{
+                label: 'Germany', code: 'DE', 
+                items: [
+                    {label: 'Berlin', value: 'Berlin'},
+                    {label: 'Frankfurt', value: 'Frankfurt'},
+                    {label: 'Hamburg', value: 'Hamburg'},
+                    {label: 'Munich', value: 'Munich'}
+                ]
+            },
+            {
+                label: 'USA', code: 'US', 
+                items: [
+                    {label: 'Chicago', value: 'Chicago'},
+                    {label: 'Los Angeles', value: 'Los Angeles'},
+                    {label: 'New York', value: 'New York'},
+                    {label: 'San Francisco', value: 'San Francisco'}
+                ]
+            },
+            {
+                label: 'Japan', code: 'JP', 
+                items: [
+                    {label: 'Kyoto', value: 'Kyoto'},
+                    {label: 'Osaka', value: 'Osaka'},
+                    {label: 'Tokyo', value: 'Tokyo'},
+                    {label: 'Yokohama', value: 'Yokohama'}
+                ]
+            }])
+
     return {
       view,
       displayModal,
@@ -655,6 +615,12 @@ export default {
       inpFocus,
       inpFocus2,
       toggleAccountType,
+
+      cities,
+      transactionalAccounts,
+      accountTypes,
+      // selectAccountType,
+      // selectedAccountType
     };
   },
 };
@@ -732,5 +698,9 @@ input.codeInput {
 .style-account div div div:hover {
   background-color: #ecf0f3;
   cursor: pointer;
+}
+
+.modal-lg {
+  max-width: 640px;
 }
 </style>
