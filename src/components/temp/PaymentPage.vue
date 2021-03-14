@@ -33,24 +33,27 @@
         <div class="col-md-10 offset-md-1 bg-white py-4" style="border-radius: 8px;">
           <form action="">
             <div class="row my-3" v-for="(item, index) in givingTypes" :key="index">
-              <div class="col-md-6">
+              <div class="col-md-5" :class="{ 'col-md-6': givingTypes.length === 1 }">
                 <select name="" id="" class="form-control">
                   <option value="">Option</option>
                   <option value="">Option</option>
                 </select>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 mt-2 mt-sm-0">
                 <div class="row">
-                  <div class="col-3 px-md-0">
+                  <div class="col-3 px-md-0 pr-0">
                     <select name="" id="" class="form-control" style="border-radius: .25rem 0 0 .25rem;">
                       <option value="">#</option>
                       <option value="">#</option>
                     </select>
                   </div>
-                  <div class="col-9 pl-md-0">
+                  <div class="col-9 pl-0">
                     <input type="text" class="form-control" style="border-radius: 0 0.25rem .25rem 0;"/>
                   </div>
                 </div>
+              </div>
+              <div class="col-md-1 d-flex align-items-center">
+                  <i class="pi pi-trash c-pointer" @click="deleteType(index)" v-if="givingTypes.length > 1"></i>
               </div>
             </div>
 
@@ -182,6 +185,10 @@ export default {
             givingTypes.value.push({ })
         }
 
+        const deleteType = (index) => {
+            givingTypes.value.splice(index, 1);
+        }
+
         return {
             recurring,
             selectPaymentType,
@@ -190,6 +197,7 @@ export default {
             frequency,
             frequencies,
             selectFrequency,
+            deleteType,
         }
 
     }
