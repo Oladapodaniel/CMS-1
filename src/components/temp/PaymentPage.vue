@@ -1,6 +1,11 @@
 <template>
   <div class="wrapper">
     <div class="container">
+        <div class="row">
+            <div class="col-md-10 offset-md-1 d-flex justify-content-end mt-3">
+                <a class="text-decoration-none text-white c-pointer font-weight-700">Your ccount <span><i class="pi pi-user ml-2"></i></span></a>
+            </div>
+        </div>
       <div class="row">
         <div class="col-md-6 offset-md-3">
           <div class="row pt-5 d-flex align-items-center mx-auto">
