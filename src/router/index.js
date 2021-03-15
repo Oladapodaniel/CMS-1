@@ -541,13 +541,37 @@ const routes = [{
     path: '/onlinegivingform1',
     name: 'OnlineGiving',
     component: () =>
-        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/onlinegivingform1')
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm')
 },
 {
     path: '/onlinegivingform2',
-    name: 'OnlineGiving',
+    name: 'OnlineGiving2',
     component: () =>
-        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/onlinegivingform2')
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm2')
+},
+{
+    path: '/onlinegivingform3',
+    name: 'OnlineGiving3',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm3')
+},
+{
+    path: '/onlinegivingform4',
+    name: 'OnlineGiving4',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm4')
+},
+{
+    path: '/onlinegivingform5',
+    name: 'OnlineGiving5',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm5')
+},
+{
+    path: '/paymentgivingform2',
+    name: 'OnlineGivingform2',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/PaymentGivingForm2')
 },
 ]
 
