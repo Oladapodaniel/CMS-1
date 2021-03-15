@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12 py-2 mt-4 account-head">
-      Cash and Bank <small class="font-weight-normal">current assets</small><i
+      Cash in Hand <small class="font-weight-normal">current assets</small><i
         class="fa fa-question-circle-o help"
         aria-hidden="true"
       ></i>
@@ -39,7 +39,47 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 py-2 mt-4 account-head">
+      Cash in Bank <small class="font-weight-normal">current assets</small><i
+        class="fa fa-question-circle-o help"
+        aria-hidden="true"
+      ></i>
+    </div>
+  </div>
+  <div
+    class="row row-border align-items-center py-2"
+    v-for="(asset, index) in assets"
+    :key="index"
+  >
+    <div class="col-6 col-md-2">{{ asset.code }}</div>
+    <div class="col-6 col-md-3">
+      <div class="desc-head">{{ asset.name }}</div>
+    </div>
+    <div class="col-6 col-md-5">Test Account</div>
+    <div class="col-6 col-md-2 text-right">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="row row-border align-items-center py-2">
+    <div class="col-6 col-md-2"></div>
+    <div class="col-6 col-md-3">
+      <div class="desc-head">You haven't added any bank</div>
+    </div>
+    <div class="col-6 col-md-5"></div>
+    <div class="col-6 col-md-2 text-right">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      <div class="add-account py-2">
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -68,7 +108,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="primary-text text-decoration-none c-pointer" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="primary-text text-decoration-none c-pointer" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -99,7 +139,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -137,7 +177,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -146,7 +186,7 @@
   <div class="row">
     <div class="col-12 py-2 account-head">
       <div>
-        Investment <small class="font-weight-normal">current assets</small><i
+        Short Term Investment <small class="font-weight-normal">current assets</small><i
           class="fa fa-question-circle-o help"
           aria-hidden="true"
         ></i>
@@ -172,7 +212,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -188,8 +228,14 @@
     </div>
   </div>
   <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You haven't added any Vendor Prepayments and Vendor Credits accounts yet.
+    <div class="col-6 col-md-2">12345</div>
+    <div class="col-6 col-md-3">
+      <div class="desc-head">Depreciation</div>
+      <div class="desc">No transaction for this account</div>
+    </div>
+    <div class="col-6 col-md-5">Asset Description</div>
+    <div class="col-6 col-md-2 text-right">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
     </div>
   </div>
   <div v-if="false" class="row row-border align-items-center py-2">
@@ -206,7 +252,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -243,7 +289,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -277,7 +323,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -293,31 +339,14 @@
     </div>
   </div>
   <div class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2">12345</div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Depreciation</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">Asset Description</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2">2002</div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Test4</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">21212</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      You have not added any inventory yet.
     </div>
   </div>
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -333,31 +362,14 @@
     </div>
   </div>
   <div class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2">12345</div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Depreciation</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">Asset Description</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2">2002</div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Test4</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">21212</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      You have not added any inventory yet.
     </div>
   </div>
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -394,13 +406,13 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
 
   <!-- BT MODAL -->
-  <div class="modal fade" id="accountModal" tabindex="-1" role="dialog" aria-labelledby="accountModalLabel" aria-hidden="true">
+  <div class="modal fade" id="assetsModal" tabindex="-1" role="dialog" aria-labelledby="assetsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -410,18 +422,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <CreateAccountModal :transactionalAccounts="transactionalAccounts" :accountTypes="accountTypes" :currencies="currencyList" />
-        </div>
-
-         <div class="modal-footer">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12 d-flex justify-content-end ">
-                <button class="default-btn mr-3" data-dismiss="modal">Cancel</button>
-                <button class="default-btn primary-bg border-0 text-white">Save</button>
-              </div>
-            </div>
-          </div>
+          <CreateAccountModal :transactionalAccounts="transactionalAccounts" :accountTypes="accountTypes" :currencies="currencyList" :financialAccountType="0" />
         </div>
       </div>
     </div>
@@ -701,6 +702,6 @@ input.codeInput {
 }
 
 .modal-lg {
-  max-width: 640px;
+  max-width: 670px;
 }
 </style>

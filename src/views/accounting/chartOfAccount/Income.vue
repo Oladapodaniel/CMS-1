@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12 py-2 mt-4 account-head">
-      Tithe-Offerings Income<i
+      Offerings and Tithe Income<i
         class="fa fa-question-circle-o help"
         aria-hidden="true"
       ></i>
@@ -29,7 +29,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#incModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#incModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -97,7 +97,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#incModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -130,7 +130,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#incModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -166,12 +166,12 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#incModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
 
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-12 py-2 account-head">
       Other Operating Income<i
         class="fa fa-question-circle-o help"
@@ -202,10 +202,10 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#incModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="row">
     <div class="col-12 py-2 account-head">
@@ -238,7 +238,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#incModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -274,7 +274,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#incModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -310,7 +310,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#incModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -320,10 +320,10 @@
       <!-- BT MODAL -->
       <div
         class="modal fade"
-        id="accountModal"
+        id="incModal"
         tabindex="-1"
         role="dialog"
-        aria-labelledby="accountModalLabel"
+        aria-labelledby="incModalLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog modal-lg" role="document">
@@ -346,22 +346,9 @@
                 :transactionalAccounts="accounts"
                 :accountTypes="accountTypes"
                 :currencies="currencies"
+                :showFundsField="true"
+                :financialAccountType="2"
               />
-            </div>
-
-            <div class="modal-footer">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-12 d-flex justify-content-end">
-                    <button class="default-btn mr-3" data-dismiss="modal">
-                      Cancel
-                    </button>
-                    <button class="default-btn primary-bg border-0 text-white">
-                      Save
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -379,6 +366,7 @@ export default {
   components: { CreateAccountModal },
   setup() {
     const view = ref(true);
+    const showFundsField = ref(true);
 
     const accounts = ref([]);
     const getAccounts = async () => {
@@ -415,6 +403,7 @@ export default {
       currencyList,
       accounts,
       currencies,
+      showFundsField,
     };
   },
 };
@@ -447,5 +436,9 @@ export default {
 .add-account {
   color: #136acd;
   font-weight: 800;
+}
+
+.modal-lg {
+    max-width: 670px;
 }
 </style>

@@ -30,17 +30,20 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a
+          class="c-pointer text-decoration-none primary-text"
+          data-toggle="modal"
+          data-target="#fundModal"
+          ><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a
+        >
       </div>
     </div>
   </div>
 
   <div class="row">
     <div class="col-12 py-2 account-head">
-        <span class="text-capitalize">Donor Restricted Funds Balances</span><i
-        class="fa fa-question-circle-o help"
-        aria-hidden="true"
-      ></i>
+      <span class="text-capitalize">Donor Restricted Funds Balances</span
+      ><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
     </div>
   </div>
   <div v-if="false" class="row row-border align-items-center py-2">
@@ -66,7 +69,12 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a
+          class="c-pointer text-decoration-none primary-text"
+          data-toggle="modal"
+          data-target="#fundModal"
+          ><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a
+        >
       </div>
     </div>
   </div>
@@ -74,17 +82,17 @@
   <div class="row">
     <div
       class="modal fade"
-      id="accountModal"
+      id="fundModal"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="accountModalLabel"
+      aria-labelledby="fundModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
-              Add an account
+              Add Fund
             </h5>
             <button
               type="button"
@@ -96,27 +104,61 @@
             </button>
           </div>
           <div class="modal-body">
-            <CreateAccountModal
-              :transactionalAccounts="accounts"
-              :accountTypes="accountTypes"
-              :currencies="currencyList"
-            />
+            <div class="row" v-if="!savingFund">
+              <div class="col-md-12">
+                <div class="row my-3">
+                  <div class="col-md-3 text-md-right">
+                    <label for="">Fund type</label>
+                  </div>
+                  <div class="col-md-8">
+                    <Dropdown
+                      v-model="selectedFundType"
+                      :options="fundTypes"
+                      style="width: 100%"
+                    />
+                  </div>
+                </div>
+                <div class="row my-3">
+                  <div class="col-md-3 text-md-right">
+                    <label for="">Fund name</label>
+                  </div>
+                  <div class="col-md-8">
+                    <input
+                      type="text"
+                      v-model="newFund.name"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row my-5" v-if="savingFund">
+                <div class="col-md-12 text-center">
+                    <i class="pi pi-spin pi-spinner" style="fontSize: 5rem"></i>
+                </div>
+            </div>
           </div>
 
           <div class="modal-footer">
             <div class="container">
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-end">
-                  <button class="default-btn mr-3" data-dismiss="modal">
+                  <button class="default-btn mr-3" data-dismiss="modal" ref="closeModalBtn">
                     Cancel
                   </button>
-                  <button class="default-btn primary-bg border-0 text-white">
+                  <button
+                    @click="onSave"
+                    class="default-btn primary-bg border-0 text-white"
+                  >
                     Save
                   </button>
                 </div>
               </div>
             </div>
           </div>
+
+          <Toast />
         </div>
       </div>
     </div>
@@ -124,14 +166,25 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref } from "vue";
 import transactionUtil from "./utilities/transactionals";
-import CreateAccountModal from "./components/CreateAccountForm";
+import Dropdown from "primevue/dropdown";
+import chart_of_accounts from "../../../services/financials/chart_of_accounts";
+import { useToast } from 'primevue/usetoast';
+
 
 export default {
-    components: { CreateAccountModal },
-  setup() {
+  components: { Dropdown },
+
+  setup(props, { emit }) {
+    const toast = useToast();
     const accounts = ref([]);
+    const fundTypes = [
+      "Unrestricted Funds Balances",
+      "Donor Restricted Funds Balances",
+    ];
+    const selectedFundType = ref("");
+
     const getAccounts = async () => {
       try {
         accounts.value = await transactionUtil.getTransactionalAccounts();
@@ -152,6 +205,38 @@ export default {
       }
     };
     getCurrencies();
+    
+    const  closeModalBtn = ref(null);
+    const savingFund = ref(false);
+    const saveFund = async (fund) => {
+      try {
+          savingFund.value = true;
+        const response = await chart_of_accounts.saveFund(fund);
+        savingFund.value = false;
+        closeModalBtn.value.click();
+        if (!response.status) {
+            emit("save-fund", { success: false, message: "An error ocuurred, please try again" });
+            toast.add({severity:'error', summary:'Fund Creation Failed', detail:`An error occurred, please try again`, life: 3000});
+        } else {
+            toast.add({severity:'success', summary:'Fund Created', detail:`The fund ${newFund.value.name} was created successfully`, life: 2500});
+        }
+        console.log(response, "save fund response");
+      } catch (error) {
+        savingFund.value = false;
+        toast.add({severity:'error', summary:'Fund Creation Failed', detail:`An error occurred, please try again`, life: 3000});
+        console.log(error);
+      }
+    };
+
+    
+    const newFund = ref({});
+    const onSave = () => {
+      if (!selectedFundType.value) {
+        return false;
+      }
+      newFund.value.fundType = fundTypes.indexOf(selectedFundType.value);
+      saveFund(newFund.value);
+    };
 
     const accountTypes = transactionUtil.accountTypes;
 
@@ -159,6 +244,12 @@ export default {
       accountTypes,
       currencyList,
       accounts,
+      onSave,
+      fundTypes,
+      newFund,
+      selectedFundType,
+      savingFund,
+      closeModalBtn,
     };
   },
 };
@@ -191,5 +282,9 @@ export default {
 .add-account {
   color: #136acd;
   font-weight: 800;
+}
+
+.modal-lg {
+  max-width: 670px;
 }
 </style>

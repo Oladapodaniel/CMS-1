@@ -1,4 +1,5 @@
 import axios from "@/gateway/backendapi";
+import stopProgressBar from "../progressbar/progress"
 
 const getChartOfAccounts = () => {
     return new Promise((resolve, reject) => {
@@ -48,4 +49,54 @@ const getAssetsAccounts = () => {
     })
 }
 
-export default { getChartOfAccounts, getCashBankAccounts, getAssetsAccounts }
+const getFunds = () => {
+    return new Promise((resolve, reject) => {
+        axios.get("/api/Financials/Funds")
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+const saveAccount = (body) => {
+    return new Promise((resolve, reject) => {
+        axios.post("/api/Financials/Accounts/Save", body)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+const saveFund = (body) => {
+    return new Promise((resolve, reject) => {
+        axios.post("/api/Financials/Funds/Save", body)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+export default { getChartOfAccounts, getCashBankAccounts, getAssetsAccounts, getFunds, saveAccount, saveFund }

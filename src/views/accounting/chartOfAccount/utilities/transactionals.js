@@ -1,3 +1,4 @@
+import chart_of_accounts from "../../../../services/financials/chart_of_accounts";
 import transaction_service from "../../../../services/financials/transaction_service";
 // import stopProgressBar from "../progressbar/progress";
 
@@ -5,6 +6,7 @@ const transactionals = {
     accountTypes: ["assets", "liability", "income", "expense", "equity"],
     account: [],
     currencies: [],
+    funds: [],
 
     getTransactionalAccounts() {
         return new Promise((resolve, reject) => {
@@ -50,6 +52,23 @@ const transactionals = {
                     })
             } else {
                 resolve(this.currencies);
+            }
+        })
+    },
+
+    getFunds() {
+        return new Promise((resolve, reject) => {
+            if (!this.funds || this.funds.length === 0) {
+                chart_of_accounts.getFunds()
+                .then(data => {
+                    this.funds = data;
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                })
+            } else {
+                resolve(this.funds);
             }
         })
     }

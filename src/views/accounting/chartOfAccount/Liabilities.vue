@@ -1,6 +1,37 @@
 <template>
   <div class="row">
     <div class="col-12 py-2 mt-4 account-head">
+      Accounts Payable <small class="font-weight-normal">Current Liabilities</small
+      ><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="row row-border align-items-center py-2">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      You haven't added any credit card yet.
+    </div>
+  </div>
+  <div v-if="false" class="row row-border align-items-center py-2">
+    <div class="col-6 col-md-2">1202</div>
+    <div class="col-6 col-md-3">
+      <div class="desc-head">asset bank (USD)</div>
+      <div class="desc">No transaction for this account</div>
+    </div>
+    <div class="col-6 col-md-5">Test Account</div>
+    <div class="col-6 col-md-2 text-right">
+      <i class="fa fa-pencil" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      <div class="add-account py-3">
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#liabModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 py-2 mt-4 account-head">
       Credit Card <small class="font-weight-normal">Current Liabilities</small
       ><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
     </div>
@@ -25,7 +56,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#liabModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -57,7 +88,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#liabModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -89,7 +120,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#liabModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -121,7 +152,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#liabModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -153,7 +184,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#liabModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -185,7 +216,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#liabModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -217,7 +248,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#liabModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -248,7 +279,27 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#liabModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 py-2 account-head">
+      Other Long Term Liabilities <small class="font-weight-normal">Long Term Liabilities</small
+      ><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="row row-border align-items-center py-2">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      You haven't added any Other Long-Term Liability Credit yet.
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-10 offset-md-2 text-center text-md-left">
+      <div class="add-account py-3">
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#liabModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -258,10 +309,10 @@
       <!-- BT MODAL -->
       <div
         class="modal fade"
-        id="accountModal"
+        id="liabModal"
         tabindex="-1"
         role="dialog"
-        aria-labelledby="accountModalLabel"
+        aria-labelledby="liabModalLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog modal-lg" role="document">
@@ -284,23 +335,10 @@
                 :transactionalAccounts="accounts"
                 :accountTypes="accountTypes"
                 :currencies="currencies"
+                :financialAccountType="1"
               />
             </div>
 
-            <div class="modal-footer">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-12 d-flex justify-content-end">
-                    <button class="default-btn mr-3" data-dismiss="modal">
-                      Cancel
-                    </button>
-                    <button class="default-btn primary-bg border-0 text-white">
-                      Save
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -386,5 +424,9 @@ export default {
 .add-account {
   color: #136acd;
   font-weight: 800;
+}
+
+.modal-lg {
+    max-width: 670px;
 }
 </style>

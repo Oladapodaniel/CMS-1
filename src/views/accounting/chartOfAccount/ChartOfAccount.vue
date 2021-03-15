@@ -128,23 +128,6 @@
                     :currencies="currencyList"
                   />
                 </div>
-
-                <div class="modal-footer">
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-md-12 d-flex justify-content-end">
-                        <button class="default-btn mr-3" data-dismiss="modal">
-                          Cancel
-                        </button>
-                        <button
-                          class="default-btn primary-bg border-0 text-white"
-                        >
-                          Save
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

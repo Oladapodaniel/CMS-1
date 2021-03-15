@@ -29,7 +29,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#expModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -65,7 +65,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#expModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -100,7 +100,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#expModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -136,7 +136,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#expModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -168,7 +168,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#expModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -204,7 +204,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#expModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -240,7 +240,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#expModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -276,7 +276,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#expModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -312,7 +312,7 @@
   <div class="row">
     <div class="col-10 offset-md-2 text-center text-md-left">
       <div class="add-account py-3">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#accountModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#expModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
       </div>
     </div>
   </div>
@@ -322,10 +322,10 @@
       <!-- BT MODAL -->
       <div
         class="modal fade"
-        id="accountModal"
+        id="expModal"
         tabindex="-1"
         role="dialog"
-        aria-labelledby="accountModalLabel"
+        aria-labelledby="expModalLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog modal-lg" role="document">
@@ -348,22 +348,9 @@
                 :transactionalAccounts="accounts"
                 :accountTypes="accountTypes"
                 :currencies="currencies"
+                :showFundsField="true"
+                :financialAccountType="3"
               />
-            </div>
-
-            <div class="modal-footer">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-12 d-flex justify-content-end">
-                    <button class="default-btn mr-3" data-dismiss="modal">
-                      Cancel
-                    </button>
-                    <button class="default-btn primary-bg border-0 text-white">
-                      Save
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -449,5 +436,9 @@ export default {
 .add-account {
   color: #136acd;
   font-weight: 800;
+}
+
+.modal-lg {
+    max-width: 670px;
 }
 </style>
