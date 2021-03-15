@@ -402,7 +402,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, computed } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
@@ -617,11 +617,13 @@ export default {
       }
     }
 
-    onMounted(() => {
-      console.log(props.list, "props");
+    const getPeopleList = () => {
+      // console.log(props.list, "props");
       churchMembers.value = props.list;
       // store.dispatch('churchMembers', props.list)
-    });
+      
+    }
+    getPeopleList()
 
     const toggleSelect = () => {
       selectAll.value = !selectAll.value
@@ -630,7 +632,8 @@ export default {
     const searchMember = computed(() => {
         if (searchText.value !== "") {
           return churchMembers.value.filter(i => {
-            return i.firstName.toLowerCase().includes(searchText.value.toLowerCase())
+            if (i.firstName) return i.firstName.toLowerCase().includes(searchText.value.toLowerCase());
+            return ""
           })
         } else {
           return churchMembers.value
@@ -924,7 +927,6 @@ a {
 
   .table-header {
     display: none;
-    /* Tosin */
     padding: 0 0 0 2rem;
   }
 }
