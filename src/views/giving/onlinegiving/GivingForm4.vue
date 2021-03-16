@@ -69,9 +69,10 @@
                   <div class="row">
                     <div class="col-md-12 mx-auto my-3 px-0 px-3">
                       <label class="hfont">Purpose</label>
+               
                       <Dropdown
                         v-model="selectedContributionType"
-                        :options="funds"
+                        :options="formResponse.contributionItems"
                         optionLabel="financialContribution.name"
                         placeholder="Select"
                         class="w-100 px-0"
@@ -92,7 +93,7 @@
                             v-model="dfaultCurrency"
                             :options="currencyInput"
                             optionLabel="shortCode"
-                            placeholder="Select"
+                            :placeholder="selectedContributionType.shortCode"
                             class="w-100 px-0"
                           />
                         </div>
@@ -201,11 +202,23 @@
                   </section>
                   <!-- end of date area -->
 
+                  <div class="row mt-2">
+                    <div class="col-sm-1">
+                      <Checkbox id="binary" v-model="checked" :binary="true" />
+                    </div>
+                    <div class="col-sm-10">
+                      <label for="binary">As an anonymous</label>
+                    </div>
+                  </div>
+
                   <!-- start of user credentials area -->
-                  <div class="row d-flex">
+                  <transition name="fade" mode="out-in">
+  
+        
+                  <div class="row d-flex" v-if="checked">
                     <div class="col-md-6">
                       <div class="row">
-                        <div class="col-md-12 mx-auto my-3 px-0 px-3">
+                        <div class="col-md-12 mx-auto my-2 px-0 px-2">
                           <label class="hfont">Name</label>
                           <input
                             class="form-control col-md-12 text-left border imp2"
@@ -219,17 +232,19 @@
 
                     <div class="col-md-6">
                       <div class="row">
-                        <div class="col-md-12 mx-auto my-3 px-0 px-3">
+                        <div class="col-md-12 mx-auto my-2 px-0 px-2">
                           <label class="hfont">Phone Number</label>
                           <input
                             class="form-control col-md-12 text-left border imp2"
                             type="text"
-                            placeholder="080********"
+                            v-model="phone"
+
                           />
                         </div>
                       </div>
                     </div>
                   </div>
+                  </transition>
                   <!-- end of user credentials area -->
 
                   <!-- start of dynamic Area 3 -->
@@ -240,7 +255,7 @@
                         v-if="!hideTabOne || hideTabOne"
                       >
                         <!-- button section -->
-                        <div class="row my-3">
+                        <div class="row my-3" @click="donation">
                           <div class="col-md-12 text-center mt-4">
                             <button data-toggle="modal" data-target="#PaymentOptionModal"
                               class="btn btn-default btngive bt hfontb btt"
@@ -265,7 +280,7 @@
                               <span aria-hidden="true">&times;</span>
                             </button>
                           </div>
-                          <div class="modal-body p-0 bg-modal mb-5">
+                          <div class="modal-body p-0 bg-modal pb-5">
                             <PaymentOptionModal :amount="amount" :name="name"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
@@ -372,9 +387,10 @@ import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
 import PaymentOptionModal from "./PaymentOptionModal"
+import Checkbox from 'primevue/checkbox';
 export default {
   components: {
-    PaymentOptionModal
+    PaymentOptionModal, Checkbox
   },
   setup() {
     const hideTabOne = ref(true);
@@ -386,6 +402,7 @@ export default {
       hideTabOne.value = true;
     };
 
+    const formResponse = ref({})
     const selectedContributionType = ref({});
     const funds = ref([]);
 
@@ -399,6 +416,8 @@ export default {
     const oftenGive4 = ref(false);
     const amount = ref("")
     const name = ref("")
+    const phone = ref("")
+    const checked = ref(true)
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -435,10 +454,12 @@ export default {
           "/give?paymentFormID=4A276E37-A1E7-4077-A851-60B82180F4A0"
         )
         .then((res) => {
-          funds.value = res.data.contributionItems;
+          // funds.value = res.data.contributionItems;
           // console.log(funds.value, "kjjjhjjjje");
           // console.log(res.data);
-          console.log(res);
+          formResponse.value = res.data
+          selectedContributionType.value = formResponse.value.currencyId
+          console.log(formResponse.value);
         })
         .catch((err) => console.log(err.response));
     };
@@ -450,13 +471,54 @@ export default {
         .get("/api/LookUp/GetAllCurrencies")
         .then((res) => {
           currencyInput.value = res.data;
-          console.log(currencyInput.value, "i am awesome");
-          console.log(res.data, "catch me if you can");
           console.log(res);
+          for (let i = 0; 1 < res.data.length; i++) {
+            if(formResponse.value.currencyId === res.data[i].id) {
+              console.log(res.data[i], 'foundddd')
+              selectedContributionType.value = res.data[i]
+            } else {
+              console.log('not found')
+            }
+            
+          }
         })
         .catch((err) => console.log(err.response, "You know me! yes gang"));
     };
     tcurrency();
+
+    const donation = () => {
+          let donation = {
+            payformFormId: formResponse.value.id,
+            churchLogoUrl: formResponse.value.churchLogo,
+            churchName: formResponse.value.churchName,
+            tenantID: formResponse.value.tenantID,
+            merchantID: formResponse.value.merchantId,
+            name: name.value,
+            email: 'oladapodaniel10@gmail.com',
+            phone: phone.value,
+            orderID: formResponse.value.orderId,
+            currencyID: formResponse.value.currencyId,
+            paymentGateway: formResponse.value.paymentGateWays,
+            donationContribution: formResponse.value.contributionItems.map(i => {
+              return {
+                contributionItemId: i.financialContributionID,
+                contributionItemName: i.financialContribution.name,
+                amount: amount.value,
+                contributionCurrencyId: formResponse.value.currencyId
+              }
+            })
+          }
+          console.log(donation)
+          
+          try {
+            let  res  = axios.post('/api/PaymentForm/donation', donation)
+            console.log(res)
+          }
+          catch (error) {
+            console.log(error)
+          }
+          console.log(formResponse.value)
+    }
 
     return {
       hideTabOne,
@@ -474,7 +536,11 @@ export default {
       dfaultCurrency,
       currencyInput,
       amount,
-      name
+      name,
+      donation,
+      formResponse,
+      phone,
+      checked
     };
   },
 };
@@ -675,6 +741,6 @@ export default {
 } */
 
 .bg-modal {
-  background: rgba(230, 230, 230, 0.205)
+  background: rgba(226, 226, 226, 0.514)
 }
 </style>

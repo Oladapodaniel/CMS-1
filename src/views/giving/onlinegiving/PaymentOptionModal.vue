@@ -154,42 +154,42 @@
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
-    <div class="row row-button mx-3" @click="payWithPaystack">
-      <div class="col-4 col-sm-3 offset-1">
+    <div class="row row-button" @click="payWithPaystack">
+      <div class="col-4 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/4PaystackLogo.png" alt=""/>
       </div>
-      <div class="col-7 col-sm-4 option-text">Paystack</div>
+      <!-- <div class="col-7 col-sm-4 option-text">Paystack</div> -->
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-1 mt-n1 d-none d-sm-block">
          <i
           class="fas fa-circle circle"
         ></i>
       </div>
       <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
-      </div>
+      </div> -->
     </div>
 
-    <div class="row row-button mx-3">
-      <div class="col-4 col-sm-3 offset-1">
+    <div class="row row-button">
+      <div class="col-4 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/flutterwave_logo_color@2x.png" alt=""/>
       </div>
-      <div class="col-7 col-sm-4 option-text">Flutterwave</div>
-      <div class="row">
+      <!-- <div class="col-7 col-sm-4 option-text">Flutterwave</div> -->
+      <!-- <div class="row">
         <div class="col-1 mt-n1 d-none d-sm-block">
          <i
           class="fas fa-circle circle"
         ></i>
       </div>
       <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
-      </div>
+      </div> -->
     </div>
 
-    <div class="row row-button mx-3">
-      <div class="col-4 col-sm-3 offset-1">
+    <div class="row row-button">
+      <div class="col-4 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/paypal-logo-2@2x.png" alt=""/>
       </div>
-      <div class="col-7 col-sm-4 option-text">Paypal</div>
+      <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
       <div class="row">
         <div class="col-1 mt-n1 d-none d-sm-block">
          <i
@@ -197,7 +197,7 @@
         ></i>
       </div>
       <div class="col-8 pl-0 d-none d-sm-block">International</div>
-      </div>
+      </div> -->
     </div>
   </div>
 
@@ -316,7 +316,7 @@ export default {
   border-radius: 25px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   background: white;
-  margin-top: 20px;
+  margin: 20px 100px 0 100px;
  transition: all 0.4s ease-in-out;
 }
 
