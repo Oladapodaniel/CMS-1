@@ -308,9 +308,10 @@
           </button>
         </div>
       </div>
+      <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
       <div class="charts" id="plot">
         <div v-if="tenantInfo.eventAttendanceChartData && attendanceDataExist">
-          <div class="adjust-view">
+          <div class="adjust-view col-6 col-sm-3 offset-sm-9">
             <div class="view-report">View Reports</div>
             <div class="weekly">
               <span
@@ -324,7 +325,7 @@
               >
             </div>
           </div>
-
+  
           <div v-if="attendanceBoolean">
             <ColumnChart
               domId="chart1"
@@ -1030,10 +1031,10 @@ tbody tr:nth-child(even) {
   z-index: 1;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 575px) {
   .adjust-view {
     position: absolute;
-    left: 5em;
+    left: 4.9em;
     top: 82.7em
   }
 }
@@ -1044,18 +1045,33 @@ tbody tr:nth-child(even) {
   }
 }
 
+@media (min-width: 509px) and (max-width: 515px) {
+  .adjust-view {
+    position: absolute;
+    left: 20em;
+    top: 60.7em;
+}
+}
+@media (min-width: 516px) and (max-width: 576px) {
+  .adjust-view {
+    position: absolute;
+    left: 20em;
+    top: 58.7em;
+}
+}
+
 .view-report {
   font: normal normal 800 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #2b6ecd;
-  text-align: right;
-  margin-right: 40px;
+  /* text-align: right;
+  margin-right: 40px; */
   cursor: pointer;
 }
 
 .weekly {
-  text-align: right;
-  margin-right: 40px;
+  /* text-align: right;
+  margin-right: 40px; */
   cursor: pointer;
 }
 

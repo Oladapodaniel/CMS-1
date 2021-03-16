@@ -6,7 +6,7 @@
       <div class="container">
         <nav class="navbar navbar-expand-lg nav-color2">
           <a class="navbar-brand" href="#">
-            <img v-bind:src="logo"  width="100px" alt="" />
+            <img v-bind:src="formResponse.churchLogo"  width="100px" alt="" />
           </a>
           <button
             class="navbar-toggler"
@@ -23,7 +23,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="text-white" v-bind:href="nameOfChurch">{{nameOfChurch}}</a
+                <a class="text-white" href="#">{{ formResponse.churchName }}</a
                 >
               </li>
             </ul>
@@ -59,14 +59,15 @@
                 <div class="col-md-3 d-sm-none"></div>
 
                 <div
-                  class="col-md-8 mx-auto form-area shadow p-3 mb-5 bg-white rounded MIDDLE"
+                  class="col-sm-10 col-md-8 mx-auto form-area shadow p-5 mb-5 bg-white rounded MIDDLE"
                 >
                   <div class="row">
                     <div class="col-md-12 mx-auto my-3 px-0 px-3">
                       <label class="hfont">Purpose</label>
+               
                       <Dropdown
                         v-model="selectedContributionType"
-                        :options="funds"
+                        :options="formResponse.contributionItems"
                         optionLabel="financialContribution.name"
                         placeholder="Select"
                         class="w-100 px-0"
@@ -82,20 +83,21 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-5 pr-2">
+                        <div class="col-6 col-sm-4 pr-2">
                           <Dropdown
                             v-model="dfaultCurrency"
                             :options="currencyInput"
                             optionLabel="shortCode"
-                            placeholder="Select"
+                            :placeholder="dfaultCurrency.shortCode"
                             class="w-100 px-0"
                           />
                         </div>
-                        <div class="col-md-7 pl-0">
+                        <div class="col-6 col-sm-8  pl-0">
                           <input
                             class="form-control col-md-12 text-left imp1 border"
                             type="text"
                             v-model="amount"
+                            placeholder="0.00"
                           />
                         </div>
                       </div>
@@ -115,7 +117,7 @@
                           <div class="row border rounded">
                             <div
                               class="col-md-6 fone p-3 text-center borderl default-color1"
-                              :class="{ 'default-color': !hideTabOne }"
+                              :class="{ 'default-color': hideTabOne }"
                               @click="toggleTabOne"
                             >
                               <span><i class="fas fa-donate"></i></span>&nbsp;
@@ -123,7 +125,7 @@
                             </div>
                             <div
                               class="col-md-6 p-3 fone text-center btn-default default-color1"
-                              :class="{ 'default-color': hideTabOne }"
+                              :class="{ 'default-color': !hideTabOne }"
                               @click="toggleTabTwo"
                             >
                               <span
@@ -141,34 +143,34 @@
                   <!-- start of dynamic Area 2-->
                   <div class="row">
                     <div class="col-md-12">
-                      <section class="col-md-12 mt-3 px-0" v-if="hideTabOne">
+                      <section class="col-md-12 mt-3 px-0" v-if="!hideTabOne">
                         <p class="col-10 hfont px-0 mb-1">Frequency:</p>
 
                         <div class="col-12 mt-1">
                           <div class="row border rounded">
                             <div
                               :class="{ 'default-color': oftenGive1 }"
-                              class="col-md-3 fone p-3 text-center default-color1 borderl"
+                              class="col-md-3 fone p-2 text-center default-color1 borderl"
                               @click="givingOften"
                             >
                               Every Week
                             </div>
                             <div
                               :class="{ 'default-color': oftenGive2 }"
-                              class="col-md-3 fone p-3 default-color1 text-center borderl"
+                              class="col-md-3 fone p-2 default-color1 text-center borderl"
                               @click="givingOften"
                             >
                               Every 2 Week
                             </div>
                             <div
                               :class="{ 'default-color': oftenGive3 }"
-                              class="col-md-3 fone p-3 default-color1 text-center borderl"
+                              class="col-md-3 fone p-2 default-color1 text-center borderl"
                               @click="givingOften"
                             >
                               Every month
                             </div>
                             <div
-                              class="col-md-3 p-3 fone text-center default-color1"
+                              class="col-md-3 p-2 fone text-center default-color1"
                               @click="givingOften"
                               :class="{ 'default-color': oftenGive4 }"
                             >
@@ -182,7 +184,7 @@
                   <!-- end of dynamic Area 2 -->
 
                   <!-- start of date area -->
-                  <section class="col-md-12 mt-3 px-0" v-if="hideTabOne">
+                  <section class="col-md-12 mt-3 px-0" v-if="!hideTabOne">
                     <div class="row">
                       <p class="col-6 py-0 ml-1 hfont">Starting</p>
                       <div class="col-md-6 d-flex flex-row mt-n2">
@@ -196,14 +198,26 @@
                   </section>
                   <!-- end of date area -->
 
+                  <div class="row mt-4">
+                    <div class="col-1">
+                      <Checkbox id="binary" v-model="checked" :binary="true" />
+                    </div>
+                    <div class="col-10">
+                      <label for="binary">As an anonymous</label>
+                    </div>
+                  </div>
+
                   <!-- start of user credentials area -->
-                  <div class="row d-flex">
+                  <transition name="fade">
+  
+        
+                  <div class="row d-flex" v-if="!checked">
                     <div class="col-md-6">
                       <div class="row">
-                        <div class="col-md-12 mx-auto my-3 px-0 px-3">
+                        <div class="col-md-12 mx-auto my-2 px-0 px-2">
                           <label class="hfont">Name</label>
                           <input
-                            class="form-control col-md-12 text-left border imp2"
+                            class="form-control col-md-12 text-left border"
                             type="text"
                             placeholder="Enter your name"
                             v-model="name"
@@ -214,17 +228,19 @@
 
                     <div class="col-md-6">
                       <div class="row">
-                        <div class="col-md-12 mx-auto my-3 px-0 px-3">
+                        <div class="col-md-12 mx-auto my-2 px-0 px-2">
                           <label class="hfont">Phone Number</label>
                           <input
-                            class="form-control col-md-12 text-left border imp2"
+                            class="form-control col-md-12 text-left border"
                             type="text"
-                            placeholder="080********"
+                            v-model="phone"
+
                           />
                         </div>
                       </div>
                     </div>
                   </div>
+                  </transition>
                   <!-- end of user credentials area -->
 
                   <!-- start of dynamic Area 3 -->
@@ -235,7 +251,7 @@
                         v-if="!hideTabOne || hideTabOne"
                       >
                         <!-- button section -->
-                        <div class="row my-3">
+                        <div class="row my-3" @click="donation">
                           <div class="col-md-12 text-center mt-4">
                             <button
                               data-toggle="modal"
@@ -251,44 +267,20 @@
                       <!-- <button type="button" class="btn btn-primary" >
             Launch demo modal
           </button> -->
-
-                      <!-- Modal -->
-                      <div
-                        class="modal fade"
-                        id="PaymentOptionModal"
-                        tabindex="-1"
-                        role="dialog"
-                        aria-labelledby="exampleModalCenterTitle"
-                        aria-hidden="true"
-                      >
-                        <div
-                          class="modal-dialog modal-dialog-centered"
-                          role="document"
-                        >
-                          <div class="modal-content">
-                            <div class="modal-header bg-modal">
-                              <h5
-                                class="modal-title"
-                                id="exampleModalLongTitle"
-                              >
-                                Payment methods
-                              </h5>
-                              <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                              >
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body p-0 bg-modal mb-5">
-                              <PaymentOptionModal
-                                :amount="amount"
-                                :name="name"
-                              />
-                            </div>
-                            <!-- <div class="modal-footer bg-modal">
+                    <!-- Modal -->
+                    <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header bg-modal">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body p-0 bg-modal pb-5">
+                            <PaymentOptionModal :amount="amount" :name="name"/>
+                          </div>
+                          <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Save changes</button>
                           </div> -->
@@ -344,7 +336,7 @@
                   </div>
                   <div class="col-md-3 d-sm-none d-md-block"></div>
                 </div>
-              </div>
+              </div> <div>{{ selectedContributionType }}</div>
               <!-- payment Methods area -->
               <!-- Footer area -->
               <div class="container mt-5">
@@ -390,21 +382,23 @@
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
-import PaymentOptionModal from "./PaymentOptionModal";
+import PaymentOptionModal from "./PaymentOptionModal"
+import Checkbox from 'primevue/checkbox';
 export default {
   components: {
-    PaymentOptionModal,
+    PaymentOptionModal, Checkbox
   },
   setup() {
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
-      hideTabOne.value = false;
-    };
-    const toggleTabTwo = () => {
       hideTabOne.value = true;
     };
+    const toggleTabTwo = () => {
+      hideTabOne.value = false;
+    };
 
+    const formResponse = ref({})
     const selectedContributionType = ref({});
     const funds = ref([]);
 
@@ -416,10 +410,10 @@ export default {
     const oftenGive2 = ref(false);
     const oftenGive3 = ref(false);
     const oftenGive4 = ref(false);
-    const amount = ref("");
-    const name = ref("");
-    const logo = ref("");
-    const nameOfChurch = ref("");
+    const amount = ref("")
+    const name = ref("")
+    const phone = ref("")
+    const checked = ref(true)
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -456,12 +450,12 @@ export default {
           "/give?paymentFormID=4A276E37-A1E7-4077-A851-60B82180F4A0"
         )
         .then((res) => {
-          funds.value = res.data.contributionItems;
-          logo.value = res.data.churchLogo;
-          nameOfChurch.value = res.data.churchName
+          // funds.value = res.data.contributionItems;
           // console.log(funds.value, "kjjjhjjjje");
           // console.log(res.data);
-          console.log(res);
+          formResponse.value = res.data
+          selectedContributionType.value = formResponse.value.currencyId
+          console.log(formResponse.value);
         })
         .catch((err) => console.log(err.response));
     };
@@ -473,13 +467,60 @@ export default {
         .get("/api/LookUp/GetAllCurrencies")
         .then((res) => {
           currencyInput.value = res.data;
-          console.log(currencyInput.value, "i am awesome");
-          console.log(res.data, "catch me if you can");
           console.log(res);
+          for (let i = 0; 1 < res.data.length; i++) {
+            if(formResponse.value.currencyId === res.data[i].id) {
+              console.log(res.data[i], 'foundddd')
+              dfaultCurrency.value = res.data[i]
+            } else {
+              console.log('not found')
+            }
+            
+          }
         })
         .catch((err) => console.log(err.response, "You know me! yes gang"));
     };
     tcurrency();
+
+    const donation = () => {
+          let donation = {
+            paymentFormId: formResponse.value.id,
+            churchLogoUrl: formResponse.value.churchLogo,
+            churchName: formResponse.value.churchName,
+            tenantID: formResponse.value.tenantID,
+            merchantID: formResponse.value.merchantId,
+            name: name.value,
+            email: 'oladapodaniel10@gmail.com',
+            phone: phone.value,
+            orderID: formResponse.value.orderId,
+            currencyID: formResponse.value.currencyId,
+            paymentGateway: formResponse.value.paymentGateWays,
+            contributionItems: [
+                        {
+                          contributionItemId: selectedContributionType.value.financialContributionID,
+                          contributionItemName: selectedContributionType.value.financialContribution.name,
+                          amount: amount.value,
+                          contributionCurrencyId: formResponse.value.currencyId
+                        }
+            ]
+       
+          }
+          if (name.value !== "" || phone.value !== "") {
+            donation.isAnonymous = false
+          } else {
+            donation.isAnonymous = true
+          }
+          console.log(donation)
+          
+          try {
+            let  res = axios.post('/donation', donation)
+            console.log(res)
+          }
+          catch (error) {
+            console.log(error)
+          }
+          console.log(formResponse.value)
+    }
 
     return {
       hideTabOne,
@@ -498,8 +539,10 @@ export default {
       currencyInput,
       amount,
       name,
-      logo,
-      nameOfChurch,
+      donation,
+      formResponse,
+      phone,
+      checked
     };
   },
 };
@@ -549,7 +592,7 @@ export default {
 }
 
 .fone {
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 300;
   color: #80878d;
 }
@@ -700,6 +743,17 @@ export default {
 } */
 
 .bg-modal {
-  background: rgba(230, 230, 230, 0.205);
+  background: rgba(226, 226, 226, 0.514)
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 </style>

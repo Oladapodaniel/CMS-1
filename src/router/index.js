@@ -509,16 +509,22 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
     },
     {
-        path: 'payments',
+        path: 'payments/:editPayment?',
         name: 'PaymentTransaction',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentTransaction')
     },
     {
-        path: 'paymentoptions',
+        path: 'paymentoptions/:paymentId',
         name: 'PaymentOption',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentOption')
+    },
+    {
+        path: 'payment',
+        name: 'Payment',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/Payment')
     }
     ],
 },
@@ -573,6 +579,18 @@ const routes = [{
     component: () =>
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/PaymentGivingForm2')
 },
+{
+    path: '/signuppayment',
+    name: 'SignUpPayment',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignUpPayment')
+},
+{
+    path: '/signinpayment',
+    name: 'SignInPayment',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignInPayment')
+}
 ]
 
 
