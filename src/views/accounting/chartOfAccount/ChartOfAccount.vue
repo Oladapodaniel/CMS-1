@@ -31,35 +31,35 @@
               :class="{ active: tab == 'assets' }"
               @click="selectTab('assets')"
             >
-              Assets <span class="count">7</span>
+              Assets <span class="count">{{ totalAssets }}</span>
             </div>
             <div
               class="col-sm-6 col-md-5 col-lg-4 col-xl-3 p-2 pointer"
               :class="{ active: tab == 'liabilities' }"
               @click="selectTab('liabilities')"
             >
-              Liabilities & Credit Cards <span class="count">2</span>
+              Liabilities & Credit Cards <span class="count">{{ totalLiabilities }}</span>
             </div>
             <div
               class="col-sm-3 col-md-2 p-2 pointer"
               :class="{ active: tab == 'income' }"
               @click="selectTab('income')"
             >
-              Income <span class="count">6</span>
+              Income <span class="count">{{ totalIncome }}</span>
             </div>
             <div
               class="col-sm-6 col-md-2 p-2 pointer"
               :class="{ active: tab == 'expenses' }"
               @click="selectTab('expenses')"
             >
-              Expenses <span class="count">3</span>
+              Expenses <span class="count">{{ totalExpenses }}</span>
             </div>
             <div
               class="col-sm-6 col-md-2 p-2 pointer"
               :class="{ active: tab == 'equity' }"
               @click="selectTab('equity')"
             >
-              Fund [Equity] <span class="count">5</span>
+              Fund [Equity] <span class="count">{{ totalEquity }}</span>
             </div>
           </div>
           <div class="row" v-if="chartOfAccounts && chartOfAccounts.length > 0">
@@ -149,7 +149,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import Assets from "@/views/accounting/chartOfAccount/Assets";
 import Liabilities from "@/views/accounting/chartOfAccount/Liabilities";
 import Income from "@/views/accounting/chartOfAccount/Income";
@@ -236,6 +236,51 @@ export default {
         }
     }
 
+    const totalAssets = computed(() => {
+        if (!chartOfAccounts.value || chartOfAccounts.value.length === 0) return 0;
+        let sum = 0;
+        for (let item of chartOfAccounts.value[0].accountHeadsDTO) {
+            sum += item.accounts.length;
+        }
+        return sum;
+    })
+
+    const totalLiabilities = computed(() => {
+        if (!chartOfAccounts.value || chartOfAccounts.value.length === 0) return 0;
+        let sum = 0;
+        for (let item of chartOfAccounts.value[1].accountHeadsDTO) {
+            sum += item.accounts.length;
+        }
+        return sum;
+    })
+
+    const totalIncome = computed(() => {
+        if (!chartOfAccounts.value || chartOfAccounts.value.length === 0) return 0;
+        let sum = 0;
+        for (let item of chartOfAccounts.value[3].accountHeadsDTO) {
+            sum += item.accounts.length;
+        }
+        return sum;
+    })
+
+    const totalExpenses = computed(() => {
+        if (!chartOfAccounts.value || chartOfAccounts.value.length === 0) return 0;
+        let sum = 0;
+        for (let item of chartOfAccounts.value[4].accountHeadsDTO) {
+            sum += item.accounts.length;
+        }
+        return sum;
+    })
+
+    const totalEquity = computed(() => {
+        if (!chartOfAccounts.value || chartOfAccounts.value.length === 0) return 0;
+        let sum = 0;
+        for (let item of chartOfAccounts.value[2].accountHeadsDTO) {
+            sum += item.accounts.length;
+        }
+        return sum;
+    })
+
     return {
       tab,
       assets,
@@ -252,6 +297,11 @@ export default {
       gettingCharts,
       getCharts,
       refreshCharts,
+      totalAssets,
+      totalLiabilities,
+      totalIncome,
+      totalExpenses,
+      totalEquity,
     //   accountCategories,
     };
   },
