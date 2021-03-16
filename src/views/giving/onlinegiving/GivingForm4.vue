@@ -6,7 +6,7 @@
       <div class="container">
         <nav class="navbar navbar-expand-lg nav-color2">
           <a class="navbar-brand" href="#">
-            <img v-bind:src="formResponse.churchLogo"  width="100px" alt="" />
+            <img v-bind:src="formResponse.churchLogo" width="100px" alt="" />
           </a>
           <button
             class="navbar-toggler"
@@ -23,8 +23,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="text-white" href="#">{{ formResponse.churchName }}</a
-                >
+                <a class="text-white" href="#">{{ formResponse.churchName }}</a>
               </li>
             </ul>
             <div class="form-inline my-2 my-lg-0">
@@ -92,7 +91,7 @@
                             class="w-100 px-0"
                           />
                         </div>
-                        <div class="col-6 col-sm-8  pl-0">
+                        <div class="col-6 col-sm-8 pl-0">
                           <input
                             class="form-control col-md-12 text-left imp1 border"
                             type="text"
@@ -209,37 +208,34 @@
 
                   <!-- start of user credentials area -->
                   <transition name="fade">
+                    <div class="row d-flex" v-if="!checked">
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-12 mx-auto my-2 px-0 px-2">
+                            <label class="hfont">Name</label>
+                            <input
+                              class="form-control col-md-12 text-left border"
+                              type="text"
+                              placeholder="Enter your name"
+                              v-model="name"
+                            />
+                          </div>
+                        </div>
+                      </div>
 
-
-                  <div class="row d-flex" v-if="!checked">
-                    <div class="col-md-6">
-                      <div class="row">
-                        <div class="col-md-12 mx-auto my-2 px-0 px-2">
-                          <label class="hfont">Name</label>
-                          <input
-                            class="form-control col-md-12 text-left border"
-                            type="text"
-                            placeholder="Enter your name"
-                            v-model="name"
-                          />
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-12 mx-auto my-2 px-0 px-2">
+                            <label class="hfont">Phone Number</label>
+                            <input
+                              class="form-control col-md-12 text-left border"
+                              type="text"
+                              v-model="phone"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
-
-                    <div class="col-md-6">
-                      <div class="row">
-                        <div class="col-md-12 mx-auto my-2 px-0 px-2">
-                          <label class="hfont">Phone Number</label>
-                          <input
-                            class="form-control col-md-12 text-left border"
-                            type="text"
-                            v-model="phone"
-
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   </transition>
                   <!-- end of user credentials area -->
 
@@ -267,20 +263,46 @@
                       <!-- <button type="button" class="btn btn-primary" >
             Launch demo modal
           </button> -->
-                    <!-- Modal -->
-                    <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header bg-modal">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true" ref="close">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :amount="amount" :name="name" :close="close"/>
-                          </div>
-                          <!-- <div class="modal-footer bg-modal">
+                      <!-- Modal -->
+                      <div
+                        class="modal fade"
+                        id="PaymentOptionModal"
+                        tabindex="-1"
+                        role="dialog"
+                        aria-labelledby="exampleModalCenterTitle"
+                        aria-hidden="true"
+                      >
+                        <div
+                          class="modal-dialog modal-dialog-centered"
+                          role="document"
+                        >
+                          <div class="modal-content">
+                            <div class="modal-header bg-modal">
+                              <h5
+                                class="modal-title"
+                                id="exampleModalLongTitle"
+                              >
+                                Payment methods
+                              </h5>
+                              <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                              >
+                                <span aria-hidden="true" ref="close"
+                                  >&times;</span
+                                >
+                              </button>
+                            </div>
+                            <div class="modal-body p-0 bg-modal pb-5">
+                              <PaymentOptionModal
+                                :amount="amount"
+                                :name="name"
+                                :close="close"
+                              />
+                            </div>
+                            <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Save changes</button>
                           </div> -->
@@ -336,7 +358,8 @@
                   </div>
                   <div class="col-md-3 d-sm-none d-md-block"></div>
                 </div>
-              </div> <div>{{ selectedContributionType }}</div>
+              </div>
+              <!-- <div>{{ selectedContributionType }}</div> -->
               <!-- payment Methods area -->
               <!-- Footer area -->
               <div class="container mt-5">
@@ -382,11 +405,12 @@
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
-import PaymentOptionModal from "./PaymentOptionModal"
-import Checkbox from 'primevue/checkbox';
+import PaymentOptionModal from "./PaymentOptionModal";
+import Checkbox from "primevue/checkbox";
 export default {
   components: {
-    PaymentOptionModal, Checkbox
+    PaymentOptionModal,
+    Checkbox,
   },
   setup() {
     const hideTabOne = ref(true);
@@ -398,7 +422,7 @@ export default {
       hideTabOne.value = false;
     };
 
-    const formResponse = ref({})
+    const formResponse = ref({});
     const selectedContributionType = ref({});
     const funds = ref([]);
 
@@ -410,11 +434,11 @@ export default {
     const oftenGive2 = ref(false);
     const oftenGive3 = ref(false);
     const oftenGive4 = ref(false);
-    const amount = ref("")
-    const name = ref("")
-    const phone = ref("")
-    const checked = ref(true)
-    const close = ref("")
+    const amount = ref("");
+    const name = ref("");
+    const phone = ref("");
+    const checked = ref(true);
+    const close = ref("");
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -454,8 +478,8 @@ export default {
           // funds.value = res.data.contributionItems;
           // console.log(funds.value, "kjjjhjjjje");
           // console.log(res.data);
-          formResponse.value = res.data
-          selectedContributionType.value = formResponse.value.currencyId
+          formResponse.value = res.data;
+          selectedContributionType.value = formResponse.value.currencyId;
           console.log(formResponse.value);
         })
         .catch((err) => console.log(err.response));
@@ -470,13 +494,12 @@ export default {
           currencyInput.value = res.data;
           console.log(res);
           for (let i = 0; 1 < res.data.length; i++) {
-            if(formResponse.value.currencyId === res.data[i].id) {
-              console.log(res.data[i], 'foundddd')
-              dfaultCurrency.value = res.data[i]
+            if (formResponse.value.currencyId === res.data[i].id) {
+              console.log(res.data[i], "foundddd");
+              dfaultCurrency.value = res.data[i];
             } else {
-              console.log('not found')
+              console.log("not found");
             }
-
           }
         })
         .catch((err) => console.log(err.response, "You know me! yes gang"));
@@ -484,44 +507,44 @@ export default {
     tcurrency();
 
     const donation = () => {
-          let donation = {
-            paymentFormId: formResponse.value.id,
-            churchLogoUrl: formResponse.value.churchLogo,
-            churchName: formResponse.value.churchName,
-            tenantID: formResponse.value.tenantID,
-            merchantID: formResponse.value.merchantId,
-            name: name.value,
-            email: 'oladapodaniel10@gmail.com',
-            phone: phone.value,
-            orderID: formResponse.value.orderId,
-            currencyID: formResponse.value.currencyId,
-            paymentGateway: formResponse.value.paymentGateWays,
-            contributionItems: [
-                        {
-                          contributionItemId: selectedContributionType.value.financialContributionID,
-                          contributionItemName: selectedContributionType.value.financialContribution.name,
-                          amount: amount.value,
-                          contributionCurrencyId: formResponse.value.currencyId
-                        }
-            ]
+      let donation = {
+        paymentFormId: formResponse.value.id,
+        churchLogoUrl: formResponse.value.churchLogo,
+        churchName: formResponse.value.churchName,
+        tenantID: formResponse.value.tenantID,
+        merchantID: formResponse.value.merchantId,
+        name: name.value,
+        email: "oladapodaniel10@gmail.com",
+        phone: phone.value,
+        orderID: formResponse.value.orderId,
+        currencyID: formResponse.value.currencyId,
+        paymentGateway: formResponse.value.paymentGateWays,
+        contributionItems: [
+          {
+            contributionItemId:
+              selectedContributionType.value.financialContributionID,
+            contributionItemName:
+              selectedContributionType.value.financialContribution.name,
+            amount: amount.value,
+            contributionCurrencyId: formResponse.value.currencyId,
+          },
+        ],
+      };
+      if (name.value !== "" || phone.value !== "") {
+        donation.isAnonymous = false;
+      } else {
+        donation.isAnonymous = true;
+      }
+      console.log(donation);
 
-          }
-          if (name.value !== "" || phone.value !== "") {
-            donation.isAnonymous = false
-          } else {
-            donation.isAnonymous = true
-          }
-          console.log(donation)
-
-          try {
-            let  res = axios.post('/donation', donation)
-            console.log(res)
-          }
-          catch (error) {
-            console.log(error)
-          }
-          console.log(formResponse.value)
-    }
+      try {
+        let res = axios.post("/donation", donation);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+      console.log(formResponse.value);
+    };
 
     return {
       hideTabOne,
@@ -745,7 +768,7 @@ export default {
 } */
 
 .bg-modal {
-  background: rgba(226, 226, 226, 0.514)
+  background: rgba(226, 226, 226, 0.514);
 }
 
 .fade-enter-active,
