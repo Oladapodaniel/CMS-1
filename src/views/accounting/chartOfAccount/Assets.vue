@@ -1,428 +1,95 @@
 <template>
-  <div class="row">
-    <div class="col-12 py-2 mt-4 account-head">
-      Cash in Hand <small class="font-weight-normal">current assets</small><i
-        class="fa fa-question-circle-o help"
-        aria-hidden="true"
-      ></i>
-    </div>
-  </div>
-  <div
-    class="row row-border align-items-center py-2"
-    v-for="(asset, index) in assets"
-    :key="index"
-  >
-    <div class="col-6 col-md-2">{{ asset.code }}</div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">{{ asset.name }}</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">Test Account</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row row-border align-items-center">
-    <div class="col-6 col-md-2"></div>
-    <div class="col-6 col-md-3">
-      <div>Cash on Hand</div>
-      <div>Last Trasaction on Jan 21st, 2021</div>
-    </div>
-    <div class="col-6 col-md-5">
-      Cash you haven't deposited in the bank. Add your bank and credit card
-      accounts to accurately categorixe transactions that aren't cash
-    </div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+  <div class="row" v-for="(item, index) in data.accountHeadsDTO" :key="index">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-12 py-2 mt-4 account-head">
+          {{ item.name }} <small class="font-weight-normal">{{ item.groupSubHead }}</small
+          ><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 mt-4 account-head">
-      Cash in Bank <small class="font-weight-normal">current assets</small><i
-        class="fa fa-question-circle-o help"
-        aria-hidden="true"
-      ></i>
-    </div>
-  </div>
-  <div
-    class="row row-border align-items-center py-2"
-    v-for="(asset, index) in assets"
-    :key="index"
-  >
-    <div class="col-6 col-md-2">{{ asset.code }}</div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">{{ asset.name }}</div>
-    </div>
-    <div class="col-6 col-md-5">Test Account</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2"></div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">You haven't added any bank</div>
-    </div>
-    <div class="col-6 col-md-5"></div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+      <div
+        class="row row-border align-items-center py-2"
+        v-for="(itm, indx) in item.accounts"
+        :key="indx"
+      >
+        <div class="col-6 col-md-2">{{ itm.code }}</div>
+        <div class="col-6 col-md-3">
+          <div class="desc-head">{{ itm.name }}</div>
+        </div>
+        <div class="col-6 col-md-5">{{ itm.description }}</div>
+        <div class="col-6 col-md-2 text-right">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Account Receivable <small class="font-weight-normal">current assets</small><i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
+      <div class="row row-border align-items-center py-3" v-if="item.accounts.length === 0">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+          You have not added any inventory yet.
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2"></div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Account Receivable</div>
-      <div class="desc">Last Trasaction on Jan 21st, 2021</div>
-    </div>
-    <div class="col-6 col-md-5"></div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="primary-text text-decoration-none c-pointer" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Inventory <small class="font-weight-normal">current assets</small><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
-      </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You have not added any inventory yet.
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2"></div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Account Receivable</div>
-      <div class="desc">Last Trasaction on Jan 21st, 2021</div>
-    </div>
-    <div class="col-6 col-md-5"></div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
-      </div>
-    </div>
-  </div>
-
-  
-
-  
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Prepaid Expenses <small class="font-weight-normal">current assets</small><i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
-      </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You haven't added any Vendor Prepayments and Vendor Credits accounts yet.
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2">12345</div>
-    <div class="col-6 col-sm-3">
-      <div class="desc-head">Depreciation</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">Asset Description</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
-      </div>
-    </div>
-  </div>
-  
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Short Term Investment <small class="font-weight-normal">current assets</small><i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
-      </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You haven't added any Vendor Prepayments and Vendor Credits accounts yet.
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2">12345</div>
-    <div class="col-6 col-sm-3">
-      <div class="desc-head">Depreciation</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">Asset Description</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-         Accumulated Depreciation <small class="font-weight-normal">current assets</small><i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
-      </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2">12345</div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Depreciation</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">Asset Description</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2">12345</div>
-    <div class="col-6 col-sm-3">
-      <div class="desc-head">Depreciation</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">Asset Description</div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Other Current Assets <small class="font-weight-normal">current assets</small><i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
-      </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You haven't added any Vendor Payments and Vendor Credits accounts yet.
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2"></div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Taxes Recoverable/Refundable</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">
-      A tax is recoverable if ypu can deduct the tax you've paidfrom the tax
-      you've collected. Many sales taxes are considered recoverable
-    </div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Land and Buildings <small class="font-weight-normal">fixed assets</small><i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
-      </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You have not added any inventory yet.
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2 pl-0"></div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Account Receivable</div>
-      <div class="desc">Last Trasaction on Jan 21st, 2021</div>
-    </div>
-    <div class="col-6 col-md-5"></div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Furniture and Equipment <small class="font-weight-normal">fixed assets</small><i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
-      </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You have not added any inventory yet.
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Vehicles <small class="font-weight-normal">fixed assets</small><i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
-      </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You have not added any inventory yet.
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <div>
-        Other Fixed Assets <small class="font-weight-normal">fixed assets</small><i
-          class="fa fa-question-circle-o help"
-          aria-hidden="true"
-        ></i>
-      </div>
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You haven't added any Vendor Payments and Vendor Credits accounts yet.
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2"></div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Taxes Recoverable/Refundable</div>
-      <div class="desc">No transaction for this account</div>
-    </div>
-    <div class="col-6 col-md-5">
-      A tax is recoverable if ypu can deduct the tax you've paidfrom the tax
-      you've collected. Many sales taxes are considered recoverable
-    </div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-2">
-        <a class="c-pointer text-decoration-none primary-text" data-toggle="modal" data-target="#assetsModal"><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a>
+      <!-- <div class="row row-border align-items-center">
+        <div class="col-6 col-md-2"></div>
+        <div class="col-6 col-md-3">
+          <div>Cash on Hand</div>
+          <div>Last Trasaction on Jan 21st, 2021</div>
+        </div>
+        <div class="col-6 col-md-5">
+          {{ item.description }}
+        </div>
+        <div class="col-6 col-md-2 text-right">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+          <div class="add-account py-2">
+            <a
+              @click="setGroupId(item.name)"
+              class="c-pointer text-decoration-none primary-text"
+              data-toggle="modal"
+              data-target="#assetsModal"
+              ><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new
+              Account</a
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- BT MODAL -->
-  <div class="modal fade" id="assetsModal" tabindex="-1" role="dialog" aria-labelledby="assetsModalLabel" aria-hidden="true">
+  <div
+    class="modal fade"
+    id="assetsModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="assetsModalLabel"
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Add an account</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
+            Add an account
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true" ref="closeModalBtn">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <CreateAccountModal @save-account="closeAccountModal" :transactionalAccounts="transactionalAccounts" :accountTypes="accountTypes" :currencies="currencyList" :financialAccountType="0" />
+          <CreateAccountModal
+            @save-account="closeAccountModal"
+            :transactionalAccounts="transactionalAccounts"
+            :accountTypes="accountTypes"
+            :currencies="currencyList"
+            :financialAccountType="0"
+            :index="0"
+            :accountGroupId="accountGroupId"
+          />
         </div>
       </div>
     </div>
@@ -437,13 +104,14 @@
 <script>
 import { ref, computed, nextTick } from "vue";
 import axios from "@/gateway/backendapi";
-import transaction_service from '../../../services/financials/transaction_service';
+// import transaction_service from "../../../services/financials/transaction_service";
 import CreateAccountModal from "./components/CreateAccountForm";
+import transactionals from './utilities/transactionals';
 
 export default {
-  components: {CreateAccountModal },
-  props: ["assets"],
-  setup() {
+  components: { CreateAccountModal },
+  props: [ "assets", "data" ],
+  setup(props, { emit }) {
     const view = ref("view");
     const displayModal = ref(false);
     const showCode = ref(false);
@@ -479,6 +147,11 @@ export default {
         return accountType.value;
       }
     });
+
+    const accountGroupId = ref("");
+    const setGroupId = (groupId) => {
+      accountGroupId.value = groupId;
+    }
 
     const getCurrenciesFromCountries = () => {
       let url = "/api/getallcountries";
@@ -545,21 +218,15 @@ export default {
     };
 
     const transactionalAccounts = ref([]);
-    const accountTypes = ["assets", "liability", "income", "expense", "equity"];
+    const accountTypes = ["assets", "liability", "equity", "income", "expense"];
     const getTransactionalAccounts = async () => {
       try {
-        const response = await transaction_service.getTransactionalAccounts();
-        for (let group of accountTypes) {
-          const groupItems = response.filter(
-            (i) => i.accountType.toLowerCase() === group
-          );
-          transactionalAccounts.value.push(groupItems);
-        }
-        console.log(response, "account");
+        const response = await transactionals.getTransactionalAccounts();
+        transactionalAccounts.value = response;
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     getTransactionalAccounts();
 
     // const selectedAccountType = ref({ });
@@ -568,37 +235,45 @@ export default {
     // }
 
     const closeModalBtn = ref(null);
-    const closeAccountModal = () => {
+    const closeAccountModal = (data) => {
       closeModalBtn.value.click();
-    }
+      if (data.success) {
+        emit("reload");
+      }
+    };
 
-    const cities = ref([{
-                label: 'Germany', code: 'DE', 
-                items: [
-                    {label: 'Berlin', value: 'Berlin'},
-                    {label: 'Frankfurt', value: 'Frankfurt'},
-                    {label: 'Hamburg', value: 'Hamburg'},
-                    {label: 'Munich', value: 'Munich'}
-                ]
-            },
-            {
-                label: 'USA', code: 'US', 
-                items: [
-                    {label: 'Chicago', value: 'Chicago'},
-                    {label: 'Los Angeles', value: 'Los Angeles'},
-                    {label: 'New York', value: 'New York'},
-                    {label: 'San Francisco', value: 'San Francisco'}
-                ]
-            },
-            {
-                label: 'Japan', code: 'JP', 
-                items: [
-                    {label: 'Kyoto', value: 'Kyoto'},
-                    {label: 'Osaka', value: 'Osaka'},
-                    {label: 'Tokyo', value: 'Tokyo'},
-                    {label: 'Yokohama', value: 'Yokohama'}
-                ]
-            }])
+    const cities = ref([
+      {
+        label: "Germany",
+        code: "DE",
+        items: [
+          { label: "Berlin", value: "Berlin" },
+          { label: "Frankfurt", value: "Frankfurt" },
+          { label: "Hamburg", value: "Hamburg" },
+          { label: "Munich", value: "Munich" },
+        ],
+      },
+      {
+        label: "USA",
+        code: "US",
+        items: [
+          { label: "Chicago", value: "Chicago" },
+          { label: "Los Angeles", value: "Los Angeles" },
+          { label: "New York", value: "New York" },
+          { label: "San Francisco", value: "San Francisco" },
+        ],
+      },
+      {
+        label: "Japan",
+        code: "JP",
+        items: [
+          { label: "Kyoto", value: "Kyoto" },
+          { label: "Osaka", value: "Osaka" },
+          { label: "Tokyo", value: "Tokyo" },
+          { label: "Yokohama", value: "Yokohama" },
+        ],
+      },
+    ]);
 
     return {
       view,
@@ -627,6 +302,8 @@ export default {
       accountTypes,
       closeModalBtn,
       closeAccountModal,
+      setGroupId,
+      accountGroupId,
       // selectAccountType,
       // selectedAccountType
     };

@@ -16,6 +16,21 @@ const getTransactionalAccounts = () => {
             })
     })
 }
+const getAccountHeads = () => {
+    return new Promise((resolve, reject) => {
+        axios.get("/api/Financials/Accounts/GetAccountHeads")
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    reject(err.response);
+                } else {
+                    reject(err)
+                }
+            })
+    })
+}
 
 const saveAccount = (body) => {
     return new Promise((resolve, reject) => {
@@ -168,4 +183,4 @@ const saveIncome = (body) => {
 }
 
 
-export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome, getCurrencies };
+export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome, getCurrencies, getAccountHeads };

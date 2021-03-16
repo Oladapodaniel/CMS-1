@@ -1,80 +1,44 @@
 <template>
-  <div class="row">
-    <div class="col-12 py-2 mt-4 account-head">
-      Unrestricted Funds Balances<i
-        class="fa fa-question-circle-o help"
-        aria-hidden="true"
-      ></i>
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You haven't added any discount yet.
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2"></div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Owner Investment / Drawings</div>
-      <div class="desc">Last Transaction on January, 10 2021</div>
-    </div>
-    <div class="col-6 col-md-5">
-      Owner investment reprsssent the amount of money or assets you put intp
-      ypur business.
-    </div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-3">
-        <a
-          class="c-pointer text-decoration-none primary-text"
-          data-toggle="modal"
-          data-target="#fundModal"
-          ><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a
-        >
+  <div class="row" v-for="(item, index) in data.accountHeadsDTO" :key="index">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-12 py-2 mt-4 account-head">
+          {{ item.name }} <small class="font-weight-normal">{{ item.groupSubHead }}</small
+          ><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 py-2 account-head">
-      <span class="text-capitalize">Donor Restricted Funds Balances</span
-      ><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
-    </div>
-  </div>
-  <div v-if="false" class="row row-border align-items-center py-2">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      You haven't added any discount yet.
-    </div>
-  </div>
-  <div class="row row-border align-items-center py-2">
-    <div class="col-6 col-md-2"></div>
-    <div class="col-6 col-md-3">
-      <div class="desc-head">Owner's Equity</div>
-      <div class="desc">Last Transaction on January, 10 2021</div>
-    </div>
-    <div class="col-6 col-md-5">
-      Owner investment reprsssent the amount of money or assets you put intp
-      ypur business.
-    </div>
-    <div class="col-6 col-md-2 text-right">
-      <i class="fa fa-pencil" aria-hidden="true"></i>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-10 offset-md-2 text-center text-md-left">
-      <div class="add-account py-3">
-        <a
-          class="c-pointer text-decoration-none primary-text"
-          data-toggle="modal"
-          data-target="#fundModal"
-          ><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new Account</a
-        >
+      <div
+        class="row row-border align-items-center py-2"
+        v-for="(itm, indx) in item.accounts"
+        :key="indx"
+      >
+        <div class="col-6 col-md-2">{{ itm.code }}</div>
+        <div class="col-6 col-md-3">
+          <div class="desc-head">{{ itm.name }}</div>
+        </div>
+        <div class="col-6 col-md-5">{{ itm.description }}</div>
+        <div class="col-6 col-md-2 text-right">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="row row-border align-items-center py-3" v-if="item.accounts.length === 0">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+          You have not added any inventory yet.
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-10 offset-md-2 text-center text-md-left">
+          <div class="add-account py-2">
+            <a
+            @click="selectAccountType(item.id)"
+              class="c-pointer text-decoration-none primary-text"
+              data-toggle="modal"
+              data-target="#fundModal"
+              ><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new
+              Account</a
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -150,6 +114,7 @@
                   <button
                     @click="onSave"
                     class="default-btn primary-bg border-0 text-white"
+                    :disabled="!selectedFundType || !newFund.name"
                   >
                     Save
                   </button>
@@ -175,6 +140,7 @@ import transactionals from './utilities/transactionals';
 
 
 export default {
+    props: [ "data" ],
   components: { Dropdown },
 
   setup(props, { emit }) {
@@ -234,14 +200,20 @@ export default {
     
     const newFund = ref({});
     const onSave = () => {
-      if (!selectedFundType.value) {
+      if (!selectedFundType.value || !newFund.value.name) {
         return false;
       }
       newFund.value.fundType = fundTypes.indexOf(selectedFundType.value);
+      newFund.value.financialAccountGroupID = selectedGroupId.value;
       saveFund(newFund.value);
     };
 
     const accountTypes = transactionUtil.accountTypes;
+
+    const selectedGroupId = ref("");
+    const selectAccountType = (groupId) => {
+        selectedGroupId.value = groupId;
+    }
 
     return {
       accountTypes,
@@ -253,6 +225,7 @@ export default {
       selectedFundType,
       savingFund,
       closeModalBtn,
+      selectAccountType,
     };
   },
 };

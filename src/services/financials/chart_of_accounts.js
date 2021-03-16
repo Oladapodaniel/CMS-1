@@ -5,6 +5,7 @@ const getChartOfAccounts = () => {
     return new Promise((resolve, reject) => {
         axios.get("/api/Financials/GetChartOfAccounts")
         .then(res => {
+            console.log(res, "chats in service");
             resolve(res.data);
         })
         .catch(err => {
@@ -36,6 +37,21 @@ const getCashBankAccounts = () => {
 const getAssetsAccounts = () => {
     return new Promise((resolve, reject) => {
         axios.get("/api/Financials/Accounts/GetAssetAccounts")
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+const getAccountHeads = () => {
+    return new Promise((resolve, reject) => {
+        axios.get("/api/Financials/Accounts/GetAccountHeads")
         .then(res => {
             resolve(res.data);
         })
@@ -116,4 +132,4 @@ const saveFund = (body) => {
     })
 }
 
-export default { getChartOfAccounts, getCashBankAccounts, getAssetsAccounts, getFunds, saveAccount, saveFund, deleteAccount }
+export default { getChartOfAccounts, getCashBankAccounts, getAssetsAccounts, getFunds, saveAccount, saveFund, deleteAccount, getAccountHeads }

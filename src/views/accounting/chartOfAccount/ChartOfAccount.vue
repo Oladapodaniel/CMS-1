@@ -38,7 +38,7 @@
               :class="{ active: tab == 'liabilities' }"
               @click="selectTab('liabilities')"
             >
-              Liabilities and Credit Cards <span class="count">2</span>
+              Liabilities & Credit Cards <span class="count">2</span>
             </div>
             <div
               class="col-sm-3 col-md-2 p-2 pointer"
@@ -62,7 +62,7 @@
               Fund [Equity] <span class="count">5</span>
             </div>
           </div>
-          <div class="row">
+          <div class="row" v-if="chartOfAccounts && chartOfAccounts.length > 0">
             <div class="col-12">
               <div v-if="tab === 'assets'">
                 <Assets
@@ -71,30 +71,38 @@
                       ? chartOfAccounts.find((i) => i.key === 0).accounts
                       : ''
                   "
+                   :data="chartOfAccounts[0]"
+                   @reload="getCharts"
                 />
               </div>
               <div v-if="tab === 'liabilities'">
                 <div>
-                  <Liabilities />
+                  <Liabilities :data="chartOfAccounts[1]" @save-account="getCharts"  />
                 </div>
               </div>
               <div v-if="tab == 'income'">
                 <div>
-                  <Income />
+                  <Income :data="chartOfAccounts[3]" @save-account="getCharts"  />
                 </div>
               </div>
               <div v-if="tab === 'expenses'">
                 <div>
-                  <Expenses />
+                  <Expenses :data="chartOfAccounts[4]" @save-account="getCharts" />
                 </div>
               </div>
               <div v-if="tab === 'equity'">
                 <div>
-                  <Equity />
+                  <Equity :data="chartOfAccounts[2]" @save-fund="getCharts" />
                 </div>
               </div>
             </div>
           </div>
+
+          <div class="row my-5" v-if="gettingCharts">
+            <div class="col-md-12 text-center">
+                <i class="pi pi-spin pi-spinner" style="fontSize: 3rem"></i>
+            </div>
+        </div>
 
           <div
             class="modal fade"
@@ -114,6 +122,7 @@
                     Add an account
                   </h5>
                   <button
+                  ref="closeAccountModalBtn"
                     type="button"
                     class="close"
                     data-dismiss="modal"
@@ -127,6 +136,7 @@
                     :transactionalAccounts="accounts"
                     :accountTypes="accountTypes"
                     :currencies="currencyList"
+                    @save-account="closeAccountModal"
                   />
                 </div>
               </div>
@@ -148,6 +158,7 @@ import Equity from "@/views/accounting/chartOfAccount/Equity";
 import chartsOfAccountService from "../../../services/financials/chart_of_accounts";
 import CreateAccountModal from "./components/CreateAccountForm";
 import transactionUtil from "./utilities/transactionals";
+// import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 
 export default {
   components: { Assets, Liabilities, Income, Expenses, Equity, CreateAccountModal },
@@ -178,7 +189,7 @@ export default {
     const getAccounts = async () => {
         try {
             accounts.value = await transactionUtil.getTransactionalAccounts();
-            console.log(accounts.value);
+            console.log(accounts.value, "accounts ss");
         } catch (error) {
             console.log(error);
         }
@@ -198,15 +209,38 @@ export default {
     const chartOfAccounts = ref([]);
     const accountTypes = transactionUtil.accountTypes;
 
+    const gettingCharts = ref(false);
     const getCharts = async () => {
       try {
-        const response = await chartsOfAccountService.getAssetsAccounts();
+          gettingCharts.value = true;
+        const response = await chartsOfAccountService.getChartOfAccounts();
+        gettingCharts.value = false;
+        chartOfAccounts.value = response;
         console.log(response, "CHARTS");
       } catch (error) {
+          gettingCharts.value = false;
         console.log(error);
       }
     };
     getCharts();
+
+    const closeAccountModalBtn = ref(null)
+    const closeAccountModal = (data) => {
+        console.log(data, "emiited data");
+        closeAccountModalBtn.value.click();
+    }
+
+    // const accountCategories = ref([ ])
+    // const getAccountHeads = async () => {
+    //     try {
+    //         const response = await chart_of_accounts.getAccountHeads();
+    //         console.log(response, "account heads");
+    //         accountCategories.value = response;
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+    // getAccountHeads();
 
     return {
       tab,
@@ -219,6 +253,11 @@ export default {
       accounts,
       accountTypes,
       selectTab,
+      closeAccountModal,
+      closeAccountModalBtn,
+      gettingCharts,
+      getCharts,
+    //   accountCategories,
     };
   },
 };

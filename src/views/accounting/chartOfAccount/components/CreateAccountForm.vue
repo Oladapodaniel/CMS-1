@@ -20,11 +20,12 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
+                        :disabled="accountGroupId"
                       >
                         {{
-                          !selectedAccountType || !selectedAccountType.account
+                          !selectedAccountType || !selectedAccountType.name
                             ? "Select account type"
-                            : selectedAccountType.account
+                            : selectedAccountType.name
                         }}
                       </button>
                       <div
@@ -53,7 +54,7 @@
                                 v-for="(account, indx) in accounts"
                                 :key="indx"
                                 @click="selectAccountType(account)"
-                                >{{ account.text }}</a
+                                >{{ account.name }}</a
                               >
                             </div>
                           </div>
@@ -173,7 +174,7 @@
 
 <script>
 import Dropdown from "primevue/dropdown";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import transactionals from "../utilities/transactionals";
 import chart_of_accounts from "../../../../services/financials/chart_of_accounts";
 import { useToast } from "primevue/usetoast";
@@ -185,6 +186,8 @@ export default {
     "currencies",
     "showFundsField",
     "financialAccountType",
+    "accountGroupId",
+    "index",
   ],
   components: { Dropdown },
   setup(props, { emit }) {
@@ -196,10 +199,9 @@ export default {
     const newAccount = ref({});
 
     const selectAccountType = (account) => {
-      console.log(account, "account");
       selectedAccountType.value = account;
+      console.log(selectedAccountType.value, "selected");
     };
-    console.log(props.currencies, "testing");
 
     const filteredCurrencies = computed(() => {
       if (!props.currencies) return [];
@@ -229,9 +231,10 @@ export default {
             emit("save-account", { success: false, type: props.financialAccountType });
             toast.add({severity:'error', summary:'Account Creation Failed', detail:`An error occurred, please try again`, life: 3000});
         } else {
-          emit("save-account", { success: false, type: props.financialAccountType });
             toast.add({severity:'success', summary:'Account Created', detail:`The account ${newAccount.value.name} was created successfully`, life: 2500});
             newAccount.value = { };
+            emit("save-account", { success: true, type: props.financialAccountType });
+            transactionals.getTransactionalAccounts(true);
         }
         console.log(response, "save account response");
       } catch (error) {
@@ -243,22 +246,16 @@ export default {
     const invalidAccountDetails = ref(false);
     const onSave = () => {
       invalidAccountDetails.value = false;
-
       if (
         !selectedAccountType.value ||
-        !selectedAccountType.value.accountType ||
+        !selectedAccountType.value.name ||
         !newAccount.value.name
       ) {
         invalidAccountDetails.value = true;
         return false;
       }
-        
-      newAccount.value.accountType = props.financialAccountType;
-      if (selectedAccountType.value && selectedAccountType.value.id) {
-        // newAccount.a
-        newAccount.value.code = selectedAccountType.value.code;
-        newAccount.value.category = selectedAccountType.value.accountType;
-      }
+    
+      newAccount.value.financialAccountGroupID = selectedAccountType.value.id;
 
       if (selectedFund.value && selectedFund.value.id) {
         newAccount.value.financialFundID = selectedFund.value.id;
@@ -266,6 +263,12 @@ export default {
       saveAccount(newAccount.value);
       console.log(newAccount.value, "new account");
     };
+
+    watch(() => {
+      if (props.accountGroupId) {
+        selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.accountGroupId)
+      }
+    })
 
     return {
       selectAccountType,

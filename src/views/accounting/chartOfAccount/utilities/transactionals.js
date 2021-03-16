@@ -3,22 +3,20 @@ import transaction_service from "../../../../services/financials/transaction_ser
 // import stopProgressBar from "../progressbar/progress";
 
 const transactionals = {
-    accountTypes: ["assets", "liability", "income", "expense", "equity"],
+    accountTypes: ["assets", "liability",  "equity", "income", "expense"],
     account: [],
     currencies: [],
     funds: [],
 
-    getTransactionalAccounts() {
+    getTransactionalAccounts(force) {
         return new Promise((resolve, reject) => {
-            if (!this.accounts || this.accounts.length === 0) {
-                transaction_service.getTransactionalAccounts()
+            if (!this.accounts || this.accounts.length === 0 || force) {
+                transaction_service.getAccountHeads()
                 .then(res => {
+                    console.log(res, "new heads");
                     const data = [];
-                    for (let group of this.accountTypes) {
-                        const groupItems = res.filter(
-                          (i) => i.accountType.toLowerCase() === group
-                        );
-                        data.push(groupItems);
+                    for (let group of res) {
+                        data.push(group.accountHeadsDTO);
                       }
                       this.accounts = data;
                     resolve(data)
