@@ -4,8 +4,52 @@
       <div class="row">
         <div class="col-md-12 px-0">
           <div class="parent-table">
-            <div class="table" style="height: fit-content">
-              <div class="top-con">
+            <div class="table" style="height: fit-content" :class="{ 'bordered': !showEditTransaction }">
+              <div class="container-fluid small-text py-2">
+                <div class="row">
+                  <div class="col-sm-5 py-2 py-md-0 d-flex align-items-center">
+                    <input
+                      type="checkbox"
+                      name="all"
+                      id="all"
+                      @click="toggleSelect"
+                    />
+                    <label class="ml-2 mb-0 c-pointer font-weight-700">SELECT ALL</label>
+                  </div>
+                  <div class="col-sm-2 py-2 py-md-0 d-flex align-items-center">
+                    <p
+                      @click="toggleFilterFormVissibility"
+                      class="mb-0 c-pointer font-weight-700"
+                    >
+                      <i class="fas fa-filter"></i>
+                      FILTER
+                    </p>
+                  </div>
+                  <div class="col-sm-5 py-2 py-md-0">
+                    <p class="search-tex d-md-flex align-items-center mb-0">
+                      <span class="mr-2 c-pointer font-weight-700" @click="toggleSearch"
+                        ><i class="fa fa-search mr-1"></i> <span v-if="!searchIsVisible">SEARCH</span></span
+                      >
+                      <label
+                        class="label-search d-flex"
+                        :class="{ 'show-search': searchIsVisible }"
+                      >
+                        <input
+                          type="text"
+                          placeholder="Search..."
+                          v-model="searchText"
+                        />
+                        <span class="empty-btn">x</span>
+                        <span class="search-btn">
+                          <i class="fa fa-search"></i>
+                        </span>
+                      </label>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="top-con">
                 <div class="table-top my-4 px-4">
                   <div class="select-all">
                     <input
@@ -39,6 +83,7 @@
                   </div>
                 </div>
               </div>
+               -->
               <div
                 class="filter-options"
                 :class="{ 'filter-options-shown': filterFormIsVissible }"
@@ -112,45 +157,89 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 parent-desc first p-2 pl-4">
-                <div><input type="checkbox" class="form-check" /></div>
-                <div>DATE</div>
-                <div>DESCRIPTION</div>
-                <div>AMOUNT</div>
-                <div>CATEGORY</div>
-                <div>MARK</div>
+              <div class="container-fluid d-none d-md-block">
+                <div class="row t-header">
+                  <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
+                    <div class="col-md-1 px-3"></div>
+                    <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
+                    <div class="small-text text-capitalize col-md-3 font-weight-bold">Description</div>
+                    <div class="small-text text-capitalize col-md-2 font-weight-bold">Amount</div>
+                    <div class="small-text text-capitalize col-md-2 font-weight-bold">Category</div>
+                    <div class="small-text text-capitalize col-md-2 font-weight-bold">Mark</div>
+                  <!-- </div> -->
+                </div>
               </div>
-              <div
-                class="col-12 parent-desc p-2 pl-4 c-pointer"
-                v-for="(item, index) in selectedTransactions"
-                :key="index"
-              >
-                <div>
-                  <input
-                    type="checkbox"
-                    v-model="item.check"
-                    class="form-check"
-                  />
+
+              <div class="row" style="margin:0">
+                <div
+                  class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
+                  v-for="(item, index) in selectedTransactions"
+                  :key="index"
+                  @click="rowSelected(item)"
+                >
+                  <div class="row w-100" style="margin:0">
+                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+                      <input
+                        type="checkbox"
+                        v-model="item.check"
+                        class="form-check"
+                      />
+                    </div>
+
+                    <div class="desc small-text col-md-2 px-1">
+                      <p class="mb-0 d-flex justify-content-between">
+                        <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
+                        <span>{{ formatDate(item.date) }}</span>
+                      </p>
+                    </div>
+
+                    <div class="col-md-3 px-1">
+                      <div class="d-flex justify-content-between">
+                        <span class="text-dark font-weight-bold d-flex d-md-none">Description</span>
+                      <div>
+                        <div class="desc-head small-text text-right text-md-left">
+                          Write a description
+                        </div>
+                        <div class="desc small-text text-right text-md-left">{{ item.narration }}</div>
+                      </div>
+                      </div>
+                    </div>
+
+                    <div class="desc-head small-text col-md-2 px-1">
+                      <p class="mb-0 d-flex justify-content-between">
+                        <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
+                        <span>{{ item.amount }}</span>
+                      </p>
+                    </div>
+
+                    <div class="choose-cat small-text col-md-2 px-1">
+                      <p class="mb-0 d-flex justify-content-between">
+                        <span class="text-dark font-weight-bold d-flex d-md-none">Category</span>
+                        <span><span class="primary-text c-pointer"
+                        >Choose a category</span
+                      ></span>
+                      </p>
+                    </div>
+
+                    <div class="small-text col-md-2 px-1">
+                      <p class="mb-0 d-flex justify-content-between">
+                        <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
+                        <span>Marked</span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div class="desc">{{ formatDate(item.date ) }}</div>
-                <div>
-                  <div class="desc-head">Write a description</div>
-                  <div class="desc">{{ item.narration }}</div>
-                </div>
-                <div class="desc-head">{{ item.amount }}</div>
-                <div class="choose-cat"><span class="primary-text c-pointer">Choose a category</span></div>
-                <div>Marked</div>
               </div>
             </div>
             <!-- :class="{ 'slide-form' : showEditTransaction, 'hide-form' : !showEditTransaction }" -->
-            <div class="table edit-transac" v-if="showEditTransaction">
+            <div class="table edit-transac mobile-form" v-if="showEditTransaction">
               <TransactionForm
                 @close-it="closeIt"
                 @transac-obj="transacObj"
                 :transactionDetails="transactionDetails"
                 :showEditTransaction="showEditTransaction"
               />
-                <!-- :transacProp="transacPropsValue" -->
+              <!-- :transacProp="transacPropsValue" -->
             </div>
           </div>
         </div>
@@ -159,20 +248,24 @@
   </div>
 </template>
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import axios from "@/gateway/backendapi";
 import TransactionForm from "../../views/accounting/transaction/EditTransaction";
-import transaction_service from '../../services/financials/transaction_service';
-import dateFormatter from '../../services/dates/dateformatter';
+import transaction_service from "../../services/financials/transaction_service";
+import dateFormatter from "../../services/dates/dateformatter";
 // import transactionService from "../../services/financials/transaction_service";
 
 export default {
-    props: [ "showEditTransaction", "transactionDetails", "selectedTransactionType" ],
+  props: [
+    "showEditTransaction",
+    "transactionDetails",
+    "selectedTransactionType",
+  ],
   components: {
     TransactionForm,
   },
   setup(props, { emit }) {
-    const transactions = ref([ ]);
+    const transactions = ref([]);
     const types = ["assets", "liability", "income", "expense", "equity"];
     const cashAndBank = ref([
       {
@@ -318,12 +411,10 @@ export default {
       }
     });
 
-    
-
     // const showEditTransaction = ref(false);
     const closeIt = (payload) => {
-        emit("toggle-edit-form", payload)
-    //   showEditTransaction.value = payload;
+      emit("toggle-edit-form", payload);
+      //   showEditTransaction.value = payload;
     };
 
     const transacObj = (payload) => {
@@ -339,18 +430,62 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     getTransactions();
 
+    const searchText = ref("");
+
     const selectedTransactions = computed(() => {
-        if (props.selectedTransactionType < 0) return allTransactions.value;
-        if (!allTransactions.value || allTransactions.value.length === 0) return [ ];
-        return allTransactions.value.filter(i => i.accountType.toLowerCase() === types[props.selectedTransactionType])
-    })
+      if (!allTransactions.value || allTransactions.value.length === 0)
+        return [];
+      const targeted = allTransactions.value.filter(
+        (i) =>
+          i.accountType.toLowerCase() ===
+          types[
+            props.selectedTransactionType > 0
+              ? props.selectedTransactionType
+              : 0
+          ]
+      );
+      if (!searchText.value) return targeted;
+      return targeted.filter((i) => {
+        return (
+          (i.narration &&
+            i.narration
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase())) ||
+          (i.amount && i.amount.toString().includes(searchText.value))
+        );
+      });
+    });
 
     const formatDate = (date) => {
-        return dateFormatter.monthDayYear(date);
-    }
+      return dateFormatter.monthDayYear(date);
+    };
+
+    const rowSelected = (item) => {
+      console.log(item, "selected row");
+      const data = {
+        amount: item.amount,
+        date: item.date,
+        memo: item.narration,
+      };
+      console.log("Hello");
+      emit("select-row", data);
+    };
+
+    watch(
+      () => props.transactionDetails,
+      (data) => {
+        console.log(data, "in watch");
+      }
+    );
+
+    // const filterText = ref("")
+    // const filteredTransactions = ref([]);
+    // // const filteredTransactions = computed(() => {
+    // //   if ()
+    // // })
 
     return {
       transactions,
@@ -380,11 +515,13 @@ export default {
       accountText,
       filterAccount,
       filterLiabilities,
-    //   showEditTransaction,
+      //   showEditTransaction,
       closeIt,
       transacObj,
       selectedTransactions,
       formatDate,
+      rowSelected,
+      searchText,
     };
   },
 };
@@ -530,11 +667,11 @@ html {
   }
 }
 
-.parent-desc {
+/* .parent-desc {
   display: grid;
   grid-template-columns: 0.5fr 2fr 3fr 1fr 2fr 1fr;
   align-items: center;
-}
+} */
 
 .desc-head {
   font-weight: 700;
@@ -551,6 +688,12 @@ html {
   font-weight: 600;
   box-shadow: 0px 3px 6px #2c28281c;
   background: #dde2e6 0% 0% no-repeat padding-box;
+}
+
+.t-header div {
+  background: #dde2e6 0% 0% no-repeat padding-box;
+  font-size: 16px;
+  padding: .5rem 0;
 }
 
 .manual-dd-item {
@@ -645,11 +788,19 @@ html {
 
 .table.edit-transac {
   background: #dde2e6bb;
-  margin-left: 15px;
+  /* margin-left: 15px; */
   width: 50%;
   height: fit-content;
   /* max-height: 518px;
         overflow-y: auto */
+}
+
+.table {
+  border-radius: 22px;
+}
+
+.mobile-form {
+  border-radius: 22px;
 }
 
 .slide-form {
@@ -693,6 +844,20 @@ html {
   .actions {
     display: flex;
     /* flex-direction: column */
+  }
+}
+
+@media (min-width: 1100px) {
+  .table {
+    border-radius: 22px 0 22px 22px;
+  }
+
+  .mobile-form {
+    border-radius: 0 22px 22px 0;
+  }
+
+  .bordered {
+    border-radius: 22px;
   }
 }
 

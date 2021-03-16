@@ -21,7 +21,7 @@
           </div>
           <div class="col-md-2" :class="{ 'order-1': isKioskMode }">
             <span class="d-flex justify-content-between">
-              <span class="hidden-header hide font-weight-700">Check-in</span>
+              <span class="hidden-header hide font-weight-700">Check in</span>
               <span>
                 <!-- <Checkbox
                   id="binary"
@@ -59,7 +59,7 @@
           </div>
           <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
             <span class="d-flex justify-content-between">
-              <span class="hidden-header hide font-weight-700">Check-out</span>
+              <span class="hidden-header hide font-weight-700">Check out</span>
               <span>
                 <!-- <Checkbox
                   id="binary"

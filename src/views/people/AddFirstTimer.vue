@@ -1333,13 +1333,13 @@ export default {
 .show-tab {
   transition: all 0.5s ease-in-out;
   height: 220px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .show-occ-tab {
   transition: all 0.5s ease-in-out;
   height: 100px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
  @media (max-width: 620px) {

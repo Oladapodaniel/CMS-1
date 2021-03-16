@@ -5,7 +5,7 @@
         <div class="col-sm-12">
         <div class="top mt-3 pl-0">
           <div class="events">
-            <div>Attendance & Checkin
+            <div>Attendance & Check-in
             </div>
           </div>
           <div class="actions">

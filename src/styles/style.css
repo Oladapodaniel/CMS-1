@@ -126,6 +126,10 @@
     color: #136ACD;
   }
 
+  .px-14 {
+    font-size: 14px;
+  }
+
   .cancel-delete {
     background: #ced4da !important;
     max-height: 40px;
@@ -905,7 +909,7 @@
   .show-tab {
     transition: all 0.5s ease-in-out;
     height: 108px;
-    overflow: hidden;
+    /* overflow: hidden; */
   }
   
   .show-addinfo-tab {

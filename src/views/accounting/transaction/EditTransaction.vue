@@ -12,6 +12,11 @@
       ></i>
     </div>
     <div class="container">
+      <div class="row mt-3" v-if="gettingIcomeAccounts || gettingExpenseAccounts">
+        <div class="col-md-12 text-center">
+          <i class="pi pi-spin pi-spinner" style="fontSize: 3rem"></i>
+        </div>
+      </div>
       <div class="row mt-4">
         <div class="col-12">
           <!-- <label for="description">Write a Description</label> -->
@@ -22,7 +27,7 @@
             class="form-control"
             id="description"
             ref="descrp"
-            v-model="transacObj.descHead"
+            v-model="transacObj.memo"
             placeholder="Description"
             :autofocus="showEditTransaction"
             
@@ -46,11 +51,17 @@
             @click="showAccount = !showAccount"
           >
             <span class="ofering close-modal">{{
-              !transacObj.accountFlow ? "Select" : transacObj.accountFlow
+              !selectedCashAccount || !selectedCashAccount.text ? "Select" : selectedCashAccount.text
             }}</span
             ><span>
               <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
             ></span>
+            <!-- <span class="ofering close-modal">{{
+              !transacObj.accountFlow ? "Select" : transacObj.accountFlow
+            }}</span
+            ><span>
+              <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
+            ></span> -->
           </div>
           <div
             class="ofering close-modal"
@@ -74,7 +85,7 @@
                   <div class="header-border close-modal">
                     <div v-if="true">
                       <div
-                        @click="accountFlow"
+                        @click="accountFlow($event, item)"
                         class="manual-dd-item close-modal"
                         v-for="(item, indx) in accounts"
                         :key="indx"
@@ -121,11 +132,17 @@
               @click="showUncategorized = !showUncategorized"
             >
               <span class="ofering close-modal">{{
-                !transacObj.category ? "Select" : transacObj.category
+                !selectedIncomeOrExpenseAccount || !selectedIncomeOrExpenseAccount.text ? "Select" : selectedIncomeOrExpenseAccount.text
               }}</span
               ><span>
                 <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
               ></span>
+              <!-- <span class="ofering close-modal">{{
+                !transacObj.category ? "Select" : transacObj.category
+              }}</span
+              ><span>
+                <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
+              ></span> -->
             </div>
             <div
               class="ofering close-modal"
@@ -157,7 +174,7 @@
                           >
                             <div
                               class="close-modal offset-sm-1"
-                              @click="categories"
+                              @click="categories($event, item)"
                             >
                               {{ item.text }}
                             </div>
@@ -370,7 +387,7 @@
           Transaction last modified on February 18th,2021
         </div>
         <div class="col-6 offset-sm-3 mb-2 mt-3" @click="saveTransac">
-          <div class="primary-btn text-center">Save</div>
+          <div class=" text-center cpon"><button class="default-btn primary-bg text-white border-0" @click="saveIncome">Save</button></div>
         </div>
       </div>
     </div>
@@ -378,7 +395,7 @@
 </template>
 
 <script>
-import { ref, computed, nextTick, onUpdated } from "vue";
+import { ref, computed, nextTick, onUpdated, watch } from "vue";
 import Tooltip from "primevue/tooltip";
 import transaction_service from "../../../services/financials/transaction_service";
 // import Dropdown from 'primevue/dropdown';
@@ -395,11 +412,15 @@ export default {
     const liabilities = ref(["Credit Card", "Loan and Line of Credit"]);
     const showUncategorized = ref(false);
     const uncategorizedText = ref("");
-    const transacObj = ref({
-      splitCategories: [],
-    });
+    const transacObj = ref(props.transactionDetails);
+    // const transacObj = ref({
+    //   // splitCategories: [],
+    // });
+
     const amountRef = ref("");
     const descrp = ref("");
+    const selectedCashAccount = ref({ });
+    const selectedIncomeOrExpenseAccount = ref({ });
 
     const filterAccount = computed(() => {
       if (accountText.value !== "" && accountType.value.length > 0) {
@@ -470,15 +491,19 @@ export default {
       // let index = splitCategories.findIndex(i => )
     };
 
-    const categories = (e) => {
-      transacObj.value.category = e.target.innerText;
+    const categories = (e, account) => {
+      // transacObj.value.category = e.target.innerText;
       showUncategorized.value = !showUncategorized.value;
+      selectedIncomeOrExpenseAccount.value = account;
+      console.log(selectedIncomeOrExpenseAccount.value );
     };
 
-    const accountFlow = (e) => {
+    const accountFlow = (e, account) => {
       console.log(e.target.innerText);
-      transacObj.value.accountFlow = e.target.innerText;
+      // transacObj.value.accountFlow = e.target.innerText;
       showAccount.value = !showAccount.value;
+      selectedCashAccount.value = account;
+      console.log(selectedCashAccount.value, "SCA");
     };
 
     const splitWithdrawal = () => {
@@ -495,7 +520,7 @@ export default {
     };
 
     const totalAmount = computed(() => {
-      if (transacObj.value.splitCategories.length > 0) {
+      if (transacObj.value.splitCategories && transacObj.value.splitCategories.length > 0) {
         return transacObj.value.splitCategories.reduce((a, b) => {
           return { amount: parseInt(a.amount) + parseInt(b.amount) };
         });
@@ -539,23 +564,30 @@ export default {
       // }
     });
 
+    const gettingIncomeAccounts = ref(false);
     const getIncomeAccounts = async () => {
       try {
+        gettingIncomeAccounts.value = true;
         const response = await transaction_service.getIncomeAccounts();
         accountType.value = response;
+        gettingIncomeAccounts.value = false;
       } catch (error) {
         console.log(error);
+        gettingIncomeAccounts.value = false;
       }
     };
 
     const expenseAccounts = ref([ ]);
+    const gettingExpenseAccounts = ref(false);
     const getExpenseAccounts = async () => {
       try {
+        gettingExpenseAccounts.value = true;
         const response = await transaction_service.getExpenseAccounts();
-        console.log(response, "Expense Accounts");
         expenseAccounts.value = response;
+        gettingExpenseAccounts.value = false;
       } catch (error) {
         console.log(error);
+        gettingExpenseAccounts.value = false;
       }
     };
 
@@ -568,30 +600,62 @@ export default {
     const getTransactionalAccounts = async () => {
       try {
         const response = await transaction_service.getTransactionalAccounts();
-        console.log(response, "Transactional accounts");
         for (let group of accountTypes) {
           const groupItems = response.filter(
             (i) => i.accountType.toLowerCase() === group
           );
           transactionalAccounts.value.push(groupItems);
         }
-        console.log(transactionalAccounts.value, "TAs");
       } catch (error) {
         console.log(error);
       }
     };
 
+    const constructSaveTransactionReqBody = () => {
+      const reqBody = {
+        amount: transacObj.value.amount,
+        creditAccountID: selectedIncomeOrExpenseAccount.value.id,
+        date: transacObj.value.date,
+        debitAccountID: selectedCashAccount.value.id,
+        memo: transacObj.value.memo
+      }
+      return reqBody;
+    }
+
     const newIncome = ref({ });
     const saveIncome = async () => {
         try {
-            const response = await transaction_service.saveIncome({ });
+          let reqBody = constructSaveTransactionReqBody();
+          if (props.transactionDetails.account === "Income Account") {
+            
+            transacObj.value.creditAccountID = selectedIncomeOrExpenseAccount.value.id;
+            transacObj.value.debitAccountID = selectedCashAccount.value.id;
+             
+            const response = await transaction_service.saveIncome(reqBody);
+            // const response = await transaction_service.saveIncome(transacObj.value);
             console.log(response, "Save income response");
+          } else {
+            transacObj.value.debitAccountID = selectedIncomeOrExpenseAccount.value.id;
+            transacObj.value.creditAccountID = selectedCashAccount.value.id;
+            const response = await transaction_service.saveExpense(reqBody);
+            console.log(response, "Save expense response");
+          }
         } catch (error) {
-            console.log();
+          console.log();
         }
     }
 
     getTransactionalAccounts();
+
+    watch(() => props.transactionDetails, (data) => {
+      console.log(data, "in watch");
+      transacObj.value.date = new Date(data.date);
+      transacObj.value.amount = data.amount;
+      transacObj.value.memo = data.memo;
+      // transacObj.value = { memo: data.memo, date: data.date, amount: data.amount }
+
+      console.log(transacObj.value, "TO");
+    })
 
     return {
       showAccount,
@@ -622,6 +686,10 @@ export default {
       expenseIncomeAccounts,
       saveIncome,
       newIncome,
+      selectedCashAccount,
+      selectedIncomeOrExpenseAccount,
+      gettingIncomeAccounts,
+      gettingExpenseAccounts,
     };
   },
 };
@@ -670,7 +738,7 @@ export default {
   overflow-y: scroll;
 }
 .style-uncategorized div div div:hover {
-  background-color: #ecf0f3;
+  /* background-color: #ecf0f3; */
   cursor: pointer;
 }
 
