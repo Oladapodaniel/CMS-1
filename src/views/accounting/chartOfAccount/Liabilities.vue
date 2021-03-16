@@ -78,6 +78,7 @@
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
+                ref="closeAccountModalBtn"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -90,6 +91,7 @@
                 :financialAccountType="1"
                 :index="1"
                 :accountGroupId="accountGroupId"
+                @save-account="closeAccountModal"
               />
             </div>
 
@@ -109,7 +111,7 @@ import transactionals from "./utilities/transactionals";
 export default {
     components: { CreateAccountModal },
     props: [ "data" ],
-  setup() {
+  setup(props, { emit }) {
     const view = ref(true);
 
     const accounts = ref([]);
@@ -147,6 +149,14 @@ export default {
       accountGroupId.value = groupId;
     }
 
+    const closeAccountModalBtn = ref(null)
+    const closeAccountModal = (data) => {
+        closeAccountModalBtn.value.click();
+        if (data.success) {
+            emit("reload");
+        }
+    }
+
     return {
       view,
       accountTypes,
@@ -155,6 +165,8 @@ export default {
       currencies,
       setGroupId,
       accountGroupId,
+      closeAccountModal,
+      closeAccountModalBtn
     };
   },
 };

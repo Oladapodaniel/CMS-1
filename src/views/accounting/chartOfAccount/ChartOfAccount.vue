@@ -77,22 +77,22 @@
               </div>
               <div v-if="tab === 'liabilities'">
                 <div>
-                  <Liabilities :data="chartOfAccounts[1]" @save-account="getCharts"  />
+                  <Liabilities :data="chartOfAccounts[1]" @reload="getCharts"  />
                 </div>
               </div>
               <div v-if="tab == 'income'">
                 <div>
-                  <Income :data="chartOfAccounts[3]" @save-account="getCharts"  />
+                  <Income :data="chartOfAccounts[3]" @reload="getCharts"  />
                 </div>
               </div>
               <div v-if="tab === 'expenses'">
                 <div>
-                  <Expenses :data="chartOfAccounts[4]" @save-account="getCharts" />
+                  <Expenses :data="chartOfAccounts[4]" @reload="getCharts" />
                 </div>
               </div>
               <div v-if="tab === 'equity'">
                 <div>
-                  <Equity :data="chartOfAccounts[2]" @save-fund="getCharts" />
+                  <Equity :data="chartOfAccounts[2]" @save-fund="refreshCharts" />
                 </div>
               </div>
             </div>
@@ -230,17 +230,11 @@ export default {
         closeAccountModalBtn.value.click();
     }
 
-    // const accountCategories = ref([ ])
-    // const getAccountHeads = async () => {
-    //     try {
-    //         const response = await chart_of_accounts.getAccountHeads();
-    //         console.log(response, "account heads");
-    //         accountCategories.value = response;
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-    // getAccountHeads();
+    const refreshCharts = (data) => {
+        if (data.success) {
+            getCharts();
+        }
+    }
 
     return {
       tab,
@@ -257,6 +251,7 @@ export default {
       closeAccountModalBtn,
       gettingCharts,
       getCharts,
+      refreshCharts,
     //   accountCategories,
     };
   },

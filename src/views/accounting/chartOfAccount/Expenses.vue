@@ -74,6 +74,7 @@
                 Add an account
               </h5>
               <button
+              ref="closeAccountModalBtn"
                 type="button"
                 class="close"
                 data-dismiss="modal"
@@ -91,6 +92,7 @@
                 :financialAccountType="3"
                 :index="4"
                 :accountGroupId="accountGroupId"
+                @save-account="closeAccountModal"
               />
             </div>
           </div>
@@ -108,7 +110,7 @@ import transactionals from "./utilities/transactionals";
 export default {
     props: [ "data" ],
   components: { CreateAccountModal },
-  setup() {
+  setup(props, { emit }) {
     const view = ref(true);
 
     const accounts = ref([]);
@@ -145,6 +147,14 @@ export default {
       accountGroupId.value = groupId;
     }
 
+    const closeAccountModalBtn = ref(null)
+    const closeAccountModal = (data) => {
+        closeAccountModalBtn.value.click();
+        if (data.success) {
+            emit("reload");
+        }
+    }
+
     return {
       view,
       accountTypes,
@@ -153,6 +163,8 @@ export default {
       currencies,
       setGroupId,
       accountGroupId,
+      closeAccountModalBtn,
+      closeAccountModal
     };
   },
 };

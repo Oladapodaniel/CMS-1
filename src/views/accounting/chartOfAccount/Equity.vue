@@ -187,6 +187,7 @@ export default {
         } else {
             toast.add({severity:'success', summary:'Fund Created', detail:`The fund ${newFund.value.name} was created successfully`, life: 2500});
             // refresh funds
+            emit("save-fund", { success: true, message: "An error ocuurred, please try again" });
             transactionals.getFunds(true);
         }
         console.log(response, "save fund response");
