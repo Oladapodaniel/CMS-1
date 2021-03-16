@@ -64,7 +64,7 @@
                   <div class="row">
                     <div class="col-md-12 mx-auto my-3 px-0 px-3">
                       <label class="hfont">Purpose</label>
-               
+
                       <Dropdown
                         v-model="selectedContributionType"
                         :options="formResponse.contributionItems"
@@ -209,8 +209,8 @@
 
                   <!-- start of user credentials area -->
                   <transition name="fade">
-  
-        
+
+
                   <div class="row d-flex" v-if="!checked">
                     <div class="col-md-6">
                       <div class="row">
@@ -274,11 +274,11 @@
                           <div class="modal-header bg-modal">
                             <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
+                              <span aria-hidden="true" ref="close">&times;</span>
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :amount="amount" :name="name"/>
+                            <PaymentOptionModal :amount="amount" :name="name" :close="close"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -414,6 +414,7 @@ export default {
     const name = ref("")
     const phone = ref("")
     const checked = ref(true)
+    const close = ref("")
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -475,7 +476,7 @@ export default {
             } else {
               console.log('not found')
             }
-            
+
           }
         })
         .catch((err) => console.log(err.response, "You know me! yes gang"));
@@ -503,7 +504,7 @@ export default {
                           contributionCurrencyId: formResponse.value.currencyId
                         }
             ]
-       
+
           }
           if (name.value !== "" || phone.value !== "") {
             donation.isAnonymous = false
@@ -511,7 +512,7 @@ export default {
             donation.isAnonymous = true
           }
           console.log(donation)
-          
+
           try {
             let  res = axios.post('/donation', donation)
             console.log(res)
@@ -542,7 +543,8 @@ export default {
       donation,
       formResponse,
       phone,
-      checked
+      checked,
+      close,
     };
   },
 };

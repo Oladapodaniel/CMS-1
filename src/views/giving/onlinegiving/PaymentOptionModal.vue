@@ -211,8 +211,8 @@ export default {
     // PaystackPay
     // paystack
   },
-  props: ['amount','name'],
-  setup () {
+  props: ['amount','name', 'close'],
+  setup (props) {
     const email = ref('oladapodaniel@gmail.com')
     const paystackKey = ref(process.env.VUE_APP_PAYSTACK_API_KEY,)
 
@@ -229,9 +229,6 @@ export default {
        window.alert("Payment recieved")
     }
 
-    const close = () => {
-      console.log('Closed')
-    }
 
     const payWithPaystack = () => {
       /*eslint no-undef: "warn"*/
@@ -268,13 +265,14 @@ export default {
           //     // toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
           //     console.log(err, "error confirming payment");
           //   });
+            props.close.click()
         },
       });
       handler.openIframe();
     };
 
     return {
-      email, paystackKey, reference, processPayment, close, payWithPaystack
+      email, paystackKey, reference, processPayment, payWithPaystack
     }
     }
 
