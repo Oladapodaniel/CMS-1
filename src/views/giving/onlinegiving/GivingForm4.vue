@@ -64,7 +64,7 @@
                 <div class="col-md-3 d-sm-none"></div>
 
                 <div
-                  class="col-md-6 mx-auto form-area shadow p-3 mb-5 bg-white rounded MIDDLE"
+                  class="col-sm-10 col-md-8 mx-auto form-area shadow p-5 mb-5 bg-white rounded MIDDLE"
                 >
                   <div class="row">
                     <div class="col-md-12 mx-auto my-3 px-0 px-3">
@@ -88,20 +88,21 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-5 pr-2">
+                        <div class="col-6 col-sm-4 pr-2">
                           <Dropdown
                             v-model="dfaultCurrency"
                             :options="currencyInput"
                             optionLabel="shortCode"
-                            :placeholder="selectedContributionType.shortCode"
+                            :placeholder="dfaultCurrency.shortCode"
                             class="w-100 px-0"
                           />
                         </div>
-                        <div class="col-md-7 pl-0">
+                        <div class="col-6 col-sm-8  pl-0">
                           <input
                             class="form-control col-md-12 text-left imp1 border"
                             type="text"
                             v-model="amount"
+                            placeholder="0.00"
                           />
                         </div>
                       </div>
@@ -121,7 +122,7 @@
                           <div class="row border rounded">
                             <div
                               class="col-md-6 fone p-3 text-center borderl default-color1"
-                              :class="{ 'default-color': !hideTabOne }"
+                              :class="{ 'default-color': hideTabOne }"
                               @click="toggleTabOne"
                             >
                               <span><i class="fas fa-donate"></i></span>&nbsp;
@@ -129,7 +130,7 @@
                             </div>
                             <div
                               class="col-md-6 p-3 fone text-center btn-default default-color1"
-                              :class="{ 'default-color': hideTabOne }"
+                              :class="{ 'default-color': !hideTabOne }"
                               @click="toggleTabTwo"
                             >
                               <span
@@ -147,34 +148,34 @@
                   <!-- start of dynamic Area 2-->
                   <div class="row">
                     <div class="col-md-12">
-                      <section class="col-md-12 mt-3 px-0" v-if="hideTabOne">
+                      <section class="col-md-12 mt-3 px-0" v-if="!hideTabOne">
                         <p class="col-10 hfont px-0 mb-1">Frequency:</p>
 
                         <div class="col-12 mt-1">
                           <div class="row border rounded">
                             <div
                               :class="{ 'default-color': oftenGive1 }"
-                              class="col-md-3 fone p-3 text-center default-color1 borderl"
+                              class="col-md-3 fone p-2 text-center default-color1 borderl"
                               @click="givingOften"
                             >
                               Every Week
                             </div>
                             <div
                               :class="{ 'default-color': oftenGive2 }"
-                              class="col-md-3 fone p-3 default-color1 text-center borderl"
+                              class="col-md-3 fone p-2 default-color1 text-center borderl"
                               @click="givingOften"
                             >
                               Every 2 Week
                             </div>
                             <div
                               :class="{ 'default-color': oftenGive3 }"
-                              class="col-md-3 fone p-3 default-color1 text-center borderl"
+                              class="col-md-3 fone p-2 default-color1 text-center borderl"
                               @click="givingOften"
                             >
                               Every month
                             </div>
                             <div
-                              class="col-md-3 p-3 fone text-center default-color1"
+                              class="col-md-3 p-2 fone text-center default-color1"
                               @click="givingOften"
                               :class="{ 'default-color': oftenGive4 }"
                             >
@@ -188,7 +189,7 @@
                   <!-- end of dynamic Area 2 -->
 
                   <!-- start of date area -->
-                  <section class="col-md-12 mt-3 px-0" v-if="hideTabOne">
+                  <section class="col-md-12 mt-3 px-0" v-if="!hideTabOne">
                     <div class="row">
                       <p class="col-6 py-0 ml-1 hfont">Starting</p>
                       <div class="col-md-6 d-flex flex-row mt-n2">
@@ -202,26 +203,26 @@
                   </section>
                   <!-- end of date area -->
 
-                  <div class="row mt-2">
-                    <div class="col-sm-1">
+                  <div class="row mt-4">
+                    <div class="col-1">
                       <Checkbox id="binary" v-model="checked" :binary="true" />
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-10">
                       <label for="binary">As an anonymous</label>
                     </div>
                   </div>
 
                   <!-- start of user credentials area -->
-                  <transition name="fade" mode="out-in">
+                  <transition name="fade">
   
         
-                  <div class="row d-flex" v-if="checked">
+                  <div class="row d-flex" v-if="!checked">
                     <div class="col-md-6">
                       <div class="row">
                         <div class="col-md-12 mx-auto my-2 px-0 px-2">
                           <label class="hfont">Name</label>
                           <input
-                            class="form-control col-md-12 text-left border imp2"
+                            class="form-control col-md-12 text-left border"
                             type="text"
                             placeholder="Enter your name"
                             v-model="name"
@@ -235,7 +236,7 @@
                         <div class="col-md-12 mx-auto my-2 px-0 px-2">
                           <label class="hfont">Phone Number</label>
                           <input
-                            class="form-control col-md-12 text-left border imp2"
+                            class="form-control col-md-12 text-left border"
                             type="text"
                             v-model="phone"
 
@@ -339,7 +340,7 @@
                   </div>
                   <div class="col-md-3 d-sm-none d-md-block"></div>
                 </div>
-              </div>
+              </div> <div>{{ selectedContributionType }}</div>
               <!-- payment Methods area -->
               <!-- Footer area -->
               <div class="container mt-5">
@@ -396,10 +397,10 @@ export default {
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
-      hideTabOne.value = false;
+      hideTabOne.value = true;
     };
     const toggleTabTwo = () => {
-      hideTabOne.value = true;
+      hideTabOne.value = false;
     };
 
     const formResponse = ref({})
@@ -475,7 +476,7 @@ export default {
           for (let i = 0; 1 < res.data.length; i++) {
             if(formResponse.value.currencyId === res.data[i].id) {
               console.log(res.data[i], 'foundddd')
-              selectedContributionType.value = res.data[i]
+              dfaultCurrency.value = res.data[i]
             } else {
               console.log('not found')
             }
@@ -488,7 +489,7 @@ export default {
 
     const donation = () => {
           let donation = {
-            payformFormId: formResponse.value.id,
+            paymentFormId: formResponse.value.id,
             churchLogoUrl: formResponse.value.churchLogo,
             churchName: formResponse.value.churchName,
             tenantID: formResponse.value.tenantID,
@@ -499,19 +500,25 @@ export default {
             orderID: formResponse.value.orderId,
             currencyID: formResponse.value.currencyId,
             paymentGateway: formResponse.value.paymentGateWays,
-            donationContribution: formResponse.value.contributionItems.map(i => {
-              return {
-                contributionItemId: i.financialContributionID,
-                contributionItemName: i.financialContribution.name,
-                amount: amount.value,
-                contributionCurrencyId: formResponse.value.currencyId
-              }
-            })
+            contributionItems: [
+                        {
+                          contributionItemId: selectedContributionType.value.financialContributionID,
+                          contributionItemName: selectedContributionType.value.financialContribution.name,
+                          amount: amount.value,
+                          contributionCurrencyId: formResponse.value.currencyId
+                        }
+            ]
+       
+          }
+          if (name.value !== "" || phone.value !== "") {
+            donation.isAnonymous = false
+          } else {
+            donation.isAnonymous = true
           }
           console.log(donation)
           
           try {
-            let  res  = axios.post('/api/PaymentForm/donation', donation)
+            let  res = axios.post('/donation', donation)
             console.log(res)
           }
           catch (error) {
@@ -590,7 +597,7 @@ export default {
 }
 
 .fone {
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 300;
   color: #80878d;
 }
@@ -742,5 +749,16 @@ export default {
 
 .bg-modal {
   background: rgba(226, 226, 226, 0.514)
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 </style>
