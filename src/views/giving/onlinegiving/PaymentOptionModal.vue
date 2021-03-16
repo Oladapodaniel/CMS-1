@@ -211,7 +211,7 @@ export default {
     // PaystackPay
     // paystack
   },
-  props: ['orderId', 'donation'],
+  props: ['orderId', 'donation', 'close'],
   setup (props) {
 
     const payWithPaystack = () => {
@@ -248,6 +248,7 @@ export default {
               // toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
               console.log(err, "error confirming payment");
             });
+            props.close.click()
         },
       });
       handler.openIframe();
