@@ -5,12 +5,8 @@
     <div class="container-fluid nav-color sticky-top">
       <div class="container">
         <nav class="navbar navbar-expand-lg nav-color2">
-          <a class="navbar-brand" href="#"
-            ><img
-              class="img-fluid logo"
-              src="../../../assets/ChurchplusLogo2-highres.png"
-              alt=""
-            />
+          <a class="navbar-brand" href="#">
+            <img v-bind:src="formResponse.churchLogo"  width="100px" alt="" />
           </a>
           <button
             class="navbar-toggler"
@@ -27,8 +23,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="text-white" href="#"
-                  >Fountain of Grace<span class="sr-only">(current)</span></a
+                <a class="text-white" href="#">{{ formResponse.churchName }}</a
                 >
               </li>
             </ul>
@@ -258,7 +253,9 @@
                         <!-- button section -->
                         <div class="row my-3" @click="donation">
                           <div class="col-md-12 text-center mt-4">
-                            <button data-toggle="modal" data-target="#PaymentOptionModal"
+                            <button
+                              data-toggle="modal"
+                              data-target="#PaymentOptionModal"
                               class="btn btn-default btngive bt hfontb btt"
                             >
                               Give Now
@@ -270,7 +267,6 @@
                       <!-- <button type="button" class="btn btn-primary" >
             Launch demo modal
           </button> -->
-
                     <!-- Modal -->
                     <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -288,9 +284,9 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Save changes</button>
                           </div> -->
+                          </div>
                         </div>
                       </div>
-                    </div>
                     </div>
                   </div>
                   <!-- end of dynamic Area 3 -->
@@ -379,7 +375,6 @@
       </div>
       <!--end of body area -->
     </div>
-
   </div>
 </template>
 
@@ -568,7 +563,7 @@ export default {
 .logo {
   height: auto;
   object-fit: cover;
-  max-width: 200px;
+  max-width: 100px;
 }
 
 .img {
