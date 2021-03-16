@@ -82,6 +82,23 @@ const saveAccount = (body) => {
     })
 }
 
+const deleteAccount = (body) => {
+    return new Promise((resolve, reject) => {
+        axios.post("/api/Financials/Accounts/Delete", body)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
 const saveFund = (body) => {
     return new Promise((resolve, reject) => {
         axios.post("/api/Financials/Funds/Save", body)
@@ -99,4 +116,4 @@ const saveFund = (body) => {
     })
 }
 
-export default { getChartOfAccounts, getCashBankAccounts, getAssetsAccounts, getFunds, saveAccount, saveFund }
+export default { getChartOfAccounts, getCashBankAccounts, getAssetsAccounts, getFunds, saveAccount, saveFund, deleteAccount }

@@ -135,7 +135,7 @@
 
             <div class="row my-5" v-if="savingFund">
                 <div class="col-md-12 text-center">
-                    <i class="pi pi-spin pi-spinner" style="fontSize: 5rem"></i>
+                    <i class="pi pi-spin pi-spinner" style="fontSize: 3rem"></i>
                 </div>
             </div>
           </div>
@@ -158,7 +158,7 @@
             </div>
           </div>
 
-          <Toast />
+          <!-- <Toast /> -->
         </div>
       </div>
     </div>
@@ -171,6 +171,7 @@ import transactionUtil from "./utilities/transactionals";
 import Dropdown from "primevue/dropdown";
 import chart_of_accounts from "../../../services/financials/chart_of_accounts";
 import { useToast } from 'primevue/usetoast';
+import transactionals from './utilities/transactionals';
 
 
 export default {
@@ -219,6 +220,8 @@ export default {
             toast.add({severity:'error', summary:'Fund Creation Failed', detail:`An error occurred, please try again`, life: 3000});
         } else {
             toast.add({severity:'success', summary:'Fund Created', detail:`The fund ${newFund.value.name} was created successfully`, life: 2500});
+            // refresh funds
+            transactionals.getFunds(true);
         }
         console.log(response, "save fund response");
       } catch (error) {

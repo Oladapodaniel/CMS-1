@@ -418,11 +418,11 @@
         <div class="modal-header">
           <h5 class="modal-title font-weight-bold" id="exampleModalLabel">Add an account</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true" ref="closeModalBtn">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <CreateAccountModal :transactionalAccounts="transactionalAccounts" :accountTypes="accountTypes" :currencies="currencyList" :financialAccountType="0" />
+          <CreateAccountModal @save-account="closeAccountModal" :transactionalAccounts="transactionalAccounts" :accountTypes="accountTypes" :currencies="currencyList" :financialAccountType="0" />
         </div>
       </div>
     </div>
@@ -567,6 +567,11 @@ export default {
     //   selectedAccountType.value = account;
     // }
 
+    const closeModalBtn = ref(null);
+    const closeAccountModal = () => {
+      closeModalBtn.value.click();
+    }
+
     const cities = ref([{
                 label: 'Germany', code: 'DE', 
                 items: [
@@ -620,6 +625,8 @@ export default {
       cities,
       transactionalAccounts,
       accountTypes,
+      closeModalBtn,
+      closeAccountModal,
       // selectAccountType,
       // selectedAccountType
     };

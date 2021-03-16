@@ -138,7 +138,7 @@
 
             <div class="row my-4" v-if="savingAccount">
               <div class="col-md-12 text-center">
-                <i class="pi pi-spin pi-spinner" style="fontSize: 5rem"></i>
+                <i class="pi pi-spin pi-spinner" style="fontSize: 3rem"></i>
               </div>
             </div>
 

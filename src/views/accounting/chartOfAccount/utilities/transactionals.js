@@ -56,9 +56,9 @@ const transactionals = {
         })
     },
 
-    getFunds() {
+    getFunds(force) {
         return new Promise((resolve, reject) => {
-            if (!this.funds || this.funds.length === 0) {
+            if (!this.funds || this.funds.length === 0 || force) {
                 chart_of_accounts.getFunds()
                 .then(data => {
                     this.funds = data;

@@ -4,6 +4,7 @@
     <div class="main-con">
       <div class="main-body">
         <div class="container-wide container-top">
+            <Toast />
           <div class="row">
             <div class="col-12 col-md-6 p-0 text-center text-md-left">
               <div>
