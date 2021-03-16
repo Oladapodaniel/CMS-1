@@ -5,12 +5,8 @@
     <div class="container-fluid nav-color sticky-top">
       <div class="container">
         <nav class="navbar navbar-expand-lg nav-color2">
-          <a class="navbar-brand" href="#"
-            ><img
-              class="img-fluid logo"
-              src="../../../assets/ChurchplusLogo2-highres.png"
-              alt=""
-            />
+          <a class="navbar-brand" href="#">
+            <img v-bind:src="logo"  width="100px" alt="" />
           </a>
           <button
             class="navbar-toggler"
@@ -27,8 +23,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="text-white" href="#"
-                  >Fountain of Grace<span class="sr-only">(current)</span></a
+                <a class="text-white" v-bind:href="nameOfChurch">{{nameOfChurch}}</a
                 >
               </li>
             </ul>
@@ -64,7 +59,7 @@
                 <div class="col-md-3 d-sm-none"></div>
 
                 <div
-                  class="col-md-6 mx-auto form-area shadow p-3 mb-5 bg-white rounded MIDDLE"
+                  class="col-md-8 mx-auto form-area shadow p-3 mb-5 bg-white rounded MIDDLE"
                 >
                   <div class="row">
                     <div class="col-md-12 mx-auto my-3 px-0 px-3">
@@ -242,7 +237,9 @@
                         <!-- button section -->
                         <div class="row my-3">
                           <div class="col-md-12 text-center mt-4">
-                            <button data-toggle="modal" data-target="#PaymentOptionModal"
+                            <button
+                              data-toggle="modal"
+                              data-target="#PaymentOptionModal"
                               class="btn btn-default btngive bt hfontb btt"
                             >
                               Give Now
@@ -255,26 +252,49 @@
             Launch demo modal
           </button> -->
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header bg-modal">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body p-0 bg-modal mb-5">
-                            <PaymentOptionModal :amount="amount" :name="name"/>
-                          </div>
-                          <!-- <div class="modal-footer bg-modal">
+                      <!-- Modal -->
+                      <div
+                        class="modal fade"
+                        id="PaymentOptionModal"
+                        tabindex="-1"
+                        role="dialog"
+                        aria-labelledby="exampleModalCenterTitle"
+                        aria-hidden="true"
+                      >
+                        <div
+                          class="modal-dialog modal-dialog-centered"
+                          role="document"
+                        >
+                          <div class="modal-content">
+                            <div class="modal-header bg-modal">
+                              <h5
+                                class="modal-title"
+                                id="exampleModalLongTitle"
+                              >
+                                Payment methods
+                              </h5>
+                              <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                              >
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body p-0 bg-modal mb-5">
+                              <PaymentOptionModal
+                                :amount="amount"
+                                :name="name"
+                              />
+                            </div>
+                            <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Save changes</button>
                           </div> -->
+                          </div>
                         </div>
                       </div>
-                    </div>
                     </div>
                   </div>
                   <!-- end of dynamic Area 3 -->
@@ -363,7 +383,6 @@
       </div>
       <!--end of body area -->
     </div>
-
   </div>
 </template>
 
@@ -371,10 +390,10 @@
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
-import PaymentOptionModal from "./PaymentOptionModal"
+import PaymentOptionModal from "./PaymentOptionModal";
 export default {
   components: {
-    PaymentOptionModal
+    PaymentOptionModal,
   },
   setup() {
     const hideTabOne = ref(true);
@@ -397,8 +416,10 @@ export default {
     const oftenGive2 = ref(false);
     const oftenGive3 = ref(false);
     const oftenGive4 = ref(false);
-    const amount = ref("")
-    const name = ref("")
+    const amount = ref("");
+    const name = ref("");
+    const logo = ref("");
+    const nameOfChurch = ref("");
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -436,6 +457,8 @@ export default {
         )
         .then((res) => {
           funds.value = res.data.contributionItems;
+          logo.value = res.data.churchLogo;
+          nameOfChurch.value = res.data.churchName
           // console.log(funds.value, "kjjjhjjjje");
           // console.log(res.data);
           console.log(res);
@@ -474,7 +497,9 @@ export default {
       dfaultCurrency,
       currencyInput,
       amount,
-      name
+      name,
+      logo,
+      nameOfChurch,
     };
   },
 };
@@ -495,7 +520,7 @@ export default {
 .logo {
   height: auto;
   object-fit: cover;
-  max-width: 200px;
+  max-width: 100px;
 }
 
 .img {
@@ -675,6 +700,6 @@ export default {
 } */
 
 .bg-modal {
-  background: rgba(230, 230, 230, 0.205)
+  background: rgba(230, 230, 230, 0.205);
 }
 </style>
