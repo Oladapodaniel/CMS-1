@@ -282,7 +282,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :amount="amount" :name="name"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -340,7 +340,7 @@
                   </div>
                   <div class="col-md-3 d-sm-none d-md-block"></div>
                 </div>
-              </div> <div>{{ selectedContributionType }}</div>
+              </div>
               <!-- payment Methods area -->
               <!-- Footer area -->
               <div class="container mt-5">
@@ -419,6 +419,7 @@ export default {
     const name = ref("")
     const phone = ref("")
     const checked = ref(true)
+    const donationObj = ref({})
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -488,7 +489,7 @@ export default {
     tcurrency();
 
     const donation = () => {
-          let donation = {
+          donationObj.value = {
             paymentFormId: formResponse.value.id,
             churchLogoUrl: formResponse.value.churchLogo,
             churchName: formResponse.value.churchName,
@@ -511,14 +512,14 @@ export default {
        
           }
           if (name.value !== "" || phone.value !== "") {
-            donation.isAnonymous = false
+            donationObj.value.isAnonymous = false
           } else {
-            donation.isAnonymous = true
+            donationObj.value.isAnonymous = true
           }
-          console.log(donation)
+          console.log(donationObj.value)
           
           try {
-            let  res = axios.post('/donation', donation)
+            let  res = axios.post('/donation', donationObj.value)
             console.log(res)
           }
           catch (error) {
@@ -547,7 +548,8 @@ export default {
       donation,
       formResponse,
       phone,
-      checked
+      checked,
+      donationObj
     };
   },
 };
@@ -633,12 +635,12 @@ export default {
 .btt {
   width: 180px;
   height: 50px;
-  border-radius: 10px;
+  border-radius: 500px;
 }
 
 .bt {
-  background: #f17c30;
-  background: #136acd;
+  background: #b15702;
+  /* background: #136acd; */
   color: #fff;
 }
 
