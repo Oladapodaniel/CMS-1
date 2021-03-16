@@ -544,7 +544,6 @@ const routes = [{
         import( /* webpackChunkName: "about" */ '../views/About.vue')
 },
 {
-<<<<<<< HEAD
     path: '/onlinegivingform1',
     name: 'OnlineGiving',
     component: () =>
@@ -580,7 +579,7 @@ const routes = [{
     component: () =>
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/PaymentGivingForm2')
 },
-=======
+{
     path: '/signuppayment',
     name: 'SignUpPayment',
     component: () =>
@@ -592,7 +591,6 @@ const routes = [{
     component: () =>
         import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignInPayment')
 }
->>>>>>> dapobranch2
 ]
 
 
