@@ -98,7 +98,7 @@ export default {
           loading.value = true;
           const res = await axios.post("/login", state.credentials)
           const { data } = res;
-          console.log(data, "data");
+          // console.log(data, "data");
           if (!data || !data.token) {
             router.push({
               name: "EmailSent",
@@ -110,6 +110,7 @@ export default {
           
           store.dispatch("setUserData", data);
           localStorage.setItem("token", data.token);
+          localStorage.setItem("expiryDate", data.expiryTime);
           console.log(data, "Church data");
           if (data.churchSize > 0) {
             router.push("/tenant")

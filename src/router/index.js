@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
-import TermsOfUse from '@/views/account/TermsOfService.vue'
+import TermsOfUse from '../components/temp/PaymentPage'
 
 
 
@@ -14,7 +14,7 @@ const routes = [{
 },
 
 {
-    path: '/termsofuse',
+    path: '/terms',
     name: 'TermsOfUse',
     component: TermsOfUse,
 },

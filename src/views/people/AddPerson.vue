@@ -1052,7 +1052,7 @@ export default {
 .showtab {
   transition: all 0.5s ease-in-out;
   height: 166px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 @media (min-width: 676px) and (max-width: 768px) {

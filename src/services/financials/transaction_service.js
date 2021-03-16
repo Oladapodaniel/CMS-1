@@ -37,7 +37,25 @@ const saveAccount = (body) => {
 const testPoint = () => {
     return new Promise((resolve, reject) => {
         axios.get("/api/Financials/Accounts/GetCashBankAccounts")
-        // axios.get("/api/Financials/Accounts/Transactions/GetIncomeAndExpense")
+        // axios.get("/api/Financials/Accounts/Transactions/GetIncomeAndExpense")\
+
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err => {
+            
+                if (err.response) {
+                    reject(err.response);
+                } else {
+                    reject(err)
+                }
+            })
+    })
+}
+
+const getCurrencies = () => {
+    return new Promise((resolve, reject) => {
+        axios.get("/api/getallcountries")
             .then(res => {
                 resolve(res.data);
             })
@@ -117,9 +135,9 @@ const getExpenseAccounts = () => {
     })
 }
 
-const saveExpense = () => {
+const saveExpense = (body) => {
     return new Promise((resolve, reject) => {
-        axios.get("/api/Financials/Accounts/Transactions/Expense/Save")
+        axios.post("/api/Financials/Accounts/Transactions/Expense/Save", body)
             .then(res => {
                 resolve(res.data);
             })
@@ -133,9 +151,9 @@ const saveExpense = () => {
     })
 }
 
-const saveIncome = () => {
+const saveIncome = (body) => {
     return new Promise((resolve, reject) => {
-        axios.get("/api/Financials/Accounts/Transactions/Income/Save")
+        axios.post("/api/Financials/Accounts/Transactions/Income/Save", body)
             .then(res => {
                 resolve(res.data);
             })
@@ -150,4 +168,4 @@ const saveIncome = () => {
 }
 
 
-export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome };
+export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome, getCurrencies };

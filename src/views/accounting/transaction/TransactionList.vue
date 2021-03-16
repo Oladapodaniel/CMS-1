@@ -1,8 +1,8 @@
 <template>
-  <div class="whole-con container-wide container-top" @click="hideModals">
-    <div class="main-con">
-      <div class="main-body">
-        <div class="top container-wide mt-3">
+  <div class="whole-co container-wid container-top" @click="hideModals">
+    <div class="main-co">
+      <div class="main-bod">
+        <div class="top container-wid mt-3">
           <div class="header">
             <div class="events">Transaction</div>
           </div>
@@ -268,7 +268,7 @@
             </template>
           </Dialog>
 
-          <TransactionTable :showEditTransaction="showEditTransaction" :transactionDetails="transacPropsValue" :selectedTransactionType="selectedTransactionType" @toggle-edit-form="closeIt" />
+          <TransactionTable :showEditTransaction="showEditTransaction" :transactionDetails="transacPropsValue" :selectedTransactionType="selectedTransactionType" @toggle-edit-form="closeIt" @select-row="selectRow" />
         </div>
       </div>
     </div>
@@ -575,6 +575,12 @@ export default {
         console.log(error);
       }
     }
+
+    const selectRow = (rowData) => {
+      showEditTransaction.value = true;
+      transacPropsValue.value = rowData;
+      console.log(rowData, "row Data");
+    }
     // saveAccount()
 
     // const get
@@ -620,6 +626,7 @@ export default {
       selectedTransactionType,
       newAccount,
       saveAccount,
+      selectRow,
     };
   },
 };
@@ -691,6 +698,10 @@ html {
 .hr {
   border: 0.8px solid #0020440a;
   margin: 0 4px;
+}
+
+.table {
+  width: 100% !important; margin: 0;
 }
 
 .table-top {
@@ -936,4 +947,9 @@ html {
       overflow-y: auto
     }
   } */
+
+  .row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
 </style>

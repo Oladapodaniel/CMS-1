@@ -21,6 +21,24 @@ const membershipService = {
         })
     },
 
+    getSignedInUser() {
+        return new Promise((resolve, reject) => {
+            axios.get("/api/Membership/GetCurrentSignedInUser")
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
+
     searchMembers(searchString) {
         return new Promise((resolve, reject) => {
             axios.get(`/api/membership/getsearchedusers?searchText=${searchString}`)

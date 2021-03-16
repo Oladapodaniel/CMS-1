@@ -34,10 +34,15 @@ import { useToast } from 'primevue/usetoast';
             const createCategory = async () => {
                 try {
                     const response =  await eventsService.createNewEventCategory(eventName.value);
-                    toast.add({severity:'success', summary:'Operation Successful', detail:'Category created successfully', life: 3000});
-                    emit('new-created', response.map(i => {
-                        return { id: i.id, name: i.name }
-                    }));
+                    if (response) {
+                        toast.add({severity:'success', summary:'Operation Successful', detail:'Category created successfully', life: 3000});
+                        emit('new-created', response.map(i => {
+                            return { id: i.id, name: i.name }
+                        }), eventName.value);
+                    } else {
+                        closeModal();
+                        toast.add({severity:'error', summary:'Operation Failed', detail:'Category could not be created', life: 3000});
+                    }
                 } catch (error) {
                     emit("closeeventmodal");
                     toast.add({severity:'error', summary:'Operation Failed', detail:'Category could not be created', life: 3000});

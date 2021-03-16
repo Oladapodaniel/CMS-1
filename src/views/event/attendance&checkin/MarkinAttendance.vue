@@ -149,13 +149,14 @@
             <span class="p-input-icon-left w-100">
               <i class="pi pi-map-marker icon" />
               <InputText
-                class="w-100"
+                class="w-100 border"
                 type="text"
                 aria-required=""
                 v-model="person.address"
-                :disabled="person.personId"
+                :disabled="person.personId && person.address && person.address.length > 100"
               />
             </span>
+            <p class="font-weight-7 small-text text-danger" v-if="person.personId && !person.address">Address is required</p>
           </div>
         </div>
       </div>
@@ -173,7 +174,7 @@
         <button
           class="default-btn add-btn"
           @click="confirmCheck"
-          :disabled="!person.name || person.length < 1"
+          :disabled="!person.name || person.name.length < 1 || !person.address"
         >
           Confirm
         </button>
@@ -315,7 +316,30 @@ export default {
           loaded.value = true;
           loading.value = false;
           autosearch.value = false;
-          appltoggle.value = true;
+          
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "error",
+              summary: "Checkin Error",
+              detail: "Ensure you have internet access and try again",
+              life: 3000,
+            });
+          } else if (err.message.includes("timeout")) {
+            toast.add({
+              severity: "error",
+              summary: "Checkin Error",
+              detail: "The request was taking too long, please reload and try again",
+              life: 3000,
+            });
+          } else {
+            toast.add({
+              severity: "error",
+              summary: "Checkin Error",
+              detail: "An error occurred, reload and try again",
+              life: 3000,
+            });
+          }
+          // appltoggle.value = true;
           console.log(err);
         });
       // }
