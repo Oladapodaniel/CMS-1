@@ -31,9 +31,11 @@
                 <a class="text-white" href="#">English</a>
               </li>
               <li class="nav-item lstyle">
+                <router-link :to="{ name: 'SignInPayment' }">
                 <a class="text-white" href="#"
                   >Your Account &nbsp; <i class="fas fa-user text-white"></i
                 ></a>
+                </router-link>
               </li>
             </div>
           </div>
@@ -263,46 +265,20 @@
                       <!-- <button type="button" class="btn btn-primary" >
             Launch demo modal
           </button> -->
-                      <!-- Modal -->
-                      <div
-                        class="modal fade"
-                        id="PaymentOptionModal"
-                        tabindex="-1"
-                        role="dialog"
-                        aria-labelledby="exampleModalCenterTitle"
-                        aria-hidden="true"
-                      >
-                        <div
-                          class="modal-dialog modal-dialog-centered"
-                          role="document"
-                        >
-                          <div class="modal-content">
-                            <div class="modal-header bg-modal">
-                              <h5
-                                class="modal-title"
-                                id="exampleModalLongTitle"
-                              >
-                                Payment methods
-                              </h5>
-                              <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                              >
-                                <span aria-hidden="true" ref="close"
-                                  >&times;</span
-                                >
-                              </button>
-                            </div>
-                            <div class="modal-body p-0 bg-modal pb-5">
-                              <PaymentOptionModal
-                                :amount="amount"
-                                :name="name"
-                                :close="close"
-                              />
-                            </div>
-                            <!-- <div class="modal-footer bg-modal">
+                    <!-- Modal -->
+                    <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header bg-modal">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true" ref="close">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body p-0 bg-modal pb-5">
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close"/>
+                          </div>
+                          <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Save changes</button>
                           </div> -->
@@ -359,7 +335,6 @@
                   <div class="col-md-3 d-sm-none d-md-block"></div>
                 </div>
               </div>
-              <!-- <div>{{ selectedContributionType }}</div> -->
               <!-- payment Methods area -->
               <!-- Footer area -->
               <div class="container mt-5">
@@ -434,11 +409,12 @@ export default {
     const oftenGive2 = ref(false);
     const oftenGive3 = ref(false);
     const oftenGive4 = ref(false);
-    const amount = ref("");
-    const name = ref("");
-    const phone = ref("");
-    const checked = ref(true);
-    const close = ref("");
+    const amount = ref("")
+    const name = ref("")
+    const phone = ref("")
+    const checked = ref(true)
+    const donationObj = ref({})
+    const close = ref("")
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -481,6 +457,7 @@ export default {
           formResponse.value = res.data;
           selectedContributionType.value = formResponse.value.currencyId;
           console.log(formResponse.value);
+          localStorage.setItem('tenantId', res.data.tenantID)
         })
         .catch((err) => console.log(err.response));
     };
@@ -507,44 +484,44 @@ export default {
     tcurrency();
 
     const donation = () => {
-      let donation = {
-        paymentFormId: formResponse.value.id,
-        churchLogoUrl: formResponse.value.churchLogo,
-        churchName: formResponse.value.churchName,
-        tenantID: formResponse.value.tenantID,
-        merchantID: formResponse.value.merchantId,
-        name: name.value,
-        email: "oladapodaniel10@gmail.com",
-        phone: phone.value,
-        orderID: formResponse.value.orderId,
-        currencyID: formResponse.value.currencyId,
-        paymentGateway: formResponse.value.paymentGateWays,
-        contributionItems: [
-          {
-            contributionItemId:
-              selectedContributionType.value.financialContributionID,
-            contributionItemName:
-              selectedContributionType.value.financialContribution.name,
-            amount: amount.value,
-            contributionCurrencyId: formResponse.value.currencyId,
-          },
-        ],
-      };
-      if (name.value !== "" || phone.value !== "") {
-        donation.isAnonymous = false;
-      } else {
-        donation.isAnonymous = true;
-      }
-      console.log(donation);
+          donationObj.value = {
+            paymentFormId: formResponse.value.id,
+            churchLogoUrl: formResponse.value.churchLogo,
+            churchName: formResponse.value.churchName,
+            tenantID: formResponse.value.tenantID,
+            merchantID: formResponse.value.merchantId,
+            name: name.value,
+            email: 'oladapodaniel10@gmail.com',
+            phone: phone.value,
+            orderID: formResponse.value.orderId,
+            currencyID: formResponse.value.currencyId,
+            paymentGateway: formResponse.value.paymentGateWays,
+            contributionItems: [
+                        {
+                          contributionItemId: selectedContributionType.value.financialContributionID,
+                          contributionItemName: selectedContributionType.value.financialContribution.name,
+                          amount: amount.value,
+                          contributionCurrencyId: formResponse.value.currencyId
+                        }
+            ]
 
-      try {
-        let res = axios.post("/donation", donation);
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-      }
-      console.log(formResponse.value);
-    };
+          }
+          if (name.value !== "" || phone.value !== "") {
+            donationObj.value.isAnonymous = false
+          } else {
+            donationObj.value.isAnonymous = true
+          }
+          console.log(donationObj.value)
+
+          try {
+            let  res = axios.post('/donation', donationObj.value)
+            console.log(res)
+          }
+          catch (error) {
+            console.log(error)
+          }
+          console.log(formResponse.value)
+    }
 
     return {
       hideTabOne,
@@ -567,7 +544,8 @@ export default {
       formResponse,
       phone,
       checked,
-      close,
+      donationObj,
+      close
     };
   },
 };
@@ -653,12 +631,12 @@ export default {
 .btt {
   width: 180px;
   height: 50px;
-  border-radius: 10px;
+  border-radius: 500px;
 }
 
 .bt {
-  background: #f17c30;
-  background: #136acd;
+  background: #b15702;
+  /* background: #136acd; */
   color: #fff;
 }
 

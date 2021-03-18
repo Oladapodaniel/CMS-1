@@ -590,6 +590,12 @@ const routes = [{
     name: 'SignInPayment',
     component: () =>
         import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignInPayment')
+},
+{
+    path: '/transactionpage/:userId',
+    name: 'TransactionPage',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
 }
 ]
 

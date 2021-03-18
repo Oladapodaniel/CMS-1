@@ -205,30 +205,14 @@
 
 <script>
 // import PaystackPay from "../../../components/payment/PaystackPay"
-import { ref, computed } from 'vue'
+// import { ref, computed } from 'vue'
 export default {
   components: {
     // PaystackPay
     // paystack
   },
-  props: ['amount','name', 'close'],
+  props: ['orderId', 'donation', 'close'],
   setup (props) {
-    const email = ref('oladapodaniel@gmail.com')
-    const paystackKey = ref(process.env.VUE_APP_PAYSTACK_API_KEY,)
-
-    const reference = computed(() => {
-      let text = "";
-      let possible =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      for (let i = 0; i < 10; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-      return text;
-    })
-
-    const processPayment = () => {
-       window.alert("Payment recieved")
-    }
-
 
     const payWithPaystack = () => {
       /*eslint no-undef: "warn"*/
@@ -238,6 +222,7 @@ export default {
         amount: 10 * 100,
         firstname: 'oladapo',
         lastname: "",
+        ref: props.orderId,
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           // toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
@@ -245,7 +230,7 @@ export default {
         },
         callback: function (response) {
           //Route to where you confirm payment status
-          console.log(response, "response");
+          console.log(response, "Payment Received");
           // var returnres = {
           //   smsUnit: totalSMSUnits.value,
           //   transaction_Reference: response.reference,
@@ -253,18 +238,16 @@ export default {
           // };
           //Route to where you confirm payment status
 
-          // axios
-          //   .post("/api/Payment/buySms", returnres)
-          //   .then((res) => {
-          //     console.log(res, "success data");
-          //     purchaseIsSuccessful.value = true;
-          //     store.dispatch("addPurchasedUnits", totalSMSUnits.value);
-          //   })
-          //   .catch((err) => {
-          //     // stopProgressBar();
-          //     // toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
-          //     console.log(err, "error confirming payment");
-          //   });
+          axios
+            .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
+            .then((res) => {
+              console.log(res, "success data");
+            })
+            .catch((err) => {
+              // stopProgressBar();
+              // toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
+              console.log(err, "error confirming payment");
+            });
             props.close.click()
         },
       });
@@ -272,7 +255,7 @@ export default {
     };
 
     return {
-      email, paystackKey, reference, processPayment, payWithPaystack
+      payWithPaystack
     }
     }
 
