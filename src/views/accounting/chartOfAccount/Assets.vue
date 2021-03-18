@@ -18,7 +18,8 @@
         </div>
         <div class="col-6 col-md-5">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
-          <i class="fa fa-pencil" aria-hidden="true"></i>
+          <i class="fa fa-pencil c-pointer" data-toggle="modal" data-target="#assetsModal" aria-hidden="true" @click="editAccount(item, itm)"></i>
+          <i class="pi pi-trash ml-2 c-pointer" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i>
         </div>
       </div>
       <div class="row row-border align-items-center py-3" v-if="item.accounts.length === 0">
@@ -26,19 +27,6 @@
           You have not added any inventory yet.
         </div>
       </div>
-      <!-- <div class="row row-border align-items-center">
-        <div class="col-6 col-md-2"></div>
-        <div class="col-6 col-md-3">
-          <div>Cash on Hand</div>
-          <div>Last Trasaction on Jan 21st, 2021</div>
-        </div>
-        <div class="col-6 col-md-5">
-          {{ item.description }}
-        </div>
-        <div class="col-6 col-md-2 text-right">
-          <i class="fa fa-pencil" aria-hidden="true"></i>
-        </div>
-      </div> -->
       <div class="row">
         <div class="col-10 offset-md-2 text-center text-md-left">
           <div class="add-account py-2">
@@ -88,13 +76,16 @@
             :currencies="currencyList"
             :financialAccountType="0"
             :index="0"
+            :account="accountToEdit"
             :accountGroupId="accountGroupId"
+            :currency="true"
           />
         </div>
       </div>
     </div>
   </div>
   <!-- END BT -->
+  <ConfirmDialog></ConfirmDialog>
 
   <!-- Primevue modal to add new account-->
   <!-- <h5>Modal</h5>
@@ -107,9 +98,13 @@ import axios from "@/gateway/backendapi";
 // import transaction_service from "../../../services/financials/transaction_service";
 import CreateAccountModal from "./components/CreateAccountForm";
 import transactionals from './utilities/transactionals';
+import ConfirmDialog from 'primevue/confirmdialog';
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 
 export default {
-  components: { CreateAccountModal },
+  components: { CreateAccountModal ,ConfirmDialog },
   props: [ "assets", "data" ],
   setup(props, { emit }) {
     const view = ref("view");
@@ -123,6 +118,8 @@ export default {
     const currencyList = ref([]);
     const inpFocus = ref("");
     const inpFocus2 = ref("");
+    const confirm = useConfirm();
+    const toast = useToast();
 
     const toggleCode = () => {
       showCode.value = !showCode.value;
@@ -151,6 +148,7 @@ export default {
     const accountGroupId = ref("");
     const setGroupId = (groupId) => {
       accountGroupId.value = groupId;
+      accountToEdit.value = { }
     }
 
     const getCurrenciesFromCountries = () => {
@@ -242,6 +240,37 @@ export default {
       }
     };
 
+    const accountToEdit = ref({ });
+    const editAccount = (group, account) => {
+      accountToEdit.value = account;
+      accountGroupId.value = group.name;
+    }
+
+    const deleteAccount = (id, index, indx) => {
+      confirm.require({
+          message: 'Are you sure you want to delete this account?',
+          header: 'Confirmation',
+          icon: 'pi pi-exclamation-triangle',
+          acceptClass: 'confirm-delete',
+          rejectClass: 'cancel-delete',
+          accept: async () => {
+              //callback to execute when user confirms the action
+              try {
+                const response = await chart_of_accounts.deleteAccount(id);
+                toast.add({severity:'success', summary:'Account Deleted', detail: `${response.response}`, life: 3000});
+                emit("asset-deleted", index, indx);
+              } catch (error) {
+                toast.add({severity:'error', summary:'Delete Error', detail:'Account not deleted', life: 3000});
+                console.log(error);
+              }
+          },
+          reject: () => {
+              //callback to execute when user rejects the action
+              // toast.add({severity:'error', summary:'Delete Error', detail:'Account not deleted', life: 3000});
+          }
+      });
+    }
+
     const cities = ref([
       {
         label: "Germany",
@@ -304,6 +333,9 @@ export default {
       closeAccountModal,
       setGroupId,
       accountGroupId,
+      editAccount,
+      accountToEdit,
+      deleteAccount,
       // selectAccountType,
       // selectedAccountType
     };

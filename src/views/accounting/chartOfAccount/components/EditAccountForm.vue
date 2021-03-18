@@ -84,7 +84,7 @@
                   </div>
                 </div>
 
-                <div class="row my-3" v-if="currency">
+                <div class="row my-3">
                   <div class="col-md-4 text-md-right">Account Currency</div>
                   <div class="col-md-7" id="currencySelect">
                     <Dropdown
@@ -189,7 +189,6 @@ export default {
     "accountGroupId",
     "index",
     "account",
-    "currency",
   ],
   components: { Dropdown },
   setup(props, { emit }) {
@@ -238,6 +237,7 @@ export default {
             emit("save-account", { success: true, type: props.financialAccountType });
             transactionals.getTransactionalAccounts(true);
         }
+        console.log(response, "save account response");
       } catch (error) {
         savingAccount.value = false;
         console.log(error);
@@ -262,14 +262,14 @@ export default {
         newAccount.value.financialFundID = selectedFund.value.id;
       }
       saveAccount(newAccount.value);
+      console.log(newAccount.value, "new account");
     };
 
     watch(() => {
+        console.log(props.account, "ACC");
       if (props.accountGroupId) {
-        selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.accountGroupId)
-      }
-      if (props.account) {
-        newAccount.value.name = props.account ? props.account.name : "";
+        selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.account.name)
+        console.log(selectedAccountType.value, "SSS");
       }
     })
     

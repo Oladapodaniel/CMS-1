@@ -18,7 +18,8 @@
         </div>
         <div class="col-6 col-md-5">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
-          <i class="fa fa-pencil" aria-hidden="true"></i>
+          <i class="fa fa-pencil c-pointer" aria-hidden="true" data-toggle="modal" data-target="#liabModal" @click="editAccount(item, itm)"></i>
+          <i class="pi pi-trash ml-2 c-pointer" aria-hidden="true"  @click="deleteAccount(itm.id, index, indx)"></i>
         </div>
       </div>
       <div class="row row-border align-items-center py-3" v-if="item.accounts.length === 0">
@@ -26,19 +27,6 @@
           You have not added any inventory yet.
         </div>
       </div>
-      <!-- <div class="row row-border align-items-center">
-        <div class="col-6 col-md-2"></div>
-        <div class="col-6 col-md-3">
-          <div>Cash on Hand</div>
-          <div>Last Trasaction on Jan 21st, 2021</div>
-        </div>
-        <div class="col-6 col-md-5">
-          {{ item.description }}
-        </div>
-        <div class="col-6 col-md-2 text-right">
-          <i class="fa fa-pencil" aria-hidden="true"></i>
-        </div>
-      </div> -->
       <div class="row">
         <div class="col-10 offset-md-2 text-center text-md-left">
           <div class="add-account py-2">
@@ -91,6 +79,8 @@
                 :financialAccountType="1"
                 :index="1"
                 :accountGroupId="accountGroupId"
+                :account="accountToEdit"
+                :currency="false"
                 @save-account="closeAccountModal"
               />
             </div>
@@ -98,6 +88,7 @@
           </div>
         </div>
       </div>
+      <ConfirmDialog></ConfirmDialog>
       <!-- END BT -->
     </div>
   </div>
@@ -107,12 +98,19 @@
 import { computed, ref } from "vue";
 import CreateAccountModal from "./components/CreateAccountForm";
 import transactionals from "./utilities/transactionals";
+import ConfirmDialog from 'primevue/confirmdialog';
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from 'primevue/usetoast';
+import chart_of_accounts from '../../../services/financials/chart_of_accounts';
+
 
 export default {
-    components: { CreateAccountModal },
+    components: { CreateAccountModal, ConfirmDialog },
     props: [ "data" ],
   setup(props, { emit }) {
     const view = ref(true);
+    const confirm = useConfirm();
+    const toast = useToast();
 
     const accounts = ref([]);
     const getAccounts = async () => {
@@ -147,6 +145,7 @@ export default {
     const accountGroupId = ref("");
     const setGroupId = (groupId) => {
       accountGroupId.value = groupId;
+      accountToEdit.value = { };
     }
 
     const closeAccountModalBtn = ref(null)
@@ -155,6 +154,37 @@ export default {
         if (data.success) {
             emit("reload");
         }
+    }
+
+    const accountToEdit = ref({ });
+    const editAccount = (group, account) => {
+      accountToEdit.value = account;
+      accountGroupId.value = group.name;
+    }
+
+    const deleteAccount = (id, index, indx) => {
+      confirm.require({
+          message: 'Are you sure you want to delete this account?',
+          header: 'Confirmation',
+          icon: 'pi pi-exclamation-triangle',
+          acceptClass: 'confirm-delete',
+          rejectClass: 'cancel-delete',
+          accept: async () => {
+              //callback to execute when user confirms the action
+              try {
+                const response = await chart_of_accounts.deleteAccount(id);
+                toast.add({severity:'success', summary:'Account Deleted', detail: `${response.response}`, life: 3000});
+                emit("liability-deleted", index, indx);
+              } catch (error) {
+                toast.add({severity:'error', summary:'Delete Error', detail:'Account not deleted', life: 3000});
+                console.log(error);
+              }
+          },
+          reject: () => {
+            //callback to execute when user rejects the action
+            
+          }
+      });
     }
 
     return {
@@ -166,7 +196,10 @@ export default {
       setGroupId,
       accountGroupId,
       closeAccountModal,
-      closeAccountModalBtn
+      closeAccountModalBtn,
+      deleteAccount,
+      editAccount,
+      accountToEdit,
     };
   },
 };

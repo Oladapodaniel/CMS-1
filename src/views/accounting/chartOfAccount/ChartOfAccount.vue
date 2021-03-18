@@ -73,26 +73,27 @@
                   "
                    :data="chartOfAccounts[0]"
                    @reload="getCharts"
+                   @asset-deleted="assetDeleted"
                 />
               </div>
               <div v-if="tab === 'liabilities'">
                 <div>
-                  <Liabilities :data="chartOfAccounts[1]" @reload="getCharts"  />
+                  <Liabilities @liability-deleted="liabilityDeleted" :data="chartOfAccounts[1]" @reload="getCharts"  />
                 </div>
               </div>
               <div v-if="tab == 'income'">
                 <div>
-                  <Income :data="chartOfAccounts[3]" @reload="getCharts"  />
+                  <Income @income-deleted="incomeDeleted" :data="chartOfAccounts[3]" @reload="getCharts"  />
                 </div>
               </div>
               <div v-if="tab === 'expenses'">
                 <div>
-                  <Expenses :data="chartOfAccounts[4]" @reload="getCharts" />
+                  <Expenses @expense-deleted="expenseDeleted" :data="chartOfAccounts[4]" @reload="getCharts" />
                 </div>
               </div>
               <div v-if="tab === 'equity'">
                 <div>
-                  <Equity :data="chartOfAccounts[2]" @save-fund="refreshCharts" />
+                  <Equity @equity-deleted="equityDeleted" :data="chartOfAccounts[2]" @save-fund="refreshCharts" />
                 </div>
               </div>
             </div>
@@ -281,6 +282,24 @@ export default {
         return sum;
     })
 
+    const assetDeleted = (index, indx) => {
+        chartOfAccounts.value[0].accountHeadsDTO[index].accounts.splice(indx ,1)
+    }
+
+    const liabilityDeleted = (index, indx) => {
+        chartOfAccounts.value[1].accountHeadsDTO[index].accounts.splice(indx ,1)
+    }
+
+    const incomeDeleted = (index, indx) => {
+        chartOfAccounts.value[3].accountHeadsDTO[index].accounts.splice(indx ,1)
+    }
+    const expenseDeleted = (index, indx) => {
+        chartOfAccounts.value[4].accountHeadsDTO[index].accounts.splice(indx ,1)
+    }
+    const equityDeleted = (index, indx) => {
+        chartOfAccounts.value[2].accountHeadsDTO[index].accounts.splice(indx ,1)
+    }
+
     return {
       tab,
       assets,
@@ -302,6 +321,11 @@ export default {
       totalIncome,
       totalExpenses,
       totalEquity,
+      assetDeleted,
+      liabilityDeleted,
+      incomeDeleted,
+      expenseDeleted,
+      equityDeleted,
     //   accountCategories,
     };
   },

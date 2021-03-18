@@ -18,7 +18,8 @@
         </div>
         <div class="col-6 col-md-5">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
-          <i class="fa fa-pencil" aria-hidden="true"></i>
+          <i class="fa fa-pencil" aria-hidden="true" data-toggle="modal" data-target="#fundModal" @click="editAccount(item, itm)"></i>
+          <i class="pi pi-trash" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i>
         </div>
       </div>
       <div class="row row-border align-items-center py-3" v-if="item.accounts.length === 0">
@@ -30,7 +31,7 @@
         <div class="col-10 offset-md-2 text-center text-md-left">
           <div class="add-account py-2">
             <a
-            @click="selectAccountType(item.id)"
+              @click="selectAccountType(item)"
               class="c-pointer text-decoration-none primary-text"
               data-toggle="modal"
               data-target="#fundModal"
@@ -78,6 +79,7 @@
                     <Dropdown
                       v-model="selectedFundType"
                       :options="fundTypes"
+                      :disabled="selectedFundType"
                       style="width: 100%"
                     />
                   </div>
@@ -147,8 +149,8 @@ export default {
     const toast = useToast();
     const accounts = ref([]);
     const fundTypes = [
-      "Unrestricted Funds Balances",
-      "Donor Restricted Funds Balances",
+      "Unrestricted Funds",
+      "Donor Restricted Funds",
     ];
     const selectedFundType = ref("");
 
@@ -212,8 +214,41 @@ export default {
     const accountTypes = transactionUtil.accountTypes;
 
     const selectedGroupId = ref("");
-    const selectAccountType = (groupId) => {
-        selectedGroupId.value = groupId;
+    const selectAccountType = (group) => {
+        selectedGroupId.value = group.id;
+        selectedFundType.value = group.name;
+    }
+
+    const accountToEdit = ref({ });
+    const editAccount = (group, account) => {
+        console.log(group, "group");
+        console.log(account, "accccc");
+      accountToEdit.value = account;
+    //   accountGroupId.value = group.name;
+    }
+
+    const deleteAccount = (id, index, indx) => {
+      confirm.require({
+          message: 'Are you sure you want to delete this account?',
+          header: 'Confirmation',
+          icon: 'pi pi-exclamation-triangle',
+          acceptClass: 'confirm-delete',
+          rejectClass: 'cancel-delete',
+          accept: async () => {
+            try {
+                const response = await chart_of_accounts.deleteFund(id);
+                toast.add({severity:'success', summary:'Account Deleted', detail: `${response.response}`, life: 3000});
+                emit("equity-deleted", index, indx);
+            } catch (error) {
+                toast.add({severity:'error', summary:'Delete Error', detail:'Account not deleted', life: 3000});
+                console.log(error);
+            }
+          },
+          reject: () => {
+            //callback to execute when user rejects the action
+            //   toast.add({severity:'error', summary:'Delete Error', detail:'Account not deleted', life: 3000});
+          }
+      });
     }
 
     return {
@@ -227,6 +262,9 @@ export default {
       savingFund,
       closeModalBtn,
       selectAccountType,
+      editAccount,
+      accountToEdit,
+      deleteAccount,
     };
   },
 };
