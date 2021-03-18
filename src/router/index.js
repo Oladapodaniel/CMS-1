@@ -129,10 +129,10 @@ const routes = [{
             import( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
     },
     {
-        path: 'emptyevent',
-        name: 'EmptyEvent',
+        path: 'events',
+        name: 'Events',
         component: () =>
-            import( /* webpackChunkName: "emptyevent" */ '@/views/event/EmptyEvent.vue')
+            import( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
     },
     {
         path: 'events',
@@ -501,6 +501,12 @@ const routes = [{
         name: 'OfferingReport',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
+    },
+    {
+        path: 'contributionCategory',
+        name: 'ContributionCategory',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/ContributionCategory')
     },
     {
         path: 'transactionlist',

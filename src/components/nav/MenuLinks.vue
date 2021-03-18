@@ -144,7 +144,7 @@
             :class="{ 'dd-hide-list': !eventsLinkDropped }"
           >
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/emptyevent`"
+              <router-link class="dd-link-item routelink" :to="`/tenant/events`"
                 >Events</router-link
               >
             </li>

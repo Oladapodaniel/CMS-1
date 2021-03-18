@@ -53,7 +53,7 @@
                         v-model="selectedMaritalStatus"
                         :options="maritalStatusArr"
                         optionLabel="value"
-                        placeholder="Marital status"
+                        :placeholder="selectedMaritalStatus ? selectedMaritalStatus.value : 'Marital status'"
                         style="width: 100%"
                       />
                     </div>
@@ -279,7 +279,7 @@
                       v-model="selectedAboutUsSource"
                       :options="howDidYouAboutUs"
                       optionLabel="name"
-                      placeholder="How did you hear about us?"
+                      :placeholder="selectedAboutUsSource ? selectedAboutUsSource.name : 'How did you hear about us?'"
                       style="width: 100%"
                     />
                   </div>
@@ -292,7 +292,7 @@
                     <Dropdown
                       v-model="selectedCommunicationMeans"
                       :options="comMeansArr"
-                      placeholder=" Means of communication"
+                      :placeholder="selectedCommunicationMeans ? selectedCommunicationMeans : 'Means of communication'"
                       style="width: 100%"
                     />
                   </div>
@@ -325,51 +325,7 @@
                 </div>
               </div>
 
-              <!-- <div class="input-field"> 
-                <label for="" class="label">Wedding Anniversary</label>
-                <div class="status-n-gender">
-                  <div class="date-picker">
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 111px">
-                        <Dropdown
-                         
-                          :options="months"
-                          placeholder="Month"
-                          @change="
-                            editAnnDateValue('month', person.monthOfWedding)
-                          "
-                          style="width: 100%"
-                        />
-                         <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/>
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 87px">
-                        <Dropdown
-                        
-                          :options="annDaysArr"
-                          placeholder="Day"
-                          style="width: 100%"
-                        />
-                        
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select" style="width: 113px">
-                        <Dropdown
-                       
-                          :options="birthYearsArr"
-                          placeholder="Year"
-                          style="width: 100%"
-                        />
-                        
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
+              
             </div>
 
             <div class="image-div other">
@@ -396,8 +352,8 @@
             }"
           >
             <div class="inputs mt-3">
-              <div class="input-field">
-                <span class="">
+              <div class="input-field" style="font-size: 15px">
+                <span style="position: relative; left: -9px;">
                   <label for="welcomeSms">Send welcome SMS</label>
                   <input
                     type="checkbox"
@@ -421,9 +377,9 @@
                 </span>
               </div>
 
-              <div class="input-field">
+              <!-- <div class="input-field"> -->
                 <!-- <label for="" class="label">Age</label> -->
-                <div class="cstm-select search-box">
+                <!-- <div class="cstm-select search-box">
                   <div class="cs-select" style="width: 330px">
                     <Dropdown
                       v-model="selectedFollowUp"
@@ -433,87 +389,16 @@
                     />
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <div class="image-div other"></div>
           </div>
         </div>
 
-        <!-- <div
-          class="add-info--con"
-          :class="{
-            'hide-tab': hideAddInfoTab,
-            'show-addinfo-tab': !hideAddInfoTab,
-          }"
-        >
-          <div class="label-text-box">
-            <p>Related information</p>
-            <small
-              >Including small groups and cell/house fellowship
-              membership</small
-            >
-          </div>
-          <div class="info-box">
-            <div class="nav-bar">
-              <div
-                class="groups box"
-                @click.prevent="() => (areaInView = 'groups')"
-                :class="{ 'white-bg': areaInView === 'groups' }"
-              >
-                <a class="tab">Groups</a>
-              </div>
-              <div
-                class="house-fel box"
-                @click.prevent="() => (areaInView = 'fellowship')"
-                :class="{ 'white-bg': areaInView === 'fellowship' }"
-              >
-                <a class="tab">House fellowship</a>
-              </div>
-              <div
-                class="notes box"
-                @click.prevent="() => (areaInView = 'notes')"
-                :class="{ 'white-bg': areaInView === 'notes' }"
-              >
-                <a class="tab">Notes</a>
-              </div>
-              <div
-                class="follow-up box"
-                @click.prevent="() => (areaInView = 'followup')"
-                :class="{ 'white-bg': areaInView === 'followup' }"
-              >
-                <a class="tab">Follow-up</a>
-              </div>
-            </div>
-            <div class="info-box-body">
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'groups'"
-              >
-                Add to Group
-              </button>
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'fellowship'"
-              >
-                Add to House fellowship
-              </button>
-              <button
-                @click.prevent="uploadImage"
-                class="info-btn"
-                v-if="areaInView === 'notes'"
-              >
-                New Notes
-              </button>
-            </div>
-          </div>
-        </div> -->
-
-        <div class="error-div">
+        <!-- <div class="error-div">
           <p v-if="!loading">{{ errMessage }}</p>
-        </div>
+        </div> -->
         <div class="inputs">
           <div class="submit-div">
             <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
@@ -760,6 +645,7 @@ import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
+import finish from "../../services/progressbar/progress"
 
 export default {
   components: { Dropdown, Dialog },
@@ -980,7 +866,7 @@ export default {
       console.log(birthMonth.value);
 
       console.log(firstTimersObj.value);
-      loading.value = true;
+
 
       if (route.params.firstTimerId) {
         let updateMember = {
@@ -1008,6 +894,7 @@ export default {
           updateMember.genderId = firstTimersObj.value.genderId;
         if (firstTimersObj.value.maritalStatusId)
           updateMember.maritalStatusId = firstTimersObj.value.maritalStatusId;
+console.log(updateMember)
 
         try {
           loading.value = true;
@@ -1031,7 +918,7 @@ export default {
           }
         } catch (err) {
           loading.value = false;
-          NProgress.done();
+          finish()
           if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
               severity: "warn",
@@ -1066,14 +953,23 @@ export default {
             //   type: "success",
             // });
             router.push("/tenant/firsttimerslist");
+
+            toast.add({
+              severity: "success",
+              summary: "Firsttimer Created",
+              detail: "Firsttimer was created succesfully",
+              life: 2500,
+            });
           })
           .catch((err) => {
-            // NProgress.done();
+            finish()
             loading.value = false;
-            // toast.show(`Saving failed`, {
-            //   position: "top-right",
-            //   type: "error",
-            // });
+            toast.add({
+              severity: "error",
+              summary: "Error Occurred",
+              detail: "Check your details and try again",
+              life: 2500,
+            });
             console.log(err);
           });
       }
@@ -1243,15 +1139,39 @@ export default {
             ftimerId.value = res.data.personId;
 
             firstTimersObj.value = res.data;
+            
             selectedGender.value = res.data.genderId ? genderArr.value.find(i => i.id === res.data.genderId) : { };
+            
             selectedMaritalStatus.value = res.data.maritalStatusId ? maritalStatusArr.value.find(i => i.id === res.data.maritalStatusId) : { };
+            
             selectedAboutUsSource.value = res.data.howDidYouAboutUsId ? howDidYouAboutUs.value.find(i => i.id === res.data.howDidYouAboutUsId) : { }
+            
+            selectedCommunicationMeans.value = res.data.communicationMeans ? comMeansArr.value[res.data.communicationMeans - 1] : ""
+            
+            selectedJoinInterest.value = res.data.interestedInJoining ? joinInterestArr.value[res.data.interestedInJoining - 1] : ""
+            
+            selectedVisitOption.value = res.data.wantsToBeVisited ? wantVisitArr.value[res.data.wantsToBeVisited - 1] : ""
+            console.log(wantVisitArr.value[res.data.wantsToBeVisited - 1], res.data.wantsToBeVisited)
+
             firstTimersObj.value.birthday = res.data.birthday ? Number(res.data.birthday) : "";
+            
             firstTimersObj.value.birthYear = res.data.birthYear ? +res.data.birthYear : "";
-            birthMonth.value = res.data.birthMont ? month.value[Number(res.data.birthMonth) - 1] : "";
+            
+            birthMonth.value = res.data.birthMonth ? month.value[Number(res.data.birthMonth) - 1] : "";
             console.log(eventsAttended.value, "EA");
+            
             selectedEventAttended.value = !res.data.activityID ? { } : eventsAttended.value.find(i => i.activityID === res.data.activityID) ? eventsAttended.value.find(i => i.activityID === res.data.activityID) : { }
-          });
+          })
+          .catch(err => {
+            finish()
+            console.log(err)
+            toast.add({
+              severity: "error",
+              summary: "Error getting details",
+              detail: "Unable to get person details, please try again",
+              life: 2500,
+            });
+          })
       }
     });
 

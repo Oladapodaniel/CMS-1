@@ -16,6 +16,7 @@ const setupService = {
         store.dispatch("membership/getFirstTimers");
         store.dispatch("groups/getGroups");
         store.dispatch('contributions/contributionList')
+        store.dispatch("communication/addSmsToSentList");
     }
 }
 

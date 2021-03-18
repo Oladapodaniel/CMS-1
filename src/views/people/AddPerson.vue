@@ -924,6 +924,7 @@ export default {
         getPersonMaritalStatusId();
         getPersonPeopleClassificationId();
         getPersonAgeGroupId();
+        console.log(res)
       });
     };
 

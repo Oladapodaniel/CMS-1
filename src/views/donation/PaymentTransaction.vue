@@ -276,7 +276,6 @@
             </div>
         </form>
         <Toast />
-        <div>{{ selectedBank }}</div>
     </div>
 </template>
 

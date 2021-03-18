@@ -101,9 +101,10 @@ var highchartsOptions = {
     //     y: 50,
     //   },
     // ];
+    console.log(props.summary)
     });
 
-    return { chart, getSummary };
+    return { chart, getSummary }
   },
 };
 </script>

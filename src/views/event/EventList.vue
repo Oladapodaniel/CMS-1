@@ -22,14 +22,26 @@
     </div>
   </div> -->
   <!-- <hr class="hr" /> -->
-  <!-- <div class="container">
-    <div class="row"> -->
+  <!-- <div class="container"> -->
+    <div class="row"> 
       <div class="col-sm-12">
         <div class="avg">Overall Average</div>
       </div>
-    <!-- </div> -->
+    </div>
+    
+    <div class="row mt-4"> 
+      <div class="col-sm-1 text-center default-btn" :class="{ 'active-btn': monthlyActiveBtn }" @click="toggleMonthlyClass">
+        <div>Monthly</div>
+      </div>
+      <div class="col-sm-1 ml-2 text-center default-btn" :class="{ 'active-btn': yearlyActiveBtn }" @click="toggleYearlyClass">
+        <div>Yearly</div>
+      </div>
+      <div class="col-sm-1 ml-2 text-center default-btn" :class="{ 'active-btn': allTimeActiveBtn }" @click="toggleAllTimeClass">
+        <div>All Time</div>
+      </div>
+    </div>
 
-    <div class="row avg-table">
+    <div class="row avg-table mt-4">
       <div class="col-6 col-md-3 first-row" v-tooltip.bottom="`${eventSummary.attendance ? eventSummary.attendance : 0 }`">
         <div>Attendance</div>
         <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 8 ? `${eventSummary.attendance.toString().slice(0, 8)}...` : eventSummary.attendance : 0}}</div>
@@ -54,9 +66,9 @@
   <!-- </div> -->
   <hr class="hr" />
   <!-- </div> -->
-  <div class="container">
+  <!-- <div class="container"> -->
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-12 p-0">
         <div class="table table-responsive">
           <div class="top-con">
             <!-- <div class="table-top my-2">
@@ -242,7 +254,108 @@
               </div>
             </div>
           </div>
-          <table class="w-100">
+          <div class="row table-header">
+                <div class="col-sm-1 d-none d-sm-block">
+                    STATUS
+                </div>
+                    <div class="col-sm-2 d-none d-sm-block">
+                    EVENT NAME
+                </div>
+                <div class="col-sm-2 d-none d-sm-block">
+                    TITLE
+                </div>
+                <div class="col-sm-2 d-none d-sm-block">
+                    DATE
+                </div>
+                <div class="col-sm-1 d-none d-sm-block" >
+                    ATTENDANCE
+                </div>
+                <div class="col-sm-2 d-none d-sm-block" >
+                    FIRST TIMERS
+                </div>
+                <div class="col-sm-2 d-none d-sm-block" >
+                    NEW CONVERTS
+                </div>
+            </div>
+
+            <div class="table-body row" v-for="(event, index) in filterEvents" :key="index">
+                <div class="col-6 d-block d-sm-none">
+                <div class="col-sm-3">
+                    DATE
+                </div>
+                    <div class="col-sm-2">
+                    EVENT
+                </div>
+                    <div class="col-sm-2">
+                    CONTRIBUTION
+                </div>
+                    <div class="col-sm-2">
+                    AMOUNT
+                </div>
+                    <div class="col-sm-2" >
+                    DONOR
+                </div>
+            </div>
+            <div class="col-6 col-sm-12">
+                <div class="row">
+                <div class="col-sm-1 p-2 align-self-center">
+                    <div class="td-first">Unsent</div>
+                </div>
+                <div class="col-sm-2 itemroute-color align-self-center">
+                    <div><router-link :to="`/tenant/event/${event.activityId}`" class="itemroute-color">{{event.eventName}}</router-link></div>
+                </div>
+                <div class="col-sm-2 itemroute-color align-self-center">
+                    <div>{{event.title}}</div>
+                </div>
+                <div class="col-sm-2 itemroute-color align-self-center">
+                    <div>{{moment.parseZone(new Date(event.activityDate).toDateString(),"YYYY MM DD HH ZZ")._i.substr(4, 11)}}</div>
+                </div>
+                <div class="col-sm-1 itemroute-color align-self-center">
+                     <div>{{ event.attendances }}</div>
+                </div>
+                <div class="col-sm-2 itemroute-color align-self-center">
+                     <div>{{ event.firstTimers }}</div>
+                </div>
+                <!-- <div class="col-sm-2">
+                     <div class="d-flex"> <div class="currency">NGN</div><div class="align-self-center ml-2" style="font-weight: 800;">{{ offering.amount }}</div></div>
+                </div> -->
+                <div class="col-sm-1 itemroute-color align-self-center" >
+                     <div>{{ event.newConverts }}</div>
+                </div>
+                <div class="col-sm-1 align-self-center">
+                    <div class="dropdown">
+              <i
+                class="fas fa-ellipsis-v cursor-pointer"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></i>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+               
+               <router-link :to="`/tenant/event/${event.activityId}`">
+                <a class="dropdown-item elipsis-items">
+                 Edit
+                </a>
+               </router-link>
+                <!-- <a
+                  class="dropdown-item elipsis-items"
+                  @click="showConfirmModal(offering.id)"
+                  >Delete</a
+                > -->
+              </div>
+            </div>
+            </div>
+            </div>
+          
+                </div>
+            </div>
+            <div class="col-12">
+                    <div class="table-footer">
+                      <Pagination  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
+                    </div>
+                </div>
+          <!-- <table class="w-100">
             <thead class="thead">
               <tr>
                 <th>STATUS</th>
@@ -263,9 +376,9 @@
                 <td class="itemroute-color">
                   {{
                     moment.parseZone(
-                      new Date(event.activityDate).toLocaleDateString(),
+                      new Date(event.activityDate).toDateString(),
                       "YYYY MM DD HH ZZ"
-                    )._i
+                    )._i.substr(4, 11)
                   }}
                 </td>
                 <td class="itemroute-color">{{ event.attendances }}</td>
@@ -280,7 +393,7 @@
                 aria-haspopup="true"
                 aria-expanded="false"
               ></i>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> -->
                 <!-- <a class="dropdown-item elipsis-items" v-if="pers.mobilePhone">
                   <router-link
                     :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
@@ -293,23 +406,23 @@
                     >Send Email</router-link
                   >
                 </a> -->
-                <a class="dropdown-item elipsis-items">
+                <!-- <a class="dropdown-item elipsis-items">
                   <router-link :to="`/tenant/event/${event.activityId}`"
                     >Edit</router-link
                   >
-                </a>
+                </a> -->
                 <!-- <a
                   class="dropdown-item elipsis-items"
                   href="#"
                   @click.prevent="showConfirmModal(event.activityId)"
                   >Delete</a
                 > -->
-              </div>
+              <!-- </div>
             </div>
                 </td>
               </tr>
             </tbody>
-          </table>
+          </table> -->
 
             <ConfirmDialog />
             <Toast />
@@ -327,7 +440,7 @@
         </div>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -338,39 +451,27 @@ import { useConfirm } from "primevue/useConfirm";
 import { useToast } from 'primevue/usetoast';
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice"
-import stopProgressBar from "../../services/progressbar/progress";
+// import stopProgressBar from "../../services/progressbar/progress";
 import Tooltip from 'primevue/tooltip';
 export default {
   directives: {
       'tooltip': Tooltip
   },
-  setup() {
-    const events = ref(getEventList());
+  props: ['eventList'],
+  setup(props) {
+
     const filterFormIsVissible = ref(false);
     const searchIsVisible = ref(false);
-    // const attendanceAverage = ref(null)
-    // const firstTimerAverage = ref(null)
-    // const newConvertAverage = ref(null)
+
     const eventSummary = ref({});
     const store = useStore();
     const userCurrency = ref(store.getters.currency)
     const searchText = ref("")
+    const monthlyActiveBtn = ref(true)
+    const yearlyActiveBtn = ref(false)
+    const allTimeActiveBtn = ref(false)
 
-    async function getEventList() {
-      return await axios
-        .get("/api/eventreports/eventReports")
-        .then((res) => {
-          events.value = res.data;
-          console.log(res.data);
-          // attendanceAverage.value = res.data.map(i => { return i.attendances }).reduce((a, b) => { return a + b })
-          // firstTimerAverage.value = res.data.map(i => { return i.firstTimers }).reduce((a, b) => { return a + b })
-          // newConvertAverage.value = res.data.map(i => { return i.newConverts }).reduce((a, b) => { return a + b })
-        })
-        .catch((err) => {
-          stopProgressBar();
-          console.log(err)
-        });
-    }
+  
 
     const getEventSummary = async () => {
       try {
@@ -403,11 +504,11 @@ export default {
 
   const filterEvents = computed(() => {
     if (searchText.value !== "") {
-          return events.value.filter(i => {
+          return props.eventList.filter(i => {
             return i.eventName.toLowerCase().includes(searchText.value.toLowerCase())
           })
         } else {
-          return events.value
+          return props.eventList
         }
   })
 
@@ -463,6 +564,23 @@ const deleteMember = (id) => {
         }
         
 
+    const toggleMonthlyClass = () => {
+      monthlyActiveBtn.value = !monthlyActiveBtn.value
+      yearlyActiveBtn.value = false
+      allTimeActiveBtn.value = false
+    }
+
+    const toggleYearlyClass = () => {
+      yearlyActiveBtn.value = !yearlyActiveBtn.value
+      allTimeActiveBtn.value = false
+      monthlyActiveBtn.value = false
+    }
+
+    const toggleAllTimeClass = () => {
+      allTimeActiveBtn.value = !allTimeActiveBtn.value
+      yearlyActiveBtn.value = false
+      monthlyActiveBtn.value = false
+    }
 
     // const attendanceAverage = computed(() => {
     // return events.value.reduce( (a, b) => { return a.attendances + b.attendances })
@@ -472,7 +590,6 @@ const deleteMember = (id) => {
     // })
 
     return {
-      events,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       searchIsVisible,
@@ -483,7 +600,13 @@ const deleteMember = (id) => {
       filterEvents,
       searchText,
       showConfirmModal,
-      deleteMember
+      deleteMember,
+      monthlyActiveBtn,
+      yearlyActiveBtn,
+      allTimeActiveBtn,
+      toggleMonthlyClass,
+      toggleYearlyClass,
+      toggleAllTimeClass
     };
   },
 };
@@ -807,10 +930,10 @@ const deleteMember = (id) => {
 }
 
 .avg-table {
-  margin-top: 2em;
+  margin-top: 1em;
   border: 1px solid #dde2e6;
+  box-shadow: 0px 3px 6px #2c28281c;
   border-radius: 10px;
-  margin: 2em 10px;
   padding: 10px;
   border-radius: 30px;
 }
@@ -852,6 +975,16 @@ const deleteMember = (id) => {
 
 .top-con {
   padding: 0px 25px;
+}
+
+.default-btn {
+  border: none;
+  box-shadow: 0px 3px 6px #2c28281c;
+  border: 1px solid #dde2e6;
+}
+
+.active-btn {
+  background: #0e74c721;
 }
 
 @media screen and (max-width: 500px) {
@@ -1038,5 +1171,20 @@ const deleteMember = (id) => {
     margin-bottom: 10px !important;
     min-height: 390px !important;
   }
+}
+
+.table-header {
+    padding: 12px;
+    color: black;
+    box-shadow: none;
+    font-size: 11px;
+    font-weight: 700
+}
+
+.table-body {
+    padding: 12px;
+    border-bottom: 1.5px solid #6d6d6d19
+    
+
 }
 </style>
