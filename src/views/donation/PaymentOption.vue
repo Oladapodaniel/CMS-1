@@ -1,46 +1,41 @@
 <template>
     <div>
         <div class="container-wide">
-            <div class="row mt-4 mx-sm-0 sub-con">
+            <div class="row mt-4 ">
                 <div class="col-md-12 col-sm-12 col-lg-12 my-3 pb-3 border-bottom">
                     <h5 class="page-header">Payment Options</h5>
                 </div>
-                <div class="col-4 offset-md-2 header-contri">Contribution Type</div>
-                <div class="col-5 header-contri">Amount</div>
-                <div class="col-12 mb-3">
-                    <div class="row" v-for="(item, index) in contributionItems" :key="index">
-                    <div class="col-md-4 offset-md-2 pt-2">
-                        <div>{{ item.offType }}</div>
-                    </div>
-                    <div class="col-md-5">{{ item.amount }}</div>
-                    </div>
+                <div class="col-sm-5 offset-1 header-contri mt-3">{{ paymentData.name ? paymentData.name : paymentData.title }}</div>
+                <div class="col-10 offset-1 text-sm-right offset-sm-0 col-sm-4 edit mt-3" @click="editPayment"><i class="fa fa-edit"></i> Edit Payment Details</div>
+                <!-- <div class="col-10 offset-1 mt-4" style="font-size: 1.1em">CONTRIBUTION ITEMS</div> -->
+                <div class="col-8 offset-1 mt-3" v-for="item in paymentData.contributionItems" :key="item.id">
+                        <div style="font-size: 1.1em"><i class="pi pi-envelope"> &nbsp;&nbsp;</i>{{ item.name }}</div>
                 </div>
             </div>
                 
-                
-                <div>
-                <div class="col-md-12 mt-5 mb-2 border-bottom">
-                
-                </div>
-                 <div class="col-md-6 offset-md-2 mb-1">
-                      <h5 class="header-contri my-4">Available options for payment</h5>
-                </div>
+
+
+                 
                 <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded" @click="toggleLink">
+                    <div class="col-md-6 offset-md-1 mt-5">
+                        <h5 class="header-contri2 my-4">Available options for payment</h5>
+                    </div>
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded" @click="toggleLink">
                             <div class="row">
-                            <div class="col-md-2 col-sm-2 image mt-3">
+                            <div class="col-3 col-sm-2 image mt-3">
                                 <img src="../../assets/group.svg" alt="marked Attendance image">
 
                             </div>
-                            <div class="col-md-10 col-sm-10  mt-3">
-                                <a class="c-pointer text-decoration-none"><h4 class="header4">Direct Payment Link</h4></a>
-                                <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
+                            <div class="col-9 col-sm-10  mt-3">
+                                <a class="c-pointer text-decoration-none"><h4 class="header4">Web Payment Link</h4></a>
+                                <p class="para">Make your payment online via this link provided.</p>
                             </div>
                             </div>
                         </div>
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 d-flex align-items-center justify-content-center" :class="{ 'show' : displayLink, 'hide' : !displayLink }">
-                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="checkinLink"  @click="copyLink" :value="`https://my.churchplus.co/checkin/e/${route.query.code}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
+                        <div class="col-md-10 col-sm-11 offset-1  col-lg-9 d-flex align-items-center justify-content-center" :class="{ 'show' : displayLink, 'hide' : !displayLink }">
+                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="paymentLink"  @click="copyLink" :value="`https://give.churchplus.co/${route.params.paymentId}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
                         </div>
+                        <!-- <div>{{ route.params.paymentId }}</div> -->
                     
                 </div>
                 <div class="col-md-12 mb-3">
@@ -70,48 +65,59 @@
                 </div> -->
                  <div class="col-md-12 mb-3">
                 </div>
-                   <!-- <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded">
+                   <div class="row w-100">
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded">
                             <div class="row">
-                            <div class="col-md-2 col-sm-2 image mt-3">
+                            <div class="col-3 col-md-2 col-sm-2 image mt-3">
                                 <img src="../../assets/group2.svg" alt="marked Attendance image">
 
                             </div>
-                            <div class="col-md-10 col-sm-10  mt-3">
+                            <div class="col-9 col-sm-10  mt-3">
                                 <h4 class="header4">Wordpress Plugin</h4>
                                 <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
                             </div>
                             </div>
                         </div>
                     
-                </div> -->
+                </div>
                 <div class="col-md-12 mb-3">
                 </div>
-                   <!-- <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 border rounded" @click="toggleIFrame">
+                   <div class="row w-100">
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded" @click="toggleIFrame">
                             <div class="row">
-                            <div class="col-md-2 col-sm-2 image mt-3">
+                            <div class="col-3 col-sm-2 col-sm-2 image mt-3">
                                 <img src="../../assets/group.svg" alt="marked Attendance image">
 
                             </div>
-                            <div class="col-md-10 col-sm-10  mt-3">
+                            <div class="col-9  col-sm-10  mt-3">
                                 <h4 class="header4">iFrame</h4>
-                                <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
+                                <p class="para">Make your payment via this iFrame link provided below</p>
                             </div>
                             </div>
                         </div>
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 d-flex align-items-center justify-content-center" :class="{ 'show-iFrame' : displayIFrame, 'hide' : !displayIFrame }">
-                            <div>https://mylordmylove.com</div>
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 d-flex align-items-center justify-content-center" :class="{ 'show-iFrame' : displayIFrame, 'hide' : !displayIFrame }">
+      
+                  
+                                <!-- <code class="text-dark text-center">{{iFrameLink}}</code> -->
+                                <p class="para">
+                                    <span class="d-flex align-items-center">
+                                    <code class="w-100">
+                                        <textarea rows="3" ref="iframeLink"  @click="copyIframeLink" :value="`${iFrameLink}`" class="form-control w-100 p-auto">
+                                        </textarea>
+                                    </code>
+                                    <i class="pi pi-copy ml-2 c-pointer" @click="copyIframeLink" style="font-size: 22px"></i>
+                                    </span>
+                                </p>
+                          
                         </div>
                     
-                </div> -->
+                </div>
                 
                 <div class="col-md-12 mb-3">
                 </div>
-            </div>
 
         </div>
-
+    <Toast />
     </div>
 </template>
 
@@ -122,18 +128,28 @@
 import { useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
+import router from '../../router';
+import { useToast } from "primevue/usetoast";
+import axios from "@/gateway/backendapi";
 
 
     export default {
-        // components: { Dropdown, MultiSelect},
+        
 
         setup() {
             const route = useRoute();
-            const contributionItems = ref([])
+            const toast = useToast()
+            const paymentData = ref({})
  
             const displayLink = ref(false)
             const displayQr = ref(false)
             const displayIFrame = ref(false)
+            // const contributionItems = ref([])
+            const iFrameLink = ref(`<iframe src="give.churchplus.co/${route.params.paymentId}"></iframe>`)
+            const paymentLink = ref("")
+            const iframeLink = ref("")
+            const title = ref("")
+            
 
             const toggleLink = () => {
                 displayLink.value = !displayLink.value
@@ -163,13 +179,66 @@ import { useStore } from 'vuex';
             //     selectedGroups.value.push({ name: route.query.groupName, id: route.query.groupId })
             // }
 
-            onMounted(() => {
+            onMounted(async() => {
                 let store = useStore()
-                console.log(store.getters['contributions/contributionItems'])
-                contributionItems.value = store.getters['contributions/contributionItems']
+                // console.log(route.params, "userouteeeee")
+                
+                let storedData = store.getters['contributions/paymentData']
+                // Check if the Object is empty   
+                if (Object.keys(storedData).length === 0) {
+                    try {
+                        const res = await axios.get(`/api/PaymentForm/GetOne?paymentFormID=${route.params.paymentId}`);
+                        console.log(res, 'dataaaaaaaa')
+                        paymentData.value.title = res.data.name
+                        paymentData.value.contributionItems = res.data.contributionItems.map(i => i.financialContribution)
+                    }
+                    catch (err) {
+                        console.log(err)
+                    }
+                }  else {
+                    paymentData.value.title = store.getters['contributions/paymentData'].name
+                    paymentData.value.contributionItems = store.getters['contributions/paymentData'].contributionItems.map(i => i.financialContribution)
+                    console.log(store.getters['contributions/paymentData'], 'yeaaaa')
+                }
+                
+                
             })
+            const editPayment = () => {
+                router.push(`/tenant/payments/${route.params.paymentId}`)
+            }
+
+            const copyLink = () => {
+                paymentLink.value.select();
+                paymentLink.value.setSelectionRange(0, paymentLink.value.value.length); /* For mobile devices */
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+                toast.add({
+                    severity: "info",
+                    summary: "Link Copied",
+                    detail: "Payment link copied to your clipboard",
+                    life: 3000,
+                });
+            }
+            
+            const copyIframeLink = () => {
+                iframeLink.value.select();
+                iframeLink.value.setSelectionRange(0, iframeLink.value.value.length); /* For mobile devices */
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+                toast.add({
+                    severity: "info",
+                    summary: "Link Copied",
+                    detail: "Payment link copied to your clipboard",
+                    life: 3000,
+                });
+            }
+
+            
+
             return {
-                displayLink, route, toggleLink, displayQr, toggleQr, toggleIFrame, displayIFrame, contributionItems
+                displayLink, route, toggleLink, displayQr, toggleQr, toggleIFrame, displayIFrame, paymentData, iFrameLink, editPayment, copyLink,  paymentLink, copyIframeLink, iframeLink, title
             }
         }
 
@@ -251,8 +320,7 @@ letter-spacing: var(--unnamed-character-spacing-0);
 text-align: left;
 font: normal normal normal 14px/19px Nunito Sans;
 letter-spacing: 0px;
-color: #02172E;
-opacity: 0.8;
+
 }
 
 .container{
@@ -304,12 +372,30 @@ opacity: 0.8;
 }
 
 .header-contri {
+     font-size: 25px; 
+     font-weight: 600;
+}
+.header-contri2 {
      font-size: 20px; 
-     font-weight: 700;
+     font-weight: 600;
 }
 
 .para {
     width: 95%;
+    
 }
+.para input {
+    color: black;
+}
+
+.para textarea  {
+    color: black;
+    /* font-family: 'Comic Sans Ms'; */
+}
+
+.edit {
+    color: #0b71d6
+}
+
 
 </style>
