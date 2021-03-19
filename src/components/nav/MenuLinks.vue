@@ -209,6 +209,11 @@
                 >Charts of Account</router-link
               >
             </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/payment"
+                >Payment Form</router-link
+              >
+            </li>
           </ul>
 
           <!-- Hidden -->
