@@ -129,10 +129,10 @@ const routes = [{
             import( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
     },
     {
-        path: 'emptyevent',
-        name: 'EmptyEvent',
+        path: 'events',
+        name: 'Events',
         component: () =>
-            import( /* webpackChunkName: "emptyevent" */ '@/views/event/EmptyEvent.vue')
+            import( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
     },
     {
         path: 'events',
@@ -509,6 +509,12 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
     },
     {
+        path: 'contributionCategory',
+        name: 'ContributionCategory',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/ContributionCategory')
+    },
+    {
         path: 'transactionlist',
         name: 'TransactionList',
         component: () =>
@@ -568,7 +574,7 @@ const routes = [{
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm3')
 },
 {
-    path: '/onlinegivingform4',
+    path: '/:userId?',
     name: 'OnlineGiving4',
     component: () =>
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm4')
@@ -586,16 +592,22 @@ const routes = [{
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/PaymentGivingForm2')
 },
 {
-    path: '/signuppayment',
+    path: '/signuppayment/:userId?',
     name: 'SignUpPayment',
     component: () =>
         import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignUpPayment')
 },
 {
-    path: '/signinpayment',
+    path: '/signinpayment/:userId?',
     name: 'SignInPayment',
     component: () =>
         import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignInPayment')
+},
+{
+    path: '/transactionpage/:userId?',
+    name: 'TransactionPage',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
 }
 ]
 

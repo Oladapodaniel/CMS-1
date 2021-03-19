@@ -104,57 +104,57 @@
            
             <div class="row table-header">
                 <div class="col-sm-3 d-none d-sm-block">
-                    DATE
+                    NAME
+                </div>
+                    <div class="col-sm-3 d-none d-sm-block">
+                    CASH ACCOUNT
+                </div>
+                    <div class="col-sm-3 d-none d-sm-block">
+                    INCOME ACCOUNT
                 </div>
                     <div class="col-sm-2 d-none d-sm-block">
-                    EVENT
+                    REMITTANCE
                 </div>
-                    <div class="col-sm-2 d-none d-sm-block">
-                    CONTRIBUTION
-                </div>
-                    <div class="col-sm-2 d-none d-sm-block">
-                    AMOUNT
-                </div>
-                    <div class="col-sm-2 d-none d-sm-block" >
+                    <!-- <div class="col-sm-2 d-none d-sm-block" >
                     DONOR
-                </div>
+                </div> -->
             </div>
 
             <div class="table-body row" v-for="offering in searchContribution" :key="offering.id">
                 <div class="col-6 d-block d-sm-none">
                 <div class="col-sm-3">
-                    DATE
+                    NAME
                 </div>
                     <div class="col-sm-2">
-                    EVENT
+                    CASH ACCOUNT
                 </div>
                     <div class="col-sm-2">
-                    CONTRIBUTION
+                    INCOME ACCOUNT
                 </div>
                     <div class="col-sm-2">
-                    AMOUNT
+                    REMITTANCE
                 </div>
-                    <div class="col-sm-2" >
-                    DONOR
-                </div>
+                    <!-- <div class="col-sm-2" >
+                    
+                </div> -->
             </div>
             <div class="col-6 col-sm-12">
                 <div class="row">
                 <div class="col-sm-3">
-                    <div>{{ moment.parseZone(new Date(offering.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</div>
+                    <div>{{ offering.name }}</div>
+                </div>
+                <div class="col-sm-3">
+                     <div>{{ offering.cashBankAccount }}</div>
+                </div>
+                <div class="col-sm-3">
+                     <div>{{ offering.incomeAccount }}</div>
                 </div>
                 <div class="col-sm-2">
-                     <div>{{ offering.eventName ? offering.eventName : "Online Giving" }}</div>
+                     <div>{{ offering.remiittances }}</div>
                 </div>
-                <div class="col-sm-2">
-                     <div>{{ offering.contribution }}</div>
-                </div>
-                <div class="col-sm-2">
-                     <div class="d-flex"> <div class="currency">NGN</div><div class="align-self-center ml-2" style="font-weight: 800;">{{ offering.amount }}</div></div>
-                </div>
-                <div class="col-sm-2" >
+                <!-- <div class="col-sm-2" >
                      <div>{{ offering.donor }}</div>
-                </div>
+                </div> -->
                 <div class="col-sm-1">
                     <div class="dropdown">
               <i
@@ -210,7 +210,7 @@ import { useToast } from "primevue/usetoast";
 import finish from '../../../services/progressbar/progress'
 
 export default {
-  props: ["contributionTransactions"],
+  props: ["contributionItems"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
@@ -255,13 +255,13 @@ export default {
 
     const searchContribution = computed(() => {
       if (searchText.value !== "") {
-        return props.contributionTransactions.filter((i) => {
-          return i.contribution
+        return props.contributionItems.filter((i) => {
+          return i.name
             .toLowerCase()
             .includes(searchText.value.toLowerCase());
         });
       } else {
-        return props.contributionTransactions;
+        return props.contributionItems;
       }
     });
 
@@ -344,7 +344,7 @@ export default {
     };
 
     const offeringCount = computed(() => {
-      if (props.contributionTransactions.length > 100) return Math.ceil(props.contributionTransactions.length / 100);
+      if (props.contributionItems.length > 100) return Math.ceil(props.contributionItems.length / 100);
       return 1;
     })
 
@@ -791,8 +791,7 @@ export default {
     padding: 12px;
     color: black;
     box-shadow: none;
-    font-size: 11px;
-    font-weight: 700
+    font-size: 16px;
 }
 
 .table-body {

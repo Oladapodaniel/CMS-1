@@ -6,7 +6,7 @@
       <div class="container">
         <nav class="navbar navbar-expand-lg nav-color2">
           <a class="navbar-brand" href="#">
-            <img v-bind:src="formResponse.churchLogo"  width="100px" alt="" />
+            <img v-bind:src="formResponse.churchLogo" width="100px" alt="" />
           </a>
           <button
             class="navbar-toggler"
@@ -23,18 +23,17 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="text-white" href="#">{{ formResponse.churchName }}</a
-                >
+                <a class="text-white" href="#">{{ formResponse.churchName }}</a>
               </li>
             </ul>
             <div class="form-inline my-2 my-lg-0">
-              <li class="nav-item lstyle mr-3">
+              <!-- <li class="nav-item lstyle mr-3">
                 <a class="text-white" href="#">English</a>
-              </li>
-              <li class="nav-item lstyle">
-                <a class="text-white" href="#"
-                  >Your Account &nbsp; <i class="fas fa-user text-white"></i
-                ></a>
+              </li> -->
+              <li class="nav-item lstyle" @click="checkForToken">
+                <div class="text-white" href="#" style="cursor: pointer"
+                  >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Your Account"}} &nbsp; <i class="fas fa-user text-white"></i
+                ></div>
               </li>
             </div>
           </div>
@@ -57,12 +56,14 @@
             <div class="container">
               <div class="row px-4">
                 <div class="col-md-3 d-sm-none"></div>
-
+              <transition name="move" mode="out-in">
                 <div
                   class="col-sm-10 col-md-8 mx-auto form-area shadow p-5 mb-5 bg-white rounded MIDDLE"
+                  v-if="!paymentSuccessful"
+                  key="form"
                 >
                   <div class="row">
-                    <div class="col-md-12 mx-auto my-3 px-0 px-3">
+                    <div class="col-md-4 my-3 pr-md-0">
                       <label class="hfont">Purpose</label>
 
                       <Dropdown
@@ -73,37 +74,29 @@
                         class="w-100 px-0"
                       />
                     </div>
-                  </div>
+                    <div class="col-md-4 my-3">
+                      <label class="hfont">Currency</label>
 
-                  <div class="row d-flex">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-12">
-                          <label class="hfont">Amount</label>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-6 col-sm-4 pr-2">
-                          <Dropdown
+                       <Dropdown
                             v-model="dfaultCurrency"
                             :options="currencyInput"
                             optionLabel="shortCode"
                             :placeholder="dfaultCurrency.shortCode"
                             class="w-100 px-0"
                           />
-                        </div>
-                        <div class="col-6 col-sm-8  pl-0">
-                          <input
+                    </div>
+                    <div class="col-md-4 my-3 pl-md-0">
+                      <label class="hfont">Amount</label>
+
+                      <input
                             class="form-control col-md-12 text-left imp1 border"
                             type="text"
                             v-model="amount"
                             placeholder="0.00"
                           />
-                        </div>
-                      </div>
                     </div>
                   </div>
-                  <hr />
+
 
                   <!-- start of dynamic Area 1-->
                   <div class="row">
@@ -116,16 +109,16 @@
                         <div class="col-12 mt-1 imp1">
                           <div class="row border rounded">
                             <div
-                              class="col-md-6 fone p-3 text-center borderl default-color1"
-                              :class="{ 'default-color': hideTabOne }"
+                              class="col-md-6 fone p-3 text-center borderl header-color1"
+                              :class="{ 'header-color': hideTabOne }"
                               @click="toggleTabOne"
                             >
                               <span><i class="fas fa-donate"></i></span>&nbsp;
                               Give One Time
                             </div>
                             <div
-                              class="col-md-6 p-3 fone text-center btn-default default-color1"
-                              :class="{ 'default-color': !hideTabOne }"
+                              class="col-md-6 p-3 fone text-center btn-default header-color1"
+                              :class="{ 'header-color': !hideTabOne }"
                               @click="toggleTabTwo"
                             >
                               <span
@@ -149,30 +142,30 @@
                         <div class="col-12 mt-1">
                           <div class="row border rounded">
                             <div
-                              :class="{ 'default-color': oftenGive1 }"
-                              class="col-md-3 fone p-2 text-center default-color1 borderl"
+                              :class="{ 'header-color': oftenGive1 }"
+                              class="col-md-3 fone p-2 text-center header-color1 borderl"
                               @click="givingOften"
                             >
                               Every Week
                             </div>
                             <div
-                              :class="{ 'default-color': oftenGive2 }"
-                              class="col-md-3 fone p-2 default-color1 text-center borderl"
+                              :class="{ 'header-color': oftenGive2 }"
+                              class="col-md-3 fone p-2 header-color1 text-center borderl"
                               @click="givingOften"
                             >
                               Every 2 Week
                             </div>
                             <div
-                              :class="{ 'default-color': oftenGive3 }"
-                              class="col-md-3 fone p-2 default-color1 text-center borderl"
+                              :class="{ 'header-color': oftenGive3 }"
+                              class="col-md-3 fone p-2 header-color1 text-center borderl"
                               @click="givingOften"
                             >
                               Every month
                             </div>
                             <div
-                              class="col-md-3 p-2 fone text-center default-color1"
+                              class="col-md-3 p-2 fone text-center header-color1"
                               @click="givingOften"
-                              :class="{ 'default-color': oftenGive4 }"
+                              :class="{ 'header-color': oftenGive4 }"
                             >
                               1st and 15th monthly
                             </div>
@@ -203,7 +196,7 @@
                       <Checkbox id="binary" v-model="checked" :binary="true" />
                     </div>
                     <div class="col-10">
-                      <label for="binary">As an anonymous</label>
+                      <label for="binary">Give as anonymous</label>
                     </div>
                   </div>
 
@@ -217,29 +210,56 @@
                         <div class="col-md-12 mx-auto my-2 px-0 px-2">
                           <label class="hfont">Name</label>
                           <input
-                            class="form-control col-md-12 text-left border"
+                            class="form-control col-md-12 text-left border imp1"
                             type="text"
                             placeholder="Enter your name"
                             v-model="name"
                           />
-                        </div>
+
+                    <!-- <div class="row d-flex" v-if="!checked">
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-12 mx-auto my-2 px-0 px-2">
+                            <label class="hfont">Name</label>
+                            <input
+                              class="form-control col-md-12 text-left border"
+                              type="text"
+                              placeholder="Enter your name"
+                              v-model="name"
+                            />
+                          </div>
+>>>>>>> midas -->
+                      </div>
                       </div>
                     </div>
+
 
                     <div class="col-md-6">
                       <div class="row">
                         <div class="col-md-12 mx-auto my-2 px-0 px-2">
                           <label class="hfont">Phone Number</label>
                           <input
-                            class="form-control col-md-12 text-left border"
+                            class="form-control col-md-12 text-left border imp1"
                             type="text"
                             v-model="phone"
 
                           />
+
+                      <!-- <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-12 mx-auto my-2 px-0 px-2">
+                            <label class="hfont">Phone Number</label>
+                            <input
+                              class="form-control col-md-12 text-left border"
+                              type="text"
+                              v-model="phone"
+                            />
+                          </div>
+>-->
                         </div>
                       </div>
+                      </div>
                     </div>
-                  </div>
                   </transition>
                   <!-- end of user credentials area -->
 
@@ -256,7 +276,7 @@
                             <button
                               data-toggle="modal"
                               data-target="#PaymentOptionModal"
-                              class="btn btn-default btngive bt hfontb btt"
+                              class="btn btn-default btngive default-color hfontb btt"
                             >
                               Give Now
                             </button>
@@ -278,7 +298,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :email="email" @payment-successful="successfulPayment"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -291,6 +311,24 @@
                   </div>
                   <!-- end of dynamic Area 3 -->
                 </div>
+                <div
+                  class="col-sm-10 col-md-8 mx-auto form-area shadow pt-5 mb-5 bg-white rounded MIDDLE"
+                  v-else 
+                  key="success"
+                >
+                  <div class="row">
+                    <div class="col-2 offset-5"><img src="../../../assets/smile.jpg" class="w-100"></div>
+                    <div class="col-12 stylish-text primary-text text-center">
+                      
+                      Thank You
+                    </div>
+                    <div class="col-12 font-weight-700 text-center p-5 mt-4 primary-bg text-white success-card">Your transaction has been successful. God Bless You!</div>
+                  </div>
+                </div>
+              </transition>
+
+
+
               </div>
 
               <!-- payment Methods area -->
@@ -343,19 +381,17 @@
                 <div class="row">
                   <div class="col-md-6 offset-md-3">
                     <div class="row hfont">
-                      <p class="text-nowrap">
+                      <p class="text-nowrap col-12 text-center">
                         Churchplus <span><u>Terms & Conditions</u></span
                         >and
                         <span><u>Privacy Policy</u> </span>
                       </p>
-                      <p class="mt-n2 text-wrap">
+                      <p class="mt-n2 col-12 text-center text-wrap">
                         Organization Legal Name: Porters House Assembly |
                         Address:Iponri Lagos
                       </p>
-                      <div class="col-12 px-0">
-                        <hr />
-                      </div>
-                      <div class="col-md-4 px-0">
+                     
+                      <div class="col-md-4 offset-5 px-0">
                         <img
                           class="logo img-fluid mb-5"
                           src="../../../assets/logoblue.png"
@@ -382,13 +418,18 @@
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
-import PaymentOptionModal from "./PaymentOptionModal"
-import Checkbox from 'primevue/checkbox';
+import PaymentOptionModal from "./PaymentOptionModal";
+import Checkbox from "primevue/checkbox";
+import { useRoute, useRouter } from "vue-router";
+import finish from "../../../services/progressbar/progress"
 export default {
   components: {
-    PaymentOptionModal, Checkbox
+    PaymentOptionModal,
+    Checkbox,
   },
   setup() {
+    const route = useRoute()
+    const router = useRouter()
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -398,7 +439,7 @@ export default {
       hideTabOne.value = false;
     };
 
-    const formResponse = ref({})
+    const formResponse = ref({});
     const selectedContributionType = ref({});
     const funds = ref([]);
 
@@ -413,9 +454,12 @@ export default {
     const amount = ref("")
     const name = ref("")
     const phone = ref("")
+    const email = ref("info@churchplus.co")
     const checked = ref(true)
     const donationObj = ref({})
     const close = ref("")
+    const paymentSuccessful = ref(false)
+    const userData = ref({})
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -449,17 +493,21 @@ export default {
       axios
         .get(
           // "/api/PaymentForm/GetOne?paymentFormID=4a276e37-a1e7-4077-a851-60b82180f4a0"
-          "/give?paymentFormID=4A276E37-A1E7-4077-A851-60B82180F4A0"
+          `/give?paymentFormID=${route.params.userId}`
         )
         .then((res) => {
           // funds.value = res.data.contributionItems;
           // console.log(funds.value, "kjjjhjjjje");
           // console.log(res.data);
-          formResponse.value = res.data
-          selectedContributionType.value = formResponse.value.currencyId
+          formResponse.value = res.data;
+          selectedContributionType.value = formResponse.value.currencyId;
           console.log(formResponse.value);
+          localStorage.setItem('tenantId', res.data.tenantID)
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          console.log(err.response)
+          finish()
+        });
     };
     addfunds();
 
@@ -471,13 +519,12 @@ export default {
           currencyInput.value = res.data;
           console.log(res);
           for (let i = 0; 1 < res.data.length; i++) {
-            if(formResponse.value.currencyId === res.data[i].id) {
-              console.log(res.data[i], 'foundddd')
-              dfaultCurrency.value = res.data[i]
+            if (formResponse.value.currencyId === res.data[i].id) {
+              console.log(res.data[i], "foundddd");
+              dfaultCurrency.value = res.data[i];
             } else {
-              console.log('not found')
+              console.log("not found");
             }
-
           }
         })
         .catch((err) => console.log(err.response, "You know me! yes gang"));
@@ -491,29 +538,42 @@ export default {
             churchName: formResponse.value.churchName,
             tenantID: formResponse.value.tenantID,
             merchantID: formResponse.value.merchantId,
-            name: name.value,
-            email: 'oladapodaniel10@gmail.com',
-            phone: phone.value,
             orderID: formResponse.value.orderId,
-            currencyID: formResponse.value.currencyId,
+            currencyID: dfaultCurrency.value.id,
             paymentGateway: formResponse.value.paymentGateWays,
             contributionItems: [
                         {
                           contributionItemId: selectedContributionType.value.financialContributionID,
                           contributionItemName: selectedContributionType.value.financialContribution.name,
                           amount: amount.value,
-                          contributionCurrencyId: formResponse.value.currencyId
+                          contributionCurrencyId: dfaultCurrency.value.id
                         }
             ]
 
           }
-          if (name.value !== "" || phone.value !== "") {
-            donationObj.value.isAnonymous = false
-          } else {
-            donationObj.value.isAnonymous = true
-          }
-          console.log(donationObj.value)
           
+          console.log(donationObj.value)
+          if(localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken')) {
+              donationObj.value.name = userData.value.name
+              donationObj.value.email = userData.value.email
+              donationObj.value.phone = userData.value.phone
+              donationObj.value.userId = userData.value.id
+              if (checked.value) {
+                donationObj.value.isAnonymous = true
+              } else {
+                donationObj.value.isAnonymous = false
+              }
+          } else {
+              donationObj.value.name = name.value,
+              donationObj.value.phone = phone.value
+
+              if (name.value !== "" || phone.value !== "") {
+                donationObj.value.isAnonymous = false
+              } else {
+                donationObj.value.isAnonymous = true
+              }
+          }
+
           try {
             let  res = axios.post('/donation', donationObj.value)
             console.log(res)
@@ -522,6 +582,39 @@ export default {
             console.log(error)
           }
           console.log(formResponse.value)
+    }
+
+    const successfulPayment = (payload) => {
+      paymentSuccessful.value = payload
+    }
+
+    const getUserDetails = async() => {
+      if (localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken')) {
+        let storedDetails = JSON.parse(localStorage.getItem('giverToken'))
+        console.log(storedDetails)
+      try {
+          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
+          console.log(data)
+          userData.value = data
+          email.value = data.email
+          name.value = userData.value.name
+          phone.value = userData.value.phone
+          finish()
+        }
+        catch (error) {
+          console.log(error)
+          finish()
+        }
+    }
+    }
+    getUserDetails()
+
+    const checkForToken = () => {
+      if (localStorage.getItem('giverToken') == "" || localStorage.getItem('giverToken') == null || !localStorage.getItem('giverToken')) {
+        router.push({ name: 'SignInPayment', params: { userId: route.params.userId } })
+      } else {
+        router.push({ name: 'TransactionPage', params: { userId: route.params.userId } })
+      }
     }
 
     return {
@@ -546,7 +639,12 @@ export default {
       phone,
       checked,
       donationObj,
-      close
+      close,
+      paymentSuccessful,
+      successfulPayment,
+      userData,
+      checkForToken,
+      email
     };
   },
 };
@@ -583,6 +681,9 @@ export default {
 
 .main-font {
   font-size: 4.375rem;
+  font: normal normal medium 70px/106px Poppins;
+  letter-spacing: 4px;
+  color: #FFFFFF;
 }
 .sub-main-font {
   font-size: 18px;
@@ -608,7 +709,7 @@ export default {
 }
 
 .imp1 {
-  height: 100%;
+  height: 58%;
 }
 
 .imp2 {
@@ -622,23 +723,32 @@ export default {
   transition: all 0.3s ease-in-out;
 }
 
-.default-color1:hover {
-  background: #0f58ac;
+ /* .header-color1 {
+  background: #0b0b0c;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+} */
+.header-color {
+  background:#020f1ec5;
   color: #fff;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 
+.header-color1:hover {
+  background: #020f1e83;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+
+
 .btt {
   width: 180px;
   height: 50px;
   border-radius: 500px;
-}
-
-.bt {
-  background: #b15702;
-  /* background: #136acd; */
-  color: #fff;
 }
 
 .hfontb {
@@ -654,103 +764,21 @@ export default {
   border-right: 1px solid #dee2e6;
 }
 
-/* .mig {
-  margin-top: 2rem;
-}
-
-.footer-area {
-  position: absolute;
-  top: 50rem;
-}
-.bg {
-  background: #eeeeee;
-} */
-
-/* style for nav-header area */
-/* .hcolor {
-  background: #020f1e;
-}
-
-
-/*end of style for nav-header area */
-
-/* start of style for card-area  */
-/* .card-area {
-  z-index: 1;
-}
-
-.givep {
-  color: #f17c30;
-  font-size: 20px;
-  font-weight: 500;
-} */
-/* end of style of hero-image area  */
-
-/* .mild {
-  position: absolute;
-  top: -20px;
-  z-index: 9;
-  background: white;
-  border-radius: 0.8rem;
-} */
-
-/* .bord {
-  background: #00000045;
-  height: 1px;
-} */
-
-/* .input1 {
-  border: none;
-  max-height: 20rem;
-  font-size: 80px;
-  font-weight: 500;
-} */
-/* .input1:focus {
-  border: none;
-  outline: none;
-  max-height: 20rem;
-  font-size: 80px;
-  font-weight: 500;
-} */
-
-/* .clean {
-  z-index: 1;
-} */
-/*
-.ash {
-  position: absolute;
-  font-size: 25px;
-  font-weight: 400;
-  top: 3rem;
-  left: 3rem;
-  z-index: 1;
-} */
-
-/* .btngive {
-  width: 150px;
-  background: #136acd;
-  color: #fff;
-} */
-
-/* .default-color {
-  background: #136acd;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-} */
-/*
-.default-color1:hover {
-  background: #0f58ac;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-} */
+.stylish-text {
+      font-size: 55px;
+      font-family: cursive;
+  }
 
 .bg-modal {
-  background: rgba(226, 226, 226, 0.514)
+  background: rgba(226, 226, 226, 0.514);
 }
 
-.fade-enter-active,
+.success-card {
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+/* .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s;
 }
@@ -759,5 +787,37 @@ export default {
 .fade-leave-to {
   opacity: 0;
   transition: opacity 0.2s;
+} */
+.fade-enter-active {
+  transition: all .5s ease-in-out;;
+}
+.fade-leave-active {
+  transition: all .5s ease-in-out;
+}
+.fade-enter, .fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(30px);
+  opacity: 0;
+}
+.fade-leave, .fade-enter-to {
+  opacity: 1;
+}
+
+.move-enter-active {
+  animation: move-in .8s;
+}
+.move-leave-active {
+  animation: move-in .8s reverse;
+}
+@keyframes move-in {
+  0% {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
 }
 </style>

@@ -10,6 +10,7 @@ export default {
         smsDrafts: [ ],
         emailDrafts: [ ],
         sentEmails: [ ],
+        addSmsToSentList: {}
     },
 
     mutations: {
@@ -36,6 +37,10 @@ export default {
         setEmailDrafts(state, payload) {
             state.emailDrafts =  payload;
         },
+        addSmsToSentList(state,payload) {
+            // state.addSmsToSentList = payload
+            state.allSentSMS.unshift(payload)
+        }
     },
 
     actions: {
@@ -53,6 +58,9 @@ export default {
 
         addDraft({ commit }, payload) {
           commit("addDraft", payload)
+        },
+        addSmsToSentList({ commit }, payload) {
+            commit("addSmsToSentList", payload)
         },
 
         async getAllSentSMS({ commit }) {
@@ -109,5 +117,6 @@ export default {
         emailDrafts: state => state.emailDrafts,
         sentEmails: state => state.sentEmails,
         getEmailDraftById: state => id => state.emailDrafts.find(i => i.id === id),
+        addSmsToSentList: state => state.addSmsToSentList
       },
 }

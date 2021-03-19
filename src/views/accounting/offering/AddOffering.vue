@@ -418,6 +418,7 @@
         <!-- <div>{{ offeringItem }}</div> -->
         <!-- <div>{{newOfferings}}</div>
         <div>{{ currencyList }}</div> -->
+
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -1016,12 +1017,15 @@ import Dropdown from 'primevue/dropdown';
 import NewDonor from './NewDonor';
 import membershipService from "../../../services/membership/membershipservice";
 import router from '../../../router';
+import { useStore } from 'vuex'
+// import store from '../../../store/modules/auth'
 export default {
     components: {
         Dialog, Dropdown, NewDonor
     },
     setup () {
         const toast = useToast();
+        const store = useStore()
         const offeringDrop = ref(null)
         const showEventList = ref(false)
         const eventsAttended = ref([]);
@@ -1062,7 +1066,7 @@ export default {
         const tenantCurrency = ref("")
         const loading = ref(false)
         const focusInp = ref("")
-  
+        const tenantId = ref("")
 
 
         const addOffering = () => {
@@ -1294,9 +1298,9 @@ export default {
               donor: "",
               date: eventDate.value,
               activityID: selectedEventAttended.value.activityID,
-              currencyID: currencyList.value.find(i => i.name === tenantCurrency.value).id
-              // currencyID: currencyList.value ? currencyList.value.find(i => i.name === "NGN") ? currencyList.value.find(i => i.name === "NGN") : "" : ""
+              currencyID: currencyList.value ? currencyList.value.find(i => i.name === tenantCurrency.value).id : ""
             });
+      console.log(currencyList.value, tenantCurrency.value)
           } 
 
           // const currentSignedIn = () => {
@@ -1354,15 +1358,54 @@ export default {
     //     .catch(err => console.log(err))
     // }
     // getCurrenciesFromCountries()
+    
+        const getCurrentlySignedInUser = async() => {
+            try {
+                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+                // console.log(res.data)
+                tenantId.value = res.data.tenantId
+                // if(res.data.country == "Nigeria") {
+                //     isPaystackChecked.value = true
+                //     isFlutterwave.value = true
+                //     isPaypal.value = true
+                // } else {
+                //     isPaypal.value = true
+                //     isFlutterwave.value = true
+                // }
+                if (store.getters.currentUser) {
+                  axios.get(`/api/Lookup/TenantCurrency?tenantID=${store.getters.currentUser.tenantId}`)
+                  .then(res => {
+                    tenantCurrency.value = res.data.currency
+                    console.log(res.data)
+                  })
+                  .catch(err => console.log(err))
+              console.log(store.getters.currentUser)
+                } else {
+                  axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
+                  .then(res => {
+                    tenantCurrency.value = res.data.currency
+                    console.log(res.data)
+                  })
+                  .catch(err => console.log(err))
+              console.log(store.getters.currentUser)
+                }
+                
+                
+            } catch (err) {
+                /*eslint no-undef: "warn"*/
+                NProgress.done();
+                console.log(err);
+            }
+        }
+        getCurrentlySignedInUser()
 
-      const getTenantCurrency = () => {
-        axios.get("/api/financials/api/lookup/tenantcurrency")
-              .then(res => {
-                tenantCurrency.value = res.data.currency
-              })
-              .catch(err => console.log(err))
-      }
-      getTenantCurrency()
+      // const getTenantCurrency = () => {
+        onMounted(() => {
+          
+        })
+        
+      // }
+      // getTenantCurrency()
 
       const getAllCurrencies = () => {
           axios.get('/api/lookup/getallcurrencies')
@@ -1603,7 +1646,7 @@ export default {
             addOffering, offeringDrop, hideModals, selectEventAttended, showEventList, eventsAttended, filteredEvents, closeManualModalIfOpen, eventAttendedSelected,
             newEvents, selectedEventAttended, eventsSearchString, selectEvent, individualEvent, newEvent, showCategory, filterEventCategory, eventText, eventDate, createNewCat,
             newEventCategoryName, displayModal, openModal, closeModal, toast, createNewEvent, invalidEventDetails, savingNewEvent, newOfferings, filterOffering, offeringText,
-            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp
+            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp, tenantId
     }
   }
 }
