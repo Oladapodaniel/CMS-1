@@ -51,7 +51,7 @@
             @click="showAccount = !showAccount"
           >
             <span class="ofering close-modal">{{
-              !selectedCashAccount || !selectedCashAccount.text ? "Select" : selectedCashAccount.text
+              !selectedCashAccount || !selectedCashAccount.name ? "Select" : selectedCashAccount.name
             }}</span
             ><span>
               <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
@@ -81,7 +81,7 @@
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-12 px-0" v-for="(accounts, index) in transactionalAccounts" :key="index">
-                  <div class="desc-head py-1 px-3 close-modal text-capitalize" v-if="accounts.length > 0">{{ accountTypes[index] }}</div>
+                  <div class="desc-head py-1 px-3 close-modal text-capitalize" v-if="accounts.length > 0">{{ accTypes[index] }}</div>
                   <div class="header-border close-modal">
                     <div v-if="true">
                       <div
@@ -93,7 +93,7 @@
                         <div
                           class="d-flex justify-content-between py-2 px-3 close-modal"
                         >
-                          <div class="close-modal offset-sm-1">{{ item.text }}</div>
+                          <div class="close-modal offset-sm-1">{{ item.name }}</div>
                         </div>
                       </div>
                     </div>
@@ -398,6 +398,7 @@
 import { ref, computed, nextTick, onUpdated, watch } from "vue";
 import Tooltip from "primevue/tooltip";
 import transaction_service from "../../../services/financials/transaction_service";
+import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 // import Dropdown from 'primevue/dropdown';
 export default {
   components: {},
@@ -408,7 +409,7 @@ export default {
   setup(props, { emit }) {
     const showAccount = ref(false);
     const accountText = ref("");
-    const accountType = ref(["Cash and Bank", "Money in Transit"]);
+    const accountType = ref([ ]);
     const liabilities = ref(["Credit Card", "Loan and Line of Credit"]);
     const showUncategorized = ref(false);
     const uncategorizedText = ref("");
@@ -570,6 +571,7 @@ export default {
         gettingIncomeAccounts.value = true;
         const response = await transaction_service.getIncomeAccounts();
         accountType.value = response;
+        console.log(response, "Icome accounts");
         gettingIncomeAccounts.value = false;
       } catch (error) {
         console.log(error);
@@ -584,6 +586,7 @@ export default {
         gettingExpenseAccounts.value = true;
         const response = await transaction_service.getExpenseAccounts();
         expenseAccounts.value = response;
+        console.log(response, "expense accounts");
         gettingExpenseAccounts.value = false;
       } catch (error) {
         console.log(error);
@@ -594,22 +597,36 @@ export default {
     getExpenseAccounts();
     getIncomeAccounts();
 
-    const transactionalAccounts = ref([]);
+    // const transactionalAccounts = ref([]);
     const accountTypes = ["assets", "liability", "income", "expense", "equity"];
+    const accTypes = ["assets", "liability", "equity", "income", "expense" ];
 
-    const getTransactionalAccounts = async () => {
-      try {
-        const response = await transaction_service.getTransactionalAccounts();
-        for (let group of accountTypes) {
-          const groupItems = response.filter(
-            (i) => i.accountType.toLowerCase() === group
-          );
-          transactionalAccounts.value.push(groupItems);
-        }
-      } catch (error) {
-        console.log(error);
+    // const getTransactionalAccounts = async () => {
+    //   try {
+    //     const response = await transaction_service.getTransactionalAccounts();
+    //     for (let group of accountTypes) {
+    //       const groupItems = response.filter(
+    //         (i) => i.accountType.toLowerCase() === group
+    //       );
+    //       transactionalAccounts.value.push(groupItems);
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+
+    const transactionalAccounts = computed(() => {
+      if (!accountHeads.value || accountHeads.value.length === 0) return [ ];
+      let accounts = [ ];
+      for (let group of accountHeads.value) {
+        // for (let account of group.accountHeadsDTO) {
+
+        // }
+        accounts.push(group.accountHeadsDTO)
       }
-    };
+      console.log(accounts, "computed accounts");
+      return accounts;
+    })
 
     const constructSaveTransactionReqBody = () => {
       const reqBody = {
@@ -645,7 +662,7 @@ export default {
         }
     }
 
-    getTransactionalAccounts();
+    // getTransactionalAccounts();
 
     watch(() => props.transactionDetails, (data) => {
       console.log(data, "in watch");
@@ -656,6 +673,18 @@ export default {
 
       console.log(transacObj.value, "TO");
     })
+
+    const accountHeads = ref([ ]);
+    const getAccountHeads = async () => {
+      try {
+        const response = await chart_of_accounts.getAccountHeads();
+        console.log(response, "d heads");
+        accountHeads.value = response;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getAccountHeads();
 
     return {
       showAccount,
@@ -690,6 +719,8 @@ export default {
       selectedIncomeOrExpenseAccount,
       gettingIncomeAccounts,
       gettingExpenseAccounts,
+      accountHeads,
+      accTypes,
     };
   },
 };
