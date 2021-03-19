@@ -18,8 +18,8 @@
         </div>
         <div class="col-6 col-md-5">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
-          <i class="fa fa-pencil" aria-hidden="true" data-toggle="modal" data-target="#fundModal" @click="editAccount(item, itm)"></i>
-          <i class="pi pi-trash" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i>
+          <i class="fa fa-pencil c-pointer" aria-hidden="true" data-toggle="modal" data-target="#fundModal" @click="editAccount(item, itm)"></i>
+          <i class="pi pi-trash c-pointer ml-2" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i>
         </div>
       </div>
       <div class="row row-border align-items-center py-3" v-if="item.accounts.length === 0">
@@ -79,7 +79,6 @@
                     <Dropdown
                       v-model="selectedFundType"
                       :options="fundTypes"
-                      :disabled="selectedFundType"
                       style="width: 100%"
                     />
                   </div>
@@ -129,6 +128,7 @@
         </div>
       </div>
     </div>
+          <ConfirmDialog></ConfirmDialog>
   </div>
 </template>
 
@@ -139,6 +139,7 @@ import Dropdown from "primevue/dropdown";
 import chart_of_accounts from "../../../services/financials/chart_of_accounts";
 import { useToast } from 'primevue/usetoast';
 import transactionals from './utilities/transactionals';
+import { useConfirm } from "primevue/useConfirm";
 
 
 export default {
@@ -147,6 +148,7 @@ export default {
 
   setup(props, { emit }) {
     const toast = useToast();
+    const confirm = useConfirm();
     const accounts = ref([]);
     const fundTypes = [
       "Unrestricted Funds",
@@ -180,7 +182,13 @@ export default {
     const saveFund = async (fund) => {
       try {
           savingFund.value = true;
-        const response = await chart_of_accounts.saveFund(fund);
+        let response = { };
+        if (accountToEdit.value.id) {
+            accountToEdit.value.name = fund.name;
+            response = await chart_of_accounts.editAccount(fund);
+        } else {
+            response = await chart_of_accounts.saveFund(fund);
+        }
         savingFund.value = false;
         closeModalBtn.value.click();
         if (!response.status) {
@@ -206,8 +214,8 @@ export default {
       if (!selectedFundType.value || !newFund.value.name) {
         return false;
       }
-      newFund.value.fundType = fundTypes.indexOf(selectedFundType.value);
-      newFund.value.financialAccountGroupID = selectedGroupId.value;
+        newFund.value.fundType = fundTypes.indexOf(selectedFundType.value);
+        newFund.value.financialAccountGroupID = selectedGroupId.value;
       saveFund(newFund.value);
     };
 
@@ -224,6 +232,12 @@ export default {
         console.log(group, "group");
         console.log(account, "accccc");
       accountToEdit.value = account;
+      newFund.value.name = accountToEdit.value.name;
+      newFund.value.code = accountToEdit.value.code;
+      newFund.value.id = accountToEdit.value.id;
+      newFund.value.fundType = fundTypes.indexOf(group.name);
+      newFund.value.financialAccountGroupID = account.financialAccountGroupID;
+      selectedFundType.value = group.name
     //   accountGroupId.value = group.name;
     }
 
@@ -236,7 +250,7 @@ export default {
           rejectClass: 'cancel-delete',
           accept: async () => {
             try {
-                const response = await chart_of_accounts.deleteFund(id);
+                const response = await chart_of_accounts.deleteAccount(id);
                 toast.add({severity:'success', summary:'Account Deleted', detail: `${response.response}`, life: 3000});
                 emit("equity-deleted", index, indx);
             } catch (error) {

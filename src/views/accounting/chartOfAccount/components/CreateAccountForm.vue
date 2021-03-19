@@ -20,8 +20,8 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        :disabled="accountGroupId"
                       >
+                        <!-- :disabled="accountGroupId" -->
                         {{
                           !selectedAccountType || !selectedAccountType.name
                             ? "Select account type"
@@ -223,21 +223,52 @@ export default {
     };
     getFunds();
 
+    const edit = async (body) => {
+      try {
+        const response = await chart_of_accounts.editAccount(body)
+        savingAccount.value = false;
+        toast.add({severity:'success', summary:'Account Updated', detail:`${response.response}`, life: 2500});
+        newAccount.value = { };
+        emit("save-account", { success: true, type: props.financialAccountType });
+      } catch (error) {
+        savingAccount.value = false;
+        toast.add({severity:'error', summary:'Account Update Failed', detail:`An error occurred, please try again`, life: 3000});
+        newAccount.value = { };
+        emit("save-account", { success: true, type: props.financialAccountType });
+        transactionals.getTransactionalAccounts(true);
+        console.log(error);
+      }
+    }
+
     const savingAccount = ref(false);
     const saveAccount = async (body) => {
       try {
         savingAccount.value = true;
-        const response = await chart_of_accounts.saveAccount(body);
-        savingAccount.value = false;
-        if (!response.status) {
-            emit("save-account", { success: false, type: props.financialAccountType });
-            toast.add({severity:'error', summary:'Account Creation Failed', detail:`An error occurred, please try again`, life: 3000});
+        let response = { };
+        if (props.account && props.account.name) {
+          const x = {
+            name: body.name,
+            code: props.account.code,
+            accountType: props.account.accountType,
+            description: body.description,
+            id: props.account.id,
+            financialAccountGroupID: selectedAccountType.value.id
+           }
+          response = edit(x);
         } else {
-            toast.add({severity:'success', summary:'Account Created', detail:`The account ${newAccount.value.name} was created successfully`, life: 2500});
-            newAccount.value = { };
-            emit("save-account", { success: true, type: props.financialAccountType });
-            transactionals.getTransactionalAccounts(true);
+          response = await chart_of_accounts.saveAccount(body);
+          savingAccount.value = false;
+          if (!response.status) {
+              emit("save-account", { success: false, type: props.financialAccountType });
+              toast.add({severity:'error', summary:'Account Creation Failed', detail:`An error occurred, please try again`, life: 3000});
+          } else {
+              toast.add({severity:'success', summary:'Account Created', detail:`The account ${newAccount.value.name} was created successfully`, life: 2500});
+              newAccount.value = { };
+              emit("save-account", { success: true, type: props.financialAccountType });
+              transactionals.getTransactionalAccounts(true);
+          }
         }
+        
       } catch (error) {
         savingAccount.value = false;
         console.log(error);
@@ -270,6 +301,7 @@ export default {
       }
       if (props.account) {
         newAccount.value.name = props.account ? props.account.name : "";
+        newAccount.value.description = props.account ? props.account.description : "";
       }
     })
     

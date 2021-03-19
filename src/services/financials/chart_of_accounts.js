@@ -115,6 +115,23 @@ const deleteAccount = (id) => {
     })
 }
 
+const editAccount = (body) => {
+    return new Promise((resolve, reject) => {
+        axios.put(`/api/Financials/Accounts/Save`, body)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
 const deleteFund = (id) => {
     return new Promise((resolve, reject) => {
         axios.delete(`/api/Financials/Fund/Delete?id=${id}`)
@@ -149,4 +166,4 @@ const saveFund = (body) => {
     })
 }
 
-export default { getChartOfAccounts, getCashBankAccounts, getAssetsAccounts, getFunds, saveAccount, saveFund, deleteAccount, deleteFund, getAccountHeads }
+export default { getChartOfAccounts, getCashBankAccounts, getAssetsAccounts, getFunds, saveAccount, saveFund, deleteAccount, deleteFund, getAccountHeads, editAccount }
