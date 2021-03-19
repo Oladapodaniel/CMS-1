@@ -230,14 +230,14 @@ const routes = [{
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceAndCheckinList')
     },
-    
+
     {
         path: 'attendancetag',
         name: 'AttendanceTag',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceTag')
     },
-    
+
     {
         path: 'addattendancecheckin',
         name: 'AddAttendance',
@@ -515,16 +515,22 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
     },
     {
-        path: 'payments',
+        path: 'payments/:editPayment?',
         name: 'PaymentTransaction',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentTransaction')
     },
     {
-        path: 'paymentoptions',
+        path: 'paymentoptions/:paymentId',
         name: 'PaymentOption',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentOption')
+    },
+    {
+        path: 'payment',
+        name: 'Payment',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/Payment')
     }
     ],
 },
@@ -542,6 +548,54 @@ const routes = [{
     // which is lazy-loaded when the route is visited.
     component: () =>
         import( /* webpackChunkName: "about" */ '../views/About.vue')
+},
+{
+    path: '/onlinegivingform1',
+    name: 'OnlineGiving',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm')
+},
+{
+    path: '/onlinegivingform2',
+    name: 'OnlineGiving2',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm2')
+},
+{
+    path: '/onlinegivingform3',
+    name: 'OnlineGiving3',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm3')
+},
+{
+    path: '/onlinegivingform4',
+    name: 'OnlineGiving4',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm4')
+},
+{
+    path: '/onlinegivingform5',
+    name: 'OnlineGiving5',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm5')
+},
+{
+    path: '/paymentgivingform2',
+    name: 'OnlineGivingform2',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/PaymentGivingForm2')
+},
+{
+    path: '/signuppayment',
+    name: 'SignUpPayment',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignUpPayment')
+},
+{
+    path: '/signinpayment',
+    name: 'SignInPayment',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignInPayment')
 }
 ]
 

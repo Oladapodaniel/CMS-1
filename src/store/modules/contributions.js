@@ -4,11 +4,13 @@ export default {
     namespaced: true,
     state: {
         contributionList: [],
-        contributionItems: []
+        contributionItems: [],
+        paymentData: {}
     },
     getters: {
         contributionList: state => state.contributionList, 
-        contributionItems: state => state.contributionItems
+        contributionItems: state => state.contributionItems,
+        paymentData: state => state.paymentData
     },
     mutations: {
         saveList(state, payload) {
@@ -16,6 +18,9 @@ export default {
         },
         contributionItems(state, payload) {
             state.contributionItems = payload
+        },
+        paymentData(state, payload) {
+            state.paymentData = payload
         }
     },
     actions: {
@@ -27,8 +32,16 @@ export default {
                     console.log(error);
                 }
         },
-        contributionItems({ commit }, payload) {
-            commit("contributionItems", payload)
-        }
+        async contributionItems({ commit }) {
+            try {
+                const { data } = await axios.get("/api/financials/contributions/items");
+                commit("contributionItems", data)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+         paymentData({ commit }, payload) {
+            commit("paymentData", payload)
+        },
     }
 }
