@@ -212,7 +212,7 @@ export default {
     // PaystackPay
     // paystack
   },
-  props: ['orderId', 'donation', 'close', 'amount', 'name'],
+  props: ['orderId', 'donation', 'close', 'amount', 'name', 'email'],
   setup (props, { emit }) {
 
     const payWithPaystack = () => {
@@ -220,7 +220,7 @@ export default {
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: 'oladapodaniel10@gmail.com',
+        email: props.email,
         amount: props.amount * 100,
         firstname: props.name,
         ref: props.orderId,

@@ -33,9 +33,12 @@
                             </div>
                         </div>
                         <div class="col-md-10 col-sm-11 offset-1  col-lg-9 d-flex align-items-center justify-content-center" :class="{ 'show' : displayLink, 'hide' : !displayLink }">
-                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="paymentLink"  @click="copyLink" :value="`https://give.churchplus.co/${route.params.paymentId}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
+                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="paymentLink"  @click="copyLink" :value="`my.churchplus.co/${route.params.paymentId}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
                         </div>
-                        <!-- <div>{{ route.params.paymentId }}</div> -->
+                        <!-- <div class="col-md-10 col-sm-11 offset-1  col-lg-9 d-flex align-items-center justify-content-center" :class="{ 'show' : displayLink, 'hide' : !displayLink }">
+                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="paymentLink"  @click="copyLink" :value="`https://give.churchplus.co/${route.params.paymentId}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
+                        </div> -->
+                       
                     
                 </div>
                 <div class="col-md-12 mb-3">
@@ -66,23 +69,6 @@
                  <div class="col-md-12 mb-3">
                 </div>
                    <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded">
-                            <div class="row">
-                            <div class="col-3 col-md-2 col-sm-2 image mt-3">
-                                <img src="../../assets/group2.svg" alt="marked Attendance image">
-
-                            </div>
-                            <div class="col-9 col-sm-10  mt-3">
-                                <h4 class="header4">Wordpress Plugin</h4>
-                                <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
-                            </div>
-                            </div>
-                        </div>
-                    
-                </div>
-                <div class="col-md-12 mb-3">
-                </div>
-                   <div class="row w-100">
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded" @click="toggleIFrame">
                             <div class="row">
                             <div class="col-3 col-sm-2 col-sm-2 image mt-3">
@@ -111,7 +97,25 @@
                           
                         </div>
                     
+                        </div>
+                <div class="col-md-12 mb-3">
                 </div>
+                   
+                        <div class="row w-100">
+                                <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded">
+                                    <div class="row disabled">
+                                    <div class="col-3 col-md-2 col-sm-2 image mt-3">
+                                        <img src="../../assets/group2.svg" alt="marked Attendance image">
+
+                                    </div>
+                                    <div class="col-9 col-sm-10  mt-3">
+                                        <h4 class="header4">Wordpress Plugin</h4>
+                                        <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
                 
                 <div class="col-md-12 mb-3">
                 </div>
@@ -145,7 +149,7 @@ import axios from "@/gateway/backendapi";
             const displayQr = ref(false)
             const displayIFrame = ref(false)
             // const contributionItems = ref([])
-            const iFrameLink = ref(`<iframe src="give.churchplus.co/${route.params.paymentId}"></iframe>`)
+            const iFrameLink = ref(`<iframe src="my.churchplus.co/${route.params.paymentId}"></iframe>`)
             const paymentLink = ref("")
             const iframeLink = ref("")
             const title = ref("")
@@ -395,6 +399,11 @@ letter-spacing: 0px;
 
 .edit {
     color: #0b71d6
+}
+
+.disabled {
+    background: rgb(240, 239, 239);
+    opacity: 0.5;
 }
 
 

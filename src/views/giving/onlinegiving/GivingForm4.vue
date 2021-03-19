@@ -6,7 +6,7 @@
       <div class="container">
         <nav class="navbar navbar-expand-lg nav-color2">
           <a class="navbar-brand" href="#">
-            <img v-bind:src="formResponse.churchLogo"  width="100px" alt="" />
+            <img v-bind:src="formResponse.churchLogo" width="100px" alt="" />
           </a>
           <button
             class="navbar-toggler"
@@ -23,18 +23,17 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="text-white" href="#">{{ formResponse.churchName }}</a
-                >
+                <a class="text-white" href="#">{{ formResponse.churchName }}</a>
               </li>
             </ul>
             <div class="form-inline my-2 my-lg-0">
-              <li class="nav-item lstyle mr-3">
+              <!-- <li class="nav-item lstyle mr-3">
                 <a class="text-white" href="#">English</a>
-              </li>
-              <li class="nav-item lstyle">
-                <a class="text-white" href="#"
-                  >Your Account &nbsp; <i class="fas fa-user text-white"></i
-                ></a>
+              </li> -->
+              <li class="nav-item lstyle" @click="checkForToken">
+                <div class="text-white" href="#" style="cursor: pointer"
+                  >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Your Account"}} &nbsp; <i class="fas fa-user text-white"></i
+                ></div>
               </li>
             </div>
           </div>
@@ -216,9 +215,24 @@
                             placeholder="Enter your name"
                             v-model="name"
                           />
-                        </div>
+
+                    <!-- <div class="row d-flex" v-if="!checked">
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-12 mx-auto my-2 px-0 px-2">
+                            <label class="hfont">Name</label>
+                            <input
+                              class="form-control col-md-12 text-left border"
+                              type="text"
+                              placeholder="Enter your name"
+                              v-model="name"
+                            />
+                          </div>
+>>>>>>> midas -->
+                      </div>
                       </div>
                     </div>
+
 
                     <div class="col-md-6">
                       <div class="row">
@@ -230,10 +244,22 @@
                             v-model="phone"
 
                           />
+
+                      <!-- <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-12 mx-auto my-2 px-0 px-2">
+                            <label class="hfont">Phone Number</label>
+                            <input
+                              class="form-control col-md-12 text-left border"
+                              type="text"
+                              v-model="phone"
+                            />
+                          </div>
+>-->
                         </div>
                       </div>
+                      </div>
                     </div>
-                  </div>
                   </transition>
                   <!-- end of user credentials area -->
 
@@ -272,10 +298,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close"
-                             @payment-successful="successfulPayment"
-                            :name="name"
-                            :amount="amount"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :email="email" @payment-successful="successfulPayment"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -395,13 +418,18 @@
 import { ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
-import PaymentOptionModal from "./PaymentOptionModal"
-import Checkbox from 'primevue/checkbox';
+import PaymentOptionModal from "./PaymentOptionModal";
+import Checkbox from "primevue/checkbox";
+import { useRoute, useRouter } from "vue-router";
+import finish from "../../../services/progressbar/progress"
 export default {
   components: {
-    PaymentOptionModal, Checkbox
+    PaymentOptionModal,
+    Checkbox,
   },
   setup() {
+    const route = useRoute()
+    const router = useRouter()
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -411,7 +439,7 @@ export default {
       hideTabOne.value = false;
     };
 
-    const formResponse = ref({})
+    const formResponse = ref({});
     const selectedContributionType = ref({});
     const funds = ref([]);
 
@@ -426,10 +454,12 @@ export default {
     const amount = ref("")
     const name = ref("")
     const phone = ref("")
+    const email = ref("info@churchplus.co")
     const checked = ref(true)
     const donationObj = ref({})
     const close = ref("")
     const paymentSuccessful = ref(false)
+    const userData = ref({})
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -463,17 +493,21 @@ export default {
       axios
         .get(
           // "/api/PaymentForm/GetOne?paymentFormID=4a276e37-a1e7-4077-a851-60b82180f4a0"
-          "/give?paymentFormID=4A276E37-A1E7-4077-A851-60B82180F4A0"
+          `/give?paymentFormID=${route.params.userId}`
         )
         .then((res) => {
           // funds.value = res.data.contributionItems;
           // console.log(funds.value, "kjjjhjjjje");
           // console.log(res.data);
-          formResponse.value = res.data
-          selectedContributionType.value = formResponse.value.currencyId
+          formResponse.value = res.data;
+          selectedContributionType.value = formResponse.value.currencyId;
           console.log(formResponse.value);
+          localStorage.setItem('tenantId', res.data.tenantID)
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          console.log(err.response)
+          finish()
+        });
     };
     addfunds();
 
@@ -485,13 +519,12 @@ export default {
           currencyInput.value = res.data;
           console.log(res);
           for (let i = 0; 1 < res.data.length; i++) {
-            if(formResponse.value.currencyId === res.data[i].id) {
-              console.log(res.data[i], 'foundddd')
-              dfaultCurrency.value = res.data[i]
+            if (formResponse.value.currencyId === res.data[i].id) {
+              console.log(res.data[i], "foundddd");
+              dfaultCurrency.value = res.data[i];
             } else {
-              console.log('not found')
+              console.log("not found");
             }
-
           }
         })
         .catch((err) => console.log(err.response, "You know me! yes gang"));
@@ -505,9 +538,6 @@ export default {
             churchName: formResponse.value.churchName,
             tenantID: formResponse.value.tenantID,
             merchantID: formResponse.value.merchantId,
-            name: name.value,
-            email: 'oladapodaniel10@gmail.com',
-            phone: phone.value,
             orderID: formResponse.value.orderId,
             currencyID: dfaultCurrency.value.id,
             paymentGateway: formResponse.value.paymentGateWays,
@@ -521,13 +551,29 @@ export default {
             ]
 
           }
-          if (name.value !== "" || phone.value !== "") {
-            donationObj.value.isAnonymous = false
-          } else {
-            donationObj.value.isAnonymous = true
-          }
-          console.log(donationObj.value)
           
+          console.log(donationObj.value)
+          if(localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken')) {
+              donationObj.value.name = userData.value.name
+              donationObj.value.email = userData.value.email
+              donationObj.value.phone = userData.value.phone
+              donationObj.value.userId = userData.value.id
+              if (checked.value) {
+                donationObj.value.isAnonymous = true
+              } else {
+                donationObj.value.isAnonymous = false
+              }
+          } else {
+              donationObj.value.name = name.value,
+              donationObj.value.phone = phone.value
+
+              if (name.value !== "" || phone.value !== "") {
+                donationObj.value.isAnonymous = false
+              } else {
+                donationObj.value.isAnonymous = true
+              }
+          }
+
           try {
             let  res = axios.post('/donation', donationObj.value)
             console.log(res)
@@ -540,6 +586,35 @@ export default {
 
     const successfulPayment = (payload) => {
       paymentSuccessful.value = payload
+    }
+
+    const getUserDetails = async() => {
+      if (localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken')) {
+        let storedDetails = JSON.parse(localStorage.getItem('giverToken'))
+        console.log(storedDetails)
+      try {
+          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
+          console.log(data)
+          userData.value = data
+          email.value = data.email
+          name.value = userData.value.name
+          phone.value = userData.value.phone
+          finish()
+        }
+        catch (error) {
+          console.log(error)
+          finish()
+        }
+    }
+    }
+    getUserDetails()
+
+    const checkForToken = () => {
+      if (localStorage.getItem('giverToken') == "" || localStorage.getItem('giverToken') == null || !localStorage.getItem('giverToken')) {
+        router.push({ name: 'SignInPayment', params: { userId: route.params.userId } })
+      } else {
+        router.push({ name: 'TransactionPage', params: { userId: route.params.userId } })
+      }
     }
 
     return {
@@ -566,7 +641,10 @@ export default {
       donationObj,
       close,
       paymentSuccessful,
-      successfulPayment
+      successfulPayment,
+      userData,
+      checkForToken,
+      email
     };
   },
 };
@@ -692,7 +770,7 @@ export default {
   }
 
 .bg-modal {
-  background: rgba(226, 226, 226, 0.514)
+  background: rgba(226, 226, 226, 0.514);
 }
 
 .success-card {
@@ -740,5 +818,6 @@ export default {
     transform: translateX(0);
     opacity: 1;
   }
+
 }
 </style>

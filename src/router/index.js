@@ -568,7 +568,7 @@ const routes = [{
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm3')
 },
 {
-    path: '/onlinegivingform4',
+    path: '/:userId?',
     name: 'OnlineGiving4',
     component: () =>
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm4')
@@ -586,16 +586,22 @@ const routes = [{
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/PaymentGivingForm2')
 },
 {
-    path: '/signuppayment',
+    path: '/signuppayment/:userId?',
     name: 'SignUpPayment',
     component: () =>
         import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignUpPayment')
 },
 {
-    path: '/signinpayment',
+    path: '/signinpayment/:userId?',
     name: 'SignInPayment',
     component: () =>
         import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignInPayment')
+},
+{
+    path: '/transactionpage/:userId?',
+    name: 'TransactionPage',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
 }
 ]
 
