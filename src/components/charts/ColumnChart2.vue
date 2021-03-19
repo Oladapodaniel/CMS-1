@@ -82,7 +82,7 @@ export default {
         series: [
           {
             name: "First Timer",
-            color: "#136ACD",
+            color: "#002044",
             // data: props.data.data
             // data: props.data ? props.data.data : props.data
             // data: [12, 33, 40, 34, 300, 0, 0]
@@ -106,7 +106,7 @@ export default {
 
     onMounted(() => {
     //   console.log(props.series, "passed data")
-    //   console.log(props.data, "passed data")
+      console.log(props.data, "passed data")
     //   console.log(props.attendanceSeries)
     })
 

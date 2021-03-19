@@ -129,7 +129,7 @@
               <button
                 class="primary-btn px-4 outline-none"
                 @click="payWithPaystack"
-                v-if="false"
+             
               >
                 Buy SMS Unit
               </button>

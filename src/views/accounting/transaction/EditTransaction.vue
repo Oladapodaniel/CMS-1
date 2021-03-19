@@ -80,10 +80,10 @@
 
             <div class="container-fluid">
               <div class="row">
-                <div class="col-md-12 px-0" v-for="(accounts, index) in transactionalAccounts" :key="index">
+                <div class="col-md-12 px-0" v-for="(accounts, index) in cashandbank" :key="index">
                   <div class="desc-head py-1 px-3 close-modal text-capitalize" v-if="accounts.length > 0">{{ accTypes[index] }}</div>
                   <div class="header-border close-modal">
-                    <div v-if="true">
+                    <div v-if="accounts">
                       <div
                         @click="accountFlow($event, item)"
                         class="manual-dd-item close-modal"
@@ -93,7 +93,7 @@
                         <div
                           class="d-flex justify-content-between py-2 px-3 close-modal"
                         >
-                          <div class="close-modal offset-sm-1">{{ item.name }}</div>
+                          <div class="close-modal offset-sm-1">{{ item.text }}</div>
                         </div>
                       </div>
                     </div>
@@ -191,31 +191,6 @@
                 </div>
               </div>
 
-              <!-- <div class="desc-head px-3 pt-2 close-modal">
-                Liabilities and Credit Cards
-              </div>
-              <div class="header-border close-modal">
-                <div v-if="filterUncategorizedLiabilities.length > 0">
-                  <div
-                    class="manual-dd-item close-modal"
-                    v-for="(item, index) in filterUncategorizedLiabilities"
-                    :key="index"
-                  >
-                    <div
-                      class="d-flex justify-content-between py-2 px-3 close-modal"
-                    >
-                      <div class="close-modal offset-sm-1" @click="categories">
-                        {{ item }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div v-else>
-                  <div class="px-3 py-2 text-center text-danger">
-                    No Match Found
-                  </div>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
@@ -226,129 +201,7 @@
           <div class="mt-2 ml-2 vendor">Include Tax Sales</div>
         </div>
       </div>
-      <!-- <div v-else>
-        <div
-          class="row mt-3"
-          v-for="(item, index) in transacObj.splitCategories"
-          :key="index"
-        >
-          
-          <div class="col-sm-7 pr-0">
-            <div class="label-text">{{ transactionDetails.account }}</div>
-            <div
-              class="select-elem-con pointer d-flex justify-content-space-between close-modal form-control"
-              @click="item.showUncategorized = !item.showUncategorized"
-            >
-              <span class="ofering close-modal">{{
-                item.category ? item.category : "Select"
-              }}</span
-              ><span>
-                <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
-              ></span>
-            </div>
-            <div
-              class="ofering close-modal"
-              :class="{ 'style-uncategorized': item.showUncategorized }"
-              v-if="item.showUncategorized"
-            >
-              <div class="px-3 pt-3 close-modal">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  class="form-control ofering mb-1 close-modal"
-                  v-model="uncategorizedText"
-                />
-              </div>
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-md-12 px-0">
-                    <div class="desc-head py-1 px-3 close-modal">Assets</div>
-                    <div class="header-border close-modal">
-                      <div v-if="filterUncategorizedAsset.length > 0">
-                        <div
-                          class="manual-dd-item close-modal"
-                          v-for="(item, index) in filterUncategorizedAsset"
-                          :key="index"
-                        >
-                          <div
-                            class="d-flex justify-content-between py-2 px-3 close-modal"
-                          >
-                            <div
-                              class="close-modal offset-sm-1"
-                              @click="categoryAccount"
-                            >
-                              {{ item }}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div v-else>
-                        <div class="text-center px-3 py-2 text-danger">
-                          No Match Found
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-              <div class="desc-head px-3 pt-2 close-modal">
-                Liabilities and Credit Cards
-              </div>
-              <div class="header-border close-modal">
-                <div v-if="filterUncategorizedLiabilities.length > 0">
-                  <div
-                    class="manual-dd-item close-modal"
-                    v-for="(item, index) in filterUncategorizedLiabilities"
-                    :key="index"
-                  >
-                    <div
-                      class="d-flex justify-content-between py-2 px-3 close-modal"
-                    >
-                      <div
-                        class="close-modal offset-sm-1"
-                        @click="categoryAccount"
-                      >
-                        {{ item }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div v-else>
-                  <div class="px-3 py-2 text-center text-danger">
-                    No Match Found
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4 pl-0">
-            <div class="label-text">Amount</div>
-            <input
-              type="number"
-              class="form-control"
-              ref="amountRef"
-              v-model="item.amount"
-              placeholder="0.00"
-            />
-          </div>
-          <div class="col-sm-1 pl-0">
-            <div class="label-text"></div>
-            <i
-              class="pi pi-trash mt-4 c-pointer"
-              @click="deleteSplit(index)"
-            ></i>
-          </div>
-          <div class="d-flex justify-content-end adjust-left">
-            <div class="mt-2 vendor">{{ transactionDetails.type }}</div>
-            <div class="dot ml-2"></div>
-            <div class="mt-2 ml-2 vendor">Include Tax Sales</div>
-          </div>
-        </div>
-
-        
-      </div> -->
+     
 
       <div>{{ totalAmount.amount }}</div>
       <div class="row mt-2">
@@ -686,6 +539,18 @@ export default {
     }
     getAccountHeads();
 
+    const cashandbank = ref([ ]);
+    const getCashAndBank = async () => {
+      try {
+        const response = await transaction_service.getCashAndBank();
+        console.log(response, "cash bandk heads");
+        cashandbank.value.push(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getCashAndBank();
+
     return {
       showAccount,
       accountText,
@@ -721,6 +586,7 @@ export default {
       gettingExpenseAccounts,
       accountHeads,
       accTypes,
+      cashandbank,
     };
   },
 };

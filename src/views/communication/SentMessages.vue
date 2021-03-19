@@ -12,7 +12,7 @@
                 <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..." />
+                    <input type="text" placeholder="Search here..." v-model="searchText" />
                     <span class="mx-2"> | </span>
                     <span class="mx-2">Sort By</span>
                     <span class="font-weight-bold"> Newest</span>
@@ -67,7 +67,7 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row" v-for="(sms, index) in messages" :key="index">
+                  <div class="row" v-for="(sms, index) in searchedMessages" :key="index">
                   <!-- <div class="row" v-for="(sms, index) in sentSMS" :key="index"> -->
                     <div class="col-md-12">
                       <div class="row">
@@ -186,6 +186,7 @@ export default {
     const sentSMS = ref(store.getters["communication/allSentSMS"]);
 
     const currentPage = ref(0);
+    const searchText = ref("")
 
     const getSentSMS = async () => {
       try {
@@ -232,6 +233,21 @@ export default {
     })
      console.log(sentSMS.value, "data");
 
+     const searchedMessages = computed(() => {
+       if (searchText.value === "" && messages.value.length > 0) return messages.value
+       return messages.value.filter(i => i.message.toLowerCase().includes(searchText.value.toLowerCase()))
+     })
+     
+    //  const addSmsToSentList = () => {
+      //  const storedData = store.getters['communication/addSmsToSentList']
+      //  console.log(storedData)
+      //  if (storedData) {
+      //    sentSMS.value.push(storedData)
+      //  }
+      //  console.log(store.getters['communication/addSmsToSentList'])
+    //  }
+    //  addSmsToSentList()
+
     return {
       sentSMS,
       loading,
@@ -239,6 +255,8 @@ export default {
       currentPage,
       getSMSByPage,
       messages,
+      searchText,
+      searchedMessages
     };
   },
 };

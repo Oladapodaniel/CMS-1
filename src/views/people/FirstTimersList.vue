@@ -43,7 +43,6 @@
             <span class="percent-text"> Since last month</span>
           </p>
         </div>
-
         <div class="chart-con">
           <div style="width: 45%" class="ml-md-4 chart1">
             <ByGenderChart
@@ -179,11 +178,11 @@
               <tr v-for="person in filterResult" :key="person.id">
                   <td><input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/></td>
                   <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}</router-link></td>
-                  <td><router-link :to="``" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
-                  <td class="itemroute-color">{{ person.howDidYouAboutUsName }}</td>
-                  <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining }}</td>
-                  <td class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.personID}`" class="data-value itemroute-color"></router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.howDidYouAboutUsName }}</router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining }}</router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ moment.parseZone(new Date(person.date).toDateString(), 'YYYY MM DD HH ZZ')._i.substr(4, 11) }}</router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color"></router-link></td>
                   <td><div class="dropdown">
                     <i
                       class="fas fa-ellipsis-v"
@@ -228,10 +227,10 @@
                 <tr v-for="person in searchMember" :key="person.id">
                   <td><input type="checkbox" name="all" id="all" @click="toggleSelect"/></td>
                   <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName }}</router-link></td>
-                  <td><router-link :to="``" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
-                  <td class="itemroute-color"> {{ person.howDidYouAboutUsName }}</td>
-                  <td class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining == "On_Transit" ? "On Transit" : person.interestedInJoining }}</td>
-                  <td class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
+                  <td ><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color"> {{ person.howDidYouAboutUsName }}</router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining == "On_Transit" ? "On Transit" : person.interestedInJoining }}</router-link></td>
+                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toDateString(), 'YYYY MM DD HH ZZ')._i.substr(4, 11) }}</router-link></td>
                   <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color"></router-link></td>
                   <td><div class="dropdown">
                     <i
@@ -778,6 +777,11 @@ export default {
 
   .itemroute-color {
     color: #136acd;
+    cursor: pointer;
+  }
+
+  .itemroute-color:hover {
+    text-decoration: underline;
   }
 
 

@@ -6,7 +6,7 @@
     <div class="main-con">
       <div class="main-body">
         <!-- <div class="col-sm-12"> -->
-        <div class="top container-wide mt-3">
+        <div class="top container-wide mt-3 p-0">
           <div class="header">
             <div class="events">Events</div>
           </div>
@@ -22,30 +22,21 @@
               </router-link>
           </div>
         </div>
-      <!-- </div> -->
-        <!-- <div class="top">
-          <div class="header">
-            <h2>Event</h2>
-          </div>
-          <div class="actions">
-            <router-link :to="{ name: 'Event' }">
-            <button class="button add-person-btn">
-              Add Event
-            </button>
-            </router-link>
-          </div>
-        </div> -->
+      
         <hr class="hr container-wide" />
-<!-- v-if="!loading && people.length === 0" -->
-<!-- v-if="!loading && people.length > 0" -->
-        <div v-if="eventList.length === 0" class="no-person" >
+
+        <div v-if="loading">
+          <Loader />
+      </div>
+
+        <div v-if="eventList.length === 0 && !loading" class="no-person" >
         <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any event yet</p>
         </div>
         </div>
-        <div v-else class="container-wide">
-            <EventList />
+        <div v-if="eventList.length > 0 && !loading" class="container-wide">
+            <EventList :eventList="eventList"/>
         </div>
 
         <!-- Transitio area -->
@@ -70,25 +61,46 @@
     import axios from '@/gateway/backendapi'
     import { ref } from 'vue'
     import EventList from './EventList'
-// import store from "@/store/index";
+    import Loader from '../accounting/offering/SkeletonLoader'
+    import finish from "../../services/progressbar/progress"
+    // import { useStore } from 'vuex'
+    // import  store  from "../../store/store"
 // import router from "@/router/index";
 // import { useRoute } from "vue-router";
 
 export default {
-       components: { EventList },
+       components: {
+        EventList, Loader
+       },
   setup() {
+      
+      const eventList = ref([])
+      const loading = ref(false)
 
-      const eventList = ref(getEventList())
 
-
-      function getEventList () {
-        return axios.get('/api/eventreports/eventReports')
+      const getEventList = () => {
+        loading.value = true
+      // let store = useStore()
+        // if (store.getters['event/eventList'].length > 0) {
+        //   eventList.value = store.getters['event/eventList']
+        // } else {
+           axios.get('/api/eventreports/eventReports')
           .then(res => {
             eventList.value = res.data
             console.log(res.data)
+            loading.value = false
+            finish()
           })
-          .catch(err => console.log(err))
+          .catch(err => {
+            console.log(err)
+            loading.value = false
+            finish()
+          })
+        // }
+        // console.log(store.getters['event/eventList'])
+        // console.log(store.getters['contributions/contributionList'])
       }
+      getEventList()
     // const people = ref([]);
     // const loading = ref(true);
     // onMounted(async () => {
@@ -102,7 +114,7 @@ export default {
     //   }
     // });
   
-    return { eventList, getEventList };
+    return { eventList, getEventList, loading };
 
   },
 };
@@ -213,10 +225,10 @@ export default {
 }
 
 @media screen and (min-width: 1400px) {
-  .main-con {
+  /* .main-con {
     width: 90%;
     margin: 0 auto;
-  }
+  } */
 
   .top {
     height: 90px;
