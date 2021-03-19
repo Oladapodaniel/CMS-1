@@ -479,6 +479,12 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
     },
     {
+        path: 'chartofaccount/update',
+        name: 'OldAccounts',
+        component: () =>
+            import( /* webpackChunkName: "oldaccounts" */ '@/views/accounting/chartOfAccount/OldAccounts')
+    },
+    {
         path: 'offering',
         name: 'Offering',
         component: () =>

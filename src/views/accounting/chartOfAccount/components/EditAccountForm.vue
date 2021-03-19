@@ -20,8 +20,8 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
+                        :disabled="accountGroupId"
                       >
-                        <!-- :disabled="accountGroupId" -->
                         {{
                           !selectedAccountType || !selectedAccountType.name
                             ? "Select account type"
@@ -84,7 +84,7 @@
                   </div>
                 </div>
 
-                <div class="row my-3" v-if="currency">
+                <div class="row my-3">
                   <div class="col-md-4 text-md-right">Account Currency</div>
                   <div class="col-md-7" id="currencySelect">
                     <Dropdown
@@ -189,7 +189,6 @@ export default {
     "accountGroupId",
     "index",
     "account",
-    "currency",
   ],
   components: { Dropdown },
   setup(props, { emit }) {
@@ -223,52 +222,22 @@ export default {
     };
     getFunds();
 
-    const edit = async (body) => {
-      try {
-        const response = await chart_of_accounts.editAccount(body)
-        savingAccount.value = false;
-        toast.add({severity:'success', summary:'Account Updated', detail:`${response.response}`, life: 2500});
-        newAccount.value = { };
-        emit("save-account", { success: true, type: props.financialAccountType });
-      } catch (error) {
-        savingAccount.value = false;
-        toast.add({severity:'error', summary:'Account Update Failed', detail:`An error occurred, please try again`, life: 3000});
-        newAccount.value = { };
-        emit("save-account", { success: true, type: props.financialAccountType });
-        transactionals.getTransactionalAccounts(true);
-        console.log(error);
-      }
-    }
-
     const savingAccount = ref(false);
     const saveAccount = async (body) => {
       try {
         savingAccount.value = true;
-        let response = { };
-        if (props.account && props.account.name) {
-          const x = {
-            name: body.name,
-            code: props.account.code,
-            accountType: props.account.accountType,
-            description: body.description,
-            id: props.account.id,
-            financialAccountGroupID: selectedAccountType.value.id
-           }
-          response = edit(x);
+        const response = await chart_of_accounts.saveAccount(body);
+        savingAccount.value = false;
+        if (!response.status) {
+            emit("save-account", { success: false, type: props.financialAccountType });
+            toast.add({severity:'error', summary:'Account Creation Failed', detail:`An error occurred, please try again`, life: 3000});
         } else {
-          response = await chart_of_accounts.saveAccount(body);
-          savingAccount.value = false;
-          if (!response.status) {
-              emit("save-account", { success: false, type: props.financialAccountType });
-              toast.add({severity:'error', summary:'Account Creation Failed', detail:`An error occurred, please try again`, life: 3000});
-          } else {
-              toast.add({severity:'success', summary:'Account Created', detail:`The account ${newAccount.value.name} was created successfully`, life: 2500});
-              newAccount.value = { };
-              emit("save-account", { success: true, type: props.financialAccountType });
-              transactionals.getTransactionalAccounts(true);
-          }
+            toast.add({severity:'success', summary:'Account Created', detail:`The account ${newAccount.value.name} was created successfully`, life: 2500});
+            newAccount.value = { };
+            emit("save-account", { success: true, type: props.financialAccountType });
+            transactionals.getTransactionalAccounts(true);
         }
-        
+        console.log(response, "save account response");
       } catch (error) {
         savingAccount.value = false;
         console.log(error);
@@ -293,15 +262,14 @@ export default {
         newAccount.value.financialFundID = selectedFund.value.id;
       }
       saveAccount(newAccount.value);
+      console.log(newAccount.value, "new account");
     };
 
     watch(() => {
+        console.log(props.account, "ACC");
       if (props.accountGroupId) {
-        selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.accountGroupId)
-      }
-      if (props.account) {
-        newAccount.value.name = props.account ? props.account.name : "";
-        newAccount.value.description = props.account ? props.account.description : "";
+        selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.account.name)
+        console.log(selectedAccountType.value, "SSS");
       }
     })
     

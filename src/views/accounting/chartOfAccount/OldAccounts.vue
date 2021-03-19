@@ -1,5 +1,36 @@
 <template>
-  <div class="row" v-for="(item, index) in data.accountHeadsDTO" :key="index">
+  <div class="container" style="max-width: 800px;margin: 0 auto">
+    <div class="row tr-border-bottom pt-4 mb-4">
+      <div class="col-md-12 pl-0">
+        <div class="pb-3">
+          <span class="chart-head"> Update Charts of Accounts</span>
+          <span class="help"
+            ><i class="fa fa-question-circle-o" aria-hidden="true"></i
+          ></span>
+        </div>
+      </div>
+    </div>
+    <div
+        class="row row-border align-items-center py-2"
+        v-for="(itm, indx) in oldAccounts"
+        :key="indx"
+      >
+        <div class="col-6 col-md-2">{{ itm.code }}</div>
+        <div class="col-6 col-md-3">
+          <div class="desc-head">{{ itm.name }}</div>
+        </div>
+        <div class="col-6 col-md-5 small-text">{{ itm.description }}</div>
+        <div class="col-6 col-md-2 text-right">
+          <a class="primary-text text-decoration-none font-weight-700 c-pointer" @click="editAccount(itm)" data-toggle="modal" data-target="#assetsModal">
+            <!-- <i class="fa fa-pencil c-pointer"  aria-hidden="true"></i> -->
+            <span>edit</span>
+          </a>
+          <!-- <i class="pi pi-trash ml-2 c-pointer" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i> -->
+        </div>
+      </div>
+  </div>
+
+  <div class="row" v-for="(item, index) in chartsOfAccount.accountHeadsDTO" :key="index">
     <div class="col-md-12">
       <div class="row">
         <div class="col-12 py-2 mt-4 account-head">
@@ -43,7 +74,6 @@
       </div>
     </div>
   </div>
-
   <!-- BT MODAL -->
   <div
     class="modal fade"
@@ -180,6 +210,36 @@ export default {
       }
     });
 
+    const gettingCharts = ref(false);
+    const chartsOfAccount = ref([ ]);
+    const getCharts = async () => {
+      try {
+          gettingCharts.value = true;
+        const response = await chart_of_accounts.getChartOfAccounts();
+        gettingCharts.value = false;
+        chartsOfAccount.value = response.accountwithoutheads;
+        console.log(chartsOfAccount.value, "CHARTS");
+      } catch (error) {
+          gettingCharts.value = false;
+        console.log(error);
+      }
+    };
+    getCharts();
+
+    const oldAccounts = computed(() => {
+      if (!chartsOfAccount.value || chartsOfAccount.value.length === 0) return [ ];
+      // let targeted = [ ];
+      // for (let accounts of chartsOfAccount.value) {
+      //   for (let nestedAccounts of accounts.accounts) {
+      //     for (let account of nestedAccounts.accounts) {
+      //       targeted.push(account);
+      //     }
+      //   }
+      // }
+      // console.log(targeted, "tagettef");
+      return chartsOfAccount.value;
+    })
+
     const filterCurrency = computed(() => {
       if (currencyText.value !== "" && currencyList.value.length > 0) {
         return currencyList.value.filter((i) => {
@@ -241,9 +301,10 @@ export default {
     };
 
     const accountToEdit = ref({ });
-    const editAccount = (group, account) => {
+    const editAccount = (account) => {
+      console.log(account, "to be edited");
       accountToEdit.value = account;
-      accountGroupId.value = group.name;
+      // accountGroupId.value = group.name;
     }
 
     const deleteAccount = (id, index, indx) => {
@@ -336,6 +397,9 @@ export default {
       editAccount,
       accountToEdit,
       deleteAccount,
+      chartsOfAccount,
+      gettingCharts,
+      oldAccounts,
       // selectAccountType,
       // selectedAccountType
     };
@@ -344,8 +408,12 @@ export default {
 </script>
 
 <style scoped>
+.chart-head {
+  font: normal normal 800 29px Nunito sans;
+}
+
 .row-border {
-  border-bottom: 1px solid rgb(225, 225, 225);
+  border-bottom: 1px solid #4762f01f;
 }
 
 .account-head {

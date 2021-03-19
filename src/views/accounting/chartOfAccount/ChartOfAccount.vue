@@ -4,7 +4,7 @@
     <div class="main-con">
       <div class="main-body">
         <div class="container-wide container-top">
-            <Toast />
+          <Toast />
           <div class="row">
             <div class="col-12 col-md-6 p-0 text-center text-md-left">
               <div>
@@ -19,8 +19,10 @@
             >
               <!-- <span><i class="fa fa-gift" aria-hidden="true"></i></span>
                 <span class="what-new ml-2">What's new</span> -->
-              <span class="primary-bg default-btn border-0 text-white ml-3 c-pointer"
-               data-toggle="modal" data-target="#accountModal"
+              <span
+                class="primary-bg default-btn border-0 text-white ml-3 c-pointer"
+                data-toggle="modal"
+                data-target="#accountModal"
                 >Add a New Account of Fund</span
               >
             </div>
@@ -31,38 +33,39 @@
               :class="{ active: tab == 'assets' }"
               @click="selectTab('assets')"
             >
-              Assets <span class="count">7</span>
+              Assets <span class="count">{{ totalAssets }}</span>
             </div>
             <div
               class="col-sm-6 col-md-5 col-lg-4 col-xl-3 p-2 pointer"
               :class="{ active: tab == 'liabilities' }"
               @click="selectTab('liabilities')"
             >
-              Liabilities and Credit Cards <span class="count">2</span>
+              Liabilities & Credit Cards
+              <span class="count">{{ totalLiabilities }}</span>
             </div>
             <div
               class="col-sm-3 col-md-2 p-2 pointer"
               :class="{ active: tab == 'income' }"
               @click="selectTab('income')"
             >
-              Income <span class="count">6</span>
+              Income <span class="count">{{ totalIncome }}</span>
             </div>
             <div
               class="col-sm-6 col-md-2 p-2 pointer"
               :class="{ active: tab == 'expenses' }"
               @click="selectTab('expenses')"
             >
-              Expenses <span class="count">3</span>
+              Expenses <span class="count">{{ totalExpenses }}</span>
             </div>
             <div
               class="col-sm-6 col-md-2 p-2 pointer"
               :class="{ active: tab == 'equity' }"
               @click="selectTab('equity')"
             >
-              Fund [Equity] <span class="count">5</span>
+              Fund [Equity] <span class="count">{{ totalEquity }}</span>
             </div>
           </div>
-          <div class="row">
+          <div class="row" v-if="chartOfAccounts && chartOfAccounts.length > 0">
             <div class="col-12">
               <div v-if="tab === 'assets'">
                 <Assets
@@ -71,28 +74,71 @@
                       ? chartOfAccounts.find((i) => i.key === 0).accounts
                       : ''
                   "
+                  :data="chartOfAccounts[0]"
+                  @reload="getCharts"
+                  @asset-deleted="assetDeleted"
                 />
               </div>
               <div v-if="tab === 'liabilities'">
                 <div>
-                  <Liabilities />
+                  <Liabilities
+                    @liability-deleted="liabilityDeleted"
+                    :data="chartOfAccounts[1]"
+                    @reload="getCharts"
+                  />
                 </div>
               </div>
               <div v-if="tab == 'income'">
                 <div>
-                  <Income />
+                  <Income
+                    @income-deleted="incomeDeleted"
+                    :data="chartOfAccounts[3]"
+                    @reload="getCharts"
+                  />
                 </div>
               </div>
               <div v-if="tab === 'expenses'">
                 <div>
-                  <Expenses />
+                  <Expenses
+                    @expense-deleted="expenseDeleted"
+                    :data="chartOfAccounts[4]"
+                    @reload="getCharts"
+                  />
                 </div>
               </div>
               <div v-if="tab === 'equity'">
                 <div>
-                  <Equity />
+                  <Equity
+                    @equity-deleted="equityDeleted"
+                    :data="chartOfAccounts[2]"
+                    @save-fund="refreshCharts"
+                  />
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="row my-5" v-if="gettingCharts">
+            <div class="col-md-12 text-center">
+              <i class="pi pi-spin pi-spinner" style="fontsize: 3rem"></i>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <Dialog
+                header="Action Needed"
+                v-model:visible="display"
+                :style="{ width: '70vw', maxWidth: '600px' }"
+                :modal="true"
+              >
+                <div class="row">
+                  <div class="col-md-12">
+                    <h6>You have accounts that needs to be updated, click on the link below to continue</h6>
+                    <router-link class="text-decoration-none primary-text font-weight-bold" to="/tenant/chartofaccount/update">Update accounts</router-link>
+                  </div>
+                </div>
+              </Dialog>
             </div>
           </div>
 
@@ -114,6 +160,7 @@
                     Add an account
                   </h5>
                   <button
+                    ref="closeAccountModalBtn"
                     type="button"
                     class="close"
                     data-dismiss="modal"
@@ -127,6 +174,7 @@
                     :transactionalAccounts="accounts"
                     :accountTypes="accountTypes"
                     :currencies="currencyList"
+                    @save-account="closeAccountModal"
                   />
                 </div>
               </div>
@@ -139,7 +187,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import Assets from "@/views/accounting/chartOfAccount/Assets";
 import Liabilities from "@/views/accounting/chartOfAccount/Liabilities";
 import Income from "@/views/accounting/chartOfAccount/Income";
@@ -148,9 +196,17 @@ import Equity from "@/views/accounting/chartOfAccount/Equity";
 import chartsOfAccountService from "../../../services/financials/chart_of_accounts";
 import CreateAccountModal from "./components/CreateAccountForm";
 import transactionUtil from "./utilities/transactionals";
+// import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 
 export default {
-  components: { Assets, Liabilities, Income, Expenses, Equity, CreateAccountModal },
+  components: {
+    Assets,
+    Liabilities,
+    Income,
+    Expenses,
+    Equity,
+    CreateAccountModal,
+  },
   setup() {
     const tab = ref("assets");
 
@@ -171,42 +227,133 @@ export default {
     };
 
     const selectTab = (selectedTab) => {
-        tab.value = selectedTab;
-    }
+      tab.value = selectedTab;
+    };
+
+    const display = ref(false);
 
     const accounts = ref([]);
     const getAccounts = async () => {
-        try {
-            accounts.value = await transactionUtil.getTransactionalAccounts();
-            console.log(accounts.value);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+      try {
+        accounts.value = await transactionUtil.getTransactionalAccounts();
+        console.log(accounts.value, "accounts ss");
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getAccounts();
     const currencies = ref([]);
     const getCurrencies = async () => {
-        try {
-            currencies.value = await transactionUtil.getCurrencies();
-            console.log(currencies.value);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+      try {
+        currencies.value = await transactionUtil.getCurrencies();
+        console.log(currencies.value);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getCurrencies();
 
     const chartOfAccounts = ref([]);
     const accountTypes = transactionUtil.accountTypes;
 
+    const gettingCharts = ref(false);
     const getCharts = async () => {
       try {
-        const response = await chartsOfAccountService.getAssetsAccounts();
+        gettingCharts.value = true;
+        const response = await chartsOfAccountService.getChartOfAccounts();
+        gettingCharts.value = false;
+        chartOfAccounts.value = response.accountwithHeads;
         console.log(response, "CHARTS");
       } catch (error) {
+        gettingCharts.value = false;
         console.log(error);
       }
     };
     getCharts();
+
+    const closeAccountModalBtn = ref(null);
+    const closeAccountModal = (data) => {
+      console.log(data, "emiited data");
+      closeAccountModalBtn.value.click();
+    };
+
+    const refreshCharts = (data) => {
+      if (data.success) {
+        getCharts();
+      }
+    };
+
+    const totalAssets = computed(() => {
+      if (!chartOfAccounts.value || chartOfAccounts.value.length === 0)
+        return 0;
+      let sum = 0;
+      for (let item of chartOfAccounts.value[0].accountHeadsDTO) {
+        sum += item.accounts.length;
+      }
+      return sum;
+    });
+
+    const totalLiabilities = computed(() => {
+      if (!chartOfAccounts.value || chartOfAccounts.value.length === 0)
+        return 0;
+      let sum = 0;
+      for (let item of chartOfAccounts.value[1].accountHeadsDTO) {
+        sum += item.accounts.length;
+      }
+      return sum;
+    });
+
+    const totalIncome = computed(() => {
+      if (!chartOfAccounts.value || chartOfAccounts.value.length === 0)
+        return 0;
+      let sum = 0;
+      for (let item of chartOfAccounts.value[3].accountHeadsDTO) {
+        sum += item.accounts.length;
+      }
+      return sum;
+    });
+
+    const totalExpenses = computed(() => {
+      if (!chartOfAccounts.value || chartOfAccounts.value.length === 0)
+        return 0;
+      let sum = 0;
+      for (let item of chartOfAccounts.value[4].accountHeadsDTO) {
+        sum += item.accounts.length;
+      }
+      return sum;
+    });
+
+    const totalEquity = computed(() => {
+      if (!chartOfAccounts.value || chartOfAccounts.value.length === 0)
+        return 0;
+      let sum = 0;
+      for (let item of chartOfAccounts.value[2].accountHeadsDTO) {
+        sum += item.accounts.length;
+      }
+      return sum;
+    });
+
+    const assetDeleted = (index, indx) => {
+      chartOfAccounts.value[0].accountHeadsDTO[index].accounts.splice(indx, 1);
+    };
+
+    const liabilityDeleted = (index, indx) => {
+      chartOfAccounts.value[1].accountHeadsDTO[index].accounts.splice(indx, 1);
+    };
+
+    const incomeDeleted = (index, indx) => {
+      chartOfAccounts.value[3].accountHeadsDTO[index].accounts.splice(indx, 1);
+    };
+    const expenseDeleted = (index, indx) => {
+      chartOfAccounts.value[4].accountHeadsDTO[index].accounts.splice(indx, 1);
+    };
+    const equityDeleted = (index, indx) => {
+      chartOfAccounts.value[2].accountHeadsDTO[index].accounts.splice(indx, 1);
+    };
+
+    onMounted(() => {
+        display.value = true;
+    })
 
     return {
       tab,
@@ -219,6 +366,23 @@ export default {
       accounts,
       accountTypes,
       selectTab,
+      closeAccountModal,
+      closeAccountModalBtn,
+      gettingCharts,
+      getCharts,
+      refreshCharts,
+      totalAssets,
+      totalLiabilities,
+      totalIncome,
+      totalExpenses,
+      totalEquity,
+      assetDeleted,
+      liabilityDeleted,
+      incomeDeleted,
+      expenseDeleted,
+      equityDeleted,
+      display,
+      //   accountCategories,
     };
   },
 };
