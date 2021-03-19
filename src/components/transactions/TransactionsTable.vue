@@ -197,9 +197,7 @@
                       <div class="d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Description</span>
                       <div>
-                        <div class="desc-head small-text text-right text-md-left">
-                          Write a description
-                        </div>
+                        
                         <div class="desc small-text text-right text-md-left">{{ item.narration }}</div>
                       </div>
                       </div>
@@ -238,6 +236,7 @@
                 @transac-obj="transacObj"
                 :transactionDetails="transactionDetails"
                 :showEditTransaction="showEditTransaction"
+                @reload="getTransactions"
               />
               <!-- :transacProp="transacPropsValue" -->
             </div>
@@ -522,6 +521,7 @@ export default {
       formatDate,
       rowSelected,
       searchText,
+      getTransactions,
     };
   },
 };
