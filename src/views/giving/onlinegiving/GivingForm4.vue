@@ -32,7 +32,7 @@
               </li> -->
               <li class="nav-item lstyle" @click="checkForToken">
                 <div class="text-white" href="#" style="cursor: pointer"
-                  >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Your Account"}} &nbsp; <i class="fas fa-user text-white"></i
+                  >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} &nbsp; <i class="fas fa-user text-white"></i
                 ></div>
               </li>
             </div>
@@ -102,7 +102,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <section>
-                        <p class="col-md-4 hfont px-0 mb-1">
+                        <p class="col-12 hfont px-0 mb-1">
                           How often do you give:
                         </p>
 
@@ -122,8 +122,8 @@
                               @click="toggleTabTwo"
                             >
                               <span
-                                ><i class="fas fa-redo-alt"></i> &nbsp; Set up
-                                recurring</span
+                                ><i class="fas fa-redo-alt"></i> &nbsp; Set Up
+                                Recurring</span
                               >
                             </div>
                           </div>
@@ -190,21 +190,32 @@
                     </div>
                   </section>
                   <!-- end of date area -->
-
-                  <div class="row mt-4">
-                    <div class="col-1">
-                      <Checkbox id="binary" v-model="checked" :binary="true" />
+                  <div class="col-12">
+                  <div class="row mt-4 stroke" v-if="!signedIn" >
+                    <!-- <div class="col-1">
+                     
+                    </div> -->
+                    <div class="col-6 align-self-center pointer" :class="{ 'active-tab' : activeTab1 }" @click="toggleActive1">
+                    <div class="p-2 fone">Give Now</div>
                     </div>
-                    <div class="col-10">
-                      <label for="binary">Give as anonymous</label>
+                    <div class="col-6 align-self-center pointer" :class="{ 'active-tab' : activeTab2 }" @click="toggleActive2">
+                      <div class="p-2 fone">Sign In</div>
                     </div>
                   </div>
+                  </div>
 
+                  <div class="col-12 d-flex align-items-center mt-3 p-0" v-if="!signedIn && !activeTab2">
+                    <Checkbox id="binary" v-model="checked" :binary="true" />
+                    <label for="binary" class="mb-0 pl-3">
+                      Give as anonymous
+                    </label>
+                  </div>
                   <!-- start of user credentials area -->
-                  <transition name="fade">
-
-
-                  <div class="row d-flex" v-if="!checked">
+                  <transition name="fade" v-if="!signedIn">
+                      
+                  <div class="col-12" v-if="!checked">
+                    <div class="row d-flex">
+                    
                     <div class="col-md-6">
                       <div class="row">
                         <div class="col-md-12 mx-auto my-2 px-0 px-2">
@@ -215,20 +226,6 @@
                             placeholder="Enter your name"
                             v-model="name"
                           />
-
-                    <!-- <div class="row d-flex" v-if="!checked">
-                      <div class="col-md-6">
-                        <div class="row">
-                          <div class="col-md-12 mx-auto my-2 px-0 px-2">
-                            <label class="hfont">Name</label>
-                            <input
-                              class="form-control col-md-12 text-left border"
-                              type="text"
-                              placeholder="Enter your name"
-                              v-model="name"
-                            />
-                          </div>
->>>>>>> midas -->
                       </div>
                       </div>
                     </div>
@@ -244,27 +241,56 @@
                             v-model="phone"
 
                           />
-
-                      <!-- <div class="col-md-6">
-                        <div class="row">
-                          <div class="col-md-12 mx-auto my-2 px-0 px-2">
-                            <label class="hfont">Phone Number</label>
-                            <input
-                              class="form-control col-md-12 text-left border"
-                              type="text"
-                              v-model="phone"
-                            />
-                          </div>
->-->
                         </div>
                       </div>
                       </div>
                     </div>
+                  </div>
                   </transition>
-                  <!-- end of user credentials area -->
+                 
+                  <div class="col-12" v-if="activeTab2">
+                    <div class="row d-flex">
+                    
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-12 mx-auto my-2 px-0 px-2">
+                          <label class="hfont">Email</label>
+                          <input
+                            class="form-control col-md-12 text-left border imp1"
+                            type="email"
+                            v-model="signInEmail"                     
+                          />
+                      </div>
+                      </div>
+                    </div>
 
-                  <!-- start of dynamic Area 3 -->
-                  <div class="row">
+
+                    <div class="col-md-6">
+                      <div class="row">
+                        <div class="col-md-12 mx-auto my-2 px-0 px-2">
+                          <label class="hfont">Password</label>
+                          <input
+                            class="form-control col-md-12 text-left border imp1"
+                            type="password"
+                            v-model="signInPassword"
+                           />
+                        </div>
+                      </div>
+                      </div>
+                      <div class="col-sm-12 mt-3">
+                        <div class="d-flex justify-content-center">
+                          <div class="button default-color text-center w-25" @click="signin">Sign in</div>
+                        </div>
+                        <div class="label mt-3 text-center">
+                          Not registered yet?
+                          <router-link :to="{ name: 'SignUpPayment', params: { userId: routeParams } }"
+                            >Create a new account</router-link
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
                     <div class="col-md-12">
                       <section
                         class="col-10 offset-1 mt-3 px-0"
@@ -298,7 +324,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :email="email" @payment-successful="successfulPayment"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -308,7 +334,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+        
                   <!-- end of dynamic Area 3 -->
                 </div>
                 <div
@@ -382,7 +408,7 @@
                   <div class="col-md-6 offset-md-3">
                     <div class="row hfont">
                       <p class="text-nowrap col-12 text-center">
-                        Churchplus <span><u>Terms & Conditions</u></span
+                        Churchplus <span><u>Terms & Conditions</u> </span
                         >and
                         <span><u>Privacy Policy</u> </span>
                       </p>
@@ -411,6 +437,7 @@
       </div>
       <!--end of body area -->
     </div>
+    <Toast />
   </div>
 </template>
 
@@ -422,6 +449,7 @@ import PaymentOptionModal from "./PaymentOptionModal";
 import Checkbox from "primevue/checkbox";
 import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
+import { useToast } from "primevue/usetoast";
 export default {
   components: {
     PaymentOptionModal,
@@ -430,6 +458,7 @@ export default {
   setup() {
     const route = useRoute()
     const router = useRouter()
+    let toast = useToast();
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -454,12 +483,18 @@ export default {
     const amount = ref("")
     const name = ref("")
     const phone = ref("")
-    const email = ref("info@churchplus.co")
+    const email = ref("anonymous@churchplus.co")
     const checked = ref(true)
     const donationObj = ref({})
     const close = ref("")
     const paymentSuccessful = ref(false)
     const userData = ref({})
+    const signedIn = ref(false)
+    const activeTab1 = ref(true)
+    const activeTab2 = ref(false)
+    const signInEmail = ref("")
+    const signInPassword = ref("")
+    const routeParams = ref(`${route.params.userId}`)
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -498,7 +533,7 @@ export default {
         .then((res) => {
           // funds.value = res.data.contributionItems;
           // console.log(funds.value, "kjjjhjjjje");
-          // console.log(res.data);
+          console.log(res.data);
           formResponse.value = res.data;
           selectedContributionType.value = formResponse.value.currencyId;
           console.log(formResponse.value);
@@ -589,8 +624,11 @@ export default {
     }
 
     const getUserDetails = async() => {
-      if (localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken')) {
-        let storedDetails = JSON.parse(localStorage.getItem('giverToken'))
+      console.log(localStorage.getItem('giverToken'))
+      if (localStorage.getItem('giverToken') === null ) {
+        console.log('Not signed in yet')        
+    } else {
+      let storedDetails = JSON.parse(localStorage.getItem('giverToken'))
         console.log(storedDetails)
       try {
           let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
@@ -605,6 +643,7 @@ export default {
           console.log(error)
           finish()
         }
+        signedIn.value = true
     }
     }
     getUserDetails()
@@ -616,6 +655,66 @@ export default {
         router.push({ name: 'TransactionPage', params: { userId: route.params.userId } })
       }
     }
+
+    const signOut = () => {
+      localStorage.removeItem('giverToken')
+      alert('signed out successfully')
+    }
+
+    const toggleActive1 = () => {
+      activeTab1.value = true
+      activeTab2.value = false
+    }
+
+    const toggleActive2 = () => {
+      activeTab2.value = true
+      activeTab1.value = false
+    }
+
+    const signin = async () => {
+      let userdetails = {
+        email: signInEmail.value,
+        password: signInPassword.value,
+      };
+
+      try {
+        let { data } = await axios.post(
+          "/mobile/v1/Account/SignIn",
+          userdetails
+        );
+        if (data && data.token) {
+            let giverDetails = {
+                giverToken: data.token,
+                giverId: data.userId
+            }
+          localStorage.setItem("giverToken", JSON.stringify(giverDetails));
+          toast.add({
+            severity: "success",
+            summary: "Successful",
+            detail: `Signed In Successfully`,
+            life: 3000,
+          });
+          signedIn.value = true
+        }
+        finish()
+
+        console.log(data);
+        console.log(data.data)
+      } catch (error) {
+          finish()
+        console.log(error);
+        console.log(error.response);
+        if (error.reponse) {
+          toast.add({
+            severity: "error",
+            summary: "Error Signing In",
+            detail: `${error.response.data.message}`,
+            life: 3000,
+          });
+        }
+      }
+      // console.log(userdetails.value);
+    };
 
     return {
       hideTabOne,
@@ -644,7 +743,17 @@ export default {
       successfulPayment,
       userData,
       checkForToken,
-      email
+      email,
+      signedIn,
+      signOut,
+      activeTab1,
+      activeTab2,
+      toggleActive1,
+      toggleActive2,
+      signin,
+      signInEmail,
+      signInPassword,
+      routeParams
     };
   },
 };
@@ -788,19 +897,37 @@ export default {
   opacity: 0;
   transition: opacity 0.2s;
 } */
-.fade-enter-active {
+/* .fade-enter-active {
   transition: all .5s ease-in-out;;
 }
 .fade-leave-active {
   transition: all .5s ease-in-out;
 }
-.fade-enter, .fade-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(30px);
+.fade-enter, .fade-leave-to {*/
+/* .slide-fade-leave-active below version 2.1.8 */ 
+  /* transform: translateX(30px);
   opacity: 0;
 }
 .fade-leave, .fade-enter-to {
   opacity: 1;
+} */
+
+.fade-enter-active {
+  animation: fade-in .5s;
+}
+.fade-leave-active {
+  animation: fade-in .5s reverse;
+}
+@keyframes fade-in {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
 }
 
 .move-enter-active {
@@ -819,5 +946,17 @@ export default {
     opacity: 1;
   }
 
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.active-tab {
+  background: rgba(206, 206, 206, 0.274);
+}
+
+.stroke {
+  border-bottom: 1px solid rgba(206, 206, 206, 0.562);
 }
 </style>
