@@ -30,13 +30,13 @@
     </div>
     
     <div class="row mt-4"> 
-      <div class="col-sm-1 text-center default-btn" :class="{ 'active-btn': monthlyActiveBtn }" @click="toggleMonthlyClass">
+      <div class="col-6 col-sm-1 text-center default-btn" :class="{ 'active-btn': monthlyActiveBtn }" @click="toggleMonthlyClass">
         <div>Monthly</div>
       </div>
-      <div class="col-sm-1 ml-2 text-center default-btn" :class="{ 'active-btn': yearlyActiveBtn }" @click="toggleYearlyClass">
+      <div class="col-6 col-sm-1 ml-sm-2 text-center default-btn" :class="{ 'active-btn': yearlyActiveBtn }" @click="toggleYearlyClass">
         <div>Yearly</div>
       </div>
-      <div class="col-sm-1 ml-2 text-center default-btn" :class="{ 'active-btn': allTimeActiveBtn }" @click="toggleAllTimeClass">
+      <div class="col-6 offset-3 offset-sm-0 col-sm-1 ml-sm-2 mt-3 mt-sm-0 text-center default-btn" :class="{ 'active-btn': allTimeActiveBtn }" @click="toggleAllTimeClass">
         <div>All Time</div>
       </div>
     </div>
@@ -44,12 +44,12 @@
     <div class="row avg-table mt-4">
       <div class="col-6 col-md-3 first-row" v-tooltip.bottom="`${eventSummary.attendance ? eventSummary.attendance : 0 }`">
         <div>Attendance</div>
-        <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 8 ? `${eventSummary.attendance.toString().slice(0, 8)}...` : eventSummary.attendance : 0}}</div>
+        <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 6 ? `${eventSummary.attendance.toString().slice(0, 6)}...` : eventSummary.attendance : 0}}</div>
         
       </div>
       <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
         <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div> {{eventSummary.offerings ? eventSummary.offerings.toString().length > 8 ? `${ eventSummary.offerings.toString().slice(0, 8) }...` : eventSummary.offerings : 0}}</div>
+        <div> {{eventSummary.offerings ? eventSummary.offerings.toString().length > 6 ? `${ eventSummary.offerings.toString().slice(0, 6) }...` : eventSummary.offerings : 0}}</div>
       </div>
       <div class="col-6 col-md-3">
         <div>First Timers</div>
@@ -255,74 +255,80 @@
             </div>
           </div>
           <div class="row table-header">
-                <div class="col-sm-1 d-none d-sm-block">
+                <div class="col-md-1 d-none d-md-block">
                     STATUS
                 </div>
-                    <div class="col-sm-2 d-none d-sm-block">
+                    <div class="col-md-2 d-none d-md-block">
                     EVENT NAME
                 </div>
-                <div class="col-sm-2 d-none d-sm-block">
+                <div class="col-md-2 d-none d-md-block">
                     TITLE
                 </div>
-                <div class="col-sm-2 d-none d-sm-block">
+                <div class="col-md-2 d-none d-md-block">
                     DATE
                 </div>
-                <div class="col-sm-1 d-none d-sm-block" >
+                <div class="col-md-1 d-none d-md-block" >
                     ATTENDANCE
                 </div>
-                <div class="col-sm-2 d-none d-sm-block" >
+                <div class="col-md-2 d-none d-md-block" >
                     FIRST TIMERS
                 </div>
-                <div class="col-sm-2 d-none d-sm-block" >
+                <div class="col-md-2 d-none d-md-block" >
                     NEW CONVERTS
                 </div>
             </div>
 
             <div class="table-body row" v-for="(event, index) in filterEvents" :key="index">
-                <div class="col-6 d-block d-sm-none">
-                <div class="col-sm-3">
+                <div class="col-6 d-block d-md-none">
+                <div class="col-md-3">
+                    STATUS
+                </div>
+                    <div class="col-md-2">
+                    EVENT NAME
+                </div>
+                    <div class="col-md-2">
+                    TITLE
+                </div>
+                    <div class="col-md-2">
                     DATE
                 </div>
-                    <div class="col-sm-2">
-                    EVENT
+                    <div class="col-md-2" >
+                    ATTENDANCE
                 </div>
-                    <div class="col-sm-2">
-                    CONTRIBUTION
+                    <div class="col-md-2" >
+                    FIRST TIMERS
                 </div>
-                    <div class="col-sm-2">
-                    AMOUNT
-                </div>
-                    <div class="col-sm-2" >
-                    DONOR
+                    <div class="col-md-2" >
+                    NEW  CONVERTS
                 </div>
             </div>
-            <div class="col-6 col-sm-12">
+            <div class="col-6 col-md-12">
                 <div class="row">
-                <div class="col-sm-1 p-2 align-self-center">
+                <div class="col-md-1 p-2 align-self-center">
                     <div class="td-first">Unsent</div>
                 </div>
-                <div class="col-sm-2 itemroute-color align-self-center">
+                <div class="col-md-2 itemroute-color align-self-center">
                     <div><router-link :to="`/tenant/event/${event.activityId}`" class="itemroute-color">{{event.eventName}}</router-link></div>
                 </div>
-                <div class="col-sm-2 itemroute-color align-self-center">
+                <div class="col-md-2 itemroute-color align-self-center">
                     <div>{{event.title}}</div>
                 </div>
-                <div class="col-sm-2 itemroute-color align-self-center">
-                    <div>{{moment.parseZone(new Date(event.activityDate).toDateString(),"YYYY MM DD HH ZZ")._i.substr(4, 11)}}</div>
+                <div class="col-md-2 itemroute-color align-self-center">
+                    <div>{{moment.parseZone(new Date(event.activityDate).toDateString(),"YYYY MM DD HH ZZ")._i.substr(4, 11) }}</div>
                 </div>
-                <div class="col-sm-1 itemroute-color align-self-center">
+                <div class="col-md-1 itemroute-color align-self-center">
                      <div>{{ event.attendances }}</div>
                 </div>
-                <div class="col-sm-2 itemroute-color align-self-center">
+                <div class="col-md-2 itemroute-color align-self-center">
                      <div>{{ event.firstTimers }}</div>
                 </div>
                 <!-- <div class="col-sm-2">
                      <div class="d-flex"> <div class="currency">NGN</div><div class="align-self-center ml-2" style="font-weight: 800;">{{ offering.amount }}</div></div>
                 </div> -->
-                <div class="col-sm-1 itemroute-color align-self-center" >
+                <div class="col-md-1 itemroute-color align-self-center" >
                      <div>{{ event.newConverts }}</div>
                 </div>
-                <div class="col-sm-1 align-self-center">
+                <div class="col-md-1 align-self-center">
                     <div class="dropdown">
               <i
                 class="fas fa-ellipsis-v cursor-pointer"
@@ -647,12 +653,6 @@ const deleteMember = (id) => {
   height: 100%;
 }
 
-.top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-}
 
 .button {
   padding: 8px 10px;
@@ -966,10 +966,10 @@ const deleteMember = (id) => {
 .td-first {
   font: normal normal 800 14px/19px Nunito Sans;
   letter-spacing: 0px;
-  color: #700303;
+  color: #313131;
   border-top-left-radius: 25px;
   border-bottom-left-radius: 25px;
-  background: #da320870;
+  background: #cecbcb70;
   padding: 7px;
 }
 

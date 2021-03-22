@@ -23,7 +23,7 @@
           </div>
         </div>
       
-        <hr class="hr container-wide" />
+        <hr class="hr container-wide mt-4" />
 
         <div v-if="loading">
           <Loader />
@@ -181,7 +181,6 @@ export default {
 .btn-icon {
   padding: 0 8px;
 }
-
  .no-person {
   height: 100%;
   display: flex;
@@ -197,22 +196,37 @@ export default {
 .empty-img img {
   width: 100%;
   max-width: 200px;
-}/*
-
-.tip {
-  color: #02172e;
-  font-size: 20px;
-  font-weight: 600;
-} */
+}
 
 .hr {
   border: 0.8px solid #0020440a;
   margin: 0 45px;
 }
 
+@media (max-width: 346px) {
+  .actions {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px
+  }
+
+  .actions a {
+    margin-top: 10px;
+  }
+}
+
 @media(max-width: 566px) {
   .button {
     width: 140px;
+  }
+}
+
+@media (max-width: 575px) {
+  .top {
+    flex-direction: column;
+  }
+  .actions {
+    margin-top: 20px;
   }
 }
 
@@ -230,9 +244,7 @@ export default {
     margin: 0 auto;
   } */
 
-  .top {
-    height: 90px;
-  }
+ 
 
   .no-person {
     height: calc(100% - 90px);
