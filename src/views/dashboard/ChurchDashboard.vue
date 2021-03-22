@@ -125,6 +125,7 @@
         </div>
       </div>
 
+    <div v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
       <div class="celeb-header">
         <div class="celeb-icon">
           <img src="../../assets/celeb-icon.svg" alt="Celebration Icon" />
@@ -133,93 +134,11 @@
           <p>Celebrations</p>
         </div>
       </div>
-      <!-- <div class="table">
-          <div class="table-top">
-            <router-link to="" class="view-all">View all</router-link>
-          </div>
-
-          <div class="table-header">
-         
-            <div class="picture">
-              <p>PICTURE</p>
-            </div>
-            <div class="firstname">
-              <p>FIRSTNAME</p>
-            </div>
-            <div class="lastname">
-              <p>LASTNAME</p>
-            </div>
-            <div class="phone one">
-              <p>PHONE</p>
-            </div>
-            <div class="action"></div>
-          </div>
-
-          <div
-            class="table-body"
-            v-for="person in celebrations"
-            :key="person.id"
-          >
-            <div class="data-row">
-           
-              <div class="picture data">
-                <div class="data-con">
-                  <div class="data-text">
-                    <p>Picture</p>
-                  </div>
-                  <div class="data-value">
-                    <div class="image-con">
-                      <img src="../../assets/people/phone-import.svg"  alt="" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="firstname data">
-                <div class="data-con">
-                  <div class="data-text">
-                    <p>Firstnmae</p>
-                  </div>
-                  <div class="data-value">{{ person.firstName }}</div>
-                </div>
-              </div>
-              <div class="lastname data">
-                <div class="data-con">
-                  <div class="data-text">
-                    <p>Lastname</p>
-                  </div>
-                  <div class="data-value">{{ person.lastName }}</div>
-                </div>
-              </div>
-              <div class="phone data">
-                <div class="data-con">
-                  <div class="data-text">
-                    <p>Phone</p>
-                  </div>
-                  <div class="data-value">{{ person.mobilePhone }}</div>
-                </div>
-              </div>
-              <div class="action data action-icon">
-                <i class="fas fa-ellipsis-v"></i>
-              </div>
-            </div>
-            <hr class="row-divider" />
-          </div>
-
-          <div class="table-footer">
-            <button class="tbl-footer-btn">
-              <i class="fa fa-angle-left"></i>
-            </button>
-            <button class="tbl-footer-btn">A</button>
-            <button class="tbl-footer-btn">A</button>
-            <button class="tbl-footer-btn">
-              <i class="fa fa-angle-right"></i>
-            </button>
-          </div>
-        </div> -->
       <div class="table table-responsive">
         <div class="table-top">
           <router-link to="" class="view-all">View all</router-link>
         </div>
+
         
           <table class="w-100">
           <thead>
@@ -231,13 +150,13 @@
               <th></th>
             </tr>
           </thead>
-          <tbody v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
+          <tbody>
             <tr
               v-for="celebration in tenantInfo.celebrations"
               :key="celebration.id" 
             >
               <td>
-                <img src="../../assets/people/phone-import.svg" alt="" /><span
+                <img src="../../assets/people/avatar-male.png" alt="" /><span
                   class="project-name"
                   >{{ celebration.name }}</span
                 >
@@ -288,15 +207,16 @@
               </td>
             </tr>
           </tbody>
-          <tbody>
+          <!-- <tbody v-else>
             <tr>
               
               
               <td colspan="5"><div class=" text-center p-3" style="font-weight: 700; font-size: 1.2em;">No Celebrations Yet</div></td>
               
             </tr>
-          </tbody>
+          </tbody> -->
         </table>
+      </div>
         <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-left"></i>
@@ -308,9 +228,10 @@
           </button>
         </div>
       </div>
+      <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
       <div class="charts" id="plot">
-        <div v-if="tenantInfo.eventAttendanceChartData && attendanceDataExist">
-          <div class="adjust-view">
+        <div v-if="tenantInfo.eventAttendanceChartDataWeekly && attendanceDataExist">
+          <div class="adjust-view col-10 col-sm-3 offset-sm-9">
             <div class="view-report">View Reports</div>
             <div class="weekly">
               <span
@@ -324,7 +245,7 @@
               >
             </div>
           </div>
-
+  
           <div v-if="attendanceBoolean">
             <ColumnChart
               domId="chart1"
@@ -348,10 +269,11 @@
             />
           </div>
         </div>
+<!-- {{ firstTimerDataExist }} -->
+<!-- {{ tenantInfo.firstTimersummary.firstTimerWeekly }} -->
 
-
-      <div v-if="tenantInfo.eventAttendanceChartData && firstTimerDataExist">
-        <div class="adjust-view">
+      <div v-if="tenantInfo.firstTimerSummary && firstTimerDataExist">
+        <div class="adjust-view col-10 col-sm-3 offset-sm-9">
           <div class="view-report">View Reports</div>
           <div class="weekly">
             <span
@@ -394,27 +316,38 @@
       <div>{{ monthlyFirstTimerObj }}</div>
       <div>{{ chartDataNewConvert }}</div> -->
       <!-- <div>{{ series2 }}</div> -->
+      <!-- <div>{{ tenantInfo ? tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.invitationSource : [] : [] }}</div> -->
 
 
-        <div class="chart-con" v-if="firstTimerPieExist">
-          <div style="width: 45%" class="ml-md-4 chart1">
-            <ByGenderChart
-              domId="source"
-              title="Invitation Source"
-              distance="5"
-              :titleMargin="10"
-              :summary="tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.invitationSource : [] "
-            />
+        <!-- <div class="chart-con" v-if="firstTimerPieExist"> -->
+          
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-6 d-flex justify-content-center">
+                <div class="chart1">
+                <ByGenderChart
+                  domId="source"
+                  title="Invitation Source"
+                  distance="5"
+                  :titleMargin="10"
+                  :summary="tenantInfo ? tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.invitationSource : [] : []"
+                />
+              </div>
+              </div>
+              <div class="col-12 col-md-6 d-flex justify-content-center">
+                <div class="chart2">
+                  <ByMaritalStatusChart
+                    domId="join"
+                    title="Interested In Joining"
+                    :titleMargin="10"
+                    :summary="tenantInfo ? tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.interestedInJoining : [] : [] "
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-          <div style="width: 45%;" class="chart2">
-            <ByMaritalStatusChart
-              domId="join"
-              title="Interested In Joining"
-              :titleMargin="10"
-              :summary="tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.interestedInJoining : [] "
-            />
-          </div>
-        </div>
+        <!-- </div> -->
         <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
         <!-- <div>{{ chartData2 }}</div> -->
 
@@ -461,6 +394,7 @@ import { computed, onMounted, ref } from "vue";
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import moment from "moment";
+import stopProgressBar from "../../services/progressbar/progress"
 
 export default {
   components: {
@@ -495,8 +429,7 @@ export default {
     const attendanceSeries = ref("weekly");
     const firstTimerSeries = ref("weekly")
 
-    const monthlyAttendanceObj = ref({})
-    const monthlyFirstTimerObj = ref({})
+    // const monthlyFirstTimerObj = ref({})
 
     const xAxis = ref([])
     const monthXaxis = ref(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
@@ -516,28 +449,29 @@ export default {
       .get("/dashboard")
       .then((res) => {
         tenantInfo.value = res.data;
+        console.log(tenantInfo.value)
         // celebrations.value = res.data
         console.log(res.data);
-        tenantInfo.value.eventAttendanceChartData[0].data.forEach(element => {
+        tenantInfo.value.eventAttendanceChartDataWeekly[0].data.forEach(element => {
           if (element > 0) {
             attendanceDataExist.value = true
           }
         });
-        tenantInfo.value.eventAttendanceChartData[1].data.forEach(element => {
+        tenantInfo.value.firstTimerSummary.firstTimerWeekly[0].data.forEach(element => {
           if (element > 0) {
             firstTimerDataExist.value = true
           }
         });
         tenantInfo.value.firstTimerSummary.invitationSource.forEach(element => {
-          if (element > 0) {
+          if (element.value > 0) {
             firstTimerPieExist.value = true
           }
         });
-
       })
       .catch((err) => {
-        console.log(err.response);
-        if (err.response.status === 401) {
+        stopProgressBar();
+        // console.log(err.response);
+        if (err.response && err.response.status === 401) {
           localStorage.removeItem("token");
           router.push("/");
         }
@@ -559,9 +493,7 @@ export default {
     })
 
     onMounted(() => {
-      console.log(tenantInfo.value.eventAttendanceChartData);
-
-      
+  
       for (let i = 1; i <= 52; i++) {
         xAxis.value.push(i)
       }
@@ -585,11 +517,11 @@ export default {
       attendanceBoolean.value = false;
       attendanceSeries.value = "monthly";
 
-      axios.get('/Dashboard/period?period=Months')
-        .then(res => {
-          monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
+      // axios.get('/Dashboard/period?period=Months')
+      //   .then(res => {
+      //     monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
           
-       })
+      //  })
     };
 
     const weeklyFirstTimer = () => {
@@ -602,21 +534,30 @@ export default {
 
         firstTimerBoolean.value = false;
           firstTimerSeries.value = "monthly"
-      axios.get('/Dashboard/period?period=Months')
-        .then(res => {
-          monthlyFirstTimerObj.value = res.data.eventAttendanceChartData[1]  
-       })
-      console.log(monthlyFirstTimerObj.value)
+      // axios.get('/Dashboard/period?period=Months')
+      //   .then(res => {
+      //     monthlyFirstTimerObj.value = res.data.eventAttendanceChartData[1]  
+      //  })
+
     };
 
     const chartData = computed(() => {
-      if (!tenantInfo.value.eventAttendanceChartData) return [];
-      return tenantInfo.value.eventAttendanceChartData[0]
+      if (!tenantInfo.value.eventAttendanceChartDataWeekly) return [];
+      return tenantInfo.value.eventAttendanceChartDataWeekly[0]
+    });
+    const monthlyAttendanceObj = computed(() => {
+      if (!tenantInfo.value.eventAttendanceChartDataMonthly) return [];
+      return tenantInfo.value.eventAttendanceChartDataMonthly[0]
     });
     
     const chartData2 = computed(() => {
-      if (!tenantInfo.value.eventAttendanceChartData) return [];
-      return tenantInfo.value.eventAttendanceChartData[1]
+      if (!tenantInfo.value.firstTimerSummary) return [];
+      return tenantInfo.value.firstTimerSummary.firstTimerWeekly[0]
+    });
+    
+    const monthlyFirstTimerObj = computed(() => {
+      if (!tenantInfo.value.firstTimerSummary) return [];
+      return tenantInfo.value.firstTimerSummary.firstTimerMonthly[0]
     });
 
     const chartDataNewConvert = computed(() => {
@@ -1024,22 +965,50 @@ tbody tr:nth-child(even) {
 
 .adjust-view {
   position: relative;
-  top: 12em;
+  top: 188px;
   z-index: 1;
+}
+
+@media (max-width: 575px) {
+  .adjust-view {
+    left: 65px;
+    top: 239px
+  }
+}
+
+@media (max-width: 305px) {
+  /* .adjust-view {
+    top: 85.5em;
+  } */
+}
+
+@media (min-width: 509px) and (max-width: 515px) {
+  /* .adjust-view {
+    position: absolute;
+    left: 20em;
+    top: 60.7em;
+} */
+}
+@media (min-width: 516px) and (max-width: 576px) {
+  /* .adjust-view {
+    position: absolute;
+    left: 20em;
+    top: 58.7em;
+} */
 }
 
 .view-report {
   font: normal normal 800 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #2b6ecd;
-  text-align: right;
-  margin-right: 40px;
+  /* text-align: right;
+  margin-right: 40px; */
   cursor: pointer;
 }
 
 .weekly {
-  text-align: right;
-  margin-right: 40px;
+  /* text-align: right;
+  margin-right: 40px; */
   cursor: pointer;
 }
 
@@ -1057,6 +1026,10 @@ tbody tr:nth-child(even) {
   border-radius: 30px;
   margin: 0 0 24px 0;
   padding: 25px 0
+}
+
+.table td {
+    vertical-align: baseline;
 }
 
 

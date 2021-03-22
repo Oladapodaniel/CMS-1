@@ -35,7 +35,7 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" data-toggle="modal">
                 <div class="row my-4">
                   <div class="col-md-4 text-md-right">
                     <label for="" class="font-weight-600">Event category</label>
@@ -71,17 +71,19 @@
                               type="text"
                               class="form-control"
                               placeholder="Find event"
+                              v-model="categorySearchText"
                             />
                           </div>
                         </div>
 
                         <a
                           class="dropdown-item font-weight-700 small-text py-2 c-pointer"
-                          v-for="(category, index) in eventCategories"
+                          v-for="(category, index) in filteredCategories"
                           :key="index"
                           @click="selectCategory(category)"
                           >{{ category.name }}</a
                         >
+
                         <!-- Hidden -->
                         <a
                           class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
@@ -162,8 +164,8 @@
                 {{
                   !selectedEvent.name
                     ? "Select from events and activities"
-                    : selectedEvent.name.length > 30
-                    ? `${selectedEvent.name.slice(0, 30)}...`
+                    : selectedEvent.name.length > 27
+                    ? `${selectedEvent.name.slice(0, 27)}...`
                     : selectedEvent.name
                 }}
                 <i
@@ -173,6 +175,7 @@
               <div
                 class="dropdown-menu w-100"
                 aria-labelledby="dropdownMenuButton"
+                style="max-height: 350px;overflow-y:auto"
               >
                 <div class="row w-100 mx-auto" v-if="events.length > 5">
                   <div class="col-md-12">
@@ -180,13 +183,14 @@
                       type="text"
                       class="form-control"
                       placeholder="Find event"
+                      v-model="eventSearchText"
                     />
                   </div>
                 </div>
 
                 <a
                   class="dropdown-item font-weight-700 small-text py-2 c-pointer"
-                  v-for="(event, index) in events"
+                  v-for="(event, index) in filteredEvents"
                   :key="index"
                   @click="selectEvent(event)"
                   >{{ event.name }}</a
@@ -196,7 +200,7 @@
                   class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text"
                   style="border-top: 1px solid #002044; color: #136acd"
                   href="#"
-                  data-toggle="modal" data-target="#newActModal"
+                  data-toggle="modal" data-target="#newActModal" ref="openModalBtn"
                 >
                   <i
                     class="pi pi-plus-circle mr-2 d-flex align-items-center"
@@ -237,7 +241,9 @@
           </div>
         </div>
 
-        <div class="row"></div>
+        <div class="row">
+          <Toast />
+        </div>
       </div>
 
       <div class="col-lg-3 col-md-1"></div>
@@ -254,6 +260,7 @@ import eventsService from "../../../services/events/eventsservice";
 import CreateEventModal from "../../../components/attendance/AttendanceEventModal";
 import attendanceservice from "../../../services/attendance/attendanceservice";
 import { useStore } from "vuex";
+import { useToast } from 'primevue/usetoast';
 
 
 export default {
@@ -266,6 +273,9 @@ export default {
     const newActModal = ref(false);
     const showBtModal = ref("");
     const popModal = ref(null);
+    const toast = useToast();
+    const openModalBtn = ref(null)
+
 
     const selectedGroup = ref({});
     const getGroups = async () => {
@@ -327,11 +337,12 @@ export default {
       if (!newAcctivityDate.value && !selectedCategory.value) return false;
       try {
         const response = await eventsService.createNewActivity({ activity: { date: newAcctivityDate.value, eventCategoryId: selectedCategory.value.id } });
-        const newActivity = { id: response.currentEvent.id, name: response.currentEvent.name };
+        const newActivity = { id: response.currentEvent.id, name: `${response.currentEvent.name} (${ new Date(response.currentEvent.activityDate).toDateString() })` };
         selectedEvent.value = newActivity;
         events.value.push(newActivity);
-        console.log(response, "Created");
+        toast.add({severity:'success', summary:'Operation Successful', detail:'Event created successfully', life: 3000});
       } catch (error) {
+        toast.add({severity:'error', summary:'Operation Failed', detail:'Could not create event', life: 3000});
         console.log(error);
       }
     }
@@ -341,10 +352,24 @@ export default {
       return selectedCategory.value.name.length > 17 ? `${selectedCategory.value.name.slice(0, 16)}...` : selectedCategory.value.name;
     })
 
-    const newCategoryCreated = (categories) => {
+    const newCategoryCreated = (categories, eventName) => {
       eventCategories.value = categories;
+      selectedCategory.value = categories.find(i => i.name.toLowerCase() === eventName.toLowerCase());
+      openModalBtn.value.click();
       display.value = false;
     }
+
+    const categorySearchText = ref("");
+    const filteredCategories = computed(() => {
+      if (!categorySearchText.value) return eventCategories.value;
+      return eventCategories.value.filter(i => i.name.toLowerCase().includes(categorySearchText.value.toLowerCase()));
+    })
+
+    const eventSearchText = ref("");
+    const filteredEvents= computed(() => {
+      if (!eventSearchText.value) return events.value;
+      return events.value.filter(i => i.name.toLowerCase().includes(eventSearchText.value.toLowerCase()));
+    })
 
     getEvents();
     getGroups();
@@ -355,7 +380,7 @@ export default {
           activityID: selectedEvent.value.id,
           groupID: selectedGroup.value.id,
         });
-        console.log(response, "RESPONSE P");
+        
         store.dispatch("attendance/setItemData", response);
         router.push({
           name: "CheckinType",
@@ -392,6 +417,11 @@ export default {
       newCategoryCreated,
       showBtModal,
       popModal,
+      filteredCategories,
+      categorySearchText,
+      eventSearchText,
+      filteredEvents,
+      openModalBtn,
     };
   },
 };

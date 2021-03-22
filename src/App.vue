@@ -53,6 +53,12 @@ export default {
   created() {
     if (localStorage.getItem("token")) {
 
+      const expiryDate = localStorage.getItem("expiryDate");
+      if (expiryDate && new Date(expiryDate) < Date.now()) {
+        localStorage.removeItem("token")
+        localStorage.removeItem("expiryDate")
+      }
+
       this.getCurrentUser();
 
       setupService.setup();

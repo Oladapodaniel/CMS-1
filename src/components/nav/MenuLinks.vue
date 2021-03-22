@@ -144,7 +144,7 @@
             :class="{ 'dd-hide-list': !eventsLinkDropped }"
           >
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/emptyevent`"
+              <router-link class="dd-link-item routelink" :to="`/tenant/events`"
                 >Events</router-link
               >
             </li>
@@ -191,7 +191,7 @@
               <router-link class="dd-link-item routelink" to="">Dashboard</router-link>
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/offeringlist">Offerings</router-link>
+              <router-link class="dd-link-item routelink" to="/tenant/offering">Contributions</router-link>
             </li>
             <li class="dd-list-item"  v-if="false">
               <router-link class="dd-link-item routelink" to="">Pledges</router-link>
@@ -207,6 +207,11 @@
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/chartofaccount"
                 >Charts of Account</router-link
+              >
+            </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/payment"
+                >Payment Form</router-link
               >
             </li>
           </ul>

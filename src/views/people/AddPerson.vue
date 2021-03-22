@@ -924,6 +924,7 @@ export default {
         getPersonMaritalStatusId();
         getPersonPeopleClassificationId();
         getPersonAgeGroupId();
+        console.log(res)
       });
     };
 
@@ -1051,26 +1052,32 @@ export default {
 
 .showtab {
   transition: all 0.5s ease-in-out;
-  height: 108px;
-  overflow: hidden;
+  height: 166px;
+  /* overflow: hidden; */
+}
+
+@media (min-width: 676px) and (max-width: 768px) {
+  .showtab {
+  height: 113px;
+}
 }
 
 @media (min-width: 663px) and (max-width: 667px) {
   .bio-info.celeb-info {
-    margin-top: 30px;
+    /* margin-top: 30px; */
   }
 }
 
-@media (min-width: 377px) and (max-width: 662px) {
+/* @media (min-width: 377px) and (max-width: 662px) {
   .bio-info.celeb-info {
     margin-top: 70px;
   }
-}
+}*/
 
 @media (max-width: 376px) {
-  .bio-info.celeb-info {
+ /* .bio-info.celeb-info {
     margin-top: 80px;
-  }
+  } */
 
   .cs-select.month {
     width: 85px;
@@ -1082,6 +1089,12 @@ export default {
 
   .cs-select.year {
     width: 90px;
+  }
+}
+
+@media (min-width: 867px) {
+  .showtab {
+    height: 100px
   }
 }
 </style>

@@ -28,16 +28,24 @@ import DataRow from "./MarkAttendanceRow";
 import attendanceservice from '../../services/attendance/attendanceservice';
     
     export default {
-        props: [ "isKiosk", "searchText" ],
+        props: [ "isKiosk", "searchText", "fetchUsers" ],
         components: { DataRow },
-        async setup(props) {
+        async setup(props, { emit }) {
             const route = useRoute();
             const people = ref([ ])
             const response = await attendanceservice.getReport(route.query.id);
             people.value = response ? response.peopoleAttendancesDTOs : [ ];
             
-
             const listOfPeople = computed(() => {
+                if (props.fetchUsers === true) {
+                    attendanceservice.getReport(route.query.id)
+                    .then(res => {
+                        console.log(res, "in computed");
+                        people.value = res.peopoleAttendancesDTOs;
+                        emit("refreshed")
+                    })
+                    .catch(err => console.log(err));
+                }
                 if (!props.searchText) return people.value;
                 return people.value.filter(i => i.name.toLowerCase().includes(props.searchText.toLowerCase()))
             })

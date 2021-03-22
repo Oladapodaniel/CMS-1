@@ -2,12 +2,12 @@
     <div class="container">
     <div class="row mt-4">
       <div class="col-md-5">
-        <h2 class="font-weight-bold page-hder">New Event and Report</h2>
+        <h2 class="font-weight-bold page-hder">New Contribution and Report</h2>
       </div>
       <div class="col-md-7 d-sm-flex justify-content-md-end">
-        <a class="def-btn mr-3 px-md-4 my-sm-1"
+        <!-- <a class="def-btn mr-3 px-md-4 my-sm-1"
           >More Actions <i class="fad fa-caret-circle-down"></i
-        ></a>
+        ></a> -->
         <router-link :to="{ name: 'AddOffering', path: '/tenant/addoffering' }">
           <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
         </router-link>
@@ -18,7 +18,7 @@
   </div>
 
   <div class="container" style="width: 80%">
-    <div class="row mx-1 mb-4 mt-3">
+    <!-- <div class="row mx-1 mb-4 mt-3">
       <div class="col-md-2 pl-0">
         <span class="theader mb-1">Status</span>
         <div class="my-3">
@@ -41,11 +41,11 @@
           <span class="date">22/11/2020</span>
         </div>
       </div>
-    </div>
+    </div> -->
     
-    <div class="row mx-1 mb-5">
+    <!-- <div class="row mx-1 mb-5">
       <div class="col-md-12">
-        <!-- Unapproved -->
+   Unapproved 
         <div class="row unapproved">
           <div class="col-md-12">
             <div class="row" v-if="!reportApproved">
@@ -87,7 +87,7 @@
           </div>
         </div>
 
-        <!-- Approved -->
+        Approved 
         <div class="row unapproved mt-4">
           <div class="col-md-12">
             <div class="row my-3">
@@ -138,12 +138,12 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="container-fluid bottom-section px-0">
       <div class="row mx-0" ref="topmost">
         <div class="col-md-8 dark-red-section pl-5">
-          <h2 class="evt-report">Offering Report</h2>
+          <h2 class="evt-report">Contribution Report</h2>
         </div>
 
         <div
@@ -152,7 +152,7 @@
       
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve"> stats.todayOffering </span>
+            <span class="recieve"> {{ contributionReport.length > 0 ? contributionReport.reduce((a, b) => {  return { amount: parseInt(a.amount) + parseInt(b.amount) } } ).amount : 0 }} </span>
           </span>
         </div>
 
@@ -168,15 +168,17 @@
           </div> -->
       </div>
 
-      <div class="row py-5 px-5" ref="middle">
-        <div class="col-md-7">
+      <div class="row pt-5 px-5" ref="middle">
+        <div class="col-md-8">
           <span class="evt-label grey-text">Event Name</span>
           <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-             Sundayt Serive
+             Sunday Service
           </h2>
-          <span class="evt-date text-danger">{{ eventDateString }}.</span>
         </div>
-        <div class="col-md-5 pl-0">
+        <div class="col-md-4">
+          <span class="evt-date text-danger">22nd March, 2020</span>
+        </div>
+        <!-- <div class="col-md-5 pl-0">
           <div class="row">
             <div class="col-md-6 d-md-flex justify-content-end">
               <span class="bold-700">Preacher: </span>
@@ -209,10 +211,10 @@
               <span>15</span>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
 
-      <div class="row mb-5" ref="bottom">
+      <div class="row mb-3" ref="bottom">
         <div class="col-md-12">
           
           
@@ -278,14 +280,14 @@
         <div class="col-md-12">
           <div class="row mb-4">
             <div class="col-md-12">
-              <span class="attendance-header">Offering</span>
+              <span class="attendance-header">Contribution</span>
             </div>
           </div>
           <div class="row px-5">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-sm-3">
-                  <span class="bold-700">Offering Item</span>
+                  <span class="bold-700">Contribution Item</span>
                 </div>
                 <div class="col-sm-3">
                   <span class="bold-700">Channel</span>
@@ -307,25 +309,25 @@
           </div>
           <div
             class="row"
-            
+            v-for="(item, index) in contributionReport"
+            :key="index"
           >
-          <!-- v-for="(offering, index) in eventData.offerings"
-            :key="index" -->
+          
             <div class="col-md-12 py-2">
               <div class="row px-5">
                 <div class="col-sm-12">
                   <div class="row">
                     <div class="col-sm-3">
-                      <span class="bold-400">offering.name</span>
+                      <span class="bold-400">{{ item.contribution.name }}</span>
                     </div>
                     <div class="col-sm-3">
-                      <span class="bold-400">channel</span>
+                      <span class="bold-400">{{ item.paymentChannel }}</span>
                     </div>
                     <div class="col-sm-3">
-                      <span class="bold-400">amount</span>
+                      <span class="bold-400">{{ item.amount }}</span>
                     </div>
                     <div class="col-sm-3 text-sm-center">
-                      <span class="bold-400">12</span>
+                      <span class="bold-400">{{ item.amount }}</span>
                     </div>
                   </div>
                 </div>
@@ -337,12 +339,12 @@
               </div> -->
             </div>
           </div>
-          <!-- <div class="row">
+          <div class="row">
             <div class="col-sm-12">
-              <hr class="hr-dark" v-if="eventData.offerings.length > 0" />
+              <hr class="hr-dark" v-if="contributionReport.length > 0" />
             </div>
-          </div> -->
-          <!-- <div class="row px-5" v-if="eventData.offerings.length > 0">
+          </div>
+          <div class="row px-5" v-if="contributionReport.length > 0">
             <div class="col-sm-12">
               <div class="row">
                 <div class="col-sm-3"></div>
@@ -351,17 +353,19 @@
                   <span class="bold-700">Total</span>
                 </div>
                 <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700">tottalOfferings </span>
+                  <span class="bold-700">{{ contributionReport.reduce((a, b) => {
+                      return { amount: a.amount + b.amount }
+                    }).amount }}</span>
                 </div>
               </div>
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
       <!-- <div class="stats">
           <EventReportStats />
       </div> -->
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-12">
           <div class="pg-content">
             <h4 class="analytics min">Ministry Performance</h4>
@@ -370,8 +374,7 @@
               <div class="ana-group">
                 <div class="ana-header">
                   
-                 
-                  <!-- <hr class="hr" /> -->
+ 
                 </div>
                 <div class="ana-items">
                  
@@ -384,11 +387,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                        <!-- {{
-                          stats.todayVsLastweekOfferingPercentage
-                            ? stats.todayVsLastweekOfferingPercentage.toFixed(2)
-                            : 0
-                        }}% -->12
+                 
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -403,18 +402,13 @@
                     <div class="ana-item-icon">
                       <div class="item-image">
                         <div >
-                            <!-- v-if="stats.todayVsLastweekOfferingPercentage < 0" -->
+    
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
                           />
                         </div>
-                        <!-- <div v-else>
-                          <img
-                            src="../../../assets/dashboardlinks/trend-icon.svg"
-                            alt=""
-                          />
-                        </div> -->
+                  
                       </div>
                     </div>
                   </div>
@@ -429,13 +423,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                        <!-- {{
-                          stats.todayVsLastMonthOfferingPercentage
-                            ? stats.todayVsLastMonthOfferingPercentage.toFixed(
-                                2
-                              )
-                            : 0
-                        }}% -->54
+                   
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -452,19 +440,13 @@
                         <div
                           
                         >
-                        <!-- v-if="stats.todayVsLastMonthOfferingPercentage < 0" -->
+  
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
                           />
                         </div>
-                        <!-- <div v-else>
-                          <img
-                            src="../../../assets/dashboardlinks/trend-icon.svg"
-                            alt=""
-                          />
-                        </div> -->
-                      </div>
+                                            </div>
                     </div>
                   </div>
                   </div>
@@ -478,11 +460,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                        <!-- {{
-                          stats.todayVsLastYearOfferingPercentage
-                            ? stats.todayVsLastYearOfferingPercentage.toFixed(2)
-                            : 0
-                        }}% -->32
+                  32
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -497,18 +475,13 @@
                     <div class="ana-item-icon">
                       <div class="item-image">
                         <div >
-                            <!-- v-if="stats.todayVsLastYearOfferingPercentage < 0" -->
+             
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
                           />
                         </div>
-                        <!-- <div v-else>
-                          <img
-                            src="../../../assets/dashboardlinks/trend-icon.svg"
-                            alt=""
-                          />
-                        </div> -->
+                        
                       </div>
                     </div>
                   </div>
@@ -522,32 +495,7 @@
            
 
           <div class="area-charts analytics-container mb-5">
-             <!-- <div
-                class="area-chart mt-5"
-                v-if="stats.attendanceSoFar && stats.attendanceSoFar.length > 0"
-              >
-                <ReportAreaChart
-                  elemId="chart"
-                  domId="areaChart1"
-                  title="OFFERING"
-                  subtitle="This month"
-                  lineColor="#50AB00"
-                  :series="stats.attendanceSoFar"
-                />
-              </div>
-              <div
-                class="area-chart mt-5"
-                v-if="stats.offeringSoFar && stats.offeringSoFar.length > 0"
-              >
-                <ReportAreaChart
-                  elemId="chart"
-                  domId="areaChart2"
-                  title="ATTENDANCE"
-                  subtitle="This month"
-                  lineColor="#1F78B4"
-                  :series="stats.offeringSoFar"
-                />
-              </div> -->
+            
               <div class="area-chart mt-5">
                 <ReportAreaChart
                   elemId="chart"
@@ -560,26 +508,45 @@
             </div> 
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     </div>
 </template>
 
 <script>
 import { ref } from 'vue'
-import ReportAreaChart from "@/components/charts/AreaChart.vue";
+// import ReportAreaChart from "@/components/charts/AreaChart.vue";
+import eventsService from '../../../services/events/eventsservice';
+// // import { useStore } from 'vuex'
+// import { useRoute } from 'vue-router'
+// import axios from "@/gateway/backendapi";
 export default {
-    components: { ReportAreaChart },
+    // components: { ReportAreaChart },
     setup () {
         const reportApproved = ref(false)
-
+        const contributionReport = ref([])
 
         const toggleReportState = () => {
         reportApproved.value = !reportApproved.value;
         status.value = "Unsent";
         };
+        
+        const getContributionReport = async() => {
+          contributionReport.value = JSON.parse(localStorage.getItem('contriTransact'))
+          console.log(contributionReport.value)
+
+          try {
+            await eventsService.getEventsByActivity(contributionReport.value[0].activityID)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+          }
+          catch (err) {
+            console.log(err)
+          }          
+        }
+        getContributionReport()
         return {
-            reportApproved, toggleReportState
+            reportApproved, toggleReportState, contributionReport
         }
     }
 }

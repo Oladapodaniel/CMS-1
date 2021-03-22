@@ -28,7 +28,9 @@ import ConfirmationService from 'primevue/confirmationservice';
 
 import 'primevue/resources/themes/saga-blue/theme.css'       //theme
 import 'primevue/resources/primevue.min.css'                 //core css
-import 'primeicons/primeicons.css'                           //icons
+import 'primeicons/primeicons.css'                          //icons
+
+
 
 NProgress.configure({ showSpinner: false });
 axios.interceptors.request.use((config) => {

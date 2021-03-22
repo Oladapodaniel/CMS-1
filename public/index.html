@@ -5,7 +5,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <link rel="icon" href="<%= BASE_URL %>favicon.png">
+  <!-- <link rel="icon" href="<%= BASE_URL %>favicon.ico"> -->
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
@@ -118,6 +119,10 @@
       border: 1px solid #EBEFF4 !important;
       border-radius: 20px !important;
     }
+
+    #currencySelect .p-dropdown-items	 {
+      max-width: 300px !important
+    }
   </style>
   <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" />
   <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
@@ -162,10 +167,10 @@
     window.fbAsyncInit = function () {
 
       FB.init({
-        appId: '725655091722748',
+        appId: '272808251120368',
         cookie: true,
         xfbml: true,
-        version: 'v9.0'
+        version: 'v10.0'
       });
 
       FB.AppEvents.logPageView();

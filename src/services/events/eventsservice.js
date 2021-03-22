@@ -18,6 +18,23 @@ const eventsService = {
                 })
         })
     },
+    getEventsByActivity(id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/events/${id}`)
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                     /*eslint no-undef: "warn"*/
+                     NProgress.done();
+                    if (error.response) {
+                        reject(error.response);
+                    } else {
+                        reject(error);
+                    }
+                })
+        })
+    },
 
     createNewEventCategory(name) {
         return new Promise((resolve, reject) => {

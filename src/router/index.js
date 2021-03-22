@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
-import TermsOfUse from '@/views/account/TermsOfService.vue'
+import TermsOfUse from '../components/temp/PaymentPage'
 
 
 
@@ -14,7 +14,7 @@ const routes = [{
 },
 
 {
-    path: '/termsofuse',
+    path: '/terms',
     name: 'TermsOfUse',
     component: TermsOfUse,
 },
@@ -129,10 +129,10 @@ const routes = [{
             import( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
     },
     {
-        path: 'emptyevent',
-        name: 'EmptyEvent',
+        path: 'events',
+        name: 'Events',
         component: () =>
-            import( /* webpackChunkName: "emptyevent" */ '@/views/event/EmptyEvent.vue')
+            import( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
     },
     {
         path: 'events',
@@ -230,14 +230,14 @@ const routes = [{
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceAndCheckinList')
     },
-    
+
     {
         path: 'attendancetag',
         name: 'AttendanceTag',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/AttendanceTag')
     },
-    
+
     {
         path: 'addattendancecheckin',
         name: 'AddAttendance',
@@ -479,10 +479,10 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
     },
     {
-        path: 'offeringlist',
-        name: 'OfferingList',
+        path: 'chartofaccount/update',
+        name: 'OldAccounts',
         component: () =>
-            import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingList')
+            import( /* webpackChunkName: "oldaccounts" */ '@/views/accounting/chartOfAccount/OldAccounts')
     },
     {
         path: 'offering',
@@ -509,22 +509,34 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
     },
     {
+        path: 'contributionCategory',
+        name: 'ContributionCategory',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/ContributionCategory')
+    },
+    {
         path: 'transactionlist',
         name: 'TransactionList',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
     },
     {
-        path: 'payments',
+        path: 'payments/:editPayment?',
         name: 'PaymentTransaction',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentTransaction')
     },
     {
-        path: 'paymentoptions',
+        path: 'paymentoptions/:paymentId',
         name: 'PaymentOption',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentOption')
+    },
+    {
+        path: 'payment',
+        name: 'Payment',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/Payment')
     }
     ],
 },
@@ -542,6 +554,60 @@ const routes = [{
     // which is lazy-loaded when the route is visited.
     component: () =>
         import( /* webpackChunkName: "about" */ '../views/About.vue')
+},
+{
+    path: '/onlinegivingform1',
+    name: 'OnlineGiving',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm')
+},
+{
+    path: '/onlinegivingform2',
+    name: 'OnlineGiving2',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm2')
+},
+{
+    path: '/onlinegivingform3',
+    name: 'OnlineGiving3',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm3')
+},
+{
+    path: '/:userId?',
+    name: 'OnlineGiving4',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm4')
+},
+{
+    path: '/onlinegivingform5',
+    name: 'OnlineGiving5',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm5')
+},
+{
+    path: '/paymentgivingform2',
+    name: 'OnlineGivingform2',
+    component: () =>
+        import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/PaymentGivingForm2')
+},
+{
+    path: '/signuppayment/:userId?',
+    name: 'SignUpPayment',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignUpPayment')
+},
+{
+    path: '/signinpayment/:userId?',
+    name: 'SignInPayment',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignInPayment')
+},
+{
+    path: '/transactionpage/:userId?',
+    name: 'TransactionPage',
+    component: () =>
+        import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
 }
 ]
 
@@ -556,7 +622,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 
 
-    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin") && !tokenIsValid) return next(true)
+    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin" || to.name ==="OnlineGiving4" || to.name ==="SignUpPayment" || to.name ==="SignInPayment" || to.name ==="TransactionPage") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;

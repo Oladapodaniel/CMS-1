@@ -3,7 +3,7 @@
         <div class="row my-5">
             <div class="col-md-12">
                 <h4 class="font-weight-bold">SMS</h4>
-                <p class="small-text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua</p>
+                <p class="small-tex">Members Check-in using mobile phones by sending the code specified below to the phone number also specified below</p>
             </div>
         </div>
 
@@ -32,13 +32,32 @@
 
 <script>
     import { useStore } from "vuex";
+    import { useRoute } from "vue-router"
+import attendanceservice from '../../../services/attendance/attendanceservice';
+import { computed, ref } from 'vue';
     export default {
         setup() {
             const store = useStore();
+            const route = useRoute();
 
-            const attendanceData = store.getters["attendance/attendanceItemData"];
-            const smsNumber = attendanceData ? attendanceData.smsNumber : "";
-            const code = attendanceData ? attendanceData.attendanceCode : "";
+            const attendanceData = ref(store.getters["attendance/attendanceItemData"]);
+            // const smsNumber = attendanceData ? attendanceData.smsNumber : "";
+            // const code = attendanceData ? attendanceData.attendanceCode : "";
+
+            const code = computed(() => attendanceData.value && attendanceData.value.attendanceCode ? attendanceData.value.attendanceCode : "")
+            const smsNumber = computed(() => attendanceData.value && attendanceData.value.attendanceCode ? attendanceData.value.smsNumber : "")
+
+            const getDetails = async () => {
+                try {
+                    const response = await attendanceservice.getItemByCode(route.query.id);
+                    console.log(response, "Item details");
+                    attendanceData.value = response;
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            if (!attendanceData.value || !attendanceData.value.smsNumber) getDetails();
 
             return {
                 smsNumber,

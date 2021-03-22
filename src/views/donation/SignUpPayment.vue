@@ -1,0 +1,234 @@
+<template>
+  <div class="">
+    <div class="row reset-row">
+      <div class="col-10 offset-1 col-lg-5 d-flex align-items-center">
+        <div class="container-top">
+          <div class="row">
+            <div
+              class="col-xl-10 offset-xl-1 signup-header text-center text-lg-left"
+            >
+              Sign up to Churchplus payment
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-xl-10 offset-xl-1">
+              <div class="label">Full Name</div>
+              <div class="mt-2">
+                <input
+                  type="text"
+                  placeholder="Enter your name"
+                  v-model="chosenName"
+                  class="form-control input-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-xl-10 offset-xl-1">
+              <div class="label">Phone Number</div>
+              <div class="mt-2">
+                <input
+                  type="phone"
+                  placeholder="Enter your phone Number"
+                  v-model="chosenNumber"
+                  class="form-control input-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-xl-10 offset-xl-1">
+              <div class="label">Email address</div>
+              <div class="mt-2">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  v-model="chosenEmail"
+                  class="form-control input-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-xl-10 offset-xl-1">
+              <div class="label">Password</div>
+              <div class="mt-2">
+                <input
+                  type="password"
+                  v-model="chosenPassword"
+                  class="form-control input-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-xl-10 offset-xl-1">
+              <div class="button w-100" @click="signUp">Sign up</div>
+              <div class="label mt-4 text-center">
+                Already created an account?
+                <router-link :to="`/signinpayment`">Sign in now</router-link>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-md-4">
+              <hr />
+            </div>
+            <div class="col-md-4 signup-option">or sign up with</div>
+            <div class="col-md-4"><hr /></div>
+          </div>
+          <div class="row d-flex justify-content-center">
+            <div class="col-6 col-sm-3">
+              <img src="../../assets/google.svg" />
+            </div>
+            <div class="col-6 col-sm-3 mt-1 text-right">
+              <img src="../../assets/facebook.svg" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 offset-lg-1 px-0 d-none d-lg-block bg-wall">
+        <!-- <img
+          src="../../assets/Group2582.png"
+          class="w-100"
+          style="height: 100vh"
+        /> -->
+      </div>
+    </div>
+    <Toast />
+  </div>
+</template>
+
+<script>
+import { ref } from "vue";
+import axios from "@/gateway/backendapi";
+ import { useRouter, useRoute } from "vue-router";
+ import { useToast } from "primevue/usetoast";
+ import finish from "../../services/progressbar/progress"
+
+export default {
+  setup() {
+    let toast = useToast();
+    const route = useRoute()
+    const chosenName = ref("");
+    const chosenNumber = ref("");
+    const chosenEmail = ref("");
+    const chosenPassword = ref("");
+    const errorOccure = ref(false);
+    const router = useRouter()
+
+    const signUp = async () => {
+      let signupDetails = {
+        name: chosenName.value,
+        phoneNumber: chosenNumber.value,
+        tenantId: "e9749fad-85e8-4130-b553-37acc8acde61",
+        email: chosenEmail.value,
+        password: chosenPassword.value,
+      };
+
+      try {
+        let  { data }= await axios.post("/mobile/v1/Account/SignUp", signupDetails);
+        // console.log(res, "God Massive Invasion Gang");
+        console.log(data, "We are super awesome");
+
+
+        if (data && data.value.token) {
+            //  localStorage.setItem("giverToken", data.token)
+             let giverDetails = {
+                giverToken: data.token,
+                giverId: data.value.userId
+            }
+          localStorage.setItem("giverToken", JSON.stringify(giverDetails));
+          router.push({
+            name: "OnlineGiving4",
+            params: { userId: route.params.userId }
+          });
+        }
+        finish()
+      } catch (error) {
+          finish()
+        // if (error.toString().includes('400')
+        toast.add({
+            severity: "error",
+            summary: "Error signing up",
+            detail: `${error.response.data}`,
+            life: 3000,
+          });
+      console.log(error.response);
+      }
+
+    };
+
+    return {
+      errorOccure,
+      chosenName,
+      chosenNumber,
+      chosenEmail,
+      chosenPassword,
+      signUp,
+    };
+  },
+};
+</script>
+
+<style scoped>
+.container-top {
+  margin-top: 50px;
+}
+
+.signup-header {
+  font: normal normal 900 52px/71px Nunito Sans;
+  letter-spacing: 0px;
+  color: #051048;
+  opacity: 1;
+  margin-top: 25px;
+}
+
+.label {
+  font: normal normal bold 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #020f1e;
+}
+
+.input-control {
+  background: #eaf4fab2 0% 0% no-repeat padding-box;
+  border-radius: 10px;
+  height: 50px;
+  border: none;
+  color: #2c3949;
+}
+
+.button {
+  background: #1351cd 0% 0% no-repeat padding-box;
+  box-shadow: 0px 12px 45px #1351cd61;
+  border-radius: 11px;
+  opacity: 1;
+  text-align: center;
+  font: normal normal bold 18px/24px Nunito Sans;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+  padding: 12px;
+  align-items: center;
+  margin: 0;
+}
+
+.signup-option {
+  font: normal normal bold 18px/24px Nunito Sans;
+  letter-spacing: 0px;
+  color: #020f1e;
+  opacity: 0.6;
+  text-align: center;
+}
+
+.reset-row {
+  margin-right: 0;
+}
+
+.bg-wall {
+    background-image: url('../../assets/Group2582.png');
+    background-size: 100%;
+    height: 100vh;
+    background-repeat: no-repeat;
+}
+</style>

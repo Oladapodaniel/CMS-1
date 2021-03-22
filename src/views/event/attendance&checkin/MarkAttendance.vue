@@ -15,11 +15,9 @@
     </Dialog>
     <div class="row my-5" :class="{ 'd-none': isKioskMode }">
       <div class="col-md-12">
-        <h4 class="font-weight-bold">Marked Attendance</h4>
+        <h4 class="font-weight-bold">Manual Check-in and Checkout</h4>
         <p class="small-text">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-          nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-          sed diam voluptua
+          Checkin members by clicking on the check-in box and check-out box to checkout, search for members in group and use kiosk mode on mobile phones and tablets
         </p>
       </div>
     </div>
@@ -39,7 +37,7 @@
               <input
                 type="text"
                 class="search-control"
-                placeholder="Type name to filter list..."
+                placeholder="Search"
                 v-model="searchText"
               />
             </p>
@@ -67,17 +65,17 @@
             Picture
           </div>
           <div class="col-md-2" :class="{ 'order-1': isKioskMode }">
-            Check-in
+            Check in
           </div>
           <div class="col-md-2" :class="{ 'd-none': isKioskMode }">
-            Check-out
+            Check out
           </div>
         </div>
 
         <div class="row pt-2" :class="{ 'kiosk-tb-size': isKioskMode }">
               <Suspense>
                 <template #default>
-                    <TableData :isKiosk="isKioskMode" :searchText="searchText" />
+                    <TableData :isKiosk="isKioskMode" @refreshed="refreshed" :fetchUsers="fetchUsers" :searchText="searchText" />
                 </template>
                 <template #fallback>
                     <div class="row">
@@ -176,7 +174,7 @@
                             class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
                             style="color: #136acd"
                           ></i>
-                          Create new event
+                          Add new member
                         </a>
                       </div>
                     </div>
@@ -224,6 +222,7 @@ export default {
     const display = ref(false);
     const searchingForMembers = ref(false);
     const searchText = ref("");
+    const fetchUsers = ref(false);
 
     const enterKioskMode = () => {
       isKioskMode.value = !isKioskMode.value;
@@ -277,6 +276,7 @@ export default {
       if (response) {
         searchText.value = "";
         toast.add({severity:'success', summary:'Checked-in', detail:'Checkin was successful', life: 3000});
+        refresh();
       } else {
         toast.add({severity:'error', summary:'Checkin Error', detail:'Checkin was not successful', life: 3000});
       }
@@ -295,6 +295,11 @@ export default {
     // getRegisteredPeople(route.query.id);
     const refresh = () => {
       searchText.value = "";
+      fetchUsers.value = true;
+    }
+
+    const refreshed = () => {
+      fetchUsers.value = false;
     }
 
     return {
@@ -311,6 +316,8 @@ export default {
       addExistingMember,
       sendExistingUser,
       refresh,
+      fetchUsers,
+      refreshed,
     };
   },
 };

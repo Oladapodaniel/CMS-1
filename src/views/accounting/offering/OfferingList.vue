@@ -1,33 +1,6 @@
 <template>
-  <div class="container-wide container-top">
-    <div class="container-wide">
-      <div class="row my-3">
-      <div class="col-md-4 first-timers-text">
-        <h2 class="page-header">Contributions</h2>
-      </div>
-
-      <div class="col-md-8 d-flex head-button">
-        <router-link to="/tenant/offeringcategory">
-          <button class="default-btn mr-3">Add Contribution Category</button>
-        </router-link>
-        <router-link to="/tenant/addoffering" class="add-btn">
-          Add Contribution
-        </router-link>
-      </div>
-    </div>
-    </div>
-
-    <div class="container-wide">
-      <div class="row">
-      <div class="col-md-12">
-        <hr class="hr" />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="my-con">
-          <div class="table">
+ <div class="row">
+          <div class="col-12 table">
             <div class="top-con">
               <div class="table-top my-4 px-4">
                 <div class="select-all"></div>
@@ -128,63 +101,100 @@
               </div>
             </div>
 
-            <div class="table-responsive">
-              <table class="table-borderless w-100">
-                <thead class="header">
-                  <tr class="">
-                    <!-- <th></th> -->
-                    <th class="">DATE</th>
-                    <th class="">EVENT</th>
-                    <th>CONTRIBUTION</th>
-                    <th>AMOUNT</th>
-                    <th>DONOR</th>
-                    <!-- <th>STATUS</th> -->
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="offering in searchContribution" :key="offering.id">
-                  
-                      <td>{{ moment.parseZone(new Date(offering.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</td>
-                      <td>{{ offering.eventName }}</td>
-                      <td class="">{{ offering.contribution }}</td>
-
-                      <td style="display: flex">
-                        <div class="currency">NGN</div>
-                        <div class="offering-amount">{{ offering.amount }}</div>
-                      </td>
-                      <td class="">{{ offering.donor }}</td>
-                      <td>
-                        <i
-                          class="fa fa-trash"
-                          style="color: #adadad"
-                          aria-hidden="true"
-                          @click="showConfirmModal(offering.id)"
-                        ></i>
-                      </td>
-               
-                  </tr>
-                </tbody>
-
-              </table>
+           
+            <div class="row table-header">
+                <div class="col-sm-3 d-none d-sm-block">
+                    DATE
+                </div>
+                    <div class="col-sm-2 d-none d-sm-block">
+                    EVENT
+                </div>
+                    <div class="col-sm-2 d-none d-sm-block">
+                    CONTRIBUTION
+                </div>
+                    <div class="col-sm-2 d-none d-sm-block">
+                    AMOUNT
+                </div>
+                    <div class="col-sm-2 d-none d-sm-block" >
+                    DONOR
+                </div>
             </div>
+
+            <div class="table-body row" v-for="offering in searchContribution" :key="offering.id">
+                <div class="col-6 d-block d-sm-none">
+                <div class="col-sm-3">
+                    DATE
+                </div>
+                    <div class="col-sm-2">
+                    EVENT
+                </div>
+                    <div class="col-sm-2">
+                    CONTRIBUTION
+                </div>
+                    <div class="col-sm-2">
+                    AMOUNT
+                </div>
+                    <div class="col-sm-2" >
+                    DONOR
+                </div>
+            </div>
+            <div class="col-6 col-sm-12">
+                <div class="row">
+                <div class="col-sm-3">
+                    <div>{{ moment.parseZone(new Date(offering.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</div>
+                </div>
+                <div class="col-sm-2">
+                     <div>{{ offering.eventName ? offering.eventName : "Online Giving" }}</div>
+                </div>
+                <div class="col-sm-2">
+                     <div>{{ offering.contribution }}</div>
+                </div>
+                <div class="col-sm-2">
+                     <div class="d-flex"> <div class="currency">NGN</div><div class="align-self-center ml-2" style="font-weight: 800;">{{ offering.amount }}</div></div>
+                </div>
+                <div class="col-sm-2" >
+                     <div>{{ offering.donor }}</div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="dropdown">
+              <i
+                class="fas fa-ellipsis-v cursor-pointer"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              ></i>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+               
+              
+                <!-- <a class="dropdown-item elipsis-items">
+                 Edit
+                </a> -->
+                <a
+                  class="dropdown-item elipsis-items"
+                  @click="showConfirmModal(offering.id)"
+                  >Delete</a
+                >
+              </div>
+            </div>
+            </div>
+            </div>
+          
+                </div>
+            </div>
+            <div class="col-12">
+                    <div class="table-footer">
+                      <Pagination  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
+                    </div>
+                </div>
+            
             <ConfirmDialog />
             <Toast />
-
-            <div class="table-footer">
-              <!-- <Pagination
-                
-              /> -->
-              <!-- @getcontent="getPeopleByPage"
-                :itemsCount="membersCount"
-                :currentPage="currentPage" -->
-            </div>
+            
           </div>
-        </div>
-      </div>
+
     </div>
-    </div>
-  </div>
+
 </template>
 
 <script>
@@ -192,7 +202,7 @@ import { ref, computed } from "vue";
 import axios from "@/gateway/backendapi";
 // import { useStore } from 'vuex'
 // import { store } from "../../../store/store"
-// import Pagination from "../../../components/pagination/PaginationButtons";
+import Pagination from "../../../components/pagination/PaginationButtons";
 // import { useRoute } from "vue-router";
 import moment from "moment";
 import { useConfirm } from "primevue/useConfirm";
@@ -200,15 +210,15 @@ import { useToast } from "primevue/usetoast";
 import finish from '../../../services/progressbar/progress'
 
 export default {
-  // props: ["list"],
+  props: ["contributionTransactions"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
-    // Pagination,
+    Pagination,
   },
 
-  setup() {
-    const contributionTransactions = ref([]);
+  setup(props, { emit }) {
+    // const contributionTransactions = ref([]);
     // const getFirstTimerSummary = ref({});
     const filter = ref({});
     const searchIsVisible = ref(false);
@@ -227,31 +237,31 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    const getContributionTranactions = () => {
-      // let store = useStore()
-      axios
-        .get("/api/Financials/Contributions/Transactions")
-        .then((res) => {
-          contributionTransactions.value = res.data;
-          console.log(res.data);
-        })
-        .catch((err) => console.log(err));
-    // get from  to store
-    // console.log(store.getters['contributions/contributionList'])
-    // savev to sstore
-    // store.dispatch('contributions/contributionList')
-    };
-    getContributionTranactions();
+    // const getContributionTranactions = () => {
+    //   // let store = useStore()
+    //   axios
+    //     .get("/api/Financials/Contributions/Transactions")
+    //     .then((res) => {
+    //       contributionTransactions.value = res.data;
+    //       console.log(res.data);
+    //     })
+    //     .catch((err) => console.log(err));
+    // // get from  to store
+    // // console.log(store.getters['contributions/contributionList'])
+    // // savev to sstore
+    // // store.dispatch('contributions/contributionList')
+    // };
+    // getContributionTranactions();
 
     const searchContribution = computed(() => {
       if (searchText.value !== "") {
-        return contributionTransactions.value.filter((i) => {
+        return props.contributionTransactions.filter((i) => {
           return i.contribution
             .toLowerCase()
             .includes(searchText.value.toLowerCase());
         });
       } else {
-        return contributionTransactions.value;
+        return props.contributionTransactions;
       }
     });
 
@@ -267,9 +277,9 @@ export default {
             detail: "Member Deleted",
             life: 3000,
           });
-          contributionTransactions.value = contributionTransactions.value.filter(
-            (item) => item.id !== id
-          );
+          // props.contributionTransactions = props.contributionTransactions.filter(
+          //   (item) => item.id !== id
+          // );
         })
         .catch((err) => {
           finish()
@@ -314,18 +324,29 @@ export default {
         },
       });
     };
+    const currentPage = ref(1);
 
-    // // const getFirstTimers = async () => {
-    // //   try {
-    // //     const { data } = await axios.get(
-    // //       `/api/People/FirstTimer`
-    // //     );
-    // //     churchMembers.value = data;
-    // //     console.log(data)
-    // //   } catch (error) {
-    // //     console.log(error);
-    // //   }
-    // // };
+    const getPeopleByPage = async (page) => {
+      if (page < 1) return false;
+      try {
+        const { data } = await axios.get(
+          `/api/people/getPaginatedFirstTimer?page=${page}`
+        );
+        // filterResult.value = [ ];
+        // searchMember.value = [ ];
+        // noRecords.value = false;
+        // props.contributionTransactions = data;
+        emit('get-pages', data)
+        currentPage.value = page;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const offeringCount = computed(() => {
+      if (props.contributionTransactions.length > 100) return Math.ceil(props.contributionTransactions.length / 100);
+      return 1;
+    })
 
     // onMounted(() => {
     //   console.log(route, "route");
@@ -371,25 +392,9 @@ export default {
     //   return 0;
     // });
 
-    // const currentPage = ref(1);
-    // const getPeopleByPage = async (page) => {
-    //   if (page < 1) return false;
-    //   try {
-    //     const { data } = await axios.get(
-    //       `/api/People/GetPeopleBasicInfo?page=${page}`
-    //     );
-    //     filterResult.value = [];
-    //     searchMember.value = [];
-    //     noRecords.value = false;
-    //     churchMembers.value = data;
-    //     currentPage.value = page;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
 
     return {
-      contributionTransactions,
+      // contributionTransactions,
       deleteOffering,
       filterFormIsVissible,
       toggleFilterFormVissibility,
@@ -406,9 +411,9 @@ export default {
       searchContribution,
       showConfirmModal,
       // deleteMember,
-      // membersCount,
-      // currentPage,
-      // getPeopleByPage,
+      offeringCount,
+      currentPage,
+      getPeopleByPage
     };
   },
 };
@@ -431,10 +436,7 @@ export default {
   font-size: 1.7rem;
 }
 
-.my-con {
-  /* display: flex; */
-  justify-content: space-between;
-}
+
 
 .summary {
   /* width: 20%; */
@@ -455,31 +457,11 @@ export default {
   margin-bottom: auto !important;
 }
 
-.summary-header {
-  color: #136acd !important;
-  margin: 0 10px;
-  color: #02172e;
-  opacity: 0.8;
-  font-size: 22px;
-  font-weight: 600;
-}
-
 .boards {
   display: flex;
 }
 
-.board {
-  width: 28%;
-  border-radius: 10px;
-  /* padding: 0 8px; */
-  /* box-shadow: 0px 1px 4px #02172e45; */
-}
 
-.chart-con {
-  width: 70%;
-  display: flex;
-  justify-content: space-between;
-}
 
 .board-top {
   display: flex;
@@ -571,49 +553,6 @@ export default {
   }
 }
 
-/* .label-search {
-  width: 0;
-  background: transparent;
-  padding: 4px;
-  overflow: hidden;
-  transition: all 0.5 ease-in-out;
-}
-.label-search input {
-  border: transparent;
-  background: transparent;
-  width: 76%;
-  outline: none;
-}
-
-.label-search .search-btn {
-  display: flex;
-  align-items: center;
-  background: #7894a6;
-  padding: 4px;
-  border-radius: 5px;
-}
-
-.label-search .empty-btn {
-  display: flex;
-  align-items: center;
-  padding: 0 5px;
-}
-
-.show-search {
-  width: 174px;
-  overflow: hidden;
-  border: 1px solid #dde2e6;
-  border-radius: 5px 0px 0px 5px;
-  background: #ebeff4;
-  transition: all 0.5s ease-in-out;
-}
-
-.hide-search {
-  width: 0;
-  overflow: hidden;
-  transition: all 0.5s ease-in-out;
-  border: none;
-} */
 
 .header {
   background: #DDE2E6 0% 0% no-repeat padding-box;
@@ -637,7 +576,6 @@ export default {
   background: #DDE2E6 0% 0% no-repeat padding-box;
   border: 1px solid #C5D9F2;
   border-radius: 5px;
-  font-weight: 700;
   letter-spacing: 0px;
   color: #1C252C;
   padding: 5px;
@@ -688,17 +626,7 @@ export default {
   border-radius: 10px;
 }
 
-/* .boards { */
-/* flex-direction: column; */
-/* flex-wrap: wrap;
-    justify-content: space-between;
-  } */
 
-/* .board {
-    width: 45%;
-    margin: 10px 0;
-    max-height: 310px;
-  } */
 
 .board.members-count {
   padding: 24px;
@@ -720,63 +648,6 @@ export default {
   color: #136acd;
 }
 
-@media screen and (max-width: 500px) {
-  .picture,
-  .firstname,
-  .lastname,
-  .phone {
-    width: 100%;
-  }
-
-  .chart1,
-  .chart2,
-  .board,
-  .chart-con {
-    width: 100% !important;
-  }
-
-  .table-body .check {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin: 10px 0;
-  }
-
-  .data-text {
-    display: inline-block;
-  }
-
-  .data-row {
-    flex-direction: column;
-  }
-
-  .data-con {
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .action-icon {
-    width: 100%;
-    text-align: right;
-  }
-
-  /* @media (max-width: 767px) {
-    .table-responsive .dropdown-menu {
-        position: static !important;
-    }
-}
-@media (min-width: 768px) {
-    .table-responsive {
-        overflow: visible;
-    }
-} */
-
-  /* .table-header {
-    display: none;
-  } */
-  
-}
 
  @media (max-width: 767px) {
  
@@ -914,6 +785,29 @@ export default {
 
 .board.members-count {
   max-height: 216px;
+}
+
+.table-header {
+    padding: 12px;
+    color: black;
+    box-shadow: none;
+    font-size: 11px;
+    font-weight: 700
+}
+
+.table-body {
+    padding: 12px;
+    border-bottom: 1.5px solid #6d6d6d19
+    
+
+}
+
+.itemroute-color {
+  color: #136acd;
+}
+
+.itemroute-color:hover {
+  text-decoration: none;
 }
 </style>
 

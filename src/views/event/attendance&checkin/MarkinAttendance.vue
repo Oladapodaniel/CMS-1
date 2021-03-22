@@ -1,6 +1,9 @@
 
 <template>
-  <div class="container-wide shadow p-3 mb-5 bg-body rounded mt-5" style="max-width:700px">
+  <div
+    class="container-wide shadow p-3 mb-5 bg-body rounded mt-5"
+    style="max-width: 700px"
+  >
     <div class="row mt-5">
       <div class="col-md-6 offset-md-3 mb-3"></div>
     </div>
@@ -21,7 +24,20 @@
     <!--end top Address -->
 
     <!-- top area -->
-    <div class="row mb-4">
+    <div class="row">
+      <div
+        class="col-md-3"
+      >
+        
+      </div>
+      <div class="col-md-5">
+        <p class="font-weight-600 text-center primary-text" v-if="person.personId && loaded && !showLoading">Your details were found, please confirm to checkin</p>
+        <p class="font-weight-600 text-center primary-text" v-if="!person.personId && !showLoading && loaded && !fetchingFailed">Details not found, please fill the form and confirm to checkin</p>
+          <!-- v-if="autosearch && !person.name" -->
+      </div>
+    </div>
+
+    <div class="row">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       >
@@ -38,24 +54,41 @@
             aria-required=""
           />
         </span>
-        <i
-          class="pi pi-spin pi-spinner"
+          <!-- v-if="autosearch && !person.name" -->
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div
+        class="col-md-3"
+      >
+      </div>
+      <div class="col-md-5">
+        
+        <div class="loading-div my-5" v-if="showLoading">
+          <i
+          class="pi pi-spin pi-spinner loading-indicator"
           style="fontsize: 2rem"
-          v-if="autosearch && !person.name"
         ></i>
+        <p>Fetching your details...</p>
+        </div>
+          <!-- v-if="autosearch && !person.name" -->
       </div>
     </div>
     <!-- end of top area -->
-  
 
     <!--start of top area button -->
-    <div class="row mb-4">
+    <div class="row" :class="{ 'mb-4': showLoading}" v-if="false">
       <div class="col-md-3 text-md-right"></div>
-      <div class="col-md-5 mt-4 text-center col-sm-2">
-        <p class="my-1 text-danger" v-if="showNoPhoneError">
+      <div class="col-md-5 text-center col-sm-2" :class="{ 'mt-4': showLoading}">
+        <p class="text-danger" v-if="showNoPhoneError" :class="{ 'my-1': showLoading}">
           Please enter your phone number
         </p>
-        <button class="default-btn add-btn" @click="checkCharacter" ref="submitBtn">
+        <button
+          class="default-btn add-btn"
+          @click="checkCharacter"
+          ref="submitBtn"
+          v-if="!appltoggle && !showLoading"
+        >
           <!-- <i class="fas fa-circle-notch fa-spin" v-if="loading"></i> -->
           Submit
         </button>
@@ -64,7 +97,7 @@
     <!--end of top area button -->
 
     <!-- start of bottom area -->
-    <div class="row" v-if="appltoggle">
+    <div class="row" v-if="appltoggle && !showLoading">
       <div class="col-md-12">
         <div class="row mt-n2 my-2">
           <div
@@ -116,13 +149,14 @@
             <span class="p-input-icon-left w-100">
               <i class="pi pi-map-marker icon" />
               <InputText
-                class="w-100"
+                class="w-100 border"
                 type="text"
                 aria-required=""
                 v-model="person.address"
-                :disabled="person.personId"
+                :disabled="person.personId && person.address && person.address.length > 100"
               />
             </span>
+            <p class="font-weight-7 small-text text-danger" v-if="person.personId && !person.address">Address is required</p>
           </div>
         </div>
       </div>
@@ -131,7 +165,7 @@
     <!-- end of bottom area -->
 
     <!-- button area -->
-    <div class="row mt-n2 my-2" v-if="appltoggle">
+    <div class="row mt-n2 my-2" v-if="appltoggle && !showLoading">
       <div class="col-md-2 text-md-right d-flex ml-md-n5"></div>
       <div class="col-md-4 mt-4 text-md-right col-6 d-flex justify-content-end">
         <button class="default-btn" @click="notme">Not Me</button>
@@ -140,7 +174,7 @@
         <button
           class="default-btn add-btn"
           @click="confirmCheck"
-          :disabled="!person.name || person.length < 1"
+          :disabled="!person.name || person.name.length < 1 || !person.address"
         >
           Confirm
         </button>
@@ -149,7 +183,7 @@
     <!--end of button area -->
 
     <!-- confirmation Note -->
-    <div class="row" v-if="checkedIn">
+    <!-- <div class="row" v-if="checkedIn && noError">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       ></div>
@@ -161,7 +195,7 @@
           Checked in Successfully
         </p>
       </div>
-    </div>
+    </div> -->
     <!-- end of confirmation Note -->
 
     <!-- Powered by Churchplus -->
@@ -189,7 +223,8 @@ import InputText from "primevue/inputtext";
 import { useRoute } from "vue-router";
 import dateFormatter from "@/services/dates/dateformatter";
 import { useToast } from "primevue/usetoast";
-import stopProgressBar from "../../../services/progressbar/progress"
+import stopProgressBar from "../../../services/progressbar/progress";
+import swal from "sweetalert";
 
 export default {
   setup() {
@@ -207,6 +242,7 @@ export default {
     const route = useRoute();
     const toast = useToast();
     const submitBtn = ref(null);
+    const loaded = ref(false);
 
     const toggleBase = () => {
       appltoggle.value = !appltoggle.value;
@@ -227,12 +263,15 @@ export default {
 
     // searching through the attendance details
     const showNoPhoneError = ref(false);
+    const fetchingFailed = ref(false);
     const personData = ref({});
     const checkCharacter = (e) => {
       if (e.target.value.length < 11) {
         person.value = {};
         return false;
       }
+      loaded.value = false;
+      fetchingFailed.value = false;
       showNoPhoneError.value = false;
       if (!enteredValue.value) {
         showNoPhoneError.value = true;
@@ -241,22 +280,20 @@ export default {
       // if (e.target.value.length > 0) {
       loading.value = true;
       autosearch.value = true;
-      axios
-        .get(
-          `/api/CheckInAttendance/SearchMemberByPhone?searchText=${
-            e.target.value
-          }&&attendanceCode=${+route.params.code}`
-        )
+      axios.get(`/searchmemberbyphone?searchtext=${enteredValue.value}&&attendanceCode=${route.params.code}`)
+      
         .then((res) => {
+          console.log(res, "RESPONSE");
           loading.value = false;
           autosearch.value = false;
+          loaded.value = true;
           names.value = res.data;
-          personData.value.firstName = res.data[0].name;
-          personData.value.email = res.data[0].email;
-          personData.value.homeAddress = res.data[0].address;
-          personData.value.personId = res.data[0].personId;
+          personData.value.firstName = res.data[0] ? res.data[0].name : "";
+          personData.value.email = res.data[0] ? res.data[0].email : "";
+          personData.value.homeAddress = res.data[0] ? res.data[0].address : "";
+          personData.value.personId = res.data[0] ? res.data[0].personId : "";
           personData.value.mobilePhone = enteredValue.value;
-          person.value = res.data[0];
+          person.value = res.data[0] ? res.data[0] : { };
 
           if (person.value.name) {
             person.value.name = formatString(person.value.name, 2, 4);
@@ -267,15 +304,42 @@ export default {
           if (person.value.address) {
             person.value.address = formatString(person.value.address, 2, 4);
           }
+          console.log(res, "RPONSE");
           populateInputfields(person.value);
           console.log(names.value);
 
           if (person.value) appltoggle.value = true;
         })
         .catch((err) => {
+          fetchingFailed.value = true;
+          person.value = { };
+          loaded.value = true;
           loading.value = false;
           autosearch.value = false;
-          appltoggle.value = true;
+          
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "error",
+              summary: "Checkin Error",
+              detail: "Ensure you have internet access and try again",
+              life: 3000,
+            });
+          } else if (err.message.includes("timeout")) {
+            toast.add({
+              severity: "error",
+              summary: "Checkin Error",
+              detail: "The request was taking too long, please reload and try again",
+              life: 3000,
+            });
+          } else {
+            toast.add({
+              severity: "error",
+              summary: "Checkin Error",
+              detail: "An error occurred, reload and try again",
+              life: 3000,
+            });
+          }
+          // appltoggle.value = true;
           console.log(err);
         });
       // }
@@ -305,7 +369,7 @@ export default {
       let newPerson = {};
       if (person.value.personId) {
         newPerson = {
-          person: personData.value,
+          person: { personId: personData.value.personId, mobilePhone: enteredValue.value },
           attendanceCode: +route.params.code,
         };
       } else {
@@ -325,22 +389,24 @@ export default {
       autosearch.value = true;
       noError.value = true;
       axios
-        .post("/api/CheckInAttendance/MarkAttendance", newPerson)
+        .post("/MarkAttendance", newPerson)
         .then((res) => {
           loading.value = false;
           autosearch.value = false;
           console.log(res, "tosin");
 
           if (newPerson) checkedIn.value = true;
+          swal("Checked-in!", "You have been checked-in successfully!", "success");
           appltoggle.value = false;
           checkedIn.value = true;
+          loaded.value = false;
 
-          toast.add({
-            severity: "success",
-            summary: "Checkin Successful",
-            detail: "Member Checkin Successful",
-            life: 3000,
-          });
+          // toast.add({
+          //   severity: "success",
+          //   summary: "Checkin Successful",
+          //   detail: "Member Checkin Successful",
+          //   life: 3000,
+          // });
         })
         .catch((err) => {
           // appltoggle.value = false;
@@ -356,7 +422,6 @@ export default {
             life: 3000,
           });
         });
-      
     };
 
     // confirm button check
@@ -373,7 +438,6 @@ export default {
     const notme = () => {
       person.value = {};
       enteredValue.value = "";
-      submitBtn.value.classList.add('d-none')
     };
 
     // getting events and date
@@ -381,7 +445,7 @@ export default {
     const getDateAndEvent = () => {
       axios
         .get(
-          `/api/CheckInAttendance/WebCheckInGetEventDetails?attendanceCode=${route.params.code}`
+          `/api/publiccontent/WebCheckInGetEventDetails?attendanceCode=${+route.params.code}`
         )
         .then((res) => {
           eventData.value.name = res.data.fullEventName;
@@ -434,6 +498,10 @@ export default {
       }
     };
 
+    const showLoading = computed(() => {
+      return autosearch.value && !person.value.name;
+    })
+
     /*end of masking functions */
 
     //not me button
@@ -472,6 +540,10 @@ export default {
       notme,
       noError,
       submitBtn,
+      showLoading,
+      loaded,
+      fetchingFailed,
+
     };
   },
 };
@@ -488,5 +560,17 @@ export default {
 
 .add-btn2 {
   background: none;
+}
+
+.loading-indicator {
+  font-size: 76px;
+  position: absolute;
+  margin-top: 86px;
+}
+
+.loading-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
