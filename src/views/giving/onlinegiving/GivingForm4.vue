@@ -2,7 +2,7 @@
 <template>
   <div>
     <!-- nav section area -->
-    <div class="container-fluid nav-color sticky-top">
+    <div class="container-fluid nav-color">
       <div class="container">
         <nav class="navbar navbar-expand-lg nav-color2">
           <a class="navbar-brand" href="#">
@@ -694,7 +694,7 @@ export default {
             detail: `Signed In Successfully`,
             life: 3000,
           });
-          signedIn.value = true
+          signedIn.value = false
         }
         finish()
 
