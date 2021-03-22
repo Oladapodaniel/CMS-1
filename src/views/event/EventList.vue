@@ -314,7 +314,7 @@
                     <div>{{event.title}}</div>
                 </div>
                 <div class="col-md-2 itemroute-color align-self-center">
-                    <div>{{moment.parseZone(new Date(event.activityDate).toDateString(),"YYYY MM DD HH ZZ")._i.substr(4, 11).split("").splice(6, 0, ',')}}</div>
+                    <div>{{moment.parseZone(new Date(event.activityDate).toDateString(),"YYYY MM DD HH ZZ")._i.substr(4, 11) }}</div>
                 </div>
                 <div class="col-md-1 itemroute-color align-self-center">
                      <div>{{ event.attendances }}</div>
