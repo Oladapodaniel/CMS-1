@@ -80,7 +80,7 @@
                 :index="1"
                 :accountGroupId="accountGroupId"
                 :account="accountToEdit"
-                :currency="false"
+                :currency="true"
                 @save-account="closeAccountModal"
               />
             </div>
