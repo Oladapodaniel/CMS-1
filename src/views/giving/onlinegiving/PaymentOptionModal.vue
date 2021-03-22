@@ -189,6 +189,7 @@
       <div class="col-4 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/paypal-logo-2@2x.png" alt=""/>
       </div>
+      
       <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
       <div class="row">
         <div class="col-1 mt-n1 d-none d-sm-block">
@@ -199,6 +200,14 @@
       <div class="col-8 pl-0 d-none d-sm-block">International</div>
       </div> -->
     </div>
+    <!-- <div class="row row-button" @click="payWithPaystack" v-for="gateway in gateways" :key="gateway.id">
+      <div class="col-4 col-sm-7 offset-2">
+        <img class="w-100" src="../../../assets/4PaystackLogo.png" alt=""/>
+        {{ gateway.paymentGateway.name }}
+      </div>
+      
+    </div> -->
+
   </div>
 
 </template>
@@ -212,7 +221,7 @@ export default {
     // PaystackPay
     // paystack
   },
-  props: ['orderId', 'donation', 'close', 'amount', 'name', 'email'],
+  props: ['orderId', 'donation', 'close', 'amount', 'name', 'email', 'gateways'],
   setup (props, { emit }) {
 
     const payWithPaystack = () => {
