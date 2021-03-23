@@ -125,7 +125,7 @@
 
 <script>
 import { ref, computed, nextTick } from "vue";
-import axios from "@/gateway/backendapi";
+// import axios from "@/gateway/backendapi";
 // import transaction_service from "../../../services/financials/transaction_service";
 import UpdateccountModal from "./components/UpdateOldAccount";
 import transactionals from './utilities/transactionals';
@@ -133,6 +133,7 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import chart_of_accounts from '../../../services/financials/chart_of_accounts';
+import transaction_service from '../../../services/financials/transaction_service';
 
 export default {
   components: { UpdateccountModal ,ConfirmDialog },
@@ -182,21 +183,19 @@ export default {
       accountToEdit.value = { }
     }
 
-    const getCurrenciesFromCountries = () => {
-      let url = "/api/getallcountries";
-      axios
-        .get(url)
-        .then((res) => {
-          currencyList.value = res.data.map((i) => {
-            // return `${i.currency} ${i.name}`
-            return {
-              name: i.currency,
+    const getCurrenciesFromCountries = async () => {
+      try {
+        const response = await transaction_service.getCurrencies();
+        currencyList.value = response.map(i => {
+          return {
+              name: i.shortCode,
               id: i.id,
-              country: i.name,
+              country: i.country,
             };
-          });
         })
-        .catch((err) => console.log(err));
+      } catch (error) {
+        console.log(error);
+      }
     };
     getCurrenciesFromCountries();
 
@@ -279,11 +278,15 @@ export default {
     };
 
     const transactionalAccounts = ref([]);
-    const accountTypes = ["assets", "liability", "equity", "income", "expense"];
+    const accountTypes = ["assets", "liability", "income", "expense", "equity"];
     const getTransactionalAccounts = async () => {
       try {
         const response = await transactionals.getTransactionalAccounts();
         transactionalAccounts.value = response;
+        const equity = response[2];
+        transactionalAccounts.value.splice(2, 1);
+        transactionalAccounts.value.push(equity);
+        console.log(transactionalAccounts.value, "WWWW");
       } catch (error) {
         console.log(error);
       }
@@ -299,6 +302,7 @@ export default {
     const closeAccountModal = (data) => {
       closeModalBtn.value.click();
       if (data.success) {
+        getCharts()
         emit("reload");
       }
     };

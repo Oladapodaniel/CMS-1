@@ -44,11 +44,11 @@
               ></i>
             </div>
             <div class="style-category close-modal" v-if="accountDisplay">
-              <div class="desc-head px-3 pt-2 close-modal">Cash And Bank</div>
+
               <div class="header-border close-modal">
                 <div
                   class="manual-dd-item close-modal"
-                  v-for="(cash, index) in cashAndBank"
+                  v-for="(cash, index) in accountsAndBalances"
                   :key="index"
                   @click="selectAnAccount(cash, index)"
                 >
@@ -56,29 +56,18 @@
                     class="d-flex justify-content-between py-1 px-3 close-modal"
                   >
                     <div class="close-modal">{{ cash.text }}</div>
-                    <div class="close-modal">{{ cash.amount }}</div>
+                    <div class="close-modal">{{ cash.currency.name }}{{ cash.balance }}</div>
                   </div>
                 </div>
+                <div class="container d-flex justify-content-between close-modal">
+                <span>All Accounts</span>
+                <span>{{ totalAccountBalances }}</span>
               </div>
-              <div class="desc-head py-1 px-3 close-modal">Credit Card</div>
-              <div class="header-border close-modal">
-                <div
-                  @click="transactionItem"
-                  class="manual-dd-item close-modal"
-                  v-for="(credit, index) in creditCard"
-                  :key="index"
-                >
-                  <div
-                    class="d-flex justify-content-between py-1 px-3 close-modal"
-                  >
-                    <div class="close-modal">{{ credit.name.type }}</div>
-                    <div class="close-modal">{{ credit.name.amount }}</div>
-                  </div>
-                </div>
               </div>
+              
               <!-- <div class="row"> -->
               <div
-                class="col-md-12 create-event px-2 d-flex justify-content-between close-modal"
+                class="col-md-12 create-event px-2 d-flex justify-content-between close-modal small-text"
               >
                 <a
                   href="#"
@@ -269,6 +258,7 @@
           </Dialog>
 
           <TransactionTable :showEditTransaction="showEditTransaction" :transactionDetails="transacPropsValue" :selectedTransactionType="selectedTransactionType" @toggle-edit-form="closeIt" @select-row="selectRow" />
+          <!-- <LedgerForm /> -->
         </div>
       </div>
     </div>
@@ -280,11 +270,14 @@ import Dialog from "primevue/dialog";
 import axios from "@/gateway/backendapi";
 import transactionService from "../../../services/financials/transaction_service";
 import TransactionTable from "../../../components/transactions/TransactionsTable"
+import transaction_service from '../../../services/financials/transaction_service';
+// import LedgerForm from "../transaction/components/LedgerForm";
 
 export default {
   components: {
     Dialog,
     TransactionTable,
+    // LedgerForm,
   },
   setup() {
     const transactions = ref([
@@ -536,7 +529,7 @@ export default {
     const getCashAndBanks = async () => {
       try {
         const response = await transactionService.getCashAndBank();
-        cashAndBank.value = response;
+        // cashAndBank.value = response;
         cashAndBankItems.value = response;
         console.log(cashAndBankItems.value, "CABI");
       } catch (error) {
@@ -559,7 +552,7 @@ export default {
     const selectAnAccount = (account, index) => {
       selectedTransaction.value = {
         type: account.text,
-        amount: 0
+        amount: `${account.currency.name}${account.balance}`
       }
       accountDisplay.value = false;
       selectedTransactionType.value = index;
@@ -583,7 +576,27 @@ export default {
     }
     // saveAccount()
 
-    // const get
+    const accountsAndBalances = ref([ ])
+    const getAccountBalances = async () => {
+      try {
+        const response = await transaction_service.getCashAndBankAccountBalances();
+        accountsAndBalances.value = response;
+        console.log(response, "account and balances");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getAccountBalances()
+
+    const totalAccountBalances = computed(() => {
+      if (!accountsAndBalances.value || accountsAndBalances.value.length === 0) return 0;
+      let sum = 0;
+
+      for (let account of accountsAndBalances.value) {
+        sum += account.balance;
+      }
+      return Number.parseFloat(sum).toFixed(2);
+    })
 
     return {
       transactions,
@@ -627,6 +640,8 @@ export default {
       newAccount,
       saveAccount,
       selectRow,
+      accountsAndBalances,
+      totalAccountBalances,
     };
   },
 };
@@ -813,7 +828,7 @@ html {
   position: absolute;
   background: white;
   z-index: 1;
-  width: 130%;
+  width: 95%;
   max-height: 20em;
   overflow-y: scroll;
   overflow-x: hidden;

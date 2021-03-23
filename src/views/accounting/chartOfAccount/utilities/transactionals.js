@@ -5,6 +5,7 @@ import transaction_service from "../../../../services/financials/transaction_ser
 const transactionals = {
     accountTypes: ["assets", "liability",  "equity", "income", "expense"],
     account: [],
+    groupedAccounts: [],
     currencies: [],
     funds: [],
 
@@ -30,6 +31,28 @@ const transactionals = {
         })
     },
 
+    getGroupedAccounts(force) {
+        return new Promise((resolve, reject) => {
+            if (!this.groupedAccounts || this.groupedAccounts.length === 0 || force) {
+                transaction_service.getTransactionalAccounts()
+                .then(res => {
+                    console.log(res, "new jhiuvithbviwehnrijntuiwhntruiwbtutwbubeiubvueib");
+                    const data = [];
+                    for (let group of this.accountTypes) {
+                        data.push(res.filter(i => i.accountType.toLowerCase() === group));
+                      }
+                      this.groupedAccounts = data;
+                    resolve(data)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+            } else {
+                resolve(this.groupedAccounts)
+            }
+        })
+    },
+
     getCurrencies() {
         return new Promise((resolve, reject) => {
             if (!this.currencies || this.currencies.length === 0) {
@@ -37,10 +60,11 @@ const transactionals = {
                     .then(res => {
                         const mapped = res.map(i => {
                             return {
-                                name: i.currency,
+                                name: i.shortCode,
                                 id: i.id,
-                                country: i.name
-                            }
+                                country: i.country,
+                                displayName: `${i.shortCode} - ${i.country}`
+                            };
                         })
                         this.currencies = mapped;
                         resolve(mapped);
