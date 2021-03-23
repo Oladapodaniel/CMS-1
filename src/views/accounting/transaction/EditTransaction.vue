@@ -80,7 +80,7 @@
 
             <div class="container-fluid">
               <div class="row">
-                <div class="col-md-12 px-0" v-for="(account, index) in filteredCashandBank" :key="index">
+                <div class="col-md-12 px-0" v-for="(account, index) in filteredCashandBank" :key="index" @click="accountFlow($event, account)">
                   <!-- <div class="desc-head py-1 px-3 close-modal text-capitalize" v-if="accounts.length > 0">{{ accTypes[index] }}</div> -->
                   <div class="header-border close-modal">
                     <div v-if="account">
@@ -527,12 +527,12 @@ export default {
     const newIncome = ref({ });
     const saveIncome = async () => {
         try {
-          
           let reqBody = { };
           if (props.transactionDetails.account === "Income Account") {
             transacObj.value.creditAccountID = selectedIncomeOrExpenseAccount.value.id;
             transacObj.value.debitAccountID = selectedCashAccount.value.id;
-             reqBody = constructSaveTransactionReqBody();
+            reqBody = constructSaveTransactionReqBody();
+            reqBody.category = "inflow";
             const response = await transaction_service.saveIncome(reqBody);
             toastMessage(response);
             console.log(response, "Save income response");
@@ -542,7 +542,8 @@ export default {
               creditAccountID: selectedCashAccount.value.id,
               date: transacObj.value.date,
               memo: transacObj.value.memo,
-              amount: transacObj.value.amount
+              amount: transacObj.value.amount,
+              category: "outflow"
             }
             const response = await transaction_service.saveExpense(body);
             toastMessage(response)

@@ -70,8 +70,9 @@ const testPoint = () => {
 
 const getCurrencies = () => {
     return new Promise((resolve, reject) => {
-        axios.get("/api/getallcountries")
+        axios.get("/api/lookup/getallcurrencies")
             .then(res => {
+                console.log(res, "CURRENCY");
                 resolve(res.data);
             })
             .catch(err => {
@@ -88,7 +89,6 @@ const getCurrencies = () => {
 const getCashAndBank = () => {
     return new Promise((resolve, reject) => {
         axios.get("/api/Financials/Accounts/GetCashBankAccounts")
-        // axios.get("/api/Financials/Accounts/Transactions/GetIncomeAndExpense")
             .then(res => {
                 resolve(res.data);
             })
@@ -182,5 +182,23 @@ const saveIncome = (body) => {
     })
 }
 
+const getCashAndBankAccountBalances = () => {
+    return new Promise((resolve, reject) => {
+        axios.get("/api/Financials/Accounts/GetCashBankAccountsBalances")
+            .then(res => {
+                resolve(res.data);
+            })
+            .catch(err => {
+                if (err.response) {
+                    reject(err.response);
+                } else {
+                    reject(err)
+                }
+            })
+    })
+}
 
-export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome, getCurrencies, getAccountHeads };
+
+
+
+export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome, getCurrencies, getAccountHeads, getCashAndBankAccountBalances };

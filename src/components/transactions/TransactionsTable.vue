@@ -232,12 +232,14 @@
             <!-- :class="{ 'slide-form' : showEditTransaction, 'hide-form' : !showEditTransaction }" -->
             <div class="table edit-transac mobile-form" v-if="showEditTransaction">
               <TransactionForm
+                v-if="false"
                 @close-it="closeIt"
                 @transac-obj="transacObj"
                 :transactionDetails="transactionDetails"
                 :showEditTransaction="showEditTransaction"
                 @reload="getTransactions"
               />
+              <LedgerForm v-if="true" />
               <!-- :transacProp="transacPropsValue" -->
             </div>
           </div>
@@ -253,6 +255,8 @@ import TransactionForm from "../../views/accounting/transaction/EditTransaction"
 import transaction_service from "../../services/financials/transaction_service";
 import dateFormatter from "../../services/dates/dateformatter";
 // import transactionService from "../../services/financials/transaction_service";
+import LedgerForm from "../../views/accounting/transaction/components/LedgerForm";
+
 
 export default {
   props: [
@@ -262,6 +266,7 @@ export default {
   ],
   components: {
     TransactionForm,
+    LedgerForm,
   },
   setup(props, { emit }) {
     const transactions = ref([]);
@@ -424,8 +429,8 @@ export default {
     const getTransactions = async () => {
       try {
         const response = await transaction_service.getTransactions();
-        console.log(response, "test point");
         allTransactions.value = response;
+        console.log(response, "ALL TRANS");
       } catch (error) {
         console.log(error);
       }
@@ -463,13 +468,11 @@ export default {
     };
 
     const rowSelected = (item) => {
-      console.log(item, "selected row");
       const data = {
         amount: item.amount,
         date: item.date,
         memo: item.narration,
       };
-      console.log("Hello");
       emit("select-row", data);
     };
 
