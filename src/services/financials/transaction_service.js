@@ -198,7 +198,26 @@ const getCashAndBankAccountBalances = () => {
     })
 }
 
+const saveJournalTransaction = (body) => {
+    return new Promise((resolve, reject) => {
+        axios.post("/api/Financials/Accounts/Transactions/SaveGeneralLedger", body)
+            .then(res => {
+                console.log(res, "LEDGER");
+                resolve(res);
+            })
+            .catch(err => {
+                if (err.response) {
+                    reject(err.response);
+                } else {
+                    reject(err)
+                }
+            })
+    })
+}
 
 
 
-export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome, getCurrencies, getAccountHeads, getCashAndBankAccountBalances };
+
+export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome, getCurrencies, getAccountHeads, getCashAndBankAccountBalances,
+    saveJournalTransaction
+};
