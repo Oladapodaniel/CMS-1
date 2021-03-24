@@ -2,10 +2,10 @@
   <div>
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
-        <div class="col-md-8 col-lg-7">
+        <div class="col-md-8 col-lg-8 col-sm-6">
           <h2 class="font-weight-bolder">{{  churchProfile }}</h2>
         </div>
-        <div class="col-md-4 col-md-5 mt-2 link">
+        <div class="col-lg-4 col-sm-6 mt-2 link d-lg-flex justify-content-end">
           <router-link
             to="/tenant/settings/invitenewuser"
             class="grey-border primary-bg border-0 text-white addnew default-btn"
@@ -15,7 +15,7 @@
       </div>
       <div class="col-md-12 px-0 my-4">
         <p class="small-text">
-          You can invite a new user to access your Wave account. Only give
+          You can invite a new user to access your Church account. Only give
           access to people you trust, since users can see your transactions and
           other business information.
         </p>

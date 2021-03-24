@@ -121,7 +121,7 @@
                                <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="CanAccessFollowUps" v-model="roles" /> CanAccessFollowUps</div>
                             </div>
                             <div class="row mb-2">
-                               <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="CenterLeader" v-model="roles" /> CenterLeader</div>
+                               <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="CenterLeader" v-model="role" /> CenterLeader</div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="FinancialAccount" v-model="roles" /> FinancialAccount</div>
