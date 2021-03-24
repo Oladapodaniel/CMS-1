@@ -89,8 +89,8 @@
                   <div class="col-md-7" id="currencySelect">
                     <Dropdown
                       v-model="selectedCurrency"
-                      :options="filteredCurrencies"
-                      optionLabel="name"
+                      :options="accountCurrencies"
+                      optionLabel="displayName"
                       placeholder="Select account currency"
                       style="width: 100%"
                       :filter="true"
@@ -178,6 +178,8 @@ import { computed, ref, watch } from "vue";
 import transactionals from "../utilities/transactionals";
 import chart_of_accounts from "../../../../services/financials/chart_of_accounts";
 import { useToast } from "primevue/usetoast";
+import membershipService from '../../../../services/membership/membershipservice';
+import { useStore } from "vuex"
 
 export default {
   props: [
@@ -194,11 +196,13 @@ export default {
   components: { Dropdown },
   setup(props, { emit }) {
     const toast = useToast();
+    const store = useStore();
 
     const selectedAccountType = ref({});
     const selectedCurrency = ref({});
     const selectedFund = ref({});
     const newAccount = ref({});
+    const userCurrency = ref(store.getters.currentUser.currency);
 
     const selectAccountType = (account) => {
       selectedAccountType.value = account;
@@ -253,6 +257,7 @@ export default {
             description: body.description,
             id: props.account.id,
             financialAccountGroupID: selectedAccountType.value.id
+            // financialFundID: body.financialFundID
            }
           response = edit(x);
         } else {
@@ -266,6 +271,7 @@ export default {
               newAccount.value = { };
               emit("save-account", { success: true, type: props.financialAccountType });
               transactionals.getTransactionalAccounts(true);
+              selectedFund.value = { }
           }
         }
         
@@ -288,20 +294,60 @@ export default {
       }
     
       newAccount.value.financialAccountGroupID = selectedAccountType.value.id;
-
-      if (selectedFund.value && selectedFund.value.id) {
-        newAccount.value.financialFundID = selectedFund.value.id;
+      if (selectedCurrency.value && selectedCurrency.value.id) {
+        newAccount.value.currencyID =  selectedCurrency.value.id;
       }
+
+      // if (selectedFund.value && selectedFund.value.id) {
+        newAccount.value.financialFundID = selectedFund.value.id ? selectedFund.value.id : "";
+      // }
       saveAccount(newAccount.value);
     };
+
+    const initializeCurrency = () => {
+      if (!userCurrency.value) {
+        membershipService.getSignedInUser()
+          .then(res => {
+            selectedCurrency.value = accountCurrencies.value.find(i => i.name === res.currency);
+          })
+          .catch(err => console.log(err));
+      } else {
+        selectedCurrency.value = accountCurrencies.value.find(i => {
+          return i.name.includes(userCurrency.value);
+        })
+      }
+    }
+
+    const updateSelectedCurrency = () => {
+      selectedCurrency.value = accountCurrencies.value.find(i => i.id === props.account.id);
+      
+    }
+
+    const accountCurrencies = ref([]);
+    const getCurrencies = async () => {
+      try {
+        const response = await transactionals.getCurrencies();
+        accountCurrencies.value = response;
+        if (!props.account || !props.account.name ) {
+          initializeCurrency()
+        } else {
+          updateSelectedCurrency();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getCurrencies();
 
     watch(() => {
       if (props.accountGroupId) {
         selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.accountGroupId)
       }
       if (props.account) {
+        console.log(props.account);
         newAccount.value.name = props.account ? props.account.name : "";
         newAccount.value.description = props.account ? props.account.description : "";
+        selectedFund.value = funds.value.find(i => i.id === props.account.financialFundID);
       }
     })
     
@@ -317,6 +363,7 @@ export default {
       onSave,
       invalidAccountDetails,
       savingAccount,
+      accountCurrencies,
     };
   },
 };

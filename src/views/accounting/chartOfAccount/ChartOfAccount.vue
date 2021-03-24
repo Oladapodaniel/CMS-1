@@ -246,7 +246,7 @@ export default {
     const getCurrencies = async () => {
       try {
         currencies.value = await transactionUtil.getCurrencies();
-        console.log(currencies.value);
+        console.log(currencies.value, "HUIUGFUYFUYufy");
       } catch (error) {
         console.log(error);
       }

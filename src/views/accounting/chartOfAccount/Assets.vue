@@ -152,16 +152,16 @@ export default {
     }
 
     const getCurrenciesFromCountries = () => {
-      let url = "/api/getallcountries";
+      let url = "/api/lookup/getallcurrencies";
       axios
         .get(url)
         .then((res) => {
           currencyList.value = res.data.map((i) => {
             // return `${i.currency} ${i.name}`
             return {
-              name: i.currency,
+              name: i.shortCode,
               id: i.id,
-              country: i.name,
+              country: i.country,
             };
           });
         })
