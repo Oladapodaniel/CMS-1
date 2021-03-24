@@ -299,7 +299,7 @@ export default {
       }
 
       // if (selectedFund.value && selectedFund.value.id) {
-        newAccount.value.financialFundID = selectedFund.value.id ? selectedFund.value.id : "";
+        newAccount.value.financialFundID = selectedFund.value && selectedFund.value.id ? selectedFund.value.id : "";
       // }
       saveAccount(newAccount.value);
     };
