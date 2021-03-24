@@ -23,7 +23,7 @@
         <div class="col-6 col-md-2 text-right">
           <a class="primary-text text-decoration-none font-weight-700 c-pointer" @click="editAccount(itm)" data-toggle="modal" data-target="#assetsModal">
             <!-- <i class="fa fa-pencil c-pointer"  aria-hidden="true"></i> -->
-            <span>edit</span>
+            <span>Update</span>
           </a>
           <!-- <i class="pi pi-trash ml-2 c-pointer" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i> -->
         </div>
@@ -99,9 +99,9 @@
           </button>
         </div>
         <div class="modal-body">
-          <CreateAccountModal
+          <UpdateccountModal
             @save-account="closeAccountModal"
-            :transactionalAccounts="transactionalAccounts"
+            :transactionalAccounts="typesFOrSelectedAccount"
             :accountTypes="accountTypes"
             :currencies="currencyList"
             :financialAccountType="0"
@@ -116,6 +116,7 @@
   </div>
   <!-- END BT -->
   <ConfirmDialog></ConfirmDialog>
+  <Toast />
 
   <!-- Primevue modal to add new account-->
   <!-- <h5>Modal</h5>
@@ -124,17 +125,18 @@
 
 <script>
 import { ref, computed, nextTick } from "vue";
-import axios from "@/gateway/backendapi";
+// import axios from "@/gateway/backendapi";
 // import transaction_service from "../../../services/financials/transaction_service";
-import CreateAccountModal from "./components/CreateAccountForm";
+import UpdateccountModal from "./components/UpdateOldAccount";
 import transactionals from './utilities/transactionals';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import chart_of_accounts from '../../../services/financials/chart_of_accounts';
+import transaction_service from '../../../services/financials/transaction_service';
 
 export default {
-  components: { CreateAccountModal ,ConfirmDialog },
+  components: { UpdateccountModal ,ConfirmDialog },
   props: [ "assets", "data" ],
   setup(props, { emit }) {
     const view = ref("view");
@@ -181,21 +183,19 @@ export default {
       accountToEdit.value = { }
     }
 
-    const getCurrenciesFromCountries = () => {
-      let url = "/api/getallcountries";
-      axios
-        .get(url)
-        .then((res) => {
-          currencyList.value = res.data.map((i) => {
-            // return `${i.currency} ${i.name}`
-            return {
-              name: i.currency,
+    const getCurrenciesFromCountries = async () => {
+      try {
+        const response = await transaction_service.getCurrencies();
+        currencyList.value = response.map(i => {
+          return {
+              name: i.shortCode,
               id: i.id,
-              country: i.name,
+              country: i.country,
             };
-          });
         })
-        .catch((err) => console.log(err));
+      } catch (error) {
+        console.log(error);
+      }
     };
     getCurrenciesFromCountries();
 
@@ -212,13 +212,15 @@ export default {
 
     const gettingCharts = ref(false);
     const chartsOfAccount = ref([ ]);
+    const accountGroups = ref([ ]);
     const getCharts = async () => {
       try {
           gettingCharts.value = true;
         const response = await chart_of_accounts.getChartOfAccounts();
         gettingCharts.value = false;
         chartsOfAccount.value = response.accountwithoutheads;
-        console.log(chartsOfAccount.value, "CHARTS");
+        accountGroups.value = response.accountwithHeads;
+        console.log(response, "CHARTS");
       } catch (error) {
           gettingCharts.value = false;
         console.log(error);
@@ -276,11 +278,15 @@ export default {
     };
 
     const transactionalAccounts = ref([]);
-    const accountTypes = ["assets", "liability", "equity", "income", "expense"];
+    const accountTypes = ["assets", "liability", "income", "expense", "equity"];
     const getTransactionalAccounts = async () => {
       try {
         const response = await transactionals.getTransactionalAccounts();
         transactionalAccounts.value = response;
+        const equity = response[2];
+        transactionalAccounts.value.splice(2, 1);
+        transactionalAccounts.value.push(equity);
+        console.log(transactionalAccounts.value, "WWWW");
       } catch (error) {
         console.log(error);
       }
@@ -296,15 +302,18 @@ export default {
     const closeAccountModal = (data) => {
       closeModalBtn.value.click();
       if (data.success) {
+        getCharts()
         emit("reload");
       }
     };
 
+    const typesFOrSelectedAccount = ref([ ]);
     const accountToEdit = ref({ });
     const editAccount = (account) => {
       console.log(account, "to be edited");
       accountToEdit.value = account;
       // accountGroupId.value = group.name;
+      typesFOrSelectedAccount.value = accountGroups.value.find(i => i.key.toLowerCase() === accountTypes[account.accountType]).accountHeadsDTO;
     }
 
     const deleteAccount = (id, index, indx) => {
@@ -400,6 +409,7 @@ export default {
       chartsOfAccount,
       gettingCharts,
       oldAccounts,
+      typesFOrSelectedAccount,
       // selectAccountType,
       // selectedAccountType
     };

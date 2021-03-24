@@ -187,7 +187,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import Assets from "@/views/accounting/chartOfAccount/Assets";
 import Liabilities from "@/views/accounting/chartOfAccount/Liabilities";
 import Income from "@/views/accounting/chartOfAccount/Income";
@@ -246,7 +246,7 @@ export default {
     const getCurrencies = async () => {
       try {
         currencies.value = await transactionUtil.getCurrencies();
-        console.log(currencies.value);
+        console.log(currencies.value, "HUIUGFUYFUYufy");
       } catch (error) {
         console.log(error);
       }
@@ -264,6 +264,9 @@ export default {
         gettingCharts.value = false;
         chartOfAccounts.value = response.accountwithHeads;
         console.log(response, "CHARTS");
+        if (response.accountwithoutheads.length > 0) {
+          display.value = true;
+        }
       } catch (error) {
         gettingCharts.value = false;
         console.log(error);
@@ -350,10 +353,6 @@ export default {
     const equityDeleted = (index, indx) => {
       chartOfAccounts.value[2].accountHeadsDTO[index].accounts.splice(indx, 1);
     };
-
-    onMounted(() => {
-        display.value = true;
-    })
 
     return {
       tab,

@@ -19,7 +19,7 @@
         <div class="col-6 col-md-5">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
           <i class="fa fa-pencil c-pointer" aria-hidden="true" data-toggle="modal" data-target="#incModal" @click="editAccount(item, itm)"></i>
-          <i class="pi pi-trash c-pointer ml-2" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i>
+          <i class="pi pi-trash c-pointer ml-3" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i>
         </div>
       </div>
       <div class="row row-border align-items-center py-3" v-if="item.accounts.length === 0">

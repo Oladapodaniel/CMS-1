@@ -48,9 +48,9 @@
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
             <div class="row">
-              <div class="col-md-2 col-sm-2 image mt-3">
+              <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
                 <img
-                  src="../../../assets/group.svg"
+                  src="../../../assets/link.svg" class="w-100"
                   alt="marked Attendance image"
                 />
               </div>
@@ -179,7 +179,7 @@
             <div class="row">
               <div class="col-md-2 col-sm-2 image mt-3">
                 <img
-                  src="../../../assets/group1.svg"
+                  src="../../../assets/childcheckin.svg" style="width:54px; height:54px"
                   alt="marked Attendance image"
                 />
               </div>
@@ -209,7 +209,7 @@
             <div class="row">
               <div class="col-md-2 col-sm-2 image mt-3">
                 <img
-                  src="../../../assets/group2.svg"
+                  src="../../../assets/USSD.svg"  style="width:58px; height:58px"
                   alt="marked Attendance image"
                 />
               </div>

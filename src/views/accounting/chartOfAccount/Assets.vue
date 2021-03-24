@@ -19,7 +19,7 @@
         <div class="col-6 col-md-5">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
           <i class="fa fa-pencil c-pointer" data-toggle="modal" data-target="#assetsModal" aria-hidden="true" @click="editAccount(item, itm)"></i>
-          <i class="pi pi-trash ml-2 c-pointer" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i>
+          <i class="pi pi-trash ml-3 c-pointer" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i>
         </div>
       </div>
       <div class="row row-border align-items-center py-3" v-if="item.accounts.length === 0">
@@ -152,16 +152,16 @@ export default {
     }
 
     const getCurrenciesFromCountries = () => {
-      let url = "/api/getallcountries";
+      let url = "/api/lookup/getallcurrencies";
       axios
         .get(url)
         .then((res) => {
           currencyList.value = res.data.map((i) => {
             // return `${i.currency} ${i.name}`
             return {
-              name: i.currency,
+              name: i.shortCode,
               id: i.id,
-              country: i.name,
+              country: i.country,
             };
           });
         })

@@ -12,62 +12,10 @@
                     Account Type <span class="text-danger">*</span>
                   </div>
                   <div class="col-md-7">
-                    <div class="dropdown">
-                      <button
-                        class="btn btn-white w-100 border text-left"
-                        type="button"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        <!-- :disabled="accountGroupId" -->
-                        {{
-                          !selectedAccountType || !selectedAccountType.name
-                            ? "Select account type"
-                            : selectedAccountType.name
-                        }}
-                      </button>
-                      <div
-                        class="dropdown-menu w-100"
-                        style="max-height: 300px; overflow: auto"
-                        aria-labelledby="dropdownMenuButton"
-                      >
-                        <div class="container">
-                          <div
-                            class="row"
-                            v-for="(accounts, index) in transactionalAccounts"
-                            :key="index"
-                          >
-                            <div class="col-md-12 px-2">
-                              <h6
-                                class="mb-0 text-capitalize font-weight-bold"
-                                v-if="accounts.length > 0"
-                              >
-                                {{ accountTypes[index] }}
-                              </h6>
-                            </div>
-                            <div class="col-md-12">
-                              <a
-                                class="dropdown-item px-1 px-14"
-                                href="#"
-                                v-for="(account, indx) in accounts"
-                                :key="indx"
-                                @click="selectAccountType(account)"
-                                >{{ account.name }}</a
-                              >
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- <Dropdown :options="cities" optionLabel="label" optionGroupLabel="label" optionGroupChildren="items">
-                  <template #optiongroup="slotProps">
-                      <div class="p-d-flex p-ai-center country-item">
-                          <div>{{slotProps.option.label}}</div>
-                      </div>
-                  </template>
-              </Dropdown> -->
+                   
+                    <Dropdown v-model="selectedAccountType" :options="transactionalAccounts" optionLabel="name" style="width:100%" placeholder="Select account type">
+                        
+                    </Dropdown>
                   </div>
                 </div>
 
@@ -84,7 +32,7 @@
                   </div>
                 </div>
 
-                <div class="row my-3" v-if="currency">
+                <div class="row my-3" v-if="account.accountType == 0 || account.accountType == 1">
                   <div class="col-md-4 text-md-right">Account Currency</div>
                   <div class="col-md-7" id="currencySelect">
                     <Dropdown
@@ -98,7 +46,7 @@
                   </div>
                 </div>
 
-                <div class="row my-3">
+                <div class="row my-3" v-if="account.accountType !== 4">
                   <div class="col-md-4 text-md-right">Account ID</div>
                   <div class="col-md-7">
                     <input
@@ -109,7 +57,7 @@
                   </div>
                 </div>
 
-                <div class="row my-3" v-if="showFundsField">
+                <div class="row my-3" v-if="account.accountType === 2 || account.accountType === 3">
                   <div class="col-md-4 text-md-right">Fund</div>
                   <div class="col-md-7">
                     <Dropdown
@@ -121,7 +69,7 @@
                   </div>
                 </div>
 
-                <div class="row my-3">
+                <div class="row my-3" v-if="account.accountType !== 4">
                   <div class="col-md-4 text-md-right">Description</div>
                   <div class="col-md-7">
                     <textarea
@@ -174,12 +122,12 @@
 
 <script>
 import Dropdown from "primevue/dropdown";
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import transactionals from "../utilities/transactionals";
 import chart_of_accounts from "../../../../services/financials/chart_of_accounts";
 import { useToast } from "primevue/usetoast";
+import { useStore } from "vuex";
 import membershipService from '../../../../services/membership/membershipservice';
-import { useStore } from "vuex"
 
 export default {
   props: [
@@ -206,15 +154,7 @@ export default {
 
     const selectAccountType = (account) => {
       selectedAccountType.value = account;
-      console.log(selectedAccountType.value, "selected");
     };
-
-    const filteredCurrencies = computed(() => {
-      if (!props.currencies) return [];
-      return props.currencies.map((i) => {
-        return { name: `${i.name} - ${i.country}`, id: i.id };
-      });
-    });
 
     const funds = ref([]);
     const getFunds = async () => {
@@ -229,6 +169,7 @@ export default {
 
     const edit = async (body) => {
       try {
+        savingAccount.value = true;
         const response = await chart_of_accounts.editAccount(body)
         savingAccount.value = false;
         toast.add({severity:'success', summary:'Account Updated', detail:`${response.response}`, life: 2500});
@@ -247,7 +188,7 @@ export default {
     const savingAccount = ref(false);
     const saveAccount = async (body) => {
       try {
-        savingAccount.value = true;
+        
         let response = { };
         if (props.account && props.account.name) {
           const x = {
@@ -256,11 +197,12 @@ export default {
             accountType: props.account.accountType,
             description: body.description,
             id: props.account.id,
-            financialAccountGroupID: selectedAccountType.value.id
-            // financialFundID: body.financialFundID
+            financialAccountGroupID: selectedAccountType.value.id,
+            currencyID: selectedCurrency.value.id
            }
           response = edit(x);
         } else {
+          savingAccount.value = true;
           response = await chart_of_accounts.saveAccount(body);
           savingAccount.value = false;
           if (!response.status) {
@@ -271,7 +213,6 @@ export default {
               newAccount.value = { };
               emit("save-account", { success: true, type: props.financialAccountType });
               transactionals.getTransactionalAccounts(true);
-              selectedFund.value = { }
           }
         }
         
@@ -294,44 +235,38 @@ export default {
       }
     
       newAccount.value.financialAccountGroupID = selectedAccountType.value.id;
-      if (selectedCurrency.value && selectedCurrency.value.id) {
-        newAccount.value.currencyID =  selectedCurrency.value.id;
-      }
 
-      // if (selectedFund.value && selectedFund.value.id) {
-        newAccount.value.financialFundID = selectedFund.value.id ? selectedFund.value.id : "";
-      // }
+      if (selectedFund.value && selectedFund.value.id) {
+        newAccount.value.financialFundID = selectedFund.value.id;
+      }
       saveAccount(newAccount.value);
     };
 
-    const initializeCurrency = () => {
-      if (!userCurrency.value) {
-        membershipService.getSignedInUser()
-          .then(res => {
-            selectedCurrency.value = accountCurrencies.value.find(i => i.name === res.currency);
-          })
-          .catch(err => console.log(err));
-      } else {
-        selectedCurrency.value = accountCurrencies.value.find(i => {
-          return i.name.includes(userCurrency.value);
-        })
+    watch(() => {
+      if (props.accountGroupId) {
+        selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.accountGroupId)
       }
-    }
-
-    const updateSelectedCurrency = () => {
-      selectedCurrency.value = accountCurrencies.value.find(i => i.id === props.account.id);
-      
-    }
+      if (props.account) {
+        newAccount.value.name = props.account ? props.account.name : "";
+        newAccount.value.description = props.account ? props.account.description : "";
+      }
+    })
 
     const accountCurrencies = ref([]);
     const getCurrencies = async () => {
       try {
         const response = await transactionals.getCurrencies();
         accountCurrencies.value = response;
-        if (!props.account || !props.account.name ) {
-          initializeCurrency()
+        if (!userCurrency.value) {
+          membershipService.getSignedInUser()
+            .then(res => {
+              selectedCurrency.value = accountCurrencies.value.find(i => i.name === res.currency);
+            })
+            .catch(err => console.log(err));
         } else {
-          updateSelectedCurrency();
+          selectedCurrency.value = accountCurrencies.value.find(i => {
+            return i.name.includes(userCurrency.value);
+          })
         }
       } catch (error) {
         console.log(error);
@@ -339,23 +274,9 @@ export default {
     }
     getCurrencies();
 
-    watch(() => {
-      if (props.accountGroupId) {
-        selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.accountGroupId)
-      }
-      if (props.account) {
-        console.log(props.account);
-        newAccount.value.name = props.account ? props.account.name : "";
-        newAccount.value.description = props.account ? props.account.description : "";
-        selectedFund.value = funds.value.find(i => i.id === props.account.financialFundID);
-      }
-    })
-    
-
     return {
       selectAccountType,
       selectedAccountType,
-      filteredCurrencies,
       funds,
       newAccount,
       selectedCurrency,
