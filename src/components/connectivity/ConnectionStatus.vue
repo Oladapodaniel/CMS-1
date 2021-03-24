@@ -3,7 +3,7 @@
       <div class="container-fluid">
           <div class="row">
               <div class="col-md-12 px-0 connection-bar text-center" :class="{ 'minimized': onLine && !showBackOnline, 'maximized': !onLine}">
-                  <p class="mb-0 font-weight-bold" v-if="!onLine">You 're offline</p>
+                  <p class="mb-0 font-weight-bold" v-if="!onLine">You 're not connected</p>
                   <p class="mb-0 font-weight-700 text-success" v-if="showBackOnline">You 're back online</p>
               </div>
           </div>
@@ -44,7 +44,8 @@ created() {
 <style scoped>
 
     .connection-bar {
-        background: #f44336;
+        background: #E60023;
+        color: #fff;
         /* background: #00204412; */
     }
 
