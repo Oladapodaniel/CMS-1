@@ -879,27 +879,36 @@ export default {
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
           // if (res.status === 200) {
-            toast.add({
+            if (res.status) {
+              toast.add({
               severity: "success",
               summary: "Successful operation",
               detail: "SMS was sent successfully",
-              life: 2500,
+              life: 3000,
             });
 
             store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
             console.log(pageCount, "Page count ");
 
-          console.log(res);
-          // Save the res to store in other to get it in the view sent sms page
-          let sentObj = {
-              message: res.message,
-              id: res.returnObjects[0].id,
-              smsUnitsUsed: res.unitsUsed,
-              dateSent: `Today | ${moment.parseZone(new Date(res.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}`,
-              deliveryReport: [{ report: res.messageStatus }]
+            console.log(res);
+            // Save the res to store in other to get it in the view sent sms page
+            let sentObj = {
+                message: res.message,
+                id: res.returnObjects[0].id,
+                smsUnitsUsed: res.unitsUsed,
+                dateSent: `Today | ${moment.parseZone(new Date(res.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}`,
+                deliveryReport: [{ report: res.messageStatus }]
+              }
+              console.log(sentObj)
+              store.dispatch("communication/addSmsToSentList", sentObj)
+            } else {
+              toast.add({
+                severity: "error",
+                summary: "Message not sent",
+                detail: res.message,
+                life: 5000,
+              });
             }
-            console.log(sentObj)
-            store.dispatch("communication/addSmsToSentList", sentObj)
             
           // } else if (typeof res === "object") {
           //   toast.add({
