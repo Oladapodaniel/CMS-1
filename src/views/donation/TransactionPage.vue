@@ -7,7 +7,7 @@
   >
     <span class="sr-only">Loading...</span>
   </div>
-  <div class="container border borderline pt-3 pb-2 mt-5">
+  <div class="container border borderline pt-3 pb-2">
     <div class="row">
       <div class="container">
         <div class="row my-5 d-flex align-items-center">
@@ -23,7 +23,7 @@
             </p>
           </div>
 
-          <div class="col-md-2 col-4 offset-md-4">
+          <div class="col-md-2 col-6 offset-md-4">
 <!-- Example split danger button -->
 <div class="btn-group">
   <button type="button" class="btn htext2">Ajose Tosin</button>
@@ -52,7 +52,7 @@
           </div>
         </div>
 
-        <div class="row d-flex justify-content-center align-items-center">
+        <div class="row d-flex justify-content-center align-items-centergit ">
           <div class="col-md-5 px-4">
             <p class="htext">Your Transactions</p>
           </div>
@@ -157,7 +157,7 @@
           <div class="col-md-1 htext2">
             <p class="d-flex justify-content-between">
               <span class="font-weight-700 d-flex d-md-none">AMOUNT</span>
-              <span class="text-right">{{ item.amount }} 200,0000000</span>
+              <span class="text-right">{{ item.amount }}</span>
             </p>
           </div>
              <hr />
@@ -178,12 +178,15 @@ export default {
   setup() {
     // const date = ref(new Date().toISOString().substr(0, 10));
     // const route = useRoute()
-    const ownerDetails = ref("Ajose Tosin");
     const startDate = ref("1/1/0001 00:00:00");
     const endDate = ref("1/1/0001 00:00:00");
     const loading = ref(false);
     const userInputs = ref("");
-    const userTransaction = ref([]);
+    const userTransaction = ref([{
+      memo:'Building Project',
+      amount: 20000000,
+      date:'21/2/2021',
+    }]);
 
     const searchInputs = computed(() => {
       if (!userInputs.value) {
@@ -229,7 +232,6 @@ export default {
 
     return {
       Dropdown,
-      ownerDetails,
       userTransaction,
       startDate,
       endDate,
