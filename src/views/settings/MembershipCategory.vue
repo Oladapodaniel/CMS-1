@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="container">
-      <div class="row d-md-flex justify-content-between mt-3 mb-4">
+    <div class="container mb-4">
+      <div class="row d-md-flex justify-content-between mt-3 mb-5">
         <div class="col-md-12">
-          <h2>Membership Category</h2>
+          <h2 class="memCat">Membership Category</h2>
         </div>
       </div>
 
@@ -13,7 +13,7 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-12">
-                  <h4>Membership Categories</h4>
+                  <h4 class="mt-2 mb-2 ml-5 memCat1">Membership Categories</h4>
                 </div>
               </div>
 
@@ -24,11 +24,11 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Membership categorry name"
+                        placeholder="Membership category name"
                       />
                     </div>
                     <div class="col-md-3">
-                      <button class="btn primary-btn px-5">Save</button>
+                      <button class="btn primary-btn text-white px-5 bold">Save</button>
                     </div>
                   </div>
                 </div>
@@ -63,7 +63,7 @@
                       <button class="btn secondary-btn py-1 px-4" @click="openClassification(index)">View</button>
                     </div>
                     <div class="col-md-6">
-                      <button class="btn btn-danger py-1 primary-btn">Delete</button>
+                      <button class="delbtn py-1 primary-btn px-3">Delete</button>
                     </div>
                   </div>
                 </div>
@@ -86,7 +86,7 @@
                       <button class="btn primary-btn save-btn py-1 px-4">Save</button>
                     </div>
                     <div class="col-md-6">
-                      <button class="btn secondary-btn py-1 px-4" @click="discard">Discard</button>
+                      <button class="btn secondary-btn py-1  px-3 bor" @click="discard">Discard</button>
                     </div>
                   </div>
                 </div>
@@ -165,6 +165,36 @@ input::placeholder {
 .save-btn {
   background: #50AB00;
 }
+.delbtn:hover{
+    background-color:red!important;
+    color: white!important;
+  }
+  .delbtn{
+  background-color: #F2BC9E!important;
+  color: black!important;
+}
+.delbtn:focus{
+  outline: none!important;
+  border: none!important;
+}
+ .memCat{
+    font: var(--unnamed-font-style-normal) normal 800 34px/46px var(--unnamed-font-family-nunito-sans);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: left;
+    font: normal normal 800 34px/46px Nunito Sans;
+    letter-spacing: 0px;
+    color: #02172E;
+    opacity: 1;
+  }
+  .memCat1{
+    font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) 24px/32px var(--unnamed-font-family-nunito-sans);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: left;
+    font: normal normal bold 24px/32px Nunito Sans;
+    letter-spacing: 0px;
+    color: #02172E;
+    opacity: 1;
+  }
 
 @media screen and (max-width: 767px) {
   .hidden-header {
@@ -175,5 +205,16 @@ input::placeholder {
   .table-header-row {
     display: none;
   }
+  .bold:hover{
+    color: white!important;
+  }
+  .bold{
+    color: rgb(187, 176, 176)!important;
+  }
+  .bor{
+    border: #02172E!important;
+    border-style: solid!important;
+  }
+  
 }
 </style>

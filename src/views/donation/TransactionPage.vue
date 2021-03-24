@@ -46,7 +46,7 @@
             />
           </div>
           <div class="col-md-1 col-2">
-            <i
+            <i @click="download"
               class="pi pi-download bell-shadow bell p-3 d-flex justify-content-center align-items-center"
             ></i>
           </div>
@@ -230,6 +230,11 @@ export default {
     };
     getPaymentDetails();
 
+    const download = () => {
+console.log('hello world')
+    }
+
+
     return {
       Dropdown,
       userTransaction,
@@ -238,6 +243,7 @@ export default {
       loading,
       userInputs,
       searchInputs,
+      download,
     };
   },
 };
@@ -290,7 +296,7 @@ export default {
 }
 
 .pi2 {
-  color: green;
+  color: #54E38A;
 }
 
 .date-area {

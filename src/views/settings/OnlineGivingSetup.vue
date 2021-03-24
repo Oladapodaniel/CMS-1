@@ -62,10 +62,10 @@
               <div class="row my-2 mb-5">
                   <div class="col-md-3 text-right">
                   </div>
-                  <div class="col-md-5 d-flex justify-content-center">
-                      <button class="primary-btn px-4 outline-none">Save and get payment link</button>
+                  <div class="col-md-6 d-flex justify-content-center">
+                      <button class="primary-btn px-2 outline-none">Save and get payment link</button>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
 
                   </div>
               </div>

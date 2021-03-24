@@ -30,7 +30,7 @@
       </div>
       <div class="col-md-6 d-md-flex flex-column align-items-end">
         <span class="small-text mb-n2">Total</span>
-        <span class="font=weight-700" style="font-size: 30px">0.00</span>
+        <span class="font=weight-700" style="font-size: 30px">{{ totalAmount }}</span>
       </div>
     </div>
 
@@ -56,7 +56,7 @@
       <div class="col-md-12">
         <div
           class="row my-1 d-flex"
-          v-for="(transaction, index) in journalTransactions"
+          v-for="(transaction, index) in debitRecords"
           :key="index"
         >
           <div class="col-md-8">
@@ -122,10 +122,10 @@
 
       <div class="col-md-12 d-flex justify-content-between">
             <div class="col-8 px-0">
-                <router-link class="text-decoration-none font-weight-700 link-color" to="">Add Debit <i class="pi pi-plus-circle" style="font-size:14px"></i></router-link>
+                <a class="text-decoration-none font-weight-700 link-color c-pointer" @click="addRecord('inflow')">Add Debit <i class="pi pi-plus-circle" style="font-size:14px"></i></a>
             </div>
             <div class="col-4 px-0 text-center">
-                <span class="font-weight-bold">0.00000</span>
+                <span class="font-weight-bold">{{ sumOfRecords(debitRecords) }}</span>
             </div>
         </div>
     </div>
@@ -144,7 +144,7 @@
       <div class="col-md-12">
         <div
           class="row my-1 d-flex"
-          v-for="(transaction, index) in journalTransactions"
+          v-for="(transaction, index) in creditRecords"
           :key="index"
         >
           <div class="col-md-8">
@@ -209,10 +209,10 @@
         </div>
         <div class="col-md-12 d-flex justify-content-between px-0">
             <div class="col-8 px-0">
-                <router-link class="text-decoration-none font-weight-700 link-color" to="">Add Credit <i class="pi pi-plus-circle" style="font-size:14px"></i></router-link>
+                <a class="text-decoration-none font-weight-700 link-color c-pointer" @click="addRecord('outflow')">Add Credit <i class="pi pi-plus-circle" style="font-size:14px"></i></a>
             </div>
             <div class="col-4 text-center px-0">
-                <span class="font-weight-bold">0.000</span>
+                <span class="font-weight-bold">{{ sumOfRecords(creditRecords) }}</span>
             </div>
         </div>
       </div>
@@ -255,6 +255,7 @@
 <script>
 import { ref } from "@vue/reactivity";
 import transactionals from "../../chartOfAccount/utilities/transactionals";
+import { computed } from '@vue/runtime-core';
 export default {
   setup() {
     const selectedAccountType = ref({});
@@ -287,12 +288,46 @@ export default {
       },
     ]);
 
+    const sumOfRecords = (records) => {
+        let sum = 0;
+        for (let record of records) {
+            sum += +record.amount;
+        }
+        return sum;
+    }
+
+    const addRecord = (category) => {
+        journalTransactions.value.push({ category: category, amount: 0.00 })
+    }
+
+    const debitRecords = computed(() => {
+        if (!journalTransactions.value) return [ ];
+        return journalTransactions.value.filter(i => i.category === "inflow");
+    })
+
+    const creditRecords = computed(() => {
+        if (!journalTransactions.value) return [ ];
+        return journalTransactions.value.filter(i => i.category === "outflow");
+    })
+
+    const totalAmount = computed(() => {
+        if (!journalTransactions.value) return 0;
+        const debits = journalTransactions.value.filter(i => i.category === "inflow");
+        
+        return sumOfRecords(debits);
+    })
+
     return {
       accountTypes,
       selectedAccountType,
       selectAccountType,
       transactionalAccounts,
       journalTransactions,
+      addRecord,
+      creditRecords,
+      debitRecords,
+      totalAmount,
+      sumOfRecords,
     };
   },
 };

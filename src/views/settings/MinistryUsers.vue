@@ -2,20 +2,20 @@
   <div>
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
-        <div class="col-md-8">
-          <h2>Grace Ministry Settings</h2>
+        <div class="col-md-8 col-lg-8 col-sm-6">
+          <h2 class="font-weight-bolder">{{  churchProfile }}</h2>
         </div>
-        <div class="col-md-4 mt-2 link">
+        <div class="col-lg-4 col-sm-6 mt-2 link d-lg-flex justify-content-end">
           <router-link
-            to="/tenant/createpeoplegroup"
-            class="grey-border primary-btn"
+            to="/tenant/settings/invitenewuser"
+            class="grey-border primary-bg border-0 text-white addnew default-btn"
             >Add New User</router-link
           >
         </div>
       </div>
       <div class="col-md-12 px-0 my-4">
         <p class="small-text">
-          You can invite a new user to access your Wave account. Only give
+          You can invite a new user to access your Church account. Only give
           access to people you trust, since users can see your transactions and
           other business information.
         </p>
@@ -111,7 +111,36 @@
 </template>
 
 <script>
-export default {};
+import store from '@/store/store'
+import axios from "@/gateway/backendapi";
+export default {
+  data(){
+    return{
+      getCurrentUser: store.getters.currentUser
+
+    }
+  },
+  computed:{
+    churchProfile(){
+      if(!this.getCurrentUser.churchName) return "";
+      return this.getCurrentUser.churchName
+    }
+
+  },
+  mounted(){
+    console.log(store.getters.currentUser)
+    if(!store.getters.currentUser.churchName){
+      axios
+      .get(`/api/Membership/GetCurrentSignedInUser`)
+      .then((response)=>{
+        this.getCurrentUser = response.data;
+      console.log(response.data)
+      .catch((error)=>console.log(error))
+
+      })
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -124,6 +153,12 @@ export default {};
 
 .hidden-header {
   display: none;
+}
+.addnew{
+  text-decoration: none!important;
+}
+.addnew:hover{
+color: white!important;
 }
 
 @media screen and (max-width: 1280px) {
