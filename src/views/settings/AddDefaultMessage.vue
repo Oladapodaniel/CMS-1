@@ -77,6 +77,7 @@ import Textarea from 'primevue/textarea';
 			{name: 'Sms'},
 			{name: 'Email'},
 			{name: 'Voice'},
+            {name: 'online'}
 		
 		]
 	}

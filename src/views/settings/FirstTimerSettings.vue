@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="container">
-      <div class="row d-md-flex justify-content-between mt-3 mb-4">
+      <div class="row d-md-flex justify-content-between mt-3 mb-5">
         <div class="col-md-12">
-          <h2 class="mt-5 mb-5">First Timer Settings</h2>
+          <h2 class="first">First Timer Settings</h2>
         </div>
       </div>
 
@@ -13,7 +13,7 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-12">
-                  <h4 class="mt-2 mb-2 ml-5">How Did You Hear About Us</h4>
+                  <h4 class="mt-2 mb-2 ml-5 first1">How Did You Hear About Us</h4>
                 </div>
               </div>
 
@@ -28,7 +28,7 @@
                       />
                     </div>
                     <div class="col-md-3">
-                      <button class="btn primary-btn px-5">Save</button>
+                      <button class="btn primary-btn text-white px-5">Save</button>
                     </div>
                   </div>
                 </div>
@@ -164,6 +164,24 @@ input::placeholder {
 
 .save-btn {
   background: #50AB00;
+}
+.first{
+    font: var(--unnamed-font-style-normal) normal 800 34px/46px var(--unnamed-font-family-nunito-sans);
+    letter-spacing: var(--unnamed-character-spacing-0);
+    text-align: left;
+    font: normal normal 800 34px/46px Nunito Sans;
+    letter-spacing: 0px;
+    color: #02172E;
+    opacity: 1;
+}
+.first1{
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-bold) 24px/32px var(--unnamed-font-family-nunito-sans);
+  letter-spacing: var(--unnamed-character-spacing-0);
+  text-align: left;
+  font: normal normal bold 24px/32px Nunito Sans;
+  letter-spacing: 0px;
+  color: #02172E;
+  opacity: 1;
 }
 
 @media screen and (max-width: 767px) {

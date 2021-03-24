@@ -420,8 +420,4 @@ export default {
 .container {
   margin-bottom: 40px;
 }
-
-.link-color {
-    color: #0056b3;
-}
 </style>
