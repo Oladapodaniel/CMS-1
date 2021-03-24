@@ -2,13 +2,13 @@
   <div>
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
-        <div class="col-md-8">
+        <div class="col-md-6">
           <h2>Default Message</h2>
         </div>
-        <div class="col-md-4 mt-2 link">
+        <div class="col-md-6 mt-2 link">
           <router-link
-            to="/tenant/createpeoplegroup"
-            class="grey-border primary-btn"
+            to="adddefaultmessage"
+            class="grey-border btn primary-btn text-white mess"
             >Add Default Message</router-link
           >
         </div>
@@ -108,6 +108,9 @@ export default {};
 
   .table-header-row {
     display: none;
+  }
+  .mess{
+    text-decoration: none!important;
   }
 }
 </style>
