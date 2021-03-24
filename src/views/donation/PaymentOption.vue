@@ -9,7 +9,7 @@
                 <div class="col-10 offset-1 text-sm-right offset-sm-0 col-sm-4 edit mt-3" @click="editPayment"><i class="fa fa-edit"></i> Edit Payment Details</div>
                 <!-- <div class="col-10 offset-1 mt-4" style="font-size: 1.1em">CONTRIBUTION ITEMS</div> -->
                 <div class="col-8 offset-1 mt-3" v-for="item in paymentData.contributionItems" :key="item.id">
-                        <div style="font-size: 1.1em"><i class="pi pi-envelope"> &nbsp;&nbsp;</i>{{ item.name }}</div>
+                        <div style="font-size: 1.1em"><i class="pi pi2 pi-check-circle"> &nbsp;&nbsp;</i>{{ item.name }}</div>
                 </div>
             </div>
 
@@ -105,7 +105,7 @@
                                 <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded">
                                     <div class="row disabled">
                                     <div class="col-3 col-md-2 col-sm-2 image mt-3">
-                                        <img src="../../assets/wordpress.svg"  c alt="marked Attendance image">
+                                        <img src="../../assets/wordpress.svg" style="width:50px; height:50px" alt="marked Attendance image">
 
                                     </div>
                                     <div class="col-9 col-sm-10  mt-3">
@@ -391,6 +391,11 @@ letter-spacing: 0px;
 .para input {
     color: black;
 }
+
+.pi2 {
+  color: #54E38A;
+}
+
 
 .para textarea  {
     color: black;
