@@ -154,23 +154,14 @@
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
-    <div class="row row-button" @click="payWithPaystack">
+    <div class="row row-button" @click="payWithPaystack" v-if="paystackGate">
       <div class="col-4 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/4PaystackLogo.png" alt=""/>
       </div>
-      <!-- <div class="col-7 col-sm-4 option-text">Paystack</div> -->
-
-      <!-- <div class="row">
-        <div class="col-1 mt-n1 d-none d-sm-block">
-         <i
-          class="fas fa-circle circle"
-        ></i>
-      </div>
-      <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
-      </div> -->
     </div>
+  
 
-    <div class="row row-button">
+    <div class="row row-button" v-if="flutterwaveGate">
       <div class="col-4 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/flutterwave_logo_color@2x.png" alt=""/>
       </div>
@@ -185,7 +176,7 @@
       </div> -->
     </div>
 
-    <div class="row row-button">
+    <div class="row row-button" v-if="paypalGate">
       <div class="col-4 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/paypal-logo-2@2x.png" alt=""/>
       </div>
@@ -214,8 +205,10 @@
 
 <script>
 // import PaystackPay from "../../../components/payment/PaystackPay"
-// import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import axios from "@/gateway/backendapi";
+import finish from "../../../services/progressbar/progress"
+import { useToast } from "primevue/usetoast";
 export default {
   components: {
     // PaystackPay
@@ -223,6 +216,23 @@ export default {
   },
   props: ['orderId', 'donation', 'close', 'amount', 'name', 'email', 'gateways'],
   setup (props, { emit }) {
+
+    const toast = useToast()
+
+    const paystackGate = computed(() => {
+      if(!props.gateways) return false
+      return props.gateways.find(i => i.paymentGateway.name === "Paystack")
+    })
+
+    const flutterwaveGate = computed(() => {
+      if(!props.gateways) return false
+      return props.gateways.find(i => i.paymentGateway.name === "FlutterWave")
+    })
+
+    const paypalGate = computed(() => {
+      if(!props.gateways) return false
+      return props.gateways.find(i => i.paymentGateway.name === "PayPal")
+    })
 
     const payWithPaystack = () => {
       props.close.click()
@@ -235,7 +245,7 @@ export default {
         ref: props.orderId,
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
-          // toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
+          toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
           console.log('closed')
         },
         callback: function (response) {
@@ -251,23 +261,24 @@ export default {
           axios
             .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
             .then((res) => {
+              finish()
               console.log(res, "success data");
-              
+              emit('payment-successful', true)
             })
             .catch((err) => {
-              // stopProgressBar();
-              // toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
+              finish()
+              toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
               console.log(err, "error confirming payment");
             });
             
-            emit('payment-successful', true)
+            
         },
       });
       handler.openIframe();
     };
 
     return {
-      payWithPaystack
+      payWithPaystack, paystackGate, flutterwaveGate, paypalGate
     }
     }
 

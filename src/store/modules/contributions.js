@@ -21,6 +21,9 @@ export default {
         },
         paymentData(state, payload) {
             state.paymentData = payload
+        },
+        newlyAddedContribution(state, payload) {
+            state.contributionList.unshift(payload)
         }
     },
     actions: {
@@ -42,6 +45,9 @@ export default {
         },
          paymentData({ commit }, payload) {
             commit("paymentData", payload)
+        },
+         newlyAddedContribution({ commit }, payload) {
+            commit("newlyAddedContribution", payload)
         },
     }
 }

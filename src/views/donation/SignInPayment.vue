@@ -123,17 +123,26 @@ export default {
         }
         finish()
 
-        console.log(data, "Awesome Gang");
-        console.log(data.data, "i am awesome");
+        console.log(data);
+        console.log(data.data);
       } catch (error) {
           finish()
         console.log(error.response);
-        toast.add({
-            severity: "error",
+        if (error.response) {
+          toast.add({
+            severity: "info",
             summary: "Error Signing In",
             detail: `${error.response.data.message}`,
             life: 3000,
           });
+        } else {
+          toast.add({
+            severity: "info",
+            summary: "Network Error",
+            detail: `Please ensure you have a strong internet connection`,
+            life: 3000,
+          });
+        }
       }
       // console.log(userdetails.value);
     };

@@ -372,7 +372,6 @@
                   </div>
                 </div>
               </div>
-
        
         <div class="col-12 offset-sm-1 add">Contribution</div>
         <div class="attendance-header d-none d-lg-block">
@@ -1529,7 +1528,8 @@ export default {
                     // })
 
                     newOfferings.value.push({
-                      name: name.value
+                      name: name.value,
+                      id: res.data.id
                     })
                     toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
                     console.log(res)
@@ -1560,7 +1560,7 @@ export default {
                   amount: i.amount ? i.amount : 0,
                   paymentChannel: i.paymentChannel,
                   activityID: i.activityID,
-                  // personID: i.personID,
+                  personID: i.personID ? i.personID : "00000000-0000-0000-0000-000000000000",
                   currencyID: i.currencyID
                 }
               })
@@ -1574,7 +1574,18 @@ export default {
               localStorage.setItem('contriTransact', JSON.stringify(res.data.returnObject))
               router.push({ name: 'OfferingReport', params: { report: res.data.returnObject.find(i => i).id } })
               loading.value = false
-              ;
+              
+              let contriTransact = {
+                amount: res.data.returnObject.find(i => i).amount,
+                contribution: res.data.returnObject.find(i  => i).contribution.name,
+                date: res.data.returnObject.find(i  => i).date,
+                donor: res.data.returnObject.find(i  => i).personName,
+                eventDate: selectedEventAttended.value.name,
+                eventName: selectedEventAttended.value.name,
+                id: res.data.returnObject.find(i  => i).id,
+              }
+              console.log(contriTransact)
+              store.dispatch('contributions/newlyAddedContribution', contriTransact)
             })
             .catch(err => {
               loading.value = false

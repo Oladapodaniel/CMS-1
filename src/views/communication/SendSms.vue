@@ -895,7 +895,7 @@ export default {
               message: res.message,
               id: res.returnObjects[0].id,
               smsUnitsUsed: res.unitsUsed,
-              dateSent: res.returnObjects[0].date `Today | ${moment.parseZone(new Date(res.returnObjects[0].date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}`,
+              dateSent: `Today | ${moment.parseZone(new Date(res.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}`,
               deliveryReport: [{ report: res.messageStatus }]
             }
             console.log(sentObj)
@@ -917,6 +917,7 @@ export default {
         .catch((err) => {
           stopProgressBar();
           toast.removeAllGroups();
+          console.log(err)
           if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
               severity: "warn",
@@ -928,7 +929,7 @@ export default {
             toast.add({
               severity: "error",
               summary: "Failed operation",
-              detail: "SMS sending failed",
+              detail: "SMS sending failed, Please try again",
               life: 2500,
             });
           }

@@ -381,6 +381,20 @@ export default {
         //         })
         //     }
             // getListofBanks()
+            // const Banko = () => {
+            // axio.get('https://api.paystack.co/bank', { headers: { Authorization: 'Bearer 771901a47711ceb27bc0e325ddfefd92f2191534' } })
+            //         .then(res => {
+                
+            //             console.log(res)
+            //         bankList.value = res.data
+            //         })
+            //         .catch(err => {
+                
+            //             console.log(err)
+            //         })
+                
+            // }
+            // Banko()
 
         const getBanks = () => {
             axios.get('/api/Financials/GetBanks')

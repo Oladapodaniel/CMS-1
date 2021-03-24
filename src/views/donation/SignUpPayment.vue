@@ -148,12 +148,21 @@ export default {
       } catch (error) {
           finish()
         // if (error.toString().includes('400')
-        toast.add({
+          if (error.response) {
+            toast.add({
             severity: "error",
             summary: "Error signing up",
             detail: `${error.response.data}`,
             life: 3000,
           });
+          } else {
+            toast.add({
+            severity: "error",
+            summary: "Network Error",
+            detail: `Please ensure you have a strong internet connection`,
+            life: 3000,
+          });
+          }
       console.log(error.response);
       }
 
