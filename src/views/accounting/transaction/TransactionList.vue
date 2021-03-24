@@ -21,10 +21,17 @@
               Add Expense<span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
 
-            <button class="more-btn align-items-center default-btn border-0">
-              More
-              <span><i class="fa fa-angle-down btn-icon"></i></span>
-            </button>
+            <!-- <button class="more-btn align-items-center default-btn border-0"> -->
+              <a class="dropdown show more-btn align-items-center default-btn border-0 text-decoration-none">
+                <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  More
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item c-pointer" @click="toggleTransac(3)">General Ledger</a>
+                </div>
+              </a>
+            <!-- </button> -->
           </div>
         </div>
 
@@ -56,13 +63,9 @@
                     class="d-flex justify-content-between py-1 px-3 close-modal"
                   >
                     <div class="close-modal">{{ cash.text }}</div>
-                    <div class="close-modal">{{ cash.currency.name }}{{ cash.balance }}</div>
+                    <div class="close-modal">{{ cash.currency && cash.currency.name ? cash.currency.name : "" }}{{ cash.balance }}</div>
                   </div>
                 </div>
-                <div class="container d-flex justify-content-between close-modal">
-                <span>All Accounts</span>
-                <span>{{ totalAccountBalances }}</span>
-              </div>
               </div>
               
               <!-- <div class="row"> -->
@@ -487,10 +490,15 @@ export default {
           type: "Add Customer",
           account: "Income Account",
         };
-      } else {
+      } else if (e === 2) {
         transacPropsValue.value = {
           type: "Add Vendor",
           account: "Expense Account",
+        };
+      } else {
+        transacPropsValue.value = {
+          type: "ledger",
+          account: "Journal",
         };
       }
       showEditTransaction.value = true;
@@ -510,7 +518,6 @@ export default {
     const getTransactionalAccounts = async () => {
       try {
         const response = await transactionService.getTransactionalAccounts();
-        console.log(response, "Transactional accounts");
         for (let group of accountTypes) {
           const groupItems = response.filter(
             (i) => i.accountType.toLowerCase() === group
@@ -552,7 +559,7 @@ export default {
     const selectAnAccount = (account, index) => {
       selectedTransaction.value = {
         type: account.text,
-        amount: `${account.currency.name}${account.balance}`
+        amount: account.currency ? `${account.currency.name}${account.balance}` : `${account.balance}`
       }
       accountDisplay.value = false;
       selectedTransactionType.value = index;
@@ -581,6 +588,7 @@ export default {
       try {
         const response = await transaction_service.getCashAndBankAccountBalances();
         accountsAndBalances.value = response;
+        accountsAndBalances.value.unshift({ text: "All Accounts", balance: totalAccountBalances.value })
         console.log(response, "account and balances");
       } catch (error) {
         console.log(error);
@@ -597,6 +605,14 @@ export default {
       }
       return Number.parseFloat(sum).toFixed(2);
     })
+
+    axios.get("/api/Financials/Accounts/Transactions/GetIncomeAndExpense")
+      .then(res => {
+        console.log(res, "INCEXP TRANS");
+      })
+      .catch(err => {
+        console.log(err);
+      })
 
     return {
       transactions,

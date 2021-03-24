@@ -232,14 +232,14 @@
             <!-- :class="{ 'slide-form' : showEditTransaction, 'hide-form' : !showEditTransaction }" -->
             <div class="table edit-transac mobile-form" v-if="showEditTransaction">
               <TransactionForm
-                v-if="false"
+                v-if="transactionDetails.type !== 'ledger'"
                 @close-it="closeIt"
                 @transac-obj="transacObj"
                 :transactionDetails="transactionDetails"
                 :showEditTransaction="showEditTransaction"
                 @reload="getTransactions"
               />
-              <LedgerForm v-if="true" />
+              <LedgerForm v-else @close-ledger="closeLedgerForm" />
               <!-- :transacProp="transacPropsValue" -->
             </div>
           </div>
@@ -483,6 +483,10 @@ export default {
       }
     );
 
+    const closeLedgerForm = () => {
+      emit("toggle-edit-form", false);
+    }
+
     // const filterText = ref("")
     // const filteredTransactions = ref([]);
     // // const filteredTransactions = computed(() => {
@@ -525,6 +529,7 @@ export default {
       rowSelected,
       searchText,
       getTransactions,
+      closeLedgerForm,
     };
   },
 };
