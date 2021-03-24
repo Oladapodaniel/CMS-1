@@ -229,7 +229,10 @@ export default {
 
     const messages = computed(() => {
       if (!sentSMS.value || sentSMS.value.length === 0) return [ ];
-      return sentSMS.value.filter(i => !i.message.toLowerCase().startsWith("sms reply"));
+      return sentSMS.value.filter(i => {
+        if (i.message) return !i.message.toLowerCase().startsWith("sms reply");
+        return false;
+      });
     })
      console.log(sentSMS.value, "data");
 
