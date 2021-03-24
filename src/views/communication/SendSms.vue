@@ -690,6 +690,7 @@ import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
 import communicationService from "../../services/communication/communicationservice";
 import dateFormatter from "../../services/dates/dateformatter";
+import moment from 'moment'
 
 export default {
   setup() {
@@ -877,24 +878,41 @@ export default {
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
-          if (res.status === false) {
-            toast.add({
-              severity: "error",
-              summary: "Failed operation",
-              detail: typeof res === "object" ? "SMS sending failed" : res,
-              life: 2500,
-            });
-          } else {
+          // if (res.status === 200) {
             toast.add({
               severity: "success",
               summary: "Successful operation",
               detail: "SMS was sent successfully",
               life: 2500,
             });
+
             store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
             console.log(pageCount, "Page count ");
-          }
+
           console.log(res);
+          // Save the res to store in other to get it in the view sent sms page
+          let sentObj = {
+              message: res.message,
+              id: res.returnObjects[0].id,
+              smsUnitsUsed: res.unitsUsed,
+              dateSent: res.returnObjects[0].date `Today | ${moment.parseZone(new Date(res.returnObjects[0].date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}`,
+              deliveryReport: [{ report: res.messageStatus }]
+            }
+            console.log(sentObj)
+            store.dispatch("communication/addSmsToSentList", sentObj)
+            
+          // } else if (typeof res === "object") {
+          //   toast.add({
+          //     severity: "error",
+          //     summary: "Failed operation",
+          //     detail: typeof res === "object" ? "SMS sending failed" : res,
+          //     life: 2500,
+          //   });
+            
+            
+            
+          // }
+          
         })
         .catch((err) => {
           stopProgressBar();
@@ -1168,6 +1186,7 @@ export default {
       nigerian,
       contructScheduleMessageBody,
       executionDate,
+      moment
     };
   },
 };

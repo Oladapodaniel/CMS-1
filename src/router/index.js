@@ -129,10 +129,10 @@ const routes = [{
             import( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
     },
     {
-        path: 'emptyevent',
-        name: 'EmptyEvent',
+        path: 'events',
+        name: 'Events',
         component: () =>
-            import( /* webpackChunkName: "emptyevent" */ '@/views/event/EmptyEvent.vue')
+            import( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
     },
     {
         path: 'events',
@@ -479,6 +479,12 @@ const routes = [{
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
     },
     {
+        path: 'chartofaccount/update',
+        name: 'OldAccounts',
+        component: () =>
+            import( /* webpackChunkName: "oldaccounts" */ '@/views/accounting/chartOfAccount/OldAccounts')
+    },
+    {
         path: 'offering',
         name: 'Offering',
         component: () =>
@@ -501,6 +507,12 @@ const routes = [{
         name: 'OfferingReport',
         component: () =>
             import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
+    },
+    {
+        path: 'contributionCategory',
+        name: 'ContributionCategory',
+        component: () =>
+            import( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/ContributionCategory')
     },
     {
         path: 'transactionlist',
@@ -562,7 +574,7 @@ const routes = [{
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm3')
 },
 {
-    path: '/onlinegivingform4',
+    path: '/:userId?',
     name: 'OnlineGiving4',
     component: () =>
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm4')
@@ -580,19 +592,19 @@ const routes = [{
         import( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/PaymentGivingForm2')
 },
 {
-    path: '/signuppayment',
+    path: '/signuppayment/:userId?',
     name: 'SignUpPayment',
     component: () =>
         import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignUpPayment')
 },
 {
-    path: '/signinpayment',
+    path: '/signinpayment/:userId?',
     name: 'SignInPayment',
     component: () =>
         import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/SignInPayment')
 },
 {
-    path: '/transactionpage/:userId',
+    path: '/transactionpage/:userId?',
     name: 'TransactionPage',
     component: () =>
         import( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
@@ -610,7 +622,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 
 
-    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin") && !tokenIsValid) return next(true)
+    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin" || to.name ==="OnlineGiving4" || to.name ==="SignUpPayment" || to.name ==="SignInPayment" || to.name ==="TransactionPage") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;

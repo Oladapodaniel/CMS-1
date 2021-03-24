@@ -189,6 +189,7 @@
       <div class="col-4 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/paypal-logo-2@2x.png" alt=""/>
       </div>
+      
       <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
       <div class="row">
         <div class="col-1 mt-n1 d-none d-sm-block">
@@ -199,6 +200,14 @@
       <div class="col-8 pl-0 d-none d-sm-block">International</div>
       </div> -->
     </div>
+    <!-- <div class="row row-button" @click="payWithPaystack" v-for="gateway in gateways" :key="gateway.id">
+      <div class="col-4 col-sm-7 offset-2">
+        <img class="w-100" src="../../../assets/4PaystackLogo.png" alt=""/>
+        {{ gateway.paymentGateway.name }}
+      </div>
+      
+    </div> -->
+
   </div>
 
 </template>
@@ -206,22 +215,23 @@
 <script>
 // import PaystackPay from "../../../components/payment/PaystackPay"
 // import { ref, computed } from 'vue'
+import axios from "@/gateway/backendapi";
 export default {
   components: {
     // PaystackPay
     // paystack
   },
-  props: ['orderId', 'donation', 'close'],
-  setup (props) {
+  props: ['orderId', 'donation', 'close', 'amount', 'name', 'email', 'gateways'],
+  setup (props, { emit }) {
 
     const payWithPaystack = () => {
+      props.close.click()
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: 'oladapodaniel10@gmail.com',
-        amount: 10 * 100,
-        firstname: 'oladapo',
-        lastname: "",
+        email: props.email,
+        amount: props.amount * 100,
+        firstname: props.name,
         ref: props.orderId,
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
@@ -242,13 +252,15 @@ export default {
             .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
             .then((res) => {
               console.log(res, "success data");
+              
             })
             .catch((err) => {
               // stopProgressBar();
               // toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
               console.log(err, "error confirming payment");
             });
-            props.close.click()
+            
+            emit('payment-successful', true)
         },
       });
       handler.openIframe();

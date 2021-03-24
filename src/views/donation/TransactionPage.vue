@@ -1,28 +1,41 @@
 <template>
-  <div class="">
+  <div
+    class="spinner-border"
+    style="width: 4rem; height: 4rem"
+    role="status"
+    v-if="loading"
+  >
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="container border borderline pt-3 pb-2">
     <div class="row">
       <div class="container">
         <div class="row my-5 d-flex align-items-center">
-          <div class="col-md-6 pl-4">
+          <div class="col-md-4 pl-3">
             <p class="search-span px-2">
               <input
                 type="text"
                 class="search-control"
                 placeholder="Search Transactions"
-                @input="search()"
+                v-model="userInputs"
               />
               <i class="pi pi-search p-2" style="height: 30px; width: 30px"></i>
             </p>
           </div>
 
-          <div class="col-md-2 col-4 offset-md-2">
-            <Dropdown
-              v-model="ownerDetails"
-              :options="fields"
-              optionLabel="type"
-              placeholder="Profile Details"
-              class="d-flex justify-content-end border-0"
-            />
+          <div class="col-md-2 col-6 offset-md-4">
+<!-- Example split danger button -->
+<div class="btn-group">
+  <button type="button" class="btn htext2">Ajose Tosin</button>
+  <button type="button" class="btn  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#">Settings</a>
+    <a class="dropdown-item" href="#">Log Out</a>
+
+  </div>
+</div>
           </div>
           <div class="col-md-1 col-2">
             <img
@@ -39,83 +52,99 @@
           </div>
         </div>
 
-        <div class="row d-flex justify-content-center align-items-center">
-          <div class="col-md-6 px-4">
-            <p class="htext">Your Transaction</p>
+        <div class="row d-flex justify-content-center align-items-centergit ">
+          <div class="col-md-5 px-4">
+            <p class="htext">Your Transactions</p>
           </div>
 
-          <div
-            class="col-md-5 col-4 d-flex justify-content-start align-items-center"
-          >
-            <!-- start of date area -->
-            <div style="width: 150px; height: 40px" class="d-flex justify-content-between">
-              <input
-                type="date"
-                class="form-control fone p-3 border-0 date-area"
-                v-model="startDate"
-              />
-              <input
-                type="date"
-                class="form-control fone p-3 border-0 date-area"
-                v-model="endDate"
-              />
-            </div>
-            <!-- end of date area -->
+          <div class="col-md-3 col-4">
+            <input
+              type="date"
+              class="form-control fone p-3 border-0 date-area w-75"
+              v-model="startDate"
+            />
           </div>
+          <div class="col-md-3 col-4">
+            <input
+              type="date"
+              class="form-control fone p-3 border-0 date-area w-75"
+              v-model="endDate"
+            />
+          </div>
+          <!-- end of date area -->
+          <!-- </div> -->
 
           <div class="col-md-1 col-2">
             <i
               class="pi pi-filter p-3 bell-shadow bell d-flex justify-content-center align-items-center"
             ></i>
           </div>
-
-
         </div>
         <!-- End of Top Section -->
 
         <!-- table content -->
         <div class="row mt-4">
           <div class="px-4 mt-4 new">
-            <label for="timestamp">Newer</label>
+            <label for="timestamp">Sort by Newest</label>
           </div>
         </div>
         <div
-          class="row mt-2 py-2 d-md-flex justify-content-center align-items-center bel bell-shadow"
+          class="row mt-2 py-2 d-md-flex justify-content-center align-items-center belw"
+          v-for="(item, searchInputs) in userTransaction"
+          :key="searchInputs"
         >
           <div class="col-md-2">
             <div class="d-flex justify-content-between">
               <span class="font-weight-700 d-flex d-md-none">PICTURE</span>
               <span class="text-right">
-                <img class="imgee" src="../../assets/best-Copy.jpg" alt=""
-              /></span>
+                <i
+                  class="pi pi2 pi-check-circle p-3 bell-shadow bell d-flex justify-content-center align-items-center"
+                ></i
+              ></span>
             </div>
           </div>
 
-          <div
-            class="col-md-4 htext2 d-md-flex justify-content-center align-items-cente"
-          >
+          <div class="col-md-3 htext2 d-md-flex align-items-cente">
             <p class="d-flex justify-content-between">
               <span class="font-weight-700 d-flex d-md-none">DONATIONS</span>
-              <span class="text-right">Payment for Building project</span>
+              <span class="text-right">{{ item.memo }}</span>
             </p>
           </div>
-          <div
-            class="col-md-3 htext2 d-md-flex justify-content-center align-items-cente"
-          >
+          <div class="col-md-3 htext2 d-md-flex align-items-cente">
             <p class="d-flex justify-content-between">
               <span class="font-weight-700 d-flex d-md-none">DATE</span>
-              <span class="text-right">24 March, 2021</span>
+              <span class="text-right">{{ item.date }}</span>
             </p>
           </div>
 
-          <div
-            class="col-md-2 d-md-flex justify-content-center align-items-center"
-          >
+          <div class="col-md-2 d-md-flex align-items-center">
             <div class="d-flex justify-content-between">
               <span class="font-weight-700 d-flex d-md-none"
                 >PAYMENT OPTION</span
               >
-              <span class="text-right">
+              <span
+                class="text-right"
+                v-if="item.paymentGatewayName === 'Paystack'"
+              >
+                <img
+                  class="imgee"
+                  src="../../assets/paystackLogo.png"
+                  alt=""
+                  srcset=""
+                />
+              </span>
+              <span
+                class="text-right"
+                v-else-if="item.paymentGatewayName === 'Flutterwave'"
+              >
+                <img
+                  class="imgee"
+                  src="../../assets/2flutterwave.png"
+                  alt=""
+                  srcset=""
+                />
+              </span>
+              <span class="text-right" v-else>
                 <img
                   class="imgee"
                   src="../../assets/2flutterwave.png"
@@ -128,132 +157,95 @@
           <div class="col-md-1 htext2">
             <p class="d-flex justify-content-between">
               <span class="font-weight-700 d-flex d-md-none">AMOUNT</span>
-              <span class="text-right">$200</span>
+              <span class="text-right">{{ item.amount }}</span>
             </p>
           </div>
+             <hr />
         </div>
-        <!-- end of table content -->
-        <!-- table content -->
-        <div class="row mt-4">
-          <div class="px-4 mt-4 new">
-            <label for="timestamp">Newer</label>
-          </div>
-        </div>
-        <div
-          class="row mt-2 py-2 d-md-flex justify-content-center align-items-center bel bell-shadow"
-        >
-          <div class="col-md-2">
-            <div class="d-flex justify-content-between">
-              <span class="font-weight-700 d-flex d-md-none">PICTURE</span>
-              <span class="text-right">
-                <img class="imgee" src="../../assets/best-Copy.jpg" alt=""
-              /></span>
-            </div>
-          </div>
 
-          <div
-            class="col-md-4 htext2 d-md-flex justify-content-center align-items-cente"
-          >
-            <p class="d-flex justify-content-between">
-              <span class="font-weight-700 d-flex d-md-none">DONATIONS</span>
-              <span class="text-right">Payment for Building project</span>
-            </p>
-          </div>
-          <div
-            class="col-md-3 htext2 d-md-flex justify-content-center align-items-cente"
-          >
-            <p class="d-flex justify-content-between">
-              <span class="font-weight-700 d-flex d-md-none">DATE</span>
-              <span class="text-right">24 March, 2021</span>
-            </p>
-          </div>
-
-          <div
-            class="col-md-2 d-md-flex justify-content-center align-items-center"
-          >
-            <div class="d-flex justify-content-between">
-              <span class="font-weight-700 d-flex d-md-none"
-                >PAYMENT OPTION</span
-              >
-              <span class="text-right">
-                <img
-                  class="imgee"
-                  src="../../assets/2flutterwave.png"
-                  alt=""
-                  srcset=""
-                />
-              </span>
-            </div>
-          </div>
-          <div class="col-md-1 htext2">
-            <p class="d-flex justify-content-between">
-              <span class="font-weight-700 d-flex d-md-none">AMOUNT</span>
-              <span class="text-right">$200</span>
-            </p>
-          </div>
-        </div>
-        <!-- end of table content -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
- import axios from "@/gateway/backendapi";
+import { computed, ref } from "vue";
+import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
-import { useRoute } from "vue-router"
+// import { useRoute } from "vue-router"
+import finish from "../../services/progressbar/progress";
 export default {
   setup() {
     // const date = ref(new Date().toISOString().substr(0, 10));
-    const route = useRoute()
-    const ownerDetails = ref("Ajose Tosin");
-    const startDate = ref(new Date().toISOString().substr(0, 10))
-    const endDate = ref(new Date().toISOString().substr(0, 10))
-    const fields = ref([
-      { type: "Adebayo Emmanuel" },
-      { type: "Profile" },
-      { type: "Settings" },
-      { type: "LogOut" },
-    ]);
-    const userTransaction = ref ([])
-//     const search = (e) => {
-//       if (e.target.value !== "") {
+    // const route = useRoute()
+    const startDate = ref("1/1/0001 00:00:00");
+    const endDate = ref("1/1/0001 00:00:00");
+    const loading = ref(false);
+    const userInputs = ref("");
+    const userTransaction = ref([{
+      memo:'Building Project',
+      amount: 20000000,
+      date:'21/2/2021',
+    }]);
 
-// userTransaction.value.filter((ele) => {
-// })
-//       }
-//     }
+    const searchInputs = computed(() => {
+      if (!userInputs.value) {
+        return userTransaction.value;
+      } else {
+        return userTransaction.value.filter((i) => {
+          return `${i.memo}${i.date}${i.amount}${i.paymentGatewayName}`
+            .toLowerCase()
+            .includes(userInputs.value.toLowerCase());
+        });
+      }
+    });
+
+    let storedDetails = JSON.parse(localStorage.getItem("giverToken"));
     const getPaymentDetails = () => {
-      let tenantId = localStorage.getItem('tenantId')
-          let initialData =  {
-          startDate: startDate.value,
-          endDate: endDate.value,
-          userId: route.params.userId,
-          tenantId: tenantId
-        }
+      let tenantId = localStorage.getItem("tenantId");
+      let initialData = {
+        startDate: startDate.value,
+        endDate: endDate.value,
+        userId: storedDetails.giverId,
+        tenantId: tenantId,
+      };
+
+      loading.value = true;
 
       axios
-              .post(
-                "/mobile/v1/PaymentForm/contributions", initialData
-              )
-              .then((res) => {
-                console.log(res, "kjjjhjjjje");
-                console.log(res.data, "kalistocrazy");
-          })
-              .catch((err) => console.log(err.response));
-// console.log(route.params.userId, tenantId)
-          }
-          getPaymentDetails()
+        .post("/mobile/v1/PaymentForm/contributions", initialData)
+        .then((res) => {
+          finish();
+          console.log(res, "kjjjhjjjje");
+          console.log(res.data, "kalistocrazy");
+          userTransaction.value = res.data;
+          loading.value = false;
+        })
+        .catch((err) => {
+          finish();
+          console.log(err.response);
+          loading.value = false;
+        });
+      // console.log(route.params.userId, tenantId)
+    };
+    getPaymentDetails();
 
-    return { Dropdown, fields, ownerDetails,  userTransaction, startDate, endDate};
+    return {
+      Dropdown,
+      userTransaction,
+      startDate,
+      endDate,
+      loading,
+      userInputs,
+      searchInputs,
+    };
   },
 };
 </script>
 
 <style scoped>
 .search-control {
-  width: calc(100% - 30px);
+  width: calc(100% - 40px);
   padding: 0.38rem;
   border: none;
   background: transparent;
@@ -277,10 +269,6 @@ export default {
   background: #f7f7f9;
   transition: all 0.4s ease-in-out;
 }
-/* .bel {
-  background: #f7f7f9;
-  transition: all 0.4s ease-in-out;
-} */
 
 .bell-shadow:hover {
   background: #fff;
@@ -290,25 +278,34 @@ export default {
 }
 
 .pi {
-  font-size: 1.5rem;
+  font-size: 1rem;
+  width: 40px;
+  height: 40px;
+}
+
+.borderline{
+  border: 1px solid #f5f8f9 ;
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  border-radius: 0.5rem;
+}
+
+.pi2 {
+  color: green;
 }
 
 .date-area {
   border-radius: 20px;
-  background: #f7f7f9;
+ background: #f5f8f9;
 }
 
 .htext {
-  font: normal normal 800 44px/60px Nunito Sans;
-  font-size: 30px;
-  font-weight: bolder;
+  font: normal normal 800 25px Nunito Sans;
   letter-spacing: 2px;
   color: #020f1e;
 }
 .htext2 {
-  font: Nunito Sans;
-  font-size: 18px;
-  font-weight: bold;
+
+  font: normal normal 700 15px Nunito Sans;
   letter-spacing: 2px;
   color: #020f1e;
 }
@@ -317,5 +314,11 @@ export default {
   color: #c2c2c2;
   font-size: 15px;
   font-weight: bold;
+}
+
+.spinner-border {
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 </style>

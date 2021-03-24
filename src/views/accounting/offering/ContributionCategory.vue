@@ -1,16 +1,13 @@
 <template>
     <div class="container-wide container-top">
       <div class="row my-3">
-      <div class="col-md-4 first-timers-text">
-        <h2 class="page-header">Contributions</h2>
+      <div class="col-md-6 first-timers-text">
+        <h2 class="page-header">Contribution Items</h2>
       </div>
 
-      <div class="col-md-8 d-flex head-button">
-        <router-link to="/tenant/contributionCategory">
-          <button class="default-btn mr-3">View Contribution Items</button>
-        </router-link>
-        <router-link to="/tenant/addoffering" class="add-btn">
-          Add Contribution
+      <div class="col-md-6 head-button">
+        <router-link to="/tenant/offeringcategory" class="add-btn">
+          Add Contribution Category
         </router-link>
       </div>
     </div>
@@ -28,14 +25,14 @@
     </div>
     
 
-    <div class="no-person"  v-if="contributionTransactions.length === 0 && !loading">
+    <div class="no-person"  v-if="contributionItems.length === 0 && !loading">
         <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't added any contribution transaction yet</p>
+            <p class="tip">You haven't added any contribution category yet</p>
         </div>
     </div>
-    <div v-if="contributionTransactions.length > 0 && !loading">
-        <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages"/>
+    <div v-if="contributionItems.length > 0 && !loading">
+        <ContributionCategoryList :contributionItems="contributionItems" @get-pages="getOfferingPages"/>
     </div> 
 </div>
 </template>
@@ -45,29 +42,29 @@ import { ref } from 'vue'
 import { useStore } from 'vuex'
 // import { store } from "../../../store/store"
 import axios from "@/gateway/backendapi"
-import OfferingList from './OfferingList'
+import ContributionCategoryList from './ContributionCategoryList'
 import Loader from './SkeletonLoader'
 export default {
     components: {
-        OfferingList, Loader
+        ContributionCategoryList, Loader
     },
     setup () {
-        const contributionTransactions = ref([])
+        const contributionItems = ref([])
         const loading = ref(false)
 
 
-        const getContributionTransactions = () => {
+        const getContributionCategory = () => {
             let store = useStore()
-            console.log(store.getters['contributions/contributionList'])
-            if (store.getters['contributions/contributionList'].length > 0) {
-                contributionTransactions.value = store.getters['contributions/contributionList']
+            console.log(store.getters['contributions/contributionItems'])
+            if (store.getters['contributions/contributionItems'].length > 0) {
+                contributionItems.value = store.getters['contributions/contributionItems']
             } else {
                 loading.value = true
                 axios
-                    .get("/api/Financials/Contributions/Transactions")
+                    .get("/api/financials/contributions/items")
                     .then((res) => {
                         loading.value = false
-                    contributionTransactions.value = res.data;
+                    contributionItems.value = res.data;
                     console.log(res.data);
                     })
                     .catch((err) => {
@@ -81,13 +78,13 @@ export default {
     // savev to sstore
     // store.dispatch('contributions/contributionList')
     };
-    getContributionTransactions();
+    getContributionCategory();
 
     const getOfferingPages = (payload) => {
-      contributionTransactions.value = payload
+      contributionItems.value = payload
     }
         return {
-            contributionTransactions, loading, getOfferingPages
+            contributionItems, loading, getOfferingPages
         }
     }
 }
@@ -135,7 +132,7 @@ export default {
 }
 
 .add-btn {
-  width: 180px;
+  width: 260px;
   background: #136acd;
   border-radius: 22px;
   color: #ffffff;

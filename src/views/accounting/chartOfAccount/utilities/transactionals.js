@@ -3,22 +3,21 @@ import transaction_service from "../../../../services/financials/transaction_ser
 // import stopProgressBar from "../progressbar/progress";
 
 const transactionals = {
-    accountTypes: ["assets", "liability", "income", "expense", "equity"],
+    accountTypes: ["assets", "liability",  "equity", "income", "expense"],
     account: [],
+    groupedAccounts: [],
     currencies: [],
     funds: [],
 
-    getTransactionalAccounts() {
+    getTransactionalAccounts(force) {
         return new Promise((resolve, reject) => {
-            if (!this.accounts || this.accounts.length === 0) {
-                transaction_service.getTransactionalAccounts()
+            if (!this.accounts || this.accounts.length === 0 || force) {
+                transaction_service.getAccountHeads()
                 .then(res => {
+                    console.log(res, "new heads");
                     const data = [];
-                    for (let group of this.accountTypes) {
-                        const groupItems = res.filter(
-                          (i) => i.accountType.toLowerCase() === group
-                        );
-                        data.push(groupItems);
+                    for (let group of res) {
+                        data.push(group.accountHeadsDTO);
                       }
                       this.accounts = data;
                     resolve(data)
@@ -32,6 +31,28 @@ const transactionals = {
         })
     },
 
+    getGroupedAccounts(force) {
+        return new Promise((resolve, reject) => {
+            if (!this.groupedAccounts || this.groupedAccounts.length === 0 || force) {
+                transaction_service.getTransactionalAccounts()
+                .then(res => {
+                    console.log(res, "new jhiuvithbviwehnrijntuiwhntruiwbtutwbubeiubvueib");
+                    const data = [];
+                    for (let group of this.accountTypes) {
+                        data.push(res.filter(i => i.accountType.toLowerCase() === group));
+                      }
+                      this.groupedAccounts = data;
+                    resolve(data)
+                })
+                .catch(err => {
+                    reject(err)
+                })
+            } else {
+                resolve(this.groupedAccounts)
+            }
+        })
+    },
+
     getCurrencies() {
         return new Promise((resolve, reject) => {
             if (!this.currencies || this.currencies.length === 0) {
@@ -39,10 +60,11 @@ const transactionals = {
                     .then(res => {
                         const mapped = res.map(i => {
                             return {
-                                name: i.currency,
+                                name: i.shortCode,
                                 id: i.id,
-                                country: i.name
-                            }
+                                country: i.country,
+                                displayName: `${i.shortCode} - ${i.country}`
+                            };
                         })
                         this.currencies = mapped;
                         resolve(mapped);

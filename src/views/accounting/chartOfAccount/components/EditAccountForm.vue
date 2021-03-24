@@ -20,8 +20,8 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
+                        :disabled="accountGroupId"
                       >
-                        <!-- :disabled="accountGroupId" -->
                         {{
                           !selectedAccountType || !selectedAccountType.name
                             ? "Select account type"
@@ -84,13 +84,13 @@
                   </div>
                 </div>
 
-                <div class="row my-3" v-if="currency">
+                <div class="row my-3">
                   <div class="col-md-4 text-md-right">Account Currency</div>
                   <div class="col-md-7" id="currencySelect">
                     <Dropdown
                       v-model="selectedCurrency"
-                      :options="accountCurrencies"
-                      optionLabel="displayName"
+                      :options="filteredCurrencies"
+                      optionLabel="name"
                       placeholder="Select account currency"
                       style="width: 100%"
                       :filter="true"
@@ -178,8 +178,6 @@ import { computed, ref, watch } from "vue";
 import transactionals from "../utilities/transactionals";
 import chart_of_accounts from "../../../../services/financials/chart_of_accounts";
 import { useToast } from "primevue/usetoast";
-import membershipService from '../../../../services/membership/membershipservice';
-import { useStore } from "vuex"
 
 export default {
   props: [
@@ -191,18 +189,15 @@ export default {
     "accountGroupId",
     "index",
     "account",
-    "currency",
   ],
   components: { Dropdown },
   setup(props, { emit }) {
     const toast = useToast();
-    const store = useStore();
 
     const selectedAccountType = ref({});
     const selectedCurrency = ref({});
     const selectedFund = ref({});
     const newAccount = ref({});
-    const userCurrency = ref(store.getters.currentUser.currency);
 
     const selectAccountType = (account) => {
       selectedAccountType.value = account;
@@ -227,54 +222,22 @@ export default {
     };
     getFunds();
 
-    const edit = async (body) => {
-      try {
-        const response = await chart_of_accounts.editAccount(body)
-        savingAccount.value = false;
-        toast.add({severity:'success', summary:'Account Updated', detail:`${response.response}`, life: 2500});
-        newAccount.value = { };
-        emit("save-account", { success: true, type: props.financialAccountType });
-      } catch (error) {
-        savingAccount.value = false;
-        toast.add({severity:'error', summary:'Account Update Failed', detail:`An error occurred, please try again`, life: 3000});
-        newAccount.value = { };
-        emit("save-account", { success: true, type: props.financialAccountType });
-        transactionals.getTransactionalAccounts(true);
-        console.log(error);
-      }
-    }
-
     const savingAccount = ref(false);
     const saveAccount = async (body) => {
       try {
         savingAccount.value = true;
-        let response = { };
-        if (props.account && props.account.name) {
-          const x = {
-            name: body.name,
-            code: props.account.code,
-            accountType: props.account.accountType,
-            description: body.description,
-            id: props.account.id,
-            financialAccountGroupID: selectedAccountType.value.id
-            // financialFundID: body.financialFundID
-           }
-          response = edit(x);
+        const response = await chart_of_accounts.saveAccount(body);
+        savingAccount.value = false;
+        if (!response.status) {
+            emit("save-account", { success: false, type: props.financialAccountType });
+            toast.add({severity:'error', summary:'Account Creation Failed', detail:`An error occurred, please try again`, life: 3000});
         } else {
-          response = await chart_of_accounts.saveAccount(body);
-          savingAccount.value = false;
-          if (!response.status) {
-              emit("save-account", { success: false, type: props.financialAccountType });
-              toast.add({severity:'error', summary:'Account Creation Failed', detail:`An error occurred, please try again`, life: 3000});
-          } else {
-              toast.add({severity:'success', summary:'Account Created', detail:`The account ${newAccount.value.name} was created successfully`, life: 2500});
-              newAccount.value = { };
-              emit("save-account", { success: true, type: props.financialAccountType });
-              transactionals.getTransactionalAccounts(true);
-              selectedFund.value = { }
-          }
+            toast.add({severity:'success', summary:'Account Created', detail:`The account ${newAccount.value.name} was created successfully`, life: 2500});
+            newAccount.value = { };
+            emit("save-account", { success: true, type: props.financialAccountType });
+            transactionals.getTransactionalAccounts(true);
         }
-        
+        console.log(response, "save account response");
       } catch (error) {
         savingAccount.value = false;
         console.log(error);
@@ -294,60 +257,19 @@ export default {
       }
     
       newAccount.value.financialAccountGroupID = selectedAccountType.value.id;
-      if (selectedCurrency.value && selectedCurrency.value.id) {
-        newAccount.value.currencyID =  selectedCurrency.value.id;
-      }
 
-      // if (selectedFund.value && selectedFund.value.id) {
-        newAccount.value.financialFundID = selectedFund.value.id ? selectedFund.value.id : "";
-      // }
+      if (selectedFund.value && selectedFund.value.id) {
+        newAccount.value.financialFundID = selectedFund.value.id;
+      }
       saveAccount(newAccount.value);
+      console.log(newAccount.value, "new account");
     };
 
-    const initializeCurrency = () => {
-      if (!userCurrency.value) {
-        membershipService.getSignedInUser()
-          .then(res => {
-            selectedCurrency.value = accountCurrencies.value.find(i => i.name === res.currency);
-          })
-          .catch(err => console.log(err));
-      } else {
-        selectedCurrency.value = accountCurrencies.value.find(i => {
-          return i.name.includes(userCurrency.value);
-        })
-      }
-    }
-
-    const updateSelectedCurrency = () => {
-      selectedCurrency.value = accountCurrencies.value.find(i => i.id === props.account.id);
-      
-    }
-
-    const accountCurrencies = ref([]);
-    const getCurrencies = async () => {
-      try {
-        const response = await transactionals.getCurrencies();
-        accountCurrencies.value = response;
-        if (!props.account || !props.account.name ) {
-          initializeCurrency()
-        } else {
-          updateSelectedCurrency();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getCurrencies();
-
     watch(() => {
+        console.log(props.account, "ACC");
       if (props.accountGroupId) {
-        selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.accountGroupId)
-      }
-      if (props.account) {
-        console.log(props.account);
-        newAccount.value.name = props.account ? props.account.name : "";
-        newAccount.value.description = props.account ? props.account.description : "";
-        selectedFund.value = funds.value.find(i => i.id === props.account.financialFundID);
+        selectedAccountType.value = props.transactionalAccounts[props.index].find(i => i.name === props.account.name)
+        console.log(selectedAccountType.value, "SSS");
       }
     })
     
@@ -363,7 +285,6 @@ export default {
       onSave,
       invalidAccountDetails,
       savingAccount,
-      accountCurrencies,
     };
   },
 };

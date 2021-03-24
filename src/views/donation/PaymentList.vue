@@ -164,6 +164,11 @@
                 aria-expanded="false"
               ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <router-link :to="{ name: 'PaymentOption', params: { paymentId: item.id } }">
+                <a class="dropdown-item elipsis-items">
+                 View Details
+                </a>
+                </router-link>
                 <router-link :to="{ name: 'PaymentTransaction', params: { editPayment: item.id } }">
                 <a class="dropdown-item elipsis-items">
                  Edit

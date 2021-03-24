@@ -12,10 +12,10 @@
                         <div style="font-size: 1.1em"><i class="pi pi-envelope"> &nbsp;&nbsp;</i>{{ item.name }}</div>
                 </div>
             </div>
-                
 
 
-                 
+
+
                 <div class="row w-100">
                     <div class="col-md-6 offset-md-1 mt-5">
                         <h5 class="header-contri2 my-4">Available options for payment</h5>
@@ -23,7 +23,7 @@
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded" @click="toggleLink">
                             <div class="row">
                             <div class="col-3 col-sm-2 image mt-3">
-                                <img src="../../assets/group.svg" alt="marked Attendance image">
+                                <img src="../../assets/link.svg" style="width:54px; height:54px" alt="marked Attendance image">
 
                             </div>
                             <div class="col-9 col-sm-10  mt-3">
@@ -33,16 +33,19 @@
                             </div>
                         </div>
                         <div class="col-md-10 col-sm-11 offset-1  col-lg-9 d-flex align-items-center justify-content-center" :class="{ 'show' : displayLink, 'hide' : !displayLink }">
-                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="paymentLink"  @click="copyLink" :value="`https://give.churchplus.co/${route.params.paymentId}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
+                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="paymentLink"  @click="copyLink" :value="`my.churchplus.co/${route.params.paymentId}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
                         </div>
-                        <!-- <div>{{ route.params.paymentId }}</div> -->
-                    
+                        <!-- <div class="col-md-10 col-sm-11 offset-1  col-lg-9 d-flex align-items-center justify-content-center" :class="{ 'show' : displayLink, 'hide' : !displayLink }">
+                            <p class="para"><span class="d-flex align-items-center"><input type="text" ref="paymentLink"  @click="copyLink" :value="`https://give.churchplus.co/${route.params.paymentId}`" class="form-control w-100"> <i class="pi pi-copy ml-2 c-pointer" @click="copyLink" style="font-size: 22px"></i></span></p>
+                        </div> -->
+
+
                 </div>
                 <div class="col-md-12 mb-3">
                 </div>
-             
 
-               
+
+
                 <div class="col-md-12 mb-3">
                 </div>
                    <!-- <div class="row w-100">
@@ -61,32 +64,15 @@
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-7 offset-lg-2 d-flex align-items-center justify-content-center" :class="{ 'show-qr' : displayQr, 'hide' : !displayQr }">
                             <div><img src="../../assets/qrcode.png"></div>
                         </div>
-                    
+
                 </div> -->
                  <div class="col-md-12 mb-3">
-                </div>
-                   <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded">
-                            <div class="row">
-                            <div class="col-3 col-md-2 col-sm-2 image mt-3">
-                                <img src="../../assets/group2.svg" alt="marked Attendance image">
-
-                            </div>
-                            <div class="col-9 col-sm-10  mt-3">
-                                <h4 class="header4">Wordpress Plugin</h4>
-                                <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
-                            </div>
-                            </div>
-                        </div>
-                    
-                </div>
-                <div class="col-md-12 mb-3">
                 </div>
                    <div class="row w-100">
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded" @click="toggleIFrame">
                             <div class="row">
                             <div class="col-3 col-sm-2 col-sm-2 image mt-3">
-                                <img src="../../assets/group.svg" alt="marked Attendance image">
+                                <img src="../../assets/iframe.svg" style="width:45px; height:45px"  alt="marked Attendance image">
 
                             </div>
                             <div class="col-9  col-sm-10  mt-3">
@@ -96,8 +82,8 @@
                             </div>
                         </div>
                         <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 d-flex align-items-center justify-content-center" :class="{ 'show-iFrame' : displayIFrame, 'hide' : !displayIFrame }">
-      
-                  
+
+
                                 <!-- <code class="text-dark text-center">{{iFrameLink}}</code> -->
                                 <p class="para">
                                     <span class="d-flex align-items-center">
@@ -108,11 +94,29 @@
                                     <i class="pi pi-copy ml-2 c-pointer" @click="copyIframeLink" style="font-size: 22px"></i>
                                     </span>
                                 </p>
-                          
+
                         </div>
-                    
+
+                        </div>
+                <div class="col-md-12 mb-3">
                 </div>
-                
+
+                        <div class="row w-100">
+                                <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded">
+                                    <div class="row disabled">
+                                    <div class="col-3 col-md-2 col-sm-2 image mt-3">
+                                        <img src="../../assets/wordpress.svg"  c alt="marked Attendance image">
+
+                                    </div>
+                                    <div class="col-9 col-sm-10  mt-3">
+                                        <h4 class="header4">Wordpress Plugin</h4>
+                                        <p class="para">Lorem ipsum dolor sit amet consectetur.</p>
+                                    </div>
+                                    </div>
+                                </div>
+
+                        </div>
+
                 <div class="col-md-12 mb-3">
                 </div>
 
@@ -134,22 +138,22 @@ import axios from "@/gateway/backendapi";
 
 
     export default {
-        
+
 
         setup() {
             const route = useRoute();
             const toast = useToast()
             const paymentData = ref({})
- 
+
             const displayLink = ref(false)
             const displayQr = ref(false)
             const displayIFrame = ref(false)
             // const contributionItems = ref([])
-            const iFrameLink = ref(`<iframe src="give.churchplus.co/${route.params.paymentId}"></iframe>`)
+            const iFrameLink = ref(`<iframe src="my.churchplus.co/${route.params.paymentId}"></iframe>`)
             const paymentLink = ref("")
             const iframeLink = ref("")
             const title = ref("")
-            
+
 
             const toggleLink = () => {
                 displayLink.value = !displayLink.value
@@ -182,9 +186,9 @@ import axios from "@/gateway/backendapi";
             onMounted(async() => {
                 let store = useStore()
                 // console.log(route.params, "userouteeeee")
-                
+
                 let storedData = store.getters['contributions/paymentData']
-                // Check if the Object is empty   
+                // Check if the Object is empty
                 if (Object.keys(storedData).length === 0) {
                     try {
                         const res = await axios.get(`/api/PaymentForm/GetOne?paymentFormID=${route.params.paymentId}`);
@@ -200,8 +204,8 @@ import axios from "@/gateway/backendapi";
                     paymentData.value.contributionItems = store.getters['contributions/paymentData'].contributionItems.map(i => i.financialContribution)
                     console.log(store.getters['contributions/paymentData'], 'yeaaaa')
                 }
-                
-                
+
+
             })
             const editPayment = () => {
                 router.push(`/tenant/payments/${route.params.paymentId}`)
@@ -220,7 +224,7 @@ import axios from "@/gateway/backendapi";
                     life: 3000,
                 });
             }
-            
+
             const copyIframeLink = () => {
                 iframeLink.value.select();
                 iframeLink.value.setSelectionRange(0, iframeLink.value.value.length); /* For mobile devices */
@@ -235,7 +239,7 @@ import axios from "@/gateway/backendapi";
                 });
             }
 
-            
+
 
             return {
                 displayLink, route, toggleLink, displayQr, toggleQr, toggleIFrame, displayIFrame, paymentData, iFrameLink, editPayment, copyLink,  paymentLink, copyIframeLink, iframeLink, title
@@ -269,12 +273,12 @@ import axios from "@/gateway/backendapi";
     //             {name: 'song', code: 'IST', id: 4},
     //             {name: 'Giving', code: 'PRS', id: 5}
     //         ],
-           
+
     //     }
     // },
-        
+
     }
-    
+
 </script>
 
 <style scoped>
@@ -284,7 +288,7 @@ font: normal 800 30px Nunito Sans !important;
 letter-spacing: 0px;
 color: #02172E;
 opacity: 1;
-    
+
 }
 
 .event{
@@ -372,17 +376,17 @@ letter-spacing: 0px;
 }
 
 .header-contri {
-     font-size: 25px; 
+     font-size: 25px;
      font-weight: 600;
 }
 .header-contri2 {
-     font-size: 20px; 
+     font-size: 20px;
      font-weight: 600;
 }
 
 .para {
     width: 95%;
-    
+
 }
 .para input {
     color: black;
@@ -395,6 +399,11 @@ letter-spacing: 0px;
 
 .edit {
     color: #0b71d6
+}
+
+.disabled {
+    background: rgb(240, 239, 239);
+    opacity: 0.5;
 }
 
 

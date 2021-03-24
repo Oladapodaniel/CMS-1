@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="row">
-                    <div class="col-sm-4 pr-sm-0 d-flex align-items-center">
+                    <div class="col-5 col-sm-4 pr-0 d-flex align-items-center">
                       <select
                         name=""
                         id=""
@@ -63,7 +63,7 @@
                         <option value="">Naira(N)</option>
                       </select>
                     </div>
-                    <div class="col-sm-8 pl-sm-0 d-flex align-items-center">
+                    <div class="col-7 col-sm-8 pl-0 d-flex align-items-center">
                       <input
                         type="text"
                         v-model="amount"
@@ -121,7 +121,7 @@
 
           <div class="row">
             <div
-              class="col-md-12 py-3 d-sm-flex flex-column align-items-center"
+              class="col-md-12 py-3 d-flex flex-column align-items-center"
             >
               <p class="text-danger font-weight-700 mb-1" v-if="invalidAmount">
                 Please enter amount
@@ -129,7 +129,7 @@
               <button
                 class="primary-btn px-4 outline-none"
                 @click="payWithPaystack"
-                v-if="false"
+             
               >
                 Buy SMS Unit
               </button>
@@ -142,35 +142,42 @@
         <div class="col-lg-8 offset-lg-2 py-3 d-sm-flex justify-content-start">
           <h4 class="font-weight-700">Bank Payment</h4>
         </div>
+        <div class="col-12 col-lg-8 offset-lg-2 pb-3">
+           <img
+              src="../../assets/payment-type.jpeg"
+              class="px-1 w-100"
+              alt="Image"
+            />
+        </div>
       </div>
 
-      <div class="row d-md-flex mb-5">
+      <!-- <div class="row d-md-flex mb-5">
         <div class="col-lg-8 offset-lg-2">
           <div class="row">
             <div class="col-md-6 my-2 bank-details">
               <div class="row">
-                <div class="col-md-4 d-flex align-items-center">
+                <div class="col-md-12 d-flex align-items-center">
                   <div class="image-box" style="height: 80px">
                     <img
-                      src="../../assets/gtbank.png"
-                      class="px-1"
+                      src="../../assets/payment-type.jpeg"
+                      class="px-1 w-100"
                       alt="Image"
                     />
                   </div>
-                </div>
-                <div class="col-md-8 px-md-1">
+                </div> -->
+                <!-- <div class="col-md-8 px-md-1">
                   <p class="font-weight-600 pt-2">Guarantee Trust Bank</p>
                   <p class="mb-0">Account Name:</p>
                   <p class="mb-0">Account Number:</p>
-                </div>
-              </div>
-            </div>
+                </div> -->
+              <!-- </div>
+            </div> -->
 
-            <div class="col-md-4 my-2">
+            <!-- <div class="col-md-4 my-2">
               <div class="row">
                 <div class="col-md-12">
                   <img
-                    src="../../assets/mastercard.png"
+                    src="../../assets/payment-type.jpeg"
                     class="master-card"
                     alt="Image"
                   />
@@ -183,10 +190,10 @@
                   />
                 </div>
               </div>
-            </div>
-          </div>
+            </div> -->
+          <!-- </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

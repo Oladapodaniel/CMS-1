@@ -87,12 +87,12 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-5 offset-lg-1 px-0 d-none d-lg-block">
-        <img
+      <div class="col-lg-5 offset-lg-1 px-0 d-none d-lg-block bg-wall">
+        <!-- <img
           src="../../assets/Group2582.png"
           class="w-100"
           style="height: 100vh"
-        />
+        /> -->
       </div>
     </div>
     <Toast />
@@ -102,13 +102,14 @@
 <script>
 import { ref } from "vue";
 import axios from "@/gateway/backendapi";
- import { useRouter } from "vue-router";
+ import { useRouter, useRoute } from "vue-router";
  import { useToast } from "primevue/usetoast";
  import finish from "../../services/progressbar/progress"
 
 export default {
   setup() {
     let toast = useToast();
+    const route = useRoute()
     const chosenName = ref("");
     const chosenNumber = ref("");
     const chosenEmail = ref("");
@@ -132,9 +133,15 @@ export default {
 
 
         if (data && data.value.token) {
+            //  localStorage.setItem("giverToken", data.token)
+             let giverDetails = {
+                giverToken: data.token,
+                giverId: data.value.userId
+            }
+          localStorage.setItem("giverToken", JSON.stringify(giverDetails));
           router.push({
-            name: "TransactionPage",
-            params: { userId: data.value.userId }
+            name: "OnlineGiving4",
+            params: { userId: route.params.userId }
           });
         }
         finish()
@@ -184,10 +191,9 @@ export default {
 }
 
 .input-control {
-  background: #f8fbfd 0% 0% no-repeat padding-box;
+  background: #eaf4fab2 0% 0% no-repeat padding-box;
   border-radius: 10px;
-  opacity: 0.4;
-  height: 70px;
+  height: 50px;
   border: none;
   color: #2c3949;
 }
@@ -202,7 +208,7 @@ export default {
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
-  padding: 20px;
+  padding: 12px;
   align-items: center;
   margin: 0;
 }
@@ -217,5 +223,12 @@ export default {
 
 .reset-row {
   margin-right: 0;
+}
+
+.bg-wall {
+    background-image: url('../../assets/Group2582.png');
+    background-size: 100%;
+    height: 100vh;
+    background-repeat: no-repeat;
 }
 </style>

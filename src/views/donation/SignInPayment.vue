@@ -46,7 +46,7 @@
               <div class="button w-100" @click="signin">Sign in</div>
               <div class="label mt-4 text-center">
                 Not registered yet?
-                <router-link :to="`/signuppayment`"
+                <router-link :to="{ name: 'SignUpPayment', params: { userId: routeParams } }"
                   >Create a new account</router-link
                 >
               </div>
@@ -71,12 +71,12 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 offset-lg-2 px-0 d-none d-lg-block">
-        <img
+      <div class="col-lg-4 offset-lg-2 px-0 d-none d-lg-block bg-wall">
+        <!-- <img
           src="../../assets/Group257.png"
           class="w-100"
           style="height: 100vh"
-        />
+        /> -->
       </div>
     </div>
     <Toast />
@@ -86,16 +86,20 @@
 <script>
 import { ref } from "vue";
 import axios from "@/gateway/backendapi";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import finish from "../../services/progressbar/progress"
 export default {
   setup() {
     let toast = useToast();
+    const route = useRoute()
     const email = ref("");
     const password = ref("");
     const token = ref("");
     const router = useRouter();
+    const routeParams =ref(`${route.params.userId}`)
+
+    
     const signin = async () => {
       let userdetails = {
         email: email.value,
@@ -108,11 +112,15 @@ export default {
           userdetails
         );
         if (data && data.token) {
-          localStorage.setItem("token", data.token);
+            let giverDetails = {
+                giverToken: data.token,
+                giverId: data.userId
+            }
+          localStorage.setItem("giverToken", JSON.stringify(giverDetails));
 
           router.push({
-            name: "TransactionPage",
-            params: { userId: data.userId },
+            name: "OnlineGiving4",
+            params: { userId: route.params.userId },
           });
         }
         finish()
@@ -120,6 +128,7 @@ export default {
         console.log(data, "Awesome Gang");
         console.log(data.data, "i am awesome");
       } catch (error) {
+          finish()
         console.log(error.response);
         toast.add({
             severity: "error",
@@ -135,6 +144,7 @@ export default {
       password,
       signin,
       token,
+      routeParams
     };
   },
 };
@@ -160,10 +170,9 @@ export default {
 }
 
 .input-control {
-  background: #e9eff6 0% 0% no-repeat padding-box;
+  background: #eaf4fab2 0% 0% no-repeat padding-box;
   border-radius: 10px;
-  opacity: 0.4;
-  height: 70px;
+  height: 50px;
   border: none;
 }
 
@@ -177,7 +186,7 @@ export default {
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
-  padding: 20px;
+  padding: 12px;
   align-items: center;
   margin: 0;
 }
@@ -192,5 +201,10 @@ export default {
 
 .reset-row {
   margin-right: 0;
+}
+
+.bg-wall {
+    background-image: url('../../assets/Group257.png');
+    height: 100vh;
 }
 </style>

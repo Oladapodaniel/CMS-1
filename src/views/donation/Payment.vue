@@ -6,12 +6,12 @@
       </div>
 
       <div class="col-md-8 d-flex head-button">
-        <router-link to="/tenant/offeringcategory">
+        <!-- <router-link to="/tenant/offeringcategory"> -->
           <button class="more-btn h-100 button align-items-center default-btn border-0">
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
-        </router-link>
+        <!-- </router-link> -->
         <router-link to="/tenant/payments" class="add-person-btn no-underline button default-btn border-0 ml-3">
           Make Payments
         </router-link>

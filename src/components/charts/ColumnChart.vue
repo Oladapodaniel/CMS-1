@@ -82,7 +82,7 @@ export default {
         series: [
           {
             name: "Church Attendance Data",
-            color: "#136ACD",
+            color: "#002044",
             // data: props.data.data
             data: props.data ? props.data.data : props.data
             // data: [127, 335, 400, 345, 307, 0, 0]
@@ -90,7 +90,7 @@ export default {
           }
           // {
           //   name: "Female",
-          //   color: "#EBEFF4",
+          //   color: "#EBEFF4",#136ACD
           //   data: [1, 4, 1, 6, 5, 4],
           // },
           // {
