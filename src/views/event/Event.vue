@@ -659,10 +659,10 @@
         </div>
         <!-- <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea> -->
 
-        <div class="col-12 offset-sm-1 add">Add Offering</div>
+        <div class="col-12 offset-sm-1 add">Add Contribution</div>
         <div class="attendance-header d-none d-lg-block">
           <div class="row">
-            <div class="col-sm-3">Offering Item</div>
+            <div class="col-sm-3">Contribution Item</div>
             <div class="col-sm-2" >Channel</div>
             <div class="col-sm-3" >Amount</div>
             <div class="col-sm-2 offset-sm-1" style="margin-left: 74px">Total</div>
@@ -671,6 +671,7 @@
 <!-- <div>{{ offeringItem }}</div>
 <div>{{ newOfferings }}</div> -->
         <!-- Selected offerings -->
+        <!-- <div>{{ offeringItem }}</div> -->
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -747,7 +748,7 @@
                 class="currency pointer d-flex justify-content-around align-items-center close-modal"
                 @click="item.showCurrency = !item.showCurrency"
                 >
-                <span class="ofering close-modal">{{ item.currency }}</span
+                <span class="ofering close-modal">{{ item.currencyName ? item.currencyName : tenantCurrency.currency }}</span
                 ><span style="margin-top: 4px">
                     <i
                     class="pi pi-angle-down close-modal"
@@ -772,7 +773,7 @@
                         <div class="header-border close-modal" v-if="filterCurrency.length > 0">
                           <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
                               <div class="d-flex justify-content-between p-1 close-modal">
-                                  <div class="close-modal offset-sm-1" @click="addCurrency($event, index)">{{ item.name }} - {{ item.country }}</div>      
+                                  <div class="close-modal offset-sm-1" @click="addCurrency($event, index, item)">{{ item.name }} - {{ item.country }}</div>      
                               </div>                      
                           </div>
                         </div>
@@ -804,10 +805,11 @@
             </div>
 
           
-
-            <div v-if="item.giver == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Giver</div>
-            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.giver }}     <span class="donor-text">edit</span></div>
-            <!-- <div v-else>{{ item.addGiver }}</div> -->
+            
+            <!-- <div v-if="item.giver == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Donor</div>
+            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.giver }}     <span class="donor-text">edit</span></div> -->
+            <div v-if="item.donor == '' " data-toggle="modal" data-target="#exampleModal" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">Add Donor</div>
+            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal" >{{ item.donor }}     <span class="donor-text">edit</span></div>
                </div>
         </div>
 
@@ -1491,6 +1493,120 @@
         </div>
       </div>
     </div>
+    <!-- Modal -->
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title font-weight-bold" id="exampleModalLabel">
+                  Add Donor
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row my-4">
+                  <div class="col-md-4 text-md-right">
+                    <label for="" class="font-weight-600">Search Name</label>
+                  </div>
+                  <div class="col-md-7">
+                    <div class="dropdown">
+                      
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        v-model="userSearchString"
+                        @input="searchForUsers"
+                      />
+                      <div
+                        class="dropdown-menu w-100"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        <div class="row w-100 mx-auto" v-if="false">
+                          <div class="col-md-12">
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Find event"
+                            />
+                          </div>
+                        </div>
+
+                        <a
+                          class="dropdown-item font-weight-700 small-text"
+                          href="#"
+                          v-for="(member, index) in searchedMembers"
+                          :key="index"
+                           @click="addExistingMember(member)"
+                          >{{ member.name }}</a
+                        >
+                        <a
+                          class="dropdown-item font-weight-700 small-text"
+                          href="#"
+                          v-if="
+                            searchingForMembers && searchedMembers.length === 0
+                          "
+                          ><i class="pi pi-spin pi-spinner"></i
+                        ></a>
+                        <p
+                          class="modal-promt pl-1 bg-secondary m-0"
+                          v-if="
+                            userSearchString.length < 3 &&
+                            searchedMembers.length === 0
+                          "
+                        >
+                          Enter 3 or moore characters
+                        </p>
+                        <a
+                          class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                          style="border-top: 1px solid #002044; color: #136acd"
+                          @click="showAddMemberForm"
+                          data-dismiss="modal"
+                        >
+                          <i
+                            class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
+                            style="color: #136acd"
+                          ></i>
+                            Add new donor
+                        </a>
+                      </div>
+                    </div>
+
+                    <div class="row mt-4">
+                      <div class="col-md-6 d-md-flex justify-content-end">
+                        <button class="default-btn" data-dismiss="modal">Cancel</button>
+                      </div>
+                      <div class="col-md-6">
+                        <button
+                          class="default-btn primary-bg border-0 text-white"
+                          data-dismiss="modal"
+                          @click="addDonor"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
   </div>
 </template>
 
@@ -1501,6 +1617,8 @@ import axios from "@/gateway/backendapi";
 // import store from "@/store/store.js"
 // import { useToast } from 'primevue/usetoast';
 import Dropdown from 'primevue/dropdown';
+import membershipService from "../../services/membership/membershipservice";
+// import { useStore } from 'vuex'
 export default {
   components: {
     SelectElem, Dropdown
@@ -1619,13 +1737,19 @@ export default {
       donorText: "",
       // addGiver: "Add Giver",
       donorBoolean: false,
-      offeringToAddDonor: 0,
       currencyList: [],
       showCode: false,
       currencyText: "",
       eventObj: {},
       routeParams: null,
-      showCurrency: false
+      showCurrency: false,
+      offeringToAddDonor: 0,
+      userSearchString: "",
+      searchingForMembers: false,
+      searchedMembers: [],
+      selectedCurrencyId: "",
+      tenantId: "",
+      tenantCurrency: {}
     };
   },
   methods: {
@@ -1657,9 +1781,10 @@ export default {
           name: offObj.name,
           offeringTypeId: offObj.id,
           channel: offObj.channel == undefined || offObj.channel == "" || offObj.channel == null ? "Cash" : offObj.channel,
-          currency: offObj.currency == undefined || offObj.currency == "" || offObj.currency == null ? "NGN" : offObj.currency,
-          giver: ""
+          currency: offObj.currency == undefined || offObj.currency == "" || offObj.currency == null ? this.tenantCurrency.currencyId : offObj.currency,
+          donor: ""
         });
+        console.log(offObj)
       } else {
         this.offeringItem.push({
           currency: "NGN",
@@ -1715,10 +1840,10 @@ export default {
     createFirstTimers() {
       document.querySelector("#modalTogglerFirstTimers").click();
     },
-    triggerGiverModal (index) {
-      this.offeringToAddDonor = index;
-      this.$refs.modalTogglerGiver.click()
-    },
+    // triggerGiverModal (index) {
+    //   this.offeringToAddDonor = index;
+    //   this.$refs.modalTogglerGiver.click()
+    // },
     save() {
       this.firstTimers.push({
         ...this.firstTimersObj,
@@ -1791,18 +1916,22 @@ export default {
         .querySelector("#closeEvent")
         .setAttribute("data-dismiss", "modal");
     },
-    addDonor () {
-      let donorName = this.donorText
-      this.offeringItem[this.offeringToAddDonor].giver = donorName
-      this.$refs.closeDonorModal.setAttribute("data-dismiss", "modal");
-      this.donorBoolean = true
-      this.donorText = ""
-      console.log(this.offeringItem)
-    },
-    addCurrency (e, index) {
+    // addDonor () {
+    //   let donorName = this.donorText
+    //   this.offeringItem[this.offeringToAddDonor].giver = donorName
+    //   this.$refs.closeDonorModal.setAttribute("data-dismiss", "modal");
+    //   this.donorBoolean = true
+    //   this.donorText = ""
+    //   console.log(this.offeringItem)
+    // },
+    addCurrency (e, index, item) {
         console.log(e.target.innerHTML, index)
-        this.offeringItem[index].currency = e.target.innerHTML.split(" ")[0]
+        // this.offeringItem[index].currency = e.target.innerHTML.split(" ")[0]
+        this.offeringItem[index].currency = item.id
         this.offeringItem[index].showCurrency = false
+        this.offeringItem[index].currencyName = item.name
+        // this.selectedCurrencyId = item.id
+        console.log(item)
 
     },
     delAttendance(index) {
@@ -2197,7 +2326,7 @@ export default {
               // return `${i.currency} ${i.name}`
               return {
               name: i.currency,
-              id: i.id,
+              id: i.currencyId,
               country: i.name
             }
             
@@ -2229,12 +2358,89 @@ export default {
            let attText = this.newAttendances.find(i => i.attendanceTypeID === e.target.value).name
            
            this.attendanceItem[index].attendanceTypeName = attText
+    },
+    setAddToDonor (index) {
+        this.offeringToAddDonor = index
+      },
+    addDonor () {
+        let donorName = this.userSearchString
+        this.offeringItem[this.offeringToAddDonor].donor = donorName
+        this.donorBoolean = true
+        this.userSearchString = ""
+      },
+      searchForUsers () {
+        if (this.userSearchString.length >= 3) {
+          this.startSearch(this.userSearchString);
+        }
+      },
+
+      async startSearch (str) {
+        try {
+          this.searchingForMembers = true;
+          const response = await membershipService.searchMembers(str);
+          this.searchingForMembers = false;
+          this.searchedMembers = response;
+        } catch (error) {
+          this.searchingForMembers = false;
+          console.log(error);
+        }
+      },
+      addExistingMember (member) {
+        this.userSearchString = member.name;
+        this.offeringItem[this.offeringToAddDonor].personID = member.id
+        console.log(this.userSearchString, member)
+      },
+      getPersonId (payload) {
+        personId.value = payload
+        offeringItem.value[offeringToAddDonor.value].donor = payload.personFirstName
+        offeringItem.value[offeringToAddDonor.value].personID = payload.personId
+      },
+      async getCurrentlySignedInUser () {
+        try {
+            const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+            // console.log(res.data)
+            this.tenantId = res.data.tenantId
+            // if(res.data.country == "Nigeria") {
+            //     isPaystackChecked.value = true
+            //     isFlutterwave.value = true
+            //     isPaypal.value = true
+            // } else {
+            //     isPaypal.value = true
+            //     isFlutterwave.value = true
+            // }
+            // let store = useStore()
+            // if (store.getters.currentUser) {
+            //   axios.get(`/api/Lookup/TenantCurrency?tenantID=${store.getters.currentUser.tenantId}`)
+            //   .then(res => {
+            //     this.tenantCurrency = res.data.currency
+            //     console.log(res.data)
+            //   })
+            //   .catch(err => console.log(err))
+            //   console.log(store.getters.currentUser)
+            // } else {
+              axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
+              .then(res => {
+                this.tenantCurrency = res.data
+                console.log(this.tenantCurrency)
+              })
+              .catch(err => console.log(err))
+              // console.log(store.getters.currentUser)
+            // }
+            
+            
+        } catch (err) {
+            /*eslint no-undef: "warn"*/
+            NProgress.done();
+            console.log(err);
+        }
     }
+        
   },
   created() {
     this.currentDate()
+    this.getCurrentlySignedInUser()
 
-    axios.get("/api/offering").then((res) => {
+    axios.get("/api/Financials/Contributions/Items").then((res) => {
       this.newOfferings = res.data.map((i) => {
         return { id: i.id, name: i.name };
       });
