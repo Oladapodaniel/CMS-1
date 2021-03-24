@@ -141,7 +141,7 @@
             <div class="col-6 col-sm-12">
                 <div class="row">
                 <div class="col-sm-3">
-                    <div>{{ moment.parseZone(new Date(offering.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</div>
+                    <div>{{ date(offering.date) }}</div>
                 </div>
                 <div class="col-sm-2">
                      <div>{{ offering.eventName ? offering.eventName : "Online Giving" }}</div>
@@ -208,6 +208,7 @@ import moment from "moment";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import finish from '../../../services/progressbar/progress'
+import monthDayYear from '../../../services/dates/dateformatter'
 
 export default {
   props: ["contributionTransactions"],
@@ -330,7 +331,7 @@ export default {
       if (page < 1) return false;
       try {
         const { data } = await axios.get(
-          `/api/people/getPaginatedFirstTimer?page=${page}`
+          `/api/Financials/Contributions/Transactions?page=${page}`
         );
         // filterResult.value = [ ];
         // searchMember.value = [ ];
@@ -344,9 +345,13 @@ export default {
     };
 
     const offeringCount = computed(() => {
-      if (props.contributionTransactions.length > 100) return Math.ceil(props.contributionTransactions.length / 100);
+      if (props.contributionTransactions.length > 50) return Math.ceil(props.contributionTransactions.length / 50);
       return 1;
     })
+
+    const date = (offDate) => {
+      return monthDayYear.monthDayYear(offDate)
+    }
 
     // onMounted(() => {
     //   console.log(route, "route");
@@ -413,7 +418,8 @@ export default {
       // deleteMember,
       offeringCount,
       currentPage,
-      getPeopleByPage
+      getPeopleByPage,
+      date
     };
   },
 };

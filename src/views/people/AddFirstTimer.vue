@@ -945,32 +945,37 @@ console.log(updateMember)
         axios
           .post("/api/people/firsttimer", firstTimersObj.value)
           .then((res) => {
-            // NProgress.done();
+            finish()
             console.log(res.data);
             loading.value = false;
-            // toast.show(`Saving successful`, {
-            //   position: "top-right",
-            //   type: "success",
-            // });
             router.push("/tenant/firsttimerslist");
 
             toast.add({
               severity: "success",
               summary: "Firsttimer Created",
               detail: "Firsttimer was created succesfully",
-              life: 2500,
+              life: 4000,
             });
           })
           .catch((err) => {
             finish()
             loading.value = false;
-            toast.add({
-              severity: "error",
-              summary: "Error Occurred",
-              detail: "Check your details and try again",
-              life: 2500,
+            if (err.response) {
+              toast.add({
+              severity: "info",
+              summary: "Record Exist",
+              detail: `${err.response.data}`,
+              life: 8000,
             });
-            console.log(err);
+            } else {
+              toast.add({
+              severity: "error",
+              summary: "Network Error",
+              detail: `Please ensure you have a strong internet  connection`,
+              life: 4000,
+            });
+            }
+            console.log(err.response);
           });
       }
     };
@@ -1117,6 +1122,7 @@ console.log(updateMember)
           });
         })
         .catch((err) => {
+          finish()
           if (err.response && err.response.status === 401) {
             localStorage.setItem("token", "");
             router.push("/");

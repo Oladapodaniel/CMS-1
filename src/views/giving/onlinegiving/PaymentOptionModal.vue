@@ -216,6 +216,8 @@
 // import PaystackPay from "../../../components/payment/PaystackPay"
 // import { ref, computed } from 'vue'
 import axios from "@/gateway/backendapi";
+import finish from "../../../services/progressbar/progress"
+import { useToast } from "primevue/usetoast";
 export default {
   components: {
     // PaystackPay
@@ -224,6 +226,7 @@ export default {
   props: ['orderId', 'donation', 'close', 'amount', 'name', 'email', 'gateways'],
   setup (props, { emit }) {
 
+    const toast = useToast()
     const payWithPaystack = () => {
       props.close.click()
       /*eslint no-undef: "warn"*/
@@ -235,7 +238,7 @@ export default {
         ref: props.orderId,
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
-          // toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
+          toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
           console.log('closed')
         },
         callback: function (response) {
@@ -251,16 +254,17 @@ export default {
           axios
             .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
             .then((res) => {
+              finish()
               console.log(res, "success data");
-              
+              emit('payment-successful', true)
             })
             .catch((err) => {
-              // stopProgressBar();
-              // toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
+              finish()
+              toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
               console.log(err, "error confirming payment");
             });
             
-            emit('payment-successful', true)
+            
         },
       });
       handler.openIframe();

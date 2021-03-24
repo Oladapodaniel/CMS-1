@@ -52,7 +52,7 @@
                   <i class="check-it mr-2">
                   <span class="child" v-if="applyRem"></span>
                 </i>
-                <h6>Apply Remitance</h6>
+                <h6>Apply Split/Remitance</h6>
               </div>
           </div>
         </div>
@@ -83,6 +83,9 @@
             <i class="pi pi-trash"></i>
           </div>
         </div>
+        </div>
+        <div class="row">
+          <div class="col-10 mt-3 text-right">Percentage Remaining: <span class="font-weight-700">{{ sumPercentage ? sumPercentage.percentage ? 100 - +sumPercentage.percentage : 0 : 0 }}%</span></div>
         </div>
         <div class="row">
           <div class="col-2 mt-3 mb-3">
@@ -129,7 +132,7 @@
 
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import Dropdown from 'primevue/dropdown';
 import Toast from 'primevue/toast';
@@ -171,7 +174,17 @@ export default {
     }
 
     const addRemittance = () => {
-      remitance.value.push({})
+      console.log(sumPercentage.value)
+      if (100 - +sumPercentage.value.percentage <= 0) {
+        toast.add({
+            severity: "error",
+            summary: "Limit Reached",
+            detail: ` You have ${sumPercentage.value.percentage}% remittance percentage, The sum of the percentages should not exceed the 100%`,
+            life: 6000,
+          });
+      }  else {
+        remitance.value.push({})
+      }
     }
 
     const getIncomeAccount = ()=> {
@@ -236,8 +249,16 @@ export default {
                 console.log(err)
               })
     }
+    const sumPercentage = computed(() => {
+      return remitance.value.reduce((a, b) => {
+        // if (remitance.value[remitance.value.length - 1].percentage) {
+          return { percentage: +a.percentage + +b.percentage }
+        // }
+      })
+    })
+
     return {
-      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem
+      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage
     };
   },
 };
@@ -304,6 +325,21 @@ export default {
 
 .textbox-height {
   height: 41px
+}
+
+.error-div {
+  background: #fff8f8;
+  border-color: #ffe9e9;
+  padding: 25px 10px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  border-left: 5px solid #b52626;
+}
+
+.error-message {
+  margin-bottom: 0;
+  font-size: 0.9em;
 }
 
 

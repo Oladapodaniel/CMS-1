@@ -164,6 +164,19 @@
                 <div class="status-n-gender">
                   <div class="date-picker">
                     <div class="cstm-select">
+                      <div class="cs-select day">
+                        <Dropdown
+                          v-model="person.dayOfBirth"
+                          :options="birthDaysArr"
+                          placeholder="Day"
+                          style="width: 100%"
+                        />
+                        <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
+                      </div>
+                    </div>
+
+                    <div class="cstm-select">
+                      
                       <div class="cs-select month">
                         <Dropdown
                           v-model="person.monthOfBirth"
@@ -175,18 +188,6 @@
                           style="width: 100%"
                         />
                         <!-- <SelectElem :typ="'membership'" name="birthmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/> -->
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select day">
-                        <Dropdown
-                          v-model="person.dayOfBirth"
-                          :options="birthDaysArr"
-                          placeholder="Day"
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="birthday" :options="['Day', ...birthDaysArr ]" value="Day" @input="itemSelected"/> -->
                       </div>
                     </div>
 
@@ -210,6 +211,19 @@
                 <div class="status-n-gender">
                   <div class="date-picker">
                     <div class="cstm-select">
+                      <div class="cs-select day">
+                        <Dropdown
+                          placeholder="Day"
+                          v-model="person.dayOfWedding"
+                          :options="annDaysArr"
+                          style="width: 100%"
+                        />
+                        <!-- <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/> -->
+                      </div>
+                    </div>
+
+                    <div class="cstm-select">
+                      
                       <div class="cs-select month">
                         <Dropdown
                           v-model="person.monthOfWedding"
@@ -221,18 +235,6 @@
                           style="width: 100%"
                         />
                         <!-- <SelectElem :typ="'membership'" name="annmonth" :options="['Month', ...months]" value="Month" @input="itemSelected"/> -->
-                      </div>
-                    </div>
-
-                    <div class="cstm-select">
-                      <div class="cs-select day">
-                        <Dropdown
-                          placeholder="Day"
-                          v-model="person.dayOfWedding"
-                          :options="annDaysArr"
-                          style="width: 100%"
-                        />
-                        <!-- <SelectElem :typ="'membership'" name="annday" :options="['Day', ...annDaysArr]" value="Day" @input="itemSelected"/> -->
                       </div>
                     </div>
 

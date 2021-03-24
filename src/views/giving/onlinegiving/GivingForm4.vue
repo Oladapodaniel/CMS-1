@@ -32,8 +32,14 @@
               </li> -->
               <li class="nav-item lstyle" @click="checkForToken">
                 <div class="text-white" href="#" style="cursor: pointer"
-                  >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} &nbsp; <i class="fas fa-user text-white"></i
+                  >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} <i class="fas fa-user text-white" v-if="signedIn"></i
                 ></div>
+              </li>
+              <li class="nav-item lstyle ml-4" @click="signOut" v-if="signedIn">
+                <div class="text-white" href="#" style="cursor: pointer"
+                  >
+                  Sign Out
+                  </div>
               </li>
             </div>
           </div>
@@ -92,7 +98,7 @@
                             class="form-control col-md-12 text-left imp1 border"
                             type="text"
                             v-model="amount"
-                            placeholder="0.00"
+                            placeholder="Amount"
                           />
                     </div>
                   </div>
@@ -211,7 +217,8 @@
                     </label>
                   </div>
                   <!-- start of user credentials area -->
-                  <transition name="fade" v-if="!signedIn">
+          
+                    <transition name="fade">
                       
                   <div class="col-12" v-if="!checked">
                     <div class="row d-flex">
@@ -247,8 +254,9 @@
                     </div>
                   </div>
                   </transition>
+  
                  
-                  <div class="col-12" v-if="activeTab2">
+                  <div class="col-12" v-if="activeTab2 && !signedIn">
                     <div class="row d-flex">
                     
                     <div class="col-md-6">
@@ -566,7 +574,9 @@ export default {
     };
     tcurrency();
 
-    const donation = () => {
+    const donation = async() => {
+
+
           donationObj.value = {
             paymentFormId: formResponse.value.id,
             churchLogoUrl: formResponse.value.churchLogo,
@@ -594,13 +604,14 @@ export default {
               donationObj.value.phone = userData.value.phone
               donationObj.value.userId = userData.value.id
               if (checked.value) {
-                donationObj.value.isAnonymous = true
+                donationObj.value.isAnonymous = false
               } else {
                 donationObj.value.isAnonymous = false
               }
           } else {
               donationObj.value.name = name.value,
-              donationObj.value.phone = phone.value
+              donationObj.value.phone = phone.value,
+              donationObj.value.email = email.value
 
               if (name.value !== "" || phone.value !== "") {
                 donationObj.value.isAnonymous = false
@@ -609,11 +620,23 @@ export default {
               }
           }
 
+         
+
           try {
-            let  res = axios.post('/donation', donationObj.value)
+            let  res = await axios.post('/donation', donationObj.value)
             console.log(res)
+            // if (!res.data) {
+            //   toast.add({
+            //   severity: "error",
+            //   summary: "Problem occurred while making this payment",
+            //   detail: `Ensure you selected`,
+            //   life: 3000,
+            // });
+            // }
+            finish()
           }
           catch (error) {
+            finish()
             console.log(error)
           }
           console.log(formResponse.value)
@@ -658,7 +681,16 @@ export default {
 
     const signOut = () => {
       localStorage.removeItem('giverToken')
-      alert('signed out successfully')
+      toast.add({
+            severity: "success",
+            summary: "Signed Out",
+            detail: `Signed Out Successfully`,
+            life: 3000,
+          });
+          userData.value  = {}
+          signedIn.value = false
+          signInEmail.value = ""
+          signInPassword.value = ""
     }
 
     const toggleActive1 = () => {
@@ -694,21 +726,51 @@ export default {
             detail: `Signed In Successfully`,
             life: 3000,
           });
-          signedIn.value = false
+          console.log(data)
+
+          let userProfile = {
+            name: data.fullname,
+            email: data.email,
+            id: data.userId,
+            tenantID: data.tenantID,
+            phone: data.phoneNumber,
+          }
+          userData.value = userProfile
+          // userData.value = data
         }
+        signedIn.value = true
+
+        
+
+
+
+        // userData.value = data
         finish()
 
-        console.log(data);
-        console.log(data.data)
+
       } catch (error) {
           finish()
         console.log(error);
         console.log(error.response);
         if (error.reponse) {
           toast.add({
-            severity: "error",
+            severity: "info",
             summary: "Error Signing In",
             detail: `${error.response.data.message}`,
+            life: 3000,
+          });
+        } else if (error.response.status === 401){
+          toast.add({
+            severity: "info",
+            summary: "Incorrect Details",
+            detail: `${error.response.data.message}`,
+            life: 3000,
+          });
+        } else {
+          toast.add({
+            severity: "error",
+            summary: "Network Error",
+            detail: `Please ensure you  have a strong internet connection`,
             life: 3000,
           });
         }

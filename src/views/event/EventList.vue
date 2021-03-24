@@ -314,7 +314,7 @@
                     <div>{{event.title}}</div>
                 </div>
                 <div class="col-md-2 itemroute-color align-self-center">
-                    <div>{{moment.parseZone(new Date(event.activityDate).toDateString(),"YYYY MM DD HH ZZ")._i.substr(4, 11) }}</div>
+                    <div>{{ date(event.activityDate) }}</div>
                 </div>
                 <div class="col-md-1 itemroute-color align-self-center">
                      <div>{{ event.attendances }}</div>
@@ -457,7 +457,7 @@ import { useConfirm } from "primevue/useConfirm";
 import { useToast } from 'primevue/usetoast';
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice"
-// import stopProgressBar from "../../services/progressbar/progress";
+import monthDayYear from '../../services/dates/dateformatter'
 import Tooltip from 'primevue/tooltip';
 export default {
   directives: {
@@ -588,12 +588,9 @@ const deleteMember = (id) => {
       monthlyActiveBtn.value = false
     }
 
-    // const attendanceAverage = computed(() => {
-    // return events.value.reduce( (a, b) => { return a.attendances + b.attendances })
-    // return events.value
-    // return events.value.map(i => { return i.attendances })
-    // return events.value.forEach(i => {return i.attendances })
-    // })
+    const date = (offDate) => {
+      return monthDayYear.monthDayYear(offDate)
+    }
 
     return {
       filterFormIsVissible,
@@ -612,7 +609,8 @@ const deleteMember = (id) => {
       allTimeActiveBtn,
       toggleMonthlyClass,
       toggleYearlyClass,
-      toggleAllTimeClass
+      toggleAllTimeClass,
+      date
     };
   },
 };
