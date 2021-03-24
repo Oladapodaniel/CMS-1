@@ -218,32 +218,14 @@
       </div>
     </div>
 
-    <!-- <div class="row d-flex justify-content-around">
-      <div class="col-sm-5 text-center bordered-top pt-3">
-        <button class="default-btn bg-transparent greyish-color">
-          Add Debit
-        </button>
-        <div class="col-12 my-2 small-text" style="font-size: 12px">
-          <span>Total Debit is <span class="font-weight-bold">0.00</span></span>
-        </div>
-      </div>
-      <div class="col-sm-5 text-center bordered-top pt-3">
-        <button class="default-btn bg-transparent greyish-color">
-          Add Credit
-        </button>
-        <div class="col-12 my-2 small-text" style="font-size: 12px">
-          <span
-            >Total Credit is
-            <span class="font-weight-bold">0.0000000</span></span
-          >
-        </div>
-      </div>
-    </div> -->
-
     <div class="row">
+        <div class="col-md-12 text-center" v-if="unbalanced">
+            <span class="text-center text-danger font-weight-700">Unbalanced</span>
+        </div>
       <div class="col-md-12 d-flex justify-content-center my-3">
         <button
           class="default-btn primary-bg text-white font-weight-700 border-0"
+          @click="saveTransaction"
         >
           Save
         </button>
@@ -317,6 +299,17 @@ export default {
         return sumOfRecords(debits);
     })
 
+    const unbalanced = computed(() => {
+        const debitSum = sumOfRecords(debitRecords.value);
+        const creditSum = sumOfRecords(creditRecords.value);
+        return debitSum !== creditSum;
+    })
+
+    const saveTransaction = () => {
+        if (sumOfRecords(creditRecords) !== sumOfRecords(debitRecords)) return false;
+        console.log("Hello");
+    }
+
     return {
       accountTypes,
       selectedAccountType,
@@ -328,6 +321,8 @@ export default {
       debitRecords,
       totalAmount,
       sumOfRecords,
+      saveTransaction,
+      unbalanced,
     };
   },
 };
