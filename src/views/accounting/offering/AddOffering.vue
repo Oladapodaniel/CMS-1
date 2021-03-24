@@ -570,20 +570,21 @@
             {{ newOffering.name }}
           </div>
            <!-- @click="offering(null)" -->
+           <!-- v-if="filterOffering.length < 1" -->
           <div
-            v-if="filterOffering.length >= 1"
+            
            type="button" data-toggle="modal" data-target="#exampleModalCenter"
             class="create ofering pointer"
           >
             Create New Contribution Item
           </div>
-          <div
+          <!-- <div
             v-else
             @click="offering({ name: offeringText })"
             class="create pointer"
           >
             Create "{{ offeringText }}" offering item
-          </div>
+          </div> -->
         </div>
         <button
           hidden
