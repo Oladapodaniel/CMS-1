@@ -11,7 +11,7 @@
           <p class="form-section-header">Bio:</p>
           <div class="bio-info">
             <div class="inputs">
-            <!--  <div class="input-field">
+              <!--  <div class="input-field">
                 <label for="" class="label">Membership</label>
                 <div class="cstm-select">
                   <div style="width: 330px">
@@ -22,7 +22,7 @@
                       placeholder="--Select membership--"
                       style="width: 100%"
                     /> -->
-                    <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/> 
+              <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/> 
                   </div>
                 </div>
               </div> -->
@@ -108,13 +108,18 @@
               <div class="grey-bg">
                 <div v-if="routeParams">
                   <div class="person-img">
-                  <img
-                    v-if="!memberToEdit.pictureUrl"
-                    src="../../assets/people/phone-import.svg"
-                    alt="Uploaded Image"
-                  />
-                  <img v-else :src="memberToEdit.pictureUrl" alt="Uploaded Image" style="width: 110px; height: 110px; border-radius: 50%" />
-                </div>
+                    <img
+                      v-if="!memberToEdit.pictureUrl"
+                      src="../../assets/people/phone-import.svg"
+                      alt="Uploaded Image"
+                    />
+                    <img
+                      v-else
+                      :src="memberToEdit.pictureUrl"
+                      alt="Uploaded Image"
+                      style="width: 110px; height: 110px; border-radius: 50%"
+                    />
+                  </div>
                 </div>
                 <div v-else>
                   <div class="person-img">
@@ -123,7 +128,12 @@
                       src="../../assets/people/phone-import.svg"
                       alt="Uploaded Image"
                     />
-                    <img v-else :src="url" alt="Uploaded Image" style="width: 110px; height: 110px; border-radius: 50%" />
+                    <img
+                      v-else
+                      :src="url"
+                      alt="Uploaded Image"
+                      style="width: 110px; height: 110px; border-radius: 50%"
+                    />
                   </div>
                 </div>
                 <div>
@@ -160,16 +170,16 @@
             <span class="h-rule col-7"><hr class="hr" /></span>
             <span class="col-2">
               <span class="tb-icon-span"
-              ><i
-                class="fa fa-angle-down tbb-icon"
-                :class="{ 'tb-icon': !hideCelebTab }"
-              ></i
-            ></span>
+                ><i
+                  class="fa fa-angle-down tbb-icon"
+                  :class="{ 'tb-icon': !hideCelebTab }"
+                ></i
+              ></span>
             </span>
           </span>
           <div
             class="bio-info celeb-info"
-            :class="{ 'hide-tab': hideCelebTab, 'showtab': !hideCelebTab }"
+            :class="{ 'hide-tab': hideCelebTab, showtab: !hideCelebTab }"
           >
             <div class="inputs">
               <div class="input-field">
@@ -189,7 +199,6 @@
                     </div>
 
                     <div class="cstm-select">
-                      
                       <div class="cs-select month">
                         <Dropdown
                           v-model="person.monthOfBirth"
@@ -236,7 +245,6 @@
                     </div>
 
                     <div class="cstm-select">
-                      
                       <div class="cs-select month">
                         <Dropdown
                           v-model="person.monthOfWedding"
@@ -278,11 +286,11 @@
             <span class="h-rule col-7"><hr class="hr" /></span>
             <span class="col-2">
               <span class="tb-icon-span"
-              ><i
-                class="fa fa-angle-down tbb-icon"
-                :class="{ 'tb-icon': !hideAddInfoTab }"
-              ></i
-            ></span>
+                ><i
+                  class="fa fa-angle-down tbb-icon"
+                  :class="{ 'tb-icon': !hideAddInfoTab }"
+                ></i
+              ></span>
             </span>
           </span>
           <div
@@ -430,8 +438,7 @@
     >
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-          <div class="modal-header" style="background: #ebeff4;
-">
+          <div class="modal-header" style="background: #ebeff4">
             <h5 class="modal-title font-weight-bold" id="addToGroup">
               Group Membership
             </h5>
@@ -466,7 +473,12 @@
                 <label for="" class="font-weight-600">Position</label>
               </div>
               <div class="col-md-7">
-                <input type="text" v-model="position" class="form-control" placeholder="e.g Member" />
+                <input
+                  type="text"
+                  v-model="position"
+                  class="form-control"
+                  placeholder="e.g Member"
+                />
               </div>
             </div>
 
@@ -474,10 +486,12 @@
               <div class="col-md-4">
                 <label for="" class="font-weight-600"></label>
               </div>
-              
+
               <div class="col-md-7">
                 <div class="col-md-12 mt-3 text-center">
-                  <p class="my-1 text-danger" v-if="addToGroupError">Please select a group</p>
+                  <p class="my-1 text-danger" v-if="addToGroupError">
+                    Please select a group
+                  </p>
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-6 d-md-flex justify-content-end">
@@ -527,7 +541,7 @@ export default {
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
-    const routeParams = ref("")
+    const routeParams = ref("");
 
     const loading = ref(false);
     const months = [
@@ -612,10 +626,11 @@ export default {
     };
 
     let url = ref("");
-    let image;
+    let image = ref("");
     const imageSelected = (e) => {
-      image = e.target.files[0];
-      url.value = URL.createObjectURL(image);
+      image.value = e.target.files[0];
+      url.value = URL.createObjectURL(image.value);
+      memberToEdit.value.pictureUrl = URL.createObjectURL(image.value);
     };
 
     //Person
@@ -634,6 +649,7 @@ export default {
 
     const errMessage = ref("");
     const showError = ref(false);
+
     const addPerson = async () => {
       const personObj = { ...person };
       errMessage.value = "";
@@ -643,7 +659,7 @@ export default {
         personObj.firstName ? personObj.firstName : ""
       );
       formData.append("lastName", personObj.lastName ? personObj.lastName : "");
-      formData.append("picture", image ? image : "");
+      formData.append("picture", image.value ? image.value : "");
       formData.append(
         "mobilePhone",
         personObj.mobilePhone ? personObj.mobilePhone : ""
@@ -678,7 +694,7 @@ export default {
         selectedMembership.value ? selectedMembership.value.id : ""
       );
       formData.append("address", personObj.address ? personObj.address : "");
-      formData.append("picture", image ? image : "");
+      // formData.append("picture", image.value ? image.value : "");
       formData.append(
         "maritalStatusID",
         selectedMaritalStatus.value ? selectedMaritalStatus.value.id : ""
@@ -691,7 +707,7 @@ export default {
         "ageGroupID",
         selectedAgeGroup.value ? selectedAgeGroup.value.id : ""
       );
-      console.log(formData)
+      console.log(formData);
       /*eslint no-undef: "warn"*/
       NProgress.start();
       if (route.params.personId) {
@@ -859,7 +875,7 @@ export default {
     if (!genders.value || genders.value.length === 0) getLookUps();
     if (!ageGroups.value || ageGroups.value.length === 0) getAgeGroups();
     // if (!memberships.value || memberships.value.length === 0)
-      // getPeopleClassifications();
+    // getPeopleClassifications();
 
     const gendersArr = computed(() => {
       return genders.value.map((i) => i.value);
@@ -943,8 +959,8 @@ export default {
         getPersonMaritalStatusId();
         // getPersonPeopleClassificationId();
         getPersonAgeGroupId();
-        console.log(res)
-        routeParams.value = route.params.personId
+        console.log(res);
+        routeParams.value = route.params.personId;
       });
     };
 
@@ -967,7 +983,7 @@ export default {
         } else {
           groups = await grousService.getGroups();
           if (groups) {
-            allGroups.value =groups;
+            allGroups.value = groups;
           }
         }
       } catch (error) {
@@ -987,13 +1003,21 @@ export default {
       }
       dismissAddToGroupModal.value = "modal";
       try {
-        const response = await membershipService.addMemberToGroup({ personId: route.params.personId, groupId: groupToAddTo.value.id }, groupToAddTo.value.id);
+        const response = await membershipService.addMemberToGroup(
+          { personId: route.params.personId, groupId: groupToAddTo.value.id },
+          groupToAddTo.value.id
+        );
         console.log(response, "RESPONSE");
-        toast.add({severity:'success', summary:'Added Successfully', detail:`Member add to ${groupToAddTo.value.name}`, life: 3000});
+        toast.add({
+          severity: "success",
+          summary: "Added Successfully",
+          detail: `Member add to ${groupToAddTo.value.name}`,
+          life: 3000,
+        });
       } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     return {
       months,
@@ -1044,7 +1068,7 @@ export default {
       addMemberToGroup,
       addToGroupError,
       dismissAddToGroupModal,
-      routeParams
+      routeParams,
     };
   },
 };
@@ -1084,8 +1108,8 @@ export default {
 
 @media (min-width: 676px) and (max-width: 768px) {
   .showtab {
-  height: 113px;
-}
+    height: 113px;
+  }
 }
 
 @media (min-width: 663px) and (max-width: 667px) {
@@ -1101,7 +1125,7 @@ export default {
 }*/
 
 @media (max-width: 376px) {
- /* .bio-info.celeb-info {
+  /* .bio-info.celeb-info {
     margin-top: 80px;
   } */
 
@@ -1120,7 +1144,7 @@ export default {
 
 @media (min-width: 867px) {
   .showtab {
-    height: 100px
+    height: 100px;
   }
 }
 </style>
