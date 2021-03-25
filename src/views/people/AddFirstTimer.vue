@@ -257,15 +257,17 @@
         <!-- <hr class="hr"> -->
 
         <div class="">
-          <span class="celeb-tab" @click="showCelebTab">
-            <span class="tab-header">Insights:</span>
-            <span class="h-rule"><hr class="hr" /></span>
-            <span class="tb-icon-span"
+          <span class="celeb-tab row" @click="showCelebTab">
+            <span class="tab-header col-sm-3">Insights:</span>
+            <span class="h-rule col-sm-7 pl-0"><hr class="hr" /></span>
+            <span class="col-sm-2">
+              <span class="tb-icon-span"
               ><i
                 class="fa fa-angle-down tbb-icon"
                 :class="{ 'tb-icon': !hideCelebTab }"
               ></i
             ></span>
+            </span>
           </span>
           <div
             class="bio-info celeb-info"
@@ -334,15 +336,17 @@
           </div>
         </div>
         <div class="">
-          <span class="celeb-tab" @click="showAddInfoTab">
-            <span class="tab-header">Follow up and Retention:</span>
-            <span class="h-rule"><hr class="hr" /></span>
-            <span class="tb-icon-span"
+          <span class="celeb-tab row" @click="showAddInfoTab">
+            <span class="tab-header col-sm-3">Follow up and Retention:</span>
+            <span class="h-rule col-sm-7 pl-0"><hr class="hr" /></span>
+            <span class="col-sm-2">
+              <span class="tb-icon-span"
               ><i
                 class="fa fa-angle-down tbb-icon"
                 :class="{ 'tb-icon': !hideAddInfoTab }"
               ></i
             ></span>
+            </span>
           </span>
           <div
             class="bio-info"
@@ -929,7 +933,7 @@ console.log(updateMember)
           } else {
             showError.value = true;
             toast.add({
-              severity: "error",
+              severity: "warn",
               summary: "Update Failed",
               detail:
                 err.response && err.response.data.messsage
@@ -962,7 +966,7 @@ console.log(updateMember)
             loading.value = false;
             if (err.response) {
               toast.add({
-              severity: "info",
+              severity: "warn",
               summary: "Record Exist",
               detail: `${err.response.data}`,
               life: 8000,
@@ -1032,9 +1036,9 @@ console.log(updateMember)
       } catch (error) {
         toast.add({
           severity: "error",
-          summary: "Opps! Sorry Try again",
+          summary: "Event not created",
           detail: error.response.data,
-          life: 2500,
+          life: 5000,
         });
       }
       displayModal.value = false;
@@ -1174,8 +1178,8 @@ console.log(updateMember)
             toast.add({
               severity: "error",
               summary: "Error getting details",
-              detail: "Unable to get person details, please try again",
-              life: 2500,
+              detail: "Unable to get person details, ensure you have a strong network connection",
+              life: 5000,
             });
           })
       }

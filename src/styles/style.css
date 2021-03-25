@@ -856,9 +856,9 @@
   
   .celeb-tab {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
-    margin-right: 20px;
+    
   }
   
   .celeb-tab:hover {
@@ -1018,6 +1018,10 @@
   
     .other {
       margin: 0 auto 20px;
+    }
+
+    .celeb-tab {
+      margin-right: 20px
     }
   }
   

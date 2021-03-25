@@ -11,21 +11,21 @@
           <p class="form-section-header">Bio:</p>
           <div class="bio-info">
             <div class="inputs">
-              <div class="input-field">
+            <!--  <div class="input-field">
                 <label for="" class="label">Membership</label>
                 <div class="cstm-select">
                   <div style="width: 330px">
-                    <Dropdown
+                     <Dropdown
                       v-model="selectedMembership"
                       :options="memberships"
                       optionLabel="name"
                       placeholder="--Select membership--"
                       style="width: 100%"
-                    />
-                    <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/> -->
+                    /> -->
+                    <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/> 
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="input-field">
                 <label for="" class="label"
                   >Firstname<span style="color: red"> *</span></label
@@ -104,16 +104,27 @@
                 </div>
               </div>
             </div>
-
             <div class="image-div other">
               <div class="grey-bg">
-                <div class="person-img">
+                <div v-if="routeParams">
+                  <div class="person-img">
                   <img
-                    v-if="!url"
+                    v-if="!memberToEdit.pictureUrl"
                     src="../../assets/people/phone-import.svg"
                     alt="Uploaded Image"
                   />
-                  <img v-else :src="url" alt="Uploaded Image" />
+                  <img v-else :src="memberToEdit.pictureUrl" alt="Uploaded Image" style="width: 110px; height: 110px; border-radius: 50%" />
+                </div>
+                </div>
+                <div v-else>
+                  <div class="person-img">
+                    <img
+                      v-if="!url"
+                      src="../../assets/people/phone-import.svg"
+                      alt="Uploaded Image"
+                    />
+                    <img v-else :src="url" alt="Uploaded Image" style="width: 110px; height: 110px; border-radius: 50%" />
+                  </div>
                 </div>
                 <div>
                   <div class="cs-input">
@@ -129,14 +140,14 @@
                     </label>
                   </div>
                 </div>
-                <div>
+                <!-- <div>
                   <button
                     class="upload-btn outline-none"
                     @click.prevent="uploadImage"
                   >
                     Upload
                   </button>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -144,15 +155,17 @@
         <!-- <hr class="hr"> -->
 
         <div class="bio-div">
-          <span class="celeb-tab" @click="showCelebTab">
-            <span class="tab-header">Celebrations:</span>
-            <span class="h-rule"><hr class="hr" /></span>
-            <span class="tb-icon-span"
+          <span class="celeb-tab row" @click="showCelebTab">
+            <span class="tab-header col-3">Celebrations:</span>
+            <span class="h-rule col-7"><hr class="hr" /></span>
+            <span class="col-2">
+              <span class="tb-icon-span"
               ><i
                 class="fa fa-angle-down tbb-icon"
                 :class="{ 'tb-icon': !hideCelebTab }"
               ></i
             ></span>
+            </span>
           </span>
           <div
             class="bio-info celeb-info"
@@ -260,15 +273,17 @@
           </div>
         </div>
         <div class="bio-div">
-          <span class="celeb-tab" @click="showAddInfoTab">
-            <span class="tab-header">Additional information:</span>
-            <span class="h-rule"><hr class="hr" /></span>
-            <span class="tb-icon-span"
+          <span class="celeb-tab row" @click="showAddInfoTab">
+            <span class="tab-header col-3">Additional information:</span>
+            <span class="h-rule col-7"><hr class="hr" /></span>
+            <span class="col-2">
+              <span class="tb-icon-span"
               ><i
                 class="fa fa-angle-down tbb-icon"
                 :class="{ 'tb-icon': !hideAddInfoTab }"
               ></i
             ></span>
+            </span>
           </span>
           <div
             class="bio-info"
@@ -512,6 +527,7 @@ export default {
     const hideAddInfoTab = ref(true);
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
+    const routeParams = ref("")
 
     const loading = ref(false);
     const months = [
@@ -675,6 +691,7 @@ export default {
         "ageGroupID",
         selectedAgeGroup.value ? selectedAgeGroup.value.id : ""
       );
+      console.log(formData)
       /*eslint no-undef: "warn"*/
       NProgress.start();
       if (route.params.personId) {
@@ -703,7 +720,7 @@ export default {
               severity: "warn",
               summary: "You 're Offline",
               detail: "Please ensure you have internet access",
-              life: 2500,
+              life: 6000,
             });
           } else {
             showError.value = true;
@@ -712,12 +729,12 @@ export default {
                 ? err.response.data.messsage
                 : "Update operation was not succesfull";
             toast.add({
-              severity: "error",
+              severity: "warn",
               summary: "Update Failed",
               detail: errMessage.value
                 ? errMessage.value
                 : "Update operation failed",
-              life: 2500,
+              life: 6000,
             });
           }
           showError.value = true;
@@ -746,7 +763,7 @@ export default {
               severity: "warn",
               summary: "You 're Offline",
               detail: "Please ensure you have internet access",
-              life: 2500,
+              life: 6000,
             });
           } else {
             showError.value = true;
@@ -755,12 +772,12 @@ export default {
               errMessage.value = err.response.data.message;
             }
             toast.add({
-              severity: "error",
+              severity: "warn",
               summary: "Saving Failed",
               detail: errMessage.value
                 ? errMessage.value
                 : "Save operation failed",
-              life: 2500,
+              life: 6000,
             });
           }
         }
@@ -770,7 +787,7 @@ export default {
     let genders = ref(store.getters["lookups/genders"]);
     let maritalStatus = ref(store.getters["lookups/maritalStatus"]);
     let ageGroups = ref(store.getters["lookups/ageGroups"]);
-    let memberships = ref(store.getters["lookups/peopleClassifications"]);
+    // let memberships = ref(store.getters["lookups/peopleClassifications"]);
 
     const selectedMaritalStatus = ref(null);
     const selectedGender = ref(null);
@@ -784,48 +801,48 @@ export default {
           genders.value = res.data.find(
             (i) => i.type.toLowerCase() === "gender"
           ).lookUps;
-          try {
-            selectedGender.value = genders.value.find(
-              (i) => i.id === memberToEdit.value.genderID
-            );
-          } catch (error) {
-            console.log(error);
-          }
+          // try {
+          //   selectedGender.value = genders.value.find(
+          //     (i) => i.id === memberToEdit.value.genderID
+          //   );
+          // } catch (error) {
+          //   console.log(error);
+          // }
 
           maritalStatus.value = res.data.find(
             (i) => i.type.toLowerCase() === "maritalstatus"
           ).lookUps;
-          try {
-            selectedMaritalStatus.value = maritalStatus.value.find(
-              (i) => i.id === memberToEdit.value.maritalStatusID
-            );
-          } catch (error) {
-            console.log(error);
-          }
+          // try {
+          //   selectedMaritalStatus.value = maritalStatus.value.find(
+          //     (i) => i.id === memberToEdit.value.maritalStatusID
+          //   );
+          // } catch (error) {
+          //   console.log(error);
+          // }
           console.log(maritalStatus, "MS");
         })
         .catch((err) => console.log(err.response));
     };
 
-    const getPeopleClassifications = async () => {
-      try {
-        const response = await axios.get(
-          "/api/Settings/GetTenantPeopleClassification"
-        );
-        const { data } = response;
-        memberships.value = data;
-        console.log(memberships.value, "ms");
-        peopleClassifications.value = data.map((i) => i.name);
-        getPersonPeopleClassificationId();
-      } catch (err) {
-        if (err.response && err.response.status === 401) {
-          localStorage.removeItem("token");
+    // const getPeopleClassifications = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       "/api/Settings/GetTenantPeopleClassification"
+    //     );
+    //     const { data } = response;
+    //     memberships.value = data;
+    //     console.log(memberships.value, "ms");
+    //     peopleClassifications.value = data.map((i) => i.name);
+    //     getPersonPeopleClassificationId();
+    //   } catch (err) {
+    //     if (err.response && err.response.status === 401) {
+    //       localStorage.removeItem("token");
 
-          router.push("/");
-        }
-        console.log(err);
-      }
-    };
+    //       router.push("/");
+    //     }
+    //     console.log(err);
+    //   }
+    // };
 
     const getAgeGroups = () => {
       console.log("Calling age");
@@ -841,8 +858,8 @@ export default {
 
     if (!genders.value || genders.value.length === 0) getLookUps();
     if (!ageGroups.value || ageGroups.value.length === 0) getAgeGroups();
-    if (!memberships.value || memberships.value.length === 0)
-      getPeopleClassifications();
+    // if (!memberships.value || memberships.value.length === 0)
+      // getPeopleClassifications();
 
     const gendersArr = computed(() => {
       return genders.value.map((i) => i.value);
@@ -852,7 +869,7 @@ export default {
     });
 
     const route = useRoute();
-    const memberToEdit = ref(null);
+    const memberToEdit = ref("");
 
     const getPersonGenderId = () => {
       if (memberToEdit.value && memberToEdit.value.personId) {
@@ -874,17 +891,17 @@ export default {
       }
     };
 
-    const getPersonPeopleClassificationId = () => {
-      if (memberToEdit.value && memberToEdit.value.personId) {
-        if (memberships.value && memberships.value.length > 0) {
-          selectedMembership.value = memberships.value.find(
-            (i) => i.id === memberToEdit.value.peopleClassificationID
-          );
-        } else {
-          getPeopleClassifications();
-        }
-      }
-    };
+    // const getPersonPeopleClassificationId = () => {
+    //   if (memberToEdit.value && memberToEdit.value.personId) {
+    //     if (memberships.value && memberships.value.length > 0) {
+    //       selectedMembership.value = memberships.value.find(
+    //         (i) => i.id === memberToEdit.value.peopleClassificationID
+    //       );
+    //     } else {
+    //       getPeopleClassifications();
+    //     }
+    //   }
+    // };
 
     const getPersonAgeGroupId = () => {
       if (memberToEdit.value && memberToEdit.value.personId) {
@@ -924,9 +941,10 @@ export default {
         populatePersonDetails(res);
         getPersonGenderId();
         getPersonMaritalStatusId();
-        getPersonPeopleClassificationId();
+        // getPersonPeopleClassificationId();
         getPersonAgeGroupId();
         console.log(res)
+        routeParams.value = route.params.personId
       });
     };
 
@@ -996,6 +1014,7 @@ export default {
       addPerson,
       peopleClassifications,
       url,
+      memberToEdit,
       imageSelected,
       uploadImage,
       loading,
@@ -1014,7 +1033,7 @@ export default {
       selectedMaritalStatus,
       selectedGender,
       selectedMembership,
-      memberships,
+      // memberships,
       selectedAgeGroup,
       ageGroups,
       getAgeGroups,
@@ -1025,6 +1044,7 @@ export default {
       addMemberToGroup,
       addToGroupError,
       dismissAddToGroupModal,
+      routeParams
     };
   },
 };
@@ -1056,6 +1076,10 @@ export default {
   transition: all 0.5s ease-in-out;
   height: 166px;
   /* overflow: hidden; */
+}
+
+.celeb-tab {
+  margin-right: 147px;
 }
 
 @media (min-width: 676px) and (max-width: 768px) {

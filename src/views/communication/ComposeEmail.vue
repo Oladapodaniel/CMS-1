@@ -707,6 +707,7 @@ import Editor from 'primevue/editor';
 export default {
   components: { Editor },
   setup() {
+    const router = useRoute()
     const toast = useToast();
     const editor = ClassicEditor;
     const editorData = ref("");
@@ -879,6 +880,7 @@ export default {
               summary: "Successful operation",
               detail: "Email was sent successfully",
             });
+            router.push({ name: 'SentEmails' })
           console.log(res);
         })
         .catch((err) => {
@@ -894,7 +896,7 @@ export default {
           } else {
             toast.add({
               severity: "error",
-              summary: "Failed operation",
+              summary: "Not Sent",
               detail: "Email sending failed",
               life: 2500,
             });
