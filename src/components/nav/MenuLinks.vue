@@ -227,7 +227,7 @@
             Reports
           </a>
 
-          <div v-if="false">
+          <div>
             <div>
               <p @click="showMore" class="more-tab">
                 <span>{{ dropDownText }}...</span>
@@ -240,7 +240,7 @@
               </p>
             </div>
             <div class="more-links" :class="{ 'hide-more-links': moreShown }">
-              <a  class="link follow-up routelink">
+              <a v-if="false"  class="link follow-up routelink">
                 <img
                   src="../../assets/dashboardlinks/follow-up-icon.svg"
                   class="link-icon"
@@ -249,16 +249,16 @@
                 Follow up
               </a>
 
-              <a  class="link routelink">
+              <router-link  to="/tenant/social" class="link routelink text-decoration-none">
                 <img
                   src="../../assets/dashboardlinks/social-icon.svg"
                   class="link-icon"
                   alt=""
                 />
                 Social & Mobile App
-              </a>
+              </router-link>
 
-              <a  class="link routelink">
+              <a v-if="false"  class="link routelink">
                 <img
                   src="../../assets/dashboardlinks/media.svg"
                   class="link-icon"
@@ -267,7 +267,7 @@
                 Media & Monetization
               </a>
 
-              <a  class="link routelink">
+              <a v-if="false"  class="link routelink">
                 <img
                   src="../../assets/dashboardlinks/branches.svg"
                   class="link-icon"
@@ -507,9 +507,15 @@ export default {
   transition: all 0.5s ease-in-out;
 }
 
+/* 
+  Only Social and Mobile link active
+
+  Increase height there are more links
+
+  */
 .hide-more-links {
   transition: all 0.5s ease-in-out;
-  height: 164px;
+  height: 55px; 
 }
 
 .follow-up {
