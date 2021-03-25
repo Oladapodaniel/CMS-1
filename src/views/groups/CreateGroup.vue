@@ -293,13 +293,13 @@
                 <div class="col-md-2">
                   <span class="py-2 font-weight-bold">POSITION</span>
                 </div>
-                <div class="col-md-2">
+                <!-- <div class="col-md-2">
                   <span class="py-2 font-weight-bold">ADDRESS</span>
-                </div>
-                <div class="col-md-2">
+                </div> -->
+                <div class="col-md-3">
                   <span class="py-2 font-weight-bold">EMAIL</span>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <span class="py-2 font-weight-bold">PHONE</span>
                 </div>
                 <div class="col-md-">
@@ -372,26 +372,26 @@
                         member.position
                       }}</span>
                     </div>
-                    <div
+                    <!-- <div
                       class="col-md-2 d-flex justify-content-between align-items-center"
                     >
                       <span class="py-2 hidden-header">ADDRESS</span>
                       <span class="py-2">{{ member.addres }}</span>
-                    </div>
+                    </div> -->
                     <div
-                      class="col-md-2 d-flex justify-content-between align-items-center"
+                      class="col-md-3 d-flex justify-content-between align-items-center"
                     >
                       <span class="py-2 hidden-header">EMAIL</span>
                       <span class="py-2">{{
                         member.email && member.email.length > 10
-                          ? `${member.email.split("").slice(0, 11).join("")}...`
+                          ? `${member.email.split("").slice(0, 14).join("")}...`
                           : member.email
                           ? member.email
                           : ""
                       }}</span>
                     </div>
                     <div
-                      class="col-md-2 px-0 d-flex justify-content-between align-items-center"
+                      class="col-md-3 d-flex justify-content-between align-items-center"
                     >
                       <span class="py-2 hidden-header">PHONE</span>
                       <span class="py-2">{{ member.phone }}</span>

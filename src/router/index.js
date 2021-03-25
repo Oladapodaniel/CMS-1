@@ -393,6 +393,22 @@ const routes = [{
         component: () =>
             import( /* webpackChunkName: "buyunits" */ '@/views/payment/BuyUnits')
     },
+
+    {
+        path: 'social',
+        name: 'Social',
+        component: () =>
+            import( /* webpackChunkName: "social" */ '@/views/social&mobile/home/Index'),
+        children: [
+            {
+                path: '',
+                name: 'SocialDashboard',
+                component: () =>
+                    import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/dashboard/Index'),
+            }
+        ]
+    },
+
     {
         path: 'settings',
         name: 'ChurchSettings',

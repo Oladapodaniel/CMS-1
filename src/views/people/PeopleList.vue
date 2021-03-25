@@ -292,21 +292,26 @@
               </div>
               <div class="data-value">
                 <div class="image-con">
-                  <div v-if="person.gender == 'Male'">
-                    <img
-                      src="../../assets/people/avatar-male.png"
-                      alt=""
-                      style="border-radius: 50%"
-                    />
-                  </div>
-                  <div v-else-if="person.gender == 'Female'">
-                    <img src="../../assets/people/avatar-female.png" alt="" />
+                  <div v-if="!person.pictureUrl">
+                    <div v-if="person.gender == 'Male'">
+                      <img
+                        src="../../assets/people/avatar-male.png"
+                        alt=""
+                        style="border-radius: 50%"
+                      />
+                    </div>
+                    <div v-else-if="person.gender == 'Female'">
+                      <img src="../../assets/people/avatar-female.png" alt="" />
+                    </div>
+                    <div v-else>
+                      <img
+                        src="../../assets/people/no-gender-avatar.png"
+                        alt=""
+                      />
+                    </div>
                   </div>
                   <div v-else>
-                    <img
-                      src="../../assets/people/no-gender-avatar.png"
-                      alt=""
-                    />
+                    <img :src="person.pictureUrl" style="width: 35px; height: 35px; border-radius: 50%">
                   </div>
                 </div>
               </div>

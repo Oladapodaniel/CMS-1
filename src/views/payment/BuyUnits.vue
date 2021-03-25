@@ -11,12 +11,13 @@
             :modal="true"
             v-model:visible="purchaseIsSuccessful"
             :style="{ maxWidth: '900px', }"
-            ariaCloseLabel="X"
+            :ariaCloseLabel="X"
+            closeOnEscape="true"
           >
             <template #header style="d-none">
               <h3>Header</h3>
             </template>
-            <PaymentSuccessModal :amount="amount" />
+            <PaymentSuccessModal @close-modal="closeModal" :amount="amount" />
           </Dialog>
         </div>
       </div>
@@ -28,9 +29,9 @@
             may purchase at any time. With our pricing system you get more SMS
             units the more you buy.
           </p>
-          <p class="font-weight-600">
+          <!-- <p class="font-weight-600">
             Note that we charge 1 unit per SMS to all GSM networks in Nigeria.
-          </p>
+          </p> -->
         </div>
       </div>
 
@@ -217,9 +218,6 @@ export default {
     const purchaseIsSuccessful = ref(false);
     const toast = useToast();
 
-    // setTimeout(() => NProgress.start(), 3000)
-    // setTimeout(() => NProgress.done(), 6000)
-
     const totalSMSUnits = computed(() => {
       if (amount.value <= 0) return "";
       return Math.ceil(amount.value / 2);
@@ -261,7 +259,8 @@ export default {
       console.log(userEmail.value, "UE");
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         email: userEmail.value,
         amount: amount.value * 100,
         firstname: churchName.value,
@@ -301,6 +300,8 @@ export default {
       console.log();
     })
 
+    const closeModal = () => purchaseIsSuccessful.value = false;
+
     return {
       amount,
       smsUnits,
@@ -309,6 +310,7 @@ export default {
       payWithPaystack,
       invalidAmount,
       purchaseIsSuccessful,
+      closeModal,
     };
   },
 };
