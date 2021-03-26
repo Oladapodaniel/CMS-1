@@ -107,18 +107,26 @@ import axios from "axios"
                 
                 FB.login(function(response) {
                     console.log(response);
-                    FB.api(
-                        `/${response.authResponse.userID}`,
-                        // `/me/accounts?access_token=${response.authResponse.accessToken}`,
-                        // `/${response.authResponse.userID}/ids_for_pages`,
-                        'GET',
-                        {
-                            "fields":"id,name,access_token",
-                            "access_token": response.authResponse.accessToken
+                    // FB.api(
+                    //     `/${response.authResponse.userID}`,
+                    //     // `/me/accounts?access_token=${response.authResponse.accessToken}`,
+                    //     // `/${response.authResponse.userID}/ids_for_pages`,
+                    //     'GET',
+                    //     {
+                    //         "fields":"id,name,access_token",
+                    //         "access_token": response.authResponse.accessToken
                         
-                        },
+                    //     },
+                    //     function(response) {
+                    //         console.log(response, "facebook");
+                    //         // Insert your code here
+                    //     }
+                    // );
+                    FB.api(
+                        '/me',
+                        'GET',
+                        {"fields":"id,name,ids_for_pages", "access_token": response.authResponse.accessToken},
                         function(response) {
-                            console.log(response, "facebook");
                             // Insert your code here
                         }
                     );
