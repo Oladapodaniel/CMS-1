@@ -108,23 +108,23 @@ import axios from "axios"
                 alert("first")
                 FB.login(function(response) {
                     console.log(response);
-                    FB.api(
-                        `/${response.authResponse.userID}/assigned_pages`,
-                        {"access_token": response.authResponse.accessToken},
-                        function (response) {
-                        if (response && !response.error) {
-                            console.log(response, "ASSIGNED");
-                        }
-                    });
-                    alert("second")
-                    FB.api(
-                        `/${response.authResponse.userID}/ids_for_pages`,
-                        {"access_token": response.authResponse.accessToken},
-                        function (response) {
-                        if (response && !response.error) {
-                            console.log(response, "PAGES");
-                        }
-                    });
+                    // FB.api(
+                    //     `/${response.authResponse.userID}/assigned_pages`,
+                    //     {"access_token": response.authResponse.accessToken},
+                    //     function (response) {
+                    //     if (response && !response.error) {
+                    //         console.log(response, "ASSIGNED");
+                    //     }
+                    // });
+                    // alert("second")
+                    // FB.api(
+                    //     `/${response.authResponse.userID}/ids_for_pages`,
+                    //     {"access_token": response.authResponse.accessToken},
+                    //     function (response) {
+                    //     if (response && !response.error) {
+                    //         console.log(response, "PAGES");
+                    //     }
+                    // });
                     // FB.api(
                     //     `/${response.authResponse.userID}`,
                     //     // `/me/accounts?access_token=${response.authResponse.accessToken}`,
@@ -154,11 +154,6 @@ import axios from "axios"
                     );
 
                     alert("fourth")
-                    axios.get(`https://graph.facebook.com/${response.authResponse.userID}?fields=name,access_token,ids_for_pages&access_token=${response.authResponse.accessToken}`)
-                    .then(res => {
-                        console.log(res, "FACE");
-                    })
-                    .catch(err => console.log(err))
                 }, {scope: 'user_birthday'});
             }
 
