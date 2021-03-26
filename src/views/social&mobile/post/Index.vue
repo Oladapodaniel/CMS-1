@@ -101,17 +101,18 @@
 
             const facebook = () => {
                  /*eslint no-undef: "warn"*/
-                // FB.api(
-                //     '/me',
-                //     'GET',
-                //     {"fields":"id,name,token_for_business"},
-                //     function(response) {
-                //         console.log(response, "facebook");
-                //         // Insert your code here
-                //     }
-                // );
+                
                 FB.login(function(response) {
                     console.log(response);
+                    FB.api(
+                        `/me?access_token=${response.authResponse.accessToken}`,
+                        'GET',
+                        {"fields":"id,name,token_for_business"},
+                        function(response) {
+                            console.log(response, "facebook");
+                            // Insert your code here
+                        }
+                    );
                 }, {scope: 'user_birthday'});
             }
 
