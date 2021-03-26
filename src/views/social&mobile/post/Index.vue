@@ -86,7 +86,7 @@
             </div>
 
             <div class="col-md-3 offset-md-1 d-flex align-items-center">
-                <button class="default-btn primary-bg text-white border-0" style="border-radius: 10px;">Post</button>
+                <button class="default-btn primary-bg text-white border-0" style="border-radius: 10px;" @click="facebook">Post</button>
             </div>
         </div>
     </div>
@@ -99,8 +99,25 @@
         setup() {
             const selectedDestination = "Facebook";
 
+            const facebook = () => {
+                 /*eslint no-undef: "warn"*/
+                // FB.api(
+                //     '/me',
+                //     'GET',
+                //     {"fields":"id,name,token_for_business"},
+                //     function(response) {
+                //         console.log(response, "facebook");
+                //         // Insert your code here
+                //     }
+                // );
+                FB.login(function(response) {
+                    console.log(response);
+                }, {scope: 'user_birthday'});
+            }
+
             return {
                 selectedDestination,
+                facebook,
             }
         }
     }

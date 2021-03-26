@@ -410,7 +410,19 @@ const routes = [{
                 path: 'post',
                 name: 'SocialPost',
                 component: () =>
-                    import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/post/Index'),
+                    import( /* webpackChunkName: "post" */ '@/views/social&mobile/post/Index'),
+            },
+            {
+                path: 'feed',
+                name: 'SocialFeed',
+                component: () =>
+                    import( /* webpackChunkName: "feed" */ '@/views/social&mobile/feed/Index'),
+            },
+            {
+                path: 'pending',
+                name: 'PendingReview',
+                component: () =>
+                    import( /* webpackChunkName: "pendingreview" */ '@/views/social&mobile/pending/Index'),
             },
         ]
     },
