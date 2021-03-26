@@ -105,18 +105,20 @@
             const facebook = () => {
                  /*eslint no-undef: "warn"*/
                  
-                try {
-                    FB.api(
-                        `/${response.authResponse.userID}`,
-                        'GET',
-                        {"fields":"id,name,ids_for_pages"},
-                        function(response) {
-                            // Insert your code here
-                            console.log(response, "SSSOSOS");
-                        }
-                    );
-                } catch (error) {
-                    FB.login(function(response) {
+                // try {
+                //     FB.api(
+                //         `/${response.authResponse.userID}`,
+                //         'GET',
+                //         {"fields":"id,name,ids_for_pages"},
+                //         function(response) {
+                //             // Insert your code here
+                //             console.log(response, "SSSOSOS");
+                //         }
+                //     );
+                // } catch (error) {
+                    
+                // }
+                FB.login(function(response) {
                     console.log(response);
 
                      /*eslint no-undef: "warn"*/
@@ -132,7 +134,6 @@
                     );
 
                 }, {scope: 'user_birthday'});
-                }
             }
 
             // membershipService.getSignedInUser()
