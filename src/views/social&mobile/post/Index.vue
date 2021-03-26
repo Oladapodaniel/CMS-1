@@ -94,6 +94,8 @@
 
 <script>
     import Dropdown from "primevue/dropdown";
+    import social_service from "../../../services/social/social_service"
+import membershipService from '../../../services/membership/membershipservice';
     export default {
         components: { Dropdown },
         setup() {
@@ -105,7 +107,8 @@
                 FB.login(function(response) {
                     console.log(response);
                     FB.api(
-                        `/me?access_token=${response.authResponse.accessToken}`,
+                        // `/me/accounts?access_token=${response.authResponse.accessToken}`,
+                        `/me/accounts`,
                         'GET',
                         {"fields":"id,name,token_for_business,ids_for_pages"},
                         function(response) {
@@ -115,6 +118,14 @@
                     );
                 }, {scope: 'user_birthday'});
             }
+
+            membershipService.getSignedInUser()
+            .then(res => {
+                alert("hello")
+                social_service.getPostCategory(res.tenantId);
+            })
+
+            
 
             return {
                 selectedDestination,

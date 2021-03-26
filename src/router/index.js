@@ -424,6 +424,12 @@ const routes = [{
                 component: () =>
                     import( /* webpackChunkName: "pendingreview" */ '@/views/social&mobile/pending/Index'),
             },
+            {
+                path: 'schedule',
+                name: 'PendingReview',
+                component: () =>
+                    import( /* webpackChunkName: "pendingreview" */ '@/views/social&mobile/schedule/Index'),
+            },
         ]
     },
 
