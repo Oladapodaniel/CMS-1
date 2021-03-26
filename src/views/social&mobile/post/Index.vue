@@ -105,7 +105,7 @@ import axios from "axios"
             const facebook = () => {
                  /*eslint no-undef: "warn"*/
                  
-                
+                alert("clicked")
                 FB.login(function(response) {
                     console.log(response);
                     FB.api(
