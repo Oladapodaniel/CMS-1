@@ -96,7 +96,7 @@
     import Dropdown from "primevue/dropdown";
     import social_service from "../../../services/social/social_service"
 import membershipService from '../../../services/membership/membershipservice';
-import axios from axios
+import axios from "axios"
     export default {
         components: { Dropdown },
         setup() {
