@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 
-import Pagination from '@/components/payment/PaymentSuccessful.vue';
+import Pagination from '@/views/social&mobile/dashboard/Index.vue';
 
 import TermsOfUse from '../components/temp/PaymentPage'
 
@@ -399,11 +399,18 @@ const routes = [{
                 component: () =>
                     import ( /* webpackChunkName: "social" */ '@/views/social&mobile/home/Index'),
                 children: [{
-                    path: '',
-                    name: 'SocialDashboard',
-                    component: () =>
-                        import ( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/dashboard/Index'),
-                }]
+                        path: '',
+                        name: 'SocialDashboard',
+                        component: () =>
+                            import ( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/dashboard/Index'),
+                    },
+                    {
+                        path: 'post',
+                        name: 'SocialPost',
+                        component: () =>
+                            import ( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/post/Index'),
+                    },
+                ]
             },
 
             {
