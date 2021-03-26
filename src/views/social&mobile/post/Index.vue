@@ -94,8 +94,8 @@
 
 <script>
     import Dropdown from "primevue/dropdown";
-    import social_service from "../../../services/social/social_service"
-import membershipService from '../../../services/membership/membershipservice';
+//     import social_service from "../../../services/social/social_service"
+// import membershipService from '../../../services/membership/membershipservice';
 import axios from "axios"
     export default {
         components: { Dropdown },
@@ -122,6 +122,7 @@ import axios from "axios"
                     //         // Insert your code here
                     //     }
                     // );
+
                      /*eslint no-undef: "warn"*/
                     FB.api(
                         `/${response.authResponse.userID}`,
