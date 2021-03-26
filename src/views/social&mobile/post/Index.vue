@@ -109,7 +109,7 @@
                     FB.api(
                         `/${response.authResponse.userID}`,
                         'GET',
-                        {"fields":"id,name,ids_for_pages", "access_token": response.authResponse.accessToken},
+                        {"fields":"id,name,ids_for_pages"},
                         function(response) {
                             // Insert your code here
                             console.log(response, "SSSOSOS");
