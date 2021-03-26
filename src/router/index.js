@@ -405,7 +405,13 @@ const routes = [{
                 name: 'SocialDashboard',
                 component: () =>
                     import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/dashboard/Index'),
-            }
+            },
+            {
+                path: 'post',
+                name: 'SocialPost',
+                component: () =>
+                    import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/post/Index'),
+            },
         ]
     },
 
