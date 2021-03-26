@@ -105,7 +105,7 @@ import axios from "axios"
             const facebook = () => {
                  /*eslint no-undef: "warn"*/
                  
-                alert("clicked")
+                alert("first")
                 FB.login(function(response) {
                     console.log(response);
                     FB.api(
@@ -116,6 +116,7 @@ import axios from "axios"
                             console.log(response, "ASSIGNED");
                         }
                     });
+                    alert("second")
                     FB.api(
                         `/${response.authResponse.userID}/ids_for_pages`,
                         {"access_token": response.authResponse.accessToken},
@@ -141,6 +142,7 @@ import axios from "axios"
                     // );
 
                      /*eslint no-undef: "warn"*/
+                     alert("third")
                     FB.api(
                         `/${response.authResponse.userID}`,
                         'GET',
@@ -151,6 +153,7 @@ import axios from "axios"
                         }
                     );
 
+                    alert("fourth")
                     axios.get(`https://graph.facebook.com/${response.authResponse.userID}?fields=name,access_token,ids_for_pages&access_token=${response.authResponse.accessToken}`)
                     .then(res => {
                         console.log(res, "FACE");
