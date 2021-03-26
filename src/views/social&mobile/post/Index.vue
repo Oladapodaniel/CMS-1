@@ -107,7 +107,7 @@
                     FB.api(
                         `/me?access_token=${response.authResponse.accessToken}`,
                         'GET',
-                        {"fields":"id,name,token_for_business"},
+                        {"fields":"id,name,token_for_business,ids_for_pages"},
                         function(response) {
                             console.log(response, "facebook");
                             // Insert your code here
