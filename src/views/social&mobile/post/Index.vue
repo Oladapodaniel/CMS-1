@@ -123,7 +123,7 @@ import axios from "axios"
                         }
                     );
 
-                    axios.get(`https://graph.facebook.com/${response.authResponse.userID}/accounts?fields=name,access_token&access_token=${response.authResponse.accessToken}`)
+                    axios.get(`https://graph.facebook.com/${response.authResponse.userID}?fields=name,access_token,ids_for_pages&access_token=${response.authResponse.accessToken}`)
                     .then(res => {
                         console.log(res, "FACE");
                     })
