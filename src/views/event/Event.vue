@@ -546,7 +546,7 @@
           <div class="row">
             <div class="col-sm-3">Attendance Type</div>
             <div class="col-sm-3 offset-sm-2">Count</div>
-            <div class="col-sm-2 offset-sm-1">Total</div>
+            <div class="col-sm-2 offset-sm-1" style="margin-left: 74px;">Total</div>
           </div>
         </div>
         <!-- Attendance Items -->
@@ -598,7 +598,7 @@
                 placeholder="Enter Count"
               />
             </div>
-            <div class="d-none d-md-block col-sm-2 offset-sm-1">
+            <div class="d-none d-md-block col-sm-1 offset-sm-1" style="margin-left: 74px;">
               {{ item.number }}
             </div>
             <div class="col-1" @click="delAttendance(index)">
@@ -653,8 +653,8 @@
         </button> -->
         <div class="col-sm-12 empty">
           <div class="row">
-            <div class="offset-sm-7 col-2 offset-4">TOTAL</div>
-            <div class="col-3">{{ addAttendanceTotal }}</div>
+            <div class="offset-sm-7 px-0 col-2 offset-4">TOTAL</div>
+            <div class="col-3 px-0"><div style="margin-left: -3%">{{ addAttendanceTotal }}</div></div>
           </div>
         </div>
         <!-- <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea> -->
@@ -664,14 +664,14 @@
           <div class="row">
             <div class="col-sm-3">Contribution Item</div>
             <div class="col-sm-2" >Channel</div>
-            <div class="col-sm-3" >Amount</div>
-            <div class="col-sm-2 offset-sm-1" style="margin-left: 74px">Total</div>
+            <div class="col-sm-4" >Amount</div>
+            <div class="col-sm-2">Total</div>
           </div>
         </div>
 <!-- <div>{{ offeringItem }}</div>
 <div>{{ newOfferings }}</div> -->
         <!-- Selected offerings -->
-        <!-- <div>{{ offeringItem }}</div> -->
+        <!-- <div>{{ convertedAmount }}</div> -->
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -743,6 +743,7 @@
                 <!-- <Dropdown v-model="item.currency" :options="currencyList" :filter="true" class="currency p-0" placeholder="NGN" :showClear="false">
                     
                 </Dropdown> -->
+                
 
                 <div
                 class="currency pointer d-flex justify-content-around align-items-center close-modal"
@@ -784,21 +785,22 @@
                   
                   </div>
             </div>
-            <div class="col-6 col-lg-2">
+            <div class="col-6 col-lg-3">
               <input
                 type="number"
                 class="form-control"
                 v-model.number="item.amount"
                 placeholder="Enter Amount"
+                @input="sendAmount($event, index)"
               />
             </div>
             <div
-              class="col-1 offset-lg-1 d-none d-lg-block"
+              class="col-1 d-none d-lg-block"
             >
               {{ item.amount }}
             </div>
             <div
-              class="col-2"
+              class="col-1"
               @click="delOffering(index)"
             >
               <i class="fa fa-trash" aria-hidden="true"></i>
@@ -819,7 +821,7 @@
           @click="addOffering"
         >
           <i class="fa fa-plus-circle ofering" aria-hidden="true"></i
-          >&nbsp;&nbsp;Add Offering Item
+          >&nbsp;&nbsp;Add Contribution Item
         </div>
         <div class="display ofering" id="showList" ref="offeringDrop">
           <input
@@ -837,20 +839,24 @@
           >
             {{ newOffering.name }}
           </div>
+          <!-- v-if="filterOffering.length >= 1" -->
+          <!-- @click="offering(null)" -->
+          <!-- class="create ofering pointer" -->
           <div
-            v-if="filterOffering.length >= 1"
-            @click="offering(null)"
+            type="button" data-toggle="modal" data-target="#exampleModalCenter"
             class="create ofering pointer"
+            
+            
           >
             Create New Offering Item
           </div>
-          <div
+          <!-- <div
             v-else
             @click="offering({ name: offeringText })"
             class="create pointer"
           >
             Create "{{ offeringText }}" offering item
-          </div>
+          </div> -->
         </div>
         <button
           hidden
@@ -865,25 +871,13 @@
 
         <div class="col-sm-12 empty">
           <div class="row">
-            <div class="col-sm-5 total-2 offset-sm-1">TOTAL</div>
-            <div class="col-sm-3">
-              <!-- <div>Total Attendance</div>
-                                <div>Total Offering</div> -->
-              <!-- <SelectElem
-                :options="[
-                  'NGN - Naira',
-                  'CAD - Canadian dollar',
-                  'AFN - Afghanistan',
-                ]"
-                name="NGN - Naira"
-                value="NGN - Naira"
-              /> -->
-              <Dropdown :options="['NGN - Naira', 'CAD - Canadian dollar', 'AFN - Afghanistan']" :filter="true" placeholder="NGN - Naira" :showClear="false">
-                    
-                </Dropdown>
+            <div class="col-3 col-sm-3 total-2 text-sm-right offset-sm-5">TOTAL</div>
+            <div class="col-3 col-sm-3 offset-sm-1">
+             
+              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="currencyAmount" @currency-index="pushConvertedCurrency"/>
             </div>
-            <div class="col-sm-2 align-self-center offset-sm-1">
-              {{ addOfferingTotal }}
+            <div v-if="convertedAmount" class="col-4 col-sm-2 align-self-center converted-amount">
+              {{ addContributionTotal.toFixed(2) }}
             </div>
           </div>
         </div>
@@ -1493,7 +1487,7 @@
         </div>
       </div>
     </div>
-    <!-- Modal -->
+    <!-- Add donor Modal -->
         <div
           class="modal fade"
           id="exampleModal"
@@ -1607,6 +1601,96 @@
             </div>
           </div>
         </div>
+
+        <!-- Add contribution Item Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="border: none">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Contribution</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm-4 text-right pr-0 align-self-center">
+                      <label>Name</label>
+                    </div>
+                  <div class="col-lg-5 col-sm-12 my-auto">
+                      <input type="text" class="form-control textbox-height w-100"  placeholder="" v-model="contributionItemName" required /> 
+                  </div>
+                  <div class="col-sm-4 mt-3 text-right pr-0 align-self-center">
+                      <label>Income Account</label>
+                  </div>
+                  <div class="col-lg-5 col-sm-12 mt-3">
+                      <Dropdown v-model="selectedIncomeAccount" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+                      </Dropdown>
+                  </div>
+                  <div class="col-sm-4 mt-3 text-right pr-0">
+                      <label>Cash Account</label>
+                    </div>
+                  <div class="col-lg-5 col-sm-12 mt-3">
+                    <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
+                    </Dropdown>
+                  </div>
+                  <div class="col-sm-12 d-flex" @click="toggleRem">
+                      <i class="check-it mr-2">
+                      <span class="child" v-if="applyRem"></span>
+                    </i>
+                    <h6>Apply Remitance</h6>
+                  </div>
+                  <div class="col-sm-12 mt-3" v-if="applyRem">
+                    <hr class="hr"/>
+                  </div>
+                </div>
+
+                <div v-if="applyRem">
+                  <div class="row" v-for="(item, index) in remitance" :key="index">
+                  <div class="col-sm-4 mt-5 text-right pr-0 align-self-center">
+                      <label>Income Account</label>
+                  </div>
+                  <div class="col-lg-5 col-sm-12 mt-5">
+                      <Dropdown v-model="item.account" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+                      </Dropdown>
+                  </div>
+
+                  <div class="col-sm-4 text-right align-self-center mt-3">
+                      <label>Percentage %</label>
+                    </div>
+                  <div class="col-lg-5 col-sm-12 mt-3">
+                      <input type="text" class="form-control textbox-height w-100"  placeholder="" v-model="item.percentage" required /> 
+                  </div>
+
+                  <div class="col-sm-2 col-12 adjust-down">
+                    <button
+                      v-on:click="addRemittance"
+                      class="btn btnIcons btn-secondary"
+                    >
+                      <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
+                      Add
+                    </button>
+                  </div>
+                  <div class="col-sm-1 adjust-down" @click="deleteItem(index)">
+                    <i class="pi pi-trash"></i>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+              <div class="modal-footer d-flex justify-content-center mt-4  ml-5" style="border: none">
+                <button type="button" class="btn secondary-btn px-5" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+               
+              <button class="add-person-btn button default-btn border-0" @click="createNewCon">
+                Save
+              </button>
+    
+              </div>
+            </div>
+          </div>
+        </div>
   </div>
 </template>
 
@@ -1616,12 +1700,14 @@ import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
 // import store from "@/store/store.js"
 // import { useToast } from 'primevue/usetoast';
-import Dropdown from 'primevue/dropdown';
+
 import membershipService from "../../services/membership/membershipservice";
+import CurrencyConverter from "./CurrencyConverter"
+import Dropdown from 'primevue/dropdown';
 // import { useStore } from 'vuex'
 export default {
   components: {
-    SelectElem, Dropdown
+    SelectElem, CurrencyConverter, Dropdown
   },
   data() {
     return {
@@ -1749,7 +1835,18 @@ export default {
       searchedMembers: [],
       selectedCurrencyId: "",
       tenantId: "",
-      tenantCurrency: {}
+      tenantCurrency: {},
+      selectedCurrencyName: "",
+      currencyAmount: "",
+      convertedAmount: [],
+      currencyIndex: 0,
+      applyRem: false,
+      remitance: [{}],
+      incomeAccount: [],
+      selectedIncomeAccount: "",
+      contributionItemName: "",
+      selectedCashAccount: "",
+      cashBankAccount: []
     };
   },
   methods: {
@@ -1931,6 +2028,7 @@ export default {
         this.offeringItem[index].showCurrency = false
         this.offeringItem[index].currencyName = item.name
         // this.selectedCurrencyId = item.id
+        this.selectedCurrencyName = e.target.innerHTML.split(" ")[0]
         console.log(item)
 
     },
@@ -1939,6 +2037,7 @@ export default {
     },
     delOffering(index) {
       this.offeringItem.splice(index, 1);
+      this.convertedAmount.splice(index, 1)
     },
     toggleForm1() {
       this.showForm1 = !this.showForm1;
@@ -2433,7 +2532,92 @@ export default {
             NProgress.done();
             console.log(err);
         }
-    }
+    },
+    sendAmount (e, index) {
+      this.currencyAmount = e.target.value
+      this.currencyIndex = index
+    },
+    pushConvertedCurrency (payload) {
+      this.convertedAmount[this.currencyIndex] = payload
+    },
+    toggleRem () {
+      this.applyRem = !this.applyRem
+    },
+    addRemittance () {
+      this.remitance.push({})
+    },
+    deleteItem (index) {
+      this.remitance.splice(index, 1)
+    },
+    getIncomeAccount () {
+        axios.get('/api/Financials/Accounts/GetIncomeAccounts')
+          .then(res => {
+              /*eslint no-undef: "warn"*/
+              NProgress.done();
+              console.log(res)
+            this.incomeAccount = res.data
+          })
+          .catch(err => {
+              NProgress.done();
+              console.log(err)
+          })
+      },
+      getCashBankAccount () {
+          axios.get('/api/financials/accounts/getcashbankaccounts')
+            .then(res => {
+              console.log(res.data)
+              this.cashBankAccount = res.data
+            })
+            .catch (err => {
+              console.log(err)
+            })
+      },
+      createNewCon (e) {
+          let contributionCategory = {
+            name: this.contributionItemName,
+            incomeAccountId: this.selectedIncomeAccount.id,
+
+            cashAccountId: this.selectedCashAccount.id,
+            
+          }
+              if (this.remitance[0].account || this.remitance[0].percentage) {
+                contributionCategory.incomeRemittance = this.remitance.map(i => {
+                  return {
+                    financialFundID: i.account.financialFundID,
+                    distinationIncomeAccount: i.account.id,
+                    percentage: i.percentage
+                  }
+                })
+              } else {
+                contributionCategory.incomeRemittance = null
+              }
+          console.log(contributionCategory)
+          axios.post('/api/financials/contributions/items/save', contributionCategory)
+                  .then(res => {
+
+                    this.newOfferings.push({
+                      name: this.contributionItemName,
+                      id: res.data.id
+                    })
+                    this.$toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
+                    console.log(res)
+
+                    this.offeringItem.push({
+                      name: res.data.name,
+                      offeringTypeId: res.data.id,
+                      channel: "Cash",
+                      currency: this.tenantCurrency.currencyId,
+                      donor: ""
+                    });
+                    
+                  })
+                  .catch(err => {
+                    this.$toast.add({severity:'error', summary: 'Error', detail:'Not Successful', life: 3000});
+                    console.log(err)
+                  })
+                  e.target.setAttribute('data-dismiss', 'modal')
+        }
+      
         
   },
   created() {
@@ -2456,6 +2640,8 @@ export default {
     this.getHowDidYouAboutUsId();
     this.getEventById();
     this.getCurrenciesFromCountries();
+    this.getIncomeAccount()
+    this.getCashBankAccount()
 
 
 
@@ -2510,13 +2696,16 @@ export default {
       }
       return arr;
     },
-    addOfferingTotal() {
-      if (this.offeringItem.length <= 0) return 0;
-      if (this.offeringItem.length === 1) return this.offeringItem[0].amount;
-      const amounts = this.offeringItem.map((i) => +i.amount);
-      return amounts.reduce((a, b) => {
-        return (a || 0) + (b || 0);
-      });
+    addContributionTotal() {
+      if (this.convertedAmount.length <= 0) return 0;
+      // if (this.convertedAmount.length === 1) return this.convertedAmount[0].amount;
+      // const amounts = this.offeringItem.map((i) => +i.amount);
+      // return amounts.reduce((a, b) => {
+      //   return (a || 0) + (b || 0);
+      // });
+      return this.convertedAmount.reduce((a, b) => {
+        return +a + +b
+      })
     },
     addAttendanceTotal() {
       if (this.attendanceItem.length <= 0) return 0;
@@ -2687,7 +2876,6 @@ export default {
   font: normal normal 600 20px/27px Nunito Sans;
   letter-spacing: 0px;
   color: #02172eb9;
-  text-align: right;
   align-self: center;
 }
 .edit {
@@ -3171,6 +3359,53 @@ input.codeInput {
     cursor: pointer;
     }
 
+    .check-it {
+      border: 2px solid #136acd;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-top: -1px;
+    }
+
+    .check-it .child {
+      /* border: 2px solid red; */
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #136acd;
+      position: relative;
+      left: 3px;
+      top: -4px;
+    }
+
+    .hr {
+        border: 0.8px solid #0020440a;
+      }
+
+    .btnIcons {
+      width: 110px;
+      height: 41px;
+      color: #136acd;
+      background-color: #dde2e6;
+      border-radius: 40px;
+      border: none;
+    }
+
+    .add-person-btn {
+      background: #136acd;
+      color: #fff;
+    }
+
+    .adjust-down {
+          align-self: flex-end;
+      }
+
+    .converted-amount {
+      margin-left: -16%
+    }
+
+
 @media (min-width: 576px) {
   .offset-sm-1 {
     margin-left: 4.333333%;
@@ -3190,6 +3425,9 @@ input.codeInput {
   .push-public {
     margin-top: 2em;
   }
+  .converted-amount {
+      margin-left: -6%
+    }
 }
 @media (max-width: 991px) {
   .row.form-body.reg .row div {

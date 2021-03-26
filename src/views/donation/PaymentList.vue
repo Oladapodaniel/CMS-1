@@ -149,7 +149,7 @@
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">10</router-link>
                 </div>
                 <div class="col-sm-2">
-                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ moment.parseZone(new Date(item.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i }}</router-link>
+                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ date(item.date) }}</router-link>
                 </div>
                 <div class="col-sm-2" >
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.isActive ? "Active" : "Inactive" }}</router-link>
@@ -210,6 +210,7 @@ import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
 import finish from '../../services/progressbar/progress'
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
+import formatDate from "../../services/dates/dateformatter"
 export default {
     props: ['paymentList'],
     components: { PaginationButtons },
@@ -314,9 +315,14 @@ export default {
         },
       });
     };
+
+      const date = date => {
+        return formatDate.monthDayYear(date)
+      }
+
         return  {
             moment, showConfirmModal, deleteOffering, filterFormIsVissible, toggleFilterFormVissibility, toggleSearch, searchIsVisible,banks,
-            loading, getPaymentGateway
+            loading, getPaymentGateway, date
         }
     }
 }

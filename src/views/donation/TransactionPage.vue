@@ -182,11 +182,7 @@ export default {
     const endDate = ref("1/1/0001 00:00:00");
     const loading = ref(false);
     const userInputs = ref("");
-    const userTransaction = ref([{
-      memo:'Building Project',
-      amount: 20000000,
-      date:'21/2/2021',
-    }]);
+    const userTransaction = ref([]);
 
     const searchInputs = computed(() => {
       if (!userInputs.value) {

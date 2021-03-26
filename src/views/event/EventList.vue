@@ -969,6 +969,7 @@ const deleteMember = (id) => {
   border-bottom-left-radius: 25px;
   background: #cecbcb70;
   padding: 7px;
+  margin-left: 10px
 }
 
 .top-con {
@@ -983,6 +984,10 @@ const deleteMember = (id) => {
 
 .active-btn {
   background: #0e74c721;
+}
+
+.table-responsive {
+  overflow-x: hidden
 }
 
 @media screen and (max-width: 500px) {
@@ -1180,7 +1185,7 @@ const deleteMember = (id) => {
 }
 
 .table-body {
-    padding: 12px;
+    padding: 0px;
     border-bottom: 1.5px solid #6d6d6d19
     
 
