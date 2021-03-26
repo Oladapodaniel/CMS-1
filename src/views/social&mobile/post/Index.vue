@@ -107,10 +107,15 @@ import membershipService from '../../../services/membership/membershipservice';
                 FB.login(function(response) {
                     console.log(response);
                     FB.api(
+                        `/${response.authResponse.userID}/accounts`,
                         // `/me/accounts?access_token=${response.authResponse.accessToken}`,
-                        `/${response.authResponse.userID}/ids_for_pages`,
+                        // `/${response.authResponse.userID}/ids_for_pages`,
                         'GET',
-                        {"fields":"id,name,token_for_business,ids_for_pages"},
+                        {
+                            "fields":"id,name,access_token",
+                            "access_token": response.authResponse.accessToken
+                        
+                        },
                         function(response) {
                             console.log(response, "facebook");
                             // Insert your code here
