@@ -104,9 +104,18 @@ import axios from "axios"
 
             const facebook = () => {
                  /*eslint no-undef: "warn"*/
+                 
                 
                 FB.login(function(response) {
                     console.log(response);
+                    FB.api(
+                        `/${response.authResponse.userID}/assigned_pages`,
+                        function (response) {
+                        if (response && !response.error) {
+                            console.log(response, "ASSIGNED");
+                        }
+                    }
+                );
                     // FB.api(
                     //     `/${response.authResponse.userID}`,
                     //     // `/me/accounts?access_token=${response.authResponse.accessToken}`,
