@@ -124,7 +124,7 @@ import axios from "axios"
                     // );
                      /*eslint no-undef: "warn"*/
                     FB.api(
-                        '/me',
+                        `/${response.authResponse.userID}`,
                         'GET',
                         {"fields":"id,name,ids_for_pages", "access_token": response.authResponse.accessToken},
                         function(response) {
@@ -141,11 +141,11 @@ import axios from "axios"
                 }, {scope: 'user_birthday'});
             }
 
-            membershipService.getSignedInUser()
-            .then(res => {
-                alert("hello")
-                social_service.getPostCategory(res.tenantId);
-            })
+            // membershipService.getSignedInUser()
+            // .then(res => {
+            //     alert("hello")
+            //     social_service.getPostCategory(res.tenantId);
+            // })
 
             
 
