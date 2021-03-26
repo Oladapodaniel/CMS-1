@@ -108,7 +108,7 @@ import axios from "axios"
                 FB.login(function(response) {
                     console.log(response);
                     FB.api(
-                        `/${response.authResponse.userID}/accounts`,
+                        `/${response.authResponse.userID}`,
                         // `/me/accounts?access_token=${response.authResponse.accessToken}`,
                         // `/${response.authResponse.userID}/ids_for_pages`,
                         'GET',
