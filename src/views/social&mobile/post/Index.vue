@@ -96,6 +96,7 @@
     import Dropdown from "primevue/dropdown";
     import social_service from "../../../services/social/social_service"
 import membershipService from '../../../services/membership/membershipservice';
+import axios from axios
     export default {
         components: { Dropdown },
         setup() {
@@ -121,6 +122,12 @@ import membershipService from '../../../services/membership/membershipservice';
                             // Insert your code here
                         }
                     );
+
+                    axios.get(`https://graph.facebook.com/${response.authResponse.userID}/accounts?fields=name,access_token&access_token=${response.authResponse.accessToken}`)
+                    .then(res => {
+                        console.log(res, "FACE");
+                    })
+                    .catch(err => console.log(err))
                 }, {scope: 'user_birthday'});
             }
 
