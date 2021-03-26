@@ -105,41 +105,19 @@
             const facebook = () => {
                  /*eslint no-undef: "warn"*/
                  
-                alert("first")
-                FB.login(function(response) {
+                try {
+                    FB.api(
+                        `/${response.authResponse.userID}`,
+                        'GET',
+                        {"fields":"id,name,ids_for_pages", "access_token": response.authResponse.accessToken},
+                        function(response) {
+                            // Insert your code here
+                            console.log(response, "SSSOSOS");
+                        }
+                    );
+                } catch (error) {
+                    FB.login(function(response) {
                     console.log(response);
-                    // FB.api(
-                    //     `/${response.authResponse.userID}/assigned_pages`,
-                    //     {"access_token": response.authResponse.accessToken},
-                    //     function (response) {
-                    //     if (response && !response.error) {
-                    //         console.log(response, "ASSIGNED");
-                    //     }
-                    // });
-                    // alert("second")
-                    // FB.api(
-                    //     `/${response.authResponse.userID}/ids_for_pages`,
-                    //     {"access_token": response.authResponse.accessToken},
-                    //     function (response) {
-                    //     if (response && !response.error) {
-                    //         console.log(response, "PAGES");
-                    //     }
-                    // });
-                    // FB.api(
-                    //     `/${response.authResponse.userID}`,
-                    //     // `/me/accounts?access_token=${response.authResponse.accessToken}`,
-                    //     // `/${response.authResponse.userID}/ids_for_pages`,
-                    //     'GET',
-                    //     {
-                    //         "fields":"id,name,access_token",
-                    //         "access_token": response.authResponse.accessToken
-                        
-                    //     },
-                    //     function(response) {
-                    //         console.log(response, "facebook");
-                    //         // Insert your code here
-                    //     }
-                    // );
 
                      /*eslint no-undef: "warn"*/
                      alert("third")
@@ -153,8 +131,8 @@
                         }
                     );
 
-                    alert("fourth")
                 }, {scope: 'user_birthday'});
+                }
             }
 
             // membershipService.getSignedInUser()
