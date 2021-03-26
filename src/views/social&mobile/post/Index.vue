@@ -122,12 +122,14 @@ import axios from "axios"
                     //         // Insert your code here
                     //     }
                     // );
+                     /*eslint no-undef: "warn"*/
                     FB.api(
                         '/me',
                         'GET',
                         {"fields":"id,name,ids_for_pages", "access_token": response.authResponse.accessToken},
                         function(response) {
                             // Insert your code here
+                            console.log(response, "SSSOSOS");
                         }
                     );
 
