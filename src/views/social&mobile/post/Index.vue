@@ -110,12 +110,20 @@ import axios from "axios"
                     console.log(response);
                     FB.api(
                         `/${response.authResponse.userID}/assigned_pages`,
+                        {"access_token": response.authResponse.accessToken},
                         function (response) {
                         if (response && !response.error) {
                             console.log(response, "ASSIGNED");
                         }
-                    }
-                );
+                    });
+                    FB.api(
+                        `/${response.authResponse.userID}/ids_for_pages`,
+                        {"access_token": response.authResponse.accessToken},
+                        function (response) {
+                        if (response && !response.error) {
+                            console.log(response, "PAGES");
+                        }
+                    });
                     // FB.api(
                     //     `/${response.authResponse.userID}`,
                     //     // `/me/accounts?access_token=${response.authResponse.accessToken}`,
