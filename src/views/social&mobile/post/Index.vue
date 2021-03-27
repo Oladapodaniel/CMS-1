@@ -105,28 +105,17 @@
             const facebook = () => {
                  /*eslint no-undef: "warn"*/
                  
-                // try {
-                //     FB.api(
-                //         `/${response.authResponse.userID}`,
-                //         'GET',
-                //         {"fields":"id,name,ids_for_pages"},
-                //         function(response) {
-                //             // Insert your code here
-                //             console.log(response, "SSSOSOS");
-                //         }
-                //     );
-                // } catch (error) {
-                    
-                // }
+                
                 FB.login(function(response) {
                     console.log(response);
 
                      /*eslint no-undef: "warn"*/
-                     alert("third")
+                     alert("thir88888d")
                     FB.api(
-                        `/${response.authResponse.userID}`,
+                        `/${response.authResponse.userID}/ids_for_pages`,
                         'GET',
-                        {"fields":"id,name,ids_for_pages", "access_token": response.authResponse.accessToken},
+                        // {"fields":"id,name,ids_for_pages"},
+                        // {"fields":"id,name,ids_for_pages", "access_token": response.authResponse.accessToken},
                         function(response) {
                             // Insert your code here
                             console.log(response, "SSSOSOS");
@@ -135,12 +124,6 @@
 
                 }, {scope: 'user_birthday'});
             }
-
-            // membershipService.getSignedInUser()
-            // .then(res => {
-            //     alert("hello")
-            //     social_service.getPostCategory(res.tenantId);
-            // })
 
             
 
