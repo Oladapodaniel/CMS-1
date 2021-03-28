@@ -106,14 +106,14 @@
                  /*eslint no-undef: "warn"*/
                  
                 
-                FB.login(function(response) {
-                    localStorage.setItem("userId", response.authResponse.userID)
-                    console.log(response);
+                // FB.login(function(response) {
+                //     localStorage.setItem("userId", response.authResponse.userID)
+                //     console.log(response);
 
                      /*eslint no-undef: "warn"*/
-                     alert("thir88888d")
                     FB.api(
-                        `/${response.authResponse.userID}/ids_for_pages`,
+                        `/${localStorage.getItem("userId")}/ids_for_pages`,
+                        // `/${response.authResponse.userID}/ids_for_pages`,
                         'GET',
                         // {"fields":"id,name,ids_for_pages"},
                         // {"fields":"id,name,ids_for_pages", "access_token": response.authResponse.accessToken},
@@ -123,7 +123,7 @@
                         }
                     );
 
-                }, {scope: 'user_birthday'});
+                // }, {scope: 'user_birthday'});
             }
 
             
