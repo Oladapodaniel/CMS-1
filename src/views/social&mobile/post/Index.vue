@@ -106,9 +106,10 @@
                  /*eslint no-undef: "warn"*/
                  
                 
-                // FB.login(function(response) {
-                //     localStorage.setItem("userId", response.authResponse.userID)
-                //     console.log(response);
+                FB.login(function(response) {
+                    localStorage.setItem("userId", response.authResponse.userID)
+                    localStorage.setItem("fbtoken", response.authResponse.accessToken)
+                    console.log(response);
 
                      /*eslint no-undef: "warn"*/
                     FB.api(
@@ -123,7 +124,7 @@
                         }
                     );
 
-                // }, {scope: 'user_birthday'});
+                }, {scope: 'user_birthday'});
             }
 
             
