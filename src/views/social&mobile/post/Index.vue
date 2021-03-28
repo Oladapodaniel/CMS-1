@@ -148,7 +148,7 @@ import membershipService from '../../../services/membership/membershipservice';
                         socialMedia: {
                             facebook: {
                                 pageId: pageId,
-                                accessToken: localStorage.getItem("fbtoken")
+                                accessToken: "EAALhDeBzXnMBANRaizf24tXt3XOouwMNtqBPGNx5iuLTqqbjQeca27GEco4Olr0x8ZCBpFnWseZBZCny9CqqCCmUnU2L5JilLXr7zBdIWtKRzuYAsLcQ6r2ZBGywDnp3b3JfrV0Mpt0lFtZChh40ffDWY7lZCIs0j76W5PkmuS5MtjZBt90oMtZClZAu2KhLZB2CEDp5YOryr0rgZDZD"
                             }
                         }
                     })
