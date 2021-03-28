@@ -19,7 +19,7 @@ const getPostCategory = (tenantId) => {
 
 const postMessage = (body) => {
     return new Promise((resolve, reject) => {
-        axios.post(`/mobile/v{version}/Feeds/CreatePost`, body)
+        axios.post(`/mobile/v1/Feeds/CreatePost`, body)
         .then(res => {
             console.log(res, "SOCIAL");
             resolve(res.data);
