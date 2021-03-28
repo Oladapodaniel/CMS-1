@@ -101,24 +101,24 @@
         components: { Dropdown },
         setup() {
             const selectedDestination = "Facebook";
+            const pageId = "978547345603168";
 
             const facebook = () => {
                  /*eslint no-undef: "warn"*/
                  
                 
-                FB.login(function(response) {
-                    localStorage.setItem("userId", response.authResponse.userID)
-                    localStorage.setItem("fbtoken", response.authResponse.accessToken)
-                    console.log(response);
+                // FB.login(function(response) {
+                //     localStorage.setItem("userId", response.authResponse.userID)
+                //     localStorage.setItem("fbtoken", response.authResponse.accessToken)
+                //     console.log(response);
 
                      /*eslint no-undef: "warn"*/
                     FB.api(
-                        `/${localStorage.getItem("userId")}/ids_for_pages`,
-                        // `/me/ids_for_pages`,
+                        `/978547345603168/locations`,
                         // `/${response.authResponse.userID}/ids_for_pages`,
                         'GET',
                         // {"fields":"id,name,ids_for_pages"},
-                        {"access_token": localStorage.getItem("fbtoken")},
+                        {"fields":"access_token","access_token": localStorage.getItem("fbtoken")},
                         function(response) {
                             // Insert your code here
                             console.log(response, "SSSOSOS");
@@ -136,7 +136,7 @@
                     //     }
                     // );
 
-                }, {scope: 'user_birthday'});
+                // }, {scope: 'user_birthday'});
             }
 
             
@@ -144,6 +144,7 @@
             return {
                 selectedDestination,
                 facebook,
+                pageId,
             }
         }
     }
