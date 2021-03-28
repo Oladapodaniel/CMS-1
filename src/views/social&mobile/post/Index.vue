@@ -148,7 +148,7 @@ import membershipService from '../../../services/membership/membershipservice';
                         socialMedia: {
                             facebook: {
                                 pageId: pageId,
-                                accessToken: "EAALhDeBzXnMBANRaizf24tXt3XOouwMNtqBPGNx5iuLTqqbjQeca27GEco4Olr0x8ZCBpFnWseZBZCny9CqqCCmUnU2L5JilLXr7zBdIWtKRzuYAsLcQ6r2ZBGywDnp3b3JfrV0Mpt0lFtZChh40ffDWY7lZCIs0j76W5PkmuS5MtjZBt90oMtZClZAu2KhLZB2CEDp5YOryr0rgZDZD"
+                                accessToken: "EAALhDeBzXnMBAFvvxEgZAun9m5V3a8hYZCgRH23ZBjrPTw7714ra9osaWdqeJXPUKdTZA6Lr2xNaZCoPHNgseZARSVbJbAHjr9J6wUO18xZB9hGAYrU6L4UwgKzL0zBQRSJyaXt9ubTRWvOZAcZBF6reIpbDkxlnqvZBbZAgFub0omQX8Ly5eBc2gmZCY6ycpSFm6eJ7d9Il6SpidQZDZD"
                             }
                         }
                     })
