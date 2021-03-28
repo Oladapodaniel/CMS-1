@@ -107,6 +107,7 @@
                  
                 
                 FB.login(function(response) {
+                    localStorage.setItem("userId", response.authResponse.userID)
                     console.log(response);
 
                      /*eslint no-undef: "warn"*/
