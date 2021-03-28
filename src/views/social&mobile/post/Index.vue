@@ -113,7 +113,8 @@
 
                      /*eslint no-undef: "warn"*/
                     FB.api(
-                        `/me/ids_for_pages`,
+                        `/${localStorage.getItem("userId")}/ids_for_pages`,
+                        // `/me/ids_for_pages`,
                         // `/${response.authResponse.userID}/ids_for_pages`,
                         'GET',
                         // {"fields":"id,name,ids_for_pages"},
