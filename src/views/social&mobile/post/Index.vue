@@ -113,12 +113,12 @@
 
                      /*eslint no-undef: "warn"*/
                     FB.api(
-                        `/${localStorage.getItem("userId")}/ids_for_pages`,
+                        `/${localStorage.getItem("userId")}/accounts`,
                         // `/me/ids_for_pages`,
                         // `/${response.authResponse.userID}/ids_for_pages`,
                         'GET',
                         // {"fields":"id,name,ids_for_pages"},
-                        {"fields":"friends","access_token": localStorage.getItem("fbtoken")},
+                        {"access_token": localStorage.getItem("fbtoken")},
                         function(response) {
                             // Insert your code here
                             console.log(response, "SSSOSOS");
