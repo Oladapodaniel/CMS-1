@@ -94,8 +94,8 @@
 
 <script>
     import Dropdown from "primevue/dropdown";
-//     import social_service from "../../../services/social/social_service"
-// import membershipService from '../../../services/membership/membershipservice';
+    import social_service from "../../../services/social/social_service"
+import membershipService from '../../../services/membership/membershipservice';
 // import axios from "axios"
     export default {
         components: { Dropdown },
@@ -137,6 +137,22 @@
                     // );
 
                 // }, {scope: 'user_birthday'});
+
+                membershipService.getSignedInUser()
+                .then(res => {
+                    social_service.postMessage({
+                        title: "Title",
+                        content: "Test Post to facebook",
+                        tenantId: res.tenantId,
+                        mediaChannels: [ "facebook" ],
+                        socialMedia: {
+                            facebook: {
+                                pageId: pageId,
+                                accessToken: localStorage.getItem("fbtoken")
+                            }
+                        }
+                    })
+                })
             }
 
             
