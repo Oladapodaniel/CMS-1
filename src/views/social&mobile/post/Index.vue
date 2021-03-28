@@ -106,10 +106,10 @@
                  /*eslint no-undef: "warn"*/
                  
                 
-                FB.login(function(response) {
-                    localStorage.setItem("userId", response.authResponse.userID)
-                    localStorage.setItem("fbtoken", response.authResponse.accessToken)
-                    console.log(response);
+                // FB.login(function(response) {
+                //     localStorage.setItem("userId", response.authResponse.userID)
+                //     localStorage.setItem("fbtoken", response.authResponse.accessToken)
+                //     console.log(response);
 
                      /*eslint no-undef: "warn"*/
                     FB.api(
@@ -117,14 +117,14 @@
                         // `/${response.authResponse.userID}/ids_for_pages`,
                         'GET',
                         // {"fields":"id,name,ids_for_pages"},
-                        // {"fields":"id,name,ids_for_pages", "access_token": response.authResponse.accessToken},
+                        {"access_token": localStorage.getItem("fbtoken")},
                         function(response) {
                             // Insert your code here
                             console.log(response, "SSSOSOS");
                         }
                     );
 
-                }, {scope: 'user_birthday'});
+                // }, {scope: 'user_birthday'});
             }
 
             
