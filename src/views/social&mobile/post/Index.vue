@@ -114,7 +114,7 @@
 
                      /*eslint no-undef: "warn"*/
                     FB.api(
-                        `/978547345603168/locations`,
+                        `/978547345603168`,
                         // `/${response.authResponse.userID}/ids_for_pages`,
                         'GET',
                         // {"fields":"id,name,ids_for_pages"},
