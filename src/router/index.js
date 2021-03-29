@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 
-import Pagination from '@/views/social&mobile/dashboard/Index.vue';
+import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
 import TermsOfUse from '../components/temp/PaymentPage'
 
@@ -24,6 +24,46 @@ const routes = [{
         name: 'Login',
         component: () =>
             import ( /* webpackChunkName: "login" */ '../views/account/Login.vue')
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: () =>
+            import ( /* webpackChunkName: "register" */ '../views/account/Register.vue')
+    },
+    {
+        path: '/onboarding',
+        name: 'Onboarding',
+        component: () =>
+            import (
+                /* webpackChunkName: …
+[6:05 PM, 3/29/2021] Senior Dev. Complutech: import { createRouter, createWebHistory } from 'vue-router';
+
+
+import Pagination from '@/components/payment/PaymentSuccessful.vue';
+
+import TermsOfUse from '../components/temp/PaymentPage'
+
+
+
+const routes = [{
+    path: '/pagination',
+    name: 'Pagination',
+    component: Pagination
+},
+
+{
+    path: '/terms',
+    name: 'TermsOfUse',
+    component: TermsOfUse,
+},
+
+{
+    path: '/',
+    name: 'Login',
+    component: () =>
+        import( /* webpackChunkName: "login" */
+                '../views/account/Login.vue')
     },
     {
         path: '/register',
@@ -408,7 +448,25 @@ const routes = [{
                         path: 'post',
                         name: 'SocialPost',
                         component: () =>
-                            import ( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/post/Index'),
+                            import ( /* webpackChunkName: "post" */ '@/views/social&mobile/post/Index'),
+                    },
+                    {
+                        path: 'feed',
+                        name: 'SocialFeed',
+                        component: () =>
+                            import ( /* webpackChunkName: "feed" */ '@/views/social&mobile/feed/Index'),
+                    },
+                    {
+                        path: 'pending',
+                        name: 'PendingReview',
+                        component: () =>
+                            import ( /* webpackChunkName: "pendingreview" */ '@/views/social&mobile/pending/Index'),
+                    },
+                    {
+                        path: 'schedule',
+                        name: 'PendingReview',
+                        component: () =>
+                            import ( /* webpackChunkName: "pendingreview" */ '@/views/social&mobile/schedule/Index'),
                     },
                 ]
             },
