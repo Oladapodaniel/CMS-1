@@ -94,8 +94,8 @@
 
 <script>
     import Dropdown from "primevue/dropdown";
-    import social_service from "../../../services/social/social_service"
-import membershipService from '../../../services/membership/membershipservice';
+//     import social_service from "../../../services/social/social_service"
+// import membershipService from '../../../services/membership/membershipservice';
 // import axios from "axios"
     export default {
         components: { Dropdown },
@@ -107,14 +107,14 @@ import membershipService from '../../../services/membership/membershipservice';
                  /*eslint no-undef: "warn"*/
                  
                 
-                // FB.login(function(response) {
-                //     localStorage.setItem("userId", response.authResponse.userID)
-                //     localStorage.setItem("fbtoken", response.authResponse.accessToken)
-                //     console.log(response);
+                FB.login(function(response) {
+                    localStorage.setItem("userId", response.authResponse.userID)
+                    localStorage.setItem("fbtoken", response.authResponse.accessToken)
+                    console.log(response);
 
                      /*eslint no-undef: "warn"*/
                     FB.api(
-                        `/978547345603168`,
+                        `/me/accounts`,
                         // `/${response.authResponse.userID}/ids_for_pages`,
                         'GET',
                         // {"fields":"id,name,ids_for_pages"},
@@ -136,23 +136,23 @@ import membershipService from '../../../services/membership/membershipservice';
                     //     }
                     // );
 
-                // }, {scope: 'user_birthday'});
+                }, {scope: 'user_birthday'});
 
-                membershipService.getSignedInUser()
-                .then(res => {
-                    social_service.postMessage({
-                        title: "Title",
-                        content: "Test Post to facebook",
-                        tenantId: res.tenantId,
-                        mediaChannels: [ "facebook" ],
-                        socialMedia: {
-                            facebook: {
-                                pageId: pageId,
-                                accessToken: "EAALhDeBzXnMBAFvvxEgZAun9m5V3a8hYZCgRH23ZBjrPTw7714ra9osaWdqeJXPUKdTZA6Lr2xNaZCoPHNgseZARSVbJbAHjr9J6wUO18xZB9hGAYrU6L4UwgKzL0zBQRSJyaXt9ubTRWvOZAcZBF6reIpbDkxlnqvZBbZAgFub0omQX8Ly5eBc2gmZCY6ycpSFm6eJ7d9Il6SpidQZDZD"
-                            }
-                        }
-                    })
-                })
+                // membershipService.getSignedInUser()
+                // .then(res => {
+                //     social_service.postMessage({
+                //         title: "Title",
+                //         content: "Test Post to facebook",
+                //         tenantId: res.tenantId,
+                //         mediaChannels: [ "facebook" ],
+                //         socialMedia: {
+                //             facebook: {
+                //                 pageId: pageId,
+                //                 accessToken: "EAALhDeBzXnMBAFvvxEgZAun9m5V3a8hYZCgRH23ZBjrPTw7714ra9osaWdqeJXPUKdTZA6Lr2xNaZCoPHNgseZARSVbJbAHjr9J6wUO18xZB9hGAYrU6L4UwgKzL0zBQRSJyaXt9ubTRWvOZAcZBF6reIpbDkxlnqvZBbZAgFub0omQX8Ly5eBc2gmZCY6ycpSFm6eJ7d9Il6SpidQZDZD"
+                //             }
+                //         }
+                //     })
+                // })
             }
 
             
