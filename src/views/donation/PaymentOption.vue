@@ -131,7 +131,7 @@
 // import MultiSelect from 'primevue/multiselect';
 import { useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
-import { useStore } from 'vuex';
+// import { useStore } from 'vuex';
 import router from '../../router';
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi";
@@ -184,12 +184,12 @@ import axios from "@/gateway/backendapi";
             // }
 
             onMounted(async() => {
-                let store = useStore()
+                // let store = useStore()
                 // console.log(route.params, "userouteeeee")
 
-                let storedData = store.getters['contributions/paymentData']
+                // let storedData = store.getters['contributions/paymentData']
                 // Check if the Object is empty
-                if (Object.keys(storedData).length === 0) {
+                // if (Object.keys(storedData).length === 0) {
                     try {
                         const res = await axios.get(`/api/PaymentForm/GetOne?paymentFormID=${route.params.paymentId}`);
                         console.log(res, 'dataaaaaaaa')
@@ -199,11 +199,11 @@ import axios from "@/gateway/backendapi";
                     catch (err) {
                         console.log(err)
                     }
-                }  else {
-                    paymentData.value.title = store.getters['contributions/paymentData'].name
-                    paymentData.value.contributionItems = store.getters['contributions/paymentData'].contributionItems.map(i => i.financialContribution)
-                    console.log(store.getters['contributions/paymentData'], 'yeaaaa')
-                }
+                // }  else {
+                //     paymentData.value.title = store.getters['contributions/paymentData'].name
+                //     paymentData.value.contributionItems = store.getters['contributions/paymentData'].contributionItems.map(i => i.financialContribution)
+                //     console.log(store.getters['contributions/paymentData'], 'yeaaaa')
+                // }
 
 
             })
@@ -403,7 +403,8 @@ letter-spacing: 0px;
 }
 
 .edit {
-    color: #0b71d6
+    color: #0b71d6;
+    cursor: pointer;
 }
 
 .disabled {

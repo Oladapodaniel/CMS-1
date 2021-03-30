@@ -318,11 +318,9 @@
       <!-- <div>{{ series2 }}</div> -->
       <!-- <div>{{ tenantInfo ? tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.invitationSource : [] : [] }}</div> -->
 
-
-        <!-- <div class="chart-con" v-if="firstTimerPieExist"> -->
-          
-          
-          <div class="container">
+<!-- {{summed}} -->
+        <div class="chart-con" v-if="sumIt">
+         <div class="container">
             <div class="row">
               <div class="col-12 col-md-6 d-flex justify-content-center">
                 <div class="chart1">
@@ -347,7 +345,7 @@
               </div>
             </div>
           </div>
-        <!-- </div> -->
+        </div>
         <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
         <!-- <div>{{ chartData2 }}</div> -->
 
@@ -414,7 +412,8 @@ export default {
     const firstTimerBoolean = ref(true);
     const attendanceDataExist = ref(false)
     const firstTimerDataExist = ref(false)
-    const firstTimerPieExist = ref(false)
+    const firstTimerPieExist = ref(true)
+    const summed = ref(0)
 
     // const attendance
 
@@ -462,11 +461,19 @@ export default {
             firstTimerDataExist.value = true
           }
         });
-        tenantInfo.value.firstTimerSummary.invitationSource.forEach(element => {
-          if (element.value > 0) {
-            firstTimerPieExist.value = true
-          }
+        let sum = 0
+        tenantInfo.value.firstTimerSummary.invitationSource.forEach((i) => {
+          // if (element.value > 0) {
+          //   firstTimerPieExist.value = true
+          // }
+          sum += +i.value
+          
         });
+        summed.value = sum
+        // console.log(sum)
+        // if (sum > 0) {
+        //   firstTimerPieExist.value = true
+        // }
       })
       .catch((err) => {
         stopProgressBar();
@@ -565,6 +572,11 @@ export default {
       return tenantInfo.value.eventAttendanceChartData[2]
     });
 
+    const  sumIt = computed(() => {
+      if (!summed.value) return false
+      return true
+    })
+
     
 
     return {
@@ -596,7 +608,9 @@ export default {
       firstTimerSeries,
       attendanceDataExist,
       firstTimerDataExist,
-      firstTimerPieExist
+      firstTimerPieExist,
+      summed,
+      sumIt
     };
   },
 };

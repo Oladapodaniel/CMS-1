@@ -23,7 +23,8 @@ export default {
             state.paymentData = payload
         },
         newlyAddedContribution(state, payload) {
-            state.contributionList.unshift(payload)
+            // state.contributionList.unshift(payload)
+            payload.forEach(i => state.contributionList.unshift(i))
         }
     },
     actions: {
