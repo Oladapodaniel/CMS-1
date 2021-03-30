@@ -24,18 +24,23 @@
           </div>
 
           <div class="col-md-2 col-6 offset-md-4">
-<!-- Example split danger button -->
-<div class="btn-group">
-  <button type="button" class="btn htext2">Ajose Tosin</button>
-  <button type="button" class="btn  dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="sr-only">Toggle Dropdown</span>
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Settings</a>
-    <a class="dropdown-item" href="#">Log Out</a>
-
-  </div>
-</div>
+            <!-- Example split danger button -->
+            <div class="btn-group">
+              <button type="button" class="btn htext2">Ajose Tosin</button>
+              <button
+                type="button"
+                class="btn dropdown-toggle dropdown-toggle-split"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Settings</a>
+                <a class="dropdown-item" href="#">Log Out</a>
+              </div>
+            </div>
           </div>
           <div class="col-md-1 col-2">
             <img
@@ -46,13 +51,14 @@
             />
           </div>
           <div class="col-md-1 col-2">
-            <i @click="download"
+            <i
+              @click="downloadPDF"
               class="pi pi-download bell-shadow bell p-3 d-flex justify-content-center align-items-center"
             ></i>
           </div>
         </div>
 
-        <div class="row d-flex justify-content-center align-items-centergit ">
+        <div class="row d-flex justify-content-center align-items-centergit">
           <div class="col-md-5 px-4">
             <p class="htext">Your Transactions</p>
           </div>
@@ -89,6 +95,7 @@
           </div>
         </div>
         <div
+          ref="downloadArea"
           class="row mt-2 py-2 d-md-flex justify-content-center align-items-center belw"
           v-for="(item, searchInputs) in userTransaction"
           :key="searchInputs"
@@ -104,15 +111,15 @@
             </div>
           </div>
 
-          <div class="col-md-3 htext2 d-md-flex align-items-cente">
+          <div class="col-md-3 htext3 d-md-flex align-items-cente">
             <p class="d-flex justify-content-between">
-              <span class="font-weight-700 d-flex d-md-none">DONATIONS</span>
+              <span class="htext2 d-flex d-md-none">DONATIONS</span>
               <span class="text-right">{{ item.memo }}</span>
             </p>
           </div>
-          <div class="col-md-3 htext2 d-md-flex align-items-cente">
+          <div class="col-md-3 htext3 d-md-flex align-items-cente">
             <p class="d-flex justify-content-between">
-              <span class="font-weight-700 d-flex d-md-none">DATE</span>
+              <span class="htext2 d-flex d-md-none">DATE</span>
               <span class="text-right">{{ item.date }}</span>
             </p>
           </div>
@@ -129,8 +136,7 @@
                 <img
                   class="imgee"
                   src="../../assets/paystackLogo.png"
-                  alt=""
-                  srcset=""
+                  :alt="item.paymentGatewayName"
                 />
               </span>
               <span
@@ -140,35 +146,34 @@
                 <img
                   class="imgee"
                   src="../../assets/2flutterwave.png"
-                  alt=""
-                  srcset=""
+                  :alt="item.paymentGatewayName"
                 />
               </span>
               <span class="text-right" v-else>
                 <img
                   class="imgee"
                   src="../../assets/2flutterwave.png"
-                  alt=""
-                  srcset=""
+                  :alt="item.paymentGatewayName"
                 />
               </span>
             </div>
           </div>
-          <div class="col-md-1 htext2">
+          <div class="col-md-1 htext3">
             <p class="d-flex justify-content-between">
-              <span class="font-weight-700 d-flex d-md-none">AMOUNT</span>
+              <span class="htext2 d-flex d-md-none">AMOUNT</span>
               <span class="text-right">{{ item.amount }}</span>
             </p>
           </div>
-             <hr />
+          <hr />
         </div>
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import jsPDF from "jspdf";
+import autoTable from 'jspdf-autotable'
 import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
@@ -182,11 +187,14 @@ export default {
     const endDate = ref("1/1/0001 00:00:00");
     const loading = ref(false);
     const userInputs = ref("");
-    const userTransaction = ref([{
-      memo:'Building Project',
-      amount: 20000000,
-      date:'21/2/2021',
-    }]);
+    const downloadArea = ref(null)
+    const userTransaction = ref([
+      {
+        memo: "Building Project",
+        amount: 20000000,
+        date: "21/2/2021",
+      },
+    ]);
 
     const searchInputs = computed(() => {
       if (!userInputs.value) {
@@ -230,9 +238,18 @@ export default {
     };
     getPaymentDetails();
 
-    const download = () => {
-console.log('hello world')
-    }
+    const downloadPDF = () => {
+      let doc = new jsPDF();
+      // const html = this.$refs.content.innerHTML;
+      const html = downloadArea.value.innerText;
+      console.log(html);
+      doc.text("Contribution List Report", 10, 10)
+      doc.line(0, 15, 400, 15);
+       doc.text(html, 20, 20)
+      doc.save("ContributionDetails.pdf");
+      doc.autoTable(html)
+    };
+
 
 
     return {
@@ -243,7 +260,10 @@ console.log('hello world')
       loading,
       userInputs,
       searchInputs,
-      download,
+      downloadPDF,
+      jsPDF,
+      autoTable,
+      downloadArea,
     };
   },
 };
@@ -289,19 +309,19 @@ console.log('hello world')
   height: 40px;
 }
 
-.borderline{
-  border: 1px solid #f5f8f9 ;
+.borderline {
+  border: 1px solid #f5f8f9;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
   border-radius: 0.5rem;
 }
 
 .pi2 {
-  color: #54E38A;
+  color: #54e38a;
 }
 
 .date-area {
   border-radius: 20px;
- background: #f5f8f9;
+  background: #f5f8f9;
 }
 
 .htext {
@@ -310,8 +330,13 @@ console.log('hello world')
   color: #020f1e;
 }
 .htext2 {
-
   font: normal normal 700 15px Nunito Sans;
+  letter-spacing: 2px;
+  color: #020f1e;
+}
+
+.htext3 {
+  font: normal normal 500 15px Nunito Sans;
   letter-spacing: 2px;
   color: #020f1e;
 }
