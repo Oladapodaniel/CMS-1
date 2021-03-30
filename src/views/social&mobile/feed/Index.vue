@@ -1,15 +1,15 @@
 <template>
   <div class="constainer-fluid">
-    <div class="row bg-primary blue-bg px-1">
+    <div class="row blue-bg px-1">
       <div class="col-md-3">
         <div class="row">
           <div class="col-md-12 my-5">
-            <h2>Feeds</h2>
+            <h2 class="text-white font-weight-700">Feeds</h2>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-12 all-platforms py-2">
+          <div class="col-md-12 all-platforms py-3">
             <div class="row text-white">
               <div class="col-md-2">
                 <i class="pi pi-microsoft text-white" style="font-size: 1.5rem"></i>
@@ -22,7 +22,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-12 facebook py-2">
+          <div class="col-md-12 facebook py-3">
             <div class="row text-white">
               <div class="col-md-2">
                 <i class="pi pi-facebook text-white" style="font-size: 1.5rem"></i>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-12 twitter py-2">
+          <div class="col-md-12 twitter py-3">
             <div class="row text-white">
               <div class="col-md-2">
                 <i class="pi pi-twitter text-white" style="font-size: 1.5rem"></i>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-12 instagram py-2">
+          <div class="col-md-12 instagram py-3">
             <div class="row text-white">
               <div class="col-md-2">
                 <i class="fa fa-instagram text-white" style="font-size: 1.5rem"></i>
@@ -61,7 +61,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-12 whatsapp py-2">
+          <div class="col-md-12 whatsapp py-3">
             <div class="row text-white">
               <div class="col-md-2">
                 <i class="fa fa-instagram text-white" style="font-size: 1.5rem"></i>
@@ -74,7 +74,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-12 mobile py-2">
+          <div class="col-md-12 mobile py-3">
             <div class="row text-white">
               <div class="col-md-2">
                 <i class="pi pi-mobile text-white" style="font-size: 1.5rem"></i>
@@ -128,7 +128,7 @@
         </div>
 
 
-        <div class="row bordered my-5">
+        <div class="row bordered my-5" v-for="(post, index) in feed" :key="index">
             <div class="col-md-12 py-3">
                 <!-- User details -->
                 <div class="row">
@@ -144,14 +144,15 @@
                 <!-- Post message -->
                 <div class="row">
                     <div class="col-md-12 pt-3">
-                        <p class="mb-0">This looks awesome! </p>
+                        <h5 class="font-weight-bold mb-0">{{ post.title }}</h5>
+                        <p class="mb-0">{{ post.content }} </p>
                     </div>
                 </div>
 
                 <!-- Post media -->
                 <div class="row">
                     <div class="col-md-12">
-                        <img src="https://via.placeholder.com/150x70" class="w-100" alt="">
+                        <img :src="post.mediaUrl" class="w-100" alt="">
                     </div>
                 </div>
 
@@ -170,14 +171,17 @@
                         <a class="text-decoration-none c-pointer post-action-link px-3 px-md-4">
                             <span><i class="pi pi-thumbs-up mr-2"></i></span>
                             <span>Like</span>
+                            <span class="ml-2">{{ post.likeCount}}</span>
                         </a>
                         <a class="text-decoration-none c-pointer post-action-link px-3 px-md-4">
                             <span><i class="pi pi-comment mr-2"></i></span>
                             <span>Comment</span>
+                            <span class="ml-2">{{ post.comments ? post.comments.length : 0}}</span>
                         </a>
                         <a class="text-decoration-none c-pointer post-action-link px-3 px-md-4">
                             <span><i class="pi pi-share-alt mr-2"></i></span>
                             <span>Share</span>
+                            
                         </a>
                     </div>
                 </div>
@@ -200,7 +204,7 @@
                         <p class="border mb-0 w-100 medium-border-radius">
                             <textarea rows="1" class="border-0 textarea mt-0 comment-field" placeholder="Comment..."></textarea>
                             <span><i class="pi pi-image c-pointer" style="font-size:20px"></i></span>
-                            <span><i class="pi pi-image c-pointer pl-2" style="font-size:20px"></i></span>
+                            <!-- <span><i class="pi pi-image c-pointer pl-2" style="font-size:20px"></i></span> -->
                         </p>
                     </div>
                 </div>
@@ -212,13 +216,41 @@
 </template>
 
 <script>
-export default {};
+import { ref } from '@vue/reactivity';
+import social_service from '../../../services/social/social_service';
+import membershipService from '../../../services/membership/membershipservice';
+export default {
+    setup() {
+        const feed = ref([ ])
+        const tenantId = ref('')
+        membershipService.getSignedInUser()
+        .then(res => {
+            tenantId.value = res.tenantId;
+            getFeed(res.tenantId);
+        })
+        .catch(err => console.log(err))
+
+        const getFeed = async (tenantId) => {
+            try {
+                feed.value = await social_service.getFeed(tenantId);
+                console.log(feed.value, "FEED");
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        return {
+            feed,
+        }
+    }
+};
 </script>
 
 <style scoped>
 
     .blue-bg {
-        max-height: 415px;
+        max-height: 500px;
+        background: #0F529F;
     }
 
 .img-holder {
