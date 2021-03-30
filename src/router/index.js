@@ -35,46 +35,6 @@ const routes = [{
         path: '/onboarding',
         name: 'Onboarding',
         component: () =>
-            import (
-                /* webpackChunkName: …
-[6:05 PM, 3/29/2021] Senior Dev. Complutech: import { createRouter, createWebHistory } from 'vue-router';
-
-
-import Pagination from '@/components/payment/PaymentSuccessful.vue';
-
-import TermsOfUse from '../components/temp/PaymentPage'
-
-
-
-const routes = [{
-    path: '/pagination',
-    name: 'Pagination',
-    component: Pagination
-},
-
-{
-    path: '/terms',
-    name: 'TermsOfUse',
-    component: TermsOfUse,
-},
-
-{
-    path: '/',
-    name: 'Login',
-    component: () =>
-        import( /* webpackChunkName: "login" */
-                '../views/account/Login.vue')
-    },
-    {
-        path: '/register',
-        name: 'Register',
-        component: () =>
-            import ( /* webpackChunkName: "register" */ '../views/account/Register.vue')
-    },
-    {
-        path: '/onboarding',
-        name: 'Onboarding',
-        component: () =>
             import ( /* webpackChunkName: "onboarding" */ '../views/account/OnboardingForm.vue')
     },
     {
