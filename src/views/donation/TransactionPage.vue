@@ -196,6 +196,7 @@ export default {
       },
     ]);
 
+
     const searchInputs = computed(() => {
       if (!userInputs.value) {
         return userTransaction.value;

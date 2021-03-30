@@ -33,7 +33,7 @@
                 {
                     text: "Feeds",
                     icon: "pi pi-wifi",
-                    to: "",
+                    to: "/tenant/social/feed",
                 },
                 {
                     text: "Schedule Post",

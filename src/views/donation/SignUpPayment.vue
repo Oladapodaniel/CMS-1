@@ -115,13 +115,37 @@ export default {
     const chosenEmail = ref("");
     const chosenPassword = ref("");
     const errorOccure = ref(false);
-    const router = useRouter()
+    const router = useRouter();
+    const tenantId = ref("")
+
+
+    const getTenantId = () => {
+      axios
+        .get(
+          // "/api/PaymentForm/GetOne?paymentFormID=4a276e37-a1e7-4077-a851-60b82180f4a0"
+          `/give?paymentFormID=${route.params.userId}`
+        )
+        .then((res) => {
+          // funds.value = res.data.contributionItems;
+          // console.log(funds.value, "kjjjhjjjje");
+          console.log(res.data);
+          tenantId.value = res.data.tenantID;
+          // selectedContributionType.value = formResponse.value.currencyId;
+          // console.log(formResponse.value);
+          // localStorage.setItem('tenantId', res.data.tenantID)
+        })
+        .catch((err) => {
+          console.log(err.response)
+          finish()
+        });
+    };
+    getTenantId();
 
     const signUp = async () => {
       let signupDetails = {
         name: chosenName.value,
         phoneNumber: chosenNumber.value,
-        tenantId: "e9749fad-85e8-4130-b553-37acc8acde61",
+        tenantId: tenantId.value,
         email: chosenEmail.value,
         password: chosenPassword.value,
       };

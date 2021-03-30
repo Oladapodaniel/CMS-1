@@ -255,9 +255,8 @@
                   </div>
                   </transition>
   
-                 
-                  <div class="col-12" v-if="activeTab2 && !signedIn">
-                    <div class="row d-flex">
+                   <div class="col-12" v-if="activeTab2 && !signedIn">
+                    <div class="row d-flex" v-if="showSignInForm">
                     
                     <div class="col-md-6">
                       <div class="row">
@@ -287,17 +286,20 @@
                       </div>
                       <div class="col-sm-12 mt-3">
                         <div class="d-flex justify-content-center">
-                          <div class="button default-color text-center w-25" @click="signin">Sign in</div>
+                          <div class="button signin-color text-center w-25" @click="signin">Sign in</div>
                         </div>
-                        <div class="label mt-3 text-center">
+                        <div class="label mt-3 text-center hfont">
                           Not registered yet?
-                          <router-link :to="{ name: 'SignUpPayment', params: { userId: routeParams } }"
-                            >Create a new account</router-link
-                          >
+                          <a href="#" class="text-primary" @click.prevent="showSignInForm = false">Create a new account</a>
                         </div>
                       </div>
                     </div>
+                    <div class="row" v-else>
+                      <SignUp :tenantId="formResponse.tenantID" @signed-up="signedUp" @show-signin="displaySignInForm"/>
+                    </div>
                   </div>
+  
+                  
                   
                     <div class="col-md-12">
                       <section
@@ -459,10 +461,12 @@ import Checkbox from "primevue/checkbox";
 import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
+import SignUp from "./SignUp"
 export default {
   components: {
     PaymentOptionModal,
     Checkbox,
+    SignUp
   },
   setup() {
     const route = useRoute()
@@ -504,6 +508,7 @@ export default {
     const signInEmail = ref("")
     const signInPassword = ref("")
     const routeParams = ref(`${route.params.userId}`)
+    const showSignInForm = ref(true)
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -779,6 +784,27 @@ export default {
       // console.log(userdetails.value);
     };
 
+    const signedUp = async(payload) => {
+      try {
+          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${payload.giverId}`)
+          console.log(data)
+          userData.value = data
+          email.value = data.email
+          name.value = userData.value.name
+          phone.value = userData.value.phone
+          finish()
+        }
+        catch (error) {
+          console.log(error)
+          finish()
+        }
+      signedIn.value = payload.setSignInStatus
+    }
+
+    const displaySignInForm = (payload) => {
+      showSignInForm.value = payload
+    }
+
     return {
       hideTabOne,
       toggleTabOne,
@@ -816,7 +842,10 @@ export default {
       signin,
       signInEmail,
       signInPassword,
-      routeParams
+      routeParams,
+      showSignInForm,
+      signedUp,
+      displaySignInForm
     };
   },
 };
@@ -1021,5 +1050,10 @@ export default {
 
 .stroke {
   border-bottom: 1px solid rgba(206, 206, 206, 0.562);
+}
+
+.signin-color {
+  background: rgba(206, 206, 206, 0.274);
+  color: black;
 }
 </style>

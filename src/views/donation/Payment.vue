@@ -13,7 +13,7 @@
             </button>
         <!-- </router-link> -->
         <router-link to="/tenant/payments" class="add-person-btn no-underline button default-btn border-0 ml-3">
-          Make Payments
+          Add Payment Form
         </router-link>
       </div>
     </div>

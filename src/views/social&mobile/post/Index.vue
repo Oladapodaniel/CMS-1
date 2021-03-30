@@ -21,6 +21,7 @@
                 <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-11">
+                    <ProgressBar :value="uploadProgress" />
                     <a class="text-decoration-none px-md-4 c-pointer">
                         <input name=""  ref="fileInput" @change="fileSelected" type="file" style="width: 0;heiight:0">
                         <span  @click="selectFile"><i class="pi pi-video mr-3"></i></span>
@@ -89,18 +90,30 @@
             <div class="col-md-3 offset-md-1 d-flex align-items-center">
                 <button class="default-btn primary-bg text-white border-0" style="border-radius: 10px;" @click="makePost">Post</button>
             </div>
+
+            <div class="col-md-12">
+                <button class="default-btn primary-bg text-white border-0" style="border-radius: 10px;" @click="createCategory">Create category</button>
+            </div>
+
+            <Dialog v-model:vissible="display">
+                <ProgressBar :value="uploadProgress" />
+            </Dialog>
+            
         </div>
     </div>
 </template>
 
 <script>
     import Dropdown from "primevue/dropdown";
+    import Dialog from "primevue/dialog";
 import { ref } from '@vue/reactivity';
-//     import social_service from "../../../services/social/social_service"
-// import membershipService from '../../../services/membership/membershipservice';
+    import social_service from "../../../services/social/social_service"
+import membershipService from '../../../services/membership/membershipservice';
     import axios from "@/gateway/backendapi";
+    import ProgressBar from 'primevue/progressbar';
+
     export default {
-        components: { Dropdown },
+        components: { Dropdown, ProgressBar, Dialog },
         setup() {
             const selectedDestination = "Facebook";
             const pageId = "978547345603168";
@@ -168,16 +181,29 @@ import { ref } from '@vue/reactivity';
                 file.value = e.target.files[0];
             }
 
+            const tenantId = ref("");
+            membershipService.getSignedInUser()
+                .then(res => {
+                    tenantId.value = res.tenantId;
+                })
+
+            const uploadProgress = ref("");
+            const display = ref(false);
             const makePost = () => {
                 const formData = new FormData();
-                formData.append("media", file.value ? file.value : "");
+                formData.append("mediaFile", file.value ? file.value : "");
                 formData.append("content", message.value ? message.value : "");
-
-                axios.post("/mobile/v{version}/Feeds/CreatePost", formData,
+                formData.append("mediaUrl", "");
+                formData.append("title", "ANouncement");
+                formData.append("tenantId", tenantId.value);
+                formData.append("postCategoryId", "4e7d21db-7e26-4cb9-b474-08d8f3603afe");
+                display.value = true;
+                axios.post("/mobile/v1/Feeds/CreatePost", formData,
                     {
                         onUploadProgress: function(progressEvent) {
                             var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
                             console.log(percentCompleted, "loaded")
+                            uploadProgress.value = percentCompleted;
                         }
                     }
                 )
@@ -185,6 +211,10 @@ import { ref } from '@vue/reactivity';
                         console.log(res, "upload res");
                     })
                     .catch(err => console.log(err))
+            }
+
+            const createCategory = () => {
+                social_service.createPostCategory({ name: "Anouncement", tenantId: tenantId.value, categoryImageUrl: "https://buildingsmart-1xbd3ajdayi.netdna-ssl.com/wp-content/uploads/2020/03/feat_important-.jpg"})
             }
 
             
@@ -199,6 +229,9 @@ import { ref } from '@vue/reactivity';
                 fileSelected,
                 message,
                 makePost,
+                uploadProgress,
+                display,
+                createCategory,
             }
         }
     }
