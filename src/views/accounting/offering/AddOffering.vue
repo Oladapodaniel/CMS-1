@@ -1208,7 +1208,7 @@ export default {
             } catch (error) {
                 toast.add({
                 severity: "error",
-                summary: "Opps! Sorry Try again",
+                summary: "Event Not Created",
                 detail: error.response.data,
                 life: 2500,
                 });
@@ -1484,24 +1484,8 @@ export default {
         const createNewCon = (e) => {
           let contributionCategory = {
             name: name.value,
-            // isPublic: true,
-            // incomeAccount: {
-                // id: selectedIncomeAccount.value.id,
-              //   name: selectedIncomeAccount.value.text,
-              //   accountType: incomeAccount.value.findIndex(i => i.id === selectedIncomeAccount.value.id),
-              //   code: selectedIncomeAccount.value.code,
-              //   isGroupAccount: selectedIncomeAccount.value.isGroupAccount,
-              //   financialFundID: selectedIncomeAccount.value.financialFundID
-              // },
             incomeAccountId: selectedIncomeAccount.value.id,
-            // cashAccount: {
-                // id: selectedCashAccount.value.id,
-              //   name: selectedCashAccount.value.text,
-              //   accountType: cashBankAccount.value.findIndex(i => i.id === selectedCashAccount.value.id),
-              //   code: selectedCashAccount.value.code,
-              //   isGroupAccount: selectedCashAccount.value.isGroupAccount,
-              //   financialFundID: selectedCashAccount.value.financialFundID
-              // },
+
             cashAccountId: selectedCashAccount.value.id,
             
           }
@@ -1519,14 +1503,6 @@ export default {
           console.log(contributionCategory)
           axios.post('/api/financials/contributions/items/save', contributionCategory)
                   .then(res => {
-                    // offeringItem.value.push({
-                    //   name: 'dapoo',
-                    //   paymentChannel: "Cash",
-                    //   financialContributionID: res.data.id,
-                    //   donor:  "",
-                    //   date: eventDate.value,
-                    //   activityID: selectedEventAttended.value.activityID
-                    // })
 
                     newOfferings.value.push({
                       name: name.value,
@@ -1576,15 +1552,27 @@ export default {
               router.push({ name: 'OfferingReport', params: { report: res.data.returnObject.find(i => i).id } })
               loading.value = false
               
-              let contriTransact = {
-                amount: res.data.returnObject.find(i => i).amount,
-                contribution: res.data.returnObject.find(i  => i).contribution.name,
-                date: res.data.returnObject.find(i  => i).date,
-                donor: res.data.returnObject.find(i  => i).personName,
-                eventDate: selectedEventAttended.value.name,
-                eventName: selectedEventAttended.value.name,
-                id: res.data.returnObject.find(i  => i).id,
-              }
+              // let contriTransact = {
+              //   amount: res.data.returnObject.find(i => i).amount,
+              //   contribution: res.data.returnObject.find(i  => i).contribution.name,
+              //   date: res.data.returnObject.find(i  => i).date,
+              //   donor: res.data.returnObject.find(i  => i).personName,
+              //   eventDate: selectedEventAttended.value.name,
+              //   eventName: selectedEventAttended.value.name,
+              //   id: res.data.returnObject.find(i  => i).id,
+              // }
+
+              let contriTransact = res.data.returnObject.map(i => {
+                return {
+                  amount: i.amount,
+                  contribution: i.contribution.name,
+                  date: i.date,
+                  donor: i.personName,
+                  eventDate: selectedEventAttended.value.name,
+                  eventName: selectedEventAttended.value.name,
+                  id: i.id
+                }
+              })
               console.log(contriTransact)
               store.dispatch('contributions/newlyAddedContribution', contriTransact)
             })

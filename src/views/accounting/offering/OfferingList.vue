@@ -120,7 +120,7 @@
                 </div>
             </div>
 
-            <div class="table-body row" v-for="offering in searchContribution" :key="offering.id">
+            <div class="table-body row" v-for="(offering, index) in searchContribution" :key="offering.id">
                 <div class="col-6 d-block d-sm-none">
                 <div class="col-sm-3">
                     DATE
@@ -150,7 +150,7 @@
                      <div>{{ offering.contribution }}</div>
                 </div>
                 <div class="col-sm-2">
-                     <div class="d-flex"> <div class="currency">NGN</div><div class="align-self-center ml-2" style="font-weight: 800;">{{ offering.amount }}</div></div>
+                     <div class="d-flex"> <div class="currency" v-if="offering.currencyName">{{ offering.currencyName }}</div><div class="align-self-center ml-2" style="font-weight: 800;">{{ offering.amount }}</div></div>
                 </div>
                 <div class="col-sm-2" >
                      <div>{{ offering.donor }}</div>
@@ -171,8 +171,8 @@
                  Edit
                 </a> -->
                 <a
-                  class="dropdown-item elipsis-items"
-                  @click="showConfirmModal(offering.id)"
+                  class="dropdown-item elipsis-items cursor-pointer"
+                  @click="showConfirmModal(offering.id, index)"
                   >Delete</a
                 >
               </div>
@@ -266,36 +266,37 @@ export default {
       }
     });
 
-    const deleteOffering = (id) => {
+    const deleteOffering = (id, index) => {
 
       axios
-        .delete(`/api/Financials/Contributions/Transactions/Delete/${id}`)
+        .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
         .then((res) => {
           console.log(res);
-          toast.add({
+          if (res.data.status) {
+            toast.add({
             severity: "success",
-            summary: "Confirmed",
-            detail: "Member Deleted",
+            summary: "Delete Successful",
+            detail: `Contribution Trasaction Deleted`,
             life: 3000,
           });
-          // props.contributionTransactions = props.contributionTransactions.filter(
-          //   (item) => item.id !== id
-          // );
+          emit('contri-transac', index)
+          } else {
+            toast.add({
+            severity: "warn",
+            summary: "Delete Failed",
+            detail: `Please Try Again`,
+            life: 3000,
+          });
+          }
         })
         .catch((err) => {
           finish()
-          if (err.response.status === 400) {
+          if (err.response) {
+            console.log(err.response)
             toast.add({
               severity: "error",
               summary: "Unable to delete",
-              detail: "Ensure this member is not in any group",
-              life: 3000,
-            });
-          } else {
-            toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: "An error occurred, please try again",
+              detail: `${err.response}`,
               life: 3000,
             });
           }
@@ -304,7 +305,7 @@ export default {
 
     const confirm = useConfirm();
     let toast = useToast();
-    const showConfirmModal = (id) => {
+    const showConfirmModal = (id, index) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
@@ -312,7 +313,7 @@ export default {
         acceptClass: "confirm-delete",
         rejectClass: "cancel-delete",
         accept: () => {
-          deleteOffering(id);
+          deleteOffering(id, index);
           // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
         },
         reject: () => {

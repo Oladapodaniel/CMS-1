@@ -137,11 +137,13 @@ import axios from "@/gateway/backendapi";
 import Dropdown from 'primevue/dropdown';
 import Toast from 'primevue/toast';
 import { useToast } from "primevue/usetoast";
+import { useRouter } from "vue-router"
 export default {
   components: {
     Dropdown, Toast
   },
   setup() {
+    const router = useRouter()
     const applyRem = ref(false);
     const cashBankAccount = ref([]);
     const remitance = ref([{}])
@@ -243,6 +245,7 @@ export default {
               .then(res => {
                 toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
                 console.log(res)
+                router.push({ name: "ContributionCategory" })
               })
               .catch(err => {
                 toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
