@@ -12,6 +12,7 @@
     "@ckeditor/ckeditor5-vue": "^2.0.1",
     "@meforma/vue-toaster": "^1.1.1",
     "axios": "^0.21.0",
+    "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
     "highcharts": "^8.2.2",
     "jquery": "^3.5.1",
