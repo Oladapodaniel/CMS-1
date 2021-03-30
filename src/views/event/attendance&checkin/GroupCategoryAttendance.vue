@@ -132,7 +132,8 @@
                     >QR</router-link
                   >
                 </h4>
-                <p class="para">Printable Check-in Quick Response code for mobile users.</p>
+                <p class="para">Printable Check-in Quick
+                   Response code for mobile users.</p>
               </div>
             </div>
           </div>

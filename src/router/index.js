@@ -412,7 +412,22 @@ const routes = [{
                 component: () =>
                     import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/post/Index'),
             },
+
         ]
+    },
+
+    {
+        path: 'settingspage',
+        name: 'SocialSettings',
+        component: () =>
+            import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/settingspage/Index'),
+    },
+
+    {
+        path: 'sharePosts',
+        name: 'Socialshare',
+        component: () =>
+            import( /* webpackChunkName: "socialdashboard" */ '@/components/sharePosts/Index'),
     },
 
     {
