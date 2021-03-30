@@ -412,22 +412,21 @@ const routes = [{
                 component: () =>
                     import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/post/Index'),
             },
+            {
+                path: 'settingspage',
+                name: 'SocialSettings',
+                component: () =>
+                    import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/settingspage/Index'),
+            },
+
+            {
+                path: 'sharePosts',
+                name: 'Socialshare',
+                component: () =>
+                    import( /* webpackChunkName: "socialdashboard" */ '@/components/sharePosts/Index'),
+            },
 
         ]
-    },
-
-    {
-        path: 'settingspage',
-        name: 'SocialSettings',
-        component: () =>
-            import( /* webpackChunkName: "socialdashboard" */ '@/views/social&mobile/settingspage/Index'),
-    },
-
-    {
-        path: 'sharePosts',
-        name: 'Socialshare',
-        component: () =>
-            import( /* webpackChunkName: "socialdashboard" */ '@/components/sharePosts/Index'),
     },
 
     {
@@ -659,7 +658,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 
 
-    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin" || to.name ==="OnlineGiving4" || to.name ==="SignUpPayment" || to.name ==="SignInPayment" || to.name ==="TransactionPage") && !tokenIsValid) return next(true)
+    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin" || to.name === "OnlineGiving4" || to.name === "SignUpPayment" || to.name === "SignInPayment" || to.name === "TransactionPage") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;
