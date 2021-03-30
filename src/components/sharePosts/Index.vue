@@ -73,9 +73,9 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customCheck1"
+                  id="customCheck2"
                 />
-                <label class="custom-control-label" for="customCheck1"></label>
+                <label class="custom-control-label" for="customCheck2"></label>
               </div>
             </div>
           </div>
@@ -102,9 +102,9 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customCheck1"
+                  id="customCheck3"
                 />
-                <label class="custom-control-label" for="customCheck1"></label>
+                <label class="custom-control-label" for="customCheck3"></label>
               </div>
             </div>
           </div>
@@ -131,9 +131,9 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customCheck1"
+                  id="customCheck4"
                 />
-                <label class="custom-control-label" for="customCheck1"></label>
+                <label class="custom-control-label" for="customCheck4"></label>
               </div>
             </div>
           </div>
@@ -160,9 +160,9 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customCheck1"
+                  id="customCheck5"
                 />
-                <label class="custom-control-label" for="customCheck1"></label>
+                <label class="custom-control-label" for="customCheck5"></label>
               </div>
             </div>
           </div>
@@ -194,9 +194,9 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customCheck1"
+                  id="customCheck6"
                 />
-                <label class="custom-control-label" for="customCheck1"></label>
+                <label class="custom-control-label" for="customCheck6"></label>
               </div>
             </div>
           </div>
