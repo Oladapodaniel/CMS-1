@@ -30,21 +30,72 @@
     </div>
     
     <div class="row mt-4"> 
-      <div class="col-6 col-sm-1 text-center default-btn" :class="{ 'active-btn': monthlyActiveBtn }" @click="toggleMonthlyClass">
+      <div class="col-6 col-sm-1 text-center default-btn cursor-pointer" :class="{ 'active-btn': monthlyActiveBtn }" @click="toggleMonthlyClass">
         <div>Monthly</div>
       </div>
-      <div class="col-6 col-sm-1 ml-sm-2 text-center default-btn" :class="{ 'active-btn': yearlyActiveBtn }" @click="toggleYearlyClass">
+      <div class="col-6 col-sm-1 ml-sm-2 text-center default-btn cursor-pointer" :class="{ 'active-btn': yearlyActiveBtn }" @click="toggleYearlyClass">
         <div>Yearly</div>
       </div>
-      <div class="col-6 offset-3 offset-sm-0 col-sm-1 ml-sm-2 mt-3 mt-sm-0 text-center default-btn" :class="{ 'active-btn': allTimeActiveBtn }" @click="toggleAllTimeClass">
+      <div class="col-6 offset-3 offset-sm-0 col-sm-1 ml-sm-2 mt-3 mt-sm-0 text-center default-btn cursor-pointer" :class="{ 'active-btn': allTimeActiveBtn }" @click="toggleAllTimeClass">
         <div>All Time</div>
       </div>
     </div>
 
-    <div class="row avg-table mt-4">
+<!-- Monthly -->
+    <div class="row avg-table mt-4" v-if="monthlyActiveBtn">
       <div class="col-6 col-md-3 first-row" v-tooltip.bottom="`${eventSummary.attendance ? eventSummary.attendance : 0 }`">
         <div>Attendance</div>
-        <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 6 ? `${eventSummary.attendance.toString().slice(0, 6)}...` : eventSummary.attendance : 0}}</div>
+        <div>{{ eventSummary.attendanceAverage.monthly }}</div>
+        
+      </div>
+      <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
+        <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
+        <div> {{eventSummary.offerings ? eventSummary.offerings.toString().length > 6 ? `${ eventSummary.offerings.toString().slice(0, 6) }...` : eventSummary.offerings : 0}}</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div>First Timers</div>
+        <div>{{ eventSummary.firstTimers }}</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div>New Converts</div>
+        <div>{{ eventSummary.newConverts }}</div>
+      </div>
+      <!-- <div class="col-12">
+        <div>Last Updated 2 hours ago</div>
+      </div> -->
+    </div>
+
+<!-- yearly -->
+    <div class="row avg-table mt-4" v-if="yearlyActiveBtn">
+      <div class="col-6 col-md-3 first-row" v-tooltip.bottom="`${eventSummary.attendance ? eventSummary.attendance : 0 }`">
+        <div>Attendance</div>
+        <!-- <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 6 ? `${eventSummary.attendance.toString().slice(0, 6)}...` : eventSummary.attendance : 0}}</div> -->
+        <div>{{ eventSummary.attendanceAverage.yearly }}</div>
+        
+      </div>
+      <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
+        <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
+        <div> {{eventSummary.offerings ? eventSummary.offerings.toString().length > 6 ? `${ eventSummary.offerings.toString().slice(0, 6) }...` : eventSummary.offerings : 0}}</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div>First Timers</div>
+        <div>{{ eventSummary.firstTimers }}</div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div>New Converts</div>
+        <div>{{ eventSummary.newConverts }}</div>
+      </div>
+      <!-- <div class="col-12">
+        <div>Last Updated 2 hours ago</div>
+      </div> -->
+    </div>
+
+<!-- All time -->
+    <div class="row avg-table mt-4" v-if="allTimeActiveBtn">
+      <div class="col-6 col-md-3 first-row" v-tooltip.bottom="`${eventSummary.attendance ? eventSummary.attendance : 0 }`">
+        <div>Attendance</div>
+        <!-- <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 6 ? `${eventSummary.attendance.toString().slice(0, 6)}...` : eventSummary.attendance : 0}}</div> -->
+        <div>{{ eventSummary.attendanceAverage.allTime }}</div>
         
       </div>
       <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
@@ -110,8 +161,8 @@
                   type="checkbox"
                   name="all"
                   id="all"
-                  @click="toggleSelect"
-                  v-model="selectAll"
+       
+            
                 />
                 <label>SELECT ALL</label>
               </div>
@@ -235,9 +286,10 @@
                   <div class="col-md-3 d-flex flex-column align-items-center">
                     <button
                       class="apply-btn text-white"
-                      @click="applyFilter"
-                      :disabled="disableBtn"
+                      
                     >
+                    <!-- @click="applyFilter"
+                      :disabled="disableBtn" -->
                       Apply
                     </button>
                     <span class="mt-2">
@@ -357,9 +409,9 @@
                 </div>
             </div>
             <div class="col-12">
-                    <div class="table-footer">
+                    <!-- <div class="table-footer">
                       <Pagination  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
-                    </div>
+                    </div> -->
                 </div>
           <!-- <table class="w-100">
             <thead class="thead">
@@ -463,13 +515,11 @@ export default {
   directives: {
       'tooltip': Tooltip
   },
-  props: ['eventList'],
+  props: ['eventList', 'eventSummary'],
   setup(props) {
 
     const filterFormIsVissible = ref(false);
     const searchIsVisible = ref(false);
-
-    const eventSummary = ref({});
     const store = useStore();
     const userCurrency = ref(store.getters.currency)
     const searchText = ref("")
@@ -479,17 +529,17 @@ export default {
 
   
 
-    const getEventSummary = async () => {
-      try {
-        const { data } = await axios.get("/api/Events/Eventsummary");
-        console.log(data);
-        eventSummary.value = data;
-        kBoolean.value = true
-      } catch (err) {
-        console.log(err.response);
-      }
-    };
-    getEventSummary();
+    // const getEventSummary = async () => {
+    //   try {
+    //     const { data } = await axios.get("/api/Events/Eventsummary");
+    //     console.log(data);
+    //     eventSummary.value = data;
+    //     kBoolean.value = true
+    //   } catch (err) {
+    //     console.log(err.response);
+    //   }
+    // };
+    // getEventSummary();
 
     const toggleFilterFormVissibility = () => {
       filterFormIsVissible.value = !filterFormIsVissible.value;
@@ -597,7 +647,6 @@ const deleteMember = (id) => {
       toggleFilterFormVissibility,
       searchIsVisible,
       toggleSearch,
-      eventSummary,
       moment,
       userCurrency,
       filterEvents,

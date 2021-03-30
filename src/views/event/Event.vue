@@ -919,52 +919,63 @@
           <div
             class="row form-body close-slide3"
             :class="{ 'slide-down3': showForm3 }"
-            @click="toggleForm3"
+            
           >
+          <!-- @click="toggleForm3" -->
             <div
               class="col-sm-3 add-first-timer pointer"
               @click="createFirstTimers"
             >
               Add First Timers
             </div>
-            <div class="col-sm-3 offset-sm-1 add-new-convert pointer">
+            <div class="col-sm-3 offset-sm-1 add-new-convert pointer" id="modalTogglerFirstTimers" data-toggle="modal"  data-target="#exampleModalNewConvert">
               Add New Converts
             </div>
-            <div class="col-sm-12 box-table">
-              <table class="table">
-                <thead>
-                  <tr class="event-list">
-                    <th><input type="checkbox" name="checkbox" class="" /></th>
-                    <!-- <th>PICTURE</th> -->
-                    <th>FIRSTNAME</th>
-                    <th>LASTNAME</th>
-                    <th>PHONE</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    class="event-list"
-                    v-for="(item, index) in firstTimers"
-                    :key="index"
-                  >
-                    <th scope="row">
-                      <input type="checkbox" name="checkbox" class="" />
-                    </th>
-                    <!-- <td>
-                      <div id="img">
-                        <img
-                          src="../../assets/logo.png"
-                          class="img-fluid rounded-circle mb-3"
-                          alt=""
-                        />
-                      </div>
-                    </td> -->
-                    <td>{{ item.firstName }}</td>
-                    <td>{{ item.lastName }}</td>
-                    <td>{{ item.phoneNumber }}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="col-sm-12 box-table" v-if="firstTimers.length > 0">
+      
+                <div class="row table-header">
+                  <div class="col-sm-4 d-none d-sm-block">
+                      FIRSTNAME
+                  </div>
+                      <div class="col-sm-4 d-none d-sm-block">
+                      LASTNAME
+                  </div>
+                      <div class="col-sm-3 d-none d-sm-block">
+                      PHONE
+                  </div>
+              </div>
+
+              <div class="table-body row" v-for="(item, index) in firstTimers"
+                    :key="index">
+                  <div class="col-6 d-block d-sm-none">
+                  <div class="col-sm-3">
+                      FIRSTNAME
+                  </div>
+                      <div class="col-sm-2">
+                      LASTNAME
+                  </div>
+                      <div class="col-sm-2">
+                      PHONE
+                  </div>
+              </div>
+              <div class="col-6 col-sm-12">
+                  <div class="row">
+                  <div class="col-sm-4">
+                      <div>{{ item.firstName }}</div>
+                  </div>
+                  <div class="col-sm-4">
+                      <div>{{ item.lastName }}</div>
+                  </div>
+                  <div class="col-sm-3">
+                      <div>{{ item.phoneNumber }}</div>
+                  </div>
+                  <div class="col-sm-1" @click="deleteFirstTimer(index)">
+                    <i class="pi pi-trash"></i>
+                  </div>
+                </div>
+            
+                  </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1320,49 +1331,59 @@
                     >Birthday</label
                   >
                   <div class="col-sm-2 mb-4">
-                    <SelectElem
+                    <!-- <SelectElem
                       :options="['day', ...day]"
                       name="day"
                       class="input-first"
                       value="day"
                       @input="select2Value"
-                    />
+                    /> -->
+                    <Dropdown :options="[...day]" :filter="false" v-model="firstTimersObj.birthday" placeholder="day" class="w-100" :showClear="false">
+                    </Dropdown>
                   </div>
                   <div class="col-sm-2 mb-4 px-sm-0">
-                    <SelectElem
+                    <!-- <SelectElem
                       :options="['month', ...months]"
                       name="month"
                       class="input-first"
                       value="month"
                       @input="select2Value"
-                    />
+                    /> -->
+                    <Dropdown :options="[...months]" :filter="false" v-model="valueMonth" @change="dropDownMonth" placeholder="month" class="w-100" :showClear="false">
+                    </Dropdown>
                   </div>
                   <div class="col-sm-2 mb-4">
-                    <SelectElem
+                    <!-- <SelectElem
                       :options="['Year', ...birthYearsArr]"
                       name="year"
                       class="input-first"
                       value="Year"
                       @input="select2Value"
-                    />
+                    /> -->
+                    <Dropdown :options="[...birthYearsArr]" :filter="false" v-model="firstTimersObj.birthYear" placeholder="year" class="w-100" :showClear="false">
+                    </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
-                    <SelectElem
+                    <!-- <SelectElem
                       :options="[...maritalStatuses]"
                       class="input-first"
                       name="marital status"
                       value="Marital Status"
                       @input="select2Value"
-                    />
+                    /> -->
+                    <Dropdown :options="[...maritalStatuses]" :filter="false" v-model="valueMarital" @change="dropDownMarital" placeholder="marital status" class="w-100" :showClear="false">
+                    </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4">
-                    <SelectElem
+                    <!-- <SelectElem
                       :options="[...genders]"
                       name="gender"
                       class="input-first"
                       value="gender"
                       @input="select2Value"
-                    />
+                    /> -->
+                    <Dropdown :options="[...genders]" :filter="false" v-model="valueGender" @change="dropDownGender" placeholder="gender" class="w-100" :showClear="false">
+                    </Dropdown>
                   </div>
                 </div>
 
@@ -1388,35 +1409,43 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-                    <SelectElem
+                    <!-- <SelectElem
                       :options="['select', ...howYouHeard]"
                       @input="select2Value"
                       name="howDidYouAboutUsId"
-                    />
+                    /> -->
+                    <Dropdown :options="[...howYouHeard]" :filter="false" v-model="valueHeard" @change="dropDownHeard" placeholder="month" class="w-100" :showClear="false">
+                    </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-                    <SelectElem
+                    <!-- <SelectElem
                       :options="['select', ...comMeansArr]"
                       @input="select2Value"
                       name="communicationMeans"
-                    />
+                    /> -->
+                    <Dropdown :options="[...comMeansArr]" :filter="false" v-model="valueComm" @change="dropDownComm" placeholder="gender" class="w-100" :showClear="false">
+                    </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-                    <SelectElem
+                    <!-- <SelectElem
                       :options="['select', ...joinInterest]"
                       @input="select2Value"
                       name="interestedInJoining"
-                    />
+                    /> -->
+                    <Dropdown :options="[...joinInterest]" :filter="false" v-model="valueInterest" @change="dropDownInterest" placeholder="gender" class="w-100" :showClear="false">
+                    </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
-                    <SelectElem
+                    <!-- <SelectElem
                       :options="['select...', ...wantVisitArr]"
                       @input="select2Value"
                       name="wantToBeVisited"
-                    />
+                    /> -->
+                    <Dropdown :options="[...wantVisitArr]" :filter="false" v-model="valueVisit" @change="dropDownVisit" placeholder="gender" class="w-100" :showClear="false">
+                    </Dropdown>
                   </div>
                 </div>
 
@@ -1459,14 +1488,302 @@
                       v-model="firstTimersObj.sendWelcomeEmail"
                     />
                   </div>
-                  <div class="col-sm-6 offset-sm-3">
+                  <!-- <div class="col-sm-6 offset-sm-3">
                     <div>Assigned automated follow-up</div>
                     <SelectElem
                       options="['List 1', 'List 2', 'List 3', 'List 4']"
                       @input="select2Value"
                       name="automatedFollowUp"
                     />
+                  </div> -->
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-second" data-dismiss="modal">
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="apply-btn"
+              id="closeFirstTimers"
+              @click="save"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <!-- New Convert Modal -->
+    <div
+      class="modal fade"
+      id="exampleModalNewConvert"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title" id="exampleModalLabel">
+              Add New Convert
+            </div>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <form>
+                <div class="form-group row">
+                  <label for="Firstname" class="col-sm-3 text-sm-right col-form-label"
+                    >Firstname<sup class="text-danger">*</sup></label
+                  >
+                  <div class="col-sm-6">
+                    <input
+                      type="text"
+                      class="form-control input-first"
+                      v-model="firstTimersObj.firstName"
+                      id="Firstname"
+                      required
+                    />
                   </div>
+                </div>
+                <div class="form-group row">
+                  <label for="LastName" class="col-sm-3 text-sm-right col-form-label"
+                    >Last Name</label
+                  >
+                  <div class="col-sm-6">
+                    <input
+                      type="text"
+                      v-model="firstTimersObj.lastName"
+                      class="form-control input-first"
+                      id="surname"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="phone number" class="col-sm-3 text-sm-right col-form-label"
+                    >Phone number</label
+                  >
+                  <div class="col-sm-6">
+                    <input
+                      type="tel"
+                      v-model="firstTimersObj.phoneNumber"
+                      class="form-control input-first"
+                      id="phone number"
+                    />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="email" class="col-sm-3 text-sm-right col-form-label"
+                    >Email</label
+                  >
+                  <div class="col-sm-6">
+                    <input
+                      type="text"
+                      class="form-control input-first"
+                      v-model="firstTimersObj.email"
+                      id="email"
+                    />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="address" class="col-sm-3 text-sm-right col-form-label"
+                    >Address</label
+                  >
+                  <div class="col-sm-6 mb-4">
+                    <input
+                      type="text"
+                      v-model="firstTimersObj.address"
+                      class="form-control input-first"
+                      id="address"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="birthday" class="col-sm-3 text-sm-right col-form-label"
+                    >Birthday</label
+                  >
+                  <div class="col-sm-2 mb-4">
+                    <!-- <SelectElem
+                      :options="['day', ...day]"
+                      name="day"
+                      class="input-first"
+                      value="day"
+                      @input="select2Value"
+                    /> -->
+                    <Dropdown :options="[...day]" :filter="false" v-model="firstTimersObj.birthday" placeholder="day" class="w-100" :showClear="false">
+                    </Dropdown>
+                  </div>
+                  <div class="col-sm-2 mb-4 px-sm-0">
+                    <!-- <SelectElem
+                      :options="['month', ...months]"
+                      name="month"
+                      class="input-first"
+                      value="month"
+                      @input="select2Value"
+                    /> -->
+                    <Dropdown :options="[...months]" :filter="false" v-model="valueMonth" @change="dropDownMonth" placeholder="month" class="w-100" :showClear="false">
+                    </Dropdown>
+                  </div>
+                  <div class="col-sm-2 mb-4">
+                    <!-- <SelectElem
+                      :options="['Year', ...birthYearsArr]"
+                      name="year"
+                      class="input-first"
+                      value="Year"
+                      @input="select2Value"
+                    /> -->
+                    <Dropdown :options="[...birthYearsArr]" :filter="false" v-model="firstTimersObj.birthYear" placeholder="year" class="w-100" :showClear="false">
+                    </Dropdown>
+                  </div>
+                  <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
+                    <!-- <SelectElem
+                      :options="[...maritalStatuses]"
+                      class="input-first"
+                      name="marital status"
+                      value="Marital Status"
+                      @input="select2Value"
+                    /> -->
+                    <Dropdown :options="[...maritalStatuses]" :filter="false" v-model="valueMarital" @change="dropDownMarital" placeholder="marital status" class="w-100" :showClear="false">
+                    </Dropdown>
+                  </div>
+                  <div class="col-sm-3 mb-4">
+                    <!-- <SelectElem
+                      :options="[...genders]"
+                      name="gender"
+                      class="input-first"
+                      value="gender"
+                      @input="select2Value"
+                    /> -->
+                    <Dropdown :options="[...genders]" :filter="false" v-model="valueGender" @change="dropDownGender" placeholder="gender" class="w-100" :showClear="false">
+                    </Dropdown>
+                  </div>
+                </div>
+
+                <!-- <div class="col-sm-12 mt-4">Insights</div>-->
+                <span
+                  class="d-flex justify-content-between align-items-center"
+                  @click="toggleForm1"
+                >
+                  <span>Insights</span
+                  ><span style="border: 0px solid red; width: 70%"><hr /></span
+                  ><span
+                    ><i
+                      class="fa fa-angle-up"
+                      :class="{ roll1: showForm1 }"
+                      aria-hidden="true"
+                    ></i>
+                  </span>
+                </span>
+
+                <div
+                  class="form-group row close-slide1"
+                  :class="{ 'slide-down1': showForm1 }"
+                >
+                  <div class="col-sm-6 offset-sm-3 mb-4">
+                    <div>How did you hear about us</div>
+                    <!-- <SelectElem
+                      :options="['select', ...howYouHeard]"
+                      @input="select2Value"
+                      name="howDidYouAboutUsId"
+                    /> -->
+                    <Dropdown :options="[...howYouHeard]" :filter="false" v-model="valueHeard" @change="dropDownHeard" placeholder="month" class="w-100" :showClear="false">
+                    </Dropdown>
+                  </div>
+                  <div class="col-sm-6 offset-sm-3 mb-4">
+                    <div>Preferred means of communication</div>
+                    <!-- <SelectElem
+                      :options="['select', ...comMeansArr]"
+                      @input="select2Value"
+                      name="communicationMeans"
+                    /> -->
+                    <Dropdown :options="[...comMeansArr]" :filter="false" v-model="valueComm" @change="dropDownComm" placeholder="gender" class="w-100" :showClear="false">
+                    </Dropdown>
+                  </div>
+                  <div class="col-sm-6 offset-sm-3 mb-4">
+                    <div>Interested in joining us</div>
+                    <!-- <SelectElem
+                      :options="['select', ...joinInterest]"
+                      @input="select2Value"
+                      name="interestedInJoining"
+                    /> -->
+                    <Dropdown :options="[...joinInterest]" :filter="false" v-model="valueInterest" @change="dropDownInterest" placeholder="gender" class="w-100" :showClear="false">
+                    </Dropdown>
+                  </div>
+                  <div class="col-sm-6 offset-sm-3 mb-4">
+                    <div>Want to be visited?</div>
+                    <!-- <SelectElem
+                      :options="['select...', ...wantVisitArr]"
+                      @input="select2Value"
+                      name="wantToBeVisited"
+                    /> -->
+                    <Dropdown :options="[...wantVisitArr]" :filter="false" v-model="valueVisit" @change="dropDownVisit" placeholder="gender" class="w-100" :showClear="false">
+                    </Dropdown>
+                  </div>
+                </div>
+
+                <!-- <div class="col-sm-12 mt-4">Follow up and Retention</div> -->
+                <span
+                  class="d-flex justify-content-between align-items-center"
+                  @click="toggleForm"
+                >
+                  <span>Follow up and retention</span
+                  ><span style="width: 60%"><hr /></span
+                  ><span
+                    ><i
+                      class="fa fa-angle-up"
+                      :class="{ roll: showForm }"
+                      aria-hidden="true"
+                    ></i>
+                  </span>
+                </span>
+                <div
+                  class="form-group row close-slide"
+                  :class="{ 'slide-down': showForm }"
+                >
+                  <div class="col-sm-3 offset-sm-3 mt-4 mb-4">
+                    Send Welcome SMS
+                  </div>
+                  <div class="mt-4 mb-4">
+                    <input
+                      type="checkbox"
+                      name="sms"
+                      v-model="firstTimersObj.sendWelcomeSms"
+                    />
+                  </div>
+
+                  <div class="col-sm-3 mt-4 mb-4">Send Welcome Email</div>
+                  <div class="mt-4 mb-4">
+                    <input
+                      type="checkbox"
+                      name="sms"
+                      value="email"
+                      v-model="firstTimersObj.sendWelcomeEmail"
+                    />
+                  </div>
+                  <!-- <div class="col-sm-6 offset-sm-3">
+                    <div>Assigned automated follow-up</div>
+                    <SelectElem
+                      options="['List 1', 'List 2', 'List 3', 'List 4']"
+                      @input="select2Value"
+                      name="automatedFollowUp"
+                    />
+                  </div> -->
                 </div>
               </form>
             </div>
@@ -1696,7 +2013,7 @@
 
 <script>
 // import { onMounted, ref } from "vue";
-import SelectElem from "@/components/select/SelectElement.vue";
+// import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
 // import store from "@/store/store.js"
 // import { useToast } from 'primevue/usetoast';
@@ -1707,7 +2024,7 @@ import Dropdown from 'primevue/dropdown';
 // import { useStore } from 'vuex'
 export default {
   components: {
-    SelectElem, CurrencyConverter, Dropdown
+    CurrencyConverter, Dropdown
   },
   data() {
     return {
@@ -1732,6 +2049,7 @@ export default {
       attendanceItem: [],
       firstTimersObj: {},
       firstTimers: [],
+      newConverts: [],
       selectedValue: null,
       check: false,
       offeringCreate: null,
@@ -1789,6 +2107,13 @@ export default {
         "November",
         "December",
       ],
+      valueMonth: "",
+      valueMarital: "",
+      valueGender: "",
+      valueHeard: "",
+      valueComm: "",
+      valueInterest: "",
+      valueVisit: "",
       showForm1: false,
       showForm: false,
       showForm2: false,
@@ -2253,12 +2578,9 @@ export default {
     //     this.selectedEventCategoryId = this.selectedEventCategory.id;
     //   }
     // },
-    select2Value(data) {
-      if (data.dataType === "day") {
-        this.firstTimersObj.birthday = data.value;
-      }
-      if (data.dataType === "month") {
-        switch (data.value) {
+    dropDownMonth(e) {
+      console.log(e)
+      switch (e.value) {
           case "January":
             this.firstTimersObj.birthMonth = "1";
             break;
@@ -2300,41 +2622,121 @@ export default {
             console.log("No month chosen");
             break;
         }
-      }
-      if (data.dataType === "year") {
-        this.firstTimersObj.birthYear = data.value;
-      }
-      if (data.dataType === "marital status") {
-        this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find(
-          (i) => i.value === data.value
+    },
+    dropDownMarital (e) {
+      this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find(
+          (i) => i.value === e.value
         ).id;
-      }
-      if (data.dataType === "gender") {
-        this.firstTimersObj.genderId = this.gender.find(
-          (i) => i.value === data.value
+    },
+    dropDownGender (e) {
+      this.firstTimersObj.genderId = this.gender.find(
+          (i) => i.value === e.value
         ).id;
-      }
-      if (data.dataType === "howDidYouAboutUsId") {
-        this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
-          (i) => i.name === data.value
+    },
+    dropDownHeard (e) {
+      this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
+          (i) => i.name === e.value
         ).id;
-        console.log(this.firstTimersObj.howDidYouAboutUsId);
-      }
-      if (data.dataType === "communicationMeans") {
-        this.firstTimersObj.communicationMeans = this.comMeansArr.indexOf(
-          data.value
+    },
+    dropDownComm (e) {
+      this.firstTimersObj.communicationMeans = this.comMeansArr.indexOf(
+          e.value
         );
-      }
-      if (data.dataType === "interestedInJoining") {
-        this.firstTimersObj.interestedInJoining = this.joinInterest.indexOf(
-          data.value
+    },
+    dropDownInterest (e) {
+      this.firstTimersObj.interestedInJoining = this.joinInterest.indexOf(
+          e.value
         );
-      }
-      if (data.dataType === "wantToBeVisited") {
-        this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(
-          data.value
+    },
+    dropDownVisit (e) {
+      this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(
+          e.value
         );
-      }
+    },
+    deleteFirstTimer (index) {
+      this.firstTimers.splice(index, 1)
+    },
+    
+    select2Value(data) {
+      // if (data.dataType === "day") {
+      //   this.firstTimersObj.birthday = data.value;
+      // }
+      // if (data.dataType === "month") {
+      //   switch (data.value) {
+      //     case "January":
+      //       this.firstTimersObj.birthMonth = "1";
+      //       break;
+      //     case "February":
+      //       this.firstTimersObj.birthMonth = "2";
+      //       break;
+      //     case "March":
+      //       this.firstTimersObj.birthMonth = "3";
+      //       break;
+      //     case "April":
+      //       this.firstTimersObj.birthMonth = "4";
+      //       break;
+      //     case "May":
+      //       this.firstTimersObj.birthMonth = "5";
+      //       break;
+      //     case "June":
+      //       this.firstTimersObj.birthMonth = "6";
+      //       break;
+      //     case "July":
+      //       this.firstTimersObj.birthMonth = "7";
+      //       break;
+      //     case "August":
+      //       this.firstTimersObj.birthMonth = "8";
+      //       break;
+      //     case "September":
+      //       this.firstTimersObj.birthMonth = "9";
+      //       break;
+      //     case "October":
+      //       this.firstTimersObj.birthMonth = "10";
+      //       break;
+      //     case "November":
+      //       this.firstTimersObj.birthMonth = "11";
+      //       break;
+      //     case "December":
+      //       this.firstTimersObj.birthMonth = "12";
+      //       break;
+      //     default:
+      //       // firstTimersObj.value.birthMonth = "12";
+      //       console.log("No month chosen");
+      //       break;
+      //   }
+      // }
+      // if (data.dataType === "year") {
+      //   this.firstTimersObj.birthYear = data.value;
+      // }
+      // if (data.dataType === "marital status") {
+        // this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find(
+        //   (i) => i.value === data.value
+        // ).id;
+      // }
+      // if (data.dataType === "gender") {
+        
+      // }
+      // if (data.dataType === "howDidYouAboutUsId") {
+      //   this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
+      //     (i) => i.name === data.value
+      //   ).id;
+      //   console.log(this.firstTimersObj.howDidYouAboutUsId);
+      // }
+      // if (data.dataType === "communicationMeans") {
+      //   this.firstTimersObj.communicationMeans = this.comMeansArr.indexOf(
+      //     data.value
+      //   );
+      // }
+      // if (data.dataType === "interestedInJoining") {
+      //   this.firstTimersObj.interestedInJoining = this.joinInterest.indexOf(
+      //     data.value
+      //   );
+      // }
+      // if (data.dataType === "wantToBeVisited") {
+      //   this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(
+      //     data.value
+      //   );
+      // }
       if (data.dataType === "automatedFollowUp") {
         this.firstTimersObj.autoMatedFollowUp = data.value;
       }
@@ -3086,7 +3488,7 @@ div .maintext {
 }
 .box-table {
   box-shadow: 0px 1px 4px #02172e45;
-  border-radius: 30px;
+  /* border-radius: 30px; */
   margin-top: 30px;
   width: 100%;
 }
@@ -3095,6 +3497,11 @@ div .maintext {
         width: 58%
     }
 } */
+.table-header, .table-body {
+  padding: 10px;
+  font-size: 15px
+}
+
 .t-header {
   background-color: #f1f3f9;
 }
@@ -3154,7 +3561,7 @@ tr.event-list td {
 }
 .slide-down1 {
   height: 365px;
-  /* overflow: visible; */
+  overflow: visible;
   transition: all 0.5s ease-in-out;
 }
 .roll1 {
