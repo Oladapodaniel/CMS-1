@@ -172,6 +172,10 @@
   .minimized-input-width {
     width: 50px;
   }
+
+  .main-title {
+    font-size: 2.2rem;
+  }
   
   #second {
     width: 48%;

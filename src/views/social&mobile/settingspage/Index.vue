@@ -173,7 +173,7 @@ export default {
 
 .link-text {
   color: #02172e;
-  font: normal normal 600 18px/24px Nunito Sans;
+  font: normal normal 600 16px/24px Nunito Sans;
 }
 
 .bordersocials {
