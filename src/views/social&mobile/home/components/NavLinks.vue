@@ -49,6 +49,11 @@
                     text: "Setting",
                     icon: "pi pi-cog",
                     to: "/tenant/social/setting",
+                },
+                {
+                    text: "Post Category",
+                    icon: "pi pi-cog",
+                    to: "/tenant/social/category",
                 }
             ]
 

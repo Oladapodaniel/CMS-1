@@ -434,6 +434,12 @@ const routes = [{
                         component: () =>
                             import ( /* webpackChunkName: "socialsetting" */ '@/views/social&mobile/settingspage/Index'),
                     },
+                    {
+                        path: 'category',
+                        name: 'PostCategory',
+                        component: () =>
+                            import ( /* webpackChunkName: "socialsetting" */ '@/views/social&mobile/settingspage/PostCategory'),
+                    },
                 ]
             },
 
