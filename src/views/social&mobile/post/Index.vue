@@ -6,6 +6,25 @@
             </div>
         </div>
 
+        <div class="row my-3">
+            <div class="col-sm-5 col-md-4">
+                <div class="row input-border">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="" class="small-text mb-0 label-color font-weight-700">Post type <span class="text-danger">*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 borde d-flex align-items-center">
+                        <i class="pi pi-facebook primary-text" style="font-size:1.5rem"></i>
+                    </div>
+                    <div class="col-md-9 px-0" id="post-icon">
+                        <Dropdown :options="postCategories" v-model="postCategory" optionLabel="name" placeholder="category" style="width:100%"  />
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row bordered">
             <div class="col-md-12 pt-3 pt-2 main-post">
                 <div class="row">
@@ -40,123 +59,69 @@
         </div>
 
         <div class="row my-4">
-            <div class="col-md-3 offset-md-1">
+            <div class="col-md-12">
                 <div class="row input-border">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-
-                            </div>
-                            <div class="col-md-9">
-                                <label for="" class="small-text mb-0 label-color font-weight-700">Post to</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3 mt-n4 border">
-
-                            </div>
-                            <div class="col-md-9 px-0" id="post-icon">
-                                <Dropdown :options="[ 'Facebook', 2, 3 ]" v-model="selectedDestination" aria-placeholder="Facebook" style="width:100%"  />
-                            </div>
-                        </div>
+                    <div class="col-md-12 mt-2">
+                        <label for="" class="small-text mb-0 label-color font-weight-700">Post to </label>
+                    </div>
+                    <div class="col-md-12 mb-2 d-flex flex-wrap">
+                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-3 d-flex align-items-center">
+                            <span class="c-pointer"><i class="pi pi-microsoft" style="font-size:20px"></i></span>
+                            <span class="mx-2">All Platforms</span>
+                            <input type="checkbox" class="c-pointer" name="" id="">
+                        </a>
+                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-3 d-flex align-items-center">
+                            <span class="c-pointer"><img class="icon-height" src="../../../assets/social/twitter.svg" alt="Whatsapp icon"></span>
+                            <span class="mx-2">Twitter</span>
+                            <input type="checkbox" class="c-pointer" name="" id="">
+                        </a>
+                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-3 d-flex align-items-center">
+                            <span class="c-pointer"><img class="icon-height" src="../../../assets/social/whatsapp.svg" alt="Whatsapp icon"></span>
+                            <span class="mx-2">Whatsapp</span>
+                            <input type="checkbox" class="c-pointer" name="" id="">
+                        </a>
+                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-3 d-flex align-items-center">
+                            <span class="c-pointer"><img class="icon-height" src="../../../assets/social/facebook.svg" alt="Whatsapp icon"></span>
+                            <span class="mx-2">Facebook</span>
+                            <input type="checkbox" class="c-pointer" name="" id="">
+                        </a>
+                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-3 d-flex align-items-center">
+                            <span class="c-pointer"><img class="icon-height" src="../../../assets/social/instagram.svg" alt="Whatsapp icon"></span>
+                            <span class="mx-2">Instagram</span>
+                            <input type="checkbox" class="c-pointer" name="" id="">
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3 offset-md-1">
-                <div class="row input-border">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-
-                            </div>
-                            <div class="col-md-9">
-                                <label for="" class="small-text mb-0 label-color font-weight-700">Post type</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3 mt-n4 border">
-
-                            </div>
-                            <div class="col-md-9 px-0" id="post-icon">
-                                <Dropdown :options="[ 'Facebook', 2, 3 ]" v-model="selectedDestination" aria-placeholder="Facebook" style="width:100%" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 offset-md-1 d-flex align-items-center">
+            <div class="col-md-12 d-flex align-items-center justify-content-end my-4">
                 <button class="default-btn primary-bg text-white border-0" style="border-radius: 10px;" @click="makePost">Post</button>
             </div>
+            <Dialog header="Header" v-model:visible="display"  :modal="true">
+                <ProgressBar :value="uploadProgress" style="max-width: 600px;width: 100%;min-width:400px" />
+            </Dialog>
+            
         </div>
     </div>
 </template>
 
 <script>
     import Dropdown from "primevue/dropdown";
+    import Dialog from "primevue/dialog";
 import { ref } from '@vue/reactivity';
-//     import social_service from "../../../services/social/social_service"
-// import membershipService from '../../../services/membership/membershipservice';
+    import social_service from "../../../services/social/social_service"
+import membershipService from '../../../services/membership/membershipservice';
     import axios from "@/gateway/backendapi";
+    import ProgressBar from 'primevue/progressbar';
+    import { useRouter } from "vue-router";
+
     export default {
-        components: { Dropdown },
+        components: { Dropdown, ProgressBar, Dialog },
         setup() {
-            const selectedDestination = "Facebook";
-            const pageId = "978547345603168";
+            const router = useRouter();
+            const postCategory = ref({});
+            const postDestination = ref("Facebook");
 
-            const facebook = () => {
-                 /*eslint no-undef: "warn"*/
-                 
-                
-                // FB.login(function(response) {
-                //     localStorage.setItem("userId", response.authResponse.userID)
-                //     localStorage.setItem("fbtoken", response.authResponse.accessToken)
-                //     console.log(response);
-
-                     /*eslint no-undef: "warn"*/
-                    FB.api(
-                        `/me/accounts`,
-                        // `/${response.authResponse.userID}/ids_for_pages`,
-                        'GET',
-                        // {"fields":"id,name,ids_for_pages"},
-                        {"fields":"access_token","access_token": localStorage.getItem("fbtoken")},
-                        function(response) {
-                            // Insert your code here
-                            console.log(response, "SSSOSOS");
-                        }
-                    );
-                    // FB.api(
-                    //     `/${localStorage.getItem("userId")}/ids_for_pages`,
-                    //     // `/${response.authResponse.userID}/ids_for_pages`,
-                    //     'GET',
-                    //     // {"fields":"id,name,ids_for_pages"},
-                    //     {"access_token": localStorage.getItem("fbtoken")},
-                    //     function(response) {
-                    //         // Insert your code here
-                    //         console.log(response, "SSSOSOS");
-                    //     }
-                    // );
-
-                // }, {scope: 'user_birthday'});
-
-                // membershipService.getSignedInUser()
-                // .then(res => {
-                //     social_service.postMessage({
-                //         title: "Title",
-                //         content: "Test Post to facebook",
-                //         tenantId: res.tenantId,
-                //         mediaChannels: [ "facebook" ],
-                //         socialMedia: {
-                //             facebook: {
-                //                 pageId: pageId,
-                //                 accessToken: "EAALhDeBzXnMBAFvvxEgZAun9m5V3a8hYZCgRH23ZBjrPTw7714ra9osaWdqeJXPUKdTZA6Lr2xNaZCoPHNgseZARSVbJbAHjr9J6wUO18xZB9hGAYrU6L4UwgKzL0zBQRSJyaXt9ubTRWvOZAcZBF6reIpbDkxlnqvZBbZAgFub0omQX8Ly5eBc2gmZCY6ycpSFm6eJ7d9Il6SpidQZDZD"
-                //             }
-                //         }
-                //     })
-                // })
-            }
-            
             const message = ref("");
             const fileInput = ref(null);
             const selectFile = () => {
@@ -168,37 +133,76 @@ import { ref } from '@vue/reactivity';
                 file.value = e.target.files[0];
             }
 
-            const makePost = () => {
-                const formData = new FormData();
-                formData.append("media", file.value ? file.value : "");
-                formData.append("content", message.value ? message.value : "");
+            const tenantId = ref("");
+            membershipService.getSignedInUser()
+                .then(res => {
+                    tenantId.value = res.tenantId;
+                    getPostCategories(res.tenantId);
+                })
+                .catch(err => console.log(err))
 
-                axios.post("/mobile/v{version}/Feeds/CreatePost", formData,
+            const uploadProgress = ref("");
+            const display = ref(false);
+            const makePost = () => {
+                if (!message.value) return false;
+                const formData = new FormData();
+                formData.append("mediaFile", file.value ? file.value : "");
+                formData.append("content", message.value ? message.value : "");
+                formData.append("mediaUrl", "");
+                formData.append("title", "ANouncement");
+                formData.append("tenantId", tenantId.value);
+                formData.append("postCategoryId", postCategory.value ? postCategory.value.postCategoryId : "");
+                display.value = true;
+                axios.post("/mobile/v1/Feeds/CreatePost", formData,
                     {
                         onUploadProgress: function(progressEvent) {
                             var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
                             console.log(percentCompleted, "loaded")
+                            uploadProgress.value = percentCompleted;
                         }
                     }
                 )
                     .then(res => {
                         console.log(res, "upload res");
+                        display.value = false;
+                        router.push("/tenant/social/feed")
                     })
-                    .catch(err => console.log(err))
+                    .catch(err => {
+                         console.log(err)
+                         display.value = false;
+                    })
             }
+
+            const createCategory = () => {
+                social_service.createPostCategory({ name: "Anouncement", tenantId: tenantId.value, categoryImageUrl: "https://buildingsmart-1xbd3ajdayi.netdna-ssl.com/wp-content/uploads/2020/03/feat_important-.jpg"})
+            }
+
+            const postCategories = ref([ ])
+            const getPostCategories = async (tenantId) => {
+                try {
+                    postCategories.value = await social_service.getPostCategory(tenantId);
+                    console.log(postCategories, "CAtegories");
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            
 
             
 
             return {
-                selectedDestination,
-                facebook,
-                pageId,
+                postDestination,
+                postCategory,
                 selectFile,
                 fileInput,
                 file,
                 fileSelected,
                 message,
                 makePost,
+                uploadProgress,
+                display,
+                createCategory,
+                postCategories,
             }
         }
     }
@@ -246,6 +250,10 @@ import { ref } from '@vue/reactivity';
 
     .label-color {
         color: #a5a0ab;
+    }
+
+    .icon-height {
+        height: 25px;
     }
 
     /* .textarea::placeholder {

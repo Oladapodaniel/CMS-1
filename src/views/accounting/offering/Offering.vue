@@ -35,7 +35,7 @@
         </div>
     </div>
     <div v-if="contributionTransactions.length > 0 && !loading">
-        <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages"/>
+        <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac"/>
     </div> 
 </div>
 </template>
@@ -86,8 +86,12 @@ export default {
     const getOfferingPages = (payload) => {
       contributionTransactions.value = payload
     }
+
+    const updateTransac = (payload) => {
+      contributionTransactions.value.splice(payload, 1)
+    }
         return {
-            contributionTransactions, loading, getOfferingPages
+            contributionTransactions, loading, getOfferingPages, updateTransac
         }
     }
 }

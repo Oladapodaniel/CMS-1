@@ -353,6 +353,7 @@ export default {
                         console.log(data)
                         contributionItems.value = data
                     } catch (error) {
+                        finish()
                         console.log(error)
                     }
             }
@@ -427,9 +428,12 @@ export default {
                         }
                     })
                 // nigerianBanks.value = res.data.data
+                finish()
                 })
                 .catch(err => {
+                    finish()
                     console.log(err)
+                     toast.add({severity:'info', summary: 'Unable to get banks', detail:'Please ensure you have a strong internet connection and reload the  page', life: 5000});
                 })
             }
         //   }
@@ -553,8 +557,10 @@ export default {
                     store.dispatch('contributions/paymentData', res.data)
 
                     router.push({ name: 'PaymentOption', params: { paymentId: res.data.result.id } })
+                    finish()
                 }
                 catch (err) {
+                    finish()
                     console.log(err)
                     loadingSave.value = false
 
@@ -581,10 +587,13 @@ export default {
                     store.dispatch('contributions/paymentData', res.data)
 
                     router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
+
+                    finish()
                 }
                 catch (err) {
                     console.log(err)
                     loadingSave.value = false
+                    finish()
 
                     // toast.add({severity:'error', summary: '', detail:'Please check your banks details again', life: 3000});
                 }
@@ -645,6 +654,8 @@ export default {
                 }
                 catch (err) {
                     console.log(err)
+                    finish()
+                     toast.add({severity:'error', summary: 'Network Error', detail:'Please ensure you have a strong internet connection', life: 6000});
                 }
             }else {
                 isActive.value = true
