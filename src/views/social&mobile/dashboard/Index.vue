@@ -307,10 +307,6 @@
           
 
         </div>
-     
-=======
-        <h1></h1>
->>>>>>> main
     </div>
 </template>
 
@@ -324,7 +320,7 @@ import Chart from 'primevue/chart';
         data(){
             return{
                 eventDate: new Date().toISOString().substr(0, 10),
-                	multiAxisData: {
+                multiAxisData: {
 				labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 				datasets: [
 					{

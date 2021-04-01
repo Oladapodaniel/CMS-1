@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 
-import Pagination from '@/components/payment/PaymentSuccessful.vue';
+import Pagination from '@/views/social&mobile/involvement/Index.vue';
 
 import TermsOfUse from '../components/temp/PaymentPage'
 
@@ -47,22 +47,22 @@ import TermsOfUse from '../components/temp/PaymentPage'
 
 
 const routes = [{
-    path: '/pagination',
-    name: 'Pagination',
-    component: Pagination
+path: '/pagination',
+name: 'Pagination',
+component: Pagination
 },
 
 {
-    path: '/terms',
-    name: 'TermsOfUse',
-    component: TermsOfUse,
+path: '/terms',
+name: 'TermsOfUse',
+component: TermsOfUse,
 },
 
 {
-    path: '/',
-    name: 'Login',
-    component: () =>
-        import( /* webpackChunkName: "login" */
+path: '/',
+name: 'Login',
+component: () =>
+    import( /* webpackChunkName: "login" */
                 '../views/account/Login.vue')
     },
     {
