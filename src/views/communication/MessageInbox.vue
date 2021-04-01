@@ -12,7 +12,11 @@
                 <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..." />
+                    <input
+                      type="text"
+                      placeholder="Search here..."
+                      v-model="searchSms"
+                    />
                     <span class="float-right">
                       <span class="mx-2"> | </span>
                       <span class="mx-2">Sort By</span>
@@ -72,9 +76,14 @@
 
                   <div
                     class="row"
-                    v-for="(reply, index) in replies"
+                    v-for="(reply, index) in searchSMS"
                     :key="index"
                   >
+                    <!-- <div
+                    class="row"
+                    v-for="(reply, index) in replies"
+                    :key="index"
+                  > -->
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
@@ -85,23 +94,34 @@
                             class="d-flex justify-content-between msg-n-time"
                           >
                             <span class="font-weight-bold">
-                              <router-link class="text-decoration-none text-dark" :to="{name: 'MessageDetails', params: { messageId: reply.id}}">
-                                  {{
-                              reply.subject
-                            }}
-                                </router-link></span>
+                              <router-link
+                                class="text-decoration-none text-dark"
+                                :to="{
+                                  name: 'MessageDetails',
+                                  params: { messageId: reply.id },
+                                }"
+                              >
+                                {{ reply.subject }}
+                              </router-link></span
+                            >
                             <span class="timestamp">Today | 08:45 PM</span>
                           </span>
                           <span class="brief-message small-text">
-                            <router-link class="text-decoration-none"  :to="{name: 'MessageDetails', params: { messageId: reply.id}}">
+                            <router-link
+                              class="text-decoration-none"
+                              :to="{
+                                name: 'MessageDetails',
+                                params: { messageId: reply.id },
+                              }"
+                            >
                               {{
-                            reply.message && reply.message.length > 25
-                              ? `${reply.message
-                                  .split("")
-                                  .slice(0, 25)
-                                  .join("")}...`
-                              : reply.message
-                          }}
+                                reply.message && reply.message.length > 25
+                                  ? `${reply.message
+                                      .split("")
+                                      .slice(0, 25)
+                                      .join("")}...`
+                                  : reply.message
+                              }}
                             </router-link>
                           </span>
                         </div>
@@ -119,7 +139,9 @@
                           <span class="hidden-header font-weight-bold"
                             >Units:
                           </span>
-                          <span class="small-text">{{ reply.smsUnitsUsed }}</span>
+                          <span class="small-text">{{
+                            reply.smsUnitsUsed
+                          }}</span>
                         </div>
                         <div
                           class="col-md-2 my-2 col-ms-12 d-flex justify-content-between"
@@ -127,7 +149,9 @@
                           <span class="hidden-header font-weight-bold"
                             >Report:
                           </span>
-                          <span class="c-pointer small-text primary-text">View</span>
+                          <span class="c-pointer small-text primary-text"
+                            >View</span
+                          >
                         </div>
                       </div>
                       <div class="row">
@@ -193,15 +217,18 @@ export default {
     const replies = ref(store.getters["communication/smsReplies"]);
     const currentPage = ref(0);
     const loading = ref(false);
-
+    const searchSms = ref("");
 
     const getSMSReplies = async () => {
       try {
         loading.value = true;
-        const data = await communicationService.getSMSReplies(currentPage.value);
+        const data = await communicationService.getSMSReplies(
+          currentPage.value
+        );
         loading.value = false;
         if (data) {
           replies.value = data;
+          console.log(replies.value);
           store.dispatch("communication/getSMSReplies");
         }
       } catch (error) {
@@ -228,12 +255,22 @@ export default {
       return replies.value.length;
     });
 
+    const searchSMS = computed(() => {
+      if (searchSms.value === "" && replies.value.length > 0) {
+        console.log(replies.value);
+        return replies.value;
+      }
+      return replies.value.filter(i => i.message.toLowerCase().includes(searchSms.value.toLowerCase()))
+    });
+
     return {
       replies,
       getRepliesByPage,
       itemsCount,
       currentPage,
       loading,
+      searchSms,
+      searchSMS,
     };
   },
 };

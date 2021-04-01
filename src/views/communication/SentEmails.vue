@@ -1,7 +1,6 @@
 !<template>
   <div>
     <div class="container">
-
       <!-- Content Box -->
       <main id="main" class="mt-3">
         <div class="container-fluid px-0">
@@ -11,7 +10,11 @@
                 <div class="col-md-12 col-sm-12">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..." />
+                    <input
+                      type="text"
+                      placeholder="Search here..."
+                      v-model="searchMail"
+                    />
                     <span class="mx-2"> | </span>
                     <span class="mx-2">Sort By</span>
                     <span class="font-weight-bold"> Newest</span>
@@ -44,50 +47,74 @@
 
                   <div class="row" v-if="emails.length > 0">
                     <div class="col-md-12">
-                      <div class="row" v-for="(email, index) in emails" :key="index">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-7 d-md-flex flex-column">
-                          <span
-                            class="msg-n-time"
-                          >
-                            <router-link :to="{ name: 'EmailDetails', params: { messageId: email.id } }" class="text-decoration-none d-flex justify-content-between small-text">
-                              <span class="font-weight-bold text-dark text-capitalize">{{ email.subject ? email.subject.toLowerCase() :  ''}}</span>
-                              <span class="timestamp small-text">{{ email.dateSent }}</span>
-                            </router-link>
-                          </span>
-                          <!-- <span class="brief-message">
+                      <div
+                        class="row"
+                        v-for="(email, index) in searchEmails"
+                        :key="index"
+                      >
+                        <div class="col-md-12">
+                          <div class="row">
+                            <div class="col-md-1">
+                              <input type="checkbox" />
+                            </div>
+                            <div class="col-md-7 d-md-flex flex-column">
+                              <span class="msg-n-time">
+                                <router-link
+                                  :to="{
+                                    name: 'EmailDetails',
+                                    params: { messageId: email.id },
+                                  }"
+                                  class="text-decoration-none d-flex justify-content-between small-text"
+                                >
+                                  <span
+                                    class="font-weight-bold text-dark text-capitalize"
+                                    >{{
+                                      email.subject
+                                        ? email.subject.toLowerCase()
+                                        : ""
+                                    }}</span
+                                  >
+                                  <span class="timestamp small-text">{{
+                                    email.dateSent
+                                  }}</span>
+                                </router-link>
+                              </span>
+                              <!-- <span class="brief-message">
                               <router-link :to="{ name: 'EmailDetails', params: { messageId: email.id } }" class="text-decoration-none small-text"><article :ref="`messageBody_${email.id}`">
                                 {{ createElementFromHTML(email.message) }}
                               </article></router-link>
                           </span> -->
-                          <span class="brief-message">
-                              <router-link :to="{ name: 'EmailDetails', params: { messageId: email.id } }" class="text-decoration-none small-text"><article>
-                                {{
-                                  formatMessage(email.message)
-                                }}
-                              </article></router-link>
-                          </span>
-                        </div>
-                        <div
-                          class="col-md-4 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >Sent By:
-                          </span>
-                          <span class="small-text">{{ email.sentByUser }}</span>
+                              <span class="brief-message">
+                                <router-link
+                                  :to="{
+                                    name: 'EmailDetails',
+                                    params: { messageId: email.id },
+                                  }"
+                                  class="text-decoration-none small-text"
+                                  ><article>
+                                    {{ formatMessage(email.message) }}
+                                  </article></router-link
+                                >
+                              </span>
+                            </div>
+                            <div
+                              class="col-md-4 col-ms-12 d-flex justify-content-between"
+                            >
+                              <span class="hidden-header font-weight-bold"
+                                >Sent By:
+                              </span>
+                              <span class="small-text">{{
+                                email.sentByUser
+                              }}</span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <hr class="hr" />
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                     </div>
                   </div>
 
@@ -102,7 +129,7 @@
                       <i class="fas fa-circle-notch fa-spin"></i>
                     </div>
                   </div>
-                  
+
                   <div class="conatiner">
                     <div class="row">
                       <div class="col-md-12 mb-3 pagination-container">
@@ -114,7 +141,6 @@
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>
@@ -126,11 +152,10 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
-import communicationService from "../../services/communication/communicationservice"
+import { computed, ref } from "vue";
+import communicationService from "../../services/communication/communicationservice";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import { useStore } from "vuex";
-
 
 export default {
   components: { PaginationButtons },
@@ -138,10 +163,14 @@ export default {
     const store = useStore();
     const emails = ref([]);
     const emailsInStore = ref(store.getters["communication/sentEmails"]);
-    emails.value = emailsInStore.value && emailsInStore.value.length > 0 ? emailsInStore.value[0] : [ ];
+    emails.value =
+      emailsInStore.value && emailsInStore.value.length > 0
+        ? emailsInStore.value[0]
+        : [];
     // console.log(emails.value[0], "from store");
     const currentPage = ref(0);
-    const loading = ref(false)
+    const loading = ref(false);
+    const searchMail = ref("");
 
     const getSentEmails = async () => {
       loading.value = true;
@@ -151,20 +180,21 @@ export default {
         console.log(data, "compo");
         emails.value = data;
       }
-
-      // let addSentEmail = store.getters["communication/addToSentEmail"]
-      // if(Object.keys(addSentEmail).length > 0) {
-      //   emails.value.unshift(addSentEmail)
-      // }
-    }
+    };
 
     if (!emails.value || emails.value.length === 0) getSentEmails();
 
     const formatMessage = (message) => {
-      const formatted = message && message.length > 25 ? `${createElementFromHTML(message).split("").slice(0, 25).join("")}...` : createElementFromHTML(message);
+      const formatted =
+        message && message.length > 25
+          ? `${createElementFromHTML(message)
+              .split("")
+              .slice(0, 25)
+              .join("")}...`
+          : createElementFromHTML(message);
 
       return `${formatted}`;
-    }
+    };
 
     const getEmailsByPage = async (page) => {
       try {
@@ -181,14 +211,25 @@ export default {
     const itemsCount = computed(() => {
       const allEmails = emails.value;
       if (!allEmails.value || allEmails.value.length === 0) return 0;
+      console.log(allEmails.value);
       return allEmails.value.length;
     });
 
     const createElementFromHTML = (htmlString) => {
-      var div = document.createElement('div');
+      var div = document.createElement("div");
       div.innerHTML = htmlString;
-      return div.textContent; 
-    }
+      return div.textContent;
+    };
+
+    const searchEmails = computed(() => {
+      if (searchMail.value === "" && emails.value.length > 0) {
+        console.log(emails.value);
+        return emails.value;
+      }
+      return emails.value.filter((i) =>
+      i.subject.toLowerCase().includes(searchMail.value.toLowerCase())
+      );
+    });
 
     return {
       emails,
@@ -198,8 +239,10 @@ export default {
       currentPage,
       loading,
       createElementFromHTML,
-    }
-  }
+      searchMail,
+      searchEmails,
+    };
+  },
 };
 </script>
 
@@ -263,41 +306,41 @@ export default {
 }
 
 .menu-item-con {
-    color: #002044;
-    opacity: 0.5;
+  color: #002044;
+  opacity: 0.5;
 }
 
 .menu-item-con.active {
-    background: rgba(19, 106, 205, 0.05);
-    border-left: 2px solid #136ACD;
-    opacity: 1;
+  background: rgba(19, 106, 205, 0.05);
+  border-left: 2px solid #136acd;
+  opacity: 1;
 }
 
 .buy-btn {
-    background: rgb(112, 142, 177, .33);
-    border-radius: 22px;
+  background: rgb(112, 142, 177, 0.33);
+  border-radius: 22px;
 }
 
 .btn-text {
-    opacity: 1;
-    font-size: 11px;
-    font-weight: 700;
+  opacity: 1;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .timestamp {
-    font-size: 14px;
-    color: #333333;
-    opacity: 0.5;
+  font-size: 14px;
+  color: #333333;
+  opacity: 0.5;
 }
 
 .view-btn {
-    background: #EBEFF4;
-    border-radius: 21px;
-    padding: 4px 18px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: #ebeff4;
+  border-radius: 21px;
+  padding: 4px 18px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media screen and (max-width: 767px) {

@@ -5,8 +5,8 @@
   <div class="whole-con">
     <div class="main-con">
       <div class="main-body">
-       
-        
+
+
         <!-- <div class="col-sm-12"> -->
         <div class="top container-wide mt-3">
           <div class="header">
@@ -14,7 +14,7 @@
             </div>
           </div>
           <div class="actions">
-            <button class="more-btn button">
+            <button class="more-btn button" v-if="false">
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
@@ -79,9 +79,9 @@
   </div>
 <!-- v-if="!loading && people.length === 0" -->
 <!-- v-if="!loading && people.length > 0" -->
-       
-        
-         
+
+
+
 
         <!-- Transitio area -->
         <!-- <transition
@@ -125,7 +125,7 @@ export default {
           })
       }
       getFirstTmersList()
-  
+
     return { firstTimersList, getFirstTmersList, loading };
 
   },

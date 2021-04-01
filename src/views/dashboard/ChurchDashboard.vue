@@ -67,7 +67,7 @@
               <router-link to="/tenant/people/addfirsttimer"
                 >Add First Timer</router-link
               >
-              <router-link to="">Add Follow-up</router-link>
+              <router-link to="" v-if="false">Add Follow-up</router-link>
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@
             </div>
             <div class="bottom">
               <div class="box-bottom">
-                <span class="plan-text">YOU'RE ON A FREE PLAN</span>
+                <!-- <span class="plan-text">YOU'RE ON A FREE PLAN</span> -->
                 <button class="upgrade-btn">
                   <h4 class="box-btn-text">UPGRADE</h4>
                 </button>
@@ -139,7 +139,7 @@
           <router-link to="" class="view-all">View all</router-link>
         </div>
 
-        
+
           <table class="w-100">
           <thead>
             <tr>
@@ -153,7 +153,7 @@
           <tbody>
             <tr
               v-for="celebration in tenantInfo.celebrations"
-              :key="celebration.id" 
+              :key="celebration.id"
             >
               <td>
                 <img src="../../assets/people/avatar-male.png" alt="" /><span
@@ -201,7 +201,7 @@
                   class="dropdown-item elipsis-items"
                   href="#"
                   @click.prevent="showConfirmModal(person.id)"
-                  >Delete</a 
+                  >Delete</a
                > -->
               </div>
               </td>
@@ -209,10 +209,10 @@
           </tbody>
           <!-- <tbody v-else>
             <tr>
-              
-              
+
+
               <td colspan="5"><div class=" text-center p-3" style="font-weight: 700; font-size: 1.2em;">No Celebrations Yet</div></td>
-              
+
             </tr>
           </tbody> -->
         </table>
@@ -245,7 +245,7 @@
               >
             </div>
           </div>
-  
+
           <div v-if="attendanceBoolean">
             <ColumnChart
               domId="chart1"
@@ -401,7 +401,7 @@ export default {
     ColumnChart2,
     ByMaritalStatusChart,
     ByGenderChart
-    
+
   },
 
   setup() {
@@ -467,7 +467,7 @@ export default {
           //   firstTimerPieExist.value = true
           // }
           sum += +i.value
-          
+
         });
         summed.value = sum
         // console.log(sum)
@@ -500,7 +500,7 @@ export default {
     })
 
     onMounted(() => {
-  
+
       for (let i = 1; i <= 52; i++) {
         xAxis.value.push(i)
       }
@@ -520,14 +520,14 @@ export default {
     };
 
     const monthlyAttendance = () => {
-      
+
       attendanceBoolean.value = false;
       attendanceSeries.value = "monthly";
 
       // axios.get('/Dashboard/period?period=Months')
       //   .then(res => {
       //     monthlyAttendanceObj.value = res.data.eventAttendanceChartData[0]
-          
+
       //  })
     };
 
@@ -543,7 +543,7 @@ export default {
           firstTimerSeries.value = "monthly"
       // axios.get('/Dashboard/period?period=Months')
       //   .then(res => {
-      //     monthlyFirstTimerObj.value = res.data.eventAttendanceChartData[1]  
+      //     monthlyFirstTimerObj.value = res.data.eventAttendanceChartData[1]
       //  })
 
     };
@@ -556,12 +556,12 @@ export default {
       if (!tenantInfo.value.eventAttendanceChartDataMonthly) return [];
       return tenantInfo.value.eventAttendanceChartDataMonthly[0]
     });
-    
+
     const chartData2 = computed(() => {
       if (!tenantInfo.value.firstTimerSummary) return [];
       return tenantInfo.value.firstTimerSummary.firstTimerWeekly[0]
     });
-    
+
     const monthlyFirstTimerObj = computed(() => {
       if (!tenantInfo.value.firstTimerSummary) return [];
       return tenantInfo.value.firstTimerSummary.firstTimerMonthly[0]
@@ -577,7 +577,7 @@ export default {
       return true
     })
 
-    
+
 
     return {
       celebrations,
