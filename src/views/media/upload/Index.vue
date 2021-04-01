@@ -115,13 +115,12 @@
 import Dropdown from "primevue/dropdown";
 import Checkbox from "primevue/checkbox";
 import { ref } from '@vue/reactivity';
-import FileUpload from 'primevue/fileupload';
 import { useStore } from "vuex";
 import membershipService from '../../../services/membership/membershipservice';
 import media_service from "../../../services/media/media_service";
 
     export default {
-        components: { Dropdown, FileUpload, Checkbox },
+        components: { Dropdown, Checkbox },
 
         setup() {
             const store = useStore();
