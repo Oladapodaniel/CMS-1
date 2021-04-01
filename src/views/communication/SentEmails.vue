@@ -151,6 +151,11 @@ export default {
         console.log(data, "compo");
         emails.value = data;
       }
+
+      // let addSentEmail = store.getters["communication/addToSentEmail"]
+      // if(Object.keys(addSentEmail).length > 0) {
+      //   emails.value.unshift(addSentEmail)
+      // }
     }
 
     if (!emails.value || emails.value.length === 0) getSentEmails();

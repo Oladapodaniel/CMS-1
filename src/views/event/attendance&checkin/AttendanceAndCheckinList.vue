@@ -74,7 +74,7 @@
             <a
               class="dropdown-item elipsis-items"
               href="#"
-              @click.prevent="showConfirmModal(person.id, index)"
+              @click.prevent="showConfirmModal(item.id, index)"
               >Delete</a
             >
           </div>
@@ -87,6 +87,7 @@
         </div>
       </div>
     </div>
+    <ConfirmDialog />
     <!-- end of table area -->
   </div>
 </template>
@@ -94,10 +95,13 @@
 <script>
 import { ref } from "vue";
 import dateFormatter from '../../../services/dates/dateformatter';
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import ConfirmDialog from 'primevue/confirmdialog';
 
 export default {
   props: [ "list", "errorOccurred" ],
-
+  components: { ConfirmDialog },
   setup(props) {
     const expose = ref(false);
 
@@ -110,10 +114,73 @@ export default {
     }
     console.log(props.errorOccurred, "error cooo");
 
+    const deleteAttendance = (id, index) => {
+        console.log(id, index)
+      // axios
+      //   .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
+      //   .then((res) => {
+      //     console.log(res);
+      //     if (res.data.status) {
+      //       toast.add({
+      //       severity: "success",
+      //       summary: "Delete Successful",
+      //       detail: `Contribution Trasaction Deleted`,
+      //       life: 3000,
+      //     });
+          // emit('attendance-checkin', index)
+      //     } else {
+      //       toast.add({
+      //       severity: "warn",
+      //       summary: "Delete Failed",
+      //       detail: `Please Try Again`,
+      //       life: 3000,
+      //     });
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     finish()
+      //     if (err.response) {
+      //       console.log(err.response)
+      //       toast.add({
+      //         severity: "error",
+      //         summary: "Unable to delete",
+      //         detail: `${err.response}`,
+      //         life: 3000,
+      //       });
+      //     }
+      //   });
+    };
+    
+    const confirm = useConfirm();
+    let toast = useToast();
+    const showConfirmModal = (id, index) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteAttendance(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
+
     return {
       expose,
       toggleEllips,
       formatDate,
+      showConfirmModal,
+      deleteAttendance
     };
   },
 };

@@ -50,15 +50,15 @@
       </div>
       <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
         <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div> {{eventSummary.offerings ? eventSummary.offerings.toString().length > 6 ? `${ eventSummary.offerings.toString().slice(0, 6) }...` : eventSummary.offerings : 0}}</div>
+        <div> {{eventSummary.offeringAverage.monthly }}</div>
       </div>
       <div class="col-6 col-md-3">
         <div>First Timers</div>
-        <div>{{ eventSummary.firstTimers }}</div>
+        <div>{{ eventSummary.firstTimerAverage.monthly }}</div>
       </div>
       <div class="col-6 col-md-3">
         <div>New Converts</div>
-        <div>{{ eventSummary.newConverts }}</div>
+        <div>{{ eventSummary.newConvertAverage.monthly }}</div>
       </div>
       <!-- <div class="col-12">
         <div>Last Updated 2 hours ago</div>
@@ -69,21 +69,20 @@
     <div class="row avg-table mt-4" v-if="yearlyActiveBtn">
       <div class="col-6 col-md-3 first-row" v-tooltip.bottom="`${eventSummary.attendance ? eventSummary.attendance : 0 }`">
         <div>Attendance</div>
-        <!-- <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 6 ? `${eventSummary.attendance.toString().slice(0, 6)}...` : eventSummary.attendance : 0}}</div> -->
         <div>{{ eventSummary.attendanceAverage.yearly }}</div>
         
       </div>
       <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
         <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div> {{eventSummary.offerings ? eventSummary.offerings.toString().length > 6 ? `${ eventSummary.offerings.toString().slice(0, 6) }...` : eventSummary.offerings : 0}}</div>
+        <div> {{eventSummary.offeringAverage.yearly }}</div>
       </div>
       <div class="col-6 col-md-3">
         <div>First Timers</div>
-        <div>{{ eventSummary.firstTimers }}</div>
+        <div>{{ eventSummary.firstTimerAverage.yearly }}</div>
       </div>
       <div class="col-6 col-md-3">
         <div>New Converts</div>
-        <div>{{ eventSummary.newConverts }}</div>
+        <div>{{ eventSummary.newConvertAverage.yearly }}</div>
       </div>
       <!-- <div class="col-12">
         <div>Last Updated 2 hours ago</div>
@@ -100,15 +99,15 @@
       </div>
       <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
         <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div> {{eventSummary.offerings ? eventSummary.offerings.toString().length > 6 ? `${ eventSummary.offerings.toString().slice(0, 6) }...` : eventSummary.offerings : 0}}</div>
+        <div> {{ eventSummary.offeringAverage.allTime }}</div>
       </div>
       <div class="col-6 col-md-3">
         <div>First Timers</div>
-        <div>{{ eventSummary.firstTimers }}</div>
+        <div>{{ eventSummary.firstTimerAverage.allTime }}</div>
       </div>
       <div class="col-6 col-md-3">
         <div>New Converts</div>
-        <div>{{ eventSummary.newConverts }}</div>
+        <div>{{ eventSummary.newConvertAverage.allTime }}</div>
       </div>
       <!-- <div class="col-12">
         <div>Last Updated 2 hours ago</div>

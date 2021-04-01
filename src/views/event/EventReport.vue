@@ -6,6 +6,7 @@
       </div>
       <div class="col-md-7 d-sm-flex justify-content-md-end">
         <a class="def-btn mr-3 px-md-4 my-sm-1"
+        v-if="false"
           >More Actions <i class="fad fa-caret-circle-down"></i
         ></a>
         <router-link :to="{ name: 'Event', path: '/tenant/event' }">
@@ -80,8 +81,10 @@
                 <a class="def-btn approve-btn mr-4" @click="toggleReportState"
                   >Approve draft</a
                 >
-                <a class="def-btn edit-btn">Edit draft</a>
-              </div>
+                <router-link :to="{ name: 'Event', params: { event: activityId } }">
+                  <a class="def-btn edit-btn">Edit draft</a>
+                </router-link>
+              </div> {{activityId}}here
             </div>
           </div>
         </div>
@@ -144,7 +147,7 @@
         <div class="col-md-8 dark-red-section pl-5">
           <h2 class="evt-report">Event and Report</h2>
         </div>
-
+{{stats}}
         <div
           class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
         >
@@ -197,7 +200,7 @@
               <span class="bold-700">New converts: </span>
             </div>
             <div class="col-md-6 pl-md-0">
-              <span>{{ eventDataResponse.newConvertsCount }}</span>
+              <span>{{ eventData.activityNewConverts.length }}</span>
             </div>
           </div>
         </div>
@@ -1097,6 +1100,7 @@ export default {
     const btnState = ref("");
     const toast = useToast();
     const url = ref("");
+    const activityId = ref("")
 
     const toggleReportState = () => {
       reportApproved.value = !reportApproved.value;
@@ -1233,7 +1237,7 @@ export default {
 
     onMounted(async () => {
       url.value = window.location.href;
-      const activityId = route.params.id;
+      activityId.value = route.params.id;
 
       eventDataResponse.value = JSON.parse(
         localStorage.getItem("eventDataResponse")
@@ -1241,7 +1245,7 @@ export default {
 
       try {
         const res = await axios.get(
-          `/api/Events/GetAnalysis?activityId=${activityId}`
+          `/api/Events/GetAnalysis?activityId=${activityId.value}`
         );
         stats.value = res.data;
       } catch (err) {
@@ -1271,6 +1275,7 @@ export default {
       btnState,
       emaildata,
       url,
+      activityId
     };
   },
 };
