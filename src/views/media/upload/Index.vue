@@ -120,12 +120,15 @@ import { ref } from '@vue/reactivity';
 import { useStore } from "vuex";
 import membershipService from '../../../services/membership/membershipservice';
 import media_service from "../../../services/media/media_service";
+import { useToast } from "primevue/usetoast";
 
     export default {
         components: { Dropdown, Checkbox },
 
         setup() {
             const store = useStore();
+            const toast = useToast();
+
             const mediaTypes = [ 'Video', 'Audio', 'Ebook', 'Picture'];
             const uploadData = ref({ });
 
@@ -166,8 +169,10 @@ import media_service from "../../../services/media/media_service";
                 try {
                     const response = await media_service.uploadMedia(formData);
                     console.log(response, "upload response");
+                    toast.add({severity:'success', summary:'File Uploaded', detail:'Your file was uploaded successfully', life: 3000});
                 } catch (error) {
                     console.log(error);
+                    toast.add({severity:'error', summary:'Upload Failed', detail:'The file upload failed, please reload and try again', life: 3000});
                 }
             }
 

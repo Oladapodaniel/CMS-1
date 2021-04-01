@@ -440,6 +440,12 @@ const routes = [{
                         component: () =>
                             import ( /* webpackChunkName: "socialsetting" */ '@/views/social&mobile/settingspage/PostCategory'),
                     },
+                    {
+                        path: 'involvement',
+                        name: 'PostEngagement',
+                        component: () =>
+                            import ( /* webpackChunkName: "involvement" */ '@/views/social&mobile/involvement/Index'),
+                    },
                 ]
             },
 

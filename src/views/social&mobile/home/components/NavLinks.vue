@@ -28,7 +28,7 @@
                 {
                     text: "Involvement",
                     icon: "pi pi-heart",
-                    to: "/tenant/social",
+                    to: "/tenant/social/involvement",
                 },
                 {
                     text: "Feeds",
