@@ -346,6 +346,7 @@ export default {
       } else {
         marked.value.splice(msgIndex, 1);
       }
+      console.log(marked.value, "tosin");
     };
 
     return {
