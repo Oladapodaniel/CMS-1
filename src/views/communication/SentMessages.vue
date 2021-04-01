@@ -12,7 +12,11 @@
                 <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..." v-model="searchText" />
+                    <input
+                      type="text"
+                      placeholder="Search here..."
+                      v-model="searchText"
+                    />
                     <span class="mx-2"> | </span>
                     <span class="mx-2">Sort By</span>
                     <span class="font-weight-bold"> Newest</span>
@@ -47,11 +51,24 @@
                         <div class="col-md-1">
                           <input type="checkbox" />
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-7 d-flex align-items-center">
                           <span class="th">Message</span>
+                          <!-- <i class="pi pi-trash c-pointer pt-2 px-4" style="font-size: 20px" v-if="marked.length > 0" @click="deleteMarked"></i> -->
+                          <i
+                            class="pi pi-trash text-danger c-pointer pt-2 px-4"
+                            style="font-size: 20px"
+                            v-if="marked.length > 0"
+
+                          ></i>
                         </div>
                         <div class="col-md-2">
-                          <span class="th">Status <i class="fa fa-question-circle-o c-pointer"  v-tooltip.top="'Sent | Processed | Failed'"></i></span>
+                          <span class="th"
+                            >Status
+                            <i
+                              class="fa fa-question-circle-o c-pointer"
+                              v-tooltip.top="'Sent | Processed | Failed'"
+                            ></i
+                          ></span>
                         </div>
                         <div class="col-md-1">
                           <span class="th">Units</span>
@@ -67,29 +84,63 @@
                       <hr class="hr mt-0" />
                     </div>
                   </div>
-                  <div class="row" v-for="(sms, index) in searchedMessages" :key="index">
-                  <!-- <div class="row" v-for="(sms, index) in sentSMS" :key="index"> -->
+                  <div
+                    class="row"
+                    v-for="(sms, index) in searchedMessages"
+                    :key="index"
+                  >
+                    <!-- <div class="row" v-for="(sms, index) in sentSMS" :key="index"> -->
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
-                          <input type="checkbox" />
+                          <input
+                            type="checkbox"
+                            name=""
+                            id=""
+                            @change="mark1Item"
+                            :checked="
+                              marked.findIndex((i) => i.id === message.id) >= 0
+                            "
+                          />
                         </div>
                         <div class="col-md-7 d-md-flex flex-column">
-                          <router-link :to="{name: 'MessageDetails', params: { messageId: sms.id}}" style="color:#000" class="text-decoration-none">
-                            <span
-                            class="d-flex justify-content-between msg-n-time"
+                          <router-link
+                            :to="{
+                              name: 'MessageDetails',
+                              params: { messageId: sms.id },
+                            }"
+                            style="color: #000"
+                            class="text-decoration-none"
                           >
-                            <!-- <span class="font-weight-bold">{{
+                            <span
+                              class="d-flex justify-content-between msg-n-time"
+                            >
+                              <!-- <span class="font-weight-bold">{{
                               !sms.subject ? "(no subject)" : sms.subject
                             }}</span> -->
-                            <!-- <span class="timestamp">{{ sms.dateSent }}</span> -->
-                          </span>
+                              <!-- <span class="timestamp">{{ sms.dateSent }}</span> -->
+                            </span>
                           </router-link>
-                          <router-link :to="{name: 'MessageDetails', params: { messageId: sms.id}}" class="text-decoration-none" >
-                            <span class="brief-message font-weight-600 "
-                            >{{ sms.message && sms.message.length > 25 ? `${sms.message.split('').slice(0, 25).join("")}...` : sms.message ? sms.message : '' }}</span
+                          <router-link
+                            :to="{
+                              name: 'MessageDetails',
+                              params: { messageId: sms.id },
+                            }"
+                            class="text-decoration-none"
                           >
-                          <span class="timestamp ml-1">{{ sms.dateSent }}</span>
+                            <span class="brief-message font-weight-600">{{
+                              sms.message && sms.message.length > 25
+                                ? `${sms.message
+                                    .split("")
+                                    .slice(0, 25)
+                                    .join("")}...`
+                                : sms.message
+                                ? sms.message
+                                : ""
+                            }}</span>
+                            <span class="timestamp ml-1">{{
+                              sms.dateSent
+                            }}</span>
                           </router-link>
                         </div>
                         <!-- <div
@@ -106,7 +157,25 @@
                           <span class="hidden-header font-weight-bold"
                             >Status:
                           </span>
-                          <span class="small-text">{{ sms.deliveryReport.filter(i => i.report.includes("sent")).length  }} | {{ sms.deliveryReport.filter(i => i.report.includes("processed")).length  }} | {{ sms.deliveryReport.filter(i => i.report.includes("failed")).length  }}</span>
+                          <span class="small-text"
+                            >{{
+                              sms.deliveryReport.filter((i) =>
+                                i.report.includes("sent")
+                              ).length
+                            }}
+                            |
+                            {{
+                              sms.deliveryReport.filter((i) =>
+                                i.report.includes("processed")
+                              ).length
+                            }}
+                            |
+                            {{
+                              sms.deliveryReport.filter((i) =>
+                                i.report.includes("failed")
+                              ).length
+                            }}</span
+                          >
                         </div>
                         <div
                           class="col-md-1 col-ms-12 d-flex justify-content-between"
@@ -122,7 +191,13 @@
                           <span class="hidden-header font-weight-bold"
                             >DELIVER REPORT:
                           </span>
-                          <router-link :to="{ name: 'DeliveryReport', params: { messageId: sms.id}, query: { units: sms.smsUnitsUsed }}" class="small-text text-decoration-none"
+                          <router-link
+                            :to="{
+                              name: 'DeliveryReport',
+                              params: { messageId: sms.id },
+                              query: { units: sms.smsUnitsUsed },
+                            }"
+                            class="small-text text-decoration-none"
                             >View</router-link
                           >
                         </div>
@@ -155,7 +230,11 @@
         <div class="conatiner">
           <div class="row">
             <div class="col-md-12 mb-3 pagination-container">
-              <PaginationButtons @getcontent="getSMSByPage" :itemsCount="itemsCount" :currentPage="currentPage" />
+              <PaginationButtons
+                @getcontent="getSMSByPage"
+                :itemsCount="itemsCount"
+                :currentPage="currentPage"
+              />
             </div>
           </div>
         </div>
@@ -168,32 +247,34 @@
 // import axios from "@/gateway/backendapi";
 import { computed, ref } from "vue";
 // import router from "@/router/index";
-import communicationService from "../../services/communication/communicationservice"
+import communicationService from "../../services/communication/communicationservice";
 import { useStore } from "vuex";
-import UnitsArea from "../../components/units/UnitsArea"
-import PaginationButtons from "../../components/pagination/PaginationButtons"
-import Tooltip from 'primevue/tooltip';
+import UnitsArea from "../../components/units/UnitsArea";
+import PaginationButtons from "../../components/pagination/PaginationButtons";
+import Tooltip from "primevue/tooltip";
 
 export default {
   components: { UnitsArea, PaginationButtons },
   directives: {
-      'tooltip': Tooltip
+    tooltip: Tooltip,
   },
-  
+
   setup() {
     const loading = ref(false);
     const store = useStore();
     const sentSMS = ref(store.getters["communication/allSentSMS"]);
 
+    // const  bulkDelete = ref(false)
+
     const currentPage = ref(0);
-    const searchText = ref("")
+    const searchText = ref("");
 
     const getSentSMS = async () => {
       try {
         loading.value = true;
         /*eslint no-undef: "warn"*/
         NProgress.start();
-        const data = await communicationService.getAllSentSMS(0)
+        const data = await communicationService.getAllSentSMS(0);
         console.log(data, "data");
         loading.value = false;
         if (data) {
@@ -217,39 +298,55 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
-
+    };
 
     if (!sentSMS.value || sentSMS.value.length === 0) getSentSMS();
 
     const itemsCount = computed(() => {
       if (!sentSMS.value || sentSMS.value.length === 0) return 0;
       return sentSMS.value.length;
-    })
+    });
 
     const messages = computed(() => {
-      if (!sentSMS.value || sentSMS.value.length === 0) return [ ];
-      return sentSMS.value.filter(i => {
+      if (!sentSMS.value || sentSMS.value.length === 0) return [];
+      return sentSMS.value.filter((i) => {
         if (i.message) return !i.message.toLowerCase().startsWith("sms reply");
         return false;
       });
-    })
-     console.log(sentSMS.value, "data");
+    });
+    console.log(sentSMS.value, "data");
 
-     const searchedMessages = computed(() => {
-       if (searchText.value === "" && messages.value.length > 0) return messages.value
-       return messages.value.filter(i => i.message.toLowerCase().includes(searchText.value.toLowerCase()))
-     })
-     
+    const searchedMessages = computed(() => {
+      if (searchText.value === "" && messages.value.length > 0)
+        return messages.value;
+      return messages.value.filter((i) =>
+        i.message.toLowerCase().includes(searchText.value.toLowerCase())
+      );
+    });
+
     //  const addSmsToSentList = () => {
-      //  const storedData = store.getters['communication/addSmsToSentList']
-      //  console.log(storedData)
-      //  if (storedData) {
-      //    sentSMS.value.push(storedData)
-      //  }
-      //  console.log(store.getters['communication/addSmsToSentList'])
+    //  const storedData = store.getters['communication/addSmsToSentList']
+    //  console.log(storedData)
+    //  if (storedData) {
+    //    sentSMS.value.push(storedData)
+    //  }
+    //  console.log(store.getters['communication/addSmsToSentList'])
     //  }
     //  addSmsToSentList()
+
+    // const checkedAll = () => {
+    //   bulkDelete.value = !bulkDelete.value
+    // }
+
+    const marked = ref([]);
+    const mark1Item = (messageid) => {
+      const msgIndex = marked.value.findIndex((i) => i.id === messageid.id);
+      if (msgIndex < 0) {
+        marked.value.push(messageid);
+      } else {
+        marked.value.splice(msgIndex, 1);
+      }
+    };
 
     return {
       sentSMS,
@@ -259,7 +356,11 @@ export default {
       getSMSByPage,
       messages,
       searchText,
-      searchedMessages
+      searchedMessages,
+      marked,
+      mark1Item,
+      // bulkDelete,
+      // checkedAll,
     };
   },
 };
