@@ -239,9 +239,13 @@ export default {
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        // email: 'st@gmail.com',
         email: props.email,
+        // amount: 100 * 100,
         amount: props.amount * 100,
-        firstname: props.name,
+        firstname: 'Godstar',
+        // firstname: props.name,
         ref: props.orderId,
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
@@ -263,7 +267,7 @@ export default {
             .then((res) => {
               finish()
               console.log(res, "success data");
-              emit('payment-successful', true)
+              
             })
             .catch((err) => {
               finish()
@@ -271,7 +275,7 @@ export default {
               console.log(err, "error confirming payment");
             });
             
-            
+          emit('payment-successful', true)  
         },
       });
       handler.openIframe();

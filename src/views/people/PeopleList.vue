@@ -47,10 +47,10 @@
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class="col-md-10 pl-5">
+    <div class="row mt-5">
+      <!-- <div class="col-md-10 pl-5">
         <i class="pi pi-trash c-pointer" style="font-size: 24px" v-if="marked.length > 0" @click="deleteMarked"></i>
-      </div>
+      </div> -->
     </div>
 
     <div class="table mx-0" :class="{ 'mt-0': marked.length > 0}">
@@ -58,6 +58,7 @@
         <div class="select-all">
           <input type="checkbox" name="all" id="all" @change="markAll" :checked="marked.length === churchMembers.length"/>
           <label>SELECT ALL</label>
+           <i class="pi pi-trash text-danger c-pointer pt-2 px-4" style="font-size: 20px" v-if="marked.length > 0" @click="deleteMarked"></i>
         </div>
         <div class="filter">
           <p @click="toggleFilterFormVissibility" class="mt-2">
@@ -69,7 +70,7 @@
             <i class="fa fa-search"></i> SEARCH
           </p>
         <div class="search d-flex" >
-          <label 
+          <label
             class="label-search d-flex"
             :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
           >
@@ -268,12 +269,12 @@
             </div>
           </div>
         </div>
-        
+
         <hr class="row-divider" />
         <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
       </div>
       </div>
-      
+
       <div v-else-if="filterResult.length == 0 && noRecords">
         <div class="no-record text-center my-4">No member found</div>
       </div>
@@ -283,7 +284,11 @@
           <div class="table-body" v-for="(person, index) in searchMember" :key="person.id">
         <div class="data-row">
           <div class="check data">
-            <input type="checkbox" name="" id="" @change="mark(person)" :checked="marked.findIndex(i => i.id === person.id) >= 0"/>
+            <input
+            type="checkbox"
+            name="" id=""
+            @change="mark(person)"
+            :checked="marked.findIndex(i => i.id === person.id) >= 0"/>
           </div>
           <div class="picture data">
             <div class="data-con">
@@ -427,7 +432,7 @@ export default {
   },
 
   setup(props) {
-   
+
     const churchMembers = ref([]);
     const filterFormIsVissible = ref(false);
     const filter = ref({});
@@ -455,14 +460,14 @@ export default {
     //   // }
     // }
     // })
-    
+
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
     const membershipSummary = ref([]);
 
     const deleteMember = (id) => {
-      
+
       axios
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
@@ -478,7 +483,7 @@ export default {
             })
             .catch((err) => {
               console.log(err)
-              
+
             });
         })
         .catch((err) => {
@@ -490,22 +495,22 @@ export default {
 
     const applyFilter = () => {
         // filterBoolean.value = false
-        
+
 
         filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
         filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
         filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
-    
+
          let url = "/api/People/FilterMembers?firstname="+filter.value.filterFirstName +"&lastname="+filter.value.filterLastName +"&phone_number="+ filter.value.phoneNumber +"&page=1"
       axios.get(url).then((res) => {
         noRecords.value = true
         filterResult.value = res.data
         console.log(res.data);
       }) .catch(err => console.log(err))
-      
+
     };
 
-    
+
     const clearAll = () => {
        filter.value.filterFirstName = ""
        filter.value.filterLastName = ""
@@ -536,7 +541,7 @@ export default {
     const confirm = useConfirm();
     let toast = useToast();
         const showConfirmModal = (id, index) => {
-           
+
            confirm.require({
                message: 'Are you sure you want to proceed?',
                 header: 'Confirmation',
@@ -545,7 +550,7 @@ export default {
                 rejectClass: 'cancel-delete',
                 accept: () => {
                     deleteMember(id, index)
-                    
+
                 },
                 reject: () => {
                     // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
@@ -553,7 +558,7 @@ export default {
 
         });
         }
-        
+
     const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
       if (page < 0) return false;
@@ -579,6 +584,7 @@ export default {
       .get(`/api/People/GetMembershipSummary`)
       .then((res) => {
         membershipSummary.value = res.data;
+
       })
       .catch((err) => console.log(err));
     // })
@@ -611,7 +617,7 @@ export default {
     const deleteMarked = async () => {
       const arr = [ ];
       for (let member of marked.value) {
-        
+
         arr.push( { personId: member.id });
       }
       try {
@@ -626,7 +632,7 @@ export default {
       // console.log(props.list, "props");
       churchMembers.value = props.list;
       // store.dispatch('churchMembers', props.list)
-      
+
     }
     getPeopleList()
 
@@ -814,7 +820,7 @@ a {
 .phone .data-value {
   /* margin-left: 38px; */
 }
-/* 
+/*
 .label-search {
   width: 0;
   background: transparent;

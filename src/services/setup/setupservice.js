@@ -17,6 +17,7 @@ const setupService = {
         store.dispatch("groups/getGroups");
         store.dispatch('contributions/contributionList')
         store.dispatch("communication/addSmsToSentList");
+        // store.dispatch("communication/addToSentEmail");
     }
 }
 

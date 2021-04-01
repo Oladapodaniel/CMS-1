@@ -122,26 +122,27 @@ const routes = [{
                 ]
             },
 
-            {
-                path: 'event',
-                name: 'Event',
-                component: () =>
-                    import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
-            },
+            // {
+            //     path: 'event',
+            //     name: 'Event',
+            //     component: () =>
+            //         import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+            // },
             {
                 path: 'events',
                 name: 'Events',
                 component: () =>
                     import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
             },
-            {
-                path: 'events',
-                name: 'EventList',
-                component: () =>
-                    import ( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
-            },
+            // {
+            //     path: 'events',
+            //     name: 'EventList',
+            //     component: () =>
+            //         import ( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
+            // },
             {
                 path: 'event/:event?',
+                name: 'Event',
                 component: () =>
                     import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
             },

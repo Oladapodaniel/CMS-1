@@ -6,6 +6,7 @@
       </div>
       <div class="col-md-7 d-sm-flex justify-content-md-end">
         <a class="def-btn mr-3 px-md-4 my-sm-1"
+        v-if="false"
           >More Actions <i class="fad fa-caret-circle-down"></i
         ></a>
         <router-link :to="{ name: 'Event', path: '/tenant/event' }">
@@ -80,7 +81,9 @@
                 <a class="def-btn approve-btn mr-4" @click="toggleReportState"
                   >Approve draft</a
                 >
-                <a class="def-btn edit-btn">Edit draft</a>
+                <router-link :to="{ name: 'Event', params: { event: activityId } }">
+                  <a class="def-btn edit-btn">Edit draft</a>
+                </router-link>
               </div>
             </div>
           </div>
@@ -144,7 +147,6 @@
         <div class="col-md-8 dark-red-section pl-5">
           <h2 class="evt-report">Event and Report</h2>
         </div>
-
         <div
           class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
         >
@@ -154,7 +156,7 @@
           </span>
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve">{{ stats.todayOffering }}</span>
+            <span class="recieve">{{ tottalOfferings }}</span>
           </span>
         </div>
       </div>
@@ -189,7 +191,7 @@
               <span class="bold-700">First timers: </span>
             </div>
             <div class="col-md-6 pl-md-0">
-              <span>{{ eventData.activityFirstTimers.length }}</span>
+              <span>{{ eventData.activityFirstTimers ? eventData.activityFirstTimers.length : 0 }}</span>
             </div>
           </div>
           <div class="row">
@@ -197,7 +199,7 @@
               <span class="bold-700">New converts: </span>
             </div>
             <div class="col-md-6 pl-md-0">
-              <span>{{ eventDataResponse.newConvertsCount }}</span>
+              <span>{{ eventData.activityNewConverts ? eventData.activityNewConverts.length : 0 }}</span>
             </div>
           </div>
         </div>
@@ -335,14 +337,14 @@
         <div class="col-md-12">
           <div class="row mb-4">
             <div class="col-md-12">
-              <span class="attendance-header">Offering</span>
+              <span class="attendance-header">Contribution</span>
             </div>
           </div>
           <div class="row px-5">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-sm-3">
-                  <span class="bold-700">Offering Item</span>
+                  <span class="bold-700">Contribution Item</span>
                 </div>
                 <div class="col-sm-3">
                   <span class="bold-700">Channel</span>
@@ -1097,6 +1099,7 @@ export default {
     const btnState = ref("");
     const toast = useToast();
     const url = ref("");
+    const activityId = ref("")
 
     const toggleReportState = () => {
       reportApproved.value = !reportApproved.value;
@@ -1233,7 +1236,7 @@ export default {
 
     onMounted(async () => {
       url.value = window.location.href;
-      const activityId = route.params.id;
+      activityId.value = route.params.id;
 
       eventDataResponse.value = JSON.parse(
         localStorage.getItem("eventDataResponse")
@@ -1241,7 +1244,7 @@ export default {
 
       try {
         const res = await axios.get(
-          `/api/Events/GetAnalysis?activityId=${activityId}`
+          `/api/Events/GetAnalysis?activityId=${activityId.value}`
         );
         stats.value = res.data;
       } catch (err) {
@@ -1271,6 +1274,7 @@ export default {
       btnState,
       emaildata,
       url,
+      activityId
     };
   },
 };

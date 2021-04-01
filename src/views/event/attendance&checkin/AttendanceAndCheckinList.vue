@@ -1,24 +1,28 @@
 
 <template>
-  <div class="mt-4">
+  <div class="mt-4 parent-element" >
 
     <!-- table area -->
-    <div class="mx-0 t-border small-text">
+    <div class="container-fluid small-text">
       <div
-        class="d-none d-md-flex table-header font-weight-700 justify-content-between"
+        class="row table-header font-weight-700 "
       >
-      <div class="col-md-3 dcreated">
-          <p style="font-size:14px">Date</p>
+
+        <div class="col-md-4">
+          Event  Name
+          <!-- <p style="font-size:14px">Event Name</p> -->
         </div>
 
-        <div class="col-md-4 alist">
-          <p style="font-size:14px">Event Name</p>
+        <div class="col-md-4">
+          <!-- <p style="font-size:14px">Date</p> -->
+          Date
         </div>
         
-        <div class="col-md-3 tattendance">
-          <p style="font-size:14px">Group Name</p>
+        <div class="col-md-3">
+          <!-- <p style="font-size:14px">Group Name</p> -->
+          Group Name
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-1"></div>
       </div>
 
       <!--end of table header area -->
@@ -27,40 +31,41 @@
       <!-- <hr class="mt-n4" /> -->
       <!-- table body starts here -->
 
-      <div class="row font-weight-700 justify-content-between small-text tr-border-bottom mx-1" v-for="(item, index) in list" :key="index">
-         <div class="col-md-3">
-          <p class="d-flex justify-content-between mb-0">
-            <span class="d-flex d-md-none tattendance2">Date Created</span>
-            <span class="edate edate2">
-              <router-link class="text-decoration-none font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id, code: item.attendanceCode } }">
-                {{ formatDate(item.eventDate) }}
-              </router-link>
-            </span>
-          </p>
-        </div>
-
+      <div class="row font-weight-500 t-body small-text tr-border-bottom align-items-center" v-for="(item, index) in list" :key="index">
         <div class="col-md-4">
-          <p class="d-flex ml-2 justify-content-between mb-0">
+          <!-- <p class=" mb-0">
             <span class="d-flex d-md-none alist2">Event Name</span>
-            <span class="elist elist2">
+            <span class="t elist2"> -->
               <router-link class="text-decoration-none font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id, code: item.attendanceCode } }">
                 {{ item.fullEventName }}
               </router-link>
-            </span>
-          </p>
+            <!-- </span>
+          </p> -->
         </div>
+
+         <div class="col-md-4">
+          <!-- <p class="d-flex justify-content-between mb-0">
+            <span class="d-flex d-md-none tattendance2">Date Created</span>
+            <span class="edate edate2"> -->
+              <router-link class="text-decoration-none font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id, code: item.attendanceCode } }">
+                {{ formatDate(item.eventDate) }}
+              </router-link>
+            <!-- </span>
+          </p> -->
+        </div>
+
        
         <div class="col-md-3">
-          <p class="d-flex justify-content-between mb-0">
+          <!-- <p class="d-flex justify-content-between mb-0">
             <span class="d-flex d-md-none dcreated2">Group Name</span>
-            <span class="eattendance eattendance2">
+            <span class="eattendance eattendance2"> -->
               <router-link class="text-decoration-none font-weight-500" :to="{name: 'CheckinType', query: { activityID: item.eventID, activityName: item.fullEventName, groupId: item.groupID, groupName: item.fullGroupName, id: item.id, code: item.attendanceCode } }">
                 {{ item.fullGroupName }}
               </router-link>
-            </span>
-          </p>
+            <!-- </span>
+          </p> -->
         </div>
-        <div class="col-md-2" @click="toggleEllips">
+        <div class="col-md-1" @click="toggleEllips">
           <i
             class="d-flex justify-content-end fas fa-ellipsis-v ion ion2 c-pointer"
             id="dropdownMenuButton"
@@ -74,7 +79,7 @@
             <a
               class="dropdown-item elipsis-items"
               href="#"
-              @click.prevent="showConfirmModal(person.id, index)"
+              @click.prevent="showConfirmModal(item.id, index)"
               >Delete</a
             >
           </div>
@@ -87,6 +92,8 @@
         </div>
       </div>
     </div>
+    <ConfirmDialog />
+    <Toast />
     <!-- end of table area -->
   </div>
 </template>
@@ -94,11 +101,17 @@
 <script>
 import { ref } from "vue";
 import dateFormatter from '../../../services/dates/dateformatter';
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import ConfirmDialog from 'primevue/confirmdialog';
+import axios from "@/gateway/backendapi";
+import Toast from 'primevue/toast';
 
 export default {
   props: [ "list", "errorOccurred" ],
-
-  setup(props) {
+  components: { ConfirmDialog, Toast },
+  setup(props, { emit }) {
+    let toast = useToast();
     const expose = ref(false);
 
     const toggleEllips = () => {
@@ -106,30 +119,106 @@ export default {
     };
 
     const formatDate = (date) => {
-      return dateFormatter.normalDate(date);
+      return dateFormatter.monthDayYear(date);
     }
     console.log(props.errorOccurred, "error cooo");
+
+    const deleteAttendance = (id, index) => {
+      axios
+        .delete(`/api/CheckInAttendance/checkout?attendanceId=${id}`)
+        .then((res) => {
+          console.log(res.status);
+          if (res.status === 200) {
+            toast.add({
+            severity: "success",
+            summary: "Delete Successful",
+            detail: `${res.data}`,
+            life: 3000
+          });
+          emit('attendance-checkin', index)
+          } else {
+            toast.add({
+            severity: "warn",
+            summary: "Delete Failed",
+            detail: `Please Try Again`,
+            life: 3000,
+          });
+          }
+        })
+        .catch((err) => {
+      //     finish()
+          if (err.response) {
+            console.log(err.response)
+            toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: `${err.response}`,
+              life: 3000,
+            });
+          } else if (err.response.toString().toLowerCase().includes('network error')) {
+            toast.add({
+              severity: "warn",
+              summary: "Unable to delete",
+              detail: `Please ensure you have a strong internet connection`,
+              life: 3000,
+            });
+          }
+        });
+    };
+    
+    const confirm = useConfirm();
+    
+    const showConfirmModal = (id, index) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteAttendance(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
 
     return {
       expose,
       toggleEllips,
       formatDate,
+      showConfirmModal,
+      deleteAttendance
     };
   },
 };
 </script>
 
 <style scoped>
-* {
-  /* font-size: 62.5%; */
-}
 
 .table {
   border-radius: 0.5rem;
 }
 
 .table-header {
-  border-radius: 0.5rem 0.5rem 0 0;
+  /* border-radius: 0.5rem 0.5rem 0 0; */
+  padding: 10px;
+  font-size: 14px;
+}
+
+.t-body {
+  padding: 0 10px;
+}
+
+.parent-element {
+  box-shadow: 0px 1px 4px #02172e45;
 }
 
 .page-header {

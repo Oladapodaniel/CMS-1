@@ -10,7 +10,8 @@ export default {
         smsDrafts: [ ],
         emailDrafts: [ ],
         sentEmails: [ ],
-        addSmsToSentList: {}
+        addSmsToSentList: {},
+        addToSentEmail: {},
     },
 
     mutations: {
@@ -40,6 +41,11 @@ export default {
         addSmsToSentList(state,payload) {
             // state.addSmsToSentList = payload
             state.allSentSMS.unshift(payload)
+        },
+        addToSentEmail(state, payload) {
+            // state.sentEmails.pop()
+            state.sentEmails.push(payload)
+            // state.addToSentEmail = payload
         }
     },
 
@@ -62,11 +68,16 @@ export default {
         addSmsToSentList({ commit }, payload) {
             commit("addSmsToSentList", payload)
         },
+        addToSentEmail ( { commit }, payload) {
+            commit("addToSentEmail", payload)
+            // console.log(payload)
+        },
 
         async getAllSentSMS({ commit }) {
             try {
                 const { data } = await axios.get("/api/Messaging/getAllSentSms?page=0");
                 commit("setAllSentSMS", data);
+                console.log(data)
             } catch (error) {
                 console.log(error);
             }
@@ -117,6 +128,7 @@ export default {
         emailDrafts: state => state.emailDrafts,
         sentEmails: state => state.sentEmails,
         getEmailDraftById: state => id => state.emailDrafts.find(i => i.id === id),
-        addSmsToSentList: state => state.addSmsToSentList
+        addSmsToSentList: state => state.addSmsToSentList,
+        addToSentEmail: state => state.addToSentEmail
       },
 }
