@@ -165,10 +165,10 @@
                 <p
                   class="mb-0 font-weight-700 mb-n2 d-flex justify-content-between"
                 >
-                  <span>Colossal Boss</span>
+                  <span>{{ post.posterDetails.posterName }}</span>
                   <span><i class="pi pi-ellipsis-h c-pointer"></i></span>
                 </p>
-                <small class="mb-0">Just now, Lagos</small>
+                <small class="mb-0">{{ formatDate(post.date) }}</small>
               </div>
             </div>
 

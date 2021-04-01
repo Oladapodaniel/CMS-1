@@ -17,8 +17,31 @@
 </template>
 
 <script>
+import media_service from '../../../services/media/media_service'
+import membershipService from '../../../services/membership/membershipservice';
     export default {
-        
+        setup() {
+            const getMedia = async (tenantId) => {
+                try {
+                    const response = await media_service.getMedia(tenantId);
+                    console.log(response, "media files");
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
+            membershipService.getSignedInUser()
+                .then(res => {
+                    getMedia(res.tenantId)
+                })
+                .catch(err => console.log(err))
+            
+
+            return {
+                
+            }
+        }
+
     }
 </script>
 

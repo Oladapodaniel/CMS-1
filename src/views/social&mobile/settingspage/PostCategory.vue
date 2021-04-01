@@ -1,12 +1,13 @@
 <template>
     <div class="container">
-        <div class="row">
+        <div class="row my-3">
             <div class="col-md-12">
                 <h2 class="main-title">
                     Create Post Category
                 </h2>
             </div>
         </div>
+
         <div class="row my-3">
             <div class="col-md-4 text-md-right">
                 <label for="">Name</label>
