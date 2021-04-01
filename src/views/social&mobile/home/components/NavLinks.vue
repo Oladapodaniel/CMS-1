@@ -23,32 +23,32 @@
                 {
                     text: "Overview",
                     icon: "pi pi-th-large",
-                    to: "",
+                    to: "/tenant/social",
                 },
                 {
                     text: "Involvement",
                     icon: "pi pi-heart",
-                    to: "",
+                    to: "/tenant/social",
                 },
                 {
                     text: "Feeds",
                     icon: "pi pi-wifi",
-                    to: "",
+                    to: "/tenant/social/feed",
                 },
                 {
                     text: "Schedule Post",
                     icon: "pi pi-clock",
-                    to: "",
+                    to: "/tenant/social/schedule",
                 },
                 {
                     text: "Pending Post",
                     icon: "pi-wallet",
-                    to: "",
+                    to: "/tenant/social/pending",
                 },
                 {
                     text: "Setting",
                     icon: "pi pi-cog",
-                    to: "",
+                    to: "/tenant/social/setting",
                 }
             ]
 
