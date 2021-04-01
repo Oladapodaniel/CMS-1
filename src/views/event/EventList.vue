@@ -43,22 +43,22 @@
 
 <!-- Monthly -->
     <div class="row avg-table mt-4" v-if="monthlyActiveBtn">
-      <div class="col-6 col-md-3 first-row" v-tooltip.bottom="`${eventSummary.attendance ? eventSummary.attendance : 0 }`">
+      <div class="col-6 col-md-3 first-row" v-tooltip.left="`${ eventSummary.attendanceAverage.monthly }`">
         <div>Attendance</div>
-        <div>{{ eventSummary.attendanceAverage.monthly }}</div>
+        <div>{{ convert(eventSummary.attendanceAverage.monthly) }}</div>
         
       </div>
-      <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
+      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.offeringAverage.monthly }`">
         <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div> {{eventSummary.offeringAverage.monthly }}</div>
+        <div> {{convert(eventSummary.offeringAverage.monthly) }}</div>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.firstTimerAverage.monthly }`">
         <div>First Timers</div>
-        <div>{{ eventSummary.firstTimerAverage.monthly }}</div>
+        <div>{{ convert(eventSummary.firstTimerAverage.monthly) }}</div>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.newConvertAverage.monthly }`">
         <div>New Converts</div>
-        <div>{{ eventSummary.newConvertAverage.monthly }}</div>
+        <div>{{ convert(eventSummary.newConvertAverage.monthly) }}</div>
       </div>
       <!-- <div class="col-12">
         <div>Last Updated 2 hours ago</div>
@@ -67,22 +67,22 @@
 
 <!-- yearly -->
     <div class="row avg-table mt-4" v-if="yearlyActiveBtn">
-      <div class="col-6 col-md-3 first-row" v-tooltip.bottom="`${eventSummary.attendance ? eventSummary.attendance : 0 }`">
+      <div class="col-6 col-md-3 first-row" v-tooltip.left="`${ eventSummary.attendanceAverage.yearly }`">
         <div>Attendance</div>
-        <div>{{ eventSummary.attendanceAverage.yearly }}</div>
+        <div>{{ convert(eventSummary.attendanceAverage.yearly) }}</div>
         
       </div>
-      <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
+      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.offeringAverage.yearly }`">
         <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div> {{eventSummary.offeringAverage.yearly }}</div>
+        <div> {{ convert(eventSummary.offeringAverage.yearly) }}</div>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.firstTimerAverage.yearly }`">
         <div>First Timers</div>
-        <div>{{ eventSummary.firstTimerAverage.yearly }}</div>
+        <div>{{ convert(eventSummary.firstTimerAverage.yearly) }}</div>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.newConvertAverage.yearly }`">
         <div>New Converts</div>
-        <div>{{ eventSummary.newConvertAverage.yearly }}</div>
+        <div>{{ convert(eventSummary.newConvertAverage.yearly) }}</div>
       </div>
       <!-- <div class="col-12">
         <div>Last Updated 2 hours ago</div>
@@ -91,23 +91,23 @@
 
 <!-- All time -->
     <div class="row avg-table mt-4" v-if="allTimeActiveBtn">
-      <div class="col-6 col-md-3 first-row" v-tooltip.bottom="`${eventSummary.attendance ? eventSummary.attendance : 0 }`">
+      <div class="col-6 col-md-3 first-row" v-tooltip.left="`${ eventSummary.attendanceAverage.allTime }`">
         <div>Attendance</div>
         <!-- <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 6 ? `${eventSummary.attendance.toString().slice(0, 6)}...` : eventSummary.attendance : 0}}</div> -->
-        <div>{{ eventSummary.attendanceAverage.allTime }}</div>
+        <div>{{ convert(eventSummary.attendanceAverage.allTime) }}</div>
         
       </div>
-      <div class="col-6 col-md-3" v-tooltip.bottom="`${eventSummary.offerings ? eventSummary.offerings : 0 }`">
+      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.offeringAverage.allTime }`">
         <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div> {{ eventSummary.offeringAverage.allTime }}</div>
+        <div> {{ convert(eventSummary.offeringAverage.allTime) }}</div>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.firstTimerAverage.allTime }`">
         <div>First Timers</div>
-        <div>{{ eventSummary.firstTimerAverage.allTime }}</div>
+        <div>{{ convert(eventSummary.firstTimerAverage.allTime) }}</div>
       </div>
-      <div class="col-6 col-md-3">
+      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.newConvertAverage.allTime }`">
         <div>New Converts</div>
-        <div>{{ eventSummary.newConvertAverage.allTime }}</div>
+        <div>{{ convert(eventSummary.newConvertAverage.allTime) }}</div>
       </div>
       <!-- <div class="col-12">
         <div>Last Updated 2 hours ago</div>
@@ -508,8 +508,9 @@ import { useConfirm } from "primevue/useConfirm";
 import { useToast } from 'primevue/usetoast';
 import { useStore } from "vuex";
 import userService from "../../services/user/userservice"
-import monthDayYear from '../../services/dates/dateformatter'
 import Tooltip from 'primevue/tooltip';
+import monthDayYear from '../../services/dates/dateformatter'
+import convertNumber from '../../services/numbershortener/numberfomatter'
 export default {
   directives: {
       'tooltip': Tooltip
@@ -641,6 +642,10 @@ const deleteMember = (id) => {
       return monthDayYear.monthDayYear(offDate)
     }
 
+    const convert = (number) => {
+      return convertNumber.convertNumber(number)
+    }
+
     return {
       filterFormIsVissible,
       toggleFilterFormVissibility,
@@ -658,7 +663,8 @@ const deleteMember = (id) => {
       toggleMonthlyClass,
       toggleYearlyClass,
       toggleAllTimeClass,
-      date
+      date,
+      convert
     };
   },
 };

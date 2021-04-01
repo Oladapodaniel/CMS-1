@@ -281,7 +281,7 @@
 
           <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
           <hr class="hr" />
-          <div @click="logout">Logout</div>
+          <div class="link" @click="logout">Logout</div>
 
           <!-- Hidden -->
           <a class="link routelink" v-if="false"> Integration </a>

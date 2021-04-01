@@ -84,7 +84,7 @@
                 <router-link :to="{ name: 'Event', params: { event: activityId } }">
                   <a class="def-btn edit-btn">Edit draft</a>
                 </router-link>
-              </div> {{activityId}}here
+              </div>
             </div>
           </div>
         </div>
@@ -147,7 +147,6 @@
         <div class="col-md-8 dark-red-section pl-5">
           <h2 class="evt-report">Event and Report</h2>
         </div>
-{{stats}}
         <div
           class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
         >
@@ -157,7 +156,7 @@
           </span>
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve">{{ stats.todayOffering }}</span>
+            <span class="recieve">{{ tottalOfferings }}</span>
           </span>
         </div>
       </div>
@@ -192,7 +191,7 @@
               <span class="bold-700">First timers: </span>
             </div>
             <div class="col-md-6 pl-md-0">
-              <span>{{ eventData.activityFirstTimers.length }}</span>
+              <span>{{ eventData.activityFirstTimers ? eventData.activityFirstTimers.length : 0 }}</span>
             </div>
           </div>
           <div class="row">
@@ -200,7 +199,7 @@
               <span class="bold-700">New converts: </span>
             </div>
             <div class="col-md-6 pl-md-0">
-              <span>{{ eventData.activityNewConverts.length }}</span>
+              <span>{{ eventData.activityNewConverts ? eventData.activityNewConverts.length : 0 }}</span>
             </div>
           </div>
         </div>
@@ -338,14 +337,14 @@
         <div class="col-md-12">
           <div class="row mb-4">
             <div class="col-md-12">
-              <span class="attendance-header">Offering</span>
+              <span class="attendance-header">Contribution</span>
             </div>
           </div>
           <div class="row px-5">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-sm-3">
-                  <span class="bold-700">Offering Item</span>
+                  <span class="bold-700">Contribution Item</span>
                 </div>
                 <div class="col-sm-3">
                   <span class="bold-700">Channel</span>

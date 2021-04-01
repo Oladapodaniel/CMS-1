@@ -12,8 +12,8 @@
         <Dialog v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '80vw'}">
             <p>You have no income account to create a contribution item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
             <template #footer>
-                <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/>
-                <Button label="Yes" icon="pi pi-check" @click="closeResponsive" autofocus />
+                <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
+                <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
             </template>
         </Dialog>
 
