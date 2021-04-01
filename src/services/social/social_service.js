@@ -51,7 +51,55 @@ const createPostCategory = (body) => {
 
 const getFeed = (tenantId) => {
     return new Promise((resolve, reject) => {
-        axios.get(`/mobile/v1/MobileOnboarding/GetChurchFeed?tenantId=${tenantId}`)
+        axios.get(`/mobile/v1/Feeds/GetChurchFeed?tenantId=${tenantId}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+const getPendingPosts = (tenantId) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/mobile/v1/Feeds/GetPendingPosts?tenantId=${tenantId}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+const postComment = (body) => {
+    return new Promise((resolve, reject) => {
+        axios.post(`/mobile/v1/Feeds/Comment`, body)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+const approvePost = (id) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/mobile/v1/Feeds/ApprovePost?postId=${id}`)
         .then(res => {
             resolve(res.data);
         })
@@ -70,4 +118,7 @@ export default {
     postMessage,
     createPostCategory,
     getFeed,
+    postComment,
+    approvePost,
+    getPendingPosts,
 }

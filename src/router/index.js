@@ -418,15 +418,27 @@ const routes = [{
                     },
                     {
                         path: 'pending',
-                        name: 'PendingReview',
+                        name: 'PendingPosts',
                         component: () =>
-                            import ( /* webpackChunkName: "pendingreview" */ '@/views/social&mobile/pending/Index'),
+                            import ( /* webpackChunkName: "feed" */ '@/views/social&mobile/pending/Index'),
                     },
                     {
                         path: 'schedule',
                         name: 'PendingReview',
                         component: () =>
-                            import ( /* webpackChunkName: "pendingreview" */ '@/views/social&mobile/schedule/Index'),
+                            import ( /* webpackChunkName: "schedule" */ '@/views/social&mobile/schedule/Index'),
+                    },
+                    {
+                        path: 'setting',
+                        name: 'SocialSetting',
+                        component: () =>
+                            import ( /* webpackChunkName: "socialsetting" */ '@/views/social&mobile/settingspage/Index'),
+                    },
+                    {
+                        path: 'category',
+                        name: 'PostCategory',
+                        component: () =>
+                            import ( /* webpackChunkName: "socialsetting" */ '@/views/social&mobile/settingspage/PostCategory'),
                     },
                 ]
             },
@@ -515,6 +527,18 @@ const routes = [{
                 name: 'ChartOfAccount',
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/chartOfAccount/ChartOfAccount')
+            },
+            {
+                path: 'media',
+                name: 'MediaLibrary',
+                component: () =>
+                    import ( /* webpackChunkName: "medialibrary" */ '@/views/media/library/Index')
+            },
+            {
+                path: 'upload',
+                name: 'UploadMedia',
+                component: () =>
+                    import ( /* webpackChunkName: "uploadmedia" */ '@/views/media/upload/Index')
             },
             {
                 path: 'chartofaccount/update',
