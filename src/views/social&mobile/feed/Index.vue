@@ -1,9 +1,9 @@
 <template>
   <div class="constainer-fluid">
     <div class="row blue-bg">
-      <div class="col-md-12 bg-danger"></div>
+      <div class="col-md-12 bg-blue"></div>
     </div>
-    <div class="row blue-bg px-1">
+    <div class="row px-1">
       <div class="col-md-3">
         <div class="row">
           <div class="col-md-12 my-5">
@@ -179,9 +179,9 @@
                   {{ post.postCategoryName }}
                 </h5>
                 <p class="mb-0 text-justify">
-                  <span v-if="post.showFullMessage">{{ post.content }}</span>
+                  <span v-if="post.showFullMessage || post.content.length < previewLenth">{{ post.content }}</span>
                   <span v-else>{{ post.briefMessage }}...</span>
-                  <span v-if="post.content.length > 300" class="font-weight-700 primary-text c-pointer ml-3" @click="() => post.showFullMessage = !post.showFullMessage">{{ post.showFullMessage ? 'See less' : 'See more' }}</span>
+                  <span v-if="post.content.length > previewLenth" class="font-weight-700 primary-text c-pointer ml-3" @click="() => post.showFullMessage = !post.showFullMessage">{{ post.showFullMessage ? 'See less' : 'See more' }}</span>
                   </p>
               </div>
             </div>
@@ -445,6 +445,7 @@ export default {
   setup() {
     const feed = ref([]);
     const tenantId = ref("");
+    const previewLenth = 300;
     membershipService
       .getSignedInUser()
       .then((res) => {
@@ -459,7 +460,7 @@ export default {
         const response = await social_service.getFeed(tenantId);
         feed.value = response.map(i => {
           i.showFullMessage = false;
-          i.briefMessage = i.content.slice(0, 300);
+          i.briefMessage = i.content.slice(0, previewLenth);
           return i;
         })
         loaded.value = false;
@@ -500,6 +501,7 @@ export default {
       comment,
       formatDate,
       loaded,
+      previewLenth,
     };
   },
 };
@@ -507,8 +509,13 @@ export default {
 
 <style scoped>
 .blue-bg {
-  max-height: 500px;
+  height: 500px;
   position: absolute;
+  background: #0f529f;
+  width: 100%;
+}
+
+.bg-blue {
   background: #0f529f;
 }
 

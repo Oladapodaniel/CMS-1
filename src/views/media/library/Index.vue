@@ -8,7 +8,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <button class="default-btn border-0 primary-bg text-white font-weight-700">Upload file</button>
+                <router-link to="/tenant/upload" class="default-btn border-0 primary-bg text-white font-weight-700 text-decoration-none">Upload file</router-link>
             </div>
         </div>
 

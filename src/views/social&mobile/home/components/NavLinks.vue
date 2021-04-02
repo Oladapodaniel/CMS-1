@@ -68,7 +68,7 @@
     * {
         color: #02172E;
         /* font: normal normal 600 ¿16px/22px Nunito Sans; */
-        font-family: Nunito Sans !important;
+        /* font-family: Nunito Sans !important; */
     }
 
     .main {

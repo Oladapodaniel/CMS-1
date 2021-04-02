@@ -32,7 +32,7 @@
             <div class="col-md-4 text-md-right">
             </div>
             <div class="col-md-5 text-center">
-                <button class="default-btn primary-bg text-white border-0" @click="createCategory">Create</button>
+                <button class="default-btn primary-bg text-white border-0" :disabled="!category.name" @click="createCategory">Create</button>
             </div>
             <div class="col-md-3"></div>
         </div>
