@@ -118,7 +118,7 @@
             </div>
 
             <div class="col-md-12 d-flex align-items-center justify-content-end my-4">
-                <button class="default-btn primary-bg text-white border-0" :disabled="!message || postCategory.postCategoryId" style="border-radius: 10px;" @click="makePost">Post</button>
+                <button class="default-btn primary-bg text-white border-0" :disabled="!message || !postCategory.postCategoryId" style="border-radius: 10px;" @click="makePost">Post</button>
             </div>
             <Dialog header="Header" v-model:visible="display"  :modal="true">
                 <ProgressBar :value="uploadProgress" style="max-width: 600px;width: 100%;min-width:400px" />
