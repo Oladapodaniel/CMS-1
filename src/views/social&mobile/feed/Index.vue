@@ -178,7 +178,11 @@
                 <h5 class="font-weight-bold mb-0">
                   {{ post.postCategoryName }}
                 </h5>
-                <p class="mb-0">{{ post.content }}</p>
+                <p class="mb-0 text-justify">
+                  <span v-if="post.showFullMessage">{{ post.content }}</span>
+                  <span v-else>{{ post.briefMessage }}...</span>
+                  <span v-if="post.content.length > 300" class="font-weight-700 primary-text c-pointer ml-3" @click="() => post.showFullMessage = !post.showFullMessage">{{ post.showFullMessage ? 'See less' : 'See more' }}</span>
+                  </p>
               </div>
             </div>
 
@@ -452,7 +456,12 @@ export default {
     const loaded = ref(true);
     const getFeed = async (tenantId) => {
       try {
-        feed.value = await social_service.getFeed(tenantId);
+        const response = await social_service.getFeed(tenantId);
+        feed.value = response.map(i => {
+          i.showFullMessage = false;
+          i.briefMessage = i.content.slice(0, 300);
+          return i;
+        })
         loaded.value = false;
         console.log(feed.value);
       } catch (error) {
