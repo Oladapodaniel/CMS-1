@@ -209,7 +209,7 @@
             </div>
 
             <!-- Post Extras -->
-            <div class="row my-3">
+            <!-- <div class="row my-3">
               <div class="col-md-12">
                 <h6 class="mb-0 font-weight-700">
                   Bodacious and awesome dragon warrior
@@ -223,7 +223,7 @@
                   >KungFu.Panda</a
                 >
               </div>
-            </div>
+            </div> -->
 
             <!-- Post Actions -->
             <div class="row my-3">
