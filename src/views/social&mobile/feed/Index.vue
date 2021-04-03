@@ -288,7 +288,6 @@
                 <div class="img-holder bg-secondary"></div>
               </div>
               <div class="pl-0 col-10 d-flex align-items-center">
-                <!-- <p class="border mb-0 w-100 medium-border-radius"> -->
                 <form class="w-100">
                   <p class="border mb-0 w-100 medium-border-radius">
                     <textarea
@@ -307,7 +306,6 @@
                   </p>
                 </form>
                 <!-- <span><i class="pi pi-image c-pointer pl-2" style="font-size:20px"></i></span> -->
-                <!-- </p> -->
               </div>
             </div>
           </div>
