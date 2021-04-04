@@ -297,12 +297,6 @@
                       v-model="comment.message"
                       placeholder="Comment..."
                     ></textarea>
-                    <!-- <span
-                      ><i
-                        class="pi pi-image c-pointer"
-                        style="font-size: 20px"
-                      ></i
-                    ></span> -->
                   </p>
                 </form>
                 <!-- <span><i class="pi pi-image c-pointer pl-2" style="font-size:20px"></i></span> -->
