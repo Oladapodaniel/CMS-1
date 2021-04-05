@@ -299,7 +299,6 @@
                     ></textarea>
                   </p>
                 </form>
-                <!-- <span><i class="pi pi-image c-pointer pl-2" style="font-size:20px"></i></span> -->
               </div>
             </div>
           </div>
