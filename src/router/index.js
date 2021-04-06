@@ -409,19 +409,53 @@ const routes = [{
                         path: 'post',
                         name: 'SocialPost',
                         component: () =>
-                            import ( /* webpackChunkName: "post" */ '@/views/social&mobile/post/Index'),
+                            import ( /* webpackChunkName: "post" */ '@/components/image-picker/ImagePicker'),
+                        // component: () =>
+                        //     import ( /* webpackChunkName: "post" */ '@/views/social&mobile/post/Index'),
                     },
                     {
                         path: 'feed',
                         name: 'SocialFeed',
                         component: () =>
                             import ( /* webpackChunkName: "feed" */ '@/views/social&mobile/feed/Index'),
+                        children: [
+                            {
+                                path: '',
+                                name: 'AllPosts',
+                                component: () =>
+                                    import ( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/general/Index'),
+                            },
+                            {
+                                path: 'facebook',
+                                name: 'FacebookPosts',
+                                component: () =>
+                                    import ( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/facebook/Index'),
+                            },
+                            {
+                                path: 'twitter',
+                                name: 'TwitterPosts',
+                                component: () =>
+                                    import ( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/twitter/Index'),
+                            },
+                            {
+                                path: 'instagram',
+                                name: 'InstagramPosts',
+                                component: () =>
+                                    import ( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/instagram/Index'),
+                            },
+                            {
+                                path: 'whatsapp',
+                                name: 'WhatsappPosts',
+                                component: () =>
+                                    import ( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/whatsapp/Index'),
+                            },
+                        ]
                     },
                     {
                         path: 'pending',
                         name: 'PendingPosts',
                         component: () =>
-                            import ( /* webpackChunkName: "feed" */ '@/views/social&mobile/pending/Index'),
+                            import ( /* webpackChunkName: "pendingfeed" */ '@/views/social&mobile/pending/Index'),
                     },
                     {
                         path: 'schedule',
