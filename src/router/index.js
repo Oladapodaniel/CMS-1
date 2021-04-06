@@ -409,9 +409,7 @@ const routes = [{
                         path: 'post',
                         name: 'SocialPost',
                         component: () =>
-                            import ( /* webpackChunkName: "post" */ '@/components/image-picker/ImagePicker'),
-                        // component: () =>
-                        //     import ( /* webpackChunkName: "post" */ '@/views/social&mobile/post/Index'),
+                            import ( /* webpackChunkName: "post" */ '@/views/social&mobile/post/Index'),
                     },
                     {
                         path: 'feed',
