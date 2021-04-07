@@ -886,7 +886,7 @@ border-radius: 5px;">
                 <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;">Preacher: {{ eventDataResponse.preacher }}</span></p>
                 <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;">Topic: {{ eventDataResponse.topic }}</span></p>
                 <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;">First&nbsp;timers: {{ eventData.activityFirstTimers.length }}</span></p>
-                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;">New&nbsp;Converts: {{ eventDataResponse.newConvertsCount }}</span></p>
+                <p style="margin-bottom:0pt;margin-top:0pt;"><span style="font-weight:bold;font-size:16px;">New&nbsp;Converts: {{ eventData.activityNewConverts.length }}</span></p>
             </td>
         </tr>
         <tr>
@@ -1237,8 +1237,8 @@ export default {
     };
 
     onMounted(async () => {
-      url.value = window.location.href;
       activityId.value = route.params.id;
+      url.value = `my.churchplus.co/tenant/report/${activityId.value}`;
 
       eventDataResponse.value = JSON.parse(
         localStorage.getItem("eventDataResponse")
