@@ -14,6 +14,12 @@
 
         <div class="row">
             <div class="col-md-12">
+                <VideoFiles />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
                 <p class="my-3" v-for="(file, index) in files" :key="index">
                     <a> <span class="primary-text">{{ file.name ? file.name : 'Unknown' }}</span> <span class="text-warn">{{ mediaTypes[file.mediaType] }} </span></a>
                 </p>
@@ -28,7 +34,10 @@
 import { ref } from '@vue/reactivity';
 import media_service from '../../../services/media/media_service'
 import membershipService from '../../../services/membership/membershipservice';
+import VideoFiles from "./components/VideoFiles"
+
     export default {
+        components: { VideoFiles },
         setup() {
             const files = ref([ ]);
             const mediaTypes = [ 'Video', 'Audio', 'Ebook', 'Picture'];
