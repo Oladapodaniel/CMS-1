@@ -258,6 +258,15 @@
                 Social & Mobile App
               </router-link>
 
+              <router-link  to="/tenant/media" class="link routelink text-decoration-none">
+                <img
+                  src="../../assets/dashboardlinks/social-icon.svg"
+                  class="link-icon"
+                  alt=""
+                />
+                Media Library
+              </router-link>
+
               <a v-if="false"  class="link routelink">
                 <img
                   src="../../assets/dashboardlinks/media.svg"
@@ -524,7 +533,7 @@ export default {
   */
 .hide-more-links {
   transition: all 0.5s ease-in-out;
-  height: 55px; 
+  height: 100px; 
 }
 
 .follow-up {

@@ -16,6 +16,23 @@ const uploadMedia = (body) => {
     })
 }
 
+const getMedia = (tenantId) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/Media/GetAllMedia?tenantId=${tenantId}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
 export default {
     uploadMedia,
+    getMedia,
 }
