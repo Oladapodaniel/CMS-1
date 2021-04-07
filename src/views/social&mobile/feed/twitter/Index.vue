@@ -46,7 +46,7 @@
 
         <div class="row bg-light mt-4 bordered">
           <div class="col-md-12">
-            <div class="row mb-4" v-for="(post, index) in feed" :key="index">
+            <div class="row mb-4 bordered-bottom" v-for="(post, index) in feed" :key="index">
               <div class="col-md-12 py-3">
                 <!-- User details -->
                 <div class="row">
@@ -75,104 +75,79 @@
                     </div>
 
                     <!-- Post message -->
-                <div class="row">
-                  <div class="col-md-12 pt-3">
-                    <h5 class="font-weight-bold mb-0">
-                      {{ post.postCategoryName }}
-                    </h5>
-                    <p class="mb-0 text-justify">
-                      <span
-                        v-if="
-                          post.showFullMessage ||
-                          post.content.length < previewLenth
-                        "
-                        >{{ post.content }}</span
-                      >
-                      <span v-else>{{ post.briefMessage }}...</span>
-                      <span
-                        v-if="post.content.length > previewLenth"
-                        class="font-weight-700 primary-text c-pointer ml-3"
-                        @click="
-                          () => (post.showFullMessage = !post.showFullMessage)
-                        "
-                        >{{
-                          post.showFullMessage ? "See less" : "See more"
-                        }}</span
-                      >
-                    </p>
+                    <div class="row">
+                      <div class="col-md-12 pt-3">
+                        <h5 class="font-weight-bold mb-0">
+                          {{ post.postCategoryName }}
+                        </h5>
+                        <p class="mb-0 text-justify">
+                          <span
+                            v-if="
+                              post.showFullMessage ||
+                              post.content.length < previewLenth
+                            "
+                            >{{ post.content }}</span
+                          >
+                          <span v-else>{{ post.briefMessage }}...</span>
+                          <span
+                            v-if="post.content.length > previewLenth"
+                            class="font-weight-700 primary-text c-pointer ml-3"
+                            @click="
+                              () =>
+                                (post.showFullMessage = !post.showFullMessage)
+                            "
+                            >{{
+                              post.showFullMessage ? "See less" : "See more"
+                            }}</span
+                          >
+                        </p>
+                      </div>
+
+                      <div class="col-md-12 my-2">
+                        <img
+                          v-if="post.type === 'Picture'"
+                          :src="post.mediaUrl"
+                          class="w-100"
+                          alt=""
+                        />
+                        <video
+                          v-if="post.type === 'Video'"
+                          style="width: 100%"
+                          height="240"
+                          controls
+                        >
+                          <source :src="post.mediaUrl" />
+                          <!-- <source src="movie.mp4" type="video/mp4"> -->
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+
+                      <div class="col-md-12">
+                        <a
+                          class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
+                        >
+                          <span><i class="pi pi-thumbs-up mr-2"></i></span>
+                          <span class="ml-2">{{ post.likeCount }}</span>
+                        </a>
+                        <a
+                          class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
+                        >
+                          <span><i class="pi pi-comment mr-2"></i></span>
+                          <span class="ml-2">{{
+                            post.comments ? post.comments.length : 0
+                          }}</span>
+                        </a>
+                        <a
+                          class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
+                        >
+                          <span><i class="pi pi-share-alt mr-2"></i></span>
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                  </div>
-                </div>
-
-                
-
-                <!-- Post media -->
-                <div class="row">
-                  <div class="col-md-12">
-                    <img
-                      v-if="post.type === 'Picture'"
-                      :src="post.mediaUrl"
-                      class="w-100"
-                      alt=""
-                    />
-                    <video
-                      v-if="post.type === 'Video'"
-                      style="width: 100%"
-                      height="240"
-                      controls
-                    >
-                      <source :src="post.mediaUrl" />
-                      <!-- <source src="movie.mp4" type="video/mp4"> -->
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                </div>
-
-                <!-- Post Extras -->
-                <!-- <div class="row my-3">
-              <div class="col-md-12">
-                <h6 class="mb-0 font-weight-700">
-                  Bodacious and awesome dragon warrior
-                </h6>
-                <p class="mb-0">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Perspiciatis obcaecati laboriosam adipisci esse autem nisi
-                  natus magnam omnis, ut quibusdam?
-                </p>
-                <a class="text-decoration-none font-weight-700 c-pointer"
-                  >KungFu.Panda</a
-                >
-              </div>
-            </div> -->
 
                 <!-- Post Actions -->
-                <div class="row my-3">
-                  <div class="col-md-12">
-                    <a
-                      class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
-                    >
-                      <span><i class="pi pi-thumbs-up mr-2"></i></span>
-                      <span>Like</span>
-                      <span class="ml-2">{{ post.likeCount }}</span>
-                    </a>
-                    <a
-                      class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
-                    >
-                      <span><i class="pi pi-comment mr-2"></i></span>
-                      <span>Comment</span>
-                      <span class="ml-2">{{
-                        post.comments ? post.comments.length : 0
-                      }}</span>
-                    </a>
-                    <a
-                      class="text-decoration-none c-pointer post-action-link px-3 px-md-4"
-                    >
-                      <span><i class="pi pi-share-alt mr-2"></i></span>
-                      <span>Share</span>
-                    </a>
-                  </div>
-                </div>
 
                 <div
                   class="row my-3"
@@ -470,6 +445,10 @@ export default {
   border: 0.20000000298023224px solid #e9eef0;
   border-radius: 15px;
   background: #fff;
+}
+
+.bordered-bottom {
+  border-bottom: 0.20000000298023224px solid #e9eef0;
 }
 
 .post-action-link {
