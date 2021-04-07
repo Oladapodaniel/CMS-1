@@ -1,14 +1,8 @@
 <template>
-<!-- <Dropdown :options="listOfCurrency" :filter="true" placeholder="NGN - Naira" :showClear="false">
-</Dropdown>{{ fromCurrencyRate }} -->
-<div>
-    <button v-if="tenantCurrency" class="converter-button" @click="showCurrency = !showCurrency">{{ selectedDestinationCurrencyRate ? selectedDestinationCurrencyRate.toString().length >  15 ? `${selectedDestinationCurrencyRate.slice(0, 15)}...` : selectedDestinationCurrencyRate : tenantCurrency }}</button>
-</div>
-<div
-    class="ofering close-modal"
-    :class="{ 'style-account': showCurrency }"
-    v-if="showCurrency"
-    >
+<div class="dropdown">
+        <button v-if="tenantCurrency" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="converter-button cursor-pointer" >{{ selectedDestinationCurrencyRate ? selectedDestinationCurrencyRate.toString().length >  15 ? `${selectedDestinationCurrencyRate.slice(0, 15)}...` : selectedDestinationCurrencyRate : tenantCurrency }}</button>
+    <!-- </div> -->
+        <div class="dropdown-menu style-account" aria-labelledby="dropdownMenuButton">
     <div class="p-2">
         <input
         type="text"
@@ -18,25 +12,21 @@
         ref="search"
     />
     </div>
-        <!-- <div class="header-border close-modal" v-if="filterCurrency.length > 0"> -->
-            <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
-                <div class="d-flex justify-content-between p-1 close-modal">
-                    <div class="close-modal offset-sm-1" @click="addCurrency($event, index, item)">{{ item.name }} - {{ item.country }}</div>      
+            <div class="manual-dd-item close-modal ofering" v-for="item in filterCurrency" :key="item.id">
+                <div class="d-flex justify-content-between p-1 close-modal ofering">
+                    <div class="close-modal offset-sm-1 ofering" @click="addCurrency($event, index, item)">{{ item.name }} - {{ item.country }}</div>      
                 </div>                      
             </div>
-        <!-- </div> -->
-        <!-- <div class="header-border close-modal" v-else>
-            <div class="p-3 text-center text-danger">No Match Found</div>
-        </div> -->
-    
-    
-    </div>
+              </div>
+            </div>
+
+
 </template>
 
 <script>
-import { ref, computed, nextTick, onUpdated } from "vue"
+import { ref, computed, onUpdated } from "vue"
 // import Dropdown from 'primevue/dropdown';
-import axios from "axios"
+import axios from "@/gateway/backendapi"
 export default {
     components: {
         
@@ -52,22 +42,22 @@ export default {
 
 
         const fromCurrencyRate = computed(() => {
-            if (props.selectedCurrency) return `USD${props.selectedCurrency}`
-            return `USD${props.tenantCurrency}`
+            if (props.selectedCurrency) return `usd${props.selectedCurrency.toLowerCase()}`
+            return `usd${props.tenantCurrency ? props.tenantCurrency.toLowerCase() : ""}`
         })
         
         const toDestinationCurrencyRate = computed(() => {
-            if (selectedDestinationCurrencyRate.value) return `USD${selectedDestinationCurrencyRate.value}`
-            return `USD${props.tenantCurrency}`
+            if (selectedDestinationCurrencyRate.value) return `usd${selectedDestinationCurrencyRate.value.toLowerCase()}`
+            return `usd${props.tenantCurrency ? props.tenantCurrency.toLowerCase() : ""}`
         })
 
     
 
         const getConvertedCurrency = async() => {
             try {
-                let { data } = await axios.get('http://api.currencylayer.com/live?access_key=0e33957bb5795cba70ad13779e018af5&source=USD&format=1')
+                let { data } = await axios.get('/fxRates')
                 console.log(data)
-                currencyRates.value = data.quotes
+                currencyRates.value = data
             }
             catch(error) {
                 console.log(error)
@@ -96,13 +86,22 @@ export default {
             console.log(e, index, item)
             showCurrency.value = false
 
-            nextTick(() => {
-                search.value.focus()
-            })
+            
+        }
+
+        const showCurrencyList = () => {
+            showCurrency.value = !showCurrency.value
+            // if (!showCurrency.value) {
+                // nextTick(() => {
+                    search.value.focus()
+                // })
+            // }
+            
+            console.log(showCurrency.value)
         }
 
         onUpdated(() => {
-            let amount = props.currencyAmount
+            let amount = +props.currencyAmount
             let propertyArr = Object.keys(currencyRates.value)
             let valueArr = Object.values(currencyRates.value)
             let fromIndex = propertyArr.indexOf(fromCurrencyRate.value)
@@ -113,13 +112,15 @@ export default {
             let result = ( amount / fromRate ) * toRate
             console.log(result)
             emit('currency-index', result)
+            // emit('display-currency-status', showCurrency.value)
             
+            // showCurrency.value  = props.hideCurrencyList
 
         })
 
 
         return {
-            fromCurrencyRate, listOfCurrency, showCurrency, filterCurrency, currencyText, selectedDestinationCurrencyRate, addCurrency, search, toDestinationCurrencyRate, currencyRates
+            fromCurrencyRate, listOfCurrency, showCurrency, filterCurrency, currencyText, selectedDestinationCurrencyRate, addCurrency, search, toDestinationCurrencyRate, currencyRates, showCurrencyList
         }
     }
 }

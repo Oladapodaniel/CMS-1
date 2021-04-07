@@ -680,18 +680,18 @@
         >
           <div class="row">
             <div class="col-12 col-sm-8 col-lg-3">
-              <select class="form-control" v-if="item.offeringTypeId && !routeParams">
+              <select class="form-control" v-if="item.financialContributionID && !routeParams">
                 <option
                   v-for="(newOffering, index) in newOfferings"
                   :key="index"
                   :value="newOffering.id"
-                  :selected="newOffering.id === item.offeringTypeId"
+                  :selected="newOffering.id === item.financialContributionID"
                 >
                   {{ newOffering.name }}
                 </option>
               </select>
             
-              <select class="form-control" v-else-if="item.offeringTypeId && routeParams" v-model="item.offeringTypeId" @change="updateOfferingId">
+              <select class="form-control" v-else-if="item.financialContributionID && routeParams" v-model="item.financialContributionID" @change="updateOfferingId">
                 <option
                   v-for="(newOffering, index) in newOfferings"
                   :key="index"
@@ -705,7 +705,7 @@
                 class="form-control"
                 name=""
                 id=""
-                v-else-if="!item.offeringTypeId"
+                v-else-if="!item.financialContributionID"
                 v-model="item.name"
                 placeholder="Enter Offering Item"
                 ref="offeringInput"
@@ -872,12 +872,12 @@
         <div class="col-sm-12 empty">
           <div class="row">
             <div class="col-3 col-sm-3 total-2 text-sm-right offset-sm-5">TOTAL</div>
-            <div class="col-3 col-sm-3 offset-sm-1">
+            <div class="col-3 col-sm-3 offset-sm-1 ofering">
              
-              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="currencyAmount" @currency-index="pushConvertedCurrency"/>
+              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="currencyAmount" @currency-index="pushConvertedCurrency" />
             </div>
             <div v-if="convertedAmount" class="col-4 col-sm-2 align-self-center converted-amount">
-              {{ addContributionTotal.toFixed(2) }}
+              {{ addContributionTotal ? addContributionTotal.toString() !== "NaN" ? addContributionTotal.toFixed(2) : 0.00 : 0.00 }}
             </div>
           </div>
         </div>
@@ -1386,7 +1386,7 @@
                       value="day"
                       @input="select2Value"
                     /> -->
-                    <Dropdown :options="[...day]" :filter="false" v-model="firstTimersObj.birthday" placeholder="day" class="w-100" :showClear="false">
+                    <Dropdown :options="[...day]" :filter="false" v-model="firstTimersObj.birthday" placeholder="Day" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-2 mb-4 px-sm-0">
@@ -1397,7 +1397,7 @@
                       value="month"
                       @input="select2Value"
                     /> -->
-                    <Dropdown :options="[...months]" :filter="false" v-model="valueMonth" @change="dropDownMonth" placeholder="month" class="w-100" :showClear="false">
+                    <Dropdown :options="[...months]" :filter="false" v-model="valueMonth" @change="dropDownMonth" placeholder="Month" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-2 mb-4">
@@ -1408,7 +1408,7 @@
                       value="Year"
                       @input="select2Value"
                     /> -->
-                    <Dropdown :options="[...birthYearsArr]" :filter="false" v-model="firstTimersObj.birthYear" placeholder="year" class="w-100" :showClear="false">
+                    <Dropdown :options="[...birthYearsArr]" :filter="false" v-model="firstTimersObj.birthYear" placeholder="Year" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
@@ -1419,7 +1419,7 @@
                       value="Marital Status"
                       @input="select2Value"
                     /> -->
-                    <Dropdown :options="[...maritalStatuses]" :filter="false" v-model="valueMarital" @change="dropDownMarital" placeholder="marital status" class="w-100" :showClear="false">
+                    <Dropdown :options="[...maritalStatuses]" :filter="false" v-model="valueMarital" @change="dropDownMarital" placeholder="Marital Status" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4">
@@ -1430,7 +1430,7 @@
                       value="gender"
                       @input="select2Value"
                     /> -->
-                    <Dropdown :options="[...genders]" :filter="false" v-model="valueGender" @change="dropDownGender" placeholder="gender" class="w-100" :showClear="false">
+                    <Dropdown :options="[...genders]" :filter="false" v-model="valueGender" @change="dropDownGender" placeholder="Gender" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                 </div>
@@ -1462,7 +1462,7 @@
                       @input="select2Value"
                       name="howDidYouAboutUsId"
                     /> -->
-                    <Dropdown :options="[...howYouHeard]" :filter="false" v-model="valueHeard" @change="dropDownHeard" placeholder="month" class="w-100" :showClear="false">
+                    <Dropdown :options="[...howYouHeard]" :filter="false" v-model="valueHeard" @change="dropDownHeard" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
@@ -1472,7 +1472,7 @@
                       @input="select2Value"
                       name="communicationMeans"
                     /> -->
-                    <Dropdown :options="[...comMeansArr]" :filter="false" v-model="valueComm" @change="dropDownComm" placeholder="gender" class="w-100" :showClear="false">
+                    <Dropdown :options="[...comMeansArr]" :filter="false" v-model="valueComm" @change="dropDownComm" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
@@ -1482,7 +1482,7 @@
                       @input="select2Value"
                       name="interestedInJoining"
                     /> -->
-                    <Dropdown :options="[...joinInterest]" :filter="false" v-model="valueInterest" @change="dropDownInterest" placeholder="gender" class="w-100" :showClear="false">
+                    <Dropdown :options="[...joinInterest]" :filter="false" v-model="valueInterest" @change="dropDownInterest" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
@@ -1492,7 +1492,7 @@
                       @input="select2Value"
                       name="wantToBeVisited"
                     /> -->
-                    <Dropdown :options="[...wantVisitArr]" :filter="false" v-model="valueVisit" @change="dropDownVisit" placeholder="gender" class="w-100" :showClear="false">
+                    <Dropdown :options="[...wantVisitArr]" :filter="false" v-model="valueVisit" @change="dropDownVisit" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                 </div>
@@ -1674,7 +1674,7 @@
                       value="day"
                       @input="select2Value"
                     /> -->
-                    <Dropdown :options="[...day]" :filter="false" v-model="newConvertsObj.birthday" placeholder="day" class="w-100" :showClear="false">
+                    <Dropdown :options="[...day]" :filter="false" v-model="newConvertsObj.birthday" placeholder="Day" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-2 mb-4 px-sm-0">
@@ -1685,7 +1685,7 @@
                       value="month"
                       @input="select2Value"
                     /> -->
-                    <Dropdown :options="[...months]" :filter="false" v-model="valueMonth" @change="dropDownMonthNewConvert" placeholder="month" class="w-100" :showClear="false">
+                    <Dropdown :options="[...months]" :filter="false" v-model="valueMonth" @change="dropDownMonthNewConvert" placeholder="Month" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-2 mb-4">
@@ -1696,7 +1696,7 @@
                       value="Year"
                       @input="select2Value"
                     /> -->
-                    <Dropdown :options="[...birthYearsArr]" :filter="false" v-model="firstTimersObj.birthYear" placeholder="year" class="w-100" :showClear="false">
+                    <Dropdown :options="[...birthYearsArr]" :filter="false" v-model="firstTimersObj.birthYear" placeholder="Year" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
@@ -1707,7 +1707,7 @@
                       value="Marital Status"
                       @input="select2Value"
                     /> -->
-                    <Dropdown :options="[...maritalStatuses]" :filter="false" v-model="valueMarital" @change="dropDownMaritalNewConvert" placeholder="marital status" class="w-100" :showClear="false">
+                    <Dropdown :options="[...maritalStatuses]" :filter="false" v-model="valueMarital" @change="dropDownMaritalNewConvert" placeholder="Marital Status" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4">
@@ -1718,7 +1718,7 @@
                       value="gender"
                       @input="select2Value"
                     /> -->
-                    <Dropdown :options="[...genders]" :filter="false" v-model="valueGender" @change="dropDownGenderNewConvert" placeholder="gender" class="w-100" :showClear="false">
+                    <Dropdown :options="[...genders]" :filter="false" v-model="valueGender" @change="dropDownGenderNewConvert" placeholder="Gender" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                 </div>
@@ -1750,7 +1750,7 @@
                       @input="select2Value"
                       name="howDidYouAboutUsId"
                     /> -->
-                    <Dropdown :options="[...howYouHeard]" :filter="false" v-model="valueHeard" @change="dropDownHeardNewConvert" placeholder="month" class="w-100" :showClear="false">
+                    <Dropdown :options="[...howYouHeard]" :filter="false" v-model="valueHeard" @change="dropDownHeardNewConvert" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
@@ -1760,7 +1760,7 @@
                       @input="select2Value"
                       name="communicationMeans"
                     /> -->
-                    <Dropdown :options="[...comMeansArr]" :filter="false" v-model="valueComm" @change="dropDownCommNewConvert" placeholder="gender" class="w-100" :showClear="false">
+                    <Dropdown :options="[...comMeansArr]" :filter="false" v-model="valueComm" @change="dropDownCommNewConvert" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
@@ -1770,7 +1770,7 @@
                       @input="select2Value"
                       name="interestedInJoining"
                     /> -->
-                    <Dropdown :options="[...joinInterest]" :filter="false" v-model="valueInterest" @change="dropDownInterestNewConvert" placeholder="gender" class="w-100" :showClear="false">
+                    <Dropdown :options="[...joinInterest]" :filter="false" v-model="valueInterest" @change="dropDownInterestNewConvert" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
@@ -1780,7 +1780,7 @@
                       @input="select2Value"
                       name="wantToBeVisited"
                     /> -->
-                    <Dropdown :options="[...wantVisitArr]" :filter="false" v-model="valueVisit" @change="dropDownVisitNewConvert" placeholder="gender" class="w-100" :showClear="false">
+                    <Dropdown :options="[...wantVisitArr]" :filter="false" v-model="valueVisit" @change="dropDownVisitNewConvert" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                 </div>
@@ -2220,7 +2220,7 @@ export default {
       selectedIncomeAccount: "",
       contributionItemName: "",
       selectedCashAccount: "",
-      cashBankAccount: []
+      cashBankAccount: [],
     };
   },
   methods: {
@@ -2236,6 +2236,7 @@ export default {
         this.$refs.attendanceDrop.classList.remove("offering-drop");
         this.showCategory = false;
       }
+      
     },
     addAttendance() {
       const showAttendance = document.querySelector("#showAttendance");
@@ -2250,7 +2251,7 @@ export default {
       if (offObj) {
         this.offeringItem.push({
           name: offObj.name,
-          offeringTypeId: offObj.id,
+          financialContributionID: offObj.id,
           channel: offObj.channel == undefined || offObj.channel == "" || offObj.channel == null ? "Cash" : offObj.channel,
           currency: offObj.currency == undefined || offObj.currency == "" || offObj.currency == null ? this.tenantCurrency.currencyId : offObj.currency,
           donor: ""
@@ -2528,6 +2529,7 @@ export default {
           eventCategoryId: this.selectedEventCategoryId
         },
         activityFirstTimers: this.firstTimers,
+        activityNewConverts: this.newConverts,
         attendances: this.attendanceItem,
         offerings: this.offeringItem,
         // offerings: this.offeringItem.map(i => {
@@ -2541,7 +2543,7 @@ export default {
         name: this.selectedEventCategoryName,
         preacher: this.preacher,
         topic: this.topic,
-        newConvertsCount: 0
+        newConvertsCount: this.newConverts
       }
 
 
@@ -2947,6 +2949,7 @@ export default {
             this.attendanceItem = res.data.attendances
             this.offeringItem = res.data.offerings
             this.firstTimers = res.data.activityFirstTimers
+            this.newConverts = res.data.activityNewConverts
             this.updatePreEvent = res.data.preEvent
             console.log(this.eventDate)
             console.log(res.data)
@@ -2978,9 +2981,9 @@ export default {
       this.showCode = false
     },
     updateOfferingId (e) {
-      // this.offeringItem[index].offeringTypeId = id
+      // this.offeringItem[index].financialContributionID = id
       
-          let index = this.offeringItem.findIndex(i => i.offeringTypeId === e.target.value)
+          let index = this.offeringItem.findIndex(i => i.financialContributionID === e.target.value)
           console.log(e.target.value, index, 'target', e.target.textContent)
            let offText = this.newOfferings.find(i => i.id === e.target.value).name
            console.log(offText)
@@ -3141,7 +3144,7 @@ export default {
 
                     this.offeringItem.push({
                       name: res.data.name,
-                      offeringTypeId: res.data.id,
+                      financialContributionID: res.data.id,
                       channel: "Cash",
                       currency: this.tenantCurrency.currencyId,
                       donor: ""
@@ -3154,7 +3157,6 @@ export default {
                   })
                   e.target.setAttribute('data-dismiss', 'modal')
         }
-      
         
   },
   created() {

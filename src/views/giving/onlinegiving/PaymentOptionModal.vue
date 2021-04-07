@@ -156,14 +156,14 @@
     </div>
     <div class="row row-button" @click="payWithPaystack" v-if="paystackGate">
       <div class="col-4 col-sm-7 offset-2">
-        <img class="w-100" src="../../../assets/4PaystackLogo.png" alt=""/>
+        <img class="w-100" src="../../../assets/4PaystackLogo.png" alt="paystack"/>
       </div>
     </div>
   
 
     <div class="row row-button" v-if="flutterwaveGate">
       <div class="col-4 col-sm-7 offset-2">
-        <img class="w-100" src="../../../assets/flutterwave_logo_color@2x.png" alt=""/>
+        <img class="w-100" src="../../../assets/flutterwave_logo_color@2x.png" alt="flutterwave"/>
       </div>
       <!-- <div class="col-7 col-sm-4 option-text">Flutterwave</div> -->
       <!-- <div class="row">
@@ -176,9 +176,25 @@
       </div> -->
     </div>
 
-    <div class="row row-button" v-if="paypalGate">
-      <div class="col-4 col-sm-7 offset-2">
-        <img class="w-100" src="../../../assets/paypal-logo-2@2x.png" alt=""/>
+    <div class="row row-button d-flex justify-content-center" v-if="paypalGate">
+      <div class="col-8 col-sm-6">
+        <img class="w-100 img-height" src="../../../assets/paypal-logo-2@2x.png" alt="paypal"/>
+      </div>
+      
+      <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
+      <div class="row">
+        <div class="col-1 mt-n1 d-none d-sm-block">
+         <i
+          class="fas fa-circle circle"
+        ></i>
+      </div>
+      <div class="col-8 pl-0 d-none d-sm-block">International</div>
+      </div> -->
+    </div>
+    
+    <div class="row row-button d-flex justify-content-center" v-if="stripe">
+      <div class="col-7 col-sm-4">
+        <img class="w-100 img-height" src="../../../assets/Stripe_logo.jpg" alt="stripe"/>
       </div>
       
       <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
@@ -233,6 +249,11 @@ export default {
       if(!props.gateways) return false
       return props.gateways.find(i => i.paymentGateway.name === "PayPal")
     })
+    
+    const stripe = computed(() => {
+      if(!props.gateways) return false
+      return props.gateways.find(i => i.paymentGateway.name === "Stripe")
+    })
 
     const payWithPaystack = () => {
       props.close.click()
@@ -282,7 +303,7 @@ export default {
     };
 
     return {
-      payWithPaystack, paystackGate, flutterwaveGate, paypalGate
+      payWithPaystack, paystackGate, flutterwaveGate, paypalGate, stripe
     }
     }
 
@@ -324,8 +345,13 @@ export default {
   border-radius: 25px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   background: white;
-  margin: 20px 100px 0 100px;
+  margin: 12px 70px 15px 70px;
  transition: all 0.4s ease-in-out;
+ max-height: 45px;
+}
+
+.img-height {
+  max-height: 36px
 }
 
 .row-button:hover {

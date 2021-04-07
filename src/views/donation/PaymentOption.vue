@@ -20,7 +20,7 @@
                     <div class="col-md-6 offset-md-1 mt-5">
                         <h5 class="header-contri2 my-4">Available options for payment</h5>
                     </div>
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded" @click="toggleLink">
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded cursor-pointer" @click="toggleLink">
                             <div class="row">
                             <div class="col-3 col-sm-2 image mt-3">
                                 <img src="../../assets/link.svg" style="width:54px; height:54px" alt="marked Attendance image">
@@ -69,7 +69,7 @@
                  <div class="col-md-12 mb-3">
                 </div>
                    <div class="row w-100">
-                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded" @click="toggleIFrame">
+                        <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded cursor-pointer" @click="toggleIFrame">
                             <div class="row">
                             <div class="col-3 col-sm-2 col-sm-2 image mt-3">
                                 <img src="../../assets/iframe.svg" style="width:45px; height:45px"  alt="marked Attendance image">
@@ -102,7 +102,7 @@
                 </div>
 
                         <div class="row w-100">
-                                <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded">
+                                <div class="col-md-10 offset-md-1 col-sm-11 offset-1  col-lg-9 border rounded cursor-pointer">
                                     <div class="row disabled">
                                     <div class="col-3 col-md-2 col-sm-2 image mt-3">
                                         <img src="../../assets/wordpress.svg" style="width:50px; height:50px" alt="marked Attendance image">

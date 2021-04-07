@@ -771,8 +771,8 @@
                 <ReportAreaChart
                   elemId="chart"
                   domId="areaChart1"
-                  title="OFFERING"
-                  subtitle="This month"
+                  title="ATTENDANCE"
+                  subtitle="So far"
                   lineColor="#50AB00"
                   :series="stats.attendanceSoFar"
                 />
@@ -784,18 +784,20 @@
                 <ReportAreaChart
                   elemId="chart"
                   domId="areaChart2"
-                  title="ATTENDANCE"
-                  subtitle="This month"
+                  title="CONTRIBUTION"
+                  subtitle="So Far"
                   lineColor="#1F78B4"
                   :series="stats.offeringSoFar"
                 />
               </div>
-              <div class="area-chart mt-5">
+              <div class="area-chart mt-5"  v-if="stats.firstTimerSoFar && stats.firstTimerSoFar.length > 0">
                 <ReportAreaChart
                   elemId="chart"
                   domId="areaChart3"
-                  title="FIRST TIMERS PERFORMANCE"
-                  lineColor="#1F78B4"
+                  title="FIRST TIMERS"
+                  subtitle="So Far"
+                  lineColor="#E14A1B"
+                  :series="stats.firstTimerSoFar"
                 />
               </div>
             </div>
