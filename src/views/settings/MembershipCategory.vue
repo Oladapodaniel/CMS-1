@@ -16,6 +16,8 @@
                   <h4 class="mt-2 mb-2 ml-5 memCat1">Membership Categories</h4>
                 </div>
               </div>
+              <Toast />
+              <ConfirmDialog></ConfirmDialog>
 
               <div class="row">
                 <div class="col-md-12 py-5 grey-background">
@@ -25,10 +27,11 @@
                         type="text"
                         class="form-control"
                         placeholder="Membership category name"
+                        v-model="classificationTypes"
                       />
                     </div>
                     <div class="col-md-3">
-                      <button class="btn primary-btn text-white px-5 bold">Save</button>
+                      <button class="btn primary-btn text-white px-5 bold" @click="saveMembership">Save</button>
                     </div>
                   </div>
                 </div>
@@ -63,7 +66,7 @@
                       <button class="btn secondary-btn py-1 px-4" @click="openClassification(index)">View</button>
                     </div>
                     <div class="col-md-6">
-                      <button class="delbtn py-1 primary-btn px-3">Delete</button>
+                      <button class="delbtn py-1 primary-btn px-3" @click="deletePop(classification.id)">Delete</button>
                     </div>
                   </div>
                 </div>
@@ -83,7 +86,7 @@
                 >
                   <div class="row">
                     <div class="col-md-6">
-                      <button class="btn primary-btn save-btn py-1 px-4">Save</button>
+                      <button class="btn primary-btn save-btn py-1 px-4" @click="updateMembership(classification.id, index)">Save</button>
                     </div>
                     <div class="col-md-6">
                       <button class="btn secondary-btn py-1  px-3 bor" @click="discard">Discard</button>
@@ -107,13 +110,21 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import Toast from 'primevue/toast';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 export default {
+  components:{
+     Toast,
+    ConfirmDialog,
+  },
   data() {
     return {
       classifications: [ ],
       vissibleTab: "",
       classificationName: "",
+      memberClass:{},
+      classificationTypes: ""
     }
   },
 
@@ -126,6 +137,49 @@ export default {
         console.log(error);
       }
     },
+   //Membership save
+    async saveMembership(){
+      try{
+        await axios.post('/api/Settings/CreateTenantPeopleClassification/' + this.classificationTypes);
+        this.getClassifications()
+        this.$toast.add({severity:'success', summary: '', detail:' Membership Save Successfully', life: 3000});
+      }catch(error){
+        console.log(error)
+      }
+    },
+    async updateMembership(id, index){
+      try{
+        await axios.put('/api/Settings/UpdateTenantPeopleClassification', { name: this.classificationName, id:id});
+        this.classifications[index].name = this.classificationName;
+        this.discard()
+        this.$toast.add({severity:'success', summary: '', detail:'Membership Updated Successfully', life: 3000});
+      }catch (error){
+        console.log(error)
+      }
+    },
+    async deleteMembership(id){
+      try {
+        await axios.delete('/api/Settings/DeleteTenantPeopleClassification/'+id);
+        this.classifications = this.classifications.filter(i => i.id !== id);
+         this.$toast.add({severity:'success', summary: '', detail:'Membership Deleted Successfully', life: 3000});
+      } catch (error){
+        console.log(error);
+      }
+    },
+     deletePop(id) {
+            this.$confirm.require({
+                message: 'Are you sure you want to Delete?',
+                header: 'Delete Confirmation',
+                icon: 'pi pi-exclamation-circle',
+                accept: () => {
+                  this.deleteMembership(id)
+                    //callback to execute when user confirms the action
+                },
+                reject: () => {
+                    'No internet'
+                }
+            });
+        },
 
     openClassification(index) {
       this.vissibleTab = `tab_${index}`;

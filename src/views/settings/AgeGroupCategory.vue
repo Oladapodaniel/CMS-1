@@ -25,7 +25,7 @@
                         type="text"
                         class="form-control"
                         placeholder="Age Group category"
-                        v-model="ageGroup.ageGroup"
+                        v-model="ageGroup"
                       />
                     </div>
                     <div class="col-md-3">
@@ -123,8 +123,7 @@ export default {
       types: [ ],
       vissibleTab: "",
       typeName: "",
-      attendanceName: "",
-      ageGroup: {},
+      ageGroup: "",
       tenantId: ""
     }
   },
@@ -139,18 +138,18 @@ export default {
       }
     },
      async saveAge(){
-       this.ageGroup.tenantId = this.tenantId;
+      
       try{
-         await axios.post('/api/Settings/CreateTenantAgeGroup', this.ageGroup);
+         await axios.post('/api/Settings/CreateTenantAgeGroup/'+ this.ageGroup);
         this.getGroup()
-        this.$toast.add({severity:'success', summary: '', detail:'Age Group Save Successfully', life: 3000});
+        this.$toast.add({severity:'success', summary: '', detail:' Attendance Save Successfully', life: 3000});
       }catch (error) {
         console.log(error)
       }
-    },
+    },  
     async deleteAge(id){
       try {
-        await axios.delete('/api/Settings/DeleteTenantAgeGroup'+id);
+        await axios.delete('/api/Settings/DeleteTenantAgeGroup/'+id);
         this.types = this.types.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Age Group Deleted Successfully', life: 3000});
       } catch (error){
@@ -172,11 +171,10 @@ export default {
             });
         },
         async updateAge(id, index){
-        this.ageGroup.tenantId = this.tenantId
-        // alert(this.tenantId)
       try{
-        await axios.put('/api/Settings/UpdateTenantAgeGroup', { name:this.typeName, id:id, tenantID: this.tenantId});
+        await axios.put('/api/Settings/UpdateTenantAgeGroup', { name:this.typeName, id:id });
         this.types[index].name = this.typeName;
+        this.discard()
         this.$toast.add({severity:'success', summary: '', detail:'Attendance Updated Successfully', life: 3000});
       }catch (error){
         console.log(error)

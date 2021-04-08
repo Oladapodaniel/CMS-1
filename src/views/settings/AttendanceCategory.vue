@@ -147,14 +147,14 @@ export default {
                     //callback to execute when user confirms the action
                 },
                 reject: () => {
-                    //callback to execute when user rejects the action
+                    'No internet'
                 }
             });
         },
     
     async deleteAttendant(id){
       try {
-        await axios.delete('/api/Settings/Delete/'+id);
+        await axios.delete('/api/Settings/DeleteAttendanceType/'+id);
         this.types = this.types.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Attendance Deleted Successfully', life: 3000});
       } catch (error){
@@ -198,9 +198,6 @@ export default {
   created() {
     this.getTypes();
   },
-  // mounted() {
-  //       this.$toast.add({severity:'success', summary: 'Success Message', detail:'let Go boy', life: 3000});
-  //   }
 };
 </script>
 
