@@ -17,10 +17,10 @@
         </div>
 
         <div class="row d-flex flex-wrap py-4" v-if="!willUpload">
-          <div class="col-sm-4 my-2" v-for="i in 10" :key="i" style="max-height: 200px" @click="uploaded(true, i)">
+          <div class="col-sm-4 my-2" v-for="(image, index) in gallery" :key="index" style="max-height: 200px" @click="uploaded(true, image)">
               <div class="row">
                   <div class="col-md-11 mx-auto c-pointer">
-                      <img src="https://d15omoko64skxi.cloudfront.net/wp-content/uploads/2020/03/22Novel-Coronavirus-SARS-CoV-222-Governor-Tom-Wolf-March-06-2020-CC-BY-opt-1.jpg" style="height:100%;width:100%" alt="">
+                      <img :src="image" style="height:100%;width:100%" alt="">
                   </div>
               </div>
           </div>
@@ -41,11 +41,24 @@
 
 <script>
 import { ref } from '@vue/reactivity';
+import media_service from '../../services/media/media_service';
 export default {
     setup(props, { emit }) {
         const fileInput = ref(null);
         const file = ref("");
         const willUpload = ref(false);
+
+        const gallery = ref([])
+        const getImages = async () => {
+            try {
+                const response = await media_service.getImageGallery();
+                gallery.value = response.splice(0, 50);
+                console.log(response, "IMAGES");
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getImages();
 
         const fileUrl = ref("");
         const fileSelected = (e) => {
@@ -78,6 +91,7 @@ export default {
             fileUrl,
             willUpload,
             uploaded,
+            gallery,
         }
     }
 };
