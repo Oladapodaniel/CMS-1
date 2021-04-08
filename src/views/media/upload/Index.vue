@@ -109,7 +109,10 @@
             </div>
             <div class="col-md-3"></div>
         </div>
-
+        <Toast />
+        <Dialog header="Header" v-model:visible="display"  :modal="true">
+            <ProgressBar :value="percentCompleted" style="max-width: 600px;width: 100%;min-width:400px" />
+        </Dialog>
     </div>
 </template>
 
@@ -119,15 +122,19 @@ import Checkbox from "primevue/checkbox";
 import { ref } from '@vue/reactivity';
 import { useStore } from "vuex";
 import membershipService from '../../../services/membership/membershipservice';
-import media_service from "../../../services/media/media_service";
+// import media_service from "../../../services/media/media_service";
+import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
+import Dialog from "primevue/dialog";
+import ProgressBar from 'primevue/progressbar';
 
     export default {
-        components: { Dropdown, Checkbox },
+        components: { Dropdown, Checkbox, Dialog, ProgressBar },
 
         setup() {
             const store = useStore();
             const toast = useToast();
+            const display = ref(false);
 
             const mediaTypes = [ 'Video', 'Audio', 'Ebook', 'Picture'];
             const uploadData = ref({ });
@@ -148,14 +155,15 @@ import { useToast } from "primevue/usetoast";
                 file.value = e.target.files[0];
             }
 
-            const uploadFile = async () => {
+            const percentCompleted = ref(0)
+            const uploadFile = () => {
                 const formData = new FormData();
                 console.log(tenantId);
                 console.log(uploadData.value);
                 console.log(uploadData.value.isFree, "is free");
 
-                formData.append("mediaFile", cover.value ? cover.value : "");
-                formData.append("mediaFileImage", file.value ? file.value : "");
+                formData.append("mediaFileImage", cover.value ? cover.value : "");
+                formData.append("mediaFile", file.value ? file.value : "");
                 formData.append("name", uploadData.value.name ? uploadData.value.name : "");
                 formData.append("mediaType", uploadData.value.type ? mediaTypes.indexOf(uploadData.value.type) : "");
                 formData.append("description", uploadData.value.description ? uploadData.value.description : "");
@@ -165,15 +173,24 @@ import { useToast } from "primevue/usetoast";
                 formData.append("public", uploadData.value.public ? uploadData.value.public : false);
                 formData.append("isPushed", uploadData.value.isPushed ? uploadData.value.isPushed : false);
                 formData.append("tenantId", tenantId.value);
-
-                try {
-                    const response = await media_service.uploadMedia(formData);
-                    console.log(response, "upload response");
-                    toast.add({severity:'success', summary:'File Uploaded', detail:'Your file was uploaded successfully', life: 3000});
-                } catch (error) {
-                    console.log(error);
-                    toast.add({severity:'error', summary:'Upload Failed', detail:'The file upload failed, please reload and try again', life: 3000});
-                }
+                display.value = true;
+                axios.post("/api/Media/UploadMedia", formData,
+                    {
+                        onUploadProgress: function(progressEvent) {
+                            percentCompleted.value = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+                        }
+                    }
+                )
+                    .then(res => {
+                        console.log(res, "uploaded");
+                        toast.add({severity:'success', summary:'File Uploaded', detail:'Your file was uploaded successfully', life: 3000});
+                        display.value = false;
+                    })
+                    .catch(err => {
+                        toast.add({severity:'error', summary:'Upload Failed', detail:'The file upload failed, please reload and try again', life: 3000});
+                        console.log(err);
+                        display.value = false;
+                    })
             }
 
             const getTenantId = () => {
@@ -198,6 +215,8 @@ import { useToast } from "primevue/usetoast";
                 coverUploaded,
                 uploadFile,
                 file,
+                display,
+                percentCompleted,
             }
         }
     }

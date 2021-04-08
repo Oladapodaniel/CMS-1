@@ -571,7 +571,21 @@ const routes = [{
                 path: 'media',
                 name: 'MediaLibrary',
                 component: () =>
-                    import ( /* webpackChunkName: "medialibrary" */ '@/views/media/library/Index')
+                    import ( /* webpackChunkName: "medialibrary" */ '@/views/media/library/Index'),
+                children: [
+                    {
+                        path: '',
+                        name: 'Gallery',
+                        component: () =>
+                            import ( /* webpackChunkName: "medialibrary" */ '@/views/media/library/components/Gallery')
+                    },
+                    {
+                        path: 'file',
+                        name: 'FileDetails',
+                        component: () =>
+                            import ( /* webpackChunkName: "medialibrary" */ '@/views/media/file/Index')
+                    },
+                ]
             },
             {
                 path: 'upload',

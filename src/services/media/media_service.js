@@ -32,7 +32,41 @@ const getMedia = (tenantId) => {
     })
 }
 
+const getMediaById = (mediaId) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/Media/GetMediaById?mediaId=${mediaId}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+const getImageGallery = () => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/Media/ImageGallery`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
 export default {
     uploadMedia,
     getMedia,
+    getMediaById,
+    getImageGallery,
 }
