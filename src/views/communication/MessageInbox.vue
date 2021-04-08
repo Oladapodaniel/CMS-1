@@ -51,10 +51,22 @@
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
-                          <input type="checkbox" />
+                          <input
+                            type="checkbox"
+                            name=""
+                            id=""
+                            @change="markAllInboxMssg"
+                            :checked="markedInboxMssg.length === replies.length"
+                          />
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-5 d-flex align-items-center">
                           <span class="th">Message</span>
+                          <i
+                            class="pi pi-trash text-danger c-pointer d-flex align-items-center px-4"
+                            style="font-size: 15px"
+                            v-if="markedInboxMssg.length > 0"
+                          >
+                          </i>
                         </div>
                         <div class="col-md-2">
                           <span class="th">Sent By</span>
@@ -87,7 +99,17 @@
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
-                          <input type="checkbox" />
+                          <input
+                            type="checkbox"
+                            name=""
+                            id=""
+                            @change="mark1InboxItem(reply)"
+                            :checked="
+                              markedInboxMssg.findIndex(
+                                (i) => i.id === reply.id
+                              ) >= 0
+                            "
+                          />
                         </div>
                         <div class="col-md-5 d-md-flex flex-column">
                           <span
@@ -209,15 +231,21 @@ import UnitsArea from "../../components/units/UnitsArea";
 import communicationService from "../../services/communication/communicationservice";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import { useStore } from "vuex";
+import Tooltip from "primevue/tooltip";
+// import { useToast } from 'primevue/usetoast';
 
 export default {
   components: { UnitsArea, PaginationButtons },
+  directives: {
+    tooltip: Tooltip,
+  },
   setup() {
     const store = useStore();
     const replies = ref(store.getters["communication/smsReplies"]);
     const currentPage = ref(0);
     const loading = ref(false);
     const searchSms = ref("");
+
 
     const getSMSReplies = async () => {
       try {
@@ -260,8 +288,43 @@ export default {
         console.log(replies.value);
         return replies.value;
       }
-      return replies.value.filter(i => i.message.toLowerCase().includes(searchSms.value.toLowerCase()))
+      return replies.value.filter((i) =>
+        i.message.toLowerCase().includes(searchSms.value.toLowerCase())
+      );
     });
+
+    const markedInboxMssg = ref([]);
+    const mark1InboxItem = (mssgInbox) => {
+      const mssgIndex = markedInboxMssg.value.findIndex(
+        (i) => i.id === mssgInbox.id
+      );
+      {
+        if (mssgIndex < 0) {
+          markedInboxMssg.value.push(mssgInbox);
+        } else {
+          markedInboxMssg.value.splice(mssgIndex, 1);
+        }
+        console.log(markedInboxMssg.value, "God is AWESOME");
+      }
+    };
+
+    const markAllInboxMssg = () => {
+      if (markedInboxMssg.value.length < replies.value.length) {
+        replies.value.forEach((i) => {
+          const mssgInReplies = markedInboxMssg.value.findIndex(
+            (t) => t.id === i.id
+          );
+          if (mssgInReplies < 0) {
+            markedInboxMssg.value.push(i);
+          }
+        });
+      } else {
+        markedInboxMssg.value = [];
+      }
+      console.log(markedInboxMssg.value, "I am awesome");
+    };
+
+
 
     return {
       replies,
@@ -271,6 +334,9 @@ export default {
       loading,
       searchSms,
       searchSMS,
+      markedInboxMssg,
+      mark1InboxItem,
+      markAllInboxMssg,
     };
   },
 };

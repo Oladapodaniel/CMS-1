@@ -183,12 +183,21 @@ export default {
       );
     });
 
+// const markScheduled = ref([])
+//     const mark1Scheduled = (schedules) => {
+// const scheduledIndex = schedules.value.findIndex(() =>{
+
+// })
+//     }
+
     return {
       schedules,
       loading,
       formattedDate,
       scheduledMssg,
       searchScheduleMssg,
+      // markScheduled,
+      // mark1Scheduled,
     };
   },
 };
