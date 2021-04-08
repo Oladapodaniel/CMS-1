@@ -307,9 +307,6 @@
       </div>
     </div>
 
-    =======
-    <h1></h1>
-    >>>>>>> main
   </div>
 </template>
 

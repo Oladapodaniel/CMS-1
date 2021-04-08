@@ -188,13 +188,7 @@ export default {
     const loading = ref(false);
     const userInputs = ref("");
     const downloadArea = ref(null)
-    const userTransaction = ref([
-      {
-        memo: "Building Project",
-        amount: 20000000,
-        date: "21/2/2021",
-      },
-    ]);
+    const userTransaction = ref([])
 
 
     const searchInputs = computed(() => {

@@ -31,7 +31,7 @@ const composerObj = {
             axios.post(url, data)
                 .then(res => {
                     console.log(res, "send sms response");
-                    resolve(res.data);
+                    resolve(res);
                 })
                 .catch(err => reject(err))
         })

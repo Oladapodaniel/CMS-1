@@ -223,7 +223,7 @@
               :options="groups"
               optionLabel="name"
               placeholder="Select group"
-              :filter="true"
+              :filter="false"
               filterPlaceholder="Search grouped contacts"
               style="width: 100%"
             />

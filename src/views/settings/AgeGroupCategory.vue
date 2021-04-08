@@ -6,6 +6,8 @@
           <h2 class="ageGroup">Age Group Category</h2>
         </div>
       </div>
+        <Toast />
+      <ConfirmDialog></ConfirmDialog>
       <div class="row grey-rounded-border pt-1 pb-5">
         <div class="col-md-12">
           <div class="row">
@@ -23,11 +25,11 @@
                         type="text"
                         class="form-control"
                         placeholder="Age Group category"
-                        v-model="attendanceName"
+                        v-model="ageGroup"
                       />
                     </div>
                     <div class="col-md-3">
-                      <button class="btn primary-btn px-5 text-white" @click="saveAttendant">Save</button>
+                      <button class="btn primary-btn px-5 text-white" @click="saveAge">Save</button>
                     </div>
                   </div>
                 </div>
@@ -62,7 +64,7 @@
                       <button class="btn secondary-btn py-1 px-4" @click="openType(index)">View</button>
                     </div>
                     <div class="col-md-6">
-                      <button class="delbtn py-1 px-3 primary-btn">Delete</button>
+                      <button class="delbtn py-1 px-3 primary-btn" @click="deletePop(type.id)">Delete</button>
                     </div>
                   </div>
                 </div>
@@ -82,7 +84,7 @@
                 >
                   <div class="row">
                     <div class="col-md-6">
-                      <button class="btn primary-btn save-btn py-1 px-4">Save</button>
+                      <button class="btn primary-btn save-btn py-1 px-4" @click="updateAge(type.id, index)">Save</button>
                     </div>
                     <div class="col-md-6">
                       <button class="btn secondary-btn py-1 px-3" @click="discard">Discard</button>
@@ -106,15 +108,23 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import Toast from 'primevue/toast';
+import ConfirmDialog from 'primevue/confirmdialog';
+import membershipService from '../../services/membership/membershipservice';
 
 export default {
+  components:{
+    Toast,
+    ConfirmDialog,
+
+  },
   data() {
     return {
       types: [ ],
       vissibleTab: "",
       typeName: "",
-      attendanceName: "",
       ageGroup: "",
+      tenantId: ""
     }
   },
 
@@ -126,6 +136,50 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+     async saveAge(){
+      
+      try{
+         await axios.post('/api/Settings/CreateTenantAgeGroup/'+ this.ageGroup);
+        this.getGroup()
+        this.$toast.add({severity:'success', summary: '', detail:' Age Group Save Successfully', life: 3000});
+      }catch (error) {
+        console.log(error)
+      }
+    },  
+    async deleteAge(id){
+      try {
+        await axios.delete('/api/Settings/DeleteTenantAgeGroup/'+id);
+        this.types = this.types.filter(i => i.id !== id);
+         this.$toast.add({severity:'success', summary: '', detail:'Age Group Deleted Successfully', life: 3000});
+      } catch (error){
+        console.log(error);
+      }
+    },
+     deletePop(id) {
+            this.$confirm.require({
+                message: 'Are you sure you want to Delete?',
+                header: 'Delete Confirmation',
+                icon: 'pi pi-exclamation-circle',
+                accept: () => {
+                  this.deleteAge(id)
+                    //callback to execute when user confirms the action
+                },
+                reject: () => {
+                    //callback to execute when user rejects the action
+                }
+            });
+        },
+        async updateAge(id, index){
+      try{
+        await axios.put('/api/Settings/UpdateTenantAgeGroup', { name:this.typeName, id:id });
+        this.types[index].name = this.typeName;
+        this.discard()
+        this.$toast.add({severity:'success', summary: '', detail:'Age Group Updated Successfully', life: 3000});
+      }catch (error){
+        console.log(error)
+      }
+
     },
     openType(index) {
       this.vissibleTab = `tab_${index}`;
@@ -140,7 +194,10 @@ export default {
 
   created() {
     this.getGroup();
-    
+    membershipService.getSignedInUser()
+      .then(res => {
+        this.tenantId = res.tenantId;
+      })
 
   },
 };

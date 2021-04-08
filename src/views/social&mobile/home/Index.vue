@@ -18,7 +18,7 @@
 </template>
 
 <script>
-    import NavLinks from "./components/NavLinks"
+    import NavLinks from "./components/NavLinks";
     export default {
         components: { NavLinks },
         

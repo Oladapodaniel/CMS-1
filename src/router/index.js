@@ -122,26 +122,27 @@ const routes = [{
                 ]
             },
 
-            {
-                path: 'event',
-                name: 'Event',
-                component: () =>
-                    import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
-            },
+            // {
+            //     path: 'event',
+            //     name: 'Event',
+            //     component: () =>
+            //         import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+            // },
             {
                 path: 'events',
                 name: 'Events',
                 component: () =>
                     import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
             },
-            {
-                path: 'events',
-                name: 'EventList',
-                component: () =>
-                    import ( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
-            },
+            // {
+            //     path: 'events',
+            //     name: 'EventList',
+            //     component: () =>
+            //         import ( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
+            // },
             {
                 path: 'event/:event?',
+                name: 'Event',
                 component: () =>
                     import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
             },
@@ -415,12 +416,44 @@ const routes = [{
                         name: 'SocialFeed',
                         component: () =>
                             import ( /* webpackChunkName: "feed" */ '@/views/social&mobile/feed/Index'),
+                        children: [
+                            {
+                                path: '',
+                                name: 'AllPosts',
+                                component: () =>
+                                    import ( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/general/Index'),
+                            },
+                            {
+                                path: 'facebook',
+                                name: 'FacebookPosts',
+                                component: () =>
+                                    import ( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/facebook/Index'),
+                            },
+                            {
+                                path: 'twitter',
+                                name: 'TwitterPosts',
+                                component: () =>
+                                    import ( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/twitter/Index'),
+                            },
+                            {
+                                path: 'instagram',
+                                name: 'InstagramPosts',
+                                component: () =>
+                                    import ( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/instagram/Index'),
+                            },
+                            {
+                                path: 'whatsapp',
+                                name: 'WhatsappPosts',
+                                component: () =>
+                                    import ( /* webpackChunkName: "facebookposts" */ '@/views/social&mobile/feed/whatsapp/Index'),
+                            },
+                        ]
                     },
                     {
                         path: 'pending',
                         name: 'PendingPosts',
                         component: () =>
-                            import ( /* webpackChunkName: "feed" */ '@/views/social&mobile/pending/Index'),
+                            import ( /* webpackChunkName: "pendingfeed" */ '@/views/social&mobile/pending/Index'),
                     },
                     {
                         path: 'schedule',
@@ -439,6 +472,12 @@ const routes = [{
                         name: 'PostCategory',
                         component: () =>
                             import ( /* webpackChunkName: "socialsetting" */ '@/views/social&mobile/settingspage/PostCategory'),
+                    },
+                    {
+                        path: 'involvement',
+                        name: 'PostEngagement',
+                        component: () =>
+                            import ( /* webpackChunkName: "involvement" */ '@/views/social&mobile/involvement/Index'),
                     },
                 ]
             },
@@ -532,7 +571,21 @@ const routes = [{
                 path: 'media',
                 name: 'MediaLibrary',
                 component: () =>
-                    import ( /* webpackChunkName: "medialibrary" */ '@/views/media/library/Index')
+                    import ( /* webpackChunkName: "medialibrary" */ '@/views/media/library/Index'),
+                children: [
+                    {
+                        path: '',
+                        name: 'Gallery',
+                        component: () =>
+                            import ( /* webpackChunkName: "medialibrary" */ '@/views/media/library/components/Gallery')
+                    },
+                    {
+                        path: 'file',
+                        name: 'FileDetails',
+                        component: () =>
+                            import ( /* webpackChunkName: "medialibrary" */ '@/views/media/file/Index')
+                    },
+                ]
             },
             {
                 path: 'upload',

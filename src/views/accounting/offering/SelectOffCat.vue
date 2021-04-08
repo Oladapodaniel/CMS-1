@@ -9,6 +9,14 @@
             </div>
         </div>
 
+        <Dialog v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '80vw'}">
+            <p>You have no income account to create a contribution item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
+            <template #footer>
+                <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
+                <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
+            </template>
+        </Dialog>
+
     <!-- input area -->
     <div class="container-wide">
       <div class="row my-5 mx-auto">
@@ -68,7 +76,9 @@
         <div class="row mt-3 mb-4">
           <div class="col-5 col-sm-6">
             <div class="">Account</div>
-          <Dropdown v-model="item.account" class="w-100  mt-2" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+            <!-- <h5>Responsive</h5> -->
+            <!-- <Button label="Show" icon="pi pi-external-link" @click="openResponsive" /> -->
+          <Dropdown v-model="item.account" class="w-100  mt-2" :options="incomeAccount" optionLabel="text" :filter="false" placeholder="Select" :showClear="false">
           </Dropdown>
           </div>
 
@@ -135,12 +145,13 @@
 import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import Dropdown from 'primevue/dropdown';
+import Dialog from 'primevue/dialog';
 import Toast from 'primevue/toast';
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router"
 export default {
   components: {
-    Dropdown, Toast
+    Dropdown, Toast, Dialog
   },
   setup() {
     const router = useRouter()
@@ -152,7 +163,7 @@ export default {
     const selectedCashAccount = ref(null)
     const name = ref("")
     const toast = useToast();
-      
+    const displayResponsive = ref(false);
 
 
     const toggleRem = () => {
@@ -194,8 +205,11 @@ export default {
         .then(res => {
             /*eslint no-undef: "warn"*/
             NProgress.done();
-            console.log(res)
+            console.log(res.data.length)
           incomeAccount.value = res.data
+          if (res.data.length < 1) {
+            displayResponsive.value = true
+          }
         })
         .catch(err => {
             NProgress.done();
@@ -260,8 +274,16 @@ export default {
       })
     })
 
+    const openResponsive = () => {
+            displayResponsive.value = true;
+        }
+     const closeResponsive = () => {
+            displayResponsive.value = false;
+            router.push({ name: "ChartOfAccount" })
+        }
+
     return {
-      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage
+      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage, openResponsive, closeResponsive, displayResponsive
     };
   },
 };

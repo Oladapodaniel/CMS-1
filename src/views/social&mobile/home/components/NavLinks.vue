@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12 my-5">
                 <router-link to="/tenant/social/post" class="default-btn primary-bg text-light c-pointer border-0 text-decoration-none">
-                    <span><i class="pi pi-microsoft mr-2 c-pointer"></i></span>
+                    <span><i class="pi pi-book text-white mr-2 c-pointer"></i></span>
                     <span class="text-white">New Post</span>
                 </router-link>
             </div>
@@ -20,6 +20,22 @@
     export default {
         setup() {
             const links = [
+                
+                {
+                    text: "Feeds",
+                    icon: "pi pi-wifi",
+                    to: "/tenant/social/feed",
+                },
+                {
+                    text: "Pending Post",
+                    icon: "pi-wallet",
+                    to: "/tenant/social/pending",
+                },
+                {
+                    text: "Schedule Post",
+                    icon: "pi pi-clock",
+                    to: "/tenant/social/schedule",
+                },
                 {
                     text: "Overview",
                     icon: "pi pi-th-large",
@@ -28,22 +44,7 @@
                 {
                     text: "Involvement",
                     icon: "pi pi-heart",
-                    to: "/tenant/social",
-                },
-                {
-                    text: "Feeds",
-                    icon: "pi pi-wifi",
-                    to: "/tenant/social/feed",
-                },
-                {
-                    text: "Schedule Post",
-                    icon: "pi pi-clock",
-                    to: "/tenant/social/schedule",
-                },
-                {
-                    text: "Pending Post",
-                    icon: "pi-wallet",
-                    to: "/tenant/social/pending",
+                    to: "/tenant/social/involvement",
                 },
                 {
                     text: "Setting",
@@ -68,7 +69,7 @@
     * {
         color: #02172E;
         /* font: normal normal 600 ¿16px/22px Nunito Sans; */
-        font-family: Nunito Sans !important;
+        /* font-family: Nunito Sans !important; */
     }
 
     .main {

@@ -696,6 +696,7 @@ import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
@@ -707,7 +708,7 @@ import Editor from 'primevue/editor';
 export default {
   components: { Editor },
   setup() {
-    const router = useRoute()
+    const router = useRouter()
     const toast = useToast();
     const editor = ClassicEditor;
     const editorData = ref("");
@@ -875,18 +876,29 @@ export default {
       composeService
         .sendMessage("/api/Messaging/sendEmail", data)
         .then((res) => {
-          toast.add({
+          if (res.status === 200) {
+            toast.add({
               severity: "success",
               summary: "Successful operation",
               detail: "Email was sent successfully",
             });
+            // let sentEmail = {
+            //   dateSent: 23,
+            //   message: 324,
+            //   sentByUser: 343,
+            //   subject: 4324
+            // }
+            // console.log(res.data.mail)
+            store.dispatch('communication/addToSentEmail', res.data.mail)
             router.push({ name: 'SentEmails' })
+          }
+          
           console.log(res);
         })
         .catch((err) => {
           stopProgressBar();
           toast.removeAllGroups();
-          if (err.toString().toLowerCase().includes("network error")) {
+          if (err.toString().toLowerCase().includes('network error')) {
             toast.add({
               severity: "warn",
               summary: "You 're Offline",
@@ -900,6 +912,7 @@ export default {
               detail: "Email sending failed",
               life: 2500,
             });
+            console.log(err)
           }
         });
     };

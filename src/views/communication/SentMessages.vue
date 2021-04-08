@@ -261,6 +261,8 @@ import UnitsArea from "../../components/units/UnitsArea";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import Tooltip from "primevue/tooltip";
 import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress";
+// import finish from '../../services/progressbar/progress'
 
 export default {
   components: { UnitsArea, PaginationButtons },
@@ -412,7 +414,7 @@ export default {
             if (y >= 0) return false;
             return true;
           });
-          marked.value = []
+
 
           toast.add({
             severity: "success",
@@ -420,10 +422,14 @@ export default {
             detail: "SMS Deleted",
             life: 3000,
           });
-          store.dispatch("communication/removeSentSMS", id);
+          marked.value.forEach(i => {
+            store.dispatch("communication/removeSentSMS", i.id);
+          })
+          marked.value = [];
         })
-        .catch(() => {
-          stopProgressBar();
+        .catch((err) => {
+          // finish()
+           stopProgressBar();
           toast.add({
             severity: "error",
             summary: "Delete Error",
