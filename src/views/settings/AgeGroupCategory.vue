@@ -142,7 +142,7 @@ export default {
       try{
          await axios.post('/api/Settings/CreateTenantAgeGroup/'+ this.ageGroup);
         this.getGroup()
-        this.$toast.add({severity:'success', summary: '', detail:' Attendance Save Successfully', life: 3000});
+        this.$toast.add({severity:'success', summary: '', detail:' Age Group Save Successfully', life: 3000});
       }catch (error) {
         console.log(error)
       }
@@ -175,7 +175,7 @@ export default {
         await axios.put('/api/Settings/UpdateTenantAgeGroup', { name:this.typeName, id:id });
         this.types[index].name = this.typeName;
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'Attendance Updated Successfully', life: 3000});
+        this.$toast.add({severity:'success', summary: '', detail:'Age Group Updated Successfully', life: 3000});
       }catch (error){
         console.log(error)
       }
