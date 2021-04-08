@@ -7,7 +7,7 @@
             <div class="events">{{ header }}</div>
           </div>
           <div class="actions">
-            <button class="more-btn button align-items-center default-btn border-0">
+            <button v-if="false" class="more-btn button align-items-center default-btn border-0">
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
@@ -41,7 +41,7 @@ export default {
       if (route.path.includes("add")) return true;
       return false;
     })
-    
+
 
     const addPersonClicked = () => {
       if (route.name === "ImportPeople") {

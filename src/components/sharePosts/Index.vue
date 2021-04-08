@@ -205,7 +205,7 @@
       <!--end check box area type 6-->
 
       <!-- Button Area -->
-      <div class="row mt-5 d-flex justify-content-center">
+      <div class="row my-5 d-flex justify-content-center">
         <div class="col-4">
  <button class="btn default-btn btn-Area">Connect</button>
         </div>

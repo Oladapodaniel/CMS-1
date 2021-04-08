@@ -258,6 +258,15 @@
                 Social & Mobile App
               </router-link>
 
+              <router-link  to="/tenant/media" class="link routelink text-decoration-none">
+                <img
+                  src="../../assets/dashboardlinks/social-icon.svg"
+                  class="link-icon"
+                  alt=""
+                />
+                Media Library
+              </router-link>
+
               <a v-if="false"  class="link routelink">
                 <img
                   src="../../assets/dashboardlinks/media.svg"
@@ -280,6 +289,8 @@
           <hr class="hr" />
 
           <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
+          <hr class="hr" />
+          <div class="link" @click="logout">Logout</div>
 
           <!-- Hidden -->
           <a class="link routelink" v-if="false"> Integration </a>
@@ -294,10 +305,11 @@ import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import store from "@/store/store";
 import axios from "@/gateway/backendapi";
+import { useRouter } from 'vue-router'
 export default {
   setup(props, { emit }) {
     const route = useRoute();
-
+    const router = useRouter()
     const moreShown = ref(false);
     const showMore = () => {
       moreShown.value = !moreShown.value;
@@ -367,6 +379,11 @@ export default {
       }
     }
 
+    const logout = () => {
+      localStorage.clear()
+      router.push('/')
+    }
+
     return {
       route,
       moreShown,
@@ -382,6 +399,7 @@ export default {
       toggleEventsDropDown,
       tenantDisplayName,
       linkClicked,
+      logout
     };
   },
 };
@@ -515,7 +533,7 @@ export default {
   */
 .hide-more-links {
   transition: all 0.5s ease-in-out;
-  height: 55px; 
+  height: 100px; 
 }
 
 .follow-up {

@@ -11,7 +11,7 @@
             <div class="events">Events</div>
           </div>
           <div class="actions">
-            <button class="more-btn button">
+            <button class="more-btn button" v-if="false">
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>

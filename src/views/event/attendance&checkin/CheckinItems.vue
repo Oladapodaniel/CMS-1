@@ -13,7 +13,7 @@
 
         <div class="row" v-if="items.length > 0 && !loading">
           <div class="col-md-12 px-0">
-            <List :list="items" :errorOcurred="errorOccurred" />
+            <List :list="items" :errorOcurred="errorOccurred" @attendance-checkin="removeCheckin" />
           </div>
         </div>
         <div class="row" v-if="cantGetItems">
@@ -59,11 +59,16 @@ export default {
     // }
     // getAttendanceItems();
 
+    const removeCheckin = (payload) => {
+        items.value.splice(payload, 1)
+    }
+
     return {
       items,
       loading,
       errorOccurred,
-      cantGetItems
+      cantGetItems,
+      removeCheckin
     };
   },
 };

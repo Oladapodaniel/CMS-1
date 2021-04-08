@@ -18,7 +18,7 @@
         </div>
         <form class="form">
             <div class="row">
-         
+
             <div class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
                     <div>Name</div>
                 </div>
@@ -85,7 +85,7 @@
               <div class="modal-body">
                 <ContributionItems @item-name="newConItems" />
             </div>
-              
+
             </div>
           </div>
         </div>
@@ -108,13 +108,13 @@
                 <div class="col-12">
                     <hr class="mt-4"/>
                 </div>
-              
+
                 <div class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
                     <div>Choose Bank</div>
                 </div>
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
                         <Dropdown v-model="selectedBank" class="w-100" :options="nigerianBanks" optionLabel="name" :filter="true" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
-                        
+
                         </Dropdown>
                 </div>
                 <div class="col-2 d-none d-sm-block"></div>
@@ -126,7 +126,7 @@
                     <input class="form-control h-100" type="number" v-model="accountNumber" @blur="resolveCustomerDetail">
                 </div>
                 <div class="col-2 d-none d-sm-block"></div>
-                
+
                 <div class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
                     <div>Account Name</div>
                 </div>
@@ -136,14 +136,14 @@
                             <div class="mt-1">
                                 <em class="mt-1">This will automatically come up, kindly confirm before clicking on save.</em>
                             </div>
-    
+
                 </div>
                 <div class="col-sm-3 align-self-end" v-if="loading">
                     <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
                     <span class="sr-only">Loading...</span>
                     </div>
                 </div>
-                
+
                 <div class="col-10 col-md-12 mt-5">
                     <hr class="mt-4"/>
                 </div>
@@ -179,9 +179,9 @@
                         <h6>Paystack</h6>
                       </div> -->
                   </div>
-                </div>            
+                </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-10 col-md-12 mt-2">
                     <hr class="mt-1"/>
@@ -194,7 +194,7 @@
                         <hr style="width: 50%"/>
                         <i class="pi pi-angle-up angle-icon mt-3" :class="{ 'rollIcon' : templateDisplay, 'closeIcon' : !templateDisplay }" @click="toggleTemplate" ></i>
                     </div>
-                    
+
                     <div class="row img-row hide-tem mt-4" :class="{ 'show-tem': templateDisplay, 'hide-tem' : !templateDisplay }">
                         <div class="col-sm-6 col-lg-4 mt-3">
                             <img src="../../assets/giving1.png" class="w-100"  ref="myImg" id="myImg" @click="togglePopup"/>
@@ -239,7 +239,7 @@
             </div>
 
             <div class="row">
-                
+
                 <div class="col-12 col-sm-10 col-md-6 col-lg-5 offset-sm-1 offset-md-3 offset-lg-4 pl-0 mt-3">
                 <button
                   class="button border-0 w-100"
@@ -255,7 +255,7 @@
                   <span class="text-white">Save and Continue</span>
                   <span></span>
                 </button>
-               
+
             </div>
             <!-- <div class="col-12 col-sm-10 offset-sm-1 col-md-5 offset-md-4 mt-5">
                     <img src="../../assets/payment-options.png" class="w-100" style="opacity: 0.9">
@@ -331,7 +331,7 @@ export default {
         const routeParams = ref(route.params.editPayment)
         const theContributionItems = ref([])
         const templateDisplay = ref(false)
-        
+
 
         const addContribution = () => {
             newContribution.value.payment.push({})
@@ -368,16 +368,16 @@ export default {
             // }
         }
         getContributionItems()
-        
+
         // const getListofBanks = () => {
         //     axios.get('https://api.paystack.co/bank')/api/Financials/GetBanks
         //         .then(res => {
-              
+
         //             console.log(res)
         //         nigerianBanks.value = res.data.data
         //         })
         //         .catch(err => {
-            
+
         //             console.log(err)
         //         })
         //     }
@@ -385,33 +385,33 @@ export default {
             // const Banko = () => {
             // axio.get('https://api.paystack.co/bank', { headers: { Authorization: 'Bearer 771901a47711ceb27bc0e325ddfefd92f2191534' } })
             //         .then(res => {
-                
+
             //             console.log(res)
             //         bankList.value = res.data
             //         })
             //         .catch(err => {
-                
+
             //             console.log(err)
             //         })
-                
+
             // }
             // Banko()
 
         const getBanks = () => {
             axios.get('/api/Financials/GetBanks')
                 .then(res => {
-              
+
                     console.log(res)
                 nigerianBanks.value = res.data
                 })
                 .catch(err => {
-            
+
                     console.log(err)
                 })
-            
+
         }
         getBanks()
-        
+
         const getGateWays = () => {
             // if (!route.params.editPayment) {
                 axios.get('/api/Financials/GetPaymentGateways')
@@ -459,7 +459,7 @@ export default {
         //     }
         // }
         // getPaymentDetails()
-        
+
 
         // const getCurrentlySignedInUser = async() => {
         //     try {
@@ -473,7 +473,7 @@ export default {
                 //     isPaypal.value = true
                 //     isFlutterwave.value = true
                 // }
-                
+
         //     } catch (err) {
         //         /*eslint no-undef: "warn"*/
         //         NProgress.done();
@@ -495,7 +495,7 @@ export default {
                 disabled.value = false
 
                 loading.value = false
-     
+
                 toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 3000});
 
             }
@@ -504,7 +504,7 @@ export default {
                 console.log(error)
 
                 loading.value = false
-                
+
                 toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
             }
             console.log(selectedBank.value.code, accountNumber.value)
@@ -513,7 +513,7 @@ export default {
 
         const toggleCheckBox = (item) => {
             item.isChecked = !item.isChecked
-           
+
             if (item.isChecked && paymentGateWays.value.findIndex(i => i.id === item.id) < 0) {
                 paymentGateWays.value.push(item)
             } else {
@@ -548,7 +548,7 @@ export default {
 
             console.log(paymentForm)
             if (!route.params.editPayment) {
-                
+
                 try {
                     const res = await axios.post("/api/PaymentForm/Save", paymentForm);
                     console.log(res)
@@ -672,7 +672,7 @@ export default {
                     // console.log(i)
                     i.isChecked = true;
                 }
-                
+
                 // alert(i)
                 return i
             })
@@ -694,13 +694,13 @@ export default {
                 secondTemplate.value = false
                 thirdTemplate.value = false
             }
-            
+
             const toggleSecondTemplate = () => {
                 secondTemplate.value = !secondTemplate.value
                 firstTemplate.value = false
                 thirdTemplate.value = false
             }
-            
+
             const toggleThirdTemplate = () => {
                 thirdTemplate.value = !thirdTemplate.value
                 firstTemplate.value = false
@@ -725,9 +725,17 @@ export default {
             const toggleTemplate = () => {
                 templateDisplay.value = !templateDisplay.value
             }
-        
+
         return {
-            contributionItems, newContribution, addContribution, deleteContribution, nigerianBanks, selectedBank, resolveCustomerDetail, accountNumber, saveAndContinue, selectContribution, selectedContribution, accountName, accNameRef, loading, loadingSave, loadingEdit, disabled,  newConItems, firstTemplate, secondTemplate, thirdTemplate, toggleFirstTemplate, toggleSecondTemplate, toggleThirdTemplate, sourceModal, togglePopup, booleanModal, closeModal, paymentGateWaysDb, paymentGateWays, toggleCheckBox, gateways, removeContributionIDs, removePaymentGatewayIDs, isActive, active, routeParams, theContributionItems, templateDisplay, toggleTemplate
+            contributionItems, newContribution, addContribution,
+            deleteContribution, nigerianBanks, selectedBank, resolveCustomerDetail,
+            accountNumber, saveAndContinue, selectContribution, selectedContribution, accountName,
+            accNameRef, loading, loadingSave, loadingEdit, disabled,  newConItems, firstTemplate,
+            secondTemplate, thirdTemplate, toggleFirstTemplate, toggleSecondTemplate,
+            toggleThirdTemplate, sourceModal, togglePopup, booleanModal, closeModal,
+            paymentGateWaysDb, paymentGateWays, toggleCheckBox, gateways, removeContributionIDs,
+            removePaymentGatewayIDs, isActive, active, routeParams, theContributionItems,
+            templateDisplay, toggleTemplate
         }
     }
 }
@@ -831,7 +839,7 @@ export default {
 }
 
 .header-contri {
-     font-size: 20px; 
+     font-size: 20px;
      font-weight: 700;
 }
 
