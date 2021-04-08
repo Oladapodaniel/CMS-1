@@ -188,7 +188,7 @@ import ProgressBar from 'primevue/progressbar';
                     })
                     .catch(err => {
                         toast.add({severity:'error', summary:'Upload Failed', detail:'The file upload failed, please reload and try again', life: 3000});
-                        console.log(error);
+                        console.log(err);
                         display.value = false;
                     })
             }
