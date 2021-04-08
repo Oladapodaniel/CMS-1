@@ -49,17 +49,23 @@
                     <div class="col-md-12">
                       <div class="row light-grey-bg">
                         <div class="col-md-1">
-                          <input type="checkbox" />
+                          <input
+                            type="checkbox"
+                            name="all"
+                            id="all"
+                            @change="markAllItem"
+                            :checked="marked.length === sentSMS.length"
+                          />
                         </div>
                         <div class="col-md-7 d-flex align-items-center">
                           <span class="th">Message</span>
-                          <!-- <i class="pi pi-trash c-pointer pt-2 px-4" style="font-size: 20px" v-if="marked.length > 0" @click="deleteMarked"></i> -->
                           <i
-                            class="pi pi-trash text-danger c-pointer pt-2 px-4"
-                            style="font-size: 20px"
+                            class="pi pi-trash text-danger c-pointer d-flex align-items-center px-4"
+                            style="font-size: 15px"
                             v-if="marked.length > 0"
-
-                          ></i>
+                            @click="showConfirmModal"
+                          >
+                          </i>
                         </div>
                         <div class="col-md-2">
                           <span class="th"
@@ -97,9 +103,9 @@
                             type="checkbox"
                             name=""
                             id=""
-                            @change="mark1Item"
+                            @change="mark1Item(sms)"
                             :checked="
-                              marked.findIndex((i) => i.id === message.id) >= 0
+                              marked.findIndex((i) => i.id === sms.id) >= 0
                             "
                           />
                         </div>
@@ -209,7 +215,8 @@
                       </div>
                     </div>
                   </div>
-
+                  <ConfirmDialog></ConfirmDialog>
+                  <Toast />
                   <div class="row" v-if="sentSMS.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
                       <span class="my-4 font-weight-bold">No sent mesages</span>
@@ -244,7 +251,8 @@
 </template>
 
 <script>
-// import axios from "@/gateway/backendapi";
+import axios from "@/gateway/backendapi";
+import { useConfirm } from "primevue/useConfirm";
 import { computed, ref } from "vue";
 // import router from "@/router/index";
 import communicationService from "../../services/communication/communicationservice";
@@ -252,6 +260,9 @@ import { useStore } from "vuex";
 import UnitsArea from "../../components/units/UnitsArea";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import Tooltip from "primevue/tooltip";
+import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress";
+// import finish from '../../services/progressbar/progress'
 
 export default {
   components: { UnitsArea, PaginationButtons },
@@ -263,12 +274,11 @@ export default {
     const loading = ref(false);
     const store = useStore();
     const sentSMS = ref(store.getters["communication/allSentSMS"]);
-
-    // const  bulkDelete = ref(false)
+    console.log(sentSMS.value, "TESTING");
+    console.log(sentSMS.value.length, "TESTING type");
 
     const currentPage = ref(0);
     const searchText = ref("");
-
     const getSentSMS = async () => {
       try {
         loading.value = true;
@@ -300,7 +310,13 @@ export default {
       }
     };
 
-    if (!sentSMS.value || sentSMS.value.length === 0) getSentSMS();
+    if (
+      !sentSMS.value ||
+      sentSMS.value == undefined ||
+      sentSMS.value.length === 0 ||
+      !sentSMS.value[0]
+    )
+      getSentSMS();
 
     const itemsCount = computed(() => {
       if (!sentSMS.value || sentSMS.value.length === 0) return 0;
@@ -310,11 +326,11 @@ export default {
     const messages = computed(() => {
       if (!sentSMS.value || sentSMS.value.length === 0) return [];
       return sentSMS.value.filter((i) => {
-        if (i.message) return !i.message.toLowerCase().startsWith("sms reply");
+        if (i && i.message)
+          return !i.message.toLowerCase().startsWith("sms reply");
         return false;
       });
     });
-    console.log(sentSMS.value, "data");
 
     const searchedMessages = computed(() => {
       if (searchText.value === "" && messages.value.length > 0)
@@ -338,6 +354,25 @@ export default {
     //   bulkDelete.value = !bulkDelete.value
     // }
 
+    const confirm = useConfirm();
+    let toast = useToast();
+    const showConfirmModal = () => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteSingleItem();
+        },
+        reject: () => {
+          //  toast.add({severity:'info', summary:'Rejected',
+          //  detail:'You have rejected', life: 3000});
+        },
+      });
+    };
+
     const marked = ref([]);
     const mark1Item = (messageid) => {
       const msgIndex = marked.value.findIndex((i) => i.id === messageid.id);
@@ -347,6 +382,62 @@ export default {
         marked.value.splice(msgIndex, 1);
       }
       console.log(marked.value, "tosin");
+    };
+
+    const markAllItem = () => {
+      if (marked.value.length < sentSMS.value.length) {
+        sentSMS.value.forEach((i) => {
+          const smsInMarked = marked.value.findIndex((q) => q.id === i.id);
+          if (smsInMarked < 0) {
+            marked.value.push(i);
+          }
+        });
+      } else {
+        marked.value = [];
+      }
+      console.log(marked.value, "I am awesome");
+    };
+
+    const convert = (x) => {
+      console.log(x, "tosin");
+      return x.map((i) => i.id).join(",");
+    };
+    const deleteSingleItem = () => {
+      let bail = convert(marked.value);
+      console.log(bail);
+      axios
+        .delete(`/api/Messaging/DeleteSentSMS?SentSMSIdList=${bail}`)
+        .then((res) => {
+          console.log(res);
+          sentSMS.value = sentSMS.value.filter((item) => {
+            const y = marked.value.findIndex((i) => i.id === item.id);
+            if (y >= 0) return false;
+            return true;
+          });
+
+
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "SMS Deleted",
+            life: 3000,
+          });
+          marked.value.forEach(i => {
+            store.dispatch("communication/removeSentSMS", i.id);
+          })
+          marked.value = [];
+        })
+        .catch((err) => {
+          // finish()
+           stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Deleting SMS failed",
+            life: 3000,
+          });
+          console.log(err);
+        });
     };
 
     return {
@@ -360,8 +451,10 @@ export default {
       searchedMessages,
       marked,
       mark1Item,
-      // bulkDelete,
-      // checkedAll,
+      markAllItem,
+      deleteSingleItem,
+      convert,
+      showConfirmModal,
     };
   },
 };

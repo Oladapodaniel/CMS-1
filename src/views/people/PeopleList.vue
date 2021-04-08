@@ -161,7 +161,7 @@
         <div class="phone">
           <p>PHONE</p>
         </div>
-        <div class="action"></div>
+        <div class="action"></div>-
       </div>
 
       <div v-if="filterResult.length > 0 && (filter.filterFirstName || filter.filterLastName || filter.phoneNumber)">
@@ -807,19 +807,19 @@ a {
   width: 50%;
 }
 
-.firstname .data-value {
-  /* margin-left: -32px;
-  margin-right: 3px; */
-}
+/* .firstname .data-value {
+   margin-left: -32px;
+  margin-right: 3px;
+} */
 
-.lastname .data-value {
-  /* margin-left: -41px;
-  margin-right: 2px; */
-}
+/* .lastname .data-value {
+   margin-left: -41px;
+  margin-right: 2px;
+} */
 
-.phone .data-value {
-  /* margin-left: 38px; */
-}
+/* .phone .data-value {
+   margin-left: 38px;
+} */
 /*
 .label-search {
   width: 0;
@@ -943,12 +943,12 @@ a {
 }
 
 @media screen and (min-width: 500px) {
-  .picture,
+  /* .picture,
   .firstname,
   .lastname,
   .phone {
-    /* width: 19%; */
-  }
+     width: 19%;
+  } */
 
   .picture > p{
     margin-left: 43px;

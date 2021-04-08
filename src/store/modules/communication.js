@@ -46,6 +46,12 @@ export default {
             // state.sentEmails.pop()
             state.sentEmails.push(payload)
             // state.addToSentEmail = payload
+        },
+        removeSentSMS(state, payload) {
+            const x = state.allSentSMS.findIndex(i => i.id === payload);
+            if (x >= 0)  {
+                state.allSentSMS.splice(x, 1);
+            }
         }
     },
 
@@ -117,6 +123,10 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        removeSentSMS({ commit }, payload) {
+            commit("removeSentSMS", payload);
         }
       },
 
