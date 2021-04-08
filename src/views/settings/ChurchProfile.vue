@@ -16,10 +16,10 @@
             </div>
             <div class="col-12 col-md-5 form-group">
               <input
-                type="text" placeholder="Name"
-                class="form-control ml-0 input"
-                name=""
+                type="text" placeholder="name()"
+                class="form-control ml-0 input" 
                 id="firstname"
+                v-model="currentUser.churchName"
                 required
               />
             </div>
@@ -194,15 +194,15 @@
 </template>
 
 <script>
-// import axios from "@/gateway/backendapi";
+import axios from "@/gateway/backendapi";
+import store from "@/store/store";
 // import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 // import { getCurrentInstance } from "vue";
 
 export default {
   components: { Dropdown },
-
   setup() {
     let url = ref("");
     let image;
@@ -211,16 +211,33 @@ export default {
       url.value = URL.createObjectURL(image);
     };
 
-    const uploadImage = () => { }
+    const uploadImage = () => { };
+    const currentUser = ref(store.getters.currentUser);
+
+    onMounted(() => {
+      if(!store.getters.currentUser.churchName){
+            axios
+            .get(`/api/Membership/GetCurrentSignedInUser`)
+            .then((response) =>{
+                currentUser.value = response.data;
+            console.log(response.data)
+        
+        })
+            .catch((error)=> console.log(error))
+            
+        }
+    })
 
     return {
       url,
       imageSelected,
       uploadImage,
+      currentUser,
+      // currentUser: store.getters.currentUser,
     }
-  }
-
-};
+  },
+  
+}
 </script>
 
 <style scoped>
