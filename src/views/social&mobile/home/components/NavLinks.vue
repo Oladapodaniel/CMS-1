@@ -53,7 +53,7 @@
                 },
                 {
                     text: "Post Category",
-                    icon: "pi pi-cog",
+                    icon: "pi pi-sitemap",
                     to: "/tenant/social/category",
                 }
             ]

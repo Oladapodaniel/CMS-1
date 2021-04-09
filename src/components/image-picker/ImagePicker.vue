@@ -16,10 +16,16 @@
           </div>
         </div>
 
+        <div class="row py-5" v-if="loading">
+            <div class="col-md-12 text-center">
+                <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
+            </div>
+        </div>
+
         <div class="row d-flex flex-wrap py-4" v-if="!willUpload">
           <div class="col-sm-4 my-2" v-for="(image, index) in gallery" :key="index" style="max-height: 200px" @click="uploaded(true, image)">
               <div class="row">
-                  <div class="col-md-11 mx-auto c-pointer">
+                  <div class="col-md-11 mx-auto c-pointer img-box">
                       <img :src="image" style="height:100%;width:100%" alt="">
                   </div>
               </div>
@@ -47,14 +53,17 @@ export default {
         const fileInput = ref(null);
         const file = ref("");
         const willUpload = ref(false);
+        const loading = ref(true);
 
         const gallery = ref([])
         const getImages = async () => {
             try {
-                const response = await media_service.getImageGallery();
-                gallery.value = response.splice(0, 50);
-                console.log(response, "IMAGES");
+              const response = await media_service.getImageGallery();
+              loading.value = false;
+              gallery.value = response.splice(0, 50);
+              console.log(response, "IMAGES");
             } catch (error) {
+              loading.value = false;
                 console.log(error);
             }
         }
@@ -92,6 +101,7 @@ export default {
             willUpload,
             uploaded,
             gallery,
+            loading,
         }
     }
 };
@@ -111,5 +121,10 @@ export default {
     background: #e9eef0;
     cursor: pointer;
     border-radius: 15px 15px 0 0;
+}
+
+.img-box:hover {
+  /* border: 0.20000000298023224px solid #e9eef0; */
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
 }
 </style>

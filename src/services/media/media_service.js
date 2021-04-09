@@ -1,4 +1,5 @@
 import axios from "@/gateway/backendapi";
+import stopProgressBar from "../../services/progressbar/progress";
 
 const uploadMedia = (body) => {
     return new Promise((resolve, reject) => {
@@ -7,6 +8,7 @@ const uploadMedia = (body) => {
             resolve(res.data);
         })
         .catch(err => {
+            stopProgressBar();
             if (err.response) {
                 reject(err.response);
             } else {
