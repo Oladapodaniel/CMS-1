@@ -4,7 +4,7 @@
     <!-- nav section area -->
     <div class="container-fluid nav-color">
       <div class="container">
-        <nav class="navbar navbar-expand-lg nav-color2">
+        <!-- <nav class="navbar navbar-expand-lg nav-color2">
           <a class="navbar-brand" href="#">
             <img v-bind:src="formResponse.churchLogo" width="100px" alt="" />
           </a>
@@ -27,9 +27,9 @@
               </li>
             </ul>
             <div class="form-inline my-2 my-lg-0">
-              <!-- <li class="nav-item lstyle mr-3">
+              <li class="nav-item lstyle mr-3">
                 <a class="text-white" href="#">English</a>
-              </li> -->
+              </li>
               <li class="nav-item lstyle" @click="checkForToken">
                 <div class="text-white" href="#" style="cursor: pointer"
                   >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} <i class="fas fa-user text-white" v-if="signedIn"></i
@@ -43,23 +43,35 @@
               </li>
             </div>
           </div>
-        </nav>
+        </nav> -->
       </div>
     </div>
     <!--end of nav section area -->
-
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-10 col-md-8 mx-auto d-flex justify-content-end pt-1">
+                    <div href="#" style="cursor: pointer" class="mr-3" @click="checkForToken"
+                    >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} <i class="fas fa-user text-white" v-if="signedIn"></i
+                ></div>
+                <div href="#" style="cursor: pointer" @click="signOut" v-if="signedIn"
+            >
+            Sign Out
+            </div>
+                </div>
+            </div>
+        </div>
     <!-- body area -->
-    <div class="container-fluid px-0">
+    <div class="container-fluid">
       <div class="row mx-0">
         <div class="col-12 px-0">
-          <div class="img">
-            <p class="text-center text-white pt-5 main-font">Giving</p>
+          <div>
+            <p class="text-center pt-2 main-font">Giving</p>
             <p class="text-center mt-n3 sub-main-font">
               Give and you will recieve. Luke - 6:38
             </p>
 
             <!-- form area -->
-            <div class="container">
+            <div>
               <div class="row px-4">
                 <div class="col-md-3 d-sm-none"></div>
               <transition name="move" mode="out-in">
@@ -69,7 +81,7 @@
                   key="form"
                 >
                   <div class="row">
-                    <div class="col-md-4 my-3 pr-md-0">
+                    <div class="col-12 col-md-4 my-3 pr-md-0">
                       <label class="hfont">Purpose</label>
 
                       <Dropdown
@@ -80,8 +92,9 @@
                         class="w-100 px-0"
                       />
                     </div>
-                    <div class="col-md-4 my-3">
+                    <div class="col-5 col-md-4 my-3">
                       <label class="hfont">Currency</label>
+
                        <Dropdown
                             v-model="dfaultCurrency"
                             :options="currencyInput"
@@ -90,7 +103,7 @@
                             class="w-100 px-0"
                           />
                     </div>
-                    <div class="col-md-4 my-3 pl-md-0">
+                    <div class="col-7 col-md-4 my-3 pl-0">
                       <label class="hfont">Amount</label>
 
                       <input
@@ -333,7 +346,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -508,8 +521,6 @@ export default {
     const signInPassword = ref("")
     const routeParams = ref(`${route.params.userId}`)
     const showSignInForm = ref(true)
-    const selectedGateway = ref("")
-    
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -593,7 +604,7 @@ export default {
             orderID: formResponse.value.orderId,
             currencyID: dfaultCurrency.value.id,
             paymentGateway: formResponse.value.paymentGateWays,
-            usedPaymentGateway: selectedGateway.value,
+          
             contributionItems: [
                         {
                           contributionItemId: selectedContributionType.value.financialContributionID,
@@ -605,8 +616,8 @@ export default {
 
           }
           
-          
-          if(localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken') ||  signedIn) {
+          console.log(donationObj.value)
+          if(localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken')) {
               donationObj.value.name = userData.value.name
               donationObj.value.email = userData.value.email
               donationObj.value.phone = userData.value.phone
@@ -617,18 +628,19 @@ export default {
                 donationObj.value.isAnonymous = false
               }
           } else {
+              donationObj.value.name = name.value,
+              donationObj.value.phone = phone.value,
+              donationObj.value.email = email.value
+
               if (name.value !== "" || phone.value !== "") {
                 donationObj.value.isAnonymous = false
-                donationObj.value.name = name.value,
-                donationObj.value.phone = phone.value,
-                donationObj.value.email = email.value
               } else {
                 donationObj.value.isAnonymous = true
               }
           }
 
          
-console.log(donationObj.value)
+
           try {
             let  res = await axios.post('/donation', donationObj.value)
             console.log(res)
@@ -806,11 +818,6 @@ console.log(donationObj.value)
       showSignInForm.value = payload
     }
 
-    const gatewaySelected  = (payload) => {
-      selectedGateway.value = payload
-      console.log(payload)
-    }
-
     return {
       hideTabOne,
       toggleTabOne,
@@ -851,9 +858,7 @@ console.log(donationObj.value)
       routeParams,
       showSignInForm,
       signedUp,
-      displaySignInForm,
-      selectedGateway,
-      gatewaySelected
+      displaySignInForm
     };
   },
 };
@@ -892,7 +897,6 @@ console.log(donationObj.value)
   font-size: 4.375rem;
   font: normal normal medium 70px/106px Poppins;
   letter-spacing: 4px;
-  color: #FFFFFF;
 }
 .sub-main-font {
   font-size: 18px;

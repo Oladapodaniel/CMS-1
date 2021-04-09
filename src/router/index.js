@@ -681,6 +681,12 @@ const routes = [{
             import ( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/GivingForm4')
     },
     {
+        path: '/iframe/:userId?',
+        name: 'iFrame',
+        component: () =>
+            import ( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/iFrame')
+    },
+    {
         path: '/onlinegivingform5',
         name: 'OnlineGiving5',
         component: () =>
