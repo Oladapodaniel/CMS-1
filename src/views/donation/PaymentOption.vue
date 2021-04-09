@@ -149,7 +149,7 @@ import axios from "@/gateway/backendapi";
             const displayQr = ref(false)
             const displayIFrame = ref(false)
             // const contributionItems = ref([])
-            const iFrameLink = ref(`<iframe src="my.churchplus.co/${route.params.paymentId}"></iframe>`)
+            const iFrameLink = ref(`<iframe loading="lazy" src="https://my.churchplus.co/iframe/${route.params.paymentId}" style="border:0px #f4f4f4 dashed;" name="online-giving" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="1190px" width="720px" allowfullscreen></iframe>`)
             const paymentLink = ref("")
             const iframeLink = ref("")
             const title = ref("")
