@@ -91,7 +91,11 @@
               <label class="small-text lb font-weight-600" for="">Email</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" placeholder="Email" class="form-control ml-0 input" />
+              <input type="text"
+               placeholder="Email"
+                class="form-control ml-0 input"
+                v-model="currentUser.userEmail" 
+                />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -185,8 +189,6 @@
             </div>
             <div class="col-md-4"></div>
           </div>
-
-
         </div>
       </div>
     </div>
@@ -196,10 +198,8 @@
 <script>
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
-// import router from "@/router/index";
 import Dropdown from "primevue/dropdown";
-import { onMounted, ref } from 'vue';
-// import { getCurrentInstance } from "vue";
+import { onMounted, ref} from 'vue';
 
 export default {
   components: { Dropdown },
@@ -227,13 +227,11 @@ export default {
             
         }
     })
-
     return {
       url,
       imageSelected,
       uploadImage,
       currentUser,
-      // currentUser: store.getters.currentUser,
     }
   },
   

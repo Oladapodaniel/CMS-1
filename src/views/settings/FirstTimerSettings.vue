@@ -15,6 +15,8 @@
                 <div class="col-md-12">
                   <h4 class="mt-2 mb-2 ml-5 first1">How Did You Hear About Us</h4>
                 </div>
+                <Toast/>
+                <ConfirmDialog/>
               </div>
 
               <div class="row">
@@ -25,10 +27,11 @@
                         type="text"
                         class="form-control"
                         placeholder="How Did You Hear About Us"
+                        v-model="classificationTypes"
                       />
                     </div>
                     <div class="col-md-3">
-                      <button class="btn primary-btn text-white px-5">Save</button>
+                      <button class="btn primary-btn text-white px-5" @click="saveFirstTimer">Save</button>
                     </div>
                   </div>
                 </div>
@@ -63,7 +66,7 @@
                       <button class="btn secondary-btn py-1 px-4" @click="openClassification(index)">View</button>
                     </div>
                     <div class="col-md-6">
-                      <button class="btn btn-danger py-1 primary-btn">Delete</button>
+                      <button class="btn btn-danger py-1 primary-btn" @click="deletePop(classification.id)" >Delete</button>
                     </div>
                   </div>
                 </div>
@@ -83,7 +86,7 @@
                 >
                   <div class="row">
                     <div class="col-md-6">
-                      <button class="btn primary-btn save-btn py-1 px-4">Save</button>
+                      <button class="btn primary-btn save-btn py-1 px-4" @click="updateFirstTimer(classification.id, index)">Save</button>
                     </div>
                     <div class="col-md-6">
                       <button class="btn secondary-btn py-1 px-4" @click="discard">Discard</button>
@@ -107,6 +110,9 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import Toast from 'primevue/toast';
+import ConfirmDialog from 'primevue/confirmdialog';
+import membershipService from '../../services/membership/membershipservice'
 
 export default {
   data() {
@@ -114,18 +120,69 @@ export default {
       classifications: [ ],
       vissibleTab: "",
       classificationName: "",
+      classificationTypes: "",
+      tenantId: ""
     }
   },
 
   methods: {
     async getClassifications() {
       try {
-        const { data } = await axios.get("");
+        const { data } = await axios.get("/api/Membership/howYouHeardAboutUs");
         this.classifications = data;
       } catch (error) {
         console.log(error);
       }
     },
+     //First Timer save
+    async saveFirstTimer(){
+      try{
+        await axios.post('/api/Membership/howYouHeardAboutUs/' + this.classificationTypes);
+        this.getClassifications()
+         this.$toast.add({severity:'success', summary: '', detail:' How Did you Hear About Us Save Successfully', life: 3000});
+      }catch(error){
+        console.log(error)
+      }
+    },
+    //Update FirstTimer
+    async updateFirstTimer(id, index){
+      console.log(id, "TARGET");
+      try{
+        await axios.put('/api/Membership/howYouHeardAboutUs', { name: this.classificationName, tenantID: this.tenantId, id:id});
+        this.classifications[index].name = this.classificationName;
+      
+        this.discard()
+        this.$toast.add({severity:'success', summary: '', detail:'How Did you Hear About Us Updated Successfully', life: 3000});
+      }catch (error){
+        console.log(error)
+      }
+    },
+    //Delete FirstTimers
+    async deleteFirstTimer(id){
+      try {
+        await axios.delete('/api/Membership/howYouHeardAboutUs/'+id);
+        this.classifications = this.classifications.filter(i => i.id !== id);
+         this.$toast.add({severity:'success', summary: '', detail:'How You Hear About Us Deleted Successfully', life: 3000});
+      } catch (error){
+        console.log(error);
+      }
+    },
+    //pop Alert
+      deletePop(id) {
+            this.$confirm.require({
+                message: 'Are you sure you want to Delete?',
+                header: 'Delete Confirmation',
+                icon: 'pi pi-exclamation-circle',
+                accept: () => {
+                  this.deleteFirstTimer(id)
+                    //callback to execute when user confirms the action
+                },
+                reject: () => {
+                    'No internet'
+                }
+            });
+        },
+
 
     openClassification(index) {
       this.vissibleTab = `tab_${index}`;
@@ -139,6 +196,10 @@ export default {
 
   created() {
     this.getClassifications();
+     membershipService.getSignedInUser()
+      .then(res => {
+        this.tenantId = res.tenantId;
+      })
   }
 };
 </script>
