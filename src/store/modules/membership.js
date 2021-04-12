@@ -46,7 +46,6 @@ export default {
         console.log("getting");
       try {
         const { data } = await axios.get("/api/People/GetPeopleBasicInfo");
-        console.log(data, "members");
         commit("setMembers", data)
       } catch (err) {
         /*eslint no-undef: "warn"*/

@@ -1,4 +1,5 @@
 import axios from "@/gateway/backendapi";
+import stopProgressBar from "../progressbar/progress";
 
 const getPostCategory = (tenantId) => {
     return new Promise((resolve, reject) => {
@@ -24,6 +25,7 @@ const postMessage = (body) => {
             resolve(res.data);
         })
         .catch(err => {
+            stopProgressBar()
             if (err.response) {
                 reject(err.response);
             } else {
@@ -40,6 +42,7 @@ const createPostCategory = (body) => {
             resolve(res.data);
         })
         .catch(err => {
+            stopProgressBar()
             if (err.response) {
                 reject(err.response);
             } else {
@@ -88,6 +91,7 @@ const postComment = (body) => {
             resolve(res.data);
         })
         .catch(err => {
+            stopProgressBar();
             if (err.response) {
                 reject(err.response);
             } else {

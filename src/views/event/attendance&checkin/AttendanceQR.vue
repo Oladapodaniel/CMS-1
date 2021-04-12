@@ -5,7 +5,7 @@
         class="col-lg-8 offset-lg-2 d-flex align-items-center shadow-lg"
       >
         <!-- style="height: calc(100vh - 65px)" -->
-        <div class="row" ref="qrCodeArea" id="section-to-print ">
+        <div class="row print-area" ref="qrCodeArea" id="section-to-print ">
             <div class="col-md-12 text-center mt-3 mb-n4 mb-md-n5" style="z-index: 1">
                 <h5 class="text-capitalize font-weight-700">{{ churchName.toString() }}</h5>
                 <h4 class="text-capitalize font-weight-bold">{{ eventName }}</h4>
@@ -130,6 +130,7 @@ export default {
         }
         #section-to-print, #section-to-print * {
             visibility: visible !important;
+            display: block !important;
         }
         #section-to-print {
             position: fixed !important;
@@ -142,5 +143,12 @@ export default {
         #section-to-print, #section-to-print #no-print {
           visibility: hidden !important;
         }
+        .print-area, .print-area * {
+            visibility: visible !important;
+            display: block !important;
+        }
+        .print-area, .print-area #no-print {
+        visibility: hidden !important;
+      }
     }
 </style>

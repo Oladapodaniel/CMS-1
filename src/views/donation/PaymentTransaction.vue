@@ -637,7 +637,7 @@ export default {
                     newContribution.value.payment = res.data.contributionItems.map(i => i.financialContribution)
                     accountNumber.value = res.data.accountNumber
                     accountName.value = res.data.accountName
-                    selectedBank.value = { name: nigerianBanks.value.find(i => i.id === res.data.bankID).name, id: res.data.bankID },
+                    selectedBank.value = { name: nigerianBanks.value.length > 0 ? nigerianBanks.value.find(i => i.id === res.data.bankID).name :  [], id: res.data.bankID },
                     isActive.value = res.data.isActive
                     paymentGateWays.value = res.data.paymentGateWays.map(i => {
                         return {

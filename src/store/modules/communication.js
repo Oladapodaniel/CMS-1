@@ -46,6 +46,12 @@ export default {
             // state.sentEmails.pop()
             state.sentEmails.push(payload)
             // state.addToSentEmail = payload
+        },
+        removeSentSMS(state, payload) {
+            const x = state.allSentSMS.findIndex(i => i.id === payload);
+            if (x >= 0)  {
+                state.allSentSMS.splice(x, 1);
+            }
         }
     },
 
@@ -77,7 +83,6 @@ export default {
             try {
                 const { data } = await axios.get("/api/Messaging/getAllSentSms?page=0");
                 commit("setAllSentSMS", data);
-                console.log(data)
             } catch (error) {
                 console.log(error);
             }
@@ -117,6 +122,10 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+
+        removeSentSMS({ commit }, payload) {
+            commit("removeSentSMS", payload);
         }
       },
 

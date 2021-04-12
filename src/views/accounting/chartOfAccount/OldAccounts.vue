@@ -99,7 +99,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <UpdateccountModal
+          <UpdateAccountModal
             @save-account="closeAccountModal"
             :transactionalAccounts="typesFOrSelectedAccount"
             :accountTypes="accountTypes"
@@ -117,17 +117,11 @@
   <!-- END BT -->
   <ConfirmDialog></ConfirmDialog>
   <Toast />
-
-  <!-- Primevue modal to add new account-->
-  <!-- <h5>Modal</h5>
-    <Button label="Show" icon="pi pi-external-link" /> -->
 </template>
 
 <script>
 import { ref, computed, nextTick } from "vue";
-// import axios from "@/gateway/backendapi";
-// import transaction_service from "../../../services/financials/transaction_service";
-import UpdateccountModal from "./components/UpdateOldAccount";
+import UpdateAccountModal from "./components/UpdateOldAccount";
 import transactionals from './utilities/transactionals';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { useConfirm } from "primevue/useConfirm";
@@ -136,7 +130,7 @@ import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 import transaction_service from '../../../services/financials/transaction_service';
 
 export default {
-  components: { UpdateccountModal ,ConfirmDialog },
+  components: { UpdateAccountModal ,ConfirmDialog },
   props: [ "assets", "data" ],
   setup(props, { emit }) {
     const view = ref("view");

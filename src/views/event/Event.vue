@@ -668,8 +668,8 @@
             <div class="col-sm-2">Total</div>
           </div>
         </div>
-<!-- <div>{{ offeringItem }}</div>
-<div>{{ newOfferings }}</div> -->
+<!-- <div>{{ offeringItem }}</div> -->
+<!-- <div>{{ newOfferings }}</div> -->
         <!-- Selected offerings -->
         <!-- <div>{{ convertedAmount }}</div> -->
         <div
@@ -712,7 +712,7 @@
               />
             </div>
             <div class="col-3 col-sm-4 col-lg-2">
-              <select class="w-100 form-control" v-model="item.channel">
+              <select class="w-100 form-control" v-model="item.paymentChannel">
                 <!-- <option :value="select">Select</option> -->
                 <option value="Cheque">Cheque</option>
                 <option value="Cash">Cash</option>
@@ -743,7 +743,7 @@
                 <!-- <Dropdown v-model="item.currency" :options="currencyList" :filter="true" class="currency p-0" placeholder="NGN" :showClear="false">
                     
                 </Dropdown> -->
-                
+            
 
                 <div
                 class="currency pointer d-flex justify-content-around align-items-center close-modal"
@@ -1340,11 +1340,17 @@
                   >
                   <div class="col-sm-6">
                     <input
-                      type="tel"
+                      type="number"
                       v-model="firstTimersObj.phoneNumber"
                       class="form-control input-first"
+                      :class="{ 'is-invalid' : !isPhoneValid }"
                       id="phone number"
+                      ref="validatePhone"
+                      @blur="checkForDuplicatePhone"
                     />
+                    <div class="invalid-feedback">
+                    Phone number exist, type a unique phone number.
+                  </div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -1353,11 +1359,17 @@
                   >
                   <div class="col-sm-6">
                     <input
-                      type="text"
+                      type="email"
                       class="form-control input-first"
+                      :class="{ 'is-invalid' : !isEmailValid}"
                       v-model="firstTimersObj.email"
                       id="email"
+                      ref="validateEmail"
+                      @blur="checkForDuplicateEmail"
                     />
+                    <div class="invalid-feedback">
+                      Email exist, type a unique email.
+                    </div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -1628,11 +1640,17 @@
                   >
                   <div class="col-sm-6">
                     <input
-                      type="tel"
                       v-model="newConvertsObj.phoneNumber"
                       class="form-control input-first"
                       id="phone number"
+                      type="number"
+                      :class="{ 'is-invalid' : !isPhoneValidNewConvert }"
+                      ref="validatePhoneNewConvert"
+                      @blur="checkForDuplicatePhoneNewConvert"
                     />
+                    <div class="invalid-feedback">
+                      Phone number exist, type a unique phone number.
+                    </div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -1641,11 +1659,17 @@
                   >
                   <div class="col-sm-6">
                     <input
-                      type="text"
-                      class="form-control input-first"
                       v-model="newConvertsObj.email"
                       id="email"
+                      type="email"
+                      class="form-control input-first"
+                      :class="{ 'is-invalid' : !isEmailValidNewConvert}"
+                      ref="validateEmailNewConvert"
+                      @blur="checkForDuplicateEmailNewConvert"
                     />
+                    <div class="invalid-feedback">
+                      Email exist, type a unique email.
+                    </div>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -2221,6 +2245,10 @@ export default {
       contributionItemName: "",
       selectedCashAccount: "",
       cashBankAccount: [],
+      isPhoneValid: true,
+      isEmailValid: true,
+      isPhoneValidNewConvert: true,
+      isEmailValidNewConvert: true
     };
   },
   methods: {
@@ -2252,15 +2280,15 @@ export default {
         this.offeringItem.push({
           name: offObj.name,
           financialContributionID: offObj.id,
-          channel: offObj.channel == undefined || offObj.channel == "" || offObj.channel == null ? "Cash" : offObj.channel,
-          currency: offObj.currency == undefined || offObj.currency == "" || offObj.currency == null ? this.tenantCurrency.currencyId : offObj.currency,
+          paymentChannel: offObj.paymentChannel == undefined || offObj.paymentChannel == "" || offObj.paymentChannel == null ? "Cash" : offObj.paymentChannel,
+          currencyID: offObj.currencyID == undefined || offObj.currencyID == "" || offObj.currencyID == null ? this.tenantCurrency.currencyId : offObj.currencyID,
           donor: ""
         });
         console.log(offObj)
       } else {
         this.offeringItem.push({
           currency: "NGN",
-          channel: "Cash"
+          paymentChannel: "Cash"
         });
         this.$nextTick(() => {
           this.$refs.offeringInput.focus();
@@ -2405,7 +2433,7 @@ export default {
     addCurrency (e, index, item) {
         console.log(e.target.innerHTML, index)
         // this.offeringItem[index].currency = e.target.innerHTML.split(" ")[0]
-        this.offeringItem[index].currency = item.id
+        this.offeringItem[index].currencyID = item.id
         this.offeringItem[index].showCurrency = false
         this.offeringItem[index].currencyName = item.name
         // this.selectedCurrencyId = item.id
@@ -2948,13 +2976,17 @@ export default {
             this.selectedEventCategoryId = res.data.activity.eventCategoryId
             this.attendanceItem = res.data.attendances
             this.offeringItem = res.data.offerings
+            
             this.firstTimers = res.data.activityFirstTimers
             this.newConverts = res.data.activityNewConverts
             this.updatePreEvent = res.data.preEvent
-            console.log(this.eventDate)
+            // this.offeringItem.find(i => console.log(i))
             console.log(res.data)
+            if (this.currencyList.length > 0 ) {
+              // this.currencyList.find(i => i.currencyId == )
+            }
           })
-          .catch (err => console.log(err.response, "get by id error"))
+          .catch (err => console.log(err, "get by id error"))
       }
     },
     getCurrenciesFromCountries () {
@@ -3145,8 +3177,8 @@ export default {
                     this.offeringItem.push({
                       name: res.data.name,
                       financialContributionID: res.data.id,
-                      channel: "Cash",
-                      currency: this.tenantCurrency.currencyId,
+                      paymentChannel: "Cash",
+                      currencyID: this.tenantCurrency.currencyId,
                       donor: ""
                     });
                     
@@ -3156,7 +3188,103 @@ export default {
                     console.log(err)
                   })
                   e.target.setAttribute('data-dismiss', 'modal')
-        }
+        },
+        async checkForDuplicatePhone () {
+          try {
+            let { data } = await axios.get(`api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`)
+            console.log(data)
+            if (this.isPhoneValid !== "") {
+              if (data === "phone number") {
+              this.isPhoneValid = false
+            } else if (data === "email and phone number") {
+              this.isPhoneValid = false
+              this.isEmailValid = false
+            } else {
+              this.isPhoneValid = true
+              this.$refs.validatePhone.classList.add('is-valid')
+              
+            }
+            } else {
+              this.$refs.validatePhone.classList.remove('is-valid')
+              this.$refs.validatePhone.classList.remove('is-invalid')
+            }
+      
+          }
+          catch (error) {
+            console.log(error)
+          }
+        },
+        async checkForDuplicateEmail () {
+          try {
+            let { data } = await axios.get(`api/People/checkDuplicate?email=${this.firstTimersObj.email}&phoneNumber=${this.firstTimersObj.phoneNumber}`)
+            console.log(data) 
+            if (this.isEmailValid !== "") {
+              if (data === "email") {
+              this.isEmailValid = false
+            } else if (data === "email and phone number") {
+              this.isEmailValid = false
+              this.isPhoneValid = false
+            } else {
+              this.isEmailValid = true
+              this.$refs.validateEmail.classList.add('is-valid')
+            }
+            } else {
+              this.$refs.validateEmail.classList.remove('is-valid')
+              this.$refs.validateEmail.classList.remove('is-invalid')
+            }
+          }
+          catch (error) {
+            console.log(error)
+          }
+        },
+        async checkForDuplicatePhoneNewConvert () {
+          try {
+            let { data } = await axios.get(`api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`)
+            console.log(data)
+            if (this.isPhoneValidNewConvert !== "") {
+              if (data === "phone number") {
+              this.isPhoneValidNewConvert = false
+            } else if (data === "email and phone number") {
+              this.isPhoneValidNewConvert = false
+              this.isEmailValidNewConvert = false
+            } else {
+              this.isPhoneValidNewConvert = true
+              this.$refs.validatePhoneNewConvert.classList.add('is-valid')
+              
+            }
+            } else {
+              this.$refs.validatePhoneNewConvert.classList.remove('is-valid')
+              this.$refs.validatePhoneNewConvert.classList.remove('is-invalid')
+            }
+      
+          }
+          catch (error) {
+            console.log(error)
+          }
+        },
+        async checkForDuplicateEmailNewConvert () {
+          try {
+            let { data } = await axios.get(`api/People/checkDuplicate?email=${this.newConvertsObj.email}&phoneNumber=${this.newConvertsObj.phoneNumber}`)
+            console.log(data) 
+            if (this.isEmailValidNewConvert !== "") {
+              if (data === "email") {
+              this.isEmailValidNewConvert = false
+            } else if (data === "email and phone number") {
+              this.isEmailValidNewConvert = false
+              this.isPhoneValidNewConvert = false
+            } else {
+              this.isEmailValidNewConvert = true
+              this.$refs.validateEmailNewConvert.classList.add('is-valid')
+            }
+            } else {
+              this.$refs.validateEmailNewConvert.classList.remove('is-valid')
+              this.$refs.validateEmailNewConvert.classList.remove('is-invalid')
+            }
+          }
+          catch (error) {
+            console.log(error)
+          }
+        },
         
   },
   created() {

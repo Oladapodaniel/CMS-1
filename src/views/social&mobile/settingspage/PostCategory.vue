@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row my-3">
             <div class="col-md-12">
-                <h2 class="main-title">
+                <h2 class="main-title" style="font-size:1.5rem">
                     Create Post Category
                 </h2>
             </div>
