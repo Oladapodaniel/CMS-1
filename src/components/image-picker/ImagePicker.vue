@@ -41,6 +41,10 @@
             </div>
         </div>
       </div>
+
+      <div class="col-md-12 d-flex justify-content-end py-2" v-if="!loading || gallery.length > 0">
+        <Pagination :itemsCount="50" :currentPage="currentPage" @getcontent="getImagesByPage" />
+      </div>
     </div>
   </div>
 </template>
@@ -48,26 +52,42 @@
 <script>
 import { ref } from '@vue/reactivity';
 import media_service from '../../services/media/media_service';
+import Pagination from "../pagination/PaginationButtons";
+
 export default {
+  components: { Pagination },
     setup(props, { emit }) {
         const fileInput = ref(null);
         const file = ref("");
         const willUpload = ref(false);
         const loading = ref(true);
 
+        const currentPage = ref(0)
         const gallery = ref([])
-        const getImages = async () => {
+        const getImagesByPage = async (page) => {
             try {
-              const response = await media_service.getImageGallery();
+              const response = await media_service.getImageGallery(page);
               loading.value = false;
-              gallery.value = response.splice(0, 50);
-              console.log(response, "IMAGES");
+              if (response.length > 0) {
+                gallery.value = response;
+                currentPage.value = page;
+              }
             } catch (error) {
               loading.value = false;
                 console.log(error);
             }
         }
-        getImages();
+        const getImages = async (page) => {
+            try {
+              const response = await media_service.getImageGallery(page);
+              loading.value = false;
+              gallery.value = response;
+            } catch (error) {
+              loading.value = false;
+                console.log(error);
+            }
+        }
+        getImages(currentPage.value);
 
         const fileUrl = ref("");
         const fileSelected = (e) => {
@@ -102,6 +122,8 @@ export default {
             uploaded,
             gallery,
             loading,
+            currentPage,
+            getImagesByPage,
         }
     }
 };

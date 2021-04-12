@@ -25,15 +25,21 @@
 
     <!-- top area -->
     <div class="row">
-      <div
-        class="col-md-3"
-      >
-        
-      </div>
+      <div class="col-md-3"></div>
       <div class="col-md-5">
-        <p class="font-weight-600 text-center primary-text" v-if="person.personId && loaded && !showLoading">Your details were found, please confirm to checkin</p>
-        <p class="font-weight-600 text-center primary-text" v-if="!person.personId && !showLoading && loaded && !fetchingFailed">Details not found, please fill the form and confirm to checkin</p>
-          <!-- v-if="autosearch && !person.name" -->
+        <p
+          class="font-weight-600 text-center primary-text"
+          v-if="person.personId && loaded && !showLoading"
+        >
+          Your details were found, please confirm to checkin
+        </p>
+        <p
+          class="font-weight-600 text-center primary-text"
+          v-if="!person.personId && !showLoading && loaded && !fetchingFailed"
+        >
+          Details not found, please fill the form and confirm to checkin
+        </p>
+        <!-- v-if="autosearch && !person.name" -->
       </div>
     </div>
 
@@ -43,7 +49,7 @@
       >
         <label for="">Phone Number</label>
       </div>
-      <div class="col-md-5">
+      <div class="col-md-7">
         <span class="p-input-icon-left w-100">
           <i class="pi pi-phone icon" />
           <InputText
@@ -54,33 +60,36 @@
             aria-required=""
           />
         </span>
-          <!-- v-if="autosearch && !person.name" -->
+        <!-- v-if="autosearch && !person.name" -->
       </div>
     </div>
     <div class="row mb-4">
-      <div
-        class="col-md-3"
-      >
-      </div>
+      <div class="col-md-3"></div>
       <div class="col-md-5">
-        
         <div class="loading-div my-5" v-if="showLoading">
           <i
-          class="pi pi-spin pi-spinner loading-indicator"
-          style="fontsize: 2rem"
-        ></i>
-        <p>Fetching your details...</p>
+            class="pi pi-spin pi-spinner loading-indicator"
+            style="fontsize: 2rem"
+          ></i>
+          <p>Fetching your details...</p>
         </div>
-          <!-- v-if="autosearch && !person.name" -->
+        <!-- v-if="autosearch && !person.name" -->
       </div>
     </div>
     <!-- end of top area -->
 
     <!--start of top area button -->
-    <div class="row" :class="{ 'mb-4': showLoading}" v-if="false">
+    <div class="row" :class="{ 'mb-4': showLoading }" v-if="false">
       <div class="col-md-3 text-md-right"></div>
-      <div class="col-md-5 text-center col-sm-2" :class="{ 'mt-4': showLoading}">
-        <p class="text-danger" v-if="showNoPhoneError" :class="{ 'my-1': showLoading}">
+      <div
+        class="col-md-5 text-center col-sm-2"
+        :class="{ 'mt-4': showLoading }"
+      >
+        <p
+          class="text-danger"
+          v-if="showNoPhoneError"
+          :class="{ 'my-1': showLoading }"
+        >
           Please enter your phone number
         </p>
         <button
@@ -105,7 +114,7 @@
           >
             <label for="">Name</label>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-7">
             <span class="p-input-icon-left w-100">
               <i class="pi pi-users icon" />
               <InputText
@@ -125,7 +134,7 @@
           >
             <label for="">Email</label>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-7">
             <span class="p-input-icon-left w-100 my-md-3">
               <i class="pi pi-envelope icon" />
               <InputText
@@ -145,7 +154,7 @@
           >
             <label for="">Address</label>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-7">
             <span class="p-input-icon-left w-100">
               <i class="pi pi-map-marker icon" />
               <InputText
@@ -153,57 +162,69 @@
                 type="text"
                 aria-required=""
                 v-model="person.address"
-                :disabled="person.personId && person.address && person.address.length > 100"
+                :disabled="personHasAddress"
               />
             </span>
-            <p class="font-weight-7 small-text text-danger" v-if="person.personId && !person.address">Address is required</p>
+            <p
+              class="font-weight-7 small-text text-danger mb-0"
+              v-if="person.personId && !person.address"
+            >
+              Address is required
+            </p>
+          </div>
+        </div>
+
+        <div class="row my-3">
+          <div
+            class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
+          >
+            <label for="">Birthday</label>
+          </div>
+          <div class="col-md-7">
+            <div class="row">
+              <div class="col-6">
+                <Dropdown
+                  v-model="birthDay"
+                  :options="days"
+                  style="width: 100%"
+                  placeholder="Day"
+                />
+              </div>
+              <div class="col-6">
+                <Dropdown
+                  v-model="birthMonth"
+                  :options="months"
+                  style="width: 100%"
+                  placeholder="Month"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row my-2">
+          <div class="col-md-3"></div>
+          <div class="col-md-7 py-4 text-center">
+            <button class="default-btn mr-3" @click="notme">Not Me</button>
+            <button
+              class="default-btn add-btn"
+              @click="confirmCheck"
+              :disabled="
+                !person.name || person.name.length < 1 || !person.address
+              "
+            >
+              Confirm
+            </button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- end of bottom area -->
-
-    <!-- button area -->
-    <div class="row mt-n2 my-2" v-if="appltoggle && !showLoading">
-      <div class="col-md-2 text-md-right d-flex ml-md-n5"></div>
-      <div class="col-md-4 mt-4 text-md-right col-6 d-flex justify-content-end">
-        <button class="default-btn" @click="notme">Not Me</button>
-      </div>
-      <div class="col-md-4 mt-4 text-md-left col-6">
-        <button
-          class="default-btn add-btn"
-          @click="confirmCheck"
-          :disabled="!person.name || person.name.length < 1 || !person.address"
-        >
-          Confirm
-        </button>
-      </div>
-    </div>
-    <!--end of button area -->
-
-    <!-- confirmation Note -->
-    <!-- <div class="row" v-if="checkedIn && noError">
-      <div
-        class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
-      ></div>
-      <div class="col-md-5 mb-3">
-        <h5 class="font-weight-bold text-center text-success">
-          CONGRATULATIONS
-        </h5>
-        <p class="text-center font-weight-500 text-capitalize">
-          Checked in Successfully
-        </p>
-      </div>
-    </div> -->
-    <!-- end of confirmation Note -->
-
-    <!-- Powered by Churchplus -->
+    
     <div class="row">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-3 font-weight-700"
       ></div>
-      <div class="col-md-5 mt-2">
+      <div class="col-md-7 mt-2">
         <p class="text-center fw-normal" style="color: #136acd">
           Powered by CHURCHPLUS
         </p>
@@ -225,8 +246,10 @@ import dateFormatter from "@/services/dates/dateformatter";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../../services/progressbar/progress";
 import swal from "sweetalert";
+import Dropdown from "primevue/dropdown";
 
 export default {
+  components: { Dropdown },
   setup() {
     const connectName = ref("");
     const appltoggle = ref(false);
@@ -243,6 +266,56 @@ export default {
     const toast = useToast();
     const submitBtn = ref(null);
     const loaded = ref(false);
+
+    const birthMonth = ref("");
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const birthDay = ref("");
+    const days = ref([
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+    ]);
 
     const toggleBase = () => {
       appltoggle.value = !appltoggle.value;
@@ -264,6 +337,7 @@ export default {
     // searching through the attendance details
     const showNoPhoneError = ref(false);
     const fetchingFailed = ref(false);
+    const personHasAddress = ref(false);
     const personData = ref({});
     const checkCharacter = (e) => {
       if (e.target.value.length < 11) {
@@ -280,8 +354,11 @@ export default {
       // if (e.target.value.length > 0) {
       loading.value = true;
       autosearch.value = true;
-      axios.get(`/searchmemberbyphone?searchtext=${enteredValue.value}&&attendanceCode=${route.params.code}`)
-      
+      axios
+        .get(
+          `/searchmemberbyphone?searchtext=${enteredValue.value}&&attendanceCode=${route.params.code}`
+        )
+
         .then((res) => {
           console.log(res, "RESPONSE");
           loading.value = false;
@@ -293,7 +370,15 @@ export default {
           personData.value.homeAddress = res.data[0] ? res.data[0].address : "";
           personData.value.personId = res.data[0] ? res.data[0].personId : "";
           personData.value.mobilePhone = enteredValue.value;
-          person.value = res.data[0] ? res.data[0] : { };
+          person.value = res.data[0] ? res.data[0] : {};
+
+          if (
+            person.value.personId &&
+            person.value.address !== null &&
+            person.value.address !== "" &&
+            person.value.address.length >= 1
+          )
+            personHasAddress.value = true;
 
           if (person.value.name) {
             person.value.name = formatString(person.value.name, 2, 4);
@@ -312,11 +397,11 @@ export default {
         })
         .catch((err) => {
           fetchingFailed.value = true;
-          person.value = { };
+          person.value = {};
           loaded.value = true;
           loading.value = false;
           autosearch.value = false;
-          
+
           if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
               severity: "error",
@@ -328,7 +413,8 @@ export default {
             toast.add({
               severity: "error",
               summary: "Checkin Error",
-              detail: "The request was taking too long, please reload and try again",
+              detail:
+                "The request was taking too long, please reload and try again",
               life: 3000,
             });
           } else {
@@ -369,7 +455,11 @@ export default {
       let newPerson = {};
       if (person.value.personId) {
         newPerson = {
-          person: { personId: personData.value.personId, mobilePhone: enteredValue.value },
+          person: {
+            personId: personData.value.personId,
+            mobilePhone: enteredValue.value,
+            homeAddress: person.value.address,
+          },
           attendanceCode: +route.params.code,
         };
       } else {
@@ -383,6 +473,11 @@ export default {
           attendanceCode: +route.params.code,
         };
       }
+      newPerson.person.monthOfBirth = birthMonth.value
+        ? months.indexOf(birthMonth.value) + 1
+        : 0;
+      newPerson.person.dayOfBirth = birthDay.value ? birthDay.value : 0;
+
       console.log(personData.value, "p data");
       console.log(newPerson);
       loading.value = true;
@@ -396,7 +491,11 @@ export default {
           console.log(res, "tosin");
 
           if (newPerson) checkedIn.value = true;
-          swal("Checked-in!", "You have been checked-in successfully!", "success");
+          swal(
+            "Checked-in!",
+            "You have been checked-in successfully!",
+            "success"
+          );
           appltoggle.value = false;
           checkedIn.value = true;
           loaded.value = false;
@@ -445,7 +544,8 @@ export default {
     const getDateAndEvent = () => {
       axios
         .get(
-          `/api/publiccontent/WebCheckInGetEventDetails?attendanceCode=${+route.params.code}`
+          `/api/publiccontent/WebCheckInGetEventDetails?attendanceCode=${+route
+            .params.code}`
         )
         .then((res) => {
           eventData.value.name = res.data.fullEventName;
@@ -500,7 +600,7 @@ export default {
 
     const showLoading = computed(() => {
       return autosearch.value && !person.value.name;
-    })
+    });
 
     /*end of masking functions */
 
@@ -543,7 +643,11 @@ export default {
       showLoading,
       loaded,
       fetchingFailed,
-
+      personHasAddress,
+      months,
+      days,
+      birthMonth,
+      birthDay,
     };
   },
 };

@@ -210,7 +210,6 @@ import stopProgressBar from "../../services/progressbar/progress"
 
 export default {
   components: { PaymentSuccessModal },
-
   setup() {
     const amount = ref(0);
     const smsUnits = ref(0);
