@@ -668,7 +668,7 @@
             <div class="col-sm-2">Total</div>
           </div>
         </div>
-<div>{{ offeringItem }}</div>
+<!-- <div>{{ offeringItem }}</div> -->
 <!-- <div>{{ newOfferings }}</div> -->
         <!-- Selected offerings -->
         <!-- <div>{{ convertedAmount }}</div> -->

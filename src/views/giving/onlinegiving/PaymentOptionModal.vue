@@ -223,7 +223,7 @@ dapo
 
 <script>
 // import PaystackPay from "../../../components/payment/PaystackPay"
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import axios from "@/gateway/backendapi";
 import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
@@ -239,6 +239,7 @@ export default {
 
     const isProduction = false
     const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
+    const selectedGateway = ref("")
 
     const paystackGate = computed(() => {
       if(!props.gateways) return false
@@ -262,7 +263,10 @@ export default {
 
     const payWithPaystack = (e) => {
       console.log(e.srcElement.alt)
-      emit('selected-gateway', e.srcElement.alt)
+      
+      selectedGateway.value = e.srcElement.alt
+      emit('selected-gateway', selectedGateway.value)
+
       props.close.click()
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
@@ -279,6 +283,8 @@ export default {
         callback: function (response) {
           //Route to where you confirm payment status
           console.log(response, "Payment Received");
+          console.log(props.donation);
+  
           axios
             .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
             .then((res) => {
@@ -288,7 +294,11 @@ export default {
             })
             .catch((err) => {
               finish()
-              toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
+              toast.add({ severity: 'error', 
+              summary: 'Confirmation failed', 
+              detail: "Confirming your purchase failed, please contact support at info@churchplus.co", 
+              life: 4000
+              })
               console.log(err, "error confirming payment");
             });
             
@@ -297,34 +307,6 @@ export default {
       });
       handler.openIframe();
     };
-
-    const makePaymentCallback = (response) => {
-      console.log("Payment callback", response)
-
-       axios
-            .post(`/confirmDonation?txnref=${response.tx_ref}`, props.donation)
-            .then((res) => {
-              finish()
-              console.log(res, "success data");
-              
-            })
-            .catch((err) => {
-              finish()
-              toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
-              console.log(err, "error confirming payment");
-            });
-            
-          emit('payment-successful', true) 
-    }
-    const closedPaymentModal = () => {
-      console.log('payment modal is closed');
-
-      toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
-    }
-    // const generateReference = () => {
-    //   let date = new Date()
-    //   return date.getTime().toString();
-    // }
 
     const getFlutterwaveModules = () => {
        const script = document.createElement("script");
@@ -338,7 +320,13 @@ export default {
 
     const makePayment = (e) => {
       console.log(e.srcElement.alt)
-      emit('selected-gateway', e.srcElement.alt)
+      // Get and send clicked payment gateway to parent
+      selectedGateway.value = e.srcElement.alt
+      emit('selected-gateway', selectedGateway.value)
+
+      // Close payment modal
+      props.close.click()
+
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
                 tx_ref: props.orderId,
@@ -349,7 +337,32 @@ export default {
                   name: props.name,
                   email: props.email,
                 },
-                callback: (response) => console.log("Payment callback", response),
+                callback: (response) => {
+                  console.log("Payment callback", response)
+                    // props.donation.usedPaymentGateway = selectedGateway.value
+                    
+                    console.log(props.donation)
+
+                    axios
+                          .post(`/confirmDonation?txnref=${response.tx_ref}`, props.donation)
+                          .then((res) => {
+                            finish()
+                            console.log(res, "success data");
+                            
+                          })
+                          .catch((err) => {
+                            finish()
+                            toast.add({ 
+                              severity: 'error', 
+                              summary: 'Confirmation failed', 
+                              detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
+                              life: 4000
+                              })
+                            console.log(err, "error confirming payment");
+                          });
+                          
+                        emit('payment-successful', true) 
+                  },
                 onclose: () => console.log('Payment closed'),
                 customizations: {
                   title: 'Church Giving',
@@ -360,7 +373,7 @@ export default {
     }
 
     return {
-      payWithPaystack, paystackGate, flutterwaveGate, paypalGate, stripe, makePaymentCallback, closedPaymentModal, makePayment
+      payWithPaystack, paystackGate, flutterwaveGate, paypalGate, stripe, makePayment,  selectedGateway
     }
     }
 

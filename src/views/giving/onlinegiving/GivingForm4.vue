@@ -508,7 +508,6 @@ export default {
     const signInPassword = ref("")
     const routeParams = ref(`${route.params.userId}`)
     const showSignInForm = ref(true)
-    const selectedGateway = ref("")
     
 
     const givingOften = (e) => {
@@ -593,7 +592,6 @@ export default {
             orderID: formResponse.value.orderId,
             currencyID: dfaultCurrency.value.id,
             paymentGateway: formResponse.value.paymentGateWays,
-            usedPaymentGateway: selectedGateway.value,
             contributionItems: [
                         {
                           contributionItemId: selectedContributionType.value.financialContributionID,
@@ -604,6 +602,8 @@ export default {
             ]
 
           }
+
+          
           
           
           if(localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken') ||  signedIn) {
@@ -807,8 +807,8 @@ console.log(donationObj.value)
     }
 
     const gatewaySelected  = (payload) => {
-      selectedGateway.value = payload
-      console.log(payload)
+        donationObj.value.usedPaymentGateway = payload
+        console.log(payload)
     }
 
     return {
@@ -852,7 +852,6 @@ console.log(donationObj.value)
       showSignInForm,
       signedUp,
       displaySignInForm,
-      selectedGateway,
       gatewaySelected
     };
   },
