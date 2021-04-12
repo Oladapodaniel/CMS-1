@@ -50,9 +50,9 @@ const getMediaById = (mediaId) => {
     })
 }
 
-const getImageGallery = () => {
+const getImageGallery = (page) => {
     return new Promise((resolve, reject) => {
-        axios.get(`/api/Media/ImageGallery`)
+        axios.get(`/api/Media/ImageGallery/${page}`)
         .then(res => {
             resolve(res.data);
         })
