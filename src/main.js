@@ -65,5 +65,3 @@ app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
 app.component("Editor", Editor);
-
-app.use(Flutterwave, { publicKey: process.env.FLUTTERWAVE_PUBLIC_KEY_TEST } )
