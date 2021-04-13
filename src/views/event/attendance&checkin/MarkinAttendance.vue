@@ -342,9 +342,11 @@ export default {
     const checkCharacter = (e) => {
       if (e.target.value.length < 11) {
         person.value = {};
+        personHasAddress.value = false;
         return false;
       }
       loaded.value = false;
+      personHasAddress.value = false;
       fetchingFailed.value = false;
       showNoPhoneError.value = false;
       if (!enteredValue.value) {
@@ -374,11 +376,14 @@ export default {
 
           if (
             person.value.personId &&
+            person.value.address &&
             person.value.address !== null &&
             person.value.address !== "" &&
             person.value.address.length >= 1
           )
+          {
             personHasAddress.value = true;
+          }
 
           if (person.value.name) {
             person.value.name = formatString(person.value.name, 2, 4);
@@ -389,9 +394,7 @@ export default {
           if (person.value.address) {
             person.value.address = formatString(person.value.address, 2, 4);
           }
-          console.log(res, "RPONSE");
           populateInputfields(person.value);
-          console.log(names.value);
 
           if (person.value) appltoggle.value = true;
         })
@@ -458,7 +461,7 @@ export default {
           person: {
             personId: personData.value.personId,
             mobilePhone: enteredValue.value,
-            homeAddress: person.value.address,
+            homeAddress: personData.value.homeAddress,
           },
           attendanceCode: +route.params.code,
         };

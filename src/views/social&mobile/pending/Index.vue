@@ -292,7 +292,7 @@ export default {
                 const response = await social_service.getPendingPosts(tenantId);
                 loading.value = false;
                 console.log(response);
-                pendingPosts.value = response.filter(i => !i.isApproved)
+                pendingPosts.value = response.pendingPosts.filter(i => !i.isApproved)
             } catch (error) {
                 loading.value = false;
                 console.log(error);
