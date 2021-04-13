@@ -38,9 +38,9 @@
         </div>
     </div>
 
-    <div class="row over-con">
+    <div class="row over-con" id="table">
       <div class="col-md-12 py-4">
-        <div class="row">
+        <div class="row" id="ignore1">
           <div class="col-md-7">
             <p class="search-span px-2">
               <i class="pi pi-search p-2" style="height: 30px; width: 30px"></i>
@@ -52,16 +52,30 @@
               />
             </p>
           </div>
-          <div class="col-md-4 d-md-flex justify-content-end d-none"></div>
+          <div class="col-md-3 offset-sm-2">
+            <div class="row">
+              <div class="col-sm-5 cursor-pointer small-text font-weight-700" @click="sortAttendanceDataByPresent" v-tooltip.top="
+            'Sort column'"><i class="pi pi-sort-alt primary-text" style="color:#136acd"></i> SORT</div>
+              <div class="col-sm-7 cursor-pointer small-text font-weight-700" v-tooltip.top="'Print Attendance'" @click="printJS({ 
+                ignoreElements: ['ignore1'], 
+                maxWidth: 867, 
+                header: 'ATTENDANCE', 
+                printable: printAttendance, 
+                properties: ['NAME', 'ADDRESS','PHONE', 'PRESENT', 'CHANNEL'], 
+                type: 'json', 
+                headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
+                gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
+                gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' 
+                })"><i class="pi pi-print primary-text" style="color:#136acd"></i> PRINT</div>
+            </div>
+          </div>
         </div>
 
         <div class="row mt-2 main-th font-weight-700 py-2 small-text grey-rounded-bg">
           <div class="col-md-4">Name</div>
           <div class="col-md-3">Address</div>
           <div class="col-md-2">Phone</div>
-          <div class="col-md-2 c-pointer" @click="sortAttendanceDataByPresent" v-tooltip.top="
-            'Sort column'
-          ">Present <i class="pi pi-sort-alt primary-text" style="color:#136acd"></i></div>
+          <div class="col-md-2 c-pointer">Present </div>
           <div class="col-md-1">Channel</div>
         </div>
 
@@ -119,13 +133,14 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import ReportChart from "../../../components/charts/SecondReportPie";
 import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useRoute } from "vue-router";
 import dateFormatter from '../../../services/dates/dateformatter';
 import Tooltip from 'primevue/tooltip';
 import LoadingComponent from "../../../components/loading/LoadingComponent"
+import printJS from 'print-js'
 
 export default {
     components: { ReportChart, LoadingComponent },
@@ -209,18 +224,18 @@ export default {
           })
         })
 
-        onMounted(() => {
-            // data.value = [
-            //   {
-            //     name: "Present",
-            //     y: Math.floor(( attendees.value / totalAttendance.value ) * 100),
-            //   },
-            //   {
-            //     name: "Absent",
-            //     y: Math.floor(( absentees.value / totalAttendance.value ) * 100),
-            //   },
-            // ].value
-        })
+       const printAttendance = computed(() => {
+         if (reportData.value.peopoleAttendancesDTOs.length === 0) return []
+         return reportData.value.peopoleAttendancesDTOs.map(i => {
+           return {
+             NAME:  i.name ? i.name : "",
+             ADDRESS: i.address ? i.address : "",
+             PHONE: i.phone ? i.phone : "",
+             PRESENT: i.isPresent === null ? "" : i.isPresent,
+             CHANNEL: i.checkedinOption ? i.checkedinOption : ""
+           }
+         })
+       })
 
         return {
             data,
@@ -236,6 +251,8 @@ export default {
             errorMessage,
             people,
             searchText,
+            printJS,
+            printAttendance
         }
     }
 };
