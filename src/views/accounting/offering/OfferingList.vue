@@ -4,7 +4,16 @@
             <div class="top-con" id="ignore2">
               <div class="table-top my-4 px-4">
                 <div class="select-all"></div>
-                <div class="filter" @click="printJS({ printable: 'table', type: 'html', ignoreElements: ['ignore1', 'ignore2'], css: '../../../styles/style.css' })">
+                <div class="filter" @click="printJS({ 
+                  ignoreElements: ['ignore1', 'ignore2'], 
+                  maxWidth: 867, 
+                  header: 'CONTRIBUTION TRANSACTIONS', 
+                  printable: printContribution, 
+                  properties: ['DATE', 'EVENT','CONTRIBUTION', 'AMOUNT', 'DONOR'], 
+                  type: 'json', 
+                  headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
+                  gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
+                  gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' })">
                   <p class="mt-2">
                     <i class="fa fa-print"></i>
                     PRINT
@@ -16,7 +25,7 @@
                     FILTER
                   </p>
                 </div>
-                <p @click="toggleSearch" class="search-text text-right mt-2">
+                <p @click="toggleSearch" class="search-text mt-2">
                   <i class="fa fa-search"></i> SEARCH
                 </p>
                 <div class="search d-flex ml-2">
@@ -276,6 +285,19 @@ export default {
       }
     });
 
+    const printContribution = computed(() => {
+      if (props.contributionTransactions.length === 0) return []
+      return props.contributionTransactions.map(i => {
+        return {
+          DATE: monthDayYear.monthDayYear(i.eventDate),
+          EVENT: i.eventName,
+          CONTRIBUTION: i.contribution,
+          AMOUNT: i.amount,
+          DONOR: i.donor ? i.donor : ""
+        }
+      })
+    })
+
     const deleteOffering = (id, index) => {
 
       axios
@@ -431,7 +453,8 @@ export default {
       currentPage,
       getPeopleByPage,
       date,
-      printJS
+      printJS,
+      printContribution
     };
   },
 };
