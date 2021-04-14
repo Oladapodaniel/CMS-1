@@ -30,7 +30,7 @@ import 'primevue/resources/themes/saga-blue/theme.css'       //theme
 import 'primevue/resources/primevue.min.css'                 //core css
 import 'primeicons/primeicons.css'                          //icons
 
-import Flutterwave from  'flutterwave-vue-v3'
+// import Flutterwave from  'flutterwave-vue-v3'
 
 
 
@@ -69,4 +69,4 @@ app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
 app.component("Editor", Editor);
 
-app.use(Flutterwave, { publicKey: process.env.FLUTTERWAVE_PUBLIC_KEY_TEST } )
+// app.use(Flutterwave, { publicKey: process.env.FLUTTERWAVE_PUBLIC_KEY_TEST } )

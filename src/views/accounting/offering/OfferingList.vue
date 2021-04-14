@@ -308,7 +308,7 @@ export default {
             toast.add({
             severity: "success",
             summary: "Delete Successful",
-            detail: `Contribution Trasaction Deleted`,
+            detail: `Contribution Transaction Deleted`,
             life: 3000,
           });
           emit('contri-transac', index)
