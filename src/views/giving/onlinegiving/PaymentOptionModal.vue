@@ -270,7 +270,7 @@ export default {
       props.close.click()
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         email: props.email,
         amount: props.amount * 100,
         firstname: props.name,
