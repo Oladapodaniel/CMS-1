@@ -11,17 +11,17 @@
 <script>
     import Chart from 'primevue/chart';
     export default {
+        props: [ 'approved', 'pending' ],
         components: { Chart },
-        setup() {
+        setup(props) {
             const chartData = {
 				labels: ['Approved','Pending'],
                 legend: {display: false},
 				datasets: [
 					{
                         legend: {display: false},
-						data: [900, 500],
+						data: [props.approved, props.pending],
 						backgroundColor: [
-                            // "#42A5F5",
                             "#66BB6A",
                             "#ffc107"
                         ],
