@@ -30,12 +30,6 @@ import 'primevue/resources/themes/saga-blue/theme.css'       //theme
 import 'primevue/resources/primevue.min.css'                 //core css
 import 'primeicons/primeicons.css'                          //icons
 
-<<<<<<< HEAD
-// import Flutterwave from  'flutterwave-vue-v3'
-
-
-=======
->>>>>>> main
 
 
 NProgress.configure({ showSpinner: false });
@@ -70,10 +64,4 @@ app.component("ConfirmDialog", ConfirmDialog);
 app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
 app.component("Tag", Tag);
-<<<<<<< HEAD
 app.component("Editor", Editor);
-
-// app.use(Flutterwave, { publicKey: process.env.FLUTTERWAVE_PUBLIC_KEY_TEST } )
-=======
-app.component("Editor", Editor);
->>>>>>> main
