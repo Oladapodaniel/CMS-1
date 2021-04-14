@@ -660,7 +660,6 @@ export default {
       birthMonth,
       birthDay,
       personData,
-      personData,
     };
   },
 };
