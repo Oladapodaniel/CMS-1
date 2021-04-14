@@ -187,6 +187,8 @@ import axios from "@/gateway/backendapi";
                 if (activeTab.value === 'sms') {
                     messageObj.toOthers = recipients.value.map(i => i.phone).join();
                     console.log(messageObj.toOthers, "others");
+                } else {
+                    messageObj.contacts = recipients.value;
                 }
 
                 // const validDestination = messageObj.contacts.find(i => i.phone);

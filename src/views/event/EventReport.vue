@@ -1189,14 +1189,16 @@ export default {
         ispersonalized: false,
         contacts: messageObj.data.contacts,
         subject: messageObj.data.subject,
-        toOthers: messageObj.data.toOthers,
-        user: "+2349086767765",
-        gateWayToUse: 'hostedsms',
-        category: "",
-        emailAddress: "",
-        emailDisplayName: "",
-        isoCode: messageObj.data.isoCode,
+        // user: "+2349086767765",
       };
+      if (messageObj.medium === "sms") {
+        body.gateWayToUse = 'hostedsms';
+        body.category = '';
+        body.emailAddress = '';
+        body.emailDisplayName = '';
+        body.isoCode = messageObj.data.isoCode;
+        body.toOthers = messageObj.data.toOthers;
+      }
 
       body.message = messageObj.medium === "sms" ? messageObj.data.message : message;
 
