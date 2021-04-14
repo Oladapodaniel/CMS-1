@@ -120,7 +120,7 @@
                         </a>
                       </div>
                       <div class="col-6">
-                        <a class="def-btn edit-btn">Get share link</a>
+                        <a class="def-btn edit-btn" @click="copyLink">Get share link</a>
                       </div>
                     </div>
                   </div>
@@ -135,6 +135,9 @@
                     >
                   </div>
                 </div>
+              </div>
+              <div class="col-md-12 pt-2" v-if="willCopyLink">
+                <input type="text" name="" @keydown="(e) => e.preventDefault()" @click="copyLink" class="form-control" :value="location" ref="shareableLinkField">
               </div>
             </div>
           </div>
@@ -1239,6 +1242,32 @@ export default {
       btnState.value = "modal";
     };
 
+    const willCopyLink = ref(false);
+    const shareableLinkField = ref(null);
+    const location = ref(window.location);
+    const copyLink = () => {
+      try {
+        willCopyLink.value = true;
+        const a = shareableLinkField.value;
+        a.select();
+        a.setSelectionRange(
+          0,
+          200
+        ); /* For mobile devices */
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+        toast.add({
+          severity: "info",
+          summary: "Link Copied",
+          detail: "Shareable link copied to your clipboard",
+          life: 3000,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     onMounted(async () => {
       activityId.value = route.params.id;
       url.value = `my.churchplus.co/tenant/report/${activityId.value}`;
@@ -1280,7 +1309,11 @@ export default {
       btnState,
       emaildata,
       url,
-      activityId
+      activityId,
+      copyLink,
+      location,
+      shareableLinkField,
+      willCopyLink,
     };
   },
 };
