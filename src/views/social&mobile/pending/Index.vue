@@ -114,7 +114,7 @@
                       <div class="row"> 
                         <div class="col-md-12">
                             <h5 class="font-weight-700">Total posts</h5>
-                            <h2>12345</h2>
+                            <h2>{{ pageData.totalPostCount }}</h2>
                         </div>
                     </div>
 
@@ -132,7 +132,7 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <Chart />
+                            <Chart :approved="pageData.approvedPostCount" :pending="pageData.pendingPostCount" />
                         </div>
                     </div>
                   </div>
@@ -287,11 +287,13 @@ export default {
         const loading = ref(true);
         const tenantId = store.getters.currentUser.tenantId;
         const pendingPosts = ref([ ])
+        const pageData = ref({})
         const getPendingPosts = async (tenantId) => {
             try {
                 const response = await social_service.getPendingPosts(tenantId);
                 loading.value = false;
                 console.log(response);
+                pageData.value = response;
                 pendingPosts.value = response.pendingPosts.filter(i => !i.isApproved)
             } catch (error) {
                 loading.value = false;
@@ -329,6 +331,7 @@ export default {
             formatDate,
             loading,
             approvePost,
+            pageData,
         }
     }
 };
