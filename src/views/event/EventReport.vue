@@ -1150,7 +1150,6 @@ export default {
     }
 
     const sendReport = (messageObj) => {
-      console.log(messageObj, "Message body");
       const emailData = ref(emaildata.value.innerHTML);
       const message = `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -1187,9 +1186,16 @@ export default {
       const body = {
         // message: topmost.value.innerHTMl.toString(),
         
-        ispersonalized: true,
+        ispersonalized: false,
         contacts: messageObj.data.contacts,
         subject: messageObj.data.subject,
+        toOthers: messageObj.data.toOthers,
+        user: "+2349086767765",
+        gateWayToUse: 'hostedsms',
+        category: "",
+        emailAddress: "",
+        emailDisplayName: "",
+        isoCode: messageObj.data.isoCode,
       };
 
       body.message = messageObj.medium === "sms" ? messageObj.data.message : message;

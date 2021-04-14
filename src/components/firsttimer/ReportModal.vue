@@ -177,17 +177,24 @@ import axios from "@/gateway/backendapi";
 
             const sendReport = () => {
                 const messageObj = {
-                    contacts: recipients.value,
+                    contacts: [],
+                    // contacts: recipients.value,
                     message: message.value,
                     subject: subject.value.value,
+                    isoCode: isoCode.value,
                 }
 
-                const validDestination = messageObj.contacts.find(i => i.phone);
-                console.log(validDestination, "validDestination");
-                if (activeTab.value === "sms" && !validDestination) {
-                    invalidDestination.value = true;
-                    return false;
+                if (activeTab.value === 'sms') {
+                    messageObj.toOthers = recipients.value.map(i => i.phone).join();
+                    console.log(messageObj.toOthers, "others");
                 }
+
+                // const validDestination = messageObj.contacts.find(i => i.phone);
+                // console.log(invalidDestination.value, "validDestination");
+                // if (activeTab.value === "sms" && !validDestination) {
+                //     invalidDestination.value = true;
+                //     return false;
+                // }
 
                 if (sendToMysef.value) {
                     messageObj.contacts.push({ email: userEmail.value });
@@ -195,13 +202,15 @@ import axios from "@/gateway/backendapi";
                 emit("sendreport", { data: messageObj, medium: activeTab.value });
             }
 
+            const isoCode = ref("");
             const getUserEmail = () => {
                 axios.get("/api/Membership/GetCurrentSignedInUser")
                     .then(res => {
                         console.log(res.data)
                         userEmail.value = res.data.userEmail
                         churchName.value = res.data.churchName
-                        recipients.value.push({ email: res.data.userEmail, phone: "" })
+                        isoCode.value = res.data.isoCode
+                        recipients.value.push({ email: "", phone: "" })
                     })
                     .catch(err => console.log(err))
             }
