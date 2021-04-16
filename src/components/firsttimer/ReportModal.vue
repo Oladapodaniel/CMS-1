@@ -38,6 +38,7 @@
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
                         <i class="fa fa-plus-circle inp-icon plus-icon my-1" @click="addRecipient"></i>
+                        <i class="pi pi-minus plus-icon ml-1 my-1 c-pointer text-danger" @click="removeRecipient(index)" v-if="recipients.length > 1"></i>
                     </div>
                 </div>
             </div>
@@ -165,12 +166,6 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 recipients.value.push({ email: ""})
                 console.log(recipients);
             }
-            const removeRecipient = (rep) => {
-                const recipient = recipients.value.find(i => i.id === rep.id)
-                const index = recipients.value.indexOf(recipient);
-                recipients.value.splice(index, 1);
-                
-            }
 
             const test = (e) => {
                 console.log(e.target.value, "bool");
@@ -231,6 +226,12 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 setTimeout(() => {
                     subject.value.focus();
                 }, 100)
+            }
+
+            const removeRecipient = (index) => {
+                if (recipients.value && recipients.value.length > 1) {
+                    recipients.value.splice(index, 1)
+                }
             }
 
 
