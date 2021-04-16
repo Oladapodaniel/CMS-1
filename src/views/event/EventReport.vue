@@ -834,6 +834,7 @@
                 <ReportModal
                   :eventName="eventDataResponse.name"
                   @sendreport="sendReport"
+                  :stats="stats"
                 />
               </div>
               <!-- <div class="modal-footer">
@@ -1181,7 +1182,7 @@ export default {
                   </head>
                   <body style="-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; background: #f6f6f6; box-sizing: border-box; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; height: 100%; line-height: 1.6; margin: 0; padding: 0; width: 100% !important;">
                   
-                  ${messageObj.data.message} <br>
+                  ${`${messageObj.data.message}`} <br>
 
                   ${emailData.value}
                   </body>

@@ -30,6 +30,9 @@
                   </div>
               </div>
           </div>
+          <div class="col-md-12 text-center" v-if="gallery.length === 0 && !loading">
+            <p class="py-3 font-weight-700">No images found</p>
+          </div>
         </div>
 
         <div class="row" v-else>
@@ -42,7 +45,7 @@
         </div>
       </div>
 
-      <div class="col-md-12 d-flex justify-content-end py-2" v-if="!loading || gallery.length > 0">
+      <div class="col-md-12 d-flex justify-content-end py-2" v-if="!loading && gallery.length > 0">
         <Pagination :itemsCount="50" :currentPage="currentPage" @getcontent="getImagesByPage" />
       </div>
     </div>
