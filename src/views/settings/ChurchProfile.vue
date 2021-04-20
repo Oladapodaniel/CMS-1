@@ -71,7 +71,7 @@
               <label class="small-text lb font-weight-600">Address</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" placeholder="Address" class="form-control ml-0 input" />
+              <input type="text" placeholder="Address" v-model="uploadData.address" class="form-control ml-0 input" />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -106,9 +106,11 @@
             </div>
             <div class="col-12 col-md-5 form-group">
               <Dropdown
-                :options="[1, 2, 3, 4, 5]"
+                :options="countries"
+                optionLabel="name"
                 placeholder="Select Country"
                 style="width: 100%"
+                v-model="selectCountry"
               />
             </div>
             <div class="col-md-4"></div>
@@ -123,6 +125,7 @@
                 :options="[1, 2, 3, 4, 5]"
                 placeholder="Select time zone"
                 style="width: 100%"
+                 v-model="selectTime"
               />
             </div>
             <div class="col-md-4"></div>
@@ -185,7 +188,7 @@
               <label class="small-text" for=""></label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <button class="primary-btn text-white px-4">Save</button>
+              <button class="primary-btn text-white px-4" @click="uploadChurchDetail">Save</button>
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -205,6 +208,10 @@ export default {
   components: { Dropdown },
   setup() {
     let url = ref("");
+    let a= ref("");
+    let b= ref("b")
+    let selectCountry= ref("");
+    let selectTime= ref("");
     let image;
     const imageSelected = (e) => {
       image = e.target.files[0];
@@ -212,7 +219,47 @@ export default {
     };
 
     const uploadImage = () => { };
+    let countries = ref("");
     const currentUser = ref(store.getters.currentUser);
+     const getCountries= async()=> {
+      try {
+        const { data } = await axios.get("/api/GetAllCountries");
+        data.sort((a,b)=> a.data - b.data);
+        console.log(data);
+        countries.value = data;
+        
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getCountries()
+    const uploadData= ref({ });
+    const display= ref(false)
+    //  const uploadChurchDetail =() =>{
+    //    const churchDetail = new churchDetail()
+    //    console.log();
+    //    console.log(uploadData.value);
+    //    churchDetail.append("address", uploadData.value.address ? uploadData.value.address : "");
+    //    churchDetail.append("aka", uploadData.value.aka ? uploadData.value.aka : "");
+    //    churchDetail.append("phoneNumber", uploadData.value.phoneNumber ? uploadData.value.phoneNumber : "");
+    //    churchDetail.append("email", uploadData.value.email ? uploadData.value.email : "");
+    //    churchDetail.append("country", uploadData.value.country ? uploadData.value.country : "");
+    //    churchDetail.append("timeZone", uploadData.value.timeZone ? uploadData.value.timeZone : "");
+    //    churchDetail.append("website", uploadData.value.website ? uploadData.value.website : "");
+    //    churchDetail.append("website", uploadData.value.website ? uploadData.value.website : "");
+    //    churchDetail.append("pastorName", uploadData.value.pastorName ? uploadData.value.pastorName : "");
+    //    churchDetail.append("pastorEmail", uploadData.value.pastorEmail ? uploadData.value.pastorEmail : "");
+    //    display.value = true;
+    //   //  axios.put('/api/Dashboard/UpdateTenantProfile', churchDetail)
+    //   //  .then(res =>{
+
+    //   //  })
+    //   //  .catch(err =>{
+
+    //   //  })
+
+
+    // };
 
     onMounted(() => {
       if(!store.getters.currentUser.churchName){
@@ -232,6 +279,16 @@ export default {
       imageSelected,
       uploadImage,
       currentUser,
+      countries,
+      getCountries,
+      selectCountry,
+      selectTime,
+      // uploadChurchDetail,
+      uploadData,
+      display,
+      a,
+      b
+  
     }
   },
   

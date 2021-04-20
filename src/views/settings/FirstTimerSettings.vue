@@ -115,6 +115,11 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import membershipService from '../../services/membership/membershipservice'
 
 export default {
+  components:{
+    Toast,
+    ConfirmDialog
+
+  },
   data() {
     return {
       classifications: [ ],
@@ -173,6 +178,8 @@ export default {
                 message: 'Are you sure you want to Delete?',
                 header: 'Delete Confirmation',
                 icon: 'pi pi-exclamation-circle',
+                acceptClass: 'confirm-delete',
+                rejectClass: 'cancel-delete',
                 accept: () => {
                   this.deleteFirstTimer(id)
                     //callback to execute when user confirms the action
