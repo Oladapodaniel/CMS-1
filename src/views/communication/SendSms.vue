@@ -516,11 +516,11 @@
               data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
-          <button
-            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3"
+          <router-link to="/tenant/sms/sent"
+            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
           >
             Discard
-          </button>
+          </router-link>
         </div>
 
         <div class="row">
