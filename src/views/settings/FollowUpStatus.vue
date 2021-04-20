@@ -108,8 +108,6 @@
 import axios from "@/gateway/backendapi";
 
 export default {
-    props: ['tod'],
-  template: `<li>{{ todo.text }}</li>`,
   data() {
     return {
       classifications: [ ],

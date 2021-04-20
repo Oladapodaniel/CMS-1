@@ -362,7 +362,7 @@
                       class="col-md-2 d-flex justify-content-between align-items-center"
                     >
                       <span class="py-2 hidden-header">NAME</span>
-                      <span class="py-2">{{ member.name }}</span>
+                      <span class="py-2">{{member.name }}</span>
                     </div>
                     <div
                       class="col-md-2 d-flex justify-content-between align-items-center"
@@ -525,15 +525,17 @@ export default {
         composeService
           .searchMemberDB("/api/Membership/GetSearchedUSers", e.target.value)
           .then((res) => {
+            console.log(res, "res");
+            console.log(groupMembers);
             loading.value = false;
             // memberSearchResults.value = res;
             memberSearchResults.value = res.filter((i) => {
-              const memberInExistingMembers = selectedMembers.value.find(
+              const memberInExistingMembers = selectedMembers.value.findIndex(
                 (j) => j.id === i.id
               );
-              if (memberInExistingMembers && memberInExistingMembers.id)
-                return false;
+              if (memberInExistingMembers >= 0 || groupMembers.value.findIndex(k => k.personID === i.id) >=0) return false;
               return true;
+              
             });
 
           });

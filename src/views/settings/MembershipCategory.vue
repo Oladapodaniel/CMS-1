@@ -16,6 +16,7 @@
                   <h4 class="mt-2 mb-2 ml-5 memCat1">Membership Categories</h4>
                 </div>
               </div>
+              <!--prime Vue -->
               <Toast />
               <ConfirmDialog></ConfirmDialog>
 
@@ -171,6 +172,8 @@ export default {
                 message: 'Are you sure you want to Delete?',
                 header: 'Delete Confirmation',
                 icon: 'pi pi-exclamation-circle',
+                acceptClass: 'confirm-delete',
+                rejectClass: 'cancel-delete',
                 accept: () => {
                   this.deleteMembership(id)
                     //callback to execute when user confirms the action
@@ -269,6 +272,12 @@ input::placeholder {
     border: #02172E!important;
     border-style: solid!important;
   }
+  /* .deleteAccept{
+    background-color: red!important;
+  }
+  .deleteReject{
+    bac
+  } */
   
 }
 </style>

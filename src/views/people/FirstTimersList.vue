@@ -199,7 +199,11 @@
                           >Send SMS</router-link
                         >
                       </a>
-                      <a class="dropdown-item" href="#">Send Email</a>
+                      <a class="dropdown-item" v-if="person.email" >
+                        <router-link :to="`/tenant/email/compose?phone=${person.email}`">
+                          Send Email
+                        </router-link>
+                        </a>
                       <a class="dropdown-item" href="#"  @click.prevent="showConfirmModal(person.id)">Delete</a>
                     </div>
                   </div>

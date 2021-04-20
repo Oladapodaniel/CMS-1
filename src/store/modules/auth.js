@@ -3,23 +3,19 @@ import router from "@/router/index"
 
 
 export default {
-  state: {
-    userEmail: "",
-    onboardingData: {},
-    userRole: "",
-    userData: {},
-    currentUser: {},
-    userStartPoint: "",
-    settingUserUp: false,
-    churchMembers: {},
-    smsBalance: 0,
-  },
-
-  mutations: {
-    setCurrentUser(state, payload) {
-      state.currentUser = payload;
+    state: {
+        userEmail: "",
+        onboardingData: {},
+        userRole: "",
+        userData: {},
+        currentUser: {},
+        userStartPoint: "",
+        settingUserUp: false,
+        churchMembers: {},
+        smsBalance: 0,
     },
 
+    mutations: {
     setUserEmail(state, payload) {
       state.userEmail = payload;
     },
