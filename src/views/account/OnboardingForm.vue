@@ -164,7 +164,7 @@ export default {
   },
 
   beforeRouteEnter() {
-    if (localStorage.getItem("token")) router.push("/next")
+    // if (localStorage.getItem("token")) router.push("/next")
     // return next(false);
   },
 
