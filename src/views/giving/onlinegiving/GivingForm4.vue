@@ -606,7 +606,17 @@ export default {
           
           
           
-          if(localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken') ||  signedIn) {
+          if(localStorage.getItem('giverToken') === null || !signedIn.value) {
+              
+              if (name.value !== "" || phone.value !== "") {
+                donationObj.value.isAnonymous = false
+                donationObj.value.name = name.value,
+                donationObj.value.phone = phone.value,
+                donationObj.value.email = email.value
+              } else {
+                donationObj.value.isAnonymous = true
+              }              
+          } else {
               donationObj.value.name = userData.value.name
               donationObj.value.email = userData.value.email
               donationObj.value.phone = userData.value.phone
@@ -616,37 +626,21 @@ export default {
               } else {
                 donationObj.value.isAnonymous = false
               }
-          } else {
-              if (name.value !== "" || phone.value !== "") {
-                donationObj.value.isAnonymous = false
-                donationObj.value.name = name.value,
-                donationObj.value.phone = phone.value,
-                donationObj.value.email = email.value
-              } else {
-                donationObj.value.isAnonymous = true
-              }
           }
 
          
-console.log(donationObj.value)
-          try {
-            let  res = await axios.post('/donation', donationObj.value)
-            console.log(res)
-            // if (!res.data) {
-            //   toast.add({
-            //   severity: "error",
-            //   summary: "Problem occurred while making this payment",
-            //   detail: `Ensure you selected`,
-            //   life: 3000,
-            // });
-            // }
-            finish()
-          }
-          catch (error) {
-            finish()
-            console.log(error)
-          }
-          console.log(formResponse.value)
+console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'))
+          // try {
+          //   let  res = await axios.post('/donation', donationObj.value)
+          //   console.log(res)
+          
+          //   finish()
+          // }
+          // catch (error) {
+          //   finish()
+          //   console.log(error)
+          // }
+          // console.log(formResponse.value)
     }
 
     const successfulPayment = (payload) => {
@@ -879,12 +873,7 @@ console.log(donationObj.value)
 .img {
   /* width: 100vw; */
   height: 40vh;
-  background: url("../../../assets/churchplusimage.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  -o-object-fit: cover;
-  object-fit: cover;
+  background: #020f1e
 }
 
 .main-font {

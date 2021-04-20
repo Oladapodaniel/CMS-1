@@ -54,13 +54,13 @@
       </div>
 
       <div class="row">
-        <div class="col-3 col-lg-2 align-self-center">
+        <div class="col-2 pr-md-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
-        <div class="col-9 col-lg-10 form-group mb-0">
+        <div class="col-10 pl-md-0 col-lg-10 form-group mb-0">
           <div class="dropdown">
             <button
-              class="btn btn-default dropdown-toggle small-text"
+              class="btn btn-default dropdown-toggle small-text pl-md-0"
               type="button"
               id="dropdownMenuButton"
               data-toggle="dropdown"
@@ -516,11 +516,11 @@
               data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
-          <button
-            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3"
+          <router-link to="/tenant/sms/sent"
+            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
           >
             Discard
-          </button>
+          </router-link>
         </div>
 
         <div class="row">
@@ -846,35 +846,6 @@ export default {
         detail: "SMS is being sent....",
         life: 2500,
       });
-
-      console.log(selectedMembers.value, "sm");
-      // const data = {
-      //   subject: subject.value,
-      //   message: editorData.value,
-      //   contacts: [],
-      //   // contacts: selectedMembers.value,
-      //   isPersonalized: isPersonalized.value,
-      //   groupedContacts: selectedGroups.value.map((i) => i.data),
-      //   toContacts: sendToAll.value ? "allcontacts" : "",
-      //   // toOthers: phoneNumber.value,
-      //   isoCode: isoCode.value,
-      //   // isoCode: "NG",
-      //   category: "",
-      //   emailAddress: "",
-      //   emailDisplayName: "",
-      //   gateWayToUse: gateway,
-      // };
-
-      // data.toOthers = phoneNumber.value;
-      // if (selectedMembers.value.length > 0) {
-      //   data.toOthers += data.toOthers.length > 0 ? "," : "";
-      //   data.toOthers += selectedMembers.value
-      //     .map((i) => {
-      //       if (i.phone) return i.phone;
-      //       return false;
-      //     })
-      //     .join();
-      // }
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
       composeService
@@ -1209,7 +1180,8 @@ export default {
       nigerian,
       contructScheduleMessageBody,
       executionDate,
-      moment
+      moment,
+      isPersonalized,
     };
   },
 };

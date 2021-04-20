@@ -26,7 +26,7 @@
     <!-- top area -->
     <div class="row">
       <div class="col-md-3"></div>
-      <div class="col-md-5">
+      <div class="col-md-7">
         <p
           class="font-weight-600 text-center primary-text"
           v-if="person.personId && loaded && !showLoading"
@@ -142,7 +142,7 @@
                 type="text"
                 aria-required=""
                 v-model="person.email"
-                :disabled="person.personId"
+                :disabled="person.personId && person.email"
               />
             </span>
           </div>
@@ -174,7 +174,7 @@
           </div>
         </div>
 
-        <div class="row my-3">
+        <div class="row my-3" v-if="!personData.dayOfBirth && personData.monthOfBirth">
           <div
             class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-2 font-weight-700"
           >
@@ -188,6 +188,7 @@
                   :options="days"
                   style="width: 100%"
                   placeholder="Day"
+                   v-if="!personData.dayOfBirth"
                 />
               </div>
               <div class="col-6">
@@ -196,6 +197,7 @@
                   :options="months"
                   style="width: 100%"
                   placeholder="Month"
+                  
                 />
               </div>
             </div>
@@ -342,9 +344,11 @@ export default {
     const checkCharacter = (e) => {
       if (e.target.value.length < 11) {
         person.value = {};
+        personHasAddress.value = false;
         return false;
       }
       loaded.value = false;
+      personHasAddress.value = false;
       fetchingFailed.value = false;
       showNoPhoneError.value = false;
       if (!enteredValue.value) {
@@ -360,7 +364,8 @@ export default {
         )
 
         .then((res) => {
-          console.log(res, "RESPONSE");
+          const x = { ...res}
+          console.log(x, "RESPONSE");
           loading.value = false;
           autosearch.value = false;
           loaded.value = true;
@@ -369,16 +374,23 @@ export default {
           personData.value.email = res.data[0] ? res.data[0].email : "";
           personData.value.homeAddress = res.data[0] ? res.data[0].address : "";
           personData.value.personId = res.data[0] ? res.data[0].personId : "";
+          personData.value.dayOfBirth = res.data[0] ? res.data[0].dayOfBirth : null;
+          personData.value.monthOfBirth = res.data[0] ? res.data[0].monthOfBirth : null;
           personData.value.mobilePhone = enteredValue.value;
           person.value = res.data[0] ? res.data[0] : {};
+          birthDay.value = res.data[0] && res.data[0].dayOfBirth ? Number(res.data[0].dayOfBirth) : 0;
+          birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth)] : 0;
 
           if (
             person.value.personId &&
+            person.value.address &&
             person.value.address !== null &&
             person.value.address !== "" &&
             person.value.address.length >= 1
           )
+          {
             personHasAddress.value = true;
+          }
 
           if (person.value.name) {
             person.value.name = formatString(person.value.name, 2, 4);
@@ -389,9 +401,7 @@ export default {
           if (person.value.address) {
             person.value.address = formatString(person.value.address, 2, 4);
           }
-          console.log(res, "RPONSE");
           populateInputfields(person.value);
-          console.log(names.value);
 
           if (person.value) appltoggle.value = true;
         })
@@ -458,7 +468,8 @@ export default {
           person: {
             personId: personData.value.personId,
             mobilePhone: enteredValue.value,
-            homeAddress: person.value.address,
+            homeAddress: personData.value.homeAddress ? '' : person.value.address,
+            email: personData.value.email ? '' : person.value.email,
           },
           attendanceCode: +route.params.code,
         };
@@ -473,10 +484,10 @@ export default {
           attendanceCode: +route.params.code,
         };
       }
-      newPerson.person.monthOfBirth = birthMonth.value
+      newPerson.person.monthOfBirth = birthMonth.value && !personData.value.monthOfBirth
         ? months.indexOf(birthMonth.value) + 1
-        : 0;
-      newPerson.person.dayOfBirth = birthDay.value ? birthDay.value : 0;
+        : null;
+      newPerson.person.dayOfBirth = birthDay.value && !personData.value.monthOfBirth ? birthDay.value : null;
 
       console.log(personData.value, "p data");
       console.log(newPerson);
@@ -648,6 +659,7 @@ export default {
       days,
       birthMonth,
       birthDay,
+      personData,
     };
   },
 };

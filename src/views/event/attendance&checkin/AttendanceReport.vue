@@ -56,7 +56,41 @@
             <div class="row">
               <div class="col-sm-5 cursor-pointer small-text font-weight-700" @click="sortAttendanceDataByPresent" v-tooltip.top="
             'Sort column'"><i class="pi pi-sort-alt primary-text" style="color:#136acd"></i> SORT</div>
-              <div class="col-sm-7 cursor-pointer small-text font-weight-700" v-tooltip.top="'Print Attendance'" @click="printJS({ 
+
+            <div class="dropdown col-sm-7">
+              <div class="cursor-pointer small-text font-weight-700" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-tooltip.top="'Print Attendance'"><i class="pi pi-print primary-text" style="color:#136acd"></i> PRINT</div>
+
+                
+                <div class="dropdown-menu style-account" aria-labelledby="dropdownMenuButton">
+                <!-- Print Those Present -->
+                <a class="dropdown-item elipsis-items cursor-pointer"  @click="printJS({ 
+                ignoreElements: ['ignore1'], 
+                maxWidth: 867, 
+                header: 'ATTENDANCE', 
+                printable: presentAttendance, 
+                properties: ['NAME', 'ADDRESS','PHONE', 'PRESENT', 'CHANNEL'], 
+                type: 'json', 
+                headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
+                gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
+                gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' 
+                })"> Present </a>
+
+
+                <!-- Print Those Absent -->
+                <a class="dropdown-item elipsis-items cursor-pointer" @click="printJS({ 
+                ignoreElements: ['ignore1'], 
+                maxWidth: 867, 
+                header: 'ATTENDANCE', 
+                printable: absentAttendance, 
+                properties: ['NAME', 'ADDRESS','PHONE', 'PRESENT', 'CHANNEL'], 
+                type: 'json', 
+                headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
+                gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
+                gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' 
+                })" data-v-26c77059=""> Absent </a>
+
+                <!-- Print All -->
+                <a class="dropdown-item elipsis-items cursor-pointer" @click="printJS({ 
                 ignoreElements: ['ignore1'], 
                 maxWidth: 867, 
                 header: 'ATTENDANCE', 
@@ -66,7 +100,9 @@
                 headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
                 gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
                 gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' 
-                })"><i class="pi pi-print primary-text" style="color:#136acd"></i> PRINT</div>
+                })" data-v-26c77059=""> All </a>
+              </div>
+              </div>
             </div>
           </div>
         </div>
@@ -171,7 +207,7 @@ export default {
         }
 
         const formatDate = (date) => {
-          return dateFormatter.normalDate(date);
+          return dateFormatter.monthDayYear(date);
         }
 
         const absentees = computed(() => {
@@ -231,12 +267,58 @@ export default {
              NAME:  i.name ? i.name : "",
              ADDRESS: i.address ? i.address : "",
              PHONE: i.phone ? i.phone : "",
-             PRESENT: i.isPresent === null ? "" : i.isPresent,
+             PRESENT: i.isPresent === null ? "" : "Yes",
              CHANNEL: i.checkedinOption ? i.checkedinOption : ""
            }
          })
        })
 
+       const filterPresentAttendance = computed (() => {
+         if (reportData.value.peopoleAttendancesDTOs) {
+           if (reportData.value.peopoleAttendancesDTOs.length === 0) return []
+            return reportData.value.peopoleAttendancesDTOs.filter(i => {
+              return i.isPresent
+            })
+         }         
+       })
+
+       const presentAttendance = computed (() => {
+          if (filterPresentAttendance.value.length === 0) return []
+          return  filterPresentAttendance.value.map(i => {
+            return {
+                    NAME:  i.name ? i.name : "",
+                    ADDRESS: i.address ? i.address : "",
+                    PHONE: i.phone ? i.phone : "",
+                    PRESENT: !i.isPresent ? "No" : "Yes",
+                    CHANNEL: i.checkedinOption ? i.checkedinOption : ""
+                  }
+          })
+        })
+       
+       
+       const filterAbsentAttendance = computed (() => {
+         if (reportData.value.peopoleAttendancesDTOs) {
+           if (reportData.value.peopoleAttendancesDTOs.length === 0) return []
+            return reportData.value.peopoleAttendancesDTOs.filter(i => {
+              return !i.isPresent
+            })
+         }         
+       })
+
+       const absentAttendance = computed (() => {
+          if (filterAbsentAttendance.value.length === 0) return []
+          return  filterAbsentAttendance.value.map(i => {
+            return {
+                    NAME:  i.name ? i.name : "",
+                    ADDRESS: i.address ? i.address : "",
+                    PHONE: i.phone ? i.phone : "",
+                    PRESENT: !i.isPresent ? "No" : "Yes",
+                    CHANNEL: i.checkedinOption ? i.checkedinOption : ""
+                  }
+          })
+        })
+
+  
         return {
             data,
             reportData,
@@ -252,7 +334,11 @@ export default {
             people,
             searchText,
             printJS,
-            printAttendance
+            printAttendance,
+            presentAttendance,
+            filterPresentAttendance,
+            absentAttendance,
+            filterAbsentAttendance
         }
     }
 };
