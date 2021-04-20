@@ -123,4 +123,29 @@ const checkout = async (body) => {
     })
 }
 
-export default { saveCheckAttendanceItem, startCheckinProces, getItems, getItemByCode, getReport, checkin, checkout };
+const generateEventReportDefaultMessage = (eventAnalysisData) => {
+    console.log(eventAnalysisData, "data");
+    if (!eventAnalysisData || !eventAnalysisData.activityToday) return "";
+    let message = `SERVICE REPORT\n          ======\n${eventAnalysisData.activityToday.name}\nDate: ${new Date(eventAnalysisData.activityToday.date).toLocaleDateString()}\n\nTotal Attendance: ${eventAnalysisData.todayAttendance}\nTotal Offering: ${eventAnalysisData.tenantCurrencyName} ${eventAnalysisData.todayOffering}`;
+
+    if (eventAnalysisData.todayVsLastWeekAttendancePercentage > 0) {
+        message += `\n\nWe recorded a ${eventAnalysisData.todayVsLastWeekAttendancePercentage}% increase in attendance since last week.`;
+    } else if (eventAnalysisData.todayVsLastWeekAttendancePercentage < 0) {
+        message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastWeekAttendancePercentage)}% decrease in attendance since last week.`;
+    } else {
+        message += `\n\nNo increase or decrease in attendance since last week`;
+    }
+
+    if (eventAnalysisData.todayVsLastweekOfferingPercentage > 0) {
+        message += `\n\nWe recorded ${eventAnalysisData.todayVsLastweekOfferingPercentage}% increase in offering since last week.`;
+    } else if (eventAnalysisData.todayVsLastweekOfferingPercentage < 0) {
+        message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastweekOfferingPercentage).toFixed(2)}% decrease in offering since last week.`;
+        // message += `\nThere was a ${Number.parseFloat(Math.abs(eventAnalysisData.todayVsLastweekOfferingPercentage)).toPrecision(4)}% decrease in offering since last week`;
+    } else {
+        message += `\n\nOffering was the same with last week.`;
+    }
+    message += `\n          ------------\nPowered by churchplus.co`
+    return message;
+}
+
+export default { saveCheckAttendanceItem, startCheckinProces, getItems, getItemByCode, getReport, checkin, checkout, generateEventReportDefaultMessage };

@@ -122,7 +122,7 @@
                         </a>
                       </div>
                       <div class="col-6">
-                        <a class="def-btn edit-btn">Get share link</a>
+                        <a class="def-btn edit-btn" @click="copyLink">Get share link</a>
                       </div>
                     </div>
                   </div>
@@ -137,6 +137,9 @@
                     >
                   </div>
                 </div>
+              </div>
+              <div class="col-md-12 pt-2" v-if="willCopyLink">
+                <input type="text" name="" @keydown="(e) => e.preventDefault()" @click="copyLink" class="form-control" :value="location" ref="shareableLinkField">
               </div>
             </div>
           </div>
@@ -833,6 +836,7 @@
                 <ReportModal
                   :eventName="eventDataResponse.name"
                   @sendreport="sendReport"
+                  :stats="stats"
                 />
               </div>
               <!-- <div class="modal-footer">
@@ -1153,7 +1157,6 @@ export default {
     }
 
     const sendReport = (messageObj) => {
-      console.log(messageObj, "Message body");
       const emailData = ref(emaildata.value.innerHTML);
       const message = `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -1182,7 +1185,7 @@ export default {
                   </head>
                   <body style="-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; background: #f6f6f6; box-sizing: border-box; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; height: 100%; line-height: 1.6; margin: 0; padding: 0; width: 100% !important;">
                   
-                  ${messageObj.data.message} <br>
+                  ${`${messageObj.data.message}`} <br>
 
                   ${emailData.value}
                   </body>
@@ -1190,10 +1193,19 @@ export default {
       const body = {
         // message: topmost.value.innerHTMl.toString(),
         
-        ispersonalized: true,
+        ispersonalized: false,
         contacts: messageObj.data.contacts,
         subject: messageObj.data.subject,
+        // user: "+2349086767765",
       };
+      if (messageObj.medium === "sms") {
+        body.gateWayToUse = 'hostedsms';
+        body.category = '';
+        body.emailAddress = '';
+        body.emailDisplayName = '';
+        body.isoCode = messageObj.data.isoCode;
+        body.toOthers = messageObj.data.toOthers;
+      }
 
       body.message = messageObj.medium === "sms" ? messageObj.data.message : message;
 
@@ -1233,6 +1245,32 @@ export default {
         });
       btnState.value = "modal";
     };
+
+    const willCopyLink = ref(false);
+    const shareableLinkField = ref(null);
+    const location = ref(window.location);
+    const copyLink = () => {
+      try {
+        willCopyLink.value = true;
+        const a = shareableLinkField.value;
+        a.select();
+        a.setSelectionRange(
+          0,
+          200
+        ); /* For mobile devices */
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+        toast.add({
+          severity: "info",
+          summary: "Link Copied",
+          detail: "Shareable link copied to your clipboard",
+          life: 3000,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     onMounted(async () => {
       activityId.value = route.params.id;
@@ -1276,7 +1314,11 @@ export default {
       emaildata,
       url,
       activityId,
-      moment
+      moment,
+      copyLink,
+      location,
+      shareableLinkField,
+      willCopyLink,
     };
   },
 };
