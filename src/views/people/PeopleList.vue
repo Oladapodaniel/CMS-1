@@ -75,7 +75,7 @@
             :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
           >
             <input type="text" placeholder="Search..." v-model="searchText" />
-            <span class="empty-btn">x</span>
+            <span class="empty-btn" @click="clearInput"><i class="pi pi-times"></i></span>
             <span class="search-btn">
               <i class="fa fa-search"></i>
             </span>
@@ -97,30 +97,18 @@
                     type="text"
                     class="input w-100"
                     placeholder="First Name"
-                    v-model="filter.filterFirstName"
+                    v-model="filter.name"
                   />
                   <!-- </div> -->
                 </div>
 
-                <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                <!-- <div class="col-12 col-sm-6 form-group d-none d-md-block">
                   <input
                     type="date"
                     class="form-control input inp w-100"
                     v-model="filter.filterDate"
                   />
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                  <input
-                    type="text"
-                    class="input w-100"
-                    placeholder="Last Name"
-                    v-model="filter.filterLastName"
-                  />
-                </div>
-
+                </div> -->
                 <div class="col-12 col-sm-6 form-group d-none d-md-block">
                   <input
                     type="text"
@@ -129,6 +117,19 @@
                     v-model="filter.phoneNumber"
                   />
                 </div>
+              </div>
+
+              <div class="row">
+                <!-- <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="Last Name"
+                    v-model="filter.filterLastName"
+                  />
+                </div> -->
+
+                
               </div>
             </div>
 
@@ -164,8 +165,8 @@
         <div class="action"></div>-
       </div>
 
-      <div v-if="filterResult.length > 0 && (filter.filterFirstName || filter.filterLastName || filter.phoneNumber)">
-        <div class="table-body" v-for="(person, index) in filterResult" :key="person.id">
+     
+        <div class="table-body" v-for="(person, index) in searchMember" :key="person.id">
         <div class="data-row">
           <div class="check data">
             <input type="checkbox" name="" id="" />
@@ -243,25 +244,28 @@
                 aria-expanded="false"
               ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item elipsis-items" v-if="person.mobilePhone">
+                <a class="dropdown-item elipsis-items">
                   <router-link
-                    :to="`/tenant/sms/compose?phone=${person.mobilePhone}`"
+                    :to="person.mobilePhone ? `/tenant/sms/compose?phone=${person.mobilePhone}` : ''"
+                    :class="{ 'fade-text' : !person.mobilePhone, 'text-color' : person.mobilePhone }"
                     >Send SMS</router-link
                   >
                 </a>
-                <a class="dropdown-item elipsis-items" v-if="person.email">
+                <a class="dropdown-item elipsis-items">
                   <router-link
-                    :to="`/tenant/email/compose?phone=${person.email}`"
+                    :to="person.email ? `/tenant/email/compose?phone=${person.email}` : ''"
+                    :class="{ 'fade-text' : !person.email, 'text-color' : person.email }"
                     >Send Email</router-link
                   >
                 </a>
                 <a class="dropdown-item elipsis-items">
                   <router-link :to="`/tenant/people/add/${person.id}`"
+                  class="text-color"
                     >Edit</router-link
                   >
                 </a>
                 <a
-                  class="dropdown-item elipsis-items"
+                  class="dropdown-item elipsis-items text-color cursor-pointer"
                   @click.prevent="showConfirmModal(person.id, index)"
                   >Delete</a
                 >
@@ -271,15 +275,15 @@
         </div>
 
         <hr class="row-divider" />
-        <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
+ 
       </div>
-      </div>
+     
 
-      <div v-else-if="filterResult.length == 0 && noRecords">
+      <!-- <div v-else-if="filterResult.length == 0 && noRecords">
         <div class="no-record text-center my-4">No member found</div>
-      </div>
-      <!-- <div v-else-if="loading">searching for memer</div> -->
-      <div v-else>
+      </div> -->
+  
+      <!-- <div v-else>
         <div v-if="searchMember.length > 0">
           <div class="table-body" v-for="(person, index) in searchMember" :key="person.id">
         <div class="data-row">
@@ -396,13 +400,13 @@
           </div>
         </div>
         <hr class="row-divider" />
-        <!-- <div>{{ membershipSummary.maritalStatus }}</div> -->
+    
       </div>
         </div>
         <div v-else>
           <div class="no-record text-center my-4">No member found</div>
         </div>
-      </div>
+      </div> -->
 
       <div class="table-footer">
         <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage" />
@@ -494,15 +498,11 @@ export default {
     };
 
     const applyFilter = () => {
-        // filterBoolean.value = false
-
-
-        filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
-        filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
+        filter.value.name = filter.value.name == undefined ? "" : filter.value.name
         filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
 
-         let url = "/api/People/FilterMembers?firstname="+filter.value.filterFirstName +"&lastname="+filter.value.filterLastName +"&phone_number="+ filter.value.phoneNumber +"&page=1"
-      axios.get(url).then((res) => {
+         let url = "/api/People/FilterMembers?firstname="+filter.value.name + "&lastname="+ filter.value.name +"&phone_number=" + filter.value.phoneNumber +"&page=1"
+        axios.get(url).then((res) => {
         noRecords.value = true
         filterResult.value = res.data
         console.log(res.data);
@@ -512,8 +512,8 @@ export default {
 
 
     const clearAll = () => {
-       filter.value.filterFirstName = ""
-       filter.value.filterLastName = ""
+       filter.value.name = ""
+
        filter.value.filterDate = ""
        filter.value.phoneNumber = ""
       }
@@ -523,7 +523,7 @@ export default {
    }
 
    const disableBtn = computed(() => {
-      if (!filter.value.filterFirstName && !filter.value.filterLastName && !filter.value.phoneNumber) return true;
+      if (!filter.value.name && !filter.value.phoneNumber) return true;
       return false;
    })
 
@@ -643,9 +643,11 @@ export default {
     const searchMember = computed(() => {
         if (searchText.value !== "") {
           return churchMembers.value.filter(i => {
-            if (i.firstName) return i.firstName.toLowerCase().includes(searchText.value.toLowerCase());
+            if (i.firstName) return `${i.firstName}${i.lastName}${i.mobilePhone}`.toLowerCase().includes(searchText.value.toLowerCase());
             return ""
           })
+        } else if (filterResult.value.length > 0 && (filter.value.name || filter.value.phoneNumber)) {
+            return filterResult.value
         } else {
           return churchMembers.value
         }
@@ -655,6 +657,10 @@ export default {
       if (membershipSummary.value.totalMember > 100) return Math.ceil(membershipSummary.value.totalMember / 100);
       return 1;
     })
+
+    const  clearInput = () => {
+      searchText.value = ""
+    }
 
     return {
       churchMembers,
@@ -684,6 +690,7 @@ export default {
       mark,
       markAll,
       deleteMarked,
+      clearInput
     };
   },
 };
@@ -692,7 +699,7 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-  color: #02172e;
+  /* color: #02172e; */
 }
 
 .itemroute-color {
@@ -807,47 +814,6 @@ a {
   width: 50%;
 }
 
-/* .firstname .data-value {
-   margin-left: -32px;
-  margin-right: 3px;
-} */
-
-/* .lastname .data-value {
-   margin-left: -41px;
-  margin-right: 2px;
-} */
-
-/* .phone .data-value {
-   margin-left: 38px;
-} */
-/*
-.label-search {
-  width: 0;
-  background: transparent;
-  padding: 4px;
-  overflow: hidden;
-  transition: all 0.5 ease-in-out;
-}
-.label-search input {
-  border: transparent;
-  background: transparent;
-  width: 70%;
-  outline: none;
-}
-
-.label-search .search-btn {
-  display: flex;
-  align-items: center;
-  background: #7894a6;
-  padding: 4px;
-  border-radius: 5px;
-}
-
-.label-search .empty-btn {
-  display: flex;
-  align-items: center;
-  padding: 0 5px;
-} */
 
 .table-top {
   font-weight: 800;
@@ -859,15 +825,6 @@ a {
   cursor: pointer;
 }
 
-/* .show-search {
-  width: 174px;
-  overflow: hidden;
-  transition: all 0.5 ease-in-out;
-  border: 1px solid #dde2e6;
-  border-radius: 5px 0px 0px 5px;
-  background: #ebeff4;
-  transition: all 0.5s ease-in-out;
-} */
 
 .filter-options {
   height: 0;
@@ -876,7 +833,7 @@ a {
 }
 
 .filter-options-shown {
-  height: 130px;
+  height: 80px;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
@@ -886,9 +843,22 @@ a {
   justify-content: stretch;
 }
 
+.text-color:hover {
+  color: #007bff;
+}
+
 .no-record {
   color: rgba(184, 5, 5, 0.726);
   font-size: 1.1em;
+}
+
+.fade-text {
+  color: #a8a8a8;
+  cursor: not-allowed
+}
+
+.text-color {
+  color: #212529
 }
 
 @media screen and (max-width: 500px) {

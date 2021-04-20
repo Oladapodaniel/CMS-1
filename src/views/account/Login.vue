@@ -47,12 +47,11 @@
           </button>
         </div>
         <div>
-          <button class="facebook-btn btn-logo sign-in-btn" >
-            <img src="../../assets/facebook-small.png" class="fb-icon" alt="Google Icon">
+          <button class="facebook-btn btn-logo sign-in-btn" @click="facebookLogin">
+            <img src="../../assets/facebook-small.png" class="fb-icon" alt="Facebook Icon">
              <span>Sign in with Facebook</span>
              <span></span>
           </button>
-          <button @click="facebookLogin">Facebook</button>
         </div>
 
       </div>
@@ -63,7 +62,7 @@
           <!-- <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p> -->
         </div>
       </div>
-      <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a>
+      <!-- <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a> -->
     </div>
   </div>
 </template>
@@ -152,26 +151,20 @@ export default {
 
       const facebookLogin = () => {
         FB.login(function(response) {
-          console.log(response, "facebook");
           let token = {
           accessToken: response.authResponse.accessToken
         }
-        console.log(response.authResponse.accessToken)
         axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
           .then(res => {
-            console.log(res, "our data")
             if (res.data.isOnboarded) {
-              console.log(res, "our data")
               localStorage.setItem("email", res.data.username)
               localStorage.setItem("token", res.data.token);
               router.push("/tenant");
             } else {
-              console.log(res, "our data")
-              localStorage.setItem("gstargerrald@ovi.com", res.data.username)
+              localStorage.setItem("email", 'gstargerrald@ovi.com')
               // localStorage.setItem("token", res.data.token);
               router.push("/onboarding");
             }
-            console.log(res, "our data")
           })
           .catch(err => console.log(err))
         }, {scope: 'user_birthday'});

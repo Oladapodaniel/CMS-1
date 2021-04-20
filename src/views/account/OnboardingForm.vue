@@ -164,7 +164,7 @@ export default {
   },
 
   beforeRouteEnter() {
-    // if (localStorage.getItem("token")) router.push("/next")
+    if (localStorage.getItem("token")) router.push("/next")
     // return next(false);
   },
 
@@ -269,16 +269,6 @@ export default {
         ? this.userDetails.churchName
         : this.userDetails.churchName.slice(0, 20) + "...";
     },
-    // isValid() {
-    //   return (
-        // this.userDetails.firstName &&
-        // this.userDetails.lastName &&
-        // this.userDetails.phoneNumber
-        // this.userDetails.churchName 
-        // this.userDetails.churchSize &&
-        // this.selectedCountry.id
-    //   );
-    // },
     valid () {
       let regex  = /[0-9]{11}/
       return regex.test(this.userDetails.phoneNumber)
@@ -298,27 +288,15 @@ export default {
       })
 
       if (this.searchText)  return codeFlag.filter(i => i.phoneCode && i.phoneCode.includes(this.searchText.toLowerCase()) || i.phoneCode && i.name.toLowerCase().includes(this.searchText.toLowerCase()))
-      // codeFlag.filter(i => console.log(i.name.toLowerCase()))
       
-      // } else {
-      //   cook = this.countries.filter(i => {
-      //     if (i.phone){
-      //       return i.phoneCode.includes(this.searchText)
-      //     }
-      //   })
-      // }
-      // console.log(cook)
       return codeFlag
         
     },
-    // searchCode () {
-    //  
-    //   } 
     
   },
 
   beforeCreate() {
-    // if (!localStorage.getItem("email")) router.push("/");
+    if (!localStorage.getItem("email")) router.push("/");
   },
  
   created() {

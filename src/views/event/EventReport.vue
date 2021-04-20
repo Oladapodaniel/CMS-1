@@ -71,7 +71,9 @@
                 <span class="grey-text">Create </span>
                 <p>
                   <span class="dark-text">Created: </span>
-                  <span class="grey-text"> just a moment ago</span>
+                  <span class="grey-text"> just a moment ago 
+                    <!-- {{ moment(eventData.activity.date, "YYYYMMDD").fromNow() }} {{ moment().startOf('second').fromNow() }} -->
+                    </span>
                 </p>
               </div>
               <div
@@ -1082,6 +1084,7 @@ import composerObj from "../../services/communication/composer";
 import stopProgressBar from "../../services/progressbar/progress";
 // import EventReportStats from "@/components/eventreports/EventReportStats";
 import { useToast } from "primevue/usetoast";
+import moment from "moment";
 
 export default {
   components: { ReportAreaChart, ReportModal },
@@ -1311,6 +1314,7 @@ export default {
       emaildata,
       url,
       activityId,
+      moment,
       copyLink,
       location,
       shareableLinkField,
