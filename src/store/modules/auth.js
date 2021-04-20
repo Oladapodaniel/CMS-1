@@ -50,6 +50,9 @@ export default {
 
     addPurchasedUnits(state, payload) {
       state.currentUser.smsBalance = state.currentUser.smsBalance + payload;
+    },
+    clearCurrentUser(state, payload) {
+      state.currentUser = payload
     }
   },
 
@@ -57,7 +60,9 @@ export default {
     setCurrentUser({ commit }, payload) {
       commit("setCurrentUser", payload)
     },
-
+    clearCurrentUser ({ commit }, payload) {
+      commit("clearCurrentUser", payload)
+  },
     async getUser({ commit }) {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");

@@ -358,6 +358,7 @@ export default {
         .get("/dashboard")
         .then((res) => {
           tenantInfo.value = res.data;
+          console.log(res.data)
         })
         .catch((err) => console.log(err.respone));
     } else {
@@ -382,6 +383,7 @@ export default {
     const logout = () => {
       localStorage.clear()
       router.push('/')
+      store.dispatch('clearCurrentUser', {})
     }
 
     return {
