@@ -159,16 +159,19 @@ export default {
         console.log(response.authResponse.accessToken)
         axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
           .then(res => {
-            console.log(res.data)
+            console.log(res, "our data")
             if (res.data.isOnboarded) {
+              console.log(res, "our data")
               localStorage.setItem("email", res.data.username)
               localStorage.setItem("token", res.data.token);
-              window.location.href = "/tenant";
+              router.push("/tenant");
             } else {
+              console.log(res, "our data")
               localStorage.setItem("email", res.data.username)
               localStorage.setItem("token", res.data.token);
-              window.location.href = "/onboarding";
+              router.push("/onboarding");
             }
+            console.log(res, "our data")
           })
           .catch(err => console.log(err))
         }, {scope: 'user_birthday'});
