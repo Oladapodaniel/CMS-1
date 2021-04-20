@@ -155,6 +155,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
+import router from '../../router/index';
 export default {
   components: { Dropdown },
   beforeRouteLeave() {
@@ -163,7 +164,7 @@ export default {
   },
 
   beforeRouteEnter() {
-    if (localStorage.getItem("token")) this.$router.push("/next")
+    if (localStorage.getItem("token")) router.push("/next")
     // return next(false);
   },
 
@@ -218,7 +219,7 @@ export default {
           console.log(typeof res.data.token, "token type")
           // this.$store.dispatch("setStartPoint", url)
           this.loading = false;
-          this.$router.push("/onboarding/step2");
+          router.push("/onboarding/step2");
         })
         .catch((err) => {
           /*eslint no-undef: "warn"*/
@@ -268,16 +269,6 @@ export default {
         ? this.userDetails.churchName
         : this.userDetails.churchName.slice(0, 20) + "...";
     },
-    // isValid() {
-    //   return (
-        // this.userDetails.firstName &&
-        // this.userDetails.lastName &&
-        // this.userDetails.phoneNumber
-        // this.userDetails.churchName 
-        // this.userDetails.churchSize &&
-        // this.selectedCountry.id
-    //   );
-    // },
     valid () {
       let regex  = /[0-9]{11}/
       return regex.test(this.userDetails.phoneNumber)
@@ -297,27 +288,15 @@ export default {
       })
 
       if (this.searchText)  return codeFlag.filter(i => i.phoneCode && i.phoneCode.includes(this.searchText.toLowerCase()) || i.phoneCode && i.name.toLowerCase().includes(this.searchText.toLowerCase()))
-      // codeFlag.filter(i => console.log(i.name.toLowerCase()))
       
-      // } else {
-      //   cook = this.countries.filter(i => {
-      //     if (i.phone){
-      //       return i.phoneCode.includes(this.searchText)
-      //     }
-      //   })
-      // }
-      // console.log(cook)
       return codeFlag
         
     },
-    // searchCode () {
-    //  
-    //   } 
     
   },
 
   beforeCreate() {
-    if (!localStorage.getItem("email")) this.$router.push("/");
+    if (!localStorage.getItem("email")) router.push("/");
   },
  
   created() {
