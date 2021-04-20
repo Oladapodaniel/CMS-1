@@ -5,11 +5,11 @@ export default {
     namespaced: true,
 
     state: {
-        allSentSMS: [ ],
-        smsReplies: [ ],
-        smsDrafts: [ ],
-        emailDrafts: [ ],
-        sentEmails: [ ],
+        allSentSMS: [],
+        smsReplies: [],
+        smsDrafts: [],
+        emailDrafts: [],
+        sentEmails: [],
         addSmsToSentList: {},
         addToSentEmail: {},
     },
@@ -36,9 +36,9 @@ export default {
         },
 
         setEmailDrafts(state, payload) {
-            state.emailDrafts =  payload;
+            state.emailDrafts = payload;
         },
-        addSmsToSentList(state,payload) {
+        addSmsToSentList(state, payload) {
             // state.addSmsToSentList = payload
             state.allSentSMS.unshift(payload)
         },
@@ -49,32 +49,57 @@ export default {
         },
         removeSentSMS(state, payload) {
             const x = state.allSentSMS.findIndex(i => i.id === payload);
-            if (x >= 0)  {
+            if (x >= 0) {
                 state.allSentSMS.splice(x, 1);
+            }
+        },
+        removeSentReplies(state, payload) {
+            const b = state.smsReplies.findIndex(i => i.id === payload);
+            if (b >= 0) {
+                state.smsReplies.splice(b, 1)
+            }
+        },
+        removeSmsDrafts(state, payload) {
+            const d = state.smsDrafts.findIndex(i => i.id === payload);
+            if (d >= 0) {
+                state.smsDrafts.splice(d, 1)
+            }
+        },
+        removeEmailDrafts(state, payload) {
+            const m = state.emailDrafts.findIndex(i => i.id === payload);
+            if (m >= 0) {
+                state.emailDrafts.splice(m, 1)
+            }
+        },
+
+        removeSentEmails(state, payload) {
+            const s = state.sentEmails.findIndex(i => i.id === payload);
+            if (s >= 0) {
+                state.sentEmails.splice(s, 1)
             }
         }
     },
 
     actions: {
         setAllSentSMS({ commit }, payload) {
-          commit("setAllSentSMS", payload)
+            commit("setAllSentSMS", payload)
         },
 
         setSMSReplies({ commit }, payload) {
-          commit("setAllSentSMS", payload)
+            commit("setAllSentSMS", payload)
         },
 
         setSMSDrafts({ commit }, payload) {
-          commit("setSMSDrafts", payload)
+            commit("setSMSDrafts", payload)
         },
 
         addDraft({ commit }, payload) {
-          commit("addDraft", payload)
+            commit("addDraft", payload)
         },
         addSmsToSentList({ commit }, payload) {
             commit("addSmsToSentList", payload)
         },
-        addToSentEmail ( { commit }, payload) {
+        addToSentEmail({ commit }, payload) {
             commit("addToSentEmail", payload)
             // console.log(payload)
         },
@@ -127,10 +152,24 @@ export default {
 
         removeSentSMS({ commit }, payload) {
             commit("removeSentSMS", payload);
-        }
-      },
+        },
 
-      getters: {
+        removeSentReplies({ commit }, payload) {
+            commit("removeSentReplies", payload)
+        },
+
+        removeSmsDrafts({ commit }, payload) {
+            commit("removeSmsDrafts", payload)
+        },
+        removeEmailDrafts({ commit }, payload) {
+            commit("removeEmailDrafts", payload)
+        },
+        removeSentEmails({ commit }, payload) {
+            commit("removeSentEmails", payload)
+        }
+    },
+
+    getters: {
         allSentSMS: state => state.allSentSMS,
         getById: (state) => (id) => state.allSentSMS.find(i => i.id === id),
         smsReplies: state => state.smsReplies,
@@ -140,5 +179,5 @@ export default {
         getEmailDraftById: state => id => state.emailDrafts.find(i => i.id === id),
         addSmsToSentList: state => state.addSmsToSentList,
         addToSentEmail: state => state.addToSentEmail
-      },
+    },
 }

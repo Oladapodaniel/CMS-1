@@ -42,13 +42,20 @@
                   </div> -->
                 </div>
               </div>
-
+              <i
+                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                style="font-size: 15px"
+                v-if="marked.length > 0"
+                @click="showConfirmModal"
+              >
+              </i>
               <div class="row table-box mb-4">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12">
                       <div class="row light-grey-bg">
-                        <div class="col-md-1">
+                        <div class="col-md-1"
+                        v-if="sentSMS.length > 0">
                           <input
                             type="checkbox"
                             name="all"
@@ -59,13 +66,6 @@
                         </div>
                         <div class="col-md-7 d-flex align-items-center">
                           <span class="th">Message</span>
-                          <i
-                            class="pi pi-trash text-danger c-pointer d-flex align-items-center px-4"
-                            style="font-size: 15px"
-                            v-if="marked.length > 0"
-                            @click="showConfirmModal"
-                          >
-                          </i>
                         </div>
                         <div class="col-md-2">
                           <span class="th"
@@ -215,7 +215,7 @@
                       </div>
                     </div>
                   </div>
-                  <ConfirmDialog></ConfirmDialog>
+                  <ConfirmDialog/>
                   <Toast />
                   <div class="row" v-if="sentSMS.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
@@ -262,7 +262,6 @@ import PaginationButtons from "../../components/pagination/PaginationButtons";
 import Tooltip from "primevue/tooltip";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
-// import finish from '../../services/progressbar/progress'
 
 export default {
   components: { UnitsArea, PaginationButtons },
@@ -373,6 +372,7 @@ export default {
       });
     };
 
+    // code to mark single item in draft
     const marked = ref([]);
     const mark1Item = (messageid) => {
       const msgIndex = marked.value.findIndex((i) => i.id === messageid.id);
@@ -384,6 +384,7 @@ export default {
       console.log(marked.value, "tosin");
     };
 
+    // code to mark multiple item item in draft
     const markAllItem = () => {
       if (marked.value.length < sentSMS.value.length) {
         sentSMS.value.forEach((i) => {
@@ -398,13 +399,14 @@ export default {
       console.log(marked.value, "I am awesome");
     };
 
+// Function to delete sent sms
     const convert = (x) => {
       console.log(x, "tosin");
       return x.map((i) => i.id).join(",");
     };
     const deleteSingleItem = () => {
       let bail = convert(marked.value);
-      console.log(bail);
+      console.log(bail, "tosin");
       axios
         .delete(`/api/Messaging/DeleteSentSMS?SentSMSIdList=${bail}`)
         .then((res) => {
@@ -415,21 +417,19 @@ export default {
             return true;
           });
 
-
           toast.add({
             severity: "success",
             summary: "Confirmed",
             detail: "SMS Deleted",
             life: 3000,
           });
-          marked.value.forEach(i => {
+          marked.value.forEach((i) => {
             store.dispatch("communication/removeSentSMS", i.id);
-          })
+          });
           marked.value = [];
         })
         .catch((err) => {
-          // finish()
-           stopProgressBar();
+          stopProgressBar();
           toast.add({
             severity: "error",
             summary: "Delete Error",
