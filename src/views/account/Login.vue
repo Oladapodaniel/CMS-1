@@ -52,6 +52,7 @@
              <span>Sign in with Facebook</span>
              <span></span>
           </button>
+          <button @click="facebookLogin">Facebook</button>
         </div>
 
       </div>
@@ -149,53 +150,29 @@ export default {
             loginFacebook.value.click()
       }
 
-    
-
-
-        // const handleSdkInit = () => {
-        //   FB.value = FB
-        //   scope.value = scope
-        // }
-
-//       const checkLoginState = () => {
-// /*eslint no-undef: "warn"*/
-//               FB.getLoginStatus(function (response) {
-//                   // $("#authstatus").html("<code>" + response + "</code>");
-//                   // console.log(response)
-//                   // fetch('https://churchplusv3coreapi.azurewebsites.net/api/People/GetMembershipSummary')
-//                   //   .then(response => response.json())
-//                   //   .then(data => console.log(data));
-//                   // fetch('https://churchplusv3coreapi.azurewebsites.net/api/People/GetMembershipSummary', {
-//                   //       method: 'post',
-//                   //       files: {}
-//                   //     }).then(function(res) {
-//                   //       return res.json();
-//                   //     }).then(function(data) {
-//                   //       console.log(data)
-//                   //       // ChromeSamples.log('Created Gist:', data.html_url);
-//                   //     })
-//                   let token = {
-//                     accessToken: response.authResponse.accessToken
-//                   }
-//                   console.log(response.authResponse.accessToken)
-//                   axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
-//                     .then(res => {
-//                       console.log(res.data)
-//                       if (res.data.isOnboarded) {
-//                         localStorage.setItem("email", res.data.username)
-//                         localStorage.setItem("token", res.data.token);
-//                         window.location.href = "/tenant";
-//                       } else {
-//                         localStorage.setItem("email", res.data.username)
-//                         localStorage.setItem("token", res.data.token);
-//                         window.location.href = "/onboarding";
-//                       }
-                      
-//                     })
-//                       .catch(err => console.log(err))
-//               });
-//               // statusChangeCallback(response);
-//       }
+      const facebookLogin = () => {
+        FB.login(function(response) {
+          console.log(response, "facebook");
+          let token = {
+          accessToken: response.authResponse.accessToken
+        }
+        console.log(response.authResponse.accessToken)
+        axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
+          .then(res => {
+            console.log(res.data)
+            if (res.data.isOnboarded) {
+              localStorage.setItem("email", res.data.username)
+              localStorage.setItem("token", res.data.token);
+              window.location.href = "/tenant";
+            } else {
+              localStorage.setItem("email", res.data.username)
+              localStorage.setItem("token", res.data.token);
+              window.location.href = "/onboarding";
+            }
+          })
+          .catch(err => console.log(err))
+        }, {scope: 'user_birthday'});
+      }
 
       return {
         state,
@@ -204,7 +181,7 @@ export default {
         itemSelected,
         loginWithFacebook,
         loginFacebook,
-        // checkLoginState
+        facebookLogin,
       };
     }
 };
