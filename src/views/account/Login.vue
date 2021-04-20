@@ -168,7 +168,7 @@ export default {
             } else {
               console.log(res, "our data")
               localStorage.setItem("email", res.data.username)
-              localStorage.setItem("token", res.data.token);
+              // localStorage.setItem("token", res.data.token);
               router.push("/onboarding");
             }
             console.log(res, "our data")

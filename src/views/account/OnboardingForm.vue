@@ -155,6 +155,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
+import router from '../../router/index';
 export default {
   components: { Dropdown },
   beforeRouteLeave() {
@@ -163,7 +164,7 @@ export default {
   },
 
   beforeRouteEnter() {
-    if (localStorage.getItem("token")) this.$router.push("/next")
+    if (localStorage.getItem("token")) router.push("/next")
     // return next(false);
   },
 
@@ -218,7 +219,7 @@ export default {
           console.log(typeof res.data.token, "token type")
           // this.$store.dispatch("setStartPoint", url)
           this.loading = false;
-          this.$router.push("/onboarding/step2");
+          router.push("/onboarding/step2");
         })
         .catch((err) => {
           /*eslint no-undef: "warn"*/
@@ -317,7 +318,7 @@ export default {
   },
 
   beforeCreate() {
-    if (!localStorage.getItem("email")) this.$router.push("/");
+    // if (!localStorage.getItem("email")) router.push("/");
   },
  
   created() {
