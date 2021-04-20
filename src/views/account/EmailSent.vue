@@ -12,6 +12,7 @@
             <p>We have sent an email with a link to reset your password to <span class="primary-text font-weight-bold">{{ email }}</span>.</p>
             <p class="contact-us">If you don't receive the email, check your spam folder or <a href="" class="contact-link">contact us</a></p>
             <p class="or-reset">Or try password reset using a different email address.</p>
+            <router-link to="/" class="text-decoration-none primary-bg default-btn font-weight-700 text-white border-0 c-pointer">Login</router-link>
         </div>
       </div>
     </div>
