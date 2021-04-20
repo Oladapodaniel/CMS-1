@@ -68,7 +68,7 @@
             <div class="top-con">
               <div class="table-top my-4 px-4">
         <div class="select-all">
-          <input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/>
+          <input type="checkbox" name="all" id="all" @click="toggleSelect"/>
           <label>SELECT ALL</label>
         </div>
         <div class="filter">
@@ -86,7 +86,7 @@
             :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
           >
             <input type="text" placeholder="Search..." v-model="searchText" />
-            <span class="empty-btn">x</span>
+            <span class="empty-btn" @click="clearInput"><i class="pi pi-times"></i></span>
             <span class="search-btn">
               <i class="fa fa-search"></i>
             </span>
@@ -108,29 +108,10 @@
                   <input
                     type="text"
                     class="input w-100"
-                    placeholder="First Name"
-                    v-model="filter.filterFirstName"
+                    placeholder="Name"
+                    v-model="filter.name"
                   />
                   <!-- </div> -->
-                </div>
-
-                <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                  <input
-                    type="date"
-                    class="form-control input inp w-100"
-                    v-model="filter.filterDate"
-                  />
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                  <input
-                    type="text"
-                    class="input w-100"
-                    placeholder="Last Name"
-                    v-model="filter.filterLastName"
-                  />
                 </div>
 
                 <div class="col-12 col-sm-6 form-group d-none d-md-block">
@@ -141,6 +122,21 @@
                     v-model="filter.phoneNumber"
                   />
                 </div>
+
+             
+              </div>
+
+              <div class="row">
+                <!-- <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                  <input
+                    type="text"
+                    class="input w-100"
+                    placeholder="Last Name"
+                    v-model="filter.filterLastName"
+                  />
+                </div> -->
+
+                
               </div>
             </div>
 
@@ -174,9 +170,9 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody v-if="filterResult.length > 0 && ( filter.filterFirstName || filter.filterLastName || filter.phoneNumber )">
-              <tr v-for="person in filterResult" :key="person.id">
-                  <td><input type="checkbox" name="all" id="all" v-model="selectAll" @click="toggleSelect"/></td>
+              <tbody>
+              <tr v-for="person in searchMember" :key="person.id">
+                  <td><input type="checkbox" name="all" id="all" @click="toggleSelect"/></td>
                   <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}</router-link></td>
                   <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
                   <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.howDidYouAboutUsName }}</router-link></td>
@@ -210,7 +206,7 @@
                   </td>
                 </tr>
                 </tbody>
-                <tbody v-else-if="filterResult.length == 0 && noRecords">
+                <!-- <tbody v-else-if="filterResult.length == 0 && noRecords">
                   <tr>
                     <td></td>
                     <td></td>
@@ -221,9 +217,9 @@
                     <td></td>
                     <td></td>
                   </tr>
-                </tbody>
+                </tbody> -->
               
-              <tbody v-else-if="searchMember.length > 0">
+              <!-- <tbody v-else-if="searchMember.length > 0">
                 <tr v-for="person in searchMember" :key="person.id">
                   <td><input type="checkbox" name="all" id="all" @click="toggleSelect"/></td>
                   <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName }}</router-link></td>
@@ -259,7 +255,7 @@
                   </td>
                 
               </tr>
-              </tbody>
+              </tbody> -->
               
             </table>
             </div>
@@ -330,8 +326,10 @@ export default {
       const searchMember = computed(() => {
         if (searchText.value !== "") {
           return churchMembers.value.filter(i => {
-            return i.fullName.toLowerCase().includes(searchText.value.toLowerCase())
+            return `${i.fullName}${i.phoneNumber}`.toLowerCase().includes(searchText.value.toLowerCase())
           })
+        } else if (filterResult.value.length > 0 && (filter.value.name || filter.value.phoneNumber )) {
+          return filterResult.value
         } else {
           return churchMembers.value
         }
@@ -411,11 +409,10 @@ export default {
     });
 
     const applyFilter = () => {
-        filter.value.filterFirstName = filter.value.filterFirstName == undefined ? "" : filter.value.filterFirstName
-        filter.value.filterLastName = filter.value.filterLastName == undefined ? "" : filter.value.filterLastName
+        filter.value.name = filter.value.name == undefined ? "" : filter.value.name
         filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
     
-         let url = "/api/People/FilterMembers?firstname="+filter.value.filterFirstName +"&lastname="+filter.value.filterLastName +"&phone_number="+ filter.value.phoneNumber +"&page=1"
+         let url = "/api/People/FilterFirstTimers?firstname=" + filter.value.name + "&lastname="+ filter.value.name +"&phone_number="+ filter.value.phoneNumber +"&page=1"
       axios.get(url).then((res) => {
         noRecords.value = true
         filterResult.value = res.data
@@ -446,6 +443,10 @@ export default {
       }
     };
 
+    const  clearInput = () => {
+      searchText.value = ""
+    }
+
     return {
       churchMembers,
       filterFormIsVissible,
@@ -465,7 +466,8 @@ export default {
       deleteMember,
       membersCount,
       currentPage,
-      getPeopleByPage
+      getPeopleByPage,
+      clearInput
     };
   },
 };
@@ -627,7 +629,7 @@ export default {
 }
 
 .filter-options-shown {
-  height: 120px !important;
+  height: 80px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
