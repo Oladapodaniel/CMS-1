@@ -94,7 +94,7 @@
         </div>
 
         <div>
-          <button class="facebook-btn btn-logo sign-in-btn">
+          <button class="facebook-btn btn-logo sign-in-btn" @click="facebookRegister">
             <img
               src="../../assets/facebook-small.png"
               class="fb-icon"
@@ -127,7 +127,7 @@
               <!-- <router-link to="/" class="sign-up"><strong> Sign in now</strong></router-link> -->
             </p>
           </div>
-          <a
+          <!-- <a
             class="fb-login-button"
             id="fb"
             data-width="380px"
@@ -140,7 +140,7 @@
             data-use-continue-as="false"
             ref="loginFacebook"
             style="margin-top: 10px"
-          ></a>
+          ></a> -->
         </div>
       </div>
     </div>
@@ -216,6 +216,27 @@ export default {
           }
         });
     },
+
+    facebookRegister() {
+        FB.login(function(response) {
+          let token = {
+          accessToken: response.authResponse.accessToken
+        }
+        axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
+          .then(res => {
+            if (res.data.isOnboarded) {
+              localStorage.setItem("email", res.data.username)
+              localStorage.setItem("token", res.data.token);
+              router.push("/tenant");
+            } else {
+              localStorage.setItem("email", 'gstargerrald@ovi.com')
+              // localStorage.setItem("token", res.data.token);
+              router.push("/onboarding");
+            }
+          })
+          .catch(err => console.log(err))
+        }, {scope: 'user_birthday'});
+      },
 
     async resetPassword() {
       try {
