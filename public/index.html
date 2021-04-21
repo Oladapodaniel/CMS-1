@@ -207,7 +207,8 @@
             } else {
               localStorage.setItem("email", res.data.username)
               localStorage.setItem("pretoken", res.data.token)
-              window.location.href = "/onboarding";
+              console.log(res, "index");
+              if (res.data.username) window.location.href = "/onboarding";
             }
 
           })

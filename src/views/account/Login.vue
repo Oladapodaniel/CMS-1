@@ -162,9 +162,10 @@ export default {
               localStorage.setItem("token", res.data.token);
               router.push("/tenant");
             } else {
+              console.log(res, "login");
               localStorage.setItem("email", res.data.username)
               localStorage.setItem("pretoken", res.data.token)
-              router.push("/onboarding");
+              if (res.data.username) router.push("/onboarding");
             }
           })
           .catch(err => console.log(err))
