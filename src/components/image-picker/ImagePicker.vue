@@ -16,13 +16,22 @@
           </div>
         </div>
 
+        <div class="row py-5" v-if="loading">
+            <div class="col-md-12 text-center">
+                <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
+            </div>
+        </div>
+
         <div class="row d-flex flex-wrap py-4" v-if="!willUpload">
           <div class="col-sm-4 my-2" v-for="(image, index) in gallery" :key="index" style="max-height: 200px" @click="uploaded(true, image)">
               <div class="row">
-                  <div class="col-md-11 mx-auto c-pointer">
+                  <div class="col-md-11 mx-auto c-pointer img-box">
                       <img :src="image" style="height:100%;width:100%" alt="">
                   </div>
               </div>
+          </div>
+          <div class="col-md-12 text-center" v-if="gallery.length === 0 && !loading">
+            <p class="py-3 font-weight-700">No images found</p>
           </div>
         </div>
 
@@ -35,6 +44,10 @@
             </div>
         </div>
       </div>
+
+      <div class="col-md-12 d-flex justify-content-end py-2" v-if="!loading && gallery.length > 0">
+        <Pagination :itemsCount="50" :currentPage="currentPage" @getcontent="getImagesByPage" />
+      </div>
     </div>
   </div>
 </template>
@@ -42,23 +55,42 @@
 <script>
 import { ref } from '@vue/reactivity';
 import media_service from '../../services/media/media_service';
+import Pagination from "../pagination/PaginationButtons";
+
 export default {
+  components: { Pagination },
     setup(props, { emit }) {
         const fileInput = ref(null);
         const file = ref("");
         const willUpload = ref(false);
+        const loading = ref(true);
 
+        const currentPage = ref(0)
         const gallery = ref([])
-        const getImages = async () => {
+        const getImagesByPage = async (page) => {
             try {
-                const response = await media_service.getImageGallery();
-                gallery.value = response.splice(0, 50);
-                console.log(response, "IMAGES");
+              const response = await media_service.getImageGallery(page);
+              loading.value = false;
+              if (response.length > 0) {
+                gallery.value = response;
+                currentPage.value = page;
+              }
             } catch (error) {
+              loading.value = false;
                 console.log(error);
             }
         }
-        getImages();
+        const getImages = async (page) => {
+            try {
+              const response = await media_service.getImageGallery(page);
+              loading.value = false;
+              gallery.value = response;
+            } catch (error) {
+              loading.value = false;
+                console.log(error);
+            }
+        }
+        getImages(currentPage.value);
 
         const fileUrl = ref("");
         const fileSelected = (e) => {
@@ -92,6 +124,9 @@ export default {
             willUpload,
             uploaded,
             gallery,
+            loading,
+            currentPage,
+            getImagesByPage,
         }
     }
 };
@@ -111,5 +146,10 @@ export default {
     background: #e9eef0;
     cursor: pointer;
     border-radius: 15px 15px 0 0;
+}
+
+.img-box:hover {
+  /* border: 0.20000000298023224px solid #e9eef0; */
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
 }
 </style>

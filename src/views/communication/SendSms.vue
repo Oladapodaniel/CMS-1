@@ -54,13 +54,13 @@
       </div>
 
       <div class="row">
-        <div class="col-3 col-lg-2 align-self-center">
+        <div class="col-2 pr-md-0 col-lg-2 align-self-center">
           <span class="small-text">Send to : </span>
         </div>
-        <div class="col-9 col-lg-10 form-group mb-0">
+        <div class="col-10 pl-md-0 col-lg-10 form-group mb-0">
           <div class="dropdown">
             <button
-              class="btn btn-default dropdown-toggle small-text"
+              class="btn btn-default dropdown-toggle small-text pl-md-0"
               type="button"
               id="dropdownMenuButton"
               data-toggle="dropdown"
@@ -516,11 +516,11 @@
               data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
-          <button
-            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3"
+          <router-link to="/tenant/sms/sent"
+            class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
           >
             Discard
-          </button>
+          </router-link>
         </div>
 
         <div class="row">
@@ -684,6 +684,7 @@ import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
@@ -695,6 +696,7 @@ import moment from 'moment'
 export default {
   setup() {
     const toast = useToast();
+    const router = useRouter()
     const editor = ClassicEditor;
     const editorData = ref("");
     const editorConfig = {
@@ -845,46 +847,26 @@ export default {
         life: 2500,
       });
 
-      console.log(selectedMembers.value, "sm");
-      // const data = {
-      //   subject: subject.value,
-      //   message: editorData.value,
-      //   contacts: [],
-      //   // contacts: selectedMembers.value,
-      //   isPersonalized: isPersonalized.value,
-      //   groupedContacts: selectedGroups.value.map((i) => i.data),
-      //   toContacts: sendToAll.value ? "allcontacts" : "",
-      //   // toOthers: phoneNumber.value,
-      //   isoCode: isoCode.value,
-      //   // isoCode: "NG",
-      //   category: "",
-      //   emailAddress: "",
-      //   emailDisplayName: "",
-      //   gateWayToUse: gateway,
-      // };
-
-      // data.toOthers = phoneNumber.value;
-      // if (selectedMembers.value.length > 0) {
-      //   data.toOthers += data.toOthers.length > 0 ? "," : "";
-      //   data.toOthers += selectedMembers.value
-      //     .map((i) => {
-      //       if (i.phone) return i.phone;
-      //       return false;
-      //     })
-      //     .join();
-      // }
-
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
           // if (res.status === 200) {
-            if (res.status) {
+            if (res.data.message.includes("You do not have")) {
+              toast.add({
+              severity: "warn",
+              summary: "Insufficient Unit",
+              detail: `${res.data.message}`,
+              life: 6000,
+            });
+
+            
+            } else {
               toast.add({
               severity: "success",
-              summary: "Successful operation",
-              detail: "SMS was sent successfully",
-              life: 3000,
+              summary: "SMS Sent",
+              detail: `SMS Sent successfully`,
+              life: 6000,
             });
 
             store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
@@ -893,21 +875,16 @@ export default {
             console.log(res);
             // Save the res to store in other to get it in the view sent sms page
             let sentObj = {
-                message: res.message,
-                id: res.returnObjects[0].id,
-                smsUnitsUsed: res.unitsUsed,
-                dateSent: `Today | ${moment.parseZone(new Date(res.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}`,
-                deliveryReport: [{ report: res.messageStatus }]
+                message: res.data.message,
+                id: res.data.returnObjects ? res.data.returnObjects[0].id : [],
+                smsUnitsUsed: res.data.unitsUsed,
+                dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
+                deliveryReport: [{ report: res.data.messageStatus }]
               }
               console.log(sentObj)
               store.dispatch("communication/addSmsToSentList", sentObj)
-            } else {
-              toast.add({
-                severity: "error",
-                summary: "Message not sent",
-                detail: res.message,
-                life: 5000,
-              });
+              router.push({ name: "SentMessages" })
+
             }
             
           // } else if (typeof res === "object") {
@@ -932,14 +909,21 @@ export default {
               severity: "warn",
               summary: "You 're Offline",
               detail: "Please ensure you have internet access",
-              life: 2500,
+              life: 4000,
+            });
+          } else if (err.toString().toLowerCase().includes('timeout')) {
+            toast.add({
+              severity: "warn",
+              summary: "Request Delayed",
+              detail: "SMS took too long, please check your network and try again",
+              life: 4000,
             });
           } else {
             toast.add({
-              severity: "error",
+              severity: "warn",
               summary: "Failed operation",
               detail: "SMS sending failed, Please try again",
-              life: 2500,
+              life: 400,
             });
           }
         });
@@ -1196,7 +1180,8 @@ export default {
       nigerian,
       contructScheduleMessageBody,
       executionDate,
-      moment
+      moment,
+      isPersonalized,
     };
   },
 };

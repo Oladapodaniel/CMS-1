@@ -71,7 +71,9 @@
                 <span class="grey-text">Create </span>
                 <p>
                   <span class="dark-text">Created: </span>
-                  <span class="grey-text"> just a moment ago</span>
+                  <span class="grey-text"> just a moment ago 
+                    <!-- {{ moment(eventData.activity.date, "YYYYMMDD").fromNow() }} {{ moment().startOf('second').fromNow() }} -->
+                    </span>
                 </p>
               </div>
               <div
@@ -120,7 +122,7 @@
                         </a>
                       </div>
                       <div class="col-6">
-                        <a class="def-btn edit-btn">Get share link</a>
+                        <a class="def-btn edit-btn" @click="copyLink">Get share link</a>
                       </div>
                     </div>
                   </div>
@@ -135,6 +137,9 @@
                     >
                   </div>
                 </div>
+              </div>
+              <div class="col-md-12 pt-2" v-if="willCopyLink">
+                <input type="text" name="" @keydown="(e) => e.preventDefault()" @click="copyLink" class="form-control" :value="location" ref="shareableLinkField">
               </div>
             </div>
           </div>
@@ -156,7 +161,7 @@
           </span>
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve">{{ tottalOfferings }}</span>
+            <span class="recieve">{{ stats.tenantCurrencyName }}&nbsp;{{ stats.todayOffering }}</span>
           </span>
         </div>
       </div>
@@ -215,16 +220,16 @@
           <div class="row px-5">
             <div class="col-md-12">
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-10">
                   <span class="bold-700">Attendance Item</span>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-2">
                   <span class="bold-700">Count</span>
                 </div>
 
-                <div class="col-sm-3 text-sm-center">
+                <!-- <div class="col-sm-3 text-sm-center">
                   <span class="bold-700 fs-1 fw-bolder">Total</span>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -236,23 +241,23 @@
           <div class="row">
             <div
               class="col-sm-12 py-2"
-              v-for="(attendance, index) in eventData.attendances"
+              v-for="(attendance, index) in stats.activityAttendances"
               :key="index"
             >
               <div class="row px-5">
                 <div class="col-sm-12">
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-10">
                       <span class="bold-400">{{
                         attendance.attendanceTypeName
                       }}</span>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-2">
                       <span class="bold-400">{{ attendance.number }}</span>
                     </div>
-                    <div class="col-sm-3 text-sm-center">
+                    <!-- <div class="col-sm-3 text-sm-center">
                       <span class="bold-400">{{ attendance.number }}</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -265,71 +270,23 @@
           </div>
           <!-- tosin -->
 
-          <div class="col-sm-12">
-            <div class="row">
-              <div
-                class="col-sm-2 offset-sm-7 text-center">
-                <span class="bold-700">Total</span>
-              </div>
-              <div class="col-sm-2 offset-sm-1 pl-sm-0">
-                <span class="bold-700">{{ attendanceArr }}</span>
+          <!-- <div class="col-sm-12"> -->
+            <div class="row px-5">
+              <div class="col-sm-12">
+                <div class="row">
+                  <div class="col-sm-8"></div>
+                <div
+                  class="col-sm-2">
+                  <span class="bold-700">Total</span>
+                </div>
+                <div class="col-sm-1 ">
+                  <span class="bold-700">{{ attendanceArr }}</span>
+                </div>
+                </div>
               </div>
             </div>
-          </div>
+          <!-- </div> -->
 
-          <!-- <div class="row px-5">
-          <div class="col-sm-12">
-            <div class="row">
-              <div class="col-sm-4">
-                <span class="bold-700">Female</span>
-              </div>
-              <div class="col-sm-4">
-                <span class="bold-700">344</span>
-              </div>
-              <div class="col-sm-4 text-sm-center">
-                <span class="bold-700">344</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
-          <!-- <div class="row">
-          <div class="col-sm-12">
-            <hr class="hr" />
-          </div>
-        </div> -->
-          <!-- <div class="row px-5">
-          <div class="col-sm-12">
-            <div class="row">
-              <div class="col-sm-4">
-                <span class="bold-700">Children</span>
-              </div>
-              <div class="col-sm-4">
-                <span class="bold-700">1222</span>
-              </div>
-              <div class="col-sm-4 text-sm-center">
-                <span class="bold-700">1222</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
-          <!-- <div class="row">
-          <div class="col-sm-12">
-            <hr class="hr-dark" />
-          </div>
-        </div> -->
-          <!-- <div class="row px-5">
-          <div class="col-sm-12">
-            <div class="row">
-              <div class="col-sm-4"></div>
-              <div class="col-sm-4 text-sm-right">
-                <span class="bold-700">Total</span>
-              </div>
-              <div class="col-sm-4 text-sm-center">
-                <span class="bold-700">1689</span>
-              </div>
-            </div>
-          </div>
-        </div> -->
         </div>
       </div>
 
@@ -343,19 +300,19 @@
           <div class="row px-5">
             <div class="col-md-12">
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-5">
                   <span class="bold-700">Contribution Item</span>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-5">
                   <span class="bold-700">Channel</span>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                   <span class="bold-700">Amount</span>
                 </div>
 
-                <div class="col-sm-3 text-sm-center">
+                <!-- <div class="col-sm-3 text-sm-center">
                   <span class="bold-700 fs-1 fw-bolder">Total</span>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -366,25 +323,25 @@
           </div>
           <div
             class="row"
-            v-for="(offering, index) in eventData.offerings"
+            v-for="(offering, index) in stats.activityOfferings"
             :key="index"
           >
             <div class="col-md-12 py-2">
               <div class="row px-5">
                 <div class="col-sm-12">
                   <div class="row">
-                    <div class="col-sm-3">
-                      <span class="bold-400">{{ offering.name }}</span>
+                    <div class="col-sm-5">
+                      <span class="bold-400">{{ offering.contribution }}</span>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-5">
                       <span class="bold-400">{{ offering.channel }}</span>
                     </div>
-                    <div class="col-sm-3">
-                      <span class="bold-400">{{ offering.amount }}</span>
+                    <div class="col-sm-2">
+                      <span class="bold-400"><span class="bold-700">{{offering.currencyName}}</span>&nbsp; {{ offering.amount }}</span>
                     </div>
-                    <div class="col-sm-3 text-sm-center">
+                    <!-- <div class="col-sm-3 text-sm-center">
                       <span class="bold-400">{{ offering.amount }}</span>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -403,13 +360,12 @@
           <div class="row px-5" v-if="eventData.offerings.length > 0">
             <div class="col-sm-12">
               <div class="row">
-                <div class="col-sm-3"></div>
-                <div class="col-sm-3"></div>
-                <div class="col-sm-3 text-sm-right">
+                <div class="col-sm-8"></div>
+                <div class="col-sm-2">
                   <span class="bold-700">Total</span>
                 </div>
-                <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700">{{ tottalOfferings }}</span>
+                <div class="col-sm-2">
+                  <span class="bold-700">{{ stats.tenantCurrencyName }}&nbsp;{{ stats.todayOffering }}</span>
                 </div>
               </div>
             </div>
@@ -516,18 +472,32 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">First timers</p>
                       <p class="ana-item-percentage">
-                        {{ stats.lastWeekFirstTimer }}
+                        {{ stats.todayVsLastWeekFirstTimerPercentage ? stats.todayVsLastWeekFirstTimerPercentage.toFixed(2) : 0 }}%
                       </p>
                       <p>
-                        <span class="ana-item-value">Since last week</span>
+                        <span class="ana-item-value">{{
+                          stats.todayFirstTimer
+                        }}</span>
+                        vs
+                        <span class="ana-item-value">{{
+                          stats.lastWeekFirstTimer
+                        }}</span>
                       </p>
                     </div>
                     <div class="ana-item-icon">
                       <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
+                        <div v-if="stats.todayVsLastWeekFirstTimerPercentage < 0">
+                          <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                        <div v-else>
+                          <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -631,18 +601,34 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">First timers</p>
                       <p class="ana-item-percentage">
-                        {{ stats.lastMonthFirstTimer }}
+                        {{ todayVsLastMonthFirstTimerPercentage ? todayVsLastMonthFirstTimerPercentage.toFixed(2) : 0 }}%
                       </p>
                       <p>
-                        <span class="ana-item-value">Since last month</span>
+                        <span class="ana-item-value">{{
+                          stats.todayFirstTimer
+                        }}</span>
+                        vs
+                        <span class="ana-item-value">{{
+                          stats.lastMonthFirstTimer
+                        }}</span>
                       </p>
                     </div>
                     <div class="ana-item-icon">
                       <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
+                        <div
+                          v-if="stats.todayVsLastMonthFirstTimerPercentage < 0"
+                        >
+                          <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                        <div v-else>
+                          <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -742,18 +728,32 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">First timers</p>
                       <p class="ana-item-percentage">
-                        {{ stats.lastYearFirstTimer }}
+                        {{ todayVsLastYearFirstTimerPercentage ? todayVsLastYearFirstTimerPercentage.toFixed(2) : 0 }}%
                       </p>
                       <p>
-                        <span class="ana-item-value">Since last year</span>
+                        <span class="ana-item-value">{{
+                          stats.todayFirstTimer
+                        }}</span>
+                        vs
+                        <span class="ana-item-value">{{
+                          stats.lastYearFirstTimer
+                        }}</span>
                       </p>
                     </div>
                     <div class="ana-item-icon">
                       <div class="item-image">
-                        <img
-                          src="../../assets/dashboardlinks/trend-icon.svg"
-                          alt=""
-                        />
+                        <div v-if="stats.todayVsLastYearFirstTimerPercentage < 0">
+                          <img
+                            src="../../assets/dashboardlinks/negative-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                        <div v-else>
+                          <img
+                            src="../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -836,6 +836,7 @@
                 <ReportModal
                   :eventName="eventDataResponse.name"
                   @sendreport="sendReport"
+                  :stats="stats"
                 />
               </div>
               <!-- <div class="modal-footer">
@@ -1083,6 +1084,7 @@ import composerObj from "../../services/communication/composer";
 import stopProgressBar from "../../services/progressbar/progress";
 // import EventReportStats from "@/components/eventreports/EventReportStats";
 import { useToast } from "primevue/usetoast";
+import moment from "moment";
 
 export default {
   components: { ReportAreaChart, ReportModal },
@@ -1155,7 +1157,6 @@ export default {
     }
 
     const sendReport = (messageObj) => {
-      console.log(messageObj, "Message body");
       const emailData = ref(emaildata.value.innerHTML);
       const message = `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -1184,7 +1185,7 @@ export default {
                   </head>
                   <body style="-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; background: #f6f6f6; box-sizing: border-box; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; height: 100%; line-height: 1.6; margin: 0; padding: 0; width: 100% !important;">
                   
-                  ${messageObj.data.message} <br>
+                  ${`${messageObj.data.message}`} <br>
 
                   ${emailData.value}
                   </body>
@@ -1192,10 +1193,19 @@ export default {
       const body = {
         // message: topmost.value.innerHTMl.toString(),
         
-        ispersonalized: true,
+        ispersonalized: false,
         contacts: messageObj.data.contacts,
         subject: messageObj.data.subject,
+        // user: "+2349086767765",
       };
+      if (messageObj.medium === "sms") {
+        body.gateWayToUse = 'hostedsms';
+        body.category = '';
+        body.emailAddress = '';
+        body.emailDisplayName = '';
+        body.isoCode = messageObj.data.isoCode;
+        body.toOthers = messageObj.data.toOthers;
+      }
 
       body.message = messageObj.medium === "sms" ? messageObj.data.message : message;
 
@@ -1236,6 +1246,32 @@ export default {
       btnState.value = "modal";
     };
 
+    const willCopyLink = ref(false);
+    const shareableLinkField = ref(null);
+    const location = ref(window.location);
+    const copyLink = () => {
+      try {
+        willCopyLink.value = true;
+        const a = shareableLinkField.value;
+        a.select();
+        a.setSelectionRange(
+          0,
+          200
+        ); /* For mobile devices */
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+        toast.add({
+          severity: "info",
+          summary: "Link Copied",
+          detail: "Shareable link copied to your clipboard",
+          life: 3000,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     onMounted(async () => {
       activityId.value = route.params.id;
       url.value = `my.churchplus.co/tenant/report/${activityId.value}`;
@@ -1249,6 +1285,7 @@ export default {
           `/api/Events/GetAnalysis?activityId=${activityId.value}`
         );
         stats.value = res.data;
+        console.log(stats.value)
       } catch (err) {
         console.log(err.response);
       }
@@ -1276,7 +1313,12 @@ export default {
       btnState,
       emaildata,
       url,
-      activityId
+      activityId,
+      moment,
+      copyLink,
+      location,
+      shareableLinkField,
+      willCopyLink,
     };
   },
 };

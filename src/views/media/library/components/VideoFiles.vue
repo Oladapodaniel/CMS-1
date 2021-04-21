@@ -14,6 +14,9 @@
                     </router-link>
                 </div>
             </div>
+            <div class="col-md-12 text-center" v-if="files && files.length === 0">
+                <p class="py-3 font-weight-700">No files found</p>
+            </div>
         </div>
     </div>
 </template>

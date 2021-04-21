@@ -1,16 +1,31 @@
 <template>
  <div class="row">
-          <div class="col-12 table">
-            <div class="top-con">
+          <div class="col-12 table" id="table">
+            <div class="top-con" id="ignore2">
               <div class="table-top my-4 px-4">
                 <div class="select-all"></div>
+                <div class="filter" @click="printJS({ 
+                  ignoreElements: ['ignore1', 'ignore2'], 
+                  maxWidth: 867, 
+                  header: 'CONTRIBUTION TRANSACTIONS', 
+                  printable: printContribution, 
+                  properties: ['DATE', 'EVENT','CONTRIBUTION', 'AMOUNT', 'DONOR'], 
+                  type: 'json', 
+                  headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
+                  gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
+                  gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' })">
+                  <p class="mt-2">
+                    <i class="fa fa-print"></i>
+                    PRINT
+                  </p>
+                </div>
                 <div class="filter">
                   <p @click="toggleFilterFormVissibility" class="mt-2">
                     <i class="fas fa-filter"></i>
                     FILTER
                   </p>
                 </div>
-                <p @click="toggleSearch" class="search-text text-right mt-2">
+                <p @click="toggleSearch" class="search-text mt-2">
                   <i class="fa fa-search"></i> SEARCH
                 </p>
                 <div class="search d-flex ml-2">
@@ -34,6 +49,7 @@
             <div
               class="filter-options"
               :class="{ 'filter-options-shown': filterFormIsVissible }"
+              id="ignore1"
             >
               <div class="container-fluid">
                 <div class="row">
@@ -102,20 +118,21 @@
             </div>
 
            
-            <div class="row table-header">
-                <div class="col-sm-3 d-none d-sm-block">
+            <!-- <div id="table"> -->
+              <div class="row table-header">
+                <div class="col-sm-2 d-none d-sm-block">
                     DATE
                 </div>
-                    <div class="col-sm-2 d-none d-sm-block">
+                    <div class="col-sm-3 d-none d-sm-block">
                     EVENT
                 </div>
-                    <div class="col-sm-2 d-none d-sm-block">
+                    <div class="col-sm-3 d-none d-sm-block">
                     CONTRIBUTION
                 </div>
                     <div class="col-sm-2 d-none d-sm-block">
                     AMOUNT
                 </div>
-                    <div class="col-sm-2 d-none d-sm-block" >
+                    <div class="col-sm-1 d-none d-sm-block" >
                     DONOR
                 </div>
             </div>
@@ -140,19 +157,19 @@
             </div>
             <div class="col-6 col-sm-12">
                 <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-2">
                     <div>{{ date(offering.date) }}</div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                      <div>{{ offering.eventName ? offering.eventName : "Online Giving" }}</div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                      <div>{{ offering.contribution }}</div>
                 </div>
                 <div class="col-sm-2">
                      <div class="d-flex"> <div class="currency" v-if="offering.currencyName">{{ offering.currencyName }}</div><div class="align-self-center ml-2" style="font-weight: 800;">{{ offering.amount }}</div></div>
                 </div>
-                <div class="col-sm-2" >
+                <div class="col-sm-1" >
                      <div>{{ offering.donor }}</div>
                 </div>
                 <div class="col-sm-1">
@@ -182,6 +199,7 @@
           
                 </div>
             </div>
+            <!-- </div> -->
             <div class="col-12">
                     <div class="table-footer">
                       <Pagination  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
@@ -209,6 +227,7 @@ import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import finish from '../../../services/progressbar/progress'
 import monthDayYear from '../../../services/dates/dateformatter'
+import printJS from 'print-js'
 
 export default {
   props: ["contributionTransactions"],
@@ -266,6 +285,19 @@ export default {
       }
     });
 
+    const printContribution = computed(() => {
+      if (props.contributionTransactions.length === 0) return []
+      return props.contributionTransactions.map(i => {
+        return {
+          DATE: monthDayYear.monthDayYear(i.eventDate),
+          EVENT: i.eventName,
+          CONTRIBUTION: i.contribution,
+          AMOUNT: i.amount,
+          DONOR: i.donor ? i.donor : ""
+        }
+      })
+    })
+
     const deleteOffering = (id, index) => {
 
       axios
@@ -276,7 +308,7 @@ export default {
             toast.add({
             severity: "success",
             summary: "Delete Successful",
-            detail: `Contribution Trasaction Deleted`,
+            detail: `Contribution Transaction Deleted`,
             life: 3000,
           });
           emit('contri-transac', index)
@@ -420,7 +452,9 @@ export default {
       offeringCount,
       currentPage,
       getPeopleByPage,
-      date
+      date,
+      printJS,
+      printContribution
     };
   },
 };

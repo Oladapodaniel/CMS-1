@@ -54,7 +54,8 @@
                 <label for="">Cover photo</label>
             </div>
             <div class="col-md-5">
-                <input type="file" name="" class="form-control" id="" @change="coverUploaded">
+                <button class="cover-picker" @click="() => showImagePicker = !showImagePicker">{{ cover && cover.name ? cover.name : uploadData.mediaFileImageUrl ? uploadData.mediaFileImageUrl : "Choose cover image"}}</button>
+                <!-- <input type="file" name="" class="form-control" id="" @change="coverUploaded"> -->
             </div>
             <div class="col-md-3"></div>
         </div>
@@ -105,13 +106,22 @@
             <div class="col-md-4 text-md-right">
             </div>
             <div class="col-md-5 text-center">
-                <button class="default-btn primary-bg text-white border-0 mt-4" @click="uploadFile" :disabled="!file">Upload</button>
+                <button class="default-btn primary-bg text-white border-0 mt-4" @click="uploadFile" :disabled="!file || !uploadData.type">Upload</button>
             </div>
             <div class="col-md-3"></div>
         </div>
         <Toast />
         <Dialog header="Header" v-model:visible="display"  :modal="true">
             <ProgressBar :value="percentCompleted" style="max-width: 600px;width: 100%;min-width:400px" />
+        </Dialog>
+        <Dialog
+            header="Image Picker"
+            v-model:visible="showImagePicker"
+            :style="{ width: '70vw', maxWidth: '600px' }"
+            :modal="true"
+            position="top"
+        >
+            <ImagePicker @uploaded="imageSelected" />
         </Dialog>
     </div>
 </template>
@@ -127,9 +137,10 @@ import axios from "@/gateway/backendapi";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import ProgressBar from 'primevue/progressbar';
+import ImagePicker from "../../../components/image-picker/ImagePicker";
 
     export default {
-        components: { Dropdown, Checkbox, Dialog, ProgressBar },
+        components: { Dropdown, Checkbox, Dialog, ProgressBar, ImagePicker },
 
         setup() {
             const store = useStore();
@@ -158,11 +169,8 @@ import ProgressBar from 'primevue/progressbar';
             const percentCompleted = ref(0)
             const uploadFile = () => {
                 const formData = new FormData();
-                console.log(tenantId);
-                console.log(uploadData.value);
-                console.log(uploadData.value.isFree, "is free");
-
                 formData.append("mediaFileImage", cover.value ? cover.value : "");
+                formData.append("mediaFileImageUrl", uploadData.value.mediaFileImageUrl ? uploadData.value.mediaFileImageUrl : "");
                 formData.append("mediaFile", file.value ? file.value : "");
                 formData.append("name", uploadData.value.name ? uploadData.value.name : "");
                 formData.append("mediaType", uploadData.value.type ? mediaTypes.indexOf(uploadData.value.type) : "");
@@ -182,9 +190,9 @@ import ProgressBar from 'primevue/progressbar';
                     }
                 )
                     .then(res => {
-                        console.log(res, "uploaded");
                         toast.add({severity:'success', summary:'File Uploaded', detail:'Your file was uploaded successfully', life: 3000});
                         display.value = false;
+                        console.log(res);
                     })
                     .catch(err => {
                         toast.add({severity:'error', summary:'Upload Failed', detail:'The file upload failed, please reload and try again', life: 3000});
@@ -207,6 +215,17 @@ import ProgressBar from 'primevue/progressbar';
                 getTenantId();
             }
 
+            const showImagePicker = ref(false);
+
+            const imageSelected = (e) => {
+                if (e.isUrl) {
+                    uploadData.value.mediaFileImageUrl = e.data;
+                } else {
+                    cover.value = e.data;
+                }
+                showImagePicker.value = false;
+            }
+
             return {
                 mediaTypes,
                 uploadData,
@@ -217,6 +236,9 @@ import ProgressBar from 'primevue/progressbar';
                 file,
                 display,
                 percentCompleted,
+                showImagePicker,
+                imageSelected,
+                cover,
             }
         }
     }
@@ -226,6 +248,15 @@ import ProgressBar from 'primevue/progressbar';
 
 button:disabled {
     opacity: .3;
+}
+
+.cover-picker {
+    border: 1px solid #ced4da;
+    width: 100%;
+    padding: .3rem;
+    text-align: left;
+    background: transparent;
+    overflow-x: hidden;
 }
 
 </style>

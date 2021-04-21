@@ -30,9 +30,11 @@
                 <div class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
                     <div>Contribution Item</div>
                 </div>
+                
 
                 <div class="col-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3">
-                    <button
+                <!-- <button
+                v-if="!routeParams"
                 class="default-btn w-100 text-left pr-1"
                 type="button"
                 style="
@@ -47,6 +49,24 @@
               >
                     {{ item.name ? item.name : "Select" }}
                 <i class="pi pi-chevron-down manual-dd-icon float-right pr-1"></i>
+              </button> -->
+              <!-- {{item}} -->
+                <button
+                
+                class="default-btn w-100 text-left pr-1"
+                type="button"
+                style="
+                  border-radius: 4px;
+                  border: 1px solid #ced4da;
+                  color: #6c757d;
+                "
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              > 
+                    {{ item && item.financialContribution ? item.financialContribution.name : "Select" }}
+                <i class="pi pi-chevron-down manual-dd-icon float-right pr-1"></i>
               </button>
               <div
                 class="dropdown-menu w-100"
@@ -59,7 +79,7 @@
                 </div>
 
                 <a class="dropdown-item font-weight-700 small-text py-2 c-pointer"
-                  v-for="(item, index) in contributionItems" :key="index"
+                  v-for="(item, indx) in contributionItems" :key="indx"
                   @click="selectContribution(item, index)"
                   >{{ item.name }}</a
                 >
@@ -91,7 +111,7 @@
         </div>
 
                 <div class="col-1 align-self-center">
-                    <i class="pi pi-trash" v-tooltip.bottom="'delete'" @click="deleteContribution(item, index)"></i>
+                    <i class="pi pi-trash" v-tooltip.bottom="'delete'" @click="showConfirmModal(item.id, index)"></i>
                 </div>
             </div>
             <div class="col-8 col-md-5 offset-sm-1 offset-md-3 pl-0 offset-lg-4 mt-3">
@@ -188,10 +208,10 @@
                 </div>
             </div>
         <div class="row">
-            <div class="col-10 offset-1 mt-4">
+            <div class="col-10 col-md-12 mt-4">
                     <div class="d-flex">
                         <h5 class="header-contri my-3">Choose the form template you desire</h5>
-                        <hr style="width: 50%"/>
+                        <hr style="width: 60%"/>
                         <i class="pi pi-angle-up angle-icon mt-3" :class="{ 'rollIcon' : templateDisplay, 'closeIcon' : !templateDisplay }" @click="toggleTemplate" ></i>
                     </div>
 
@@ -275,6 +295,7 @@
             </div>
             </div>
         </form>
+        <ConfirmDialog />
         <Toast />
     </div>
 </template>
@@ -295,6 +316,7 @@ import store from '../../store/store';
 import ContributionItems from "@/components/firsttimer/contributionItemModal"
 import ImageModal from './ImageModal'
 import ToggleButton from './toggleButton'
+import { useConfirm } from "primevue/useConfirm";
 
 export default {
     components: {
@@ -334,7 +356,9 @@ export default {
 
 
         const addContribution = () => {
-            newContribution.value.payment.push({})
+            newContribution.value.payment.push({
+                financialContribution: {}
+            })
             console.log(newContribution.value)
         }
 
@@ -439,15 +463,101 @@ export default {
         //   }
         getGateWays()
 
-        const deleteContribution = (item, index) => {
-            newContribution.value.payment.splice(index, 1)
-            if (route.params.editPayment) {
-                console.log(item)
-                removeContributionIDs.value.push(item.id)
+        // const deleteContribution = (item, index) => {
+        //     
+            // if (route.params.editPayment) {
+            //     console.log(item)
+            //     removeContributionIDs.value.push(item.id)
 
-                console.log(removeContributionIDs.value)
-            }
-        }
+            //     console.log(removeContributionIDs.value)
+            // }
+
+            
+
+        // }
+
+     const confirm = useConfirm();
+    const showConfirmModal = (id, index) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+            console.log(id, index)
+          deleteContribution(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
+
+    const deleteContribution = (id, index) => {
+        console.log(id)
+      axios
+        .delete(`/mobile/v1/PaymentForm/contributionItem?contributionItemID=${id}`)
+        .then((res) => {
+          console.log(res);
+          newContribution.value.payment.splice(index, 1)
+          if (res.data) {
+            toast.add({
+            severity: "success",
+            summary: "Delete Successful",
+            detail: `Contribution Transaction Deleted`,
+            life: 3000,
+          });
+          } else {
+            toast.add({
+            severity: "warn",
+            summary: "Delete Failed",
+            detail: `Please Try Again`,
+            life: 3000,
+          });
+          }
+        })
+        .catch((err) => {
+          finish()
+          if (err.response) {
+            console.log(err.response)
+            toast.add({
+              severity: "warn",
+              summary: "Unable to delete",
+              detail: `${err.response}`,
+              life: 3000,
+            });
+          } else if (err.toString().toLowerCase().includes('network error')) {
+              toast.add({
+              severity: "warn",
+              summary: "Network Error",
+              detail: `Please Ensure you have a strong internet connection`,
+              life: 3000,
+            });
+          } else if (err.toString().toLowerCase().includes('timeout')) {
+              toast.add({
+              severity: 'warn',
+              summary: "Request Delayed",
+              detail: "Make sure you have a strong internet connection",
+              life: 3000,
+            });
+          } else {
+            toast.add({
+            severity: "warn",
+            summary: "Delete Failed",
+            detail: `Please Try Again`,
+            life: 3000,
+          });
+          }
+        console.log(err)
+        });
+    };
 
         // const getPaymentDetails = async() => {
         //     try {
@@ -538,7 +648,8 @@ export default {
                 accountNumber: accountNumber.value,
                 isActive: isActive.value,
                 contributionItems: newContribution.value.payment.map(i => {
-                    return { financialContributionID: i.id }
+                    let id = i.financialContribution.id;
+                    return { financialContributionID: id }
                 }),
                  paymentGateWays: paymentGateWays.value.map(i => {
                      return { paymentGateWayID: i.id }
@@ -568,7 +679,7 @@ export default {
                 }
             } else {
                 paymentForm.contributionItems = newContribution.value.payment.map(i => {
-                    return { financialContributionID: i.id }
+                    return { financialContributionID: i.financialContribution.id }
                 }),
                 // paymentForm.contributionItems = theContributionItems.value.map(i => {
                 //     return {
@@ -601,7 +712,8 @@ export default {
         }
         const selectContribution = (item, index) => {
             // if (newContribution.value.payment.findIndex(i => i.id === item.id) < 0) {
-                newContribution.value.payment[newContribution.value.payment.length - 1] = item
+                // newContribution.value.payment[newContribution.value.payment.length - 1] = item
+                newContribution.value.payment[index].financialContribution = item
             // }   else {
                 console.log("Youve selected this, please select another")
             // }
@@ -634,10 +746,10 @@ export default {
                     loadingEdit.value = false
                     newContribution.value.name = res.data.name
                     theContributionItems.value = res.data.contributionItems
-                    newContribution.value.payment = res.data.contributionItems.map(i => i.financialContribution)
+                    newContribution.value.payment = res.data.contributionItems.map(i => i)
                     accountNumber.value = res.data.accountNumber
                     accountName.value = res.data.accountName
-                    selectedBank.value = { name: nigerianBanks.value.find(i => i.id === res.data.bankID).name, id: res.data.bankID },
+                    selectedBank.value = { name: nigerianBanks.value.length > 0 ? nigerianBanks.value.find(i => i.id === res.data.bankID).name :  [], id: res.data.bankID },
                     isActive.value = res.data.isActive
                     paymentGateWays.value = res.data.paymentGateWays.map(i => {
                         return {
@@ -735,7 +847,7 @@ export default {
             toggleThirdTemplate, sourceModal, togglePopup, booleanModal, closeModal,
             paymentGateWaysDb, paymentGateWays, toggleCheckBox, gateways, removeContributionIDs,
             removePaymentGatewayIDs, isActive, active, routeParams, theContributionItems,
-            templateDisplay, toggleTemplate
+            templateDisplay, toggleTemplate, showConfirmModal
         }
     }
 }

@@ -108,7 +108,6 @@ export default {
             try {
                 const { data } = await axios.get("/api/Messaging/getAllSentSms?page=0");
                 commit("setAllSentSMS", data);
-                console.log(data)
             } catch (error) {
                 console.log(error);
             }

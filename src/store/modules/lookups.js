@@ -50,12 +50,8 @@ export default {
         },
 
         setup({ commit }) {
-            // lookupService.lookupsSetUp()
-
-
             lookupService.getLookUps()
                 .then(res => {
-                    console.log(res, "G n M");
                     commit("setGenders", res.genders);
                     commit("setMaritalStatus", res.maritalStatus);
                 })

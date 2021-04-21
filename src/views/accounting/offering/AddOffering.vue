@@ -415,8 +415,8 @@
 
         <!-- Selected offerings -->
         <!-- <div>{{ offeringItem }}</div> -->
-        <!-- <div>{{newOfferings}}</div>
-        <div>{{ currencyList }}</div> -->
+        <!-- <div>{{newOfferings}}</div> -->
+        <!-- <div>{{ currencyList }}</div> -->
 
         <div
           class="attendance-body stretch"
@@ -1570,7 +1570,8 @@ export default {
                   donor: i.personName,
                   eventDate: selectedEventAttended.value.name,
                   eventName: selectedEventAttended.value.name,
-                  id: i.id
+                  id: i.id,
+                  currencyName: currencyList.value.find(j =>  j.id === i.currencyID).name
                 }
               })
               console.log(contriTransact)

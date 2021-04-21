@@ -38,9 +38,9 @@
         </div>
     </div>
 
-    <div class="row over-con">
+    <div class="row over-con" id="table">
       <div class="col-md-12 py-4">
-        <div class="row">
+        <div class="row" id="ignore1">
           <div class="col-md-7">
             <p class="search-span px-2">
               <i class="pi pi-search p-2" style="height: 30px; width: 30px"></i>
@@ -48,28 +48,81 @@
                 type="text"
                 class="search-control"
                 placeholder="Search"
+                v-model="searchText"
               />
             </p>
           </div>
-          <div class="col-md-4 d-md-flex justify-content-end d-none"></div>
+          <div class="col-md-3 offset-sm-2">
+            <div class="row">
+              <div class="col-sm-5 cursor-pointer small-text font-weight-700" @click="sortAttendanceDataByPresent" v-tooltip.top="
+            'Sort column'"><i class="pi pi-sort-alt primary-text" style="color:#136acd"></i> SORT</div>
+
+            <div class="dropdown col-sm-7">
+              <div class="cursor-pointer small-text font-weight-700" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-tooltip.top="'Print Attendance'"><i class="pi pi-print primary-text" style="color:#136acd"></i> PRINT</div>
+
+                
+                <div class="dropdown-menu style-account" aria-labelledby="dropdownMenuButton">
+                <!-- Print Those Present -->
+                <a class="dropdown-item elipsis-items cursor-pointer"  @click="printJS({ 
+                ignoreElements: ['ignore1'], 
+                maxWidth: 867, 
+                header: 'ATTENDANCE', 
+                printable: presentAttendance, 
+                properties: ['NAME', 'ADDRESS','PHONE', 'PRESENT', 'CHANNEL'], 
+                type: 'json', 
+                headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
+                gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
+                gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' 
+                })"> Present </a>
+
+
+                <!-- Print Those Absent -->
+                <a class="dropdown-item elipsis-items cursor-pointer" @click="printJS({ 
+                ignoreElements: ['ignore1'], 
+                maxWidth: 867, 
+                header: 'ATTENDANCE', 
+                printable: absentAttendance, 
+                properties: ['NAME', 'ADDRESS','PHONE', 'PRESENT', 'CHANNEL'], 
+                type: 'json', 
+                headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
+                gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
+                gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' 
+                })" data-v-26c77059=""> Absent </a>
+
+                <!-- Print All -->
+                <a class="dropdown-item elipsis-items cursor-pointer" @click="printJS({ 
+                ignoreElements: ['ignore1'], 
+                maxWidth: 867, 
+                header: 'ATTENDANCE', 
+                printable: printAttendance, 
+                properties: ['NAME', 'ADDRESS','PHONE', 'PRESENT', 'CHANNEL'], 
+                type: 'json', 
+                headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
+                gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
+                gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' 
+                })" data-v-26c77059=""> All </a>
+              </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="row mt-2 main-th font-weight-700 py-2 small-text grey-rounded-bg">
           <div class="col-md-4">Name</div>
-          <div class="col-md-4">Address</div>
+          <div class="col-md-3">Address</div>
           <div class="col-md-2">Phone</div>
-          <div class="col-md-1">Present</div>
-          <div class="col-md-1">Option</div>
+          <div class="col-md-2 c-pointer">Present </div>
+          <div class="col-md-1">Channel</div>
         </div>
 
-        <div class="row py-2 tb-row small-text" v-for="(person, index) in reportData.peopoleAttendancesDTOs" :key="index">
+        <div class="row py-2 tb-row small-text" v-for="(person, index) in people" :key="index">
           <div class="col-md-4">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Name</span>
               <span class="small-text">{{ person.name }}</span>
             </span>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Address</span>
               <span class="small-text">{{ person.address }}</span>
@@ -83,11 +136,11 @@
               <span class="small-text">{{ person.phone }}</span>
             </span>
           </div>
-          <div class="col-md-1">
+          <div class="col-md-2">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Checked-in</span>
               <span>
-                <i class="pi pi-check" v-if="person.isPresent"></i>
+                <i class="pi pi-check attended" v-if="person.isPresent"></i>
                 <i class="pi pi-times" v-else></i>
                 <!-- <span v-else>--</span> -->
               </span>
@@ -97,44 +150,64 @@
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Option</span>
               <span>
-                {{ person.checkedinOption  }}
+                {{ person.isPresent ? person.checkedinOption : '---'  }}
               </span>
             </span>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-md-12 text-center py-3">
+            <p class="text-danger font-weight-700" v-if="errorMessage">{{ errorMessage }}</p>
+          </div>
+        </div>
+
+        <LoadingComponent :loading="loading" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import ReportChart from "../../../components/charts/SecondReportPie";
 import attendanceservice from '../../../services/attendance/attendanceservice';
 import { useRoute } from "vue-router";
 import dateFormatter from '../../../services/dates/dateformatter';
+import Tooltip from 'primevue/tooltip';
+import LoadingComponent from "../../../components/loading/LoadingComponent"
+import printJS from 'print-js'
 
 export default {
-    components: { ReportChart, },
-
+    components: { ReportChart, LoadingComponent },
+    directives: {
+      'tooltip': Tooltip
+    },
     setup() {
         const route = useRoute();
         const data = ref([]);
 
         const reportData = ref({ });
+        const loading = ref(true);
 
+        const errorMessage = ref("")
         const getReportData = async () => {
           try {
             const response = await attendanceservice.getReport(route.params.id);
-            console.log(response, "REPORT");
             reportData.value = response;
+            loading.value = false;
+            sortAttendanceDataByPresent();
           } catch (error) {
             console.log(error);
+            if (error.toString().toLowerCase().includes("network error")) {
+              errorMessage.value = "Loading data failed, please check your internet connection and try reloading the page"
+            }
+            loading.value = false;
           }
         }
 
         const formatDate = (date) => {
-          return dateFormatter.normalDate(date);
+          return dateFormatter.monthDayYear(date);
         }
 
         const absentees = computed(() => {
@@ -169,19 +242,83 @@ export default {
 
         getReportData();
 
-        onMounted(() => {
-            // data.value = [
-            //   {
-            //     name: "Present",
-            //     y: Math.floor(( attendees.value / totalAttendance.value ) * 100),
-            //   },
-            //   {
-            //     name: "Absent",
-            //     y: Math.floor(( absentees.value / totalAttendance.value ) * 100),
-            //   },
-            // ]
+        const isSorted = ref(false);
+        const sortAttendanceDataByPresent = () => {
+          if (isSorted.value) {
+            reportData.value.peopoleAttendancesDTOs.sort(x => !x.isPresent ? -1 : 1)
+          } else {
+            reportData.value.peopoleAttendancesDTOs.sort(x => x.isPresent ? -1 : 1)
+          }
+          isSorted.value = !isSorted.value;
+        }
+
+        const searchText = ref("");
+        const people = computed(() => {
+          if (!searchText.value) return reportData.value.peopoleAttendancesDTOs;
+          return reportData.value.peopoleAttendancesDTOs.filter(i => {
+            return (i.name && i.name.toLowerCase().includes(searchText.value.toLowerCase())) || (i.checkedinOption && i.checkedinOption.toLowerCase().includes(searchText.value.toLowerCase())) || (i.email && i.email.toLowerCase().includes(searchText.value.toLowerCase())) || (i.phone && i.phone.toLowerCase().includes(searchText.value.toLowerCase()))
+          })
         })
 
+       const printAttendance = computed(() => {
+         if (reportData.value.peopoleAttendancesDTOs.length === 0) return []
+         return reportData.value.peopoleAttendancesDTOs.map(i => {
+           return {
+             NAME:  i.name ? i.name : "",
+             ADDRESS: i.address ? i.address : "",
+             PHONE: i.phone ? i.phone : "",
+             PRESENT: i.isPresent === null ? "" : "Yes",
+             CHANNEL: i.checkedinOption ? i.checkedinOption : ""
+           }
+         })
+       })
+
+       const filterPresentAttendance = computed (() => {
+         if (reportData.value.peopoleAttendancesDTOs) {
+           if (reportData.value.peopoleAttendancesDTOs.length === 0) return []
+            return reportData.value.peopoleAttendancesDTOs.filter(i => {
+              return i.isPresent
+            })
+         }         
+       })
+
+       const presentAttendance = computed (() => {
+          if (filterPresentAttendance.value.length === 0) return []
+          return  filterPresentAttendance.value.map(i => {
+            return {
+                    NAME:  i.name ? i.name : "",
+                    ADDRESS: i.address ? i.address : "",
+                    PHONE: i.phone ? i.phone : "",
+                    PRESENT: !i.isPresent ? "No" : "Yes",
+                    CHANNEL: i.checkedinOption ? i.checkedinOption : ""
+                  }
+          })
+        })
+       
+       
+       const filterAbsentAttendance = computed (() => {
+         if (reportData.value.peopoleAttendancesDTOs) {
+           if (reportData.value.peopoleAttendancesDTOs.length === 0) return []
+            return reportData.value.peopoleAttendancesDTOs.filter(i => {
+              return !i.isPresent
+            })
+         }         
+       })
+
+       const absentAttendance = computed (() => {
+          if (filterAbsentAttendance.value.length === 0) return []
+          return  filterAbsentAttendance.value.map(i => {
+            return {
+                    NAME:  i.name ? i.name : "",
+                    ADDRESS: i.address ? i.address : "",
+                    PHONE: i.phone ? i.phone : "",
+                    PRESENT: !i.isPresent ? "No" : "Yes",
+                    CHANNEL: i.checkedinOption ? i.checkedinOption : ""
+                  }
+          })
+        })
+
+  
         return {
             data,
             reportData,
@@ -190,6 +327,18 @@ export default {
             absentees,
             attendees,
             chartData,
+            sortAttendanceDataByPresent,
+            isSorted,
+            loading,
+            errorMessage,
+            people,
+            searchText,
+            printJS,
+            printAttendance,
+            presentAttendance,
+            filterPresentAttendance,
+            absentAttendance,
+            filterAbsentAttendance
         }
     }
 };
@@ -263,5 +412,9 @@ export default {
     padding: 8px 20px;
     background: #a5682a69;
     border-radius: 22px 0 0 22px;
+}
+
+.attended {
+  color: #28a745bf;
 }
 </style>

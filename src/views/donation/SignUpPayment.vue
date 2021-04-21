@@ -68,6 +68,10 @@
                 Already created an account?
                 <router-link :to="`/signinpayment`">Sign in now</router-link>
               </div>
+              <div class="label mt-3 text-center hfont cursor-pointer">
+                    Go back to
+                    <span class="text-primary" @click="goBack">Give</span>
+                </div>
             </div>
           </div>
           <div class="row mt-5">
@@ -192,6 +196,10 @@ export default {
 
     };
 
+    const goBack = () => {
+      router.go(-2)
+    }
+
     return {
       errorOccure,
       chosenName,
@@ -199,6 +207,7 @@ export default {
       chosenEmail,
       chosenPassword,
       signUp,
+      goBack
     };
   },
 };

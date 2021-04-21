@@ -20,47 +20,10 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
-import media_service from "../../../services/media/media_service";
-import membershipService from "../../../services/membership/membershipservice";
 
 export default {
   setup() {
-    const files = ref([]);
-    const tab = ref(3);
-    const mediaTypes = ["Video", "Audio", "Ebook", "Picture"];
-    const media = ref({});
-    const getMedia = async (tenantId) => {
-      try {
-        const response = await media_service.getMedia(tenantId);
-        for (let file of mediaTypes) {
-          console.log(file);
-          media.value[file] = response.filter((i) => {
-            console.log(i.mediaType, mediaTypes.indexOf(file));
-            return Number(i.mediaType) === mediaTypes.indexOf(file);
-          });
-        }
-        console.log(response, "media files");
-        console.log(media.value, "media");
-        files.value = response;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    membershipService
-      .getSignedInUser()
-      .then((res) => {
-        getMedia(res.tenantId);
-      })
-      .catch((err) => console.log(err));
-
-    return {
-      files,
-      mediaTypes,
-      tab,
-      media,
-    };
+    
   },
 };
 </script>

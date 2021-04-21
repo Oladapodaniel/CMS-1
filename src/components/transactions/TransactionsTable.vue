@@ -170,6 +170,8 @@
                 </div>
               </div>
 
+              <LoadingComponent :loading="loading" />
+
               <div class="row" style="margin:0">
                 <div
                   class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
@@ -256,6 +258,7 @@ import transaction_service from "../../services/financials/transaction_service";
 import dateFormatter from "../../services/dates/dateformatter";
 // import transactionService from "../../services/financials/transaction_service";
 import LedgerForm from "../../views/accounting/transaction/components/LedgerForm";
+import LoadingComponent from "../loading/LoadingComponent";
 
 
 export default {
@@ -267,6 +270,7 @@ export default {
   components: {
     TransactionForm,
     LedgerForm,
+    LoadingComponent,
   },
   setup(props, { emit }) {
     const transactions = ref([]);
@@ -426,13 +430,16 @@ export default {
     };
 
     const allTransactions = ref([]);
+    const loading = ref(true);
     const getTransactions = async () => {
       try {
         const response = await transaction_service.getTransactions();
+        loading.value = false;
         allTransactions.value = response;
         console.log(response, "ALL TRANS");
       } catch (error) {
         console.log(error);
+        loading.value = false;
       }
     };
     getTransactions();
@@ -530,6 +537,7 @@ export default {
       searchText,
       getTransactions,
       closeLedgerForm,
+      loading,
     };
   },
 };

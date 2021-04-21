@@ -50,6 +50,10 @@
                   >Create a new account</router-link
                 >
               </div>
+              <div class="label mt-3 text-center hfont cursor-pointer">
+                    Go back to
+                    <span class="text-primary" @click="goBack">Give</span>
+                </div>
             </div>
           </div>
 
@@ -148,12 +152,17 @@ export default {
       }
       // console.log(userdetails.value);
     };
+
+    const goBack = () => {
+      router.go(-1)
+    }
     return {
       email,
       password,
       signin,
       token,
-      routeParams
+      routeParams,
+      goBack
     };
   },
 };

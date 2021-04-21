@@ -83,28 +83,35 @@
                             <span class="mx-1">Mobile App</span>
                             <input type="checkbox" class="c-pointer" checked name="" id="">
                         </a>
-                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center">
+                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center" style="opacity:0.4">
                             <span class="c-pointer"><img class="icon-height" src="../../../assets/social/twitter.svg" alt="Whatsapp icon"></span>
                             <span class="mx-1">Twitter</span>
-                            <input type="checkbox" class="c-pointer" name="" id="">
+                            <input type="checkbox" class="c-pointer" :disabled="true" name="" id="">
                         </a>
-                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center">
+                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center" style="opacity:0.4">
                             <span class="c-pointer"><i class="pi pi-microsoft" style="font-size:20px"></i></span>
                             <span class="mx-1">All Platforms</span>
-                            <input type="checkbox" class="c-pointer" name="" id="">
+                            <input type="checkbox" class="c-pointer" :disabled="true" name="" id="">
                         </a>
-                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center">
+                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center" style="opacity:0.4">
                             <span class="c-pointer"><img class="icon-height" src="../../../assets/social/facebook.svg" alt="Whatsapp icon"></span>
                             <span class="mx-1">Facebook</span>
-                            <input type="checkbox" class="c-pointer" name="" id="">
+                            <input type="checkbox" class="c-pointer" :disabled="true" name="" id="">
                         </a>
-                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center">
+                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center" style="opacity:0.4">
                             <span class="c-pointer"><img class="icon-height" src="../../../assets/social/instagram.svg" alt="Whatsapp icon"></span>
                             <span class="mx-1">Instagram</span>
-                            <input type="checkbox" class="c-pointer" name="" id="">
+                            <input type="checkbox" class="c-pointer" :disabled="true" name="" id="">
                         </a>
                     </div>
                 </div>
+            </div>
+
+            <div class="col-md-12">
+                <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center">
+                    <input type="checkbox" class="c-pointer" name="" id="">
+                    <span class="mx-1">Send push notification</span>
+                </a>
             </div>
 
             <div class="col-md-12 d-flex align-items-center justify-content-end my-4 px-0">

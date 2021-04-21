@@ -4,7 +4,7 @@
             <div class="row mt-4">
                 <div class="col-sm-12 py-2">
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'churchplus'}" @click="changeTab('churchplus')">Churchplus</a>
-                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sms'}" @click="changeTab('sms')" v-if="false">SMS</a>
+                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sms'}" @click="changeTab('sms')" >SMS</a>
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'sharelink'}">Share link</a>
                 </div>
             </div>
@@ -38,6 +38,7 @@
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
                         <i class="fa fa-plus-circle inp-icon plus-icon my-1" @click="addRecipient"></i>
+                        <i class="pi pi-minus plus-icon ml-1 my-1 c-pointer text-danger" @click="removeRecipient(index)" v-if="recipients.length > 1"></i>
                     </div>
                 </div>
             </div>
@@ -48,14 +49,14 @@
                     <div class="col-sm-4 d-flex justify-content-end align-items-center text-sm-right">
                         <span class="">Subject</span>
                     </div>
-                    <div class="col-sm-5 form-group">
-                        <input type="text" class="form-control border-0 inp evt-name" name="" :value="`Report For ${eventName}`"
+                    <div class="col-sm-6 form-group">
+                        <input type="text" class="form-control border-0 inp pr-0" :class="{ 'evt-name': !subjectFieldIsActive}" :disabled="!subjectFieldIsActive" name="" :value="`Report For ${eventName}`"
                             style="margin-top: -5px"
                             ref="subject"
                         >
                     </div>
-                    <div class="col-sm-3 d-flex justify-content-start align-items-center">
-                        <a class="edit-sub-btn">Edit subject</a>
+                    <div class="col-sm-2 d-flex justify-content-start align-items-center">
+                        <a class="edit-sub-btn c-pointer" @click="enableSubjectField">edit</a>
                     </div>
                 </div>
             </div>
@@ -93,7 +94,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-1" v-if="false">
+                            <div class="col-sm-1">
                                  <Checkbox id="binary" v-model="attachReport" :binary="true"/>
                             </div>
                             <div class="col-sm-10">
@@ -134,35 +135,36 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import axios from "@/gateway/backendapi";
+import attendanceservice from '../../services/attendance/attendanceservice';
 
     
     export default {
-        props: ['eventName'],
+        props: ['eventName', 'stats'],
         setup(props, { emit }) {
             const activeTab = ref("churchplus");
-            // const count = 0;
             const userEmail = ref("")
-            const message = ref("")
+            const message = ref("");
             const sendToMysef = ref(false);
             const subject = ref(null);
             const invalidDestination = ref(false);
             const recipients = ref([  ])
             const churchName = ref("")
             const sendCopy = ref("")
+            const attachReport = ref(false)
+
+            watch(() => {
+                if (props.stats) {
+                    message.value = attendanceservice.generateEventReportDefaultMessage(props.stats)
+                }
+            })
 
             const changeTab = (tab) => activeTab.value = tab;
 
             const addRecipient = () => {
                 recipients.value.push({ email: ""})
                 console.log(recipients);
-            }
-            const removeRecipient = (rep) => {
-                const recipient = recipients.value.find(i => i.id === rep.id)
-                const index = recipients.value.indexOf(recipient);
-                recipients.value.splice(index, 1);
-                
             }
 
             const test = (e) => {
@@ -177,17 +179,25 @@ import axios from "@/gateway/backendapi";
 
             const sendReport = () => {
                 const messageObj = {
-                    contacts: recipients.value,
+                    contacts: [],
+                    // contacts: recipients.value,
                     message: message.value,
                     subject: subject.value.value,
+                    isoCode: isoCode.value,
                 }
 
-                const validDestination = messageObj.contacts.find(i => i.phone);
-                console.log(validDestination, "validDestination");
-                if (activeTab.value === "sms" && !validDestination) {
-                    invalidDestination.value = true;
-                    return false;
+                if (activeTab.value === 'sms') {
+                    messageObj.toOthers = recipients.value.map(i => i.phone).join();
+                } else {
+                    messageObj.contacts = recipients.value;
                 }
+
+                // const validDestination = messageObj.contacts.find(i => i.phone);
+                // console.log(invalidDestination.value, "validDestination");
+                // if (activeTab.value === "sms" && !validDestination) {
+                //     invalidDestination.value = true;
+                //     return false;
+                // }
 
                 if (sendToMysef.value) {
                     messageObj.contacts.push({ email: userEmail.value });
@@ -195,17 +205,35 @@ import axios from "@/gateway/backendapi";
                 emit("sendreport", { data: messageObj, medium: activeTab.value });
             }
 
+            const isoCode = ref("");
             const getUserEmail = () => {
                 axios.get("/api/Membership/GetCurrentSignedInUser")
                     .then(res => {
                         console.log(res.data)
                         userEmail.value = res.data.userEmail
                         churchName.value = res.data.churchName
-                        recipients.value.push({ email: res.data.userEmail, phone: "" })
+                        isoCode.value = res.data.isoCode
+                        recipients.value.push({ email: "", phone: "" })
                     })
                     .catch(err => console.log(err))
             }
             getUserEmail()
+
+            const subjectFieldIsActive = ref(false);
+
+            const enableSubjectField = () => {
+                subjectFieldIsActive.value = true;
+                setTimeout(() => {
+                    subject.value.focus();
+                }, 100)
+            }
+
+            const removeRecipient = (index) => {
+                if (recipients.value && recipients.value.length > 1) {
+                    recipients.value.splice(index, 1)
+                }
+            }
+
 
             return { changeTab, activeTab,  recipients, removeRecipient, addRecipient, event, userEmail, getUserEmail, sendReport,
                 message,
@@ -215,7 +243,10 @@ import axios from "@/gateway/backendapi";
                 invalidDestination,
                 hideErrorMessage,
                 churchName,
-                sendCopy
+                sendCopy,
+                subjectFieldIsActive,
+                enableSubjectField,
+                attachReport,
             }
         }
     }
@@ -299,9 +330,13 @@ import axios from "@/gateway/backendapi";
         color: red;
     }
 
-    .evt-name {
+    /* .evt-name {
         outline: none !important;
         box-shadow: none;
+    } */
+
+    input:disabled {
+        background: transparent;
     }
 
     @media screen and (max-width: 577px) {

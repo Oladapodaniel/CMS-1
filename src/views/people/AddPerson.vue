@@ -693,7 +693,7 @@ export default {
         "peopleClassificationID",
         selectedMembership.value ? selectedMembership.value.id : ""
       );
-      formData.append("address", personObj.address ? personObj.address : "");
+      formData.append("homeAddress", personObj.address ? personObj.address : "");
       // formData.append("picture", image.value ? image.value : "");
       formData.append(
         "maritalStatusID",
