@@ -94,7 +94,8 @@
         </div>
 
         <div>
-          <button class="facebook-btn btn-logo sign-in-btn" @click="facebookRegister">
+          <button class="facebook-btn btn-logo sign-in-btn">
+          <!-- <button class="facebook-btn btn-logo sign-in-btn" @click="facebookRegister"> -->
             <img
               src="../../assets/facebook-small.png"
               class="fb-icon"
@@ -127,7 +128,7 @@
               <!-- <router-link to="/" class="sign-up"><strong> Sign in now</strong></router-link> -->
             </p>
           </div>
-          <!-- <a
+          <a
             class="fb-login-button"
             id="fb"
             data-width="380px"
@@ -140,7 +141,7 @@
             data-use-continue-as="false"
             ref="loginFacebook"
             style="margin-top: 10px"
-          ></a> -->
+          ></a>
         </div>
       </div>
     </div>
