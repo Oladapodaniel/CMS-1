@@ -37,9 +37,9 @@ const communicationService = {
         }
     },
 
-    deleteSMSDraft(id) {
+    deleteSMS(id) {
         return new Promise((resolve, reject) => {
-            axios.get(`/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${id}`)
+            axios.delete(`/api/Messaging/DeleteSentSMS?SentSMSIdList=${id}`)
                 .then(res => {
                     resolve(res.data);
                 })
