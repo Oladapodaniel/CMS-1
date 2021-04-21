@@ -149,6 +149,7 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+import router from '../../router/index';
 
 export default {
   data() {
@@ -222,6 +223,7 @@ export default {
           let token = {
           accessToken: response.authResponse.accessToken
         }
+        console.log(response, "facebook");
         axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
           .then(res => {
             if (res.data.isOnboarded) {
