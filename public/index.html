@@ -199,7 +199,7 @@
         console.log(response.authResponse.accessToken)
         axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
           .then(res => {
-            alert(`${res.data.username} index`);
+            console.log(res, "index");
             if (res.data.isOnboarded) {
               localStorage.setItem("email", res.data.username)
               localStorage.setItem("token", res.data.token);
@@ -207,7 +207,6 @@
             } else {
               localStorage.setItem("email", res.data.username)
               localStorage.setItem("pretoken", res.data.token)
-              console.log(res, "index");
               if (res.data.username) window.location.href = "/onboarding";
             }
 
