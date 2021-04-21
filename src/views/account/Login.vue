@@ -161,8 +161,8 @@ export default {
               localStorage.setItem("token", res.data.token);
               router.push("/tenant");
             } else {
-              localStorage.setItem("email", 'gstargerrald@ovi.com')
-              // localStorage.setItem("token", res.data.token);
+              localStorage.setItem("email", res.data.username)
+              localStorage.setItem("pretoken", res.data.token)
               router.push("/onboarding");
             }
           })
