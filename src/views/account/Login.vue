@@ -156,6 +156,7 @@ export default {
         }
         axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
           .then(res => {
+            alert(`${res.data.username} login`);
             if (res.data.isOnboarded) {
               localStorage.setItem("email", res.data.username)
               localStorage.setItem("token", res.data.token);
