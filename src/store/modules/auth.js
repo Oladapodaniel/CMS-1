@@ -3,23 +3,19 @@ import router from "@/router/index"
 
 
 export default {
-  state: {
-    userEmail: "",
-    onboardingData: {},
-    userRole: "",
-    userData: {},
-    currentUser: {},
-    userStartPoint: "",
-    settingUserUp: false,
-    churchMembers: {},
-    smsBalance: 0,
-  },
-
-  mutations: {
-    setCurrentUser(state, payload) {
-      state.currentUser = payload;
+    state: {
+        userEmail: "",
+        onboardingData: {},
+        userRole: "",
+        userData: {},
+        currentUser: {},
+        userStartPoint: "",
+        settingUserUp: false,
+        churchMembers: {},
+        smsBalance: 0,
     },
 
+    mutations: {
     setUserEmail(state, payload) {
       state.userEmail = payload;
     },
@@ -50,6 +46,9 @@ export default {
 
     addPurchasedUnits(state, payload) {
       state.currentUser.smsBalance = state.currentUser.smsBalance + payload;
+    },
+    clearCurrentUser(state, payload) {
+      state.currentUser = payload
     }
   },
 
@@ -57,7 +56,9 @@ export default {
     setCurrentUser({ commit }, payload) {
       commit("setCurrentUser", payload)
     },
-
+    clearCurrentUser ({ commit }, payload) {
+      commit("clearCurrentUser", payload)
+  },
     async getUser({ commit }) {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");

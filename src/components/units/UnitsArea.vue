@@ -20,33 +20,33 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import userService from "../../services/user/userservice"
 import router from "@/router/index";
 import { useStore } from "vuex"
+// import axios from "@/gateway/backendapi";
 
     export default {
         setup() {
             const store = useStore();
             
-            const currentUser = computed(() => store.getters.smsBalance ? store.getters.smsBalance : 0)
+            const currentUser = ref(store.getters.currentUser && store.getters.currentUser.smsBalance ? store.getters.currentUser.smsBalance : 0)
 
             const getCurrentUserBalance = async () => {
+              
                 try {
-                    
-                    const data = await userService.getCurrentUser();
-                    currentUser.value = data.smsBalance;
-                    // currentUser.value = data;
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-
-            if (!currentUser.value || currentUser.value === 0) getCurrentUserBalance();
+                  const data = await userService.getCurrentUser();
+                  currentUser.value = data.smsBalance;
+                  // alert(currentUser.value)
+                  console.log(data, "daataaaaa")
+                  } catch (error) {
+                      console.log(error);
+                  }
+              }
+            if (!currentUser.value || currentUser.value === 0)  getCurrentUserBalance();
             
             const balance = computed(() => {
-                if (!currentUser.value) return 0;
-                return currentUser.value;
+                  return currentUser.value;
             })
 
             const  payWithPaystack = () => {
@@ -56,6 +56,7 @@ import { useStore } from "vuex"
             return {
                 balance,
                 payWithPaystack,
+                currentUser
             }
         }
     }
