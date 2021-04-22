@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="row mainHeada">
-        <div class="col-md-6 col-sm-10 mt-lg-5">
+        <div class="col-md-6 col-sm-10 mt-3 mt-lg-5">
           <h1>Add Group</h1>
         </div>
       </div>
@@ -14,7 +14,7 @@
 
       <!-- Content of the Box -->
       <main class="">
-        <div id="main" class="container-fluid col-sm-12">
+        <div id="main" class="container-fluid">
           <div class="row">
             <!-- Group Name row -->
             <div class="col-md-12">
@@ -22,18 +22,15 @@
                 <div class="col-md-12">
                   <div class="row">
                     <div class="col-md-12 gName">
-                      <h3 class="ml-md-n3 mb-n2">Group Name</h3>
+                      <h3 class="ml-n3 mb-n2">Group Name</h3>
                     </div>
                   </div>
 
                   <!-- Context Area -->
                   <div
-                    class="row amazing d-flex flex-row justify-content-between mt-lg-3"
+                    class="row amazing d-flex flex-row justify-content-between mt-lg-1"
                   >
-                    <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
-                    <!-- <div class="col-md-7 form-group px-0"> <input type="text"
-class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="groupNameDisabled"ref="groupName"/></div> -->
-                    <div class="col-md-6 mt-3 form-group px-0">
+                    <div class="col-md-12 mt-3 form-group px-0">
                       <input
                         type="text"
                         class="form-control"
@@ -43,25 +40,15 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                       />
                     </div>
 
-                    <div class="col-md-6 col-sm-4 mr-lg-n5 amazingE">
-                      <!-- <button
-                        v-on:click="enableGroupName"
-                        class="btn btnIcons btn-secondary"
-                      >
-                        <i
-                          class="fa fa-plus-circle icons"
-                          aria-hidden="true"
-                        ></i>
-                        Add
-                      </button> -->
-                    </div>
+                    <!-- <div class="col-md-3 col-sm-4 mr-lg-n5 amazingE">
+                    </div> -->
                   </div>
 
-                  <div class="row mt-lg-5 mb-lg-1">
+                  <div class="row mt-lg-3 mb-lg-1">
                     <h3>Phone Numbers</h3>
                   </div>
                   <div class="row d-flex flex-row justify-content-between mdiv">
-                    <div class="col-md-6 form-group px-0">
+                    <div class="col-md-12 form-group px-0">
                       <textarea
                         name=""
                         id=""
@@ -71,21 +58,11 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                         required
                       ></textarea>
                     </div>
-                    <div class="col-md-5 mr-lg-n5 addIconarea">
-                      <!-- <button
-                        v-on:click="addPhoneNumber"
-                        class="btn btnIcons align-self-end btn-secondary mb-2"
-                      >
-                        <i
-                          class="fa fa-plus-circle icons"
-                          aria-hidden="true"
-                        ></i>
-                        Add
-                      </button> -->
-                    </div>
+                    <!-- <div class="col-md-3 mr-lg-n5 addIconarea">
+                    </div> -->
                   </div>
 
-                  <div
+                  <!-- <div
                     v-for="(phoneNumber, index) in phoneNumbers"
                     :key="index"
                     class="row"
@@ -109,13 +86,12 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <!-- Button Area -->
-                  <div class="row mt-md-5 mb-4">
-                    <div class="col-md-7">
-                      <div class="row d-md-flex align-items-center ml-n5">
-                        <div class="col-md-6 basebtns">
+                  <div class="row mt-3 mb-4">
+                    <div class="col-md-12 d-flex justify-content-end p-0">
+                      <div>
                           <button
                             v-on:click="resetInputFields"
                             class="btn default-btn"
@@ -123,20 +99,19 @@ class="inputWithDisable" id="groupName"v-model="groupNameValue"v-bind:disabled="
                             Cancel
                           </button>
                         </div>
-                        <div class="col-md-6 basebtns">
+                        <div>
                           <button
                             v-on:click="saveGroupDetails"
-                            class="btn default-btn ml-md-4"
+                            class="btn default-btn border-0 primary-bg ml-md-4"
                           >
                             <i
                               class="fas fa-circle-notch fa-spin"
                               v-if="loading"
                             ></i>
-                            <span class="basebtni">Save</span>
+                            <span class="text-white">Save</span>
                             <span></span>
                           </button>
                         </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -197,9 +172,9 @@ export default {
       // this.enteredValue = "";
       // console.log("am here");
     },
-    removePhoneNumber(index) {
-      this.phoneNumbers.splice(index, 1);
-    },
+    // removePhoneNumber(index) {
+    //   this.phoneNumbers.splice(index, 1);
+    // },
 
     enableGroupName() {
       this.groupNameDisabled = false;
@@ -239,6 +214,7 @@ export default {
       this.enteredValue = "";
       this.groupNameValue = "";
       this.phoneNumbers = "";
+      router.push("/tenant/sms/contacts")
     },
   },
 };

@@ -24,7 +24,7 @@
                 class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                 style="font-size: 15px"
                 v-if="markedContact.length > 0"
-                @click="showConfirmModal"
+                @click="showConfirmModal1"
               >
               </i>
               </div>
@@ -43,7 +43,7 @@
                             name="all"
                             id="all"
                             @change="markAllContact"
-                            :checked="markAcontact.length === groups.length"
+                            :checked="markedContact.length === groups.length"
                           />
                         </div>
                         <div class="col-md-3">
@@ -67,57 +67,6 @@
                       <hr class="hr" />
                     </div>
                   </div>
-
-                  <!-- <div
-                    class="row"
-                  >
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1 py-2">
-                          <input type="checkbox" />
-                        </div>
-
-                        <div class="col-md-3 d-flex justify-content-between align-items-center">
-                          <span class="hidden-header font-weight-bold">NAME: </span>
-                          <span>
-                            <router-link
-                              class="link"
-                              to=""
-                              >test</router-link
-                            >
-                          </span>
-                        </div>
-
-                        <div
-                          class="col-md-4 col-ms-12 d-flex justify-content-between align-items-center"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >TOTAL PHONE NUMBER:
-                          </span>
-                          <span>09073576353</span>
-                        </div>
-
-                        <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between align-items-center"
-                        >
-                          <span class="hidden-header font-weight-bold"
-                            >DATE CREATED
-                          </span>
-                          <span>11/23/63563</span>
-                        </div>
-
-                        <div class="col-md-1 col-ms-12 d-flex justify-content-center align-items-center">
-                          <span><i class="fa fa-trash delete-icon"></i></span>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12 px-0">
-                          <hr class="hr" />
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
-
                   <div
                     class="row"
                     v-for="(group, index) in groups"
@@ -171,18 +120,12 @@
                             >Date Created
                           </span>
                           <span class="small-text">{{
-                            new Date(group.dateEntered).toLocaleDateString()
+                            formatDate(group.dateEntered)
                           }}</span>
                         </div>
 
-                        <div
-                          class="col-md-1 col-ms-12 d-flex justify-content-center align-items-center"
-                        >
-                          <span>
-                            <i class="c-pointer fa fa-trash delete-icon"
-                            @click="showConfirmModal">
-                            </i>
-                            </span>
+                        <div class="col-md-1 col-ms-12 d-flex justify-content-center align-items-center">
+                          <span @click="showConfirmModal(group.id, index)"><i class="fa fa-trash delete-icon"></i></span>
                         </div>
                       </div>
                       <div class="row">
@@ -208,43 +151,6 @@
                       <i class="fas fa-circle-notch fa-spin my-2"></i>
                     </div>
                   </div>
-
-                  <!-- <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
-                        </div>
-                        <div class="col-md-2 d-md-flex justify-content-between">
-                          <span class="hidden-header">SENDER: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-5 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div
-                          class="col-md-3 col-ms-12 d-flex justify-content-between"
-                        >
-                          <span class="hidden-header">message: </span>
-                          <span>message</span>
-                        </div>
-                        <div class="col-md-1 col-ms-12">
-                          <span><i class="fa fa-trash delete-icon"></i></span>
-                        </div>
-                        <div class="col-md-6 basebtns">
-                          <button
-                            v-on:click="saveDetails"
-                            class="btn btnBase btn-primary"
-                          >
-                            save
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -260,9 +166,9 @@
 <script>
 import { onMounted, ref } from "vue";
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useConfirm";
-import { useToast } from "primevue/usetoast";
-import stopProgressBar from "../../services/progressbar/progress";
+import { useConfirm } from "primevue/useConfirm"
+import { useToast } from 'primevue/usetoast';
+import dateFormatter from "../../services/dates/dateformatter"
 
 export default {
   setup() {
@@ -281,6 +187,62 @@ export default {
         console.log(error);
       }
     };
+
+    const deletePhoneGroup = async(id, index) => {
+      try {
+        const res = await axios.delete(`/api/Messaging/DeletePhoneGroup?phoneGroupIdList=${id}`);
+        groups.value.splice(index, 1)
+        console.log(res)
+        toast.add({
+          severity:'success', 
+          summary:'Successful', 
+          detail:'Phone Group Deleted', 
+          life: 4000
+        });
+      }
+      catch (err) {
+        console.log(err)
+        if (err.toString().toLowerCase().includes('network error')) {
+          toast.add({
+          severity:'error', 
+          summary:'Network error', 
+          detail:'Please ensure you have a strong internet', 
+          life: 4000
+        });
+        } else if (err.toString().toLowerCase().includes('timeout')) {
+          toast.add({
+          severity:'warn', 
+          summary:'Response took too long to respond', 
+          detail:'Please ensure you have an active internet connection', 
+          life: 4000
+        });
+        }
+      }
+    }
+
+    const confirm = useConfirm();
+      let toast = useToast();
+      const showConfirmModal = (id, index) => {
+           confirm.require({
+               message: 'Are you sure you want to proceed?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'confirm-delete',
+                rejectClass: 'cancel-delete',
+                accept: () => {
+                    deletePhoneGroup(id, index)
+                    // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+                },
+                reject: () => {
+                    toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+                }
+
+        });
+        }
+
+        const formatDate = (date) => {
+          return dateFormatter.monthDayYear(date)
+        }
 
     onMounted(() => {
       getGroups();
@@ -303,7 +265,7 @@ export default {
             if (w >= 0) return false;
             return true;
           });
-markedContact.value = []
+          markedContact.value = []
           toast.add({
             severity: "success",
             summary: "Confirmed",
@@ -314,7 +276,7 @@ markedContact.value = []
 
         })
         .catch((err) => {
-          stopProgressBar();
+          
           toast.add({
             severity: "error",
             summary: "Delete Error",
@@ -358,9 +320,7 @@ markedContact.value = []
     };
 
 
-    const confirm = useConfirm();
-    let toast = useToast();
-    const showConfirmModal = () => {
+    const showConfirmModal1 = () => {
       confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
@@ -380,11 +340,14 @@ markedContact.value = []
     return {
       groups,
       loading,
+      deletePhoneGroup,
+      showConfirmModal,
+      formatDate,
       markedContact,
       markAcontact,
       markAllContact,
       deleteContactList,
-      showConfirmModal,
+      showConfirmModal1,
     };
   },
 };

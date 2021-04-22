@@ -82,15 +82,12 @@ const membershipService = {
 
     },
 
-    deletePeople(d) {
+    deletePeople(data) {
         return new Promise((resolve, reject) => {
-            let nameHolder = this.peopleHandle(d)
-            console.log(nameHolder, "all iz well");
-            axios
-                .delete(`/api/People/DeletePeoples?peopleIDList=${nameHolder}`)
+            axios.delete(`/api/People/DeletePeoples?peopleIDList=${data}`)
                 .then(res => {
                     resolve(res.data);
-
+                    console.log(res.data)
                     // store.dispatch("setFirstTimers", res.data);
                 })
                 .catch(error => {
