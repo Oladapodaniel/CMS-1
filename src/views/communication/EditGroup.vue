@@ -28,13 +28,14 @@
 
                   <!-- Context Area -->
                   <div
-                    class="row amazing d-flex flex-row justify-content-between mt-lg-3 mb-4"
+                    class="row amazing mt-lg-3 mb-4"
                   >
                     <!-- <h4 class="ml-md-n3 mt-lg-1">Amazing Group</h4> -->
-                    <div class="col-md-6 form-group px-0">
+                    <div class="col-sm-9 form-group px-0">
                       <input
                         type="text"
-                        class="inputWithDisable"
+                        class="p-0"
+                        :class="{ 'form-control' : !groupNameDisabled, 'inputWithDisable' : groupNameDisabled }"
                         id="groupName"
                         v-model="groupNameValue"
                         v-bind:disabled="groupNameDisabled"
@@ -42,12 +43,12 @@
                       />
                     </div>
 
-                    <div class="col-lg-5 col-sm-4 amazingE">
+                    <div class="col-sm-2 amazingE">
                       <button
                         v-on:click="enableGroupName"
-                        class="btn btnIcons btn-secondary"
+                        class="btnIcons btn-secondary"
                       >
-                        <i class="fas fa-pencil-alt icons"></i>
+                        <i class="fa fa-pencil-alt icons"></i>
                         Edit
                       </button>
                     </div>
@@ -56,80 +57,41 @@
                   <div class="row mb-lg-1">
                     <h3>Phone Numbers</h3>
                   </div>
-                  <div class="row d-flex flex-row justify-content-between mdiv">
-                    <div class="col-md-6 form-group px-0">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="phoneNumber"
-                        v-model="enteredValue"
-                      />
+                  <div class="row mdiv">
+                    <div class="col-sm-9 form-group px-0">
+                      <textarea class="form-control" v-model="groupNumbers" rows="4" ref="iframeLink"></textarea>
                     </div>
-                    <div class="col-md-5 addIconarea">
+                    <div class="col-sm-2 addIconarea">
                       <button
-                        v-on:click="addPhoneNumber"
-                        class="btn btnIcons align-self-end btn-secondary mb-2"
+                        v-on:click="copyIframeLink"
+                        class="btnIcons align-self-end btn-secondary mb-2"
                       >
-                        <i
-                          class="fa fa-plus-circle icons"
-                          aria-hidden="true"
-                        ></i>
-                        Add
+                        <i class="pi pi-copy icon" aria-hidden="true"></i>
+                        Copy
                       </button>
                     </div>
                   </div>
-
-                  <div
-                    v-for="(phoneNumber, index) in phoneNumbers"
-                    :key="index"
-                    class="row"
-                  >
-                    <div class="col-md-7 col-sm-4 addContent spanArea1 mt-1">
-                      <div class="row d-md-flex align-items-center">
-                        <div class="col-md-6 spanArea col-sm-4">
-                          <span>
-                            {{ phoneNumber }}
-                          </span>
-                        </div>
-                        <div
-                          class="col-md-5 d-md-flex justify-content-end spanArea2"
-                        >
-                          <button
-                            v-on:click="removePhoneNumber(index)"
-                            class="btn btn-default text-danger"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Button Area -->
                   <div class="row mt-md-5">
-                    <div class="col-md-7">
-                      <div class="row d-md-flex align-items-center">
-                        <div class="col-md-6 basebtns">
+                    <div class="col-md-11 ml-4">
+                      <div class="row d-flex align-items-center justify-content-end">
+ 
                           <button
                             v-on:click="resetInputFields"
-                            class="btn btnBase1 btnBase btn-primary"
+                            class="btn default-btn"
                           >
                             cancel
                           </button>
-                        </div>
-                        <div class="col-md-6 basebtns">
                           <button
                             v-on:click="saveDetails"
-                            class="btn btnBase btn-primary ml-md-4"
+                            class="btn default-btn border-0 primary-bg ml-md-4"
                           >
                             <i
                               class="fas fa-circle-notch fa-spin"
                               v-if="loading"
                             ></i>
-                            <span>Save</span>
+                            <span class="text-white">Save</span>
                             <span></span>
                           </button>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -140,90 +102,86 @@
         </div>
       </main>
     </div>
+    <Toast />
   </div>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
+import communicationService from "../../services/communication/communicationservice"
 
 export default {
   data() {
     return {
-      phoneNumbers: [],
       enteredValue: "",
-      groupNameValue: "Amazing group",
+      groupNameValue: "",
       groupNameDisabled: true,
+      groupNumbers: "",
       loading: false,
     };
   },
 
   methods: {
-    addPhoneNumber() {
-      if (this.enteredValue !== "") {
-        this.enteredValue.trim();
-        if (this.enteredValue.includes(",")) {
-          this.enteredValue
-            .split(",")
-            .forEach((i) => this.phoneNumbers.push(i));
-        }
-        if (
-          this.enteredValue.split(" ").length > 1 &&
-          !this.enteredValue.includes(",")
-        ) {
-          this.enteredValue
-            .split(" ")
-            .forEach((i) => this.phoneNumbers.push(i));
-        }
-        if (
-          !this.enteredValue.includes(",") &&
-          !this.enteredValue.includes(" ")
-        ) {
-          this.phoneNumbers.push(this.enteredValue);
-        }
-        this.enteredValue = "";
-        console.log(this.phoneNumbers);
-      }
-    },
-
-    removePhoneNumber(index) {
-      this.phoneNumbers.splice(index, 1);
-    },
-
     enableGroupName() {
       this.groupNameDisabled = false;
-      this.$refs.groupName.focus();
+      this.$nextTick(() => {
+        this.$refs.groupName.focus()
+      })
+      console.log(this.$refs.groupName)
     },
 
     saveDetails() {
       let details = {
-        id: "",
+        id: this.$route.params.groupId,
         groupName: this.groupNameValue,
-        phoneNumbers: this.phoneNumbers.join(","),
+        phoneNumbers: this.groupNumbers,
       };
       console.log(details);
         this.loading = true;
       axios
-        .post("/api/Messaging/createPhoneGroups", details)
+        .put("/api/Messaging/editPhoneGroups", details)
         .then((res) => {
             this.loading = false;
-          console.log(res);
+            console.log(res);
+            this.$router.push({ name: "ContactList" })
         })
         .catch((err) => {
             this.loading = false;
-          console.log(err);
+            console.log(err);
         });
     },
 
     resetInputFields() {
-      this.enteredValue = "";
-      this.groupNameValue = "";
-      this.phoneNumbers = "";
+      this.$router.push({ name: "ContactList" })
     },
+    copyIframeLink () {
+          this.$refs.iframeLink.select();
+          this.$refs.iframeLink.setSelectionRange(0, this.$refs.iframeLink.value.length); /* For mobile devices */
+
+          /* Copy the text inside the text field */
+          document.execCommand("copy");
+          this.$toast.add({
+              severity: "info",
+              summary: "Number Copied",
+              detail: "Group phone numbers copied to your clipboard",
+              life: 3000,
+          });
+      }
   },
 
   created() {
     const groupId = this.$route.params.groupId;
     console.log(groupId);
+    communicationService.getOnePhoneGroup(`/api/Messaging/getPhoneGroupById?phoneGroupId=${groupId}`)
+      .then((res) => {
+        console.log(res)
+        this.groupNameValue = res.name
+        this.groupNumbers = res.numbers
+        
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   },
 };
 </script>
@@ -248,6 +206,15 @@ export default {
   /* background-color: rgba(252, 252, 252, 0.932); */
   border: none;
   outline: transparent;
+  display: block;
+  width: 100%;
+  height: calc(1.5em + .75rem + 2px);
+  padding: .375rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-clip: padding-box;
 }
 
 .inputWithDisable:disabled {
@@ -296,6 +263,7 @@ h4 {
   background-color: #dde2e6;
   border-radius: 40px;
   border: none;
+  outline: none;
 }
 
 .btnBase1 {
