@@ -172,7 +172,15 @@
                             >Report:
                           </span>
                           <span class="c-pointer small-text primary-text"
-                            >View</span
+                            >
+                             <router-link
+                            :to="{
+                               name: 'MessageDetails',
+                                params: { messageId: reply.id },
+                            }" > View
+                             </router-link>
+                            </span
+                            
                           >
                         </div>
                       </div>
