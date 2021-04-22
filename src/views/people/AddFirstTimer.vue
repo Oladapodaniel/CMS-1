@@ -335,7 +335,7 @@
             </div>
           </div>
         </div>
-        <div class="">
+        <!-- <div class="">
           <span class="celeb-tab row" @click="showAddInfoTab">
             <span class="tab-header col-sm-3">Follow up and Retention:</span>
             <span class="h-rule col-sm-7 pl-0"><hr class="hr" /></span>
@@ -380,25 +380,11 @@
                   />
                 </span>
               </div>
-
-              <!-- <div class="input-field"> -->
-                <!-- <label for="" class="label">Age</label> -->
-                <!-- <div class="cstm-select search-box">
-                  <div class="cs-select" style="width: 330px">
-                    <Dropdown
-                      v-model="selectedFollowUp"
-                      :options="['Option1', 'Option2']"
-                      placeholder="Assigned automated follow-up"
-                      style="width: 100%"
-                    />
-                  </div>
-                </div>
-              </div> -->
             </div>
 
             <div class="image-div other"></div>
           </div>
-        </div>
+        </div> -->
 
         <!-- <div class="error-div">
           <p v-if="!loading">{{ errMessage }}</p>
@@ -885,13 +871,14 @@ export default {
           birthday: firstTimersObj.value.birthday,
           birthMonth: firstTimersObj.value.birthMonth,
           birthYear: firstTimersObj.value.birthYear,
-          howDidYouAboutUsId: firstTimersObj.value.howDidYouAboutUsId,
+          howDidYouAboutUsId: selectedAboutUsSource.value ? selectedAboutUsSource.value.id : null,
+          // howDidYouAboutUsId: firstTimersObj.value.howDidYouAboutUsId,
           communicationMeans: firstTimersObj.value.communicationMeans,
           interestedInJoining: firstTimersObj.value.interestedInJoining,
           wantsToBeVisited: firstTimersObj.value.wantToBeVisited,
           personId: firstTimersObj.value.personId,
-          sendWelcomeEmail: firstTimersObj.value.sendWelcomeEmail,
-          sendWelcomeSMS: firstTimersObj.value.sendWelcomeSMS,
+          sendEmail: firstTimersObj.value.sendWelcomeEmail,
+          sendSms: firstTimersObj.value.sendWelcomeSMS,
         };
 
         if (firstTimersObj.value.genderId)
@@ -1149,12 +1136,14 @@ console.log(updateMember)
             ftimerId.value = res.data.personId;
 
             firstTimersObj.value = res.data;
+            firstTimersObj.value.sendWelcomeSMS = res.data.sendSms;
+            firstTimersObj.value.sendWelcomeEmail = res.data.sendEmail;
             
             selectedGender.value = res.data.genderId ? genderArr.value.find(i => i.id === res.data.genderId) : { };
             
             selectedMaritalStatus.value = res.data.maritalStatusId ? maritalStatusArr.value.find(i => i.id === res.data.maritalStatusId) : { };
             
-            selectedAboutUsSource.value = res.data.howDidYouAboutUsId ? howDidYouAboutUs.value.find(i => i.id === res.data.howDidYouAboutUsId) : { }
+            selectedAboutUsSource.value = getUserSource(res.data.howDidYouAboutUsId)
             
             selectedCommunicationMeans.value = res.data.communicationMeans ? comMeansArr.value[res.data.communicationMeans - 1] : ""
             
@@ -1170,7 +1159,7 @@ console.log(updateMember)
             birthMonth.value = res.data.birthMonth ? month.value[Number(res.data.birthMonth) - 1] : "";
             console.log(eventsAttended.value, "EA");
             
-            selectedEventAttended.value = !res.data.activityID ? { } : eventsAttended.value.find(i => i.activityID === res.data.activityID) ? eventsAttended.value.find(i => i.activityID === res.data.activityID) : { }
+            selectedEventAttended.value = getEventUserAttended(res.data.activityID)
           })
           .catch(err => {
             finish()
@@ -1184,6 +1173,29 @@ console.log(updateMember)
           })
       }
     });
+
+    const getUserSource = sourceId => {
+      if (sourceId && howDidYouAboutUs.value && howDidYouAboutUs.value.length > 0) return howDidYouAboutUs.value.find(i => i.id === sourceId);
+      if (!sourceId) {
+        axios.get("/api/membership/howyouheardaboutus").then((res) => {
+          howDidYouAboutUs.value = res.data.map((i) => {
+            return { name: i.name, id: i.id };
+          });
+          return howDidYouAboutUs.value.find(i => i.id === res.data.howDidYouAboutUsId);
+        });
+      } else {
+        return null;
+      }
+    }
+
+    const getEventUserAttended = userEventId => {
+      if (!userEventId) return { };
+      if (eventsAttended.value && eventsAttended.value.length > 0) return eventsAttended.value.find(i => i.activityID === userEventId);
+      axios.get("/api/Events/EventActivity").then((res) => {
+        eventsAttended.value = res.data;
+        return eventsAttended.value.find(i => i.activityID === userEventId);
+      });
+    }
 
     const year = computed(() => {
       const arrOfYears = [];
