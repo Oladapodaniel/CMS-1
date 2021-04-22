@@ -4,18 +4,20 @@
       <div class="row mt-4" style="margin-top: 10px">
         <div class="col-md-12 d-flex">
           <a class="p-2 mx-1 page-btn rounded-circle" @click="prevPage"
+           :class="{ 'disable': currentPage === 0 }"
             ><i class="fa fa-angle-left"></i>
           </a>
           <a
             class="p-2 mx-1 rounded-circle"
             :class="{ 'primary-bg text-white': i === currentPage + 1, 'page-btn': i <= startButton + buttonsCount, 'd-none': i < startButton || i > startButton + buttonsCount }"
-            v-for="i in itemsCount"
+            v-for="i in pages"
             :key="i"
             @click="getPageContent(i)"
             
             ><span v-if="i >= startButton && i <= (startButton + buttonsCount)">{{ i }}</span></a
           >
-          <a class="p-2 mx-1 page-btn rounded-circle" @click="nextPage"
+          <a class="p-2 mx-1 page-btn rounded-circle" :class="{ 'disable': currentPage >= pages - 1 }"
+            @click="nextPage"
             ><i class="fa fa-angle-right"></i
           ></a>
         </div>
@@ -26,7 +28,7 @@
 
 <script>
 export default {
-  props: [ "itemsCount", "currentPage" ],
+  props: [ "itemsCount", "currentPage", "totalItems" ],
 
   data() {
     return {
@@ -38,16 +40,19 @@ export default {
   methods: {
     getPageContent(page) {
       if (page < 1) return false;
+      // if(page = 1)return false;
       this.$emit("getcontent", page - 1);
+      // this.$emit("getcontent", page + 3000);
     },
 
     nextPage() {
       const next = this.currentPage + 1;
-      this.getPageContent(next + 1);
+      if (next < this.pages) this.getPageContent(next + 1);
     },
 
     prevPage() {
       const prev = this.currentPage - 1;
+      // if(this.getPageContent<=this.nextPage)return this.getPageContent;
       this.getPageContent(prev + 1);
     }
   },
@@ -59,6 +64,11 @@ export default {
       if (this.currentPage % this.buttonsCount === 0) start = this.currentPage;
       if (!this.currentPage % this.buttonsCount === 0) start = Math.floor(this.currentPage / this.buttonsCount) * this.buttonsCount;
       return start;
+    },
+
+    pages() {
+      if (!this.totalItems) return this.itemsCount;
+      return Math.ceil(this.totalItems / this.itemsCount);
     }
   },
 };
@@ -81,5 +91,11 @@ a {
 
 .page-btn:hover {
   cursor: pointer;
+}
+
+.disable {
+  pointer-events: none; 
+  cursor: default !important;
+  color: grey;
 }
 </style>

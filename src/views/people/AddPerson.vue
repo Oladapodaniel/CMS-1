@@ -738,20 +738,27 @@ export default {
               detail: "Please ensure you have internet access",
               life: 6000,
             });
-          } else {
-            showError.value = true;
-            errMessage.value =
-              err.response && err.response.data.messsage
-                ? err.response.data.messsage
-                : "Update operation was not succesfull";
+          } else if (err.toString().toLowerCase().includes("timeout")) {
             toast.add({
-              severity: "warn",
-              summary: "Update Failed",
-              detail: errMessage.value
-                ? errMessage.value
-                : "Update operation failed",
-              life: 6000,
-            });
+                severity: "warn",
+                summary: "Request Delayed",
+                detail: "Request took too long to respond",
+                life: 6000,
+              });
+            }else {
+              showError.value = true;
+              errMessage.value =
+                err.response && err.response.data.messsage
+                  ? err.response.data.messsage
+                  : "Update operation was not succesfull";
+              toast.add({
+                severity: "warn",
+                summary: "Update Failed",
+                detail: errMessage.value
+                  ? errMessage.value
+                  : "Update operation failed",
+                life: 6000,
+              });
           }
           showError.value = true;
           console.log(err.response);
