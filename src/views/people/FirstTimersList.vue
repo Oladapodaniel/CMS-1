@@ -64,17 +64,7 @@
         </div>
       </div>
 
-
       <!-- tosin 1 -->
-      <div class="mb-3 px-2">
-        <i
-          class="pi pi-trash text-danger ml-4 mb-n2 mt-4 c-pointer d-flex align-items-center"
-          style="font-size: 23px"
-          v-if="checkedFirstTimer.length > 0"
-          @click="deleteFirstTimer"
-        >
-        </i>
-      </div>
       <div class="table">
         <div class="top-con">
           <div class="table-top my-4 px-4">
@@ -86,7 +76,17 @@
                 @change="markAllFirsttimer"
                 :checked="checkedFirstTimer.length === churchMembers.length"
               />
-              <label>SELECT ALL</label>
+              <label
+                >SELECT ALL
+              </label>
+               <i
+                    class="pi pi-trash text-danger ml-3 c-pointer d-flex-inline align-items-center"
+                    style="font-size: 20px"
+                    v-if="checkedFirstTimer.length > 0"
+                    @click="modal"
+                  >
+                  </i
+                >
             </div>
             <div class="filter">
               <p @click="toggleFilterFormVissibility" class="mt-2">
@@ -204,7 +204,7 @@
                     @change="check1item(person)"
                     :checked="
                       checkedFirstTimer.findIndex((i) => i.id === person.id) >=
-                        0
+                      0
                     "
                   />
                 </td>
@@ -508,19 +508,8 @@ export default {
           });
         },
       });
-    };
 
-    // const getFirstTimers = async () => {
-    //   try {
-    //     const { data } = await axios.get(
-    //       `/api/People/FirstTimer`
-    //     );
-    //     churchMembers.value = data;
-    //     console.log(data)
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
+    };
 
     onMounted(() => {
       console.log(route, "route");
@@ -599,7 +588,8 @@ export default {
     const markAllFirsttimer = () => {
       if (checkedFirstTimer.value.length < churchMembers.value.length) {
         churchMembers.value.forEach((i) => {
-          const ftInMarked = checkedFirstTimer.value.findIndex((f) => f.id === i.id
+          const ftInMarked = checkedFirstTimer.value.findIndex(
+            (f) => f.id === i.id
           );
           if (ftInMarked < 0) {
             checkedFirstTimer.value.push(i);
@@ -611,7 +601,8 @@ export default {
       console.log(checkedFirstTimer.value, "God is Good");
     };
 
- const convert = (x) => {
+    // Function to delete first timer
+    const convert = (x) => {
       console.log(x, "tosin");
       return x.map((i) => i.id).join(",");
     };
@@ -623,16 +614,19 @@ export default {
         .then((res) => {
           console.log(res);
           churchMembers.value = churchMembers.value.filter((item) => {
-            const y = checkedFirstTimer.value.findIndex((i) => i.id === item.id);
+            const y = checkedFirstTimer.value.findIndex(
+              (i) => i.id === item.id
+            );
             if (y >= 0) return false;
             return true;
           });
           toast.add({
             severity: "success",
             summary: "Confirmed",
-            detail: "Records deleted successfully!",
+            detail: "1 Record deleted successfully.",
             life: 3000,
           });
+
 
           checkedFirstTimer.value = [];
         })
@@ -641,13 +635,35 @@ export default {
           toast.add({
             severity: "error",
             summary: "Delete Error",
-            detail: "Deleting SMS failed",
+            detail: "Deleting Record failed",
             life: 3000,
           });
           console.log(err);
         });
     };
 
+    const modal = () => {
+        confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteFirstTimer()
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+
+    }
 
     return {
       churchMembers,
@@ -674,6 +690,7 @@ export default {
       check1item,
       markAllFirsttimer,
       deleteFirstTimer,
+      modal,
     };
   },
 };
