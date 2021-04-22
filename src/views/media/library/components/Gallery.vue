@@ -113,9 +113,10 @@ export default {
     const getMedia = async (tenantId) => {
       try {
         const response = await media_service.getMedia(tenantId);
+        console.log(response);
         loading.value = false;
         for (let file of mediaTypes) {
-          media.value[file] = response.filter((i) => {
+          media.value[file] = response.returnObject.filter((i) => {
             return Number(i.mediaType) === mediaTypes.indexOf(file);
           });
         }

@@ -38,7 +38,9 @@ export default {
   methods: {
     getPageContent(page) {
       if (page < 1) return false;
+      // if(page = 1)return false;
       this.$emit("getcontent", page - 1);
+      // this.$emit("getcontent", page + 3000);
     },
 
     nextPage() {
@@ -48,6 +50,7 @@ export default {
 
     prevPage() {
       const prev = this.currentPage - 1;
+      // if(this.getPageContent<=this.nextPage)return this.getPageContent;
       this.getPageContent(prev + 1);
     }
   },
