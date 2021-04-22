@@ -27,13 +27,29 @@
                 </div>
               </div>
 
+              <i
+                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                style="font-size: 15px"
+                v-if="markedSchedules.length > 0"
+                @click="showConfirmModal">
+              </i>
               <div class="row table-box mb-4">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg">
                     <div class="col-md-12">
                       <div class="row light-grey-bg py-1">
-                        <div class="col-md-1">
-                          <input type="checkbox" class="mark-box" />
+                        <div class="col-md-1"
+                        v-if="schedules.length > 0">
+                          <input
+                            type="checkbox"
+                            name="all"
+                            id="all"
+                            @change="markAllSchedules"
+                            :checked="
+                              markedSchedules.length === schedules.length
+                            "
+                            class="mark-box"
+                          />
                         </div>
                         <div class="col-md-11">
                           <span class="th">Message</span>
@@ -54,7 +70,18 @@
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1">
-                          <input type="checkbox" class="mark-box" />
+                          <input
+                            type="checkbox"
+                            name=""
+                            id=""
+                            @change="mark1Schedule(sms)"
+                            :checked="
+                              markedSchedules.findIndex(
+                                (i) => i.id === sms.id
+                              ) >= 0
+                            "
+                            class="mark-box"
+                          />
                         </div>
                         <div class="col-md-8 d-md-flex flex-column small-text">
                           <router-link to="" class="text-decoration-none"
@@ -133,6 +160,8 @@
                 </div>
               </div>
             </div>
+            <ConfirmDialog />
+            <Toast />
           </div>
         </div>
       </main>
@@ -145,6 +174,10 @@ import { onMounted, ref, computed } from "vue";
 import UnitsArea from "../../components/units/UnitsArea";
 import communicationService from "../../services/communication/communicationservice";
 import dateFormatter from "../../services/dates/dateformatter";
+import axios from "@/gateway/backendapi";
+import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress";
+import { useConfirm } from "primevue/useConfirm";
 
 export default {
   components: { UnitsArea },
@@ -183,12 +216,96 @@ export default {
       );
     });
 
-// const markScheduled = ref([])
-//     const mark1Scheduled = (schedules) => {
-// const scheduledIndex = schedules.value.findIndex(() =>{
+    // code to mark single item in schedules
+    const markedSchedules = ref([]);
+    const mark1Schedule = (msch) => {
+      const scheduleIndex = markedSchedules.value.findIndex(
+        (i) => i.id === msch.id
+      );
+      if (scheduleIndex < 0) {
+        markedSchedules.value.push(msch);
+      } else {
+        markedSchedules.value.splice(msch, 1);
+      }
+      console.log(markedSchedules.value, " Am here");
+    };
 
-// })
-//     }
+    // code to mark multiple item in schedules
+    const markAllSchedules = () => {
+      if (markedSchedules.value.length < schedules.value.length) {
+        schedules.value.forEach((i) => {
+          const schedulesInMarked = markedSchedules.value.findIndex(
+            (s) => s.id === i.id
+          );
+          if (schedulesInMarked < 0) {
+            markedSchedules.value.push(i);
+          }
+        });
+      } else {
+        markedSchedules.value = [];
+      }
+      console.log(markedSchedules.value, "God is awesome");
+    };
+
+    // function to delete schedules
+    const mainone = (k) => {
+      console.log(k, "wait a moment");
+      return k.map((i) => i.id).join(",");
+    };
+    const deleteSchedules = () => {
+      let sub = mainone(markedSchedules.value);
+      console.log(sub, "Am here save and sound");
+      axios
+        .delete(
+          `/api/Messaging/DeleteSMSScheduledMessages?ScheduledMessageIdList=${sub}`
+        )
+        .then((res) => {
+          console.log(res, "we good");
+          schedules.value = schedules.value.filter((item) => {
+            const p = markedSchedules.value.findIndex((i) => i.id === item.id);
+            if (p >= 0) return false;
+            return true;
+          });
+
+          markedSchedules.value = [];
+
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Draft Deleted",
+            life: 3000,
+          });
+        })
+        .catch((err) => {
+          stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Deleting Draft failed",
+            life: 3000,
+          });
+          console.log(err);
+        });
+    };
+
+    const confirm = useConfirm();
+    let toast = useToast();
+    const showConfirmModal = () => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteSchedules();
+        },
+        reject: () => {
+          //  toast.add({severity:'info', summary:'Rejected',
+          //  detail:'You have rejected', life: 3000});
+        },
+      });
+    };
 
     return {
       schedules,
@@ -196,8 +313,11 @@ export default {
       formattedDate,
       scheduledMssg,
       searchScheduleMssg,
-      // markScheduled,
-      // mark1Scheduled,
+      markedSchedules,
+      mark1Schedule,
+      markAllSchedules,
+      deleteSchedules,
+      showConfirmModal,
     };
   },
 };

@@ -10,8 +10,8 @@ const membershipService = {
                     store.dispatch("setMembers", res.data);
                 })
                 .catch(error => {
-                     /*eslint no-undef: "warn"*/
-                     NProgress.done();
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
                     if (error.response) {
                         reject(error.response);
                     } else {
@@ -28,8 +28,8 @@ const membershipService = {
                     resolve(res.data);
                 })
                 .catch(error => {
-                     /*eslint no-undef: "warn"*/
-                     NProgress.done();
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
                     if (error.response) {
                         reject(error.response);
                     } else {
@@ -46,8 +46,8 @@ const membershipService = {
                     resolve(res.data);
                 })
                 .catch(error => {
-                     /*eslint no-undef: "warn"*/
-                     NProgress.done();
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
                     if (error.response) {
                         reject(error.response);
                     } else {
@@ -65,8 +65,8 @@ const membershipService = {
                     store.dispatch("setFirstTimers", res.data);
                 })
                 .catch(error => {
-                     /*eslint no-undef: "warn"*/
-                     NProgress.done();
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
                     if (error.response) {
                         reject(error.response);
                     } else {
@@ -74,6 +74,12 @@ const membershipService = {
                     }
                 })
         })
+    },
+
+    peopleHandle(p) {
+        console.log(p, "God is good");
+        return p.map((i) => i).join(",")
+
     },
 
     deletePeople(data) {
@@ -85,8 +91,8 @@ const membershipService = {
                     // store.dispatch("setFirstTimers", res.data);
                 })
                 .catch(error => {
-                     /*eslint no-undef: "warn"*/
-                     NProgress.done();
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
                     if (error.response) {
                         reject(error.response);
                     } else {
@@ -103,8 +109,8 @@ const membershipService = {
                     resolve(res.data);
                 })
                 .catch(error => {
-                     /*eslint no-undef: "warn"*/
-                     NProgress.done();
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
                     if (error.response) {
                         reject(error.response);
                     } else {
@@ -118,22 +124,22 @@ const membershipService = {
         return new Promise((resolve, reject) => {
             axios.get(
                 `/api/People/GetPersonInfoWithAssignments/${id}`
-              )
-              .then((res) => {
-                resolve(res.data);
-              })
-              .catch(err => {
-                  /*eslint no-undef: "warn"*/
-                  NProgress.done();
-                  if (err.response) reject(err.response);
-                  if (!err.response) reject(err);
-                  
-                  console.log(err);
-              })
+            )
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch(err => {
+                    /*eslint no-undef: "warn"*/
+                    NProgress.done();
+                    if (err.response) reject(err.response);
+                    if (!err.response) reject(err);
+
+                    console.log(err);
+                })
         })
     },
 
-    addPersonToStore (data) {
+    addPersonToStore(data) {
         if (data) {
             const person = {
                 id: data.personId,
@@ -146,12 +152,12 @@ const membershipService = {
                 maritalStatusID: data.maritalStatusID,
                 ageGroupID: data.ageGroupID
             }
-    
+
             store.dispatch("membership/addMember", person);
         }
     },
 
-    updatePersonInStore (data, personId) {
+    updatePersonInStore(data, personId) {
         if (data) {
             const person = {
                 id: personId,
@@ -163,9 +169,9 @@ const membershipService = {
                 genderID: data.genderID,
                 maritalStatusID: data.maritalStatusID,
                 ageGroupID: data.ageGroupID
-              }
-        
-              store.dispatch("membership/updateMember", person);
+            }
+
+            store.dispatch("membership/updateMember", person);
         }
     }
 

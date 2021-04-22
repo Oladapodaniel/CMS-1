@@ -67,7 +67,7 @@
               <div class="col-lg-3">
                 <div class="icons d-md-flex justify-content-end">
                   <span><i class="fas fa-star mx-2 icons"></i></span>
-                  <span><i class="fas fa-trash mx-2 icons"></i></span>
+                  <span @click="showConfirmModal(message.id)"><i class="fas fa-trash mx-2 icons"></i></span>
                   <span><i class="fas fa-ellipsis-v mx-2 icons"></i></span>
                 </div>
               </div>
@@ -85,6 +85,12 @@
             <p class="ptext text-justify" style="line-height: 2.5rem;">
               {{ message ? message.message : "" }}
             </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <Loading :loading="loading" />
           </div>
         </div>
 
@@ -126,6 +132,8 @@
             SEND
           </button>
         </div>
+        <ConfirmDialog></ConfirmDialog>
+        <Toast />
 
         <!-- <div class="row mt-md-n4 main3 shadow pt-md-3 mb-5 bg-white rounded">
           <div class="col-md-5 ml-lg-5 img mt-2">
@@ -153,33 +161,37 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import composeService from "../../services/communication/composer";
 import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-
+import communicationService from '../../services/communication/communicationservice';
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import Loading from "../../components/loading/LoadingComponent"
 
 export default {
+  components: { Loading },
   setup() {
     const message = ref({ });
-    const loading = ref(false);
+    const loading = ref(true);
     const route = useRoute();
+    const confirm = useConfirm();
+    const toast = useToast();
     const store = useStore();
+    const router = useRouter();
     const body = ref(null)
 
     if (route.params.messageId) {
-      loading.value = true;
       message.value = store.getters["communication/getById"](route.params.messageId);
-      console.log(message.value, "Details");
     }
 
-    if (route.params.messageId) {
-      loading.value = true;
-      composeService.getSMSById(route.params.messageId)
+    const getMessage = (id) => {
+      composeService.getSMSById(id)
         .then(res => {
           loading.value = false;
           message.value = res;
-          console.log(res, "on load");
         })
         .catch(err => {
           loading.value = false;
@@ -187,14 +199,56 @@ export default {
         })
     }
 
-    onMounted(() => {
-      setTimeout(() => console.log(body.value.innerText, "text"), 5000)
-    })
+    if (route.params.messageId) {
+      if (!message.value) getMessage(route.params.messageId);
+      else loading.value = false;
+    }
+
+    const deleteMessage = async id => {
+      try {
+        await communicationService.deleteSMS(id);
+        toast.add({
+            severity: "success",
+            summary: "Message Deleted",
+            detail: "The message was deleted successfully",
+            life: 3000,
+          });
+          store.dispatch("communication/removeSentSMS", id);
+          router.push({name: 'SentMessages'})
+      } catch (error) {
+        toast.add({
+          severity: "error",
+          summary: "Delete Failed",
+          detail: "The message could not be deleted, reload and try again",
+          life: 3000,
+        });
+        console.log(error);
+      }
+    }
+
+    const showConfirmModal = id => {
+      confirm.require({
+        message: "Are you sure you want to proceed? this operation can't be undone.",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteMessage(id)
+        },
+        reject: () => {
+          //  toast.add({severity:'info', summary:'Rejected',
+          //  detail:'You have rejected', life: 3000});
+        },
+      });
+    };
 
     return {
       message,
       loading,
       body,
+      deleteMessage,
+      showConfirmModal,
     }
   }
 };

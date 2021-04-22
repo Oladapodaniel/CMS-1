@@ -21,113 +21,139 @@
 
     <!-- <div class="row">
       <div class="col-md-12"> -->
-        <div class="my-con">
+    <div class="my-con">
+      <div class="summary px-3">
+        <p class="summary-header">Summary</p>
+        <div class="boards">
+          <div class="board">
+            <div class="board-top">
+              <p class="total-text mb-0">TOTAL MEMBERS</p>
+              <img
+                class="trend-icon"
+                src="../../assets/dashboardlinks/trend-icon.svg"
+                alt=""
+              />
+            </div>
+            <h4 class="total">{{ getFirstTimerSummary.totalFirstTimer }}</h4>
+            <p>
+              <span class="percent"
+                >+{{ getFirstTimerSummary.firstTimerPercentageGrowth }}%
+              </span>
+              <span class="percent-text"> Since last month</span>
+            </p>
+          </div>
+          <div class="chart-con">
+            <div style="width: 45%" class="ml-md-4 chart1">
+              <ByGenderChart
+                domId="chart"
+                title="Invitation Source"
+                distance="5"
+                :titleMargin="10"
+                :summary="getFirstTimerSummary.invitationSource"
+              />
+            </div>
+            <div style="width: 45%" class="chart2">
+              <ByMaritalStatusChart
+                domId="second"
+                title="Interested In Joining"
+                :titleMargin="10"
+                :summary="getFirstTimerSummary.interestedInJoining"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
-          <div class="summary px-3">
-      <p class="summary-header">Summary</p>
-      <div class="boards">
-        <div class="board">
-          <div class="board-top">
-            <p class="total-text mb-0">TOTAL MEMBERS</p>
-            <img
-              class="trend-icon"
-              src="../../assets/dashboardlinks/trend-icon.svg"
-              alt=""
-            />
-          </div>
-          <h4 class="total">{{ getFirstTimerSummary.totalFirstTimer }}</h4>
-          <p>
-            <span class="percent"
-              >+{{ getFirstTimerSummary.firstTimerPercentageGrowth }}%
-            </span>
-            <span class="percent-text"> Since last month</span>
-          </p>
-        </div>
-        <div class="chart-con">
-          <div style="width: 45%" class="ml-md-4 chart1">
-            <ByGenderChart
-              domId="chart"
-              title="Invitation Source"
-              distance="5"
-              :titleMargin="10"
-              :summary="getFirstTimerSummary.invitationSource"
-            />
-          </div>
-          <div style="width: 45%;" class="chart2">
-            <ByMaritalStatusChart
-              domId="second"
-              title="Interested In Joining"
-              :titleMargin="10"
-              :summary="getFirstTimerSummary.interestedInJoining"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-          <div class="table">
-            <div class="top-con">
-              <div class="table-top my-4 px-4">
-        <div class="select-all">
-          <input type="checkbox" name="all" id="all" @click="toggleSelect"/>
-          <label>SELECT ALL</label>
-        </div>
-        <div class="filter">
-          <p @click="toggleFilterFormVissibility" class="mt-2">
-            <i class="fas fa-filter"></i>
-            FILTER
-          </p>
-        </div>
-        <p @click="toggleSearch" class="search-text mt-2">
-            <i class="fa fa-search"></i> SEARCH
-          </p>
-        <div class="search d-flex" >
-          <label 
-            class="label-search d-flex"
-            :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
-          >
-            <input type="text" placeholder="Search..." v-model="searchText" />
-            <span class="empty-btn" @click="clearInput"><i class="pi pi-times"></i></span>
-            <span class="search-btn">
-              <i class="fa fa-search"></i>
-            </span>
-          </label>
-        </div>
-      </div>
-      </div>
-            <div
-        class="filter-options"
-        :class="{ 'filter-options-shown': filterFormIsVissible }"
-      >
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-9">
-              <div class="row">
-                <div class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100">
-                  <!-- <div class="input-field"> -->
 
-                  <input
-                    type="text"
-                    class="input w-100"
-                    placeholder="Name"
-                    v-model="filter.name"
-                  />
-                  <!-- </div> -->
+      <!-- tosin 1 -->
+      <div class="mb-3 px-2">
+        <i
+          class="pi pi-trash text-danger ml-4 mb-n2 mt-4 c-pointer d-flex align-items-center"
+          style="font-size: 23px"
+          v-if="checkedFirstTimer.length > 0"
+          @click="deleteFirstTimer"
+        >
+        </i>
+      </div>
+      <div class="table">
+        <div class="top-con">
+          <div class="table-top my-4 px-4">
+            <div class="select-all" v-if="churchMembers.length > 0">
+              <input
+                type="checkbox"
+                name="all"
+                id="all"
+                @change="markAllFirsttimer"
+                :checked="checkedFirstTimer.length === churchMembers.length"
+              />
+              <label>SELECT ALL</label>
+            </div>
+            <div class="filter">
+              <p @click="toggleFilterFormVissibility" class="mt-2">
+                <i class="fas fa-filter"></i>
+                FILTER
+              </p>
+            </div>
+            <p @click="toggleSearch" class="search-text mt-2">
+              <i class="fa fa-search"></i> SEARCH
+            </p>
+            <div class="search d-flex">
+              <label
+                class="label-search d-flex"
+                :class="{
+                  'show-search': searchIsVisible,
+                  'hide-search': !searchIsVisible,
+                }"
+              >
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  v-model="searchText"
+                />
+                <span class="empty-btn" @click="clearInput"
+                  ><i class="pi pi-times"></i
+                ></span>
+                <span class="search-btn">
+                  <i class="fa fa-search"></i>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="filter-options"
+          :class="{ 'filter-options-shown': filterFormIsVissible }"
+        >
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-9">
+                <div class="row">
+                  <div
+                    class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                  >
+                    <!-- <div class="input-field"> -->
+
+                    <input
+                      type="text"
+                      class="input w-100"
+                      placeholder="Name"
+                      v-model="filter.name"
+                    />
+                    <!-- </div> -->
+                  </div>
+
+                  <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                    <input
+                      type="text"
+                      class="input w-100"
+                      placeholder="Phone Number"
+                      v-model="filter.phoneNumber"
+                    />
+                  </div>
                 </div>
 
-                <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                  <input
-                    type="text"
-                    class="input w-100"
-                    placeholder="Phone Number"
-                    v-model="filter.phoneNumber"
-                  />
-                </div>
-
-             
-              </div>
-
-              <div class="row">
-                <!-- <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                <div class="row">
+                  <!-- <div class="col-12 col-sm-6 form-group d-none d-md-block">
                   <input
                     type="text"
                     class="input w-100"
@@ -135,51 +161,111 @@
                     v-model="filter.filterLastName"
                   />
                 </div> -->
-
-                
+                </div>
               </div>
-            </div>
 
-            <div class="col-md-3 d-flex flex-column align-items-center">
-              <button class="apply-btn text-white" @click="applyFilter">
-                Apply
-              </button>
-              <span class="mt-2">
-                <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                <span class="mx-2"
-                  ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                ><a class="hide-link ml-2" @click="hide">Hide</a>
-              </span>
+              <div class="col-md-3 d-flex flex-column align-items-center">
+                <button class="apply-btn text-white" @click="applyFilter">
+                  Apply
+                </button>
+                <span class="mt-2">
+                  <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                  <span class="mx-2"
+                    ><i class="fas fa-circle" style="font-size: 4px"></i></span
+                  ><a class="hide-link ml-2" @click="hide">Hide</a>
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-            
-            <div class="responsive-table">
-              <table class=" table-borderless w-100">
-              <thead class="header"> 
-                <tr>
-                  <th></th>
-                  <th>NAME</th>
-                  <th>PHONE NUMBER</th>
-                  <th>SOURCE</th>
-                  <th>INTERESTED</th>
-                  <th>DATE</th>
-                  <th>STATUS</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
+        <div class="responsive-table">
+          <table class="table-borderless w-100">
+            <thead class="header">
+              <tr>
+                <th></th>
+                <th>NAME</th>
+                <th>PHONE NUMBER</th>
+                <th>SOURCE</th>
+                <th>INTERESTED</th>
+                <th>DATE</th>
+                <th>STATUS</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
               <tr v-for="person in searchMember" :key="person.id">
-                  <td><input type="checkbox" name="all" id="all" @click="toggleSelect"/></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName ? person.fullName : `${person.firstName} ${person.lastName}` }}</router-link></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.howDidYouAboutUsName }}</router-link></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining }}</router-link></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ moment.parseZone(new Date(person.date).toDateString(), 'YYYY MM DD HH ZZ')._i.substr(4, 11) }}</router-link></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color"></router-link></td>
-                  <td><div class="dropdown">
+                <!-- tosin 2 -->
+                <td>
+                  <input
+                    type="checkbox"
+                    name=""
+                    id=""
+                    @change="check1item(person)"
+                    :checked="
+                      checkedFirstTimer.findIndex((i) => i.id === person.id) >=
+                        0
+                    "
+                  />
+                </td>
+                <td>
+                  <router-link
+                    :to="`/tenant/people/addfirsttimer/${person.id}`"
+                    class="itemroute-color"
+                    >{{
+                      person.fullName
+                        ? person.fullName
+                        : `${person.firstName} ${person.lastName}`
+                    }}</router-link
+                  >
+                </td>
+                <td>
+                  <router-link
+                    :to="`/tenant/people/addfirsttimer/${person.id}`"
+                    class="data-value itemroute-color"
+                    >{{ person.phoneNumber }}</router-link
+                  >
+                </td>
+                <td>
+                  <router-link
+                    :to="`/tenant/people/addfirsttimer/${person.id}`"
+                    class="itemroute-color"
+                    >{{ person.howDidYouAboutUsName }}</router-link
+                  >
+                </td>
+                <td>
+                  <router-link
+                    :to="`/tenant/people/addfirsttimer/${person.id}`"
+                    class="itemroute-color"
+                    >{{
+                      person.interestedInJoining === "Not_Specified"
+                        ? "Not Sure"
+                        : person.interestedInJoining
+                    }}</router-link
+                  >
+                </td>
+                <td>
+                  <router-link
+                    :to="`/tenant/people/addfirsttimer/${person.id}`"
+                    class="itemroute-color"
+                    >{{
+                      moment
+                        .parseZone(
+                          new Date(person.date).toDateString(),
+                          "YYYY MM DD HH ZZ"
+                        )
+                        ._i.substr(4, 11)
+                    }}</router-link
+                  >
+                </td>
+                <td>
+                  <router-link
+                    :to="`/tenant/people/addfirsttimer/${person.id}`"
+                    class="data-value itemroute-color"
+                  ></router-link>
+                </td>
+                <td>
+                  <div class="dropdown">
                     <i
                       class="fas fa-ellipsis-v"
                       id="dropdownMenuButton"
@@ -192,25 +278,32 @@
                       aria-labelledby="dropdownMenuButton"
                     >
                       <a class="dropdown-item" href="#">Convert to member</a>
-                      <a class="dropdown-item" href="#">Assign to follow-up</a>
+                      <!-- <a class="dropdown-item" href="#">Assign to follow-up</a> -->
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
                           :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
                           >Send SMS</router-link
                         >
                       </a>
-                      <a class="dropdown-item" v-if="person.email" >
-                        <router-link :to="`/tenant/email/compose?phone=${person.email}`">
+                      <a class="dropdown-item" v-if="person.email">
+                        <router-link
+                          :to="`/tenant/email/compose?phone=${person.email}`"
+                        >
                           Send Email
                         </router-link>
-                        </a>
-                      <a class="dropdown-item" href="#"  @click.prevent="showConfirmModal(person.id)">Delete</a>
+                      </a>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        @click.prevent="showConfirmModal(person.id)"
+                        >Delete</a
+                      >
                     </div>
                   </div>
-                  </td>
-                </tr>
-                </tbody>
-                <!-- <tbody v-else-if="filterResult.length == 0 && noRecords">
+                </td>
+              </tr>
+            </tbody>
+            <!-- <tbody v-else-if="filterResult.length == 0 && noRecords">
                   <tr>
                     <td></td>
                     <td></td>
@@ -222,8 +315,8 @@
                     <td></td>
                   </tr>
                 </tbody> -->
-              
-              <!-- <tbody v-else-if="searchMember.length > 0">
+
+            <!-- <tbody v-else-if="searchMember.length > 0">
                 <tr v-for="person in searchMember" :key="person.id">
                   <td><input type="checkbox" name="all" id="all" @click="toggleSelect"/></td>
                   <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName }}</router-link></td>
@@ -257,22 +350,25 @@
                     </div>
                   </div>
                   </td>
-                
+
               </tr>
               </tbody> -->
-              
-            </table>
-            </div>
-
-            <ConfirmDialog />
-            <Toast />
-
-            <div class="table-footer">
-              <Pagination  @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage"/>
-            </div>
-          </div>
+          </table>
         </div>
-      <!-- </div>
+
+        <ConfirmDialog />
+        <Toast />
+
+        <div class="table-footer">
+          <Pagination
+            @getcontent="getPeopleByPage"
+            :itemsCount="membersCount"
+            :currentPage="currentPage"
+          />
+        </div>
+      </div>
+    </div>
+    <!-- </div>
     </div> -->
   </div>
 </template>
@@ -284,9 +380,9 @@ import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
 import Pagination from "../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
-import moment from 'moment'
-import { useConfirm } from "primevue/useConfirm"
-import { useToast } from 'primevue/usetoast';
+import moment from "moment";
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
 
 export default {
   props: ["list"],
@@ -296,14 +392,14 @@ export default {
     Pagination,
   },
 
-   setup() {
+  setup() {
     const churchMembers = ref([]);
-    const getFirstTimerSummary = ref({})
-    const filter = ref({})
-    const searchIsVisible = ref(false)
-    const filterResult = ref([])
-    const noRecords = ref(false)
-    const searchText = ref("")
+    const getFirstTimerSummary = ref({});
+    const filter = ref({});
+    const searchIsVisible = ref(false);
+    const filterResult = ref([]);
+    const noRecords = ref(false);
+    const searchText = ref("");
 
     // if ()
 
@@ -313,19 +409,21 @@ export default {
       (filterFormIsVissible.value = !filterFormIsVissible.value);
 
     const toggleSearch = () => {
-      searchIsVisible.value = !searchIsVisible.value
-   }
-      
+      searchIsVisible.value = !searchIsVisible.value;
+    };
 
-     const firstTimerSummary = () => {
-      axios.get("/api/People/GetFirsttimerSummary")
-          .then(res => {
-            getFirstTimerSummary.value = res.data;
-            console.log(res.data)
-          })
-          .catch(err => console.log(err))
-      }
-    firstTimerSummary()
+    const firstTimerSummary = () => {
+      axios
+        .get("/api/People/GetFirsttimerSummary")
+        .then((res) => {
+          getFirstTimerSummary.value = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+    };
+    firstTimerSummary();
+
+   
 
       const searchMember = computed(() => {
         if (searchText.value !== "") {
@@ -370,25 +468,94 @@ export default {
 
 
 
-      const confirm = useConfirm();
-      let toast = useToast();
-      const showConfirmModal = (id) => {
-           confirm.require({
-               message: 'Are you sure you want to proceed?',
-                header: 'Confirmation',
-                icon: 'pi pi-exclamation-triangle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                    deleteMember(id)
-                    // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-                },
-                reject: () => {
-                    toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
-                }
+      // const confirm = useConfirm();
+      // let toast = useToast();
+      // const showConfirmModal = (id) => {
+      //      confirm.require({
+      //          message: 'Are you sure you want to proceed?',
+      //           header: 'Confirmation',
+      //           icon: 'pi pi-exclamation-triangle',
+      //           acceptClass: 'confirm-delete',
+      //           rejectClass: 'cancel-delete',
+      //           accept: () => {
+      //               deleteMember(id)
+      //               // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+      //           },
+      //           reject: () => {
+      //               toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+      //           }
+      //      }
+      // }
 
-        });
-        }
+    // const deleteMember = (id) => {
+    //   //  delete firtimer
+    //   axios
+    //     .delete(`/api/People/DeleteOnePerson/${id}`)
+    //     .then((res) => {
+    //       console.log(res);
+    //       toast.add({
+    //         severity: "success",
+    //         summary: "Confirmed",
+    //         detail: "Member Deleted",
+    //         life: 3000,
+    //       });
+    //       churchMembers.value = churchMembers.value.filter(
+    //         (item) => item.id !== id
+    //       );
+
+    //       // update first timer summary while deleting
+    //       axios
+    //         .get("/api/People/GetFirsttimerSummary")
+    //         .then((res) => {
+    //           getFirstTimerSummary.value = res.data;
+    //           console.log(res.data);
+    //         })
+    //         .catch((err) => console.log(err));
+    //     })
+    //     .catch((err) => {
+    //       /*eslint no-undef: "warn"*/
+    //       NProgress.done();
+    //       if (err.response.status === 400) {
+    //         toast.add({
+    //           severity: "error",
+    //           summary: "Unable to delete",
+    //           detail: "Ensure this member is not in any group",
+    //           life: 3000,
+    //         });
+    //       } else {
+    //         toast.add({
+    //           severity: "error",
+    //           summary: "Unable to delete",
+    //           detail: "An error occurred, please try again",
+    //           life: 3000,
+    //         });
+    //       }
+    //     });
+    // };
+
+    const confirm = useConfirm();
+    let toast = useToast();
+    const showConfirmModal = (id) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteMember(id);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
 
     // const getFirstTimers = async () => {
     //   try {
@@ -402,33 +569,43 @@ export default {
     //   }
     // };
 
-
     onMounted(() => {
       console.log(route, "route");
-        axios.get("/api/People/FirstTimer")
-          .then(res => {
-            churchMembers.value = res.data;
-            console.log(churchMembers.value)
-          })
+      axios.get("/api/People/FirstTimer").then((res) => {
+        churchMembers.value = res.data;
+        console.log(churchMembers.value, "Al iz well");
+      });
     });
 
     const applyFilter = () => {
-        filter.value.name = filter.value.name == undefined ? "" : filter.value.name
-        filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
-    
-         let url = "/api/People/FilterFirstTimers?firstname=" + filter.value.name + "&lastname="+ filter.value.name +"&phone_number="+ filter.value.phoneNumber +"&page=1"
-      axios.get(url).then((res) => {
-        noRecords.value = true
-        filterResult.value = res.data
-        console.log(filterResult.value);
-        
-      }) .catch(err => console.log(err))
-    }
+      filter.value.name =
+        filter.value.name == undefined ? "" : filter.value.name;
+      filter.value.phoneNumber =
+        filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
+
+      let url =
+        "/api/People/FilterFirstTimers?firstname=" +
+        filter.value.name +
+        "&lastname=" +
+        filter.value.name +
+        "&phone_number=" +
+        filter.value.phoneNumber +
+        "&page=1";
+      axios
+        .get(url)
+        .then((res) => {
+          noRecords.value = true;
+          filterResult.value = res.data;
+          console.log(filterResult.value);
+        })
+        .catch((err) => console.log(err));
+    };
 
     const membersCount = computed(() => {
-      if (getFirstTimerSummary.value.totalFirstTimer > 100) return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 100);
+      if (getFirstTimerSummary.value.totalFirstTimer > 100)
+        return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 100);
       return 1;
-    })
+    });
 
     const currentPage = ref(1);
     const getPeopleByPage = async (page) => {
@@ -437,8 +614,8 @@ export default {
         const { data } = await axios.get(
           `/api/people/getPaginatedFirstTimer?page=${page}`
         );
-        filterResult.value = [ ];
-        searchMember.value = [ ];
+        filterResult.value = [];
+        searchMember.value = [];
         noRecords.value = false;
         churchMembers.value = data;
         currentPage.value = page;
@@ -447,9 +624,77 @@ export default {
       }
     };
 
-    const  clearInput = () => {
-      searchText.value = ""
-    }
+    const clearInput = () => {
+      searchText.value = "";
+    };
+
+    // function to checkmark a single first timer
+    const checkedFirstTimer = ref([]);
+    const check1item = (ft) => {
+      const firstTimerIdx = checkedFirstTimer.value.findIndex(
+        (i) => i.id === ft.id
+      );
+      if (firstTimerIdx < 0) {
+        checkedFirstTimer.value.push(ft);
+      } else {
+        checkedFirstTimer.value.splice(firstTimerIdx, 1);
+      }
+      console.log(checkedFirstTimer.value, "it working");
+    };
+
+    // function to check all first timer
+    const markAllFirsttimer = () => {
+      if (checkedFirstTimer.value.length < churchMembers.value.length) {
+        churchMembers.value.forEach((i) => {
+          const ftInMarked = checkedFirstTimer.value.findIndex((f) => f.id === i.id
+          );
+          if (ftInMarked < 0) {
+            checkedFirstTimer.value.push(i);
+          }
+        });
+      } else {
+        checkedFirstTimer.value = [];
+      }
+      console.log(checkedFirstTimer.value, "God is Good");
+    };
+
+ const convert = (x) => {
+      console.log(x, "tosin");
+      return x.map((i) => i.id).join(",");
+    };
+    const deleteFirstTimer = () => {
+      let dft = convert(checkedFirstTimer.value);
+      console.log(dft, "tosin");
+      axios
+        .delete(`/api/People/DeletePeoples?peopleIDList=${dft}`)
+        .then((res) => {
+          console.log(res);
+          churchMembers.value = churchMembers.value.filter((item) => {
+            const y = checkedFirstTimer.value.findIndex((i) => i.id === item.id);
+            if (y >= 0) return false;
+            return true;
+          });
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Records deleted successfully!",
+            life: 3000,
+          });
+
+          checkedFirstTimer.value = [];
+        })
+        .catch((err) => {
+          stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Deleting SMS failed",
+            life: 3000,
+          });
+          console.log(err);
+        });
+    };
+
 
     return {
       churchMembers,
@@ -471,7 +716,11 @@ export default {
       membersCount,
       currentPage,
       getPeopleByPage,
-      clearInput
+      clearInput,
+      checkedFirstTimer,
+      check1item,
+      markAllFirsttimer,
+      deleteFirstTimer,
     };
   },
 };
@@ -501,13 +750,13 @@ export default {
 }
 
 .summary {
-    /* width: 20%; */
-    border-radius: 30px;
-    /* box-shadow: 0px 3px 6px #2c28281c; */
-    padding: 24px 10px;
-    background: #fff;
-    box-shadow: 0px 3px 6px #2c28281c;
-    border: 1px solid #00204424;
+  /* width: 20%; */
+  border-radius: 30px;
+  /* box-shadow: 0px 3px 6px #2c28281c; */
+  padding: 24px 10px;
+  background: #fff;
+  box-shadow: 0px 3px 6px #2c28281c;
+  border: 1px solid #00204424;
 }
 
 .table {
@@ -519,7 +768,7 @@ export default {
   margin-bottom: auto !important;
   /* padding: 0 21px; */
 }
-/* 
+/*
 .
 
 .table-header p.name {
@@ -638,7 +887,9 @@ export default {
   transition: all 0.5s ease-in-out;
 }
 
-
+a {
+  text-decoration: none;
+}
 
 .clear-link,
 .hide-link {
@@ -654,7 +905,7 @@ export default {
 .table-top p:hover {
   cursor: pointer;
 }
-/* 
+/*
 .label-search {
   width: 0;
   background: transparent;
@@ -693,20 +944,18 @@ export default {
   transition: all 0.5s ease-in-out;
 } */
 
-  .header{
-    background: #f1f3f9;
+.header {
+  background: #f1f3f9;
 
-    
-    
-    /*
+  /*
     ; */
-  }
+}
 
-  .header tr {
-    color: #8898aa;
-    font-size: 11px;
-    box-shadow: 0px 3px 6px #2c28281c;
-  }
+.header tr {
+  color: #8898aa;
+  font-size: 11px;
+  box-shadow: 0px 3px 6px #2c28281c;
+}
 
 .select-all input {
   margin: 0 8px 0 -5px !important;
@@ -751,45 +1000,44 @@ export default {
   border-radius: 10px;
 }
 
-  /* .boards { */
-    /* flex-direction: column; */
-    /* flex-wrap: wrap;
+/* .boards { */
+/* flex-direction: column; */
+/* flex-wrap: wrap;
     justify-content: space-between;
   } */
 
-  /* .board {
+/* .board {
     width: 45%;
     margin: 10px 0;
     max-height: 310px;
   } */
 
-  .board.members-count {
-    padding: 24px;
-  }
+.board.members-count {
+  padding: 24px;
+}
 
-  .page-header {
-    font-size: 1.7rem;
-  }
+.page-header {
+  font-size: 1.7rem;
+}
 
-  .no-record {
+.no-record {
   color: rgba(184, 5, 5, 0.726);
   font-size: 1.1em;
-  }
+}
 
-  .chart1,
-  .chart2 {
-    border-radius: 10px;
-  }
+.chart1,
+.chart2 {
+  border-radius: 10px;
+}
 
-  .itemroute-color {
-    color: #136acd;
-    cursor: pointer;
-  }
+.itemroute-color {
+  color: #136acd;
+  cursor: pointer;
+}
 
-  .itemroute-color:hover {
-    text-decoration: underline;
-  }
-
+.itemroute-color:hover {
+  text-decoration: underline;
+}
 
 @media screen and (max-width: 500px) {
   .picture,
@@ -798,7 +1046,6 @@ export default {
   .phone {
     width: 100%;
   }
-
 
   .chart1,
   .chart2,
@@ -833,9 +1080,6 @@ export default {
     text-align: right;
   }
 
-
-
-
   /* @media (max-width: 767px) {
     .table-responsive .dropdown-menu {
         position: static !important;
@@ -846,7 +1090,6 @@ export default {
         overflow: visible;
     }
 } */
-
 
   /* .table-header {
     display: none;
@@ -892,12 +1135,13 @@ export default {
     justify-content: center;
   }
 
-  .add-btn, .more {
+  .add-btn,
+  .more {
     margin-top: 10px;
   }
 
   .first-timers-text {
-    text-align: center
+    text-align: center;
   }
 }
 
@@ -923,7 +1167,7 @@ export default {
 
   .summary-header {
     width: 50%;
-    margin-left: 25%
+    margin-left: 25%;
   }
 }
 
@@ -939,9 +1183,9 @@ export default {
   }
 
   .responsive-table {
-      max-width: 100%;
-      overflow-x: scroll;
-    }
+    max-width: 100%;
+    overflow-x: scroll;
+  }
 }
 
 @media screen and (max-width: 1024px) {

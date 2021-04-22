@@ -962,20 +962,25 @@ export default {
         subject: subject.value,
         message: editorData.value,
         contacts: [],
-        // contacts: selectedMembers.value,
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
         toContacts: sendToAll.value ? "allcontacts" : "",
-        // toOthers: phoneNumber.value,
         isoCode: isoCode.value,
-        // isoCode: "NG",
         category: "",
         emailAddress: "",
         emailDisplayName: "",
         gateWayToUse: gateway,
       };
 
-      data.toOthers = phoneNumber.value;
+      const numbers = [ ];
+      phoneNumber.value.split(',').forEach(i => {
+        i.split('\n').forEach(j => {
+          if (j) numbers.push(j);
+        })
+      })
+
+      data.toOthers = numbers.join();
+
       if (selectedMembers.value.length > 0) {
         data.toOthers += data.toOthers.length > 0 ? "," : "";
         data.toOthers += selectedMembers.value
