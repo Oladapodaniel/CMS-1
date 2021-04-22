@@ -120,6 +120,7 @@
                           >Send SMS</router-link
                         >
                       </a>
+                      <!-- `/tenant/email/compose?phone=${person.email}` -->
                       <a class="dropdown-item">
                         <router-link to="">Send Email</router-link>
                       </a>
