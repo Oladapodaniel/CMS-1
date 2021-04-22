@@ -3,7 +3,7 @@
     <div class="summary px-3">
       <p class="summary-header">Summary</p>
       <ConfirmDialog />
-        <Toast />
+      <Toast />
       <!-- <hr class="hr" /> -->
 
       <div class="boards">
@@ -53,12 +53,41 @@
       </div> -->
     </div>
 
-    <div class="table mx-0" :class="{ 'mt-0': marked.length > 0}">
+    <!-- tosin  -->
+    <!-- <i
+      class="pi pi-trash text-danger c-pointer pt-2 px-4"
+      style="font-size: 20px"
+      v-if="marked.length > 0"
+      @click="deleteMarked"
+    ></i> -->
+
+    <div class="mb-1">
+      <i
+        class="ml-4 mr-3 color-groupicon pi pi-users c-pointer"
+        style="font-size: 24px"
+        v-if="marked.length > 0"
+        @click="addToGroup"
+      ></i>
+
+      <i
+        class="pi color-deleteicon pi-trash c-pointer"
+        style="font-size: 24px"
+        v-if="marked.length > 0"
+        @click="deleteMarked"
+      ></i>
+    </div>
+
+    <div class="table mx-0" :class="{ 'mt-0': marked.length > 0 }">
       <div class="table-top mb-3">
         <div class="select-all">
-          <input type="checkbox" name="all" id="all" @change="markAll" :checked="marked.length === churchMembers.length"/>
+          <input
+            type="checkbox"
+            name="all"
+            id="all"
+            @change="markAll"
+            :checked="marked.length === churchMembers.length"
+          />
           <label>SELECT ALL</label>
-           <i class="pi pi-trash text-danger c-pointer pt-2 px-4" style="font-size: 20px" v-if="marked.length > 0" @click="deleteMarked"></i>
         </div>
         <div class="filter">
           <p @click="toggleFilterFormVissibility" class="mt-2">
@@ -67,15 +96,20 @@
           </p>
         </div>
         <p @click="toggleSearch" class="search-text mt-2">
-            <i class="fa fa-search"></i> SEARCH
-          </p>
-        <div class="search d-flex" >
+          <i class="fa fa-search"></i> SEARCH
+        </p>
+        <div class="search d-flex">
           <label
             class="label-search d-flex"
-            :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
+            :class="{
+              'show-search': searchIsVisible,
+              'hide-search': !searchIsVisible,
+            }"
           >
             <input type="text" placeholder="Search..." v-model="searchText" />
-            <span class="empty-btn" @click="clearInput"><i class="pi pi-times"></i></span>
+            <span class="empty-btn" @click="clearInput"
+              ><i class="pi pi-times"></i
+            ></span>
             <span class="search-btn">
               <i class="fa fa-search"></i>
             </span>
@@ -90,7 +124,9 @@
           <div class="row">
             <div class="col-md-9">
               <div class="row">
-                <div class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100">
+                <div
+                  class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                >
                   <!-- <div class="input-field"> -->
 
                   <input
@@ -128,13 +164,15 @@
                     v-model="filter.filterLastName"
                   />
                 </div> -->
-
-                
               </div>
             </div>
 
             <div class="col-md-3 d-flex flex-column align-items-center">
-              <button class="apply-btn text-white" @click="applyFilter" :disabled="disableBtn">
+              <button
+                class="apply-btn text-white"
+                @click="applyFilter"
+                :disabled="disableBtn"
+              >
                 Apply
               </button>
               <span class="mt-2">
@@ -147,7 +185,7 @@
           </div>
         </div>
       </div>
-<div v-if="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
+      <div v-if="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
       <div class="table-header font-weight-700">
         <div class="check"></div>
         <div class="picture">
@@ -162,11 +200,15 @@
         <div class="phone">
           <p>PHONE</p>
         </div>
-        <div class="action"></div>-
+        <div class="action"></div>
+        -
       </div>
 
-     
-        <div class="table-body" v-for="(person, index) in searchMember" :key="person.id">
+      <div
+        class="table-body"
+        v-for="(person, index) in searchMember"
+        :key="person.id"
+      >
         <div class="data-row">
           <div class="check data">
             <input type="checkbox" name="" id="" />
@@ -246,21 +288,36 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item elipsis-items">
                   <router-link
-                    :to="person.mobilePhone ? `/tenant/sms/compose?phone=${person.mobilePhone}` : ''"
-                    :class="{ 'fade-text' : !person.mobilePhone, 'text-color' : person.mobilePhone }"
+                    :to="
+                      person.mobilePhone
+                        ? `/tenant/sms/compose?phone=${person.mobilePhone}`
+                        : ''
+                    "
+                    :class="{
+                      'fade-text': !person.mobilePhone,
+                      'text-color': person.mobilePhone,
+                    }"
                     >Send SMS</router-link
                   >
                 </a>
                 <a class="dropdown-item elipsis-items">
                   <router-link
-                    :to="person.email ? `/tenant/email/compose?phone=${person.email}` : ''"
-                    :class="{ 'fade-text' : !person.email, 'text-color' : person.email }"
+                    :to="
+                      person.email
+                        ? `/tenant/email/compose?phone=${person.email}`
+                        : ''
+                    "
+                    :class="{
+                      'fade-text': !person.email,
+                      'text-color': person.email,
+                    }"
                     >Send Email</router-link
                   >
                 </a>
                 <a class="dropdown-item elipsis-items">
-                  <router-link :to="`/tenant/people/add/${person.id}`"
-                  class="text-color"
+                  <router-link
+                    :to="`/tenant/people/add/${person.id}`"
+                    class="text-color"
                     >Edit</router-link
                   >
                 </a>
@@ -275,14 +332,12 @@
         </div>
 
         <hr class="row-divider" />
- 
       </div>
-     
 
       <!-- <div v-else-if="filterResult.length == 0 && noRecords">
         <div class="no-record text-center my-4">No member found</div>
       </div> -->
-  
+
       <!-- <div v-else>
         <div v-if="searchMember.length > 0">
           <div class="table-body" v-for="(person, index) in searchMember" :key="person.id">
@@ -400,7 +455,7 @@
           </div>
         </div>
         <hr class="row-divider" />
-    
+
       </div>
         </div>
         <div v-else>
@@ -409,7 +464,11 @@
       </div> -->
 
       <div class="table-footer">
-        <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage" />
+        <PaginationButtons
+          @getcontent="getPeopleByPage"
+          :itemsCount="membersCount"
+          :currentPage="currentPage"
+        />
       </div>
     </div>
   </div>
@@ -422,8 +481,8 @@ import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 import axios from "@/gateway/backendapi";
 import { useConfirm } from "primevue/useConfirm";
-import { useToast } from 'primevue/usetoast';
-import { useStore } from 'vuex';
+import { useToast } from "primevue/usetoast";
+import { useStore } from "vuex";
 import stopProgressBar from "../../services/progressbar/progress";
 import membershipservice from "../../services/membership/membershipservice";
 
@@ -436,27 +495,26 @@ export default {
   },
 
   setup(props) {
-
     const churchMembers = ref([]);
     const filterFormIsVissible = ref(false);
     const filter = ref({});
-    const searchIsVisible = ref(false)
-    const filterResult = ref([])
-    const selectAll = ref(false)
-    const noRecords = ref(false)
-    const searchText = ref("")
+    const searchIsVisible = ref(false);
+    const filterResult = ref([]);
+    const selectAll = ref(false);
+    const noRecords = ref(false);
+    const searchText = ref("");
     const store = useStore();
     // const selected = ref([])
     // const count = ref(churchMembers.length)
 
     // const selectAll = computed(() => {
-      // selectedAll: {
-      // set(val) {
-      //   selected.value = []
-        // if (val) {
-          // for(let i = 1; i <= churchMembers.value; i++) {
-          //   selected.value.push(i)
-          // }
+    // selectedAll: {
+    // set(val) {
+    //   selected.value = []
+    // if (val) {
+    // for(let i = 1; i <= churchMembers.value; i++) {
+    //   selected.value.push(i)
+    // }
     //     }
     //   }
     //   get() {
@@ -465,20 +523,25 @@ export default {
     // }
     // })
 
-
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
     const membershipSummary = ref([]);
 
     const deleteMember = (id) => {
-
       axios
         .delete(`/api/People/DeleteOnePerson/${id}`)
         .then((res) => {
           console.log(res);
-          churchMembers.value = churchMembers.value.filter(item => item.id !== id )
-          toast.add({severity:'success', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-          store.dispatch("membership/removeMember", id)
+          churchMembers.value = churchMembers.value.filter(
+            (item) => item.id !== id
+          );
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Member Deleted",
+            life: 3000,
+          });
+          store.dispatch("membership/removeMember", id);
           axios
             .get(`/api/People/GetMembershipSummary`)
             .then((res) => {
@@ -486,78 +549,89 @@ export default {
               membershipSummary.value = res.data;
             })
             .catch((err) => {
-              console.log(err)
-
+              console.log(err);
             });
         })
         .catch((err) => {
           stopProgressBar();
-          toast.add({severity:'error', summary:'Delete Error', detail:'Deleting member failed', life: 3000});
-          console.log(err)
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Deleting member failed",
+            life: 3000,
+          });
+          console.log(err);
         });
     };
 
     const applyFilter = () => {
-        filter.value.name = filter.value.name == undefined ? "" : filter.value.name
-        filter.value.phoneNumber = filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber
+      filter.value.name =
+        filter.value.name == undefined ? "" : filter.value.name;
+      filter.value.phoneNumber =
+        filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
 
-         let url = "/api/People/FilterMembers?firstname="+filter.value.name + "&lastname="+ filter.value.name +"&phone_number=" + filter.value.phoneNumber +"&page=1"
-        axios.get(url).then((res) => {
-        noRecords.value = true
-        filterResult.value = res.data
-        console.log(res.data);
-      }) .catch(err => console.log(err))
-
+      let url =
+        "/api/People/FilterMembers?firstname=" +
+        filter.value.name +
+        "&lastname=" +
+        filter.value.name +
+        "&phone_number=" +
+        filter.value.phoneNumber +
+        "&page=1";
+      axios
+        .get(url)
+        .then((res) => {
+          noRecords.value = true;
+          filterResult.value = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
     };
 
-
     const clearAll = () => {
-       filter.value.name = ""
+      filter.value.name = "";
 
-       filter.value.filterDate = ""
-       filter.value.phoneNumber = ""
-      }
+      filter.value.filterDate = "";
+      filter.value.phoneNumber = "";
+    };
 
-   const hide = () => {
-      filterFormIsVissible.value = false
-   }
+    const hide = () => {
+      filterFormIsVissible.value = false;
+    };
 
-   const disableBtn = computed(() => {
+    const disableBtn = computed(() => {
       if (!filter.value.name && !filter.value.phoneNumber) return true;
       return false;
-   })
+    });
 
-   const toggleSearch = () => {
-      searchIsVisible.value = !searchIsVisible.value
-   }
+    const toggleSearch = () => {
+      searchIsVisible.value = !searchIsVisible.value;
+    };
 
-   // onMounted(() => {
-   //    console.log('working')
-   //    confirm.require({
-   //       message: "Are you sure?"
-   //    })
-   // })
+    // onMounted(() => {
+    //    console.log('working')
+    //    confirm.require({
+    //       message: "Are you sure?"
+    //    })
+    // })
 
     const confirm = useConfirm();
     let toast = useToast();
-        const showConfirmModal = (id, index) => {
-
-           confirm.require({
-               message: 'Are you sure you want to proceed?',
-                header: 'Confirmation',
-                icon: 'pi pi-exclamation-triangle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                    deleteMember(id, index)
-
-                },
-                reject: () => {
-                    // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
-                }
-
-        });
-        }
+    const showConfirmModal = (id, index) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteMember(id, index);
+        },
+        reject: () => {
+          // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+        },
+      });
+    };
 
     const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
@@ -566,8 +640,8 @@ export default {
         const { data } = await axios.get(
           `/api/People/GetPeopleBasicInfo?page=${page}`
         );
-        filterResult.value = [ ];
-        searchMember.value = [ ];
+        filterResult.value = [];
+        searchMember.value = [];
         noRecords.value = false;
         churchMembers.value = data;
         currentPage.value = page;
@@ -584,83 +658,128 @@ export default {
       .get(`/api/People/GetMembershipSummary`)
       .then((res) => {
         membershipSummary.value = res.data;
-
       })
       .catch((err) => console.log(err));
     // })
 
-    const marked = ref([ ]);
+    const marked = ref([]);
     const mark = (member) => {
-      const memberIndex = marked.value.findIndex(i => i.id === member.id);
+      const memberIndex = marked.value.findIndex((i) => i.id === member.id);
       if (memberIndex < 0) {
-        marked.value.push(member)
+        marked.value.push(member);
       } else {
         marked.value.splice(memberIndex, 1);
       }
       console.log(marked.value, "marked");
-    }
+    };
 
+//function to mark all item
     const markAll = () => {
       if (marked.value.length < churchMembers.value.length) {
-        churchMembers.value.forEach(i => {
-          const memberInmarked = marked.value.findIndex(j => j.id === i.id);
+        churchMembers.value.forEach((i) => {
+          const memberInmarked = marked.value.findIndex((j) => j.id === i.id);
           if (memberInmarked < 0) {
             marked.value.push(i);
           }
-        })
+        });
       } else {
-        marked.value = [ ];
+        marked.value = [];
       }
       console.log(marked.value, "all");
-    }
+    };
 
+// function to delete marked item
     const deleteMarked = async () => {
-      const arr = [ ];
+      const arr = [];
       for (let member of marked.value) {
-
-        arr.push( { personId: member.id });
+        arr.push({ personId: member.id });
       }
-      try {
-        const response = await membershipservice.deletePeople(marked.value.map(i => i.id));
-        console.log(response, "RESPONSE");
-      } catch (error) {
+    confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: async () => {
+         try {
+        const response = await membershipservice.deletePeople(
+          marked.value.map((i) => i.id)
+        );
+
+          if(response){
+            toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Member Deleted",
+            life: 3000,
+          });
+          }
+          console.log(response, "RESPONSE");
+      }
+      catch (error) {
+         stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Deleting Member failed",
+            life: 3000,
+          });
         console.log(error);
       }
-    }
+        },
+        reject: () => {
+          //  toast.add({severity:'info', summary:'Rejected',
+          //  detail:'You have rejected', life: 3000});
+        },
+      });
+
+    };
+
+
+// New code area
+
+// New code area
+
 
     const getPeopleList = () => {
       // console.log(props.list, "props");
       churchMembers.value = props.list;
       // store.dispatch('churchMembers', props.list)
-
-    }
-    getPeopleList()
+    };
+    getPeopleList();
 
     const toggleSelect = () => {
-      selectAll.value = !selectAll.value
-    }
+      selectAll.value = !selectAll.value;
+    };
 
     const searchMember = computed(() => {
-        if (searchText.value !== "") {
-          return churchMembers.value.filter(i => {
-            if (i.firstName) return `${i.firstName}${i.lastName}${i.mobilePhone}`.toLowerCase().includes(searchText.value.toLowerCase());
-            return ""
-          })
-        } else if (filterResult.value.length > 0 && (filter.value.name || filter.value.phoneNumber)) {
-            return filterResult.value
-        } else {
-          return churchMembers.value
-        }
-      })
+      if (searchText.value !== "") {
+        return churchMembers.value.filter((i) => {
+          if (i.firstName)
+            return `${i.firstName}${i.lastName}${i.mobilePhone}`
+              .toLowerCase()
+              .includes(searchText.value.toLowerCase());
+          return "";
+        });
+      } else if (
+        filterResult.value.length > 0 &&
+        (filter.value.name || filter.value.phoneNumber)
+      ) {
+        return filterResult.value;
+      } else {
+        return churchMembers.value;
+      }
+    });
 
     const membersCount = computed(() => {
-      if (membershipSummary.value.totalMember > 100) return Math.ceil(membershipSummary.value.totalMember / 100);
+      if (membershipSummary.value.totalMember > 100)
+        return Math.ceil(membershipSummary.value.totalMember / 100);
       return 1;
-    })
+    });
 
-    const  clearInput = () => {
-      searchText.value = ""
-    }
+    const clearInput = () => {
+      searchText.value = "";
+    };
 
     return {
       churchMembers,
@@ -690,7 +809,7 @@ export default {
       mark,
       markAll,
       deleteMarked,
-      clearInput
+      clearInput,
     };
   },
 };
@@ -777,7 +896,7 @@ a {
 
 .total-text {
   font-size: 15px;
-  font-weight: 700
+  font-weight: 700;
 }
 
 .percent {
@@ -814,7 +933,6 @@ a {
   width: 50%;
 }
 
-
 .table-top {
   font-weight: 800;
   font-size: 12px;
@@ -824,7 +942,6 @@ a {
 .table-top p:hover {
   cursor: pointer;
 }
-
 
 .filter-options {
   height: 0;
@@ -852,13 +969,20 @@ a {
   font-size: 1.1em;
 }
 
+.color-groupicon {
+  color: #136acd;
+}
+.color-deleteicon {
+  color: rgba(184, 5, 5, 0.726);
+}
+
 .fade-text {
   color: #a8a8a8;
-  cursor: not-allowed
+  cursor: not-allowed;
 }
 
 .text-color {
-  color: #212529
+  color: #212529;
 }
 
 @media screen and (max-width: 500px) {
@@ -920,7 +1044,7 @@ a {
      width: 19%;
   } */
 
-  .picture > p{
+  .picture > p {
     margin-left: 43px;
   }
 
@@ -934,9 +1058,9 @@ a {
 }
 
 @media (max-width: 767px) {
-   .filter-options-shown {
-      height: 150px;
-   }
+  .filter-options-shown {
+    height: 150px;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -971,7 +1095,7 @@ a {
 
   .summary-header {
     width: 50%;
-    margin-left: 26.5%
+    margin-left: 26.5%;
   }
 }
 

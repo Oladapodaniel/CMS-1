@@ -10,7 +10,11 @@
                 <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..." v-model="searchDrafts" />
+                    <input
+                      type="text"
+                      placeholder="Search here..."
+                      v-model="searchDrafts"
+                    />
                     <span class="mx-2"> | </span>
                     <span class="mx-2">Sort By</span>
                     <span class="font-weight-bold"> Newest</span>
@@ -21,19 +25,29 @@
                 </div>
               </div>
 
+              <i
+                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                style="font-size: 15px"
+                v-if="markedDraft.length > 0"
+                @click="showConfirmModal(null)"
+              >
+              </i>
               <div class="row">
                 <div class="col-md-12">
                   <div class="row header-row">
                     <div class="col-md-12">
-                      <div class="row light-grey-bg py-2">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
+                      <div class="row light-grey-bg py-2 tr-border-bottom">
+                        <div class="col-md-1" v-if="drafts.length > 0">
+                          <input
+                            type="checkbox"
+                            name="all"
+                            id="all"
+                            @change="markAllDrafts"
+                            :checked="markedDraft.length === drafts.length"
+                          />
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-7">
                           <span class="th">Message</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">Sender</span>
                         </div>
                         <div class="col-md-3">
                           <span class="th">Date & Time</span>
@@ -44,48 +58,39 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <hr class="hr mt-0" />
-                    </div>
-                  </div>
                   <div
-                    class="row"
+                    class="row tr-border-bottom"
                     v-for="(draft, index) in searchDraftMessage"
                     :key="index"
                   >
                     <div class="col-md-12 py-2">
                       <div class="row py-1">
                         <div class="col-md-1">
-                          <input type="checkbox" />
+                          <input
+                            type="checkbox"
+                            name=""
+                            id=""
+                            @change="mark1Draft(draft)"
+                            :checked="
+                              markedDraft.findIndex((i) => i.id === draft.id) >=
+                              0
+                            "
+                          />
                         </div>
                         <div
-                          class="col-md-5 col-ms-12 d-flex justify-content-between"
+                          class="col-md-7 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
                             >Message:
                           </span>
                           <span
                             ><router-link
-                              class="small-text text-decoration-none"
+                              class="small-text text-decoration-none font-weight-700"
                               :to="{
                                 name: 'SendMessage',
                                 query: { draftId: draft.id },
                               }"
-                              >{{ draft.body }}</router-link
-                            ></span
-                          >
-                        </div>
-                        <div class="col-md-2 d-md-flex justify-content-between">
-                          <span class="hidden-header">Sender: </span>
-                          <span
-                            ><router-link
-                              class="small-text text-decoration-none"
-                              :to="{
-                                name: 'SendMessage',
-                                query: { draftId: draft.id },
-                              }"
-                              >{{ draft.sender }}</router-link
+                              >{{ draft.body.length > 50 ? `${ draft.body.slice(0, 50) }...` : draft.body }}</router-link
                             ></span
                           >
                         </div>
@@ -102,16 +107,27 @@
                         <div
                           class="col-md-1 col-ms-12 d-flex justify-content-between"
                         >
-                          <span class="small-text"
-                            ><i class="fa fa-trash delete-icon"></i
+                          <span class="small-text">
+                            <i
+                              class="c-pointer fa fa-trash delete-icon"
+                              @click="showConfirmModal(draft)"
+                            >
+                            </i
                           ></span>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
-                        </div>
-                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-12">
+                      <Loading :loading="loading" />
+                    </div>
+                  </div>
+
+                  <div class="row" v-if="!loading && searchDraftMessage.length === 0">
+                    <div class="col-md-12 text-center py-3">
+                      <p class="font-weight-700">No Drafts</p>
                     </div>
                   </div>
                 </div>
@@ -119,23 +135,31 @@
             </div>
           </div>
         </div>
+        <ConfirmDialog />
+        <Toast />
       </main>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, computed} from "vue";
+import { ref, computed } from "vue";
 import router from "@/router/index";
 import UnitsArea from "../../components/units/UnitsArea";
+import { useConfirm } from "primevue/useConfirm";
+import axios from "@/gateway/backendapi";
 import communicationService from "../../services/communication/communicationservice";
 import store from "../../store/store";
+import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress";
+import Loading from "../../components/loading/LoadingComponent"
 
 export default {
-    components: { UnitsArea },
+  components: { UnitsArea, Loading },
 
   setup() {
-    const searchDrafts = ref("")
+    const loading = ref(true);
+    const searchDrafts = ref("");
     const drafts = ref([]);
     const payWithPaystack = () => {
       router.push("/tenant/units");
@@ -144,7 +168,7 @@ export default {
     const getDrafts = async () => {
       try {
         const data = await communicationService.getDrafts();
-        console.log(data, "Drafts");
+        loading.value = false;
         if (data) {
           drafts.value = data;
         }
@@ -156,15 +180,125 @@ export default {
     drafts.value = store.getters["communication/smsDrafts"];
     if (!drafts.value || drafts.value.length === 0) {
       getDrafts();
+    } else {
+      loading.value = false;
     }
 
-const searchDraftMessage = computed(() => {
-if (searchDrafts.value === "" && drafts.value.length > 0) {
-return drafts.value
-}
-return drafts.value.filter((i) =>
-i.body.toLowerCase().includes(searchDrafts.value.toLowerCase()))
-})
+    const searchDraftMessage = computed(() => {
+      if (searchDrafts.value === "" && drafts.value.length > 0) {
+        return drafts.value;
+      }
+      return drafts.value.filter((i) =>
+        i.body.toLowerCase().includes(searchDrafts.value.toLowerCase())
+      );
+    });
+
+// Function to delete messages
+    const handler = (f) => {
+      return f.map((i) => i.id).join(",");
+    };
+
+    const deleteDraft = (draft) => {
+      let holder = handler(markedDraft.value);
+      let url = "";
+
+      if (!draft || !draft.id) url = `/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${holder}`;
+      if (draft && draft.id) url = `/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${draft.id}`;
+      axios
+        .delete(url)
+        .then((res) => {
+          console.log(res);
+          if (!draft || !draft.id) {
+            drafts.value = drafts.value.filter((item) => {
+              const t = markedDraft.value.findIndex((i) => i.id === item.id);
+              if (t >= 0) return false;
+              return true;
+            });
+            markedDraft.value.forEach((i) => {
+              store.dispatch("communication/removeSmsDrafts", i.id);
+            });
+          } else {
+            drafts.value = drafts.value.filter(i => i.id !== draft.id);
+            store.dispatch("communication/removeSmsDrafts", draft.id);
+          }
+
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Draft Deleted",
+            life: 3000,
+          });
+          
+          markedDraft.value = [];
+
+        })
+        .catch((err) => {
+          stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Deleting Draft failed",
+            life: 3000,
+          });
+          console.log(err);
+        });
+    };
+
+
+
+    const confirm = useConfirm();
+    let toast = useToast();
+    const showConfirmModal = (id) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          if (!id) {
+            deleteDraft()
+          } else {
+            deleteDraft(id)
+          }
+        },
+        reject: () => {
+          //  toast.add({severity:'info', summary:'Rejected',
+          //  detail:'You have rejected', life: 3000});
+        },
+      });
+    };
+
+    // code to mark single item in draft
+    const markedDraft = ref([]);
+    const mark1Draft = (draftItem) => {
+      const draftIndex = markedDraft.value.findIndex(
+        (i) => i.id === draftItem.id
+      );
+      if (draftIndex < 0) {
+        markedDraft.value.push(draftItem);
+      } else {
+        markedDraft.value.splice(draftIndex, 1);
+      }
+      console.log(markedDraft.value, "You are awesome");
+    };
+
+    // code to mark multiple item in draft
+    const markAllDrafts = () => {
+      if (markedDraft.value.length < drafts.value.length) {
+        drafts.value.forEach((i) => {
+          const draftInMarked = markedDraft.value.findIndex(
+            (d) => d.id === i.id
+          );
+          if (draftInMarked < 0) {
+            markedDraft.value.push(i);
+          }
+        });
+      } else {
+        markedDraft.value = [];
+      }
+      console.log(markedDraft.value, "You are Super awesome");
+    };
 
     return {
       drafts,
@@ -172,6 +306,13 @@ i.body.toLowerCase().includes(searchDrafts.value.toLowerCase()))
       getDrafts,
       searchDraftMessage,
       searchDrafts,
+      markedDraft,
+      mark1Draft,
+      markAllDrafts,
+      handler,
+      deleteDraft,
+      showConfirmModal,
+      loading,
     };
   },
 };

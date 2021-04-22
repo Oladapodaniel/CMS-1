@@ -27,8 +27,15 @@
                   <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12 px-0">
                       <div class="row">
-                        <div class="col-md-1 text-md-right text-lg-center px-0">
-                          <input type="checkbox" />
+                        <div class="col-md-1 text-md-right text-lg-center px-0"
+                        v-if="emails.length > 0">
+                          <input
+                            type="checkbox"
+                            name="all"
+                            id="all"
+                            @change="markAllMails"
+                            :checked="markedMail.length === emails.length"
+                          />
                         </div>
                         <div class="col-md-7">
                           <span class="th">Message</span>
@@ -55,7 +62,17 @@
                         <div class="col-md-12">
                           <div class="row">
                             <div class="col-md-1">
-                              <input type="checkbox" />
+                              <input
+                                type="checkbox"
+                                name=""
+                                id=""
+                                @change="mark1Email(email)"
+                                @checked="
+                                  markedMail.findIndex(
+                                    (i) => i.id === email.id
+                                  ) >= 0
+                                "
+                              />
                             </div>
                             <div class="col-md-7 d-md-flex flex-column">
                               <span class="msg-n-time">
@@ -156,6 +173,7 @@ import { computed, ref } from "vue";
 import communicationService from "../../services/communication/communicationservice";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import { useStore } from "vuex";
+import axios from "@/gateway/backendapi";
 
 export default {
   components: { PaginationButtons },
@@ -227,9 +245,55 @@ export default {
         return emails.value;
       }
       return emails.value.filter((i) =>
-      i.subject.toLowerCase().includes(searchMail.value.toLowerCase())
+        i.subject.toLowerCase().includes(searchMail.value.toLowerCase())
       );
     });
+
+    // Function to check a single item
+    const markedMail = ref([]);
+    const mark1Email = (mailId) => {
+      const mailIdx = markedMail.value.findIndex((i) => i.id === mailId.id);
+      if (mailIdx < 0) {
+        markedMail.value.push(mailId);
+      } else {
+        markedMail.value.splice(mailIdx, 1);
+      }
+      console.log(markedMail.value, "Tosin");
+    };
+
+    // Function to check a multiple item
+    const markAllMails = () => {
+      if (markedMail.value.length < emails.value.length) {
+        emails.value.forEach((i) => {
+          const emailsInMarked = markedMail.value.findIndex(
+            (e) => e.id === i.id
+          );
+          if (emailsInMarked < 0) {
+            markedMail.value.push(i);
+          }
+        });
+      } else {
+        markedMail.value = [];
+      }
+      console.log(markedMail.value, "God is awesome");
+    };
+
+// Function to delete emails
+const mainEmailDel = (l) => {
+  console.log(l, "Am here");
+  return l.map((i) => i.id).join(",");
+};
+
+const deleteEmails = () => {
+let subDel = mainEmailDel (markedMail.value);
+console.log(subDel, "God is super awesome");
+axios
+    .delete(`/api/Messaging/DeleteSentEmails?SentEmailIdList=${subDel}`)
+    .then((res) => {
+console.log(res);
+
+    })
+}
 
     return {
       emails,
@@ -241,6 +305,10 @@ export default {
       createElementFromHTML,
       searchMail,
       searchEmails,
+      markedMail,
+      mark1Email,
+      markAllMails,
+      deleteEmails
     };
   },
 };

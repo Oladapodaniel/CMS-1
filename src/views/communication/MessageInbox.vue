@@ -45,12 +45,21 @@
                 </div>
               </div>
 
+                               <i
+                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                style="font-size: 15px"
+                v-if="markedInboxMssg.length > 0"
+                @click="showConfirmModal"
+              >
+              </i>
+
               <div class="row table-box mb-4">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12">
                       <div class="row">
-                        <div class="col-md-1">
+                        <div class="col-md-1"
+                        v-if="replies.length > 0">
                           <input
                             type="checkbox"
                             name=""
@@ -61,12 +70,6 @@
                         </div>
                         <div class="col-md-5 d-flex align-items-center">
                           <span class="th">Message</span>
-                          <i
-                            class="pi pi-trash text-danger c-pointer d-flex align-items-center px-4"
-                            style="font-size: 15px"
-                            v-if="markedInboxMssg.length > 0"
-                          >
-                          </i>
                         </div>
                         <div class="col-md-2">
                           <span class="th">Sent By</span>
@@ -126,7 +129,7 @@
                                 {{ reply.subject }}
                               </router-link></span
                             >
-                            <span class="timestamp">Today | 08:45 PM</span>
+                           <span class="timestamp" style="font-size:13px">{{ reply.dateSent}}</span>
                           </span>
                           <span class="brief-message small-text">
                             <router-link
@@ -211,7 +214,8 @@
                       </div>
                     </div>
                   </div>
-
+                  <ConfirmDialog></ConfirmDialog>
+                  <Toast />
                   <div class="conatiner">
                     <div class="row">
                       <div class="col-md-12 mb-3 pagination-container">
@@ -240,7 +244,10 @@ import communicationService from "../../services/communication/communicationserv
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import { useStore } from "vuex";
 import Tooltip from "primevue/tooltip";
-// import { useToast } from 'primevue/usetoast';
+import axios from "@/gateway/backendapi";
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress";
 
 export default {
   components: { UnitsArea, PaginationButtons },
@@ -253,7 +260,6 @@ export default {
     const currentPage = ref(0);
     const loading = ref(false);
     const searchSms = ref("");
-
 
     const getSMSReplies = async () => {
       try {
@@ -301,11 +307,33 @@ export default {
       );
     });
 
+
+
+    const confirm = useConfirm();
+    let toast = useToast();
+    const showConfirmModal = () => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteRepliesMsg();
+        },
+        reject: () => {
+          //  toast.add({severity:'info', summary:'Rejected',
+          //  detail:'You have rejected', life: 3000});
+        },
+      });
+    };
+
+
+// code to mark single item
     const markedInboxMssg = ref([]);
     const mark1InboxItem = (mssgInbox) => {
       const mssgIndex = markedInboxMssg.value.findIndex(
-        (i) => i.id === mssgInbox.id
-      );
+        (i) => i.id === mssgInbox.id);
       {
         if (mssgIndex < 0) {
           markedInboxMssg.value.push(mssgInbox);
@@ -316,6 +344,7 @@ export default {
       }
     };
 
+  // code to mark multiple item item in replies
     const markAllInboxMssg = () => {
       if (markedInboxMssg.value.length < replies.value.length) {
         replies.value.forEach((i) => {
@@ -332,6 +361,46 @@ export default {
       console.log(markedInboxMssg.value, "I am awesome");
     };
 
+// Function to delete replies sms
+    const retain = (m) => {
+      console.log(m, "tosin");
+      return m.map((i) => i.id).join(",");
+    };
+    const deleteRepliesMsg = () => {
+      let repliesArr = retain(markedInboxMssg.value);
+      console.log(repliesArr, "bunmi");
+      axios
+        .delete(`/api/messaging/deletesmsreplies?smsreplyidlist=${repliesArr}`)
+        .then((res) => {
+          console.log(res);
+          replies.value = replies.value.filter((item) => {
+            const z = markedInboxMssg.value.findIndex((i) => i.id === item.id);
+            if (z >= 0) return false;
+            return true;
+          });
+
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Replies Deleted",
+            life: 3000,
+          });
+          markedInboxMssg.value.forEach((i) => {
+            store.dispatch("communication/removeSentReplies", i.id);
+          });
+          markedInboxMssg.value = [];
+        })
+        .catch((err) => {
+          stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Deleting Replies failed",
+            life: 3000,
+          });
+          console.log(err);
+        });
+    };
 
 
     return {
@@ -345,6 +414,9 @@ export default {
       markedInboxMssg,
       mark1InboxItem,
       markAllInboxMssg,
+      retain,
+      deleteRepliesMsg,
+      showConfirmModal,
     };
   },
 };

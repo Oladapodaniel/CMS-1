@@ -12,19 +12,39 @@
                     to="/tenant/sms/addgroup"
                     class="create-btn font-weigth-bold border-0"
                   >
-                    <span class="mr-2 font-weight-700" style="font-size: 22px">+</span> Create
-                    new group
+                    <span class="mr-2 font-weight-700" style="font-size: 22px"
+                      >+</span
+                    >
+                    Create new group
                   </router-link>
                 </div>
               </div>
-
+              <div>
+              <i
+                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                style="font-size: 15px"
+                v-if="markedContact.length > 0"
+                @click="showConfirmModal"
+              >
+              </i>
+              </div>
               <div class="row">
                 <div class="col-md-12">
                   <div class="row header-row">
                     <div class="col-md-12">
-                      <div class="row light-grey-bg py-2 font-weight-600 small-text">
-                        <div class="col-md-1">
-                          <input type="checkbox" />
+                      <div
+                        class="row light-grey-bg py-2 font-weight-600 small-text"
+                      >
+                        <div class="col-md-1"
+                        v-if="groups.length > 0"
+                        >
+                          <input
+                            type="checkbox"
+                            name="all"
+                            id="all"
+                            @change="markAllContact"
+                            :checked="markAcontact.length === groups.length"
+                          />
                         </div>
                         <div class="col-md-3">
                           <span class="th small-text">Name</span>
@@ -44,7 +64,7 @@
                   <div class="row">
                     <div class="col-md-12 gName px-0">
                       <!-- <h3 class="ml-md-n3 mb-n2">Group Name</h3> -->
-                      <hr class="hr">
+                      <hr class="hr" />
                     </div>
                   </div>
 
@@ -97,6 +117,7 @@
                       </div>
                     </div>
                   </div> -->
+
                   <div
                     class="row"
                     v-for="(group, index) in groups"
@@ -105,10 +126,22 @@
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1 py-2">
-                          <input type="checkbox" />
+                          <input
+                            type="checkbox"
+                            name=""
+                            id=""
+                            @change="markAcontact(group)"
+                            :checked="
+                              markedContact.findIndex(
+                                (i) => i.id === group.id
+                              ) >= 0
+                            "
+                          />
                         </div>
 
-                        <div class="col-md-3 d-flex justify-content-between align-items-center">
+                        <div
+                          class="col-md-3 d-flex justify-content-between align-items-center"
+                        >
                           <span class="hidden-header">NAME: </span>
                           <span>
                             <router-link
@@ -142,8 +175,14 @@
                           }}</span>
                         </div>
 
-                        <div class="col-md-1 col-ms-12 d-flex justify-content-center align-items-center">
-                          <span><i class="fa fa-trash delete-icon"></i></span>
+                        <div
+                          class="col-md-1 col-ms-12 d-flex justify-content-center align-items-center"
+                        >
+                          <span>
+                            <i class="c-pointer fa fa-trash delete-icon"
+                            @click="showConfirmModal">
+                            </i>
+                            </span>
                         </div>
                       </div>
                       <div class="row">
@@ -155,13 +194,17 @@
                   </div>
 
                   <div class="row" v-if="groups.length === 0 && !loading">
-                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                    <div
+                      class="col-md-12 d-flex justify-content-center align-items-center"
+                    >
                       <span class="my-4 font-weight-bold">No groups</span>
                     </div>
                   </div>
 
                   <div class="row" v-if="groups.length === 0 && loading">
-                    <div class="col-md-12 py-2 d-flex justify-content-center align-items-center">
+                    <div
+                      class="col-md-12 py-2 d-flex justify-content-center align-items-center"
+                    >
                       <i class="fas fa-circle-notch fa-spin my-2"></i>
                     </div>
                   </div>
@@ -207,6 +250,8 @@
             </div>
           </div>
         </div>
+        <ConfirmDialog />
+        <Toast />
       </main>
     </div>
   </div>
@@ -215,6 +260,9 @@
 <script>
 import { onMounted, ref } from "vue";
 import axios from "@/gateway/backendapi";
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress";
 
 export default {
   setup() {
@@ -226,8 +274,9 @@ export default {
         loading.value = true;
         const res = await axios.get("/api/Messaging/getPhoneGroups");
         loading.value = false;
-        console.log(res, "groups");
+        console.log(res, "Tosin");
         groups.value = res.data;
+        console.log(res.data, "Ajose");
       } catch (error) {
         console.log(error);
       }
@@ -237,9 +286,105 @@ export default {
       getGroups();
     });
 
+       // Function to delete contact groups
+    const remy = (v) => {
+      console.log(v, "this for contact");
+      return v.map((i) => i.id).join(",");
+    };
+    const deleteContactList = () => {
+      let rem = remy(markedContact.value);
+      console.log(rem, "God is Awesome");
+      axios
+        .delete(`/api/Messaging/DeletePhoneGroup?PhoneGroupIdList=${rem}`)
+        .then((res) => {
+          console.log(res);
+          groups.value = groups.value.filter((item) => {
+            const w = markedContact.value.findIndex((i) => i.id === item.id);
+            if (w >= 0) return false;
+            return true;
+          });
+markedContact.value = []
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Group Deleted",
+            life: 3000,
+          });
+
+
+        })
+        .catch((err) => {
+          stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Deleting SMS failed",
+            life: 3000,
+          });
+          console.log(err);
+        });
+    };
+
+
+    // code to mark single contact in group
+    const markedContact = ref([]);
+    const markAcontact = (contactid) => {
+      const contactIndex = markedContact.value.findIndex(
+        (i) => i.id === contactid.id
+      );
+      if (contactIndex < 0) {
+        markedContact.value.push(contactid);
+      } else {
+        markedContact.value.splice(contactIndex, 1);
+      }
+      console.log(markedContact.value, "God is Good");
+    };
+
+    // code to mark all contacts in group
+    const markAllContact = () => {
+      if (markedContact.value.length < groups.value.length) {
+        groups.value.forEach((i) => {
+          const contactInMarked = markedContact.value.findIndex(
+            (c) => c.id === i.id
+          );
+          if (contactInMarked < 0) {
+            markedContact.value.push(i);
+          }
+        });
+      } else {
+        markedContact.value = [];
+      }
+      console.log(markedContact.value, "I am awesome");
+    };
+
+
+    const confirm = useConfirm();
+    let toast = useToast();
+    const showConfirmModal = () => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteContactList();
+        },
+        reject: () => {
+          //  toast.add({severity:'info', summary:'Rejected',
+          //  detail:'You have rejected', life: 3000});
+        },
+      });
+    };
+
     return {
       groups,
       loading,
+      markedContact,
+      markAcontact,
+      markAllContact,
+      deleteContactList,
+      showConfirmModal,
     };
   },
 };
@@ -391,8 +536,8 @@ h4 {
 }
 
 .hidden-header {
-    display: none;
-  }
+  display: none;
+}
 
 @media screen and (max-width: 767px) {
   .hidden-header {
