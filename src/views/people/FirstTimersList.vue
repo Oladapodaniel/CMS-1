@@ -361,7 +361,7 @@ export default {
             /*eslint no-undef: "warn"*/
             NProgress.done();
             if (err.response.status === 400) {
-              toast.add({severity:'error', summary:'Unable to delete', detail:'Ensure this member is not in any group', life: 3000});
+              toast.add({severity:'warn', summary:'Unable to delete', detail:'Ensure this member is not in any group', life: 3000});
             } else {
               toast.add({severity:'error', summary:'Unable to delete', detail:'An error occurred, please try again', life: 3000});
             }

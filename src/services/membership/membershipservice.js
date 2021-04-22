@@ -78,9 +78,10 @@ const membershipService = {
 
     deletePeople(data) {
         return new Promise((resolve, reject) => {
-            axios.delete("/api/People/DeletePeoples", data)
+            axios.delete(`/api/People/DeletePeoples?peopleIDList=${data}`)
                 .then(res => {
                     resolve(res.data);
+                    console.log(res.data)
                     // store.dispatch("setFirstTimers", res.data);
                 })
                 .catch(error => {

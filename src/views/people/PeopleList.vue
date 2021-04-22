@@ -58,7 +58,7 @@
         <div class="select-all">
           <input type="checkbox" name="all" id="all" @change="markAll" :checked="marked.length === churchMembers.length"/>
           <label>SELECT ALL</label>
-           <i class="pi pi-trash text-danger c-pointer pt-2 px-4" style="font-size: 20px" v-if="marked.length > 0" @click="deleteMarked"></i>
+           <i class="pi pi-trash text-danger c-pointer pt-2 px-4" style="font-size: 20px" v-if="marked.length > 0" @click="showConfirmModal1"></i>
         </div>
         <div class="filter">
           <p @click="toggleFilterFormVissibility" class="mt-2">
@@ -147,7 +147,7 @@
           </div>
         </div>
       </div>
-<div v-if="loading"><i class="fas fa-circle-notch fa-spin"></i></div>
+
       <div class="table-header font-weight-700">
         <div class="check"></div>
         <div class="picture">
@@ -169,7 +169,7 @@
         <div class="table-body" v-for="(person, index) in searchMember" :key="person.id">
         <div class="data-row">
           <div class="check data">
-            <input type="checkbox" name="" id="" />
+            <input type="checkbox" name="" id="" @change="markOne(person)" :checked="marked.findIndex((i) => i.id === person.id) >= 0"/>
           </div>
           <div class="picture data">
             <div class="data-con">
@@ -277,137 +277,6 @@
         <hr class="row-divider" />
  
       </div>
-     
-
-      <!-- <div v-else-if="filterResult.length == 0 && noRecords">
-        <div class="no-record text-center my-4">No member found</div>
-      </div> -->
-  
-      <!-- <div v-else>
-        <div v-if="searchMember.length > 0">
-          <div class="table-body" v-for="(person, index) in searchMember" :key="person.id">
-        <div class="data-row">
-          <div class="check data">
-            <input
-            type="checkbox"
-            name="" id=""
-            @change="mark(person)"
-            :checked="marked.findIndex(i => i.id === person.id) >= 0"/>
-          </div>
-          <div class="picture data">
-            <div class="data-con">
-              <div class="data-text">
-                <p>Picture</p>
-              </div>
-              <div class="data-value">
-                <div class="image-con">
-                  <div v-if="!person.pictureUrl">
-                    <div v-if="person.gender == 'Male'">
-                      <img
-                        src="../../assets/people/avatar-male.png"
-                        alt=""
-                        style="border-radius: 50%"
-                      />
-                    </div>
-                    <div v-else-if="person.gender == 'Female'">
-                      <img src="../../assets/people/avatar-female.png" alt="" />
-                    </div>
-                    <div v-else>
-                      <img
-                        src="../../assets/people/no-gender-avatar.png"
-                        alt=""
-                      />
-                    </div>
-                  </div>
-                  <div v-else>
-                    <img :src="person.pictureUrl" style="width: 35px; height: 35px; border-radius: 50%">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="firstname data">
-            <div class="data-con">
-              <div class="data-text">
-                <p>Firstname</p>
-              </div>
-              <router-link
-                :to="`/tenant/people/add/${person.id}`"
-                class="data-value itemroute-color"
-                >{{ person.firstName }} </router-link
-              >
-            </div>
-          </div>
-          <div class="lastname data">
-            <div class="data-con">
-              <div class="data-text">
-                <p>Lastname</p>
-              </div>
-              <router-link
-                :to="`/tenant/people/add/${person.id}`"
-                class="data-value itemroute-color"
-                >{{ person.lastName }}</router-link
-              >
-            </div>
-          </div>
-          <div class="phone data">
-            <div class="data-con">
-              <div class="data-text">
-                <p>Phone</p>
-              </div>
-              <router-link
-                :to="`/tenant/people/add/${person.id}`"
-                class="data-value itemroute-color"
-                >{{ person.mobilePhone }}</router-link
-              >
-            </div>
-          </div>
-          <div class="action data action-icon">
-            <div class="dropdown">
-              <i
-                class="fas fa-ellipsis-v cursor-pointer"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              ></i>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item elipsis-items" v-if="person.mobilePhone">
-                  <router-link
-                    :to="`/tenant/sms/compose?phone=${person.mobilePhone}`"
-                    >Send SMS</router-link
-                  >
-                </a>
-                <a class="dropdown-item elipsis-items" v-if="person.email">
-                  <router-link
-                    :to="`/tenant/email/compose?phone=${person.email}`"
-                    >Send Email</router-link
-                  >
-                </a>
-                <a class="dropdown-item elipsis-items">
-                  <router-link :to="`/tenant/people/add/${person.id}`"
-                    >Edit</router-link
-                  >
-                </a>
-                <a
-                  class="dropdown-item elipsis-items"
-                  href="#"
-                  @click.prevent="showConfirmModal(person.id, index)"
-                  >Delete</a
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr class="row-divider" />
-    
-      </div>
-        </div>
-        <div v-else>
-          <div class="no-record text-center my-4">No member found</div>
-        </div>
-      </div> -->
-
       <div class="table-footer">
         <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage" />
       </div>
@@ -446,24 +315,6 @@ export default {
     const noRecords = ref(false)
     const searchText = ref("")
     const store = useStore();
-    // const selected = ref([])
-    // const count = ref(churchMembers.length)
-
-    // const selectAll = computed(() => {
-      // selectedAll: {
-      // set(val) {
-      //   selected.value = []
-        // if (val) {
-          // for(let i = 1; i <= churchMembers.value; i++) {
-          //   selected.value.push(i)
-          // }
-    //     }
-    //   }
-    //   get() {
-    //     return selected.value.length === churchMembers.value
-    //   // }
-    // }
-    // })
 
 
     const toggleFilterFormVissibility = () =>
@@ -553,7 +404,7 @@ export default {
 
                 },
                 reject: () => {
-                    // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+                    toast.add({severity:'info', summary:'Rejected', detail:'Delete discarded', life: 3000});
                 }
 
         });
@@ -601,6 +452,7 @@ export default {
     }
 
     const markAll = () => {
+      console.log(marked.value)
       if (marked.value.length < churchMembers.value.length) {
         churchMembers.value.forEach(i => {
           const memberInmarked = marked.value.findIndex(j => j.id === i.id);
@@ -614,19 +466,83 @@ export default {
       console.log(marked.value, "all");
     }
 
-    const deleteMarked = async () => {
-      const arr = [ ];
-      for (let member of marked.value) {
-
-        arr.push( { personId: member.id });
+    const markOne = (person) => {
+      const msgIndex = marked.value.findIndex((i) => i.id === person.id);
+      if (msgIndex < 0) {
+        marked.value.push(person);
+      } else {
+        marked.value.splice(msgIndex, 1);
       }
+      console.log(marked.value);
+    }
+
+    const deleteMarked = async () => {
       try {
-        const response = await membershipservice.deletePeople(marked.value.map(i => i.id));
+        const IDs = marked.value.map(i => i.id).join()
+        const response = await membershipservice.deletePeople(IDs);
         console.log(response, "RESPONSE");
+        churchMembers.value = churchMembers.value.filter((item) => {
+            const y = marked.value.findIndex((i) => i.id === item.id);
+            if (y >= 0) return false;
+            return true;
+          });
+        
+          if (response.response.toString().toLowerCase().includes("all")) {
+            toast.add({
+              severity:'success', 
+              summary:'Confirmed', 
+              detail:'Member Deleted', 
+              life: 4000
+            });
+          } else {
+            toast.add({
+              severity:'info', 
+              // summary:'Confirmed', 
+              detail: `${response.response}`, 
+              // life: 4000
+            });
+          }
+          axios
+            .get(`/api/People/GetMembershipSummary`)
+            .then((res) => {
+              console.log(res, "new chart");
+              membershipSummary.value = res.data;
+            })
+            .catch((err) => {
+              console.log(err)
+
+            });
       } catch (error) {
         console.log(error);
+        if (error.response) {
+          toast.add({
+            severity:'warn', 
+            summary:'Delete Failed', 
+            detail:'Member Deleted', 
+            life: 4000
+          });
+        }
       }
     }
+
+    const showConfirmModal1 = () => {
+
+           confirm.require({
+               message: 'Are you sure you want to proceed?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                acceptClass: 'confirm-delete',
+                rejectClass: 'cancel-delete',
+                accept: () => {
+                    deleteMarked()
+
+                },
+                reject: () => {
+                    toast.add({severity:'info', summary:'Rejected', detail:'Delete discarded', life: 3000});
+                }
+
+        });
+        }
 
     const getPeopleList = () => {
       // console.log(props.list, "props");
@@ -689,8 +605,10 @@ export default {
       marked,
       mark,
       markAll,
+      markOne,
       deleteMarked,
-      clearInput
+      clearInput,
+      showConfirmModal1
     };
   },
 };
