@@ -195,6 +195,7 @@
         let token = {
           accessToken: response.authResponse.accessToken
         }
+        console.log(response, "facebook");
         console.log(response.authResponse.accessToken)
         axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
           .then(res => {
@@ -204,7 +205,8 @@
               window.location.href = "/tenant";
             } else {
               localStorage.setItem("email", res.data.username)
-              window.location.href = "/onboarding";
+              localStorage.setItem("pretoken", res.data.token)
+              if (res.data.username) window.location.href = "/onboarding";
             }
 
           })

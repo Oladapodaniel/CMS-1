@@ -170,7 +170,7 @@ export default {
 
     getters: {
         allSentSMS: state => state.allSentSMS,
-        getById: (state) => (id) => state.allSentSMS.find(i => i.id === id),
+        getById: (state) => (id) => state.allSentSMS.find(i => i && i.id === id),
         smsReplies: state => state.smsReplies,
         smsDrafts: state => state.smsDrafts,
         emailDrafts: state => state.emailDrafts,

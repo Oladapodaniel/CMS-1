@@ -215,8 +215,13 @@ export default {
         .post("/api/onboarding", this.userDetails)
         .then((res) => {
           console.log(res, "onboarding response");
-          localStorage.setItem("token", res.data.token);
-          console.log(typeof res.data.token, "token type")
+          if (!res.data.token) {
+            const preToken = localStorage.getItem("pretoken");
+            localStorage.setItem("token", preToken);
+            localStorage.removeItem("pretoken");
+          } else {
+            localStorage.setItem("token", res.data.token);
+          }
           // this.$store.dispatch("setStartPoint", url)
           this.loading = false;
           router.push("/onboarding/step2");

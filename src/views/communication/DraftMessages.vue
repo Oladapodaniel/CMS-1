@@ -29,14 +29,14 @@
                 class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                 style="font-size: 15px"
                 v-if="markedDraft.length > 0"
-                @click="showConfirmModal"
+                @click="showConfirmModal(null)"
               >
               </i>
               <div class="row">
                 <div class="col-md-12">
                   <div class="row header-row">
                     <div class="col-md-12">
-                      <div class="row light-grey-bg py-2">
+                      <div class="row light-grey-bg py-2 tr-border-bottom">
                         <div class="col-md-1" v-if="drafts.length > 0">
                           <input
                             type="checkbox"
@@ -46,11 +46,8 @@
                             :checked="markedDraft.length === drafts.length"
                           />
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-7">
                           <span class="th">Message</span>
-                        </div>
-                        <div class="col-md-2">
-                          <span class="th">Sender</span>
                         </div>
                         <div class="col-md-3">
                           <span class="th">Date & Time</span>
@@ -61,13 +58,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <hr class="hr mt-0" />
-                    </div>
-                  </div>
                   <div
-                    class="row"
+                    class="row tr-border-bottom"
                     v-for="(draft, index) in searchDraftMessage"
                     :key="index"
                   >
@@ -86,32 +78,19 @@
                           />
                         </div>
                         <div
-                          class="col-md-5 col-ms-12 d-flex justify-content-between"
+                          class="col-md-7 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"
                             >Message:
                           </span>
                           <span
                             ><router-link
-                              class="small-text text-decoration-none"
+                              class="small-text text-decoration-none font-weight-700"
                               :to="{
                                 name: 'SendMessage',
                                 query: { draftId: draft.id },
                               }"
-                              >{{ draft.body }}</router-link
-                            ></span
-                          >
-                        </div>
-                        <div class="col-md-2 d-md-flex justify-content-between">
-                          <span class="hidden-header">Sender: </span>
-                          <span
-                            ><router-link
-                              class="small-text text-decoration-none"
-                              :to="{
-                                name: 'SendMessage',
-                                query: { draftId: draft.id },
-                              }"
-                              >{{ draft.sender }}</router-link
+                              >{{ draft.body.length > 50 ? `${ draft.body.slice(0, 50) }...` : draft.body }}</router-link
                             ></span
                           >
                         </div>
@@ -131,17 +110,24 @@
                           <span class="small-text">
                             <i
                               class="c-pointer fa fa-trash delete-icon"
-                              @click="showConfirmModal"
+                              @click="showConfirmModal(draft)"
                             >
                             </i
                           ></span>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <hr class="hr" />
-                        </div>
-                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-md-12">
+                      <Loading :loading="loading" />
+                    </div>
+                  </div>
+
+                  <div class="row" v-if="!loading && searchDraftMessage.length === 0">
+                    <div class="col-md-12 text-center py-3">
+                      <p class="font-weight-700">No Drafts</p>
                     </div>
                   </div>
                 </div>
@@ -166,11 +152,13 @@ import communicationService from "../../services/communication/communicationserv
 import store from "../../store/store";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
+import Loading from "../../components/loading/LoadingComponent"
 
 export default {
-  components: { UnitsArea },
+  components: { UnitsArea, Loading },
 
   setup() {
+    const loading = ref(true);
     const searchDrafts = ref("");
     const drafts = ref([]);
     const payWithPaystack = () => {
@@ -180,7 +168,7 @@ export default {
     const getDrafts = async () => {
       try {
         const data = await communicationService.getDrafts();
-        console.log(data, "Drafts");
+        loading.value = false;
         if (data) {
           drafts.value = data;
         }
@@ -192,6 +180,8 @@ export default {
     drafts.value = store.getters["communication/smsDrafts"];
     if (!drafts.value || drafts.value.length === 0) {
       getDrafts();
+    } else {
+      loading.value = false;
     }
 
     const searchDraftMessage = computed(() => {
@@ -205,22 +195,32 @@ export default {
 
 // Function to delete messages
     const handler = (f) => {
-      console.log(f, "Awesome God");
       return f.map((i) => i.id).join(",");
     };
 
-    const deleteDraft = () => {
+    const deleteDraft = (draft) => {
       let holder = handler(markedDraft.value);
-      console.log(holder, "Al iz well");
+      let url = "";
+
+      if (!draft || !draft.id) url = `/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${holder}`;
+      if (draft && draft.id) url = `/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${draft.id}`;
       axios
-        .delete(`/api/Messaging/DeleteSmsDraft?SMSDraftIdList=${holder}`)
+        .delete(url)
         .then((res) => {
           console.log(res);
-          drafts.value = drafts.value.filter((item) => {
-            const t = markedDraft.value.findIndex((i) => i.id === item.id);
-            if (t >= 0) return false;
-            return true;
-          });
+          if (!draft || !draft.id) {
+            drafts.value = drafts.value.filter((item) => {
+              const t = markedDraft.value.findIndex((i) => i.id === item.id);
+              if (t >= 0) return false;
+              return true;
+            });
+            markedDraft.value.forEach((i) => {
+              store.dispatch("communication/removeSmsDrafts", i.id);
+            });
+          } else {
+            drafts.value = drafts.value.filter(i => i.id !== draft.id);
+            store.dispatch("communication/removeSmsDrafts", draft.id);
+          }
 
           toast.add({
             severity: "success",
@@ -228,9 +228,7 @@ export default {
             detail: "Draft Deleted",
             life: 3000,
           });
-          markedDraft.value.forEach((i) => {
-            store.dispatch("communication/removeSmsDrafts", i.id);
-          });
+          
           markedDraft.value = [];
 
         })
@@ -250,7 +248,7 @@ export default {
 
     const confirm = useConfirm();
     let toast = useToast();
-    const showConfirmModal = () => {
+    const showConfirmModal = (id) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
@@ -258,7 +256,11 @@ export default {
         acceptClass: "confirm-delete",
         rejectClass: "cancel-delete",
         accept: () => {
-          deleteDraft();
+          if (!id) {
+            deleteDraft()
+          } else {
+            deleteDraft(id)
+          }
         },
         reject: () => {
           //  toast.add({severity:'info', summary:'Rejected',
@@ -310,6 +312,7 @@ export default {
       handler,
       deleteDraft,
       showConfirmModal,
+      loading,
     };
   },
 };

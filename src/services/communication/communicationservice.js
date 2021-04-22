@@ -37,6 +37,20 @@ const communicationService = {
         }
     },
 
+    deleteSMS(id) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`/api/Messaging/DeleteSentSMS?SentSMSIdList=${id}`)
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    stopProgressBar();
+                    if (error.response) reject(error.response);
+                    if (!error.response) reject(error);
+                })
+        })
+    },
+
     async getEmailDrafts() {
         try {
             const { data } = await axios.get(`/api/Messaging/getEmailDrafts`);

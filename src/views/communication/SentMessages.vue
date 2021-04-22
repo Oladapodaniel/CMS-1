@@ -223,9 +223,9 @@
                     </div>
                   </div>
 
-                  <div class="row" v-if="sentSMS.length === 0 && loading">
+                  <div class="row" v-if="loading">
                     <div class="col-md-12 py-2 d-flex justify-content-center">
-                      <i class="fas fa-circle-notch fa-spin"></i>
+                      <Loading :loading="loading" />
                     </div>
                   </div>
                 </div>
@@ -262,9 +262,10 @@ import PaginationButtons from "../../components/pagination/PaginationButtons";
 import Tooltip from "primevue/tooltip";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
+import Loading from "../../components/loading/LoadingComponent"
 
 export default {
-  components: { UnitsArea, PaginationButtons },
+  components: { UnitsArea, PaginationButtons, Loading },
   directives: {
     tooltip: Tooltip,
   },
@@ -284,7 +285,6 @@ export default {
         /*eslint no-undef: "warn"*/
         NProgress.start();
         const data = await communicationService.getAllSentSMS(0);
-        console.log(data, "data");
         loading.value = false;
         if (data) {
           sentSMS.value = data;
@@ -301,7 +301,6 @@ export default {
         const data = await communicationService.getAllSentSMS(page);
         if (data) {
           sentSMS.value = data;
-          console.log(data, "SMS");
           currentPage.value = page;
         }
       } catch (error) {
