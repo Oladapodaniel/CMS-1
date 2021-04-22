@@ -282,12 +282,18 @@
                   </div>
                 </div>
               </div>
-
               <div class="row table-header-row py-2">
+                
                 <div class="col-md-1">
-                  <input type="checkbox" class="py-2" />
+                  <input 
+                  type="checkbox"
+                   @change="markAllItem" 
+                   :checked="marked.length === groupData.length" 
+                   id="all" 
+                   name="all" 
+                   class="py-2"/>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <span class="py-2 font-weight-bold">NAME</span>
                 </div>
                 <div class="col-md-2">
@@ -296,13 +302,13 @@
                 <!-- <div class="col-md-2">
                   <span class="py-2 font-weight-bold">ADDRESS</span>
                 </div> -->
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <span class="py-2 font-weight-bold">EMAIL</span>
                 </div>
                 <div class="col-md-3">
                   <span class="py-2 font-weight-bold">PHONE</span>
                 </div>
-                <div class="col-md-">
+                <div class="col-md-1">
                   <!-- <i class="fa fa-elipsis-v"></i> -->
                 </div>
               </div>
@@ -356,10 +362,10 @@
                     <div
                       class="col-md-1 d-flex justify-content-between align-items-center"
                     >
-                      <input type="checkbox" class="py-2" />
+                      <input type="checkbox" class="py-2" name="" id="" @change="mark1Item(member)" :checked="marked.findIndex((i) => i.id === member.id) >=0" />
                     </div>
                     <div
-                      class="col-md-2 d-flex justify-content-between align-items-center"
+                      class="col-md-3 d-flex justify-content-between align-items-center"
                     >
                       <span class="py-2 hidden-header">NAME</span>
                       <span class="py-2">{{member.name }}</span>
@@ -379,7 +385,7 @@
                       <span class="py-2">{{ member.addres }}</span>
                     </div> -->
                     <div
-                      class="col-md-3 d-flex justify-content-between align-items-center"
+                      class="col-md-2 d-flex justify-content-between align-items-center"
                     >
                       <span class="py-2 hidden-header">EMAIL</span>
                       <span class="py-2">{{
@@ -490,8 +496,30 @@ export default {
     const memberSearchResults = ref([]);
     const position = ref("");
     const memberSelectInput = ref(null);
-
+    const marked= ref([]);
     const confirm = useConfirm();
+    const mark1Item =(groupid) =>{
+      const grpIndex= marked.value.findIndex((i) => i.id === groupid.id);
+      if(grpIndex < 0) {
+        marked.value.push(groupid);
+      }else{
+        marked.value.splice(grpIndex, 1);
+      }
+      console.log(marked.value, "tosin")
+    }
+    const markAllItem = () => {
+      if (marked.value.length < groupData.value.length) {
+        groupData.value.forEach((i) => {
+          const groupInMarked = marked.value.findIndex((q) => q.id === i.id);
+          if (groupInMarked < 0) {
+            marked.value.push(i);
+          }
+        });
+      } else {
+        marked.value = [];
+      }
+      console.log(marked.value, "I am awesome");
+    };
 
     const confirmDelete = (id, index) => {
       confirm.require({
@@ -700,7 +728,7 @@ export default {
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
-            name: i.person.firstName + i.person.lastName,
+            name: i.person.firstName + ' '+ i.person.lastName,
             phone: i.person.phoneNumber,
             position: i.position,
           };
@@ -758,6 +786,9 @@ export default {
       inputBlurred,
       closeDropdownIfOpen,
       confirmDelete,
+      marked,
+      markAllItem,
+      mark1Item
     };
   },
 };
