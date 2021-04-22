@@ -86,7 +86,7 @@
                             class="btn default-btn border-0 primary-bg ml-md-4"
                           >
                             <i
-                              class="fas fa-circle-notch fa-spin"
+                              class="fas fa-circle-notch fa-spin mr-2 text-white"
                               v-if="loading"
                             ></i>
                             <span class="text-white">Save</span>

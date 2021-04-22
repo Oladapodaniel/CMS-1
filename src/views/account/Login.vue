@@ -63,6 +63,40 @@
         </div>
       </div>
       <!-- <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a> -->
+      <h5>Modal</h5>
+        <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
+        <Dialog header="Header" v-model:visible="displayModal" :style="{width: '50vw'}" :modal="true">
+            <div class="container">
+              <div class="row mt-2">
+                <div class="col-12">Email Required, Please enter your email</div>
+                  <div class="col-sm-3 align-self-center">
+                    Email*
+                  </div>
+                  <div class="col-sm-9">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="invalidEmailObj.email"
+                      />
+                  </div>
+                </div>
+            </div>
+            <template #footer>
+                <div class="col-12">
+                    <button
+                      @click="saveEmail"
+                      class="btn default-btn border-0 primary-bg ml-md-4"
+                    >
+                      <i
+                        class="fas fa-circle-notch fa-spin mr-2 text-white"
+                        v-if="loading"
+                      ></i>
+                      <span class="text-white">Save</span>
+                      <span></span>
+                    </button>
+                  </div>
+            </template>
+        </Dialog>
     </div>
   </div>
 </template>
@@ -73,6 +107,7 @@ import { reactive, ref } from 'vue';
 import store from '../../store/store'
 import router from '../../router/index';
 import setupService from "../../services/setup/setupservice"
+import finish from "../../services/progressbar/progress"
 
 export default {
     setup() {
@@ -85,7 +120,8 @@ export default {
         notAUser: false,
       });
       const loading = ref(false)
-      // NProgress.start()
+      const displayModal = ref(false)
+      const invalidEmailObj = ref({})
 
       const loginFacebook = ref(null)
 
@@ -154,10 +190,14 @@ export default {
           let token = {
           accessToken: response.authResponse.accessToken
         }
-        axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
+        axios.post('/Login/Facebook', token)
           .then(res => {
+            finish()
             console.log(res, "login");
-            if (res.data.isOnboarded) {
+            if (res.data.success === "Email Required") {
+               displayModal.value = true
+               invalidEmailObj.value = res.data
+            } else if (res.data.isOnboarded) {
               localStorage.setItem("email", res.data.username)
               localStorage.setItem("token", res.data.token);
               router.push("/tenant");
@@ -167,8 +207,21 @@ export default {
               if (res.data.username) router.push("/onboarding");
             }
           })
-          .catch(err => console.log(err))
+          .catch(err => {
+            finish()
+            console.log(err)
+          })
         }, {scope: 'user_birthday'});
+      }
+
+      const saveEmail = async() => {
+        try {
+          const response = await axios.post("/Register/Facebook", invalidEmailObj.value)
+          console.log(response)
+        }
+        catch (err) {
+          console.log(err)
+        }
       }
 
       return {
@@ -179,6 +232,9 @@ export default {
         loginWithFacebook,
         loginFacebook,
         facebookLogin,
+        displayModal,
+        invalidEmailObj,
+        saveEmail
       };
     }
 };
