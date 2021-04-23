@@ -1372,7 +1372,7 @@ export default {
                 //     isPaypal.value = true
                 //     isFlutterwave.value = true
                 // }
-                if (store.getters.currentUser) {
+                if (store.getters.currentUser.tenantId) {
                   axios.get(`/api/Lookup/TenantCurrency?tenantID=${store.getters.currentUser.tenantId}`)
                   .then(res => {
                     tenantCurrency.value = res.data.currency
