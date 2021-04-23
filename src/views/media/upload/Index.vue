@@ -111,7 +111,7 @@
             <div class="col-md-3"></div>
         </div>
         <Toast />
-        <Dialog header="Header" v-model:visible="display"  :modal="true">
+        <Dialog header="Uploading" v-model:visible="display"  :modal="true">
             <ProgressBar :value="percentCompleted" style="max-width: 600px;width: 100%;min-width:400px" />
         </Dialog>
         <Dialog
