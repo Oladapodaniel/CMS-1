@@ -71,8 +71,9 @@ export default {
             try {
               const response = await media_service.getImageGallery(page);
               loading.value = false;
-              if (response.length > 0) {
-                gallery.value = response;
+              if (response.returnObject.images.length > 0) {
+                gallery.value = [ ]
+                gallery.value = response.returnObject.images;
                 currentPage.value = page;
               }
             } catch (error) {
@@ -84,7 +85,7 @@ export default {
             try {
               const response = await media_service.getImageGallery(page);
               loading.value = false;
-              gallery.value = response;
+              gallery.value = response.returnObject.images;
             } catch (error) {
               loading.value = false;
                 console.log(error);

@@ -134,7 +134,9 @@
                             }"
                             class="text-decoration-none"
                           >
-                            <span class="brief-message font-weight-600">{{
+                            <span class="brief-message font-weight-600"
+                              v-tooltip.top="sms.message"
+                            >{{
                               sms.message && sms.message.length > 25
                                 ? `${sms.message
                                     .split("")
@@ -241,6 +243,7 @@
                 @getcontent="getSMSByPage"
                 :itemsCount="itemsCount"
                 :currentPage="currentPage"
+                :totalItems="sentSMS.totalItems"
               />
             </div>
           </div>
@@ -287,7 +290,7 @@ export default {
         const data = await communicationService.getAllSentSMS(0);
         loading.value = false;
         if (data) {
-          sentSMS.value = data;
+          sentSMS.value = data.sentSMS;
         }
       } catch (error) {
         loading.value = false;
@@ -300,7 +303,7 @@ export default {
       try {
         const data = await communicationService.getAllSentSMS(page);
         if (data) {
-          sentSMS.value = data;
+          sentSMS.value = data.sentSMS;
           currentPage.value = page;
         }
       } catch (error) {
