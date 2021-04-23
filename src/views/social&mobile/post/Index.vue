@@ -29,7 +29,7 @@
 
                     <div class="col-md-12 text-center py-2" style="max-height: 300px">
                         <span class="remove-file" @click="removeFile" v-if="file">X</span>
-                        <span><img v-if="file || isUrl" style="border-radius:15px;max-width:100%" class="mx-auto h-100" :src="fileUrl" alt=""><p v-else>{{ fileUrl }}</p></span>
+                        <span><img v-if="file || isUrl" style="border-radius:15px;max-width:100%" class="mx-auto h-100" :src="fileUrl" alt=""></span>
                         <video
                         v-if="file && (file.type && file.type.includes('video'))"
                         style="width: 100%;border-radius:10px"
@@ -145,6 +145,8 @@ import membershipService from '../../../services/membership/membershipservice';
     import { useRouter } from "vue-router";
     import ImagePicker from "../../../components/image-picker/ImagePicker"
 import { computed } from '@vue/runtime-core';
+// import { useRoute } from "vue-router"
+// import { useStore } from "vuex"
 
     export default {
         components: { Dropdown, ProgressBar, Dialog, ImagePicker },
@@ -152,6 +154,9 @@ import { computed } from '@vue/runtime-core';
             const router = useRouter();
             const postCategory = ref({});
             const postDestination = ref("Facebook");
+            
+            // const store = useStore();
+            // const route = useRoute();
 
             const message = ref("");
             const fileInput = ref(null);
@@ -221,6 +226,7 @@ import { computed } from '@vue/runtime-core';
             const getPostCategories = async (tenantId) => {
                 try {
                     postCategories.value = await social_service.getPostCategory(tenantId);
+                    console.log(postCategories.value, "cats");
                 } catch (error) {
                     console.log(error);
                 }
@@ -253,6 +259,23 @@ import { computed } from '@vue/runtime-core';
                 if (!message.value) return 2;
                 return message.value.split('\n').length + 1;
             })
+
+            // const postToEdit = ref({ });
+            // if (route.query.postId) {
+            //     if (!store.getters.postToEdit || !store.getters.postToEdit.postId) {
+            //         router.push({ name: 'AllPosts' });
+            //     } else {
+            //         const postData =  store.getters.postToEdit;
+            //         console.log(postData);
+            //         postToEdit.value.content = postData.content;
+            //         postToEdit.value.mediaUrl = postData.mediaUrl;
+            //         postToEdit.value.postId = postData.postId;
+            //         message.value = postData.content;
+            //         fileUrl.value = postData.mediaUrl;
+            //         isUrl.value = true;
+            //         postCategory.value = postCategories.value.find(i => i && i.postCategoryId === postData.postCategoryId) ? postCategories.value.find(i => i && i.postCategoryId === postData.postCategoryId) : {}
+            //     }
+            // }
             
 
             return {
