@@ -24,14 +24,15 @@
             <div class="col-md-12 pt-3 pt-2 main-post">
                 <div class="row">
                     <div class="col-md-12 d-flex align-items-center">
-                        <textarea name="" id="" rows="2" class="w-100 border-0 textarea" v-model="message" placeholder="What's on your mind, Complustech?"></textarea>
+                        <textarea name="" id="" rows="2" class="w-100 border-0 textarea" v-model="message" placeholder="What's on your mind?"></textarea>
                     </div>
 
                     <div class="col-md-12 text-center py-2" style="max-height: 300px">
                         <span class="remove-file" @click="removeFile" v-if="file">X</span>
-                        <span><img v-if="file && file.type.includes('image')" style="border-radius:15px;max-width:100%" class="mx-auto h-100" :src="fileUrl" alt=""></span>
+                        {{ file && ((file.type && file.type.includes('image')) || isUrl) ? 'true' : 'false'}}
+                        <span><img v-if="file && ((file.type && file.type.includes('image')) || isUrl)" style="border-radius:15px;max-width:100%" class="mx-auto h-100" :src="fileUrl" alt=""><p v-else>{{ fileUrl }}</p></span>
                         <video
-                        v-if="file && file.type.includes('video')"
+                        v-if="file && (file.type && file.type.includes('video'))"
                         style="width: 100%;border-radius:10px"
                         height="240"
                         class="border"
@@ -54,7 +55,7 @@
                 <div class="row">
                 <div class="col-md-12">
                     <a class="text-decoration-none px-md-2 c-pointer">
-                        <input name=""  ref="fileInput" @change="fileSelected" type="file" style="width: 0;heiight:0">
+                        <!-- <input name=""  ref="fileInput" @change="fileSelected" type="file" style="width: 0;heiight:0"> -->
                         <span  @click="selectFile"><i class="pi pi-video mr-1"></i></span>
                         <span class="text-dark" @click="selectFile">Video</span>
                     </a>
@@ -120,6 +121,15 @@
             <Dialog header="Header" v-model:visible="display"  :modal="true">
                 <ProgressBar :value="uploadProgress" style="max-width: 600px;width: 100%;min-width:400px" />
             </Dialog>
+            <Dialog
+                header="Image Picker"
+                v-model:visible="showImagePicker"
+                :style="{ width: '70vw', maxWidth: '600px' }"
+                :modal="true"
+                position="top"
+            >
+                <ImagePicker @uploaded="fileUploaded" />
+            </Dialog>
             
         </div>
     </div>
@@ -134,9 +144,10 @@ import membershipService from '../../../services/membership/membershipservice';
     import axios from "@/gateway/backendapi";
     import ProgressBar from 'primevue/progressbar';
     import { useRouter } from "vue-router";
+    import ImagePicker from "../../../components/image-picker/ImagePicker"
 
     export default {
-        components: { Dropdown, ProgressBar, Dialog },
+        components: { Dropdown, ProgressBar, Dialog, ImagePicker },
         setup() {
             const router = useRouter();
             const postCategory = ref({});
@@ -145,10 +156,12 @@ import membershipService from '../../../services/membership/membershipservice';
             const message = ref("");
             const fileInput = ref(null);
             const selectFile = () => {
-                fileInput.value.click();
+                // fileInput.value.click();
+                showImagePicker.value = true;
             }
 
             const file = ref("");
+            const mediaUrl = ref("");
             const fileUrl = ref("");
             const fileSelected = (e) => {
                 fileUrl.value = "";
@@ -175,7 +188,7 @@ import membershipService from '../../../services/membership/membershipservice';
                 const formData = new FormData();
                 formData.append("mediaFile", file.value ? file.value : "");
                 formData.append("content", message.value ? message.value : "");
-                formData.append("mediaUrl", "");
+                formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
                 formData.append("title", "ANouncement");
                 formData.append("tenantId", tenantId.value);
                 formData.append("postCategoryId", postCategory.value ? postCategory.value.postCategoryId : "");
@@ -208,7 +221,6 @@ import membershipService from '../../../services/membership/membershipservice';
             const getPostCategories = async (tenantId) => {
                 try {
                     postCategories.value = await social_service.getPostCategory(tenantId);
-                    console.log(postCategories, "CAtegories");
                 } catch (error) {
                     console.log(error);
                 }
@@ -217,6 +229,25 @@ import membershipService from '../../../services/membership/membershipservice';
             const removeFile = () => {
                 file.value = "";
                 fileUrl.value = "";
+            }
+
+            const isUrl = ref(true);
+            const showImagePicker = ref(false);
+            const fileUploaded = payload => {
+                isUrl.value = true;
+                if (payload.isUrl) {
+                    
+                    fileUrl.value = payload.data;
+                    mediaUrl.value = payload.data;
+                    file.value = '';
+                    console.log(fileUrl.value, "url");
+                } else {
+                    isUrl.value = false;
+                    file.value = payload.data;
+                    fileUrl.value = URL.createObjectURL(payload.data);
+                    mediaUrl.value = ""
+                }
+                showImagePicker.value = false;
             }
             
 
@@ -235,6 +266,9 @@ import membershipService from '../../../services/membership/membershipservice';
                 postCategories,
                 fileUrl,
                 removeFile,
+                showImagePicker,
+                fileUploaded,
+                isUrl,
             }
         }
     }
