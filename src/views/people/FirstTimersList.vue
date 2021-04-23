@@ -76,17 +76,14 @@
                 @change="markAllFirsttimer"
                 :checked="checkedFirstTimer.length === churchMembers.length"
               />
-              <label
-                >SELECT ALL
-              </label>
-               <i
-                    class="pi pi-trash text-danger ml-3 c-pointer d-flex-inline align-items-center"
-                    style="font-size: 20px"
-                    v-if="checkedFirstTimer.length > 0"
-                    @click="modal"
-                  >
-                  </i
-                >
+              <label>SELECT ALL </label>
+              <i
+                class="pi pi-trash text-danger ml-3 c-pointer d-flex-inline align-items-center"
+                style="font-size: 20px"
+                v-if="checkedFirstTimer.length > 0"
+                @click="modal"
+              >
+              </i>
             </div>
             <div class="filter">
               <p @click="toggleFilterFormVissibility" class="mt-2">
@@ -358,7 +355,8 @@
 
         <ConfirmDialog />
         <Toast />
-
+        <Dialog header="Message" v-model:visible="display" :style="{width: '35vw'}">
+          <p>{{deleteMessage}}</p></Dialog>
         <div class="table-footer">
           <Pagination
             @getcontent="getPeopleByPage"
@@ -383,6 +381,7 @@ import { useRoute } from "vue-router";
 import moment from "moment";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress";
 
 export default {
   props: ["list"],
@@ -423,69 +422,87 @@ export default {
     };
     firstTimerSummary();
 
-   
+    const searchMember = computed(() => {
+      if (searchText.value !== "") {
+        return churchMembers.value.filter((i) => {
+          return `${i.fullName}${i.phoneNumber}`
+            .toLowerCase()
+            .includes(searchText.value.toLowerCase());
+        });
+      } else if (
+        filterResult.value.length > 0 &&
+        (filter.value.name || filter.value.phoneNumber)
+      ) {
+        return filterResult.value;
+      } else {
+        return churchMembers.value;
+      }
+    });
 
-      const searchMember = computed(() => {
-        if (searchText.value !== "") {
-          return churchMembers.value.filter(i => {
-            return `${i.fullName}${i.phoneNumber}`.toLowerCase().includes(searchText.value.toLowerCase())
-          })
-        } else if (filterResult.value.length > 0 && (filter.value.name || filter.value.phoneNumber )) {
-          return filterResult.value
-        } else {
-          return churchMembers.value
-        }
-      })
-
-
-      const deleteMember = (id) => {
-        //  delete firtimer
-        axios
-          .delete(`/api/People/DeleteOnePerson/${id}`)
-          .then((res) => {
-            console.log(res);
-            toast.add({severity:'success', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-            churchMembers.value = churchMembers.value.filter(item => item.id !== id )
-
-// update first timer summary while deleting
-            axios.get("/api/People/GetFirsttimerSummary")
-              .then(res => {
-                getFirstTimerSummary.value = res.data;
-                console.log(res.data)
-              })
-              .catch(err => console.log(err))            
-          })
-          .catch((err) => {
-            /*eslint no-undef: "warn"*/
-            NProgress.done();
-            if (err.response.status === 400) {
-              toast.add({severity:'warn', summary:'Unable to delete', detail:'Ensure this member is not in any group', life: 3000});
-            } else {
-              toast.add({severity:'error', summary:'Unable to delete', detail:'An error occurred, please try again', life: 3000});
-            }
+    const deleteMember = (id) => {
+      //  delete firtimer
+      axios
+        .delete(`/api/People/DeleteOnePerson/${id}`)
+        .then((res) => {
+          console.log(res);
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Member Deleted",
+            life: 3000,
           });
-      };
+          churchMembers.value = churchMembers.value.filter(
+            (item) => item.id !== id
+          );
 
+          // update first timer summary while deleting
+          axios
+            .get("/api/People/GetFirsttimerSummary")
+            .then((res) => {
+              getFirstTimerSummary.value = res.data;
+              console.log(res.data);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => {
+          /*eslint no-undef: "warn"*/
+          NProgress.done();
+          if (err.response.status === 400) {
+            toast.add({
+              severity: "warn",
+              summary: "Unable to delete",
+              detail: "Ensure this member is not in any group",
+              life: 3000,
+            });
+          } else {
+            toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: "An error occurred, please try again",
+              life: 3000,
+            });
+          }
+        });
+    };
 
-
-      // const confirm = useConfirm();
-      // let toast = useToast();
-      // const showConfirmModal = (id) => {
-      //      confirm.require({
-      //          message: 'Are you sure you want to proceed?',
-      //           header: 'Confirmation',
-      //           icon: 'pi pi-exclamation-triangle',
-      //           acceptClass: 'confirm-delete',
-      //           rejectClass: 'cancel-delete',
-      //           accept: () => {
-      //               deleteMember(id)
-      //               // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-      //           },
-      //           reject: () => {
-      //               toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
-      //           }
-      //      }
-      // }
+    // const confirm = useConfirm();
+    // let toast = useToast();
+    // const showConfirmModal = (id) => {
+    //      confirm.require({
+    //          message: 'Are you sure you want to proceed?',
+    //           header: 'Confirmation',
+    //           icon: 'pi pi-exclamation-triangle',
+    //           acceptClass: 'confirm-delete',
+    //           rejectClass: 'cancel-delete',
+    //           accept: () => {
+    //               deleteMember(id)
+    //               // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+    //           },
+    //           reject: () => {
+    //               toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+    //           }
+    //      }
+    // }
 
     // const deleteMember = (id) => {
     //   //  delete firtimer
@@ -555,7 +572,6 @@ export default {
           });
         },
       });
-
     };
 
     onMounted(() => {
@@ -650,54 +666,102 @@ export default {
 
     // Function to delete first timer
     const convert = (x) => {
-      console.log(x, "tosin");
+      console.log(x, "tosine");
       return x.map((i) => i.id).join(",");
     };
+    const deleteMessage = ref("");
+    const display = ref(false);
     const deleteFirstTimer = () => {
       let dft = convert(checkedFirstTimer.value);
       console.log(dft, "tosin");
       axios
         .delete(`/api/People/DeletePeoples?peopleIDList=${dft}`)
         .then((res) => {
-          console.log(res);
-          churchMembers.value = churchMembers.value.filter((item) => {
+          console.log(res.data, "God is awesome");
+          let incomingRes = res.data.response;
+          console.log(incomingRes, "tosin");
+          if (incomingRes.toString().toLowerCase().includes("all")) {
+             toast.add({
+                severity: "success",
+                summary: "Confirmed",
+                detail: "First Timer(s) deleted successfully.",
+                life: 4000,
+              });
+            churchMembers.value = churchMembers.value.filter((item) => {
+            console.log(churchMembers.value, "God is good");
             const y = checkedFirstTimer.value.findIndex(
-              (i) => i.id === item.id
-            );
-            if (y >= 0) return false;
-            return true;
-          });
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "1 Record deleted successfully.",
-            life: 3000,
-          });
+                (i) => i.id === item.id
+              );
+              if (y >= 0) return false;
+              return true;
+            });
+          } else {
+            let resArr = incomingRes.split("@");
+            console.log(resArr);
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: resArr[0]
+            });
 
 
-          checkedFirstTimer.value = [];
+
+            if (!resArr[1].includes(",")) {
+              churchMembers.value = churchMembers.value.filter((item) => {
+              return !item.id.includes(resArr[1])
+            });
+            } else {
+              let IdArr = resArr[1].split(",");
+                console.log(IdArr);
+                churchMembers.value = churchMembers.value.filter((item) => {
+                const y = IdArr.findIndex(
+                    (i) => i === item.id
+                  );
+                  if (y >= 0) return false;
+                  return true;
+                });
+            }
+
+          }
+          checkedFirstTimer.value = []
         })
         .catch((err) => {
           stopProgressBar();
-          toast.add({
-            severity: "error",
-            summary: "Delete Error",
-            detail: "Deleting Record failed",
-            life: 3000,
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+            severity: "warn",
+            summary: "Network Error",
+            detail: "Please ensure you have a strong internet connection",
+            life: 4000,
           });
+          } else if (err.toString().toLowerCase().includes("timeout")) {
+            toast.add({
+            severity: "warn",
+            summary: "Request Delayed",
+            detail: "Request took too long to respond",
+            life: 4000,
+          });
+          } else {
+            toast.add({
+            severity: "warn",
+            summary: "Delete Failed",
+            detail: "Unable to delte first timer",
+            life: 4000,
+          });
+          }
           console.log(err);
         });
     };
 
     const modal = () => {
-        confirm.require({
+      confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
         icon: "pi pi-exclamation-triangle",
         acceptClass: "confirm-delete",
         rejectClass: "cancel-delete",
         accept: () => {
-          deleteFirstTimer()
+          deleteFirstTimer();
           // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
         },
         reject: () => {
@@ -709,8 +773,7 @@ export default {
           });
         },
       });
-
-    }
+    };
 
     return {
       churchMembers,
@@ -738,6 +801,8 @@ export default {
       markAllFirsttimer,
       deleteFirstTimer,
       modal,
+      deleteMessage,
+      display,
     };
   },
 };
