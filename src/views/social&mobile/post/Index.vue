@@ -24,20 +24,19 @@
             <div class="col-md-12 pt-3 pt-2 main-post">
                 <div class="row">
                     <div class="col-md-12 d-flex align-items-center">
-                        <textarea name="" id="" rows="2" class="w-100 border-0 textarea" v-model="message" placeholder="What's on your mind?"></textarea>
+                        <textarea name="" id="" :rows="rowsCount" class="w-100 border-0 textarea" v-model="message" placeholder="What's on your mind?"></textarea>
                     </div>
 
                     <div class="col-md-12 text-center py-2" style="max-height: 300px">
                         <span class="remove-file" @click="removeFile" v-if="file">X</span>
-                        {{ file && ((file.type && file.type.includes('image')) || isUrl) ? 'true' : 'false'}}
-                        <span><img v-if="file && ((file.type && file.type.includes('image')) || isUrl)" style="border-radius:15px;max-width:100%" class="mx-auto h-100" :src="fileUrl" alt=""><p v-else>{{ fileUrl }}</p></span>
+                        <span><img v-if="file || isUrl" style="border-radius:15px;max-width:100%" class="mx-auto h-100" :src="fileUrl" alt=""><p v-else>{{ fileUrl }}</p></span>
                         <video
                         v-if="file && (file.type && file.type.includes('video'))"
                         style="width: 100%;border-radius:10px"
                         height="240"
                         class="border"
                         >
-                        <source :src="fileUrl" />
+                            <source :src="fileUrl" />
                         <!-- <source src="movie.mp4" type="video/mp4"> -->
                         Your browser does not support the video tag.
                         </video>
@@ -145,6 +144,7 @@ import membershipService from '../../../services/membership/membershipservice';
     import ProgressBar from 'primevue/progressbar';
     import { useRouter } from "vue-router";
     import ImagePicker from "../../../components/image-picker/ImagePicker"
+import { computed } from '@vue/runtime-core';
 
     export default {
         components: { Dropdown, ProgressBar, Dialog, ImagePicker },
@@ -231,24 +231,28 @@ import membershipService from '../../../services/membership/membershipservice';
                 fileUrl.value = "";
             }
 
-            const isUrl = ref(true);
+            const isUrl = ref(false);
             const showImagePicker = ref(false);
             const fileUploaded = payload => {
-                isUrl.value = true;
+                isUrl.value = false;
                 if (payload.isUrl) {
-                    
+                    isUrl.value = true;
                     fileUrl.value = payload.data;
                     mediaUrl.value = payload.data;
                     file.value = '';
                     console.log(fileUrl.value, "url");
                 } else {
-                    isUrl.value = false;
                     file.value = payload.data;
                     fileUrl.value = URL.createObjectURL(payload.data);
                     mediaUrl.value = ""
                 }
                 showImagePicker.value = false;
             }
+
+            const rowsCount = computed(() => {
+                if (!message.value) return 2;
+                return message.value.split('\n').length + 1;
+            })
             
 
             return {
@@ -269,6 +273,7 @@ import membershipService from '../../../services/membership/membershipservice';
                 showImagePicker,
                 fileUploaded,
                 isUrl,
+                rowsCount,
             }
         }
     }
