@@ -84,7 +84,6 @@ export default {
         const getImages = async (page) => {
             try {
               const response = await media_service.getImageGallery(page);
-              console.log(response, "response");
               loading.value = false;
               gallery.value = response.returnObject.images;
             } catch (error) {
