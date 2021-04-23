@@ -306,6 +306,7 @@ export default {
         if (data) {
           sentSMS.value = data.sentSMS;
           currentPage.value = page;
+          isSortedByStatus.value = true;
         }
       } catch (error) {
         console.log(error);
@@ -443,9 +444,17 @@ export default {
         });
     };
 
-    const isSortedByStatus = ref(false);
+    const isSortedByStatus = ref(true);
     const sortByStatus = () => {
-      console.log(sentSMS.value);
+      if (isSortedByStatus.value) {
+        sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "failed") >= 0 ? -1 : 1);
+        // isSortedByStatus.value = false;
+      } else {
+        sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "failed") >= 0 ? 1 : -1);
+        // isSortedByStatus.value = true;
+      }
+      // if (!isSortedByStatus.value) sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "sent") > 0 ? -1 : 1);
+      isSortedByStatus.value = !isSortedByStatus.value;
     }
 
     return {
