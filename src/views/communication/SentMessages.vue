@@ -68,7 +68,8 @@
                           <span class="th">Message</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th"
+                          <span class="th c-pointer"
+                            @click="sortByStatus"
                             >Status
                             <i
                               class="fa fa-question-circle-o c-pointer"
@@ -442,6 +443,11 @@ export default {
         });
     };
 
+    const isSortedByStatus = ref(false);
+    const sortByStatus = () => {
+      console.log(sentSMS.value);
+    }
+
     return {
       sentSMS,
       loading,
@@ -457,6 +463,8 @@ export default {
       deleteSingleItem,
       convert,
       showConfirmModal,
+      sortByStatus,
+      isSortedByStatus,
     };
   },
 };
