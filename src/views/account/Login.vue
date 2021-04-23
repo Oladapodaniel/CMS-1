@@ -63,14 +63,13 @@
         </div>
       </div>
       <!-- <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a> -->
-      <h5>Modal</h5>
-        <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
-        <Dialog header="Header" v-model:visible="displayModal" :style="{width: '50vw'}" :modal="true">
+      <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
+        <Dialog header="Please enter your email" v-model:visible="displayModal" :style="{width: '50vw'}" :modal="true">
             <div class="container">
               <div class="row mt-2">
-                <div class="col-12">Email Required, Please enter your email</div>
+                <div class="col-12"></div>
                   <div class="col-sm-3 align-self-center">
-                    Email*
+                    Email <span class="text-danger">*</span>
                   </div>
                   <div class="col-sm-9">
                     <input
