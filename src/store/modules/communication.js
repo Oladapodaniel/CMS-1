@@ -107,7 +107,7 @@ export default {
         async getAllSentSMS({ commit }) {
             try {
                 const { data } = await axios.get("/api/Messaging/getAllSentSms?page=0");
-                commit("setAllSentSMS", data);
+                commit("setAllSentSMS", data.sentSMS);
             } catch (error) {
                 console.log(error);
             }

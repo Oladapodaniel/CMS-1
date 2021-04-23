@@ -78,11 +78,14 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
 
             const category = ref({ });
             const tenantId = ref(store.getters.currentUser.tenantId);
+            console.log(tenantId.value, "outside");
+            const categoryImageUrl = ref("")
 
             const createCategory = async () => {
                 try {
                     const formData = new FormData();
                     formData.append("categoryImage", file.value ? file.value : "");
+                    // formData.append("categoryImageUrl", categoryImageUrl.value ? categoryImageUrl.value : "");
                     formData.append("name", category.value.name);
                     formData.append("tenantId", tenantId.value);
 
@@ -97,7 +100,10 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
 
             const getTenantId = async () => {
                 try {
-                    tenantId.value = await membershipService.getSignedInUser().tenantId;
+                    const response = await membershipService.getSignedInUser()
+                    tenantId.value = response.tenantId;
+                    console.log(response, "response");
+                    console.log(tenantId.value, "inside call");
                 } catch (error) {
                     console.log(error);
                 }
@@ -112,9 +118,12 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
             const fileUploaded = (payload) => {
                 if (payload.isUrl) {
                     fileUrl.value = payload.data;
+                    categoryImageUrl.value = payload.data;
+                    file.value = '';
                 } else {
                     file.value = payload.data;
                     fileUrl.value = URL.createObjectURL(payload.data);
+                    categoryImageUrl.value = ""
                 }
                 display.value = false;
             }
