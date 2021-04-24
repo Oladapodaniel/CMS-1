@@ -274,7 +274,7 @@
                       class="dropdown-menu"
                       aria-labelledby="dropdownMenuButton"
                     >
-                      <a class="dropdown-item" @click="toggle" href="#">Convert to member</a>
+                      <a class="dropdown-item" @click="toggle($event, person.id)" href="#">Convert to member</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
                           :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
@@ -314,9 +314,9 @@
       </div>
     </div>
 
-    <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" style="width: 178px; margin-top: -25px; box-shadow: 0px 1px 4px #02172e45; border: 1px solid #dde2e6;" :breakpoints="{'960px': '75vw'}">
+    <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" style="width: 134px; margin-top: -25px; box-shadow: 0px 1px 4px #02172e45; border: 1px solid #dde2e6;" :breakpoints="{'960px': '75vw', '640px': '100vw'}">
         <div v-for="item in membershipCategory" :key="item.id">
-          <div class="dropdown-item cursor-pointer" @click="chooseCategory($event, item)">{{ item.name }}</div>
+          <div class="dropdown-item cursor-pointer p-0" @click="chooseCategory($event, item.id)">{{ item.name }}</div>
         </div>
     </OverlayPanel>
     <!-- <OverlayPanel ref="op" appendTo="body" :showCloseIcon="true" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
@@ -368,6 +368,7 @@ export default {
     const noRecords = ref(false);
     const searchText = ref("");
     const membershipCategory = ref([])
+    const selectedPersonId = ref("")
 
   
 
@@ -756,13 +757,72 @@ export default {
     getMembershipCategory()
 
     const op = ref()
-    const toggle = (event) => {
+    const toggle = (event, id) => {
       op.value.toggle(event)
+      selectedPersonId.value = id
     }
 
-    const chooseCategory = (event, item) => {
+    const chooseCategory = async(event, id) => {
       op.value.toggle(event)
-      console.log(item)
+      try {
+        let { data }  = await axios.post(`/api/People/ConvertFirstTimerToMember?personId=${selectedPersonId.value}&membershipCategoryId=${id}`)
+        console.log(data)
+
+        churchMembers.value = churchMembers.value.filter(i => {
+          return i.id !== selectedPersonId.value
+        })
+        if (data.response) {
+          toast.add({
+          severity: "success",
+          summary: "Confirmed",
+          detail: data.response,
+          life: 4000,
+        });
+        } else {
+          toast.add({
+          severity: "success",
+          summary: "Confirmed",
+          detail: "Moved successfully",
+          life: 4000,
+        });
+        }
+      }
+      catch (err) {
+        console.log(err)
+        if (err.response) {
+          toast.add({
+          severity: "warn",
+          summary: "Moving failed",
+          detail: err.response,
+          life: 4000,
+        });
+        } else if (err.toString().toLowerCase().includes("timeout")) {
+          toast.add({
+            severity: "warn",
+            summary: "Request Delayed",
+            detail: "Request took too long to respond",
+            life: 4000,
+          });
+        } else if (err.toString().toLowerCase().includes("network error")) {
+          toast.add({
+            severity: "warn",
+            summary: "Network Error",
+            detail: "Please ensure that you havve a strong internet",
+            life: 4000,
+          });
+        }  else {
+          toast.add({
+            severity: "warn",
+            summary: "Unable to move",
+            detail: "Couldn't move successfully, check your connection and try again",
+            life: 4000,
+          });
+        }
+      }
+    }
+
+    const convertToMembers = async() => {
+      
     }
 
 
@@ -797,7 +857,9 @@ export default {
       membershipCategory,
       op,
       toggle,
-      chooseCategory
+      chooseCategory,
+      convertToMembers,
+      selectedPersonId
     };
   },
 };

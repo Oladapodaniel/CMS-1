@@ -90,7 +90,7 @@
                   @click.prevent="selectEventAttended"
                   class="form-control input dd small-text"
                 >
-                  {{ selectedEventAttended.name }}
+                  {{ selectedEventAttended ? selectedEventAttended.name : "" }}
                   {{ newEvent.activity.date }}
                 </button>
               </div>
