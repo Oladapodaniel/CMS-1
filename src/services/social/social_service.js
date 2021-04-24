@@ -117,6 +117,57 @@ const approvePost = (id) => {
     })
 }
 
+const deletePost = (id) => {
+    return new Promise((resolve, reject) => {
+        axios.delete(`/mobile/v1/Feeds/DeletePost?postId=${id}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+const updatePost = (body) => {
+    return new Promise((resolve, reject) => {
+        axios.put(`/mobile/v1/Feeds/UpdatePost`, body)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+const disapprovePost = (id) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/mobile/v1/Feeds/DisapprovePost?postId=${id}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
 export default {
     getPostCategory,
     postMessage,
@@ -125,4 +176,7 @@ export default {
     postComment,
     approvePost,
     getPendingPosts,
+    deletePost,
+    updatePost,
+    disapprovePost,
 }

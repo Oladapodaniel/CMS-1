@@ -53,13 +53,15 @@
 
                 <!-- Post media -->
                 <div class="row">
-                  <div class="col-md-12">
-                    <img
+                  <div class="col-md-12 text-center">
+                    <span>
+                      <img
                         v-if="post.type === 'Picture'"
                       :src="post.mediaUrl"
-                      class="w-100"
                       alt=""
+                      style="width: auto;max-width:100%;max-height:300px;border-radius: 15px;"
                     />
+                    </span>
                     <video
                         v-if="post.type === 'Video'"
                         style="width: 100%"

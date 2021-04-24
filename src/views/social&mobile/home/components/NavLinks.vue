@@ -9,7 +9,13 @@
             </div>
             <div class="col-md-12">
                 <ul class="list-style-none px-0">
-                    <li v-for="(link, index) in links" :key="index" class="py-3"><i :class="link.icon" class="mr-2"></i> <router-link :to="link.to" class="text-decoration-none font-weight-700 link-color">{{ link.text }}</router-link></li>
+                    <li v-for="(link, index) in links" :key="index" class="py-3">
+                        <i :class="link.icon" class="mr-2"></i>
+                        <router-link :to="link.to" class="text-decoration-none font-weight-700 link-color">
+                            {{ link.text }}
+                            <span v-if="link.text === 'Pending Posts' && pendingPostsCount"><Badge :value="pendingPostsCount" style="background: orange; color:#fff"></Badge></span>
+                        </router-link>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -17,7 +23,13 @@
 </template>
 
 <script>
+import { computed, ref } from '@vue/runtime-core'
+import membershipService from '../../../../services/membership/membershipservice'
+import social_service from '../../../../services/social/social_service'
+import Badge from 'primevue/badge';
+
     export default {
+        components: { Badge },
         setup() {
             const links = [
                 
@@ -27,7 +39,7 @@
                     to: "/tenant/social/feed",
                 },
                 {
-                    text: "Pending Post",
+                    text: "Pending Posts",
                     icon: "pi-wallet",
                     to: "/tenant/social/pending",
                 },
@@ -58,8 +70,27 @@
                 }
             ]
 
+            const pendingPosts = ref(0);
+            const getPendingPosts = async () => {
+                try {
+                    const currentUser = await membershipService.getSignedInUser();
+                    const response = await social_service.getPendingPosts(currentUser.tenantId);
+                    pendingPosts.value = response.pendingPosts;
+                    console.log(response);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            getPendingPosts();
+
+            const pendingPostsCount = computed(() => {
+                if (!pendingPosts.value || pendingPosts.value.length === 0) return 0;
+                return pendingPosts.value.length;
+            })
+
             return {
                 links,
+                pendingPostsCount,
             }
         }
     }
