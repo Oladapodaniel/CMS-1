@@ -123,6 +123,20 @@ const communicationService = {
                     if (!error.response) reject(error);
                 })
         })
+    },
+    getOnePhoneGroup(url) {
+        return new Promise((resolve, reject) => {
+            axios.get(url)
+                .then(res => {
+                    console.log(res);
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    stopProgressBar();
+                    if (error.response) reject(error.response);
+                    if (!error.response) reject(error);
+                })
+        })
     }
 }
 

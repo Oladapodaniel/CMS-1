@@ -68,7 +68,8 @@
                           <span class="th">Message</span>
                         </div>
                         <div class="col-md-2">
-                          <span class="th"
+                          <span class="th c-pointer"
+                            @click="sortByStatus"
                             >Status
                             <i
                               class="fa fa-question-circle-o c-pointer"
@@ -134,7 +135,9 @@
                             }"
                             class="text-decoration-none"
                           >
-                            <span class="brief-message font-weight-600">{{
+                            <span class="brief-message font-weight-600"
+                              v-tooltip.top="sms.message"
+                            >{{
                               sms.message && sms.message.length > 25
                                 ? `${sms.message
                                     .split("")
@@ -241,6 +244,7 @@
                 @getcontent="getSMSByPage"
                 :itemsCount="itemsCount"
                 :currentPage="currentPage"
+                :totalItems="sentSMS.totalItems"
               />
             </div>
           </div>
@@ -287,7 +291,7 @@ export default {
         const data = await communicationService.getAllSentSMS(0);
         loading.value = false;
         if (data) {
-          sentSMS.value = data;
+          sentSMS.value = data.sentSMS;
         }
       } catch (error) {
         loading.value = false;
@@ -300,8 +304,9 @@ export default {
       try {
         const data = await communicationService.getAllSentSMS(page);
         if (data) {
-          sentSMS.value = data;
+          sentSMS.value = data.sentSMS;
           currentPage.value = page;
+          isSortedByStatus.value = true;
         }
       } catch (error) {
         console.log(error);
@@ -439,6 +444,19 @@ export default {
         });
     };
 
+    const isSortedByStatus = ref(true);
+    const sortByStatus = () => {
+      if (isSortedByStatus.value) {
+        sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "failed") >= 0 ? -1 : 1);
+        // isSortedByStatus.value = false;
+      } else {
+        sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "failed") >= 0 ? 1 : -1);
+        // isSortedByStatus.value = true;
+      }
+      // if (!isSortedByStatus.value) sentSMS.value.sort(x => x.deliveryReport.findIndex(i => i.report === "sent") > 0 ? -1 : 1);
+      isSortedByStatus.value = !isSortedByStatus.value;
+    }
+
     return {
       sentSMS,
       loading,
@@ -454,6 +472,8 @@ export default {
       deleteSingleItem,
       convert,
       showConfirmModal,
+      sortByStatus,
+      isSortedByStatus,
     };
   },
 };

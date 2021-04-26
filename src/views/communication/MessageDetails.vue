@@ -66,9 +66,9 @@
               </div>
               <div class="col-lg-3">
                 <div class="icons d-md-flex justify-content-end">
-                  <span><i class="fas fa-star mx-2 icons"></i></span>
-                  <span @click="showConfirmModal(message.id)"><i class="fas fa-trash mx-2 icons"></i></span>
-                  <span><i class="fas fa-ellipsis-v mx-2 icons"></i></span>
+                  <!-- <span><i class="fas fa-star mx-2 icons"></i></span> -->
+                  <span @click="showConfirmModal(message.id)" class="cursor-pointer"><i class="fas fa-trash mx-2 icons"></i></span>
+                  <!-- <span><i class="fas fa-ellipsis-v mx-2 icons"></i></span> -->
                 </div>
               </div>
             </div>

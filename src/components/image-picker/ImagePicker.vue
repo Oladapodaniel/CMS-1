@@ -37,7 +37,19 @@
 
         <div class="row" v-else>
             <div class="col-md-12 text-center my-4">
-                <span><img style="border-radius:15px;max-width:100%;max-height:300px" class="mx-auto h-100" :src="fileUrl" alt=""></span>
+                <span>
+                  <img v-if="file && (file.type && file.type.includes('image'))" style="border-radius:15px;max-width:100%;max-height:300px" class="mx-auto h-100" :src="fileUrl" alt="">
+                  <video
+                    v-if="file && (file.type && file.type.includes('video'))"
+                    style="width: 100%;border-radius:10px"
+                    height="240"
+                    class="border"
+                    >
+                    <source :src="fileUrl" />
+                    <!-- <source src="movie.mp4" type="video/mp4"> -->
+                    Your browser does not support the video tag.
+                  </video>
+                </span>
             </div>
             <div class="col-md-12 text-center py-4">
                 <button class="default-btn border-0 text-white primary-bg" @click="uploaded(false, '')">Upload</button>
@@ -71,8 +83,9 @@ export default {
             try {
               const response = await media_service.getImageGallery(page);
               loading.value = false;
-              if (response.length > 0) {
-                gallery.value = response;
+              if (response.returnObject.images.length > 0) {
+                gallery.value = [ ]
+                gallery.value = response.returnObject.images;
                 currentPage.value = page;
               }
             } catch (error) {
@@ -84,7 +97,7 @@ export default {
             try {
               const response = await media_service.getImageGallery(page);
               loading.value = false;
-              gallery.value = response;
+              gallery.value = response.returnObject.images;
             } catch (error) {
               loading.value = false;
                 console.log(error);
@@ -127,6 +140,7 @@ export default {
             loading,
             currentPage,
             getImagesByPage,
+            file,
         }
     }
 };

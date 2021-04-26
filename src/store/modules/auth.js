@@ -13,6 +13,7 @@ export default {
         settingUserUp: false,
         churchMembers: {},
         smsBalance: 0,
+        postToEdit: { },
     },
 
     mutations: {
@@ -49,6 +50,9 @@ export default {
     },
     clearCurrentUser(state, payload) {
       state.currentUser = payload
+    },
+    setPost(state, payload) {
+      state.postToEdit = payload
     }
   },
 
@@ -109,6 +113,10 @@ export default {
     addPurchasedUnits({ commit }, payload) {
       commit("addPurchasedUnits", payload)
     },
+
+    setPost({ commit }, payload) {
+      commit("setPost", payload)
+    },
   },
 
   getters: {
@@ -123,5 +131,6 @@ export default {
     settingUserUp: state => state.settingUserUp,
     smsBalance: state => state.currentUser.smsBalance,
     currency: state => state.currentUser.currency,
+    postToEdit: state => state.postToEdit,
   },
 }

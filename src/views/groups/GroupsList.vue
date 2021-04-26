@@ -120,9 +120,8 @@
                           >Send SMS</router-link
                         >
                       </a>
-                      <!-- `/tenant/email/compose?phone=${person.email}` -->
                       <a class="dropdown-item">
-                        <router-link to="">Send Email</router-link>
+                        <router-link :to="`/tenant/email/compose?group=${group.name}&groupId=${group.id}`">Send Email</router-link>
                       </a>
                       <a class="dropdown-item" @click="confirmDelete(group.id, index)">Delete</a>
                     </div>
