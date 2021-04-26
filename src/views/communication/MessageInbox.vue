@@ -283,7 +283,7 @@ export default {
     const getRepliesByPage = async (page) => {
       try {
         const data = await communicationService.getSMSReplies(page);
-        if (data) {
+        if (data && data.length > 0) {
           replies.value = data;
           currentPage.value = page;
         }
