@@ -282,22 +282,70 @@
                   </div>
                 </div>
               </div>
-              <div class="row" v-if="marked.length >  0">
+              <!-- Modal -->
+                 <div class="container">
+                      <!-- Button to Open the Modal -->
+                      <!-- <button type="button" class="btn btn-primary" >
+                        Open modal
+                      </button> -->
+
+                      <!-- The Modal -->
+                      <div class="modal fade" id="myModal">
+                        <div class="modal-dialog modal-sm">
+                          <div class="modal-content">
+                          
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                              <h4 class="modal-title">
+                                 <label class="font-weight-900 w-100">Move Members To Groups</label>
+                                                    
+                              </h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                              <div class="col-md-12">
+                                                       
+                                                      </div>
+                                                      <div class="col-md-12 form-group w-100">
+                                                        <Dropdown
+                                                          :options="getAllGroup"
+                                                          optionLabel="name"
+                                                          placeholder="Select Groups"
+                                                          style="width: 100%"
+                                                          v-model="selectGroupTo"
+                                                        />
+                                                      </div>
+                            </div>
+                            
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-primary" data-dismiss="modal" @click="moveMembers">Send</button>
+                            </div>
+                            
+                          </div>
+                        </div>
+                     </div>
+  
+               </div>
+              <div class="row" v-if="marked.length >  0" @click="memberChange">
                 <div class="col-md-12 d-flex align-content-between">
-                      <a href="" class="tool">
+                      <a href="#" class="tool" data-toggle="modal" data-target="#myModal">
                         <i
                           class="pi pi-reply text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4 mr-3"
                           style="font-size: 20px" v-tooltip.top="'move to group'">
                           </i>
                     </a>
-                    <a href="" class="tool">
+                    
+                    <a href="#" class="tool">
                         <i
                           class="pi pi-copy text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                           style="font-size: 20px" v-tooltip.right="'copy to group'"
-                          >
+                          > 
                         </i>
-
                     </a>
+                    
                 </div>
                 </div>
 
@@ -330,7 +378,6 @@
                   <!-- <i class="fa fa-elipsis-v"></i> -->
                 </div>
               </div>
-
               <div class="row" v-if="loadingMembers">
                 <div class="col-md-12">
                   <div class="row">
@@ -495,7 +542,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
@@ -504,13 +551,18 @@ import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useConfirm";
 import groupsService from "../../services/groups/groupsservice";
 import Tooltip from 'primevue/tooltip';
+import Dropdown from "primevue/dropdown";
+import store from "../../store/store"
+// import Dialog from 'primevue/dialog';
 
 
 export default {
   directives: {
     'tooltip': Tooltip
 },
+ components: { Dropdown,},
   setup() {
+    const memberDia =ref(true)
     const groupData = ref({});
     const searchText = ref("");
     const loading = ref(false);
@@ -520,6 +572,37 @@ export default {
     const memberSelectInput = ref(null);
     const marked= ref([]);
     const confirm = useConfirm();
+    let selectMembers = ref("");
+    const getAllGroup = ref([]);
+    const selectGroupTo = ref({});
+    // const moveMembers =() =>{
+    //   let memberChange = convert(marked.value);
+    //   console.log(memberChange,'wisdom')
+    // }
+    onMounted( async() => {
+      try{
+        const{data} = await axios.get("/api/GetAllGroupBasicInformation");
+        getAllGroup.value = data;
+        console.log(getAllGroup);
+      }catch(error) {
+        console.log(error)
+      }
+      
+    })
+    const moveMembers=()=>{
+      let memberMove = {
+        memberIDList: marked.value.map(i => i.personID),
+        groupTo: selectGroupTo.value.id,
+        groupFrom: route.params.groupId
+      }
+      axios.post(`/api/Group/MoveMembers`,memberMove)
+      .then((res)=>{
+        toast.add({severity:'success', summary:'Confirmed', detail:'Group moved', life: 2500});
+        console.log(res)
+        store.dispatch('groups/updateGroupPeopleCount', { groupId: selectGroupTo.value.id, count: marked.value.length})
+
+      })
+    }
     const mark1Item =(member) =>{
       console.log(member);
       const memberIndex= marked.value.findIndex((i) => i.personID === member.personID);
@@ -813,7 +896,12 @@ export default {
       confirmDelete,
       marked,
       markAllItem,
-      mark1Item
+      mark1Item,
+      selectMembers,
+      memberDia,
+      getAllGroup,
+      selectGroupTo,
+      moveMembers
     };
   },
 };
