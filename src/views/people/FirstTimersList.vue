@@ -679,10 +679,8 @@ export default {
               summary: "Confirmed",
               detail: resArr[0]
             });
-
-
-
-            if (!resArr[1].includes(",")) {
+            if (resArr[1] !== '') {
+              if (!resArr[1].includes(",")) {
               churchMembers.value = churchMembers.value.filter((item) => {
               return !item.id.includes(resArr[1])
             });
@@ -696,6 +694,7 @@ export default {
                   if (y >= 0) return false;
                   return true;
                 });
+            }
             }
 
           }
