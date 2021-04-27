@@ -259,7 +259,6 @@ export default {
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         email: userEmail.value,
         amount: amount.value * 100,
         firstname: churchName.value,

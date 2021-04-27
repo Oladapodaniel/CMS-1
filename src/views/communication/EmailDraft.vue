@@ -1,4 +1,4 @@
-!<template>
+<template>
   <div>
     <div class="container">
       <!-- Content Box -->
@@ -119,13 +119,13 @@
 
                   <div class="row" v-if="drafts.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
-                      <span class="my-4 font-weight-bold">No sent mesages</span>
+                      <span class="my-4 font-weight-bold">No draft messages</span>
                     </div>
                   </div>
 
                   <div class="row" v-if="drafts.length === 0 && loading">
                     <div class="col-md-12 py-2 d-flex justify-content-center">
-                      <i class="fas fa-circle-notch fa-spin"></i>
+                      <Loading :loading="loading" />
                     </div>
                   </div>
                 </div>
@@ -146,8 +146,10 @@ import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
+import Loading from "../../components/loading/LoadingComponent"
 
 export default {
+  components: { Loading },
   setup() {
     const store = useStore();
     const drafts = ref(store.getters["communication/emailDrafts"]);
@@ -297,6 +299,7 @@ export default {
       markAllMailDrafts,
       deleteMailDrafts,
       showConfirmModal,
+      markEmailDraft,
     };
   },
 };
