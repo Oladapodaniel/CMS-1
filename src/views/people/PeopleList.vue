@@ -608,34 +608,81 @@ export default {
         const response = await membershipservice.deletePeople(IDs);
         console.log(response, "RESPONSE");
 
-        if (response.response.toString().toLowerCase().includes("all")) {
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Member Deleted",
-            life: 4000,
-          });
-          churchMembers.value = churchMembers.value.filter((item) => {
-            const y = marked.value.findIndex((i) => i.id === item.id);
-            if (y >= 0) return false;
-            return true;
-          });
-        } else {
-          toast.add({
-            severity: "info",
-            // summary:'Confirmed',
-            detail: `${response.response}`,
-            // life: 4000
-          });
-        }
-        axios
-          .get(`/api/People/GetMembershipSummary`)
-          .then((res) => {
-            console.log(res, "new chart");
-            membershipSummary.value = res.data;
-          })
-          .catch((err) => {
-            console.log(err);
+
+          if (response.response.toString().toLowerCase().includes("all")) {
+            toast.add({
+              severity:'success',
+              summary:'Confirmed',
+              detail:'Member(s) Deleted',
+              life: 4000
+            });
+
+            churchMembers.value = churchMembers.value.filter((item) => {
+              const y = marked.value.findIndex((i) => i.id === item.id);
+              if (y >= 0) return false;
+              return true;
+            });
+          } else {
+            let displayRes = response.response.split("@")
+            toast.add({
+              severity:'info',
+              detail: `${displayRes[0]}`,
+            });
+
+            if (displayRes[1] !== '') {
+              if (!displayRes[1].includes(',')) {
+                churchMembers.value = churchMembers.value.filter((item) => {
+                console.log(item.id.includes(displayRes[1]))
+                return !item.id.includes(displayRes[1])
+              });
+              } else {
+                let IDs = displayRes[1].split(",")
+                churchMembers.value = churchMembers.value.filter((item) => {
+                const y = IDs.findIndex((i) => i === item.id);
+                if (y >= 0) return false;
+                return true;
+              });
+              }
+            }
+          }
+          marked.value = []
+          axios
+            .get(`/api/People/GetMembershipSummary`)
+            .then((res) => {
+              console.log(res, "new chart");
+              membershipSummary.value = res.data;
+            })
+            .catch((err) => {
+              console.log(err)
+
+        // if (response.response.toString().toLowerCase().includes("all")) {
+        //   toast.add({
+        //     severity: "success",
+        //     summary: "Confirmed",
+        //     detail: "Member Deleted",
+        //     life: 4000,
+        //   });
+        //   churchMembers.value = churchMembers.value.filter((item) => {
+        //     const y = marked.value.findIndex((i) => i.id === item.id);
+        //     if (y >= 0) return false;
+        //     return true;
+        //   });
+        // } else {
+        //   toast.add({
+        //     severity: "info",
+        //     // summary:'Confirmed',
+        //     detail: `${response.response}`,
+        //     // life: 4000
+        //   });
+        // }
+        // axios
+        //   .get(`/api/People/GetMembershipSummary`)
+        //   .then((res) => {
+        //     console.log(res, "new chart");
+        //     membershipSummary.value = res.data;
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
           });
       } catch (error) {
         console.log(error);
@@ -740,7 +787,7 @@ export default {
           {people: peopleMoved}
         )
         .then((res) => {
-          console.log(res);
+          console.log(res, "Munachi");
             toast.add({
             severity: "success",
             summary: "Confirmed",

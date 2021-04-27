@@ -274,8 +274,7 @@
                       class="dropdown-menu"
                       aria-labelledby="dropdownMenuButton"
                     >
-                      <a class="dropdown-item" href="#">Convert to member</a>
-                      <!-- <a class="dropdown-item" href="#">Assign to follow-up</a> -->
+                      <a class="dropdown-item" @mouseover="toggle($event, person.id)" href="#">Convert to member</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
                           :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
@@ -300,63 +299,11 @@
                 </td>
               </tr>
             </tbody>
-            <!-- <tbody v-else-if="filterResult.length == 0 && noRecords">
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                     <td class="no-record text-center my-4">No record found</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody> -->
-
-            <!-- <tbody v-else-if="searchMember.length > 0">
-                <tr v-for="person in searchMember" :key="person.id">
-                  <td><input type="checkbox" name="all" id="all" @click="toggleSelect"/></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.fullName }}</router-link></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color">{{ person.phoneNumber }}</router-link></td>
-                  <td ><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color"> {{ person.howDidYouAboutUsName }}</router-link></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color">{{ person.interestedInJoining === "Not_Specified" ? "Not Sure" : person.interestedInJoining == "On_Transit" ? "On Transit" : person.interestedInJoining }}</router-link></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="itemroute-color"> {{ moment.parseZone(new Date(person.date).toDateString(), 'YYYY MM DD HH ZZ')._i.substr(4, 11) }}</router-link></td>
-                  <td><router-link :to="`/tenant/people/addfirsttimer/${person.id}`" class="data-value itemroute-color"></router-link></td>
-                  <td><div class="dropdown">
-                    <i
-                      class="fas fa-ellipsis-v"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    ></i>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <a class="dropdown-item" href="#">Convert to member</a>
-                      <a class="dropdown-item" href="#">Assign to follow-up</a>
-                      <a class="dropdown-item" v-if="person.phoneNumber">
-                        <router-link
-                          :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
-                          >Send SMS</router-link
-                        >
-                      </a>
-                      <a class="dropdown-item" href="#">Send Email</a>
-                      <a class="dropdown-item" href="#" @click.prevent="showConfirmModal(person.id)">Delete</a>
-                    </div>
-                  </div>
-                  </td>
-
-              </tr>
-              </tbody> -->
           </table>
         </div>
 
         <ConfirmDialog />
         <Toast />
-        <Dialog header="Message" v-model:visible="display" :style="{width: '35vw'}">
-          <p>{{deleteMessage}}</p></Dialog>
         <div class="table-footer">
           <Pagination
             @getcontent="getPeopleByPage"
@@ -367,8 +314,27 @@
         </div>
       </div>
     </div>
-    <!-- </div>
-    </div> -->
+
+    <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" style="width: 134px; margin-top: -25px; box-shadow: 0px 1px 4px #02172e45; border: 1px solid #dde2e6;" :breakpoints="{'960px': '75vw', '640px': '100vw'}">
+        <div v-for="item in membershipCategory" :key="item.id">
+          <div class="dropdown-item cursor-pointer p-0" @click="chooseCategory($event, item.id)">{{ item.name }}</div>
+        </div>
+    </OverlayPanel>
+    <!-- <OverlayPanel ref="op" appendTo="body" :showCloseIcon="true" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
+            <DataTable :value="products" v-model:selection="selectedProduct" selectionMode="single" :paginator="false" :rows="5" @rowSelect="onProductSelect" responsiveLayout="scroll" >
+                <Column field="name" header="Name" sortable style="width: 50%"></Column>
+                <Column header="Image" style="width: 20%">
+                    <template #body="slotProps">
+                        <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" :alt="slotProps.data.image" class="product-image" />
+                    </template>
+                </Column>
+                <Column field="price" header="Price" sortable style="width: 30%">
+                    <template>
+                        {{formatCurrency(slotProps.data.price)}}
+                    </template>
+                </Column>
+            </DataTable>
+        </OverlayPanel> -->
   </div>
 </template>
 
@@ -383,6 +349,7 @@ import moment from "moment";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
+import OverlayPanel from 'primevue/overlaypanel';
 
 export default {
   props: ["list"],
@@ -390,6 +357,7 @@ export default {
     ByGenderChart,
     ByMaritalStatusChart,
     Pagination,
+    OverlayPanel
   },
 
   setup() {
@@ -400,8 +368,10 @@ export default {
     const filterResult = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
+    const membershipCategory = ref([])
+    const selectedPersonId = ref("")
 
-    // if ()
+
 
     const route = useRoute();
     const filterFormIsVissible = ref(false);
@@ -443,7 +413,7 @@ export default {
     const totalFirsttimersCount = computed(() => {
       if (getFirstTimerSummary.value || !getFirstTimerSummary.value.totalFirstTimer) return 0;
       return getFirstTimerSummary.value.totalFirstTimer;
-    }) 
+    })
 
     const deleteMember = (id) => {
       //  delete firtimer
@@ -781,6 +751,87 @@ export default {
       });
     };
 
+    const getMembershipCategory = async () => {
+      try {
+        let { data }  = await axios.get("/api/Settings/GetTenantPeopleClassification")
+        membershipCategory.value = data
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+    getMembershipCategory()
+
+    const op = ref()
+    const toggle = (event, id) => {
+      op.value.toggle(event)
+      selectedPersonId.value = id
+    }
+
+    const chooseCategory = async(event, id) => {
+      op.value.toggle(event)
+      try {
+        let { data }  = await axios.post(`/api/People/ConvertFirstTimerToMember?personId=${selectedPersonId.value}&membershipCategoryId=${id}`)
+        console.log(data)
+
+        churchMembers.value = churchMembers.value.filter(i => {
+          return i.id !== selectedPersonId.value
+        })
+        if (data.response) {
+          toast.add({
+          severity: "success",
+          summary: "Confirmed",
+          detail: data.response,
+          life: 4000,
+        });
+        } else {
+          toast.add({
+          severity: "success",
+          summary: "Confirmed",
+          detail: "Moved successfully",
+          life: 4000,
+        });
+        }
+      }
+      catch (err) {
+        console.log(err)
+        if (err.response) {
+          toast.add({
+          severity: "warn",
+          summary: "Moving failed",
+          detail: err.response,
+          life: 4000,
+        });
+        } else if (err.toString().toLowerCase().includes("timeout")) {
+          toast.add({
+            severity: "warn",
+            summary: "Request Delayed",
+            detail: "Request took too long to respond",
+            life: 4000,
+          });
+        } else if (err.toString().toLowerCase().includes("network error")) {
+          toast.add({
+            severity: "warn",
+            summary: "Network Error",
+            detail: "Please ensure that you havve a strong internet",
+            life: 4000,
+          });
+        }  else {
+          toast.add({
+            severity: "warn",
+            summary: "Unable to move",
+            detail: "Couldn't move successfully, check your connection and try again",
+            life: 4000,
+          });
+        }
+      }
+    }
+
+    const convertToMembers = async() => {
+
+    }
+
+
     return {
       churchMembers,
       filterFormIsVissible,
@@ -809,6 +860,12 @@ export default {
       modal,
       deleteMessage,
       display,
+      membershipCategory,
+      op,
+      toggle,
+      chooseCategory,
+      convertToMembers,
+      selectedPersonId,
       totalFirsttimersCount,
     };
   },
