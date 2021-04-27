@@ -46,7 +46,6 @@
                       >
                         <a class="dropdown-item elipsis-items cursor-pointer"
                         @click="addToStore(post)"
-                        v-if="false"
                         >
                         <router-link :to="{ name: 'SocialPost', query: { postId: post.postId } }" class="text-decoration-none text-dark">Edit</router-link>
                         </a>
