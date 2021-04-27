@@ -321,7 +321,7 @@
                             
                             <!-- Modal footer -->
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-primary" data-dismiss="modal" @click="moveMembers">Send</button>
+                              <button type="button" class="btn btn-primary" data-dismiss="modal" @click="moveMembers">Move</button>
                             </div>
                             
                           </div>
@@ -329,7 +329,54 @@
                      </div>
   
                </div>
-              <div class="row" v-if="marked.length >  0" @click="memberChange">
+               <!-- Modal -->
+                 <div class="container">
+                      <!-- Button to Open the Modal -->
+                      <!-- <button type="button" class="btn btn-primary" >
+                        Open modal
+                      </button> -->
+
+                      <!-- The Modal2 -->
+                      <div class="modal fade" id="myModal1">
+                        <div class="modal-dialog modal-sm">
+                          <div class="modal-content">
+                          
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                              <h4 class="modal-title">
+                                 <label class="font-weight-900 w-100">Copy Members To Groups</label>
+                                                    
+                              </h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            
+                            <!-- Modal body2 -->
+                            <div class="modal-body">
+                              <div class="col-md-12">
+                                                       
+                                                      </div>
+                                                      <div class="col-md-12 form-group w-100">
+                                                        <Dropdown
+                                                          :options="getAllGroup"
+                                                          optionLabel="name"
+                                                          placeholder="Select Groups"
+                                                          style="width: 100%"
+                                                          v-model="copyGroupTo"
+                                                        />
+                                                      </div>
+                            </div>
+                            
+                            <!-- Modal footer2 -->
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-primary" data-dismiss="modal" @click="copyMemberToGroup">Copy</button>
+                            </div>
+                            
+                          </div>
+                        </div>
+                     </div>
+  
+               </div>
+              <div class="row" v-if="marked.length >  0 && groupMembers.length > 0">
                 <div class="col-md-12 d-flex align-content-between">
                       <a href="#" class="tool" data-toggle="modal" data-target="#myModal">
                         <i
@@ -338,7 +385,7 @@
                           </i>
                     </a>
                     
-                    <a href="#" class="tool">
+                    <a href="#" class="tool" data-toggle="modal" data-target="#myModal1">
                         <i
                           class="pi pi-copy text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                           style="font-size: 20px" v-tooltip.right="'copy to group'"
@@ -553,7 +600,7 @@ import groupsService from "../../services/groups/groupsservice";
 import Tooltip from 'primevue/tooltip';
 import Dropdown from "primevue/dropdown";
 import store from "../../store/store"
-// import Dialog from 'primevue/dialog';
+import finish from "../../services/progressbar/progress.js"
 
 
 export default {
@@ -575,6 +622,7 @@ export default {
     let selectMembers = ref("");
     const getAllGroup = ref([]);
     const selectGroupTo = ref({});
+    const copyGroupTo = ref({});
     // const moveMembers =() =>{
     //   let memberChange = convert(marked.value);
     //   console.log(memberChange,'wisdom')
@@ -597,10 +645,72 @@ export default {
       }
       axios.post(`/api/Group/MoveMembers`,memberMove)
       .then((res)=>{
-        toast.add({severity:'success', summary:'Confirmed', detail:'Group moved', life: 2500});
+        toast.add({
+          severity:'success', 
+          summary:'Confirmed', 
+          detail:'Member(s) Moved Successfully', 
+          life: 4000
+        });
         console.log(res)
         store.dispatch('groups/updateGroupPeopleCount', { groupId: selectGroupTo.value.id, count: marked.value.length})
 
+        // Remove from view
+      groupMembers.value = groupMembers.value.filter(i => {
+        let match = marked.value.findIndex(j => j.personID === i.personID)
+        if (match >= 0) return false
+        return true
+      })
+
+      }).catch (err => {
+        finish()
+        if (err.toString().toLowerCase().includes('network error')) {
+          toast.add({
+          severity:'warn', 
+          summary:'Network error', 
+          detail:'Please ensure you have a strong internet',
+          life: 4000
+        });
+        } else if (err.toString().toLowerCase().includes('timeout')) {
+          toast.add({
+            severity:'warn', 
+            summary:'Request took too long', 
+            detail:'Please refresh the page',
+            life: 4000
+          });
+        }
+      })
+      
+
+    }
+    const copyMemberToGroup=()=>{
+      let copyMember={
+        memberIDList: marked.value.map(i =>i.personID),
+        groupTo: copyGroupTo.value.id,
+        groupFrom: route.params.groupId
+      }
+      axios.post(`/api/Group/CopyMembers`,copyMember)
+      .then((res)=>{
+        toast.add({severity:'success', summary: 'Confirmed' , detail:'Member Copy Successfully', life:2500});
+        console.log(res)
+        store.dispatch('groups/updateGroupPeopleCopy', { groupId: copyGroupTo.value.id,
+        count: marked.value.length})
+      }).catch (err => {
+        finish()
+        if (err.toString().toLowerCase().includes('network error')) {
+          toast.add({
+          severity:'warn', 
+          summary:'Network error', 
+          detail:'Please ensure you have a strong internet',
+          life: 4000
+        });
+        } else if (err.toString().toLowerCase().includes('timeout')) {
+          toast.add({
+            severity:'warn', 
+            summary:'Request took too long', 
+            detail:'Please refresh the page',
+            life: 4000
+          });
+        }
       })
     }
     const mark1Item =(member) =>{
@@ -848,6 +958,21 @@ export default {
         NProgress.done();
         loadingMembers.value = false;
         console.log(error.response);
+        if (err0r.toString().toLowerCase().includes('network error')) {
+          toast.add({
+          severity:'warn', 
+          summary:'Network error', 
+          detail:'Please ensure you have a strong internet',
+          life: 4000
+        });
+        } else if (error.toString().toLowerCase().includes('timeout')) {
+          toast.add({
+            severity:'warn', 
+            summary:'Request took too long', 
+            detail:'Please refresh the page',
+            life: 4000
+          });
+        }
       }
     };
 
@@ -901,7 +1026,9 @@ export default {
       memberDia,
       getAllGroup,
       selectGroupTo,
-      moveMembers
+      moveMembers,
+      copyGroupTo,
+      copyMemberToGroup
     };
   },
 };
