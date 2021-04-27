@@ -390,7 +390,7 @@ import PaginationButtons from "../../components/pagination/PaginationButtons.vue
 import axios from "@/gateway/backendapi";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
-import { useStore } from "vuex";
+import store from "../../store/store";
 import stopProgressBar from "../../services/progressbar/progress";
 import membershipservice from "../../services/membership/membershipservice";
 import Tooltip from "primevue/tooltip";
@@ -418,7 +418,7 @@ export default {
     const selectAll = ref(false);
     const noRecords = ref(false);
     const searchText = ref("");
-    const store = useStore();
+    // const store = useStore();
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -748,13 +748,15 @@ export default {
             life: 3000,
           });
 
-         marked.value = [];
+         store.dispatch("groups/updateGroupPeopleCount", { groupId: chooseGrouptoMoveto.value.id, count: marked.value.length, operation:"add"});
+
+          marked.value = [];
         })
         .catch((err) => {
             stopProgressBar();
           toast.add({
             severity: "error",
-            summary: "Delete Error",
+            summary: "Adding Error",
             detail: "Adding Member(s) failed",
             life: 3000,
           });
