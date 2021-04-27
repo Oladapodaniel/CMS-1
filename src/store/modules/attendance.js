@@ -9,13 +9,21 @@ export default {
     mutations: {
         setItemData(state, payload) {
             state.attendanceItemData = payload;
+        },
+
+        clearState(state) {
+            for (var prop in state) delete state[prop];
         }
     },
 
     actions: {
         setItemData({ commit }, payload) {
           commit("setItemData", payload)
-        }
+        },
+
+        clearState({ commit }) {
+            commit("clearState")
+        },
     },
 
     getters: {

@@ -103,7 +103,6 @@
 <script>
 import axios from '@/gateway/backendapi';
 import { reactive, ref } from 'vue';
-import store from '../../store/store'
 import router from '../../router/index';
 import setupService from "../../services/setup/setupservice"
 import finish from "../../services/progressbar/progress"
@@ -141,12 +140,12 @@ export default {
             })
             return false;
           }
-          setupService.setup();
-          
-          store.dispatch("setUserData", data);
           localStorage.setItem("token", data.token);
           localStorage.setItem("expiryDate", data.expiryTime);
           console.log(data, "Church data");
+          setTimeout(() => {
+            setupService.setup();
+          }, 5000)
           if (data.churchSize > 0) {
             router.push("/tenant")
           } else {
@@ -214,9 +213,19 @@ export default {
       }
 
       const saveEmail = async() => {
+        displayModal.value = false
         try {
-          const response = await axios.post("/Register/Facebook", invalidEmailObj.value)
-          console.log(response)
+          const res = await axios.post("/Register/Facebook", invalidEmailObj.value)
+          console.log(res)
+          if (res.data.isOnboarded) {
+              localStorage.setItem("email", res.data.username)
+              localStorage.setItem("token", res.data.token);
+              router.push("/tenant");
+            } else {
+              localStorage.setItem("email", res.data.username)
+              localStorage.setItem("pretoken", res.data.token)
+              if (res.data.username) router.push("/onboarding");
+            }
         }
         catch (err) {
           console.log(err)

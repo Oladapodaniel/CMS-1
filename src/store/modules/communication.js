@@ -40,7 +40,9 @@ export default {
         },
         addSmsToSentList(state, payload) {
             // state.addSmsToSentList = payload
-            state.allSentSMS.unshift(payload)
+            if (state.allSentSMS) {
+                state.allSentSMS.unshift(payload)
+            }
         },
         addToSentEmail(state, payload) {
             // state.sentEmails.pop()
@@ -77,6 +79,16 @@ export default {
             if (s >= 0) {
                 state.sentEmails.splice(s, 1)
             }
+        },
+
+        clearState(state) {
+            state.allSentSMS = []
+            state.smsReplies = [],
+            state.smsDrafts = []
+            state.emailDrafts = []
+            state.sentEmails = []
+            state.addSmsToSentList = {}
+            state.addToSentEmail = {}
         }
     },
 
@@ -165,7 +177,10 @@ export default {
         },
         removeSentEmails({ commit }, payload) {
             commit("removeSentEmails", payload)
-        }
+        },
+        clearState({ commit }) {
+            commit("clearState")
+        },
     },
 
     getters: {

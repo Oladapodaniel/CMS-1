@@ -25,7 +25,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg py-2">
-                    <div class="col-md-12 px-0">
+                    <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-1 text-md-right text-lg-center px-0"
                         v-if="emails.length > 0">
@@ -143,7 +143,7 @@
 
                   <div class="row" v-if="emails.length === 0 && loading">
                     <div class="col-md-12 py-2 d-flex justify-content-center">
-                      <i class="fas fa-circle-notch fa-spin"></i>
+                      <Loading :loading="loading" />
                     </div>
                   </div>
 
@@ -174,9 +174,10 @@ import communicationService from "../../services/communication/communicationserv
 import PaginationButtons from "../../components/pagination/PaginationButtons";
 import { useStore } from "vuex";
 import axios from "@/gateway/backendapi";
+import Loading from "../../components/loading/LoadingComponent"
 
 export default {
-  components: { PaginationButtons },
+  components: { PaginationButtons, Loading },
   setup() {
     const store = useStore();
     const emails = ref([]);
@@ -187,20 +188,22 @@ export default {
         : [];
     // console.log(emails.value[0], "from store");
     const currentPage = ref(0);
-    const loading = ref(false);
+    const loading = ref(true);
     const searchMail = ref("");
 
     const getSentEmails = async () => {
-      loading.value = true;
       const data = await communicationService.getSentEmails(0);
       loading.value = false;
       if (data && data.length > 0) {
-        console.log(data, "compo");
         emails.value = data;
       }
     };
 
-    if (!emails.value || emails.value.length === 0) getSentEmails();
+    if (!emails.value || emails.value.length === 0) {
+      getSentEmails();
+    } else {
+      loading.value = false;
+    }
 
     const formatMessage = (message) => {
       const formatted =

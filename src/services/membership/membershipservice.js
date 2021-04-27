@@ -77,7 +77,6 @@ const membershipService = {
     },
 
     peopleHandle(p) {
-        console.log(p, "God is good");
         return p.map((i) => i).join(",")
 
     },
@@ -88,7 +87,6 @@ const membershipService = {
                 .then(res => {
                     resolve(res.data);
                     console.log(res.data)
-                    // store.dispatch("setFirstTimers", res.data);
                 })
                 .catch(error => {
                     /*eslint no-undef: "warn"*/

@@ -53,6 +53,10 @@ export default {
     },
     setPost(state, payload) {
       state.postToEdit = payload
+    },
+
+    clearState(state) {
+      for (var prop in state) delete state[prop];
     }
   },
 
@@ -62,7 +66,7 @@ export default {
     },
     clearCurrentUser ({ commit }, payload) {
       commit("clearCurrentUser", payload)
-  },
+    },
     async getUser({ commit }) {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
@@ -116,6 +120,10 @@ export default {
 
     setPost({ commit }, payload) {
       commit("setPost", payload)
+    },
+
+    clearState({ commit }) {
+      commit("clearState")
     },
   },
 

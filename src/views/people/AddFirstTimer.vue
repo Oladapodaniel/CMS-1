@@ -90,7 +90,7 @@
                   @click.prevent="selectEventAttended"
                   class="form-control input dd small-text"
                 >
-                  {{ selectedEventAttended.name }}
+                  {{ selectedEventAttended ? selectedEventAttended.name : "" }}
                   {{ newEvent.activity.date }}
                 </button>
               </div>
@@ -636,6 +636,7 @@ import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress"
+import setupService from '../../services/setup/setupservice';
 
 export default {
   components: { Dropdown, Dialog },
@@ -1116,6 +1117,7 @@ console.log(updateMember)
           finish()
           if (err.response && err.response.status === 401) {
             localStorage.setItem("token", "");
+            setupService.clearStore();
             router.push("/");
           }
         });
