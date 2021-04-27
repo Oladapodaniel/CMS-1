@@ -544,22 +544,39 @@ export default {
             toast.add({
               severity:'success', 
               summary:'Confirmed', 
-              detail:'Member Deleted', 
+              detail:'Member(s) Deleted', 
               life: 4000
             });
+
             churchMembers.value = churchMembers.value.filter((item) => {
               const y = marked.value.findIndex((i) => i.id === item.id);
               if (y >= 0) return false;
               return true;
             });
           } else {
+            let displayRes = response.response.split("@")
             toast.add({
               severity:'info', 
-              // summary:'Confirmed', 
-              detail: `${response.response}`, 
-              // life: 4000
+              detail: `${displayRes[0]}`,
             });
+
+            if (displayRes[1] !== '') {
+              if (!displayRes[1].includes(',')) {
+                churchMembers.value = churchMembers.value.filter((item) => {
+                console.log(item.id.includes(displayRes[1]))
+                return !item.id.includes(displayRes[1])
+              });
+              } else {
+                let IDs = displayRes[1].split(",")
+                churchMembers.value = churchMembers.value.filter((item) => {
+                const y = IDs.findIndex((i) => i === item.id);
+                if (y >= 0) return false;
+                return true;
+              });
+              }
+            }
           }
+          marked.value = []
           axios
             .get(`/api/People/GetMembershipSummary`)
             .then((res) => {

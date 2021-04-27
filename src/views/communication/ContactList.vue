@@ -169,6 +169,7 @@ import axios from "@/gateway/backendapi";
 import { useConfirm } from "primevue/useConfirm"
 import { useToast } from 'primevue/usetoast';
 import dateFormatter from "../../services/dates/dateformatter"
+import finish from "../../services/progressbar/progress"
 
 export default {
   setup() {
@@ -179,11 +180,13 @@ export default {
       try {
         loading.value = true;
         const res = await axios.get("/api/Messaging/getPhoneGroups");
+        finish()
         loading.value = false;
         console.log(res, "Tosin");
         groups.value = res.data;
         console.log(res.data, "Ajose");
       } catch (error) {
+        finish()
         console.log(error);
       }
     };
@@ -201,6 +204,7 @@ export default {
         });
       }
       catch (err) {
+        finish()
         console.log(err)
         if (err.toString().toLowerCase().includes('network error')) {
           toast.add({

@@ -120,6 +120,7 @@
           </div>
         </div>
       </main>
+      <Toast />
     </div>
   </div>
 </template>
@@ -127,6 +128,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 import router from "../../router/index";
+import finish from  "../../services/progressbar/progress"
 
 
 export default {
@@ -140,74 +142,77 @@ export default {
     };
   },
 
-  // this.phoneNumbers.indexOf(this.enteredValue) < 0
   methods: {
-    addPhoneNumber() {
-      if (this.enteredValue !== "") {
-        this.enteredValue.trim();
-        if (this.enteredValue.includes(",")) {
-          this.enteredValue
-            .split(",")
-            .forEach((i) => this.phoneNumbers.push(i));
-        }
-        if (
-          this.enteredValue.split(" ").length > 1 &&
-          !this.enteredValue.includes(",")
-        ) {
-          this.enteredValue
-            .split(" ")
-            .forEach((i) => this.phoneNumbers.push(i));
-        }
-        if (
-          !this.enteredValue.includes(",") &&
-          !this.enteredValue.includes(" ")
-        ) {
-          this.phoneNumbers.push(this.enteredValue);
-        }
-        this.enteredValue = "";
-        console.log(this.phoneNumbers);
-      }
-
-      // this.phoneNumbers.push(this.enteredValue);
-      // this.enteredValue = "";
-      // console.log("am here");
-    },
-    // removePhoneNumber(index) {
-    //   this.phoneNumbers.splice(index, 1);
-    // },
-
     enableGroupName() {
       this.groupNameDisabled = false;
       this.$refs.groupName.focus();
     },
 
     saveGroupDetails() {
+      console.log(this.enteredValue)
       if (
         this.enteredValue !== "" &&
         this.phoneNumbers.indexOf(this.enteredValue) < 0
       ) {
-        this.phoneNumbers.push(this.enteredValue);
-        this.enteredValue = "";
-      }
-      let details = {
-        id: "",
-        groupName: this.groupNameValue,
-        phoneNumbers: this.phoneNumbers.join(","),
-      };
-      console.log(details);
-      console.log(this.phoneNumbers);
-      this.loading = true;
-      axios
-        .post("/api/Messaging/createPhoneGroups", details)
-        .then((res) => {
-          this.loading = false;
-          console.log(res);
-          router.push("/tenant/sms/contacts");
-        })
-        .catch((err) => {
-          this.loading = false;
-          console.log(err);
-        });
+        
+        if (this.enteredValue.includes(',')) {
+          this.enteredValue.split(',').forEach(i => {
+            
+            let match = /\r|\n/.exec(i);
+            if (match) {
+              i.split('\n').forEach(j => {
+                this.phoneNumbers.push(j)
+              })
+          } 
+          else {
+            this.phoneNumbers.push(i)
+          }
+            })
+          } else {
+            let match = /\r|\n/.exec(this.enteredValue);
+            if (match) {
+              this.enteredValue.split('\n').forEach(i => {
+                this.phoneNumbers.push(i)
+            })
+          } else {
+            this.phoneNumbers.push(this.enteredValue)
+          }
+            
+          }
+
+          let details = {
+            id: "",
+            groupName: this.groupNameValue,
+            phoneNumbers: this.phoneNumbers.join(","),
+          };
+          console.log(details);
+          console.log(this.phoneNumbers, this.enteredValue);
+          this.loading = true;
+            
+          axios
+            .post("/api/Messaging/createPhoneGroups", details)
+            .then((res) => {
+              finish()
+              this.loading = false;
+              console.log(res);
+              router.push("/tenant/sms/contacts");
+            })
+            .catch((err) => {
+              finish()
+              this.loading = false;
+              console.log(err);
+            });
+          } else {
+            this.$toast.add({
+              severity:'info', 
+              summary: 'No Phone Number Added', 
+              detail:'Please add phone number(s) to create this phone group', 
+              life: 4000
+            });
+          }
+      
+
+      
     },
 
     resetInputFields() {
