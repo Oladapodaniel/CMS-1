@@ -652,7 +652,8 @@ export default {
           life: 4000
         });
         console.log(res)
-        store.dispatch('groups/updateGroupPeopleCount', { groupId: selectGroupTo.value.id, count: marked.value.length})
+        store.dispatch('groups/updateGroupPeopleCount', { groupId: selectGroupTo.value.id, count: marked.value.length, operation: 'add' })
+        store.dispatch('groups/updateGroupPeopleCount', { groupId: route.params.groupId, count: marked.value.length, operation: 'remove' })
 
         // Remove from view
       groupMembers.value = groupMembers.value.filter(i => {

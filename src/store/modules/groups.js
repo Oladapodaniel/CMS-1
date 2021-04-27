@@ -14,8 +14,13 @@ export default {
             state.groups = payload;
         },
         updateGroupPeopleCount(state, payload) {
-            const group = state.groups.findIndex(i => i.id === payload.groupId)
-            state.groups[group].peopleInGroupsCount += payload.count
+            if (payload.operation === "add") {
+                const group = state.groups.findIndex(i => i.id === payload.groupId)
+                state.groups[group].peopleInGroupsCount += payload.count
+            } else {
+                const group = state.groups.findIndex(i => i.id === payload.groupId)
+                state.groups[group].peopleInGroupsCount -= payload.count
+            }
 
         },
         updateGroupPeopleCopy(state, payload) {
