@@ -674,11 +674,12 @@ export default {
           } else {
             let resArr = incomingRes.split("@");
             console.log(resArr);
-            toast.add({``
+            toast.add({
               severity: "success",
               summary: "Confirmed",
               detail: resArr[0]
             });
+
             if (resArr[1] !== '') {
               if (!resArr[1].includes(",")) {
               churchMembers.value = churchMembers.value.filter((item) => {
