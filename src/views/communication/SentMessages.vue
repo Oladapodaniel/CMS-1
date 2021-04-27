@@ -428,7 +428,12 @@ export default {
           marked.value.forEach((i) => {
             store.dispatch("communication/removeSentSMS", i.id);
           });
-          marked.value = [];
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "SMS Deleted",
+            life: 3000,
+          });
         })
         .catch((err) => {
           stopProgressBar();

@@ -53,7 +53,46 @@
       </div> -->
     </div>
 
-  
+    <!-- group box area -->
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Add Members To Group</h4>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <Dropdown
+              v-model="chooseGrouptoMoveto"
+              optionLabel="name"
+              :options="getAllGroups"
+              placeholder="Select a Group"
+              style="width: 100%"
+            >
+            </Dropdown>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn groupicon-color"
+              data-dismiss="modal"
+              @click="moveMemberToGroup"
+            >
+              Add to Group
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- group box area -->
 
     <div class="table mx-0" :class="{ 'mt-0': marked.length > 0 }">
       <div class="table-top mb-3">
@@ -66,8 +105,22 @@
             :checked="marked.length === churchMembers.length"
           />
           <label>SELECT ALL</label>
-           <i class="pi pi-trash text-danger c-pointer pt-2 px-2" style="font-size: 20px" v-if="marked.length > 0" @click="showConfirmModal1"></i>
-           <!-- <i class="ml-2 mr-2 color-groupicon pi pi-users c-pointer" style="font-size: 20px" v-if="marked.length > 0" @click="addToGroup"></i> -->
+          <a href="#" data-toggle="modal" data-target="#myModal">
+            <i
+              class="ml-3 mr-2 color-groupicon pi pi-users c-pointer"
+              v-tooltip.top="'Add to Group'"
+              style="font-size: 22px"
+              v-if="marked.length > 0"
+            >
+            </i>
+          </a>
+          <i
+            class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
+            v-tooltip.top="'Delete Member'"
+            style="font-size: 20px"
+            v-if="marked.length > 0"
+            @click="showConfirmModal1"
+          ></i>
         </div>
         <div class="filter">
           <p @click="toggleFilterFormVissibility" class="mt-2">
@@ -190,7 +243,13 @@
       >
         <div class="data-row">
           <div class="check data">
-            <input type="checkbox" name="" id="" @change="markOne(person)" :checked="marked.findIndex((i) => i.id === person.id) >= 0"/>
+            <input
+              type="checkbox"
+              name=""
+              id=""
+              @change="markOne(person)"
+              :checked="marked.findIndex((i) => i.id === person.id) >= 0"
+            />
           </div>
           <div class="picture data">
             <div class="data-con">
@@ -334,6 +393,8 @@ import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
 import stopProgressBar from "../../services/progressbar/progress";
 import membershipservice from "../../services/membership/membershipservice";
+import Tooltip from "primevue/tooltip";
+import Dropdown from "primevue/dropdown";
 
 export default {
   props: ["list", "peopleCount"],
@@ -341,6 +402,11 @@ export default {
     ByGenderChart,
     ByMaritalStatusChart,
     PaginationButtons,
+    Dropdown,
+  },
+
+  directives: {
+    tooltip: Tooltip,
   },
 
   setup(props) {
@@ -356,6 +422,7 @@ export default {
 
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
+
     const membershipSummary = ref([]);
 
     const deleteMember = (id) => {
@@ -448,24 +515,26 @@ export default {
 
     const confirm = useConfirm();
     let toast = useToast();
-        const showConfirmModal = (id, index) => {
-
-           confirm.require({
-               message: 'Are you sure you want to proceed?',
-                header: 'Confirmation',
-                icon: 'pi pi-exclamation-triangle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                    deleteMember(id, index)
-
-                },
-                reject: () => {
-                    toast.add({severity:'info', summary:'Rejected', detail:'Delete discarded', life: 3000});
-                }
-
-        });
-        }
+    const showConfirmModal = (id, index) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteMember(id, index);
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "Delete discarded",
+            life: 3000,
+          });
+        },
+      });
+    };
 
     const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
@@ -507,9 +576,9 @@ export default {
       console.log(marked.value, "marked");
     };
 
-//function to mark all item
+    //function to mark all item
     const markAll = () => {
-      console.log(marked.value)
+      console.log(marked.value);
       if (marked.value.length < churchMembers.value.length) {
         churchMembers.value.forEach((i) => {
           const memberInmarked = marked.value.findIndex((j) => j.id === i.id);
@@ -531,82 +600,76 @@ export default {
         marked.value.splice(msgIndex, 1);
       }
       console.log(marked.value);
-    }
+    };
 
     const deleteMarked = async () => {
       try {
-        const IDs = marked.value.map(i => i.id).join()
+        const IDs = marked.value.map((i) => i.id).join();
         const response = await membershipservice.deletePeople(IDs);
         console.log(response, "RESPONSE");
-        
-        
-          if (response.response.toString().toLowerCase().includes("all")) {
-            toast.add({
-              severity:'success', 
-              summary:'Confirmed', 
-              detail:'Member Deleted', 
-              life: 4000
-            });
-            churchMembers.value = churchMembers.value.filter((item) => {
-              const y = marked.value.findIndex((i) => i.id === item.id);
-              if (y >= 0) return false;
-              return true;
-            });
-          } else {
-            toast.add({
-              severity:'info', 
-              // summary:'Confirmed', 
-              detail: `${response.response}`, 
-              // life: 4000
-            });
-          }
-          axios
-            .get(`/api/People/GetMembershipSummary`)
-            .then((res) => {
-              console.log(res, "new chart");
-              membershipSummary.value = res.data;
-            })
-            .catch((err) => {
-              console.log(err)
 
-            });
+        if (response.response.toString().toLowerCase().includes("all")) {
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Member Deleted",
+            life: 4000,
+          });
+          churchMembers.value = churchMembers.value.filter((item) => {
+            const y = marked.value.findIndex((i) => i.id === item.id);
+            if (y >= 0) return false;
+            return true;
+          });
+        } else {
+          toast.add({
+            severity: "info",
+            // summary:'Confirmed',
+            detail: `${response.response}`,
+            // life: 4000
+          });
+        }
+        axios
+          .get(`/api/People/GetMembershipSummary`)
+          .then((res) => {
+            console.log(res, "new chart");
+            membershipSummary.value = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } catch (error) {
         console.log(error);
         if (error.response) {
           toast.add({
-            severity:'warn', 
-            summary:'Delete Failed', 
-            detail:'Member Deleted', 
-            life: 4000
+            severity: "warn",
+            summary: "Delete Failed",
+            detail: "Member Deleted",
+            life: 4000,
           });
         }
       }
     };
 
-
-// New code area
-
-// New code area
-
-
     const showConfirmModal1 = () => {
-
-           confirm.require({
-               message: 'Are you sure you want to proceed?',
-                header: 'Confirmation',
-                icon: 'pi pi-exclamation-triangle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                    deleteMarked()
-
-                },
-                reject: () => {
-                    toast.add({severity:'info', summary:'Rejected', detail:'Delete discarded', life: 3000});
-                }
-
-        });
-        }
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteMarked();
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "Delete discarded",
+            life: 3000,
+          });
+        },
+      });
+    };
 
     const getPeopleList = () => {
       // console.log(props.list, "props");
@@ -648,6 +711,57 @@ export default {
       searchText.value = "";
     };
 
+    const getAllGroups = ref([]);
+    const getGroups = () => {
+      axios
+        .get(`/api/GetAllGroupBasicInformation`)
+        .then((res) => {
+          console.log(res, "God is awesome");
+          getAllGroups.value = res.data;
+          console.log(getAllGroups.value, "Am awesome");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getGroups();
+
+    const chooseGrouptoMoveto = ref({});
+    const moveMemberToGroup = () => {
+      let peopleMoved = marked.value.map ((i) => {
+          return {
+            "groupId": chooseGrouptoMoveto.value.id,
+            "position": "member",
+            "personId": i.id,
+          }
+        })
+      axios
+        .put(`/api/AssignPeopleToGroup/${chooseGrouptoMoveto.value.id}`,
+          {people: peopleMoved}
+        )
+        .then((res) => {
+          console.log(res);
+            toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Member(s) Added Successfully",
+            life: 3000,
+          });
+
+         marked.value = [];
+        })
+        .catch((err) => {
+            stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Adding Member(s) failed",
+            life: 3000,
+          });
+          console.log(err);
+        });
+    };
+
     return {
       churchMembers,
       getPeopleByPage,
@@ -678,7 +792,12 @@ export default {
       markOne,
       deleteMarked,
       clearInput,
-      showConfirmModal1
+      showConfirmModal1,
+      Dropdown,
+      getGroups,
+      getAllGroups,
+      chooseGrouptoMoveto,
+      moveMemberToGroup,
     };
   },
 };
@@ -831,6 +950,11 @@ a {
 
 .text-color:hover {
   color: #007bff;
+}
+
+.groupicon-color {
+  background-color: #136acd;
+  color: #fff;
 }
 
 .no-record {
