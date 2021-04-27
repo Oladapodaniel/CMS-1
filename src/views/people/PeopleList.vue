@@ -560,18 +560,20 @@ export default {
               detail: `${displayRes[0]}`,
             });
 
-            if (!displayRes[1].includes(',')) {
-              churchMembers.value = churchMembers.value.filter((item) => {
-              console.log(item.id.includes(displayRes[1]))
-              return !item.id.includes(displayRes[1])
-            });
-            } else {
-              let IDs = displayRes[1].split(",")
-              churchMembers.value = churchMembers.value.filter((item) => {
-              const y = IDs.findIndex((i) => i === item.id);
-              if (y >= 0) return false;
-              return true;
-            });
+            if (displayRes[1] !== '') {
+              if (!displayRes[1].includes(',')) {
+                churchMembers.value = churchMembers.value.filter((item) => {
+                console.log(item.id.includes(displayRes[1]))
+                return !item.id.includes(displayRes[1])
+              });
+              } else {
+                let IDs = displayRes[1].split(",")
+                churchMembers.value = churchMembers.value.filter((item) => {
+                const y = IDs.findIndex((i) => i === item.id);
+                if (y >= 0) return false;
+                return true;
+              });
+              }
             }
           }
           marked.value = []

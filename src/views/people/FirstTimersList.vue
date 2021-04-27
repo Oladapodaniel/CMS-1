@@ -274,7 +274,7 @@
                       class="dropdown-menu"
                       aria-labelledby="dropdownMenuButton"
                     >
-                      <a class="dropdown-item" @click="toggle($event, person.id)" href="#">Convert to member</a>
+                      <a class="dropdown-item" @mouseover="toggle($event, person.id)" href="#">Convert to member</a>
                       <a class="dropdown-item" v-if="person.phoneNumber">
                         <router-link
                           :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
