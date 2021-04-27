@@ -145,7 +145,7 @@ import membershipService from '../../../services/membership/membershipservice';
     import { useRouter } from "vue-router";
     import ImagePicker from "../../../components/image-picker/ImagePicker"
 import { computed } from '@vue/runtime-core';
-// import { useRoute } from "vue-router"
+import { useRoute } from "vue-router"
 // import { useStore } from "vuex"
 
     export default {
@@ -156,13 +156,33 @@ import { computed } from '@vue/runtime-core';
             const postDestination = ref("Facebook");
             
             // const store = useStore();
-            // const route = useRoute();
+            const route = useRoute();
 
             const message = ref("");
             const fileInput = ref(null);
             const selectFile = () => {
                 // fileInput.value.click();
                 showImagePicker.value = true;
+            }
+
+            const postToEdit = ref({ });
+            const getPostById = async () => {
+                try {
+                    const postData = await social_service.getPostById(route.query.postId);
+                    console.log(postData);
+                    postToEdit.value.content = postData.content;
+                    postToEdit.value.mediaUrl = postData.mediaUrl;
+                    postToEdit.value.postId = postData.postId;
+                    message.value = postData.content;
+                    fileUrl.value = postData.mediaUrl;
+                    isUrl.value = true;
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+
+            if (route.query.postId) {
+                getPostById(route.query.postId);
             }
 
             const file = ref("");
@@ -188,7 +208,22 @@ import { computed } from '@vue/runtime-core';
 
             const uploadProgress = ref("");
             const display = ref(false);
+
             const makePost = () => {
+                if (route.query.postId) {
+                    const body = {
+                        content: message.value,
+                        mediaUrl: postToEdit.value.mediaUrl,
+                        title: postCategory.value.name,
+                        postId: route.query.postId
+                    }
+                    updatePost(body)
+                } else {
+                    craetePost();
+                }
+            }
+
+            const craetePost = () => {
                 if (!message.value) return false;
                 const formData = new FormData();
                 formData.append("mediaFile", file.value ? file.value : "");
@@ -218,6 +253,15 @@ import { computed } from '@vue/runtime-core';
                     })
             }
 
+            const updatePost = async (body) => {
+                try {
+                    await social_service.updatePost(body);
+                   router.push("/tenant/social/feed")
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
             const createCategory = () => {
                 social_service.createPostCategory({ name: "Anouncement", tenantId: tenantId.value, categoryImageUrl: "https://buildingsmart-1xbd3ajdayi.netdna-ssl.com/wp-content/uploads/2020/03/feat_important-.jpg"})
             }
@@ -226,7 +270,6 @@ import { computed } from '@vue/runtime-core';
             const getPostCategories = async (tenantId) => {
                 try {
                     postCategories.value = await social_service.getPostCategory(tenantId);
-                    console.log(postCategories.value, "cats");
                 } catch (error) {
                     console.log(error);
                 }
