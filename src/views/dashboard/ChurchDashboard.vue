@@ -393,6 +393,7 @@ import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress"
+import setupService from '../../services/setup/setupservice';
 
 export default {
   components: {
@@ -480,6 +481,7 @@ export default {
         // console.log(err.response);
         if (err.response && err.response.status === 401) {
           localStorage.removeItem("token");
+          setupService.clearStore();
           router.push("/");
         }
       });
