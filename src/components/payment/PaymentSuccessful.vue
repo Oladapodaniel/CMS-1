@@ -43,7 +43,7 @@ import { useStore } from "vuex";
         setup(props, { emit }) {
             const store = useStore();
             const currency = ref(store.getters.currency);
-            const currentUnits = computed(() => store.getters.smsBalance ? store.getters.smsBalance : 0)
+            const currentUnits = ref(store.getters.smsBalance)
 
             const getUserCurrency = async () => {
                 try {
