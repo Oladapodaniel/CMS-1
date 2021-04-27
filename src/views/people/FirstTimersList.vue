@@ -860,16 +860,13 @@ export default {
       modal,
       deleteMessage,
       display,
-<<<<<<< HEAD
       membershipCategory,
       op,
       toggle,
       chooseCategory,
       convertToMembers,
-      selectedPersonId
-=======
+      selectedPersonId,
       totalFirsttimersCount,
->>>>>>> firsttimer
     };
   },
 };
