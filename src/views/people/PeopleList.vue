@@ -763,9 +763,8 @@ export default {
       axios
         .get(`/api/GetAllGroupBasicInformation`)
         .then((res) => {
-          console.log(res, "God is awesome");
+          console.log(res);
           getAllGroups.value = res.data;
-          console.log(getAllGroups.value, "Am awesome");
         })
         .catch((err) => {
           console.log(err);
@@ -787,7 +786,7 @@ export default {
           {people: peopleMoved}
         )
         .then((res) => {
-          console.log(res, "Munachi");
+          console.log(res,);
             toast.add({
             severity: "success",
             summary: "Confirmed",
