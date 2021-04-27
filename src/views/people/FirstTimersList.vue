@@ -674,7 +674,7 @@ export default {
           } else {
             let resArr = incomingRes.split("@");
             console.log(resArr);
-            toast.add({
+            toast.add({``
               severity: "success",
               summary: "Confirmed",
               detail: resArr[0]
