@@ -103,7 +103,6 @@
 <script>
 import axios from '@/gateway/backendapi';
 import { reactive, ref } from 'vue';
-import store from '../../store/store'
 import router from '../../router/index';
 import setupService from "../../services/setup/setupservice"
 import finish from "../../services/progressbar/progress"
@@ -141,12 +140,12 @@ export default {
             })
             return false;
           }
-          setupService.setup();
-          
-          store.dispatch("setUserData", data);
           localStorage.setItem("token", data.token);
           localStorage.setItem("expiryDate", data.expiryTime);
           console.log(data, "Church data");
+          setTimeout(() => {
+            setupService.setup();
+          }, 5000)
           if (data.churchSize > 0) {
             router.push("/tenant")
           } else {

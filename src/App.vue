@@ -57,6 +57,7 @@ export default {
       if (expiryDate && new Date(expiryDate) < Date.now()) {
         localStorage.removeItem("token")
         localStorage.removeItem("expiryDate")
+        setupService.clearStore();
       }
 
       this.getCurrentUser();

@@ -307,6 +307,7 @@ import { useRoute } from "vue-router";
 import store from "@/store/store";
 import axios from "@/gateway/backendapi";
 import { useRouter } from 'vue-router'
+import setupService from '../../services/setup/setupservice';
 export default {
   setup(props, { emit }) {
     const route = useRoute();
@@ -354,7 +355,7 @@ export default {
 
     const tenantInfo = ref({});
 
-    if (!store.getters.currentUser.churchName) {
+    if (!store.getters.currentUser || !store.getters.currentUser.churchName) {
       axios
         .get("/dashboard")
         .then((res) => {
@@ -385,6 +386,7 @@ export default {
       localStorage.clear()
       router.push('/')
       store.dispatch('clearCurrentUser', {})
+      setupService.clearStore();
     }
 
     return {

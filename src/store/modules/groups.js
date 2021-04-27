@@ -5,12 +5,18 @@ export default {
     namespaced: true,
 
     state: {
-        groups: [ ],
+        groups: [],
     },
+
 
     mutations: {
         setGroups(state, payload) {
             state.groups = payload;
+        },
+        updateGroupPeopleCount(state, payload) {
+            const group = state.groups.findIndex(i => i.id === payload.groupId)
+            state.groups[group].peopleInGroupsCount += payload.count
+
         },
 
         updateGroup(state, payload) {
@@ -19,11 +25,11 @@ export default {
             console.log(targetGroupsIndex, "index");
             state.groups[targetGroupsIndex] = payload;
         },
-    
+
         addGroup(state, payload) {
             state.groups.push(payload);
         },
-    
+
         removeGroup(state, payload) {
             state.groups.slice(payload, 1);
         },
@@ -31,19 +37,22 @@ export default {
 
     actions: {
         removeGroup({ commit }, payload) {
-          commit("removeGroup", payload)
+            commit("removeGroup", payload)
         },
 
         addGroup({ commit }, payload) {
-          commit("addGroup", payload)
+            commit("addGroup", payload)
+        },
+        updateGroupPeopleCount({ commit }, payload) {
+            commit("updateGroupPeopleCount", payload)
         },
 
         setGroups({ commit }, payload) {
-          commit("setGroups", payload)
+            commit("setGroups", payload)
         },
 
         updateGroup({ commit }, payload) {
-          commit("updateGroup", payload)
+            commit("updateGroup", payload)
         },
 
         async getGroups({ commit }) {
@@ -55,9 +64,9 @@ export default {
                 console.log(error);
             }
         }
-      },
+    },
 
-      getters: {
+    getters: {
         groups: state => state.groups,
-      },
+    },
 }

@@ -361,6 +361,7 @@
           <Pagination
             @getcontent="getPeopleByPage"
             :itemsCount="membersCount"
+            :totalItems="totalFirsttimersCount"
             :currentPage="currentPage"
           />
         </div>
@@ -438,6 +439,11 @@ export default {
         return churchMembers.value;
       }
     });
+
+    const totalFirsttimersCount = computed(() => {
+      if (getFirstTimerSummary.value || !getFirstTimerSummary.value.totalFirstTimer) return 0;
+      return getFirstTimerSummary.value.totalFirstTimer;
+    }) 
 
     const deleteMember = (id) => {
       //  delete firtimer
@@ -803,6 +809,7 @@ export default {
       modal,
       deleteMessage,
       display,
+      totalFirsttimersCount,
     };
   },
 };

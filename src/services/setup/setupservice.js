@@ -18,6 +18,14 @@ const setupService = {
         store.dispatch('contributions/contributionList')
         store.dispatch("communication/addSmsToSentList");
         // store.dispatch("communication/addToSentEmail");
+    },
+
+    clearStore() {
+        store.dispatch("clearState");
+        store.dispatch("attendance/clearState");
+        store.dispatch("communication/clearState");
+        store.dispatch("contributions/clearState");
+        store.dispatch("clearPeopleInStore");
     }
 }
 

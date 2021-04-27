@@ -13,6 +13,7 @@ export default {
         settingUserUp: false,
         churchMembers: {},
         smsBalance: 0,
+        postToEdit: { },
     },
 
     mutations: {
@@ -49,6 +50,13 @@ export default {
     },
     clearCurrentUser(state, payload) {
       state.currentUser = payload
+    },
+    setPost(state, payload) {
+      state.postToEdit = payload
+    },
+
+    clearState(state) {
+      for (var prop in state) delete state[prop];
     }
   },
 
@@ -58,7 +66,7 @@ export default {
     },
     clearCurrentUser ({ commit }, payload) {
       commit("clearCurrentUser", payload)
-  },
+    },
     async getUser({ commit }) {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
@@ -109,6 +117,14 @@ export default {
     addPurchasedUnits({ commit }, payload) {
       commit("addPurchasedUnits", payload)
     },
+
+    setPost({ commit }, payload) {
+      commit("setPost", payload)
+    },
+
+    clearState({ commit }) {
+      commit("clearState")
+    },
   },
 
   getters: {
@@ -123,5 +139,6 @@ export default {
     settingUserUp: state => state.settingUserUp,
     smsBalance: state => state.currentUser.smsBalance,
     currency: state => state.currentUser.currency,
+    postToEdit: state => state.postToEdit,
   },
 }

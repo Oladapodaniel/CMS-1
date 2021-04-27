@@ -41,6 +41,17 @@ export default {
 
         getMembers(state, payload) {
             state.churchMembers = payload;
+        },
+
+        clearPeopleInStore(state) {
+            state.userEmail = "";
+            state.onboardingData = {};
+            state.userRole = "";
+            state.userData = {};
+            state.currentUser = {};
+            state.userStartPoint = "";
+            state.settingUserUp = false;
+            state.churchMembers = { };
         }
     },
 
@@ -58,6 +69,10 @@ export default {
             console.log(err, "in store");
           }
           
+        },
+
+        clearPeopleInStore({ commit }) {
+            commit("clearPeopleInStore");
         }
       },
 

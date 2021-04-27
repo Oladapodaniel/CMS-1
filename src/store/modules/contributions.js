@@ -25,6 +25,12 @@ export default {
         newlyAddedContribution(state, payload) {
             // state.contributionList.unshift(payload)
             payload.forEach(i => state.contributionList.unshift(i))
+        },
+
+        clearState(state) {
+            state.contributionList = []
+            state.contributionItems = []
+            state.paymentData = {}
         }
     },
     actions: {
@@ -49,6 +55,9 @@ export default {
         },
          newlyAddedContribution({ commit }, payload) {
             commit("newlyAddedContribution", payload)
+        },
+        clearState({ commit }) {
+            commit("clearState")
         },
     }
 }

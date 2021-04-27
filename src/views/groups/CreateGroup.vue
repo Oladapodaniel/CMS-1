@@ -282,13 +282,79 @@
                   </div>
                 </div>
               </div>
-              <div class="row table-header-row py-2">
-                
-                <div class="col-md-1">
+              <!-- Modal -->
+                 <div class="container">
+                      <!-- Button to Open the Modal -->
+                      <!-- <button type="button" class="btn btn-primary" >
+                        Open modal
+                      </button> -->
+
+                      <!-- The Modal -->
+                      <div class="modal fade" id="myModal">
+                        <div class="modal-dialog modal-sm">
+                          <div class="modal-content">
+                          
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                              <h4 class="modal-title">
+                                 <label class="font-weight-900 w-100">Move Members To Groups</label>
+                                                    
+                              </h4>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                              <div class="col-md-12">
+                                                       
+                                                      </div>
+                                                      <div class="col-md-12 form-group w-100">
+                                                        <Dropdown
+                                                          :options="getAllGroup"
+                                                          optionLabel="name"
+                                                          placeholder="Select Groups"
+                                                          style="width: 100%"
+                                                          v-model="selectGroupTo"
+                                                        />
+                                                      </div>
+                            </div>
+                            
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-primary" data-dismiss="modal" @click="moveMembers">Send</button>
+                            </div>
+                            
+                          </div>
+                        </div>
+                     </div>
+  
+               </div>
+              <div class="row" v-if="marked.length >  0" @click="memberChange">
+                <div class="col-md-12 d-flex align-content-between">
+                      <a href="#" class="tool" data-toggle="modal" data-target="#myModal">
+                        <i
+                          class="pi pi-reply text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4 mr-3"
+                          style="font-size: 20px" v-tooltip.top="'move to group'">
+                          </i>
+                    </a>
+                    
+                    <a href="#" class="tool">
+                        <i
+                          class="pi pi-copy text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                          style="font-size: 20px" v-tooltip.right="'copy to group'"
+                          > 
+                        </i>
+                    </a>
+                    
+                </div>
+                </div>
+
+              <div class="row table-header-row py-2"   >
+                <div class="col-md-1" v-if="groupMembers.length > 0">
                   <input 
                   type="checkbox"
                    @change="markAllItem" 
-                   :checked="marked.length === groupData.length" 
+                   :checked="marked.length === groupMembers.length" 
                    id="all" 
                    name="all" 
                    class="py-2"/>
@@ -312,7 +378,6 @@
                   <!-- <i class="fa fa-elipsis-v"></i> -->
                 </div>
               </div>
-
               <div class="row" v-if="loadingMembers">
                 <div class="col-md-12">
                   <div class="row">
@@ -362,7 +427,7 @@
                     <div
                       class="col-md-1 d-flex justify-content-between align-items-center"
                     >
-                      <input type="checkbox" class="py-2" name="" id="" @change="mark1Item(member)" :checked="marked.findIndex((i) => i.id === member.id) >=0" />
+                      <input type="checkbox" class="py-2" name="" id="" @change="mark1Item(member)" :checked="marked.findIndex((i) => i.personID === member.personID) >=0" />
                     </div>
                     <div
                       class="col-md-3 d-flex justify-content-between align-items-center"
@@ -477,7 +542,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
@@ -485,10 +550,19 @@ import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useConfirm";
 import groupsService from "../../services/groups/groupsservice";
+import Tooltip from 'primevue/tooltip';
+import Dropdown from "primevue/dropdown";
+import store from "../../store/store"
+// import Dialog from 'primevue/dialog';
 
 
 export default {
+  directives: {
+    'tooltip': Tooltip
+},
+ components: { Dropdown,},
   setup() {
+    const memberDia =ref(true)
     const groupData = ref({});
     const searchText = ref("");
     const loading = ref(false);
@@ -498,27 +572,61 @@ export default {
     const memberSelectInput = ref(null);
     const marked= ref([]);
     const confirm = useConfirm();
-    const mark1Item =(groupid) =>{
-      const grpIndex= marked.value.findIndex((i) => i.id === groupid.id);
-      if(grpIndex < 0) {
-        marked.value.push(groupid);
-      }else{
-        marked.value.splice(grpIndex, 1);
+    let selectMembers = ref("");
+    const getAllGroup = ref([]);
+    const selectGroupTo = ref({});
+    // const moveMembers =() =>{
+    //   let memberChange = convert(marked.value);
+    //   console.log(memberChange,'wisdom')
+    // }
+    onMounted( async() => {
+      try{
+        const{data} = await axios.get("/api/GetAllGroupBasicInformation");
+        getAllGroup.value = data;
+        console.log(getAllGroup);
+      }catch(error) {
+        console.log(error)
       }
-      console.log(marked.value, "tosin")
+      
+    })
+    const moveMembers=()=>{
+      let memberMove = {
+        memberIDList: marked.value.map(i => i.personID),
+        groupTo: selectGroupTo.value.id,
+        groupFrom: route.params.groupId
+      }
+      axios.post(`/api/Group/MoveMembers`,memberMove)
+      .then((res)=>{
+        toast.add({severity:'success', summary:'Confirmed', detail:'Group moved', life: 2500});
+        console.log(res)
+        store.dispatch('groups/updateGroupPeopleCount', { groupId: selectGroupTo.value.id, count: marked.value.length})
+
+      })
+    }
+    const mark1Item =(member) =>{
+      console.log(member);
+      const memberIndex= marked.value.findIndex((i) => i.personID === member.personID);
+      if(memberIndex < 0) {
+        marked.value.push(member);
+      }else{
+        marked.value.splice(memberIndex, 1);
+      }
+      console.log(marked.value, "wisdom")
     }
     const markAllItem = () => {
-      if (marked.value.length < groupData.value.length) {
-        groupData.value.forEach((i) => {
-          const groupInMarked = marked.value.findIndex((q) => q.id === i.id);
+      if (marked.value.length < groupMembers.value.length) {
+        groupMembers.value.forEach((i) => {
+          const groupInMarked = marked.value.findIndex((q) => q.personID === i.personID);
           if (groupInMarked < 0) {
             marked.value.push(i);
           }
         });
       } else {
-        marked.value = [];
+        marked.value.splice(0, marked.value.length);
       }
       console.log(marked.value, "I am awesome");
+      console.log(marked.value.length, "I am grp");
+      console.log(groupMembers.value.length, "I am grp");
     };
 
     const confirmDelete = (id, index) => {
@@ -788,7 +896,12 @@ export default {
       confirmDelete,
       marked,
       markAllItem,
-      mark1Item
+      mark1Item,
+      selectMembers,
+      memberDia,
+      getAllGroup,
+      selectGroupTo,
+      moveMembers
     };
   },
 };
@@ -913,6 +1026,9 @@ export default {
 .send-dropdown a {
   color: #190138;
   font-size: 14px;
+  text-decoration: none;
+}
+.tool{
   text-decoration: none;
 }
 

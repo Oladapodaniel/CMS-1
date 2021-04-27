@@ -16,7 +16,11 @@ export default {
         },
         eventList(state, payload) {
           state.eventList = payload
-        }
+        },
+        clearState(state) {
+          state.eventData = {}
+          state.eventList = []
+      }
     },
 
     actions: {
@@ -30,6 +34,9 @@ export default {
           } catch (error) {
               console.log(error);
           }
-        }
+        },
+        clearState({ commit }) {
+          commit("clearState")
+        },
       }
 }
