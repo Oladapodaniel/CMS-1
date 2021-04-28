@@ -1,4 +1,4 @@
-z!<template>
+!<template>
   <div>
     <div class="container">
       <!-- Content Box -->
@@ -430,12 +430,7 @@ export default {
           marked.value.forEach((i) => {
             store.dispatch("communication/removeSentSMS", i.id);
           });
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "SMS Deleted",
-            life: 3000,
-          });
+          marked.value = [];
         })
         .catch((err) => {
           stopProgressBar();

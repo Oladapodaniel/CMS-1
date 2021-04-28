@@ -24,34 +24,35 @@
                             </div>  
                             <div class="col-lg-8 col-sm-12"> <InputText type="text" class="form-control" /></div>
                         </div>
-                         <div class="row mb-3">
-                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span> 
-                            </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" /></div>
-                        </div>
-                        <div class="row mb-3">
-                         <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span> 
-                            </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" /></div>
-                        </div>
-                         <div class="row mb-3">
+                        <div class="row mb-3 mt-5">
                         
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span> 
                             </div>  
                             <div class="col-lg-8 col-sm-12 "> <InputText type="text" class="form-control"/></div>
                         </div>
-                        <div class="row mb-3">
+                         <div class="row mb-3 mt-5">
+                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span> 
+                            </div>  
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" /></div>
+                        </div>
+                        <div class="row mb-3 mt-5">
+                         <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span> 
+                            </div>  
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" /></div>
+                        </div>
+                         
+                        <!-- <div class="row mb-3">
                         
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Questions</span> 
                             </div>  
                             <div class="col-lg-8 col-sm-12 "> <InputText type="text" class="form-control"/></div>
-                        </div>
-                        <div class="row mb-3">
+                        </div> -->
+                        <!-- <div class="row mb-3">
                         
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Answers</span> 
                             </div>  
                             <div class="col-lg-8 col-sm-12"> <InputText type="text" class="form-control" /></div>
-                        </div>
+                        </div> -->
                    </div>
 
                    <div class="col-lg-5 col-sm-12 mt-lg-0 mt-sm-5 mt-md-5 mt-lg-0 mt-5 pl-lg-5 pr-lg-5 pl-sm-3 pr-3 pr-sm-2">
@@ -149,7 +150,7 @@
                     <div class="col-lg-7">
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 d-flex justify-content-around">
-                        <button type="button" class="btn px-3 btn-outline-secondary mr-3" style="border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button>
+                        <router-link to="/tenant/settings"> <button type="button" class="btn px-3 btn-outline-secondary mr-3" style="border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button></router-link>
                         <button type="button" class="btn px-3 btn-primary saveButton ml-3" style="border-radius:22px; font-size: 16px; font-weight: 600">Save User</button>
                     </div>
                 </div>
@@ -178,6 +179,7 @@ import store from "@/store/store";
 		return {
             roles: [],
             info: null,
+            vissibleTab: "",
             currentUser: store.getters.currentUser,
             FtRoles: [ "Admin","BasicUser",],
             FuRoles: [ "Admin", "CanAccessFollowUps" ],
@@ -247,6 +249,13 @@ import store from "@/store/store";
             return result
 
         }
+    },
+    methods:{
+        discard(){
+            this.vissibleTab = ""
+              console.log('welcomed');
+        }
+
     },
 
     mounted(){

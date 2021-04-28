@@ -191,6 +191,7 @@ export default {
 
     discard() {
       this.vissibleTab = "";
+      console.log('welcomed');
     },
     del(index){
         this.types.splice(index, 1)
