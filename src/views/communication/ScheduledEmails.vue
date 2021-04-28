@@ -26,13 +26,30 @@
                 </div> -->
               </div>
 
+
+<!-- delete icon area -->
+  <i
+                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                style="font-size: 15px"
+                v-if="markedMails.length > 0"
+                @click="markAllScheduleMails"
+              >
+              </i>
+<!-- delete icon area -->
               <div class="row table-box mb-4">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg">
                     <div class="col-md-12">
                       <div class="row light-grey-bg py-1">
-                        <div class="col-md-1">
-                          <input type="checkbox" class="mark-box" />
+                        <div class="col-md-1"
+                        v-if="schedules.length > 0">
+                          <input
+                          type="checkbox" class="mark-box"
+                          name="all"
+                          id="all"
+                          @change=" markAllScheduleMails"
+                          :checked="markedMails.length === schedules.length"
+                           />
                         </div>
                         <div class="col-md-11">
                           <span class="th">Message</span>
@@ -47,13 +64,17 @@
                   </div>
                   <div
                     class="row"
-                    v-for="(email, index) in schedules"
+                    v-for="(email, index) in scheduledMails"
                     :key="index"
                   >
                     <div class="col-md-12 py-1">
                       <div class="row">
                         <div class="col-md-1">
-                          <input type="checkbox" class="mark-box" />
+                          <input
+                          type="checkbox" class="mark-box"
+                          @change="mark1mailItem(email)"
+                          :checked="markedMails.findIndex((i) => i.id === email.id) >= 0"
+                           />
                         </div>
                         <div class="col-md-8 d-md-flex flex-column small-text">
                           <router-link to="" class="text-decoration-none"
@@ -148,20 +169,50 @@ export default {
 
     const searchScheduled = ref("");
     const scheduledMails = computed(() => {
-      if (searchScheduled.value === "" && schedules.value.length > 0) {
+      if (searchScheduled.value === "" && schedules.value.length > 0)
         return schedules.value;
-      }
       return schedules.value.filter((i) => {
         i.message.toLowerCase().includes(searchScheduled.value.toLowerCase());
       });
     });
+
+// code to mark single object
+const markedMails = ref([]);
+const mark1mailItem = (mail) => {
+const mailIndex = markedMails.value.findIndex((i) => i.id === mail.id);
+if (mailIndex < 0) {
+markedMails.value.push(mail)
+} else {
+markedMails.value.splice(mailIndex, 1);
+}
+console.log(markedMails.value, "🎉🎉");
+}
+
+// code to select multiple schedule mails
+const markAllScheduleMails = () => {
+if (markedMails.value.length < schedules.value.length) {
+schedules.value.forEach((i) => {
+const schedulesInmarkedMails = markedMails.value.findIndex((f) => f.id === i.id);
+if (schedulesInmarkedMails < 0) {
+markedMails.value.push(i)
+}
+});
+} else {
+  markedMails.value = [];
+}
+console.log(markedMails.value, "👌👌🎊🎊");
+}
+
 
     return {
       schedules,
       loading,
       formattedDate,
      scheduledMails,
-     searchScheduled
+     searchScheduled,
+     markedMails,
+     mark1mailItem,
+     markAllScheduleMails,
     };
   },
 };
