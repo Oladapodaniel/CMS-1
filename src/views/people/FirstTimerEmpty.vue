@@ -14,10 +14,17 @@
             </div>
           </div>
           <div class="actions">
-            <button class="more-btn button" v-if="false">
+            <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item elipsis-items cursor-pointer" @click="fileUpload">
+                  <i class="pi pi-upload" aria-hidden="true"></i>&nbsp; Import from Excel
+                  <input type="file" ref="importFile" @change="imageSelected" hidden>
+                </a>
+                <a class="dropdown-item elipsis-items cursor-pointer" href="/files/Template.csv" download><i class="pi pi-download" aria-hidden="true"></i>&nbsp; Download Template</a>
+              </div>
               <router-link :to="{ name: 'AddFirstTimer' }">
                 <button class="button add-person-btn">
                   Add First Timers
@@ -25,6 +32,30 @@
               </router-link>
           </div>
         </div>
+        <Dialog header="First Timers to import from file" v-model:visible="displayModal" :style="{width: '80vw'}" :modal="true">
+            <div class="container">
+              <div class="row">
+                <div class="col-3 font-weight-700">Name</div>
+                <div class="col-4 font-weight-700">Email</div>
+                <div class="col-2 font-weight-700">Gender</div>
+                <div class="col-2 font-weight-700">Phone Number</div>
+              </div>
+              <div class="row" v-for="(item, index) in firstTimerData" :key="index">
+                <div class="col-3">{{ item.firstName ? item.firstName : "" }} {{ item.lastName ? item.lastName : "" }}</div>
+                <div class="col-4">{{ item.email }}</div>
+                <div class="col-2">{{ item.gender }}</div>
+                <div class="col-2">{{ item.phoneNumber }}</div>
+              </div>
+            </div>
+            <template #footer>
+                <div class="container">
+                  <div class="row d-flex justify-content-end text-center">
+                    <div class="default-btn mr-3 cursor-pointer" @click="closeModal">Discard</div>
+                    <div class="primary-bg default-btn border-0 text-white text-center cursor-pointer" @click="addToFirstTimers">Save</div>
+                  </div>
+                </div>
+            </template>
+        </Dialog>
       <!-- </div> -->
         <hr class="hr container-wide" />
          <div v-if="firstTimersList.length === 0 && !loading" class="no-person" >
@@ -96,6 +127,8 @@
         <!-- <transition name="fade" mode="out-in"> -->
           <router-view class="view" />
         <!-- </transition> -->
+        
+        <Toast />
       </div>
     </div>
   </div>
@@ -105,15 +138,23 @@
     import axios from '@/gateway/backendapi'
     import FirstTimersList from './FirstTimersList'
     import { ref } from 'vue';
+    import finish from '../../services/progressbar/progress'
+    import { useToast } from "primevue/usetoast";
+    import Dialog from 'primevue/dialog';
 // import store from "@/store/index";
 // import router from "@/router/index";
 // import { useRoute } from "vue-router";
 
 export default {
-       components: { FirstTimersList },
+  components: { FirstTimersList, Dialog },
   setup() {
       const firstTimersList = ref([])
       const loading = ref(false)
+      const toast = useToast()
+      const importFile = ref("") 
+      const image = ref("");
+      const displayModal = ref(false)
+      const firstTimerData = ref([])
 
       const getFirstTmersList = () => {
         loading.value = true
@@ -126,7 +167,111 @@ export default {
       }
       getFirstTmersList()
 
-    return { firstTimersList, getFirstTmersList, loading };
+      const fileUpload = () => {
+        importFile.value.click()
+      }
+
+      const closeModal = () => {
+        displayModal.value = false
+      }
+
+      const imageSelected = async(e) => {
+        image.value = e.target.files[0];
+        const formData = new FormData();
+        formData.append("file", image.value ? image.value : "")
+        console.log(formData)
+        try {
+          let { data } = await axios.post("/api/People/UploadFirstTimerFile", formData)
+          console.log(data)
+          if   (!data.response.toString().includes('0')) {
+              toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: data.response,
+              life: 4000,
+            });
+              firstTimerData.value = data.returnObject
+              displayModal.value = true;
+            } else {
+              toast.add({
+              severity: "info",
+              summary: "No First Timer found",
+              detail: "Download our template and add first timers before you upload",
+              life: 4000,
+            });
+          }          
+        }
+        catch  (err) {
+          finish()
+          console.log(err)
+          if (err.status === 404 || err.response.status === 404) {
+              toast.add({
+              severity: "warn",
+              summary: "Upload not successful",
+              detail: "Ensure that there isn't any empty row or field and try again",
+              // life: 4000,
+            });
+          } else if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "Network Error",
+              detail: "Please ensure you have strong internet connection",
+              life: 4000,
+            });
+          } else if (err.toString().toLowerCase().includes("timeout")) {
+            toast.add({
+              severity: "warn",
+              summary: "Request took too long to respond",
+              detail: "Please try again by refreshing the page",
+              life: 3000,
+            });
+          }
+        }
+      };
+
+      const addToFirstTimers = async() =>  {
+      try {
+        let { data } = await axios.post("/api/People/CreateMultipleFirstTimer", firstTimerData.value)
+        console.log(data)
+        displayModal.value = false
+        if (data.returnObject.returnList.length > 0) {
+          toast.add({
+          severity: "info",
+          summary: data.returnObject.createdRecord,
+          detail: `There are ${data.returnObject.returnList.length} members that have been added already`,
+        });
+        } else {
+          toast.add({
+          severity: "success",
+          summary: "Created Successfully",
+          detail: data.createdRecord,
+          life: 4000,
+        });
+        }
+        
+      }
+      catch  (err) {
+        finish()
+         if (err.toString().toLowerCase().includes("network error")) {
+          toast.add({
+            severity: "warn",
+            summary: "Network Error",
+            detail: "Please ensure you have strong internet connection",
+            life: 4000,
+          });
+        } else if (err.toString().toLowerCase().includes("timeout")) {
+          toast.add({
+            severity: "warn",
+            summary: "Request took too long to respond",
+            detail: "Please try again by refreshing the page",
+            life: 3000,
+          });
+        }
+        console.log(err)
+      }
+    }
+
+    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal };
 
   },
 };
