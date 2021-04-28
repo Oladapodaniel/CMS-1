@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12 post-add-ons py-2">
+            <div class="col-md-12 post-add-ons py-2" v-if="!route.query.postId">
                 <div class="row">
                 <div class="col-md-12">
                     <a class="text-decoration-none px-md-2 c-pointer">
@@ -62,7 +62,7 @@
                         <span @click="selectFile"><i class="pi pi-images mr-1"></i></span>
                         <span class="text-dark" @click="selectFile">Photo/Video</span>
                     </a>
-                    <a class="text-decoration-none px-md-2 c-pointer">
+                    <a class="text-decoration-none px-md-2 c-pointer" v-if="false">
                         <span><i class="pi pi-video mr-1"></i></span>
                         <span class="text-dark">Feeling/Activity</span>
                     </a>
@@ -145,7 +145,7 @@ import membershipService from '../../../services/membership/membershipservice';
     import { useRouter } from "vue-router";
     import ImagePicker from "../../../components/image-picker/ImagePicker"
 import { computed } from '@vue/runtime-core';
-// import { useRoute } from "vue-router"
+import { useRoute } from "vue-router"
 // import { useStore } from "vuex"
 
     export default {
@@ -156,13 +156,34 @@ import { computed } from '@vue/runtime-core';
             const postDestination = ref("Facebook");
             
             // const store = useStore();
-            // const route = useRoute();
+            const route = useRoute();
 
             const message = ref("");
             const fileInput = ref(null);
             const selectFile = () => {
                 // fileInput.value.click();
                 showImagePicker.value = true;
+            }
+
+            const postToEdit = ref({ });
+            const getPostById = async () => {
+                try {
+                    const postData = await social_service.getPostById(route.query.postId);
+                    console.log(postData);
+                    postToEdit.value.content = postData.content;
+                    postToEdit.value.mediaUrl = postData.mediaUrl;
+                    postToEdit.value.postId = postData.postId;
+                    message.value = postData.content;
+                    fileUrl.value = postData.mediaUrl;
+                    isUrl.value = true;
+                    getPostCategoryById(postData.postCategoryId);
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+
+            if (route.query.postId) {
+                getPostById(route.query.postId);
             }
 
             const file = ref("");
@@ -188,7 +209,22 @@ import { computed } from '@vue/runtime-core';
 
             const uploadProgress = ref("");
             const display = ref(false);
+
             const makePost = () => {
+                if (route.query.postId) {
+                    const body = {
+                        content: message.value,
+                        mediaUrl: postToEdit.value.mediaUrl,
+                        title: postCategory.value.name,
+                        postId: route.query.postId
+                    }
+                    updatePost(body)
+                } else {
+                    craetePost();
+                }
+            }
+
+            const craetePost = () => {
                 if (!message.value) return false;
                 const formData = new FormData();
                 formData.append("mediaFile", file.value ? file.value : "");
@@ -218,6 +254,15 @@ import { computed } from '@vue/runtime-core';
                     })
             }
 
+            const updatePost = async (body) => {
+                try {
+                    await social_service.updatePost(body);
+                   router.push("/tenant/social/feed")
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+
             const createCategory = () => {
                 social_service.createPostCategory({ name: "Anouncement", tenantId: tenantId.value, categoryImageUrl: "https://buildingsmart-1xbd3ajdayi.netdna-ssl.com/wp-content/uploads/2020/03/feat_important-.jpg"})
             }
@@ -226,7 +271,6 @@ import { computed } from '@vue/runtime-core';
             const getPostCategories = async (tenantId) => {
                 try {
                     postCategories.value = await social_service.getPostCategory(tenantId);
-                    console.log(postCategories.value, "cats");
                 } catch (error) {
                     console.log(error);
                 }
@@ -260,22 +304,13 @@ import { computed } from '@vue/runtime-core';
                 return message.value.split('\n').length + 1;
             })
 
-            // const postToEdit = ref({ });
-            // if (route.query.postId) {
-            //     if (!store.getters.postToEdit || !store.getters.postToEdit.postId) {
-            //         router.push({ name: 'AllPosts' });
-            //     } else {
-            //         const postData =  store.getters.postToEdit;
-            //         console.log(postData);
-            //         postToEdit.value.content = postData.content;
-            //         postToEdit.value.mediaUrl = postData.mediaUrl;
-            //         postToEdit.value.postId = postData.postId;
-            //         message.value = postData.content;
-            //         fileUrl.value = postData.mediaUrl;
-            //         isUrl.value = true;
-            //         postCategory.value = postCategories.value.find(i => i && i.postCategoryId === postData.postCategoryId) ? postCategories.value.find(i => i && i.postCategoryId === postData.postCategoryId) : {}
-            //     }
-            // }
+            const getPostCategoryById = async postCategoryId => {
+                try {
+                    postCategory.value = await social_service.getPostCategoryById(postCategoryId);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
             
 
             return {
@@ -297,6 +332,7 @@ import { computed } from '@vue/runtime-core';
                 fileUploaded,
                 isUrl,
                 rowsCount,
+                route,
             }
         }
     }

@@ -168,6 +168,40 @@ const disapprovePost = (id) => {
     })
 }
 
+const getPostById = (id) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/mobile/v1/Feeds/GetPostById?postId=${id}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
+const getPostCategoryById = (id) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/mobile/v1/Feeds/GetPostCategoryById?postCategoryId=${id}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            stopProgressBar();
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
 export default {
     getPostCategory,
     postMessage,
@@ -179,4 +213,6 @@ export default {
     deletePost,
     updatePost,
     disapprovePost,
+    getPostById,
+    getPostCategoryById,
 }
