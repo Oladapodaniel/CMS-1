@@ -200,7 +200,7 @@
                       <div class="row" v-if="replies.length === 0 && !loading">
                         <div class="col-md-12 d-flex justify-content-center">
                           <span class="my-4 font-weight-bold small-text"
-                            >No sent mesages</span
+                            >No received messages</span
                           >
                         </div>
                       </div>
