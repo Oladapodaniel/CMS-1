@@ -10,7 +10,8 @@
                 <div class="col-md-12 col-sm-12">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..." />
+                    <input type="text" placeholder="Search here..."
+                    v-model="searchMails" />
                     <span class="mx-2"> | </span>
                     <span class="mx-2">Sort By</span>
                     <span class="font-weight-bold"> Newest</span>
@@ -19,7 +20,7 @@
               </div>
 
               <i
-                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                class="pi pi-trash  deleteicon-color ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                 style="font-size: 15px"
                 v-if="markEmailDraft.length > 0"
                 @click="showConfirmModal"
@@ -31,8 +32,15 @@
                   <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12 px-0">
                       <div class="row">
-                        <div class="col-md-1 text-md-right text-lg-center px-0">
-                          <input type="checkbox" />
+                        <div class="col-md-1 text-md-right text-lg-center px-0"
+                         v-if="drafts.length > 0">
+                          <input
+                          type="checkbox"
+                          name="all"
+                          id="all"
+                          @change="markAllMailDrafts"
+                          :checked="markEmailDraft.length === drafts.length"
+                           />
                         </div>
                         <div class="col-md-7">
                           <span class="th">Message</span>
@@ -50,7 +58,7 @@
                   </div>
                   <div
                     class="row"
-                    v-for="(draft, index) in drafts"
+                    v-for="(draft, index) in searchEmailDraft"
                     :key="index"
                   >
                     <div class="col-md-12">
@@ -63,7 +71,7 @@
                             @change="mark1Draft(draft)"
                             :checked="
                               markEmailDraft.findIndex(
-                                () => i.id === draft.id
+                                (i) => i.id === draft.id
                               ) >= 0
                             "
                           />
@@ -103,10 +111,17 @@
                           >
                         </div>
                         <div
-                          class="col-md-4 col-ms-12 d-flex justify-content-between"
+                          class="col-md-3 col-ms-12 d-flex justify-content-between"
                         >
                           <span class="hidden-header font-weight-bold"> </span>
                           <span></span>
+                           <span class="small-text">
+                              <i
+                                class="c-pointer pr-3 fa fa-trash delete-icon"
+                                @click="showConfirmModal(draft)"
+                              >
+                              </i
+                            ></span>
                         </div>
                       </div>
                       <div class="row">
@@ -116,7 +131,8 @@
                       </div>
                     </div>
                   </div>
-
+ <ConfirmDialog />
+                  <Toast />
                   <div class="row" v-if="drafts.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
                       <span class="my-4 font-weight-bold">No draft messages</span>
@@ -191,9 +207,9 @@ export default {
     // Function to search through item
     const searchMails = ref("");
     const searchEmailDraft = computed(() => {
-      if (searchMails.value === "" && drafts.value.length > 0) {
+      if (searchMails.value === "" && drafts.value.length > 0)
         return drafts.value;
-      }
+        console.log(drafts.value, "🎈🎈");
       return drafts.value.filter((i) => {
         i.body.toLowerCase().includes(searchMails.value.toLocaleLowerCase());
       });
@@ -202,12 +218,13 @@ export default {
     // function to check single item
     const markEmailDraft = ref([]);
     const mark1Draft = (mdi) => {
-      const mdiIndex = markEmailDraft.value.findIndex((i) => i.id === mdi.id);
-      if (mdiIndex < 0) {
+      const mailIndex = markEmailDraft.value.findIndex((i) => i.id === mdi.id);
+      if (mailIndex < 0) {
         markEmailDraft.value.push(mdi);
       } else {
-        markEmailDraft.value.splice(mdiIndex, 1);
+        markEmailDraft.value.splice(mailIndex, 1);
       }
+      console.log(markEmailDraft.value, "🎇🎇");
     };
 
     // function to mark all email drafts
@@ -215,7 +232,7 @@ export default {
       if (markEmailDraft.value.length < drafts.value.length) {
         drafts.value.forEach((i) => {
           const draftMailInMarked = markEmailDraft.value.findIndex(
-            (ma) => ma.id === i.id
+            (a) => a.id === i.id
           );
           if (draftMailInMarked < 0) {
             markEmailDraft.value.push(i);
@@ -224,18 +241,17 @@ export default {
       } else {
         markEmailDraft.value = [];
       }
-      console.log(markEmailDraft.value, "tosine");
+      console.log(markEmailDraft.value, "🎆🎆");
     };
 
     //Function to delete drafted mails
     const mailHandler = (h) => {
-      console.log(h, "am here again");
+      console.log(h, "🎄🎄");
       return h.map((i) => i.id).join(",");
     };
-
     const deleteMailDrafts = () => {
       let mailHolder = mailHandler(markEmailDraft.value);
-      console.log(mailHolder, "Al iz well");
+      console.log(mailHolder, "🎉🎉");
       axios
         .delete(`/api/Messaging/DeleteEmailDrafts?EmailDraftIdList=${mailHolder}`)
         .then((res) => {
@@ -270,7 +286,7 @@ export default {
         });
     };
 
-         const confirm = useConfirm();
+    const confirm = useConfirm();
     let toast = useToast();
     const showConfirmModal = () => {
       confirm.require({
@@ -295,6 +311,7 @@ export default {
       createElementFromHTML,
       formatMessage,
       searchEmailDraft,
+      searchMails,
       mark1Draft,
       markAllMailDrafts,
       deleteMailDrafts,
@@ -321,6 +338,10 @@ export default {
 
 .brief-message {
   color: #4762f0;
+}
+
+.deleteicon-color {
+ color: rgba(184, 5, 5, 0.726);
 }
 
 .compose-btn {

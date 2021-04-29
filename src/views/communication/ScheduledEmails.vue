@@ -33,7 +33,7 @@
                 class="pi pi-trash color-deleteicon ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                 style="font-size: 15px"
                 v-if="markedMails.length > 0"
-                @click="deleteSchedules"
+                @click="showConfirmModal"
               >
               </i>
               <!--end delete icon area -->
@@ -101,11 +101,21 @@
                         </div>
 
                         <div class="col-md-3 d-md-flex flex-column small-text">
-                          <span class="msg-n-time">
-                            <span class="timestamp ml-4 small-text">{{
-                              formattedDate(email.date)
-                            }}</span>
-                          </span>
+                          <div class="row">
+                            <span class="msg-n-time">
+                              <span class="timestamp ml-4 small-text">{{
+                                formattedDate(email.date)
+                              }}</span>
+                            </span>
+
+                            <span class="small-text ml-5 mr-n4">
+                              <i
+                                class="c-pointer pr-3 fa fa-trash delete-icon"
+                                @click="showConfirmModal(draft)"
+                              >
+                              </i
+                            ></span>
+                          </div>
                         </div>
                       </div>
                       <div class="row" v-if="index !== schedules.length - 1">
@@ -115,7 +125,8 @@
                       </div>
                     </div>
                   </div>
-
+                  <ConfirmDialog />
+                  <Toast />
                   <div class="row" v-if="schedules.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
                       <span class="my-4 font-weight-bold"
@@ -144,7 +155,10 @@ import { computed, onMounted, ref } from "vue";
 // import UnitsArea from "../../components/units/UnitsArea"
 import communicationService from "../../services/communication/communicationservice";
 import dateFormatter from "../../services/dates/dateformatter";
-import axios from "axios";
+import axios from "@/gateway/backendapi";
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress";
 
 export default {
   //   components: { UnitsArea },
@@ -173,6 +187,7 @@ export default {
       getScheduledSMS();
     });
 
+// function to search
     const searchScheduled = ref("");
     const scheduledMails = computed(() => {
       if (searchScheduled.value === "" && schedules.value.length > 0)
@@ -228,7 +243,45 @@ export default {
             if (z >= 0) return false;
             return true;
           });
+
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Schedule Mails Deleted",
+            life: 3000,
+          });
+          markedMails.value = [];
+        })
+
+        .catch((err) => {
+          stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Deleting failed. Mark the box to Delete a Scheduled Mail",
+            life: 3000,
+          });
+          console.log(err);
         });
+    };
+
+    const confirm = useConfirm();
+    let toast = useToast();
+    const showConfirmModal = () => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteSchedules();
+        },
+        reject: () => {
+          //  toast.add({severity:'info', summary:'Rejected',
+          //  detail:'You have rejected', life: 3000});
+        },
+      });
     };
 
     return {
@@ -241,6 +294,7 @@ export default {
       mark1mailItem,
       markAllScheduleMails,
       deleteSchedules,
+      showConfirmModal,
     };
   },
 };
