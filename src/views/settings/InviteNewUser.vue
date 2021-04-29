@@ -1,7 +1,7 @@
 <template>
     <div>
         <div container>
-            <h1 class="mt-3 pl-3 mb-3 font-weight-bolder" style="font-size:34px">{{ name }}</h1>
+            <h1 class="mt-3 pl-3 mb-3 font-weight-bolder" style="font-size:34px">{{ name1 }}</h1>
             <p class="pl-3" style="font-size:16px" >You can invite a new user to access your ChurchPlus account. Only give access to people you trust, since users can see your transactions and other business information.</p>
             <div class="invite-container" style="font-size:14px">
                 <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">Invite New User</h4>
@@ -22,18 +22,19 @@
                        <div class="row mb-3">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Username</label> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12"> <InputText type="text" class="form-control" /></div>
+                            <div class="col-lg-8 col-sm-12"> <InputText type="text" v-model="userName" class="form-control" /></div>
                         </div>
                         <div class="row mb-3 mt-5">
                         
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" class="form-control"/></div>
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" v-model="mail" class="form-control"/></div>
+                            <span> Rum{{mail}}</span>
                         </div>
                          <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" v-model="assword"  /></div>
                         </div>
                         <div class="row mb-3 mt-5">
                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span> 
@@ -110,28 +111,69 @@
                         <!-- Roles -->
                         <div class="ml-5 mt-2 mt-lg-0">
                             <div class="row mb-2 mb-lg-2"> 
-                                <span class="col-lg-2 mb-lg-0 mb-3"></span> <span class="col-lg-1 mb-lg-0 mb-3 font-weight-bold">Role</span> <div class="col-md-7"><Checkbox name="role" value="Admin" v-model="roles" /> Admin</div>
+                                <span class="col-lg-2 mb-lg-0 mb-3"></span> <span class="col-lg-1 mb-lg-0 mb-3 font-weight-bold">Role</span> <div class="col-md-7">
+                                    <Checkbox  
+                                    v-model="roles1"
+                                    value="Admin" 
+                                    @change="roleSelected('admin')"/>
+                                     Admin
+                                     </div>
                             </div>
                             <div class="row mb-2">
-                               <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="BasicUser" v-model="roles" /> BasicUser</div>
+                               <span class="col-lg-3"></span><div class="col-lg-7">
+                                   <Checkbox value="" 
+                                   v-model="roles1" 
+                                   @change="roleSelected('BasicUser')"/> 
+                                   BasicUser
+                                   </div>
                             </div>
                             <div class="row mb-2">
-                               <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="CanAccessFirstTimers" v-model="roles" /> CanAccessFirstTimers</div>
+                               <span class="col-lg-3"></span><div class="col-lg-7">
+                                   <Checkbox value="" 
+                                   v-model="roles1" 
+                                   @change="roleSelected('CanAccessFirstTimers')"/>
+                                    CanAccessFirstTimers
+                                    </div>
                             </div>
                             <div class="row mb-2">
-                               <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="CanAccessFollowUps" v-model="roles" /> CanAccessFollowUps</div>
+                               <span class="col-lg-3"></span><div class="col-lg-7">
+                                   <Checkbox value="" 
+                                   v-model="roles1"
+                                   @change="roleSelected('CanAccessFollowUps')"/> 
+                                   CanAccessFollowUps
+                                   </div>
                             </div>
                             <div class="row mb-2">
-                               <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="CenterLeader" v-model="role" /> CenterLeader</div>
+                               <span class="col-lg-3"></span><div class="col-lg-7">
+                                   <Checkbox value="" 
+                                   v-model="roles1" 
+                                   @change="roleSelected('CenterLeader')"/> 
+                                   CenterLeader
+                                   </div>
                             </div>
                             <div class="row mb-2">
-                               <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="FinancialAccount" v-model="roles" /> FinancialAccount</div>
+                               <span class="col-lg-3"></span><div class="col-lg-7">
+                                   <Checkbox value="" 
+                                   v-model="roles1" 
+                                   @change="roleSelected('FinancialAccount')"/> 
+                                   FinancialAccount
+                                   </div>
                             </div>
                             <div class="row mb-2">
-                               <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="MobileAdmin" v-model="roles" /> MobileAdmin</div>
+                               <span class="col-lg-3"></span><div class="col-lg-7">
+                                   <Checkbox value="" 
+                                   v-model="roles1" 
+                                   @change="roleSelected('MobileAdmin')"/> 
+                                   MobileAdmin
+                                   </div>
                             </div>
                             <div class="row mb-2">
-                               <span class="col-lg-3"></span><div class="col-lg-7"><Checkbox name="role" value="Reports" v-model="roles" /> Reports</div>
+                               <span class="col-lg-3"></span><div class="col-lg-7">
+                                   <Checkbox value="" 
+                                   v-model="roles1" 
+                                   @change="roleSelected('Reports')"/> 
+                                   Reports
+                                   </div>
                             </div>
                             <br>
 
@@ -151,7 +193,7 @@
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 d-flex justify-content-around">
                         <router-link to="/tenant/settings"> <button type="button" class="btn px-3 btn-outline-secondary mr-3" style="border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button></router-link>
-                        <button type="button" class="btn px-3 btn-primary saveButton ml-3" style="border-radius:22px; font-size: 16px; font-weight: 600">Save User</button>
+                        <button type="button" class="btn px-3 btn-primary saveButton ml-3" style="border-radius:22px; font-size: 16px; font-weight: 600" @click="createNewUser">Save User</button>
                     </div>
                 </div>
             </div>
@@ -178,8 +220,12 @@ import store from "@/store/store";
         data() {
 		return {
             roles: [],
+            roles1: [],
+            userName:'',
+            mail:'',
+            assword: '',
+            name2: '',
             info: null,
-            vissibleTab: "",
             currentUser: store.getters.currentUser,
             FtRoles: [ "Admin","BasicUser",],
             FuRoles: [ "Admin", "CanAccessFollowUps" ],
@@ -192,7 +238,7 @@ import store from "@/store/store";
 	} ,
 
     computed: {
-        name() {
+        name1() {
             if (!this.currentUser.churchName) return "";
             return this.currentUser.churchName;
         },
@@ -251,13 +297,51 @@ import store from "@/store/store";
         }
     },
     methods:{
-        discard(){
-            this.vissibleTab = ""
-              console.log('welcomed');
+        roleSelected(e){
+            if(!this.roles1.includes(e)){
+                console.log(e);
+                this.roles1.push(e)
+
+            }
+
+
+        },
+        createNewUser(){
+
+            let createNew = {
+                email : this.mail,
+                password: this.assword,
+                name : this.userName,
+                roles : this.roles1
+            }
+            axios.post(`/api/Settings/CreatNewUser`,createNew)
+            .then((res)=>{
+                toast.add({
+                severity:'success', 
+                summary:'Confirmed', 
+                detail:'Invite New User Saved Successfully', 
+                life: 4000
+                });
+                console.log(res);
+                console.log('wisdom is great');
+            })
+            
+
+            
+
         }
 
     },
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
     mounted(){
         //     axios
         // .get(`/api/Settings/GetTenantPeopleClassification`)
