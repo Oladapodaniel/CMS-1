@@ -95,13 +95,16 @@
       <div class="row" v-if="sendToAll">
         <div class="col-md-2"></div>
         <div class="col-md-10 px-0">
-          <input
-            class="form-control dropdown-toggle my-1 px-1 small-text"
-            type="text"
-            id="dropdownMenu"
-            value="All Contacts"
-            disabled
-          />
+          <span>
+            <input
+              class="form-control dropdown-toggle my-1 px-1 small-text"
+              type="text"
+              id="dropdownMenu"
+              value="All Contacts"
+              disabled
+            />
+            <span class="close-allcontacts c-pointer" @click="() => sendToAll = false">x</span>
+          </span>
         </div>
       </div>
 
@@ -928,6 +931,7 @@ export default {
         }),
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
+        toContacts: sendToAll.value ? 'allcontacts_00000000-0000-0000-0000-000000000000' : '',
       };
 
       if (sendOrSchedule == 2) {
@@ -1156,6 +1160,7 @@ export default {
       onEditorReady,
       contructScheduleMessageBody,
       executionDate,
+      isPersonalized,
     };
   },
 };
@@ -1362,6 +1367,17 @@ input:focus {
 
 .extra-btn {
   width: 100%;
+}
+
+.close-allcontacts {
+  position: absolute;
+  font-size: 18px;
+  z-index: 100;
+  top: 0;
+  right: 0;
+  padding: 0 10px;
+  font-weight: bold;
+  padding-top: 7px;
 }
 
 /* Start SplitButton */
