@@ -162,15 +162,18 @@
                       </div>
                     </div>
                     <div class="col-md-12 pt-2" v-if="willCopyLink">
-                      <input
-                        type="text"
-                        name=""
-                        @keydown="(e) => e.preventDefault()"
-                        @click="copyLink"
-                        class="form-control"
-                        :value="location"
-                        ref="shareableLinkField"
-                      />
+                      <span class="d-flex" @click="copyLink">
+                        <input
+                          type="text"
+                          name=""
+                          @keydown="(e) => e.preventDefault()"
+                          class="form-control mr-2"
+                          :value="location"
+                          ref="shareableLinkField"
+                          style="width:90%"
+                        />
+                        <span><i class="pi pi-copy c-pointer" style="font-size: 1.5rem"></i></span>
+                      </span>
                     </div>
                   </div>
                 </div>
