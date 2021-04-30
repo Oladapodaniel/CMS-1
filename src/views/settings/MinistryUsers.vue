@@ -67,7 +67,7 @@
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">COMMENTS</span>
-              <span class="py-2">{{churchMem.roles[1]}}</span>
+              <span class="py-2">{{churchMem.roles[0]}}</span>
             </div>
             <div
               class="col-md-1 d-flex justify-content-between align-items-center"
