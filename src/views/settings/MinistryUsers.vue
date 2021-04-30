@@ -20,13 +20,14 @@
           other business information.
         </p>
       </div>
+        
 
       <div class="row table-header-row py-2 mt-5">
         <div class="col-md-3">
           <span class="py-2 font-weight-bold">NAME</span>
         </div>
         <div class="col-md-3">
-          <span class="py-2 font-weight-bold">Email</span>
+          <span class="py-3 font-weight-bold">Email</span>
         </div>
         <div class="col-md-2">
           <span class="py-2 font-weight-bold">STATUS</span>

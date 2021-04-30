@@ -17,29 +17,30 @@
                 </div>
                 
                 <h4>{{info}}</h4> -->
+                <Toast />
                <div class="row">
                    <div class="col-lg-7 col-sm-12 border-right pr-3 mt-3 mt-lg-3 pr-lg-5 pr-sm-3" style="">
                        <div class="row mb-3">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Username</label> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12"> <InputText type="text" v-model="userName" class="form-control" /></div>
+                            <div class="col-lg-8 col-sm-12"> <InputText type="text" required v-model="userName" class="form-control" /></div>
                         </div>
                         <div class="row mb-3 mt-5">
                         
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" v-model="mail" class="form-control"/></div>
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" required v-model="mail" class="form-control"/></div>
                             <span> Rum{{mail}}</span>
                         </div>
                          <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" v-model="assword"  /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" required v-model="assword"  /></div>
                         </div>
                         <div class="row mb-3 mt-5">
                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" v-model="assword1" required /></div>
                         </div>
                          
                         <!-- <div class="row mb-3">
@@ -210,13 +211,14 @@
 
 <script>
 import InputText from 'primevue/inputtext';
+import Toast from 'primevue/toast'
 import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
 // import ref from 'Vue'
     export default {
-        components:{InputText, Password, Checkbox},
+        components:{InputText, Password, Checkbox,Toast},
         data() {
 		return {
             roles: [],
@@ -224,6 +226,7 @@ import store from "@/store/store";
             userName:'',
             mail:'',
             assword: '',
+            assword1: '',
             name2: '',
             info: null,
             currentUser: store.getters.currentUser,
@@ -307,6 +310,26 @@ import store from "@/store/store";
 
         },
         createNewUser(){
+            if( this.uesrName === '' || this.assword === '' || this.mail === '' || this.assword1 === '' ){
+                this.$toast.add({
+                severity:'success', 
+                summary:'Confirmed', 
+                detail:'Input Your Complete Details', 
+                life: 4000
+                });
+                
+
+            }
+            if(this.assword !== this.assword1){
+                this.$toast.add({
+                severity:'success', 
+                summary:'Confirmed', 
+                detail:'Ensured Your Password is same', 
+                life: 4000
+                });
+                
+
+            }
 
             let createNew = {
                 email : this.mail,
@@ -316,7 +339,7 @@ import store from "@/store/store";
             }
             axios.post(`/api/Settings/CreatNewUser`,createNew)
             .then((res)=>{
-                toast.add({
+                this.$toast.add({
                 severity:'success', 
                 summary:'Confirmed', 
                 detail:'Invite New User Saved Successfully', 
