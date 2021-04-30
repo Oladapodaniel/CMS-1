@@ -30,7 +30,6 @@
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span> 
                             </div>  
                             <div class="col-lg-8 col-sm-12 "> <InputText type="text" required v-model="mail" class="form-control"/></div>
-                            <span> Rum{{mail}}</span>
                         </div>
                          <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span> 
@@ -122,57 +121,57 @@
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="BasicUser" 
                                    v-model="roles1" 
-                                   @change="roleSelected('BasicUser')"/> 
+                                   @change="roleSelected('basicUser')"/> 
                                    BasicUser
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="CanAccessFirstTimers" 
                                    v-model="roles1" 
-                                   @change="roleSelected('CanAccessFirstTimers')"/>
+                                   @change="roleSelected('canAccessFirstTimers')"/>
                                     CanAccessFirstTimers
                                     </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="CanAccessFollowUps" 
                                    v-model="roles1"
-                                   @change="roleSelected('CanAccessFollowUps')"/> 
+                                   @change="roleSelected('canAccessFollowUps')"/> 
                                    CanAccessFollowUps
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="CenterLeader" 
                                    v-model="roles1" 
-                                   @change="roleSelected('CenterLeader')"/> 
+                                   @change="roleSelected('centerLeader')"/> 
                                    CenterLeader
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="FinancialAccount" 
                                    v-model="roles1" 
-                                   @change="roleSelected('FinancialAccount')"/> 
+                                   @change="roleSelected('financialAccount')"/> 
                                    FinancialAccount
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="MobileAdmin" 
                                    v-model="roles1" 
-                                   @change="roleSelected('MobileAdmin')"/> 
+                                   @change="roleSelected('mobileAdmin')"/> 
                                    MobileAdmin
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="Reports" 
                                    v-model="roles1" 
-                                   @change="roleSelected('Reports')"/> 
+                                   @change="roleSelected('reports')"/> 
                                    Reports
                                    </div>
                             </div>
