@@ -32,7 +32,7 @@ export default {
         },
 
         setSentEmails(state, payload) {
-            state.sentEmails.push(payload);
+            state.sentEmails = payload;
         },
 
         setEmailDrafts(state, payload) {
@@ -75,10 +75,8 @@ export default {
         },
 
         removeSentEmails(state, payload) {
-            const s = state.sentEmails.findIndex(i => i.id === payload);
-            if (s >= 0) {
-                state.sentEmails.splice(s, 1)
-            }
+            state.sentEmails = state.sentEmails.filter(i => i.id !== payload);
+
         },
 
         clearState(state) {
@@ -146,6 +144,7 @@ export default {
         async getSentEmails({ commit }) {
             try {
                 const data = await communicationService.getSentEmails(0);
+                console.log(data, "emails instore");
                 if (data) commit("setSentEmails", data);
             } catch (error) {
                 console.log(error);
