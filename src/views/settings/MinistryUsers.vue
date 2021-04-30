@@ -9,7 +9,7 @@
           <router-link
             to="/tenant/settings/invitenewuser"
             class="grey-border primary-bg border-0 text-white addnew default-btn"
-            >Add New User</router-link
+            >Add New Us</router-link
           >
         </div>
       </div>
@@ -20,13 +20,14 @@
           other business information.
         </p>
       </div>
+        
 
       <div class="row table-header-row py-2 mt-5">
         <div class="col-md-3">
           <span class="py-2 font-weight-bold">NAME</span>
         </div>
         <div class="col-md-3">
-          <span class="py-2 font-weight-bold">Email</span>
+          <span class="py-3 font-weight-bold">Email</span>
         </div>
         <div class="col-md-2">
           <span class="py-2 font-weight-bold">STATUS</span>
@@ -44,30 +45,30 @@
         
       >
         <div class="col-md-12">
-          <div class="row">
+          <div class="row" v-for="(churchMem, index) in churchUsers" :key="index">
             <div
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">NAME</span>
-              <span class="py-2">name</span>
+              <span class="py-2">{{ churchMem.name}}</span>
             </div>
             <div
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">EMAIL</span>
-              <span class="py-2 text-xs-left">position</span>
+              <span class="py-2 text-xs-left">{{ churchMem.email}}</span>
             </div>
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">STATUS</span>
-              <span class="py-2">address</span>
+              <span class="py-2">{{ churchMem.status }}</span>
             </div>
             <div
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">COMMENTS</span>
-              <span class="py-2">email</span>
+              <span class="py-2">{{churchMem.roles[0]}}</span>
             </div>
             <div
               class="col-md-1 d-flex justify-content-between align-items-center"
@@ -116,14 +117,26 @@ import axios from "@/gateway/backendapi";
 export default {
   data(){
     return{
-      getCurrentUser: store.getters.currentUser
-
+      getCurrentUser: store.getters.currentUser,
+      churchUsers: [],
     }
   },
   computed:{
     churchProfile(){
       if(!this.getCurrentUser.churchName) return "";
       return this.getCurrentUser.churchName
+    }
+
+  },
+  methods:{
+    async churchUser(){
+      try{
+        const { data } = await axios.get('/api/Settings/ChurchUsers')
+        this.churchUsers = data;
+        console.log(this.churchUsers)
+      }catch(error){
+        console.log(error)
+      }
     }
 
   },
@@ -139,7 +152,10 @@ export default {
 
       })
     }
-  }
+  },
+  created() {
+    this.churchUser()
+  },
 };
 </script>
 
