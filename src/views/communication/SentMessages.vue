@@ -43,7 +43,7 @@
                 </div>
               </div>
               <i
-                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                class="pi pi-trash deleteicon-color ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                 style="font-size: 15px"
                 v-if="marked.length > 0"
                 @click="showConfirmModal"
@@ -522,6 +522,10 @@ export default {
 
 .hidden-header {
   display: none;
+}
+
+.deleteicon-color {
+ color: rgba(184, 5, 5, 0.726);
 }
 
 .th {

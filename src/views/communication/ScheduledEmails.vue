@@ -12,8 +12,10 @@
                 <div class="col-md-12 col-sm-12 pl-0">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..."
-                     v-model="searchScheduled"
+                    <input
+                      type="text"
+                      placeholder="Search here..."
+                      v-model="searchScheduled"
                     />
 
                     <span class="mx-2"> | </span>
@@ -26,13 +28,29 @@
                 </div> -->
               </div>
 
+              <!-- delete icon area -->
+              <i
+                class="pi pi-trash color-deleteicon ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                style="font-size: 15px"
+                v-if="markedMails.length > 0"
+                @click="showConfirmModal"
+              >
+              </i>
+              <!--end delete icon area -->
               <div class="row table-box mb-4">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg">
                     <div class="col-md-12">
                       <div class="row light-grey-bg py-1">
-                        <div class="col-md-1">
-                          <input type="checkbox" class="mark-box" />
+                        <div class="col-md-1" v-if="schedules.length > 0">
+                          <input
+                            type="checkbox"
+                            class="mark-box"
+                            name="all"
+                            id="all"
+                            @change="markAllScheduleMails"
+                            :checked="markedMails.length === schedules.length"
+                          />
                         </div>
                         <div class="col-md-11">
                           <span class="th">Message</span>
@@ -47,13 +65,21 @@
                   </div>
                   <div
                     class="row"
-                    v-for="(email, index) in schedules"
+                    v-for="(email, index) in scheduledMails"
                     :key="index"
                   >
                     <div class="col-md-12 py-1">
                       <div class="row">
                         <div class="col-md-1">
-                          <input type="checkbox" class="mark-box" />
+                          <input
+                            type="checkbox"
+                            class="mark-box"
+                            @change="mark1mailItem(email)"
+                            :checked="
+                              markedMails.findIndex((i) => i.id === email.id) >=
+                              0
+                            "
+                          />
                         </div>
                         <div class="col-md-8 d-md-flex flex-column small-text">
                           <router-link to="" class="text-decoration-none"
@@ -75,11 +101,21 @@
                         </div>
 
                         <div class="col-md-3 d-md-flex flex-column small-text">
-                          <span class="msg-n-time">
-                            <span class="timestamp ml-4 small-text">{{
-                              formattedDate(email.date)
-                            }}</span>
-                          </span>
+                          <div class="row">
+                            <span class="msg-n-time">
+                              <span class="timestamp ml-4 small-text">{{
+                                formattedDate(email.date)
+                              }}</span>
+                            </span>
+
+                            <span class="small-text ml-5 mr-n4">
+                              <i
+                                class="c-pointer pr-3 fa fa-trash delete-icon"
+                                @click="showConfirmModal(draft)"
+                              >
+                              </i
+                            ></span>
+                          </div>
                         </div>
                       </div>
                       <div class="row" v-if="index !== schedules.length - 1">
@@ -89,7 +125,8 @@
                       </div>
                     </div>
                   </div>
-
+                  <ConfirmDialog />
+                  <Toast />
                   <div class="row" v-if="schedules.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
                       <span class="my-4 font-weight-bold"
@@ -118,6 +155,10 @@ import { computed, onMounted, ref } from "vue";
 // import UnitsArea from "../../components/units/UnitsArea"
 import communicationService from "../../services/communication/communicationservice";
 import dateFormatter from "../../services/dates/dateformatter";
+import axios from "@/gateway/backendapi";
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress";
 
 export default {
   //   components: { UnitsArea },
@@ -146,22 +187,114 @@ export default {
       getScheduledSMS();
     });
 
+// function to search
     const searchScheduled = ref("");
     const scheduledMails = computed(() => {
-      if (searchScheduled.value === "" && schedules.value.length > 0) {
+      if (searchScheduled.value === "" && schedules.value.length > 0)
         return schedules.value;
-      }
       return schedules.value.filter((i) => {
         i.message.toLowerCase().includes(searchScheduled.value.toLowerCase());
       });
     });
 
+    // code to mark single object
+    const markedMails = ref([]);
+    const mark1mailItem = (mail) => {
+      const mailIndex = markedMails.value.findIndex((i) => i.id === mail.id);
+      if (mailIndex < 0) {
+        markedMails.value.push(mail);
+      } else {
+        markedMails.value.splice(mailIndex, 1);
+      }
+      console.log(markedMails.value, "🎉🎉");
+    };
+
+    // code to select multiple schedule mails
+    const markAllScheduleMails = () => {
+      if (markedMails.value.length < schedules.value.length) {
+        schedules.value.forEach((i) => {
+          const schedulesInmarkedMails = markedMails.value.findIndex(
+            (f) => f.id === i.id
+          );
+          if (schedulesInmarkedMails < 0) {
+            markedMails.value.push(i);
+          }
+        });
+      } else {
+        markedMails.value = [];
+      }
+      console.log(markedMails.value, "👌👌🎊🎊");
+    };
+
+    // function to delete schedulemails
+    const itemHolder = (y) => {
+      return y.map((i) => i.id).join(",");
+    };
+    const deleteSchedules = () => {
+      let holder = itemHolder(markedMails.value);
+      axios
+        .delete(
+          `/api/Messaging/DeleteEmailScheduledMessages?ScheduledMessageIdList=${holder}`
+        )
+        .then((res) => {
+          console.log(res, "🎉✨");
+          schedules.value = schedules.value.filter((item) => {
+            const z = markedMails.value.findIndex((i) => i.id === item.id);
+            if (z >= 0) return false;
+            return true;
+          });
+
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Schedule Mails Deleted",
+            life: 3000,
+          });
+          markedMails.value = [];
+        })
+
+        .catch((err) => {
+          stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Delete Error",
+            detail: "Deleting failed. Mark the box to Delete a Scheduled Mail",
+            life: 3000,
+          });
+          console.log(err);
+        });
+    };
+
+    const confirm = useConfirm();
+    let toast = useToast();
+    const showConfirmModal = () => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteSchedules();
+        },
+        reject: () => {
+          //  toast.add({severity:'info', summary:'Rejected',
+          //  detail:'You have rejected', life: 3000});
+        },
+      });
+    };
+
     return {
       schedules,
       loading,
       formattedDate,
-     scheduledMails,
-     searchScheduled
+      scheduledMails,
+      searchScheduled,
+      markedMails,
+      mark1mailItem,
+      markAllScheduleMails,
+      deleteSchedules,
+      showConfirmModal,
     };
   },
 };
@@ -194,6 +327,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.color-deleteicon {
+  color: rgba(184, 5, 5, 0.726);
 }
 
 .menu-icon {
