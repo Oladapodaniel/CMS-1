@@ -346,7 +346,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -474,6 +474,7 @@ import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import SignUp from "./SignUp"
+import convertCurrency from "../../../services/currency-converter/currencyConverter"
 export default {
   components: {
     PaymentOptionModal,
@@ -521,6 +522,8 @@ export default {
     const signInPassword = ref("")
     const routeParams = ref(`${route.params.userId}`)
     const showSignInForm = ref(true)
+    const tenantCurrency = ref("")
+    const convertedAmount = ref(0)
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -594,6 +597,25 @@ export default {
 
     const donation = async() => {
 
+          try {
+        let { data } = await axios.get(`/api/Lookup/TenantCurrency?tenantID=${formResponse.value ? formResponse.value.tenantID : ""}`)
+        tenantCurrency.value = data.currency
+      }
+
+      catch (err) {
+        console.log(err)
+      }
+          // Heres where im converting the currenccy
+          try {
+            let fromCurrencyRate = `usd${dfaultCurrency.value.shortCode.toLowerCase()}`
+            let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
+            const result = await convertCurrency.currencyConverter(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
+            console.log(result)
+            convertedAmount.value = Math.round(result)
+          }
+          catch (err) {
+            console.log(err)
+          }
 
           donationObj.value = {
             paymentFormId: formResponse.value.id,
@@ -818,6 +840,11 @@ export default {
       showSignInForm.value = payload
     }
 
+    const gatewaySelected  = (payload) => {
+        donationObj.value.usedPaymentGateway = payload
+        console.log(payload)
+    }
+
     return {
       hideTabOne,
       toggleTabOne,
@@ -858,7 +885,10 @@ export default {
       routeParams,
       showSignInForm,
       signedUp,
-      displaySignInForm
+      displaySignInForm,
+      gatewaySelected,
+      tenantCurrency,
+      convertedAmount
     };
   },
 };

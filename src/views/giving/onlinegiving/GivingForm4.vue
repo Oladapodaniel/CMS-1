@@ -594,9 +594,6 @@ export default {
       catch (err) {
         console.log(err)
       }
-
-// console.log(dfaultCurrency.value)
-// console.log(tenantCurrency.value)
           // Heres where im converting the currenccy
           try {
             let fromCurrencyRate = `usd${dfaultCurrency.value.shortCode.toLowerCase()}`
