@@ -232,7 +232,7 @@ export default {
     // PaystackPay
     // paystack
   },
-  props: ['orderId', 'donation', 'close', 'amount', 'name', 'email', 'gateways', 'currency'],
+  props: ['orderId', 'donation', 'close', 'amount', 'converted', 'name', 'email', 'gateways', 'currency'],
   setup (props, { emit }) {
 
     const toast = useToast()
@@ -272,7 +272,7 @@ export default {
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         email: props.email,
-        amount: props.amount * 100,
+        amount: props.converted * 100,
         firstname: props.name,
         ref: props.orderId,
         onClose: function () {

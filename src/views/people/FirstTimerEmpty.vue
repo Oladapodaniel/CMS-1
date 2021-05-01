@@ -248,6 +248,7 @@ export default {
           life: 4000,
         });
         }
+        firstTimersList.value = firstTimerData.value
         
       }
       catch  (err) {

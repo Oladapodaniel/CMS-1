@@ -73,7 +73,8 @@ export default {
   components: {
     Dialog
   },
-  setup() {
+  props: [],
+  setup(props, { emit }) {
     // const addPerson = (path) => router.push(path);
       const toast = useToast()
       const memberData = ref([])
@@ -102,6 +103,7 @@ export default {
               });
               memberData.value = data.returnObject
               displayModal.value = true;
+              emit('people-list', data.returnObject)
             } else {
               toast.add({
               severity: "success",

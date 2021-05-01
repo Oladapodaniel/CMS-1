@@ -58,6 +58,7 @@ export default {
                 let { data } = await axios.get('/fxRates')
                 console.log(data)
                 currencyRates.value = data
+                emit("currency-rate", data)
             }
             catch(error) {
                 console.log(error)

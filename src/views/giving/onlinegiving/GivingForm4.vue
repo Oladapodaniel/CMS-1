@@ -333,7 +333,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -461,6 +461,7 @@ import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import SignUp from "./SignUp"
+import convertCurrency from "../../../services/currency-converter/currencyConverter"
 export default {
   components: {
     PaymentOptionModal,
@@ -508,6 +509,8 @@ export default {
     const signInPassword = ref("")
     const routeParams = ref(`${route.params.userId}`)
     const showSignInForm = ref(true)
+    const tenantCurrency = ref("")
+    const convertedAmount = ref(0)
     
 
     const givingOften = (e) => {
@@ -583,6 +586,29 @@ export default {
     const donation = async() => {
 
 
+      try {
+        let { data } = await axios.get(`/api/Lookup/TenantCurrency?tenantID=${formResponse.value ? formResponse.value.tenantID : ""}`)
+        tenantCurrency.value = data.currency
+      }
+
+      catch (err) {
+        console.log(err)
+      }
+
+// console.log(dfaultCurrency.value)
+// console.log(tenantCurrency.value)
+          // Heres where im converting the currenccy
+          try {
+            let fromCurrencyRate = `usd${dfaultCurrency.value.shortCode.toLowerCase()}`
+            let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
+            const result = await convertCurrency.currencyConverter(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
+            console.log(result)
+            convertedAmount.value = Math.round(result)
+          }
+          catch (err) {
+            console.log(err)
+          }
+
           donationObj.value = {
             paymentFormId: formResponse.value.id,
             churchLogoUrl: formResponse.value.churchLogo,
@@ -630,17 +656,17 @@ export default {
 
          
 console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'))
-          // try {
-          //   let  res = await axios.post('/donation', donationObj.value)
-          //   console.log(res)
+          try {
+            let  res = await axios.post('/donation', donationObj.value)
+            console.log(res)
           
-          //   finish()
-          // }
-          // catch (error) {
-          //   finish()
-          //   console.log(error)
-          // }
-          // console.log(formResponse.value)
+            finish()
+          }
+          catch (error) {
+            finish()
+            console.log(error)
+          }
+          console.log(formResponse.value)
     }
 
     const successfulPayment = (payload) => {
@@ -715,10 +741,10 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
           "/mobile/v1/Account/SignIn",
           userdetails
         );
-        if (data && data.token) {
+        if (data && data.returnObject.token) {
             let giverDetails = {
-                giverToken: data.token,
-                giverId: data.userId
+                giverToken: data.returnObject.token,
+                giverId: data.returnObject.userId
             }
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
           toast.add({
@@ -846,7 +872,9 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
       showSignInForm,
       signedUp,
       displaySignInForm,
-      gatewaySelected
+      gatewaySelected,
+      tenantCurrency,
+      convertedAmount
     };
   },
 };
