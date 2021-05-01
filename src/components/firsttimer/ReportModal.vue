@@ -94,12 +94,12 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-1">
+                            <!-- <div class="col-sm-1">
                                  <Checkbox id="binary" v-model="attachReport" :binary="true"/>
                             </div>
                             <div class="col-sm-10">
                                 <span>Attach the report as a PDF</span>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col-sm-8 form-group" v-if="activeTab === 'sms'">

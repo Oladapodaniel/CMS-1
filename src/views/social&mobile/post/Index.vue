@@ -50,7 +50,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12 post-add-ons py-2">
+            <div class="col-md-12 post-add-ons py-2" v-if="!route.query.postId">
                 <div class="row">
                 <div class="col-md-12">
                     <a class="text-decoration-none px-md-2 c-pointer">
@@ -62,7 +62,7 @@
                         <span @click="selectFile"><i class="pi pi-images mr-1"></i></span>
                         <span class="text-dark" @click="selectFile">Photo/Video</span>
                     </a>
-                    <a class="text-decoration-none px-md-2 c-pointer">
+                    <a class="text-decoration-none px-md-2 c-pointer" v-if="false">
                         <span><i class="pi pi-video mr-1"></i></span>
                         <span class="text-dark">Feeling/Activity</span>
                     </a>
@@ -176,6 +176,7 @@ import { useRoute } from "vue-router"
                     message.value = postData.content;
                     fileUrl.value = postData.mediaUrl;
                     isUrl.value = true;
+                    getPostCategoryById(postData.postCategoryId);
                 } catch (error) {
                     console.log(error)
                 }
@@ -303,22 +304,13 @@ import { useRoute } from "vue-router"
                 return message.value.split('\n').length + 1;
             })
 
-            // const postToEdit = ref({ });
-            // if (route.query.postId) {
-            //     if (!store.getters.postToEdit || !store.getters.postToEdit.postId) {
-            //         router.push({ name: 'AllPosts' });
-            //     } else {
-            //         const postData =  store.getters.postToEdit;
-            //         console.log(postData);
-            //         postToEdit.value.content = postData.content;
-            //         postToEdit.value.mediaUrl = postData.mediaUrl;
-            //         postToEdit.value.postId = postData.postId;
-            //         message.value = postData.content;
-            //         fileUrl.value = postData.mediaUrl;
-            //         isUrl.value = true;
-            //         postCategory.value = postCategories.value.find(i => i && i.postCategoryId === postData.postCategoryId) ? postCategories.value.find(i => i && i.postCategoryId === postData.postCategoryId) : {}
-            //     }
-            // }
+            const getPostCategoryById = async postCategoryId => {
+                try {
+                    postCategory.value = await social_service.getPostCategoryById(postCategoryId);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
             
 
             return {
@@ -340,6 +332,7 @@ import { useRoute } from "vue-router"
                 fileUploaded,
                 isUrl,
                 rowsCount,
+                route,
             }
         }
     }

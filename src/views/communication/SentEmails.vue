@@ -21,27 +21,48 @@
                   </div>
                 </div>
               </div>
+              <Toast />
+              <ConfirmDialog />
+
+              <div class="row">
+                <div class="col-md-12">
+                  <i
+                    class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
+                    v-tooltip.top="'delete marked'"
+                    style="font-size: 20px"
+                    v-if="markedMail.length > 0"
+                    @click="showConfirmModal(false)"
+                  ></i>
+                </div>
+              </div>
 
               <div class="row">
                 <div class="col-md-12">
                   <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12">
                       <div class="row">
-                        <div class="col-md-1 text-md-right text-lg-center px-0"
-                        v-if="emails.length > 0">
+                        <div
+                          class="col-md-1 text-md-right text-lg-center px-0"
+                          v-if="emails.length > 0"
+                        >
                           <input
                             type="checkbox"
                             name="all"
                             id="all"
                             @change="markAllMails"
-                            :checked="markedMail.length === emails.length"
+                            :checked="
+                              markedMail.length > 0 &&
+                              markedMail.length === emails.length
+                            "
                           />
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                           <span class="th">Message</span>
                         </div>
                         <div class="col-md-4">
                           <span class="th">Sent By</span>
+                        </div>
+                        <div class="col-md-1">
                         </div>
                       </div>
                     </div>
@@ -67,14 +88,14 @@
                                 name=""
                                 id=""
                                 @change="mark1Email(email)"
-                                @checked="
+                                :checked="
                                   markedMail.findIndex(
                                     (i) => i.id === email.id
                                   ) >= 0
                                 "
                               />
                             </div>
-                            <div class="col-md-7 d-md-flex flex-column">
+                            <div class="col-md-6 d-md-flex flex-column">
                               <span class="msg-n-time">
                                 <router-link
                                   :to="{
@@ -124,6 +145,20 @@
                                 email.sentByUser
                               }}</span>
                             </div>
+                            <div
+                              class="col-md-1 col-ms-12 d-flex justify-content-between"
+                            >
+                              <span class="hidden-header font-weight-bold"
+                                >
+                              </span>
+                              <span class="small-text">
+                                <i
+                                  class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
+                                  style="font-size: 20px"
+                                  @click="showConfirmModal(email.id)"
+                                ></i>
+                              </span>
+                            </div>
                           </div>
                           <div class="row">
                             <div class="col-md-12">
@@ -172,19 +207,28 @@
 import { computed, ref } from "vue";
 import communicationService from "../../services/communication/communicationservice";
 import PaginationButtons from "../../components/pagination/PaginationButtons";
-import { useStore } from "vuex";
 import axios from "@/gateway/backendapi";
-import Loading from "../../components/loading/LoadingComponent"
+import Loading from "../../components/loading/LoadingComponent";
+import Tooltip from "primevue/tooltip";
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../services/progressbar/progress";
+import store from '../../store/store';
 
 export default {
   components: { PaginationButtons, Loading },
+  directives: {
+    tooltip: Tooltip,
+  },
   setup() {
-    const store = useStore();
+    const confirm = useConfirm();
+    const toast = useToast();
+    
     const emails = ref([]);
     const emailsInStore = ref(store.getters["communication/sentEmails"]);
     emails.value =
       emailsInStore.value && emailsInStore.value.length > 0
-        ? emailsInStore.value[0]
+        ? emailsInStore.value
         : [];
     // console.log(emails.value[0], "from store");
     const currentPage = ref(0);
@@ -232,7 +276,6 @@ export default {
     const itemsCount = computed(() => {
       const allEmails = emails.value;
       if (!allEmails.value || allEmails.value.length === 0) return 0;
-      console.log(allEmails.value);
       return allEmails.value.length;
     });
 
@@ -244,7 +287,6 @@ export default {
 
     const searchEmails = computed(() => {
       if (searchMail.value === "" && emails.value.length > 0) {
-        console.log(emails.value);
         return emails.value;
       }
       return emails.value.filter((i) =>
@@ -261,7 +303,6 @@ export default {
       } else {
         markedMail.value.splice(mailIdx, 1);
       }
-      console.log(markedMail.value, "Tosin");
     };
 
     // Function to check a multiple item
@@ -278,25 +319,89 @@ export default {
       } else {
         markedMail.value = [];
       }
-      console.log(markedMail.value, "God is awesome");
     };
 
-// Function to delete emails
-const mainEmailDel = (l) => {
-  console.log(l, "Am here");
-  return l.map((i) => i.id).join(",");
-};
+    // Function to delete emails
+    const getIdsOfEmailsToDelete = (markedEmails) => {
+      return markedEmails.map((i) => i.id).join(",");
+    };
 
-const deleteEmails = () => {
-let subDel = mainEmailDel (markedMail.value);
-console.log(subDel, "God is super awesome");
-axios
-    .delete(`/api/Messaging/DeleteSentEmails?SentEmailIdList=${subDel}`)
-    .then((res) => {
-console.log(res);
+    const deleteEmails = async id => {
+      try {
+        let stringOfEmailIds = id ? id : getIdsOfEmailsToDelete(markedMail.value);
 
-    })
-}
+        const { data } = await axios.delete(
+          `/api/Messaging/DeleteSentEmails?SentEmailIdList=${stringOfEmailIds}`
+        );
+        if (data.deleted) {
+          toast.add({
+            severity: "success",
+            summary: "Delete successfull",
+            detail: `${markedMail.value.length > 1 ? 'Selected Emails have' : 'Email has' } been deleted successfully`,
+            life: 3000,
+          });
+          emails.value = !id ? removeDeletedEmailsFromEmailList(markedMail.value) : emails.value.filter(i => i.id !== id);
+          if (id) {
+             store.dispatch('communication/removeSentEmails', id)
+          } else {
+            removeDeletedEmailsFromStore(markedMail.value);
+          }
+          markedMail.value = [ ];
+        } else {
+          toast.add({
+            severity: "error",
+            summary: "Delete Failed",
+            detail: `${data.message}`,
+            life: 3000,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: "Delete Failed",
+          detail: `${markedMail.value.length > 1 ? 'Selected Emails' : 'Email'} could not be deleted, Please try reloading`,
+          life: 3000,
+        });
+        stopProgressBar();
+      }
+    };
+
+
+    const removeDeletedEmailsFromEmailList = deletedEmailsArr => {
+      return emails.value.filter(i => {
+        const emailIndexInMarked = deletedEmailsArr.findIndex(j => j.id === i.id);
+        if (emailIndexInMarked < 0) return true;
+        return false;
+      })
+    }
+
+    const removeDeletedEmailsFromStore = deletedEmails => {
+      for (let email of deletedEmails) {
+        store.dispatch('communication/removeSentEmails', email.id)
+      }
+    }
+
+    const showConfirmModal = (id) => {
+      confirm.require({
+        message: "Are you sure you want to proceed? This operation can't be reversed.",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteEmails(id);
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "Delete discarded",
+            life: 3000,
+          });
+        },
+      });
+    };
 
     return {
       emails,
@@ -311,7 +416,8 @@ console.log(res);
       markedMail,
       mark1Email,
       markAllMails,
-      deleteEmails
+      deleteEmails,
+      showConfirmModal,
     };
   },
 };

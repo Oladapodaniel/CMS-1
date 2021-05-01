@@ -1,4 +1,4 @@
-z!<template>
+!<template>
   <div>
     <div class="container">
       <!-- Content Box -->
@@ -43,7 +43,7 @@ z!<template>
                 </div>
               </div>
               <i
-                class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                class="pi pi-trash deleteicon-color ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                 style="font-size: 15px"
                 v-if="marked.length > 0"
                 @click="showConfirmModal"
@@ -430,12 +430,7 @@ export default {
           marked.value.forEach((i) => {
             store.dispatch("communication/removeSentSMS", i.id);
           });
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "SMS Deleted",
-            life: 3000,
-          });
+          marked.value = [];
         })
         .catch((err) => {
           stopProgressBar();
@@ -527,6 +522,10 @@ export default {
 
 .hidden-header {
   display: none;
+}
+
+.deleteicon-color {
+ color: rgba(184, 5, 5, 0.726);
 }
 
 .th {
