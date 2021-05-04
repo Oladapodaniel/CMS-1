@@ -82,15 +82,14 @@
                   aria-expanded="false"
                 ></i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item">
+                  <a class="dropdown-item" v-if="churchMem.phone">
                     <router-link
-                    to=""
-                      >Send SMS</router-link
-                    >
-                  </a>
-                  <a class="dropdown-item">
+                    to="`/tenant/sms/compose?phone=${churchMem.phone}`"
+                      >Send SMS</router-link>
+                    </a>
+                  <a class="dropdown-item" v-if="churchMem.email">
                     <router-link
-                    to=""
+                    :to="`/tenant/email/compose?phone=${churchMem.email}`"
                       >Send Email</router-link
                     >
                   </a>
