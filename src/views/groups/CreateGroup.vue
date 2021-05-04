@@ -381,14 +381,14 @@
                       <a href="#" class="tool" data-toggle="modal" data-target="#myModal">
                         <i
                           class="pi pi-reply text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4 mr-3"
-                          style="font-size: 20px" v-tooltip.top="'move to group'">
+                          style="font-size: 20px; font-weight:bold" v-tooltip.top="'move to group'">
                           </i>
                     </a>
                     
                     <a href="#" class="tool" data-toggle="modal" data-target="#myModal1">
                         <i
                           class="pi pi-copy text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
-                          style="font-size: 20px" v-tooltip.right="'copy to group'"
+                          style="font-size: 20px; font-weight:bold" v-tooltip.right="'copy to group'"
                           > 
                         </i>
                     </a>
@@ -691,7 +691,7 @@ export default {
       }
       axios.post(`/api/Group/CopyMembers`,copyMember)
       .then((res)=>{
-        toast.add({severity:'success', summary: 'Confirmed' , detail:'Member Copy Successfully', life:2500});
+        toast.add({severity:'success', summary: 'Confirmed' , detail:'Member(s) Copy Successfully', life:2500});
         console.log(res)
         store.dispatch('groups/updateGroupPeopleCopy', { groupId: copyGroupTo.value.id,
         count: marked.value.length})
@@ -1192,6 +1192,9 @@ export default {
 .remove-email:hover {
   cursor: pointer;
 }
+.btn-primary{
+  background: #136acd!important;
+}
 
 @media screen and (max-width: 767px) {
   .hidden-header {
@@ -1202,5 +1205,6 @@ export default {
   .table-header-row {
     display: none;
   }
+
 }
 </style>
