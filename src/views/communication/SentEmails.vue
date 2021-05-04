@@ -29,7 +29,7 @@
                   <i
                     class="pi pi-trash color-deleteicon c-pointer pt-2 px-2"
                     v-tooltip.top="'delete marked'"
-                    style="font-size: 20px"
+                    style="font-size: 15px"
                     v-if="markedMail.length > 0"
                     @click="showConfirmModal(false)"
                   ></i>
@@ -223,7 +223,7 @@ export default {
   setup() {
     const confirm = useConfirm();
     const toast = useToast();
-    
+
     const emails = ref([]);
     const emailsInStore = ref(store.getters["communication/sentEmails"]);
     emails.value =
@@ -342,7 +342,7 @@ export default {
           });
           emails.value = !id ? removeDeletedEmailsFromEmailList(markedMail.value) : emails.value.filter(i => i.id !== id);
           if (id) {
-             store.dispatch('communication/removeSentEmails', id)
+          store.dispatch('communication/removeSentEmails', id)
           } else {
             removeDeletedEmailsFromStore(markedMail.value);
           }
