@@ -265,7 +265,7 @@ export default {
           toast.add({
             severity: "success",
             summary: "Confirmed",
-            detail: "Draft Mail Deleted",
+            detail:"Deleting failed. Mark the box to Delete a Drafted Mail",
             life: 3000,
           });
 
