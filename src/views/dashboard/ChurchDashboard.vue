@@ -142,7 +142,7 @@
               <!-- <i class="pi pi-times"></i> -->
               <img src="../../assets/website.svg" class="w-100">
               <div class="mt-4">Website</div>
-              <div class="more-body mt-2">Let your chruch get an online presence world wide.</div>
+              <div class="more-body mt-2">Let your church get an online presence world wide.</div>
               <div class="learn-more mt-3 col-12">Learn more</div>
             </div>
 
