@@ -134,7 +134,6 @@
                 </div>
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
                         <Dropdown v-model="selectedBank" class="w-100" :options="nigerianBanks" optionLabel="name" :filter="true" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
-
                         </Dropdown>
                 </div>
                 <div class="col-2 d-none d-sm-block"></div>
@@ -151,11 +150,10 @@
                     <div>Account Name</div>
                 </div>
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
-
-                            <input type="text" v-model="accountName" placeholder="Account name" ref="accNameRef" class="form-control h-100" />
-                            <div class="mt-1">
-                                <em class="mt-1">This will automatically come up, kindly confirm before clicking on save.</em>
-                            </div>
+                    <input type="text" v-model="accountName" placeholder="Account name" ref="accNameRef" class="form-control h-100" />
+                    <div class="mt-1">
+                        <em class="mt-1">This will automatically come up, kindly confirm before clicking on save.</em>
+                    </div>
 
                 </div>
                 <div class="col-sm-3 align-self-end" v-if="loading">
@@ -167,8 +165,6 @@
                 <div class="col-10 col-md-12 mt-5">
                     <hr class="mt-4"/>
                 </div>
-                <!-- <div>{{ paymentGateWays }}</div>
-                <div>{{ paymentGateWaysDb }}</div> -->
                 <div class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right mb-3 mb-md-0">
                     <div>Select Payment Gateway</div>
                 </div>
@@ -180,24 +176,6 @@
                         </i>
                         <h6>{{ item.name }}</h6>
                       </div>
-                      <!-- <div class="col-sm-5 d-flex" @click="flutterCheck">
-                        <i class="check-box mr-2">
-                          <img v-if="isFlutterwave" src="../../assets/check.png" class="child w-100">
-                        </i>
-                        <h6>Flutterwave</h6>
-                      </div>
-                      <div class="col-sm-3 d-flex" @click="paypalCheck">
-                        <i class="check-box mr-2">
-                            <img v-if="isPaypal" src="../../assets/check.png" class="child w-100">
-                        </i>
-                        <h6>Paypal</h6>
-                      </div> -->
-                      <!-- <div class="col-sm-6 d-flex">
-                        <i class="check-it mr-2">
-                          <span class="child" v-if="isPaypal"></span>
-                        </i>
-                        <h6>Paystack</h6>
-                      </div> -->
                   </div>
                 </div>
             </div>

@@ -141,12 +141,12 @@
     </div>
 
     <div class="row">
-      <div class="col-lg-9 col-md-11">
+      <div class="col-md-12">
         <div class="row my-4">
-          <div class="col-md-5 text-md-right">
+          <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
             <label for="" class="font-weight-600">Event</label>
           </div>
-          <div class="col-md-6">
+          <div class="col-sm-7 col-md-6 col-lg-5">
             <div class="dropdown">
               <button
                 class="default-btn w-100 text-left pr-1"
@@ -214,10 +214,10 @@
         </div>
 
         <div class="row my-3">
-          <div class="col-md-5 text-md-right">
+          <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
             <label for="" class="font-weight-600">Group</label>
           </div>
-          <div class="col-md-6">
+          <div class="col-sm-7 col-md-6 col-lg-5">
             <Dropdown
               v-model="selectedGroup"
               :options="groups"
@@ -227,6 +227,210 @@
               filterPlaceholder="Search grouped contacts"
               style="width: 100%"
             />
+            <div class="row mt-5">
+              <!-- <div class="col-md-12 d-flex justify-content-center">
+                <button
+                  class="default-btn primary-bg text-white border-0 contn-btn"
+                  @click="onContinue"
+                  :disabled="!selectedEvent.id || !selectedGroup.id"
+                >
+                  Save and Continue
+                </button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="d-flex justify-content-between">
+              <h5 class="header-contri mt-2">More</h5>
+                <hr style="width: 80%"/>
+                <i class="pi pi-angle-up angle-icon mt-2" :class="{ 'rollIcon' : templateDisplay, 'closeIcon' : !templateDisplay }" @click="toggleTemplate" ></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" :class="{ 'show-tem': templateDisplay, 'hide-tem' : !templateDisplay }">
+          <div class="container-fluid">
+            <div class="row my-3">
+
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
+              <label for="" class="font-weight-600">Event Banner</label>
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5">
+              <Dropdown
+                v-model="selectedGroup"
+                :options="groups"
+                optionLabel="name"
+                placeholder="Select group"
+                :filter="false"
+                filterPlaceholder="Search grouped contacts"
+                style="width: 100%"
+              />
+          
+            </div>
+            <div class="col-5 col-sm-2 offset-3 offset-sm-0 my-2 my-sm-0 upload-button align-self-center text-center">Upload</div>
+            <div class="col-sm-3 col-md-4"></div>
+            <div class="col-sm-7 col-md-6 col-lg-5 offset-2 offset-sm-0 mt-2">Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
+                GIF formats.</div>
+          </div>
+          
+          
+          <div class="row my-3">
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
+              <label for="" class="font-weight-600">Event Details</label>
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5">
+              <textarea name="" id="" cols="30" rows="4" class="form-control"></textarea>         
+            </div>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
+              
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5">
+              <div class="row">
+                <div class="col-sm-4 align-self-center">
+                  <span class="font-weight-700 cursor-pointer" @click="showFreeTab" :class="{ 'active-tab' : addFreeClass }">Free</span>&nbsp;&nbsp;/&nbsp;&nbsp;<span class="font-weight-700 cursor-pointer" @click="showPaidTab" :class="{ 'active-tab' : addPaidClass }">Paid</span>
+                </div>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" placeholder="Enter amount" v-if="addPaidClass">
+                </div>
+              </div>     
+            </div>
+            <div class="col-sm-2 col-lg-3"></div>
+
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Select Bank</div>
+            <div class="col-sm-7 col-md-6 col-lg-5">
+              <Dropdown v-model="selectedBank" class="w-100 mt-4" :options="nigerianBanks" optionLabel="name" :filter="true" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
+              </Dropdown>
+            </div>
+            <div class="col-sm-2 col-lg-3"></div>
+
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Account Number</div>
+            <div class="col-sm-7 col-md-6 col-lg-5">
+              <input type="text" class="form-control mt-4 input-height" placeholder="Enter account number" v-model="accountNumber" @blur="resolveCustomerDetail">
+            </div>
+            <div class="col-sm-2 col-lg-3"></div>
+            
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Account Name</div>
+            <div class="col-sm-7 col-md-6 col-lg-5">
+              <input type="text" class="form-control mt-4 input-height" placeholder="account name" v-model="accountName" ref="accNameRef">
+            </div>
+            <div class="col-sm-2 col-lg-3  align-self-center mt-4" v-if="loading">
+              <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Income Account</div>
+            <div class="col-sm-7 col-md-6 col-lg-5">
+              <Dropdown v-model="selectedIncomeAccount" class="w-100 p-0 mt-4" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+              </Dropdown>
+            </div>
+            <div class="col-sm-2 col-lg-3"></div>
+            
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Cash Account</div>
+            <div class="col-sm-7 col-md-6 col-lg-5">
+              <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0 mt-4" :showClear="false">
+              </Dropdown>
+            </div>
+            <div class="col-sm-2 col-lg-3"></div>
+          </div>
+          
+          
+          <div class="row mt-3">
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-5">
+              <label for="" class="font-weight-600">SMS</label>
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5 mt-2">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Checkin</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Registration</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2"></textarea>
+                  </div>
+                  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2"></textarea>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2 col-lg-3"></div>
+
+          <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3">
+              <label for="" class="font-weight-600">Email</label>
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Checkin</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Registration</a>
+                  </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2"></textarea>
+                  </div>
+                  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2"></textarea>
+                  </div>
+                </div>   
+            </div>
+            
+            <div class="col-sm-2 col-lg-3"></div>
+
+           <!-- <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3">
+              <label for="" class="font-weight-600">Registration SMS</label>
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
+                <textarea name="" id="" cols="30" rows="4" class="form-control"></textarea>     
+            </div>
+
+            <div class="col-sm-2 col-lg-3"></div>
+
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3">
+              <label for="" class="font-weight-600">Check-in Email</label>
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
+                <textarea name="" id="" cols="30" rows="4" class="form-control"></textarea>     
+            </div>
+            
+            <div class="col-sm-2 col-lg-3"></div>
+
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3">
+              <label for="" class="font-weight-600">Check-in SMS</label>
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
+                <textarea name="" id="" cols="30" rows="4" class="form-control"></textarea>     
+            </div> -->
+          </div>
+          </div>
+        </div>
+
+        <div class="row my-3">
+          <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
+            <!-- <label for="" class="font-weight-600">Group</label> -->
+          </div>
+          <div class="col-sm-7 col-md-6 col-lg-5">
+            <!-- <Dropdown
+              v-model="selectedGroup"
+              :options="groups"
+              optionLabel="name"
+              placeholder="Select group"
+              :filter="false"
+              filterPlaceholder="Search grouped contacts"
+              style="width: 100%"
+            /> -->
             <div class="row mt-5">
               <div class="col-md-12 d-flex justify-content-center">
                 <button
@@ -261,6 +465,9 @@ import CreateEventModal from "../../../components/attendance/AttendanceEventModa
 import attendanceservice from "../../../services/attendance/attendanceservice";
 import { useStore } from "vuex";
 import { useToast } from 'primevue/usetoast';
+import axios from "@/gateway/backendapi";
+import finish from '../../../services/progressbar/progress'
+import axio from  'axios'
 
 
 export default {
@@ -274,7 +481,16 @@ export default {
     const showBtModal = ref("");
     const popModal = ref(null);
     const toast = useToast();
-    const openModalBtn = ref(null)
+    const openModalBtn = ref(null);
+    const addPaidClass = ref(false)
+    const addFreeClass = ref(true)
+    const templateDisplay = ref(false)
+    const nigerianBanks = ref([])
+    const selectedBank = ref("")
+    const accountNumber = ref("")
+    const accountName = ref("")
+    const accNameRef = ref("")
+    const loading = ref(false)
 
 
     const selectedGroup = ref({});
@@ -398,6 +614,63 @@ export default {
       }
     };
 
+    const showPaidTab = () => {
+      addPaidClass.value = true
+      addFreeClass.value = false
+    }
+
+    const showFreeTab = () => {
+      addFreeClass.value = true
+      addPaidClass.value = false
+    }
+
+    const toggleTemplate = () => {
+        templateDisplay.value = !templateDisplay.value
+    }
+
+    const getBanks = () => {
+        axios.get('/api/Financials/GetBanks')
+            .then(res => {
+
+                console.log(res)
+            nigerianBanks.value = res.data
+            })
+            .catch(err => {
+
+                console.log(err)
+            })
+
+    }
+    getBanks()
+
+    const resolveCustomerDetail = async() => {
+            loading.value = true
+            try {
+                let header = { headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` }}
+                console.log(header, "header");
+
+                let { data } = await axio.get(`https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`, header)
+                console.log(data)
+                accountName.value = data.data.account_name
+                accNameRef.value.focus()
+                // disabled.value = false
+
+                loading.value = false
+
+                toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 3000});
+
+            }
+            catch (error) {
+                finish()
+                console.log(error)
+
+                loading.value = false
+
+                toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
+            }
+            console.log(selectedBank.value.code, accountNumber.value)
+        }
+
     return {
       selectedEvent,
       onContinue,
@@ -422,6 +695,19 @@ export default {
       eventSearchText,
       filteredEvents,
       openModalBtn,
+      addPaidClass,
+      addFreeClass,
+      showPaidTab,
+      showFreeTab,
+      toggleTemplate,
+      templateDisplay,
+      nigerianBanks,
+      selectedBank,
+      accountNumber,
+      accountName,
+      resolveCustomerDetail,
+      accNameRef,
+      loading
     };
   },
 };
@@ -435,5 +721,56 @@ export default {
 
 .contn-btn:disabled {
   opacity: 0.3;
+}
+
+.upload-button {
+  background: rgba(206, 206, 206, 0.274);
+  color: black;
+  border-radius: 25px;
+  font-weight: 600;
+  padding: 8px 10px;
+}
+
+.active-tab {
+  border-bottom: 2px solid rgb(31, 87, 241);
+}
+
+.header-contri {
+     font-size: 20px;
+     font-weight: 700;
+}
+
+.angle-icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 1px solid  rgb(73, 73, 73);
+    padding: 3px
+}
+
+.hide-tem {
+    height: 0;
+    overflow: hidden;
+    transition: all 1s ease-in-out
+}
+
+.show-tem {
+    height: 964px;
+    overflow: hidden;
+    transition: all 1s ease-in-out
+}
+
+.rollIcon {
+    transform: rotateZ(180deg);
+    transition: all 1s ease-in-out
+}
+
+.closeIcon {
+    transform: rotateZ(0deg);
+    transition: all 0.5s ease-in-out
+}
+
+.input-height {
+  height: 70%
 }
 </style>

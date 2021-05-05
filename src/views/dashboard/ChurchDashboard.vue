@@ -1,9 +1,5 @@
 <template>
   <main class="container-slim" id="main">
-    <!-- <div class="menu-links">
-      <menu-links />
-    </div> -->
-    <!-- <div class="main-content"> -->
     <div class="second-col container-top">
       <div class="create-btn-div">
         <div>
@@ -72,7 +68,10 @@
           </div>
         </div>
 
-        <div class="number-boxes">
+        <div v-if="tenantInfoBasic.memberCount === 0">
+          <img src="../../assets/welcome_user.svg">
+        </div>
+        <div class="number-boxes" v-else>
           <div class="box one">
             <div class="top">
               <div class="box-top">
@@ -81,11 +80,11 @@
                 </div>
                 <div class="box-top-text">
                   <p>FIRST TIMERS</p>
-                  <h4>{{ firstTimerArr.length }}</h4>
+                  <h4>{{ tenantInfoBasic.firstTimerCount }}</h4>
                 </div>
               </div>
               <div class="box-middle">
-                <h1>{{ tenantInfo.memberCount }}</h1>
+                <h1>{{ tenantInfoBasic.memberCount }}</h1>
                 <span class="size-text">Church Size</span>
               </div>
             </div>
@@ -107,7 +106,7 @@
                 <div class="box-top-text"></div>
               </div>
               <div class="box-middle">
-                <h1>{{ tenantInfo.smsUnit }}</h1>
+                <h1>{{ tenantInfoBasic.smsUnit }}</h1>
                 <span class="size-text">SMS Units</span>
               </div>
             </div>
@@ -125,98 +124,263 @@
         </div>
       </div>
 
-    <div v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
-      <div class="celeb-header">
-        <div class="celeb-icon">
-          <img src="../../assets/celeb-icon.svg" alt="Celebration Icon" />
-        </div>
-        <div class="celeb-header-text">
-          <p>Celebrations</p>
-        </div>
+      <div class="text-center" v-if="attendanceLoading">
+        <i class="pi pi-spin pi-spinner text-primary" style="fontSize: 3rem"></i>
       </div>
-      <div class="table table-responsive">
-        <div class="table-top">
-          <router-link to="" class="view-all">View all</router-link>
-        </div>
+      <!-- {{ tenantInfoExtra.hasOnlineGiving }}
+      {{ tenantInfoExtra.hasWebsite }}
+      {{ tenantInfoExtra.hasMobileApp }} -->
+      <!-- {{ tenantInfoCeleb.length > 0 }} -->
+      <!-- {{ tenantInfoFirstTimerWeekly[0].data.length > 0  }}
+      {{ tenantInfoAttendanceWeekly[0].data.length >= 1 }}
+      {{ tenantInfoAttendanceWeekly[0].data[0] > 0 }} -->
+    <!-- || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0) -->
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-3 p-0" v-if="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0)">
+            <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
+              <!-- <i class="pi pi-times"></i> -->
+              <img src="../../assets/website.svg" class="w-100">
+              <div class="mt-4">Website</div>
+              <div class="more-body mt-2">Let your chruch get an online presence world wide.</div>
+              <div class="learn-more mt-3 col-12">Learn more</div>
+            </div>
 
-
-          <table class="w-100">
-          <thead>
-            <tr>
-              <th>NAME</th>
-              <th>DATE</th>
-              <th>TYPE</th>
-              <th>PHONE</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="celebration in tenantInfo.celebrations"
-              :key="celebration.id"
-            >
-              <td>
-                <img src="../../assets/people/avatar-male.png" alt="" /><span
-                  class="project-name"
-                  >{{ celebration.name }}</span
-                >
-              </td>
-              <td>
-                {{
-                  moment.parseZone(
-                    new Date(celebration.date).toLocaleDateString(),
-                    "YYYY MM DD HH ZZ"
-                  )._i
-                }}
-              </td>
-              <td>{{ celebration.celebration }}</td>
-              <td>{{ celebration.phone }}</td>
-              <td>
-                <i class="fas fa-ellipsis-v cursor-pointer"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"></i>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <!-- v-if="person.mobilePhone" -->
-                <a class="dropdown-item elipsis-items">
-                  <router-link
-                    :to="`/tenant/sms/compose?phone=${celebration.phone}`"
-                    >Send SMS</router-link
-                  >
-                </a>
-                <!-- v-if="person.email" -->
-                <!-- <a class="dropdown-item elipsis-items" >
-                  <router-link
-                    :to="`/tenant/email/compose?phone=${person.email}`"
-                    >Send Email</router-link
-                  >
-                </a> -->
-                <!-- <a class="dropdown-item elipsis-items">
-                  <router-link :to="`/tenant/people/add/${person.id}`"
-                    >Edit</router-link
-                  >
-                </a> -->
-                <!-- <a
-                  class="dropdown-item elipsis-items"
-                  href="#"
-                  @click.prevent="showConfirmModal(person.id)"
-                  >Delete</a
-               > -->
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasOnlineGiving">
+              <img src="../../assets/online_giving.png" class="w-100">
+              <div class="mt-4">Online Giving</div>
+              <div class="more-body mt-2">Make online giving with no hassle.</div>
+              <div class="learn-more mt-3 col-12">Learn more</div>
+            </div>
+            
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.mobilePhone">
+              <img src="../../assets/mobile_app.svg" class="w-100">
+              <div class="mt-4">Mobile App</div>
+              <div class="more-body mt-2">Engage your members with your messages via our customized mobile app for your church.</div>
+              <div class="learn-more mt-3 col-12">Learn more</div>
+            </div>
+          </div>
+         
+          <div  :class="{ 'col-9' : !tenantInfoExtra.hasMobileApp || !tenantInfoExtra.hasOnlineGiving || !tenantInfoExtra.hasWebsite, 'col-12' : tenantInfoExtra.hasMobileApp && tenantInfoExtra.hasOnlineGiving && tenantInfoExtra.hasWebsite }">
+            <!-- Celebrations -->
+          <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
+            <div class="celeb-header">
+              <div class="celeb-icon">
+                <img src="../../assets/celeb-icon.svg" alt="Celebration Icon" />
               </div>
-              </td>
-            </tr>
-          </tbody>
-          <!-- <tbody v-else>
-            <tr>
+              <div class="celeb-header-text">
+                <p>Celebrations</p>
+              </div>
+            </div>
+            <div class="table table-responsive">
+              <div class="table-top">
+                <router-link to="" class="view-all">View all</router-link>
+              </div>
 
 
-              <td colspan="5"><div class=" text-center p-3" style="font-weight: 700; font-size: 1.2em;">No Celebrations Yet</div></td>
+                <table class="w-100">
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>DATE</th>
+                    <th>TYPE</th>
+                    <th>PHONE</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="celebration in tenantInfoCeleb"
+                    :key="celebration.id"
+                  >
+                    <td>
+                      <img src="../../assets/people/avatar-male.png" alt="" /><span
+                        class="project-name"
+                        >{{ celebration.name }}</span
+                      >
+                    </td>
+                    <td>
+                      {{ dateFormat(celebration.date) }}
+                    </td>
+                    <td>{{ celebration.celebration }}</td>
+                    <td>{{ celebration.phone }}</td>
+                    <td>
+                      <i class="fas fa-ellipsis-v cursor-pointer"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"></i>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <!-- v-if="person.mobilePhone" -->
+                      <a class="dropdown-item elipsis-items">
+                        <router-link
+                          :to="`/tenant/sms/compose?phone=${celebration.phone}`"
+                          >Send SMS</router-link
+                        >
+                      </a>
+                      <!-- v-if="person.email" -->
+                      <!-- <a class="dropdown-item elipsis-items" >
+                        <router-link
+                          :to="`/tenant/email/compose?phone=${person.email}`"
+                          >Send Email</router-link
+                        >
+                      </a> -->
+                      <!-- <a class="dropdown-item elipsis-items">
+                        <router-link :to="`/tenant/people/add/${person.id}`"
+                          >Edit</router-link
+                        >
+                      </a> -->
+                      <!-- <a
+                        class="dropdown-item elipsis-items"
+                        href="#"
+                        @click.prevent="showConfirmModal(person.id)"
+                        >Delete</a
+                    > -->
+                    </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+            <!-- Column Charts -->
+            <div v-show="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0) || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0)">
+              <div class="charts" id="plot">
+              <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
+                <div class="adjust-view col-10 col-sm-3 offset-sm-9">
+                  <div class="view-report">View Reports</div>
+                  <div class="weekly">
+                    <span
+                      @click="weeklyAttendance"
+                      :class="{ active: attendanceBoolean }"
+                      >Weekly</span
+                    >&nbsp;&nbsp;&nbsp;<span
+                      @click="monthlyAttendance"
+                      :class="{ active: !attendanceBoolean }"
+                      >Monthly</span
+                    >
+                  </div>
+                </div>
 
-            </tr>
-          </tbody> -->
-        </table>
+                <div v-if="attendanceBoolean">
+                  <ColumnChart
+                    domId="chart1"
+                    title="Event Attendance"
+                    subtitle="Weekly Attendance of Events"
+                    header="Members Attendance"
+                    :data="chartData"
+                    :series="series"
+                    :attendanceSeries="attendanceSeries"
+                  />
+                </div>
+                <div v-else>
+                  <ColumnChart
+                    domId="chart1"
+                    title="Event Attendance"
+                    subtitle="Monthly Attendance of Events"
+                    header="Members Attendance"
+                    :data="monthlyAttendanceObj"
+                    :series="series"
+                    :attendanceSeries="attendanceSeries"
+                  />
+                </div>
+              </div>
+              
+            <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist">
+              <div class="adjust-view col-10 col-sm-3 offset-sm-9">
+                <div class="view-report">View Reports</div>
+                <div class="weekly">
+                  <span
+                    @click="weeklyFirstTimer"
+                    :class="{ active: firstTimerBoolean }"
+                    >Weekly</span
+                  >&nbsp;&nbsp;&nbsp;<span
+                    @click="monthlyFirstTimer"
+                    :class="{ active: !firstTimerBoolean }"
+                    >Monthly</span
+                  >
+                </div>
+              </div>
+
+              <div v-if="firstTimerBoolean">
+                <ColumnChart2
+                  domId="chart3"
+                  title="First Timer And New Convert Inflow"
+                  subtitle="How First Timer Come to Church"
+                  header="First Timer Attendence"
+                  :data="chartData2"
+                  :chartDataNewConvert="chartDataNewConvert"
+                  :series2="series2"
+                />
+              </div>
+              <div v-else>
+                <ColumnChart2
+                  domId="chart4"
+                  title="First Timer And New Convert Inflow"
+                  subtitle="How First Timer Come to Church"
+                  header="First Timer Attendence"
+                  :data="monthlyFirstTimerObj"
+                  :chartDataNewConvert="chartDataNewConvert"
+                  :series2="series2"
+                />
+              </div>
+            </div>
+          </div>
+
+              <div class="chart-con" v-show="firstTimerPieExist">
+              <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-12 col-md-6 d-flex justify-content-center">
+                      <ByGenderChart
+                        domId="source"
+                        title="Invitation Source"
+                        distance="5"
+                        :titleMargin="10"
+                        :summary="tenantInfoInvitationSource ? tenantInfoInvitationSource : []"
+                      />
+                    </div>
+                    <div class="col-12 col-md-6 d-flex justify-content-center">
+                      <ByMaritalStatusChart
+                        domId="join"
+                        title="Interested In Joining"
+                        :titleMargin="10"
+                        :summary="tenantInfoInterestedInJoining ? tenantInfoInterestedInJoining : [] "
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <div v-if="tenantInfoCeleb.length === 0 && (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] === 0) && (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length === 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] === 0)">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12 more-things">More Things You Can do</div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-12 col-sm-6  col-md-4 more-things">
+              <img src="../../assets/website.svg">
+              <div class="mt-4">Website</div>
+              <div class="more-body mt-2">Lorem Ipsum Is a good man, Init imet is his wife</div>
+              <div class="learn-more mt-3 col-6 offset-3">Learn more</div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 more-things second">
+              <img src="../../assets/online_giving.png">
+              <div class="mt-4">Online Giving</div>
+              <div class="more-body mt-2">Lorem Ipsum Is a good man, Init imet is his wife</div>
+              <div class="learn-more second col-6 offset-3">Learn more</div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-4  more-things">
+              <img src="../../assets/mobile_app.svg">
+              <div class="mt-4">Mobile App</div>
+              <div class="more-body mt-2">Lorem Ipsum Is a good man, Init imet is his wife</div>
+              <div class="learn-more mt-3 col-6 offset-3">Learn more</div>
+            </div>
+          </div>
+        </div>
+        </div>
         <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-left"></i>
@@ -227,125 +391,9 @@
             <i class="fa fa-angle-right"></i>
           </button>
         </div>
-      </div>
+      <!-- </div> -->
       <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
-      <div class="charts" id="plot">
-        <div v-if="tenantInfo.eventAttendanceChartDataWeekly && attendanceDataExist">
-          <div class="adjust-view col-10 col-sm-3 offset-sm-9">
-            <div class="view-report">View Reports</div>
-            <div class="weekly">
-              <span
-                @click="weeklyAttendance"
-                :class="{ active: attendanceBoolean }"
-                >Weekly</span
-              >&nbsp;&nbsp;&nbsp;<span
-                @click="monthlyAttendance"
-                :class="{ active: !attendanceBoolean }"
-                >Monthly</span
-              >
-            </div>
-          </div>
-
-          <div v-if="attendanceBoolean">
-            <ColumnChart
-              domId="chart1"
-              title="Event Attendance"
-              subtitle="Weekly Attendance of Events"
-              header="Members Attendance"
-              :data="chartData"
-              :series="series"
-              :attendanceSeries="attendanceSeries"
-            />
-          </div>
-          <div v-else>
-            <ColumnChart
-              domId="chart1"
-              title="Event Attendance"
-              subtitle="Monthly Attendance of Events"
-              header="Members Attendance"
-              :data="monthlyAttendanceObj"
-              :series="series"
-              :attendanceSeries="attendanceSeries"
-            />
-          </div>
-        </div>
-<!-- {{ firstTimerDataExist }} -->
-<!-- {{ tenantInfo.firstTimersummary.firstTimerWeekly }} -->
-
-      <div v-if="tenantInfo.firstTimerSummary && firstTimerDataExist">
-        <div class="adjust-view col-10 col-sm-3 offset-sm-9">
-          <div class="view-report">View Reports</div>
-          <div class="weekly">
-            <span
-              @click="weeklyFirstTimer"
-              :class="{ active: firstTimerBoolean }"
-              >Weekly</span
-            >&nbsp;&nbsp;&nbsp;<span
-              @click="monthlyFirstTimer"
-              :class="{ active: !firstTimerBoolean }"
-              >Monthly</span
-            >
-          </div>
-        </div>
-
-        <div v-if="firstTimerBoolean">
-          <ColumnChart2
-            domId="chart3"
-            title="First Timer And New Convert Inflow"
-            subtitle="How First Timer Come to Church"
-            header="First Timer Attendence"
-            :data="chartData2"
-            :chartDataNewConvert="chartDataNewConvert"
-            :series2="series2"
-          />
-        </div>
-        <div v-else>
-          <ColumnChart2
-            domId="chart4"
-            title="First Timer And New Convert Inflow"
-            subtitle="How First Timer Come to Church"
-            header="First Timer Attendence"
-            :data="monthlyFirstTimerObj"
-            :chartDataNewConvert="chartDataNewConvert"
-            :series2="series2"
-          />
-        </div>
-      </div>
-    </div>
-      <!-- <div>{{ chartData2 }}</div>
-      <div>{{ monthlyFirstTimerObj }}</div>
-      <div>{{ chartDataNewConvert }}</div> -->
-      <!-- <div>{{ series2 }}</div> -->
-      <!-- <div>{{ tenantInfo ? tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.invitationSource : [] : [] }}</div> -->
-
-<!-- {{summed}} -->
-        <div class="chart-con" v-if="sumIt">
-         <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-6 d-flex justify-content-center">
-                <div class="chart1">
-                <ByGenderChart
-                  domId="source"
-                  title="Invitation Source"
-                  distance="5"
-                  :titleMargin="10"
-                  :summary="tenantInfo ? tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.invitationSource : [] : []"
-                />
-              </div>
-              </div>
-              <div class="col-12 col-md-6 d-flex justify-content-center">
-                <div class="chart2">
-                  <ByMaritalStatusChart
-                    domId="join"
-                    title="Interested In Joining"
-                    :titleMargin="10"
-                    :summary="tenantInfo ? tenantInfo.firstTimerSummary ? tenantInfo.firstTimerSummary.interestedInJoining : [] : [] "
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      
         <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
         <!-- <div>{{ chartData2 }}</div> -->
 
@@ -358,7 +406,7 @@
               distance="5"
               :titleMarginLeft="70"
               height="400"
-              :summary="offering"
+              :summary="tenantInfoInterestedInJoining ? tenantInfoInterestedInJoining : []"
             />
           </div>
 
@@ -370,7 +418,7 @@
               distance="1"
               :titleMarginLeft="70"
               height="400"
-              :summary="offering"
+              :summary="tenantInfoInterestedInJoining ? tenantInfoInterestedInJoining : []"
             />
           </div>
         </div> -->
@@ -386,6 +434,7 @@ import ByMaritalStatusChart from "@/components/charts/PieChart";
 import ByGenderChart from "@/components/charts/PieChart";
 import ColumnChart from "@/components/charts/ColumnChart.vue";
 import ColumnChart2 from "@/components/charts/ColumnChart2.vue";
+// import PieChart from "@/components/charts/PieChart"
 import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
 // import store from "@/store/store.js"
@@ -394,6 +443,7 @@ import axios from "@/gateway/backendapi";
 import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress"
 import setupService from '../../services/setup/setupservice';
+import formatDate from "../../services/dates/dateformatter"
 
 export default {
   components: {
@@ -407,13 +457,12 @@ export default {
 
   setup() {
     const moreLinksVissible = ref(false);
-    const firstTimerArr = ref([]);
     const offering = ref([23, 45, 65, 78, 89]);
     const attendanceBoolean = ref(true);
     const firstTimerBoolean = ref(true);
     const attendanceDataExist = ref(false)
     const firstTimerDataExist = ref(false)
-    const firstTimerPieExist = ref(true)
+    const firstTimerPieExist = ref(false)
     const summed = ref(0)
 
     // const attendance
@@ -426,8 +475,18 @@ export default {
     // const route = useRoute();
 
     const tenantInfo = ref({});
+    const tenantInfoBasic = ref({});
+    const tenantInfoCeleb = ref([])
     const attendanceSeries = ref("weekly");
     const firstTimerSeries = ref("weekly")
+    const tenantInfoAttendanceWeekly = ref([])
+    const tenantInfoAttendanceMonthly = ref([])
+    const attendanceLoading = ref(false)
+    const tenantInfoFirstTimerWeekly = ref([])
+    const tenantInfoFirstTimerMonthly = ref([])
+    const tenantInfoInvitationSource = ref([])
+    const tenantInfoInterestedInJoining = ref([])
+    const tenantInfoExtra = ref({})
 
     // const monthlyFirstTimerObj = ref({})
 
@@ -444,29 +503,30 @@ export default {
       return monthXaxis.value;
     })
 
-    const getDashboard = () => {
+    const getBasicDashboard = () => {
       axios
-      .get("/dashboard")
+      .get("/dashboard/basic")
       .then((res) => {
-        tenantInfo.value = res.data;
-        console.log(tenantInfo.value)
-        // celebrations.value = res.data
-        console.log(res.data);
-        tenantInfo.value.eventAttendanceChartDataWeekly[0].data.forEach(element => {
-          if (element > 0) {
-            attendanceDataExist.value = true
-          }
-        });
-        tenantInfo.value.firstTimerSummary.firstTimerWeekly[0].data.forEach(element => {
-          if (element > 0) {
-            firstTimerDataExist.value = true
-          }
-        });
+        tenantInfoBasic.value = res.data.returnObject;
+        console.log(tenantInfoBasic.value)
+        console.log(res.data)
+
+        tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp 
+        tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving 
+        tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite
+        // tenantInfo.value.eventAttendanceChartDataWeekly[0].data.forEach(element => {
+        //   if (element > 0) {
+        //     attendanceDataExist.value = true
+        //   }
+        // });
+        // tenantInfo.value.firstTimerSummary.firstTimerWeekly[0].data.forEach(element => {
+        //   if (element > 0) {
+        //     firstTimerDataExist.value = true
+        //   }
+        // });
         let sum = 0
         tenantInfo.value.firstTimerSummary.invitationSource.forEach((i) => {
-          // if (element.value > 0) {
-          //   firstTimerPieExist.value = true
-          // }
+       
           sum += +i.value
 
         });
@@ -486,15 +546,60 @@ export default {
         }
       });
     }
-    getDashboard()
+    getBasicDashboard()
 
-    const firstTimer = () => {
-      axios.get("/api/People/FirstTimer").then((res) => {
-        firstTimerArr.value = res.data;
-        console.log(res.data);
-      });
-    };
-    firstTimer();
+    let getCelebDashboard = () => {
+      axios
+      .get("/dashboard/celebrations")
+      .then((res) => {
+        tenantInfoCeleb.value = res.data.returnObject.celebrations
+      })
+    }
+    getCelebDashboard()
+
+    onMounted(() => {
+      attendanceLoading.value = true
+      axios
+      .get("/dashboard/attendance")
+      .then((res) => {
+        console.log(res.data)
+        attendanceLoading.value = false
+        tenantInfoAttendanceWeekly.value = res.data.returnObject.eventAttendanceChartDataWeekly
+        tenantInfoAttendanceMonthly.value = res.data.returnObject.eventAttendanceChartDataMonthly
+
+        tenantInfoFirstTimerWeekly.value = res.data.returnObject.firstTimerSummary.firstTimerWeekly
+        tenantInfoFirstTimerMonthly.value = res.data.returnObject.firstTimerSummary.firstTimerMonthly
+
+        tenantInfoInvitationSource.value = res.data.returnObject.firstTimerSummary.invitationSource
+        tenantInfoInterestedInJoining.value = res.data.returnObject.firstTimerSummary.interestedInJoining
+
+        tenantInfoAttendanceWeekly.value[0].data.forEach(element => {
+          if (element > 0) {
+            attendanceDataExist.value = true
+          }
+        })
+
+        tenantInfoFirstTimerWeekly.value[0].data.forEach(element => {
+          if (element > 0) {
+            firstTimerDataExist.value = true
+          }
+        });
+
+        let sum = 0
+        tenantInfoInterestedInJoining.value.forEach((i) => {
+          sum += +i.value
+        });
+        console.log(sum)
+        if (sum > 0) {
+          firstTimerPieExist.value = true
+        } else {
+          firstTimerPieExist.value = false
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    })
 
     const showPieChart = computed(() => {
       if (!tenantInfo.value || tenantInfo.value.firstTimerSummary) return [];
@@ -551,22 +656,22 @@ export default {
     };
 
     const chartData = computed(() => {
-      if (!tenantInfo.value.eventAttendanceChartDataWeekly) return [];
-      return tenantInfo.value.eventAttendanceChartDataWeekly[0]
+      if (!tenantInfoAttendanceWeekly.value) return [];
+      return tenantInfoAttendanceWeekly.value[0]
     });
     const monthlyAttendanceObj = computed(() => {
-      if (!tenantInfo.value.eventAttendanceChartDataMonthly) return [];
-      return tenantInfo.value.eventAttendanceChartDataMonthly[0]
+      if (!tenantInfoAttendanceMonthly.value) return [];
+      return tenantInfoAttendanceMonthly.value[0]
     });
 
     const chartData2 = computed(() => {
-      if (!tenantInfo.value.firstTimerSummary) return [];
-      return tenantInfo.value.firstTimerSummary.firstTimerWeekly[0]
+      if (!tenantInfoFirstTimerWeekly.value) return [];
+      return tenantInfoFirstTimerWeekly.value[0]
     });
 
     const monthlyFirstTimerObj = computed(() => {
-      if (!tenantInfo.value.firstTimerSummary) return [];
-      return tenantInfo.value.firstTimerSummary.firstTimerMonthly[0]
+      if (!tenantInfoFirstTimerMonthly.value) return [];
+      return tenantInfoFirstTimerMonthly.value[0]
     });
 
     const chartDataNewConvert = computed(() => {
@@ -579,15 +684,19 @@ export default {
       return true
     })
 
+    const dateFormat = (payload) => {
+      return formatDate.monthDayYear(payload)
+    }
+
 
 
     return {
       celebrations,
       tenantInfo,
+      tenantInfoBasic,
+      tenantInfoCeleb,
       moreLinksVissible,
       toggleMoreLinkVissibility,
-      firstTimer,
-      firstTimerArr,
       subPlan,
       offering,
       moment,
@@ -612,7 +721,16 @@ export default {
       firstTimerDataExist,
       firstTimerPieExist,
       summed,
-      sumIt
+      sumIt,
+      dateFormat,
+      tenantInfoAttendanceWeekly,
+      tenantInfoAttendanceMonthly,
+      attendanceLoading,
+      tenantInfoFirstTimerWeekly,
+      tenantInfoFirstTimerMonthly,
+      tenantInfoInvitationSource,
+      tenantInfoInterestedInJoining,
+      tenantInfoExtra
     };
   },
 };
@@ -983,6 +1101,43 @@ tbody tr:nth-child(even) {
   position: relative;
   top: 188px;
   z-index: 1;
+}
+
+.more-things {
+  text-align: center;
+  font: normal normal 800 26px/35px Nunito Sans;
+  letter-spacing: 0px;
+  color: #020E1C;
+  opacity: 0.8;
+}
+
+.more-body {
+  text-align: center;
+  font: normal normal 600 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #020E1C;
+  opacity: 0.8;
+}
+
+.learn-more {
+  border: 1px solid #707070;
+  border-radius: 25px;
+  padding: 10px;
+  opacity: 1;
+    font: normal normal bold 14px/19px Nunito Sans;
+  letter-spacing: 0px;
+  color: #020E1C;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+}
+
+.learn-more.second {
+  margin-top: 21px
+}
+
+.more-things.side {
+  background: #ECF0F3 0% 0% no-repeat padding-box;
+  border-radius: 15px;
+  opacity: 1;
 }
 
 @media (max-width: 575px) {

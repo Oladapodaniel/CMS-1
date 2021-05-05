@@ -103,7 +103,7 @@ export default {
   setup() {
        const data =  ref({})
       const churchData = () => {
-        if (store.state.currentUser.churchName == undefined) {
+        if (store.state.currentUser == undefined) {
           axios.get("/api/Membership/GetCurrentSignedInUser")
               .then(res => {
                 console.log(res.data);

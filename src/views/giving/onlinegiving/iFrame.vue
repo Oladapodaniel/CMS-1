@@ -47,16 +47,22 @@
       </div>
     </div>
     <!--end of nav section area -->
+    
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-10 col-md-8 mx-auto d-flex justify-content-end pt-1">
-                    <div href="#" style="cursor: pointer" class="mr-3" @click="checkForToken"
-                    >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} <i class="fas fa-user text-white" v-if="signedIn"></i
-                ></div>
-                <div href="#" style="cursor: pointer" @click="signOut" v-if="signedIn"
-            >
-            Sign Out
-            </div>
+                <div class="col-sm-10 col-md-8 mx-auto  pt-1">
+                    <div class="row">
+                      <div class="col-6">{{ formResponse.churchName }}</div>
+                      <div class="col-6 d-flex justify-content-end">
+                        <div href="#" style="cursor: pointer" class="mr-3" @click="checkForToken"
+                          >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} <i class="fas fa-user text-white" v-if="signedIn"></i
+                      ></div>
+                      <div href="#" style="cursor: pointer" @click="signOut" v-if="signedIn"
+                        >
+                        Sign Out
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
