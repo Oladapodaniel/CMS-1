@@ -69,7 +69,7 @@
         </div>
 
         <div v-if="tenantInfoBasic.memberCount === 0">
-          <img src="../../assets/welcome_user.svg">
+          <img src="../../assets/welcome_user.svg" class="welcome-user">
         </div>
         <div class="number-boxes" v-else>
           <div class="box one">
@@ -137,31 +137,31 @@
     <!-- || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0) -->
       <div class="container-fluid">
         <div class="row">
-          <div class="col-3 p-0" v-if="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0)">
+          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0)">
             <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
               <!-- <i class="pi pi-times"></i> -->
               <img src="../../assets/website.svg" class="w-100">
               <div class="mt-4">Website</div>
-              <div class="more-body mt-2">Let your church get an online presence world wide.</div>
-              <div class="learn-more mt-3 col-12">Learn more</div>
+              <div class="more-body mt-2">Get a user engaging website for your church.</div>
+              <a href="https://churchplus.co/awoofwebsite/" target="_blank"><div class="learn-more mt-3 col-12 cursor-pointer">Get One Now</div></a>
             </div>
 
             <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasOnlineGiving">
               <img src="../../assets/online_giving.png" class="w-100">
               <div class="mt-4">Online Giving</div>
-              <div class="more-body mt-2">Make online giving with no hassle.</div>
-              <div class="learn-more mt-3 col-12">Learn more</div>
+              <div class="more-body mt-2">Make online donations to your church.</div>
+              <router-link to="/tenant/payments"><div class="learn-more mt-3 col-12 cursor-pointer">Set Up Now</div></router-link>
             </div>
             
-            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.mobilePhone">
+            <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
               <img src="../../assets/mobile_app.svg" class="w-100">
               <div class="mt-4">Mobile App</div>
-              <div class="more-body mt-2">Engage your members with your messages via our customized mobile app for your church.</div>
-              <div class="learn-more mt-3 col-12">Learn more</div>
+              <div class="more-body mt-2">Get a customized mobile app for your church.</div>
+              <div class="learn-more mt-3 col-12 cursor-pointer">Set Up Now</div>
             </div>
           </div>
          
-          <div  :class="{ 'col-9' : !tenantInfoExtra.hasMobileApp || !tenantInfoExtra.hasOnlineGiving || !tenantInfoExtra.hasWebsite, 'col-12' : tenantInfoExtra.hasMobileApp && tenantInfoExtra.hasOnlineGiving && tenantInfoExtra.hasWebsite }">
+          <div  :class="{ 'col-12 col-md-9' : !tenantInfoExtra.hasMobileApp || !tenantInfoExtra.hasOnlineGiving || !tenantInfoExtra.hasWebsite, 'col-md-12' : tenantInfoExtra.hasMobileApp && tenantInfoExtra.hasOnlineGiving && tenantInfoExtra.hasWebsite }">
             <!-- Celebrations -->
           <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
             <div class="celeb-header">
@@ -245,9 +245,9 @@
           </div>
             <!-- Column Charts -->
             <div v-show="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0) || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0)">
-              <div class="charts" id="plot">
+              <!-- <div class="charts" id="plot"> -->
               <div v-if="tenantInfoAttendanceWeekly && attendanceDataExist">
-                <div class="adjust-view col-10 col-sm-3 offset-sm-9">
+                <div class="adjust-view col-10 col-sm-3 offset-sm-9 mt-5 mt-md-0">
                   <div class="view-report">View Reports</div>
                   <div class="weekly">
                     <span
@@ -286,7 +286,7 @@
                 </div>
               </div>
               
-            <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist">
+            <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist" style="margin-top: 100px">
               <div class="adjust-view col-10 col-sm-3 offset-sm-9">
                 <div class="view-report">View Reports</div>
                 <div class="weekly">
@@ -325,9 +325,9 @@
                 />
               </div>
             </div>
-          </div>
+          <!-- </div> -->
 
-              <div class="chart-con" v-show="firstTimerPieExist">
+              <div class="" v-show="firstTimerPieExist" style="margin-top: 80px">
               <div class="container-fluid">
                   <div class="row">
                     <div class="col-12 col-md-6 d-flex justify-content-center">
@@ -357,26 +357,26 @@
       <div v-if="tenantInfoCeleb.length === 0 && (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] === 0) && (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length === 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] === 0)">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-12 more-things">More Things You Can do</div>
+            <div class="col-12 more-things">More Benefits You Can Get</div>
           </div>
           <div class="row mt-4">
-            <div class="col-12 col-sm-6  col-md-4 more-things">
+            <div class="col-12 col-sm-6 col-md-4 more-things">
               <img src="../../assets/website.svg">
               <div class="mt-4">Website</div>
-              <div class="more-body mt-2">Lorem Ipsum Is a good man, Init imet is his wife</div>
-              <div class="learn-more mt-3 col-6 offset-3">Learn more</div>
+              <div class="more-body mt-2">Get a user engaging website for your church.</div>
+              <a href="https://churchplus.co/awoofwebsite/" target="_blank"><div class="learn-more mt-3 col-6 offset-3 cursor-pointer" >Get One Now</div></a>
             </div>
             <div class="col-12 col-sm-6 col-md-4 more-things second">
               <img src="../../assets/online_giving.png">
               <div class="mt-4">Online Giving</div>
-              <div class="more-body mt-2">Lorem Ipsum Is a good man, Init imet is his wife</div>
-              <div class="learn-more second col-6 offset-3">Learn more</div>
+              <div class="more-body mt-2">Make online donations to your church.</div>
+              <router-link to="/tenant/payments"><div class="learn-more second col-6 offset-3 cursor-pointer">Set Up Now</div></router-link>
             </div>
             <div class="col-12 col-sm-6 col-md-4  more-things">
               <img src="../../assets/mobile_app.svg">
               <div class="mt-4">Mobile App</div>
-              <div class="more-body mt-2">Lorem Ipsum Is a good man, Init imet is his wife</div>
-              <div class="learn-more mt-3 col-6 offset-3">Learn more</div>
+              <div class="more-body mt-2">Get a customized mobile app for your church.</div>
+              <div class="learn-more mt-3 col-6 offset-3 cursor-pointer">Set Up Now</div>
             </div>
           </div>
         </div>
@@ -1099,7 +1099,7 @@ tbody tr:nth-child(even) {
 
 .adjust-view {
   position: relative;
-  top: 188px;
+  top: 96px;
   z-index: 1;
 }
 
@@ -1140,10 +1140,15 @@ tbody tr:nth-child(even) {
   opacity: 1;
 }
 
+.welcome-user {
+  width: 64%;
+  float: right;
+}
+
 @media (max-width: 575px) {
   .adjust-view {
     left: 65px;
-    top: 239px
+    top: 150px
   }
 }
 

@@ -10,7 +10,7 @@
       </div>
 </div>
   <div class="wrapper">
-    <div class="chart-div" :id="domId" style="height: 530px" ref="chartDiv"></div>
+    <div class="" :id="domId" style="height: 530px" ref="chartDiv"></div>
   </div>
 </template>
 
@@ -138,7 +138,7 @@ export default {
 
 .chart-header {
     display: flex;
-    /* margin-top: 45px; */
+    margin-top: -66px;
 }
 
 .icon-div img {
