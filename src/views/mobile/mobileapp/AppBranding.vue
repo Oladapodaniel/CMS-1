@@ -8,7 +8,9 @@
                     </div>
             </div>
             <div class="col-5">
-                <h1>Welcome</h1>
+                <div :style="{'background-image': 'url(../../../assets/paystack.png)'}">
+
+                </div>
 
             </div>
             
