@@ -220,6 +220,7 @@ import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
+// import { error } from 'highcharts';
 // import ref from 'Vue'
     export default {
         components:{InputText, Password, Checkbox,Toast},
@@ -315,7 +316,7 @@ import store from "@/store/store";
 
         },
         createNewUser(){
-            if( this.uesrName === '' || this.assword === '' || this.mail === '' || this.assword1 === '' || this.phoneNumber === ''){
+            if( this.userName === '' || this.assword === '' || this.mail === '' || this.assword1 === '' || this.phoneNumber === ''){
                 this.$toast.add({
                 severity:'error', 
                 summary:'Confirmed', 
@@ -358,11 +359,20 @@ import store from "@/store/store";
                 this.$toast.add({
                 severity:'success', 
                 summary:'Confirmed', 
-                detail:'Invite New User Saved Successfully', 
+                detail:'New User Saved Successfully', 
                 life: 4000
                 });
                 console.log(res);
                 console.log('wisdom is great');
+                this.$router.push('/tenant/settings')
+            }).catch((error)=>{
+                console.log(error);
+                this.$toast.add({
+                severity:'error', 
+                summary:'Confirmed', 
+                detail:'Check your Internet Connectivity', 
+                life: 4000
+                })
             })
             
 

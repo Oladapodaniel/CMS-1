@@ -91,9 +91,9 @@
                   aria-expanded="false"
                 ></i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" v-if="churchMem.phone">
+                  <a class="dropdown-item">
                     <router-link
-                    to="`/tenant/sms/compose?phone=${churchMem.phone}`"
+                    :to="`/tenant/sms/compose?phone=${churchMem.phone}`"
                       >Send SMS</router-link>
                     </a>
                   <a class="dropdown-item" v-if="churchMem.email">
@@ -156,9 +156,8 @@ export default {
       .then((response)=>{
         this.getCurrentUser = response.data;
       console.log(response.data)
-      .catch((error)=>console.log(error))
-
       })
+      .catch((error)=>console.log(error))
     }
   },
   created() {
