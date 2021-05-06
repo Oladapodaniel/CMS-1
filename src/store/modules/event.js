@@ -22,6 +22,7 @@ export default {
     clearState(state) {
       state.eventData = {}
       state.eventList = []
+      state.reportData = {}
     },
 
     setReportData(state, payload) {
