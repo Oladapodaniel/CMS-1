@@ -60,7 +60,7 @@
         <div class="modal-content">
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">Add Members To Group</h4>
+            <h5 class="modal-title">Add Members To Group</h5>
             <button type="button" class="close" data-dismiss="modal">
               &times;
             </button>
@@ -82,9 +82,10 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn groupicon-color"
+              class="btn groupicon-color default-btn"
               data-dismiss="modal"
               @click="moveMemberToGroup"
+              style="border:none"
             >
               Add to Group
             </button>
