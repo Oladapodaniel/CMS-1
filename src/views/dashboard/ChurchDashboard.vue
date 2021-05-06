@@ -126,7 +126,7 @@
 
       <div class="container-fluid">
         <div class="row">
-          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0)">
+          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0) || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0)">
             <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
               <!-- <i class="pi pi-times"></i> -->
               <img src="../../assets/website.svg" class="w-100">
@@ -343,7 +343,8 @@
           </div>
         </div>
       </div>
-      <div v-if="tenantInfoCeleb.length === 0 && (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] === 0) && (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length === 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] === 0)">
+      <!-- {{ tenantInfoAttendanceWeekly[0].data }} -->
+      <div v-if="tenantInfoCeleb.length === 0 && tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0 && tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length === 0">
         <div class="container-fluid">
           <div class="row">
             <div class="col-12 more-things">More Benefits You Can Get</div>
