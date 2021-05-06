@@ -1,9 +1,9 @@
 <template>
   <div class="container-fluid wave">
-    <div class="row d-flex align-items-center hero-section">
-      <div class="col-6">
+    <div class="row d-flex align-items-center">
+      <div class="col-6 text-end">
         <div class="row mainheader">
-          <h2>
+          <h2 class="">
             All in one app to <br />
             effectively manage <br />
             your church
@@ -34,8 +34,7 @@
             </div>
 
             <div class="image-column">
-              <img class="phone1" src="../../../assets/phone1.png" alt="" />
-              <img class="phone2 " src="../../../assets/phone2.png" alt="" />
+              <img class="w-100" src="../../../assets/mobileonboarding/phone.png" alt="" />
             </div>
           </div>
         </div>
@@ -55,21 +54,6 @@
 background:linear-gradient(222deg, #2E67CE 0%, #52309E 58%,
  #690C7F 100%) ;
  height: 80vh;
-}
-
-.phone1{
-  width: 322px;
-  height: 658px;
-  z-index: 1;
-  position: relative;
-}
-
-.phone2{
-  width:322px;
-  height:659px;
-  z-index: 1;
-  /* z-index: -1; */
-  position: absolute;
 }
 
 .mainheader{
@@ -111,12 +95,6 @@ background:linear-gradient(222deg, #2E67CE 0%, #52309E 58%,
 .custom-shape-divider-bottom-1620296099 .shape-fill {
     fill: #fff;
 }
-
-
-/* transparent linear-gradient(222deg, #2E67CE 0%, #52309E 58%,
- #690C7F 100%) 0% 0% no-repeat padding-box;
-opacity: 1; */
-
 </style>
 
 
