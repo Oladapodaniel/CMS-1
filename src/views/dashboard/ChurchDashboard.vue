@@ -124,17 +124,6 @@
         </div>
       </div>
 
-      <div class="text-center" v-if="attendanceLoading">
-        <i class="pi pi-spin pi-spinner text-primary" style="fontSize: 3rem"></i>
-      </div>
-      <!-- {{ tenantInfoExtra.hasOnlineGiving }}
-      {{ tenantInfoExtra.hasWebsite }}
-      {{ tenantInfoExtra.hasMobileApp }} -->
-      <!-- {{ tenantInfoCeleb.length > 0 }} -->
-      <!-- {{ tenantInfoFirstTimerWeekly[0].data.length > 0  }}
-      {{ tenantInfoAttendanceWeekly[0].data.length >= 1 }}
-      {{ tenantInfoAttendanceWeekly[0].data[0] > 0 }} -->
-    <!-- || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0) -->
       <div class="container-fluid">
         <div class="row">
           <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0)">
@@ -161,7 +150,7 @@
             </div>
           </div>
          
-          <div  :class="{ 'col-12 col-md-9' : !tenantInfoExtra.hasMobileApp || !tenantInfoExtra.hasOnlineGiving || !tenantInfoExtra.hasWebsite, 'col-md-12' : tenantInfoExtra.hasMobileApp && tenantInfoExtra.hasOnlineGiving && tenantInfoExtra.hasWebsite }">
+          <div class="pl-5 pr-0" :class="{ 'col-12 col-md-9' : !tenantInfoExtra.hasMobileApp || !tenantInfoExtra.hasOnlineGiving || !tenantInfoExtra.hasWebsite, 'col-md-12' : tenantInfoExtra.hasMobileApp && tenantInfoExtra.hasOnlineGiving && tenantInfoExtra.hasWebsite }">
             <!-- Celebrations -->
           <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
             <div class="celeb-header">
@@ -174,7 +163,7 @@
             </div>
             <div class="table table-responsive">
               <div class="table-top">
-                <router-link to="" class="view-all">View all</router-link>
+                <router-link to="" class="view-all" v-if="false">View all</router-link>
               </div>
 
 
@@ -286,7 +275,7 @@
                 </div>
               </div>
               
-            <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist" style="margin-top: 100px">
+            <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist">
               <div class="adjust-view col-10 col-sm-3 offset-sm-9">
                 <div class="view-report">View Reports</div>
                 <div class="weekly">
@@ -327,7 +316,7 @@
             </div>
           <!-- </div> -->
 
-              <div class="" v-show="firstTimerPieExist" style="margin-top: 80px">
+              <div class="chart-div" v-show="firstTimerPieExist">
               <div class="container-fluid">
                   <div class="row">
                     <div class="col-12 col-md-6 d-flex justify-content-center">
@@ -381,7 +370,10 @@
           </div>
         </div>
         </div>
-        <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
+        <div class="text-center" v-if="attendanceLoading">
+          <i class="pi pi-spin pi-spinner text-primary" style="fontSize: 3rem"></i>
+        </div>
+        <!-- <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-left"></i>
           </button>
@@ -390,7 +382,7 @@
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-right"></i>
           </button>
-        </div>
+        </div> -->
       <!-- </div> -->
       <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
       
@@ -1005,6 +997,13 @@ export default {
   align-items: center;
   font-size: 25px;
   font-weight: 600;
+  margin-top: -18px;
+}
+
+@media (max-width: 767px) {
+  .celeb-header {
+    margin-top: 0
+  }
 }
 
 .celeb-header-text p {
@@ -1099,7 +1098,8 @@ tbody tr:nth-child(even) {
 
 .adjust-view {
   position: relative;
-  top: 96px;
+  top: 120px;
+  right: 10px;
   z-index: 1;
 }
 

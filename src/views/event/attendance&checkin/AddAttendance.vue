@@ -243,7 +243,7 @@
         <div class="row">
           <div class="col-12">
             <div class="d-flex justify-content-between">
-              <h5 class="header-contri mt-2">More</h5>
+              <h5 class="mt-2">More</h5>
                 <hr style="width: 80%"/>
                 <i class="pi pi-angle-up angle-icon mt-2" :class="{ 'rollIcon' : templateDisplay, 'closeIcon' : !templateDisplay }" @click="toggleTemplate" ></i>
             </div>
@@ -281,7 +281,7 @@
               <label for="" class="font-weight-600">Event Details</label>
             </div>
             <div class="col-sm-7 col-md-6 col-lg-5">
-              <textarea name="" id="" cols="30" rows="4" class="form-control"></textarea>         
+              <textarea name="" id="" cols="30" rows="4" class="form-control" v-model="eventDetails"></textarea>         
             </div>
           </div>
           
@@ -444,7 +444,6 @@
             </div>
           </div>
         </div>
-
         <div class="row">
           <Toast />
         </div>
@@ -491,6 +490,11 @@ export default {
     const accountName = ref("")
     const accNameRef = ref("")
     const loading = ref(false)
+    const eventDetails = ref("")
+    const cashBankAccount = ref([])
+    const incomeAccount = ref([])
+    const selectedIncomeAccount = ref(null)
+    const selectedCashAccount = ref(null)
 
 
     const selectedGroup = ref({});
@@ -591,6 +595,18 @@ export default {
     getGroups();
 
     const onContinue = async () => {
+      const formData = new FormData();
+      formData.append("details", eventDetails.value)
+      formData.append("bankId", selectedBank.value.id)
+      formData.append("accountName", accountName.value)
+      formData.append("accountNumber", accountNumber.value)
+      formData.append("contributionItemName", selectedEvent.value.name)
+      formData.append("cashAccountId", selectedCashAccount.value.id)
+      formData.append("incomeAccountId", selectedIncomeAccount.value.id)
+      formData.append("registrationSms", selectedIncomeAccount.value.id)
+      formData.append("registrationEmail", selectedIncomeAccount.value.id)
+      formData.append("checkinSms", selectedIncomeAccount.value.id)
+      formData.append("checkinEmail", selectedIncomeAccount.value.id)
       try {
         const response = await attendanceservice.saveCheckAttendanceItem({
           activityID: selectedEvent.value.id,
@@ -671,6 +687,32 @@ export default {
             console.log(selectedBank.value.code, accountNumber.value)
         }
 
+        const getCashBankAccount = () => {
+            axios.get('/api/financials/accounts/getcashbankaccounts')
+              .then(res => {
+                console.log(res.data)
+                cashBankAccount.value = res.data
+              })
+              .catch (err => {
+                console.log(err)
+              })
+        }
+        getCashBankAccount()
+
+        const getIncomeAccount = ()=> {
+          axios.get('/api/Financials/Accounts/GetIncomeAccounts')
+            .then(res => {
+              incomeAccount.value = res.data
+              // if (res.data.length < 1) {
+              //   displayResponsive.value = true
+              // }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+        getIncomeAccount()
+
     return {
       selectedEvent,
       onContinue,
@@ -707,7 +749,12 @@ export default {
       accountName,
       resolveCustomerDetail,
       accNameRef,
-      loading
+      loading,
+      eventDetails,
+      cashBankAccount,
+      incomeAccount,
+      selectedIncomeAccount,
+      selectedCashAccount
     };
   },
 };
