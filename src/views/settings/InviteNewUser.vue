@@ -39,12 +39,12 @@
                          <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" required v-model="assword"  /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" required v-model="password1"  /></div>
                         </div>
                         <div class="row mb-5 mt-5">
                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" v-model="assword1" required /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" v-model="password2" required /></div>
                         </div>
                          
                         <!-- <div class="row mb-3">
@@ -230,8 +230,8 @@ import store from "@/store/store";
             roles1: [],
             userName:'',
             mail:'',
-            assword: '',
-            assword1: '',
+            password1: '',
+            password2: '',
             phoneNumber: '',
             name2: '',
             info: null,
@@ -316,7 +316,7 @@ import store from "@/store/store";
 
         },
         createNewUser(){
-            if( this.userName === '' || this.assword === '' || this.mail === '' || this.assword1 === '' || this.phoneNumber === ''){
+            if( this.userName === '' || this.password1 === '' || this.mail === '' || this.password2 === '' || this.phoneNumber === ''){
                 this.$toast.add({
                 severity:'error', 
                 summary:'Confirmed', 
@@ -326,7 +326,7 @@ import store from "@/store/store";
                 
 
             }
-            if(this.assword.length < 6){
+            if(this.password1.length < 6){
                 this.$toast.add({
                 severity:'error', 
                 summary:'Confirmed', 
@@ -335,7 +335,7 @@ import store from "@/store/store";
 
                 })
             }
-            if(this.assword !== this.assword1){
+            if(this.password1 !== this.password2){
                 this.$toast.add({
                 severity:'error', 
                 summary:'Confirmed', 
@@ -348,7 +348,7 @@ import store from "@/store/store";
 
             let createNew = {
                 email : this.mail,
-                password: this.assword,
+                password: this.password1,
                 name : this.userName,
                 roles : this.roles1,
                 phone: this.phoneNumber
