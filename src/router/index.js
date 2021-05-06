@@ -730,17 +730,17 @@ const routes = [{
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
     },
     {
-        path: '/index',
+        path: '/Index',
         name: 'mobileapponboarding',
         component: () =>
             import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index')
     },
-    {
-        path: '/index2',
-        name: 'mobileapponboarding',
-        component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index2')
-    },
+    // {
+    //     path: '/index2',
+    //     name: 'mobileapponboarding',
+    //     component: () =>
+    //         import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index2')
+    // },
 
 
 ]
