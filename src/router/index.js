@@ -415,8 +415,7 @@ const routes = [{
                         name: 'SocialFeed',
                         component: () =>
                             import ( /* webpackChunkName: "feed" */ '@/views/social&mobile/feed/Index'),
-                        children: [
-                            {
+                        children: [{
                                 path: '',
                                 name: 'AllPosts',
                                 component: () =>
@@ -571,8 +570,7 @@ const routes = [{
                 name: 'MediaLibrary',
                 component: () =>
                     import ( /* webpackChunkName: "medialibrary" */ '@/views/media/library/Index'),
-                children: [
-                    {
+                children: [{
                         path: '',
                         name: 'Gallery',
                         component: () =>
@@ -730,7 +728,7 @@ const routes = [{
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
     },
     {
-        path: '/index',
+        path: '/Index',
         name: 'mobileapponboarding',
         component: () =>
             import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index')
@@ -740,6 +738,12 @@ const routes = [{
         name: 'mobileapponboarding',
         component: () =>
             import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index2')
+    },
+    {
+        path: '/AppBranding',
+        name: 'appbranding',
+        component: () =>
+            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/AppBranding')
     },
 
 
