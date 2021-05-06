@@ -21,7 +21,7 @@
         </div>
         <div class="row">
           <div>
-            <button>Start Now</button>
+            <button class="btn default-btn">Start Now</button>
           </div>
         </div>
       </div>
