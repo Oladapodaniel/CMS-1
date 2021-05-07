@@ -669,6 +669,7 @@ export default {
       formData.append("amount", amount.value)
       formData.append("activityId", selectedEvent.value.id)
       formData.append("groupId", selectedGroup.value.id)
+      formData.append("enableRegistration", true)
       if (!amount.value && !selectedBank.value && !accountNumber.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value && !registrationEmail.value && !registrationSMS.value && !checkinEmail.value && !checkinSMS.value) {
         
       try {

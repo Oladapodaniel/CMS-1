@@ -417,6 +417,7 @@ export default {
         const response = await attendanceservice.getItemByCode(route.query.id);
         store.dispatch("attendance/setItemData", response);
         attendanceCheckinInStore.value = response;
+        console.log(response)
       } catch (error) {
         console.log(error);
       }
