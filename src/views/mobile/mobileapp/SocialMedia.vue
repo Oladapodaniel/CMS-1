@@ -8,7 +8,7 @@
 
                     </div>
                     <div class="col-md-5">
-                       <h5 class="appBranding">App Branding</h5> 
+                       <h5 class="appBranding">Social Media</h5> 
                     </div>
                     <div class="col-md-1">
                     </div>
@@ -23,7 +23,7 @@
 
                     </div>
                     <div class="col-md-5">
-                       <h5 class="colourText">Colour</h5> 
+                       <h5 class="colourText"></h5> 
                     </div>
                     <div class="col-md-1">
                     </div>
@@ -32,76 +32,79 @@
                     </div>
                     
                 </div>
-                 <div class="row mt-5 d-flex justify-content-md-between">
-                    <div class="col-md-3">
-                        
-
-                    </div>
-                    <div class="col-md-5">
-                       <h5 class="primaryColour">Primary Colour</h5> 
-                    </div>
-                    <div class="col-md-1" id="primaryColour">
-                    </div>
-                    <div class="col-md-3">
-
-                    </div>
-                    
-                </div>
-                <hr class="mt-2">
-                 <div class="row mt-3 d-flex justify-content-md-between">
-                    <div class="col-md-3">
-                        
-
-                    </div>
-                    <div class="col-md-5">
-                       <h5 class="primaryColour">Secondary Colour</h5> 
-                    </div>
-                    <div class="col-md-1" id="secondaryColour">
-                    </div>
-                    <div class="col-md-3">
-
-                    </div>
-                    
-                </div>
-                <hr class="mt-2">
-                <div class="row mt-3 d-flex justify-content-md-between">
-                    <div class="col-md-3">
-                        
-
-                    </div>
-                    <div class="col-md-5">
-                       <h5 class="primaryColour">Test Colour</h5> 
-                    </div>
-                    <div class="col-md-1" id="TestColour">
-                    </div>
-                    <div class="col-md-3">
-
-                    </div>
-                    
-                </div>
-                <hr class="mt-2">
                 <div class="row mt-5 d-flex justify-content-md-between">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-1">
-                       <h5 class="logo">Logo</h5> 
+                       <img src="../../../assets/social/facebook.svg" alt="">
                     </div>
                     <div class="col-md-5" id="logoBox">
-                         <div class="cs-input border-0 mt-2 ml-4">
-                    <label for="imgUpload" class="choose-file">
-                      Choose file
-                      <input
-                        type="file"
-                        class="input file-input"
-                        placeholder=""
-                        id="imgUpload"
-                        @change="imageSelected"
-                      />
-                    </label>
-                  </div>
+                        <input type="text" class="w-100 py-1 border-0 outline-none px-2">
 
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
+
+                    </div>
+                    
+                </div>
+                <div class="row mt-4 d-flex justify-content-md-between">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-1">
+                       <img src="../../../assets/social/twitter.svg" alt="">
+                    </div>
+                    <div class="col-md-5" id="logoBox">
+                         <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                    
+                </div>
+                <div class="row mt-4 d-flex justify-content-md-between">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-1">
+                       <img src="../../../assets/social/instagram.svg" alt="">
+                    </div>
+                    <div class="col-md-5" id="logoBox">
+                         <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                    
+                </div>
+                 <div class="row mt-4 d-flex justify-content-md-between">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-1">
+                       <img src="../../../assets/social/instagram.svg" alt="">
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="">YouTube Url</h6>
+                    </div>
+                    <div class="col-md-3" id="logoBox">
+                         <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+                    
+                </div>
+                 <div class="row mt-4 d-flex justify-content-md-between">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-2">
+                        <h6 class="p-0">Channel ID</h6>
+                    </div>
+                    <div class="col-md-3" id="logoBox">
+                         <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                    </div>
+                    <div class="col-md-3">
 
                     </div>
                     
@@ -145,7 +148,7 @@
     
 }
 .backgroundImage{
-    background-image: url("../../../assets/mobileonboarding/app1.svg");
+    background-image: url("../../../assets/mobileonboarding/socialimage.svg");
     background-repeat: no-repeat,repeat;
     background-size: cover;
     background-color: #cccccc;
@@ -191,7 +194,7 @@ border: 1px solid #DDE2E6;
 border-radius: 5px;
 opacity: 1; 
 width: 437px;
-height: 45px;
+height: 40px;
 
 }
 .colourText{

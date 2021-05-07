@@ -745,12 +745,13 @@ const routes = [{
         component: () =>
             import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/AppBranding')
     },
-    // {
-    //     path: '/index2',
-    //     name: 'mobileapponboarding',
-    //     component: () =>
-    //         import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index2')
-    // },
+    {
+        path: '/SocialMedia',
+        name: 'socialmedia',
+        component: () =>
+            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/SocialMedia')
+    },
+
 
 
 ]
