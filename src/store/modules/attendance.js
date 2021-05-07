@@ -4,11 +4,16 @@ export default {
 
     state: {
         attendanceItemData: { },
+        eventRegItemData: { }
     },
 
     mutations: {
         setItemData(state, payload) {
             state.attendanceItemData = payload;
+        },
+        
+        setEventReg(state, payload) {
+            state.eventRegItemData = payload;
         },
 
         clearState(state) {
@@ -20,6 +25,10 @@ export default {
         setItemData({ commit }, payload) {
           commit("setItemData", payload)
         },
+        
+        setEventReg({ commit }, payload) {
+          commit("setEventReg", payload)
+        },
 
         clearState({ commit }) {
             commit("clearState")
@@ -28,5 +37,6 @@ export default {
 
     getters: {
         attendanceItemData: state => state.attendanceItemData,
+        eventRegItemData: state => state.eventRegItemData
     },
 }

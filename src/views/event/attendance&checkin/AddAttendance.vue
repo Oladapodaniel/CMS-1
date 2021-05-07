@@ -250,26 +250,17 @@
           </div>
         </div>
 
-        <div class="row" :class="{ 'show-tem': templateDisplay, 'hide-tem' : !templateDisplay }">
+        <div class="row" :class="{ 'show-tem-free': templateDisplay && addFreeClass, 'show-tem' : templateDisplay && addPaidClass,'hide-tem' : !templateDisplay }">
           <div class="container-fluid">
             <div class="row my-3">
 
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
               <label for="" class="font-weight-600">Event Banner</label>
             </div>
-            <div class="col-sm-7 col-md-6 col-lg-5">
-              <Dropdown
-                v-model="selectedGroup"
-                :options="groups"
-                optionLabel="name"
-                placeholder="Select group"
-                :filter="false"
-                filterPlaceholder="Search grouped contacts"
-                style="width: 100%"
-              />
-          
+            <div class="col-sm-7 col-md-6 col-lg-3 offset-lg-1"  :class="{ 'img-border ' : imageUrl === '' }">
+              <img :src="imageUrl" class="w-100">
             </div>
-            <div class="col-5 col-sm-2 offset-3 offset-sm-0 my-2 my-sm-0 upload-button align-self-center text-center">Upload</div>
+            <div @click="altClick" class="col-5 col-sm-2 offset-3 offset-sm-1 my-2 my-sm-0 upload-button align-self-center text-center cursor-pointer">Upload <input type="file" @change="chooseFile" ref="binImage" hidden/></div>
             <div class="col-sm-3 col-md-4"></div>
             <div class="col-sm-7 col-md-6 col-lg-5 offset-2 offset-sm-0 mt-2">Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
                 GIF formats.</div>
@@ -277,7 +268,7 @@
           
           
           <div class="row my-3">
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
               <label for="" class="font-weight-600">Event Details</label>
             </div>
             <div class="col-sm-7 col-md-6 col-lg-5">
@@ -295,53 +286,96 @@
                   <span class="font-weight-700 cursor-pointer" @click="showFreeTab" :class="{ 'active-tab' : addFreeClass }">Free</span>&nbsp;&nbsp;/&nbsp;&nbsp;<span class="font-weight-700 cursor-pointer" @click="showPaidTab" :class="{ 'active-tab' : addPaidClass }">Paid</span>
                 </div>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" placeholder="Enter amount" v-if="addPaidClass">
+                  <input type="text" class="form-control" placeholder="Enter amount" v-model="amount" :class="{ 'show-amount' : addPaidClass, 'hide-amount' : !addPaidClass }">
                 </div>
               </div>     
             </div>
             <div class="col-sm-2 col-lg-3"></div>
 
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Select Bank</div>
-            <div class="col-sm-7 col-md-6 col-lg-5">
-              <Dropdown v-model="selectedBank" class="w-100 mt-4" :options="nigerianBanks" optionLabel="name" :filter="true" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
-              </Dropdown>
-            </div>
-            <div class="col-sm-2 col-lg-3"></div>
+            <div class="col-12" :class="{ 'show-paid' : addPaidClass, 'hide-paid' : !addPaidClass }">
+              <div class="row">
+                  <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Select Bank</div>
+              <div class="col-sm-7 col-md-6 col-lg-5">
+                <div class="dropdown w-100 mt-4">
+                  <button
+                class="default-btn w-100 text-left pr-1"
+                type="button"
+                style="
+                  border-radius: 4px;
+                  border: 1px solid #ced4da;
+                  color: #6c757d;
+                "
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                {{
+                  !selectedBank
+                    ? "Select"
+                    : selectedBank.name.length > 27
+                    ? `${selectedBank.name.slice(0, 27)}...`
+                    : selectedBank.name
+                }}
+                <i
+                  class="pi pi-chevron-down manual-dd-icon float-right pr-1"
+                ></i>
+              </button>
+                  <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton" style="max-height: 350px;overflow-y:auto">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Find event"
+                      v-model="bankSearchText"
+                    />
+                    <a class="dropdown-item elipsis-items cursor-pointer" v-for="item in filteredBanks" :key="item.id">
+                      <div @click="setBank(item)">{{ item ? item.name : "" }}</div>
+                    </a>
+                    
+                  </div>
+                </div>
+               
+                <!-- <Dropdown v-model="selectedBank" class="w-100 mt-4" :options="nigerianBanks" optionLabel="name" :filter="true" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
+                </Dropdown> -->
+              </div>
+              <div class="col-sm-2 col-lg-3"></div>
 
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Account Number</div>
-            <div class="col-sm-7 col-md-6 col-lg-5">
-              <input type="text" class="form-control mt-4 input-height" placeholder="Enter account number" v-model="accountNumber" @blur="resolveCustomerDetail">
-            </div>
+              <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Account Number</div>
+              <div class="col-sm-7 col-md-6 col-lg-5">
+                <input type="text" class="form-control mt-4 input-height" placeholder="Enter account number" v-model="accountNumber" @blur="resolveCustomerDetail">
+              </div>
+              <div class="col-sm-2 col-lg-3"></div>
+              
+              <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Account Name</div>
+              <div class="col-sm-7 col-md-6 col-lg-5">
+                <input type="text" class="form-control mt-4 input-height" placeholder="account name" v-model="accountName" ref="accNameRef">
+              </div>
+              <div class="col-sm-2 col-lg-3  align-self-center mt-4" v-if="loading">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+              
+              <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Income Account</div>
+              <div class="col-sm-7 col-md-6 col-lg-5">
+                <Dropdown v-model="selectedIncomeAccount" class="w-100 p-0 mt-4" :options="incomeAccount" optionLabel="text" :filter="false" placeholder="Select" :showClear="false">
+                </Dropdown>
+              </div>
+              <div class="col-sm-2 col-lg-3"></div>
+              
+              <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Cash Account</div>
+              <div class="col-sm-7 col-md-6 col-lg-5">
+                <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0 mt-4" :showClear="false">
+                </Dropdown>
+              </div>
             <div class="col-sm-2 col-lg-3"></div>
-            
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Account Name</div>
-            <div class="col-sm-7 col-md-6 col-lg-5">
-              <input type="text" class="form-control mt-4 input-height" placeholder="account name" v-model="accountName" ref="accNameRef">
-            </div>
-            <div class="col-sm-2 col-lg-3  align-self-center mt-4" v-if="loading">
-              <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
               </div>
             </div>
-            
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Income Account</div>
-            <div class="col-sm-7 col-md-6 col-lg-5">
-              <Dropdown v-model="selectedIncomeAccount" class="w-100 p-0 mt-4" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-              </Dropdown>
-            </div>
-            <div class="col-sm-2 col-lg-3"></div>
-            
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-4 font-weight-600">Cash Account</div>
-            <div class="col-sm-7 col-md-6 col-lg-5">
-              <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0 mt-4" :showClear="false">
-              </Dropdown>
-            </div>
-            <div class="col-sm-2 col-lg-3"></div>
           </div>
           
           
           <div class="row mt-3">
-            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-5">
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-5 align-self-center">
               <label for="" class="font-weight-600">SMS</label>
             </div>
             <div class="col-sm-7 col-md-6 col-lg-5 mt-2">
@@ -355,34 +389,34 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2"></textarea>
+                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2" v-model="checkinSMS"></textarea>
                   </div>
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2"></textarea>
+                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2" v-model="registrationSMS"></textarea>
                   </div>
                 </div>
             </div>
 
             <div class="col-sm-2 col-lg-3"></div>
 
-          <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3">
+          <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right mt-3 align-self-center">
               <label for="" class="font-weight-600">Email</label>
             </div>
             <div class="col-sm-7 col-md-6 col-lg-5 mt-3">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Checkin</a>
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#first" role="tab" aria-controls="home" aria-selected="true">Checkin</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Registration</a>
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#second" role="tab" aria-controls="profile" aria-selected="false">Registration</a>
                   </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2"></textarea>
+                  <div class="tab-pane fade show active" id="first" role="tabpanel" aria-labelledby="home-tab">
+                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2" v-model="checkinEmail"></textarea>
                   </div>
-                  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2"></textarea>
+                  <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="profile-tab">
+                     <textarea name="" id="" cols="30" rows="3" class="form-control mt-2" v-model="registrationEmail"></textarea>
                   </div>
                 </div>   
             </div>
@@ -467,6 +501,7 @@ import { useToast } from 'primevue/usetoast';
 import axios from "@/gateway/backendapi";
 import finish from '../../../services/progressbar/progress'
 import axio from  'axios'
+import moment from "moment";
 
 
 export default {
@@ -495,6 +530,14 @@ export default {
     const incomeAccount = ref([])
     const selectedIncomeAccount = ref(null)
     const selectedCashAccount = ref(null)
+    const registrationSMS = ref("")
+    const registrationEmail = ref("")
+    const checkinSMS = ref("")
+    const checkinEmail = ref("")
+    const amount = ref("")
+    const binImage = ref("")
+    const image = ref ("")
+    const imageUrl = ref("")
 
 
     const selectedGroup = ref({});
@@ -584,6 +627,12 @@ export default {
       if (!categorySearchText.value) return eventCategories.value;
       return eventCategories.value.filter(i => i.name.toLowerCase().includes(categorySearchText.value.toLowerCase()));
     })
+    
+    const bankSearchText = ref("");
+    const filteredBanks = computed(() => {
+      if (!bankSearchText.value) return nigerianBanks.value;
+      return nigerianBanks.value.filter(i => i.name.toLowerCase().includes(bankSearchText.value.toLowerCase()));
+    })
 
     const eventSearchText = ref("");
     const filteredEvents= computed(() => {
@@ -595,38 +644,73 @@ export default {
     getGroups();
 
     const onContinue = async () => {
+      let checkinEvent = {
+          eventId: selectedEvent.value.id,
+          groupID: selectedGroup.value.id,
+          eventDate: moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0]
+        }
+        console.log(checkinEvent)
       const formData = new FormData();
+
+      formData.append("bannerPhoto", image.value)
       formData.append("details", eventDetails.value)
-      formData.append("bankId", selectedBank.value.id)
+      formData.append("bankId", selectedBank.value ? selectedBank.value.id : "")
       formData.append("accountName", accountName.value)
       formData.append("accountNumber", accountNumber.value)
       formData.append("contributionItemName", selectedEvent.value.name)
-      formData.append("cashAccountId", selectedCashAccount.value.id)
-      formData.append("incomeAccountId", selectedIncomeAccount.value.id)
-      formData.append("registrationSms", selectedIncomeAccount.value.id)
-      formData.append("registrationEmail", selectedIncomeAccount.value.id)
-      formData.append("checkinSms", selectedIncomeAccount.value.id)
-      formData.append("checkinEmail", selectedIncomeAccount.value.id)
-      try {
-        const response = await attendanceservice.saveCheckAttendanceItem({
-          activityID: selectedEvent.value.id,
-          groupID: selectedGroup.value.id,
-        });
+      formData.append("cashAccountId", selectedCashAccount.value ? selectedCashAccount.value.id : "")
+      formData.append("incomeAccountId", selectedIncomeAccount.value ? selectedIncomeAccount.value.id : "")
+      formData.append("registrationSMS", registrationSMS.value)
+      formData.append("registrationEmail", registrationEmail.value)
+      formData.append("checkinSMS", checkinSMS.value)
+      formData.append("checkinEmail", checkinEmail.value)
+      formData.append("activityDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0])
+      formData.append("isPaidFor", addPaidClass.value)
+      formData.append("amount", amount.value)
+      formData.append("activityId", selectedEvent.value.id)
+      formData.append("groupId", selectedGroup.value.id)
+      if (!amount.value && !selectedBank.value && !accountNumber.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value && !registrationEmail.value && !registrationSMS.value && !checkinEmail.value && !checkinSMS.value) {
         
-        store.dispatch("attendance/setItemData", response);
-        router.push({
-          name: "CheckinType",
-          query: {
-            activityID: selectedEvent.value.id,
-            activityName: selectedEvent.value.name,
-            groupId: selectedGroup.value.id,
-            groupName: selectedGroup.value.name,
-            id: response.id,
-            code: response.attendanceCode,
-          },
-        });
-      } catch (error) {
-        console.log(error);
+      try {
+          const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
+          console.log(response)
+          store.dispatch("attendance/setItemData", response);
+          router.push({
+            name: "CheckinType",
+            query: {
+              activityID: selectedEvent.value.id,
+              activityName: selectedEvent.value.name,
+              groupId: selectedGroup.value.id,
+              groupName: selectedGroup.value.name,
+              id: response.id,
+              code: response.attendanceCode,
+            },
+          });
+        } catch (error) {
+          console.log(error);
+        }
+      console.log("Only Top")
+      } else {
+        console.log("All fields  filled")
+        try {
+            let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
+            console.log(data)
+            store.dispatch("attendance/setEventReg", data.returnObject);
+            router.push({
+              name: "CheckinType",
+              query: {
+                activityID: selectedEvent.value.id,
+                activityName: selectedEvent.value.name,
+                groupId: selectedGroup.value.id,
+                groupName: selectedGroup.value.name,
+                id: data.returnObject.checkInAttendanceResult.id,
+                code: data.returnObject.checkInAttendanceResult.attendanceCode
+              },
+            });
+        }
+        catch (err) {
+          console.log(err)
+        }
       }
     };
 
@@ -713,6 +797,23 @@ export default {
         }
         getIncomeAccount()
 
+        const altClick = () => {
+          binImage.value.click()
+        }
+
+        const chooseFile = (e) => {
+          console.log(e.target.files[0])
+          image.value = e.target.files[0]
+          imageUrl.value = URL.createObjectURL(image.value);
+          console.log(imageUrl.value)
+          // imageUrl.value = URL.createObjectURL(image.value);
+        }
+
+        const setBank = (item) => {
+          selectedBank.value = item
+          console.log(selectedBank.value)
+        }
+
     return {
       selectedEvent,
       onContinue,
@@ -754,7 +855,21 @@ export default {
       cashBankAccount,
       incomeAccount,
       selectedIncomeAccount,
-      selectedCashAccount
+      selectedCashAccount,
+      moment,
+      registrationSMS,
+      registrationEmail,
+      checkinSMS,
+      checkinEmail,
+      amount,
+      binImage,
+      altClick,
+      chooseFile,
+      image,
+      imageUrl,
+      setBank,
+      bankSearchText,
+      filteredBanks
     };
   },
 };
@@ -801,9 +916,15 @@ export default {
     transition: all 1s ease-in-out
 }
 
-.show-tem {
-    height: 964px;
+.show-tem-free {
+    height: 745px;
     overflow: hidden;
+    transition: all 1s ease-in-out
+}
+
+.show-tem {
+    height: 1050px;
+    /* overflow: hidden; */
     transition: all 1s ease-in-out
 }
 
@@ -819,5 +940,42 @@ export default {
 
 .input-height {
   height: 70%
+}
+
+.img-border {
+  border: 1px dotted rgb(206, 212, 218);
+  height: 150px;
+}
+
+.show-paid {
+  height: 327px;
+  /* overflow: hidden; */
+  transition: all 0.6s ease-in-out
+}
+
+.hide-paid {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.6s ease-in-out
+}
+
+.show-amount {
+  /* width: 100%;
+  overflow: hidden; */
+  transform: translateX(0px);
+  opacity: 1;
+  transition: all 0.6s ease-in-out
+}
+
+.hide-amount {
+  /* width: 0;
+  overflow: hidden; */
+  transform: translateX(-20px);
+  opacity: 0;
+  transition: all 0.6s ease-in-out;
+}
+
+#second {
+  width: 100%
 }
 </style>

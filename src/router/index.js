@@ -118,6 +118,11 @@ const routes = [{
                         component: () =>
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
                     },
+                    {
+                        path: 'importinstructions',
+                        component: () =>
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/ImportInstruction.vue')
+                    }
 
                 ]
             },

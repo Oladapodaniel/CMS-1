@@ -56,7 +56,116 @@
               </div>
               <div class="col-md-10 col-sm-10 mt-3">
                 <a class="text-decoration-none"
-                  ><h4 class="header4 link-color c-pointer" @click="copyLink">Registration Link</h4></a
+                  ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Registration Link</h4></a
+                >
+                <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+                <p class="para">
+                  <span class="d-flex align-items-center"
+                    ><input
+                      type="text"
+                      ref="regLink"
+                      @keydown="preventChangingOfCheckinLink"
+                      @click="copyRegLink"
+                      :value="eventRegLink"
+                      class="form-control"
+                      style="width: 95%" />
+                    <i
+                      class="pi pi-copy ml-2 c-pointer"
+                      @click="copyRegLink"
+                      style="font-size: 22px"
+                    ></i
+                  ></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row w-100 mt-3">
+          <div
+            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          >
+            <div class="row">
+              <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
+                <img
+                  src="../../../assets/link.svg" class="w-100"
+                  alt="marked Attendance image"
+                />
+              </div>
+              <div class="col-md-10 col-sm-10 mt-3">
+                <a class="text-decoration-none"
+                  ><h4 class="header4 link-color c-pointer" @click="copyPaymentFormLink">Payment Form Link</h4></a
+                >
+                <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+                <p class="para">
+                  <span class="d-flex align-items-center"
+                    ><input
+                      type="text"
+                      ref="paymentFormLink"
+                      @keydown="preventChangingOfCheckinLink"
+                      @click="copyPaymentFormLink"
+                      :value="`https://my.churchplus.co/${paymentFormID}`"
+                      class="form-control"
+                      style="width: 95%" />
+                    <i
+                      class="pi pi-copy ml-2 c-pointer"
+                      @click="copyPaymentFormLink"
+                      style="font-size: 22px"
+                    ></i
+                  ></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row w-100 mt-3">
+          <div
+            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          >
+            <div class="row">
+              <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
+                <img
+                  src="../../../assets/link.svg" class="w-100"
+                  alt="marked Attendance image"
+                />
+              </div>
+              <div class="col-md-10 col-sm-10 mt-3">
+                <a class="text-decoration-none"
+                  ><h4 class="header4 link-color c-pointer" @click="copyIframeLink">iFrame</h4></a
+                >
+                <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+                <p class="para">
+                  <span class="d-flex align-items-center"
+                    ><code class="w-100">
+                          <textarea rows="1" ref="iframeLink"  @click="copyIframeLink" :value="`${iFrameLink}`" class="form-control w-100 p-auto">
+                          </textarea>
+                      </code>
+                    <i
+                      class="pi pi-copy ml-2 c-pointer"
+                      @click="copyIframeLink"
+                      style="font-size: 22px"
+                    ></i
+                  ></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row w-100 mt-3">
+          <div
+            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          >
+            <div class="row">
+              <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
+                <img
+                  src="../../../assets/link.svg" class="w-100"
+                  alt="marked Attendance image"
+                />
+              </div>
+              <div class="col-md-10 col-sm-10 mt-3">
+                <a class="text-decoration-none"
+                  ><h4 class="header4 link-color c-pointer" @click="copyLink">Checkin Link</h4></a
                 >
                 <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
                 <p class="para">
@@ -259,6 +368,9 @@ export default {
     const selectedGroups = ref([]);
     const store = useStore();
     const checkinLink = ref(null);
+    const regLink = ref(null);
+    const paymentFormLink = ref(null);
+    const iframeLink = ref(null);
     const toast = useToast();
 
     if (route.query.activityID) {
@@ -295,8 +407,20 @@ export default {
     const attendanceCheckinInStore = ref(
       store.getters["attendance/attendanceItemData"]
     );
+    
+    const eventRegistration = ref(
+      store.getters["attendance/eventRegItemData"]
+    );
 
     const initCheckinAttendanceInStore = async () => {
+      try {
+        const response = await attendanceservice.getItemByCode(route.query.id);
+        store.dispatch("attendance/setItemData", response);
+        attendanceCheckinInStore.value = response;
+      } catch (error) {
+        console.log(error);
+      }
+      
       try {
         const response = await attendanceservice.getItemByCode(route.query.id);
         store.dispatch("attendance/setItemData", response);
@@ -321,7 +445,61 @@ export default {
         detail: "Checkin link copied to your clipboard",
         life: 3000,
       });
+      console.log(attendanceCheckinInStore.value)
+      console.log(eventRegistration.value)
     };
+    
+    const copyRegLink = () => {
+      regLink.value.select();
+      regLink.value.setSelectionRange(
+        0,
+        regLink.value.value.length
+      ); /* For mobile devices */
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      toast.add({
+        severity: "info",
+        summary: "Link Copied",
+        detail: "Registration link copied to your clipboard",
+        life: 3000,
+      });
+    };
+
+    const copyPaymentFormLink = () => {
+      paymentFormLink.value.select();
+      paymentFormLink.value.setSelectionRange(
+        0,
+        paymentFormLink.value.value.length
+      ); /* For mobile devices */
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      toast.add({
+        severity: "info",
+        summary: "Link Copied",
+        detail: "Payment form link copied to your clipboard",
+        life: 3000,
+      });
+    }
+
+    const copyIframeLink = () => {
+      
+      iframeLink.value.select();
+      iframeLink.value.setSelectionRange(
+        0,
+        iframeLink.value.value.length
+      ); /* For mobile devices */
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      toast.add({
+        severity: "info",
+        summary: "Link Copied",
+        detail: "iFrame copied to your clipboard",
+        life: 3000,
+      });
+    }
 
     const link = computed(() => {
       if (
@@ -330,6 +508,15 @@ export default {
       )
         return "";
       return attendanceCheckinInStore.value.attendanceRegistrationLink;
+    });
+    
+    const eventRegLink = computed(() => {
+      if (
+        !eventRegistration.value ||
+        !eventRegistration.value.eventRegistrationLink
+      )
+        return "";
+      return eventRegistration.value.eventRegistrationLink
     });
 
     const preventChangingOfCheckinLink = (e) => {
@@ -351,9 +538,17 @@ export default {
       selectedGroups,
       route,
       checkinLink,
+      regLink,
       copyLink,
       preventChangingOfCheckinLink,
       link,
+      eventRegistration,
+      eventRegLink,
+      copyRegLink,
+      paymentFormLink,
+      copyPaymentFormLink,
+      iframeLink,
+      copyIframeLink
     };
   },
 };
