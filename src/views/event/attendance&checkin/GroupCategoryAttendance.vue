@@ -43,7 +43,7 @@
         <div class="col-md-12 mb-1">
           <h5 class="check">Check in options</h5>
         </div>
-        <div class="row w-100">
+        <div class="row w-100" v-if="eventRegistration.eventRegistrationLink || eventLinkResponse">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -59,6 +59,7 @@
                   ><h4 class="header4 link-color c-pointer" @click="copyRegLink">Registration Link</h4></a
                 >
                 <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+                
                 <p class="para">
                   <span class="d-flex align-items-center"
                     ><input
@@ -81,7 +82,7 @@
           </div>
         </div>
         
-        <div class="row w-100 mt-3">
+        <div class="row w-100 mt-3" v-if="attendanceCheckinInStore ? attendanceCheckinInStore.paymentFormId : '' || paymentFormIdResponse">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -119,7 +120,7 @@
           </div>
         </div>
         
-        <div class="row w-100 mt-3">
+        <div class="row w-100 mt-3" v-if="attendanceCheckinInStore ? attendanceCheckinInStore.paymentFormId : '' || paymentFormIdResponse">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -138,7 +139,7 @@
                 <p class="para">
                   <span class="d-flex align-items-center"
                     ><code class="w-100">
-                          <textarea rows="1" ref="iframeLink"  @click="copyIframeLink" :value="`${iFrameLink}`" class="form-control w-100 p-auto">
+                          <textarea rows="2" ref="iframeLink"  @click="copyIframeLink" :value="`${iFrameLink}`" class="form-control w-100 p-auto">
                           </textarea>
                       </code>
                     <i
@@ -372,6 +373,9 @@ export default {
     const paymentFormLink = ref(null);
     const iframeLink = ref(null);
     const toast = useToast();
+    const eventLinkResponse = ref("")
+    const paymentFormIdResponse = ref("")
+    
 
     if (route.query.activityID) {
       events.value.push({
@@ -417,15 +421,11 @@ export default {
         const response = await attendanceservice.getItemByCode(route.query.id);
         store.dispatch("attendance/setItemData", response);
         attendanceCheckinInStore.value = response;
+
+        eventLinkResponse.value = response.eventRegistrationLink
+        paymentFormIdResponse.value = response.paymentFormId
+        console.log(response.paymentFormId)
         console.log(response)
-      } catch (error) {
-        console.log(error);
-      }
-      
-      try {
-        const response = await attendanceservice.getItemByCode(route.query.id);
-        store.dispatch("attendance/setItemData", response);
-        attendanceCheckinInStore.value = response;
       } catch (error) {
         console.log(error);
       }
@@ -516,9 +516,23 @@ export default {
         !eventRegistration.value ||
         !eventRegistration.value.eventRegistrationLink
       )
-        return "";
+        return eventLinkResponse.value;
       return eventRegistration.value.eventRegistrationLink
     });
+
+    const paymentFormID = computed(() => {
+      if (
+        !attendanceCheckinInStore.value ||
+        !attendanceCheckinInStore.value.paymentFormId
+      )
+        return paymentFormIdResponse.value;
+      return attendanceCheckinInStore.value.paymentFormId
+    });
+
+    const iFrameLink = computed(() => {
+      if (!paymentFormID.value) return ""
+      return `<iframe loading="lazy" src="https://my.churchplus.co/iframe/${paymentFormID.value}" style="border:0px #f4f4f4 dashed;" name="online-giving" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="1190px" width="720px" allowfullscreen></iframe>`
+    })
 
     const preventChangingOfCheckinLink = (e) => {
       e.preventDefault();
@@ -549,7 +563,11 @@ export default {
       paymentFormLink,
       copyPaymentFormLink,
       iframeLink,
-      copyIframeLink
+      copyIframeLink,
+      eventLinkResponse,
+      paymentFormIdResponse,
+      paymentFormID,
+      iFrameLink
     };
   },
 };

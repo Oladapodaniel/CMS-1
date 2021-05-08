@@ -14,17 +14,20 @@
             </div>
           </div>
           <div class="actions">
-            <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              More
-              <span><i class="fa fa-angle-down btn-icon"></i></span>
+            <router-link :to="{ name: 'ImportInstruction' }">
+            <button class="more-btn button">
+              Import
+              <!-- <span><i class="fa fa-angle-down btn-icon"></i></span> -->
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            </router-link>
+            
+            <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item elipsis-items cursor-pointer" @click="fileUpload">
                   <i class="pi pi-upload" aria-hidden="true"></i>&nbsp; Import from Excel
                   <input type="file" ref="importFile" @change="imageSelected" hidden>
                 </a>
                 <a class="dropdown-item elipsis-items cursor-pointer" href="/files/Template.csv" download><i class="pi pi-download" aria-hidden="true"></i>&nbsp; Download Template</a>
-              </div>
+              </div> -->
               <router-link :to="{ name: 'AddFirstTimer' }">
                 <button class="button add-person-btn">
                   Add First Timers

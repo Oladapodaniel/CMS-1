@@ -118,26 +118,27 @@ const routes = [{
                         component: () =>
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
                     },
-                    {
-                        path: 'importinstructions',
-                        component: () =>
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/ImportInstruction.vue')
-                    }
-
+                    
                 ]
             },
-
+            
             // {
-            //     path: 'event',
-            //     name: 'Event',
-            //     component: () =>
-            //         import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
-            // },
-            {
-                path: 'events',
-                name: 'Events',
-                component: () =>
-                    import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
+                //     path: 'event',
+                //     name: 'Event',
+                //     component: () =>
+                //         import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+                // },
+                {
+                    path: 'importinstruction',
+                    name: 'ImportInstruction',
+                    component: () =>
+                        import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/ImportInstruction.vue')
+                },
+                {
+                    path: 'events',
+                    name: 'Events',
+                    component: () =>
+                        import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
             },
             // {
             //     path: 'events',
@@ -145,14 +146,14 @@ const routes = [{
             //     component: () =>
             //         import ( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
             // },
-            {
-                path: 'event/:event?',
-                name: 'Event',
-                component: () =>
-                    import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
-            },
+                {
+                    path: 'event/:event?',
+                    name: 'Event',
+                    component: () =>
+                        import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+                },
 
-            {
+                {
                 path: 'attendancecheckin',
                 name: 'Attendance',
                 component: () =>

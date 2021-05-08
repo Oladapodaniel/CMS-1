@@ -1,113 +1,125 @@
 <template>
-    C<div class="container">
+    <div class="container-wide container-top">
         <div class="row">
-            <div class="col-md-12 col-lg-12 col-12 ">
-                <h2>Import customers from CSV </h2>
+            <div class="col-12 col-md-12 col-lg-12 header">
+                <div>Import members from Excel/CSV </div>
+                <div class="border-bottom w-100 my-4 col-12  col-md-12 col-lg-12 "></div>
             </div>
             
             <div class="col-12 col-md-10  col-lg-11 col-xl-11">
-                <p>A CSV (comma-seperated values) file is a spreedsheet file that is used by wave to impart customer information into your business. </p>
+                <p>You can easily import members from any spreadsheet with .xlsx/.xlx or .csv file format. </p>
             </div>
-            <div class=" col-lg-12 col-md-12 mx-1 border  rounded ">
+            <div class=" col-lg-12 col-md-12 mx-1 border  rounded">
                 <div class="col-md-12 col-12 col-lg-12 mt-3 ">
-                    <input type="file" class="col-12 ">
+                    <input type="file" @change="imageSelected" class="form-control col-sm-4">
                 </div>
-                <div class="col-md-12 col-12 col-lg-12 text-center  my-3">
-                    <button class="btn btn-primary  " style="border-radius: 10rem;">Upload and preview customers</button>
+                <div class="col-md-4 col-12 offset-md-4 text-center  my-3" @click="uploadFile">
+                     <button class="upload-button form-control">Upload and preview members</button>
                 </div>
                 <div class="border-bottom w-100 my-2 col-md-12 "></div>
-                <div class="col-12 col-md-7 col-lg-7 my-3  small "> Maximum 10MB file size. CSV file type only</div>
+                <div class="col-12 col-md-7 col-lg-7 my-3  small "> Maximum 10MB file size.</div>
             </div>
             <div class="col-lg-12 col-md-12">
-                <div class="mt-2">
-                    <i  class="fa fa-question "></i> 
-                    <span>Need help creating your CSV file?</span> 
+                <div class="mt-4">
+                    <span>Need help creating your Excel or CSV file?</span> 
                     <a href="#" class=" text-decoration-none  font-weight-bold "> View Instruction <i class="fa fa-angle-down"></i></a> 
                 </div>
-                <div class="border-bottom w-100 my-3 col-12  col-md-12 col-lg-12 "></div>
+                
             </div>
-            <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead "> Customer CSV template file </div>
-            <div class="col-12 col-md-12 mb-3 col-lg-12">
-                <a href="#" class="text-decoration-none font-weight-bold small">Download and view our customer CSV template.</a>
-                <span class="small">You can use this as a template for creating your CSV file.</span>
+            <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead mt-5"> Members Excel/CSV template file </div>
+            <div class="col-12 col-md-12 mb-3">
+                <a href="#" class="text-decoration-none font-weight-bold">Download and view our members Excel/CSV template.</a>
+                <span>You can use this as a template for creating your Excel/CSV file.</span>
             </div>
             <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead my-3 "> File format </div>
-            <div class="col-10 col-md-10 col-lg-10">
-                <span>The first line of your customer CSV must include all of the headers listed below, which are included in the <a href="#" class="text-decoration-none font-weight-bold">customer CSV template.</a></span>  
+            <div class="col-10 col-md-12">
+                <span>The first line of your members Excel/CSV must include all of the headers listed below, which are included in the member Excel/CSV template</span>  
             </div>
-            <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="fa fa-question "></i></div>
+            <!-- <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="fa fa-question "></i></div> -->
             <div class="row ml-1 bg-secondary my-3 rounded h-100 w-100">
-                <div class="col-12 my-2 col-md-12 col-lg-12 fa fa-info-circle "><strong> Reminder:</strong> All CSV file headers are case-sensitive.
+                <div class="col-12 my-2 col-md-12 col-lg-12"><i class="fa fa-info-circle"></i><strong> Reminder:</strong> All Excel/CSV file headers are case-sensitive.
                     <div class="col-12 col-md-12 col-lg-12 border-bottom  my-2"></div> 
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
-                    <p> Company Name</p>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p>FirstName</p>
                 </div>
                 <div class="col-8 col-md-8 col-lg-8">
-                    <p> The name of the company. if blank, it will default to the customer's first and last names,</p>
+                    <p>The first name of your member</p>
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
-                    <p> First Name</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The first name of your customer</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
-                    <p> Last Name</p>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p> LastName</p>
                 </div>
                 <div class="col-8 col-md-8 col-lg-8">
-                    <p>The last name of your customer.</p>
+                    <p>The last name of your member.</p>
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
                     <p> Email</p>
                 </div>
                 <div class="col-8 col-md-8 col-lg-8">
-                    <p>The email address of your customer</p>
+                    <p>The email address of your member</p>
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
-                    <p>Phone</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    The customerr's phone number.
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
-                    <p> Address 1</p>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p>PhoneNumber</p>
                 </div>
                 <div class="col-8 col-md-8 col-lg-8">
-                    The first line of the customer's address.
+                    The phone number of your member.
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
-                    <p>Address 2</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The Second line of the customer's address </p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
-                    <p> City</p>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p> Address</p>
                 </div>
                 <div class="col-8 col-md-8 col-lg-8">
-                    <p>The city the customer is in</p>
+                    The address of the member.
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
-                    <p>Postal Code</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The ZIP or postal code for the customer's address.</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
-                    <p>Country</p>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p>Birthday</p>
                 </div>
                 <div class="col-8 col-md-8 col-lg-8">
-                    <p>The customer's <a href="#" class="text-decoration-none">country ISO code</a></p>
+                    <p>The birthday of the member</p>
                 </div>
-                <div class="col-4 col-md-4 col-lg-4 small font-weight-bold">
-                    <p>Currency</p>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p>BirthMonth</p>
                 </div>
                 <div class="col-8 col-md-8 col-lg-8">
-                    <p>The <a href="" class="text-decoration-none">currency ISO code</a> for the customer.If not specified, it will default to your business currency.</p>
+                    <p>The birth month of the  member</p>
+                </div>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p>BirthYear</p>
+                </div>
+                <div class="col-8 col-md-8 col-lg-8">
+                    <p>The birth year of the member</p>
+                </div>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p>Gender</p>
+                </div>
+                <div class="col-8 col-md-8 col-lg-8">
+                    <p>The gender of the  member</p>
+                </div>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p>MaritalStatus</p>
+                </div>
+                <div class="col-8 col-md-8 col-lg-8">
+                    <p>The marital status of the member</p>
+                </div>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p>CommunicationMeans</p>
+                </div>
+                <div class="col-8 col-md-8 col-lg-8">
+                    <p>Preferred communcation means of the member</p>
+                </div>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p>InterestedInJoining</p>
+                </div>
+                <div class="col-8 col-md-8 col-lg-8">
+                    <p>If member is interested in joining</p>
+                </div>
+                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                    <p>WantToBeVisited</p>
+                </div>
+                <div class="col-8 col-md-8 col-lg-8">
+                    <p>If member wants to be visited.</p>
                 </div>
             </div>
-            <div class="my-3 col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead "> Exporting your CSV file from Excel or other software </div>
+            <!-- <div class="my-3 col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead "> Exporting your CSV file from Excel or other software </div>
             <div class="col-12 my-2 col-md-12 col-lg-12 fa fa-info-circle "><strong> Reminder:</strong> When importing customer information, your CSV file must be in UTF-8 format.</div>
             <div class="my-1 col-12 col-md-12 col-lg-12 "> 
                 <p>
@@ -117,9 +129,32 @@
             <div class="col-10 col-md-10 col-lg-10">
                 <p>Most spreadsheet applications have the ability to save CSV files in UTF-8 format with the save As... or Export command, depending on the program</p>
             </div>
-            <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="fa fa-question "></i></div>
-
-            
+            <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="fa fa-question "></i></div> -->
+            <Dialog header="Members to import from file" v-model:visible="displayModal" :style="{width: '80vw'}" :modal="true">
+            <div class="container">
+              <div class="row">
+                <div class="col-3 font-weight-700">Name</div>
+                <div class="col-4 font-weight-700">Email</div>
+                <div class="col-2 font-weight-700">Gender</div>
+                <div class="col-2 font-weight-700">Phone Number</div>
+              </div>
+              <div class="row" v-for="(item, index) in memberData" :key="index">
+                <div class="col-3">{{ item.firstName ? item.firstName : "" }} {{ item.lastName ? item.lastName : "" }}</div>
+                <div class="col-4">{{ item.email }}</div>
+                <div class="col-2">{{ item.gender }}</div>
+                <div class="col-2">{{ item.phoneNumber }}</div>
+              </div>
+            </div>
+            <template #footer>
+                <div class="container">
+                  <div class="row d-flex justify-content-end text-center">
+                    <div class="default-btn mr-3 cursor-pointer" @click="closeModal">Discard</div>
+                    <div class="primary-bg default-btn border-0 text-white text-center cursor-pointer" @click="addToMembers">Save</div>
+                  </div>
+                </div>
+            </template>
+        </Dialog>
+        <Toast />
         </div>
         
         
@@ -127,11 +162,148 @@
 </template>
 
 <script>
+import { ref } from "vue"
+import axios from "@/gateway/backendapi";
+import Dialog from 'primevue/dialog';
+import finish from  "../../services/progressbar/progress"
+import { useToast } from "primevue/usetoast";
 export default {
-    
+    components: {
+        Dialog
+    },
+    setup () {
+        const image = ref("");
+        const toast = useToast()
+        const displayModal = ref(false)
+        const memberData = ref([])
+
+
+
+
+
+
+        const imageSelected = async(e) => {
+        image.value = e.target.files[0];
+        };
+
+        const uploadFile = async() => {
+            const formData = new FormData();
+            formData.append("file", image.value ? image.value : "")
+            console.log(formData)
+            try {
+                let { data } = await axios.post("/api/People/UploadFirstTimerFile", formData)
+                console.log(data)
+                if   (!data.response.toString().includes('0')) {
+                    toast.add({
+                    severity: "success",
+                    summary: "Confirmed",
+                    detail: data.response,
+                    life: 4000,
+                });
+                memberData.value = data.returnObject
+                displayModal.value = true;
+                } else {
+                toast.add({
+                severity: "success",
+                summary: "No Member found",
+                detail: "Download our template and add members before you upload",
+                life: 4000,
+                });
+                }        
+            }
+            catch  (err) {
+                finish()
+                console.log(err)
+                if (err.status === 404 || err.response.status === 404) {
+                    toast.add({
+                    severity: "warn",
+                    summary: "Upload not successful",
+                    detail: "Ensure that there isn't any empty row or field and try again",
+                    // life: 4000,
+                });
+                } else if (err.toString().toLowerCase().includes("network error")) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Network Error",
+                    detail: "Please ensure you have strong internet connection",
+                    life: 4000,
+                });
+                } else if (err.toString().toLowerCase().includes("timeout")) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Request took too long to respond",
+                    detail: "Please try again by refreshing the page",
+                    life: 3000,
+                });
+                }
+            }
+        }
+
+        const closeModal = () => {
+      displayModal.value = false
+    }
+
+    const addToMembers = async() =>  {
+    try {
+        let { data } = await axios.post("/api/People/CreateMultipleFirstTimer", memberData.value)
+        console.log(data)
+        displayModal.value = false
+        if (data.returnObject.returnList.length > 0) {
+        toast.add({
+        severity: "info",
+        summary: data.returnObject.createdRecord,
+        detail: `There are ${data.returnObject.returnList.length} members that have been added already`,
+        });
+        } else {
+        toast.add({
+        severity: "success",
+        summary: "Created Successfully",
+        detail: data.createdRecord,
+        life: 4000,
+        });
+        }
+        
+    }
+    catch  (err) {
+        finish()
+        if (err.toString().toLowerCase().includes("network error")) {
+        toast.add({
+            severity: "warn",
+            summary: "Network Error",
+            detail: "Please ensure you have strong internet connection",
+            life: 4000,
+        });
+        } else if (err.toString().toLowerCase().includes("timeout")) {
+        toast.add({
+            severity: "warn",
+            summary: "Request took too long to respond",
+            detail: "Please try again by refreshing the page",
+            life: 3000,
+        });
+        }
+        console.log(err)
+    }
+    }
+        return {
+            imageSelected, image, uploadFile, memberData, addToMembers, closeModal, displayModal
+        }
+    }
 }
 </script>
 
 <style scoped>
+
+.upload-button {
+  background: rgba(206, 206, 206, 0.274);
+  color: black;
+  border-radius: 25px;
+  font-weight: 600;
+  padding: 8px 10px;
+}
+
+.header {
+font: normal normal 800 29px Nunito sans;
+}
+
 
 </style>
