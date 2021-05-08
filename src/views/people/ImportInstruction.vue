@@ -19,104 +19,108 @@
                 <div class="border-bottom w-100 my-2 col-md-12 "></div>
                 <div class="col-12 col-md-7 col-lg-7 my-3  small "> Maximum 10MB file size.</div>
             </div>
-            <div class="col-lg-12 col-md-12">
-                <div class="mt-4">
-                    <span>Need help creating your Excel or CSV file?</span> 
-                    <a href="#" class=" text-decoration-none  font-weight-bold "> View Instruction <i class="fa fa-angle-down"></i></a> 
-                </div>
-                
-            </div>
-            <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead mt-5"> Members Excel/CSV template file </div>
-            <div class="col-12 col-md-12 mb-3">
-                <a href="#" class="text-decoration-none font-weight-bold">Download and view our members Excel/CSV template.</a>
-                <span>You can use this as a template for creating your Excel/CSV file.</span>
-            </div>
-            <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead my-3 "> File format </div>
-            <div class="col-10 col-md-12">
-                <span>The first line of your members Excel/CSV must include all of the headers listed below, which are included in the member Excel/CSV template</span>  
-            </div>
-            <!-- <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="fa fa-question "></i></div> -->
-            <div class="row ml-1 bg-secondary my-3 rounded h-100 w-100">
-                <div class="col-12 my-2 col-md-12 col-lg-12"><i class="fa fa-info-circle"></i><strong> Reminder:</strong> All Excel/CSV file headers are case-sensitive.
-                    <div class="col-12 col-md-12 col-lg-12 border-bottom  my-2"></div> 
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p>FirstName</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The first name of your member</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p> LastName</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The last name of your member.</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p> Email</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The email address of your member</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p>PhoneNumber</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    The phone number of your member.
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p> Address</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    The address of the member.
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p>Birthday</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The birthday of the member</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p>BirthMonth</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The birth month of the  member</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p>BirthYear</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The birth year of the member</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p>Gender</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The gender of the  member</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p>MaritalStatus</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>The marital status of the member</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p>CommunicationMeans</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>Preferred communcation means of the member</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p>InterestedInJoining</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>If member is interested in joining</p>
-                </div>
-                <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
-                    <p>WantToBeVisited</p>
-                </div>
-                <div class="col-8 col-md-8 col-lg-8">
-                    <p>If member wants to be visited.</p>
+                    <div class="col-lg-12 col-md-12">
+                        <div class="mt-4">
+                            <span>Need help creating your Excel or CSV file?</span> 
+                            <a href="#" @click="toggleInstruction" class=" text-decoration-none  font-weight-bold "> View Instruction <i class="fa fa-angle-down" :class="{ 'rollIcon' : addInstructionClass, 'closeIcon' : !addInstructionClass }"></i></a> 
+                        </div>
+                        
+                    </div>
+            <div class="col-12" :class="{ 'show-instruction' : addInstructionClass, 'hide-instruction' : !addInstructionClass }">
+                <div class="row">
+                    <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead mt-5"> Members Excel/CSV template file </div>
+                    <div class="col-12 col-md-12 mb-3">
+                        <a href="#" class="text-decoration-none font-weight-bold">Download and view our members Excel/CSV template.</a>
+                        <span>You can use this as a template for creating your Excel/CSV file.</span>
+                    </div>
+                    <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead my-3 "> File format </div>
+                    <div class="col-10 col-md-12">
+                        <span>The first line of your members Excel/CSV must include all of the headers listed below, which are included in the member Excel/CSV template</span>  
+                    </div>
+                    <!-- <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="fa fa-question "></i></div> -->
+                    <div class="row ml-1 bg-secondary my-3 rounded h-100 w-100">
+                        <div class="col-12 my-2 col-md-12 col-lg-12"><i class="fa fa-info-circle"></i><strong> Reminder:</strong> All Excel/CSV file headers are case-sensitive.
+                            <div class="col-12 col-md-12 col-lg-12 border-bottom  my-2"></div> 
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p>FirstName</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>The first name of your member</p>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p> LastName</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>The last name of your member.</p>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p> Email</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>The email address of your member</p>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p>PhoneNumber</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            The phone number of your member.
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p> Address</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            The address of the member.
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p>Birthday</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>The birthday of the member</p>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p>BirthMonth</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>The birth month of the  member</p>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p>BirthYear</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>The birth year of the member</p>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p>Gender</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>The gender of the  member</p>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p>MaritalStatus</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>The marital status of the member</p>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p>CommunicationMeans</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>Preferred communcation means of the member</p>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p>InterestedInJoining</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>If member is interested in joining</p>
+                        </div>
+                        <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
+                            <p>WantToBeVisited</p>
+                        </div>
+                        <div class="col-8 col-md-8 col-lg-8">
+                            <p>If member wants to be visited.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- <div class="my-3 col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead "> Exporting your CSV file from Excel or other software </div>
@@ -176,6 +180,7 @@ export default {
         const toast = useToast()
         const displayModal = ref(false)
         const memberData = ref([])
+        const addInstructionClass = ref(false)
 
 
 
@@ -284,8 +289,13 @@ export default {
         console.log(err)
     }
     }
+
+    const toggleInstruction = () => {
+        addInstructionClass.value = !addInstructionClass.value
+    }
+
         return {
-            imageSelected, image, uploadFile, memberData, addToMembers, closeModal, displayModal
+            imageSelected, image, uploadFile, memberData, addToMembers, closeModal, displayModal, addInstructionClass, toggleInstruction
         }
     }
 }
@@ -303,6 +313,28 @@ export default {
 
 .header {
 font: normal normal 800 29px Nunito sans;
+}
+
+.show-instruction {
+  height: 825px;
+  overflow: hidden;
+  transition: all 1s ease-in-out
+}
+
+.hide-instruction {
+  height: 0;
+  overflow: hidden;
+  transition: all 1s ease-in-out
+}
+
+.rollIcon {
+    transform: rotateZ(180deg);
+    transition: all 1s ease-in-out
+}
+
+.closeIcon {
+    transform: rotateZ(0deg);
+    transition: all 0.5s ease-in-out
 }
 
 
