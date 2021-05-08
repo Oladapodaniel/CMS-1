@@ -43,7 +43,7 @@
         <div class="col-md-12 mb-1">
           <h5 class="check">Check in options</h5>
         </div>
-        <div class="row w-100" v-if="eventRegistration.eventRegistrationLink || eventLinkResponse">
+        <div class="row w-100" v-if="eventRegistration ? eventRegistration.eventRegistrationLink : '' || eventLinkResponse">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
