@@ -1,85 +1,104 @@
 <template>
-  <div class="container-fluid wave containerheight">
-    <div class="row d-flex justify-content-center align-items-center" style="height: 100vh;">
-      <!-- column 1 -->
-      <!-- <div class="col-12 d-flex justify-content-center align-items-center"> -->
-        <div class="col-6 mt-n5">
-          <div class="col-md-7 col-sm-12 mx-auto mt-n5">
-            <h2 class="font-weight-bold text-white">
-              All in one app to effectively manage your church
-            </h2>
-          </div>
-          <div class="col-md-7 col-sm-12 mx-auto my-4">
-            <h5 class="text-wrap text-white">
+  <div class="wave">
+    <div class="container">
+      <div class="row d-flex align-items-center containerheight">
+        <div class="col-lg-6 col-sm-12">
+          <div class="col">
+              <!-- track 1 -->
+            <div class="row">
+              <div class="col-lg-12 fss align-text-main">
+                <h2 class="font-weight-bold text-white font-size-small-screen">
+                  All in one app to effectively manage your church
+                </h2>
+              </div>
+            </div>
+                <!-- end track 1 -->
+
+                <!-- track 2 -->
+            <div class="row mt-3 align-text">
+              <div class="col-lg-12">
+                <h5 class="text-wrap text-white h6">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit.
               Repellendus iste ad similique, aut libero consequuntur quisquam
               laboriosam quasi. Quos, sapiente.
             </h5>
-          </div>
-          <div class="col-md-7 mx-auto">
-            <h4 class="text-white">Get started for FREE!</h4>
-          </div>
-          <div class="col-md-7 mx-auto my-4">
-            <button class="btn default-btn cta c-pointer">Start Now</button>
+              </div>
+            </div>
+             <!-- end track 2 -->
+
+                <!-- track 3 -->
+            <div class="row mt-3 align-text">
+              <div class="col-lg-12">
+                 <h4 class="text-white">Get started for FREE!</h4>
+              </div>
+            </div>
+             <!-- end track 3 -->
+
+                <!-- track 4 -->
+            <div class="row mt-3 align-text">
+              <div class="col-lg-12">
+               <button class="btn default-btn cta c-pointer">Start Now</button>
+              </div>
+            </div>
+             <!-- end track 4 -->
+
+
           </div>
         </div>
-        <!-- End of column 1 -->
 
-        <!-- column 2 -->
-        <div class="col-6 image">
-          <div class="col-2"></div>
-          <div class="col-8">
-            <div class="image">
+        <div class="col-lg-6 col-sm-12">
+          <div class="col text-center">
+            <div class="image mt-3">
               <img
-                class="w-100"
+                class="w-100 mt-5"
                 src="../../../assets/mobileonboarding/phone1.png"
-                alt=""
+                alt="phone image"
               />
             </div>
           </div>
-          <div class="col-2"></div>
         </div>
-        <!-- End of column 2 -->
-      <!-- </div> -->
-    </div>
+      </div>
 
-     <!-- Gradient Area -->
+      <!-- wave area -->
+      <div class="row">
+        <div class="custom-shape-divider-bottom-1620296099">
+          <svg
+            data-name="Layer 1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1200 120"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+              class="shape-fill"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <!-- end wave area -->
+    </div>
+  </div>
+
+  <!-- footer Area -->
+  <div class="container mt-5 footer-area">
     <div class="row">
- <div class="custom-shape-divider-bottom-1620296099">
-      <svg
-        data-name="Layer 1"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1200 120"
-        preserveAspectRatio="none">
-        <path
-          d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
-          class="shape-fill"
-        ></path>
-      </svg>
+      <div class="col-12 text-center mt-5 mb-4">
+        <h5 class="copyright mb-5">Powered By Churchplus</h5>
+      </div>
     </div>
-    </div>
-    <!--End Gradient Area -->
-
-
   </div>
-
-
-     <!-- copyright -->
-  <div class="row mx-0 mt-5">
-    <h5 class="col-md-4 offset-5  copyright">Powered By Churchplus</h5>
-  </div>
-  <!--end copyright -->
+  <!-- end footer Area -->
 </template>
 
 
 <style scoped>
 .copyright {
-  color: #020e1c9f;;
+  color: #020e1c9f;
   font: normal normal 800 18px/36px Nunito Sans;
 }
 
 .containerheight {
-  height: 100vh;
+  height: 80vh;
 }
 .wave {
   position: relative;
@@ -114,6 +133,7 @@
 }
 
 .image {
+    position: relative;
   z-index: 1;
 }
 
@@ -134,8 +154,92 @@
   transform: rotateY(180deg);
 }
 
+
 .custom-shape-divider-bottom-1620296099 .shape-fill {
   fill: #fff;
+}
+
+@media only screen and (max-width: 360px){
+.fss{
+    margin-top:1.5rem;
+}
+
+.mainheader {
+  font: normal normal 500 30px/30px Nunito Sans;
+  font-family: Nunito Sans;
+  color: #fff;
+}
+
+.align-text{
+    text-align: center;
+}
+
+.align-text-main{
+    text-align: center;
+    font-weight: normal;
+}
+
+.footer-area{
+  height: 100vh;
+}
+
+}
+
+
+.custom-shape-divider-bottom-1620296099 .shape-fill {
+  fill: #fff;
+}
+
+@media only screen and (max-width: 576px){
+.fss{
+    margin-top:3rem;
+}
+
+.mainheader {
+  font: normal normal 500 30px/30px Nunito Sans;
+  font-family: Nunito Sans;
+  color: #fff;
+}
+
+.align-text{
+    text-align: center;
+}
+
+.align-text-main{
+    text-align: center;
+    font-weight: normal;
+}
+
+.footer-area{
+  height: 100vh;
+}
+
+}
+
+@media only screen and (max-width: 992px){
+.fss{
+    margin-top:3rem;
+}
+
+.mainheader {
+  font: normal normal 500 30px/30px Nunito Sans;
+  font-family: Nunito Sans;
+  color: #fff;
+}
+
+.align-text{
+    text-align: center;
+}
+
+.align-text-main{
+    text-align: center;
+    font-weight: normal;
+}
+
+.footer-area{
+  height: 100vh;
+    position: fixed;
+}
 }
 </style>
 
