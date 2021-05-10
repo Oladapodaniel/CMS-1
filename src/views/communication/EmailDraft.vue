@@ -10,8 +10,11 @@
                 <div class="col-md-12 col-sm-12">
                   <div class="search-div">
                     <span><i class="fa fa-search mr-1"></i></span>
-                    <input type="text" placeholder="Search here..."
-                    v-model="searchMails" />
+                    <input
+                      type="text"
+                      placeholder="Search here..."
+                      v-model="searchMails"
+                    />
                     <span class="mx-2"> | </span>
                     <span class="mx-2">Sort By</span>
                     <span class="font-weight-bold"> Newest</span>
@@ -20,10 +23,10 @@
               </div>
 
               <i
-                class="pi pi-trash  deleteicon-color ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
-                style="font-size: 15px"
+                class="pi pi-trash deleteicon-color ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                style="font-size: 20px"
                 v-if="markEmailDraft.length > 0"
-                @click="showConfirmModal"
+                @click="showConfirmModal(false)"
               >
               </i>
 
@@ -32,15 +35,18 @@
                   <div class="row header-row light-grey-bg py-2">
                     <div class="col-md-12 px-0">
                       <div class="row">
-                        <div class="col-md-1 text-md-right text-lg-center px-0"
-                         v-if="drafts.length > 0">
+                        <div
+                          class="col-md-1 text-md-right text-lg-center px-0"
+                          v-if="drafts.length > 0"
+                        >
                           <input
-                          type="checkbox"
-                          name="all"
-                          id="all"
-                          @change="markAllMailDrafts"
-                          :checked="markEmailDraft.length === drafts.length"
-                           />
+                            type="checkbox"
+                            class="ml-3"
+                            name="all"
+                            id="all"
+                            @change="markAllMailDrafts"
+                            :checked="markEmailDraft.length === drafts.length"
+                          />
                         </div>
                         <div class="col-md-7">
                           <span class="th">Message</span>
@@ -115,13 +121,14 @@
                         >
                           <span class="hidden-header font-weight-bold"> </span>
                           <span></span>
-                           <span class="small-text">
-                              <i
-                                class="c-pointer pr-3 fa fa-trash delete-icon"
-                                @click="showConfirmModal(draft)"
-                              >
-                              </i
-                            ></span>
+                          <span class="small-text">
+                            <i
+                              class="c-pointer pr-3 fa fa-trash delete-icon"
+                              @click="showConfirmModal(draft.id)"
+                              style="font-size: 18px"
+                            >
+                            </i
+                          ></span>
                         </div>
                       </div>
                       <div class="row">
@@ -131,11 +138,13 @@
                       </div>
                     </div>
                   </div>
- <ConfirmDialog />
+                  <ConfirmDialog />
                   <Toast />
                   <div class="row" v-if="drafts.length === 0 && !loading">
                     <div class="col-md-12 d-flex justify-content-center">
-                      <span class="my-4 font-weight-bold">No draft messages</span>
+                      <span class="my-4 font-weight-bold"
+                        >No draft messages</span
+                      >
                     </div>
                   </div>
 
@@ -158,16 +167,17 @@
 import { computed, ref } from "vue";
 import communicationService from "../../services/communication/communicationservice";
 import { useConfirm } from "primevue/useConfirm";
-import { useStore } from "vuex";
+// import { useStore } from "vuex";
+import store from '../../store/store';
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
-import Loading from "../../components/loading/LoadingComponent"
+import Loading from "../../components/loading/LoadingComponent";
 
 export default {
   components: { Loading },
   setup() {
-    const store = useStore();
+    // const store = useStoredraftId
     const drafts = ref(store.getters["communication/emailDrafts"]);
     const loading = ref(false);
 
@@ -209,7 +219,7 @@ export default {
     const searchEmailDraft = computed(() => {
       if (searchMails.value === "" && drafts.value.length > 0)
         return drafts.value;
-        console.log(drafts.value, "🎈🎈");
+      console.log(drafts.value, "🎈🎈");
       return drafts.value.filter((i) => {
         i.body.toLowerCase().includes(searchMails.value.toLocaleLowerCase());
       });
@@ -217,14 +227,13 @@ export default {
 
     // function to check single item
     const markEmailDraft = ref([]);
-    const mark1Draft = (mdi) => {
-      const mailIndex = markEmailDraft.value.findIndex((i) => i.id === mdi.id);
+    const mark1Draft = (draftId) => {
+      const mailIndex = markEmailDraft.value.findIndex((i) => i.id === draftId.id);
       if (mailIndex < 0) {
-        markEmailDraft.value.push(mdi);
+        markEmailDraft.value.push(draftId);
       } else {
         markEmailDraft.value.splice(mailIndex, 1);
       }
-      console.log(markEmailDraft.value, "🎇🎇");
     };
 
     // function to mark all email drafts
@@ -241,54 +250,84 @@ export default {
       } else {
         markEmailDraft.value = [];
       }
-      console.log(markEmailDraft.value, "🎆🎆");
     };
 
     //Function to delete drafted mails
-    const mailHandler = (h) => {
-      console.log(h, "🎄🎄");
-      return h.map((i) => i.id).join(",");
+    const getIdsOfDraftsToDelete = (markedDrafts) => {
+      return markedDrafts.map((i) => i.id).join(",");
     };
-    const deleteMailDrafts = () => {
-      let mailHolder = mailHandler(markEmailDraft.value);
-      console.log(mailHolder, "🎉🎉");
+
+    const deleteMailDrafts = (id) => {
+      let stringOfDraftsIds = id ? id
+        : getIdsOfDraftsToDelete(markEmailDraft.value);
+
       axios
-        .delete(`/api/Messaging/DeleteEmailDrafts?EmailDraftIdList=${mailHolder}`)
+        .delete(
+          `/api/Messaging/DeleteEmailDrafts?EmailDraftIdList=${stringOfDraftsIds}`
+        )
         .then((res) => {
-          console.log(res);
-          drafts.value = drafts.value.filter((item) => {
-            const m = markEmailDraft.value.findIndex((i) => i.id === item.id);
-            if (m >= 0) return false;
-            return true;
-          });
-
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Draft Mail Deleted",
-            life: 3000,
-          });
-
-          markEmailDraft.value.forEach((i) => {
-            store.dispatch("communication/removeEmailDrafts", i.id);
-          });
-          markEmailDraft.value = [];
+          if (res) {
+            toast.add({
+              severity: "success",
+              summary: "Delete Successful",
+              detail: `${ markEmailDraft.value.length > 1 ? 'Selected Drafts have' : 'Draft has'} been deleted successfully ` ,
+              life: 3000,
+            });
+            drafts.value = !id
+              ? removeDeletedDraftedEmailsFromDraftsEmailsList(
+                  markEmailDraft.value
+                )
+              : drafts.value.filter((i) => i.id !== id);
+            if (id) {
+              store.dispatch("communication/removeEmailDrafts", id);
+            } else {
+              removeDeletedDraftedEmailsFromStore(markEmailDraft.value);
+            }
+            markEmailDraft.value = [];
+          } else {
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `${res}`,
+              life: 3000,
+            });
+          }
         })
         .catch((err) => {
           stopProgressBar();
           toast.add({
             severity: "error",
             summary: "Delete Error",
-            detail: "Deleting Draft failed",
+            detail: `${
+              markEmailDraft.value > 1 ? "Selected Drafts" : "Draft"
+            } could not be deleted,`,
             life: 3000,
           });
           console.log(err);
         });
     };
 
+    const removeDeletedDraftedEmailsFromDraftsEmailsList = (
+      deletedDraftsArr
+    ) => {
+      return drafts.value.filter((i) => {
+        const draftIndexInMarked = deletedDraftsArr.findIndex(
+          (j) => j.id === i.id
+        );
+        if (draftIndexInMarked < 0) return true;
+        return false;
+      });
+    };
+
+    const removeDeletedDraftedEmailsFromStore = (deletedDrafts) => {
+      for (let draft of deletedDrafts) {
+        store.dispatch("communication/removeEmailDrafts", draft.id);
+      }
+    };
+
     const confirm = useConfirm();
     let toast = useToast();
-    const showConfirmModal = () => {
+    const showConfirmModal = (id) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
@@ -296,7 +335,7 @@ export default {
         acceptClass: "confirm-delete",
         rejectClass: "cancel-delete",
         accept: () => {
-          deleteMailDrafts();
+          deleteMailDrafts(id);
         },
         reject: () => {
           //  toast.add({severity:'info', summary:'Rejected',
@@ -341,7 +380,7 @@ export default {
 }
 
 .deleteicon-color {
- color: rgba(184, 5, 5, 0.726);
+  color: rgba(184, 5, 5, 0.726);
 }
 
 .compose-btn {
