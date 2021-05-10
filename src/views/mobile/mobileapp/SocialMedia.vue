@@ -1,110 +1,110 @@
 <template>
 <div >
         <div class="row">
-            <div class="col-md-7 mt-5">
+            <div class="col-md-7 col-12 mt-5">
                  <div class="row mt-5 d-flex justify-content-md-between">
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-12">
                         
 
                     </div>
-                    <div class="col-md-5">
-                       <h5 class="appBranding">Social Media</h5> 
+                    <div class="col-md-5 col-12">
+                       <h5 class="appBranding text-center text-lg-left text-md-left text-xl-left">Social Media</h5> 
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1 col-12">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-12">
 
                     </div>
                     
                 </div>
-                <div class="row mt-5 d-flex justify-content-md-between">
-                    <div class="col-md-3">
+                <div class="row mt-5 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
+                    <div class="col-md-3 col-12">
                         
 
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-5 col-12">
                        <h5 class="colourText"></h5> 
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1 col-12">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-12">
 
                     </div>
                     
                 </div>
-                <div class="row mt-5 d-flex justify-content-md-between">
-                    <div class="col-md-3">
+                <div class="row mt-5 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
+                    <div class="col-md-3 col-12">
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1 col-12 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
                        <img src="../../../assets/social/facebook.svg" alt="">
                     </div>
-                    <div class="col-md-5" id="logoBox">
+                    <div class="col-md-5 col-12" id="logoBox">
                         <input type="text" class="w-100 py-1 border-0 outline-none px-2">
 
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-12">
 
                     </div>
                     
                 </div>
-                <div class="row mt-4 d-flex justify-content-md-between">
-                    <div class="col-md-3">
+                <div class="row mt-4 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
+                    <div class="col-md-3 col-12">
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1 col-12 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
                        <img src="../../../assets/social/twitter.svg" alt="">
                     </div>
-                    <div class="col-md-5" id="logoBox">
+                    <div class="col-md-5 col-12" id="logoBox">
                          <input type="text" class="w-100 py-1 border-0 outline-none px-2">
 
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-12">
 
                     </div>
                     
                 </div>
-                <div class="row mt-4 d-flex justify-content-md-between">
-                    <div class="col-md-3">
+                <div class="row mt-4 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
+                    <div class="col-md-3 col-12">
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1 col-12 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
                        <img src="../../../assets/social/instagram.svg" alt="">
                     </div>
-                    <div class="col-md-5" id="logoBox">
+                    <div class="col-md-5 col-12" id="logoBox">
                          <input type="text" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-12">
 
                     </div>
                     
                 </div>
-                 <div class="row mt-4 d-flex justify-content-md-between">
-                    <div class="col-md-3">
+                 <div class="row mt-4 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
+                    <div class="col-md-3 col-12">
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1 col-2 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
                        <img src="../../../assets/social/instagram.svg" alt="">
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-10 mb-0 mb-md-0 mb-lg-0 mb-xl-0 mt-2 mt-md-0 mt-lg-0 mt-xl-0">
                         <h6 class="">YouTube Url</h6>
                     </div>
-                    <div class="col-md-3" id="logoBox">
+                    <div class="col-md-3 col-12" id="logoBox">
                          <input type="text" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-12">
 
                     </div>
                     
                 </div>
-                 <div class="row mt-4 d-flex justify-content-md-between">
-                    <div class="col-md-3">
+                 <div class="row mt-4 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
+                    <div class="col-md-3 col-12">
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1 col-12">
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-12 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
                         <h6 class="p-0">Channel ID</h6>
                     </div>
-                    <div class="col-md-3" id="logoBox">
+                    <div class="col-md-3 col-12" id="logoBox">
                          <input type="text" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-12">
 
                     </div>
                     
@@ -112,7 +112,7 @@
                    
             </div>
             <div class="col-md-5">
-                <div class="backgroundImage">
+                <div class="backgroundImage d-none d-sm-none  d-md-block">
                 </div>
             </div>
         </div>
@@ -152,7 +152,7 @@
     background-repeat: no-repeat,repeat;
     background-size: cover;
     background-color: #cccccc;
-    height: 850px;
+    height: 100vh;
     width: 100%;
 }
 .appHeading1{
