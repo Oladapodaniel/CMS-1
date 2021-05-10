@@ -115,10 +115,10 @@ export default {
           "/mobile/v1/Account/SignIn",
           userdetails
         );
-        if (data && data.token) {
+        if (data && data.returnObject.token) {
             let giverDetails = {
-                giverToken: data.token,
-                giverId: data.userId
+                giverToken: data.returnObject.token,
+                giverId: data.returnObject.userId
             }
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
 
@@ -130,7 +130,6 @@ export default {
         finish()
 
         console.log(data);
-        console.log(data.data);
       } catch (error) {
           finish()
         console.log(error.response);

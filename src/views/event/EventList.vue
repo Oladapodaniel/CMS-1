@@ -373,9 +373,6 @@
                 <div class="col-md-2 itemroute-color align-self-center">
                      <div>{{ event.firstTimers }}</div>
                 </div>
-                <!-- <div class="col-sm-2">
-                     <div class="d-flex"> <div class="currency">NGN</div><div class="align-self-center ml-2" style="font-weight: 800;">{{ offering.amount }}</div></div>
-                </div> -->
                 <div class="col-md-1 itemroute-color align-self-center" >
                      <div>{{ event.newConverts }}</div>
                 </div>
@@ -390,16 +387,17 @@
               ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                
+               <router-link :to="`/tenant/report/${event.activityId}`">
+                <a class="dropdown-item elipsis-items">
+                 View Report
+                </a>
+               </router-link>
+               
                <router-link :to="`/tenant/event/${event.activityId}`">
                 <a class="dropdown-item elipsis-items">
                  Edit
                 </a>
                </router-link>
-                <!-- <a
-                  class="dropdown-item elipsis-items"
-                  @click="showConfirmModal(offering.id)"
-                  >Delete</a
-                > -->
               </div>
             </div>
             </div>
@@ -407,92 +405,12 @@
           
                 </div>
             </div>
-            <div class="col-12">
-                    <!-- <div class="table-footer">
-                      <Pagination  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
-                    </div> -->
-                </div>
-          <!-- <table class="w-100">
-            <thead class="thead">
-              <tr>
-                <th>STATUS</th>
-                <th>EVENT NAME</th>
-                <th>TITLE</th>
-                <th>DATE</th>
-                <th>ATTENDANCE</th>
-                <th>FIRST TIMERS</th>
-                <th>NEW CONVERTS</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(event, index) in filterEvents" :key="index">
-                <td class="itemroute-color"><div class="td-first">Unsent</div></td>
-                <td><router-link :to="`/tenant/event/${event.activityId}`" class="itemroute-color">{{ event.eventName }}</router-link></td>
-                <td class="itemroute-color">{{ event.title }}</td>
-                <td class="itemroute-color">
-                  {{
-                    moment.parseZone(
-                      new Date(event.activityDate).toDateString(),
-                      "YYYY MM DD HH ZZ"
-                    )._i.substr(4, 11)
-                  }}
-                </td>
-                <td class="itemroute-color">{{ event.attendances }}</td>
-                <td class="itemroute-color">{{ event.firstTimers }}</td>
-                <td class="itemroute-color">{{ event.newConverts }}</td>
-                <td class="itemroute-color">
-                  <div class="dropdown">
-              <i
-                class="fas fa-ellipsis-v cursor-pointer"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              ></i>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> -->
-                <!-- <a class="dropdown-item elipsis-items" v-if="pers.mobilePhone">
-                  <router-link
-                    :to="`/tenant/sms-communications/compose-message?phone=${person.mobilePhone}`"
-                    >Send SMS</router-link
-                  >
-                </a> -->
-                <!-- <a class="dropdown-item elipsis-items" v-if="person.email">
-                  <router-link
-                    :to="`/tenant/email-communications/compose-message?phone=${person.email}`"
-                    >Send Email</router-link
-                  >
-                </a> -->
-                <!-- <a class="dropdown-item elipsis-items">
-                  <router-link :to="`/tenant/event/${event.activityId}`"
-                    >Edit</router-link
-                  >
-                </a> -->
-                <!-- <a
-                  class="dropdown-item elipsis-items"
-                  href="#"
-                  @click.prevent="showConfirmModal(event.activityId)"
-                  >Delete</a
-                > -->
-              <!-- </div>
-            </div>
-                </td>
-              </tr>
-            </tbody>
-          </table> -->
-
             <ConfirmDialog />
             <Toast />
 
           <div class="table-footer">
-            <button class="tbl-footer-btn">
-              <i class="fa fa-angle-left"></i>
-            </button>
-            <button class="tbl-footer-btn">1</button>
-            <button class="tbl-footer-btn">2</button>
-            <button class="tbl-footer-btn">
-              <i class="fa fa-angle-right"></i>
-            </button>
+            <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage"
+        />
           </div>
         </div>
       </div>
@@ -511,12 +429,16 @@ import userService from "../../services/user/userservice"
 import Tooltip from 'primevue/tooltip';
 import monthDayYear from '../../services/dates/dateformatter'
 import convertNumber from '../../services/numbershortener/numberfomatter'
+import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
 export default {
   directives: {
       'tooltip': Tooltip
   },
+  components: {
+    PaginationButtons
+  },
   props: ['eventList', 'eventSummary'],
-  setup(props) {
+  setup(props, { emit }) {
 
     const filterFormIsVissible = ref(false);
     const searchIsVisible = ref(false);
@@ -646,6 +568,29 @@ const deleteMember = (id) => {
       return convertNumber.convertNumber(number)
     }
 
+    const currentPage = ref(0);
+    const getPeopleByPage = async (page) => {
+      if (page < 0) return false;
+      try {
+        const { data } = await axios.get(
+          `/api/eventreports/eventReports?page=${page}`
+        );
+          if (data.activities.length > 0) {
+            filterEvents.value = [];
+          emit("activity-per-page", data.activities)
+          currentPage.value = page;
+          } 
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const membersCount = computed(() => {
+      if (props.eventSummary.activities.length > 100)
+        return Math.ceil(props.eventSummary.activities.length / 100);
+      return 1;
+    });
+
     return {
       filterFormIsVissible,
       toggleFilterFormVissibility,
@@ -664,7 +609,10 @@ const deleteMember = (id) => {
       toggleYearlyClass,
       toggleAllTimeClass,
       date,
-      convert
+      convert,
+      getPeopleByPage,
+      currentPage,
+      membersCount
     };
   },
 };

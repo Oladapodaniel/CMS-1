@@ -517,6 +517,7 @@
               :model="sendOptions"
               data-toggle="modal"
               data-target="#sendsmsbtn"
+              @click="data"
             ></SplitButton>
           </span>
           <router-link to="/tenant/sms/sent"
@@ -687,11 +688,11 @@ import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
-import stopProgressBar from "../../services/progressbar/progress";
+// import stopProgressBar from "../../services/progressbar/progress";
 import communicationService from "../../services/communication/communicationservice";
 import dateFormatter from "../../services/dates/dateformatter";
 import moment from 'moment'
@@ -699,7 +700,7 @@ import moment from 'moment'
 export default {
   setup() {
     const toast = useToast();
-    const router = useRouter()
+    // const router = useRouter()
     const editor = ClassicEditor;
     const editorData = ref("");
     const editorConfig = {
@@ -727,6 +728,7 @@ export default {
       if (index === 0) {
         sendToAll.value = true;
       }
+      // console.log(index)
     };
 
     const sendOptionsIsShown = ref(false);
@@ -849,87 +851,88 @@ export default {
         detail: "SMS is being sent....",
         life: 2500,
       });
+      console.log(data)
 
-      // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
-      composeService
-        .sendMessage("/api/Messaging/sendSms", data)
-        .then((res) => {
-          // if (res.status === 200) {
-            if (res.data.message.includes("You do not have")) {
-              toast.add({
-              severity: "warn",
-              summary: "Insufficient Unit",
-              detail: `${res.data.message}`,
-              life: 6000,
-            });
+      // // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
+      // composeService
+      //   .sendMessage("/api/Messaging/sendSms", data)
+      //   .then((res) => {
+      //     // if (res.status === 200) {
+      //       if (res.data.message.includes("You do not have")) {
+      //         toast.add({
+      //         severity: "warn",
+      //         summary: "Insufficient Unit",
+      //         detail: `${res.data.message}`,
+      //         life: 6000,
+      //       });
 
             
-            } else {
-              toast.add({
-              severity: "success",
-              summary: "SMS Sent",
-              detail: `SMS Sent successfully`,
-              life: 6000,
-            });
+      //       } else {
+      //         toast.add({
+      //         severity: "success",
+      //         summary: "SMS Sent",
+      //         detail: `SMS Sent successfully`,
+      //         life: 6000,
+      //       });
 
-            store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
-            console.log(pageCount, "Page count ");
+      //       store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
+      //       console.log(pageCount, "Page count ");
 
-            console.log(res);
-            // Save the res to store in other to get it in the view sent sms page
-            let sentObj = {
-                message: res.data.message,
-                id: res.data.returnObjects ? res.data.returnObjects[0].id : [],
-                smsUnitsUsed: res.data.unitsUsed,
-                dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
-                deliveryReport: [{ report: res.data.messageStatus }]
-              }
-              console.log(sentObj)
-              store.dispatch("communication/addSmsToSentList", sentObj)
-              router.push({ name: "SentMessages" })
+      //       console.log(res);
+      //       // Save the res to store in other to get it in the view sent sms page
+      //       let sentObj = {
+      //           message: res.data.message,
+      //           id: res.data.returnObjects ? res.data.returnObjects[0].id : [],
+      //           smsUnitsUsed: res.data.unitsUsed,
+      //           dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
+      //           deliveryReport: [{ report: res.data.messageStatus }]
+      //         }
+      //         console.log(sentObj)
+      //         store.dispatch("communication/addSmsToSentList", sentObj)
+      //         router.push({ name: "SentMessages" })
 
-            }
+      //       }
             
-          // } else if (typeof res === "object") {
-          //   toast.add({
-          //     severity: "error",
-          //     summary: "Failed operation",
-          //     detail: typeof res === "object" ? "SMS sending failed" : res,
-          //     life: 2500,
-          //   });
+      //     // } else if (typeof res === "object") {
+      //     //   toast.add({
+      //     //     severity: "error",
+      //     //     summary: "Failed operation",
+      //     //     detail: typeof res === "object" ? "SMS sending failed" : res,
+      //     //     life: 2500,
+      //     //   });
             
             
             
-          // }
+      //     // }
           
-        })
-        .catch((err) => {
-          stopProgressBar();
-          toast.removeAllGroups();
-          console.log(err)
-          if (err.toString().toLowerCase().includes("network error")) {
-            toast.add({
-              severity: "warn",
-              summary: "You 're Offline",
-              detail: "Please ensure you have internet access",
-              life: 4000,
-            });
-          } else if (err.toString().toLowerCase().includes('timeout')) {
-            toast.add({
-              severity: "warn",
-              summary: "Request Delayed",
-              detail: "SMS took too long, please check your network and try again",
-              life: 4000,
-            });
-          } else {
-            toast.add({
-              severity: "warn",
-              summary: "Failed operation",
-              detail: "SMS sending failed, Please try again",
-              life: 400,
-            });
-          }
-        });
+      //   })
+      //   .catch((err) => {
+      //     stopProgressBar();
+      //     toast.removeAllGroups();
+      //     console.log(err)
+      //     if (err.toString().toLowerCase().includes("network error")) {
+      //       toast.add({
+      //         severity: "warn",
+      //         summary: "You 're Offline",
+      //         detail: "Please ensure you have internet access",
+      //         life: 4000,
+      //       });
+      //     } else if (err.toString().toLowerCase().includes('timeout')) {
+      //       toast.add({
+      //         severity: "warn",
+      //         summary: "Request Delayed",
+      //         detail: "SMS took too long, please check your network and try again",
+      //         life: 4000,
+      //       });
+      //     } else {
+      //       toast.add({
+      //         severity: "warn",
+      //         summary: "Failed operation",
+      //         detail: "SMS sending failed, Please try again",
+      //         life: 400,
+      //       });
+      //     }
+      //   });
     };
 
     const draftMessage = async () => {
@@ -1138,6 +1141,24 @@ export default {
     const groupSelectInput = ref(null);
     const memberSelectInput = ref(null);
 
+    const data = () => {
+      const data = {
+        subject: subject.value,
+        message: editorData.value,
+        contacts: [],
+        isPersonalized: isPersonalized.value,
+        groupedContacts: selectedGroups.value.map((i) => i.data),
+        toContacts: sendToAll.value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
+        isoCode: isoCode.value,
+        category: "",
+        emailAddress: "",
+        emailDisplayName: "",
+        // gateWayToUse: gateway,
+      };
+
+      console.log(data)
+    }
+
     return {
       editor,
       editorData,
@@ -1190,6 +1211,7 @@ export default {
       executionDate,
       moment,
       isPersonalized,
+      data
     };
   },
 };

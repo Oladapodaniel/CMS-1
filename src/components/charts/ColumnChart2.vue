@@ -138,7 +138,7 @@ export default {
 
 .chart-header {
     display: flex;
-    /* margin-top: 45px; */
+    margin-top: -66px;
 }
 
 .icon-div img {

@@ -6,11 +6,12 @@
           <div class="header">
             <div class="events">{{ header }}</div>
           </div>
-          <div class="actions">
-            <button v-if="false" class="more-btn  button align-items-center default-btn border-0">
-              More
-              <span><i class="fa fa-angle-down btn-icon"></i></span>
-            </button>
+          <div>
+            <router-link :to="{ name: 'ImportInstruction' }">
+              <button class="more-btn button default-btn border-0 align-items-center">
+              Import
+              </button>
+            </router-link>
             <router-link :to="`/tenant/people/add`" class="">
             <button class="add-person-btn button default-btn border-0 ml-3">
               Add Member
@@ -32,11 +33,18 @@
 // import store from "@/store/index";
 import router from "@/router/index";
 import { useRoute } from "vue-router";
-import { computed } from 'vue';
+import {  computed } from 'vue';
+
+
 
 export default {
   setup() {
     const route = useRoute();
+    // const toast = useToast()
+    // const importFile = ref("") 
+    
+    // const displayModal = ref(false)
+    // const memberData = ref([])
     const isFormPage = computed(() => {
       if (route.path.includes("add")) return true;
       return false;
@@ -64,7 +72,59 @@ export default {
     //   Store.commit("setPageTransition", "default");
     // }
 
-    return { addPersonClicked, route, header, isFormPage, };
+    // const fileUpload = () => {
+    //   importFile.value.click()
+    // }
+
+    
+
+    // const closeModal = () => {
+    //   displayModal.value = false
+    // }
+
+    // const addToMembers = async() =>  {
+    //   try {
+    //     let { data } = await axios.post("/api/People/CreateMultipleFirstTimer", memberData.value)
+    //     console.log(data)
+    //     displayModal.value = false
+    //     if (data.returnObject.returnList.length > 0) {
+    //       toast.add({
+    //       severity: "info",
+    //       summary: data.returnObject.createdRecord,
+    //       detail: `There are ${data.returnObject.returnList.length} members that have been added already`,
+    //     });
+    //     } else {
+    //       toast.add({
+    //       severity: "success",
+    //       summary: "Created Successfully",
+    //       detail: data.createdRecord,
+    //       life: 4000,
+    //     });
+    //     }
+        
+    //   }
+    //   catch  (err) {
+    //     finish()
+    //      if (err.toString().toLowerCase().includes("network error")) {
+    //       toast.add({
+    //         severity: "warn",
+    //         summary: "Network Error",
+    //         detail: "Please ensure you have strong internet connection",
+    //         life: 4000,
+    //       });
+    //     } else if (err.toString().toLowerCase().includes("timeout")) {
+    //       toast.add({
+    //         severity: "warn",
+    //         summary: "Request took too long to respond",
+    //         detail: "Please try again by refreshing the page",
+    //         life: 3000,
+    //       });
+    //     }
+    //     console.log(err)
+    //   }
+    // }
+
+    return { addPersonClicked, route, header, isFormPage };
   },
 };
 // transition method

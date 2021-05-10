@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-      <div class="form col-12 col-sm-12 offset-md-0 col-md-12">
+      <!-- <div class="form col-12 col-sm-12 offset-md-0 col-md-12">
         <div class="row form-header" @click="toggleForm2">
           <div class="col-10">Events and Activities</div>
           <div class="col-2 text-right">
@@ -46,7 +46,7 @@
             ></i>
           </div>
         </div>
-        <!-- <div class="container"> -->
+
         <div class="row form-body" :class="{ 'close-slide2': !showForm2 }">
           <div class="col-6 offset-3 offset-sm-0 col-sm-5 col-md-3">
             <div class="drop-box">
@@ -151,7 +151,7 @@
 
               <div v-if="check" class="col-sm-12">
                 <div class="row">
-                  <!-- <div class="col-sm-12 mt-4"><input type="text" class="form-control"></div> -->
+                <div class="col-sm-12 mt-4"><input type="text" class="form-control"></div> 
                   <div class="input-group mt-3 col-sm-7">
                     <input
                       type="text"
@@ -367,8 +367,7 @@
                 </table>
                 <tr class="offset-sm-3">
                   <td>
-                    <!-- WITH ARROWS -->
-                    <!--  -->
+       
                     <nav>
                       <ul
                         class="pagination rounded-circle justify-content-end mx-3 my-3"
@@ -426,8 +425,8 @@
             </div>
           </div>
         </div>
-        <!-- </div> -->
-      </div>
+   
+      </div> -->
       <div class="form">
         <!-- <div class="container"> -->
         <div class="row second-form first-row">
@@ -874,7 +873,7 @@
             <div class="col-3 col-sm-3 total-2 text-sm-right offset-sm-5">TOTAL</div>
             <div class="col-3 col-sm-3 offset-sm-1 ofering">
              
-              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="currencyAmount" @currency-index="pushConvertedCurrency" />
+              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="currencyAmount" @currency-index="pushConvertedCurrency" @currency-rate="setCurrencyRate" />
             </div>
             <div v-if="convertedAmount" class="col-4 col-sm-2 align-self-center converted-amount">
               {{ addContributionTotal ? addContributionTotal.toString() !== "NaN" ? addContributionTotal.toFixed(2) : 0.00 : 0.00 }}
@@ -1391,57 +1390,27 @@
                     >Birthday</label
                   >
                   <div class="col-sm-2 mb-4">
-                    <!-- <SelectElem
-                      :options="['day', ...day]"
-                      name="day"
-                      class="input-first"
-                      value="day"
-                      @input="select2Value"
-                    /> -->
+  
                     <Dropdown :options="[...day]" :filter="false" v-model="firstTimersObj.birthday" placeholder="Day" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-2 mb-4 px-sm-0">
-                    <!-- <SelectElem
-                      :options="['month', ...months]"
-                      name="month"
-                      class="input-first"
-                      value="month"
-                      @input="select2Value"
-                    /> -->
+       
                     <Dropdown :options="[...months]" :filter="false" v-model="valueMonth" @change="dropDownMonth" placeholder="Month" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-2 mb-4">
-                    <!-- <SelectElem
-                      :options="['Year', ...birthYearsArr]"
-                      name="year"
-                      class="input-first"
-                      value="Year"
-                      @input="select2Value"
-                    /> -->
+
                     <Dropdown :options="[...birthYearsArr]" :filter="false" v-model="firstTimersObj.birthYear" placeholder="Year" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
-                    <!-- <SelectElem
-                      :options="[...maritalStatuses]"
-                      class="input-first"
-                      name="marital status"
-                      value="Marital Status"
-                      @input="select2Value"
-                    /> -->
+ 
                     <Dropdown :options="[...maritalStatuses]" :filter="false" v-model="valueMarital" @change="dropDownMarital" placeholder="Marital Status" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4">
-                    <!-- <SelectElem
-                      :options="[...genders]"
-                      name="gender"
-                      class="input-first"
-                      value="gender"
-                      @input="select2Value"
-                    /> -->
+
                     <Dropdown :options="[...genders]" :filter="false" v-model="valueGender" @change="dropDownGender" placeholder="Gender" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
@@ -1469,47 +1438,29 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-                    <!-- <SelectElem
-                      :options="['select', ...howYouHeard]"
-                      @input="select2Value"
-                      name="howDidYouAboutUsId"
-                    /> -->
+        
                     <Dropdown :options="[...howYouHeard]" :filter="false" v-model="valueHeard" @change="dropDownHeard" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-                    <!-- <SelectElem
-                      :options="['select', ...comMeansArr]"
-                      @input="select2Value"
-                      name="communicationMeans"
-                    /> -->
+
                     <Dropdown :options="[...comMeansArr]" :filter="false" v-model="valueComm" @change="dropDownComm" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-                    <!-- <SelectElem
-                      :options="['select', ...joinInterest]"
-                      @input="select2Value"
-                      name="interestedInJoining"
-                    /> -->
+    
                     <Dropdown :options="[...joinInterest]" :filter="false" v-model="valueInterest" @change="dropDownInterest" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
-                    <!-- <SelectElem
-                      :options="['select...', ...wantVisitArr]"
-                      @input="select2Value"
-                      name="wantToBeVisited"
-                    /> -->
+
                     <Dropdown :options="[...wantVisitArr]" :filter="false" v-model="valueVisit" @change="dropDownVisit" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                 </div>
-
-                <!-- <div class="col-sm-12 mt-4">Follow up and Retention</div> -->
                 <span
                   class="d-flex justify-content-between align-items-center"
                   @click="toggleForm"
@@ -1548,14 +1499,6 @@
                       v-model="firstTimersObj.sendWelcomeEmail"
                     />
                   </div>
-                  <!-- <div class="col-sm-6 offset-sm-3">
-                    <div>Assigned automated follow-up</div>
-                    <SelectElem
-                      options="['List 1', 'List 2', 'List 3', 'List 4']"
-                      @input="select2Value"
-                      name="automatedFollowUp"
-                    />
-                  </div> -->
                 </div>
               </form>
             </div>
@@ -1691,63 +1634,31 @@
                     >Birthday</label
                   >
                   <div class="col-sm-2 mb-4">
-                    <!-- <SelectElem
-                      :options="['day', ...day]"
-                      name="day"
-                      class="input-first"
-                      value="day"
-                      @input="select2Value"
-                    /> -->
                     <Dropdown :options="[...day]" :filter="false" v-model="newConvertsObj.birthday" placeholder="Day" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
+
                   <div class="col-sm-2 mb-4 px-sm-0">
-                    <!-- <SelectElem
-                      :options="['month', ...months]"
-                      name="month"
-                      class="input-first"
-                      value="month"
-                      @input="select2Value"
-                    /> -->
                     <Dropdown :options="[...months]" :filter="false" v-model="valueMonth" @change="dropDownMonthNewConvert" placeholder="Month" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
+
                   <div class="col-sm-2 mb-4">
-                    <!-- <SelectElem
-                      :options="['Year', ...birthYearsArr]"
-                      name="year"
-                      class="input-first"
-                      value="Year"
-                      @input="select2Value"
-                    /> -->
                     <Dropdown :options="[...birthYearsArr]" :filter="false" v-model="firstTimersObj.birthYear" placeholder="Year" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
+
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
-                    <!-- <SelectElem
-                      :options="[...maritalStatuses]"
-                      class="input-first"
-                      name="marital status"
-                      value="Marital Status"
-                      @input="select2Value"
-                    /> -->
                     <Dropdown :options="[...maritalStatuses]" :filter="false" v-model="valueMarital" @change="dropDownMaritalNewConvert" placeholder="Marital Status" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
+
                   <div class="col-sm-3 mb-4">
-                    <!-- <SelectElem
-                      :options="[...genders]"
-                      name="gender"
-                      class="input-first"
-                      value="gender"
-                      @input="select2Value"
-                    /> -->
                     <Dropdown :options="[...genders]" :filter="false" v-model="valueGender" @change="dropDownGenderNewConvert" placeholder="Gender" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                 </div>
 
-                <!-- <div class="col-sm-12 mt-4">Insights</div>-->
                 <span
                   class="d-flex justify-content-between align-items-center"
                   @click="toggleForm1"
@@ -1769,47 +1680,29 @@
                 >
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>How did you hear about us</div>
-                    <!-- <SelectElem
-                      :options="['select', ...howYouHeard]"
-                      @input="select2Value"
-                      name="howDidYouAboutUsId"
-                    /> -->
                     <Dropdown :options="[...howYouHeard]" :filter="false" v-model="valueHeard" @change="dropDownHeardNewConvert" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
+
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Preferred means of communication</div>
-                    <!-- <SelectElem
-                      :options="['select', ...comMeansArr]"
-                      @input="select2Value"
-                      name="communicationMeans"
-                    /> -->
                     <Dropdown :options="[...comMeansArr]" :filter="false" v-model="valueComm" @change="dropDownCommNewConvert" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
+
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Interested in joining us</div>
-                    <!-- <SelectElem
-                      :options="['select', ...joinInterest]"
-                      @input="select2Value"
-                      name="interestedInJoining"
-                    /> -->
                     <Dropdown :options="[...joinInterest]" :filter="false" v-model="valueInterest" @change="dropDownInterestNewConvert" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
+
                   <div class="col-sm-6 offset-sm-3 mb-4">
                     <div>Want to be visited?</div>
-                    <!-- <SelectElem
-                      :options="['select...', ...wantVisitArr]"
-                      @input="select2Value"
-                      name="wantToBeVisited"
-                    /> -->
                     <Dropdown :options="[...wantVisitArr]" :filter="false" v-model="valueVisit" @change="dropDownVisitNewConvert" placeholder="Select" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
-                </div>
 
-                <!-- <div class="col-sm-12 mt-4">Follow up and Retention</div> -->
+                </div>
                 <span
                   class="d-flex justify-content-between align-items-center"
                   @click="toggleForm"
@@ -1848,14 +1741,6 @@
                       v-model="firstTimersObj.sendWelcomeEmail"
                     />
                   </div>
-                  <!-- <div class="col-sm-6 offset-sm-3">
-                    <div>Assigned automated follow-up</div>
-                    <SelectElem
-                      options="['List 1', 'List 2', 'List 3', 'List 4']"
-                      @input="select2Value"
-                      name="automatedFollowUp"
-                    />
-                  </div> -->
                 </div>
               </form>
             </div>
@@ -2237,6 +2122,7 @@ export default {
       selectedCurrencyName: "",
       currencyAmount: "",
       convertedAmount: [],
+      convertedAmount2: [],
       currencyIndex: 0,
       applyRem: false,
       remitance: [{}],
@@ -2248,7 +2134,8 @@ export default {
       isPhoneValid: true,
       isEmailValid: true,
       isPhoneValidNewConvert: true,
-      isEmailValidNewConvert: true
+      isEmailValidNewConvert: true,
+      currencyRate: []
     };
   },
   methods: {
@@ -2282,7 +2169,8 @@ export default {
           financialContributionID: offObj.id,
           paymentChannel: offObj.paymentChannel == undefined || offObj.paymentChannel == "" || offObj.paymentChannel == null ? "Cash" : offObj.paymentChannel,
           currencyID: offObj.currencyID == undefined || offObj.currencyID == "" || offObj.currencyID == null ? this.tenantCurrency.currencyId : offObj.currencyID,
-          donor: ""
+          donor: "",
+          fromCurrencyRate: `usd${this.tenantCurrency.currency ? this.tenantCurrency.currency.toLowerCase() : ""}`
         });
         console.log(offObj)
       } else {
@@ -2422,24 +2310,18 @@ export default {
         .querySelector("#closeEvent")
         .setAttribute("data-dismiss", "modal");
     },
-    // addDonor () {
-    //   let donorName = this.donorText
-    //   this.offeringItem[this.offeringToAddDonor].giver = donorName
-    //   this.$refs.closeDonorModal.setAttribute("data-dismiss", "modal");
-    //   this.donorBoolean = true
-    //   this.donorText = ""
-    //   console.log(this.offeringItem)
-    // },
     addCurrency (e, index, item) {
-        console.log(e.target.innerHTML, index)
-        // this.offeringItem[index].currency = e.target.innerHTML.split(" ")[0]
-        this.offeringItem[index].currencyID = item.id
-        this.offeringItem[index].showCurrency = false
-        this.offeringItem[index].currencyName = item.name
-        // this.selectedCurrencyId = item.id
-        this.selectedCurrencyName = e.target.innerHTML.split(" ")[0]
-        console.log(item)
+      console.log(e.target.innerHTML, index)
+      this.offeringItem[index].currencyID = item.id
+      this.offeringItem[index].showCurrency = false
+      this.offeringItem[index].currencyName = item.name
+      this.selectedCurrencyName = e.target.innerHTML.split(" ")[0]
 
+      this.offeringItem[index].fromCurrencyRate = `usd${item.name.toLowerCase()}`
+
+    },
+    setCurrencyRate (payload) {
+      this.currencyRate = payload
     },
     delAttendance(index) {
       this.attendanceItem.splice(index, 1);
@@ -2498,6 +2380,7 @@ export default {
         // offerings: this.offeringItem,
         offerings: this.offeringItem.map(i => {
            delete i.showCurrency
+           delete i.fromCurrencyRate
            return i
         }),
         // offerings: this.offeringItem.map(i => {
@@ -2823,85 +2706,6 @@ export default {
     },
     
     select2Value(data) {
-      // if (data.dataType === "day") {
-      //   this.firstTimersObj.birthday = data.value;
-      // }
-      // if (data.dataType === "month") {
-      //   switch (data.value) {
-      //     case "January":
-      //       this.firstTimersObj.birthMonth = "1";
-      //       break;
-      //     case "February":
-      //       this.firstTimersObj.birthMonth = "2";
-      //       break;
-      //     case "March":
-      //       this.firstTimersObj.birthMonth = "3";
-      //       break;
-      //     case "April":
-      //       this.firstTimersObj.birthMonth = "4";
-      //       break;
-      //     case "May":
-      //       this.firstTimersObj.birthMonth = "5";
-      //       break;
-      //     case "June":
-      //       this.firstTimersObj.birthMonth = "6";
-      //       break;
-      //     case "July":
-      //       this.firstTimersObj.birthMonth = "7";
-      //       break;
-      //     case "August":
-      //       this.firstTimersObj.birthMonth = "8";
-      //       break;
-      //     case "September":
-      //       this.firstTimersObj.birthMonth = "9";
-      //       break;
-      //     case "October":
-      //       this.firstTimersObj.birthMonth = "10";
-      //       break;
-      //     case "November":
-      //       this.firstTimersObj.birthMonth = "11";
-      //       break;
-      //     case "December":
-      //       this.firstTimersObj.birthMonth = "12";
-      //       break;
-      //     default:
-      //       // firstTimersObj.value.birthMonth = "12";
-      //       console.log("No month chosen");
-      //       break;
-      //   }
-      // }
-      // if (data.dataType === "year") {
-      //   this.firstTimersObj.birthYear = data.value;
-      // }
-      // if (data.dataType === "marital status") {
-        // this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find(
-        //   (i) => i.value === data.value
-        // ).id;
-      // }
-      // if (data.dataType === "gender") {
-        
-      // }
-      // if (data.dataType === "howDidYouAboutUsId") {
-      //   this.firstTimersObj.howDidYouAboutUsId = this.howDidYouAboutUsId.find(
-      //     (i) => i.name === data.value
-      //   ).id;
-      //   console.log(this.firstTimersObj.howDidYouAboutUsId);
-      // }
-      // if (data.dataType === "communicationMeans") {
-      //   this.firstTimersObj.communicationMeans = this.comMeansArr.indexOf(
-      //     data.value
-      //   );
-      // }
-      // if (data.dataType === "interestedInJoining") {
-      //   this.firstTimersObj.interestedInJoining = this.joinInterest.indexOf(
-      //     data.value
-      //   );
-      // }
-      // if (data.dataType === "wantToBeVisited") {
-      //   this.firstTimersObj.wantToBeVisited = this.wantVisitArr.indexOf(
-      //     data.value
-      //   );
-      // }
       if (data.dataType === "automatedFollowUp") {
         this.firstTimersObj.autoMatedFollowUp = data.value;
       }
@@ -3108,6 +2912,25 @@ export default {
     sendAmount (e, index) {
       this.currencyAmount = e.target.value
       this.currencyIndex = index
+
+
+      let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
+      let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate
+
+      let amount = this.offeringItem[index].amount ? this.offeringItem[index].amount : 0
+      if (amount === 0) return false
+      let propertyArr = Object.keys(this.currencyRate)
+      let valueArr = Object.values(this.currencyRate)
+      let fromIndex = propertyArr.indexOf(fromCurrencyRate)
+      let fromRate = valueArr[fromIndex]
+      let toIndex = propertyArr.indexOf(toDestinationCurrencyRate)
+      let toRate = valueArr[toIndex]
+
+      // console.log(amount, fromIndex, toIndex, amount, fromRate, toRate)
+      let result = ( amount / fromRate ) * toRate
+      console.log(result)
+      this.convertedAmount2[index] = result
+      console.log(this.convertedAmount2)
     },
     pushConvertedCurrency (payload) {
       this.convertedAmount[this.currencyIndex] = payload
@@ -3417,6 +3240,10 @@ export default {
       } else {
         return this.currencyList
       }
+    },
+    fromCurrencyRate () {
+      if (this.selectedCurrencyName) return `usd${props.selectedCurrency.toLowerCase()}`
+      return `usd${props.tenantCurrency ? props.tenantCurrency.toLowerCase() : ""}`
     }
   },
 };

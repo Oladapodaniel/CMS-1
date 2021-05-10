@@ -8,7 +8,7 @@
     <div class="main-con">
       <div class="main-section">
         <div class="intro-div">
-          <h1 class="intro-header">Welcome {{ data.churchName }}</h1>
+          <h1 class="intro-header">Welcome {{ data && data.churchName ? data.churchName : "" }}</h1>
           <p class="intro-subtext">Where do you want to start ?</p>
         </div>
         <div class="boxes-con">
@@ -103,7 +103,7 @@ export default {
   setup() {
        const data =  ref({})
       const churchData = () => {
-        if (store.state.currentUser.churchName == undefined) {
+        if (store.state.currentUser == undefined) {
           axios.get("/api/Membership/GetCurrentSignedInUser")
               .then(res => {
                 console.log(res.data);

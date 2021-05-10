@@ -40,17 +40,13 @@
       </div>
       <div class="col-sm-5 mt-sm-3">
           <Dropdown v-model="selectedIncomeAccount" class="w-100 p-0" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-
-              </Dropdown>
+          </Dropdown>
       </div>
       <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
            <label for="" class="label">Cash Account</label>
         </div>
       <div class="col-sm-5 mt-sm-3">
- 
-         
           <Dropdown v-model="selectedCashAccount" :options="cashBankAccount" optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
-            
           </Dropdown>
         </div>
 
@@ -183,18 +179,27 @@ export default {
     getCashBankAccount()
 
     const deleteItem = (index) => {
-      remitance.value.splice(index, 1)
+      if (remitance.value.length > 1) {
+        remitance.value.splice(index, 1)
+      } else {
+         toast.add({
+          severity: "error",
+          summary: "Cannot delete",
+          detail: `You must have at least one field to apply for remittance`,
+          life: 5000,
+        });
+      }
     }
 
     const addRemittance = () => {
       console.log(sumPercentage.value)
       if (100 - +sumPercentage.value.percentage <= 0) {
         toast.add({
-            severity: "error",
-            summary: "Limit Reached",
-            detail: ` You have ${sumPercentage.value.percentage}% remittance percentage, The sum of the percentages should not exceed the 100%`,
-            life: 6000,
-          });
+          severity: "error",
+          summary: "Limit Reached",
+          detail: ` You have ${sumPercentage.value.percentage}% remittance percentage, The sum of the percentages should not exceed the 100%`,
+          life: 5000,
+        });
       }  else {
         remitance.value.push({})
       }
@@ -230,7 +235,7 @@ export default {
         //     isGroupAccount: selectedIncomeAccount.value.isGroupAccount,
         //     financialFundID: selectedIncomeAccount.value.financialFundID
         //   },
-        incomeAccountId: selectedIncomeAccount.value.id,
+        incomeAccountId: selectedIncomeAccount.value ? selectedIncomeAccount.value.id : "",
         // cashAccount: {
         //     id: selectedCashAccount.value.id,
         //     name: selectedCashAccount.value.text,
@@ -239,7 +244,7 @@ export default {
         //     isGroupAccount: selectedCashAccount.value.isGroupAccount,
         //     financialFundID: selectedCashAccount.value.financialFundID
         //   },
-        cashAccountId: selectedCashAccount.value.id,
+        cashAccountId: selectedCashAccount.value ? selectedCashAccount.value.id : "",
         incomeRemittance: remitance.value
       }
 
@@ -255,23 +260,31 @@ export default {
                 contributionCategory.incomeRemittance = null
               }
       console.log(contributionCategory)
-       axios.post('/api/financials/contributions/items/save', contributionCategory)
-              .then(res => {
-                toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
-                console.log(res)
-                router.push({ name: "ContributionCategory" })
-              })
-              .catch(err => {
-                toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
-                console.log(err)
-              })
+       if (selectedIncomeAccount.value && selectedCashAccount.value) {
+         axios.post('/api/financials/contributions/items/save', contributionCategory)
+            .then(res => {
+              toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
+              console.log(res)
+              router.push({ name: "ContributionCategory" })
+            })
+            .catch(err => {
+              toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
+              console.log(err)
+            })
+       }  else {
+          toast.add({
+            severity: "error",
+            summary: "No account selected",
+            detail: `Please select an income and cash account`,
+            life: 5000,
+          });
+       }
     }
     const sumPercentage = computed(() => {
+      if (remitance.value.length === 0) return 0
       return remitance.value.reduce((a, b) => {
-        // if (remitance.value[remitance.value.length - 1].percentage) {
           return { percentage: +a.percentage + +b.percentage }
-        // }
-      })
+      }) 
     })
 
     const openResponsive = () => {

@@ -55,7 +55,7 @@
           <div class="img">
             <p class="text-center text-white pt-5 main-font">Giving</p>
             <p class="text-center mt-n3 sub-main-font">
-              Give and you will recieve. Luke - 6:38
+              Give and you shall recieve. Luke - 6:38
             </p>
 
             <!-- form area -->
@@ -333,7 +333,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -416,15 +416,14 @@
               <div class="container mt-5">
                 <div class="row">
                   <div class="col-md-6 offset-md-3">
-                    <div class="row hfont">
+                    <div class="row">
                       <p class="text-nowrap col-12 text-center">
-                        Churchplus <span><u>Terms & Conditions</u> </span
-                        >and
-                        <span><u>Privacy Policy</u> </span>
+                        Churchplus <span>Terms & Conditions </span
+                        > and
+                        <span>Privacy Policy </span>
                       </p>
                       <p class="mt-n2 col-12 text-center text-wrap">
-                        Organization Legal Name: Porters House Assembly |
-                        Address:Iponri Lagos
+                        Organization Legal Name: {{ formResponse.churchName }} 
                       </p>
                      
                       <div class="col-md-4 offset-5 px-0">
@@ -461,6 +460,7 @@ import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import SignUp from "./SignUp"
+import convertCurrency from "../../../services/currency-converter/currencyConverter"
 export default {
   components: {
     PaymentOptionModal,
@@ -508,6 +508,8 @@ export default {
     const signInPassword = ref("")
     const routeParams = ref(`${route.params.userId}`)
     const showSignInForm = ref(true)
+    const tenantCurrency = ref("")
+    const convertedAmount = ref(0)
     
 
     const givingOften = (e) => {
@@ -583,6 +585,26 @@ export default {
     const donation = async() => {
 
 
+      try {
+        let { data } = await axios.get(`/api/Lookup/TenantCurrency?tenantID=${formResponse.value ? formResponse.value.tenantID : ""}`)
+        tenantCurrency.value = data.currency
+      }
+
+      catch (err) {
+        console.log(err)
+      }
+          // Heres where im converting the currenccy
+          try {
+            let fromCurrencyRate = `usd${dfaultCurrency.value.shortCode.toLowerCase()}`
+            let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
+            const result = await convertCurrency.currencyConverter(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
+            console.log(result)
+            convertedAmount.value = Math.round(result)
+          }
+          catch (err) {
+            console.log(err)
+          }
+
           donationObj.value = {
             paymentFormId: formResponse.value.id,
             churchLogoUrl: formResponse.value.churchLogo,
@@ -630,17 +652,17 @@ export default {
 
          
 console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'))
-          // try {
-          //   let  res = await axios.post('/donation', donationObj.value)
-          //   console.log(res)
+          try {
+            let  res = await axios.post('/donation', donationObj.value)
+            console.log(res)
           
-          //   finish()
-          // }
-          // catch (error) {
-          //   finish()
-          //   console.log(error)
-          // }
-          // console.log(formResponse.value)
+            finish()
+          }
+          catch (error) {
+            finish()
+            console.log(error)
+          }
+          console.log(formResponse.value)
     }
 
     const successfulPayment = (payload) => {
@@ -715,10 +737,10 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
           "/mobile/v1/Account/SignIn",
           userdetails
         );
-        if (data && data.token) {
+        if (data && data.returnObject.token) {
             let giverDetails = {
-                giverToken: data.token,
-                giverId: data.userId
+                giverToken: data.returnObject.token,
+                giverId: data.returnObject.userId
             }
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
           toast.add({
@@ -846,7 +868,9 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
       showSignInForm,
       signedUp,
       displaySignInForm,
-      gatewaySelected
+      gatewaySelected,
+      tenantCurrency,
+      convertedAmount
     };
   },
 };
