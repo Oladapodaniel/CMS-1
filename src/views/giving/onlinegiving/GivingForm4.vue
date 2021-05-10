@@ -55,7 +55,7 @@
           <div class="img">
             <p class="text-center text-white pt-5 main-font">Giving</p>
             <p class="text-center mt-n3 sub-main-font">
-              Give and you will recieve. Luke - 6:38
+              Give and you shall recieve. Luke - 6:38
             </p>
 
             <!-- form area -->
@@ -416,15 +416,14 @@
               <div class="container mt-5">
                 <div class="row">
                   <div class="col-md-6 offset-md-3">
-                    <div class="row hfont">
+                    <div class="row">
                       <p class="text-nowrap col-12 text-center">
-                        Churchplus <span><u>Terms & Conditions</u> </span
-                        >and
-                        <span><u>Privacy Policy</u> </span>
+                        Churchplus <span>Terms & Conditions </span
+                        > and
+                        <span>Privacy Policy </span>
                       </p>
                       <p class="mt-n2 col-12 text-center text-wrap">
-                        Organization Legal Name: Porters House Assembly |
-                        Address:Iponri Lagos
+                        Organization Legal Name: {{ formResponse.churchName }} 
                       </p>
                      
                       <div class="col-md-4 offset-5 px-0">
