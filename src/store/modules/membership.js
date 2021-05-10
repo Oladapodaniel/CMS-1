@@ -31,6 +31,10 @@ export default {
     removeMember(state, payload) {
         state.members = state.members.filter(i => i.id !== payload);
     },
+    showImportedPeople(payload) {
+        // state.members = payload;
+        console.log(payload)
+    }
   },
 
   actions: {
@@ -90,6 +94,10 @@ export default {
     removeMember({ commit }, payload) {
         commit("removeMember", payload);
     },
+    showImportedPeople ({ commit }, payload) {
+      commit("showImportedPeople"), payload
+      // console./log(payload)
+    }
 
   },
 

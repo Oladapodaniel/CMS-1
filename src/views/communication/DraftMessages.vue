@@ -28,7 +28,7 @@
               <i
                 class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                 style="font-size: 15px"
-                v-if="markedDraft.length > 0"
+                v-if="markedDraft ? markedDraft.length > 0 : ''"
                 @click="showConfirmModal(null)"
               >
               </i>

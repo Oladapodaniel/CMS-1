@@ -423,7 +423,8 @@
                         <span>Privacy Policy </span>
                       </p>
                       <p class="mt-n2 col-12 text-center text-wrap">
-                        Organization Legal Name: {{ formResponse.churchName }} 
+                        Organization Legal Name: {{ formResponse.churchName }} <br>
+                        Address: {{ formResponse.address }}
                       </p>
                      
                       <div class="col-md-4 offset-5 px-0">
