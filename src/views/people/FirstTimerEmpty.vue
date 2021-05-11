@@ -13,13 +13,11 @@
             <div class="events">First Timers
             </div>
           </div>
-          <div class="actions">
-            <router-link :to="{ name: 'ImportInstruction' }">
+          <div class="actions" @click="importFirstTimer">
             <button class="more-btn button">
               Import
               <!-- <span><i class="fa fa-angle-down btn-icon"></i></span> -->
             </button>
-            </router-link>
             
             <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item elipsis-items cursor-pointer" @click="fileUpload">
@@ -145,12 +143,14 @@
     import { useToast } from "primevue/usetoast";
     import Dialog from 'primevue/dialog';
 // import store from "@/store/index";
-// import router from "@/router/index";
+import router from "@/router/index";
 // import { useRoute } from "vue-router";
+
 
 export default {
   components: { FirstTimersList, Dialog },
   setup() {
+    // const route = useRoute()
       const firstTimersList = ref([])
       const loading = ref(false)
       const toast = useToast()
@@ -275,7 +275,11 @@ export default {
       }
     }
 
-    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal };
+    const importFirstTimer = () => {
+      router.push({ name: 'ImportInstruction', query: { query: 'importfirsttimer' } })
+    }
+
+    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer };
 
   },
 };

@@ -171,11 +171,17 @@ import axios from "@/gateway/backendapi";
 import Dialog from 'primevue/dialog';
 import finish from  "../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
+import { useRoute } from "vue-router"
+import { useStore } from "vuex"
+import router from "@/router/index";
+
 export default {
     components: {
         Dialog
     },
     setup () {
+        const route = useRoute()
+        const store = useStore();
         const image = ref("");
         const toast = useToast()
         const displayModal = ref(false)
@@ -249,50 +255,102 @@ export default {
     }
 
     const addToMembers = async() =>  {
-    try {
-        let { data } = await axios.post("/api/People/CreateMultipleFirstTimer", memberData.value)
-        console.log(data)
-        displayModal.value = false
-        if (data.returnObject.returnList.length > 0) {
-        toast.add({
-        severity: "info",
-        summary: data.returnObject.createdRecord,
-        detail: `There are ${data.returnObject.returnList.length} members that have been added already`,
-        });
-        } else {
-        toast.add({
-        severity: "success",
-        summary: "Created Successfully",
-        detail: data.createdRecord,
-        life: 4000,
-        });
+        if (route.query.query === "importpeople") {
+            console.log(route.query.query)
+            try {
+                let { data } = await axios.post("/api/People/CreatePeople", memberData.value)
+                console.log(data)
+                console.log(memberData.value)
+                store.dispatch('membership/showImportedPeople', memberData.value)
+                displayModal.value = false
+                router.push("/tenant/people")
+                // if (data.returnObject.returnList.length > 0) {
+                toast.add({
+                severity: "info",
+                summary: data.returnObject.createdRecord,
+                detail: `There are ${data.returnObject.returnList.length} ${data.returnObject.returnList.length === 1 ? "member" : "members"} that have been added already`,
+                });
+                // } else {
+                // toast.add({
+                // severity: "success",
+                // summary: "Created Successfully",
+                // detail: data.createdRecord,
+                // life: 4000,
+                // });
+                // }
+                
+            }
+            catch  (err) {
+                finish()
+                if (err.toString().toLowerCase().includes("network error")) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Network Error",
+                    detail: "Please ensure you have strong internet connection",
+                    life: 4000,
+                });
+                } else if (err.toString().toLowerCase().includes("timeout")) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Request took too long to respond",
+                    detail: "Please try again by refreshing the page",
+                    life: 3000,
+                });
+                }
+                console.log(err)
+            }
+        }   else {
+            console.log(route.query.query)
+            try {
+                let { data } = await axios.post("/api/People/CreateMultipleFirstTimer", memberData.value)
+                console.log(data)
+                displayModal.value = false
+                if (data.returnObject.returnList.length > 0) {
+                toast.add({
+                severity: "info",
+                summary: data.returnObject.createdRecord,
+                detail: `There are ${data.returnObject.returnList.length} members that have been added already`,
+                });
+                } else {
+                toast.add({
+                severity: "success",
+                summary: "Created Successfully",
+                detail: data.createdRecord,
+                life: 4000,
+                });
+                }
+                
+            }
+            catch  (err) {
+                finish()
+                if (err.toString().toLowerCase().includes("network error")) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Network Error",
+                    detail: "Please ensure you have strong internet connection",
+                    life: 4000,
+                });
+                } else if (err.toString().toLowerCase().includes("timeout")) {
+                toast.add({
+                    severity: "warn",
+                    summary: "Request took too long to respond",
+                    detail: "Please try again by refreshing the page",
+                    life: 3000,
+                });
+                }
+                console.log(err)
+            }
         }
-        
-    }
-    catch  (err) {
-        finish()
-        if (err.toString().toLowerCase().includes("network error")) {
-        toast.add({
-            severity: "warn",
-            summary: "Network Error",
-            detail: "Please ensure you have strong internet connection",
-            life: 4000,
-        });
-        } else if (err.toString().toLowerCase().includes("timeout")) {
-        toast.add({
-            severity: "warn",
-            summary: "Request took too long to respond",
-            detail: "Please try again by refreshing the page",
-            life: 3000,
-        });
-        }
-        console.log(err)
-    }
     }
 
     const toggleInstruction = () => {
         addInstructionClass.value = !addInstructionClass.value
     }
+
+    const getImportType = () => {
+        console.log(route.query.query)
+    }
+    getImportType()
 
         return {
             imageSelected, image, uploadFile, memberData, addToMembers, closeModal, displayModal, addInstructionClass, toggleInstruction

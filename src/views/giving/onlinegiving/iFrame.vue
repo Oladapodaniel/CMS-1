@@ -760,68 +760,69 @@ export default {
           "/mobile/v1/Account/SignIn",
           userdetails
         );
-        if (data && data.token) {
+        if (!data.returnObject) {
+            toast.add({
+              severity: "warn",
+              summary: "Incorrect details",
+              detail: `${data.response}`,
+              life: 4000,
+            });
+        } else if (data && data.returnObject.token && data.status) {
             let giverDetails = {
-                giverToken: data.token,
-                giverId: data.userId
+                giverToken: data.returnObject.token,
+                giverId: data.returnObject.userId
             }
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
           toast.add({
             severity: "success",
             summary: "Successful",
-            detail: `Signed In Successfully`,
-            life: 3000,
+            detail: `${data.response}`,
+            life: 4000,
           });
           console.log(data)
 
           let userProfile = {
-            name: data.fullname,
-            email: data.email,
-            id: data.userId,
-            tenantID: data.tenantID,
-            phone: data.phoneNumber,
+            name: data.returnObject.fullname,
+            email: data.returnObject.email,
+            id: data.returnObject.userId,
+            tenantID: data.returnObject.tenantID,
+            phone: data.returnObject.phoneNumber,
           }
           userData.value = userProfile
+          signedIn.value = true
+          console.log(data)
           // userData.value = data
+        }   else {
+           console.log(data.response)
         }
-        signedIn.value = true
-
-        
-
-
-
-        // userData.value = data
         finish()
-
-
-      } catch (error) {
+    } catch (error) {
           finish()
         console.log(error);
-        console.log(error.response);
-        if (error.reponse) {
+        console.log(error.response && error.response.data.message);
+        if (error.response && error.response.data.message ) {
           toast.add({
             severity: "info",
             summary: "Error Signing In",
             detail: `${error.response.data.message}`,
             life: 3000,
           });
-        } else if (error.response.status === 401){
-          toast.add({
-            severity: "info",
-            summary: "Incorrect Details",
-            detail: `${error.response.data.message}`,
-            life: 3000,
-          });
-        } else {
+        } else if (error.response && error.response.toString().includes('network error')){
           toast.add({
             severity: "error",
             summary: "Network Error",
             detail: `Please ensure you  have a strong internet connection`,
             life: 3000,
           });
+        } else {
+          toast.add({
+            severity: "error",
+            summary: "Not Successful",
+            detail: `Please try again`,
+            life: 3000,
+          });
         }
       }
-      // console.log(userdetails.value);
     };
 
     const signedUp = async(payload) => {

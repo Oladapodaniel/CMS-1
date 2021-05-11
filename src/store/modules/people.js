@@ -12,6 +12,7 @@ export default {
         userStartPoint: "",
         settingUserUp: false,
         churchMembers: { },
+        // importType: ""
     },
 
     mutations: {
@@ -77,13 +78,14 @@ export default {
       },
 
     //   getters: {
-    //     currentUser: state => state.currentUser,
-    //     userEmail: state => state.userEmail,
-    //     onboardingData: state => state.onboardingData,
-    //     userRole: state => state.userRole,
-    //     userData: state => state.userData,
-    //     initialSignUpDetails: state => state.initialSignUpDetails,
-    //     userStartPoint: state => state.userStartPoint,
-    //     settingUserUp: state => state.settingUserUp,
+        // currentUser: state => state.currentUser,
+        // userEmail: state => state.userEmail,
+        // onboardingData: state => state.onboardingData,
+        // userRole: state => state.userRole,
+        // userData: state => state.userData,
+        // initialSignUpDetails: state => state.initialSignUpDetails,
+        // userStartPoint: state => state.userStartPoint,
+        // settingUserUp: state => state.settingUserUp,
+        // importType: state => state.importType
     //   },
 }
