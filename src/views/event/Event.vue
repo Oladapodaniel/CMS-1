@@ -670,7 +670,7 @@
 <!-- <div>{{ offeringItem }}</div> -->
 <!-- <div>{{ newOfferings }}</div> -->
         <!-- Selected offerings -->
-        <!-- <div>{{ convertedAmount }}</div> -->
+        <!-- <div>{{ convertedAmount2 }}</div> -->
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -1978,7 +1978,7 @@ import axios from "@/gateway/backendapi";
 import membershipService from "../../services/membership/membershipservice";
 import CurrencyConverter from "./CurrencyConverter"
 import Dropdown from 'primevue/dropdown';
-// import { useStore } from 'vuex'
+import CurrencyConverterService from '../../services/currency-converter/currencyConverter'
 export default {
   components: {
     CurrencyConverter, Dropdown
@@ -2909,7 +2909,8 @@ export default {
             console.log(err);
         }
     },
-    sendAmount (e, index) {
+    async sendAmount (e, index) {
+
       this.currencyAmount = e.target.value
       this.currencyIndex = index
 
@@ -2917,20 +2918,31 @@ export default {
       let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
       let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate
 
-      let amount = this.offeringItem[index].amount ? this.offeringItem[index].amount : 0
-      if (amount === 0) return false
-      let propertyArr = Object.keys(this.currencyRate)
-      let valueArr = Object.values(this.currencyRate)
-      let fromIndex = propertyArr.indexOf(fromCurrencyRate)
-      let fromRate = valueArr[fromIndex]
-      let toIndex = propertyArr.indexOf(toDestinationCurrencyRate)
-      let toRate = valueArr[toIndex]
+      let amount = this.offeringItem[index].amount ? +this.offeringItem[index].amount : 0
 
-      // console.log(amount, fromIndex, toIndex, amount, fromRate, toRate)
-      let result = ( amount / fromRate ) * toRate
-      console.log(result)
-      this.convertedAmount2[index] = result
-      console.log(this.convertedAmount2)
+      console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
+
+      try {
+        let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+        console.log(result)
+        this.convertedAmount2[index] = result
+      }
+      catch (err) {
+        console.log(err)
+      }
+      // if (amount === 0) return false
+      // let propertyArr = Object.keys(this.currencyRate)
+      // let valueArr = Object.values(this.currencyRate)
+      // let fromIndex = propertyArr.indexOf(fromCurrencyRate)
+      // let fromRate = valueArr[fromIndex]
+      // let toIndex = propertyArr.indexOf(toDestinationCurrencyRate)
+      // let toRate = valueArr[toIndex]
+
+      // // console.log(amount, fromIndex, toIndex, amount, fromRate, toRate)
+      // let result = ( amount / fromRate ) * toRate
+      // console.log(result)
+      // 
+      // console.log(this.convertedAmount2)
     },
     pushConvertedCurrency (payload) {
       this.convertedAmount[this.currencyIndex] = payload
@@ -3108,6 +3120,15 @@ export default {
             console.log(error)
           }
         },
+         async getRates () {
+            try {
+                let { data } = await axios.get('/fxRates')
+                console.log(data)
+                this.$store.dispatch("getRates", data)
+            }   catch (error) {
+                    console.log(error);
+            }
+        },
         
   },
   created() {
@@ -3132,6 +3153,7 @@ export default {
     this.getCurrenciesFromCountries();
     this.getIncomeAccount()
     this.getCashBankAccount()
+    this.getRates()
 
 
 
@@ -3187,13 +3209,13 @@ export default {
       return arr;
     },
     addContributionTotal() {
-      if (this.convertedAmount.length <= 0) return 0;
+      if (this.convertedAmount2.length <= 0) return 0;
       // if (this.convertedAmount.length === 1) return this.convertedAmount[0].amount;
       // const amounts = this.offeringItem.map((i) => +i.amount);
       // return amounts.reduce((a, b) => {
       //   return (a || 0) + (b || 0);
       // });
-      return this.convertedAmount.reduce((a, b) => {
+      return this.convertedAmount2.reduce((a, b) => {
         return +a + +b
       })
     },

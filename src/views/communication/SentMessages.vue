@@ -400,7 +400,6 @@ export default {
       } else {
         marked.value = [];
       }
-      console.log(marked.value, "I am awesome");
     };
 
 // Function to delete sent sms

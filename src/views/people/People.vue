@@ -7,11 +7,10 @@
             <div class="events">{{ header }}</div>
           </div>
           <div>
-            <router-link :to="{ name: 'ImportInstruction' }">
-              <button class="more-btn button default-btn border-0 align-items-center">
-              Import
-              </button>
-            </router-link>
+            <button class="more-btn button default-btn border-0 align-items-center" @click="importMembers">
+            Import
+            </button>
+      
             <router-link :to="`/tenant/people/add`" class="">
             <button class="add-person-btn button default-btn border-0 ml-3">
               Add Member
@@ -64,6 +63,11 @@ export default {
       if (route.path.includes("/people/addfirsttimer")) return "First Timers";
       return "Members";
     })
+
+    const importMembers = () => {
+          // <router-link :to="{ name: 'ImportInstruction' }">
+          router.push({ name: 'ImportInstruction', query: { query: 'importpeople' } })
+    }
 
     //   const afterEnter =  () => {
     //   window.scrollTo(0, 0);
@@ -124,7 +128,7 @@ export default {
     //   }
     // }
 
-    return { addPersonClicked, route, header, isFormPage };
+    return { addPersonClicked, route, header, isFormPage, importMembers };
   },
 };
 // transition method

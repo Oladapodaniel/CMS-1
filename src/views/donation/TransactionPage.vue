@@ -23,7 +23,7 @@
             </p>
           </div>
 
-          <div class="col-md-2 col-6 offset-md-4">
+          <div class="col-md-3 col-6 offset-md-4">
             <!-- Example split danger button -->
             <div class="btn-group">
               <button type="button" class="btn htext2">Ajose Tosin</button>
@@ -66,23 +66,23 @@
           <div class="col-md-3 col-4">
             <input
               type="date"
-              class="form-control fone p-3 border-0 date-area w-75"
+              class="form-control fone p-3 border-0 date-area w-100"
               v-model="startDate"
             />
           </div>
           <div class="col-md-3 col-4">
             <input
               type="date"
-              class="form-control fone p-3 border-0 date-area w-75"
+              class="form-control fone p-3 border-0 date-area w-100"
               v-model="endDate"
             />
           </div>
           <!-- end of date area -->
           <!-- </div> -->
 
-          <div class="col-md-1 col-2">
+          <div class="col-md-1 col-2" @click="searchRange">
             <i
-              class="pi pi-filter p-3 bell-shadow bell d-flex justify-content-center align-items-center"
+              class="pi pi-search p-3 bell-shadow bell d-flex justify-content-center align-items-center"
             ></i>
           </div>
         </div>
@@ -219,8 +219,8 @@ export default {
         .post("/mobile/v1/PaymentForm/contributions", initialData)
         .then((res) => {
           finish();
-          console.log(res, "kjjjhjjjje");
-          console.log(res.data, "kalistocrazy");
+          console.log(res);
+          console.log(res.data);
           userTransaction.value = res.data;
           loading.value = false;
         })
@@ -245,6 +245,31 @@ export default {
       doc.autoTable(html)
     };
 
+    const searchRange = () => {
+      let tenantId = localStorage.getItem("tenantId");
+      let initialData = {
+        startDate: startDate.value,
+        endDate: endDate.value,
+        userId: storedDetails.giverId,
+        tenantId: tenantId,
+      };
+
+      axios
+        .post("/mobile/v1/PaymentForm/contributions", initialData)
+        .then((res) => {
+          finish();
+          console.log(res);
+          console.log(res.data);
+          userTransaction.value = res.data;
+          loading.value = false;
+        })
+        .catch((err) => {
+          finish();
+          console.log(err.response);
+          loading.value = false;
+        });
+    }
+
 
 
     return {
@@ -259,6 +284,7 @@ export default {
       jsPDF,
       autoTable,
       downloadArea,
+      searchRange
     };
   },
 };

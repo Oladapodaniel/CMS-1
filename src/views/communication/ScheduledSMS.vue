@@ -30,7 +30,7 @@
               <i
                 class="pi pi-trash text-danger ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
                 style="font-size: 15px"
-                v-if="markedSchedules.length > 0"
+                v-if="markedSchedules ? markedSchedules.length > 0 :''"
                 @click="showConfirmModal">
               </i>
               <div class="row table-box mb-4">
