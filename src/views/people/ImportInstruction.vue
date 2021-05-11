@@ -173,6 +173,7 @@ import finish from  "../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import { useRoute } from "vue-router"
 import { useStore } from "vuex"
+import router from "@/router/index";
 
 export default {
     components: {
@@ -259,15 +260,16 @@ export default {
             try {
                 let { data } = await axios.post("/api/People/CreatePeople", memberData.value)
                 console.log(data)
-                // console.log(memberData.value)
+                console.log(memberData.value)
                 store.dispatch('membership/showImportedPeople', memberData.value)
-                // displayModal.value = false
+                displayModal.value = false
+                router.push("/tenant/people")
                 // if (data.returnObject.returnList.length > 0) {
-                // toast.add({
-                // severity: "info",
-                // summary: data.returnObject.createdRecord,
-                // detail: `There are ${data.returnObject.returnList.length} members that have been added already`,
-                // });
+                toast.add({
+                severity: "info",
+                summary: data.returnObject.createdRecord,
+                detail: `There are ${data.returnObject.returnList.length} ${data.returnObject.returnList.length === 1 ? "member" : "members"} that have been added already`,
+                });
                 // } else {
                 // toast.add({
                 // severity: "success",
