@@ -11,7 +11,7 @@ export default {
         currentUser: {},
         userStartPoint: "",
         settingUserUp: false,
-        churchMembers: { },
+        churchMembers: {},
     },
 
     mutations: {
@@ -51,7 +51,7 @@ export default {
             state.currentUser = {};
             state.userStartPoint = "";
             state.settingUserUp = false;
-            state.churchMembers = { };
+            state.churchMembers = {};
         }
     },
 
@@ -68,7 +68,6 @@ export default {
           } catch(err) {
             console.log(err, "in store");
           }
-          
         },
 
         clearPeopleInStore({ commit }) {
