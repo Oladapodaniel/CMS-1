@@ -741,6 +741,12 @@ const routes = [{
         component: () =>
             import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index')
     },
+    {
+        path: '/churchsetup',
+        name: 'ChurchSetUp',
+        component: () =>
+            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/ChurchSetUp')
+    },
     // {
     //     path: '/index2',
     //     name: 'mobileapponboarding',
