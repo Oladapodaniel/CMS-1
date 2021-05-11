@@ -47,9 +47,10 @@
                     <div class="col-md-3 col-sm-0 col-12">
 
                     </div>
+                     <hr class="mt-2 d-none d-sm-none  d-md-block">
                     
                 </div>
-                <hr class="mt-2 d-none d-sm-none  d-md-block">
+               
                  <div class="row mt-3 px-5 px-md-0 px-lg-0 px-xl-0  d-flex justify-content-md-between">
                     <div class="col-md-3 col-sm-0 col-12">
                         
@@ -65,9 +66,10 @@
                     <div class="col-md-3 col-12 col-sm-0">
 
                     </div>
+                    <hr class="mt-2 d-none d-sm-none  d-md-block">
                     
                 </div>
-                <hr class="mt-2 d-none d-sm-none  d-md-block">
+                
                 <div class="row mt-3 px-5 px-md-0 px-lg-0 px-xl-0 d-flex justify-content-md-between">
                     <div class="col-md-3 col-12 col-sm-0">
                         
@@ -84,9 +86,10 @@
                     <div class="col-md-3 col-12 col-sm-0">
 
                     </div>
+                    <hr class="mt-2 d-none d-sm-none  d-md-block">
                     
                 </div>
-                <hr class="mt-2 d-none d-sm-none  d-md-block">
+                
                 <div class="row mt-5 d-flex px-5 px-md-0 px-lg-0 px-xl-0  justify-content-md-between">
                     <div class="col-md-3 col-12 col-0">
                     </div>
@@ -274,12 +277,30 @@ color: #031C39;
 opacity: 1;
 
 }
-#colorpicker{
+/* #colorpicker{
 text-align: left;
 font: normal normal bold 18px/24px Nunito Sans;
 letter-spacing: 0px;
 color: #020E1C;
 opacity: 1;  
+} */
+#colorpicker {
+  -webkit-appearance: none;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  /* width: 20px;
+  height: 20px; */
+}
+#colorpicker::-webkit-color-swatch {
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+}
+#colorpicker::-webkit-color-swatch-wrapper {
+  border: none;
+  border-radius: 10px;
+  padding: 0;
 }
 .logo{
     text-align: left;
