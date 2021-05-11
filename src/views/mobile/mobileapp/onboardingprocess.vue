@@ -7,7 +7,7 @@
               <!-- track 1 -->
             <div class="row">
               <div class="col-lg-12 fss align-text-main">
-                <h2 class="font-weight-bold text-white font-size-small-screen">
+                <h2 class="font-weight-bold text-white font-size-small-screen slideInFromLeft">
                   All in one app to effectively manage your church
                 </h2>
               </div>
@@ -17,7 +17,7 @@
                 <!-- track 2 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-                <h5 class="text-wrap text-white h6">
+                <h5 class="text-wrap text-white h6 slideInFromLeft2">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit.
               Repellendus iste ad similique, aut libero consequuntur quisquam
               laboriosam quasi. Quos, sapiente.
@@ -29,7 +29,7 @@
                 <!-- track 3 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-                 <h4 class="text-white">Get started for FREE!</h4>
+                 <h4 class="text-white slideInFromLeft3">Get started for FREE!</h4>
               </div>
             </div>
              <!-- end track 3 -->
@@ -92,6 +92,55 @@
 
 
 <style scoped>
+/* Animation Area */
+@keyframes slideInFromLeft{
+  0% {
+    transform: translateX(-100%)
+  }
+
+  100% {
+transform:translateX(0)
+  }
+}
+
+h2{
+  animation: 1s ease-in-out 0s 1 slideInFromLeft;
+}
+
+@keyframes slideInFromLeft2{
+  0% {
+    transform: translateX(-100%)
+  }
+
+  100% {
+transform:translateX(0)
+  }
+}
+
+h5{
+  animation: 2s ease-in-out 0s 1 slideInFromLeft2;
+}
+@keyframes slideInFromLeft3{
+  0% {
+    transform: translateX(-100%)
+  }
+
+  100% {
+transform:translateX(0)
+  }
+}
+
+h4{
+  animation: 3s ease-in-out 0s 1 slideInFromLeft3;
+}
+/* Animation Area */
+
+
+
+
+
+
+
 .copyright {
   color: #020e1c9f;
   font: normal normal 800 18px/36px Nunito Sans;
