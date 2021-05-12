@@ -9,7 +9,7 @@
           <router-link
             to="/tenant/settings/invitenewuser"
             class="grey-border primary-bg border-0 text-white addnew default-btn"
-            >Add New Us</router-link
+            >Add New User</router-link
           >
         </div>
       </div>
@@ -23,17 +23,20 @@
         
 
       <div class="row table-header-row py-2 mt-5">
-        <div class="col-md-3">
+        <div class="col-md-2">
           <span class="py-2 font-weight-bold">NAME</span>
         </div>
-        <div class="col-md-3">
-          <span class="py-3 font-weight-bold">Email</span>
+        <div class="col-md-2">
+          <span class="py-2 font-weight-bold">PHONE</span>
+        </div>
+        <div class="col-md-2">
+          <span class="py-3 font-weight-bold">EMAIL</span>
         </div>
         <div class="col-md-2">
           <span class="py-2 font-weight-bold">STATUS</span>
         </div>
         <div class="col-md-3">
-          <span class="py-2 font-weight-bold">COMMENTS</span>
+          <span class="py-2 font-weight-bold">ROLES</span>
         </div>
         <div class="col-md-1">
           <span class="py-2 font-weight-bold"></span>
@@ -47,13 +50,19 @@
         <div class="col-md-12">
           <div class="row" v-for="(churchMem, index) in churchUsers" :key="index">
             <div
-              class="col-md-3 d-flex justify-content-between align-items-center"
+              class="col-md-2 d-flex justify-content-between"
             >
               <span class="py-2 hidden-header">NAME</span>
               <span class="py-2">{{ churchMem.name}}</span>
             </div>
+             <div
+              class="col-md-2 d-flex justify-content-between align-items-center"
+            >
+              <span class="py-2 hidden-header">PHONE</span>
+              <span class="py-2">{{ churchMem.phone}}</span>
+            </div>
             <div
-              class="col-md-3 d-flex justify-content-between align-items-center"
+              class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">EMAIL</span>
               <span class="py-2 text-xs-left">{{ churchMem.email}}</span>
@@ -65,13 +74,13 @@
               <span class="py-2">{{ churchMem.status }}</span>
             </div>
             <div
-              class="col-md-3 d-flex justify-content-between align-items-center"
+              class="col-md-2 d-flex justify-content-between align-items-center"
             >
-              <span class="py-2 hidden-header">COMMENTS</span>
+              <span class="py-2 hidden-header">ROLES</span>
               <span class="py-2">{{churchMem.roles[0]}}</span>
             </div>
             <div
-              class="col-md-1 d-flex justify-content-between align-items-center"
+              class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <div class="dropdown">
                 <i
@@ -84,13 +93,12 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item">
                     <router-link
-                    to=""
-                      >Send SMS</router-link
-                    >
-                  </a>
-                  <a class="dropdown-item">
+                    :to="`/tenant/sms/compose?phone=${churchMem.phone}`"
+                      >Send SMS</router-link>
+                    </a>
+                  <a class="dropdown-item" v-if="churchMem.email">
                     <router-link
-                    to=""
+                    :to="`/tenant/email/compose?phone=${churchMem.email}`"
                       >Send Email</router-link
                     >
                   </a>
@@ -148,9 +156,8 @@ export default {
       .then((response)=>{
         this.getCurrentUser = response.data;
       console.log(response.data)
-      .catch((error)=>console.log(error))
-
       })
+      .catch((error)=>console.log(error))
     }
   },
   created() {
