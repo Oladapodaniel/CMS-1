@@ -150,7 +150,7 @@
             <div class="col-md-5 col-sm-12  d-none d-sm-none  d-md-block">
                 <div class="backgroundImage">
                 <div class="button2">
-                    <router-link :to="{ name: 'OnboardingSuccessful' ljhk}"><button class="button1">Next</button></router-link>
+                    <router-link :to="{ name: 'OnboardingSuccessful' }"><button class="button1">Next</button></router-link>
                     <div class="mt-5 d-flex justify-content-between">
                     <div class="dash">
 

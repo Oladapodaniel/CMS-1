@@ -18,9 +18,9 @@
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
                 <h5 class="text-wrap text-white h6 slideInFromLeft2">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Repellendus iste ad similique, aut libero consequuntur quisquam
-              laboriosam quasi. Quos, sapiente.
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                  Repellendus iste ad similique, aut libero consequuntur quisquam
+                  laboriosam quasi. Quos, sapiente.
             </h5>
               </div>
             </div>
@@ -80,13 +80,13 @@
   </div>
 
   <!-- footer Area -->
-  <div class="container mt-5 footer-area">
+  <!-- <div class="container mt-5 footer-area">
     <div class="row">
       <div class="col-12 text-center mt-5 mb-4">
         <h5 class="copyright mb-5">Powered By Churchplus</h5>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- end footer Area -->
 </template>
 

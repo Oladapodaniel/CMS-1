@@ -655,6 +655,36 @@ const routes = [{
                 name: 'Payment',
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/Payment')
+            },
+            {
+                path: '/onboardingprocess',
+                name: 'MobileOnboarding',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')
+            },
+            {
+                path: '/appbranding',
+                name: 'AppBranding',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/AppBranding')
+            },
+            {
+                path: '/socialmedia',
+                name: 'SocialMedia',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/SocialMedia')
+            },
+            {
+                path: '/onboardingsuccessful',
+                name: 'OnboardingSuccessful',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/OnboardingSuccessful')
+            },
+            {
+                path: '/churchsetup',
+                name: 'ChurchSetUp',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/ChurchSetUp')
             }
         ],
     },
@@ -732,38 +762,7 @@ const routes = [{
         name: 'TransactionPage',
         component: () =>
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
-    },
-
-    {
-        path: '/onboardingprocess',
-        name: 'MobileOnboarding',
-        component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')
-    },
-    {
-        path: '/appbranding',
-        name: 'AppBranding',
-        component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/AppBranding')
-    },
-    {
-        path: '/socialmedia',
-        name: 'SocialMedia',
-        component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/SocialMedia')
-    },
-    {
-        path: '/onboardingsuccessful',
-        name: 'OnboardingSuccessful',
-        component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/OnboardingSuccessful')
-    },
-    {
-        path: '/churchsetup',
-        name: 'ChurchSetUp',
-        component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/ChurchSetUp')
-    },
+    }
 ]
 
 

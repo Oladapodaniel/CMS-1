@@ -1,71 +1,56 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-wide">
         <!-- write up part -->
         <div class="row">
-            <div class="col-md-6 offset-2 offset-md-1 mt-5">
-                <div class="row">
-                     <div class="col-md-6 col-12 text-center text-md-left my-5 setup">  Set up your church profile</div>
+          <div class="col-md-6 offset-2 offset-md-0 mt-5">
+            <div class="row mt-5">
+              <div class="col-12 col-md-6 setup">  Set up your church profile</div>
+              <div class="col-md-6"></div>
+              <div class="col-sm-4 align-self-center">Name</div>
+              <div class="col-sm-6">
+                <input type="text" class="form-control">
+              </div>
+              <div class="col-sm-2"></div>
+              
+              <div class="col-sm-4 align-self-center mt-2">Phone Number</div>
+              <div class="col-sm-6 mt-2">
+                <input type="text" class="form-control mt-2">
+              </div>
+              <div class="col-sm-2"></div>
+              
+              <div class="col-sm-4 align-self-center mt-2">Address</div>
+              <div class="col-sm-6 mt-2">
+                <input type="text" class="form-control mt-2">
+              </div>
+              <div class="col-sm-2"></div>
+              <div class="col-sm-12"><hr/></div>
+              <div class="col-sm-5 font-weight-700">Pastors and Ministers</div>
+
+              <div class="col-12">
+                <div class="row" v-for="(item, index) in pastors" :key="index">
+                  <div class="col-sm-4 text-right align-self-center mt-2"></div>
+                  <div class="col-sm-6 mt-2">
+                    <input type="text" class="form-control mt-2" v-model="item.name">
+                  </div>
+                  <div class="col-sm-2 align-self-center mt-2" @click="deleteItem(index)"><i class="fa fa-trash"></i></div>
                 </div>
-                <div class="row">
-                        <div class="col-md-2 col-2">
-                             <div class="check-icon"><span class="ml-1"><i class="pi pi-check"></i></span></div>
-                        </div>
-                    <div class="col-md-4 col-5">Church Basic Info</div>
-                    <div class="col-md-4 offset-md-2 col-5">
-                        <button class="btn btn-outline-dark btn-button">Edit</button>
-                    </div>
-                </div>
-                <div class="row my-4">
-                    <div class="col-md-2 col-2">
-                        <div class="check-icon"><span class="ml-1"><i class="pi pi-check"></i></span></div>
-                    </div>
-                    <div class="col-md-4 col-5">Church Additional Info</div>
-                    <div class="col-md-4 offset-md-2 col-5" data-toggle="modal" data-target="#addChurchDetails" data-whatever="@fat">
-                        <button class="btn btn-outline-dark btn-button">Edit</button>
-                    </div>
-                </div>
-                <div class="row" v-if="Object.keys(churchAddition).length > 0">
-                    <div class="col-md-8 offset-md-2 border d-flex justify-content-between bg-mission">
-                        <p class="mission pt-1">{{ churchAddition.name }}</p>
-                        <p class="edit pt-1" data-toggle="modal" data-target="#addChurchDetails" data-whatever="@fat">Edit</p>
-                    </div>
-                </div>
-                <div class="row my-4">
-                    <div class="col-md-2 col-2">
-                        <div class="check-icon"><span class="ml-1"><i class="pi pi-check"></i></span></div>
-                    </div>
-                    <div class="col-md-4 col-5">Pastors and ministers</div>
-                    <div class="col-md-4 offset-md-2 col-5" data-target="#add-pastor" data-toggle="modal" tabindex="-1" aria-labelledby="exampleModalLabel" >
-                        <button class="btn btn-outline-dark btn-button">Edit</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-4">
-                        <div v-if="!pastorImage"><img src='../../../assets/mobileonboarding/avatar-male.png' style="width: 100px; height: 100px;"></div>
-                        <div v-else><img :src="pastorImage" style="width: 100px; height: 100px;"></div>
-                        <div class="pastors-name">{{ pastorsName ? pastorsName : "Name" }}</div>
-                        <div class="edit-pastor-details" data-target="#add-pastor" data-toggle="modal" tabindex="-1" aria-labelledby="exampleModalLabel">edit</div>
-                    </div>
-                </div>
-                <div class="row my-4">
-                    <div class="col-md-2 col-2">
-                        <div class="check-icon"><span class="ml-1"><i class="pi pi-check"></i></span></div>
-                    </div>
-                    <div class="col-md-4 col-5">Bank Details</div>
-                    <div class="col-md-4 offset-md-2 col-5" data-target="#bank" data-toggle="modal">
-                        <button class="btn btn-outline-dark text-center btn-button">Edit</button>
-                    </div>
-                </div>
-                <div class="row" v-if="Object.keys(bankDetails).length > 0">
-                    <div class="col-md-8 offset-md-2 border d-flex justify-content-between bg-mission">
-                        <p class="edit text-dark pt-1" >{{ bankName }}</p>
-                        <p class="edit text-dark pt-1" >{{ accountName }}</p>
-                        <p class="edit text-dark pt-1" >{{ accountNumber }}</p>
-                        <p class="edit pt-1" >Edit</p>
-                    </div>
-                </div>
+              </div>
+              <div class="col-sm-6 mt-3"></div>
+              <div class="col-sm-3 btn btnIcons btn-secondary mt-3" @click="addPastors">Add</div>
+              <div class="col-sm-3 mt-3"></div>
+              
+              
+              <div class="col-sm-3 mt-3"></div>
+              <div class="col-sm-6 btn mt-3">Save and continue</div>
+              <div class="col-sm-3 mt-3"></div>
             </div>
+          </div>
+
+
+
+            <!-- <div c
+            
+             -->
             <!-- image part -->
             <div class="col-md-5 col-12 bg-image d-none d-md-block d-lg-block">
                 <div class="row mt-3">
@@ -75,7 +60,7 @@
                     <img src="../../../assets/mobileonboarding/church1.svg" style="height:40%; width:40%;">
                 </div>
                 <div class="row my-5">
-                    <button class="col-md-2 offset-5 next-btn"><router-link :to="{ name: 'SocialMedia' }"><span class="next-text">Next</span></router-link></button>
+                    <button class="col-md-2 offset-5 next-btn"> <span class="next-text">Next</span></button>
                 </div>
             </div>
         </div>
@@ -378,6 +363,8 @@ export default {
         const bankDetails = ref({})
         const closeBankModal = ref({})
 
+        const pastors = ref([{}])
+
 
         const addChurchDetail = () => {
             churchAddition.value = additionalDetailText.value
@@ -404,6 +391,14 @@ export default {
           closeBankModal.value.setAttribute("data-dismiss", "modal")
         }
 
+        const addPastors = () => {
+          pastors.value.push({})
+        }
+
+        const deleteItem = (index) => {
+          pastors.value.splice(index, 1)
+        }
+
         return {
             churchAddition,
             addChurchDetail,
@@ -421,7 +416,10 @@ export default {
             accountNumber,
             bankDetails,
             churchBankDetails,
-            closeBankModal
+            closeBankModal,
+            pastors,
+            addPastors,
+            deleteItem
         }
     }
 }
@@ -569,6 +567,16 @@ export default {
   letter-spacing: 0px;
   color: #136ACD;
   cursor: pointer;
+}
+
+.btnIcons {
+    width: 110px;
+    /* height: 35px; */
+    color: #136acd;
+    background-color: #dde2e6;
+    border-radius: 40px;
+    border: none;
+    padding: .5rem 1.25rem;
 }
 
 </style>
