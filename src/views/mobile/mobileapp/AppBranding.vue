@@ -124,7 +124,7 @@
                     </div>
                     <div class="col-md-2 col-12 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
                         <div class="col-12 text-center">
-                        <button class="smallButton">Next</button>
+                        <router-link :to="{ name: 'OnboardingSuccessful' }"><button class="smallButton">Next</button></router-link>
                         <div class="mt-5 d-flex justify-content-center">
                         <div class="dash">
 

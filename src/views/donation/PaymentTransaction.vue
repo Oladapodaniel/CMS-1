@@ -133,7 +133,7 @@
                     <div>Choose Bank</div>
                 </div>
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
-                        <Dropdown v-model="selectedBank" class="w-100" :options="nigerianBanks" optionLabel="name" :filter="true" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
+                        <Dropdown v-model="selectedBank" class="w-100" :options="nigerianBanks" optionLabel="name" :filter="false" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
                         </Dropdown>
                 </div>
                 <div class="col-2 d-none d-sm-block"></div>

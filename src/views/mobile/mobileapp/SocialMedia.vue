@@ -143,7 +143,7 @@
             <div class="col-md-5">
                 <div class="backgroundImage d-none d-sm-none  d-md-block">
                     <div class="button2">
-                    <button class="button1">Next</button>
+                    <router-link :to="{ name: 'AppBranding' }"><button class="button1">Next</button></router-link>
                     <div class="mt-5 d-flex justify-content-between">
                     <div class="dash1">
 

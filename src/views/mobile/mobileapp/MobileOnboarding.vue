@@ -37,7 +37,7 @@
                 <!-- track 4 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-               <button class="btn default-btn cta c-pointer">Start Now</button>
+               <router-link :to="{ name: 'ChurchSetUp' }"><button class="btn default-btn cta c-pointer">Start Now</button></router-link>
               </div>
             </div>
              <!-- end track 4 -->

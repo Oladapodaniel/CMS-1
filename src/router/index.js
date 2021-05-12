@@ -736,30 +736,27 @@ const routes = [{
 
     {
         path: '/onboardingprocess',
-        name: 'mobileonboarding',
+        name: 'MobileOnboarding',
         component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/onboardingprocess')
+            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')
     },
     {
-        path: '/AppBranding',
-        name: 'appbranding',
+        path: '/appbranding',
+        name: 'AppBranding',
         component: () =>
             import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/AppBranding')
     },
     {
-        path: '/SocialMedia',
-        name: 'socialmedia',
+        path: '/socialmedia',
+        name: 'SocialMedia',
         component: () =>
             import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/SocialMedia')
     },
-
-
-
     {
-        path: '/onboardingissuccessful',
-        name: 'mobileapponboarding',
+        path: '/onboardingsuccessful',
+        name: 'OnboardingSuccessful',
         component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/onboardingissuccessful')
+            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/OnboardingSuccessful')
     },
     {
         path: '/churchsetup',

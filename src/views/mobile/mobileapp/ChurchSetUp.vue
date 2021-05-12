@@ -75,7 +75,7 @@
                     <img src="../../../assets/mobileonboarding/church1.svg" style="height:40%; width:40%;">
                 </div>
                 <div class="row my-5">
-                    <button class="col-md-2 offset-5 next-btn"> <span class="next-text">Next</span></button>
+                    <router-link :to="{ name: 'SocialMedia' }"><button class="col-md-2 offset-5 next-btn"> <span class="next-text">Next</span></button></router-link>
                 </div>
             </div>
         </div>
