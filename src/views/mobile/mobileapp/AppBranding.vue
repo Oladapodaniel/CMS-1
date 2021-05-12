@@ -124,7 +124,7 @@
                     </div>
                     <div class="col-md-2 col-12 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
                         <div class="col-12 text-center">
-                        <router-link :to="{ name: 'OnboardingSuccessful' }"><button class="smallButton">Next</button></router-link>
+                        <button class="smallButton">Next</button>
                         <div class="mt-5 d-flex justify-content-center">
                         <div class="dash">
 
@@ -150,7 +150,7 @@
             <div class="col-md-5 col-sm-12  d-none d-sm-none  d-md-block">
                 <div class="backgroundImage">
                 <div class="button2">
-                    <button class="button1">Next</button>
+                    <router-link :to="{ name: 'OnboardingSuccessful' ljhk}"><button class="button1">Next</button></router-link>
                     <div class="mt-5 d-flex justify-content-between">
                     <div class="dash">
 
