@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-6 offset-2 offset-md-1 mt-5">
                 <div class="row">
-                     <div class="col-md-4 col-12 text-center text-md-left my-5 setup">  Set up your church profile</div>
+                     <div class="col-md-6 col-12 text-center text-md-left my-5 setup">  Set up your church profile</div>
                 </div>
                 <div class="row">
                         <div class="col-md-2 col-2">
@@ -24,10 +24,10 @@
                         <button class="btn btn-outline-dark btn-button">Edit</button>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" v-if="Object.keys(churchAddition).length > 0">
                     <div class="col-md-8 offset-md-2 border d-flex justify-content-between bg-mission">
-                        <p class="mission pt-1">Mission</p>
-                        <p class="edit pt-1">Edit</p>
+                        <p class="mission pt-1">{{ churchAddition.name }}</p>
+                        <p class="edit pt-1" data-toggle="modal" data-target="#addChurchDetails" data-whatever="@fat">Edit</p>
                     </div>
                 </div>
                 <div class="row my-4">
@@ -39,6 +39,15 @@
                         <button class="btn btn-outline-dark btn-button">Edit</button>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-4">
+                        <div v-if="!pastorImage"><img src='../../../assets/mobileonboarding/avatar-male.png' style="width: 100px; height: 100px;"></div>
+                        <div v-else><img :src="pastorImage" style="width: 100px; height: 100px;"></div>
+                        <div class="pastors-name">{{ pastorsName ? pastorsName : "Name" }}</div>
+                        <div class="edit-pastor-details" data-target="#add-pastor" data-toggle="modal" tabindex="-1" aria-labelledby="exampleModalLabel">edit</div>
+                    </div>
+                </div>
                 <div class="row my-4">
                     <div class="col-md-2 col-2">
                         <div class="check-icon"><span class="ml-1"><i class="pi pi-check"></i></span></div>
@@ -46,6 +55,14 @@
                     <div class="col-md-4 col-5">Bank Details</div>
                     <div class="col-md-4 offset-md-2 col-5" data-target="#bank" data-toggle="modal">
                         <button class="btn btn-outline-dark text-center btn-button">Edit</button>
+                    </div>
+                </div>
+                <div class="row" v-if="Object.keys(bankDetails).length > 0">
+                    <div class="col-md-8 offset-md-2 border d-flex justify-content-between bg-mission">
+                        <p class="edit text-dark pt-1" >{{ bankName }}</p>
+                        <p class="edit text-dark pt-1" >{{ accountName }}</p>
+                        <p class="edit text-dark pt-1" >{{ accountNumber }}</p>
+                        <p class="edit pt-1" >Edit</p>
                     </div>
                 </div>
             </div>
@@ -96,7 +113,7 @@
                   <label for="recipient-name" class="col-form-label"
                     >Name:</label
                   >
-                  <input type="text" class="form-control" id="recipient-name" />
+                  <input type="text" class="form-control" id="recipient-name" v-model="additionalDetailText.name" />
                 </div>
                 <div class="form-group">
                   <label for="message-text" class="col-form-label"
@@ -106,6 +123,7 @@
                     type="text"
                     class="form-control"
                     id="description-text"
+                    v-model="additionalDetailText.desc"
                   />
                 </div>
               </form>
@@ -118,8 +136,8 @@
               >
                 Close
               </button>
-              <button type="button" class="btn btn-primary">
-                Send message
+              <button type="button" ref="addDetail" class="btn btn-primary" @click="addChurchDetail">
+                Save
               </button>
             </div>
           </div>
@@ -133,7 +151,7 @@
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
@@ -161,6 +179,7 @@
                           type="text"
                           class="form-control"
                           id="recipient-name"
+                          v-model="pastorDetails.name"
                         />
                       </div>
                       <div class="form-group">
@@ -189,12 +208,15 @@
                 </div>
                 <div class="col-md-4 col-12">
                   <div class="container mx-auto mx-md-0 mx-lg-0 pt-2">
-                    <div class="photo-box border ml-1"></div>
+                    <div class="photo-box ml-1">
+                      <img :src="pastorDetails.url" class="w-100">
+                    </div>
                     <div class="custom-file">
                       <input
                         type="file"
                         class="custom-file-input"
                         id="customFile"
+                        @change="uploadFile"
                       />
                       <label
                         class="custom-file-label px-4"
@@ -226,7 +248,7 @@
                       </div>
                     </div>
                     <div class="col-md-1">
-                      <!-- <img src="../assets/instagram-icon.png" /> -->
+                      <img src="../../../assets/mobileonboarding/instagram-icon.png" /> 
                     </div>
                     <div class="col-md-11">
                       <div class="">
@@ -235,7 +257,7 @@
                     </div>
                     <div class="col-md-1">
                       <div class="font-container">
-                        <!-- <img src="../assets/twitter-icon.png " /> -->
+                         <img src="../../../assets/mobileonboarding/twitter-icon.png" /> 
                       </div>
                     </div>
                     <div class="col-md-11">
@@ -258,7 +280,7 @@
               >
                 Cancel
               </button>
-              <button type="button" class="btn btn-primary">Save</button>
+              <button type="button" class="btn btn-primary" ref="pasDetail" @click="addPastorDetail">Save</button>
             </div>
           </div>
         </div>
@@ -294,6 +316,7 @@
                       type="text"
                       class="form-control"
                       id="recipient-name"
+                      v-model="bankDetails.name"
                     />
                   </div>
                   <div class="form-group">
@@ -304,6 +327,7 @@
                       type="text"
                       class="form-control"
                       id="recipient-name"
+                      v-model="bankDetails.accountName"
                     />
                   </div>
                   <div class="form-group">
@@ -314,6 +338,7 @@
                       type="text"
                       class="form-control"
                       id="recipient-name"
+                      v-model="bankDetails.accountNumber"
                     />
                   </div>
                 </form>
@@ -328,7 +353,7 @@
                 >
                   Cancel
                 </button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" ref="closeBankModal" class="btn btn-primary" @click="churchBankDetails">Save</button>
               </div>
             </div>
           </div>
@@ -336,7 +361,70 @@
     </div> 
 </template>
 <script>
+import { ref } from "vue"
+export default {
+    setup () {
+        const churchAddition = ref({})
+        const additionalDetailText = ref({})
+        const addDetail = ref("")
+        const pastorDetails = ref({}) 
+        const  pastorsName = ref("")
+        const pasDetail = ref("")
+        const image = ref("")
+        const pastorImage = ref("")
+        const bankName = ref("")
+        const accountName = ref("")
+        const accountNumber = ref("")
+        const bankDetails = ref({})
+        const closeBankModal = ref({})
 
+
+        const addChurchDetail = () => {
+            churchAddition.value = additionalDetailText.value
+            addDetail.value.setAttribute("data-dismiss", "modal")
+        }
+
+        const addPastorDetail = () => {
+          pastorsName.value = pastorDetails.value.name
+          pastorImage.value = pastorDetails.value.url
+          console.log(pasDetail.value)
+          pasDetail.value.setAttribute("data-dismiss", "modal")
+
+        }
+
+        const uploadFile = (e) => {
+          image.value = e.target.files[0]
+          pastorDetails.value.url = URL.createObjectURL(image.value);
+        }
+        
+        const churchBankDetails = () => {
+          bankName.value = bankDetails.value.name
+          accountName.value = bankDetails.value.accountName
+          accountNumber.value = bankDetails.value.accountNumber
+          closeBankModal.value.setAttribute("data-dismiss", "modal")
+        }
+
+        return {
+            churchAddition,
+            addChurchDetail,
+            additionalDetailText,
+            addDetail,
+            pastorDetails,
+            addPastorDetail,
+            pastorsName,
+            pasDetail,
+            uploadFile,
+            image,
+            pastorImage,
+            bankName,
+            accountName,
+            accountNumber,
+            bankDetails,
+            churchBankDetails,
+            closeBankModal
+        }
+    }
+}
 </script>
 <style scoped>
 .setup {
@@ -458,6 +546,7 @@
     border-radius: 24px;
     opacity: 0.64;
     height: 30px;
+    padding-right: 50px
 }
 .mission {
     font: normal normal bold 16px/22px Nunito Sans;
@@ -468,6 +557,18 @@
     font: normal normal bold 16px/22px Nunito Sans;
     letter-spacing: 0px;
     color: #136ACD;
+    cursor: pointer;
+}
+
+.pastors-name {
+  font: normal normal 600 16px/22px Nunito Sans;
+}
+
+.edit-pastor-details {
+  font: normal normal bold 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #136ACD;
+  cursor: pointer;
 }
 
 </style>
