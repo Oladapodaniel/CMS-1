@@ -330,7 +330,7 @@
                 </Column>
                 <Column field="price" header="Price" sortable style="width: 30%">
                     <template>
-                        {{formatCurrency(slotProps.data.price)}} 
+                        {{formatCurrency(slotProps.data.price)}}
                     </template>
                 </Column>
             </DataTable>
@@ -371,7 +371,7 @@ export default {
     const membershipCategory = ref([])
     const selectedPersonId = ref("")
 
-  
+
 
     const route = useRoute();
     const filterFormIsVissible = ref(false);
@@ -413,7 +413,7 @@ export default {
     const totalFirsttimersCount = computed(() => {
       if (getFirstTimerSummary.value || !getFirstTimerSummary.value.totalFirstTimer) return 0;
       return getFirstTimerSummary.value.totalFirstTimer;
-    }) 
+    })
 
     const deleteMember = (id) => {
       //  delete firtimer
@@ -642,7 +642,6 @@ export default {
 
     // Function to delete first timer
     const convert = (x) => {
-      console.log(x, "tosine");
       return x.map((i) => i.id).join(",");
     };
     const deleteMessage = ref("");
@@ -700,6 +699,8 @@ export default {
 
           }
           checkedFirstTimer.value = []
+
+
         })
         .catch((err) => {
           stopProgressBar();
@@ -828,7 +829,7 @@ export default {
     }
 
     const convertToMembers = async() => {
-      
+
     }
 
 
@@ -865,7 +866,7 @@ export default {
       toggle,
       chooseCategory,
       convertToMembers,
-      selectedPersonId, 
+      selectedPersonId,
       totalFirsttimersCount,
     };
   },
