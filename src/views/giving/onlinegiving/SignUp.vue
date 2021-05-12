@@ -110,23 +110,32 @@ export default {
             };
 
             try {
-                let  { data } = await axios.post("/mobile/v1/Account/SignUp", signupDetails);
+                let  { data } = await axios.post("/mobile/v1/Account/WebSignUp", signupDetails);
 
                 console.log(data);
 
-
-                if (data && data.value.token) {
+                if (!data.status) {
+                    toast.add({
+                        severity: "warn",
+                        summary: "Something went wrong",
+                        detail: `${data.response}`,
+                        life: 3000,
+                    });
+                } else if (data && data.returnObject.token &&  data.status) {
     
                 toast.add({
                     severity: "success",
                     summary: "Success",
-                    detail: `Successfully signed up`,
+                    detail: `${data.response}`,
                     life: 3000,
                 });
                 
                 let giverDetails = {
-                    giverToken: data.token,
-                    giverId: data.value.userId,
+                    giverToken: data.returnObject.token,
+                    giverId: data.returnObject.userId,
+                    email: data.returnObject.email,
+                    name: data.returnObject.fullname,
+                    phone: data.returnObject.phoneNumber,
                     setSignInStatus: true
                 }
 
@@ -145,11 +154,18 @@ export default {
                     detail: `${error.response.data}`,
                     life: 3000,
                 });
-                } else {
+                } else if (error.response.toString().toLowercase().includes("network error")){
                     toast.add({
                     severity: "error",
                     summary: "Network Error",
                     detail: `Please ensure you have a strong internet connection`,
+                    life: 3000,
+                });
+                } else if (error.response.toString().toLowercase().includes("timeout")){
+                    toast.add({
+                    severity: "error",
+                    summary: "Request took too long to respond",
+                    detail: `Please refresh the page`,
                     life: 3000,
                 });
                 }

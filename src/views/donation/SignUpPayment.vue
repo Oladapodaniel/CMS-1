@@ -155,44 +155,105 @@ export default {
       };
 
       try {
-        let  { data }= await axios.post("/mobile/v1/Account/SignUp", signupDetails);
-        // console.log(res, "God Massive Invasion Gang");
-        console.log(data, "We are super awesome");
+        let  { data }= await axios.post("/mobile/v1/Account/WebSignUp", signupDetails);
+        console.log(data);
 
+        if (!data.status) {
+              toast.add({
+                  severity: "warn",
+                  summary: "Something went wrong",
+                  detail: `${data.response}`,
+                  life: 3000,
+              });
+          } else if (data && data.returnObject.token &&  data.status) {
 
-        if (data && data.value.token) {
-            //  localStorage.setItem("giverToken", data.token)
-             let giverDetails = {
-                giverToken: data.token,
-                giverId: data.value.userId
-            }
-          localStorage.setItem("giverToken", JSON.stringify(giverDetails));
+          toast.add({
+              severity: "success",
+              summary: "Success",
+              detail: `${data.response}`,
+              life: 3000,
+          });
+          
+          let giverDetails = {
+              giverToken: data.returnObject.token,
+              giverId: data.returnObject.userId,
+              email: data.returnObject.email,
+              name: data.returnObject.fullname,
+              phone: data.returnObject.phoneNumber,
+              setSignInStatus: true
+          }
+
+           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
           router.push({
             name: "OnlineGiving4",
             params: { userId: route.params.userId }
-          });
+          });          
         }
-        finish()
-      } catch (error) {
-          finish()
-        // if (error.toString().includes('400')
-          if (error.response) {
-            toast.add({
-            severity: "error",
-            summary: "Error signing up",
-            detail: `${error.response.data}`,
-            life: 3000,
-          });
-          } else {
-            toast.add({
-            severity: "error",
-            summary: "Network Error",
-            detail: `Please ensure you have a strong internet connection`,
-            life: 3000,
-          });
-          }
-      console.log(error.response);
-      }
+           finish()
+            } catch (error) {
+                finish()
+                // if (error.toString().includes('400')
+                if (error.response) {
+                    toast.add({
+                    severity: "error",
+                    summary: "Error signing up",
+                    detail: `${error.response.data}`,
+                    life: 3000,
+                });
+                } else if (error.response.toString().toLowercase().includes("network error")){
+                    toast.add({
+                    severity: "error",
+                    summary: "Network Error",
+                    detail: `Please ensure you have a strong internet connection`,
+                    life: 3000,
+                });
+                } else if (error.response.toString().toLowercase().includes("timeout")){
+                    toast.add({
+                    severity: "error",
+                    summary: "Request took too long to respond",
+                    detail: `Please refresh the page`,
+                    life: 3000,
+                });
+                }
+            console.log(error.response);
+            }
+
+
+
+
+      //   if (data && data.value.token) {
+      //       //  localStorage.setItem("giverToken", data.token)
+      //        let giverDetails = {
+      //           giverToken: data.token,
+      //           giverId: data.value.userId
+      //       }
+      //     localStorage.setItem("giverToken", JSON.stringify(giverDetails));
+      //     router.push({
+      //       name: "OnlineGiving4",
+      //       params: { userId: route.params.userId }
+      //     });
+      //   }
+      //   finish()
+      // } catch (error) {
+      //     finish()
+      //   // if (error.toString().includes('400')
+      //     if (error.response) {
+      //       toast.add({
+      //       severity: "error",
+      //       summary: "Error signing up",
+      //       detail: `${error.response.data}`,
+      //       life: 3000,
+      //     });
+      //     } else {
+      //       toast.add({
+      //       severity: "error",
+      //       summary: "Network Error",
+      //       detail: `Please ensure you have a strong internet connection`,
+      //       life: 3000,
+      //     });
+      //     }
+      // console.log(error.response);
+      // }
 
     };
 

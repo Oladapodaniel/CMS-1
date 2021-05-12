@@ -677,19 +677,28 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
     } else {
       let storedDetails = JSON.parse(localStorage.getItem('giverToken'))
         console.log(storedDetails)
-      try {
-          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
-          console.log(data)
-          userData.value = data
-          email.value = data.email
-          name.value = userData.value.name
-          phone.value = userData.value.phone
-          finish()
-        }
-        catch (error) {
-          console.log(error)
-          finish()
-        }
+        userData.value = {
+        email: storedDetails.email,
+        name: storedDetails.name,
+        userId: storedDetails.giverId
+      }
+        email.value = storedDetails.email
+        name.value = storedDetails.name
+        phone.value = storedDetails.phone
+        signedIn.value = storedDetails.setSignInStatus
+      // try {
+      //     let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
+      //     console.log(data)
+      //     userData.value = data
+      //     email.value = data.email
+      //     name.value = userData.value.name
+      //     phone.value = userData.value.phone
+      //     finish()
+      //   }
+      //   catch (error) {
+      //     console.log(error)
+      //     finish()
+      //   }
         signedIn.value = true
     }
     }
@@ -804,20 +813,30 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
     };
 
     const signedUp = async(payload) => {
-      try {
-          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${payload.giverId}`)
-          console.log(data)
-          userData.value = data
-          email.value = data.email
-          name.value = userData.value.name
-          phone.value = userData.value.phone
-          finish()
-        }
-        catch (error) {
-          console.log(error)
-          finish()
-        }
+      // try {
+      //     let  res = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${payload.giverId}`)
+      //     console.log(res)
+      //     // userData.value = data
+      //     // email.value = data.email
+      //     // name.value = userData.value.name
+      //     // phone.value = userData.value.phone
+      //     
+      //     finish()
+      //   }
+      //   catch (error) {
+      //     console.log(error)
+      //     finish()
+      //   }
+      userData.value = {
+        email: payload.email,
+        name: payload.name,
+        userId: payload.giverId
+      }
+      email.value = payload.email
+      name.value = payload.name
+      phone.value = payload.phone
       signedIn.value = payload.setSignInStatus
+      
     }
 
     const displaySignInForm = (payload) => {
@@ -828,6 +847,8 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
         donationObj.value.usedPaymentGateway = payload
         console.log(payload)
     }
+
+    
 
     return {
       hideTabOne,
