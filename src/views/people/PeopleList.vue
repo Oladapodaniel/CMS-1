@@ -603,6 +603,7 @@ export default {
       console.log(marked.value);
     };
 
+// Delete item
     const deleteMarked = async () => {
       try {
         const IDs = marked.value.map((i) => i.id).join();
@@ -647,6 +648,7 @@ export default {
             }
           }
           marked.value = []
+           store.dispatch("membership/removeMember")
           axios
             .get(`/api/People/GetMembershipSummary`)
             .then((res) => {
@@ -655,7 +657,6 @@ export default {
             })
             .catch((err) => {
               console.log(err)
-
         // if (response.response.toString().toLowerCase().includes("all")) {
         //   toast.add({
         //     severity: "success",

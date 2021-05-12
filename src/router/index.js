@@ -735,11 +735,19 @@ const routes = [{
         component: () =>
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
     },
+
     {
-        path: '/Index',
+        path: '/onboardingprocess',
+        name: 'mobileonboarding',
+        component: () =>
+            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/onboardingprocess')
+    },
+
+    {
+        path: '/onboardingissuccessful',
         name: 'mobileapponboarding',
         component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index')
+            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/onboardingissuccessful')
     },
     {
         path: '/churchsetup',
@@ -747,14 +755,6 @@ const routes = [{
         component: () =>
             import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/ChurchSetUp')
     },
-    // {
-    //     path: '/index2',
-    //     name: 'mobileapponboarding',
-    //     component: () =>
-    //         import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index2')
-    // },
-
-
 ]
 
 
