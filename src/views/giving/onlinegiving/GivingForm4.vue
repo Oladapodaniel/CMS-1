@@ -347,6 +347,7 @@
         
                   <!-- end of dynamic Area 3 -->
                 </div>
+                
                 <div
                   class="col-sm-10 col-md-8 mx-auto form-area shadow pt-5 mb-5 bg-white rounded MIDDLE"
                   v-else 
@@ -361,6 +362,7 @@
                     <div class="col-12 font-weight-700 text-center p-5 mt-4 primary-bg text-white success-card">Your transaction has been successful. God Bless You!</div>
                   </div>
                 </div>
+                
               </transition>
 
 
@@ -699,7 +701,6 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
       //     console.log(error)
       //     finish()
       //   }
-        signedIn.value = true
     }
     }
     getUserDetails()
@@ -813,20 +814,6 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
     };
 
     const signedUp = async(payload) => {
-      // try {
-      //     let  res = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${payload.giverId}`)
-      //     console.log(res)
-      //     // userData.value = data
-      //     // email.value = data.email
-      //     // name.value = userData.value.name
-      //     // phone.value = userData.value.phone
-      //     
-      //     finish()
-      //   }
-      //   catch (error) {
-      //     console.log(error)
-      //     finish()
-      //   }
       userData.value = {
         email: payload.email,
         name: payload.name,
