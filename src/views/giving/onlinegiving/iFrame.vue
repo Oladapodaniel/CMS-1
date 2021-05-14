@@ -479,6 +479,7 @@ import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import SignUp from "./SignUp"
 import convertCurrency from "../../../services/currency-converter/currencyConverter"
+import { useStore } from "vuex"
 export default {
   components: {
     PaymentOptionModal,
@@ -489,6 +490,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     let toast = useToast();
+    const store = useStore()
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -598,6 +600,17 @@ export default {
         .catch((err) => console.log(err.response, "You know me! yes gang"));
     };
     tcurrency();
+
+    const getRates = async() => {
+            try {
+                let { data } = await axios.get('/fxRates')
+                console.log(data)
+                store.dispatch("getRates", data)
+            }   catch (error) {
+                    console.log(error);
+            }
+        }
+    getRates()
 
     const donation = async() => {
 

@@ -464,6 +464,7 @@ import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import SignUp from "./SignUp"
 import convertCurrency from "../../../services/currency-converter/currencyConverter"
+import { useStore } from "vuex"
 export default {
   components: {
     PaymentOptionModal,
@@ -474,6 +475,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     let toast = useToast();
+    const store = useStore()
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -585,6 +587,17 @@ export default {
     };
     tcurrency();
 
+    const getRates = async() => {
+            try {
+                let { data } = await axios.get('/fxRates')
+                console.log(data)
+                store.dispatch("getRates", data)
+            }   catch (error) {
+                    console.log(error);
+            }
+        }
+    getRates()
+
     const donation = async() => {
 
 
@@ -601,12 +614,14 @@ export default {
             let fromCurrencyRate = `usd${dfaultCurrency.value.shortCode.toLowerCase()}`
             let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
             const result = await convertCurrency.currencyConverter(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
+            console.log(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
             console.log(result)
             convertedAmount.value = Math.round(result)
           }
           catch (err) {
             console.log(err)
           }
+
 
           donationObj.value = {
             paymentFormId: formResponse.value.id,
