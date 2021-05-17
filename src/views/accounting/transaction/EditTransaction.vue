@@ -22,7 +22,7 @@
           <!-- <label for="description">Write a Description</label> -->
         </div>
         <div class="col-7 pr-0">
-          <div class="label-text">Write a Description</div>
+          <div class="label-text">Write a Description <span class="text-danger">*</span></div>
           <input
             class="form-control"
             id="description"
@@ -34,7 +34,7 @@
           />
         </div>
         <div class="col-5 pl-0">
-          <div class="label-text">Date</div>
+          <div class="label-text">Date <span class="text-danger">*</span></div>
           <input
             type="date"
             v-model="transacObj.date"

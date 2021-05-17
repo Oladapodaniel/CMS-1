@@ -208,7 +208,7 @@
                     <div class="desc-head small-text col-md-2 px-1">
                       <p class="mb-0 d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
-                        <span>{{ item.amount }}</span>
+                        <span :class="{ 'text-danger': item.amount < 0 }">{{ amountWithCommas(Math.abs(item.amount)) }}</span>
                       </p>
                     </div>
 
@@ -259,6 +259,7 @@ import dateFormatter from "../../services/dates/dateformatter";
 // import transactionService from "../../services/financials/transaction_service";
 import LedgerForm from "../../views/accounting/transaction/components/LedgerForm";
 import LoadingComponent from "../loading/LoadingComponent";
+import numbers_formatter from "../../services/numbers/numbers_formatter"
 
 
 export default {
@@ -494,6 +495,8 @@ export default {
       emit("toggle-edit-form", false);
     }
 
+    const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
+
     // const filterText = ref("")
     // const filteredTransactions = ref([]);
     // // const filteredTransactions = computed(() => {
@@ -538,6 +541,7 @@ export default {
       getTransactions,
       closeLedgerForm,
       loading,
+      amountWithCommas,
     };
   },
 };
