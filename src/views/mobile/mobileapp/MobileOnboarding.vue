@@ -18,9 +18,7 @@
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
                 <h5 class="text-wrap text-white h6 slideInFromLeft2">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Repellendus iste ad similique, aut libero consequuntur quisquam
-                  laboriosam quasi. Quos, sapiente.
+                  Church management has not been more effective, with our mobile app, you can manage your church activities and event, increase your first time visitors retention rate with our automation flow by 90% and many more.
             </h5>
               </div>
             </div>
@@ -93,7 +91,7 @@
 
 <style scoped>
 /* Animation Area */
-@keyframes slideInFromLeft{
+/* @keyframes slideInFromLeft{
   0% {
     transform: translateX(-100%)
   }
@@ -132,7 +130,7 @@ transform:translateX(0)
 
 h4{
   animation: 3s ease-in-out 0s 1 slideInFromLeft3;
-}
+} */
 /* Animation Area */
 
 
