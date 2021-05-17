@@ -138,7 +138,7 @@ export default {
     userStartPoint: state => state.userStartPoint,
     settingUserUp: state => state.settingUserUp,
     smsBalance: state => state.currentUser.smsBalance,
-    currency: state => state.currentUser.currency,
+    currency: state => { if (state.currentUser) return state.currentUser.currency },
     postToEdit: state => state.postToEdit,
   },
 }
