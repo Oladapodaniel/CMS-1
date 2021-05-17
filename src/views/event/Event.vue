@@ -74,7 +74,7 @@
                 :key="index"
                 class="ofering"
               >
-                <div class="ofering p-1" @click="individualEvent(eventCategory)">
+                <div class="ofering p-1" @click="individualEvent(eventCategory, index)">
                   {{ eventCategory.name }}
                 </div>
               </div>
@@ -89,8 +89,6 @@
                 Create "{{ eventText }}" event
               </div>
             </div>
-
-            
             <div class="selected-category" v-if="selectedEventCategoryId">
               <p><i class="fa fa-calendar-alt mr-2"></i> Events</p>
               <h4>{{ selectedEventCategoryName }}</h4>
@@ -106,13 +104,12 @@
                 <div class="edit-input">
                   <input
                     type="text"
-                    name=""
-                    id=""
-                    v-model="selectedEventCategory.name"
+                    class="form-control"
+                    v-model="selectedEventCategoryName"
                     autofocus
                   />
                 </div>
-                <div class="edit-input">
+                <div class="edit-input" @click="updateEventCategory">
                   <button>Save</button>
                 </div>
               </div>
@@ -1693,6 +1690,7 @@ export default {
       eventCategories: [],
       selectedEventCategory: {},
       selectedEventCategoryId: "",
+      selectedCategoryIndex: "",
       eventDate: new Date().toISOString().substr(0, 10),
       showEditEventCategory: false,
       gender: [],
@@ -2180,13 +2178,39 @@ export default {
     changeSelectedEventCategory(action) {
       if (action === "edit") {
         // do something
-        this.selectedEventCategoryId = "";
+        // this.selectedEventCategoryId = "";
         this.showEditEventCategory = true;
         console.log(this.selectedEventCategory);
       }
       if (action === "change") {
-        this.selectedEventCategoryId = "";
+        this.selectedEventCategoryId  = false
+        this.showEditEventCategory = false
+        
       }
+    },
+    updateEventCategory () {
+      const updatePayload = {
+        eventID: this.selectedEventCategoryId,
+        eventName: this.selectedEventCategoryName
+      }
+      axios.put(`/api/EventCategory`, updatePayload)
+            .then(res => {
+              console.log(res)
+              this.selectedEventCategoryName = res.data[this.selectedCategoryIndex].name
+              this.selectedEventCategoryId = res.data[this.selectedCategoryIndex].id
+              this.showEditEventCategory = false
+              this.$toast.add({
+                severity: "success",
+                summary: "Confirmed",
+                detail: "Updated succcessfully",
+                life: 4000,
+              });
+            })
+            .catch(err =>  {
+              console.log(err)
+            })
+      console.log(this.selectedCategoryIndex)
+
     },
     // categorySelected(data) {
     //   if (data.dataType === 'eventcategory') {
@@ -2357,7 +2381,7 @@ export default {
         this.firstTimersObj.autoMatedFollowUp = data.value;
       }
     },
-    individualEvent(eventObj) {
+    individualEvent(eventObj, index) {
       if (eventObj.id) {
         this.selectedEventCategoryName = eventObj.name;
         this.selectedEventCategoryId = eventObj.id;
@@ -2381,6 +2405,9 @@ export default {
       // const showEventCategory = document.querySelector("#showEventCategory");
       // showEventCategory.classList.remove("style-category");
       this.showCategory = false;
+
+      // Get the index  of the selected category to update the category from the update response
+      this.selectedCategoryIndex = index
     },
     getPreActivityId() {
       // console.log(this.check)

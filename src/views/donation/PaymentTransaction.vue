@@ -180,12 +180,12 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" v-if="false">
                 <div class="col-10 col-md-12 mt-2">
                     <hr class="mt-1"/>
                 </div>
             </div>
-        <div class="row">
+        <div class="row" v-if="false">
             <div class="col-10 col-md-12 mt-4">
                     <div class="d-flex">
                         <h5 class="header-contri my-3">Choose the form template you desire</h5>
@@ -244,7 +244,7 @@
                   :class="{ 'disabled-bg' : disabled, 'primary-bg' : !disabled }"
                   @click.prevent="saveAndContinue"
                   style="margin-left: 2px"
-                  :disabled="disabled"
+             
                 >
                   <i
                     class="fas fa-circle-notch fa-spin mr-2 text-white"
@@ -303,7 +303,7 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    setup () {
+    setup (prop, { emit }) {
         const contributionItems = ref([])
         const newContribution = ref({ payment: [{}]})
         const nigerianBanks = ref([])
@@ -636,8 +636,14 @@ export default {
             console.log(newContribution.value.payments)
 
             console.log(paymentForm)
-            if (!route.params.editPayment) {
+                console.log(route.fullPath)
+                if (route.fullPath === "/donationsetup") {
+                        console.log('PaymentCreated')
+                        emit('payment-form', true)
+                    }
 
+            if (!route.params.editPayment) {
+                
                 try {
                     const res = await axios.post("/api/PaymentForm/Save", paymentForm);
                     console.log(res)
@@ -645,7 +651,12 @@ export default {
                     // toast.add({severity:'success', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
                     store.dispatch('contributions/paymentData', res.data)
 
-                    router.push({ name: 'PaymentOption', params: { paymentId: res.data.result.id } })
+                    
+                    if (route.fullPath === "/tenant/payments") {
+                        router.push({ name: 'PaymentOption', params: { paymentId: res.data.result.id } })
+                    } else if (route.fullPath === "/donationsetup") {
+                        router.push({ name: 'OnboardingSuccessful' })
+                    }
                     finish()
                 }
                 catch (err) {
@@ -674,8 +685,8 @@ export default {
                     console.log(res)
                     loadingSave.value = false
                     store.dispatch('contributions/paymentData', res.data)
-
                     router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
+                    
 
                     finish()
                 }
@@ -833,7 +844,7 @@ export default {
 
 <style scoped>
 .form {
-  padding: 50px;
+  padding: 25px;
 }
 
 .btnIcons {

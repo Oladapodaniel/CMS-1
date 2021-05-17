@@ -1,53 +1,17 @@
 <template>
-    <div class="container-wide">
+    <div class="container-fluid">
         <!-- write up part -->
         <div class="row">
-          <div class="col-md-6 mt-5">
-            <div class="row mt-5">
-              <div class="col-12 setup">  Set up your church profile</div>
-              <!-- <div class="col-md-6"></div> -->
-              <div class="col-sm-12 align-self-center mt-4 px-md-0">Name</div>
-              <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control">
-              </div>
-              <!-- <div class="col-sm-2"></div> -->
-              
-              <div class="col-sm-12 align-self-center mt-3 px-md-0">Phone Number</div>
-              <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control">
-              </div>
-              <!-- <div class="col-sm-2"></div> -->
-              
-              <div class="col-sm-12 align-self-center mt-3 px-md-0">Address</div>
-              <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control">
-              </div>
-
-              <div class="col-sm-12 mt-3 px-md-0">Pastors and Ministers</div>
-              
-
-              <div class="col-12 px-md-0">
-                <div class="row" v-for="(item, index) in pastors" :key="index">
-                  <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
-                  <div class="col-9 col-md-7 mt-2">
-                    <input type="text" class="form-control" v-model="item.name">
-                  </div>
-                  <div class="col-1 align-self-center mt-2" @click="deleteItem(index)"><i class="fa fa-trash"></i></div>
-                  <div @click="addPastors" class="col-2 mt-2 align-self-center mt-2 btnIcons pointer-cursor" v-if="index === pastors.indexOf(pastors[pastors.length - 1])">Add</div>
-                </div>
-              </div> 
-                           
-              <div class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0" @click="saveSetUp">
-              Save and continue
-              </div>
-              
+          <div class="col-md-7 mt-5" :class="{ 'slide-right' : slide }">
+            <div class="row">
+              <DonationSetup @payment-form="formCreated"/>
             </div>
           </div>
 
             <!-- image part -->
-            <div class="col-md-6 col-12 bg-image d-none d-md-block">
+            <div class="col-md-5 col-12 bg-image d-none d-md-block" :class="{ 'slide-left' : slide }">
                 <div class="row mt-3">
-                    <div class="col-md-12 text-center my-5 step">STEP 1 of 1</div>
+                    <div class="col-md-12 text-center my-5 step">STEP 1 of 4</div>
                 </div>
                 <div class="image-dis"> 
                     <img src="../../../assets/mobileonboarding/church1.svg" style="height:40%; width:40%;">
@@ -59,9 +23,14 @@
 <script>
 import { ref } from "vue"
 import router from '../../../router'
+import DonationSetup from "../../donation/PaymentTransaction"
 export default {
+    components: {
+        DonationSetup
+    },
     setup () {
         const pastors = ref([{}])
+        const slide = ref(false)
 
 
 
@@ -76,12 +45,18 @@ export default {
         const saveSetUp = () => {
           router.push({ name: 'SocialMedia' })
         }
+        
+        const formCreated = (payload) => {
+            slide.value = payload
+        }
 
         return {
             pastors,
             addPastors,
             deleteItem,
-            saveSetUp
+            saveSetUp,
+            formCreated,
+            slide
         }
     }
 }
@@ -110,7 +85,7 @@ export default {
 }
 .bg-image{
     background: transparent linear-gradient(180deg, #2E67CE 0%, #690C7F 100%) 0% 0% no-repeat padding-box;
-    height: 100vh;
+    height: 133vh;
 }
 .image-dis {
     display: flex;
@@ -240,4 +215,13 @@ export default {
     text-align: center
 }
 
+.slide-left {
+    transition: all 1s ease-in-out;
+    transform: translateX(-609px);
+}
+
+.slide-right {
+    transition: all 1s ease-in-out;
+    transform: translateX(478px);
+}
 </style>
