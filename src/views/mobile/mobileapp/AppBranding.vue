@@ -41,7 +41,7 @@
                        <h5 class="primaryColour mt-4">Primary Colour</h5> 
                     </div>
                     <div class="col-md-1 col-sm-4 col-12" >
-                        <span>Select Color </span>
+                        <span>Select Colours </span>
                         <label for="colorpicker"></label>
                          <input type="color" id="colorpicker" class="no-border form-control" value="#828282">
                     </div>
@@ -61,7 +61,7 @@
                        <h5 class="primaryColour mt-4">Secondary Colour</h5> 
                     </div>
                     <div class="col-md-1 col-12 col-sm-4">
-                        <span>Select Color </span>
+                        <span>Select Colours </span>
                         <label for="colorpicker"></label>
                          <input type="color" id="colorpicker" class="no-border form-control" value="#828282">
                     </div>
@@ -81,7 +81,7 @@
                        <h5 class="primaryColour mt-4">Test Colour</h5> 
                     </div>
                     <div class="col-md-1 col-12 col-sm-4">
-                        <span>Select Color </span>
+                        <span>Pick Colours</span>
                          <label for="colorpicker"></label> 
                          <input type="color" id="colorpicker" class="no-border form-control" value="#828282">
 
