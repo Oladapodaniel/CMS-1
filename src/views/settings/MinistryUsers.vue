@@ -47,7 +47,7 @@
         
       >
         <div class="col-md-12">
-          <div class="row" v-for="(churchMem, index) in churchUsers" :key="index">
+          <div class="row" v-for="(churchMem, index) in churchUsers.users" :key="index">
             <div
               class="col-md-2 d-flex justify-content-between"
             >
@@ -64,7 +64,8 @@
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">EMAIL</span>
-              <span class="py-2 text-xs-left">{{ churchMem.email}}</span>
+              <span class="py-2 text-xs-left mall2" v-if="churchMem.email.length<10" v-tooltip.top="'move to group'">{{ churchMem.email}}</span>
+              <span v-else>{{churchMem.email.substring(0,10)+ "..."}}</span>
             </div>
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
@@ -102,6 +103,7 @@
                     >
                   </a>
                   <a class="dropdown-item" href="#">Delete</a>
+                  <a class="dropdown-item" href="#">Inactive</a>
                 </div>
               </div>
             </div>
@@ -119,9 +121,13 @@
 </template>
 
 <script>
-import store from '@/store/store'
+import store from '@/store/store';
+import Tooltip from 'primevue/tooltip';
 import axios from "@/gateway/backendapi";
 export default {
+    directives: {
+    'tooltip': Tooltip
+},
   data(){
     return{
       getCurrentUser: store.getters.currentUser,
@@ -181,6 +187,12 @@ export default {
 }
 .addnew:hover{
 color: white!important;
+}
+.mall2{
+  cursor: pointer;
+}
+.mall2:hover{
+  color: #dde2e6;
 }
 
 @media screen and (max-width: 1280px) {
