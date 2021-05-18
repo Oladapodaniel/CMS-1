@@ -652,21 +652,21 @@ export default {
         console.log(checkinEvent)
       const formData = new FormData();
 
-      formData.append("bannerPhoto", image.value)
+      image.value ? formData.append("bannerPhoto", image.value) : ""
       formData.append("details", eventDetails.value)
-      formData.append("bankId", selectedBank.value ? selectedBank.value.id : "")
-      formData.append("accountName", accountName.value)
-      formData.append("accountNumber", accountNumber.value)
+      selectedBank.value ? formData.append("bankId", selectedBank.value ? selectedBank.value.id : "") : ""
+      accountName.value ? formData.append("accountName", accountName.value) : ""
+      accountNumber.value ? formData.append("accountNumber", accountNumber.value) : ""
       formData.append("contributionItemName", selectedEvent.value.name)
-      formData.append("cashAccountId", selectedCashAccount.value ? selectedCashAccount.value.id : "")
-      formData.append("incomeAccountId", selectedIncomeAccount.value ? selectedIncomeAccount.value.id : "")
+      selectedCashAccount.value ? formData.append("cashAccountId", selectedCashAccount.value ? selectedCashAccount.value.id : "") : ""
+      selectedIncomeAccount.value ? formData.append("incomeAccountId", selectedIncomeAccount.value ? selectedIncomeAccount.value.id : "") : ""
       formData.append("registrationSMS", registrationSMS.value)
       formData.append("registrationEmail", registrationEmail.value)
       formData.append("checkinSMS", checkinSMS.value)
       formData.append("checkinEmail", checkinEmail.value)
       formData.append("activityDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0])
       formData.append("isPaidFor", addPaidClass.value)
-      formData.append("amount", amount.value)
+      amount.value ? formData.append("amount", amount.value) : ""
       formData.append("activityId", selectedEvent.value.id)
       formData.append("groupId", selectedGroup.value.id)
       formData.append("enableRegistration", true)

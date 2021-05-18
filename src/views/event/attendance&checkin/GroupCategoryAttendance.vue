@@ -43,7 +43,7 @@
         <div class="col-md-12 mb-1">
           <h5 class="check">Check in options</h5>
         </div>
-        <div class="row w-100" v-if="eventRegistration ? eventRegistration.eventRegistrationLink : '' || eventLinkResponse">
+        <div class="row w-100" v-if="eventRegLink">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -82,7 +82,7 @@
           </div>
         </div>
         
-        <div class="row w-100 mt-3" v-if="attendanceCheckinInStore ? attendanceCheckinInStore.paymentFormId : '' || paymentFormIdResponse">
+        <div class="row w-100 mt-3" v-if="paymentFormID">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -120,7 +120,7 @@
           </div>
         </div>
         
-        <div class="row w-100 mt-3" v-if="attendanceCheckinInStore ? attendanceCheckinInStore.paymentFormId : '' || paymentFormIdResponse">
+        <div class="row w-100 mt-3" v-if="paymentFormID">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -419,8 +419,11 @@ export default {
     const initCheckinAttendanceInStore = async () => {
       try {
         const response = await attendanceservice.getItemByCode(route.query.id);
+        store.dispatch("attendance/setItemData", {});
+
         store.dispatch("attendance/setItemData", response);
         attendanceCheckinInStore.value = response;
+
 
         eventLinkResponse.value = response.eventRegistrationLink
         paymentFormIdResponse.value = response.paymentFormId
@@ -511,15 +514,24 @@ export default {
       return attendanceCheckinInStore.value.attendanceRegistrationLink;
     });
     
+    // const eventRegLink = computed(() => {
+    //   if (
+    //     !eventRegistration.value ||
+    //     !eventRegistration.value.eventRegistrationLink
+    //   )
+    //     return eventLinkResponse.value;
+    //   return eventRegistration.value.eventRegistrationLink
+    // });
+
     const eventRegLink = computed(() => {
       if (
-        !eventRegistration.value ||
-        !eventRegistration.value.eventRegistrationLink
+        !attendanceCheckinInStore.value ||
+        !attendanceCheckinInStore.value.eventRegistrationLink
       )
         return eventLinkResponse.value;
-      return eventRegistration.value.eventRegistrationLink
+      return attendanceCheckinInStore.value.eventRegistrationLink
     });
-
+    
     const paymentFormID = computed(() => {
       if (
         !attendanceCheckinInStore.value ||

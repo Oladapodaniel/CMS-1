@@ -902,17 +902,19 @@
 
         <div class="col-sm-12 empty">
           <div class="row">
-            <div class="col-sm-5 total-2 offset-sm-1">TOTAL</div>
-            <div class="col-sm-3">
-              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="currencyAmount" @currency-index="pushConvertedCurrency" @currency-rate="setCurrencyRate"
+            <div class="col-2 col-md-6"></div>
+            <div class="col-3 col-md-3 total-2">TOTAL</div>
+            <div class="col-3 col-md-1">
+              <CurrencyConverter :tenantCurrency="tenantCurrency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="currencyAmount" @currency-index="pushConvertedCurrency" @currency-rate="setCurrencyRate"
               />
               <!-- <Dropdown :options="['NGN - Naira', 'CAD - Canadian dollar', 'AFN - Afghanistan']" :filter="true" placeholder="NGN - Naira" :showClear="false">
                     
                 </Dropdown> -->
             </div>
-            <div class="col-sm-2 align-self-center">
-              {{ addOfferingTotal }}
+            <div class="col-4 col-md-2 align-self-center">
+              {{ addOfferingTotal.toFixed(2) }}
             </div>
+              
           </div>
         </div>
         <!-- <div class="col-sm-12 text-center add-attendance" @click="createFirstTimers">Add First Timers</div> -->
@@ -953,7 +955,7 @@ import membershipService from "../../../services/membership/membershipservice";
 import router from '../../../router';
 import { useStore } from 'vuex'
 import CurrencyConverter from "../../event/CurrencyConverter"
-// import store from '../../../store/modules/auth'
+import CurrencyConverterService from '../../../services/currency-converter/currencyConverter'
 export default {
     components: {
         Dialog, Dropdown, NewDonor, CurrencyConverter
@@ -998,12 +1000,15 @@ export default {
         const searchingForMembers = ref(false)
         const display = ref(false);
         const personId = ref("")
-        const tenantCurrency = ref({})
+        const tenantCurrency = ref("")
         const loading = ref(false)
         const focusInp = ref("")
         const tenantId = ref("")
         const selectedCurrencyName = ref("")
         const currencyAmount = ref("")
+        const convertedAmount = ref([])
+        const currencyIndex = ref(0)
+        const currencyRate = ref("")
 
 
         const addOffering = () => {
@@ -1235,7 +1240,8 @@ export default {
               donor: "",
               date: eventDate.value,
               activityID: selectedEventAttended.value.activityID,
-              currencyID: currencyList.value ? currencyList.value.find(i => i.name === tenantCurrency.value).id : ""
+              currencyID: currencyList.value ? currencyList.value.find(i => i.name === tenantCurrency.value).id : "",
+              fromCurrencyRate: `usd${tenantCurrency.value ? tenantCurrency.value.toLowerCase() : ""}`
             });
       console.log(currencyList.value, tenantCurrency.value)
           } 
@@ -1370,13 +1376,24 @@ export default {
         })
 
       const addOfferingTotal= computed(() => {
-        if (offeringItem.value.length <= 0) return 0;
-        if (offeringItem.value.length === 1) return offeringItem.value[0].amount;
-        const amounts = offeringItem.value.map((i) => +i.amount);
-        return amounts.reduce((a, b) => {
+        if (convertedAmount.value.length <= 0) return 0;
+        // if (convertedAmount.value.length === 1) return convertedAmount.value[0].amount;
+        // const amounts = convertedAmount.value.map((i) => +i.amount);
+        return convertedAmount.value.reduce((a, b) => {
           return (a || 0) + (b || 0);
         });
       })
+
+      // addContributionTotal() {
+      // if (this.convertedAmount2.length <= 0) return 0;
+      // // if (this.convertedAmount.length === 1) return this.convertedAmount[0].amount;
+      // // const amounts = this.offeringItem.map((i) => +i.amount);
+      // // return amounts.reduce((a, b) => {
+      // //   return (a || 0) + (b || 0);
+      // // });
+      // return this.convertedAmount2.reduce((a, b) => {
+      //   return +a + +b
+      // })
 
       const addRemittance = () => {
         remitance.value.push({})
@@ -1533,6 +1550,7 @@ export default {
           // } else {
           //       offeringItem.value[index].currencyID = 721
           // }
+          offeringItem.value[index].fromCurrencyRate = `usd${item.name.toLowerCase()}`
 
       }
 
@@ -1582,34 +1600,55 @@ export default {
           offeringItem.value[offeringToAddDonor.value].personID = payload.personId
         }
 
-        const sendAmount = () => {
+        const getRates = async() => {
+            try {
+                let { data } = await axios.get('/fxRates')
+                console.log(data)
+                store.dispatch("getRates", data)
+            }   catch (error) {
+                    console.log(error);
+            }
+        }
+        getRates()
 
-          // currencyAmount.value = e.target.value
-          // // this.currencyIndex = index
+        const sendAmount = async(e, index) => {
+
+          currencyAmount.value = e.target.value
+          currencyIndex.value = index
 
 
-          // let toDestinationCurrencyRate = `usd${tenantCurrency.value.currency.toLowerCase()}`
-          // let fromCurrencyRate = offeringItem.value[index].fromCurrencyRate
+          let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
+          let fromCurrencyRate = offeringItem.value[index].fromCurrencyRate
 
-          // let amount = offeringItem.value[index].amount ? +offeringItem.value[index].amount : 0
+          let amount = offeringItem.value[index].amount ? +offeringItem.value[index].amount : 0
 
-          // console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
+  
+          try {
+            let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+            console.log(result)
+            convertedAmount.value[index] = result
+          }
+          catch (err) {
+            console.log(err)
+          }
+          console.log(toDestinationCurrencyRate)
+          console.log(fromCurrencyRate)
+          console.log(amount)
+        }
 
-          // try {
-          //   let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
-          //   console.log(result)
-          //   this.convertedAmount2[index] = result
-          // }
-          // catch (err) {
-          //   console.log(err)
-          // }
+        const pushConvertedCurrency = (payload) =>  {
+          convertedAmount[currencyIndex.value] = payload
+        }
+
+        const setCurrencyRate = (payload) =>  {
+          currencyRate.value = payload
         }
 
         return {
             addOffering, offeringDrop, hideModals, selectEventAttended, showEventList, eventsAttended, filteredEvents, closeManualModalIfOpen, eventAttendedSelected,
             newEvents, selectedEventAttended, eventsSearchString, selectEvent, individualEvent, newEvent, showCategory, filterEventCategory, eventText, eventDate, createNewCat,
             newEventCategoryName, displayModal, openModal, closeModal, toast, createNewEvent, invalidEventDetails, savingNewEvent, newOfferings, filterOffering, offeringText,
-            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp, tenantId, selectedCurrencyName, currencyAmount, sendAmount
+            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp, tenantId, selectedCurrencyName, currencyAmount, sendAmount, convertedAmount, pushConvertedCurrency, setCurrencyRate, currencyRate
     }
   }
 }

@@ -1,6 +1,7 @@
 <template>
 <div class="dropdown">
         <button v-if="tenantCurrency" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="converter-button cursor-pointer" >{{ selectedDestinationCurrencyRate ? selectedDestinationCurrencyRate.toString().length >  15 ? `${selectedDestinationCurrencyRate.slice(0, 15)}...` : selectedDestinationCurrencyRate : tenantCurrency }}</button>
+
     <!-- </div> -->
         <div class="dropdown-menu style-account" aria-labelledby="dropdownMenuButton">
     <div class="p-2">
