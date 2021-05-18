@@ -16,9 +16,8 @@
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
                 <h5 class="text-wrap h6">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Repellendus iste ad similique, aut libero consequuntur
-                  quisquam laboriosam quasi. Quos, sapiente.
+                  Welldone, you successfully set up your Churchplus App.
+                  Curious what you can do? Head on over to the menu
                 </h5>
               </div>
             </div>

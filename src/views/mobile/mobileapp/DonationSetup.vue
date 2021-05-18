@@ -4,7 +4,7 @@
         <div class="row">
           <div class="col-md-7 mt-5" :class="{ 'slide-right' : slide }">
             <div class="row">
-              <DonationSetup @payment-form="formCreated"/>
+              <DonationSetup  @payment-form="formCreated"/>
             </div>
           </div>
 
@@ -13,14 +13,14 @@
                 <div class="row mt-3">
                     <div class="col-md-12 text-center my-5 step">STEP 1 of 4</div>
                 </div>
-                <div class="image-dis"> 
+                <div class="image-dis">
                     <img src="../../../assets/mobileonboarding/church1.svg" style="height:40%; width:40%;">
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </template>
-<script>
+<script>g
 import { ref } from "vue"
 import router from '../../../router'
 import DonationSetup from "../../donation/PaymentTransaction"
@@ -45,7 +45,7 @@ export default {
         const saveSetUp = () => {
           router.push({ name: 'SocialMedia' })
         }
-        
+
         const formCreated = (payload) => {
             slide.value = payload
         }

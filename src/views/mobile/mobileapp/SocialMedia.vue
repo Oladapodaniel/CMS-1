@@ -4,29 +4,26 @@
         <div class="row"  style="height: 100vh">
           <div class="col-md-6 mt-5">
             <div class="row">
-              <div class="col-12 setup">  Social Media</div>
+              <div class="col-12 setup">Add Social Media Handles</div>
               </div>
             <div class="row d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
-                    <div class="col-md-3 col-12">
-                        
 
-                    </div>
                     <div class="col-md-5 col-12">
-                       <h5 class="colourText"></h5> 
+                       <h5 class="colourText"></h5>
                     </div>
                     <div class="col-md-1 col-12">
                     </div>
                     <div class="col-md-3 col-12">
 
                     </div>
-                    
+
                 </div>
                 <div class="row mt-5 ">
                     <div class="col-12 col-sm-2 mt-3">
                        <img src="../../../assets/social/facebook.svg" alt="">
                     </div>
                     <div class="col-md-8 col-12 mt-3" id="logoBox">
-                        <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                        <input type="text" placeholder="Instagram Handle" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
                     <div class="col-2"></div>
                     <div class="col-12 col-sm-2 mt-3">
@@ -34,44 +31,41 @@
                        <img src="../../../assets/social/twitter.svg" alt="">
                     </div>
                     <div class="col-md-8 col-12 mt-3" id="logoBox">
-                        <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                        <input type="text" placeholder="Twitter Handle" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
                     <div class="col-2"></div>
-                    
+
                     <div class="col-12 col-sm-2 mt-3">
                        <img src="../../../assets/social/instagram.svg" alt="">
                     </div>
                     <div class="col-md-8 col-12 mt-3" id="logoBox">
-                        <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                        <input type="text" placeholder="Instagram Handle" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
                     <div class="col-2"></div>
-                    
-                    <div class="col-12 col-md-2 mt-3">
+
+
+                      <div class="col-12 col-sm-2 mt-3">
                        <img src="../../../assets/mobileonboarding/youtube.svg" alt="">
                     </div>
-                    <div class="col-12 col-md-2 mt-3">
-                       YouTube URL
-                    </div>
-                    <div class="col-md-6 col-12 mt-3" id="logoBox">
-                        <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                    <div class="col-md-8 col-12 mt-3" id="logoBox">
+                        <input type="text" placeholder="Youtube URL" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
                     <div class="col-2"></div>
-                    
-                    <div class="col-12 col-md-2 mt-3">
-                       <!-- <img src="../../../assets/mobileonboarding/youtube.svg" alt=""> -->
-                    </div>
-                    <div class="col-12 col-md-2 mt-3">
-                        Channel ID
-                    </div>
-                    <div class="col-md-6 col-12 mt-3" id="logoBox">
-                        <input type="text" class="w-100 py-1 border-0 outline-none px-2">
-                    </div>
 
-                    <div class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0" @click="saveSocialMedia">
+
+                      <div class="col-12 col-sm-2 mt-3">
+                       <img src="../../../assets/mobileonboarding/youtube.svg" alt="">
+                    </div>
+                    <div class="col-md-8 col-12 mt-3" id="logoBox">
+                        <input type="text" placeholder="Youtube Channel ID" class="w-100 py-1 border-0 outline-none px-2">
+                    </div>
+                    <div class="col-2"></div>
+
+                    <div class="col-10 offset-1 offset-md-0 btn primary-bg ml-2 mt-5 text-white default-btn border-0" @click="saveSocialMedia">
                     Save and continue
                     </div>
- 
-                    
+
+
                 </div>
           </div>
 
@@ -80,11 +74,11 @@
                 <div class="row mt-3">
                     <div class="col-md-12 text-center my-5 step">STEP 1 of 2</div>
                 </div>
-                <div> 
+                <div>
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 
 
 
@@ -98,7 +92,7 @@ import router from '../../../router'
 // import {ref} from 'vue'
     export default {
         setup(){
-        
+
 
         const saveSocialMedia = () => {
               router.push({ name: 'AppBranding' })
@@ -107,7 +101,7 @@ import router from '../../../router'
             saveSocialMedia
         }
     }
-        
+
 }
 </script>
 
@@ -161,7 +155,7 @@ margin:auto;
 background: #FFFFFF 0% 0% no-repeat padding-box;
 border: 1px solid #DDE2E6;
 border-radius: 5px;
-opacity: 1; 
+opacity: 1;
 width: 437px;
 height: 40px;
 
@@ -187,7 +181,7 @@ text-align: left;
 font: normal normal bold 18px/24px Nunito Sans;
 letter-spacing: 0px;
 color: #020E1C;
-opacity: 1;  
+opacity: 1;
 }
 .logo{
     text-align: left;
@@ -211,7 +205,7 @@ color: #136ACD;
     position: absolute;
     top: 80%;
     right: 40%;
-   
+
 }
 .dash{
 width: 41px;
