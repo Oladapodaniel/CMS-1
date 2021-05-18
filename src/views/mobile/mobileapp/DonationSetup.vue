@@ -20,7 +20,7 @@
         </div>
     </div>
 </template>
-<script>g
+<script>
 import { ref } from "vue"
 import router from '../../../router'
 import DonationSetup from "../../donation/PaymentTransaction"
