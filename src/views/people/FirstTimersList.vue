@@ -642,7 +642,6 @@ export default {
 
     // Function to delete first timer
     const convert = (x) => {
-      console.log(x, "tosine");
       return x.map((i) => i.id).join(",");
     };
     const deleteMessage = ref("");
@@ -700,6 +699,8 @@ export default {
 
           }
           checkedFirstTimer.value = []
+
+
         })
         .catch((err) => {
           stopProgressBar();

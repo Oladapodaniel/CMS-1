@@ -113,11 +113,11 @@ import communicationService from "../../services/communication/communicationserv
 export default {
   data() {
     return {
-      enteredValue: "",
       groupNameValue: "",
       groupNameDisabled: true,
       groupNumbers: "",
       loading: false,
+      phoneNumbers: []
     };
   },
 
@@ -131,10 +131,35 @@ export default {
     },
 
     saveDetails() {
+      if (this.groupNumbers.includes(',')) {
+          this.groupNumbers.split(',').forEach(i => {
+            
+            let match = /\r|\n/.exec(i);
+            if (match) {
+              i.split('\n').forEach(j => {
+                this.phoneNumbers.push(j)
+              })
+          } 
+          else {
+            this.phoneNumbers.push(i)
+          }
+            })
+          } else {
+            let match = /\r|\n/.exec(this.groupNumbers);
+            if (match) {
+              this.groupNumbers.split('\n').forEach(i => {
+                this.phoneNumbers.push(i)
+            })
+          } else {
+            this.phoneNumbers.push(this.groupNumbers)
+          }
+            
+          }
+
       let details = {
         id: this.$route.params.groupId,
         groupName: this.groupNameValue,
-        phoneNumbers: this.groupNumbers,
+        phoneNumbers: this.phoneNumbers.join(","),
       };
       console.log(details);
         this.loading = true;

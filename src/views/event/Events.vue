@@ -36,7 +36,7 @@
         </div>
         </div>
         <div v-if="eventList.length > 0 && !loading" class="container-wide">
-            <EventList :eventList="eventList" :eventSummary="eventSummary"/>
+            <EventList :eventList="eventList" :eventSummary="eventSummary" @activity-per-page="getPageActivity"/>
         </div>
 
         <!-- Transitio area -->
@@ -81,10 +81,7 @@ export default {
 
       const getEventList = () => {
         loading.value = true
-      // let store = useStore()
-        // if (store.getters['event/eventList'].length > 0) {
-        //   eventList.value = store.getters['event/eventList']
-        // } else {
+
            axios.get('/api/eventreports/eventReports')
           .then(res => {
             eventList.value = res.data.activities
@@ -115,8 +112,12 @@ export default {
     //     console.log(err);
     //   }
     // });
+
+    const getPageActivity = (payload) => {
+      eventList.value = payload
+    }
   
-    return { eventList, getEventList, loading, eventSummary };
+    return { eventList, getEventList, loading, eventSummary, getPageActivity };
 
   },
 };

@@ -436,7 +436,7 @@
 
       <div class="row">
         <div class="col-md-2">
-          <span class="font-weight-600 small-text">Subject: </span>
+          <span class="font-weight-600 small-text">Sender: </span>
         </div>
         <div class="col-md-10 px-0">
           <input
@@ -517,6 +517,7 @@
               :model="sendOptions"
               data-toggle="modal"
               data-target="#sendsmsbtn"
+              @click="data"
             ></SplitButton>
           </span>
           <router-link to="/tenant/sms/sent"
@@ -726,7 +727,9 @@ export default {
       if (index === 3) phoneNumberSelectionTab.value = true;
       if (index === 0) {
         sendToAll.value = true;
+        selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts" })
       }
+      // console.log(index)
     };
 
     const sendOptionsIsShown = ref(false);
@@ -849,6 +852,7 @@ export default {
         detail: "SMS is being sent....",
         life: 2500,
       });
+      console.log(data)
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
       composeService
@@ -967,7 +971,7 @@ export default {
         contacts: [],
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        toContacts: sendToAll.value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
+        // toContacts: sendToAll./value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
         isoCode: isoCode.value,
         category: "",
         emailAddress: "",
@@ -985,17 +989,21 @@ export default {
       data.toOthers = numbers.join();
 
       if (selectedMembers.value.length > 0) {
-        data.toOthers += data.toOthers.length > 0 ? "," : "";
-        data.toOthers += selectedMembers.value
+        data.ToContacts = data && data.ToContacts ? data.ToContacts.length > 0 ? "," : "" : "";
+        data.ToContacts += selectedMembers.value
           .map((i) => {
             console.log(i, "person");
-            if (i.phone) return i.phone;
+            if (i.id) return i.id;
           })
           .join();
       }
+      console.log(selectedMembers.value)
 
       if (sendOrSchedule == 2) {
-        data.executionDate = executionDate.value;
+        const dateToBeExecuted = executionDate.value
+        data.executionDate = dateToBeExecuted.split("T")[0];
+        data.date = dateToBeExecuted
+        data.time = dateToBeExecuted.split("T")[1]
         scheduleMessage(data);
       } else {
         sendSMS(data);
@@ -1010,6 +1018,9 @@ export default {
       display.value = false;
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
       console.log(formattedDate, "Formatted Date");
+      console.log(data.executionDate)
+      
+      console.log(data)
       try {
         const response = await composerObj.sendMessage(
           "/api/Messaging/saveSmsSchedule",
@@ -1018,7 +1029,7 @@ export default {
         toast.add({
           severity: "success",
           summary: "message Scheduled",
-          detail: `Message scheduled for ${formattedDate}`,
+          detail: `Message scheduled for ${data.time}`,
         });
         console.log(response, "Schedule response");
       } catch (error) {
@@ -1138,6 +1149,24 @@ export default {
     const groupSelectInput = ref(null);
     const memberSelectInput = ref(null);
 
+    const data = () => {
+      const data = {
+        subject: subject.value,
+        message: editorData.value,
+        contacts: [],
+        isPersonalized: isPersonalized.value,
+        groupedContacts: selectedGroups.value.map((i) => i.data),
+        toContacts: sendToAll.value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
+        isoCode: isoCode.value,
+        category: "",
+        emailAddress: "",
+        emailDisplayName: "",
+        // gateWayToUse: gateway,
+      };
+
+      console.log(data)
+    }
+
     return {
       editor,
       editorData,
@@ -1190,6 +1219,7 @@ export default {
       executionDate,
       moment,
       isPersonalized,
+      data
     };
   },
 };

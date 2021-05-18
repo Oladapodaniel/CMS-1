@@ -7,7 +7,7 @@
 
       <div class="col-md-8 d-flex head-button">
         <!-- <router-link to="/tenant/offeringcategory"> -->
-          <button class="more-btn h-100 button align-items-center default-btn border-0">
+          <button class="more-btn h-100 button align-items-center default-btn border-0" v-if="false">
               More
               <span><i class="fa fa-angle-down btn-icon"></i></span>
             </button>

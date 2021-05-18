@@ -115,41 +115,103 @@ export default {
           "/mobile/v1/Account/SignIn",
           userdetails
         );
-        if (data && data.token) {
+        if (!data.returnObject) {
+            toast.add({
+              severity: "warn",
+              summary: "Incorrect details",
+              detail: `${data.response}`,
+              life: 4000,
+            });
+        } else if (data && data.returnObject.token && data.status) {
             let giverDetails = {
-                giverToken: data.token,
-                giverId: data.userId
+                giverToken: data.returnObject.token,
+                giverId: data.returnObject.userId
             }
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
+          
+          toast.add({
+            severity: "success",
+            summary: "Successful",
+            detail: `${data.response}`,
+            life: 4000,
+          });
 
           router.push({
             name: "OnlineGiving4",
             params: { userId: route.params.userId },
           });
+          console.log(data)
+        }   else {
+           console.log(data.response)
         }
         finish()
-
-        console.log(data);
-        console.log(data.data);
-      } catch (error) {
+    } catch (error) {
           finish()
-        console.log(error.response);
-        if (error.response) {
+        console.log(error);
+        console.log(error.response && error.response.data.message);
+        if (error.response && error.response.data.message ) {
           toast.add({
             severity: "info",
             summary: "Error Signing In",
             detail: `${error.response.data.message}`,
             life: 3000,
           });
+        } else if (error.response && error.response.toString().includes('network error')){
+          toast.add({
+            severity: "error",
+            summary: "Network Error",
+            detail: `Please ensure you  have a strong internet connection`,
+            life: 3000,
+          });
         } else {
           toast.add({
-            severity: "info",
-            summary: "Network Error",
-            detail: `Please ensure you have a strong internet connection`,
+            severity: "error",
+            summary: "Not Successful",
+            detail: `Please try again`,
             life: 3000,
           });
         }
       }
+
+      // try {
+      //   let { data } = await axios.post(
+      //     "/mobile/v1/Account/SignIn",
+      //     userdetails
+      //   );
+      //   if (data && data.returnObject.token) {
+      //       let giverDetails = {
+      //           giverToken: data.returnObject.token,
+      //           giverId: data.returnObject.userId
+      //       }
+      //     localStorage.setItem("giverToken", JSON.stringify(giverDetails));
+
+      //     router.push({
+      //       name: "OnlineGiving4",
+      //       params: { userId: route.params.userId },
+      //     });
+      //   }
+      //   finish()
+
+      //   console.log(data);
+      // } catch (error) {
+      //     finish()
+      //   console.log(error.response);
+      //   if (error.response) {
+      //     toast.add({
+      //       severity: "info",
+      //       summary: "Error Signing In",
+      //       detail: `${error.response.data.message}`,
+      //       life: 3000,
+      //     });
+      //   } else {
+      //     toast.add({
+      //       severity: "info",
+      //       summary: "Network Error",
+      //       detail: `Please ensure you have a strong internet connection`,
+      //       life: 3000,
+      //     });
+      //   }
+      // }
       // console.log(userdetails.value);
     };
 

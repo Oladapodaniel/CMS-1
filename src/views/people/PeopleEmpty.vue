@@ -10,7 +10,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <ImportPeople />
+          <ImportPeople @people-list="getMemberData" />
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@
     class="container-wide"
     v-if="!loading && (people.length > 0 || errorGettingPeople)"
   >
-    <PeopleList :list="people" :peopleCount="people.length" />
+    <PeopleList :list="people" :peopleCount="people.length" :membershipSummary="membershipSummary" />
   </div>
 </template>
 
@@ -80,6 +80,7 @@ export default {
     const loading = ref(false);
     const errorGettingPeople = ref(false);
     const dataStore = useStore();
+    const membershipSummary = ref({})
 
     const getMembers = async () => {
       try {
@@ -111,11 +112,26 @@ export default {
 
     });
 
+    const  getMemberData = () => {
+      // people.value = payload
+      axios
+        .get(`/api/People/GetMembershipSummary`)
+        .then((res) => {
+          console.log(res, "new chart");
+          membershipSummary.value = res.data;
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+
     return {
       people,
       peopleInStore,
       loading,
       errorGettingPeople,
+      getMemberData,
+      membershipSummary
     };
   },
 };

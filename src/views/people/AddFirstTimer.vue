@@ -18,7 +18,7 @@
                 >
                 <input
                   type="text"
-                  class="input"
+                  class="input form-control"
                   v-model="firstTimersObj.firstName"
                   name=""
                   id="firstname"
@@ -29,7 +29,7 @@
                 <label for="" class="label">Surname</label>
                 <input
                   type="text"
-                  class="input"
+                  class="input form-control"
                   placeholder=""
                   v-model="firstTimersObj.lastName"
                   name=""
@@ -37,12 +37,22 @@
               </div>
               <div class="input-field">
                 <label for="" class="label">Phone number</label>
-                <input
-                  type="text"
-                  class="input"
-                  placeholder=""
-                  v-model="firstTimersObj.phoneNumber"
-                />
+                <div class="d-flex flex-column">
+                    <input
+                    class="input form-control"
+                    placeholder=""
+                    v-model="firstTimersObj.phoneNumber"
+                    type="text"
+                    :class="{ 'is-invalid' : !isPhoneValid }"
+                    id="phone number"
+                    ref="validatePhone"
+                    @blur="checkForDuplicatePhone"
+                  />
+                  <div class="invalid-feedback text-danger pl-2">
+                    Phone number exist, type a unique phone number.
+                  </div>
+                </div>
+                
               </div>
               <div class="input-field">
                 <label for=""></label>
@@ -73,12 +83,21 @@
               </div>
               <div class="input-field">
                 <label for="" class="label">Email</label>
-                <input
-                  type="text"
-                  class="input"
-                  placeholder=""
-                  v-model="firstTimersObj.email"
-                />
+                  <div class="d-flex flex-column">
+                    <input
+                    class="input form-control"
+                    placeholder=""
+                    v-model="firstTimersObj.email"
+                    type="email"
+                    :class="{ 'is-invalid' : !isEmailValid}"
+                    id="email"
+                    ref="validateEmail"
+                    @blur="checkForDuplicateEmail"
+                  />
+                  <div class="invalid-feedback text-danger pl-2">
+                    Email exist, type a unique email.
+                  </div>
+                </div>
               </div>
 
               <!-- Test -->
@@ -174,7 +193,7 @@
                 <label for="" class="label">Address</label>
                 <input
                   type="text"
-                  class="input"
+                  class="input form-control"
                   placeholder=""
                   v-model="firstTimersObj.address"
                 />
@@ -220,38 +239,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- <div class="image-div other">
-              <div class="grey-bg">
-                <div class="person-img">
-                  <img
-                    v-if="!url"
-                    src="../../assets/people/phone-import.svg"
-                    alt="Uploaded Image"
-                  />
-                  <img v-else :src="url" alt="Uploaded Image" />
-                </div>
-                <div>
-                  <div class="cs-input">
-                    <label for="imgUpload" class="choose-file">
-                      Choose file
-                      <input
-                        type="file"
-                        class="input file-input"
-                        placeholder=""
-                        id="imgUpload"
-                        @change="imageSelected"
-                      />
-                    </label>
-                  </div>
-                </div>
-                <div>
-                  <button class="upload-btn" @click.prevent="uploadImage">
-                    Upload
-                  </button>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
         <!-- <hr class="hr"> -->
@@ -335,60 +322,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="">
-          <span class="celeb-tab row" @click="showAddInfoTab">
-            <span class="tab-header col-sm-3">Follow up and Retention:</span>
-            <span class="h-rule col-sm-7 pl-0"><hr class="hr" /></span>
-            <span class="col-sm-2">
-              <span class="tb-icon-span"
-              ><i
-                class="fa fa-angle-down tbb-icon"
-                :class="{ 'tb-icon': !hideAddInfoTab }"
-              ></i
-            ></span>
-            </span>
-          </span>
-          <div
-            class="bio-info"
-            :class="{
-              'hide-tab': hideAddInfoTab,
-              'show-occ-tab': !hideAddInfoTab,
-            }"
-          >
-            <div class="inputs mt-3">
-              <div class="input-field" style="font-size: 15px">
-                <span style="position: relative; left: -9px;">
-                  <label for="welcomeSms">Send welcome SMS</label>
-                  <input
-                    type="checkbox"
-                    class="check-box"
-                    name=""
-                    v-model="firstTimersObj.sendWelcomeSMS"
-                    id="welcomeSms"
-                  />
-                </span>
-
-                <span>
-                  <label for="welcomeEmail">Send welcome email</label>
-                  <input
-                    type="checkbox"
-                    checked
-                    class="check-box"
-                    name=""
-                    v-model="firstTimersObj.sendWelcomeEmail"
-                    id="welcomeEmail"
-                  />
-                </span>
-              </div>
-            </div>
-
-            <div class="image-div other"></div>
-          </div>
-        </div> -->
-
-        <!-- <div class="error-div">
-          <p v-if="!loading">{{ errMessage }}</p>
-        </div> -->
         <div class="inputs">
           <div class="submit-div">
             <button class="action-btn cancel-btn btn" @click.prevent="onCancel">
@@ -447,24 +380,6 @@
                           >
                         </div>
                         <div class="col-md-7">
-                          <!-- <Dropdown
-                            v-model="selectedVisitOption"
-                            :options="eventName"
-                             placeholder="Select Event" 
-                             :filter="true" 
-                             filterPlaceholder="Search..."
-                            style="width: 100%"
-                          /> -->
-                          <!-- <select class="form-control select-dropdown">
-                            <option>Select Event</option>
-                            <option v-for="event in newEvents" :key="event.id" class="create-option">{{ event.name }}</option>
-                            <option class="create-new-event text-center">Create new event</option>
-                          </select> -->
-                          <!-- <input
-                                        type="text"
-                                        class="form-control"
-                                        v-model="newEvent.activity.newEventCategoryName"
-                                      /> -->
                           <div
                             class="select-elem-con pointer d-flex justify-content-space-between"
                             @click="showCategory = !showCategory"
@@ -726,11 +641,6 @@ export default {
     const selectedFollowUp = ref(null);
 
     const firstTimersObj = ref({
-      // howDidYouAboutUsId: selectedAboutUsSource.id,
-      // maritalStatusId: "00000000-0000-0000-0000-000000000000",
-      // genderId: "00000000-0000-0000-0000-000000000000",
-      // maritalStatusId: "00000000-0000-0000-0000-000000000000",
-      // maritalStatusId: "00000000-0000-0000-0000-000000000000",
       sendWelcomeSMS: false,
       sendWelcomeEmail: true,
     });
@@ -743,6 +653,13 @@ export default {
     const eventText = ref("");
     const displayModal = ref(false);
     const selectEvent = ref("Select Event");
+    const isPhoneValid = ref(true)
+    const isEmailValid = ref(true)
+    const validatePhone = ref("")
+    const validateEmail = ref("")
+    const firstTimerPhone = ref("")
+    const firstTimerEmail = ref("")
+
 
     const filterEventCategory = computed(() => {
       // let x;
@@ -1209,6 +1126,71 @@ console.log(updateMember)
       return arrOfYears;
     });
 
+    const checkForDuplicatePhone = async() => {
+          if (route.params.firstTimerId) {
+            try {
+              let { data } = await axios.get(`/api/People/firstTimer/${route.params.firstTimerId}`)
+              firstTimerPhone.value = data.phoneNumber
+              firstTimerEmail.value = data.email
+            }
+            catch (err) {
+              console.log(err)
+            }
+          }
+            if (firstTimersObj.value.phoneNumber !== firstTimerPhone.value) {
+              try {
+      
+            let { data } = await axios.get(`api/People/checkDuplicate?phoneNumber=${firstTimersObj.value.phoneNumber}`)
+            console.log(data, validatePhone.value)
+              if (data === "phone number") {
+              isPhoneValid.value = false
+            } else if (data === "email and phone number") {
+              isPhoneValid.value = false
+              isEmailValid.value = false
+            } else {
+              isPhoneValid.value = true
+              validatePhone.value.classList.add('is-valid')
+              
+            }
+          }
+          catch (error) {
+            console.log(error)
+          }
+        }
+      }
+
+      const checkForDuplicateEmail = async() => {
+
+        if (route.params.firstTimerId) {
+            try {
+              let { data } = await axios.get(`/api/People/firstTimer/${route.params.firstTimerId}`)
+              firstTimerEmail.value = data.email
+            }
+            catch (err) {
+              console.log(err)
+            }
+          }
+
+          if (firstTimersObj.value.email !== firstTimerEmail.value) {
+          try {
+            let { data } = await axios.get(`api/People/checkDuplicate?email=${firstTimersObj.value.email}`)
+            console.log(data) 
+              if (data === "email") {
+                isEmailValid.value = false
+              } else if (data === "email and phone number") {
+                isEmailValid.value = false
+                isPhoneValid.value = false
+              } else {
+                isEmailValid.value = true
+                validateEmail.value.classList.add('is-valid')
+              }
+            }
+          catch (error) {
+            console.log(error)
+          }
+        }
+      }
+
     return {
       onSubmit,
       onCancel,
@@ -1263,6 +1245,14 @@ console.log(updateMember)
       newEventCategoryName,
       selectEvent,
       individualEvent,
+      checkForDuplicatePhone,
+      checkForDuplicateEmail,
+      isPhoneValid,
+      isEmailValid,
+      validatePhone,
+      validateEmail,
+      firstTimerPhone,
+      firstTimerEmail
     };
   },
 };

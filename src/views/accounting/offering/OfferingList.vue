@@ -56,7 +56,7 @@
                   <div class="col-md-9">
                     <div class="row">
                       <div
-                        class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                        class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
                       >
                         <!-- <div class="input-field"> -->
 
@@ -64,36 +64,25 @@
                           type="text"
                           class="input w-100"
                           placeholder="Contribution"
-                      
-                        />
-                        <!-- </div> -->
-                      </div>
-
-                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
-                          type="date"
-                          class="form-control input inp w-100"
-                     
+                          v-model="filter.contribution"
                         />
                       </div>
-                    </div>
 
-                    <div class="row">
-                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                      <div class="col-12 col-md-4 form-group d-none d-md-block">
                         <input
                           type="text"
                           class="input w-100"
                           placeholder="event"
-            
+                          v-model="filter.event"
                         />
                       </div>
 
-                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
+                      <div class="col-12 col-md-4 form-group d-none d-md-block">
                         <input
                           type="text"
                           class="input w-100"
                           placeholder="donor"
-                  
+                          v-model="filter.donor"
                         />
                       </div>
                     </div>
@@ -118,7 +107,7 @@
             </div>
 
            
-            <!-- <div id="table"> -->
+            <div v-if="!noRecords">
               <div class="row table-header">
                 <div class="col-sm-2 d-none d-sm-block">
                     DATE
@@ -132,10 +121,11 @@
                     <div class="col-sm-2 d-none d-sm-block">
                     AMOUNT
                 </div>
-                    <div class="col-sm-1 d-none d-sm-block" >
+                    <div class="col-sm-1 d-none d-sm-block" style="font-weight: 800">
                     DONOR
                 </div>
             </div>
+
 
             <div class="table-body row" v-for="(offering, index) in searchContribution" :key="offering.id">
                 <div class="col-6 d-block d-sm-none">
@@ -151,7 +141,7 @@
                     <div class="col-sm-2">
                     AMOUNT
                 </div>
-                    <div class="col-sm-2" >
+                    <div class="col-sm-2" style="font-weight: 800">
                     DONOR
                 </div>
             </div>
@@ -167,9 +157,9 @@
                      <div>{{ offering.contribution }}</div>
                 </div>
                 <div class="col-sm-2">
-                     <div class="d-flex"> <div class="currency" v-if="offering.currencyName">{{ offering.currencyName }}</div><div class="align-self-center ml-2" style="font-weight: 800;">{{ offering.amount }}</div></div>
+                     <div class="d-flex"> <div class="currency" v-if="offering.currencyName">{{ offering.currencyName }}</div><div class="align-self-center ml-2">{{ offering.amount }}</div></div>
                 </div>
-                <div class="col-sm-1" >
+                <div class="col-sm-1" style="font-weight: 800">
                      <div>{{ offering.donor }}</div>
                 </div>
                 <div class="col-sm-1">
@@ -199,7 +189,8 @@
           
                 </div>
             </div>
-            <!-- </div> -->
+            </div>
+            <div v-else class="text-danger">No records found</div>
             <div class="col-12">
                     <div class="table-footer">
                       <Pagination  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
@@ -242,8 +233,8 @@ export default {
     // const getFirstTimerSummary = ref({});
     const filter = ref({});
     const searchIsVisible = ref(false);
-    // const filterResult = ref([]);
-    // const noRecords = ref(false);
+    const filterResult = ref([]);
+    const noRecords = ref(false);
     const searchText = ref("");
 
     // if ()
@@ -280,6 +271,8 @@ export default {
             .toLowerCase()
             .includes(searchText.value.toLowerCase());
         });
+      } else if (filterResult.value.length > 0 && (filter.value.contribution || filter.value.event || filter.value.donor)) {
+          return filterResult.value
       } else {
         return props.contributionTransactions;
       }
@@ -394,35 +387,34 @@ export default {
     //   });
     // });
 
-    // const applyFilter = () => {
-    //   filter.value.filterFirstName =
-    //     filter.value.filterFirstName == undefined
-    //       ? ""
-    //       : filter.value.filterFirstName;
-    //   filter.value.filterLastName =
-    //     filter.value.filterLastName == undefined
-    //       ? ""
-    //       : filter.value.filterLastName;
-    //   filter.value.phoneNumber =
-    //     filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
+    const applyFilter = () => {
+      filter.value.contribution = filter.value.contribution == undefined ? "" : filter.value.contribution;
+      filter.value.event = filter.value.event == undefined ? "" : filter.value.event;
+      filter.value.donor = filter.value.donor == undefined ? "" : filter.value.donor;
 
-    //   let url =
-    //     "/api/People/FilterMembers?firstname=" +
-    //     filter.value.filterFirstName +
-    //     "&lastname=" +
-    //     filter.value.filterLastName +
-    //     "&phone_number=" +
-    //     filter.value.phoneNumber +
-    //     "&page=1";
-    //   axios
-    //     .get(url)
-    //     .then((res) => {
-    //       noRecords.value = true;
-    //       filterResult.value = res.data;
-    //       console.log(filterResult.value);
-    //     })
-    //     .catch((err) => console.log(err));
-    // };
+      let url = "/api/Financials/Contributions/FilteredTransactions?contribution=" + filter.value.contribution + "&eventname=" + filter.value.event + "&donor=" + filter.value.donor
+        // "/api/People/FilterMembers?firstname=" +
+        // filter.value.filterFirstName +
+        // "&lastname=" +
+        // filter.value.filterLastName +
+        // "&phone_number=" +
+        // filter.value.phoneNumber +
+        // "&page=1";
+        
+      axios
+        .get(url)
+        .then((res) => {
+          // noRecords.value = true;
+          filterResult.value = res.data;
+          console.log(res.data)
+          if (res.data.length === 0) {
+            noRecords.value = true
+          } else {
+            noRecords.value = false
+          }
+        })
+        .catch((err) => console.log(err));
+    };
 
     // const membersCount = computed(() => {
     //   if (getFirstTimerSummary.value.totalFirstTimer > 20)
@@ -439,12 +431,12 @@ export default {
       moment,
       // firstTimerSummary,
       // getFirstTimerSummary,
-      // applyFilter,
+      applyFilter,
       filter,
       toggleSearch,
       searchIsVisible,
-      // filterResult,
-      // noRecords,
+      filterResult,
+      noRecords,
       searchText,
       searchContribution,
       showConfirmModal,
@@ -568,7 +560,7 @@ export default {
 }
 
 .filter-options-shown {
-  height: 120px !important;
+  height: 80px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }

@@ -23,10 +23,10 @@
             </p>
           </div>
 
-          <div class="col-md-2 col-6 offset-md-4">
+          <div class="col-md-3 col-6 offset-md-4">
             <!-- Example split danger button -->
-            <div class="btn-group">
-              <button type="button" class="btn htext2">Ajose Tosin</button>
+            <!-- <div class="btn-group">
+              <button type="button" class="btn htext2">{{ name }}</button>
               <button
                 type="button"
                 class="btn dropdown-toggle dropdown-toggle-split"
@@ -40,15 +40,15 @@
                 <a class="dropdown-item" href="#">Settings</a>
                 <a class="dropdown-item" href="#">Log Out</a>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="col-md-1 col-2">
-            <img
+            <!-- <img
               class="imgee"
               src="../../assets/best-Copy.jpg"
               alt=""
               srcset=""
-            />
+            /> -->
           </div>
           <div class="col-md-1 col-2">
             <i
@@ -66,23 +66,23 @@
           <div class="col-md-3 col-4">
             <input
               type="date"
-              class="form-control fone p-3 border-0 date-area w-75"
+              class="form-control fone p-3 border-0 date-area w-100"
               v-model="startDate"
             />
           </div>
           <div class="col-md-3 col-4">
             <input
               type="date"
-              class="form-control fone p-3 border-0 date-area w-75"
+              class="form-control fone p-3 border-0 date-area w-100"
               v-model="endDate"
             />
           </div>
           <!-- end of date area -->
           <!-- </div> -->
 
-          <div class="col-md-1 col-2">
+          <div class="col-md-1 col-2" @click="searchRange">
             <i
-              class="pi pi-filter p-3 bell-shadow bell d-flex justify-content-center align-items-center"
+              class="pi pi-search p-3 bell-shadow bell d-flex justify-content-center align-items-center"
             ></i>
           </div>
         </div>
@@ -94,6 +94,8 @@
             <label for="timestamp">Sort by Newest</label>
           </div>
         </div>
+        <div v-if="displayMessage" class="text-danger">You have not made anay transactions</div>
+        <div v-else>
         <div
           ref="downloadArea"
           class="row mt-2 py-2 d-md-flex justify-content-center align-items-center belw"
@@ -166,6 +168,7 @@
           </div>
           <hr />
         </div>
+        </div>
       </div>
     </div>
   </div>
@@ -189,6 +192,7 @@ export default {
     const userInputs = ref("");
     const downloadArea = ref(null)
     const userTransaction = ref([])
+    const displayMessage = ref(false)
 
 
     const searchInputs = computed(() => {
@@ -219,9 +223,14 @@ export default {
         .post("/mobile/v1/PaymentForm/contributions", initialData)
         .then((res) => {
           finish();
-          console.log(res, "kjjjhjjjje");
-          console.log(res.data, "kalistocrazy");
-          userTransaction.value = res.data;
+          console.log(res);
+          console.log(res.data);
+          if (res.data.length > 0) {
+            userTransaction.value = res.data;
+          }
+          else {
+            displayMessage.value = true
+          }
           loading.value = false;
         })
         .catch((err) => {
@@ -245,6 +254,31 @@ export default {
       doc.autoTable(html)
     };
 
+    const searchRange = () => {
+      let tenantId = localStorage.getItem("tenantId");
+      let initialData = {
+        startDate: startDate.value,
+        endDate: endDate.value,
+        userId: storedDetails.giverId,
+        tenantId: tenantId,
+      };
+
+      axios
+        .post("/mobile/v1/PaymentForm/contributions", initialData)
+        .then((res) => {
+          finish();
+          console.log(res);
+          console.log(res.data);
+          userTransaction.value = res.data;
+          loading.value = false;
+        })
+        .catch((err) => {
+          finish();
+          console.log(err.response);
+          loading.value = false;
+        });
+    }
+
 
 
     return {
@@ -259,6 +293,8 @@ export default {
       jsPDF,
       autoTable,
       downloadArea,
+      searchRange,
+      displayMessage
     };
   },
 };

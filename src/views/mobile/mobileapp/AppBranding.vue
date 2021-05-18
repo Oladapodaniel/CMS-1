@@ -1,5 +1,102 @@
 <template>
-<div >
+<div class="container-wide">
+    <div class="row">
+        <div class="col-md-7 mt-5">
+            <div class="row">
+                <div class="col-12 col-md-10">
+                    <div class="row">
+                        <div class="col-12">
+                        <h5 class="appBranding">App Branding</h5> 
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="colourText">Colour</div>
+                    </div>
+                    <div class="col-12 col-sm-8">
+                        <h5 class="primaryColour mt-4">Primary Colour</h5> 
+                    </div>
+                    <div class="col-sm-4 col-12" >
+                        <label for="colorpicker"></label>
+                            <input type="color" id="colorpicker" class="no-border form-control" value="#136ACA">
+                    </div>
+                    <hr class="mt-2 d-none d-sm-none  d-md-block">
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2"> 
+                <div class="col-12 col-md-10">
+                    <div class="row">
+                        <div class="col-12 col-sm-8">
+                        <h5 class="primaryColour mt-4">Secondary Colour</h5> 
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <label for="colorpicker"></label>
+                            <input type="color" id="colorpicker" class="no-border form-control" value="#FF5D00">
+                    </div>
+                    <div class="col-md-3 col-12 col-sm-0">
+
+                    </div>
+                    <hr class="mt-2 d-none d-sm-none  d-md-block">
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12 col-md-10">
+                    <div class="row">
+                        <div class="col-12 col-sm-8">
+                        <h5 class="primaryColour mt-4">Test Colour</h5> 
+                    </div>
+                    <div class="col-12 col-sm-4">
+                            <label for="colorpicker"></label>
+                            <input type="color" id="colorpicker" class="no-border form-control" value="#FD0604">
+                        
+                    </div>
+                    <div class="col-md-3 col-12 col-sm-0">
+
+                    </div>
+                    <hr class="mt-2 d-none d-sm-none  d-md-block">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row mt-2">
+                <div class="col-12 col-md-10">
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                        <h5 class="logo">Logo</h5> 
+                    </div>
+                    <div class="col-12 col-sm-6" id="logoBox">
+                            <div class="cs-input border-0 mt-2 ml-4">
+                    <label for="imgUpload" class="choose-file mr-sm-4">
+                        Choose file
+                        <input
+                        type="file"
+                        class="input file-input"
+                        placeholder=""
+                        id="imgUpload"
+                        @change="imageSelected"
+                        />
+                    </label>
+                    </div>
+
+                    </div>
+                    
+                    <div class=" col-md-3 col-12 col-sm0">
+
+                    </div>
+                    <div class="col-4"></div>
+                    <div class="col-sm-12 btn primary-bg mt-5 text-white default-btn border-0" @click="saveAppBranding">
+                    Save and continue
+                    </div>
+                </div>    
+        </div>                
+            </div>
+        </div>
+        <div class="col-md-5 backgroundImage d-none d-md-block"></div>
+    </div>
+</div>
+
+
+<!-- <div>
         <div class="row">
             <div class="col-md-7 col-12 mt-5">
                  <div class="row mt-5 d-flex justify-content-md-between">
@@ -94,7 +191,7 @@
                     
                 </div>
                 
-                <div class="row mt-5 d-flex px-5 px-md-0 px-lg-0 px-xl-0  justify-content-md-between">
+                <div class="row mt-5 d-flex px-5 px-md-0 px-lg-0 px-xl-0  justify-content-md-between" style="border: 2px solid red">
                     <div class="col-md-3 col-12 col-0">
                     </div>
                     <div class="col-md-1 col-12 col-sm-8">
@@ -115,12 +212,17 @@
                   </div>
 
                     </div>
+                    
                     <div class=" col-md-3 col-12 col-sm0">
 
                     </div>
+                    <div class="col-4"></div>
+                    <div class="col-sm-5 btn primary-bg mt-5 text-white default-btn border-0" >
+                    Save and continue
+                    </div>
                     
                 </div>
-                <!--small sreen display-->
+                small sreen display
                  <div class="row mt-4 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0 d-block d-sm-block d-md-none d-lg-none d-xl-none  ">
                     <div class="col-md-3 col-12">
                     </div>
@@ -154,7 +256,7 @@
             <div class="col-md-5 col-sm-12  d-none d-sm-none  d-md-block">
                 <div class="backgroundImage">
                 <div class="button2">
-                    <button class="button1">Next</button>
+                    <router-link :to="{ name: 'DonationSetup' }"><button class="button1">Next</button></router-link>
                     <div class="mt-5 d-flex justify-content-between">
                     <div class="dash">
 
@@ -173,24 +275,19 @@
                 
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <script>
+import router from '../../../router'
 // import {ref} from 'vue'
     export default {
         setup(){
-    // let url = ref("");
-    // let image = ref("");
-    // const imageSelected = (e) => {
-    //   image.value = e.target.files[0];
-    //   url.value = URL.createObjectURL(image.value);
-    //   memberToEdit.value.pictureUrl = URL.createObjectURL(image.value);
-    // };
+            const saveAppBranding =  () => {
+                router.push({ name: 'DonationSetup' })
+            }
     return{
-        // imageSelected,
-        // memberToEdit
-
+        saveAppBranding
     }
         }
         
@@ -198,12 +295,7 @@
 </script>
 
 <style scoped>
-*{
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    
-}
+
 .backgroundImage{
     background-image: url("../../../assets/mobileonboarding/app1.svg");
     background-repeat: no-repeat,repeat;
@@ -274,11 +366,8 @@ opacity: 1;
 
 }
 .appBranding{
-text-align: left;
-font: normal normal 800 44px/60px Nunito Sans;
-letter-spacing: 0px;
-color: #031C39;
-opacity: 1;
+    color: #031C39;
+    font: normal normal 800 30px/40px Nunito Sans;
 
 }
 /* #colorpicker{

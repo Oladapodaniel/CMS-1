@@ -47,16 +47,22 @@
       </div>
     </div>
     <!--end of nav section area -->
+    
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-10 col-md-8 mx-auto d-flex justify-content-end pt-1">
-                    <div href="#" style="cursor: pointer" class="mr-3" @click="checkForToken"
-                    >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} <i class="fas fa-user text-white" v-if="signedIn"></i
-                ></div>
-                <div href="#" style="cursor: pointer" @click="signOut" v-if="signedIn"
-            >
-            Sign Out
-            </div>
+                <div class="col-sm-10 col-md-8 mx-auto  pt-1">
+                    <div class="row">
+                      <div class="col-6">{{ formResponse.churchName }}</div>
+                      <div class="col-6 d-flex justify-content-end">
+                        <div href="#" style="cursor: pointer" class="mr-3" @click="checkForToken"
+                          >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} <i class="fas fa-user text-white" v-if="signedIn"></i
+                      ></div>
+                      <div href="#" style="cursor: pointer" @click="signOut" v-if="signedIn"
+                        >
+                        Sign Out
+                        </div>
+                      </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,7 +73,7 @@
           <div>
             <p class="text-center pt-2 main-font">Giving</p>
             <p class="text-center mt-n3 sub-main-font">
-              Give and you will recieve. Luke - 6:38
+              Give and you shall recieve. Luke - 6:38
             </p>
 
             <!-- form area -->
@@ -310,7 +316,6 @@
                       <SignUp :tenantId="formResponse.tenantID" @signed-up="signedUp" @show-signin="displaySignInForm"/>
                     </div>
                   </div>
-  
                   
                   
                     <div class="col-md-12">
@@ -346,7 +351,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -431,14 +436,13 @@
                   <div class="col-md-6 offset-md-3">
                     <div class="row hfont">
                       <p class="text-nowrap col-12 text-center">
-                        Churchplus <span><u>Terms & Conditions</u> </span
-                        >and
-                        <span><u>Privacy Policy</u> </span>
-                      </p>
-                      <p class="mt-n2 col-12 text-center text-wrap">
-                        Organization Legal Name: Porters House Assembly |
-                        Address:Iponri Lagos
-                      </p>
+                        Churchplus <span>Terms & Conditions </span
+                          > and
+                          <span>Privacy Policy </span>
+                        </p>
+                        <p class="mt-n2 col-12 text-center text-wrap">
+                          Organization Legal Name: {{ formResponse.churchName }} 
+                        </p>
                      
                       <div class="col-md-4 offset-5 px-0">
                         <img
@@ -474,6 +478,8 @@ import { useRoute, useRouter } from "vue-router";
 import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import SignUp from "./SignUp"
+import convertCurrency from "../../../services/currency-converter/currencyConverter"
+import { useStore } from "vuex"
 export default {
   components: {
     PaymentOptionModal,
@@ -484,6 +490,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     let toast = useToast();
+    const store = useStore()
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -521,6 +528,8 @@ export default {
     const signInPassword = ref("")
     const routeParams = ref(`${route.params.userId}`)
     const showSignInForm = ref(true)
+    const tenantCurrency = ref("")
+    const convertedAmount = ref(0)
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -592,8 +601,38 @@ export default {
     };
     tcurrency();
 
+    const getRates = async() => {
+            try {
+                let { data } = await axios.get('/fxRates')
+                console.log(data)
+                store.dispatch("getRates", data)
+            }   catch (error) {
+                    console.log(error);
+            }
+        }
+    getRates()
+
     const donation = async() => {
 
+          try {
+        let { data } = await axios.get(`/api/Lookup/TenantCurrency?tenantID=${formResponse.value ? formResponse.value.tenantID : ""}`)
+        tenantCurrency.value = data.currency
+      }
+
+      catch (err) {
+        console.log(err)
+      }
+          // Heres where im converting the currenccy
+          try {
+            let fromCurrencyRate = `usd${dfaultCurrency.value.shortCode.toLowerCase()}`
+            let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
+            const result = await convertCurrency.currencyConverter(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
+            console.log(result)
+            convertedAmount.value = Math.round(result)
+          }
+          catch (err) {
+            console.log(err)
+          }
 
           donationObj.value = {
             paymentFormId: formResponse.value.id,
@@ -644,14 +683,7 @@ export default {
           try {
             let  res = await axios.post('/donation', donationObj.value)
             console.log(res)
-            // if (!res.data) {
-            //   toast.add({
-            //   severity: "error",
-            //   summary: "Problem occurred while making this payment",
-            //   detail: `Ensure you selected`,
-            //   life: 3000,
-            // });
-            // }
+     
             finish()
           }
           catch (error) {
@@ -672,20 +704,28 @@ export default {
     } else {
       let storedDetails = JSON.parse(localStorage.getItem('giverToken'))
         console.log(storedDetails)
-      try {
-          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
-          console.log(data)
-          userData.value = data
-          email.value = data.email
-          name.value = userData.value.name
-          phone.value = userData.value.phone
-          finish()
+        userData.value = {
+          email: storedDetails.email,
+          name: storedDetails.name,
+          userId: storedDetails.giverId
         }
-        catch (error) {
-          console.log(error)
-          finish()
-        }
-        signedIn.value = true
+          email.value = storedDetails.email
+          name.value = storedDetails.name
+          phone.value = storedDetails.phone
+          signedIn.value = storedDetails.setSignInStatus
+      // try {
+      //     let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
+      //     console.log(data)
+      //     userData.value = data
+      //     email.value = data.email
+      //     name.value = userData.value.name
+      //     phone.value = userData.value.phone
+      //     finish()
+      //   }
+      //   catch (error) {
+      //     console.log(error)
+      //     finish()
+      //   }
     }
     }
     getUserDetails()
@@ -733,89 +773,91 @@ export default {
           "/mobile/v1/Account/SignIn",
           userdetails
         );
-        if (data && data.token) {
+        if (!data.returnObject) {
+            toast.add({
+              severity: "warn",
+              summary: "Incorrect details",
+              detail: `${data.response}`,
+              life: 4000,
+            });
+        } else if (data && data.returnObject.token && data.status) {
             let giverDetails = {
-                giverToken: data.token,
-                giverId: data.userId
+                giverToken: data.returnObject.token,
+                giverId: data.returnObject.userId
             }
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
           toast.add({
             severity: "success",
             summary: "Successful",
-            detail: `Signed In Successfully`,
-            life: 3000,
+            detail: `${data.response}`,
+            life: 4000,
           });
           console.log(data)
 
           let userProfile = {
-            name: data.fullname,
-            email: data.email,
-            id: data.userId,
-            tenantID: data.tenantID,
-            phone: data.phoneNumber,
+            name: data.returnObject.fullname,
+            email: data.returnObject.email,
+            id: data.returnObject.userId,
+            tenantID: data.returnObject.tenantID,
+            phone: data.returnObject.phoneNumber,
           }
           userData.value = userProfile
+          signedIn.value = true
+          console.log(data)
           // userData.value = data
+        }   else {
+           console.log(data.response)
         }
-        signedIn.value = true
-
-        
-
-
-
-        // userData.value = data
         finish()
-
-
-      } catch (error) {
+    } catch (error) {
           finish()
         console.log(error);
-        console.log(error.response);
-        if (error.reponse) {
+        console.log(error.response && error.response.data.message);
+        if (error.response && error.response.data.message ) {
           toast.add({
             severity: "info",
             summary: "Error Signing In",
             detail: `${error.response.data.message}`,
             life: 3000,
           });
-        } else if (error.response.status === 401){
-          toast.add({
-            severity: "info",
-            summary: "Incorrect Details",
-            detail: `${error.response.data.message}`,
-            life: 3000,
-          });
-        } else {
+        } else if (error.response && error.response.toString().includes('network error')){
           toast.add({
             severity: "error",
             summary: "Network Error",
             detail: `Please ensure you  have a strong internet connection`,
             life: 3000,
           });
+        } else {
+          toast.add({
+            severity: "error",
+            summary: "Not Successful",
+            detail: `Please try again`,
+            life: 3000,
+          });
         }
       }
-      // console.log(userdetails.value);
     };
 
     const signedUp = async(payload) => {
-      try {
-          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${payload.giverId}`)
-          console.log(data)
-          userData.value = data
-          email.value = data.email
-          name.value = userData.value.name
-          phone.value = userData.value.phone
-          finish()
-        }
-        catch (error) {
-          console.log(error)
-          finish()
-        }
+        userData.value = {
+        email: payload.email,
+        name: payload.name,
+        userId: payload.giverId
+      }
+      email.value = payload.email
+      name.value = payload.name
+      phone.value = payload.phone
       signedIn.value = payload.setSignInStatus
+    
     }
 
     const displaySignInForm = (payload) => {
       showSignInForm.value = payload
+    }
+
+    const gatewaySelected  = (payload) => {
+        donationObj.value.usedPaymentGateway = payload
+        console.log(payload)
     }
 
     return {
@@ -858,7 +900,10 @@ export default {
       routeParams,
       showSignInForm,
       signedUp,
-      displaySignInForm
+      displaySignInForm,
+      gatewaySelected,
+      tenantCurrency,
+      convertedAmount
     };
   },
 };

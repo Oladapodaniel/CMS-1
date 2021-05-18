@@ -12,6 +12,7 @@ export default {
         userStartPoint: "",
         settingUserUp: false,
         churchMembers: { },
+        // importType: ""
     },
 
     mutations: {
@@ -51,7 +52,7 @@ export default {
             state.currentUser = {};
             state.userStartPoint = "";
             state.settingUserUp = false;
-            state.churchMembers = { };
+            state.churchMembers = {};
         }
     },
 
@@ -68,7 +69,6 @@ export default {
           } catch(err) {
             console.log(err, "in store");
           }
-          
         },
 
         clearPeopleInStore({ commit }) {
@@ -77,13 +77,14 @@ export default {
       },
 
     //   getters: {
-    //     currentUser: state => state.currentUser,
-    //     userEmail: state => state.userEmail,
-    //     onboardingData: state => state.onboardingData,
-    //     userRole: state => state.userRole,
-    //     userData: state => state.userData,
-    //     initialSignUpDetails: state => state.initialSignUpDetails,
-    //     userStartPoint: state => state.userStartPoint,
-    //     settingUserUp: state => state.settingUserUp,
+        // currentUser: state => state.currentUser,
+        // userEmail: state => state.userEmail,
+        // onboardingData: state => state.onboardingData,
+        // userRole: state => state.userRole,
+        // userData: state => state.userData,
+        // initialSignUpDetails: state => state.initialSignUpDetails,
+        // userStartPoint: state => state.userStartPoint,
+        // settingUserUp: state => state.settingUserUp,
+        // importType: state => state.importType
     //   },
 }

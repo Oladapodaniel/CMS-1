@@ -117,21 +117,27 @@ const routes = [{
                         component: () =>
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
                     },
-
+                    
                 ]
             },
-
+            
             // {
-            //     path: 'event',
-            //     name: 'Event',
-            //     component: () =>
-            //         import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
-            // },
-            {
-                path: 'events',
-                name: 'Events',
-                component: () =>
-                    import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
+                //     path: 'event',
+                //     name: 'Event',
+                //     component: () =>
+                //         import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+                // },
+                {
+                    path: 'importinstruction',
+                    name: 'ImportInstruction',
+                    component: () =>
+                        import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/ImportInstruction.vue')
+                },
+                {
+                    path: 'events',
+                    name: 'Events',
+                    component: () =>
+                        import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
             },
             // {
             //     path: 'events',
@@ -139,14 +145,14 @@ const routes = [{
             //     component: () =>
             //         import ( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
             // },
-            {
-                path: 'event/:event?',
-                name: 'Event',
-                component: () =>
-                    import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
-            },
+                {
+                    path: 'event/:event?',
+                    name: 'Event',
+                    component: () =>
+                        import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+                },
 
-            {
+                {
                 path: 'attendancecheckin',
                 name: 'Attendance',
                 component: () =>
@@ -649,6 +655,42 @@ const routes = [{
                 name: 'Payment',
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/Payment')
+            },
+            {
+                path: '/onboardingprocess',
+                name: 'MobileOnboarding',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')
+            },
+            {
+                path: '/appbranding',
+                name: 'AppBranding',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/AppBranding')
+            },
+            {
+                path: '/socialmedia',
+                name: 'SocialMedia',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/SocialMedia')
+            },
+            {
+                path: '/onboardingsuccessful',
+                name: 'OnboardingSuccessful',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/OnboardingSuccessful')
+            },
+            {
+                path: '/churchsetup',
+                name: 'ChurchSetUp',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/ChurchSetUp')
+            },
+            {
+                path: '/donationsetup',
+                name: 'DonationSetup',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/DonationSetup')
             }
         ],
     },
@@ -726,34 +768,7 @@ const routes = [{
         name: 'TransactionPage',
         component: () =>
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
-    },
-    {
-        path: '/Index',
-        name: 'mobileapponboarding',
-        component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index')
-    },
-    {
-        path: '/index2',
-        name: 'mobileapponboarding',
-        component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/Index2')
-    },
-    {
-        path: '/AppBranding',
-        name: 'appbranding',
-        component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/AppBranding')
-    },
-    {
-        path: '/SocialMedia',
-        name: 'socialmedia',
-        component: () =>
-            import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/SocialMedia')
-    },
-
-
-
+    }
 ]
 
 
@@ -767,7 +782,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 
 
-    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin" || to.name === "OnlineGiving4" || to.name === "SignUpPayment" || to.name === "SignInPayment" || to.name === "TransactionPage") && !tokenIsValid) return next(true)
+    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin" || to.name === "OnlineGiving4" || to.name === "iFrame" || to.name === "SignUpPayment" || to.name === "SignInPayment" || to.name === "TransactionPage") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;

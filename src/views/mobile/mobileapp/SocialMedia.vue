@@ -1,23 +1,12 @@
 <template>
-<div >
-        <div class="row">
-            <div class="col-md-7 col-12 mt-5">
-                 <div class="row mt-5 d-flex justify-content-md-between">
-                    <div class="col-md-3 col-12">
-                        
-
-                    </div>
-                    <div class="col-md-5 col-12">
-                       <h5 class="appBranding text-center text-lg-left text-md-left text-xl-left">Social Media</h5> 
-                    </div>
-                    <div class="col-md-1 col-12">
-                    </div>
-                    <div class="col-md-3 col-12">
-
-                    </div>
-                    
-                </div>
-                <div class="row mt-5 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
+<div class="container-wide">
+        <!-- write up part -->
+        <div class="row"  style="height: 100vh">
+          <div class="col-md-6 mt-5">
+            <div class="row">
+              <div class="col-12 setup">  Social Media</div>
+              </div>
+            <div class="row d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
                     <div class="col-md-3 col-12">
                         
 
@@ -32,165 +21,100 @@
                     </div>
                     
                 </div>
-                <div class="row mt-5 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
-                    <div class="col-md-3 col-12 col-sm-0">
-                    </div>
-                    <div class="col-md-1 col-12 col-sm-1 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
+                <div class="row mt-5 ">
+                    <div class="col-12 col-sm-2 mt-3">
                        <img src="../../../assets/social/facebook.svg" alt="">
                     </div>
-                    <div class="col-md-5 col-12 col-sm-11" id="logoBox">
+                    <div class="col-md-8 col-12 mt-3" id="logoBox">
                         <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="col-12 col-sm-2 mt-3">
 
-                    </div>
-                    <div class="col-md-3 col-12">
-
-                    </div>
-                    
-                </div>
-                <div class="row mt-4 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
-                    <div class="col-md-3 col-12 col-sm-0">
-                    </div>
-                    <div class="col-md-1 col-12 col-sm-1 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
                        <img src="../../../assets/social/twitter.svg" alt="">
                     </div>
-                    <div class="col-md-5 col-12 col-sm-11" id="logoBox">
-                         <input type="text" class="w-100 py-1 border-0 outline-none px-2">
-
+                    <div class="col-md-8 col-12 mt-3" id="logoBox">
+                        <input type="text" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
-                    <div class="col-md-3 col-12">
-
-                    </div>
+                    <div class="col-2"></div>
                     
-                </div>
-                <div class="row mt-4 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
-                    <div class="col-md-3 col-12 col-sm-0">
-                    </div>
-                    <div class="col-md-1 col-12 col-sm-1 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
+                    <div class="col-12 col-sm-2 mt-3">
                        <img src="../../../assets/social/instagram.svg" alt="">
                     </div>
-                    <div class="col-md-5 col-12 col-sm-11" id="logoBox">
-                         <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                    <div class="col-md-8 col-12 mt-3" id="logoBox">
+                        <input type="text" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
-                    <div class="col-md-3 col-12">
-
-                    </div>
+                    <div class="col-2"></div>
                     
-                </div>
-                 <div class="row mt-4 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
-                    <div class="col-md-3 col-12 col-sm-0">
-                    </div>
-                    <div class="col-md-1 col-2 col-sm-1 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
+                    <div class="col-12 col-md-2 mt-3">
                        <img src="../../../assets/mobileonboarding/youtube.svg" alt="">
                     </div>
-                    <div class="col-md-2 col-sm-2 col-10 mb-0 mb-md-0 mb-lg-0 mb-xl-0 mt-2 mt-md-0 mt-lg-0 mt-xl-0">
-                        <h6 class="">YouTube Url</h6>
+                    <div class="col-12 col-md-2 mt-3">
+                       YouTube URL
                     </div>
-                    <div class="col-md-3 col-sm-9 col-12" id="logoBox">
-                         <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                    <div class="col-md-6 col-12 mt-3" id="logoBox">
+                        <input type="text" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
-                    <div class="col-md-3 col-sm-0 col-12">
+                    <div class="col-2"></div>
+                    
+                    <div class="col-12 col-md-2 mt-3">
+                       <!-- <img src="../../../assets/mobileonboarding/youtube.svg" alt=""> -->
+                    </div>
+                    <div class="col-12 col-md-2 mt-3">
+                        Channel ID
+                    </div>
+                    <div class="col-md-6 col-12 mt-3" id="logoBox">
+                        <input type="text" class="w-100 py-1 border-0 outline-none px-2">
+                    </div>
 
+                    <div class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0" @click="saveSocialMedia">
+                    Save and continue
                     </div>
+ 
                     
                 </div>
-                 <div class="row mt-4 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0">
-                    <div class="col-md-3 col-sm-0 col-12">
-                    </div>
-                    <div class="col-md-1 col-sm-1 col-12">
-                    </div>
-                    <div class="col-md-2 col-sm-2 col-12 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
-                        <h6 class="p-0">Channel ID</h6>
-                    </div>
-                    <div class="col-md-3 col-sm-9 col-12" id="logoBox">
-                         <input type="text" class="w-100 py-1 border-0 outline-none px-2">
-                    </div>
-                    <div class="col-md-3 col-12 col-sm-0">
+          </div>
 
-                    </div>
-                    
+            <!-- image part -->
+            <div class="col-md-6 col-12 bg-image d-none d-md-block">
+                <div class="row mt-3">
+                    <div class="col-md-12 text-center my-5 step">STEP 1 of 2</div>
                 </div>
-                <!--small sreen display-->
-                 <div class="row mt-4 d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0 d-block d-sm-block d-md-none d-lg-none d-xl-none  ">
-                    <div class="col-md-3 col-12">
-                    </div>
-                    <div class="col-md-1 col-12">
-                    </div>
-                    <div class="col-md-2 col-12 mb-2 mb-md-0 mb-lg-0 mb-xl-0">
-                        <div class="col-12 text-center">
-                        <button class="smallButton">Next</button>
-                        <div class="mt-5 d-flex justify-content-center">
-                        <div class="dash1">
-
-                        </div>
-                        <div class="dash1">
-
-                        </div>
-                        <div class="dash">
-
-                        </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-12">
-                    </div>
-                    <div class="col-md-3 col-12">
-
-                    </div>
-                    
+                <div> 
                 </div>
-                   
-            </div>
-            <div class="col-md-5">
-                <div class="backgroundImage d-none d-sm-none  d-md-block">
-                    <div class="button2">
-                    <button class="button1">Next</button>
-                    <div class="mt-5 d-flex justify-content-between">
-                    <div class="dash1">
-
-                    </div>
-                    <div class="dash1">
-
-                    </div>
-                    <div class="dash">
-
-                    </div>
-                    </div>
-                    </div>
-                   
-                </div>
-                
             </div>
         </div>
+    </div> 
+
+
+
+<div >
+
     </div>
 </template>
 
 <script>
+import router from '../../../router'
 // import {ref} from 'vue'
     export default {
         setup(){
-    // let url = ref("");
-    // let image = ref("");
-    // const imageSelected = (e) => {
-    //   image.value = e.target.files[0];
-    //   url.value = URL.createObjectURL(image.value);
-    //   memberToEdit.value.pictureUrl = URL.createObjectURL(image.value);
-    // };
-    return{
-        // imageSelected,
-        // memberToEdit
-
-    }
-        }
         
+
+        const saveSocialMedia = () => {
+              router.push({ name: 'AppBranding' })
+        }
+        return{
+            saveSocialMedia
+        }
     }
+        
+}
 </script>
 
 <style scoped>
-*{
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    
+.setup {
+     color: #031C39;
+     font: normal normal 800 30px/40px Nunito Sans;
 }
 .backgroundImage{
     background-image: url("../../../assets/mobileonboarding/socialimage.svg");
@@ -310,6 +234,24 @@ border-radius: 23px;
 opacity: 1;
 width: 180px;
 height: 46px;
+}
+
+.image-dis {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.bg-image {
+    background-image: url(../../../assets/mobileonboarding/socialimage.svg);
+    background-size: cover;
+
+}
+
+.step{
+    font: normal normal bold 18px/24px Nunito Sans;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
 }
 
 

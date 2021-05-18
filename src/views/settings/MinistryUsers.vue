@@ -76,7 +76,7 @@
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">ROLES</span>
-              <span class="py-2">{{churchMem.roles[0]}}</span>
+              <span class="py-2">{{ churchMem ? churchMem.roles ? churchMem.roles[0] : "" : "" }}</span>
             </div>
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
