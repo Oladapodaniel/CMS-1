@@ -42,7 +42,6 @@
           <span class="py-2 font-weight-bold"></span>
         </div>
       </div>
-
       <div
         class="row py-2"
         
