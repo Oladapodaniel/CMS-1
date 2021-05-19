@@ -623,9 +623,7 @@ export default {
             let removeEmptyObj = newContribution.value.payment.filter((i) => {
                 return Object.keys(i.financialContribution).length > 0                    
                 })
-                // console.log(mapped)
-
-
+        
             let paymentForm = {
                 name: newContribution.value.name,
                 bankID: selectedBank.value.id,
