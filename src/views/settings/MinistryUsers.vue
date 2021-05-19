@@ -46,6 +46,8 @@
         class="row py-2"
         
       >
+      <Toast/>
+      <ConfirmDialog/>
         <div class="col-md-12">
           <div class="row" v-for="(churchMem, index) in churchUsers.users" :key="index">
             <div
@@ -64,8 +66,8 @@
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">EMAIL</span>
-              <span class="py-2 text-xs-left mall2" v-if="churchMem.email.length<10" v-tooltip.top="'move to group'">{{ churchMem.email}}</span>
-              <span v-else>{{churchMem.email.substring(0,10)+ "..."}}</span>
+              <span class="py-2 text-xs-left"  v-if="churchMem.email.length<10">{{ churchMem.email}}</span>
+              <span v-else v-tooltip.top="`${churchMem.email}`">{{churchMem.email.substring(0,10)+ "..."}}</span>
             </div>
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
@@ -91,18 +93,18 @@
                   aria-expanded="false"
                 ></i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item">
+                  <a class="dropdown-item button">
                     <router-link
                     :to="`/tenant/sms/compose?phone=${churchMem.phone}`"
                       >Send SMS</router-link>
                     </a>
-                  <a class="dropdown-item" v-if="churchMem.email">
+                  <a class="dropdown-item button" v-if="churchMem.email">
                     <router-link
                     :to="`/tenant/email/compose?phone=${churchMem.email}`"
                       >Send Email</router-link
                     >
                   </a>
-                  <a class="dropdown-item" href="#">Delete</a>
+                  <a class="dropdown-item button" @click="deletePop(churchMem.email)">Delete</a>
                   <a class="dropdown-item" href="#">Inactive</a>
                 </div>
               </div>
@@ -123,8 +125,15 @@
 <script>
 import store from '@/store/store';
 import Tooltip from 'primevue/tooltip';
+import Toast from 'primevue/toast';
+import ConfirmDialog from 'primevue/confirmdialog'
 import axios from "@/gateway/backendapi";
 export default {
+  components:{
+    Toast,
+    ConfirmDialog
+
+  },
     directives: {
     'tooltip': Tooltip
 },
@@ -150,7 +159,33 @@ export default {
       }catch(error){
         console.log(error)
       }
-    }
+    },
+     
+     async deleteChurchUser(email){
+      try {
+        await axios.post(`/api/Settings/DeleteChurchUser?churchUserEmail=${email}`);
+        this.churchUsers.users = this.churchUsers.users.filter(i => i.email !== email);
+         this.$toast.add({severity:'success', summary: '', detail:'Church Users Deleted Successfully', life: 3000});
+      } catch (error){
+        console.log(error);
+      }
+    },
+     deletePop(email) {
+            this.$confirm.require({
+                message: 'Are you sure you want to Delete?',
+                header: 'Delete Confirmation',
+                icon: 'pi pi-exclamation-circle',
+                acceptClass: 'confirm-delete',
+                rejectClass: 'cancel-delete',
+                accept: () => {
+                  this.deleteChurchUser(email)
+                    //callback to execute when user confirms the action
+                },
+                reject: () => {
+                    'No internet'
+                }
+            });
+        },
 
   },
   mounted(){
@@ -165,6 +200,7 @@ export default {
       .catch((error)=>console.log(error))
     }
   },
+ 
   created() {
     this.churchUser()
   },
@@ -188,13 +224,6 @@ export default {
 .addnew:hover{
 color: white!important;
 }
-.mall2{
-  cursor: pointer;
-}
-.mall2:hover{
-  color: #dde2e6;
-}
-
 @media screen and (max-width: 1280px) {
     .small-text {
         font-size: 13px;
