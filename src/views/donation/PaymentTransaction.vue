@@ -619,13 +619,20 @@ export default {
 
         const saveAndContinue = async() => {
             loadingSave.value = true
+
+            let removeEmptyObj = newContribution.value.payment.filter((i) => {
+                return Object.keys(i.financialContribution).length > 0                    
+                })
+                // console.log(mapped)
+
+
             let paymentForm = {
                 name: newContribution.value.name,
                 bankID: selectedBank.value.id,
                 accountName: accountName.value,
                 accountNumber: accountNumber.value,
                 isActive: isActive.value,
-                contributionItems: newContribution.value.payment.map(i => {
+                contributionItems: removeEmptyObj.map(i => {
                     let id = i.financialContribution.id;
                     return { financialContributionID: id }
                 }),

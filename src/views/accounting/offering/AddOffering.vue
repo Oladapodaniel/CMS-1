@@ -905,14 +905,14 @@
             <div class="col-2 col-md-6"></div>
             <div class="col-3 col-md-3 total-2">TOTAL</div>
             <div class="col-3 col-md-1">
-              <CurrencyConverter :tenantCurrency="tenantCurrency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="currencyAmount" @currency-index="pushConvertedCurrency" @currency-rate="setCurrencyRate"
+              <CurrencyConverter :tenantCurrency="tenantCurrency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="addOfferingTotal" @conversion-result="convertResult" @currency-rate="setCurrencyRate"
               />
               <!-- <Dropdown :options="['NGN - Naira', 'CAD - Canadian dollar', 'AFN - Afghanistan']" :filter="true" placeholder="NGN - Naira" :showClear="false">
                     
                 </Dropdown> -->
             </div>
             <div class="col-4 col-md-2 align-self-center">
-              {{ addOfferingTotal.toFixed(2) }}
+              {{ convertedResult ? convertedResult.toFixed(2) : addOfferingTotal ? addOfferingTotal.toFixed(2) : 0.00 }}
             </div>
               
           </div>
@@ -1009,6 +1009,7 @@ export default {
         const convertedAmount = ref([])
         const currencyIndex = ref(0)
         const currencyRate = ref("")
+        const convertedResult = ref(0)
 
 
         const addOffering = () => {
@@ -1636,8 +1637,8 @@ export default {
           console.log(amount)
         }
 
-        const pushConvertedCurrency = (payload) =>  {
-          convertedAmount[currencyIndex.value] = payload
+        const convertResult = (payload) => {
+          convertedResult.value = payload
         }
 
         const setCurrencyRate = (payload) =>  {
@@ -1648,7 +1649,7 @@ export default {
             addOffering, offeringDrop, hideModals, selectEventAttended, showEventList, eventsAttended, filteredEvents, closeManualModalIfOpen, eventAttendedSelected,
             newEvents, selectedEventAttended, eventsSearchString, selectEvent, individualEvent, newEvent, showCategory, filterEventCategory, eventText, eventDate, createNewCat,
             newEventCategoryName, displayModal, openModal, closeModal, toast, createNewEvent, invalidEventDetails, savingNewEvent, newOfferings, filterOffering, offeringText,
-            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp, tenantId, selectedCurrencyName, currencyAmount, sendAmount, convertedAmount, pushConvertedCurrency, setCurrencyRate, currencyRate
+            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp, tenantId, selectedCurrencyName, currencyAmount, sendAmount, convertedAmount,  setCurrencyRate, currencyRate, convertResult, convertedResult
     }
   }
 }

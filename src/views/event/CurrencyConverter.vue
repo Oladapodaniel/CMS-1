@@ -32,7 +32,7 @@ export default {
     components: {
         
     },
-    props:  ['selectedCurrency', 'tenantCurrency', 'currencyList', 'currencyAmount'],
+    props:  ['tenantCurrency', 'currencyList', 'currencyAmount'],
     setup (props, { emit }) {
         const showCurrency = ref(false)
         const currencyText = ref("")
@@ -51,6 +51,10 @@ export default {
             if (selectedDestinationCurrencyRate.value) return `usd${selectedDestinationCurrencyRate.value.toLowerCase()}`
             return `usd${props.tenantCurrency ? props.tenantCurrency.toLowerCase() : ""}`
         })
+
+        // From Selected to tenant
+        // Props attribute to remove
+        // selectedCurrency
 
     
 
@@ -88,6 +92,18 @@ export default {
             console.log(e, index, item)
             showCurrency.value = false
 
+            let amount = +props.currencyAmount
+            let propertyArr = Object.keys(currencyRates.value)
+            let valueArr = Object.values(currencyRates.value)
+            let fromIndex = propertyArr.indexOf(fromCurrencyRate.value)
+            let fromRate = valueArr[fromIndex]
+            let toIndex = propertyArr.indexOf(toDestinationCurrencyRate.value)
+            let toRate = valueArr[toIndex]
+
+            let result = ( amount / fromRate ) * toRate
+            console.log(result)
+            emit('conversion-result', result)
+
             
         }
 
@@ -103,20 +119,10 @@ export default {
         }
 
         onUpdated(() => {
-            let amount = +props.currencyAmount
-            let propertyArr = Object.keys(currencyRates.value)
-            let valueArr = Object.values(currencyRates.value)
-            let fromIndex = propertyArr.indexOf(fromCurrencyRate.value)
-            let fromRate = valueArr[fromIndex]
-            let toIndex = propertyArr.indexOf(toDestinationCurrencyRate.value)
-            let toRate = valueArr[toIndex]
-
-            let result = ( amount / fromRate ) * toRate
-            console.log(result)
-            emit('currency-index', result)
+            
+            
             // emit('display-currency-status', showCurrency.value)
             
-            // showCurrency.value  = props.hideCurrencyList
 
         })
 
