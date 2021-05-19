@@ -73,14 +73,17 @@
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">STATUS</span>
-              <span class="py-2">{{ churchMem.status }}</span>
+              <span class="py-2">{{churchMem.status}}</span>
             </div>
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">ROLES</span>
-              <span class="py-2">{{ churchMem ? churchMem.roles ? churchMem.roles[0] : "" : "" }}</span>
+              <span class="py-2">{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</span>
+              <!-- <span v-else>{{ churchMem ? churchMem.roles ? churchMem.roles[0].substring(0,14)+ ".." : '' : '' }}</span> -->
+              <!-- "churchMem ? churchMem.roles ? churchMem.roles[0].length<14 : '' : '' " -->
             </div>
+            <!-- {{churchMem && churchMem.roles[0] ? churchMem.roles[0]? churchMem.roles[0] : '' : '' }} -->
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
@@ -105,7 +108,8 @@
                     >
                   </a>
                   <a class="dropdown-item button" @click="deletePop(churchMem.email)">Delete</a>
-                  <a class="dropdown-item" href="#">Inactive</a>
+                  <a class="dropdown-item button" @click="deactivateChurchUser(churchMem.email, index)">Inactive</a>
+                  <a class="dropdown-item button" @click="activateChurchUser(churchMem.email, index)">Active</a>
                 </div>
               </div>
             </div>
@@ -159,6 +163,29 @@ export default {
       }catch(error){
         console.log(error)
       }
+    },
+  
+    async activateChurchUser(email, index){
+      try{
+        let response = await axios.post(`/api/Settings/ActivateChurchUser?churchUserEmail=${email}`);
+        console.log(response);
+        // this.churchUsers.users[index].status = "Active";
+        console.log();
+        // this.$toast.add({severity:'success', summary: '', detail:'Active Status Successfully', life: 3000});
+      }catch(error){
+
+      }
+    }, 
+      async deactivateChurchUser(email, index) {
+      try{
+        await axios.post(`/api/Settings/DeactivateChurchUser?churchUserEmail=${email}`);
+        this.churchUsers.users[index].status = "Inactive";
+        this.$toast.add({severity:'success', summary: '', detail:'Inactive Status Successfully', life: 3000});
+
+      }catch(error){
+
+      }
+      
     },
      
      async deleteChurchUser(email){
