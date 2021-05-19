@@ -116,6 +116,12 @@
                   <input type="text" class="form-control" id="recipient-name" v-model="additionalDetailText.name" />
                 </div>
                 <div class="form-group">
+                  <label for="recipient-email" class="col-form-label"
+                    >Email:</label
+                  >
+                  <input type="text" class="form-control" id="recipient-email" v-model="additionalDetailText.name" />
+                </div>
+                <div class="form-group">
                   <label for="message-text" class="col-form-label"
                     >Description:</label
                   >
