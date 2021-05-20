@@ -30,17 +30,21 @@
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span> 
                             </div>  
                             <div class="col-lg-8 col-sm-12 "> <InputText type="text" required v-model="mail" class="form-control"/></div>
-                            <span> Rum{{mail}}</span>
+                        </div>
+                        <div class="row mb-3 mt-5">
+                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Phone Number</span> 
+                            </div>  
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="number" class="form-control" required v-model="phoneNumber"  /></div>
                         </div>
                          <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" required v-model="assword"  /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" required v-model="password1"  /></div>
                         </div>
-                        <div class="row mb-3 mt-5">
+                        <div class="row mb-5 mt-5">
                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span> 
                             </div>  
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" v-model="assword1" required /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" v-model="password2" required /></div>
                         </div>
                          
                         <!-- <div class="row mb-3">
@@ -59,7 +63,7 @@
 
                    <div class="col-lg-5 col-sm-12 mt-lg-0 mt-sm-5 mt-md-5 mt-lg-0 mt-5 pl-lg-5 pr-lg-5 pl-sm-3 pr-3 pr-sm-2">
                        <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 mt-5">
                                 <h4 class="mt-sm-5 mt-5 mt-xl-0 mt-md-5 mt-lg-0">Admin Permission</h4>
                             </div>
 
@@ -108,7 +112,7 @@
                </div>
 
                 <div class="row">
-                    <div class="col-lg-7 col-sm-12 mt-sm-4 mt-4 mt-lg-0">
+                    <div class="col-lg-7 col-sm-12 mt-sm-4 mt-4 mt-lg-3">
                         <!-- Roles -->
                         <div class="ml-5 mt-2 mt-lg-0">
                             <div class="row mb-2 mb-lg-2"> 
@@ -116,63 +120,63 @@
                                     <Checkbox  
                                     v-model="roles1"
                                     value="Admin" 
-                                    @change="roleSelected('admin')"/>
+                                    />
                                      Admin
                                      </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="BasicUser" 
                                    v-model="roles1" 
-                                   @change="roleSelected('BasicUser')"/> 
+                                   /> 
                                    BasicUser
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="CanAccessFirstTimers" 
                                    v-model="roles1" 
-                                   @change="roleSelected('CanAccessFirstTimers')"/>
+                                   />
                                     CanAccessFirstTimers
                                     </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="CanAccessFollowUps" 
                                    v-model="roles1"
-                                   @change="roleSelected('CanAccessFollowUps')"/> 
+                                   /> 
                                    CanAccessFollowUps
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
-                                   v-model="roles1" 
-                                   @change="roleSelected('CenterLeader')"/> 
+                                   <Checkbox value="CenterLeader"
+                                   v-model="roles1"   
+                                   /> 
                                    CenterLeader
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="FinancialAccount" 
                                    v-model="roles1" 
-                                   @change="roleSelected('FinancialAccount')"/> 
+                                   /> 
                                    FinancialAccount
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="mobileAdmin" 
                                    v-model="roles1" 
-                                   @change="roleSelected('MobileAdmin')"/> 
+                                   /> 
                                    MobileAdmin
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="" 
+                                   <Checkbox value="Reports" 
                                    v-model="roles1" 
-                                   @change="roleSelected('Reports')"/> 
+                                   /> 
                                    Reports
                                    </div>
                             </div>
@@ -216,6 +220,7 @@ import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
+// import { error } from 'highcharts';
 // import ref from 'Vue'
     export default {
         components:{InputText, Password, Checkbox,Toast},
@@ -225,8 +230,9 @@ import store from "@/store/store";
             roles1: [],
             userName:'',
             mail:'',
-            assword: '',
-            assword1: '',
+            password1: '',
+            password2: '',
+            phoneNumber: '',
             name2: '',
             info: null,
             currentUser: store.getters.currentUser,
@@ -310,9 +316,9 @@ import store from "@/store/store";
 
         },
         createNewUser(){
-            if( this.uesrName === '' || this.assword === '' || this.mail === '' || this.assword1 === '' ){
+            if( this.userName === '' || this.password1 === '' || this.mail === '' || this.password2 === '' || this.phoneNumber === ''){
                 this.$toast.add({
-                severity:'success', 
+                severity:'error', 
                 summary:'Confirmed', 
                 detail:'Input Your Complete Details', 
                 life: 4000
@@ -320,9 +326,18 @@ import store from "@/store/store";
                 
 
             }
-            if(this.assword !== this.assword1){
+            if(this.password1.length < 6){
                 this.$toast.add({
-                severity:'success', 
+                severity:'error', 
+                summary:'Confirmed', 
+                detail:'Ensured Your Password is More than 6 character', 
+                life: 4000
+
+                })
+            }
+            if(this.password1 !== this.password2){
+                this.$toast.add({
+                severity:'error', 
                 summary:'Confirmed', 
                 detail:'Ensured Your Password is same', 
                 life: 4000
@@ -333,20 +348,31 @@ import store from "@/store/store";
 
             let createNew = {
                 email : this.mail,
-                password: this.assword,
+                password: this.password1,
                 name : this.userName,
-                roles : this.roles1
+                roles : this.roles1,
+                phone: this.phoneNumber
+                
             }
             axios.post(`/api/Settings/CreatNewUser`,createNew)
             .then((res)=>{
                 this.$toast.add({
                 severity:'success', 
                 summary:'Confirmed', 
-                detail:'Invite New User Saved Successfully', 
+                detail:'New User Saved Successfully', 
                 life: 4000
                 });
                 console.log(res);
                 console.log('wisdom is great');
+                this.$router.push('/tenant/settings')
+            }).catch((error)=>{
+                console.log(error);
+                this.$toast.add({
+                severity:'error', 
+                summary:'Confirmed', 
+                detail:'Check your Internet Connectivity', 
+                life: 4000
+                })
             })
             
 

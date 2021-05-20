@@ -347,6 +347,7 @@
         
                   <!-- end of dynamic Area 3 -->
                 </div>
+                
                 <div
                   class="col-sm-10 col-md-8 mx-auto form-area shadow pt-5 mb-5 bg-white rounded MIDDLE"
                   v-else 
@@ -361,6 +362,7 @@
                     <div class="col-12 font-weight-700 text-center p-5 mt-4 primary-bg text-white success-card">Your transaction has been successful. God Bless You!</div>
                   </div>
                 </div>
+                
               </transition>
 
 
@@ -462,6 +464,7 @@ import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import SignUp from "./SignUp"
 import convertCurrency from "../../../services/currency-converter/currencyConverter"
+import { useStore } from "vuex"
 export default {
   components: {
     PaymentOptionModal,
@@ -472,6 +475,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     let toast = useToast();
+    const store = useStore()
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -583,6 +587,17 @@ export default {
     };
     tcurrency();
 
+    const getRates = async() => {
+            try {
+                let { data } = await axios.get('/fxRates')
+                console.log(data)
+                store.dispatch("getRates", data)
+            }   catch (error) {
+                    console.log(error);
+            }
+        }
+    getRates()
+
     const donation = async() => {
 
 
@@ -599,12 +614,14 @@ export default {
             let fromCurrencyRate = `usd${dfaultCurrency.value.shortCode.toLowerCase()}`
             let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
             const result = await convertCurrency.currencyConverter(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
+            console.log(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
             console.log(result)
             convertedAmount.value = Math.round(result)
           }
           catch (err) {
             console.log(err)
           }
+
 
           donationObj.value = {
             paymentFormId: formResponse.value.id,
@@ -677,20 +694,28 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
     } else {
       let storedDetails = JSON.parse(localStorage.getItem('giverToken'))
         console.log(storedDetails)
-      try {
-          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
-          console.log(data)
-          userData.value = data
-          email.value = data.email
-          name.value = userData.value.name
-          phone.value = userData.value.phone
-          finish()
-        }
-        catch (error) {
-          console.log(error)
-          finish()
-        }
-        signedIn.value = true
+        userData.value = {
+        email: storedDetails.email,
+        name: storedDetails.name,
+        userId: storedDetails.giverId
+      }
+        email.value = storedDetails.email
+        name.value = storedDetails.name
+        phone.value = storedDetails.phone
+        signedIn.value = storedDetails.setSignInStatus
+      // try {
+      //     let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
+      //     console.log(data)
+      //     userData.value = data
+      //     email.value = data.email
+      //     name.value = userData.value.name
+      //     phone.value = userData.value.phone
+      //     finish()
+      //   }
+      //   catch (error) {
+      //     console.log(error)
+      //     finish()
+      //   }
     }
     }
     getUserDetails()
@@ -804,20 +829,16 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
     };
 
     const signedUp = async(payload) => {
-      try {
-          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${payload.giverId}`)
-          console.log(data)
-          userData.value = data
-          email.value = data.email
-          name.value = userData.value.name
-          phone.value = userData.value.phone
-          finish()
-        }
-        catch (error) {
-          console.log(error)
-          finish()
-        }
+      userData.value = {
+        email: payload.email,
+        name: payload.name,
+        userId: payload.giverId
+      }
+      email.value = payload.email
+      name.value = payload.name
+      phone.value = payload.phone
       signedIn.value = payload.setSignInStatus
+      
     }
 
     const displaySignInForm = (payload) => {
@@ -828,6 +849,8 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
         donationObj.value.usedPaymentGateway = payload
         console.log(payload)
     }
+
+    
 
     return {
       hideTabOne,

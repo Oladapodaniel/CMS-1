@@ -133,7 +133,7 @@
                     <div>Choose Bank</div>
                 </div>
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
-                        <Dropdown v-model="selectedBank" class="w-100" :options="nigerianBanks" optionLabel="name" :filter="true" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
+                        <Dropdown v-model="selectedBank" class="w-100" :options="nigerianBanks" optionLabel="name" :filter="false" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
                         </Dropdown>
                 </div>
                 <div class="col-2 d-none d-sm-block"></div>
@@ -180,12 +180,12 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" v-if="false">
                 <div class="col-10 col-md-12 mt-2">
                     <hr class="mt-1"/>
                 </div>
             </div>
-        <div class="row">
+        <div class="row" v-if="false">
             <div class="col-10 col-md-12 mt-4">
                     <div class="d-flex">
                         <h5 class="header-contri my-3">Choose the form template you desire</h5>
@@ -244,7 +244,7 @@
                   :class="{ 'disabled-bg' : disabled, 'primary-bg' : !disabled }"
                   @click.prevent="saveAndContinue"
                   style="margin-left: 2px"
-                  :disabled="disabled"
+             
                 >
                   <i
                     class="fas fa-circle-notch fa-spin mr-2 text-white"
@@ -303,7 +303,7 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    setup () {
+    setup (prop, { emit }) {
         const contributionItems = ref([])
         const newContribution = ref({ payment: [{}]})
         const nigerianBanks = ref([])
@@ -619,13 +619,18 @@ export default {
 
         const saveAndContinue = async() => {
             loadingSave.value = true
+
+            let removeEmptyObj = newContribution.value.payment.filter((i) => {
+                return Object.keys(i.financialContribution).length > 0                    
+                })
+        
             let paymentForm = {
                 name: newContribution.value.name,
                 bankID: selectedBank.value.id,
                 accountName: accountName.value,
                 accountNumber: accountNumber.value,
                 isActive: isActive.value,
-                contributionItems: newContribution.value.payment.map(i => {
+                contributionItems: removeEmptyObj.map(i => {
                     let id = i.financialContribution.id;
                     return { financialContributionID: id }
                 }),
@@ -636,8 +641,14 @@ export default {
             console.log(newContribution.value.payments)
 
             console.log(paymentForm)
-            if (!route.params.editPayment) {
+                console.log(route.fullPath)
+                if (route.fullPath === "/donationsetup") {
+                        console.log('PaymentCreated')
+                        emit('payment-form', true)
+                    }
 
+            if (!route.params.editPayment) {
+                
                 try {
                     const res = await axios.post("/api/PaymentForm/Save", paymentForm);
                     console.log(res)
@@ -645,7 +656,12 @@ export default {
                     // toast.add({severity:'success', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
                     store.dispatch('contributions/paymentData', res.data)
 
-                    router.push({ name: 'PaymentOption', params: { paymentId: res.data.result.id } })
+                    
+                    if (route.fullPath === "/tenant/payments") {
+                        router.push({ name: 'PaymentOption', params: { paymentId: res.data.result.id } })
+                    } else if (route.fullPath === "/donationsetup") {
+                        router.push({ name: 'OnboardingSuccessful' })
+                    }
                     finish()
                 }
                 catch (err) {
@@ -674,8 +690,8 @@ export default {
                     console.log(res)
                     loadingSave.value = false
                     store.dispatch('contributions/paymentData', res.data)
-
                     router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
+                    
 
                     finish()
                 }
@@ -833,7 +849,7 @@ export default {
 
 <style scoped>
 .form {
-  padding: 50px;
+  padding: 25px;
 }
 
 .btnIcons {

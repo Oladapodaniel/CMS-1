@@ -316,7 +316,6 @@
                       <SignUp :tenantId="formResponse.tenantID" @signed-up="signedUp" @show-signin="displaySignInForm"/>
                     </div>
                   </div>
-  
                   
                   
                     <div class="col-md-12">
@@ -480,6 +479,7 @@ import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import SignUp from "./SignUp"
 import convertCurrency from "../../../services/currency-converter/currencyConverter"
+import { useStore } from "vuex"
 export default {
   components: {
     PaymentOptionModal,
@@ -490,6 +490,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     let toast = useToast();
+    const store = useStore()
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -600,6 +601,17 @@ export default {
     };
     tcurrency();
 
+    const getRates = async() => {
+            try {
+                let { data } = await axios.get('/fxRates')
+                console.log(data)
+                store.dispatch("getRates", data)
+            }   catch (error) {
+                    console.log(error);
+            }
+        }
+    getRates()
+
     const donation = async() => {
 
           try {
@@ -671,14 +683,7 @@ export default {
           try {
             let  res = await axios.post('/donation', donationObj.value)
             console.log(res)
-            // if (!res.data) {
-            //   toast.add({
-            //   severity: "error",
-            //   summary: "Problem occurred while making this payment",
-            //   detail: `Ensure you selected`,
-            //   life: 3000,
-            // });
-            // }
+     
             finish()
           }
           catch (error) {
@@ -699,20 +704,28 @@ export default {
     } else {
       let storedDetails = JSON.parse(localStorage.getItem('giverToken'))
         console.log(storedDetails)
-      try {
-          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
-          console.log(data)
-          userData.value = data
-          email.value = data.email
-          name.value = userData.value.name
-          phone.value = userData.value.phone
-          finish()
+        userData.value = {
+          email: storedDetails.email,
+          name: storedDetails.name,
+          userId: storedDetails.giverId
         }
-        catch (error) {
-          console.log(error)
-          finish()
-        }
-        signedIn.value = true
+          email.value = storedDetails.email
+          name.value = storedDetails.name
+          phone.value = storedDetails.phone
+          signedIn.value = storedDetails.setSignInStatus
+      // try {
+      //     let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
+      //     console.log(data)
+      //     userData.value = data
+      //     email.value = data.email
+      //     name.value = userData.value.name
+      //     phone.value = userData.value.phone
+      //     finish()
+      //   }
+      //   catch (error) {
+      //     console.log(error)
+      //     finish()
+      //   }
     }
     }
     getUserDetails()
@@ -826,20 +839,16 @@ export default {
     };
 
     const signedUp = async(payload) => {
-      try {
-          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${payload.giverId}`)
-          console.log(data)
-          userData.value = data
-          email.value = data.email
-          name.value = userData.value.name
-          phone.value = userData.value.phone
-          finish()
-        }
-        catch (error) {
-          console.log(error)
-          finish()
-        }
+        userData.value = {
+        email: payload.email,
+        name: payload.name,
+        userId: payload.giverId
+      }
+      email.value = payload.email
+      name.value = payload.name
+      phone.value = payload.phone
       signedIn.value = payload.setSignInStatus
+    
     }
 
     const displaySignInForm = (payload) => {

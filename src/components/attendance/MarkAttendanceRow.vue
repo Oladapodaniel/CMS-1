@@ -3,7 +3,7 @@
     <div class="row over-con">
       <div class="col-md-12">
         <div class="row py-2 tb-row" :class="{ 'kiosk-tb-size': isKioskMode }">
-          <div class="col-md-5" :class="{ 'order-3': isKioskMode }">
+          <div class="col-md-3" :class="{ 'order-3': isKioskMode }">
             <span class="d-flex justify-content-between">
               <span class="hidden-header hide font-weight-700">Name</span>
               <span
@@ -17,6 +17,14 @@
                 >Phone Number</span
               >
               <span>{{ person.phone }}</span>
+            </span>
+          </div>
+          <div class="col-md-2" :class="{ 'order-4': isKioskMode }">
+            <span class="d-flex justify-content-between">
+              <span class="hidden-header hide font-weight-700"
+                >Registered</span
+              >
+              <span>{{ person.isRegistered ? "Yes" : "No" }}</span>
             </span>
           </div>
           <div class="col-md-2" :class="{ 'order-1': isKioskMode }">

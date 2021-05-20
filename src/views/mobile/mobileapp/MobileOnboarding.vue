@@ -18,9 +18,7 @@
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
                 <h5 class="text-wrap text-white h6 slideInFromLeft2">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Repellendus iste ad similique, aut libero consequuntur quisquam
-              laboriosam quasi. Quos, sapiente.
+                  Church management has not been more effective, with our mobile app, you can manage your church activities and event, increase your first time visitors retention rate with our automation flow by 90% and many more.
             </h5>
               </div>
             </div>
@@ -37,7 +35,7 @@
                 <!-- track 4 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-               <button class="btn default-btn cta c-pointer">Start Now</button>
+               <router-link :to="{ name: 'ChurchSetUp' }"><button class="btn default-btn cta c-pointer">Start Now</button></router-link>
               </div>
             </div>
              <!-- end track 4 -->
@@ -80,20 +78,20 @@
   </div>
 
   <!-- footer Area -->
-  <div class="container mt-5 footer-area">
+  <!-- <div class="container mt-5 footer-area">
     <div class="row">
       <div class="col-12 text-center mt-5 mb-4">
         <h5 class="copyright mb-5">Powered By Churchplus</h5>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- end footer Area -->
 </template>
 
 
 <style scoped>
 /* Animation Area */
-@keyframes slideInFromLeft{
+/* @keyframes slideInFromLeft{
   0% {
     transform: translateX(-100%)
   }
@@ -132,7 +130,7 @@ transform:translateX(0)
 
 h4{
   animation: 3s ease-in-out 0s 1 slideInFromLeft3;
-}
+} */
 /* Animation Area */
 
 

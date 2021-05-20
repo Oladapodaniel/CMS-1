@@ -8,19 +8,19 @@
               <!-- <div class="col-md-6"></div> -->
               <div class="col-sm-12 align-self-center mt-4 px-md-0">Name</div>
               <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" v-model="churchName">
               </div>
               <!-- <div class="col-sm-2"></div> -->
               
               <div class="col-sm-12 align-self-center mt-3 px-md-0">Phone Number</div>
               <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" v-model="phoneNumber">
               </div>
               <!-- <div class="col-sm-2"></div> -->
               
               <div class="col-sm-12 align-self-center mt-3 px-md-0">Address</div>
               <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" v-model="address">
               </div>
               <div  class="col-12 col-md-10 ">
                 <div class=" row d-flex justify-content-md-between">
@@ -42,6 +42,70 @@
                   </div>
                 </div>
               </div> 
+             <div  class="col-12 col-md-10 ">
+                <div class=" row d-flex justify-content-md-between">
+                  <div class="col-md-6 mt-3 px-md-0">Other Information</div>
+                  <div>{{ information }}</div>
+                  <div class="col-2 mt-2 col-md-2 mr-2 btnIcons pointer-cursor" data-target="#other-info"  data-toggle="modal"   data-whatever="@fat">Add</div>
+                </div>
+              </div>
+              <!-- modal for other info -->
+              <div
+                class="modal fade"
+                id="other-info"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+             
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-8 col-12">
+                  <div class="form-cover w-100">
+                    <form class="mt-1 mr-5 mr-md-0 mr-lg-0">
+                      <div class="form-group">
+                        <label for="message-text" class="col-form-label"
+                          >Other Information:</label
+                        >
+                        <textarea
+                          class="form-control h-100"
+                          id="message-text"
+                          v-model="information"
+                        ></textarea>
+                      </div>
+                    </form>
+                  </div>
+                </div> 
+              </div>
+            </div>
+            <div
+              class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
+            >
+              <button
+                type="button"
+                class="btn btn-secondary mr-4"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
               <!-- modal -->
                <div
                 class="modal fade"
@@ -214,13 +278,13 @@
 <script>
 import { ref } from "vue"
 import router from '../../../router'
-// import axios from "@/gateway/backendapi";
-// import store from '../../../store/store';
-import { useStore } from "vuex"
+import axios from "@/gateway/backendapi";
+import store from '../../../store/store';
+// import { useStore } from "vuex"
 
 export default {
     setup () {
-      let store = useStore()
+      // let store = useStore()
         const pastors = ref([])
   
         const deleteItem = (index) => {
@@ -235,6 +299,11 @@ export default {
         const closePastorModal = ref("")
         const image = ref("")
         const pastorImage = ref("")
+        const tenantId = ref("")
+        const churchName = ref("")
+        const phoneNumber = ref("")
+        const address = ref("")
+        const information = ref("")
 
         const detailsForPastor = () => {
           pastors.value.push(pastorDetails.value)
@@ -249,15 +318,33 @@ export default {
           pastorDetails.value.url = URL.createObjectURL(image.value);
         }
 
-        const getChurchProfile = () => {
-          // axios.get('/mobile/v1/MobileOnboarding/GetChurchProfile').then(response => {
-          //   console.log(response);
-          // }).catch(error => {
-          //   console.log(error);
-          // }) 
-          console.log(store.getters.currentUser)
+        const getTenantId = async() => {
+          if(Object.keys(store.getters.currentUser).length > 0) {
+              console.log(store.getters.currentUser)
+              tenantId.value = store.getters.currentUser.tenantId
+              
+            } else {
+                try {
+                    const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+                    store.dispatch("setCurrentUser", res.data);
+                    console.log(res.data);
+                    tenantId.value = res.data.tenantId
+                  } catch (err) {
+                    console.log(err.response);
+                  }
+          }
+
+          console.log(tenantId.value)
+          axios.get(`/mobile/v1/MobileOnboarding/GetChurchProfile?TenantID=${tenantId.value}`).then(response => {
+           console.log(response);
+           churchName.value = response.data.churchName
+           phoneNumber.value = response.data.phoneNumber
+           address.value = response.data.address
+          }).catch(error => {
+            console.log(error);
+          })
         }
-        getChurchProfile()
+        getTenantId()
         
 
         return {
@@ -271,7 +358,11 @@ export default {
             closePastorModal,
             uploadFile,
             image,
-            pastorImage
+            pastorImage,
+            tenantId,
+            churchName,
+            phoneNumber,
+            information
         }
     }
 }
@@ -300,7 +391,7 @@ export default {
 }
 .bg-image{
     background: transparent linear-gradient(180deg, #2E67CE 0%, #690C7F 100%) 0% 0% no-repeat padding-box;
-    /* height: 100vh; */
+    height: 100vh;
 }
 .image-dis {
     display: flex;

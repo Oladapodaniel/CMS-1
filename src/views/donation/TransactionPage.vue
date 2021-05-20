@@ -25,8 +25,8 @@
 
           <div class="col-md-3 col-6 offset-md-4">
             <!-- Example split danger button -->
-            <div class="btn-group">
-              <button type="button" class="btn htext2">Ajose Tosin</button>
+            <!-- <div class="btn-group">
+              <button type="button" class="btn htext2">{{ name }}</button>
               <button
                 type="button"
                 class="btn dropdown-toggle dropdown-toggle-split"
@@ -40,15 +40,15 @@
                 <a class="dropdown-item" href="#">Settings</a>
                 <a class="dropdown-item" href="#">Log Out</a>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="col-md-1 col-2">
-            <img
+            <!-- <img
               class="imgee"
               src="../../assets/best-Copy.jpg"
               alt=""
               srcset=""
-            />
+            /> -->
           </div>
           <div class="col-md-1 col-2">
             <i
@@ -94,6 +94,8 @@
             <label for="timestamp">Sort by Newest</label>
           </div>
         </div>
+        <div v-if="displayMessage" class="text-danger">You have not made anay transactions</div>
+        <div v-else>
         <div
           ref="downloadArea"
           class="row mt-2 py-2 d-md-flex justify-content-center align-items-center belw"
@@ -166,6 +168,7 @@
           </div>
           <hr />
         </div>
+        </div>
       </div>
     </div>
   </div>
@@ -189,6 +192,7 @@ export default {
     const userInputs = ref("");
     const downloadArea = ref(null)
     const userTransaction = ref([])
+    const displayMessage = ref(false)
 
 
     const searchInputs = computed(() => {
@@ -221,7 +225,12 @@ export default {
           finish();
           console.log(res);
           console.log(res.data);
-          userTransaction.value = res.data;
+          if (res.data.length > 0) {
+            userTransaction.value = res.data;
+          }
+          else {
+            displayMessage.value = true
+          }
           loading.value = false;
         })
         .catch((err) => {
@@ -284,7 +293,8 @@ export default {
       jsPDF,
       autoTable,
       downloadArea,
-      searchRange
+      searchRange,
+      displayMessage
     };
   },
 };
