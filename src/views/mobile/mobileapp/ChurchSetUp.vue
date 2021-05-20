@@ -1,163 +1,56 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-wide">
         <!-- write up part -->
         <div class="row">
-            <div class="col-md-6 offset-2 offset-md-1 mt-5">
-                <div class="row">
-                     <div class="col-md-6 col-12 text-center text-md-left my-5 setup">  Set up your church profile</div>
+          <div class="col-md-6 mt-5">
+            <div class="row mt-5">
+              <div class="col-12 setup">  Set up your church profile</div>
+              <!-- <div class="col-md-6"></div> -->
+              <div class="col-sm-12 align-self-center mt-4 px-md-0">Name</div>
+              <div class="col-12 col-md-10 px-md-0">
+                <input type="text" class="form-control">
+              </div>
+              <!-- <div class="col-sm-2"></div> -->
+              
+              <div class="col-sm-12 align-self-center mt-3 px-md-0">Phone Number</div>
+              <div class="col-12 col-md-10 px-md-0">
+                <input type="text" class="form-control">
+              </div>
+              <!-- <div class="col-sm-2"></div> -->
+              
+              <div class="col-sm-12 align-self-center mt-3 px-md-0">Address</div>
+              <div class="col-12 col-md-10 px-md-0">
+                <input type="text" class="form-control">
+              </div>
+              <div  class="col-12 col-md-10 ">
+                <div class=" row d-flex justify-content-md-between">
+                  <div class="col-md-6 mt-3 px-md-0">Pastors and Ministers</div>
+                  <div class="col-2 mt-2 col-md-2 mr-2 btnIcons pointer-cursor" data-target="#add-pastor"  data-toggle="modal"   data-whatever="@fat">Add</div>
                 </div>
-                <div class="row">
-                        <div class="col-md-2 col-2">
-                             <div class="check-icon"><span class="ml-1"><i class="pi pi-check"></i></span></div>
-                        </div>
-                    <div class="col-md-4 col-5">Church Basic Info</div>
-                    <div class="col-md-4 offset-md-2 col-5">
-                        <button class="btn btn-outline-dark btn-button">Edit</button>
-                    </div>
+              </div>
+              <div class="col-12 px-md-0">
+                <div class="row" v-for="(item, index) in pastors" :key="index">
+                  <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
+                  <div class="col-9 col-md-7 mt-2">
+                    <div><img :src="item.url" class="w-50" style="border: 1px solid #707070;border-radius: 13px;"></div>
+                    <div class="pastorname">{{ item.pastorsName }}</div>
+                    <div class="pastorname">{{ item.pastorsEmail }}</div>
+                  </div>
+                  <div class="row d-flex justify-content-between mt-5">
+                    <div class="col-1  mt-2" @click="deleteItem(index)"><i class="fa fa-trash"></i></div>
+                    <div class="col-2 pt-2 edit-button pointer-cursor" style="color: #136ACD;">Edit</div>
+                  </div>
                 </div>
-                <div class="row my-4">
-                    <div class="col-md-2 col-2">
-                        <div class="check-icon"><span class="ml-1"><i class="pi pi-check"></i></span></div>
-                    </div>
-                    <div class="col-md-4 col-5">Church Additional Info</div>
-                    <div class="col-md-4 offset-md-2 col-5" data-toggle="modal" data-target="#addChurchDetails" data-whatever="@fat">
-                        <button class="btn btn-outline-dark btn-button">Edit</button>
-                    </div>
-                </div>
-                <div class="row" v-if="Object.keys(churchAddition).length > 0">
-                    <div class="col-md-8 offset-md-2 border d-flex justify-content-between bg-mission">
-                        <p class="mission pt-1">{{ churchAddition.name }}</p>
-                        <p class="edit pt-1" data-toggle="modal" data-target="#addChurchDetails" data-whatever="@fat">Edit</p>
-                    </div>
-                </div>
-                <div class="row my-4">
-                    <div class="col-md-2 col-2">
-                        <div class="check-icon"><span class="ml-1"><i class="pi pi-check"></i></span></div>
-                    </div>
-                    <div class="col-md-4 col-5">Pastors and ministers</div>
-                    <div class="col-md-4 offset-md-2 col-5" data-target="#add-pastor" data-toggle="modal" tabindex="-1" aria-labelledby="exampleModalLabel" >
-                        <button class="btn btn-outline-dark btn-button">Edit</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-4">
-                        <div v-if="!pastorImage"><img src='../../../assets/mobileonboarding/avatar-male.png' style="width: 100px; height: 100px;"></div>
-                        <div v-else><img :src="pastorImage" style="width: 100px; height: 100px;"></div>
-                        <div class="pastors-name">{{ pastorsName ? pastorsName : "Name" }}</div>
-                        <div class="edit-pastor-details" data-target="#add-pastor" data-toggle="modal" tabindex="-1" aria-labelledby="exampleModalLabel">edit</div>
-                    </div>
-                </div>
-                <div class="row my-4">
-                    <div class="col-md-2 col-2">
-                        <div class="check-icon"><span class="ml-1"><i class="pi pi-check"></i></span></div>
-                    </div>
-                    <div class="col-md-4 col-5">Bank Details</div>
-                    <div class="col-md-4 offset-md-2 col-5" data-target="#bank" data-toggle="modal">
-                        <button class="btn btn-outline-dark text-center btn-button">Edit</button>
-                    </div>
-                </div>
-                <div class="row" v-if="Object.keys(bankDetails).length > 0">
-                    <div class="col-md-8 offset-md-2 border d-flex justify-content-between bg-mission">
-                        <p class="edit text-dark pt-1" >{{ bankName }}</p>
-                        <p class="edit text-dark pt-1" >{{ accountName }}</p>
-                        <p class="edit text-dark pt-1" >{{ accountNumber }}</p>
-                        <p class="edit pt-1" >Edit</p>
-                    </div>
-                </div>
-            </div>
-            <!-- image part -->
-            <div class="col-md-5 col-12 bg-image d-none d-md-block d-lg-block">
-                <div class="row mt-3">
-                    <div class="col-md-12 text-center my-5 step">step 1 of 3</div>
-                </div>
-                <div class="image-dis"> 
-                    <img src="../../../assets/mobileonboarding/church1.svg" style="height:40%; width:40%;">
-                </div>
-                <div class="row my-5">
-                    <button class="col-md-2 offset-5 next-btn"> <span class="next-text">Next</span></button>
-                </div>
-            </div>
-        </div>
-        <!-- Church Additional Details Modal -->
-
-         <div
-        class="modal fade"
-        id="addChurchDetails"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div
-          class="modal-dialog modal-dialog-centered"
-          role="document"
-        >
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="addChurchDetails">
-                Church Additional Details
-              </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
+              </div> 
+              <!-- modal -->
+               <div
+                class="modal fade"
+                id="add-pastor"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
               >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="recipient-name" class="col-form-label"
-                    >Name:</label
-                  >
-                  <input type="text" class="form-control" id="recipient-name" v-model="additionalDetailText.name" />
-                </div>
-                <div class="form-group">
-                  <label for="recipient-email" class="col-form-label"
-                    >Email:</label
-                  >
-                  <input type="text" class="form-control" id="recipient-email" v-model="additionalDetailText.name" />
-                </div>
-                <div class="form-group">
-                  <label for="message-text" class="col-form-label"
-                    >Description:</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="description-text"
-                    v-model="additionalDetailText.desc"
-                  />
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" ref="addDetail" class="btn btn-primary" @click="addChurchDetail">
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Add Pastors Modal -->
-       <div
-        class="modal fade"
-        id="add-pastor"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">
@@ -185,7 +78,18 @@
                           type="text"
                           class="form-control"
                           id="recipient-name"
-                          v-model="pastorDetails.name"
+                          v-model="pastorDetails.pastorsName"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="recipient-email" class="col-form-label"
+                          >Email:</label
+                        >
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="recipient-email"
+                          v-model="pastorDetails.pastorsEmail"
                         />
                       </div>
                       <div class="form-group">
@@ -195,9 +99,11 @@
                         <select
                           class="form-control"
                           id="exampleFormControlSelect1"
+                          v-model="pastorDetails.designation"
                         >
-                          <option>Mr</option>
-                          <option>Pastor</option>
+                          <option value="Mr">Mr</option>
+                          <option value="Mrs">Mrs</option>
+                          <option value="pastor">Pastor</option>
                         </select>
                       </div>
                       <div class="form-group">
@@ -207,6 +113,7 @@
                         <textarea
                           class="form-control h-100"
                           id="message-text"
+                          v-model="pastorDetails.text"
                         ></textarea>
                       </div>
                     </form>
@@ -214,9 +121,7 @@
                 </div>
                 <div class="col-md-4 col-12">
                   <div class="container mx-auto mx-md-0 mx-lg-0 pt-2">
-                    <div class="photo-box ml-1">
-                      <img :src="pastorDetails.url" class="w-100">
-                    </div>
+                    <div class="photo-box border ml-1"><img :src="pastorDetails.url" class="w-100 h-100 img-responsive"></div>
                     <div class="custom-file">
                       <input
                         type="file"
@@ -229,11 +134,6 @@
                         for="customFile"
                       ></label>
                     </div>
-                    <div class="text-center mb-3 mt-2">
-                      <button class="btn btn-outline-dark upload-Btn">
-                        Upload
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -245,30 +145,30 @@
                   <div class="row ml-3">
                     <div class="col-md-1">
                       <div class="font-container">
-                        <img src="../../../assets/mobileonboarding/facebook-icon.png" />
+                        <!-- <img src="../assets/facebook-icon.png" /> -->
                       </div>
                     </div>
                     <div class="col-md-11">
                       <div class="">
-                        <input type="text" class="social-input mb-2" />
+                        <input type="text" class="social-input mb-2" v-model="pastorDetails.facebook" />
                       </div>
                     </div>
                     <div class="col-md-1">
-                      <img src="../../../assets/mobileonboarding/instagram-icon.png" /> 
+                      <!-- <img src="../assets/instagram-icon.png" /> -->
                     </div>
                     <div class="col-md-11">
                       <div class="">
-                        <input type="text" class="social-input mb-2" />
+                        <input type="text" class="social-input mb-2" v-model=" pastorDetails.instagram" />
                       </div>
                     </div>
                     <div class="col-md-1">
                       <div class="font-container">
-                         <img src="../../../assets/mobileonboarding/twitter-icon.png" /> 
+                        <!-- <img src="../assets/twitter-icon.png " /> -->
                       </div>
                     </div>
                     <div class="col-md-11">
                       <div class="">
-                        <input type="text" class="social-input mb-2" />
+                        <input type="text" class="social-input mb-2" v-model="pastorDetails.twitter" />
                       </div>
                     </div>
                   </div>
@@ -286,148 +186,92 @@
               >
                 Cancel
               </button>
-              <button type="button" class="btn btn-primary" ref="pasDetail" @click="addPastorDetail">Save</button>
+              <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button>
             </div>
           </div>
         </div>
       </div>
-      <!-- Bank Details Modal -->
-        <div
-          class="modal fade"
-          id="bank"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Bank Details</h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                     
+              <div class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0" @click="saveSetUp">
+              Save and continue
               </div>
-              <div class="modal-body">
-                <form mx-2 class="mr-2 mr-md-0 mr-lg-0">
-                  <div class="form-group">
-                    <label for="recipient-name" class="col-form-label"
-                      >Bank name:</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="recipient-name"
-                      v-model="bankDetails.name"
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="recipient-name" class="col-form-label"
-                      >Account name:</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="recipient-name"
-                      v-model="bankDetails.accountName"
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="recipient-name" class="col-form-label"
-                      >Account number:</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="recipient-name"
-                      v-model="bankDetails.accountNumber"
-                    />
-                  </div>
-                </form>
-              </div>
-              <div
-                class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
-              >
-                <button
-                  type="button"
-                  class="btn btn-outline-dark mr-4"
-                  data-dismiss="modal"
-                >
-                  Cancel
-                </button>
-                <button type="button" ref="closeBankModal" class="btn btn-primary" @click="churchBankDetails">Save</button>
-              </div>
+              
             </div>
           </div>
+
+            <!-- image part -->
+            <div class="col-md-6 col-12 bg-image d-none d-md-block">
+                <div class="row mt-3">
+                    <div class="col-md-12 text-center my-5 step">STEP 1 of 1</div>
+                </div>
+                <div class="image-dis"> 
+                    <img src="../../../assets/mobileonboarding/church1.svg" style="height:40%; width:40%;">
+                </div>
+            </div>
         </div>
     </div> 
 </template>
 <script>
 import { ref } from "vue"
+import router from '../../../router'
+// import axios from "@/gateway/backendapi";
+// import store from '../../../store/store';
+import { useStore } from "vuex"
+
 export default {
     setup () {
-        const churchAddition = ref({})
-        const additionalDetailText = ref({})
-        const addDetail = ref("")
-        const pastorDetails = ref({}) 
-        const  pastorsName = ref("")
-        const pasDetail = ref("")
+      let store = useStore()
+        const pastors = ref([])
+  
+        const deleteItem = (index) => {
+          pastors.value.splice(index, 1)
+        }
+        const saveSetUp = () => {
+          router.push({ name: 'SocialMedia' })
+        }
+        const pastorDetails = ref({})
+        const pastorsName = ref("")
+        const pastorsEmail = ref("")
+        const closePastorModal = ref("")
         const image = ref("")
         const pastorImage = ref("")
-        const bankName = ref("")
-        const accountName = ref("")
-        const accountNumber = ref("")
-        const bankDetails = ref({})
-        const closeBankModal = ref({})
 
-
-        const addChurchDetail = () => {
-            churchAddition.value = additionalDetailText.value
-            addDetail.value.setAttribute("data-dismiss", "modal")
-        }
-
-        const addPastorDetail = () => {
-          pastorsName.value = pastorDetails.value.name
-          pastorImage.value = pastorDetails.value.url
-          console.log(pasDetail.value)
-          pasDetail.value.setAttribute("data-dismiss", "modal")
-
+        const detailsForPastor = () => {
+          pastors.value.push(pastorDetails.value)
+          // pastorsName.value = pastorDetails.value.pastorsName
+          // pastorsEmail.value = pastorDetails.value.pastorsEmail
+          // pastorImage.value = pastorDetails.value.url
+          // closePastorModal.value.setAttribute("data-dismiss", "modal")
         }
 
         const uploadFile = (e) => {
           image.value = e.target.files[0]
           pastorDetails.value.url = URL.createObjectURL(image.value);
         }
-        
-        const churchBankDetails = () => {
-          bankName.value = bankDetails.value.name
-          accountName.value = bankDetails.value.accountName
-          accountNumber.value = bankDetails.value.accountNumber
-          closeBankModal.value.setAttribute("data-dismiss", "modal")
+
+        const getChurchProfile = () => {
+          // axios.get('/mobile/v1/MobileOnboarding/GetChurchProfile').then(response => {
+          //   console.log(response);
+          // }).catch(error => {
+          //   console.log(error);
+          // }) 
+          console.log(store.getters.currentUser)
         }
+        getChurchProfile()
+        
 
         return {
-            churchAddition,
-            addChurchDetail,
-            additionalDetailText,
-            addDetail,
+            pastors,
+            deleteItem,
+            saveSetUp,
             pastorDetails,
-            addPastorDetail,
             pastorsName,
-            pasDetail,
+            pastorsEmail,
+            detailsForPastor,
+            closePastorModal,
             uploadFile,
             image,
-            pastorImage,
-            bankName,
-            accountName,
-            accountNumber,
-            bankDetails,
-            churchBankDetails,
-            closeBankModal
+            pastorImage
         }
     }
 }
@@ -456,7 +300,7 @@ export default {
 }
 .bg-image{
     background: transparent linear-gradient(180deg, #2E67CE 0%, #690C7F 100%) 0% 0% no-repeat padding-box;
-    height: 100vh;
+    /* height: 100vh; */
 }
 .image-dis {
     display: flex;
@@ -577,4 +421,17 @@ export default {
   cursor: pointer;
 }
 
+.btnIcons {
+    color: #136acd;
+    background-color: #dde2e6;
+    border-radius: 40px;
+    border: none;
+    padding: 7px;
+    text-align: center
+}
+.pastorname{
+  font: normal normal 300 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #020E1C;
+}
 </style>
