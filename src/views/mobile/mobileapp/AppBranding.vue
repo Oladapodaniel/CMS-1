@@ -16,8 +16,9 @@
                     </div>
                     <div class="col-sm-4 col-12" >
                         <label for="colorpicker"></label>
-                            <input type="color" id="colorpicker" class="no-border form-control" value="#136ACA">
+                            <input type="color" id="colorpicker" class="no-border form-control" v-model="colorPicker">
                     </div>
+                    {{ colorPicker }}
                     <hr class="mt-2 d-none d-sm-none  d-md-block">
                     </div>
                 </div>
@@ -280,14 +281,16 @@
 
 <script>
 import router from '../../../router'
-// import {ref} from 'vue'
+import {ref} from 'vue'
     export default {
         setup(){
+            const colorPicker = ref("")
             const saveAppBranding =  () => {
                 router.push({ name: 'DonationSetup' })
             }
     return{
-        saveAppBranding
+        saveAppBranding,
+        colorPicker
     }
         }
         
