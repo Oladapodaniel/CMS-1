@@ -5,7 +5,7 @@
         <div class="col-md-6">
           <h2>Default Message</h2>
         </div>
-        <div class="col-md-6 mt-2 link">
+        <div class="col-md-6 mt-2 link d-md-flex justify-content-end">
           <router-link
             to="adddefaultmessage"
             class="grey-border btn primary-btn text-white mess"
@@ -16,7 +16,10 @@
 
       <div class="row table-header-row py-2 mt-5">
         <div class="col-md-4">
-          <span class="py-2 font-weight-bold">SELECT</span>
+          <span class="py-2 font-weight-bold">MESSAGE</span>
+        </div>
+         <div class="col-md-2">
+          <span class="py-2 font-weight-bold">SUBJECT</span>
         </div>
         <div class="col-md-2">
           <span class="py-2 font-weight-bold">TYPE</span>
@@ -24,9 +27,9 @@
         <div class="col-md-4">
           <span class="py-2 font-weight-bold">CATEGORY</span>
         </div>
-        <div class="col-md-2">
-          <span class="py-2 font-weight-bold"></span>
-        </div>
+        <!-- <div class="col-md-2">
+          <span class="py-2 font-weight-bold">MESSAGE</span>
+        </div> -->
       </div>
 
       <div class="row py-2">
@@ -35,20 +38,26 @@
             <div
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
-              <span class="py-2 hidden-header">SELEECT</span>
-              <span class="py-2">name</span>
+              <span class="py-2 hidden-header">CATEGORY</span>
+              <span class="py-2">SMS</span>
             </div>
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
-              <span class="py-2 hidden-header">TYPE</span>
-              <span class="py-2 text-xs-left">position</span>
+              <span class="py-2 hidden-header">SUBJECT</span>
+              <span class="py-2 text-xs-left">Birthday</span>
             </div>
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
+            >
+              <span class="py-4 hidden-header">TYPE</span>
+              <span class="py-2">Type of messages</span>
+            </div>
+            <div
+              class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">CATEGORY</span>
-              <span class="py-2">address</span>
+              <span class="py-2">Category message</span>
             </div>
             <div
               class="col-md-1 d-flex justify-content-between align-items-center"

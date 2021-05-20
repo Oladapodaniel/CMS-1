@@ -169,20 +169,23 @@ export default {
       try{
         let response = await axios.post(`/api/Settings/ActivateChurchUser?churchUserEmail=${email}`);
         console.log(response);
-        // this.churchUsers.users[index].status = "Active";
+         this.churchUsers.users[index].status = "Active";
         console.log();
-        // this.$toast.add({severity:'success', summary: '', detail:'Active Status Successfully', life: 3000});
+        this.$toast.add({severity:'success', summary: '', detail:'Active Status Successfully', life: 3000});
       }catch(error){
+        console.log(error);
 
       }
     }, 
       async deactivateChurchUser(email, index) {
       try{
-        await axios.post(`/api/Settings/DeactivateChurchUser?churchUserEmail=${email}`);
+         let response = await axios.post(`/api/Settings/DeactivateChurchUser?churchUserEmail=${email}`);
+         console.log(response);
         this.churchUsers.users[index].status = "Inactive";
         this.$toast.add({severity:'success', summary: '', detail:'Inactive Status Successfully', life: 3000});
 
       }catch(error){
+        console.log(error);
 
       }
       
