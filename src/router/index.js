@@ -701,7 +701,7 @@ const routes = [{
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/MarkinAttendance')
     },
     {
-        path: '/event',
+        path: '/event/:eventId',
         name: 'EventRegistration',
         component: () =>
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/EventRegistration')

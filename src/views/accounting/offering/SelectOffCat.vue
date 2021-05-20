@@ -39,7 +39,7 @@
            <label for="" class="label">Income Account</label>
       </div>
       <div class="col-sm-5 mt-sm-3">
-          <Dropdown v-model="selectedIncomeAccount" class="w-100 p-0" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+          <Dropdown v-model="selectedIncomeAccount" class="w-100 p-0" :options="incomeAccount" optionLabel="text" :filter="false" placeholder="Select" :showClear="false">
           </Dropdown>
       </div>
       <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
@@ -93,8 +93,13 @@
         <div class="row">
           <div class="col-10 mt-3 text-right">Percentage Remaining: <span class="font-weight-700">{{ sumPercentage ? sumPercentage.percentage ? 100 - +sumPercentage.percentage : 0 : 0 }}%</span></div>
         </div>
-        <div class="row">
-          <div class="col-2 mt-3 mb-3">
+      </div>
+      
+      <!--end of diisplay bottom area -->
+      
+    </div>
+    <div class="row">
+          <div class="col-2 mt-3 mb-3 offset-sm-4" v-if="applyRem">
           <button
               v-on:click="addRemittance"
               class="btn btnIcons btn-secondary"
@@ -103,16 +108,12 @@
               Add
             </button>
           </div>
-          <div class="col-2 mt-3 mb-3 offset-3 offset-4">
-          <button class="add-person-btn button default-btn border-0" @click="save">
+          <div class="col-5 mt-3 mb-3 offset-4" :class="{ 'col-sm-2 offset-sm-1' : applyRem }">
+          <button class="add-person-btn button default-btn border-0 w-100" @click="save">
             Save
           </button>
         </div>
         </div>
-      </div>
-      <!--end of diisplay bottom area -->
-      
-    </div>
     </div>
     
     <!-- End input area -->

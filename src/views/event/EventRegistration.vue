@@ -7,9 +7,14 @@
     <div class="row mt-5">
       <div class="col-md-6 offset-md-3 mb-3"></div>
     </div>
+    <div class="row">
+      <div class="col-12 p-0">
+        <img :src="bannerUrl" class="w-100">
+      </div>
+    </div>
 
     <!-- top Address -->
-    <div class="row">
+    <div class="row mt-5">
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       ></div>
@@ -341,6 +346,9 @@ export default {
     const fetchingFailed = ref(false);
     const personHasAddress = ref(false);
     const personData = ref({});
+    const bannerUrl = ref("")
+
+
     const checkCharacter = (e) => {
       if (e.target.value.length < 11) {
         person.value = {};
@@ -356,13 +364,13 @@ export default {
         return false;
       }
 
-      console.log(route.query.eventId)
+      console.log(route.params.eventId)
       // if (e.target.value.length > 0) {
       loading.value = true;
       autosearch.value = true;
       axios
         .get(
-          `/searchregistrationbyphone?searchtext=${enteredValue.value}&&eventId=${route.query.eventId}`
+          `/searchregistrationbyphone?searchtext=${enteredValue.value}&&eventId=${route.params.eventId}`
         )
 
         .then((res) => {
@@ -473,7 +481,7 @@ export default {
             homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
             email: personData.value.email ? person.value.email : '',
           },
-          activityID: route.query.eventId
+          activityID: route.params.eventId
         };
       } else {
         newPerson = {
@@ -483,7 +491,7 @@ export default {
             homeAddress: person.value.address,
             mobilePhone: enteredValue.value,
           },
-          activityID: route.query.eventId
+          activityID: route.params.eventId
         };
       }
       newPerson.person.monthOfBirth = birthMonth.value && !personData.value.monthOfBirth
@@ -567,11 +575,12 @@ export default {
     const getDateAndEvent = () => {
       axios
         .get(
-          `/api/publiccontent/WebRegistrationEventDetails?activityId=${route.query.eventId}`
+          `/api/publiccontent/WebRegistrationEventDetails?activityId=${route.params.eventId}`
         )
         .then((res) => {
           eventData.value.name = res.data.fullEventName;
           eventData.value.date = dateFormatter.monthDayTime(res.data.eventDate);
+          bannerUrl.value = res.data.bannerUrl
 
           console.log(eventData);
           console.log(res, "response");
@@ -671,6 +680,7 @@ export default {
       birthMonth,
       birthDay,
       personData,
+      bannerUrl
     };
   },
 };
