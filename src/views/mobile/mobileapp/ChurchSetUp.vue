@@ -8,35 +8,254 @@
               <!-- <div class="col-md-6"></div> -->
               <div class="col-sm-12 align-self-center mt-4 px-md-0">Name</div>
               <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" v-model="churchName">
               </div>
               <!-- <div class="col-sm-2"></div> -->
               
               <div class="col-sm-12 align-self-center mt-3 px-md-0">Phone Number</div>
               <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" v-model="phoneNumber">
               </div>
               <!-- <div class="col-sm-2"></div> -->
               
               <div class="col-sm-12 align-self-center mt-3 px-md-0">Address</div>
               <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" v-model="address">
               </div>
-
-              <div class="col-sm-12 mt-3 px-md-0">Pastors and Ministers</div>
-              
-
+              <div  class="col-12 col-md-10 ">
+                <div class=" row d-flex justify-content-md-between">
+                  <div class="col-md-6 mt-3 px-md-0">Pastors and Ministers</div>
+                  <div class="col-2 mt-2 col-md-2 mr-2 btnIcons pointer-cursor" data-target="#add-pastor"  data-toggle="modal"   data-whatever="@fat">Add</div>
+                </div>
+              </div>
               <div class="col-12 px-md-0">
                 <div class="row" v-for="(item, index) in pastors" :key="index">
                   <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
                   <div class="col-9 col-md-7 mt-2">
-                    <input type="text" class="form-control" v-model="item.name">
+                    <div><img :src="item.url" class="w-50" style="border: 1px solid #707070;border-radius: 13px;"></div>
+                    <div class="pastorname">{{ item.pastorsName }}</div>
+                    <div class="pastorname">{{ item.pastorsEmail }}</div>
                   </div>
-                  <div class="col-1 align-self-center mt-2" @click="deleteItem(index)"><i class="fa fa-trash"></i></div>
-                  <div @click="addPastors" class="col-2 mt-2 align-self-center mt-2 btnIcons pointer-cursor" v-if="index === pastors.indexOf(pastors[pastors.length - 1])">Add</div>
+                  <div class="row d-flex justify-content-between mt-5">
+                    <div class="col-1  mt-2" @click="deleteItem(index)"><i class="fa fa-trash"></i></div>
+                    <div class="col-2 pt-2 edit-button pointer-cursor" style="color: #136ACD;">Edit</div>
+                  </div>
                 </div>
               </div> 
-                           
+             <div  class="col-12 col-md-10 ">
+                <div class=" row d-flex justify-content-md-between">
+                  <div class="col-md-6 mt-3 px-md-0">Other Information</div>
+                  <div>{{ information }}</div>
+                  <div class="col-2 mt-2 col-md-2 mr-2 btnIcons pointer-cursor" data-target="#other-info"  data-toggle="modal"   data-whatever="@fat">Add</div>
+                </div>
+              </div>
+              <!-- modal for other info -->
+              <div
+                class="modal fade"
+                id="other-info"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+             
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-8 col-12">
+                  <div class="form-cover w-100">
+                    <form class="mt-1 mr-5 mr-md-0 mr-lg-0">
+                      <div class="form-group">
+                        <label for="message-text" class="col-form-label"
+                          >Other Information:</label
+                        >
+                        <textarea
+                          class="form-control h-100"
+                          id="message-text"
+                          v-model="information"
+                        ></textarea>
+                      </div>
+                    </form>
+                  </div>
+                </div> 
+              </div>
+            </div>
+            <div
+              class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
+            >
+              <button
+                type="button"
+                class="btn btn-secondary mr-4"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+              <!-- modal -->
+               <div
+                class="modal fade"
+                id="add-pastor"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Add Pastor/Minister
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-8 col-12">
+                  <div class="form-cover w-100">
+                    <form class="mt-1 mr-5 mr-md-0 mr-lg-0">
+                      <div class="form-group">
+                        <label for="recipient-name" class="col-form-label"
+                          >Name:</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                          v-model="pastorDetails.pastorsName"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="recipient-email" class="col-form-label"
+                          >Email:</label
+                        >
+                        <input
+                          type="email"
+                          class="form-control"
+                          id="recipient-email"
+                          v-model="pastorDetails.pastorsEmail"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1"
+                          >Designation</label
+                        >
+                        <select
+                          class="form-control"
+                          id="exampleFormControlSelect1"
+                          v-model="pastorDetails.designation"
+                        >
+                          <option value="Mr">Mr</option>
+                          <option value="Mrs">Mrs</option>
+                          <option value="pastor">Pastor</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="message-text" class="col-form-label"
+                          >About Pastor/Minister:</label
+                        >
+                        <textarea
+                          class="form-control h-100"
+                          id="message-text"
+                          v-model="pastorDetails.text"
+                        ></textarea>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="col-md-4 col-12">
+                  <div class="container mx-auto mx-md-0 mx-lg-0 pt-2">
+                    <div class="photo-box border ml-1"><img :src="pastorDetails.url" class="w-100 h-100 img-responsive"></div>
+                    <div class="custom-file">
+                      <input
+                        type="file"
+                        class="custom-file-input"
+                        id="customFile"
+                        @change="uploadFile"
+                      />
+                      <label
+                        class="custom-file-label px-4"
+                        for="customFile"
+                      ></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mr-3 mr-md-0 mr-lg-0">
+                <div class="col-md-8 col-12 text-md-left mt-4">
+                  <div class="ml-4">
+                    <p class="font-weight-bold">Social media Handles</p>
+                  </div>
+                  <div class="row ml-3">
+                    <div class="col-md-1">
+                      <div class="font-container">
+                        <!-- <img src="../assets/facebook-icon.png" /> -->
+                      </div>
+                    </div>
+                    <div class="col-md-11">
+                      <div class="">
+                        <input type="text" class="social-input mb-2" v-model="pastorDetails.facebook" />
+                      </div>
+                    </div>
+                    <div class="col-md-1">
+                      <!-- <img src="../assets/instagram-icon.png" /> -->
+                    </div>
+                    <div class="col-md-11">
+                      <div class="">
+                        <input type="text" class="social-input mb-2" v-model=" pastorDetails.instagram" />
+                      </div>
+                    </div>
+                    <div class="col-md-1">
+                      <div class="font-container">
+                        <!-- <img src="../assets/twitter-icon.png " /> -->
+                      </div>
+                    </div>
+                    <div class="col-md-11">
+                      <div class="">
+                        <input type="text" class="social-input mb-2" v-model="pastorDetails.twitter" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4"></div>
+              </div>
+            </div>
+            <div
+              class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
+            >
+              <button
+                type="button"
+                class="btn btn-secondary mr-4"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+                     
               <div class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0" @click="saveSetUp">
               Save and continue
               </div>
@@ -59,29 +278,91 @@
 <script>
 import { ref } from "vue"
 import router from '../../../router'
+import axios from "@/gateway/backendapi";
+import store from '../../../store/store';
+// import { useStore } from "vuex"
+
 export default {
     setup () {
-        const pastors = ref([{}])
-
-
-
-        const addPastors = () => {
-          pastors.value.push({})
-        }
-
+      // let store = useStore()
+        const pastors = ref([])
+  
         const deleteItem = (index) => {
           pastors.value.splice(index, 1)
         }
-
         const saveSetUp = () => {
           router.push({ name: 'SocialMedia' })
         }
+        const pastorDetails = ref({})
+        const pastorsName = ref("")
+        const pastorsEmail = ref("")
+        const closePastorModal = ref("")
+        const image = ref("")
+        const pastorImage = ref("")
+        const tenantId = ref("")
+        const churchName = ref("")
+        const phoneNumber = ref("")
+        const address = ref("")
+        const information = ref("")
+
+        const detailsForPastor = () => {
+          pastors.value.push(pastorDetails.value)
+          // pastorsName.value = pastorDetails.value.pastorsName
+          // pastorsEmail.value = pastorDetails.value.pastorsEmail
+          // pastorImage.value = pastorDetails.value.url
+          // closePastorModal.value.setAttribute("data-dismiss", "modal")
+        }
+
+        const uploadFile = (e) => {
+          image.value = e.target.files[0]
+          pastorDetails.value.url = URL.createObjectURL(image.value);
+        }
+
+        const getTenantId = async() => {
+          if(Object.keys(store.getters.currentUser).length > 0) {
+              console.log(store.getters.currentUser)
+              tenantId.value = store.getters.currentUser.tenantId
+              
+            } else {
+                try {
+                    const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+                    store.dispatch("setCurrentUser", res.data);
+                    console.log(res.data);
+                    tenantId.value = res.data.tenantId
+                  } catch (err) {
+                    console.log(err.response);
+                  }
+          }
+
+          console.log(tenantId.value)
+          axios.get(`/mobile/v1/MobileOnboarding/GetChurchProfile?TenantID=${tenantId.value}`).then(response => {
+           console.log(response);
+           churchName.value = response.data.churchName
+           phoneNumber.value = response.data.phoneNumber
+           address.value = response.data.address
+          }).catch(error => {
+            console.log(error);
+          })
+        }
+        getTenantId()
+        
 
         return {
             pastors,
-            addPastors,
             deleteItem,
-            saveSetUp
+            saveSetUp,
+            pastorDetails,
+            pastorsName,
+            pastorsEmail,
+            detailsForPastor,
+            closePastorModal,
+            uploadFile,
+            image,
+            pastorImage,
+            tenantId,
+            churchName,
+            phoneNumber,
+            information
         }
     }
 }
@@ -239,5 +520,9 @@ export default {
     padding: 7px;
     text-align: center
 }
-
+.pastorname{
+  font: normal normal 300 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #020E1C;
+}
 </style>
