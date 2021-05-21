@@ -701,6 +701,12 @@ const routes = [{
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/MarkinAttendance')
     },
     {
+        path: '/event/:eventId',
+        name: 'EventRegistration',
+        component: () =>
+            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/EventRegistration')
+    },
+    {
         path: '/about',
         name: 'About',
         // route level code-splitting
@@ -782,7 +788,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 
 
-    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin" || to.name === "OnlineGiving4" || to.name === "iFrame" || to.name === "SignUpPayment" || to.name === "SignInPayment" || to.name === "TransactionPage") && !tokenIsValid) return next(true)
+    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin" || to.name === "OnlineGiving4" || to.name === "iFrame" || to.name === "SignUpPayment" || to.name === "SignInPayment" || to.name === "TransactionPage" || to.name === "EventRegistration") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;

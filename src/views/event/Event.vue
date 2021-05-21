@@ -105,7 +105,7 @@
                   <input
                     type="text"
                     class="form-control"
-                    v-model="selectedEventCategoryName"
+                    v-model="categoryNametoEdit"
                     autofocus
                   />
                 </div>
@@ -479,10 +479,10 @@
             <div class="col-3 col-sm-3 total-2 text-sm-right offset-sm-5">TOTAL</div>
             <div class="col-3 col-sm-3 offset-sm-1 ofering">
              
-              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="currencyAmount" @currency-index="pushConvertedCurrency" @currency-rate="setCurrencyRate" />
+              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="addContributionTotal" @conversion-result="convertResult" @currency-rate="setCurrencyRate" />
             </div>
             <div v-if="convertedAmount" class="col-4 col-sm-2 align-self-center converted-amount">
-              {{ addContributionTotal ? addContributionTotal.toString() !== "NaN" ? addContributionTotal.toFixed(2) : 0.00 : 0.00 }}
+              {{ convertedResult ? convertedResult.toFixed(2) : addContributionTotal ? addContributionTotal.toString() !== "NaN" ? addContributionTotal.toFixed(2) : 0.00 : 0.00 }}
             </div>
           </div>
         </div>
@@ -1691,6 +1691,7 @@ export default {
       selectedEventCategory: {},
       selectedEventCategoryId: "",
       selectedCategoryIndex: "",
+      categoryNametoEdit: "",
       eventDate: new Date().toISOString().substr(0, 10),
       showEditEventCategory: false,
       gender: [],
@@ -1742,7 +1743,8 @@ export default {
       isEmailValid: true,
       isPhoneValidNewConvert: true,
       isEmailValidNewConvert: true,
-      currencyRate: []
+      currencyRate: [],
+      convertedResult: 0
     };
   },
   methods: {
@@ -2180,6 +2182,7 @@ export default {
         // do something
         // this.selectedEventCategoryId = "";
         this.showEditEventCategory = true;
+        this.categoryNametoEdit = this.selectedEventCategoryName
         console.log(this.selectedEventCategory);
       }
       if (action === "change") {
@@ -2191,18 +2194,19 @@ export default {
     updateEventCategory () {
       const updatePayload = {
         eventID: this.selectedEventCategoryId,
-        eventName: this.selectedEventCategoryName
+        eventName: this.categoryNametoEdit
       }
       axios.put(`/api/EventCategory`, updatePayload)
             .then(res => {
               console.log(res)
-              this.selectedEventCategoryName = res.data[this.selectedCategoryIndex].name
-              this.selectedEventCategoryId = res.data[this.selectedCategoryIndex].id
+              this.newEvents[this.selectedCategoryIndex].name = res.data[this.selectedCategoryIndex].name
+              // this.selectedEventCategoryName = res.data[this.selectedCategoryIndex].name
+              // this.selectedEventCategoryId = res.data[this.selectedCategoryIndex].id
               this.showEditEventCategory = false
               this.$toast.add({
                 severity: "success",
                 summary: "Confirmed",
-                detail: "Updated succcessfully",
+                detail: "Updated successfully",
                 life: 4000,
               });
             })
@@ -2210,7 +2214,7 @@ export default {
               console.log(err)
             })
       console.log(this.selectedCategoryIndex)
-
+      console.log(this.selectedEventCategoryName)
     },
     // categorySelected(data) {
     //   if (data.dataType === 'eventcategory') {
@@ -2618,8 +2622,9 @@ export default {
       // 
       // console.log(this.convertedAmount2)
     },
-    pushConvertedCurrency (payload) {
-      this.convertedAmount[this.currencyIndex] = payload
+    convertResult (payload) {
+      // this.convertedAmount[this.currencyIndex] = payload
+      this.convertedResult = payload
     },
     toggleRem () {
       this.applyRem = !this.applyRem
