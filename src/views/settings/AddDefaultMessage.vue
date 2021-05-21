@@ -23,12 +23,13 @@
                         </div>
                        
                 </div>
+                <Toast/>
                 <div class="row g-3 align-items-center">
                         <div class="col-auto w-25">
                             <label for="inputPassword6" class="col-form-label">Subject:</label>
                         </div>
                         <div class="col-auto w-75">
-                            <input type="text" id="inputPassword6" class="form-control" style="height:40px" aria-describedby="passwordHelpInline">
+                            <input type="text" v-model="subject" id="inputPassword6" class="form-control" style="height:40px" aria-describedby="passwordHelpInline">
                         </div>
                 </div>
                 <div class="row g-3 align-items-center">
@@ -37,15 +38,15 @@
                         </div>
                         <div class="col-auto w-75">
                            <!-- <textarea name="" id="" style=" border-color:rgb(119, 119, 119);; ; outline-color: none;"></textarea> -->
-                           <Textarea v-model="value" rows="" cols="" style="border-radius:5px;height:110px; width:100%;" />
+                           <Textarea v-model="message" rows="" cols="" style="border-radius:5px;height:110px; width:100%;" />
                         </div>  
                 </div>
                  <div class="row g-3 align-items-center">
                         <div class="col-auto w-25">
                         </div>
                         <div class="col-auto w-75 button-add">
-                           <button type="button" class="btn btn-primary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600">Save</button>
-                           <button type="button" class="btn h-25 btn-outline-secondary" style="float:right; border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button>
+                           <button type="button" class="btn btn-primary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="createDefaultMessage">Save</button>
+                           <router-link to="/tenant/settings/defaultmessage"><button type="button" class="btn h-25 btn-outline-secondary" style="float:right; border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button></router-link>
                         </div> 
                 </div>
                  </div>
@@ -57,31 +58,51 @@
 
 <script>
 import Dropdown from 'primevue/dropdown';
+import Toast from 'primevue/toast'
 import Textarea from 'primevue/textarea';
+import messageOptions from '../../services/defaultmessage/default_message_service';
+import ConfirmDialog from 'primevue/confirmdialog'
+import axios from "@/gateway/backendapi";
 
     export default {
-        components: {Dropdown, Textarea},
+        components: {Dropdown, Textarea, Toast, ConfirmDialog},
         
         data() {
 	return {
+        message:'',
+        subject:'',
 		selectCategory: null,
-		Membership: [
-			{name: 'Birthday', value:0},
-			{name: 'Wedding Anniversary', value:1},
-			{name: 'First Timer Welcome Message', value:2},
-			{name: 'New Convert Welcome Message', value:3},
-			{name: 'Default Welcome Message', value:4},
-			{name: 'Membership Information Update Message', value:5},
-			{name: 'Meeting Absentee Message', value: 6}
-        ],
+		Membership: messageOptions.Membership,
         selectType: null,
-		Sms: [
-			{name: 'Sms', value:0},
-			{name: 'Email', value:1},
-			{name: 'Voice', value:2},
-		]
+		Sms: messageOptions.Sms
 	}
 },
+methods:{
+    createDefaultMessage(){
+        if( this.subject === "" || this.message === "" || this.selectType.value === "" || this.selectCategory.value === ""){
+             this.$toast.add({
+                severity:'error', 
+                summary:'Confirmed', 
+                detail:'Input Your Complete Messages', 
+                life: 4000
+                });
+                        }
+        let newCreate = {
+          subject: this.subject,
+          message: this.message,
+          messageType: this.selectCategory.value,
+          category: this.selectType.value
+        }
+        axios.post(`/api/Settings/CreateDefaultMessage`,newCreate)
+        .then((res)=>{
+            console.log(res);
+            this.$router.push('/tenant/settings/defaultmessage')
+        }).catch((error)=>{
+            console.log(error);
+        })
+    },
+     
+}
         
     }
 </script>
