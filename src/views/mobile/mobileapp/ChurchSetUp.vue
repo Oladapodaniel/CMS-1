@@ -100,7 +100,7 @@
               >
                 Cancel
               </button>
-              <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button>
+              <button type="button" ref="closeTextArea" class="btn btn-primary" @click="otherInfoDetails">Save</button>
             </div>
           </div>
         </div>
@@ -131,7 +131,7 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <div class="col-md-8 col-12">
+                <div class="col-md-7 col-12">
                   <div class="form-cover w-100">
                     <form class="mt-1 mr-5 mr-md-0 mr-lg-0">
                       <div class="form-group">
@@ -157,20 +157,6 @@
                         />
                       </div>
                       <div class="form-group">
-                        <label for="exampleFormControlSelect1"
-                          >Designation</label
-                        >
-                        <select
-                          class="form-control"
-                          id="exampleFormControlSelect1"
-                          v-model="pastorDetails.designation"
-                        >
-                          <option value="Mr">Mr</option>
-                          <option value="Mrs">Mrs</option>
-                          <option value="pastor">Pastor</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
                         <label for="message-text" class="col-form-label"
                           >About Pastor/Minister:</label
                         >
@@ -183,7 +169,7 @@
                     </form>
                   </div>
                 </div>
-                <div class="col-md-4 col-12">
+                <div class="col-md-5 col-12">
                   <div class="container mx-auto mx-md-0 mx-lg-0 pt-2">
                     <div class="photo-box border ml-1"><img :src="pastorDetails.url" class="w-100 h-100 img-responsive"></div>
                     <div class="custom-file">
@@ -202,7 +188,7 @@
                 </div>
               </div>
               <div class="row mr-3 mr-md-0 mr-lg-0">
-                <div class="col-md-8 col-12 text-md-left mt-4">
+                <div class="col-md-8 col-12 text-md-left mt-2">
                   <div class="ml-4">
                     <p class="font-weight-bold">Social media Handles</p>
                   </div>
@@ -310,13 +296,18 @@ export default {
         const phoneNumber = ref("")
         const address = ref("")
         const information = ref("")
+        const closeTextArea = ref("")
 
         const detailsForPastor = () => {
           pastors.value.push(pastorDetails.value)
           // pastorsName.value = pastorDetails.value.pastorsName
           // pastorsEmail.value = pastorDetails.value.pastorsEmail
           // pastorImage.value = pastorDetails.value.url
-          // closePastorModal.value.setAttribute("data-dismiss", "modal")
+          closePastorModal.value.setAttribute("data-dismiss", "modal")
+        }
+
+        const otherInfoDetails = () => {
+          closeTextArea.value.setAttribute("data-dismiss", "modal")
         }
 
         const uploadFile = (e) => {
@@ -368,7 +359,9 @@ export default {
             tenantId,
             churchName,
             phoneNumber,
-            information
+            information,
+            otherInfoDetails,
+            closeTextArea
         }
     }
 }
