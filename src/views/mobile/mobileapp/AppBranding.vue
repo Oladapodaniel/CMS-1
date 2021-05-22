@@ -9,7 +9,8 @@
                 <h5 class="appBranding mt-3">Customize Your App</h5>
                 <small class="mt-n2 mb-n5"
                   >Click on color tab, brand the App using your church
-                  colors</small>
+                  colors</small
+                >
               </div>
 
               <!-- MOBILE AREA -->
@@ -24,8 +25,8 @@
                   </div>
                 </div> -->
 
-                <!-- picture area -->
-                <!-- <div class="container mb-2">
+                  <!-- picture area -->
+                  <!-- <div class="container mb-2">
                   <div class="row d-flex justify-content-center">
                     <div class="col-6">
                       <div class="image-container">
@@ -45,10 +46,10 @@
                     </div>
                   </div>
                 </div> -->
-                <!--end picture area -->
+                  <!--end picture area -->
 
-                <!-- profile list -->
-                <!-- <div class="container my-2"> -->
+                  <!-- profile list -->
+                  <!-- <div class="container my-2"> -->
                   <!-- user area -->
                   <!-- <div class="row">
                     <div class="col-2">
@@ -131,7 +132,7 @@
                 <!-- end profile list -->
                 <!--END MOBILE AREA -->
               </div>
-                <!--End MOBILE AREA -->
+              <!--End MOBILE AREA -->
               <!-- <hr class="mt-2 d-none d-sm-none d-md-block" /> -->
             </div>
           </div>
@@ -166,6 +167,16 @@
               </div>
               <div class="col-12 col-sm-6" id="logoBox">
                 <div class="cs-input border-0 mt-2 ml-4">
+
+
+<div>
+  <i
+                        class="pi-cloud-upload text-center c-pointer"
+                        :style="{ color: colorPicked }"
+                        style="font-size: 22px"
+                      ></i>
+</div>
+
                   <label for="imgUpload" class="choose-file mr-sm-4">
                     Choose file
                     <input
@@ -191,8 +202,8 @@
           </div>
         </div>
       </div>
-<!-- v-show="" -->
-      <div class="col-md-6 backgroundImage d-none d-md-block" >
+      <!-- v-show="" -->
+      <div class="col-md-6 backgroundImage d-none d-md-block">
         <div class="smartphone">
           <div class="content">
             <iframe style="width: 100%; border: none; height: 100%" />
@@ -418,30 +429,52 @@
 </template>
 
 <script>
-import router from "../../../router";
+// import router from "../../../router";
 import { ref, computed } from "vue";
+import axios from "@/gateway/backendapi";
+import store from "@/store/store.js";
 // import {ref} from 'vue'
 export default {
   setup() {
     const colorPicked = ref("");
-    const saveAppBranding = () => {
-      router.push({ name: "DonationSetup" });
-    };
 
-    const changeColors = computed(() => {
+      const changeColors = computed(() => {
       console.log(colorPicked);
       return { colorPicked: colorPicked.value };
     });
 
-    const updateColor = () => {
 
-    }
+    const saveAppBranding = () => {
+      // router.push({ name: "DonationSetup" });
+
+       //  let genericMobileInfo = {
+
+      //  }
+      let dataInStore = store.getters.mobileAppUsersData;
+       const requestBody = new FormData();
+       requestBody.append("churchAppBackgroundColor", dataInStore.churchAppBackgroundColor);
+       requestBody.append("services", dataInStore.services);
+       requestBody.append("pastors", dataInStore.pastors);
+       requestBody.append("customAbouts", dataInStore.customAbouts);
+       requestBody.append("banks", dataInStore.banks);
+      axios
+        .put(`/mobile/v1/Profile/UpdateChurchProfile`, requestBody)
+        .then((res) => {
+          console.log(res,  "🎄🎄🎄");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+
+    const updateColor = () => {};
 
     return {
       saveAppBranding,
       colorPicked,
       changeColors,
-      updateColor
+      updateColor,
     };
   },
 };
@@ -579,7 +612,7 @@ export default {
   background-size: cover;
   background-color: #cccccc;
   /* max-height: 100%;*/
-  height:100vh;
+  height: 100vh;
   width: 100%;
   position: relative;
 }

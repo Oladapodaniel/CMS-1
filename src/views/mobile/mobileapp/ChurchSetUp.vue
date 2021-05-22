@@ -11,13 +11,13 @@
                 <input type="text" class="form-control" v-model="churchName">
               </div>
               <!-- <div class="col-sm-2"></div> -->
-              
+
               <div class="col-sm-12 align-self-center mt-3 px-md-0">Phone Number</div>
               <div class="col-12 col-md-10 px-md-0">
                 <input type="text" class="form-control" v-model="phoneNumber">
               </div>
               <!-- <div class="col-sm-2"></div> -->
-              
+
               <div class="col-sm-12 align-self-center mt-3 px-md-0">Address</div>
               <div class="col-12 col-md-10 px-md-0">
                 <input type="text" class="form-control" v-model="address">
@@ -41,7 +41,7 @@
                     <div class="col-2 pt-2 edit-button pointer-cursor" style="color: #136ACD;">Edit</div>
                   </div>
                 </div>
-              </div> 
+              </div>
              <div  class="col-12 col-md-10 ">
                 <div class=" row d-flex justify-content-md-between">
                   <div class="col-md-6 mt-3 px-md-0">Other Information</div>
@@ -60,7 +60,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-             
+
               <button
                 type="button"
                 class="close"
@@ -87,7 +87,7 @@
                       </div>
                     </form>
                   </div>
-                </div> 
+                </div>
               </div>
             </div>
             <div
@@ -255,11 +255,11 @@
           </div>
         </div>
       </div>
-                     
+
               <div class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0" @click="saveSetUp">
               Save and continue
               </div>
-              
+
             </div>
           </div>
 
@@ -268,12 +268,12 @@
                 <div class="row mt-3">
                     <div class="col-md-12 text-center my-5 step">STEP 1 of 1</div>
                 </div>
-                <div class="image-dis"> 
+                <div class="image-dis">
                     <img src="../../../assets/mobileonboarding/church1.svg" style="height:40%; width:40%;">
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
 </template>
 <script>
 import { ref } from "vue"
@@ -286,12 +286,18 @@ export default {
     setup () {
       // let store = useStore()
         const pastors = ref([])
-  
+
         const deleteItem = (index) => {
           pastors.value.splice(index, 1)
         }
         const saveSetUp = () => {
           router.push({ name: 'SocialMedia' })
+          let churchDetails = {
+            name: churchName.value,
+            address: address.value,
+            phoneNumber: phoneNumber.value
+          }
+          store.dispatch("setChurchProfileData", churchDetails)
         }
         const pastorDetails = ref({})
         const pastorsName = ref("")
@@ -322,7 +328,7 @@ export default {
           if(Object.keys(store.getters.currentUser).length > 0) {
               console.log(store.getters.currentUser)
               tenantId.value = store.getters.currentUser.tenantId
-              
+
             } else {
                 try {
                     const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
@@ -345,7 +351,7 @@ export default {
           })
         }
         getTenantId()
-        
+
 
         return {
             pastors,
