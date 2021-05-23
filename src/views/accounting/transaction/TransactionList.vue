@@ -2,7 +2,7 @@
   <div class="whole-co container-wid container-top" @click="hideModals">
     <div class="main-co">
       <div class="main-bod">
-        <div class="top container-wid mt-3">
+        <div class="top container-wide mt-3">
           <div class="header">
             <div class="events">Transaction</div>
           </div>
@@ -11,14 +11,14 @@
               class="more-btn align-items-center default-btn border-0"
               @click="toggleTransac(1)"
             >
-              Add Income<span><i class="fa fa-angle-down btn-icon"></i></span>
+              Add Income
             </button>
 
             <button
               class="more-btn align-items-center default-btn border-0"
               @click="toggleTransac(2)"
             >
-              Add Expense<span><i class="fa fa-angle-down btn-icon"></i></span>
+              Add Expense
             </button>
 
             <!-- <button class="more-btn align-items-center default-btn border-0"> -->
@@ -488,12 +488,13 @@ export default {
     const toggleTransac = (e) => {
       if (e === 1) {
         transacPropsValue.value = {
-          type: "Add Customer",
+          type: "Add Donor",
           account: "Income Account",
         };
       } else if (e === 2) {
         transacPropsValue.value = {
-          type: "Add Vendor",
+          type: "",
+          // type: "Add Vendor",
           account: "Expense Account",
         };
       } else {
