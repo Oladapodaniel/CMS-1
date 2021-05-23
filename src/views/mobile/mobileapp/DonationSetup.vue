@@ -217,7 +217,7 @@ export default {
 
 .slide-left {
     transition: all 1s ease-in-out;
-    transform: translateX(-609px);
+    transform: translateX(-596px);
 }
 
 .slide-right {
