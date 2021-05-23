@@ -252,7 +252,7 @@
             <!-- image part -->
             <div class="col-md-6 col-12 bg-image d-none d-md-block">
                 <div class="row mt-3">
-                    <div class="col-md-12 text-center my-5 step">STEP 1 of 1</div>
+                    <div class="col-md-12 text-center my-5 step">STEP 1 of 4</div>
                 </div>
                 <div class="image-dis">
                     <img src="../../../assets/mobileonboarding/church1.svg" style="height:40%; width:40%;">
@@ -271,7 +271,20 @@ import store from '../../../store/store';
 export default {
     setup () {
       // let store = useStore()
-        const pastors = ref([])
+          const pastors = ref([])
+          const pastorDetails = ref({})
+          const pastorsName = ref("")
+          const pastorsEmail = ref("")
+          const closePastorModal = ref("")
+          const image = ref("")
+          const pastorImage = ref("")
+          const tenantId = ref("")
+          const churchName = ref("")
+          const phoneNumber = ref("")
+          const address = ref("")
+          const information = ref("")
+          const closeTextArea = ref("")
+          const pastorSocial = ref([])
 
         const deleteItem = (index) => {
           pastors.value.splice(index, 1)
@@ -283,26 +296,60 @@ export default {
             address: address.value,
             phoneNumber: phoneNumber.value
           }
+
+          let pastor = pastors.value.map(i => {
+            return {
+              name: i.pastorsName,
+              socialMedia: pastorSocial.value
+            }
+          })
+
+          let abouts = pastors.value.map(i => {
+            return {
+              details: i.text
+            }
+          })
+
+          churchDetails.pastor = pastor
+          churchDetails.abouts = abouts
+
           store.dispatch("setChurchProfileData", churchDetails)
+          console.log(churchDetails);
+          axios
+            .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
+            .then((res) => {
+            console.log(res,  "🎄🎄🎄");
+            })
+            .catch((err) => {
+            console.log(err);
+            });
+
         }
-        const pastorDetails = ref({})
-        const pastorsName = ref("")
-        const pastorsEmail = ref("")
-        const closePastorModal = ref("")
-        const image = ref("")
-        const pastorImage = ref("")
-        const tenantId = ref("")
-        const churchName = ref("")
-        const phoneNumber = ref("")
-        const address = ref("")
-        const information = ref("")
-        const closeTextArea = ref("")
+        store.dispatch("setPastorsData", pastors)
 
         const detailsForPastor = () => {
           pastors.value.push(pastorDetails.value)
-          // pastorsName.value = pastorDetails.value.pastorsName
-          // pastorsEmail.value = pastorDetails.value.pastorsEmail
-          // pastorImage.value = pastorDetails.value.url
+          if (pastorDetails.value.facebook) {
+              pastorSocial.value.push({
+              name: 'facebook',
+              profileUrl: pastorDetails.value.facebook
+            })
+          }
+
+          if (pastorDetails.value.instagram) {
+              pastorSocial.value.push({
+              name: 'instagram',
+              profileUrl: pastorDetails.value.instagram
+            })
+          }
+
+          if (pastorDetails.value.twitter) {
+              pastorSocial.value.push({
+              name: 'twitter',
+              profileUrl: pastorDetails.value.twitter
+            })
+          }
+          console.log(pastorSocial)
           closePastorModal.value.setAttribute("data-dismiss", "modal")
         }
 
@@ -361,7 +408,8 @@ export default {
             phoneNumber,
             information,
             otherInfoDetails,
-            closeTextArea
+            closeTextArea,
+            pastorSocial
         }
     }
 }

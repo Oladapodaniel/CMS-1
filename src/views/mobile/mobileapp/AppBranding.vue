@@ -141,18 +141,24 @@
         <div class="row mt-1">
           <div class="col-12 col-md-10">
             <div class="row">
-              <div class="col-12 col-sm-8">
+              <div class="col-4 col-sm-8">
                 <h5 class="primaryColour mt-4">Default Colour</h5>
               </div>
-              <div class="col-12 col-sm-4">
+
+             <div class="col-4 color-picker">
+               <img class="c-pointer w-25 mt-4" src="../../../assets/mobileonboarding/colorpickericon.png" alt="color-picker"  @click="showColorPallet" >
+
+              <div class="col-4 col-sm-4 text-right">
                 <label for="colorpicker"></label>
                 <input
                   type="color"
                   id="colorpicker"
                   class="no-border form-control c-pointer"
                   v-model="colorPicked"
-                  @click="updateColor"
+                  ref="colorBox"
+                  hidden
                 />
+              </div>
               </div>
               <div class="col-md-3 col-12 col-sm-0"></div>
               <hr class="mt-2 d-none d-sm-none d-md-block" />
@@ -167,7 +173,6 @@
               </div>
               <div class="col-12 col-sm-6" id="logoBox">
                 <div class="cs-input border-0 mt-2 ml-4">
-
 
 <div>
   <i
@@ -193,7 +198,7 @@
               <div class="col-md-3 col-12 col-sm-0"></div>
               <div class="col-4"></div>
               <div
-                class="col-sm-12 btn primary-bg mt-4 mb-4 text-white default-btn border-0"
+                class="col-sm-12 btn primary-bg mt-5 mb-4 text-white default-btn border-0"
                 @click="saveAppBranding"
               >
                 Save and continue
@@ -429,52 +434,56 @@
 </template>
 
 <script>
-// import router from "../../../router";
+import router from "../../../router";
 import { ref, computed } from "vue";
+import store from '../../../store/store';
 import axios from "@/gateway/backendapi";
-import store from "@/store/store.js";
+
 // import {ref} from 'vue'
 export default {
   setup() {
+    const colorBox = ref("")
     const colorPicked = ref("");
-
       const changeColors = computed(() => {
       console.log(colorPicked);
       return { colorPicked: colorPicked.value };
     });
 
+    const showColorPallet = () => {
+colorBox.value.click()
+console.log(colorBox);
+    }
 
     const saveAppBranding = () => {
-      // router.push({ name: "DonationSetup" });
+      router.push({ name: "DonationSetup" });
 
-       //  let genericMobileInfo = {
-
-      //  }
-      let dataInStore = store.getters.mobileAppUsersData;
-       const requestBody = new FormData();
-       requestBody.append("churchAppBackgroundColor", dataInStore.churchAppBackgroundColor);
-       requestBody.append("services", dataInStore.services);
-       requestBody.append("pastors", dataInStore.pastors);
-       requestBody.append("customAbouts", dataInStore.customAbouts);
-       requestBody.append("banks", dataInStore.banks);
+      // let dataInStore = store.getters.mobileAppUsersData;
+      //  const requestBody = new FormData();
+      //  requestBody.append("churchAppBackgroundColor", dataInStore.churchAppBackgroundColor);
+      //  requestBody.append("services", dataInStore.services);
+      //  requestBody.append("pastors", dataInStore.pastors);
+      //  requestBody.append("customAbouts", dataInStore.customAbouts);
+      //  requestBody.append("banks", dataInStore.banks);
+      store.dispatch("setChurchAppBackgroundColor", colorPicked.value)
+      console.log(colorPicked.value);
       axios
-        .put(`/mobile/v1/Profile/UpdateChurchProfile`, requestBody)
+        .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
         .then((res) => {
           console.log(res,  "🎄🎄🎄");
         })
         .catch((err) => {
           console.log(err);
         });
+      // console.log(store.getters.formData)
     };
 
-
-    const updateColor = () => {};
 
     return {
       saveAppBranding,
       colorPicked,
       changeColors,
-      updateColor,
+     showColorPallet,
+     colorBox,
     };
   },
 };

@@ -23,7 +23,7 @@
                        <img src="../../../assets/social/facebook.svg" alt="">
                     </div>
                     <div class="col-md-8 col-12 mt-3" id="logoBox">
-                        <input type="text" placeholder="Instagram Handle" class="w-100 py-1 border-0 outline-none px-2">
+                        <input type="text" placeholder="Facebook Handle" v-model="facebook.url" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
                     <div class="col-2"></div>
                     <div class="col-12 col-sm-2 mt-3">
@@ -31,7 +31,7 @@
                        <img src="../../../assets/social/twitter.svg" alt="">
                     </div>
                     <div class="col-md-8 col-12 mt-3" id="logoBox">
-                        <input type="text" placeholder="Twitter Handle" class="w-100 py-1 border-0 outline-none px-2">
+                        <input type="text" placeholder="Twitter Handle" v-model="twitter.url" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
                     <div class="col-2"></div>
 
@@ -39,7 +39,7 @@
                        <img src="../../../assets/social/instagram.svg" alt="">
                     </div>
                     <div class="col-md-8 col-12 mt-3" id="logoBox">
-                        <input type="text" placeholder="Instagram Handle" class="w-100 py-1 border-0 outline-none px-2">
+                        <input type="text" placeholder="Instagram Handle" v-model="instagram.url" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
                     <div class="col-2"></div>
 
@@ -48,7 +48,7 @@
                        <img src="../../../assets/mobileonboarding/youtube.svg" alt="">
                     </div>
                     <div class="col-md-8 col-12 mt-3" id="logoBox">
-                        <input type="text" placeholder="Youtube URL" class="w-100 py-1 border-0 outline-none px-2">
+                        <input type="text" placeholder="Youtube URL" v-model="youtube.url" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
                     <div class="col-2"></div>
 
@@ -57,7 +57,7 @@
                        <img src="../../../assets/mobileonboarding/youtube.svg" alt="">
                     </div>
                     <div class="col-md-8 col-12 mt-3" id="logoBox">
-                        <input type="text" placeholder="Youtube Channel ID" class="w-100 py-1 border-0 outline-none px-2">
+                        <input type="text" placeholder="Youtube Channel ID" v-model="youtubeChannel.url" class="w-100 py-1 border-0 outline-none px-2">
                     </div>
                     <div class="col-2"></div>
 
@@ -72,7 +72,7 @@
             <!-- image part -->
             <div class="col-md-6 col-12 bg-image d-none d-md-block">
                 <div class="row mt-3">
-                    <div class="col-md-12 text-center my-5 step">STEP 1 of 2</div>
+                    <div class="col-md-12 text-center my-5 step">STEP 2 of 4</div>
                 </div>
                 <div>
                 </div>
@@ -88,17 +88,77 @@
 </template>
 
 <script>
+import axios from "@/gateway/backendapi";
 import router from '../../../router'
-// import {ref} from 'vue'
+import store from '../../../store/store'
+
+import {ref} from 'vue'
     export default {
         setup(){
-
+            const handles = ref([])
+            const facebook = ref({
+                name: 'facebook'
+            })
+            const twitter = ref({
+                name: 'twitter'
+            })
+            const instagram = ref({
+                name: 'instagram'
+            })
+            const youtube = ref({
+                name: 'youtube'
+            })
+            const youtubeChannel = ref({
+                name: 'youtubeChannel'
+            })
 
         const saveSocialMedia = () => {
+            if (facebook.value.url) {
+                handles.value.push(facebook.value)
+            }
+
+            if (instagram.value.url) {
+                handles.value.push(instagram.value)
+            }
+
+            if (twitter.value.url) {
+                handles.value.push(twitter.value)
+            }
+
+            if (youtube.value.url) {
+                handles.value.push(youtube.value)
+            }
+
+            if (youtubeChannel.value.url) {
+                handles.value.push(youtubeChannel.value)
+            }
+
+            console.log(store.getters.formData)
+            console.log(handles.value)
+            store.dispatch("setSocialMediaData", handles.value)
+            axios
+            .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
+            .then((res) => {
+            console.log(res,  "🎄🎄🎄");
+            })
+            .catch((err) => {
+            console.log(err);
+            });
+
               router.push({ name: 'AppBranding' })
         }
+
+
+
+
         return{
-            saveSocialMedia
+            saveSocialMedia,
+            facebook,
+            twitter,
+            instagram,
+            youtube,
+            youtubeChannel,
+            handles
         }
     }
 
