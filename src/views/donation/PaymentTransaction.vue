@@ -74,7 +74,7 @@
               >
                 <div class="row w-100 mx-auto">
                   <div class="col-md-12">
-                    <input type="text" class="form-control" placeholder="Find event" />
+                    <input type="text" class="form-control" placeholder="Select contribution item" />
                   </div>
                 </div>
 

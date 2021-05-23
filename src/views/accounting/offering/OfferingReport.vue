@@ -38,7 +38,7 @@
       <div class="col-md-3">
         <span class="theader">Date</span>
         <div class="my-3">
-          <span class="date">22/11/2020</span>
+          <span class="date">{{ format(routeParams) }}</span>
         </div>
       </div>
     </div>
@@ -199,7 +199,7 @@
       
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve"> {{ contributionReport.length > 0 ? contributionReport.reduce((a, b) => {  return { amount: parseInt(a.amount) + parseInt(b.amount) } } ).amount : 0 }} </span>
+            <span class="recieve"> {{ contributionReport ? contributionReport.totalToday : 0 }} </span>
           </span>
         </div>
 
@@ -222,7 +222,7 @@
           </h2>
         </div>
         <div class="col-md-4">
-          <span class="evt-date text-danger">22nd March, 2020</span>
+          <span class="evt-date text-danger">{{ format(routeParams) }}</span>
         </div>
         <!-- <div class="col-md-5 pl-0">
           <div class="row">
@@ -355,7 +355,7 @@
           </div>
           <div
             class="row"
-            v-for="(item, index) in contributionReport"
+            v-for="(item, index) in contributionReport.todayContributions"
             :key="index"
           >
           
@@ -364,10 +364,10 @@
                 <div class="col-sm-12">
                   <div class="row">
                     <div class="col-sm-3">
-                      <span class="bold-400">{{ item.contribution.name }}</span>
+                      <span class="bold-400">{{ item.contribution }}</span>
                     </div>
                     <div class="col-sm-3">
-                      <span class="bold-400">{{ item.paymentChannel }}</span>
+                      <span class="bold-400">{{ item.channel }}</span>
                     </div>
                     <div class="col-sm-3">
                       <span class="bold-400">{{ item.amount }}</span>
@@ -399,9 +399,7 @@
                   <span class="bold-700">Total</span>
                 </div>
                 <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700">{{ contributionReport.reduce((a, b) => {
-                      return { amount: a.amount + b.amount }
-                    }).amount }}</span>
+                  <span class="bold-700">{{ contributionReport ? contributionReport.totalToday : "" }}</span>
                 </div>
               </div>
             </div>
@@ -1644,10 +1642,10 @@
       <!-- <div class="stats">
           <EventReportStats />
       </div> -->
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-md-12">
           <div class="pg-content">
-            <h4 class="analytics min">Ministry Performance</h4>
+            <h4 class="analytics min">Contribution Performance</h4>
 
             <div class="analytics-container first-con">
               <div class="ana-group">
@@ -1666,15 +1664,15 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                 
+                          {{ contributionReport.todayVsLastWeek }}
                       </p>
                       <p>
                         <span class="ana-item-value">
-                          20
+                          {{ contributionReport.totalToday }}
                         </span>
                         vs
                         <span class="ana-item-value">
-                          32
+                          {{ contributionReport.totalLastWeek }}
                         </span>
                       </p>
                     </div>
@@ -1702,15 +1700,15 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                   
+                          {{ contributionReport.todayVsLastMonth }}
                       </p>
                       <p>
                         <span class="ana-item-value">
-                          12
+                          {{ contributionReport.totalToday }}
                         </span>
                         vs
                         <span class="ana-item-value">
-                         56
+                         {{ contributionReport.totalLastMonth }}
                         </span>
                       </p>
                     </div>
@@ -1725,7 +1723,7 @@
                             alt=""
                           />
                         </div>
-                                            </div>
+                        </div>
                     </div>
                   </div>
                   </div>
@@ -1739,15 +1737,15 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                  32
+                        {{ contributionReport.todayVsLastYear }}
                       </p>
                       <p>
                         <span class="ana-item-value">
-                          65
+                          {{ contributionReport.totalToday }}
                         </span>
                         vs
                         <span class="ana-item-value">
-                          32
+                          {{ contributionReport.totalLastYear }}
                         </span>
                       </p>
                     </div>
@@ -1787,7 +1785,7 @@
             </div> 
           </div>
         </div>
-      </div> -->
+      </div>
       <Toast />
     </div>
     </div>
@@ -1796,26 +1794,29 @@
 <script>
 import { ref } from 'vue'
 // import ReportAreaChart from "@/components/charts/AreaChart.vue";
-import eventsService from '../../../services/events/eventsservice';
+// import eventsService from '../../../services/events/eventsservice';
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
 import composerObj from "../../../services/communication/composer";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 // // import { useStore } from 'vuex'
-// import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
+import formatDate from "../../../services/dates/dateformatter"
 
 export default {
     components: {
       ReportModal
     },
     setup () {
+        const route = useRoute()
         const reportApproved = ref(false)
         const contributionReport = ref([])
         const emaildata = ref(null)
         const btnState = ref("");
         const toast = useToast();
         const churchName = ref("")
+        const routeParams = ref(route.params.report)
         const stats = ref({
   "activityToday": {
     "id": "ebec2866-63f9-43d9-87c7-08d919f43494",
@@ -1908,20 +1909,42 @@ export default {
         status.value = "Unsent";
         };
         
-        const getContributionReport = async() => {
-          contributionReport.value = JSON.parse(localStorage.getItem('contriTransact'))
-          console.log(contributionReport.value)
+        // const getContributionReport = async() => {
+        //   contributionReport.value = JSON.parse(localStorage.getItem('contriTransact'))
+        //   console.log(contributionReport.value)
 
-          try {
-            await eventsService.getEventsByActivity(contributionReport.value[0].activityID)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-          }
-          catch (err) {
-            console.log(err)
-          }          
+        //   try {
+        //     await eventsService.getEventsByActivity(contributionReport.value[0].activityID)
+        //     .then(res => console.log(res))
+        //     .catch(err => console.log(err))
+        //   }
+        //   catch (err) {
+        //     console.log(err)
+        //   }          
+        // }
+        // getContributionReport()
+
+        // try {
+        //         await eventsService.getEventsByActivity(contributionReport.value.todayContributions[0].id)
+        //         .then(res => console.log(res))
+        //         .catch(err => console.log(err))
+        //       }
+        //       catch (err) {
+        //         console.log(err)
+        //       } 
+
+        const getReport = () => {
+          axios.get(`https://churchplusv3coreapi.azurewebsites.net/api/Offering/contributionReport?date=${route.params.report}`)
+          .then(res =>  {
+            console.log(res)
+            contributionReport.value = res.data.returnObject
+
+               
+          }).catch(err => {
+              console.log(err)
+            })
         }
-        getContributionReport()
+        getReport()
 
         const sendReport = (messageObj) => {
           console.log(messageObj)
@@ -2023,17 +2046,13 @@ export default {
               churchName.value = payload
             }
 
-            const getReport = () => {
-              axios.get('/pub/contributionReport?date=5/22/2021')
-              .then(res =>  {
-                console.log(res)
-              })
-              .catch(err => console.log(err))
+            const format = (date) => {
+              return formatDate.monthDayYear(date)
             }
-            getReport()
+
         return {
             reportApproved, toggleReportState, contributionReport, stats, sendReport,
-            emaildata, btnState, churchName, getChurchName
+            emaildata, btnState, churchName, getChurchName, routeParams, format
         }
     }
 }
