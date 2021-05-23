@@ -121,7 +121,7 @@
                     <div class="col-sm-2 d-none d-sm-block">
                     AMOUNT
                 </div>
-                    <div class="col-sm-1 d-none d-sm-block" >
+                    <div class="col-sm-1 d-none d-sm-block" style="font-weight: 800">
                     DONOR
                 </div>
             </div>
@@ -141,7 +141,7 @@
                     <div class="col-sm-2">
                     AMOUNT
                 </div>
-                    <div class="col-sm-2" >
+                    <div class="col-sm-2" style="font-weight: 800">
                     DONOR
                 </div>
             </div>
@@ -157,9 +157,9 @@
                      <div>{{ offering.contribution }}</div>
                 </div>
                 <div class="col-sm-2">
-                     <div class="d-flex"> <div class="currency" v-if="offering.currencyName">{{ offering.currencyName }}</div><div class="align-self-center ml-2" style="font-weight: 800;">{{ offering.amount }}</div></div>
+                     <div class="d-flex"> <div class="currency" v-if="offering.currencyName">{{ offering.currencyName }}</div><div class="align-self-center ml-2">{{ offering.amount }}</div></div>
                 </div>
-                <div class="col-sm-1" >
+                <div class="col-sm-1" style="font-weight: 800">
                      <div>{{ offering.donor }}</div>
                 </div>
                 <div class="col-sm-1">

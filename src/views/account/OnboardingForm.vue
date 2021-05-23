@@ -92,7 +92,7 @@
                   <!-- <SelectElem :typ="'churchsize'" name="churchSize" :options="['--Select size range--', 'Between 1 - 100', 'Between 100 - 1000', 'Between 1000 - 100000']" value="--Select size range--" @input="itemSelected"/> -->
                 <Dropdown
                   v-model="userDetails.churchSize"
-                  :options="['Between 1 - 100', 'Between 101 - 200', 'Between 201 - 500', 'Between 501 - 2000']"
+                  :options="['Between 1 - 100', 'Between 101 - 200', 'Between 201 - 500', 'Between 501 - 2000', '2001 - 10,000']"
                   style="width: 100%"
                   placeholder="Select size range"
                 />
@@ -174,7 +174,7 @@ export default {
       zipCode: "",
       step1Completed: true,
       userDetails: {
-        subscriptionPlanID: 1,
+        subscriptionPlanID: 9,
         countryId: 89,
         password: "password",
       },

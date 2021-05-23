@@ -740,6 +740,8 @@ export default {
       if (index === 3) phoneNumberSelectionTab.value = true;
       if (index === 0) {
         sendToAll.value = true;
+        selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts"
+        })
       }
     };
 
@@ -877,6 +879,7 @@ export default {
       // };
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
+      
       composeService
         .sendMessage("/api/Messaging/sendEmail", data)
         .then((res) => {
@@ -926,13 +929,24 @@ export default {
         subject: subject.value,
         message: editorData.value,
         // contacts: [],
-        contacts: selectedMembers.value.map(i => {
-          return { email: i.email }
-        }),
+        // contacts: selectedMembers.value.map(i => {
+        //   return { email: i.email }
+        // }),
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        toContacts: sendToAll.value ? 'allcontacts_00000000-0000-0000-0000-000000000000' : '',
+        // toContacts: sendToAll.value ? 'allcontacts_00000000-0000-0000-0000-000000000000' : '',
       };
+
+      if (selectedMembers.value.length > 0) {
+        data.ToContacts = data && data.ToContacts ? data.ToContacts.length > 0 ? "," : "" : "";
+        data.ToContacts += selectedMembers.value
+          .map((i) => {
+            console.log(i, "person");
+            if (i.id) return i.id;
+          })
+          .join();
+      }
+
 
       if (sendOrSchedule == 2) {
         data.executionDate = executionDate.value;

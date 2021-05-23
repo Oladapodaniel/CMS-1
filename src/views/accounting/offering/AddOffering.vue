@@ -502,7 +502,7 @@
                         <div class="header-border close-modal" v-if="filterCurrency.length > 0">
                           <div class="manual-dd-item close-modal" v-for="item in filterCurrency" :key="item.id">
                               <div class="d-flex justify-content-between p-1 close-modal">
-                                  <div class="close-modal offset-sm-1" @click="addCurrency(index, item)">{{ item.name }} - {{ item.country }}</div>      
+                                  <div class="close-modal offset-sm-1" @click="addCurrency($event, index, item)">{{ item.name }} - {{ item.country }}</div>      
                               </div>                      
                           </div>
                         </div>
@@ -519,6 +519,7 @@
                 class="form-control"
                 v-model.number="item.amount"
                 placeholder="Enter Amount"
+                @input="sendAmount($event, index)"
               />
             </div>
             <div
@@ -686,74 +687,7 @@
             </div>
           </div>
         </div>
-        <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" />
-          <Dialog header="Header" v-model:visible="displayModal" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" >
-              <p class="p-m-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-              <template #footer>
-                  <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
-                  <Button label="Yes" icon="pi pi-check" @click="closeModal" autofocus />
-              </template>
-          </Dialog> -->
-
-<!-- 
-          <Dialog header="Add offering type" v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '50vw'}">
-              <div class="container">
-                <div class="row">
-                  <div class="col-sm-4 text-right">
-                    <label for="" class="label">Name</label>
-                  </div>
-                <div class="col-lg-5 col-sm-12 my-auto">
-          
-                  
-                    <input
-                      type="text"
-                      class="form-control textbox-height"
-                      placeholder=""
-                      v-model="name"
-                      required
-                    /> -->
-
-
-                  
-                    <!-- <button class="form-control input transaction-button close-modal text-right" @click="toggleAccount">
-                          <i class="pi pi-angle-down arrow-icon close-modal" @click="toggleAccount"></i>
-                      </button> -->
-                        
-
-                  
-                    <!-- <button class="form-control input transaction-button close-modal text-right" @click="toggleAccount">
-                        <i class="pi pi-angle-down arrow-icon close-modal" @click="toggleAccount"></i>
-                    </button> -->
-                    
-          
-                <!-- </div>
-                <div class="col-sm-4 my-3 text-right">
-                    <label for="" class="label">Income Account</label>
-                </div>
-                <div class="col-lg-5 col-sm-12 my-3">
-                    <Dropdown v-model="selectedIncomeAccount" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-
-                        </Dropdown>
-                </div>
-                <div class="col-sm-4 my-3 text-right">
-                    <label for="" class="label">Cash Account</label>
-                  </div>
-                <div class="col-lg-5 col-sm-12 my-auto">
-          
-                  
-                    <Dropdown v-model="selectedCashAccount" :options=cashBankAccount optionLabel="text" :filter="false" placeholder="Select" class="w-100 p-0" :showClear="false">
-                      
-                    </Dropdown>
-                  </div>
-                </div>
-              </div>
-              <template #footer>
-                  <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/>
-                  <Button label="Yes" icon="pi pi-check" @click="closeResponsive" autofocus />
-              </template>
-          </Dialog> -->
+  
           
     <!-- Modal -->
         <div
@@ -968,17 +902,19 @@
 
         <div class="col-sm-12 empty">
           <div class="row">
-            <div class="col-sm-5 total-2 offset-sm-1">TOTAL</div>
-            <div class="col-sm-3">
-              <!-- <div>Total Attendance</div>
-                                <div>Total Offering</div> -->
-              <Dropdown :options="['NGN - Naira', 'CAD - Canadian dollar', 'AFN - Afghanistan']" :filter="true" placeholder="NGN - Naira" :showClear="false">
+            <div class="col-2 col-md-6"></div>
+            <div class="col-3 col-md-3 total-2">TOTAL</div>
+            <div class="col-3 col-md-1">
+              <CurrencyConverter :tenantCurrency="tenantCurrency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="addOfferingTotal" @conversion-result="convertResult" @currency-rate="setCurrencyRate"
+              />
+              <!-- <Dropdown :options="['NGN - Naira', 'CAD - Canadian dollar', 'AFN - Afghanistan']" :filter="true" placeholder="NGN - Naira" :showClear="false">
                     
-                </Dropdown>
+                </Dropdown> -->
             </div>
-            <div class="col-sm-2 align-self-center">
-              {{ addOfferingTotal }}
+            <div class="col-4 col-md-2 align-self-center">
+              {{ convertedResult ? convertedResult.toFixed(2) : addOfferingTotal ? addOfferingTotal.toFixed(2) : 0.00 }}
             </div>
+              
           </div>
         </div>
         <!-- <div class="col-sm-12 text-center add-attendance" @click="createFirstTimers">Add First Timers</div> -->
@@ -1018,10 +954,11 @@ import NewDonor from './NewDonor';
 import membershipService from "../../../services/membership/membershipservice";
 import router from '../../../router';
 import { useStore } from 'vuex'
-// import store from '../../../store/modules/auth'
+import CurrencyConverter from "../../event/CurrencyConverter"
+import CurrencyConverterService from '../../../services/currency-converter/currencyConverter'
 export default {
     components: {
-        Dialog, Dropdown, NewDonor
+        Dialog, Dropdown, NewDonor, CurrencyConverter
     },
     setup () {
         const toast = useToast();
@@ -1067,6 +1004,12 @@ export default {
         const loading = ref(false)
         const focusInp = ref("")
         const tenantId = ref("")
+        const selectedCurrencyName = ref("")
+        const currencyAmount = ref("")
+        const convertedAmount = ref([])
+        const currencyIndex = ref(0)
+        const currencyRate = ref("")
+        const convertedResult = ref(0)
 
 
         const addOffering = () => {
@@ -1298,7 +1241,8 @@ export default {
               donor: "",
               date: eventDate.value,
               activityID: selectedEventAttended.value.activityID,
-              currencyID: currencyList.value ? currencyList.value.find(i => i.name === tenantCurrency.value).id : ""
+              currencyID: currencyList.value ? currencyList.value.find(i => i.name === tenantCurrency.value).id : "",
+              fromCurrencyRate: `usd${tenantCurrency.value ? tenantCurrency.value.toLowerCase() : ""}`
             });
       console.log(currencyList.value, tenantCurrency.value)
           } 
@@ -1433,13 +1377,24 @@ export default {
         })
 
       const addOfferingTotal= computed(() => {
-        if (offeringItem.value.length <= 0) return 0;
-        if (offeringItem.value.length === 1) return offeringItem.value[0].amount;
-        const amounts = offeringItem.value.map((i) => +i.amount);
-        return amounts.reduce((a, b) => {
+        if (convertedAmount.value.length <= 0) return 0;
+        // if (convertedAmount.value.length === 1) return convertedAmount.value[0].amount;
+        // const amounts = convertedAmount.value.map((i) => +i.amount);
+        return convertedAmount.value.reduce((a, b) => {
           return (a || 0) + (b || 0);
         });
       })
+
+      // addContributionTotal() {
+      // if (this.convertedAmount2.length <= 0) return 0;
+      // // if (this.convertedAmount.length === 1) return this.convertedAmount[0].amount;
+      // // const amounts = this.offeringItem.map((i) => +i.amount);
+      // // return amounts.reduce((a, b) => {
+      // //   return (a || 0) + (b || 0);
+      // // });
+      // return this.convertedAmount2.reduce((a, b) => {
+      //   return +a + +b
+      // })
 
       const addRemittance = () => {
         remitance.value.push({})
@@ -1584,16 +1539,19 @@ export default {
             })
         }
 
-        const addCurrency = (index, item) => {
+        const addCurrency = (e, index, item) => {
         // console.log(e.target.innerHTML, index)
         // offeringItem.value[index].currency = e.target.innerHTML.split(" ")[0]
           // if (item.id) {
                 offeringItem.value[index].currencyID = item.id
                 offeringItem.value[index].showCurrency = false
                 console.log(item, index)
+
+                selectedCurrencyName.value = e.target.innerHTML.split(" ")[0]
           // } else {
           //       offeringItem.value[index].currencyID = 721
           // }
+          offeringItem.value[index].fromCurrencyRate = `usd${item.name.toLowerCase()}`
 
       }
 
@@ -1643,11 +1601,55 @@ export default {
           offeringItem.value[offeringToAddDonor.value].personID = payload.personId
         }
 
+        const getRates = async() => {
+            try {
+                let { data } = await axios.get('/fxRates')
+                console.log(data)
+                store.dispatch("getRates", data)
+            }   catch (error) {
+                    console.log(error);
+            }
+        }
+        getRates()
+
+        const sendAmount = async(e, index) => {
+
+          currencyAmount.value = e.target.value
+          currencyIndex.value = index
+
+
+          let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
+          let fromCurrencyRate = offeringItem.value[index].fromCurrencyRate
+
+          let amount = offeringItem.value[index].amount ? +offeringItem.value[index].amount : 0
+
+  
+          try {
+            let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+            console.log(result)
+            convertedAmount.value[index] = result
+          }
+          catch (err) {
+            console.log(err)
+          }
+          console.log(toDestinationCurrencyRate)
+          console.log(fromCurrencyRate)
+          console.log(amount)
+        }
+
+        const convertResult = (payload) => {
+          convertedResult.value = payload
+        }
+
+        const setCurrencyRate = (payload) =>  {
+          currencyRate.value = payload
+        }
+
         return {
             addOffering, offeringDrop, hideModals, selectEventAttended, showEventList, eventsAttended, filteredEvents, closeManualModalIfOpen, eventAttendedSelected,
             newEvents, selectedEventAttended, eventsSearchString, selectEvent, individualEvent, newEvent, showCategory, filterEventCategory, eventText, eventDate, createNewCat,
             newEventCategoryName, displayModal, openModal, closeModal, toast, createNewEvent, invalidEventDetails, savingNewEvent, newOfferings, filterOffering, offeringText,
-            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp, tenantId
+            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp, tenantId, selectedCurrencyName, currencyAmount, sendAmount, convertedAmount,  setCurrencyRate, currencyRate, convertResult, convertedResult
     }
   }
 }

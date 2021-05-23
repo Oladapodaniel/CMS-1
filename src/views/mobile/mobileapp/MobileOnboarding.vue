@@ -7,7 +7,7 @@
               <!-- track 1 -->
             <div class="row">
               <div class="col-lg-12 fss align-text-main">
-                <h2 class="font-weight-bold text-white font-size-small-screen">
+                <h2 class="font-weight-bold text-white font-size-small-screen slideInFromLeft">
                   All in one app to effectively manage your church
                 </h2>
               </div>
@@ -17,10 +17,8 @@
                 <!-- track 2 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-                <h5 class="text-wrap text-white h6">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Repellendus iste ad similique, aut libero consequuntur quisquam
-              laboriosam quasi. Quos, sapiente.
+                <h5 class="text-wrap text-white h6 slideInFromLeft2">
+                  Church management has not been more effective, with our mobile app, you can manage your church activities and event, increase your first time visitors retention rate with our automation flow by 90% and many more.
             </h5>
               </div>
             </div>
@@ -29,7 +27,7 @@
                 <!-- track 3 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-                 <h4 class="text-white">Get started for FREE!</h4>
+                 <h4 class="text-white slideInFromLeft3">Get started for FREE!</h4>
               </div>
             </div>
              <!-- end track 3 -->
@@ -37,7 +35,7 @@
                 <!-- track 4 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-               <button class="btn default-btn cta c-pointer">Start Now</button>
+               <router-link :to="{ name: 'ChurchSetUp' }"><button class="btn default-btn cta c-pointer">Start Now</button></router-link>
               </div>
             </div>
              <!-- end track 4 -->
@@ -80,18 +78,67 @@
   </div>
 
   <!-- footer Area -->
-  <div class="container mt-5 footer-area">
+  <!-- <div class="container mt-5 footer-area">
     <div class="row">
       <div class="col-12 text-center mt-5 mb-4">
         <h5 class="copyright mb-5">Powered By Churchplus</h5>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- end footer Area -->
 </template>
 
 
 <style scoped>
+/* Animation Area */
+/* @keyframes slideInFromLeft{
+  0% {
+    transform: translateX(-100%)
+  }
+
+  100% {
+transform:translateX(0)
+  }
+}
+
+h2{
+  animation: 1s ease-in-out 0s 1 slideInFromLeft;
+}
+
+@keyframes slideInFromLeft2{
+  0% {
+    transform: translateX(-100%)
+  }
+
+  100% {
+transform:translateX(0)
+  }
+}
+
+h5{
+  animation: 2s ease-in-out 0s 1 slideInFromLeft2;
+}
+@keyframes slideInFromLeft3{
+  0% {
+    transform: translateX(-100%)
+  }
+
+  100% {
+transform:translateX(0)
+  }
+}
+
+h4{
+  animation: 3s ease-in-out 0s 1 slideInFromLeft3;
+} */
+/* Animation Area */
+
+
+
+
+
+
+
 .copyright {
   color: #020e1c9f;
   font: normal normal 800 18px/36px Nunito Sans;
