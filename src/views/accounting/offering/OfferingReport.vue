@@ -1,13 +1,13 @@
 <template>
-    <div class="container">
+  <div class="container">
     <div class="row mt-4">
       <div class="col-md-5">
         <h2 class="font-weight-bold page-hder">New Contribution and Report</h2>
       </div>
       <div class="col-md-7 d-sm-flex justify-content-md-end">
-        <!-- <a class="def-btn mr-3 px-md-4 my-sm-1"
+        <a class="def-btn mr-3 px-md-4 my-sm-1"
           >More Actions <i class="fad fa-caret-circle-down"></i
-        ></a> -->
+        ></a>
         <router-link :to="{ name: 'AddOffering', path: '/tenant/addoffering' }">
           <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
         </router-link>
@@ -18,7 +18,7 @@
   </div>
 
   <div class="container" style="width: 80%">
-    <!-- <div class="row mx-1 mb-4 mt-3">
+    <div class="row mx-1 mb-4 mt-3">
       <div class="col-md-2 pl-0">
         <span class="theader mb-1">Status</span>
         <div class="my-3">
@@ -41,11 +41,11 @@
           <span class="date">22/11/2020</span>
         </div>
       </div>
-    </div> -->
-    
-    <!-- <div class="row mx-1 mb-5">
+    </div>
+
+    <div class="row mx-1 mb-5">
       <div class="col-md-12">
-   Unapproved 
+        Unapproved
         <div class="row unapproved">
           <div class="col-md-12">
             <div class="row" v-if="!reportApproved">
@@ -87,7 +87,7 @@
           </div>
         </div>
 
-        Approved 
+        Approved
         <div class="row unapproved mt-4">
           <div class="col-md-12">
             <div class="row my-3">
@@ -117,12 +117,74 @@
                           sendBtnText
                         </a>
                       </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div
+                            class="modal fade"
+                            id="sendReport"
+                            tabindex="-1"
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true"
+                            :show="true"
+                          >
+                            <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5
+                                    class="modal-title font-weight-bold"
+                                    id="sendReport"
+                                  >
+                                    Send this report
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div
+                                  class="modal-body pt-0 px-0"
+                                  :data-dismiss="btnState"
+                                >
+                                  <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
+                                  <ReportModal
+                                    :eventName="
+                                      stats.activityToday
+                                        ? stats.activityToday.name
+                                        : ''
+                                    "
+                                    @sendreport="sendReport"
+                                    :stats="stats"
+                                  />
+                                </div>
+                                <!-- <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       <div class="col-6">
                         <a class="def-btn edit-btn">Get share link</a>
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="col-md-6 offset-md-1" style="">
                     <span class="mr-2">or</span>
@@ -138,7 +200,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <div class="container-fluid bottom-section px-0">
       <div class="row mx-0" ref="topmost">
@@ -149,10 +211,19 @@
         <div
           class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
         >
-      
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve"> {{ contributionReport.length > 0 ? contributionReport.reduce((a, b) => {  return { amount: parseInt(a.amount) + parseInt(b.amount) } } ).amount : 0 }} </span>
+            <span class="recieve">
+              {{
+                contributionReport.length > 0
+                  ? contributionReport.reduce((a, b) => {
+                      return {
+                        amount: parseInt(a.amount) + parseInt(b.amount),
+                      };
+                    }).amount
+                  : 0
+              }}
+            </span>
           </span>
         </div>
 
@@ -172,7 +243,7 @@
         <div class="col-md-8">
           <span class="evt-label grey-text">Event Name</span>
           <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-             Sunday Service
+            Sunday Service
           </h2>
         </div>
         <div class="col-md-4">
@@ -216,10 +287,6 @@
 
       <div class="row mb-3" ref="bottom">
         <div class="col-md-12">
-          
-          
-    
-
           <!-- <div class="row px-5">
           <div class="col-sm-12">
             <div class="row">
@@ -312,7 +379,6 @@
             v-for="(item, index) in contributionReport"
             :key="index"
           >
-          
             <div class="col-md-12 py-2">
               <div class="row px-5">
                 <div class="col-sm-12">
@@ -353,9 +419,11 @@
                   <span class="bold-700">Total</span>
                 </div>
                 <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700">{{ contributionReport.reduce((a, b) => {
-                      return { amount: a.amount + b.amount }
-                    }).amount }}</span>
+                  <span class="bold-700">{{
+                    contributionReport.reduce((a, b) => {
+                      return { amount: a.amount + b.amount };
+                    }).amount
+                  }}</span>
                 </div>
               </div>
             </div>
@@ -510,280 +578,284 @@
         </div>
       </div> -->
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 // import ReportAreaChart from "@/components/charts/AreaChart.vue";
-import eventsService from '../../../services/events/eventsservice';
+import eventsService from "../../../services/events/eventsservice";
 // // import { useStore } from 'vuex'
 // import { useRoute } from 'vue-router'
 // import axios from "@/gateway/backendapi";
 export default {
-    // components: { ReportAreaChart },
-    setup () {
-        const reportApproved = ref(false)
-        const contributionReport = ref([])
+  // components: { ReportAreaChart },
+  setup() {
+    const reportApproved = ref(false);
+    const contributionReport = ref([]);
 
-        const toggleReportState = () => {
-        reportApproved.value = !reportApproved.value;
-        status.value = "Unsent";
-        };
-        
-        const getContributionReport = async() => {
-          contributionReport.value = JSON.parse(localStorage.getItem('contriTransact'))
-          console.log(contributionReport.value)
+    const toggleReportState = () => {
+      reportApproved.value = !reportApproved.value;
+      status.value = "Unsent";
+    };
 
-          try {
-            await eventsService.getEventsByActivity(contributionReport.value[0].activityID)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-          }
-          catch (err) {
-            console.log(err)
-          }          
-        }
-        getContributionReport()
-        return {
-            reportApproved, toggleReportState, contributionReport
-        }
-    }
-}
+    const getContributionReport = async () => {
+      contributionReport.value = JSON.parse(
+        localStorage.getItem("contriTransact")
+      );
+      console.log(contributionReport.value);
+
+      try {
+        await eventsService
+          .getEventsByActivity(contributionReport.value[0].activityID)
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getContributionReport();
+    return {
+      reportApproved,
+      toggleReportState,
+      contributionReport,
+    };
+  },
+};
 </script>
 
 <style scoped>
-    * {
-    color: #1c252c;
-    box-sizing: border-box;
-    }
+* {
+  color: #1c252c;
+  box-sizing: border-box;
+}
 
-    a {
-    text-decoration: none;
-    font-weight: 700;
-    }
+a {
+  text-decoration: none;
+  font-weight: 700;
+}
 
-    .page-hder {
-    font-size: 28px;
-    }
+.page-hder {
+  font-size: 28px;
+}
 
-    .theader {
-    font-size: 14px;
-    font-weight: 800;
-    color: #0f0220;
-    }
+.theader {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f0220;
+}
 
-    .draft {
-    border: 0.5px solid #252a2f;
-    padding: 10px;
-    border-radius: 22px 0 0 22px;
-    background: grey;
-    }
+.draft {
+  border: 0.5px solid #252a2f;
+  padding: 10px;
+  border-radius: 22px 0 0 22px;
+  background: grey;
+}
 
-    .evt-name {
-    color: #136acd;
-    font-weight: 800;
-    font-size: 22px;
-    }
+.evt-name {
+  color: #136acd;
+  font-weight: 800;
+  font-size: 22px;
+}
 
-    .def-btn {
-    height: 40px;
-    border-radius: 22px;
-    padding: 8px 10px;
-    width: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #dde2e6;
-    }
+.def-btn {
+  height: 40px;
+  border-radius: 22px;
+  padding: 8px 10px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dde2e6;
+}
 
-    .def-btn:hover {
-    cursor: pointer;
-    }
+.def-btn:hover {
+  cursor: pointer;
+}
 
-    @media screen and (max-width: 1000px) {
-    .container {
-        width: 100% !important;
-    }
+@media screen and (max-width: 1000px) {
+  .container {
+    width: 100% !important;
+  }
 
-    .def-btn {
-        max-width: 280px;
-    }
-    }
+  .def-btn {
+    max-width: 280px;
+  }
+}
 
-    .unapproved {
-    background: #ffffff 0% 0% no-repeat padding-box;
-    box-shadow: 0px 3px 15px #00000029;
-    border: 1px solid #dde2e6;
-    border-radius: 5px;
-    }
+.unapproved {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 15px #00000029;
+  border: 1px solid #dde2e6;
+  border-radius: 5px;
+}
 
-    .info-div {
-    background: #f9f8db;
-    border: 1px solid #dde2e6;
-    border-radius: 5px 5px 0px 0px;
-    text-align: center;
-    }
+.info-div {
+  background: #f9f8db;
+  border: 1px solid #dde2e6;
+  border-radius: 5px 5px 0px 0px;
+  text-align: center;
+}
 
-    .file-icon {
-    color: #136acd;
-    border: 1px solid #136acd;
-    padding: 10px;
-    border-radius: 50%;
-    height: 40px;
-    width: 40px;
-    text-align: center;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    }
+.file-icon {
+  color: #136acd;
+  border: 1px solid #136acd;
+  padding: 10px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
 
-    .grey-text {
-    color: #8296ae;
-    }
+.grey-text {
+  color: #8296ae;
+}
 
-    .dark-text {
-    color: #1d262d;
-    font-weight: 800;
-    }
+.dark-text {
+  color: #1d262d;
+  font-weight: 800;
+}
 
-    .edit-btn {
-    border: 1px solid #dde2e6;
-    }
+.edit-btn {
+  border: 1px solid #dde2e6;
+}
 
-    .bottom-section {
-    box-shadow: 0px 3px 10px #00000029;
-    border: 1px solid #dde2e6;
-    border-radius: 5px;
-    }
+.bottom-section {
+  box-shadow: 0px 3px 10px #00000029;
+  border: 1px solid #dde2e6;
+  border-radius: 5px;
+}
 
-    .dark-red-section {
-    /* background: #980404; */
-    background: #ff0000b5;
-    color: #fff;
-    height: 133px;
-    display: flex;
-    align-items: center;
-    border-radius: 5px 0px 0px 0px;
-    height: 133px;
-    display: flex;
-    align-items: center;
-    border-radius: 5px 0px 0px 0px;
-    }
+.dark-red-section {
+  /* background: #980404; */
+  background: #ff0000b5;
+  color: #fff;
+  height: 133px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px 0px 0px 0px;
+  height: 133px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px 0px 0px 0px;
+}
 
-    .light-red-section {
-    /* background: #ff0000b5; */
-    background: #980404;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0px 5px 0px 0px;
-    }
+.light-red-section {
+  /* background: #ff0000b5; */
+  background: #980404;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px 5px 0px 0px;
+}
 
-    .dark-red-section h2,
-    .light-red-section span {
-    color: #fff;
-    font-weight: 800;
-    }
+.dark-red-section h2,
+.light-red-section span {
+  color: #fff;
+  font-weight: 800;
+}
 
-    .evt-report {
-    font-size: 25px;
-    }
+.evt-report {
+  font-size: 25px;
+}
 
-    .recieve {
-    font-size: 22px;
-    }
+.recieve {
+  font-size: 22px;
+}
 
-    .analytics,
-    .attendance-header {
-    background: #1c252c;
-    color: #fff;
-    width: 155px;
-    height: 37px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 24px;
-    }
+.analytics,
+.attendance-header {
+  background: #1c252c;
+  color: #fff;
+  width: 155px;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
 
-    .analytics-container {
-    /* padding: 0 24px 24px 24px; */
-    width: 90%;
-    margin: auto;
-    }
+.analytics-container {
+  /* padding: 0 24px 24px 24px; */
+  width: 90%;
+  margin: auto;
+}
 
-    .analytics.min {
-        width: 230px;
-        font-size: 17px;
-    }
+.analytics.min {
+  width: 230px;
+  font-size: 17px;
+}
 
-    .ana-items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding-bottom: 24px;
-    }
+.ana-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding-bottom: 24px;
+}
 
-    .ana-item {
-    width: 200px;
-    display: flex;
-    justify-content: space-between;
-    box-shadow: 0px 3px 10px #00000029;
-    border: 1px solid #dde2e6;
-    border-radius: 5px;
-    padding: 10px 4px 10px 10px;
-    margin: 4px 0;
-    }
+.ana-item {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 3px 10px #00000029;
+  border: 1px solid #dde2e6;
+  border-radius: 5px;
+  padding: 10px 4px 10px 10px;
+  margin: 4px 0;
+}
 
-    .ana-header {
-    margin-bottom: 40px;
-    }
+.ana-header {
+  margin-bottom: 40px;
+}
 
-    .ana-item p {
-    margin-bottom: 0;
-    }
+.ana-item p {
+  margin-bottom: 0;
+}
 
-    .ana-item-header {
-    font-size: 14px;
-    text-transform: uppercase;
-    }
+.ana-item-header {
+  font-size: 14px;
+  text-transform: uppercase;
+}
 
-    .ana-item-percentage {
-    color: #1c252c;
-    font-weight: bold;
-    font-size: 40px;
-    }
+.ana-item-percentage {
+  color: #1c252c;
+  font-weight: bold;
+  font-size: 40px;
+}
 
-    .ana-item-value,
-    .today-text {
-    color: #136acd;
-    font-weight: 700;
-    }
+.ana-item-value,
+.today-text {
+  color: #136acd;
+  font-weight: 700;
+}
 
-    .ana-items h5 {
-        font-size: 16px;
-    }
+.ana-items h5 {
+  font-size: 16px;
+}
 
-    .versus {
-    color: #1c252c;
-    font-weight: 700;
-    }
+.versus {
+  color: #1c252c;
+  font-weight: 700;
+}
 
-    .bold-400 {
-    font-weight: 400;
-    }
+.bold-400 {
+  font-weight: 400;
+}
 
-    .bold-700 {
-    font-weight: 700;
-    }
+.bold-700 {
+  font-weight: 700;
+}
 
-    .hr-dark {
-    border: 1px solid #000;
-    }
+.hr-dark {
+  border: 1px solid #000;
+}
 
-    .approve-btn {
-    background: #136acd;
-    color: white;
-    }
+.approve-btn {
+  background: #136acd;
+  color: white;
+}
 </style>
