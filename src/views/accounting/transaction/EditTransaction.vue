@@ -508,7 +508,7 @@ export default {
               debitSplitAccounts: splittedTransactions.value.map(i => {
                 return {
                   accountID: i.accountID,
-                  amount: i.amount ? +i.amount : +transacObj.value.amount,
+                  amount: splittedTransactions.value.length ===1 ? transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount,
                   // amount: Math.abs(i.amount ? +i.amount : +transacObj.value.amount),
                   contactID: i.donorId ? i.donorId : "",
                   transactionID: i.transactionID

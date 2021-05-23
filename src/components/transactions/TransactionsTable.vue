@@ -172,7 +172,7 @@
                 </div>
               </div>
 
-              <div class="row mt-3" v-if="refreshing">
+              <div class="row mt-3" v-if="refreshing && !loading">
                 <div class="col-md-12 text-center">
                   <i class="pi pi-spin pi-spinner" style="fontSize: 3rem"></i>
                 </div>
@@ -461,8 +461,10 @@ export default {
 
     const allTransactions = ref([]);
     const loading = ref(true);
+    const refreshing = ref(false);
     const getTransactions = async () => {
       try {
+        refreshing.value = true;
         const response = await transaction_service.getTransactions();
         loading.value = false;
         refreshing.value = false;
@@ -534,7 +536,7 @@ export default {
 
     const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
 
-    const refreshing = ref(false);
+    
     const deleteTransaction = async (id, index) => {
       try {
         const response = await transaction_service.deleteTransaction(id);
