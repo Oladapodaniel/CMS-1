@@ -1241,7 +1241,7 @@ export default {
               donor: "",
               date: eventDate.value,
               activityID: selectedEventAttended.value.activityID,
-              currencyID: currencyList.value ? currencyList.value.find(i => i.name === tenantCurrency.value).id : "",
+              currencyID: currencyList.value && tenantCurrency.value ? currencyList.value.find(i => i.name === tenantCurrency.value).id : "",
               fromCurrencyRate: `usd${tenantCurrency.value ? tenantCurrency.value.toLowerCase() : ""}`
             });
       console.log(currencyList.value, tenantCurrency.value)

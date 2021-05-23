@@ -68,6 +68,8 @@
           </div>
         </div>
 
+       
+
         <div v-if="tenantInfoBasic.memberCount === 0">
           <img src="../../assets/welcome_user.svg" class="welcome-user">
         </div>
@@ -126,7 +128,7 @@
 
       <div class="container-fluid">
         <div class="row">
-          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0) || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0)">
+          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0) || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0)">
             <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
               <!-- <i class="pi pi-times"></i> -->
               <img src="../../assets/website.svg" class="w-100">
@@ -232,6 +234,15 @@
               </table>
             </div>
           </div>
+  
+   <!-- 2   {{ tenantInfoAttendanceWeekly }}
+   22   {{ tenantInfoAttendanceWeekly[0] }}
+   3   {{ tenantInfoCeleb }}
+   4   {{ tenantInfoFirstTimerWeekly[0] }}
+
+   1{{ tenantInfoCeleb.length === 0 }}
+   2{{ tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0  }}
+   3{{ tenantInfoAttendanceWeekly[0] ? tenantInfoAttendanceWeekly[0].data[0] === 0 : "" }} -->
             <!-- Column Charts -->
             <div v-show="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0) || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0)">
               <!-- <div class="charts" id="plot"> -->
@@ -343,8 +354,8 @@
           </div>
         </div>
       </div>
-      <!-- {{ tenantInfoAttendanceWeekly[0].data }} -->
-      <div v-if="tenantInfoCeleb.length === 0 && tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0 && tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length === 0">
+  
+      <div v-if="tenantInfoCeleb.length === 0 && tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0 && tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] === 0">
         <div class="container-fluid">
           <div class="row">
             <div class="col-12 more-things">More Benefits You Can Get</div>
@@ -374,6 +385,7 @@
         <div class="text-center" v-if="attendanceLoading">
           <i class="pi pi-spin pi-spinner text-primary" style="fontSize: 3rem"></i>
         </div>
+        
         <!-- <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-left"></i>

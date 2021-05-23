@@ -109,9 +109,8 @@
             </div>
           </div>
         </div>
-
                 <div class="col-1 align-self-center">
-                    <i class="pi pi-trash" v-tooltip.bottom="'delete'" @click="showConfirmModal(item.id, index)"></i>
+                    <i class="pi pi-trash" v-tooltip.bottom="'delete'" @click="showConfirmModal(item.financialContribution.id, index)"></i>
                 </div>
             </div>
             <div class="col-8 col-md-5 offset-sm-1 offset-md-3 pl-0 offset-lg-4 mt-3">
