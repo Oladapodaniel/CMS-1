@@ -174,9 +174,11 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                
               
-                <!-- <a class="dropdown-item elipsis-items">
+                <router-link :to="{ name: 'AddOffering', params: { offId: offering.id } }">
+                  <a class="dropdown-item elipsis-items">
                  Edit
-                </a> -->
+                </a>
+                </router-link>
                 <a
                   class="dropdown-item elipsis-items cursor-pointer"
                   @click="showConfirmModal(offering.id, index)"

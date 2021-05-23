@@ -102,6 +102,14 @@ const routes = [
           ),
       },
       {
+        path: "subscription",
+        name: "Subscription",
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ "../views/dashboard/Subscription.vue"
+          ),
+      },
+      {
         path: "people",
         component: () =>
           import(/* webpackChunkName: "people" */ "../views/people/People.vue"),
@@ -793,7 +801,7 @@ const routes = [
           ),
       },
       {
-        path: "addoffering",
+        path: "addoffering/:offId?",
         name: "AddOffering",
         component: () =>
           import(
@@ -848,6 +856,54 @@ const routes = [
             /* webpackChunkName: "defaultmessage" */ "@/views/donation/Payment"
           ),
       },
+      {
+        path: "/onboardingprocess",
+        name: "MobileOnboarding",
+        component: () =>
+          import(
+            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/MobileOnboarding"
+          ),
+      },
+      {
+        path: "/appbranding",
+        name: "AppBranding",
+        component: () =>
+          import(
+            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/AppBranding"
+          ),
+      },
+      {
+        path: "/socialmedia",
+        name: "SocialMedia",
+        component: () =>
+          import(
+            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/SocialMedia"
+          ),
+      },
+      {
+        path: "/onboardingsuccessful",
+        name: "OnboardingSuccessful",
+        component: () =>
+          import(
+            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/OnboardingSuccessful"
+          ),
+      },
+      {
+        path: "/churchsetup",
+        name: "ChurchSetUp",
+        component: () =>
+          import(
+            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/ChurchSetUp"
+          ),
+      },
+      {
+        path: "/donationsetup",
+        name: "DonationSetup",
+        component: () =>
+          import(
+            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/DonationSetup"
+          ),
+      },
     ],
   },
   {
@@ -856,6 +912,14 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "defaultmessage" */ "@/views/event/attendance&checkin/MarkinAttendance"
+      ),
+  },
+  {
+    path: "/event/:eventId",
+    name: "EventRegistration",
+    component: () =>
+      import(
+        /* webpackChunkName: "defaultmessage" */ "@/views/event/EventRegistration"
       ),
   },
   {
@@ -947,24 +1011,6 @@ const routes = [
         /* webpackChunkName: "defaultmessage" */ "@/views/donation/TransactionPage"
       ),
   },
-
-  {
-    path: "/onboardingprocess",
-    name: "mobileonboarding",
-    component: () =>
-      import(
-        /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/onboardingprocess"
-      ),
-  },
-
-  {
-    path: "/onboardingissuccessful",
-    name: "mobileapponboarding",
-    component: () =>
-      import(
-        /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/onboardingissuccessful"
-      ),
-  },
 ];
 
 const router = createRouter({
@@ -982,7 +1028,8 @@ router.beforeEach((to, from, next) => {
       to.name === "iFrame" ||
       to.name === "SignUpPayment" ||
       to.name === "SignInPayment" ||
-      to.name === "TransactionPage") &&
+      to.name === "TransactionPage" ||
+      to.name === "EventRegistration") &&
     !tokenIsValid
   )
     return next(true);

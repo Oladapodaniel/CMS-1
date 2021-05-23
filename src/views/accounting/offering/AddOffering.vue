@@ -956,6 +956,7 @@ import router from '../../../router';
 import { useStore } from 'vuex'
 import CurrencyConverter from "../../event/CurrencyConverter"
 import CurrencyConverterService from '../../../services/currency-converter/currencyConverter'
+import { useRoute } from "vue-router"
 export default {
     components: {
         Dialog, Dropdown, NewDonor, CurrencyConverter
@@ -963,6 +964,7 @@ export default {
     setup () {
         const toast = useToast();
         const store = useStore()
+        const route = useRoute()
         const offeringDrop = ref(null)
         const showEventList = ref(false)
         const eventsAttended = ref([]);
@@ -1241,7 +1243,7 @@ export default {
               donor: "",
               date: eventDate.value,
               activityID: selectedEventAttended.value.activityID,
-              currencyID: currencyList.value ? currencyList.value.find(i => i.name === tenantCurrency.value).id : "",
+              currencyID: currencyList.value && tenantCurrency.value ? currencyList.value.find(i => i.name === tenantCurrency.value).id : "",
               fromCurrencyRate: `usd${tenantCurrency.value ? tenantCurrency.value.toLowerCase() : ""}`
             });
       console.log(currencyList.value, tenantCurrency.value)
@@ -1504,7 +1506,7 @@ export default {
               // toast.add({severity:'success', summary: 'Successful', detail:'Contribution added', life: 3000})
               console.log(res)
               localStorage.setItem('contriTransact', JSON.stringify(res.data.returnObject))
-              router.push({ name: 'OfferingReport', params: { report: res.data.returnObject.find(i => i).id } })
+              router.push({ name: 'OfferingReport', params: { report: eventDate.value } })
               loading.value = false
               
               // let contriTransact = {
@@ -1644,6 +1646,18 @@ export default {
         const setCurrencyRate = (payload) =>  {
           currencyRate.value = payload
         }
+
+        const getOneContribution = async() => {
+          if(route.params.offId) {
+            try {
+                let { data } = await axios.get(`/api/Financials/Contributions/Transactions/One?ID=${route.params.offId}`)
+                console.log(data)
+            }   catch (error) {
+                    console.log(error);
+            }
+          }
+        }
+        getOneContribution()
 
         return {
             addOffering, offeringDrop, hideModals, selectEventAttended, showEventList, eventsAttended, filteredEvents, closeManualModalIfOpen, eventAttendedSelected,
