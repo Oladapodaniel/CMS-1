@@ -956,6 +956,7 @@ import router from '../../../router';
 import { useStore } from 'vuex'
 import CurrencyConverter from "../../event/CurrencyConverter"
 import CurrencyConverterService from '../../../services/currency-converter/currencyConverter'
+import { useRoute } from "vue-router"
 export default {
     components: {
         Dialog, Dropdown, NewDonor, CurrencyConverter
@@ -963,6 +964,7 @@ export default {
     setup () {
         const toast = useToast();
         const store = useStore()
+        const route = useRoute()
         const offeringDrop = ref(null)
         const showEventList = ref(false)
         const eventsAttended = ref([]);
@@ -1644,6 +1646,18 @@ export default {
         const setCurrencyRate = (payload) =>  {
           currencyRate.value = payload
         }
+
+        const getOneContribution = async() => {
+          if(route.params.offId) {
+            try {
+                let { data } = await axios.get(`/api/Financials/Contributions/Transactions/One?ID=${route.params.offId}`)
+                console.log(data)
+            }   catch (error) {
+                    console.log(error);
+            }
+          }
+        }
+        getOneContribution()
 
         return {
             addOffering, offeringDrop, hideModals, selectEventAttended, showEventList, eventsAttended, filteredEvents, closeManualModalIfOpen, eventAttendedSelected,

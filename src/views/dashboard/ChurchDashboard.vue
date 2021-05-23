@@ -92,10 +92,12 @@
             </div>
             <div class="bottom">
               <div class="box-bottom">
+                <router-link :to="{ name: 'Subscription' }">
                 <!-- <span class="plan-text">YOU'RE ON A FREE PLAN</span> -->
                 <button class="upgrade-btn">
                   <h4 class="box-btn-text">UPGRADE</h4>
                 </button>
+                </router-link>
               </div>
             </div>
           </div>

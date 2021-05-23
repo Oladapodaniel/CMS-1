@@ -2024,7 +2024,7 @@ export default {
             }
 
             const getReport = () => {
-              axios.get('/pub/contributionReport')
+              axios.get('/pub/contributionReport?date=5/22/2021')
               .then(res =>  {
                 console.log(res)
               })
