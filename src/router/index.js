@@ -102,14 +102,6 @@ const routes = [
           ),
       },
       {
-        path: "subscription",
-        name: "Subscription",
-        component: () =>
-          import(
-            /* webpackChunkname: "subscription" */ "../views/dashboard/Subscription.vue"
-          ),
-      },
-      {
         path: "people",
         component: () =>
           import(/* webpackChunkName: "people" */ "../views/people/People.vue"),
@@ -187,6 +179,330 @@ const routes = [
         name: "Event",
         component: () =>
           import(/* webpackChunkName: "event" */ "@/views/event/Event.vue"),
+      },
+
+      {
+        path: "attendancecheckin",
+        name: "Attendance",
+        component: () =>
+          import(
+            /* webpackChunkName: "defaultmessage" */ "@/views/event/attendance&checkin/Attendance"
+          ),
+        children: [
+          {
+            path: "",
+            name: "AttendanceList",
+            component: () =>
+              import(
+                /* webpackChunkName: "attendance" */ "@/views/event/attendance&checkin/AttendanceCheckin"
+              ),
+          },
+          {
+            path: "add",
+            name: "AddCheckin",
+            component: () =>
+              import(
+                /* webpackChunkName: "addcheckin" */ "@/views/event/attendance&checkin/AddAttendance"
+              ),
+          },
+          {
+            path: "ussd",
+            name: "USSDCheckin",
+            component: () =>
+              import(
+                /* webpackChunkName: "ussdcheckin" */ "@/views/event/attendance&checkin/USSDCheckin"
+              ),
+          },
+          {
+            path: "sms",
+            name: "SMSCheckin",
+            component: () =>
+              import(
+                /* webpackChunkName: "smscheckin" */ "@/views/event/attendance&checkin/SMSCheckin"
+              ),
+          },
+
+          {
+            path: "mark",
+            name: "MarkAttendance",
+            component: () =>
+              import(
+                /* webpackChunkName: "markattendance" */ "@/views/event/attendance&checkin/MarkAttendance"
+              ),
+          },
+
+          {
+            path: "childcheckin",
+            name: "ChildCheckin",
+            component: () =>
+              import(
+                /* webpackChunkName: "childcheckin" */ "@/views/event/attendance&checkin/ChildCheckin"
+              ),
+          },
+
+          {
+            path: "type",
+            name: "CheckinType",
+            component: () =>
+              import(
+                /* webpackChunkName: "childcheckin" */ "@/views/event/attendance&checkin/GroupCategoryAttendance"
+              ),
+          },
+          {
+            path: "tag",
+            name: "AttendanceTag",
+            component: () =>
+              import(
+                /* webpackChunkName: "tag" */ "@/views/event/attendance&checkin/AttendanceTag"
+              ),
+          },
+          {
+            path: "checkins",
+            name: "AttendanceAndCheckinList",
+            component: () =>
+              import(
+                /* webpackChunkName: "checkins" */ "@/views/event/attendance&checkin/AttendanceAndCheckinList"
+              ),
+          },
+          {
+            path: "qr",
+            name: "AttendanceQR",
+            component: () =>
+              import(
+                /* webpackChunkName: "attendaceqr" */ "@/views/event/attendance&checkin/AttendanceQR"
+              ),
+          },
+
+          {
+            path: "report/:id",
+            name: "AttendanceReport",
+            component: () =>
+              import(
+                /* webpackChunkName: "childcheckin" */ "@/views/event/attendance&checkin/AttendanceReport"
+              ),
+          },
+        ],
+      },
+      {
+        path: "checkins",
+        name: "AttendanceAndCheckinList",
+        component: () =>
+          import(
+            /* webpackChunkName: "defaultmessage" */ "@/views/event/attendance&checkin/AttendanceAndCheckinList"
+          ),
+      },
+
+      {
+        path: "attendancetag",
+        name: "AttendanceTag",
+        component: () =>
+          import(
+            /* webpackChunkName: "defaultmessage" */ "@/views/event/attendance&checkin/AttendanceTag"
+          ),
+      },
+
+      {
+        path: "addattendancecheckin",
+        name: "AddAttendance",
+        component: () =>
+          import(
+            /* webpackChunkName: "defaultmessage" */ "@/views/event/attendance&checkin/AddAttendance"
+          ),
+      },
+
+      {
+        path: "firsttimers",
+        name: "FirstTimers",
+        component: () =>
+          import(
+            /* webpackChunkName: "firsttimers" */ "@/views/people/FirstTimersList.vue"
+          ),
+      },
+      {
+        path: "firsttimerslist",
+        name: "FirstTimerEmpty",
+        component: () =>
+          import(
+            /* webpackChunkName: "addfirsttimer" */ "../views/people/FirstTimerEmpty.vue"
+          ),
+      },
+      {
+        path: "report/:id",
+        name: "Report",
+        component: () =>
+          import(
+            /* webpackChunkName: "report" */ "@/views/event/EventReport.vue"
+          ),
+      },
+      {
+        path: "sms",
+        name: "SmsCommunication",
+        component: () =>
+          import(
+            /* webpackChunkName: "smscommunication" */ "@/views/communication/SmsCommunication"
+          ),
+        children: [
+          {
+            path: "",
+            name: "Inbox",
+            component: () =>
+              import(
+                /* webpackChunkName: "inbox" */ "@/views/communication/MessageInbox"
+              ),
+          },
+          {
+            path: "sent",
+            name: "SentMessages",
+            component: () =>
+              import(
+                /* webpackChunkName: "sentmessages" */ "@/views/communication/SentMessages"
+              ),
+          },
+          {
+            path: "draft",
+            name: "DraftMessages",
+            component: () =>
+              import(
+                /* webpackChunkName: "draftmessages" */ "@/views/communication/DraftMessages"
+              ),
+          },
+          {
+            path: "contacts",
+            name: "ContactList",
+            component: () =>
+              import(
+                /* webpackChunkName: "contactlist" */ "@/views/communication/ContactList"
+              ),
+          },
+          {
+            path: "sent/:messageId",
+            name: "MessageDetails",
+            component: () =>
+              import(
+                /* webpackChunkName: "contactlist" */ "@/views/communication/MessageDetails"
+              ),
+          },
+          {
+            path: "addgroup",
+            name: "Phongroup",
+            component: () =>
+              import(
+                /* webpackChunkName: "phonegroup" */ "@/views/communication/PhoneGroup"
+              ),
+          },
+          {
+            path: "editcontact/:groupId",
+            name: "EditContactList",
+            component: () =>
+              import(
+                /* webpackChunkName: "editcontactlist" */ "@/views/communication/EditGroup"
+              ),
+          },
+          {
+            path: "report/:messageId",
+            name: "DeliveryReport",
+            component: () =>
+              import(
+                /* webpackChunkName: "deliveryreport" */ "@/views/communication/DeliveryReport"
+              ),
+          },
+          {
+            path: "compose",
+            name: "SendMessage",
+            component: () =>
+              import(
+                /* webpackChunkName: "sendmessage" */ "@/views/communication/SendSms"
+              ),
+          },
+          {
+            path: "scheduled",
+            name: "ScheduledSMS",
+            component: () =>
+              import(
+                /* webpackChunkName: "scheduled" */ "@/views/communication/ScheduledSMS"
+              ),
+          },
+        ],
+      },
+      {
+        path: "email",
+        name: "EmailCommunication",
+        component: () =>
+          import(
+            /* webpackChunkName: "emailcommunication" */ "@/views/communication/EmailCommunication"
+          ),
+        children: [
+          {
+            path: "",
+            name: "Sent",
+            component: () =>
+              import(
+                /* webpackChunkName: "sentemails" */ "@/views/communication/SentEmails"
+              ),
+          },
+          {
+            path: "sent",
+            name: "SentEmails",
+            component: () =>
+              import(
+                /* webpackChunkName: "sentemails" */ "@/views/communication/SentEmails"
+              ),
+          },
+          {
+            path: "sent/:messageId",
+            name: "EmailDetails",
+            component: () =>
+              import(
+                /* webpackChunkName: "emaildetails" */ "@/views/communication/EmailDetails"
+              ),
+          },
+          {
+            path: "draft",
+            name: "EmailDraft",
+            component: () =>
+              import(
+                /* webpackChunkName: "emaildraft" */ "@/views/communication/EmailDraft"
+              ),
+          },
+          // { path: 'contacts', name: 'ContactList', component: ContactList },
+          // { path: 'report', name: 'DeliveryReport', component: DeliveryReport },
+          {
+            path: "compose",
+            name: "ComposeEmail",
+            component: () =>
+              import(
+                /* webpackChunkName: "compose" */ "@/views/communication/ComposeEmail"
+              ),
+          },
+          {
+            path: "schedules",
+            name: "Schedules",
+            component: () =>
+              import(
+                /* webpackChunkName: "compose" */ "@/views/communication/ScheduledEmails"
+              ),
+          },
+        ],
+      },
+      {
+        path: "peoplegroups",
+        name: "Groups",
+        component: () =>
+          import(/* webpackChunkName: "groups" */ "@/views/groups/GroupsList"),
+      },
+      {
+        path: "createpeoplegroup/:groupId?",
+        name: "CreateGroup",
+        component: () =>
+          import(
+            /* webpackChunkName: "createpeoplegroup" */ "@/views/groups/CreateGroup"
+          ),
+      },
+      {
+        path: "units",
+        name: "BuyUnits",
+        component: () =>
+          import(/* webpackChunkName: "buyunits" */ "@/views/payment/BuyUnits"),
       },
 
       {
@@ -497,87 +813,39 @@ const routes = [
         name: "ContributionCategory",
         component: () =>
           import(
-            /* webpackChunkName: "facebookposts" */ "@/views/social&mobile/feed/general/Index"
+            /* webpackChunkName: "defaultmessage" */ "@/views/accounting/offering/ContributionCategory"
           ),
       },
       {
-        path: "facebook",
-        name: "FacebookPosts",
+        path: "transactionlist",
+        name: "TransactionList",
         component: () =>
           import(
-            /* webpackChunkName: "facebookposts" */ "@/views/social&mobile/feed/facebook/Index"
+            /* webpackChunkName: "defaultmessage" */ "@/views/accounting/transaction/TransactionList"
           ),
       },
       {
-        path: "twitter",
-        name: "TwitterPosts",
+        path: "payments/:editPayment?",
+        name: "PaymentTransaction",
         component: () =>
           import(
-            /* webpackChunkName: "facebookposts" */ "@/views/social&mobile/feed/twitter/Index"
+            /* webpackChunkName: "defaultmessage" */ "@/views/donation/PaymentTransaction"
           ),
       },
       {
-        path: "instagram",
-        name: "InstagramPosts",
+        path: "paymentoptions/:paymentId",
+        name: "PaymentOption",
         component: () =>
           import(
-            /* webpackChunkName: "facebookposts" */ "@/views/social&mobile/feed/instagram/Index"
+            /* webpackChunkName: "defaultmessage" */ "@/views/donation/PaymentOption"
           ),
       },
       {
-        path: "whatsapp",
-        name: "WhatsappPosts",
+        path: "payment",
+        name: "Payment",
         component: () =>
           import(
             /* webpackChunkName: "defaultmessage" */ "@/views/donation/Payment"
-          ),
-      },
-      {
-        path: "/onboardingprocess",
-        name: "MobileOnboarding",
-        component: () =>
-          import(
-            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/MobileOnboarding"
-          ),
-      },
-      {
-        path: "/appbranding",
-        name: "AppBranding",
-        component: () =>
-          import(
-            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/AppBranding"
-          ),
-      },
-      {
-        path: "/socialmedia",
-        name: "SocialMedia",
-        component: () =>
-          import(
-            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/SocialMedia"
-          ),
-      },
-      {
-        path: "/onboardingsuccessful",
-        name: "OnboardingSuccessful",
-        component: () =>
-          import(
-            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/OnboardingSuccessful"
-          ),
-      },
-      {
-        path: "/churchsetup",
-        name: "ChurchSetUp",
-        component: () =>
-          import(
-            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/ChurchSetUp"
-          ),
-      },
-      {
-        path: "/donationsetup",
-        name: "DonationSetup",
-        component: () =>
-          import(
-            /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/DonationSetup"
           ),
       },
     ],
@@ -588,14 +856,6 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "defaultmessage" */ "@/views/event/attendance&checkin/MarkinAttendance"
-      ),
-  },
-  {
-    path: "/event/:eventId",
-    name: "EventRegistration",
-    component: () =>
-      import(
-        /* webpackChunkName: "defaultmessage" */ "@/views/event/EventRegistration"
       ),
   },
   {
@@ -687,6 +947,24 @@ const routes = [
         /* webpackChunkName: "defaultmessage" */ "@/views/donation/TransactionPage"
       ),
   },
+
+  {
+    path: "/onboardingprocess",
+    name: "mobileonboarding",
+    component: () =>
+      import(
+        /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/onboardingprocess"
+      ),
+  },
+
+  {
+    path: "/onboardingissuccessful",
+    name: "mobileapponboarding",
+    component: () =>
+      import(
+        /* webpackChunkName: "giving" */ "@/views/mobile/mobileapp/onboardingissuccessful"
+      ),
+  },
 ];
 
 const router = createRouter({
@@ -704,8 +982,7 @@ router.beforeEach((to, from, next) => {
       to.name === "iFrame" ||
       to.name === "SignUpPayment" ||
       to.name === "SignInPayment" ||
-      to.name === "TransactionPage" ||
-      to.name === "EventRegistration") &&
+      to.name === "TransactionPage") &&
     !tokenIsValid
   )
     return next(true);
