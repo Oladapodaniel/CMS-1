@@ -174,7 +174,7 @@
 
               <div class="row mt-3" v-if="refreshing && !loading">
                 <div class="col-md-12 text-center">
-                  <i class="pi pi-spin pi-spinner" style="fontSize: 3rem"></i>
+                  <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
                 </div>
               </div>
               <LoadingComponent :loading="loading" />

@@ -14,7 +14,7 @@
     <div class="container">
       <div class="row mt-3" v-if="gettingIcomeAccounts || gettingExpenseAccounts || gettingSelectedTrsn">
         <div class="col-md-12 text-center">
-          <i class="pi pi-spin pi-spinner" style="fontSize: 3rem"></i>
+          <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
         </div>
       </div>
       <div class="row mt-4">
@@ -40,6 +40,7 @@
             v-model="transacObj.date"
             id="date"
             class="form-control"
+            ref="dateField"
           />
         </div>
       </div>
@@ -231,7 +232,6 @@ import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 import { useToast } from "primevue/usetoast";
 import SearchMember from "../../../components/search/SearchMember"
 // import Dropdown from 'primevue/dropdown';
-import moment from 'moment'
 export default {
   components: { SearchMember },
   directives: {
@@ -374,6 +374,12 @@ export default {
         if (!props.transactionDetails.account) {
           data = [ ...expenseAccounts.value, accountType.value ];
         }
+        if (props.transactionDetails.id && props.transactionDetails.debitSplitAccounts && props.transactionDetails.debitSplitAccounts.length > 0) {
+          data = expenseAccounts.value;
+        }
+        if (props.transactionDetails.id && props.transactionDetails.creditSplitAccounts && props.transactionDetails.creditSplitAccounts.length > 0) {
+          data = accountType.value ? accountType.value : [ ];
+        }
         if (props.transactionDetails.account === "Income Account") {
           data = accountType.value ? accountType.value : [ ];
         }
@@ -462,13 +468,13 @@ export default {
 
     const constructSaveTransactionReqBody = () => {
       const reqBody = {
-        id: props.transactionDetails.id ? props.transactionDetails.id : "",
+        // id: props.transactionDetails.id ? props.transactionDetails.id : "",
         amount: +transacObj.value.amount,
         // amount: Math.abs(+transacObj.value.amount),
         creditSplitAccounts: splittedTransactions.value.map(i => {
           return {
             accountID: i.accountID,
-            amount: splittedTransactions.value.length ===1 ? transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount,
+            amount: splittedTransactions.value.length ===1 ? +transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount,
             // amount: Math.abs(i.amount ? +i.amount : +transacObj.value.amount),
             contactID: i.donorId ? i.donorId : "",
             transactionID: i.transactionID
@@ -478,6 +484,9 @@ export default {
         debitAccountID: selectedCashAccount.value.id,
         memo: transacObj.value.memo,
         transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : ""
+      }
+      if (props.transactionDetails.id) {
+        reqBody.id = props.transactionDetails.id;
       }
       return reqBody;
     }
@@ -543,6 +552,7 @@ export default {
       })
     }
 
+    const dateField = ref(null);
     watch(() => props.transactionDetails, (data) => {
       console.log(data, "in watch");
       transacObj.value.date = new Date(data.date);
@@ -553,7 +563,7 @@ export default {
       selectedCashAccount.value = data.account;
 
       if (props.transactionDetails.id) {
-        transacObj.value.date = moment(new Date(data.date))
+        transacObj.value.date = new Date(data.date).toISOString().substr(0, 10)
         if (data.debitSplitAccounts && data.debitSplitAccounts.length > 0) {
           splittedTransactions.value = data.debitSplitAccounts;
         } else {
@@ -667,6 +677,7 @@ export default {
       addDonor,
       formIsValid,
       removeSplit,
+      dateField,
     };
   },
 };
