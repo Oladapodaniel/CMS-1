@@ -25,28 +25,34 @@
               <div  class="col-12 col-md-10 ">
                 <div class=" row d-flex justify-content-md-between">
                   <div class="col-md-6 mt-3 px-md-0">Pastors and Ministers</div>
-                  <div class="col-2 mt-2 col-md-2 mr-2 btnIcons pointer-cursor" data-target="#add-pastor"  data-toggle="modal"   data-whatever="@fat">Add</div>
+                  <div class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer" data-target="#add-pastor"  data-toggle="modal"   data-whatever="@fat">Add</div>
                 </div>
               </div>
-              <div class="col-12 px-md-0">
+              <div class="col-11 px-md-0">
                 <div class="row" v-for="(item, index) in pastors" :key="index">
                   <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
-                  <div class="col-9 col-md-7 mt-2">
-                    <div><img :src="item.url" class="w-50" style="border: 1px solid #707070;border-radius: 13px;"></div>
-                    <div class="pastorname">{{ item.pastorsName }}</div>
-                    <div class="pastorname">{{ item.pastorsEmail }}</div>
-                  </div>
-                  <div class="row d-flex justify-content-between mt-5">
-                    <div class="col-1  mt-2" @click="deleteItem(index)"><i class="fa fa-trash"></i></div>
-                    <div class="col-2 pt-2 edit-button pointer-cursor" style="color: #136ACD;">Edit</div>
+                  <div class="col-9 col-md-10 mt-4">
+                    <div class="row">
+                      <div class="col-md-2"><img :src="item.url" class="w-75 rounded-circle" style="border: 1px solid #707070;border-radius: 13px;"></div>
+                      <div class=" col-md-3 pastorname">{{ item.pastorsName }}</div>
+                      <div class="col-md-6 pastorname">{{ item.pastorsEmail }}</div>
+                      <div class="col-1 col-md-1" @click="deleteItem(index)"><i class="fa fa-trash"></i></div>
+
+                    </div>
                   </div>
                 </div>
               </div>
              <div  class="col-12 col-md-10 ">
                 <div class=" row d-flex justify-content-md-between">
                   <div class="col-md-6 mt-3 px-md-0">Other Information</div>
-                  <div>{{ information }}</div>
-                  <div class="col-2 mt-2 col-md-2 mr-2 btnIcons pointer-cursor" data-target="#other-info"  data-toggle="modal"   data-whatever="@fat">Add</div>
+                  <div class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer" data-target="#other-info"  data-toggle="modal"   data-whatever="@fat">Add</div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12 col-12">
+                    <span class="display:block">{{ information }}</span>
+                  </div>
                 </div>
               </div>
               <!-- modal for other info -->
@@ -72,15 +78,26 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <div class="col-md-8 col-12">
+                <div class="col-md-11 col-12">
                   <div class="form-cover w-100">
-                    <form class="mt-1 mr-5 mr-md-0 mr-lg-0">
+                    <form class=" mr-lg-0">
                       <div class="form-group">
+                        <label for="recipient-title" class="col-form-label"
+                          >Title:</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="title"
+                          v-model="title"
+                        />
+                      </div>
+                       <div class="form-group">
                         <label for="message-text" class="col-form-label"
                           >Other Information:</label
                         >
                         <textarea
-                          class="form-control h-100"
+                          class="form-control h-200"
                           id="message-text"
                           v-model="information"
                         ></textarea>
@@ -345,6 +362,7 @@ export default {
           console.log(pastorSocial)
           closePastorModal.value.setAttribute("data-dismiss", "modal")
           console.log(image.value);
+          pastorDetails.value = {}
         }
 
         const otherInfoDetails = () => {
@@ -385,7 +403,6 @@ export default {
           })
         }
         getTenantId()
-
 
         return {
             pastors,
