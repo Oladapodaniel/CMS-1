@@ -4,11 +4,11 @@
     class="container-wide shadow p-3 mb-5 bg-body rounded mt-5"
     style="max-width: 700px"
   >
-    <div class="row mt-5">
+    <div class="row mt-2">
       <div class="col-md-6 offset-md-3 mb-3"></div>
     </div>
     <div class="row">
-      <div class="col-12 p-0">
+      <div class="col-6 offset-sm-3 p-0">
         <img :src="bannerUrl" class="w-100">
       </div>
     </div>

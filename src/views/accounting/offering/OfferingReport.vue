@@ -27,11 +27,11 @@
       </div>
 
       <div class="col-md-7">
-        <span class="theader">Hello</span>
+        <!-- <span class="theader">Event</span> -->
         <div class="my-3">
-          <span class="evt-name">
-            {{ churchName }} 
-          </span>
+          <!-- <span class="evt-name">
+            {{  }} 
+          </span> -->
         </div>
       </div>
 
@@ -113,7 +113,7 @@
                           data-target="#sendReport"
                           :class="{ 'resend-btn': markedAsSent }"
                         >
-                          sendBtnText
+                          {{ sendBtnText }}
                         </a>
                       </div>
                       <div class="col-6">
@@ -128,7 +128,7 @@
                     <a
                       style="color: #136acd; cursor: pointer"
                       @click="markAsSent"
-                      >mark as sent</a
+                      >{{ markedAsSent  }}</a
                     >
                   </div>
                 </div>
@@ -165,10 +165,10 @@
           <div class="modal-body pt-0 px-0" :data-dismiss="btnState">
             <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
             <ReportModal
-              :eventName="stats.activityToday ? stats.activityToday.name : ''"
+              :eventName="`This Contribution`"
               @sendreport="sendReport"
               @get-church-name="getChurchName"
-              :stats="stats"
+              :stats="contributionReport"
             />
           </div>
           <!-- <div class="modal-footer">
@@ -406,7 +406,7 @@
           </div>
         </div>
       </div>
-      <div class="row email-data" ref="emaildata" v-show="false">
+      <div class="row email-data" ref="emaildata" v-if="false" >
           <table
             align="center"
             style="
@@ -454,8 +454,9 @@
                         color: rgb(255, 255, 255);
                         font-weight: bold;
                         font-size: 29px;
+                        padding-bottom: 20px;
                       "
-                      >Event&nbsp;and&nbsp;Report</span
+                      >Contribution&nbsp;Report</span
                     >
                   </p>
                 </td>
@@ -485,8 +486,8 @@
                         font-weight: bold;
                         font-size: 16px;
                       "
-                      >Total&nbsp;Attendance:
-                      {{ stats.todayAttendance }}</span
+                      >Total&nbsp;Offering:
+                      {{ contributionReport.totalToday }}</span
                     >
                   </p>
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
@@ -499,16 +500,7 @@
                       >&nbsp;</span
                     >
                   </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span
-                      style="
-                        color: rgb(255, 255, 255);
-                        font-weight: bold;
-                        font-size: 16px;
-                      "
-                      >Total&nbsp;Offering: {{ stats.todayOffering }}</span
-                    >
-                  </p>
+        
                 </td>
               </tr>
               <tr>
@@ -525,37 +517,13 @@
                       >&nbsp;</span
                     >
                   </p>
-                  <p
-                    style="
-                      text-indent: 20pt;
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                    "
-                  >
-                    <span
-                      style="
-                        color: rgb(192, 192, 192);
-                        font-weight: bold;
-                        font-size: 13px;
-                      "
-                      >Event&nbsp;Name</span
-                    >
-                  </p>
+            
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
                     <span style="font-weight: bold; font-size: 24px"
                       >&nbsp;
-                      {{
-                        stats.activityToday ? stats.activityToday.name : ""
-                      }}
+                      CONTRIBUTION DETAILS
                       <br />
-                      <span
-                        style="
-                          font-size: 14px;
-                          color: red;
-                          padding-left: 20px;
-                        "
-                        >{{ eventDateString }}.</span
-                      ></span
+                      </span
                     >
                   </p>
                 </td>
@@ -567,326 +535,19 @@
                     vertical-align: top;
                   "
                 >
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >Preacher:
-                      {{
-                        stats.activityToday
-                          ? stats.activityToday.preacher
-                          : ""
-                      }}</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >Topic:
-                      {{
-                        stats.activityToday ? stats.activityToday.topic : ""
-                      }}</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >First&nbsp;timers: {{ stats.todayFirstTimer }}</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >New&nbsp;Converts: {{ stats.todayNewConvert }}</span
-                    >
+                <p style="margin-bottom: 0pt; margin-top: 15pt">
+                      <span
+                        style="
+                          font-size: 14px;
+                          color: red;
+                          padding-left: 20px;
+                        "
+                        >{{ format(routeParams) }}.</span
+                      >
                   </p>
                 </td>
               </tr>
-              <tr>
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    background: rgb(0, 0, 0);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="
-                        font-weight: normal;
-                        font-size: 21px;
-                        color: rgb(255, 255, 255);
-                      "
-                      >Attendance</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="5"
-                  style="
-                    width: 388.5pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: normal; font-size: 21px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="5"
-                  style="
-                    width: 388.5pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    border-bottom: 2.25pt solid rgb(0, 0, 0);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      text-indent: 21pt;
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
-                      >Attendance&nbsp;item</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
-                    width: 188.2pt;
-                    padding: 0pt 5.4pt;
-                    border-bottom: 2.25pt solid rgb(0, 0, 0);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="
-                        font-weight: bolder;
-                        font-size: 18px;
-                        color: #000;
-                      "
-                      >Count</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="2"
-                  style="
-                    width: 200.3pt;
-                    padding: 0pt 5.4pt;
-                    border-bottom: 2.25pt solid rgb(0, 0, 0);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
-                      >Total</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr
-                style="font-weight: normal"
-                v-for="(attendance, index) in activityAttendances"
-                :key="index"
-              >
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    border-bottom: 31.875pt none rgb(255, 255, 255);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      text-indent: 21pt;
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: normal; font-size: 13px">{{
-                      attendance.attendanceTypeName
-                    }}</span>
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
-                    width: 188.2pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    border-bottom: 31.875pt none rgb(255, 255, 255);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: normal; font-size: 13px">{{
-                      attendance.number
-                    }}</span>
-                  </p>
-                </td>
-                <td
-                  colspan="2"
-                  style="
-                    width: 200.3pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    border-bottom: 31.875pt none rgb(255, 255, 255);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: normal; font-size: 13px">{{
-                      attendance.number
-                    }}</span>
-                  </p>
-                </td>
-              </tr>
-              <tr style="border-top: 3px solid">
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      text-indent: 21pt;
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
-                    width: 188.2pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >Total</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="2"
-                  style="
-                    width: 200.3pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px">{{
-                      stats.todayAttendance
-                    }}</span>
-                  </p>
-                </td>
-              </tr>
+              
 
               <tr>
                 <td
@@ -970,7 +631,7 @@
                     "
                   >
                     <span style="font-size: 21px; color: rgb(255, 255, 255)"
-                      >Offering</span
+                      >Contribution</span
                     >
                   </p>
                 </td>
@@ -1093,7 +754,7 @@
                   >
                     <span
                       style="font-weight: bold; font-size: 18px; color: #000"
-                      >Offering&nbsp;Item</span
+                      >Contribution&nbsp;Item</span
                     >
                   </p>
                 </td>
@@ -1169,7 +830,7 @@
               </tr>
               <tr
                 style="font-weight: normal; font-size: 13px"
-                v-for="(offering, index) in activityOfferings"
+                v-for="(offering, index) in contributionReport.todayContributions"
                 :key="index"
               >
                 <td
@@ -1189,7 +850,7 @@
                       text-align: center;
                     "
                   >
-                    <span style="font-weight: normal; font-size: 13px">{{
+                    <span style="font-weight: normal; font-size: 16px">{{
                       offering.name
                     }}</span>
                   </p>
@@ -1212,7 +873,7 @@
                       text-align: center;
                     "
                   >
-                    <span style="font-weight: normal; font-size: 13px">{{
+                    <span style="font-weight: normal; font-size: 16px">{{
                       offering.channel
                     }}</span>
                   </p>
@@ -1236,7 +897,7 @@
                       text-align: center;
                     "
                   >
-                    <span style="font-weight: normal; font-size: 13px">{{
+                    <span style="font-weight: normal; font-size: 16px">{{
                       offering.amount
                     }}</span>
                   </p>
@@ -1258,7 +919,7 @@
                       text-align: center;
                     "
                   >
-                    <span style="font-weight: normal; font-size: 13px">{{
+                    <span style="font-weight: normal; font-size: 16px">{{
                       offering.amount
                     }}</span>
                   </p>
@@ -1352,7 +1013,7 @@
                     "
                   >
                     <span style="font-weight: bold; font-size: 16px">{{
-                      tottalOfferings
+                      contributionReport.totalToday
                     }}</span>
                   </p>
                 </td>
@@ -1532,7 +1193,7 @@
                     "
                   >
                     <span style="font-weight: bold; font-size: 16px"
-                      ><a :href="url" style="color: blue; font-weight: bold"
+                      ><a :href="url" target="_blank" style="color: blue; font-weight: bold"
                         >View full report</a
                       ></span
                     >
@@ -1664,7 +1325,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                          {{ contributionReport.todayVsLastWeek }}
+                          {{ contributionReport.todayVsLastWeek ? contributionReport.todayVsLastWeek.toFixed(2) : 0 }}
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -1700,7 +1361,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                          {{ contributionReport.todayVsLastMonth }}
+                          {{ contributionReport.todayVsLastMonth ? contributionReport.todayVsLastMonth.toFixed(2) : 0 }}
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -1737,7 +1398,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                        {{ contributionReport.todayVsLastYear }}
+                        {{ contributionReport.todayVsLastYear ? contributionReport.todayVsLastYear : 0 }}
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -1817,92 +1478,9 @@ export default {
         const toast = useToast();
         const churchName = ref("")
         const routeParams = ref(route.params.report)
-        const stats = ref({
-  "activityToday": {
-    "id": "ebec2866-63f9-43d9-87c7-08d919f43494",
-    "firstTimersCount": 0,
-    "newConvertsCount": 0,
-    "name": "PFN-TEST",
-    "venue": null,
-    "details": null,
-    "adImagePath": "",
-    "adImagePathBlobName": "",
-    "date": "2021-05-18T12:09:21.96",
-    "makePublic": false,
-    "enableRegisteration": true,
-    "enableRegisterationPayment": true,
-    "registrationAmount": 200,
-    "eventRegistrationRules": null,
-    "eventRegistrationSMS": "Thanks",
-    "eventRegistrationEmail": "Thanks",
-    "adAudioPath": null,
-    "adVideoPath": null,
-    "isPushed": false,
-    "activityDate": "2021-05-24T00:00:00",
-    "startTime": null,
-    "endTime": null,
-    "description": null,
-    "preacher": null,
-    "topic": null,
-    "text": null,
-    "note": null,
-    "tenantID": "e9749fad-85e8-4130-b553-37acc8acde61",
-    "eventId": "f7de6ca5-47a6-4e4e-de41-08d919f42a41",
-    "event": null,
-    "attendances": null,
-    "offerings": null,
-    "testimonies": [],
-    "firstTimers": [],
-    "converts": [],
-    "activityRegistrations": null
-  },
-  "activityOfferings": [],
-  "todayOffering": 0,
-  "lastWeekOffering": 0,
-  "lastMonthOffering": 0,
-  "lastYearOffering": 0,
-  "todayVsLastweekOfferingPercentage": 0,
-  "todayVsLastMonthOfferingPercentage": 0,
-  "todayVsLastYearOfferingPercentage": 0,
-  "tenantCurrencyName": "NGN",
-  "todayFirstTimer": 0,
-  "lastWeekFirstTimer": 0,
-  "lastMonthFirstTimer": 0,
-  "lastYearFirstTimer": 0,
-  "todayVsLastYearFirstTimerPercentage": 0,
-  "todayVsLastWeekFirstTimerPercentage": 0,
-  "todayVsLastMonthFirstTimerPercentage": 0,
-  "activityAttendances": [],
-  "todayAttendance": 0,
-  "lastWeekAttendance": 0,
-  "lastMonthAttendance": 0,
-  "lastYearAttendance": 0,
-  "todayVsLastYearAttendancePercentage": 0,
-  "todayVsLastWeekAttendancePercentage": 0,
-  "todayVsLastMonthAttendancePercentage": 0,
-  "todayNewConvert": 0,
-  "attendanceSoFar": [
-    0,
-    0,
-    0,
-    0,
-    0
-  ],
-  "firstTimerSoFar": [
-    0,
-    0,
-    0,
-    0,
-    0
-  ],
-  "offeringSoFar": [
-    0,
-    0,
-    0,
-    0,
-    0
-  ]
-})
+        const url = ref(`my.churchplus.co/tenant/report/${route.params.report}`)
+        const sendBtnText = ref("Send Report")
+        const markedAsSent =  ref('mark as sent')
 
         const toggleReportState = () => {
         reportApproved.value = !reportApproved.value;
@@ -2050,9 +1628,13 @@ export default {
               return formatDate.monthDayYear(date)
             }
 
+            const markAsSent =  () => {
+              sendBtnText.value = "Resend Report"
+              markedAsSent.value = "marked as sent"
+            }
+
         return {
-            reportApproved, toggleReportState, contributionReport, stats, sendReport,
-            emaildata, btnState, churchName, getChurchName, routeParams, format
+            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent
         }
     }
 }
@@ -2292,4 +1874,10 @@ export default {
     background: #136acd;
     color: white;
     }
+
+    .resend-btn {
+    background: transparent !important;
+    color: #4d6676 !important;
+    border: 1px solid #dde2e6 !important;
+  }
 </style>
