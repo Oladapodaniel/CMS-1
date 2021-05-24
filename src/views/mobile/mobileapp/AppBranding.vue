@@ -149,14 +149,14 @@
                <img class="c-pointer w-25 mt-4" src="../../../assets/mobileonboarding/colorpickericon.png" alt="color-picker"  @click="showColorPallet" >
 
               <div class="col-4 col-sm-4 text-right">
-                <label for="colorpicker"></label>
+                <!-- <label for="colorpicker"></label> -->
                 <input
                   type="color"
                   id="colorpicker"
                   class="no-border form-control c-pointer"
                   v-model="colorPicked"
                   ref="colorBox"
-                  hidden
+                  style="width: 0;height:0"
                 />
               </div>
               </div>
@@ -442,6 +442,7 @@ import axios from "@/gateway/backendapi";
 // import {ref} from 'vue'
 export default {
   setup() {
+    const image = ref("")
     const colorBox = ref("")
     const colorPicked = ref("");
       const changeColors = computed(() => {
@@ -478,12 +479,18 @@ console.log(colorBox);
     };
 
 
+const imageSelected = (e) => {
+image.value = e.target.files[0]
+ console.log(image.value);
+};
+
     return {
       saveAppBranding,
       colorPicked,
       changeColors,
      showColorPallet,
      colorBox,
+     imageSelected,
     };
   },
 };

@@ -300,7 +300,8 @@ export default {
           let pastor = pastors.value.map(i => {
             return {
               name: i.pastorsName,
-              socialMedia: pastorSocial.value
+              socialMedia: pastorSocial.value,
+              photo: image.value
             }
           })
 
@@ -315,14 +316,6 @@ export default {
 
           store.dispatch("setChurchProfileData", churchDetails)
           console.log(churchDetails);
-          axios
-            .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
-            .then((res) => {
-            console.log(res,  "🎄🎄🎄");
-            })
-            .catch((err) => {
-            console.log(err);
-            });
 
         }
         store.dispatch("setPastorsData", pastors)
@@ -351,6 +344,7 @@ export default {
           }
           console.log(pastorSocial)
           closePastorModal.value.setAttribute("data-dismiss", "modal")
+          console.log(image.value);
         }
 
         const otherInfoDetails = () => {
@@ -360,6 +354,8 @@ export default {
         const uploadFile = (e) => {
           image.value = e.target.files[0]
           pastorDetails.value.url = URL.createObjectURL(image.value);
+          console.log(pastorDetails);
+          console.log(image.value);
         }
 
         const getTenantId = async() => {

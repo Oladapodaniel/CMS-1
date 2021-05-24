@@ -44,6 +44,7 @@ export default {
             state.formData.append("phoneNumber", payload.phoneNumber)
             state.formData.append("abouts", payload.abouts)
             state.formData.append("pastors", payload.pastor)
+            state.formData.append("logo", payload.logo)
         },
 
         setSocialMediaData(state, payload) {
