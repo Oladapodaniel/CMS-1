@@ -45,8 +45,14 @@
              <div  class="col-12 col-md-10 ">
                 <div class=" row d-flex justify-content-md-between">
                   <div class="col-md-6 mt-3 px-md-0">Other Information</div>
-                  <div>{{ information }}</div>
                   <div class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer" data-target="#other-info"  data-toggle="modal"   data-whatever="@fat">Add</div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12 col-12">
+                    <span class="display:block">{{ information }}</span>
+                  </div>
                 </div>
               </div>
               <!-- modal for other info -->
@@ -349,7 +355,6 @@ export default {
         }
         getTenantId()
         
-
         return {
             pastors,
             deleteItem,
