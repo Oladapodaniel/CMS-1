@@ -28,7 +28,7 @@
     </div>
 
     <div class="row bordered-bottom pb-3 mb-3">
-      <div class="col-md-6 d-flex align-items-end">
+      <div class="col-md-7 d-flex align-items-end">
         <input
           type="date"
           name=""
@@ -37,7 +37,7 @@
           v-model="transactionDate"
         />
       </div>
-      <div class="col-md-6 d-md-flex flex-column align-items-end">
+      <div class="col-md-5 d-md-flex flex-column align-items-end">
         <span class="small-text mb-n2">Total</span>
         <span class="font=weight-700" style="font-size: 30px">{{
           totalAmount
@@ -59,7 +59,7 @@
         <div class="row">
           <div class="col-md-8"></div>
           <div class="col-md-4 pl-0">
-            <h5 class="font-weight-700 text-center mb-0">Debits</h5>
+            <h6 class="font-weight-700 text-center mb-n1">Debits</h6>
           </div>
         </div>
       </div>
@@ -142,7 +142,7 @@
           <a
             class="text-decoration-none font-weight-700 link-color c-pointer"
             @click="addRecord('inflow')"
-            >Add Debit <i class="pi pi-plus-circle" style="font-size: 14px"></i
+            ><span style="font-size:18px">Add Debit</span> <i class="pi pi-plus-circle" style="font-size: 14px"></i
           ></a>
         </div>
         <div class="col-4 px-0 text-center">
@@ -156,7 +156,7 @@
         <div class="row">
           <div class="col-md-8"></div>
           <div class="col-md-4 pl-0">
-            <h5 class="font-weight-700 text-center mb-0">Credits</h5>
+            <h6 class="font-weight-700 text-center mb-n1">Credits</h6>
           </div>
         </div>
       </div>
@@ -235,10 +235,10 @@
         <div class="col-md-12 d-flex justify-content-between px-0">
           <div class="col-8 px-0">
             <a
-              class="text-decoration-none font-weight-700 link-color c-pointer"
+              class="text-decoration-none font-weight-bold link-color c-pointer"
               @click="addRecord('outflow')"
-              >Add Credit
-              <i class="pi pi-plus-circle" style="font-size: 14px"></i
+              ><span style="font-size:18px">Add Credit</span> 
+              <i class="pi pi-plus-circle ml-1" style="font-size: 14px"></i
             ></a>
           </div>
           <div class="col-4 text-center px-0">
