@@ -46,6 +46,7 @@
                         </div>
                         <div class="col-auto w-75 button-add">
                            <button type="button" class="btn btn-primary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="createDefaultMessage">Save</button>
+                           <button type="button" class="btn btn-secondary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="updateDefaultMessage">Save</button>
                            <router-link to="/tenant/settings/defaultmessage"><button type="button" class="btn h-25 btn-outline-secondary" style="float:right; border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button></router-link>
                         </div> 
                 </div>
@@ -74,7 +75,10 @@ import axios from "@/gateway/backendapi";
 		selectCategory: null,
 		Membership: messageOptions.Membership,
         selectType: null,
-		Sms: messageOptions.Sms
+		Sms: messageOptions.Sms,
+        defaultMessage:{}
+
+
 	}
 },
 methods:{
@@ -101,7 +105,43 @@ methods:{
             console.log(error);
         })
     },
+    async updateDefaultMessage(){
+        let newUpdate={
+            id: this.defaultMessage.returnObject.id,
+            subject: this.defaultMessage.returnObject.subject,
+            message: this.defaultMessage.returnObject.message,
+            messageType: this.selectCategory.value,
+            category: this.selectType.value
+        }
+        axios.put(`/api/Settings/UpdateDefaultMessage`,newUpdate)
+        .then((res)=>{
+            console.log(res);
+            this.$router.push('/tenant/settings/defaultmessage')
+        }).catch((error)=>{
+         console.log(error);   
+        })
+    },
+    async getDefaultMessage(){
+      try{
+       const {data} = await axios.get(`/api/Settings/GetDefaultMessage/${this.$route.query.messageId}`);
+        this.defaultMessage = data;
+        this.message = data.returnObject.message;
+        this.subject = data.returnObject.subject;
+        this.selectCategory = this.Membership.find(i =>i.value === data.returnObject.messageType)
+        this.selectType = this.Sms.find(i => i.value === data.returnObject.category )
+        console.log(this.defaultMessage);
+
+      }catch(error){
+        console.log(error);
+      }
+
+    },
+
      
+},
+created(){
+    this.getDefaultMessage()
+
 }
         
     }

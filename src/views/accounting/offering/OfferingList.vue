@@ -1,5 +1,5 @@
 <template>
- <div class="row">
+ <!-- <div class="row"> -->
           <div class="col-12 table" id="table">
             <div class="top-con" id="ignore2">
               <div class="table-top my-4 px-4">
@@ -202,7 +202,7 @@
             
           </div>
 
-    </div>
+    <!-- </div></div> -->
 
 </template>
 

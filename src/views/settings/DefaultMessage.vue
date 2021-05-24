@@ -87,6 +87,7 @@
                   <a class="dropdown-item">
                     <router-link :to="`/tenant/sms/compose?defaultId=${allMessages.id}`">Send Email</router-link>
                   </a>
+                  <router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}"><a class="dropdown-item button">Edit</a></router-link>
                   <a class="dropdown-item button" @click="deletePop(allMessages.id)">Delete</a>
                 </div>
               </div>
@@ -166,6 +167,7 @@ export default {
         console.log(error)
       }
     },
+    
     messageName(value){
       return messageOptions.Membership[value].name
     },
