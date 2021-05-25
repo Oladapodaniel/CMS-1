@@ -11,7 +11,7 @@
                             <label for="inputPassword6" class="col-form-label">Category:</label>
                         </div>
                         <div class="col-auto w-75">
-                          <Dropdown v-model="selectType" :options="Sms" optionLabel="name" placeholder="Select type" :filter="true" filterPlaceholder="Sms"  style="width:100%; text-align:left" />
+                          <Dropdown v-model="selectType" :options="Sms" optionLabel="name" placeholder="Select type" :filter="false" filterPlaceholder="Sms"  style="width:100%; text-align:left" />
                         </div>
                 </div>
                  <div class="row g-3 align-items-center">
@@ -19,11 +19,12 @@
                             <label for="inputPassword6" class="col-form-label">Type:</label>
                         </div>
                         <div class="col-auto w-75">
-                            <Dropdown v-model="selectCategory" :options="Membership" optionLabel="name" placeholder="Select category" :filter="true" filterPlaceholder="Membership Information Update Message" style="width:100%; text-align:left" />
+                            <Dropdown v-model="selectCategory" :options="Membership" optionLabel="name" placeholder="Select category" :filter="false" filterPlaceholder="Membership Information Update Message" style="width:100%; text-align:left" />
                         </div>
                        
                 </div>
                 <Toast/>
+                <ConfirmDialog/>
                 <div class="row g-3 align-items-center">
                         <div class="col-auto w-25">
                             <label for="inputPassword6" class="col-form-label">Subject:</label>
