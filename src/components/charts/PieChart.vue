@@ -30,7 +30,7 @@ export default {
         getSummary.value = [ ]
         props.summary.forEach((i) => {
           let summaryObj = {
-            name: i.name === 'Not_Specified' ? `<div style="font-weight: 200; color: red;">Not Sure</div>` : i.name === null ? 'Not Sure' : `<div style="font-weight: 200; color: red;">${i.name}</div>`,
+            name: i.name === 'Not_Specified' ? `<div style="font-weight: 200;">Not Sure</div>` : i.name === null ? 'Not Sure' : `<div style="font-weight: 200;">${i.name}</div>`,
             y: i.value,
           };
           getSummary.value.push(summaryObj);

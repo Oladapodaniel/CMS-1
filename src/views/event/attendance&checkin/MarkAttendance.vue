@@ -56,13 +56,20 @@
           class="row mt-4 main-th font-weight-700 py-2 grey-rounded-bg"
           :class="{ 'kiosk-th-size': isKioskMode }"
         >
-          <div class="col-md-5" :class="{ 'order-3': isKioskMode }">Name</div>
+          <div class="col-md-3" :class="{ 'order-3': isKioskMode }">Name</div>
           <div class="col-md-3" :class="{ 'order-4': isKioskMode }">Phone</div>
           <div
             class="col-md-2 d-none"
             :class="{ 'd-flex order-2': isKioskMode }"
           >
             Picture
+          </div>
+          <!--  :class="{ 'd-flex order-2': isKioskMode }" -->
+          <div
+            class="col-md-2"
+           
+          >
+            Registered
           </div>
           <div class="col-md-2" :class="{ 'order-1': isKioskMode }">
             Check in

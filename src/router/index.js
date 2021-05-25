@@ -3,9 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Pagination from '@/components/payment/PaymentSuccessful.vue';
 
-import TermsOfUse from '../components/temp/PaymentPage'
 
-
+import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [{
         path: '/pagination',
@@ -83,6 +82,12 @@ const routes = [{
                 name: 'Dashboard',
                 component: () =>
                     import ( /* webpackChunkName: "dashboard" */ '../views/dashboard/ChurchDashboard.vue')
+            },
+            {
+                path: 'subscription',
+                name: 'Subscription',
+                component: () =>
+                    import ( /* webpackChunkName: "dashboard" */ '../views/dashboard/Subscription.vue')
             },
             {
                 path: 'people',
@@ -422,8 +427,7 @@ const routes = [{
                         name: 'SocialFeed',
                         component: () =>
                             import ( /* webpackChunkName: "feed" */ '@/views/social&mobile/feed/Index'),
-                        children: [
-                            {
+                        children: [{
                                 path: '',
                                 name: 'AllPosts',
                                 component: () =>
@@ -578,8 +582,7 @@ const routes = [{
                 name: 'MediaLibrary',
                 component: () =>
                     import ( /* webpackChunkName: "medialibrary" */ '@/views/media/library/Index'),
-                children: [
-                    {
+                children: [{
                         path: '',
                         name: 'Gallery',
                         component: () =>
@@ -618,7 +621,7 @@ const routes = [{
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/SelectOffCat')
             },
             {
-                path: 'addoffering',
+                path: 'addoffering/:offId?',
                 name: 'AddOffering',
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/AddOffering')
@@ -658,6 +661,42 @@ const routes = [{
                 name: 'Payment',
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/Payment')
+            },
+            {
+                path: '/onboardingprocess',
+                name: 'MobileOnboarding',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')
+            },
+            {
+                path: '/appbranding',
+                name: 'AppBranding',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/AppBranding')
+            },
+            {
+                path: '/socialmedia',
+                name: 'SocialMedia',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/SocialMedia')
+            },
+            {
+                path: '/onboardingsuccessful',
+                name: 'OnboardingSuccessful',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/OnboardingSuccessful')
+            },
+            {
+                path: '/churchsetup',
+                name: 'ChurchSetUp',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/ChurchSetUp')
+            },
+            {
+                path: '/donationsetup',
+                name: 'DonationSetup',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/DonationSetup')
             }
         ],
     },
@@ -666,6 +705,12 @@ const routes = [{
         name: 'WebCheckin',
         component: () =>
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/attendance&checkin/MarkinAttendance')
+    },
+    {
+        path: '/event/:eventId',
+        name: 'EventRegistration',
+        component: () =>
+            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/EventRegistration')
     },
     {
         path: '/about',
@@ -749,7 +794,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 
 
-    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin" || to.name === "OnlineGiving4" || to.name === "iFrame" || to.name === "SignUpPayment" || to.name === "SignInPayment" || to.name === "TransactionPage") && !tokenIsValid) return next(true)
+    if ((to.name === "ResetPassword" || to.name === "EmailSent" || to.name === "OnboardingForm" || to.name === "WebCheckin" || to.name === "OnlineGiving4" || to.name === "iFrame" || to.name === "SignUpPayment" || to.name === "SignInPayment" || to.name === "TransactionPage" || to.name === "EventRegistration") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;

@@ -14,26 +14,16 @@
             </div>
           </div>
           <div class="actions">
-            <router-link :to="{ name: 'ImportInstruction' }">
-            <button class="more-btn button">
+            <button class="more-btn button" @click="importFirstTimer">
               Import
-              <!-- <span><i class="fa fa-angle-down btn-icon"></i></span> -->
             </button>
+            <router-link :to="{ name: 'AddFirstTimer' }">
+              <button class="button add-person-btn">
+                Add First Timers
+              </button>
             </router-link>
-            
-            <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item elipsis-items cursor-pointer" @click="fileUpload">
-                  <i class="pi pi-upload" aria-hidden="true"></i>&nbsp; Import from Excel
-                  <input type="file" ref="importFile" @change="imageSelected" hidden>
-                </a>
-                <a class="dropdown-item elipsis-items cursor-pointer" href="/files/Template.csv" download><i class="pi pi-download" aria-hidden="true"></i>&nbsp; Download Template</a>
-              </div> -->
-              <router-link :to="{ name: 'AddFirstTimer' }">
-                <button class="button add-person-btn">
-                  Add First Timers
-                </button>
-              </router-link>
           </div>
+          
         </div>
         <Dialog header="First Timers to import from file" v-model:visible="displayModal" :style="{width: '80vw'}" :modal="true">
             <div class="container">
@@ -145,12 +135,14 @@
     import { useToast } from "primevue/usetoast";
     import Dialog from 'primevue/dialog';
 // import store from "@/store/index";
-// import router from "@/router/index";
+import router from "@/router/index";
 // import { useRoute } from "vue-router";
+
 
 export default {
   components: { FirstTimersList, Dialog },
   setup() {
+    // const route = useRoute()
       const firstTimersList = ref([])
       const loading = ref(false)
       const toast = useToast()
@@ -275,7 +267,11 @@ export default {
       }
     }
 
-    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal };
+    const importFirstTimer = () => {
+      router.push({ name: 'ImportInstruction', query: { query: 'importfirsttimer' } })
+    }
+
+    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer };
 
   },
 };

@@ -31,9 +31,9 @@
               <!-- delete icon area -->
               <i
                 class="pi pi-trash color-deleteicon ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
-                style="font-size: 15px"
+                style="font-size: 20px"
                 v-if="markedMails.length > 0"
-                @click="showConfirmModal"
+                @click="showConfirmModal(false)"
               >
               </i>
               <!--end delete icon area -->
@@ -111,7 +111,8 @@
                             <span class="small-text ml-5 mr-n4">
                               <i
                                 class="c-pointer pr-3 fa fa-trash delete-icon"
-                                @click="showConfirmModal(draft)"
+                                @click="showConfirmModal(email.id)"
+                                style="font-size: 18px"
                               >
                               </i
                             ></span>
@@ -187,7 +188,7 @@ export default {
       getScheduledSMS();
     });
 
-// function to search
+    // function to search
     const searchScheduled = ref("");
     const scheduledMails = computed(() => {
       if (searchScheduled.value === "" && schedules.value.length > 0)
@@ -206,7 +207,6 @@ export default {
       } else {
         markedMails.value.splice(mailIndex, 1);
       }
-      console.log(markedMails.value, "🎉🎉");
     };
 
     // code to select multiple schedule mails
@@ -223,51 +223,77 @@ export default {
       } else {
         markedMails.value = [];
       }
-      console.log(markedMails.value, "👌👌🎊🎊");
     };
 
-    // function to delete schedulemails
-    const itemHolder = (y) => {
-      return y.map((i) => i.id).join(",");
+    // Function to delete schedulemails
+    const getIdsOfSchedulesToDelete = (markedSchedules) => {
+      return markedSchedules.map((i) => i.id).join(",");
     };
-    const deleteSchedules = () => {
-      let holder = itemHolder(markedMails.value);
+
+    const deleteSchedules = (id) => {
+      let stringOfSchedulesIds = id
+        ? id
+        : getIdsOfSchedulesToDelete(markedMails.value);
+
       axios
         .delete(
-          `/api/Messaging/DeleteEmailScheduledMessages?ScheduledMessageIdList=${holder}`
+          `/api/Messaging/DeleteEmailScheduledMessages?ScheduledMessageIdList=${stringOfSchedulesIds}`
         )
         .then((res) => {
-          console.log(res, "🎉✨");
-          schedules.value = schedules.value.filter((item) => {
-            const z = markedMails.value.findIndex((i) => i.id === item.id);
-            if (z >= 0) return false;
-            return true;
-          });
+          if (res) {
+            toast.add({
+              severity: "success",
+              summary: "Delete Successful",
+              detail: `${
+                markedMails.value.length > 1
+                  ? "Selected Schedules have"
+                  : "Schedule has"
+              } been deleted successfully `,
+              life: 3000,
+            });
+            schedules.value = !id
+              ? removeDeletedScheduleFromSchedulesEmailsList(markedMails.value)
+              : schedules.value.filter((i) => i.id !== id);
 
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Schedule Mails Deleted",
-            life: 3000,
-          });
-          markedMails.value = [];
+            markedMails.value = [];
+          } else {
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `${res}`,
+              life: 3000,
+            });
+          }
         })
-
         .catch((err) => {
           stopProgressBar();
           toast.add({
             severity: "error",
             summary: "Delete Error",
-            detail: "Deleting failed. Mark the box to Delete a Scheduled Mail",
+            detail: `${
+              markedMails.value > 1 ? "Selected Schedules" : "Schedule"
+            } could not be deleted,`,
             life: 3000,
           });
           console.log(err);
         });
     };
 
+    const removeDeletedScheduleFromSchedulesEmailsList = (
+      deletedSchedulesArr
+    ) => {
+      return schedules.value.filter((i) => {
+        const schedulesInMarked = deletedSchedulesArr.findIndex(
+          (j) => j.id === i.id
+        );
+        if (schedulesInMarked < 0) return true;
+        return false;
+      });
+    };
+
     const confirm = useConfirm();
     let toast = useToast();
-    const showConfirmModal = () => {
+    const showConfirmModal = (id) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
@@ -275,7 +301,7 @@ export default {
         acceptClass: "confirm-delete",
         rejectClass: "cancel-delete",
         accept: () => {
-          deleteSchedules();
+          deleteSchedules(id);
         },
         reject: () => {
           //  toast.add({severity:'info', summary:'Rejected',

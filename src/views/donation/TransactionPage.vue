@@ -23,10 +23,10 @@
             </p>
           </div>
 
-          <div class="col-md-2 col-6 offset-md-4">
+          <div class="col-md-3 col-6 offset-md-4">
             <!-- Example split danger button -->
-            <div class="btn-group">
-              <button type="button" class="btn htext2">Ajose Tosin</button>
+            <!-- <div class="btn-group">
+              <button type="button" class="btn htext2">{{ name }}</button>
               <button
                 type="button"
                 class="btn dropdown-toggle dropdown-toggle-split"
@@ -40,19 +40,21 @@
                 <a class="dropdown-item" href="#">Settings</a>
                 <a class="dropdown-item" href="#">Log Out</a>
               </div>
-            </div>
+            </div> -->
           </div>
-          <div class="col-md-1 col-2">
-            <img
-              class="imgee"
-              src="../../assets/best-Copy.jpg"
-              alt=""
-              srcset=""
-            />
-          </div>
+  
           <div class="col-md-1 col-2">
             <i
-              @click="downloadPDF"
+              @click="printJS({ 
+                  ignoreElements: ['ignore1', 'ignore2'], 
+                  maxWidth: 867, 
+                  header: 'YOUR TRANSACTIONS', 
+                  printable: printTransactions, 
+                  properties: ['MEMO', 'DATE','PAYMENTGATEWAY', 'AMOUNT'], 
+                  type: 'json', 
+                  headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
+                  gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
+                  gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' })"
               class="pi pi-download bell-shadow bell p-3 d-flex justify-content-center align-items-center"
             ></i>
           </div>
@@ -66,23 +68,23 @@
           <div class="col-md-3 col-4">
             <input
               type="date"
-              class="form-control fone p-3 border-0 date-area w-75"
+              class="form-control fone p-3 border-0 date-area w-100"
               v-model="startDate"
             />
           </div>
           <div class="col-md-3 col-4">
             <input
               type="date"
-              class="form-control fone p-3 border-0 date-area w-75"
+              class="form-control fone p-3 border-0 date-area w-100"
               v-model="endDate"
             />
           </div>
           <!-- end of date area -->
           <!-- </div> -->
 
-          <div class="col-md-1 col-2">
+          <div class="col-md-1 col-2" @click="searchRange">
             <i
-              class="pi pi-filter p-3 bell-shadow bell d-flex justify-content-center align-items-center"
+              class="pi pi-search p-3 bell-shadow bell d-flex justify-content-center align-items-center"
             ></i>
           </div>
         </div>
@@ -94,6 +96,8 @@
             <label for="timestamp">Sort by Newest</label>
           </div>
         </div>
+        <div v-if="!displayMessage" class="text-danger">You have not made any transactions</div>
+        <div v-else>
         <div
           ref="downloadArea"
           class="row mt-2 py-2 d-md-flex justify-content-center align-items-center belw"
@@ -166,19 +170,19 @@
           </div>
           <hr />
         </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import jsPDF from "jspdf";
-import autoTable from 'jspdf-autotable'
 import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
 // import { useRoute } from "vue-router"
 import finish from "../../services/progressbar/progress";
+import printJS from 'print-js'
 export default {
   setup() {
     // const date = ref(new Date().toISOString().substr(0, 10));
@@ -189,6 +193,7 @@ export default {
     const userInputs = ref("");
     const downloadArea = ref(null)
     const userTransaction = ref([])
+    const displayMessage = ref(false)
 
 
     const searchInputs = computed(() => {
@@ -219,9 +224,14 @@ export default {
         .post("/mobile/v1/PaymentForm/contributions", initialData)
         .then((res) => {
           finish();
-          console.log(res, "kjjjhjjjje");
-          console.log(res.data, "kalistocrazy");
-          userTransaction.value = res.data;
+          console.log(res);
+          console.log(res.data);
+          if (res.data.length > 0) {
+            userTransaction.value = res.data;
+          }
+          else {
+            displayMessage.value = true
+          }
           loading.value = false;
         })
         .catch((err) => {
@@ -233,17 +243,42 @@ export default {
     };
     getPaymentDetails();
 
-    const downloadPDF = () => {
-      let doc = new jsPDF();
-      // const html = this.$refs.content.innerHTML;
-      const html = downloadArea.value.innerText;
-      console.log(html);
-      doc.text("Contribution List Report", 10, 10)
-      doc.line(0, 15, 400, 15);
-       doc.text(html, 20, 20)
-      doc.save("ContributionDetails.pdf");
-      doc.autoTable(html)
-    };
+    const searchRange = () => {
+      let tenantId = localStorage.getItem("tenantId");
+      let initialData = {
+        startDate: startDate.value,
+        endDate: endDate.value,
+        userId: storedDetails.giverId,
+        tenantId: tenantId,
+      };
+
+      axios
+        .post("/mobile/v1/PaymentForm/contributions", initialData)
+        .then((res) => {
+          finish();
+          console.log(res);
+          console.log(res.data);
+          userTransaction.value = res.data;
+          loading.value = false;
+        })
+        .catch((err) => {
+          finish();
+          console.log(err.response);
+          loading.value = false;
+        });
+    }
+
+    const printTransactions = computed(() => {
+      if (userTransaction.value.length === 0) return []
+      return userTransaction.value.map(i => {
+        return {
+          MEMO: i.memo,
+          DATE: i.date,
+          PAYMENTGATEWAY: i.paymentGatewayName,
+          AMOUNT: i.amount,
+        }
+      })
+    })
 
 
 
@@ -255,10 +290,11 @@ export default {
       loading,
       userInputs,
       searchInputs,
-      downloadPDF,
-      jsPDF,
-      autoTable,
       downloadArea,
+      searchRange,
+      displayMessage,
+      printJS,
+      printTransactions
     };
   },
 };

@@ -35,398 +35,7 @@
           </div>
         </div>
       </div>
-      <!-- <div class="form col-12 col-sm-12 offset-md-0 col-md-12">
-        <div class="row form-header" @click="toggleForm2">
-          <div class="col-10">Events and Activities</div>
-          <div class="col-2 text-right">
-            <i
-              class="fa fa-angle-up"
-              :class="{ roll2: showForm2 }"
-              aria-hidden="true"
-            ></i>
-          </div>
-        </div>
-
-        <div class="row form-body" :class="{ 'close-slide2': !showForm2 }">
-          <div class="col-6 offset-3 offset-sm-0 col-sm-5 col-md-3">
-            <div class="drop-box">
-              Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
-              GIF formats.
-            </div>
-          </div>
-          <div class="col-12 col-sm-7 col-md-6 offset-md-3">
-            <div class="row nested-row">
-              <div class="col-12 col-sm-5">
-                <label for="eventName">Event Name</label>
-              </div>
-              <div class="col-12 col-sm-7">
-                <input
-                  type="text"
-                  v-model="preEventName"
-                  class="form-control"
-                />
-              </div>
-              <div class="col-sm-5">
-                <label for="venue">Venue</label>
-              </div>
-              <div class="col-sm-7">
-                <input type="text" v-model="venue" class="form-control" />
-              </div>
-              <div class="col-sm-5">
-                <label for="details">Details</label>
-              </div>
-              <div class="col-sm-7">
-                <textarea
-                  class="form-control textarea-adjust"
-                  rows="3"
-                  v-model="details"
-                ></textarea>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-12 push-public">
-            <div class="row">
-              <div class="col-1 mt-3">
-                <input type="checkbox" v-model="isPublic" class="form-check" />
-              </div>
-              <div class="col-10 mt-3">
-                <div class="make-public">Make Public</div>
-                <div class="public">Make Event publicly visible on app</div>
-              </div>
-            </div>
-          </div>
-          <ul
-            class="nav nav-tabs w-100 push-down event-reg"
-            id="myTab"
-            role="tablist"
-          >
-            <li class="nav-item" role="presentation">
-              <a
-                class="nav-link active"
-                id="home-tab"
-                data-toggle="tab"
-                href="#home"
-                role="tab"
-                aria-controls="home"
-                aria-selected="true"
-                >Event Registration Setting</a
-              >
-            </li>
-            <li class="nav-item" role="presentation">
-              <a
-                class="nav-link"
-                id="profile-tab"
-                data-toggle="tab"
-                href="#profile"
-                role="tab"
-                aria-controls="profile"
-                aria-selected="false"
-                >Event Registration</a
-              >
-            </li>
-          </ul>
-          <div class="tab-content w-100" id="myTabContent">
-            <div
-              class="tab-pane fade show active"
-              id="home"
-              role="tabpanel"
-              aria-labelledby="home-tab"
-            >
-              <div class="col-sm-12">
-                <div class="row enable-reg">
-                  <div class="col-1">
-                    <input
-                      type="checkbox"
-                      v-model="check"
-                      class="form-check"
-                      @click="getPreActivityId"
-                    />
-                  </div>
-                  <div class="col-10">
-                    <div>Enable Registration</div>
-                  </div>
-                </div>
-              </div>
-
-              <div v-if="check" class="col-sm-12">
-                <div class="row">
-                <div class="col-sm-12 mt-4"><input type="text" class="form-control"></div> 
-                  <div class="input-group mt-3 col-sm-7">
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="eventRegistrationLink"
-                      aria-label="Recipient's username"
-                      aria-describedby="basic-addon2"
-                    />
-                    <div class="input-group-append">
-                      <span class="input-group-text" id="basic-addon2"
-                        >COPY</span
-                      >
-                    </div>
-                  </div>
-                  <div class="col-sm-5"></div>
-                  <div class="col-6 col-sm-4 paid">is this event paid for?</div>
-                  <div class="col-3">
-                    <div class="form-radio form-radio-inline paid">
-                      <input
-                        class="form-radio-input"
-                        @change="changeValue"
-                        name="event"
-                        type="radio"
-                        label="Yes"
-                        value="Yes"
-                      />
-                      <label class="form-radio-label">Yes</label>
-                    </div>
-                  </div>
-                  <div class="col-3 col-sm-5">
-                    <div class="form-radio form-radio-inline paid">
-                      <input
-                        class="form-radio-input"
-                        @change="changeValue"
-                        name="event"
-                        type="radio"
-                        label="No"
-                        value="No"
-                      />
-                      <label class="form-radio-label">No</label>
-                    </div>
-                  </div>
-                  <div
-                    v-if="selectedValue == null"
-                    class="row form-body col-sm-12"
-                  ></div>
-                  <div
-                    v-else-if="selectedValue == 'Yes'"
-                    class="row form-body reg col-sm-12"
-                  >
-                    <div class="row">
-                      <div class="col-sm-4 col-lg-2">Amount</div>
-                      <div class="col-12 col-sm-8 col-lg-4">
-                        <input
-                          type="number"
-                          v-model="preEventAmount"
-                          class="form-control"
-                        />
-                      </div>
-                      <div class="col-12 col-sm-4 col-lg-2">
-                        Email to be sent upon after registration
-                      </div>
-                      <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea
-                          class="form-control"
-                          v-model="emailRegistration"
-                          rows="2"
-                        ></textarea>
-                      </div>
-                      <div class="col-12 col-sm-4 col-lg-2">
-                        Event rules and guidelines
-                      </div>
-                      <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea
-                          class="form-control"
-                          v-model="eventRules"
-                          rows="4"
-                        ></textarea>
-                      </div>
-                      <div class="col-12 col-sm-4 col-lg-2">
-                        SMS to be sent upon after registration
-                      </div>
-                      <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea
-                          class="form-control"
-                          v-model="SMSRegistration"
-                          rows="4"
-                        ></textarea>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-else class="row form-body reg col-sm-12">
-                    <div class="row">
-                      <div class="col-12 col-sm-4 col-lg-2">
-                        Email to be sent upon after registration
-                      </div>
-                      <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea
-                          class="form-control"
-                          v-model="emailRegistration"
-                          rows="3"
-                        ></textarea>
-                      </div>
-                      <div class="col-12 col-sm-4 col-lg-2">
-                        SMS to be sent upon after registration
-                      </div>
-                      <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea
-                          class="form-control"
-                          v-model="SMSRegistration"
-                          rows="4"
-                        ></textarea>
-                      </div>
-                      <div class="col-12 col-sm-4 col-lg-2">
-                        Event rules and guidelines
-                      </div>
-                      <div class="col-12 col-sm-8 col-lg-4">
-                        <textarea
-                          class="form-control"
-                          v-model="eventRules"
-                          rows="4"
-                        ></textarea>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="tab-pane fade"
-              id="profile"
-              role="tabpanel"
-              aria-labelledby="profile-tab"
-            >
-              <div class="w-100 box-table">
-                <table class="table">
-                  <thead>
-                    <tr class="event-list">
-                      <th scope="col">
-                        <input type="checkbox" name="checkbox" class="" />
-                      </th>
-                      <th scope="col">Picture</th>
-                      <th scope="col">Firstname</th>
-                      <th scope="col">Phone</th>
-                      <th scope="col">Reg.Code</th>
-                      <th scope="col">Attended</th>
-                      <th scope="col">Paid</th>
-                      <th scope="col">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="event-list">
-                      <th scope="row">
-                        <input type="checkbox" name="checkbox" class="" />
-                      </th>
-                      <td>
-                        <div id="img">
-                          <img
-                            src="../../assets/logo.png"
-                            class="img-fluid rounded-circle mb-3"
-                            alt=""
-                          />
-                        </div>
-                      </td>
-                      <td>Ajose Tosin</td>
-                      <td>08041941919</td>
-                      <td>0123345</td>
-                      <td><input type="radio" name="radio" class="" /></td>
-                      <td><input type="radio" name="radio" class="" /></td>
-                      <td>01/02/2021</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        <input type="checkbox" name="checkbox" class="" />
-                      </th>
-                      <td>
-                        <div id="img">
-                          <img
-                            src="../../assets/logo.png"
-                            class="img-fluid rounded-circle mb-3"
-                            alt=""
-                          />
-                        </div>
-                      </td>
-                      <td>Ajose Tosin</td>
-                      <td>08041941919</td>
-                      <td>0123345</td>
-                      <td><input type="radio" name="radio" class="" /></td>
-                      <td><input type="radio" name="radio" class="" /></td>
-                      <td>01/02/2021</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">
-                        <input type="checkbox" name="checkbox" class="" />
-                      </th>
-                      <td>
-                        <div id="img">
-                          <img
-                            src="../../assets/logo.png"
-                            class="img-fluid rounded-circle mb-3"
-                            alt=""
-                          />
-                        </div>
-                      </td>
-                      <td>Ajose Tosin</td>
-                      <td>08041941919</td>
-                      <td>0123345</td>
-                      <td><input type="radio" name="radio" class="" /></td>
-                      <td><input type="radio" name="radio" class="" /></td>
-                      <td>01/02/2021</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <tr class="offset-sm-3">
-                  <td>
-       
-                    <nav>
-                      <ul
-                        class="pagination rounded-circle justify-content-end mx-3 my-3"
-                      >
-                        <li class="page-item">
-                          <a class="page-link rounded-circle mr-2" href="#">
-                            <span>&lt;</span>
-                            <span class="sr-only">Previous</span>
-                          </a>
-                        </li>
-                        <li class="page-item active">
-                          <a class="page-link rounded-circle mr-2" href="#"
-                            >1</a
-                          >
-                        </li>
-                        <li class="page-item">
-                          <a class="page-link rounded-circle mr-2" href="#"
-                            >2</a
-                          >
-                        </li>
-                        <li class="page-item">
-                          <a class="page-link rounded-circle mr-2" href="#"
-                            >3</a
-                          >
-                        </li>
-                        <li class="page-item">
-                          <a class="page-link rounded-circle mr-2" href="#"
-                            >4</a
-                          >
-                        </li>
-                        <li class="page-item">
-                          <a class="page-link rounded-circle mr-2" href="#"
-                            >5</a
-                          >
-                        </li>
-                        <li class="page-item">
-                          <a class="page-link rounded-circle mr-2" href="#">
-                            <span>&gt;</span>
-                            <span class="sr-only">Next</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </td>
-                </tr>
-              </div>
-            </div>
-            <div
-              class="tab-pane fade"
-              id="contact"
-              role="tabpanel"
-              aria-labelledby="contact-tab"
-            >
-              ...
-            </div>
-          </div>
-        </div>
-   
-      </div> -->
+      
       <div class="form">
         <!-- <div class="container"> -->
         <div class="row second-form first-row">
@@ -465,7 +74,7 @@
                 :key="index"
                 class="ofering"
               >
-                <div class="ofering p-1" @click="individualEvent(eventCategory)">
+                <div class="ofering p-1" @click="individualEvent(eventCategory, index)">
                   {{ eventCategory.name }}
                 </div>
               </div>
@@ -476,12 +85,10 @@
               >
                 Add New Event
               </div>
-              <div v-else class="create mt-3" @click="individualEvent({})">
+              <div v-else class="create mt-3" @click="createNewEvent">
                 Create "{{ eventText }}" event
               </div>
             </div>
-
-            
             <div class="selected-category" v-if="selectedEventCategoryId">
               <p><i class="fa fa-calendar-alt mr-2"></i> Events</p>
               <h4>{{ selectedEventCategoryName }}</h4>
@@ -497,13 +104,12 @@
                 <div class="edit-input">
                   <input
                     type="text"
-                    name=""
-                    id=""
-                    v-model="selectedEventCategory.name"
+                    class="form-control"
+                    v-model="categoryNametoEdit"
                     autofocus
                   />
                 </div>
-                <div class="edit-input">
+                <div class="edit-input" @click="updateEventCategory">
                   <button>Save</button>
                 </div>
               </div>
@@ -670,7 +276,7 @@
 <!-- <div>{{ offeringItem }}</div> -->
 <!-- <div>{{ newOfferings }}</div> -->
         <!-- Selected offerings -->
-        <!-- <div>{{ convertedAmount }}</div> -->
+        <!-- <div>{{ convertedAmount2 }}</div> -->
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -873,10 +479,10 @@
             <div class="col-3 col-sm-3 total-2 text-sm-right offset-sm-5">TOTAL</div>
             <div class="col-3 col-sm-3 offset-sm-1 ofering">
              
-              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="currencyAmount" @currency-index="pushConvertedCurrency" @currency-rate="setCurrencyRate" />
+              <CurrencyConverter :tenantCurrency="tenantCurrency.currency" :selectedCurrency="selectedCurrencyName" :currencyList="currencyList" :currencyAmount="addContributionTotal" @conversion-result="convertResult" @currency-rate="setCurrencyRate" />
             </div>
             <div v-if="convertedAmount" class="col-4 col-sm-2 align-self-center converted-amount">
-              {{ addContributionTotal ? addContributionTotal.toString() !== "NaN" ? addContributionTotal.toFixed(2) : 0.00 : 0.00 }}
+              {{ convertedResult ? convertedResult.toFixed(2) : addContributionTotal ? addContributionTotal.toString() !== "NaN" ? addContributionTotal.toFixed(2) : 0.00 : 0.00 }}
             </div>
           </div>
         </div>
@@ -1978,7 +1584,7 @@ import axios from "@/gateway/backendapi";
 import membershipService from "../../services/membership/membershipservice";
 import CurrencyConverter from "./CurrencyConverter"
 import Dropdown from 'primevue/dropdown';
-// import { useStore } from 'vuex'
+import CurrencyConverterService from '../../services/currency-converter/currencyConverter'
 export default {
   components: {
     CurrencyConverter, Dropdown
@@ -2084,6 +1690,8 @@ export default {
       eventCategories: [],
       selectedEventCategory: {},
       selectedEventCategoryId: "",
+      selectedCategoryIndex: "",
+      categoryNametoEdit: "",
       eventDate: new Date().toISOString().substr(0, 10),
       showEditEventCategory: false,
       gender: [],
@@ -2135,7 +1743,8 @@ export default {
       isEmailValid: true,
       isPhoneValidNewConvert: true,
       isEmailValidNewConvert: true,
-      currencyRate: []
+      currencyRate: [],
+      convertedResult: 0
     };
   },
   methods: {
@@ -2297,18 +1906,56 @@ export default {
         .setAttribute("data-dismiss", "modal");
     },
     createNewEvent() {
-      this.newEvents.push({
-        name: this.eventCreate,
-        id: "00000000-0000-0000-0000-000000000000",
-      });
-      this.selectedEventCategoryName = this.eventCreate;
-      this.selectedEventCategoryId = "00000000-0000-0000-0000-000000000000";
+      
+      if (this.eventCreate) {
+        this.newEvents.push({
+          name: this.eventCreate,
+          id: "00000000-0000-0000-0000-000000000000",
+        });
 
-      this.eventCreate = "";
+        this.selectedEventCategoryName = this.eventCreate;
+        this.selectedEventCategoryId = "00000000-0000-0000-0000-000000000000";
+
+          axios.post(`/api/EventCategory?name=${this.eventCreate}`)
+              .then(res => {
+                console.log(res)
+                this.$toast.add({
+                  severity:'success', 
+                  summary: 'Confirmed', 
+                  detail: 'Event category saved successfully', 
+                  life: 4000
+                });
+              })
+
+        this.eventCreate = "";
+        this.showCategory = false;
+        document
+          .querySelector("#closeEvent")
+          .setAttribute("data-dismiss", "modal");
+      } else if (this.eventText) {
+        this.newEvents.push({
+          name: this.eventText,
+          id: "00000000-0000-0000-0000-000000000000",
+        });
+
+        this.selectedEventCategoryName = this.eventText;
+        this.selectedEventCategoryId = "00000000-0000-0000-0000-000000000000";
+
+        axios.post(`/api/EventCategory?name=${this.eventText}`)
+            .then(res => {
+              console.log(res)
+              this.$toast.add({
+                severity:'success', 
+                summary: 'Confirmed', 
+                detail: 'Event category saved successfully', 
+                life: 4000
+              });
+            })
+
+      this.eventText = "";
       this.showCategory = false;
-      document
-        .querySelector("#closeEvent")
-        .setAttribute("data-dismiss", "modal");
+      }
+      console.log(this.eventText, this.eventCreate)
     },
     addCurrency (e, index, item) {
       console.log(e.target.innerHTML, index)
@@ -2533,13 +2180,41 @@ export default {
     changeSelectedEventCategory(action) {
       if (action === "edit") {
         // do something
-        this.selectedEventCategoryId = "";
+        // this.selectedEventCategoryId = "";
         this.showEditEventCategory = true;
+        this.categoryNametoEdit = this.selectedEventCategoryName
         console.log(this.selectedEventCategory);
       }
       if (action === "change") {
-        this.selectedEventCategoryId = "";
+        this.selectedEventCategoryId  = false
+        this.showEditEventCategory = false
+        
       }
+    },
+    updateEventCategory () {
+      const updatePayload = {
+        eventID: this.selectedEventCategoryId,
+        eventName: this.categoryNametoEdit
+      }
+      axios.put(`/api/EventCategory`, updatePayload)
+            .then(res => {
+              console.log(res)
+              this.newEvents[this.selectedCategoryIndex].name = res.data[this.selectedCategoryIndex].name
+              // this.selectedEventCategoryName = res.data[this.selectedCategoryIndex].name
+              // this.selectedEventCategoryId = res.data[this.selectedCategoryIndex].id
+              this.showEditEventCategory = false
+              this.$toast.add({
+                severity: "success",
+                summary: "Confirmed",
+                detail: "Updated successfully",
+                life: 4000,
+              });
+            })
+            .catch(err =>  {
+              console.log(err)
+            })
+      console.log(this.selectedCategoryIndex)
+      console.log(this.selectedEventCategoryName)
     },
     // categorySelected(data) {
     //   if (data.dataType === 'eventcategory') {
@@ -2710,7 +2385,7 @@ export default {
         this.firstTimersObj.autoMatedFollowUp = data.value;
       }
     },
-    individualEvent(eventObj) {
+    individualEvent(eventObj, index) {
       if (eventObj.id) {
         this.selectedEventCategoryName = eventObj.name;
         this.selectedEventCategoryId = eventObj.id;
@@ -2734,6 +2409,9 @@ export default {
       // const showEventCategory = document.querySelector("#showEventCategory");
       // showEventCategory.classList.remove("style-category");
       this.showCategory = false;
+
+      // Get the index  of the selected category to update the category from the update response
+      this.selectedCategoryIndex = index
     },
     getPreActivityId() {
       // console.log(this.check)
@@ -2909,7 +2587,8 @@ export default {
             console.log(err);
         }
     },
-    sendAmount (e, index) {
+    async sendAmount (e, index) {
+
       this.currencyAmount = e.target.value
       this.currencyIndex = index
 
@@ -2917,23 +2596,35 @@ export default {
       let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
       let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate
 
-      let amount = this.offeringItem[index].amount ? this.offeringItem[index].amount : 0
-      if (amount === 0) return false
-      let propertyArr = Object.keys(this.currencyRate)
-      let valueArr = Object.values(this.currencyRate)
-      let fromIndex = propertyArr.indexOf(fromCurrencyRate)
-      let fromRate = valueArr[fromIndex]
-      let toIndex = propertyArr.indexOf(toDestinationCurrencyRate)
-      let toRate = valueArr[toIndex]
+      let amount = this.offeringItem[index].amount ? +this.offeringItem[index].amount : 0
 
-      // console.log(amount, fromIndex, toIndex, amount, fromRate, toRate)
-      let result = ( amount / fromRate ) * toRate
-      console.log(result)
-      this.convertedAmount2[index] = result
-      console.log(this.convertedAmount2)
+      console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
+
+      try {
+        let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+        console.log(result)
+        this.convertedAmount2[index] = result
+      }
+      catch (err) {
+        console.log(err)
+      }
+      // if (amount === 0) return false
+      // let propertyArr = Object.keys(this.currencyRate)
+      // let valueArr = Object.values(this.currencyRate)
+      // let fromIndex = propertyArr.indexOf(fromCurrencyRate)
+      // let fromRate = valueArr[fromIndex]
+      // let toIndex = propertyArr.indexOf(toDestinationCurrencyRate)
+      // let toRate = valueArr[toIndex]
+
+      // // console.log(amount, fromIndex, toIndex, amount, fromRate, toRate)
+      // let result = ( amount / fromRate ) * toRate
+      // console.log(result)
+      // 
+      // console.log(this.convertedAmount2)
     },
-    pushConvertedCurrency (payload) {
-      this.convertedAmount[this.currencyIndex] = payload
+    convertResult (payload) {
+      // this.convertedAmount[this.currencyIndex] = payload
+      this.convertedResult = payload
     },
     toggleRem () {
       this.applyRem = !this.applyRem
@@ -3108,6 +2799,15 @@ export default {
             console.log(error)
           }
         },
+         async getRates () {
+            try {
+                let { data } = await axios.get('/fxRates')
+                console.log(data)
+                this.$store.dispatch("getRates", data)
+            }   catch (error) {
+                    console.log(error);
+            }
+        },
         
   },
   created() {
@@ -3132,6 +2832,7 @@ export default {
     this.getCurrenciesFromCountries();
     this.getIncomeAccount()
     this.getCashBankAccount()
+    this.getRates()
 
 
 
@@ -3187,13 +2888,13 @@ export default {
       return arr;
     },
     addContributionTotal() {
-      if (this.convertedAmount.length <= 0) return 0;
+      if (this.convertedAmount2.length <= 0) return 0;
       // if (this.convertedAmount.length === 1) return this.convertedAmount[0].amount;
       // const amounts = this.offeringItem.map((i) => +i.amount);
       // return amounts.reduce((a, b) => {
       //   return (a || 0) + (b || 0);
       // });
-      return this.convertedAmount.reduce((a, b) => {
+      return this.convertedAmount2.reduce((a, b) => {
         return +a + +b
       })
     },

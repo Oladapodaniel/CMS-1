@@ -1,16 +1,9 @@
-import axios from "@/gateway/backendapi";
+// import axios from "@/gateway/backendapi";
+import store from "../../store/store";
 
 let converter = {
     async currencyConverter (amount, fromCurrencyRate, toDestinationCurrencyRate) {
-        let currencyRate;
-        try {
-            let { data } = await axios.get('/fxRates')
-            console.log(data)
-            currencyRate = data
-        }
-        catch(error) {
-            console.log(error)
-        }
+        let currencyRate = store.getters.getRates
         let propertyArr = Object.keys(currencyRate)
         let valueArr = Object.values(currencyRate)
         let fromIndex = propertyArr.indexOf(fromCurrencyRate)
@@ -18,7 +11,7 @@ let converter = {
         let toIndex = propertyArr.indexOf(toDestinationCurrencyRate)
         let toRate = valueArr[toIndex]
         let result = ( amount / fromRate ) * toRate
-        console.log(result)
+        console.log(currencyRate)
         return result
     }
 }

@@ -73,7 +73,7 @@
           <div>
             <p class="text-center pt-2 main-font">Giving</p>
             <p class="text-center mt-n3 sub-main-font">
-              Give and you will recieve. Luke - 6:38
+              Give and you shall recieve. Luke - 6:38
             </p>
 
             <!-- form area -->
@@ -316,7 +316,6 @@
                       <SignUp :tenantId="formResponse.tenantID" @signed-up="signedUp" @show-signin="displaySignInForm"/>
                     </div>
                   </div>
-  
                   
                   
                     <div class="col-md-12">
@@ -437,14 +436,13 @@
                   <div class="col-md-6 offset-md-3">
                     <div class="row hfont">
                       <p class="text-nowrap col-12 text-center">
-                        Churchplus <span><u>Terms & Conditions</u> </span
-                        >and
-                        <span><u>Privacy Policy</u> </span>
-                      </p>
-                      <p class="mt-n2 col-12 text-center text-wrap">
-                        Organization Legal Name: Porters House Assembly |
-                        Address:Iponri Lagos
-                      </p>
+                        Churchplus <span>Terms & Conditions </span
+                          > and
+                          <span>Privacy Policy </span>
+                        </p>
+                        <p class="mt-n2 col-12 text-center text-wrap">
+                          Organization Legal Name: {{ formResponse.churchName }} 
+                        </p>
                      
                       <div class="col-md-4 offset-5 px-0">
                         <img
@@ -481,6 +479,7 @@ import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import SignUp from "./SignUp"
 import convertCurrency from "../../../services/currency-converter/currencyConverter"
+import { useStore } from "vuex"
 export default {
   components: {
     PaymentOptionModal,
@@ -491,6 +490,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     let toast = useToast();
+    const store = useStore()
     const hideTabOne = ref(true);
 
     const toggleTabOne = () => {
@@ -601,6 +601,17 @@ export default {
     };
     tcurrency();
 
+    const getRates = async() => {
+            try {
+                let { data } = await axios.get('/fxRates')
+                console.log(data)
+                store.dispatch("getRates", data)
+            }   catch (error) {
+                    console.log(error);
+            }
+        }
+    getRates()
+
     const donation = async() => {
 
           try {
@@ -672,14 +683,7 @@ export default {
           try {
             let  res = await axios.post('/donation', donationObj.value)
             console.log(res)
-            // if (!res.data) {
-            //   toast.add({
-            //   severity: "error",
-            //   summary: "Problem occurred while making this payment",
-            //   detail: `Ensure you selected`,
-            //   life: 3000,
-            // });
-            // }
+     
             finish()
           }
           catch (error) {
@@ -700,20 +704,28 @@ export default {
     } else {
       let storedDetails = JSON.parse(localStorage.getItem('giverToken'))
         console.log(storedDetails)
-      try {
-          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
-          console.log(data)
-          userData.value = data
-          email.value = data.email
-          name.value = userData.value.name
-          phone.value = userData.value.phone
-          finish()
+        userData.value = {
+          email: storedDetails.email,
+          name: storedDetails.name,
+          userId: storedDetails.giverId
         }
-        catch (error) {
-          console.log(error)
-          finish()
-        }
-        signedIn.value = true
+          email.value = storedDetails.email
+          name.value = storedDetails.name
+          phone.value = storedDetails.phone
+          signedIn.value = storedDetails.setSignInStatus
+      // try {
+      //     let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${storedDetails.giverId}`)
+      //     console.log(data)
+      //     userData.value = data
+      //     email.value = data.email
+      //     name.value = userData.value.name
+      //     phone.value = userData.value.phone
+      //     finish()
+      //   }
+      //   catch (error) {
+      //     console.log(error)
+      //     finish()
+      //   }
     }
     }
     getUserDetails()
@@ -761,85 +773,86 @@ export default {
           "/mobile/v1/Account/SignIn",
           userdetails
         );
-        if (data && data.token) {
+        if (!data.returnObject) {
+            toast.add({
+              severity: "warn",
+              summary: "Incorrect details",
+              detail: `${data.response}`,
+              life: 4000,
+            });
+        } else if (data && data.returnObject.token && data.status) {
             let giverDetails = {
-                giverToken: data.token,
-                giverId: data.userId
+                giverToken: data.returnObject.token,
+                giverId: data.returnObject.userId,
+                tenantId: data.returnObject.tenantID
             }
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
+
+          localStorage.setItem("token", JSON.stringify(data.returnObject.token));
+          
           toast.add({
             severity: "success",
             summary: "Successful",
-            detail: `Signed In Successfully`,
-            life: 3000,
+            detail: `${data.response}`,
+            life: 4000,
           });
           console.log(data)
 
           let userProfile = {
-            name: data.fullname,
-            email: data.email,
-            id: data.userId,
-            tenantID: data.tenantID,
-            phone: data.phoneNumber,
+            name: data.returnObject.fullname,
+            email: data.returnObject.email,
+            id: data.returnObject.userId,
+            tenantID: data.returnObject.tenantID,
+            phone: data.returnObject.phoneNumber,
           }
           userData.value = userProfile
+          signedIn.value = true
+          console.log(data)
           // userData.value = data
+        }   else {
+           console.log(data.response)
         }
-        signedIn.value = true
-
-        
-
-
-
-        // userData.value = data
         finish()
-
-
-      } catch (error) {
+    } catch (error) {
           finish()
         console.log(error);
-        console.log(error.response);
-        if (error.reponse) {
+        console.log(error.response && error.response.data.message);
+        if (error.response && error.response.data.message ) {
           toast.add({
             severity: "info",
             summary: "Error Signing In",
             detail: `${error.response.data.message}`,
             life: 3000,
           });
-        } else if (error.response.status === 401){
-          toast.add({
-            severity: "info",
-            summary: "Incorrect Details",
-            detail: `${error.response.data.message}`,
-            life: 3000,
-          });
-        } else {
+        } else if (error.response && error.response.toString().includes('network error')){
           toast.add({
             severity: "error",
             summary: "Network Error",
             detail: `Please ensure you  have a strong internet connection`,
             life: 3000,
           });
+        } else {
+          toast.add({
+            severity: "error",
+            summary: "Not Successful",
+            detail: `Please try again`,
+            life: 3000,
+          });
         }
       }
-      // console.log(userdetails.value);
     };
 
     const signedUp = async(payload) => {
-      try {
-          let   { data } = await axios.get(`/mobile/v1/Profile/GetMobileUserProfile?userId=${payload.giverId}`)
-          console.log(data)
-          userData.value = data
-          email.value = data.email
-          name.value = userData.value.name
-          phone.value = userData.value.phone
-          finish()
-        }
-        catch (error) {
-          console.log(error)
-          finish()
-        }
+        userData.value = {
+        email: payload.email,
+        name: payload.name,
+        userId: payload.giverId
+      }
+      email.value = payload.email
+      name.value = payload.name
+      phone.value = payload.phone
       signedIn.value = payload.setSignInStatus
+    
     }
 
     const displaySignInForm = (payload) => {

@@ -436,7 +436,7 @@
 
       <div class="row">
         <div class="col-md-2">
-          <span class="font-weight-600 small-text">Subject: </span>
+          <span class="font-weight-600 small-text">Sender: </span>
         </div>
         <div class="col-md-10 px-0">
           <input
@@ -688,11 +688,11 @@ import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
 import { useRoute } from "vue-router";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import store from "../../store/store";
 import axios from "@/gateway/backendapi";
-// import stopProgressBar from "../../services/progressbar/progress";
+import stopProgressBar from "../../services/progressbar/progress";
 import communicationService from "../../services/communication/communicationservice";
 import dateFormatter from "../../services/dates/dateformatter";
 import moment from 'moment'
@@ -700,7 +700,7 @@ import moment from 'moment'
 export default {
   setup() {
     const toast = useToast();
-    // const router = useRouter()
+    const router = useRouter()
     const editor = ClassicEditor;
     const editorData = ref("");
     const editorConfig = {
@@ -727,6 +727,7 @@ export default {
       if (index === 3) phoneNumberSelectionTab.value = true;
       if (index === 0) {
         sendToAll.value = true;
+        selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts" })
       }
       // console.log(index)
     };
@@ -853,86 +854,86 @@ export default {
       });
       console.log(data)
 
-      // // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
-      // composeService
-      //   .sendMessage("/api/Messaging/sendSms", data)
-      //   .then((res) => {
-      //     // if (res.status === 200) {
-      //       if (res.data.message.includes("You do not have")) {
-      //         toast.add({
-      //         severity: "warn",
-      //         summary: "Insufficient Unit",
-      //         detail: `${res.data.message}`,
-      //         life: 6000,
-      //       });
+      // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
+      composeService
+        .sendMessage("/api/Messaging/sendSms", data)
+        .then((res) => {
+          // if (res.status === 200) {
+            if (res.data.message.includes("You do not have")) {
+              toast.add({
+              severity: "warn",
+              summary: "Insufficient Unit",
+              detail: `${res.data.message}`,
+              life: 6000,
+            });
 
             
-      //       } else {
-      //         toast.add({
-      //         severity: "success",
-      //         summary: "SMS Sent",
-      //         detail: `SMS Sent successfully`,
-      //         life: 6000,
-      //       });
+            } else {
+              toast.add({
+              severity: "success",
+              summary: "SMS Sent",
+              detail: `SMS Sent successfully`,
+              life: 6000,
+            });
 
-      //       store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
-      //       console.log(pageCount, "Page count ");
+            store.dispatch("removeSMSUnitCharge", pageCount.value * 1.5);
+            console.log(pageCount, "Page count ");
 
-      //       console.log(res);
-      //       // Save the res to store in other to get it in the view sent sms page
-      //       let sentObj = {
-      //           message: res.data.message,
-      //           id: res.data.returnObjects ? res.data.returnObjects[0].id : [],
-      //           smsUnitsUsed: res.data.unitsUsed,
-      //           dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
-      //           deliveryReport: [{ report: res.data.messageStatus }]
-      //         }
-      //         console.log(sentObj)
-      //         store.dispatch("communication/addSmsToSentList", sentObj)
-      //         router.push({ name: "SentMessages" })
+            console.log(res);
+            // Save the res to store in other to get it in the view sent sms page
+            let sentObj = {
+                message: res.data.message,
+                id: res.data.returnObjects ? res.data.returnObjects[0].id : [],
+                smsUnitsUsed: res.data.unitsUsed,
+                dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
+                deliveryReport: [{ report: res.data.messageStatus }]
+              }
+              console.log(sentObj)
+              store.dispatch("communication/addSmsToSentList", sentObj)
+              router.push({ name: "SentMessages" })
 
-      //       }
+            }
             
-      //     // } else if (typeof res === "object") {
-      //     //   toast.add({
-      //     //     severity: "error",
-      //     //     summary: "Failed operation",
-      //     //     detail: typeof res === "object" ? "SMS sending failed" : res,
-      //     //     life: 2500,
-      //     //   });
+          // } else if (typeof res === "object") {
+          //   toast.add({
+          //     severity: "error",
+          //     summary: "Failed operation",
+          //     detail: typeof res === "object" ? "SMS sending failed" : res,
+          //     life: 2500,
+          //   });
             
             
             
-      //     // }
+          // }
           
-      //   })
-      //   .catch((err) => {
-      //     stopProgressBar();
-      //     toast.removeAllGroups();
-      //     console.log(err)
-      //     if (err.toString().toLowerCase().includes("network error")) {
-      //       toast.add({
-      //         severity: "warn",
-      //         summary: "You 're Offline",
-      //         detail: "Please ensure you have internet access",
-      //         life: 4000,
-      //       });
-      //     } else if (err.toString().toLowerCase().includes('timeout')) {
-      //       toast.add({
-      //         severity: "warn",
-      //         summary: "Request Delayed",
-      //         detail: "SMS took too long, please check your network and try again",
-      //         life: 4000,
-      //       });
-      //     } else {
-      //       toast.add({
-      //         severity: "warn",
-      //         summary: "Failed operation",
-      //         detail: "SMS sending failed, Please try again",
-      //         life: 400,
-      //       });
-      //     }
-      //   });
+        })
+        .catch((err) => {
+          stopProgressBar();
+          toast.removeAllGroups();
+          console.log(err)
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "You 're Offline",
+              detail: "Please ensure you have internet access",
+              life: 4000,
+            });
+          } else if (err.toString().toLowerCase().includes('timeout')) {
+            toast.add({
+              severity: "warn",
+              summary: "Request Delayed",
+              detail: "SMS took too long, please check your network and try again",
+              life: 4000,
+            });
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "Failed operation",
+              detail: "SMS sending failed, Please try again",
+              life: 400,
+            });
+          }
+        });
     };
 
     const draftMessage = async () => {
@@ -970,7 +971,7 @@ export default {
         contacts: [],
         isPersonalized: isPersonalized.value,
         groupedContacts: selectedGroups.value.map((i) => i.data),
-        toContacts: sendToAll.value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
+        // toContacts: sendToAll./value ? "allcontacts_00000000-0000-0000-0000-000000000000" : "",
         isoCode: isoCode.value,
         category: "",
         emailAddress: "",
@@ -988,17 +989,21 @@ export default {
       data.toOthers = numbers.join();
 
       if (selectedMembers.value.length > 0) {
-        data.toOthers += data.toOthers.length > 0 ? "," : "";
-        data.toOthers += selectedMembers.value
+        data.ToContacts = data && data.ToContacts ? data.ToContacts.length > 0 ? "," : "" : "";
+        data.ToContacts += selectedMembers.value
           .map((i) => {
             console.log(i, "person");
-            if (i.phone) return i.phone;
+            if (i.id) return i.id;
           })
           .join();
       }
+      console.log(selectedMembers.value)
 
       if (sendOrSchedule == 2) {
-        data.executionDate = executionDate.value;
+        const dateToBeExecuted = executionDate.value
+        data.executionDate = dateToBeExecuted.split("T")[0];
+        data.date = dateToBeExecuted
+        data.time = dateToBeExecuted.split("T")[1]
         scheduleMessage(data);
       } else {
         sendSMS(data);
@@ -1013,6 +1018,9 @@ export default {
       display.value = false;
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
       console.log(formattedDate, "Formatted Date");
+      console.log(data.executionDate)
+      
+      console.log(data)
       try {
         const response = await composerObj.sendMessage(
           "/api/Messaging/saveSmsSchedule",
@@ -1021,7 +1029,7 @@ export default {
         toast.add({
           severity: "success",
           summary: "message Scheduled",
-          detail: `Message scheduled for ${formattedDate}`,
+          detail: `Message scheduled for ${data.time}`,
         });
         console.log(response, "Schedule response");
       } catch (error) {

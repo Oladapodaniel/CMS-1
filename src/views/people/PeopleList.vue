@@ -59,7 +59,7 @@
         <div class="modal-content">
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">Add Members To Group</h4>
+            <h5 class="modal-title">Add Members To Group</h5>
             <button type="button" class="close" data-dismiss="modal">
               &times;
             </button>
@@ -81,9 +81,10 @@
           <div class="modal-footer">
             <button
               type="button"
-              class="btn groupicon-color"
+              class="btn groupicon-color default-btn"
               data-dismiss="modal"
               @click="moveMemberToGroup"
+              style="border:none"
             >
               Add to Group
             </button>
@@ -601,6 +602,7 @@ export default {
       console.log(marked.value);
     };
 
+// Delete item
     const deleteMarked = async () => {
       try {
         const IDs = marked.value.map((i) => i.id).join();
@@ -645,6 +647,7 @@ export default {
             }
           }
           marked.value = []
+           store.dispatch("membership/removeMember")
           axios
             .get(`/api/People/GetMembershipSummary`)
             .then((res) => {
@@ -653,7 +656,6 @@ export default {
             })
             .catch((err) => {
               console.log(err)
-
         // if (response.response.toString().toLowerCase().includes("all")) {
         //   toast.add({
         //     severity: "success",

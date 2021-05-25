@@ -68,6 +68,8 @@
           </div>
         </div>
 
+       
+
         <div v-if="tenantInfoBasic.memberCount === 0">
           <img src="../../assets/welcome_user.svg" class="welcome-user">
         </div>
@@ -90,10 +92,12 @@
             </div>
             <div class="bottom">
               <div class="box-bottom">
+                <router-link :to="{ name: 'Subscription' }">
                 <!-- <span class="plan-text">YOU'RE ON A FREE PLAN</span> -->
                 <button class="upgrade-btn">
                   <h4 class="box-btn-text">UPGRADE</h4>
                 </button>
+                </router-link>
               </div>
             </div>
           </div>
@@ -126,7 +130,7 @@
 
       <div class="container-fluid">
         <div class="row">
-          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0) || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0)">
+          <div class="col-8 offset-2 offset-md-0 col-md-3 p-0" v-if="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0) || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0)">
             <div class="more-things side p-3" v-if="!tenantInfoExtra.hasWebsite">
               <!-- <i class="pi pi-times"></i> -->
               <img src="../../assets/website.svg" class="w-100">
@@ -146,7 +150,7 @@
               <img src="../../assets/mobile_app.svg" class="w-100">
               <div class="mt-4">Mobile App</div>
               <div class="more-body mt-2">Get a customized mobile app for your church.</div>
-              <div class="learn-more mt-3 col-12 cursor-pointer">Set Up Now</div>
+              <router-link :to="{ name: 'MobileOnboarding' }"><div class="learn-more mt-3 col-12 cursor-pointer">Set Up Now</div></router-link>
             </div>
           </div>
          
@@ -232,9 +236,15 @@
               </table>
             </div>
           </div>
-      <!-- attendanceSeries    {{attendanceSeries ? attendanceSeries : ""}}
-chartData{{chartData ? chartData : ""}}
-series {{series}} -->
+  
+   <!-- 2   {{ tenantInfoAttendanceWeekly }}
+   22   {{ tenantInfoAttendanceWeekly[0] }}
+   3   {{ tenantInfoCeleb }}
+   4   {{ tenantInfoFirstTimerWeekly[0] }}
+
+   1{{ tenantInfoCeleb.length === 0 }}
+   2{{ tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0  }}
+   3{{ tenantInfoAttendanceWeekly[0] ? tenantInfoAttendanceWeekly[0].data[0] === 0 : "" }} -->
             <!-- Column Charts -->
             <div v-show="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0) || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0)">
               <!-- <div class="charts" id="plot"> -->
@@ -346,8 +356,8 @@ series {{series}} -->
           </div>
         </div>
       </div>
-      <!-- {{ tenantInfoAttendanceWeekly[0].data }} -->
-      <div v-if="tenantInfoCeleb.length === 0 && tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0 && tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length === 0">
+  
+      <div v-if="tenantInfoCeleb.length === 0 && tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0 && tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] === 0">
         <div class="container-fluid">
           <div class="row">
             <div class="col-12 more-things">More Benefits You Can Get</div>
@@ -377,6 +387,7 @@ series {{series}} -->
         <div class="text-center" v-if="attendanceLoading">
           <i class="pi pi-spin pi-spinner text-primary" style="fontSize: 3rem"></i>
         </div>
+        
         <!-- <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-left"></i>
