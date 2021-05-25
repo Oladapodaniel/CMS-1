@@ -46,8 +46,8 @@
                         <div class="col-auto w-25">
                         </div>
                         <div class="col-auto w-75 button-add">
-                           <button type="button" class="btn btn-primary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="createDefaultMessage">Save</button>
-                           <button type="button" class="btn btn-secondary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="updateDefaultMessage">Save</button>
+                           <button type="button" class="btn btn-primary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="callButton">Save</button>
+                           <!-- <button type="button" class="btn btn-secondary h-25 saveButton" style="float:right; margin-left:20px; border-radius:22px; font-size: 16px; font-weight: 600" @click="updateDefaultMessage">Save</button> -->
                            <router-link to="/tenant/settings/defaultmessage"><button type="button" class="btn h-25 btn-outline-secondary" style="float:right; border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button></router-link>
                         </div> 
                 </div>
@@ -77,13 +77,20 @@ import axios from "@/gateway/backendapi";
 		Membership: messageOptions.Membership,
         selectType: null,
 		Sms: messageOptions.Sms,
-        defaultMessage:{}
-
-
+        defaultMessage:{},
 	}
 },
 methods:{
+    callButton(){
+        if(!this.$route.query.messageId){
+            this.createDefaultMessage()
+        } else {
+            this.updateDefaultMessage()
+        }
+
+    },
     createDefaultMessage(){
+        
         if( this.subject === "" || this.message === "" || this.selectType.value === "" || this.selectCategory.value === ""){
              this.$toast.add({
                 severity:'error', 
@@ -109,8 +116,8 @@ methods:{
     async updateDefaultMessage(){
         let newUpdate={
             id: this.defaultMessage.returnObject.id,
-            subject: this.defaultMessage.returnObject.subject,
-            message: this.defaultMessage.returnObject.message,
+            subject: this.subject,
+            message: this.message,
             messageType: this.selectCategory.value,
             category: this.selectType.value
         }
