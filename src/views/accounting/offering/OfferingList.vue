@@ -246,13 +246,19 @@
                           aria-haspopup="true"
                           aria-expanded="false"
                         ></i>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <!-- <a class="dropdown-item elipsis-items">
-                                    Edit
-                                    </a> -->
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        
+                        
+                          <router-link :to="!offering.activityID ? { name: 'OfferingReport', query: { report: offering.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: offering.date.split('T')[0], activityID: offereing.activityID } }">
+                            <a class="dropdown-item elipsis-items">
+                          View Report
+                          </a>
+                          </router-link>
+                          <router-link :to="{ name: 'AddOffering', params: { offId: offering.id } }">
+                            <a class="dropdown-item elipsis-items">
+                          Edit
+                          </a>
+                          </router-link>
                           <a
                             class="dropdown-item elipsis-items cursor-pointer"
                             @click="showConfirmModal(offering.id, index)"

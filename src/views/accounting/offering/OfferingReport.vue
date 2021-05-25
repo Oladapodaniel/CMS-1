@@ -111,7 +111,7 @@
                           class="def-btn approve-btn"
                           data-toggle="modal"
                           data-target="#sendReport"
-                          :class="{ 'resend-btn': markedAsSent }"
+                          :class="{ 'resend-btn': markedAsSent === 'marked as sent' }"
                         >
                           {{ sendBtnText }}
                         </a>
@@ -332,7 +332,7 @@
           <div class="row px-5">
             <div class="col-md-12">
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                   <span class="bold-700">Contribution Item</span>
                 </div>
                 <div class="col-sm-3">
@@ -342,7 +342,7 @@
                   <span class="bold-700">Amount</span>
                 </div>
 
-                <div class="col-sm-3 text-sm-center">
+                <div class="col-sm-2">
                   <span class="bold-700 fs-1 fw-bolder">Total</span>
                 </div>
               </div>
@@ -357,51 +357,55 @@
             class="row"
             v-for="(item, index) in contributionReport.todayContributions"
             :key="index"
-          >
-          
-            <div class="col-md-12 py-2">
+          >          
+            <div class="col-md-12">
               <div class="row px-5">
                 <div class="col-sm-12">
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-4 py-2">
                       <span class="bold-400">{{ item.contribution }}</span>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 py-2">
                       <span class="bold-400">{{ item.channel }}</span>
                     </div>
-                    <div class="col-sm-3">
-                      <span class="bold-400">{{ item.amount }}</span>
+                    <div class="col-sm-3 py-2">
+                      <span class="bold-400">{{ item.currencyName }} {{ item.amount }}</span>
                     </div>
-                    <div class="col-sm-3 text-sm-center">
-                      <span class="bold-400">{{ item.amount }}</span>
+                    <div class="col-sm-2 py-2">
+                      <span class="bold-400">{{ item.currencyName }} {{ item.amount }}</span>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- <div class="row" v-if="index !== eventData.offerings.length - 1">
-                <div class="col-sm-12 pt-2">
+              <div class="row" v-if="index !== contributionReport.todayContributions.length - 1">
+                <div class="col-sm-12">
                   <hr class="hr" />
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-12">
-              <hr class="hr-dark" v-if="contributionReport.length > 0" />
+            <div class="col-sm-6 offset-sm-6 mt-3">
+              <hr class="hr-total" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 :''" />
             </div>
           </div>
-          <div class="row px-5" v-if="contributionReport.length > 0">
+          <div class="row px-5" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 :''">
             <div class="col-sm-12">
               <div class="row">
+                <div class="col-sm-4"></div>
                 <div class="col-sm-3"></div>
-                <div class="col-sm-3"></div>
-                <div class="col-sm-3 text-sm-right">
-                  <span class="bold-700">Total</span>
+                <div class="col-sm-1">
+                  <span class="text-style">Total</span>
                 </div>
-                <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700">{{ contributionReport ? contributionReport.totalToday : "" }}</span>
+                <div class="col-sm-3 total-text">
+                  <span>{{ contributionReport ? contributionReport.totalToday : "" }}</span>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 offset-sm-6">
+              <hr class="hr-total" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 :''" />
             </div>
           </div>
         </div>
@@ -1303,7 +1307,7 @@
       <!-- <div class="stats">
           <EventReportStats />
       </div> -->
-      <div class="row">
+      <div class="row" v-if="routeActivityId">
         <div class="col-md-12">
           <div class="pg-content">
             <h4 class="analytics min">Contribution Performance</h4>
@@ -1477,7 +1481,8 @@ export default {
         const btnState = ref("");
         const toast = useToast();
         const churchName = ref("")
-        const routeParams = ref(route.params.report)
+        const routeParams = ref(route.query.report)
+        const routeActivityId = ref(route.query.activityID)
         const url = ref(`my.churchplus.co/tenant/report/${route.params.report}`)
         const sendBtnText = ref("Send Report")
         const markedAsSent =  ref('mark as sent')
@@ -1512,15 +1517,27 @@ export default {
         //       } 
 
         const getReport = () => {
-          axios.get(`https://churchplusv3coreapi.azurewebsites.net/api/Offering/contributionReport?date=${route.params.report}`)
-          .then(res =>  {
-            console.log(res)
-            contributionReport.value = res.data.returnObject
+          if (route.query.activityID) {
+            axios.get(`/api/Offering/contributionReport?date=${route.query.report}&activityId=${route.query.activityID}`)
+              .then(res =>  {
+                console.log(res)
+                contributionReport.value = res.data.returnObject
 
-               
-          }).catch(err => {
-              console.log(err)
-            })
+                  
+              }).catch(err => {
+                  console.log(err)
+                })
+          } else {
+            axios.get(`/api/Offering/contributionReport?date=${route.query.report}`)
+              .then(res =>  {
+                console.log(res)
+                contributionReport.value = res.data.returnObject
+
+                  
+              }).catch(err => {
+                  console.log(err)
+                })
+          }
         }
         getReport()
 
@@ -1634,7 +1651,7 @@ export default {
             }
 
         return {
-            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent
+            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent, routeActivityId
         }
     }
 }
@@ -1645,6 +1662,7 @@ export default {
     color: #1c252c;
     box-sizing: border-box;
     }
+    
 
     a {
     text-decoration: none;
@@ -1879,5 +1897,17 @@ export default {
     background: transparent !important;
     color: #4d6676 !important;
     border: 1px solid #dde2e6 !important;
+  }
+
+  .text-style {
+    font: normal normal bold 17px/16px Nunito Sans;
+  }
+
+  .total-text {
+    font: normal normal normal 30px/24px Nunito Sans;
+  }
+
+  .hr-total {
+    border: 1px solid #dde2e6
   }
 </style>
