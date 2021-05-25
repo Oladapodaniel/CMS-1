@@ -7,7 +7,7 @@
           <div class="col-md-7">
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
-                <div class="dropdown">
+                <div class="dropdown" v-if="false">
                 <router-link to="/tenant/offeringcategory">
                 <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <span><i class="fa fa-angle-down btn-icon"></i></span></button></router-link>
                     <!-- <i
@@ -1509,7 +1509,7 @@ export default {
               loading.value = false
 
 
-              if (selectEventAttended.value) {
+              if (Object.keys(selectedEventAttended.value).length > 0) {
                 router.push({ name: 'OfferingReport', query: { report: eventDate.value, activityID: selectedEventAttended.value.activityID } })
               } else {
                 router.push({ name: 'OfferingReport', query: { report: eventDate.value } })

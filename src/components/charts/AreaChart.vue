@@ -18,6 +18,7 @@ export default {
         chart: {
           type: "line",
           renderTo: props.domId,
+          height: '250px'
         },
         title: {
           text: `${props.title}`,

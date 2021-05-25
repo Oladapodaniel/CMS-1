@@ -27,11 +27,11 @@
       </div>
 
       <div class="col-md-7">
-        <!-- <span class="theader">Event</span> -->
+        <span class="theader">{{ contributionReport.activityName? 'Event' : "" }}</span>
         <div class="my-3">
-          <!-- <span class="evt-name">
-            {{  }} 
-          </span> -->
+          <span class="evt-name">
+            {{ contributionReport.activityName ? contributionReport.activityName : ""  }} <i v-if="contributionReport.activityName" class="fa fa-info-circle"></i>
+          </span>
         </div>
       </div>
 
@@ -86,7 +86,7 @@
           </div>
         </div>
 
-        Approved 
+   
         <div class="row unapproved mt-4">
           <div class="col-md-12">
             <div class="row my-3">
@@ -199,7 +199,7 @@
       
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve"> {{ contributionReport ? contributionReport.totalToday : 0 }} </span>
+            <span class="recieve">{{ contributionReport.tenantCurrency }} {{ contributionReport ? contributionReport.totalToday : 0 }} </span>
           </span>
         </div>
 
@@ -218,7 +218,7 @@
       <div class="row pt-5 px-5" ref="middle">
         <div class="col-md-8">
           <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-             Contribution Details
+             {{ contributionReport. activityName ? contributionReport.activityName : "Contribution Details" }}
           </h2>
         </div>
         <div class="col-md-4">
@@ -398,7 +398,7 @@
                   <span class="text-style">Total</span>
                 </div>
                 <div class="col-sm-3 total-text">
-                  <span>{{ contributionReport ? contributionReport.totalToday : "" }}</span>
+                  <span class="text-danger">{{ contributionReport.tenantCurrency }}&nbsp;{{ contributionReport ? contributionReport.totalToday : "" }}</span>
                 </div>
               </div>
             </div>
@@ -1329,7 +1329,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                          {{ contributionReport.todayVsLastWeek ? contributionReport.todayVsLastWeek.toFixed(2) : 0 }}
+                          {{ contributionReport.todayVsLastWeek ? contributionReport.todayVsLastWeek.toString().length > 4 ? `${contributionReport.todayVsLastWeek.toString().slice(0, 4)}..%` : contributionReport.todayVsLastWeek.toFixed(2) : 0 }}
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -1343,8 +1343,13 @@
                     </div>
                     <div class="ana-item-icon">
                       <div class="item-image">
-                        <div >
-    
+                        <div v-if="contributionReport.todayVsLastWeek > 0">
+                          <img
+                            src="../../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                        <div v-else>
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
@@ -1359,13 +1364,13 @@
                   <div>
                        <h5>
                         <span class="today-text">Today </span>
-                        <span class="versus"> vs Same time last month</span>
+                        <span class="versus"> vs Same Time Last Month</span>
                     </h5>
                       <div class="ana-item mt-5">
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                          {{ contributionReport.todayVsLastMonth ? contributionReport.todayVsLastMonth.toFixed(2) : 0 }}
+                          {{ contributionReport.todayVsLastMonth ? contributionReport.todayVsLastMonth.toString().length > 4 ? `${contributionReport.todayVsLastMonth.toString().slice(0, 4)}..%` : contributionReport.todayVsLastMonth.toFixed(2) : 0 }}
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -1379,10 +1384,13 @@
                     </div>
                     <div class="ana-item-icon">
                       <div class="item-image">
-                        <div
-                          
-                        >
-  
+                        <div v-if="contributionReport.todayVsLastMonth > 0">
+                          <img
+                            src="../../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                        <div v-else>
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
@@ -1396,13 +1404,13 @@
                   <div>
                       <h5>
                         <span class="today-text">Today </span>
-                        <span class="versus"> vs Same time last year</span>
+                        <span class="versus"> vs Same Time Last Year</span>
                     </h5>
                       <div class="ana-item mt-5">
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                        {{ contributionReport.todayVsLastYear ? contributionReport.todayVsLastYear : 0 }}
+                        {{ contributionReport.todayVsLastYear ? contributionReport.todayVsLastYear.toString().length > 4 ? `${contributionReport.todayVsLastYear.toString().slice(0, 4)}..%` : contributionReport.todayVsLastYear.toFixed(2) : 0 }}
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -1416,8 +1424,13 @@
                     </div>
                     <div class="ana-item-icon">
                       <div class="item-image">
-                        <div >
-             
+                        <div v-if="contributionReport.todayVsLastYear > 0">
+                          <img
+                            src="../../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                        <div v-else>
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""

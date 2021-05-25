@@ -62,7 +62,14 @@ export default {
               enabled: true,
               distance: -50,
             },
-          },
+          }
+        },
+        legend : {
+          align: 'left',
+          layout: 'vertical',
+          verticalAlign: 'top',
+          x: 40,
+          y: 0
         },
         series: [
           {

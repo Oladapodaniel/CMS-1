@@ -151,10 +151,10 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
         let message = `CONTRIBUTION REPORT\n          ======\n\nTotal Offering: ${eventAnalysisData.totalToday}`
 
 
-    if (eventAnalysisData.todayVsLastweek > 0) {
-        message += `\n\nWe recorded ${eventAnalysisData.todayVsLastweek}% increase in offering since last week.`;
-    } else if (eventAnalysisData.todayVsLastweek < 0) {
-        message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastweek).toFixed(2)}% decrease in offering since last week.`;
+    if (eventAnalysisData.todayVsLastWeek > 0) {
+        message += `\n\nWe recorded ${eventAnalysisData.todayVsLastWeek.toFixed(2)}% increase in offering since last week.`;
+    } else if (eventAnalysisData.todayVsLastWeek < 0) {
+        message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastWeek).toFixed(2)}% decrease in offering since last week.`;
         // message += `\nThere was a ${Number.parseFloat(Math.abs(eventAnalysisData.todayVsLastweekOfferingPercentage)).toPrecision(4)}% decrease in offering since last week`;
     } else {
         message += `\n\nOffering was the same with last week.`;

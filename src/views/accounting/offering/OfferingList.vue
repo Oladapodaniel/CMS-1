@@ -1,6 +1,6 @@
 <template>
   <div class="pb-4">
-    <div class="row table " >
+    <div class="row table " style="height: 300px">
       <div class="col-12 mt-4  w-100">
         <div class="row">
           <!-- {{contributionSummary}} -->
@@ -25,7 +25,7 @@
           <div class="col-12 col-md-4">
             <ContributionPieChart
               domId="chart"
-              title="Contribution Analytics"
+              title="Analytics"
               distance="5"
               :titleMargin="10"
               :summary="pieChart"
@@ -43,7 +43,7 @@
             <ContributionAreaChart
                elemId="chart"
                   domId="areaChart3"
-                  title=""
+                  title="So Far"
                   lineColor="#002044"
                   :subtitle="chartData.name"
                   :series="chartData && chartData.barChart ? chartData.barChart.data : {}"
@@ -54,7 +54,7 @@
         </div>
       </div>
     </div>
-    <div class="row table overflow-auto  " style="height: 50vh;">
+    <div class="row table">
       <div class="col-12" id="table">
         <div class="top-con" id="ignore2">
           <!-- {{ selectedPeriod.name }} -->
@@ -182,7 +182,7 @@
         </div>
 
         <!-- contribution -->
-        <div>
+        <div v-if="searchContribution.length > 0">
           <div class="row">
             <div
               class="col-12 col-md-12 col-lg-12 overflow-auto border-bottom border-top border-left"
@@ -249,7 +249,7 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         
                         
-                          <router-link :to="!offering.activityID ? { name: 'OfferingReport', query: { report: offering.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: offering.date.split('T')[0], activityID: offereing.activityID } }">
+                          <router-link :to="!offering.activityId || offering.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: offering.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: offering.date.split('T')[0], activityID: offering.activityId } }">
                             <a class="dropdown-item elipsis-items">
                           View Report
                           </a>
@@ -273,7 +273,7 @@
             </div>
           </div>
         </div>
-        <div class="text-danger">No records found</div>
+        <div class="text-danger" v-else>No records found</div>
         <div class="col-12">
           <div class="table-footer">
             <Pagination
