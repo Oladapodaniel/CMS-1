@@ -50,8 +50,11 @@
               </div>
               <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-12 col-12">
-                    <span class="display:block">{{ information }}</span>
+                  <div class="col-md-12 col-12" v-for="(item, index) in infoArray" :key="index">
+                    <div class="col-12 col-md-10 mt-4 font-weight-bold"> <span class="display:block">{{ item.title }}</span></div>
+                    <div class="col-12 col-md-10"><p><span  v-if="!item.showFullMessage" class="display:block">{{ item.information && item.information.toString().length > 20 ? `${item.information.substring(0, 20)}...` : item.information }}</span> 
+                    <span v-else>{{ item.information }}</span>
+                    <span @click="() => item.showFullMessage = !item.showFullMessage" v-if="item.information && item.information.toString().length > 20 "> {{item.showFullMessage ?'see less' : 'see more'}} </span></p> </div>
                   </div>
                 </div>
               </div>
@@ -89,7 +92,7 @@
                           type="text"
                           class="form-control"
                           id="title"
-                          v-model="title"
+                          v-model="otherInfo.title"
                         />
                       </div>
                        <div class="form-group">
@@ -99,7 +102,7 @@
                         <textarea
                           class="form-control h-200"
                           id="message-text"
-                          v-model="information"
+                          v-model="otherInfo.information"
                         ></textarea>
                       </div>
                     </form>
@@ -148,48 +151,51 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <div class="col-md-7 col-12">
+                <div class="col-md-7 mt-4 col-12">
                   <div class="form-cover w-100">
-                    <form class="mt-1 mr-5 mr-md-0 mr-lg-0">
+                    <form class=" mr-5 mr-md-0 mr-lg-0">
                       <div class="form-group">
-                        <label for="recipient-name" class="col-form-label"
-                          >Name:</label
-                        >
+                        <!-- <label for="recipient-name" class="col-form-label"
+                          ></label
+                        > -->
                         <input
                           type="text"
                           class="form-control"
                           id="recipient-name"
+                          placeholder="Name"
                           v-model="pastorDetails.pastorsName"
                         />
                       </div>
                       <div class="form-group">
-                        <label for="recipient-email" class="col-form-label"
-                          >Email:</label
-                        >
+                        <!-- <label for="recipient-email" class="col-form-label"
+                          ></label
+                        > -->
                         <input
                           type="email"
                           class="form-control"
                           id="recipient-email"
+                          placeholder="Email"
                           v-model="pastorDetails.pastorsEmail"
                         />
                       </div>
                       <div class="form-group">
-                        <label for="message-text" class="col-form-label"
-                          >About Pastor/Minister:</label
-                        >
+                        <!-- <label for="message-text" class="col-form-label"
+                          ></label
+                        > -->
                         <textarea
                           class="form-control h-100"
                           id="message-text"
                           v-model="pastorDetails.text"
+                          placeholder="About Pastor/Minister"
                         ></textarea>
                       </div>
                     </form>
                   </div>
                 </div>
-                <div class="col-md-5 col-12">
-                  <div class="container mx-auto mx-md-0 mx-lg-0 pt-2">
+                <div class="col-md-5 mt-3 col-12">
+                  <div class="container-img mx-auto mx-md-0 mx-lg-0 pt-2">
                     <div class="photo-box border ml-1"><img :src="pastorDetails.url" class="w-100 h-100 img-responsive"></div>
-                    <div class="custom-file">
+                    <div class="custom-file submit-img">
                       <input
                         type="file"
                         class="custom-file-input"
@@ -246,14 +252,14 @@
             <div
               class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
             >
-              <button
-                type="button"
-                class="btn btn-secondary mr-4"
-                data-dismiss="modal"
-              >
-                Cancel
-              </button>
               <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button>
+              <button
+                      class="default-btn primary-bg border-0 text-white"
+                      :data-dismiss="dismissAddToGroupModal"
+                      @click="addMemberToGroup"
+                    >
+                      Save
+                    </button>
             </div>
           </div>
         </div>
@@ -306,7 +312,8 @@ export default {
         const churchName = ref("")
         const phoneNumber = ref("")
         const address = ref("")
-        const information = ref("")
+        const otherInfo = ref({showFullMessage: false})
+        const infoArray = ref([])
         const closeTextArea = ref("")
 
         const detailsForPastor = () => {
@@ -319,8 +326,10 @@ export default {
         }
 
         const otherInfoDetails = () => {
+          infoArray.value.push(otherInfo.value)
           closeTextArea.value.setAttribute("data-dismiss", "modal")
-        }
+          otherInfo.value = {}
+        }  
 
         const uploadFile = (e) => {
           image.value = e.target.files[0]
@@ -370,8 +379,9 @@ export default {
             tenantId,
             churchName,
             phoneNumber,
-            information,
+            otherInfo,
             otherInfoDetails,
+            infoArray,
             closeTextArea
         }
     }
@@ -457,9 +467,10 @@ export default {
   line-height: 15px;
 }
 
-.container {
+.container-img {
   width: 100%;
-  height: 35vh;
+  padding-bottom: 24px;
+  /* height: 35vh; */
 
   border-radius: 27px !important;
   background: rgb(248, 248, 249);
@@ -468,8 +479,9 @@ export default {
 
 .photo-box {
   border-radius: 27px;
-  width: 95%;
-  height: 55%;
+  width: 87%;
+  margin-left: 11px;
+  height: 93px;
   background-color: rgb(100%, 100%, 100%);
   margin-bottom: 0.75rem;
   margin-top: 0.75rem;
@@ -534,5 +546,9 @@ export default {
   font: normal normal 300 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #020E1C;
+}
+.submit-img {
+  width: 87%;
+  margin-left: 12px
 }
 </style>
