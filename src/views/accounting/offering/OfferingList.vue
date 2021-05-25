@@ -151,7 +151,7 @@
                     <div>{{ date(offering.date) }}</div>
                 </div>
                 <div class="col-sm-3">
-                     <div>{{ offering.eventName ? offering.eventName : "Online Giving" }}</div>
+                     <div>{{ offering.eventName ? offering.eventName : "" }}</div>
                 </div>
                 <div class="col-sm-3">
                      <div>{{ offering.contribution }}</div>
@@ -174,6 +174,11 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                
               
+                <router-link :to="!offering.activityID ? { name: 'OfferingReport', query: { report: offering.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: offering.date.split('T')[0], activityID: offereing.activityID } }">
+                  <a class="dropdown-item elipsis-items">
+                 View Report
+                </a>
+                </router-link>
                 <router-link :to="{ name: 'AddOffering', params: { offId: offering.id } }">
                   <a class="dropdown-item elipsis-items">
                  Edit

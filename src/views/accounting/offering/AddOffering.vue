@@ -1506,8 +1506,14 @@ export default {
               // toast.add({severity:'success', summary: 'Successful', detail:'Contribution added', life: 3000})
               console.log(res)
               localStorage.setItem('contriTransact', JSON.stringify(res.data.returnObject))
-              router.push({ name: 'OfferingReport', params: { report: eventDate.value } })
               loading.value = false
+
+
+              if (selectEventAttended.value) {
+                router.push({ name: 'OfferingReport', query: { report: eventDate.value, activityID: selectedEventAttended.value.activityID } })
+              } else {
+                router.push({ name: 'OfferingReport', query: { report: eventDate.value } })
+              }
               
               // let contriTransact = {
               //   amount: res.data.returnObject.find(i => i).amount,
