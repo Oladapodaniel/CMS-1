@@ -7,7 +7,7 @@
               <!-- track 1 -->
             <div class="row">
               <div class="col-lg-12 fss align-text-main">
-                <h2 class="font-weight-bold text-white font-size-small-screen slideInFromLeft">
+                <h2 class="font-weight-bold font-size-small-screen slideInFromLeft mainheader">
                   All in one app to effectively manage your church
                 </h2>
               </div>
@@ -17,8 +17,8 @@
                 <!-- track 2 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-                <h5 class="text-wrap text-white h6 slideInFromLeft2">
-                  Church management has not been more effective, with our mobile app, you can manage your church activities and event, increase your first time visitors retention rate with our automation flow by 90% and many more.
+                <h5 class="text-wrap h6 slideInFromLeft2 line-height">
+                  Church management with excellence, our mobile app will help manage your church activities, events and increase first timer retention rate with our automation flow by 90% and many more.
             </h5>
               </div>
             </div>
@@ -27,14 +27,14 @@
                 <!-- track 3 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-                 <h4 class="text-white slideInFromLeft3">Get started for FREE!</h4>
+                 <h4 class="slideInFromLeft3">Get started for FREE!</h4>
               </div>
             </div>
              <!-- end track 3 -->
 
                 <!-- track 4 -->
             <div class="row mt-3 align-text">
-              <div class="col-lg-12" style="border: 1px solid red">
+              <div class="col-lg-12">
                <router-link :to="{ name: 'ChurchSetUp' }"><button class="btn default-btn cta c-pointer">Start Now</button></router-link>
               </div>
             </div>
@@ -148,22 +148,27 @@ h4{
   height: 80vh;
 }
 .wave {
-  position: relative;
-  background: linear-gradient(222deg, #2e67ce 0%, #52309e 58%, #690c7f 100%);
+    position: relative;
+  background: #f1faff;
   height: 80vh;
 }
 
 .mainheader {
-  font: normal normal 800 64px/64px Nunito Sans;
+  font: normal normal 800 40px/54px Nunito Sans;
   font-family: Nunito Sans;
-  color: #fff;
+   color: #020e1c9f;
 }
 
 .subheader {
   font: normal normal normal 20px/36px Nunito Sans;
   font-family: Nunito Sans;
   font-size: 18px;
-  color: #fff;
+  /* color: #fff; */
+  color: #020e1c9f;
+}
+
+.line-height{
+  line-height: 1.5rem;
 }
 
 .ctatext {
@@ -173,8 +178,8 @@ h4{
 }
 
 .cta {
-  color: #2e67ce;
-  background-color: #f1faff;
+  color:#f1faff ;
+  background-color: #2e67ce ;
   border: none;
   outline: none;
 }

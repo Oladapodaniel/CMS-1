@@ -141,8 +141,11 @@
         <div class="row mt-1">
           <div class="col-12 col-md-10">
             <div class="row">
-              <div class="col-4 col-sm-8">
-                <h5 class="primaryColour mt-4">Default Colour</h5>
+              <div class="d-flex align-item-center col-4 col-sm-8">
+                <h5 class="primaryColour mt-4">Primary Colour</h5>
+                 <i class="fa fa-question-circle-o c-pointer "
+                              v-tooltip.top="'Sent | Processed | Failed'"
+                            ></i>
               </div>
 
              <div class="col-4 color-picker">
@@ -169,7 +172,7 @@
           <div class="col-12 col-md-10">
             <div class="row">
               <div class="col-12 col-sm-6">
-                <h5 class="logo">Logo</h5>
+                <h5 class="logo">Ministery Logo</h5>
               </div>
               <div class="col-12 col-sm-6" id="logoBox">
                 <div class="cs-input border-0 mt-2 ml-4">
@@ -438,9 +441,13 @@ import router from "../../../router";
 import { ref, computed } from "vue";
 import store from '../../../store/store';
 import axios from "@/gateway/backendapi";
+import Tooltip from "primevue/tooltip";
 
 // import {ref} from 'vue'
 export default {
+   directives: {
+    tooltip: Tooltip,
+  },
   setup() {
     const image = ref("")
     const colorBox = ref("")
@@ -699,7 +706,7 @@ opacity: 1;
 }
 .logo {
   text-align: left;
-  font: normal normal bold 24px/32px Nunito Sans;
+  /* font: normal normal bold 24px/32px Nunito Sans; */
   letter-spacing: 0px;
   color: #020e1c;
   opacity: 1;
