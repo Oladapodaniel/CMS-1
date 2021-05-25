@@ -102,6 +102,7 @@ var highchartsOptions = {
     //   },
     // ];
     console.log(props.summary)
+    console.log(getSummary.value)
     });
 
     return { chart, getSummary }

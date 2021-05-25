@@ -24,7 +24,6 @@
             <span class="percent-text"> Since last month</span>
           </p>
         </div>
-
         <div class="chart-con">
           <div style="width: 45%" class="ml-md-4 chart1">
             <ByGenderChart

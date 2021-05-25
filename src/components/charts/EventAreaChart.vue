@@ -5,14 +5,14 @@
 </template>
 
 <script>
-import { onUpdated, ref } from "vue";
+import { onMounted, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
-  props: ["elemId", "domId", "title", "subtitle", "lineColor", "series", "xAxis"],
+  props: ["elemId", "domId", "title", "subtitle", "lineColor", "series"],
   setup(props) {
     const chart = ref(null);
-    onUpdated(() => {
+    onMounted(() => {
       console.log(props.series, "series");
       let highchartsOptions = {
         chart: {
@@ -26,7 +26,7 @@ export default {
           y: 20,
         },
         xAxis: {
-          categories: props.xAxis ? props.xAxis : [
+          categories: [
             "Jan",
             "Feb",
             "Mar",
@@ -99,9 +99,7 @@ export default {
       };
       chart.value = new Highcharts.chart(highchartsOptions);
     });
-    onUpdated(() => {
-      console.log(props.series);
-    });
+  
   },
 };
 </script>

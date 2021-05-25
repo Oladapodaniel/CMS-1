@@ -232,6 +232,9 @@
               </table>
             </div>
           </div>
+      <!-- attendanceSeries    {{attendanceSeries ? attendanceSeries : ""}}
+chartData{{chartData ? chartData : ""}}
+series {{series}} -->
             <!-- Column Charts -->
             <div v-show="tenantInfoCeleb.length > 0 || (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length > 0 || tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data[0] > 0) || (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.length > 0 || tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] > 0)">
               <!-- <div class="charts" id="plot"> -->
@@ -1207,6 +1210,15 @@ tbody tr:nth-child(even) {
 
 .table td {
     vertical-align: baseline;
+}
+
+.chart-div {
+      border: 1px solid #DDE2E6;
+    border-radius: 30px;
+    margin: 0 0 24px 0;
+    box-shadow: 0px 1px 4px #02172E45;
+    border: 1px solid #DDE2E6;
+    padding: 25px 0;
 }
 
 
