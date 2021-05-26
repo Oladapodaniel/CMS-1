@@ -21,7 +21,8 @@
               </div>
            
           </div>
-          <div class="col-12 col-md-4" v-if="pieChart.length > 0">
+          <!-- {{ pieChart }} -->
+          <div class="col-12 col-md-4">
             <ContributionPieChart
               domId="chart"
               title="Analytics"
@@ -29,9 +30,6 @@
               :titleMargin="10"
               :summary="pieChart"
             />
-          </div>
-          <div class="col-12 col-md-4 text-primary" v-else>
-            You currently have no data for {{ selectedPeriod.name.toLowerCase() }}.
           </div>
           <div class="col-12 col-md-4 " >
             <!-- <div v-if="attendanceBoolean"> -->
