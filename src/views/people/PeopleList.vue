@@ -220,20 +220,21 @@
       </div>
       <div class="table-header font-weight-700">
         <div class="check"></div>
-        <div class="picture">
-          <p>PICTURE</p>
+        <div class="picture text-dark  small-text text-capitalize  font-weight-bold" style="font-size: 16px">
+          <p>picture</p>
         </div>
-        <div class="firstname">
-          <p>FIRSTNAME</p>
+        <div class="firstname small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+          <p>firstname</p>
         </div>
-        <div class="lastname">
-          <p>LASTNAME</p>
+        <div class="lastname small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+          <p>lastname</p>
         </div>
-        <div class="phone">
-          <p>PHONE</p>
+        <div class="phone small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+          <p>phone</p>
         </div>
-        <div class="action"></div>
-        -
+        <div class="action small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+          <p>action</p> 
+        </div>
       </div>
 
       <div
@@ -285,7 +286,7 @@
               </div>
               <router-link
                 :to="`/tenant/people/add/${person.id}`"
-                class="data-value itemroute-color"
+                class="data-value text-secondary itemroute-color"
                 >{{ person.firstName }}</router-link
               >
             </div>
@@ -297,7 +298,7 @@
               </div>
               <router-link
                 :to="`/tenant/people/add/${person.id}`"
-                class="data-value itemroute-color"
+                class="data-value text-secondary itemroute-color"
                 >{{ person.lastName }}</router-link
               >
             </div>
@@ -309,13 +310,16 @@
               </div>
               <router-link
                 :to="`/tenant/people/add/${person.id}`"
-                class="data-value itemroute-color"
+                class="data-value text-secondary itemroute-color"
                 >{{ person.mobilePhone }}</router-link
               >
             </div>
           </div>
           <div class="action data action-icon">
-            <div class="dropdown">
+            <div class="data-text">
+                <p>Action</p>
+              </div>
+            <div class="dropdown text-left">
               <i
                 class="fas fa-ellipsis-v cursor-pointer"
                 id="dropdownMenuButton"
@@ -866,6 +870,15 @@ a {
   text-decoration: none;
 }
 
+.picture,
+  .firstname,
+  .lastname,
+  .phone,
+  .action {
+    width: 100%;
+    /* font-size: 20px; */
+  }
+
 .my-con {
   /* display: flex; */
   justify-content: space-between;
@@ -1038,8 +1051,10 @@ a {
   .picture,
   .firstname,
   .lastname,
-  .phone {
+  .phone,
+  .action {
     width: 100%;
+    /* font-size: 20px; */
   }
 
   .table {
@@ -1062,6 +1077,7 @@ a {
   }
 
   .data-con {
+ 
     /* text-align: center; */
     display: flex;
     justify-content: space-between;
