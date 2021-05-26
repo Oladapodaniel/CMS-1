@@ -455,7 +455,7 @@
                   <span class="text-style">Total</span>
                 </div>
                 <div class="col-sm-3 total-text">
-                  <span class="text-danger">{{ contributionReport.tenantCurrency }}&nbsp;{{ contributionReport ? contributionReport.totalToday : "" }}</span>
+                  <span class="text-danger">{{ contributionReport.tenantCurrency }}&nbsp;{{ contributionReport ? amountWithCommas(Math.round(contributionReport.totalToday)) : "" }}</span>
                 </div>
               </div>
             </div>
@@ -1538,6 +1538,7 @@ import axios from "@/gateway/backendapi";
 // // import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import formatDate from "../../../services/dates/dateformatter"
+import numbers_formatter from '../../../services/numbers/numbers_formatter';
 
 export default {
     components: {
@@ -1720,8 +1721,11 @@ export default {
               markedAsSent.value = "marked as sent"
             }
 
+            const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount)
+
         return {
-            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent, routeActivityId
+            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent, routeActivityId, amountWithCommas
+            
         }
     }
 }
