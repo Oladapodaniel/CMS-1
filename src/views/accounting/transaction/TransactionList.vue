@@ -2,7 +2,7 @@
   <div class="whole-co container-wid container-top" @click="hideModals">
     <div class="main-co">
       <div class="main-bod">
-        <div class="top container-wid mt-3">
+        <div class="top container-wide mt-3">
           <div class="header">
             <div class="events">Transaction</div>
           </div>
@@ -11,14 +11,14 @@
               class="more-btn align-items-center default-btn border-0"
               @click="toggleTransac(1)"
             >
-              Add Income<span><i class="fa fa-angle-down btn-icon"></i></span>
+              Add Income
             </button>
 
             <button
               class="more-btn align-items-center default-btn border-0"
               @click="toggleTransac(2)"
             >
-              Add Expense<span><i class="fa fa-angle-down btn-icon"></i></span>
+              Add Expense
             </button>
 
             <!-- <button class="more-btn align-items-center default-btn border-0"> -->
@@ -36,14 +36,14 @@
         </div>
 
         <div class="container-wide">
-          <div class="col-12 col-sm-6 col-lg-4 px-0 mt-5">
+          <div class="col-12 col-sm-8 col-lg-6 px-0 mt-5">
             <div class="d-flex">
               <button
                 class="form-control transaction-button close-modal"
                 @click="toggleAccount"
               >
                 <div class="close-modal">{{ selectedTransaction.type }}</div>
-                <div class="close-modal">{{ selectedTransaction.amount }}</div>
+                <div class="close-modal">{{ amountWithCommas(selectedTransaction.amount) }}</div>
               </button>
               <i
                 class="pi pi-angle-down arrow-icon close-modal"
@@ -63,7 +63,7 @@
                     class="d-flex justify-content-between py-1 px-3 close-modal"
                   >
                     <div class="close-modal">{{ cash.text }}</div>
-                    <div class="close-modal">{{ cash.currency && cash.currency.name ? cash.currency.name : "" }}{{ cash.balance }}</div>
+                    <div class="close-modal">{{ cash.currency && cash.currency.name ? cash.currency.name : "" }}{{ amountWithCommas(cash.balance) }}</div>
                   </div>
                 </div>
               </div>
@@ -274,6 +274,7 @@ import axios from "@/gateway/backendapi";
 import transactionService from "../../../services/financials/transaction_service";
 import TransactionTable from "../../../components/transactions/TransactionsTable"
 import transaction_service from '../../../services/financials/transaction_service';
+import numbers_formatter from '../../../services/numbers/numbers_formatter';
 // import LedgerForm from "../transaction/components/LedgerForm";
 
 export default {
@@ -487,12 +488,13 @@ export default {
     const toggleTransac = (e) => {
       if (e === 1) {
         transacPropsValue.value = {
-          type: "Add Customer",
+          type: "Add Donor",
           account: "Income Account",
         };
       } else if (e === 2) {
         transacPropsValue.value = {
-          type: "Add Vendor",
+          type: "",
+          // type: "Add Vendor",
           account: "Expense Account",
         };
       } else {
@@ -590,6 +592,8 @@ export default {
         accountsAndBalances.value = response;
         accountsAndBalances.value.unshift({ text: "All Accounts", balance: totalAccountBalances.value })
         console.log(response, "account and balances");
+        let sum = response.map(i => i.balance).reduce((j, k) => +j + +k);
+        selectedTransaction.value.amount = Number(sum).toFixed(2)
       } catch (error) {
         console.log(error);
       }
@@ -613,6 +617,8 @@ export default {
       .catch(err => {
         console.log(err);
       })
+
+      const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount)
 
     return {
       transactions,
@@ -658,6 +664,7 @@ export default {
       selectRow,
       accountsAndBalances,
       totalAccountBalances,
+      amountWithCommas,
     };
   },
 };

@@ -12,9 +12,9 @@
       ></i>
     </div>
     <div class="container">
-      <div class="row mt-3" v-if="gettingIcomeAccounts || gettingExpenseAccounts">
+      <div class="row mt-3" v-if="gettingIcomeAccounts || gettingExpenseAccounts || gettingSelectedTrsn">
         <div class="col-md-12 text-center">
-          <i class="pi pi-spin pi-spinner" style="fontSize: 3rem"></i>
+          <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
         </div>
       </div>
       <div class="row mt-4">
@@ -22,7 +22,7 @@
           <!-- <label for="description">Write a Description</label> -->
         </div>
         <div class="col-7 pr-0">
-          <div class="label-text">Write a Description</div>
+          <div class="label-text">Write a Description <span class="text-danger">*</span></div>
           <input
             class="form-control"
             id="description"
@@ -34,12 +34,13 @@
           />
         </div>
         <div class="col-5 pl-0">
-          <div class="label-text">Date</div>
+          <div class="label-text">Date <span class="text-danger">*</span></div>
           <input
             type="date"
             v-model="transacObj.date"
             id="date"
             class="form-control"
+            ref="dateField"
           />
         </div>
       </div>
@@ -51,7 +52,7 @@
             @click="showAccount = !showAccount"
           >
             <span class="ofering close-modal">{{
-              !selectedCashAccount || !selectedCashAccount.text ? "Select" : selectedCashAccount.text
+              !selectedCashAccount || !selectedCashAccount.name ? "Select" : selectedCashAccount.name
             }}</span
             ><span>
               <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
@@ -131,81 +132,49 @@
       <div>
         <!-- <div v-if="transacObj.splitCategories.length <= 0"> -->
         <div class="row mt-3">
-          <div class="col-12">
-            <div class="label-text">{{ transactionDetails.account }}</div>
-            <div
-              class="select-elem-con pointer d-flex justify-content-space-between close-modal c-pointer"
-              @click="showUncategorized = !showUncategorized"
-            >
-              <span class="ofering close-modal">{{
-                !selectedIncomeOrExpenseAccount || !selectedIncomeOrExpenseAccount.text ? "Select" : selectedIncomeOrExpenseAccount.text
-              }}</span
-              ><span>
-                <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
-              ></span>
-              <!-- <span class="ofering close-modal">{{
-                !transacObj.category ? "Select" : transacObj.category
-              }}</span
-              ><span>
-                <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
-              ></span> -->
-            </div>
-            <div
-              class="ofering close-modal"
-              :class="{ 'style-uncategorized': showUncategorized }"
-              v-if="showUncategorized"
-            >
-              <div class="px-3 pt-3 close-modal">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  class="form-control ofering mb-1 close-modal"
-                  v-model="incomeExpenseSearchText"
-                />
-              </div>
+          <div class="col-12" v-for="(i, index) in splittedTransactions" :key="index">
+            <div class="label-text">{{ transactionDetails.id && transactionDetails.debitSplitAccounts && transactionDetails.debitSplitAccounts.length > 0 ? "Expense Account" : transactionDetails.id ? "Income Account" : transactionDetails.account }}</div>
 
-              <div class="container-fluid">
+            <div class="dropdown">
+              <button class="btn btn-default text-left bg-light col-7" :class="{ 'col-12': splittedTransactions.length === 1 }" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                style="border: 1px solid #ced4da;border-radius: 4px;background: rgb(253, 253, 253)"
+              >
+                <span class="text-left">{{ !splittedTransactions.length === 0 || !splittedTransactions[index].text ? "Select" : splittedTransactions[index].text }}</span>
+                <span class="float-right"><i class="pi pi-chevron-down" style="fontSize: .9rem"></i></span> 
+              </button><input type="text" placeholder="amount" :class="{ 'col-4': splittedTransactions.length > 1 }" class="form-control d-inline" v-model="i.amount" v-if="splittedTransactions.length > 1"><span v-if="splittedTransactions.length > 1" class="col-1 px-1" @click="removeSplit(index)"><i class="pi pi-trash"></i></span>
+              <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
                 <div class="row">
-                  <div class="col-md-12 px-0">
-                    <!-- <div class="desc-head py-1 px-3 close-modal">Assets</div> -->
-                    <div class="header-border close-modal">
-                      <div v-if="filterUncategorizedAsset.length > 0">
-                        <div
-                          class="manual-dd-item close-modal"
-                          v-for="(item, index) in expenseIncomeAccounts"
-                          :key="index"
-                        >
-                          <div
-                            class="d-flex justify-content-between py-2 px-3 close-modal"
-                          >
-                            <div
-                              class="close-modal offset-sm-1"
-                              @click="categories($event, item)"
-                            >
-                              {{ item.text }}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div v-else>
-                        <div class="text-center px-3 py-2 text-danger">
-                          No Match Found
-                        </div>
-                      </div>
-                    </div>
+                  <div class="col-md-11 mx-auto">
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      class="form-control ofering mb-1 close-modal"
+                      v-model="incomeExpenseSearchText"
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-11 mx-auto">
+                    <a class="dropdown-item" v-for="(item, indx) in expenseIncomeAccounts" :key="indx" @click="categories(item, index)">{{ item.text }}</a>
                   </div>
                 </div>
               </div>
-
+            </div>
+            <div class="col-md-12">
+              <div class="d-flex justify-content-end">
+                <div class="mt-2 vendor c-pointer" @click="() => i.showDonorField = !i.showDonorField">{{ i.donor ? i.donor : transactionDetails.type }}</div>
+                <div class="dot ml-2"></div>
+                <div class="mt-2 ml-2 vendor">Include Tax Sales</div>
+              </div>
+            </div>
+            <div class="col-md-12 px-0" v-if="i.showDonorField">
+              <!-- Hello -->
+              <SearchMember @selectmember="donorSelected" :index="index" />
             </div>
           </div>
         </div>
 
-        <div class="d-flex justify-content-end">
-          <div class="mt-2 vendor">{{ transactionDetails.type }}</div>
-          <div class="dot ml-2"></div>
-          <div class="mt-2 ml-2 vendor">Include Tax Sales</div>
-        </div>
       </div>
      
 
@@ -217,9 +186,9 @@
           v-tooltip.top="
             'Create multiple categories to associate(split) this trasaction between different accounts.'
           "
-          @click="splitWithdrawal"
+          @click="splitTransaction"
         >
-          Split this widrawal <i class="fa fa-info-circle"></i>
+          Split this {{ transactionDetails.account === 'Expense Account' ? 'expense' : 'income' }} <i class="fa fa-info-circle"></i>
         </div>
         <div class="col-3 line pl-0"><hr /></div>
         <div
@@ -243,10 +212,11 @@
           ></textarea>
         </div>
         <div class="col-12 mt-1 modified">
-          Transaction last modified on February 18th,2021
+          Transaction last modified on {{ new Date(Date.now()).toLocaleDateString() }}
         </div>
         <div class="col-6 offset-sm-3 mb-2 mt-3">
-          <div class=" text-center cpon"><button class="default-btn primary-bg text-white border-0" @click="saveIncome">Save</button></div>
+          <div class=" text-center cpon"><button class="default-btn primary-bg text-white border-0" :disabled="!formIsValid" @click="saveIncome">Save</button></div>
+          <!-- <div class=" text-center cpon"><button class="default-btn primary-bg text-white border-0" @click="saveIncome" :disabled="!formIsValid">Save</button></div> -->
         </div>
       </div>
       <Toast />
@@ -260,13 +230,14 @@ import Tooltip from "primevue/tooltip";
 import transaction_service from "../../../services/financials/transaction_service";
 import chart_of_accounts from '../../../services/financials/chart_of_accounts';
 import { useToast } from "primevue/usetoast";
+import SearchMember from "../../../components/search/SearchMember"
 // import Dropdown from 'primevue/dropdown';
 export default {
-  components: {},
+  components: { SearchMember },
   directives: {
     tooltip: Tooltip,
   },
-  props: ["transactionDetails", "showEditTransaction"],
+  props: ["transactionDetails", "showEditTransaction", "gettingSelectedTrsn"],
   setup(props, { emit }) {
     const showAccount = ref(false);
     const accountText = ref("");
@@ -275,6 +246,7 @@ export default {
     const showUncategorized = ref(false);
     const uncategorizedText = ref("");
     const transacObj = ref(props.transactionDetails);
+    const splittedTransactions = ref([ { ...props.transactionDetails }])
     // const transacObj = ref({
     //   // splitCategories: [],
     // });
@@ -355,11 +327,13 @@ export default {
       // let index = splitCategories.findIndex(i => )
     };
 
-    const categories = (e, account) => {
+    const categories = (account, index) => {
       // transacObj.value.category = e.target.innerText;
       showUncategorized.value = !showUncategorized.value;
-      selectedIncomeOrExpenseAccount.value = account;
-      console.log(selectedIncomeOrExpenseAccount.value );
+      // selectedIncomeOrExpenseAccount.value = account;
+      splittedTransactions.value[index].accountID = account.id;
+      splittedTransactions.value[index].text = account.text;
+      console.log(splittedTransactions.value, "SPLITET TTS");
     };
 
     const accountFlow = (e, account) => {
@@ -399,6 +373,12 @@ export default {
       let data = [ ];
         if (!props.transactionDetails.account) {
           data = [ ...expenseAccounts.value, accountType.value ];
+        }
+        if (props.transactionDetails.id && props.transactionDetails.debitSplitAccounts && props.transactionDetails.debitSplitAccounts.length > 0) {
+          data = expenseAccounts.value;
+        }
+        if (props.transactionDetails.id && props.transactionDetails.creditSplitAccounts && props.transactionDetails.creditSplitAccounts.length > 0) {
+          data = accountType.value ? accountType.value : [ ];
         }
         if (props.transactionDetails.account === "Income Account") {
           data = accountType.value ? accountType.value : [ ];
@@ -473,31 +453,13 @@ export default {
     getExpenseAccounts();
     getIncomeAccounts();
 
-    // const transactionalAccounts = ref([]);
     const accountTypes = ["assets", "liability", "income", "expense", "equity"];
     const accTypes = ["assets", "liability", "equity", "income", "expense" ];
-
-    // const getTransactionalAccounts = async () => {
-    //   try {
-    //     const response = await transaction_service.getTransactionalAccounts();
-    //     for (let group of accountTypes) {
-    //       const groupItems = response.filter(
-    //         (i) => i.accountType.toLowerCase() === group
-    //       );
-    //       transactionalAccounts.value.push(groupItems);
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
 
     const transactionalAccounts = computed(() => {
       if (!accountHeads.value || accountHeads.value.length === 0) return [ ];
       let accounts = [ ];
       for (let group of accountHeads.value) {
-        // for (let account of group.accountHeadsDTO) {
-
-        // }
         accounts.push(group.accountHeadsDTO)
       }
       console.log(accounts, "computed accounts");
@@ -506,11 +468,25 @@ export default {
 
     const constructSaveTransactionReqBody = () => {
       const reqBody = {
-        amount: transacObj.value.amount,
-        creditAccountID: selectedIncomeOrExpenseAccount.value.id,
+        // id: props.transactionDetails.id ? props.transactionDetails.id : "",
+        amount: +transacObj.value.amount,
+        // amount: Math.abs(+transacObj.value.amount),
+        creditSplitAccounts: splittedTransactions.value.map(i => {
+          return {
+            accountID: i.accountID,
+            amount: splittedTransactions.value.length ===1 ? +transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount,
+            // amount: Math.abs(i.amount ? +i.amount : +transacObj.value.amount),
+            contactID: i.donorId ? i.donorId : "",
+            transactionID: i.transactionID
+          }
+        }),
         date: transacObj.value.date,
         debitAccountID: selectedCashAccount.value.id,
-        memo: transacObj.value.memo
+        memo: transacObj.value.memo,
+        transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : ""
+      }
+      if (props.transactionDetails.id) {
+        reqBody.id = props.transactionDetails.id;
       }
       return reqBody;
     }
@@ -528,7 +504,7 @@ export default {
     const saveIncome = async () => {
         try {
           let reqBody = { };
-          if (props.transactionDetails.account === "Income Account") {
+          if (props.transactionDetails.account === "Income Account" || (!props.transactionDetails.debitSplitAccounts)) {
             transacObj.value.creditAccountID = selectedIncomeOrExpenseAccount.value.id;
             transacObj.value.debitAccountID = selectedCashAccount.value.id;
             reqBody = constructSaveTransactionReqBody();
@@ -538,11 +514,22 @@ export default {
             console.log(response, "Save income response");
           } else {
             const body = {
-              debitAccountID: selectedIncomeOrExpenseAccount.value.id,
+              debitSplitAccounts: splittedTransactions.value.map(i => {
+                return {
+                  accountID: i.accountID,
+                  amount: splittedTransactions.value.length ===1 ? transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount,
+                  // amount: Math.abs(i.amount ? +i.amount : +transacObj.value.amount),
+                  contactID: i.donorId ? i.donorId : "",
+                  transactionID: i.transactionID
+                }
+              }),
+              id: props.transactionDetails.id ? props.transactionDetails.id : "",
               creditAccountID: selectedCashAccount.value.id,
               date: transacObj.value.date,
               memo: transacObj.value.memo,
-              amount: transacObj.value.amount,
+              transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : "",
+              amount: +transacObj.value.amount,
+              // amount: Math.abs(+transacObj.value.amount),
               category: "outflow"
             }
             const response = await transaction_service.saveExpense(body);
@@ -554,16 +541,37 @@ export default {
         }
     }
 
-    // getTransactionalAccounts();
+    const getSplittedAccountNames = () => {
+      console.log(expenseIncomeAccounts.value, "splitted");
+      console.log(splittedTransactions.value);
+      splittedTransactions.value = splittedTransactions.value.map(i => {
+        const accIncome = accountType.value.find(j => j.id === i.accountID);
+        const accExpense = expenseAccounts.value.find(j => j.id === i.accountID);
+        i.text = accIncome ? accIncome.text : accExpense ? accExpense.text : "Income Account";
+        return i;
+      })
+    }
 
+    const dateField = ref(null);
     watch(() => props.transactionDetails, (data) => {
       console.log(data, "in watch");
       transacObj.value.date = new Date(data.date);
       transacObj.value.amount = data.amount;
       transacObj.value.memo = data.memo;
-      // transacObj.value = { memo: data.memo, date: data.date, amount: data.amount }
-
+      splittedTransactions.value = [ { }]
       console.log(transacObj.value, "TO");
+      selectedCashAccount.value = data.account;
+
+      if (props.transactionDetails.id) {
+        transacObj.value.date = new Date(data.date).toISOString().substr(0, 10)
+        if (data.debitSplitAccounts && data.debitSplitAccounts.length > 0) {
+          splittedTransactions.value = data.debitSplitAccounts;
+        } else {
+          splittedTransactions.value = data.creditSplitAccounts;
+        }
+        getSplittedAccountNames()
+      }
+
     })
 
     const accountHeads = ref([ ]);
@@ -594,6 +602,35 @@ export default {
       if (!cashandbank.value || cashandbank.value.length === 0) return [ ];
       return cashandbank.value.filter(i => i.text.includes(accountText.value));
     })
+
+    const splitTransaction = () => {
+      splittedTransactions.value.push({ })
+    }
+
+    const showDonorField = ref(false);
+    const addDonor = () => {
+
+    }
+
+    const donorSelected = (memberData) => {
+      splittedTransactions.value[memberData.index].donorId = memberData.member.id;
+      splittedTransactions.value[memberData.index].donor = memberData.member.name;
+      splittedTransactions.value[memberData.index].showDonorField = false;
+    }
+
+    const formIsValid = computed(() => {
+      if (!transacObj.value.amount) return false;
+      if (splittedTransactions.value.length === 1) return true;
+      const result = splittedTransactions.value.map(i => {
+        return i.amount ? Math.abs(+i.amount) : 0;
+      }).reduce((a, b) => a + b);
+      const amount = transacObj.value.amount ? +transacObj.value.amount : 0;
+      return Math.abs(amount) === result;
+    })
+
+    const removeSplit = index => {
+      splittedTransactions.value.splice(index, 1);
+    }
 
     return {
       showAccount,
@@ -633,6 +670,14 @@ export default {
       cashandbank,
       filteredCashandBank,
       incomeExpenseSearchText,
+      splitTransaction,
+      splittedTransactions,
+      donorSelected,
+      showDonorField,
+      addDonor,
+      formIsValid,
+      removeSplit,
+      dateField,
     };
   },
 };

@@ -130,17 +130,19 @@ methods:{
         })
     },
     async getDefaultMessage(){
-      try{
-       const {data} = await axios.get(`/api/Settings/GetDefaultMessage/${this.$route.query.messageId}`);
-        this.defaultMessage = data;
-        this.message = data.returnObject.message;
-        this.subject = data.returnObject.subject;
-        this.selectCategory = this.Membership.find(i =>i.value === data.returnObject.messageType)
-        this.selectType = this.Sms.find(i => i.value === data.returnObject.category )
-        console.log(this.defaultMessage);
+      if (this.$route.query.messageId) {
+          try{
+            const {data} = await axios.get(`/api/Settings/GetDefaultMessage/${this.$route.query.messageId}`);
+                this.defaultMessage = data;
+                this.message = data.returnObject.message;
+                this.subject = data.returnObject.subject;
+                this.selectCategory = this.Membership.find(i =>i.value === data.returnObject.messageType)
+                this.selectType = this.Sms.find(i => i.value === data.returnObject.category )
+                console.log(this.defaultMessage);
 
-      }catch(error){
-        console.log(error);
+            }catch(error){
+                console.log(error);
+            }
       }
 
     },
