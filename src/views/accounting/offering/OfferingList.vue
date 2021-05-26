@@ -1,6 +1,6 @@
 <template>
   <div class="pb-4">
-    <div class="row table " >
+    <div class="row table " style="height: 300px">
       <div class="col-12 mt-4  w-100">
         <div class="row">
           <!-- {{contributionSummary}} -->
@@ -25,7 +25,7 @@
           <div class="col-12 col-md-4">
             <ContributionPieChart
               domId="chart"
-              title="Contribution Analytics"
+              title="Analytics"
               distance="5"
               :titleMargin="10"
               :summary="pieChart"
@@ -43,7 +43,7 @@
             <ContributionAreaChart
                elemId="chart"
                   domId="areaChart3"
-                  title=""
+                  title="So Far"
                   lineColor="#002044"
                   :subtitle="chartData.name"
                   :series="chartData && chartData.barChart ? chartData.barChart.data : {}"
@@ -54,13 +54,10 @@
         </div>
       </div>
     </div>
-    <div class="row table overflow-auto  " style="height: 50vh;">
-      <div class="col-12" id="table">
+    <div class="row table">
+      <div class="col-12 px-0" id="table">
         <div class="top-con" id="ignore2">
-          <!-- {{ selectedPeriod.name }} -->
-
           <div class="table-top">
-            <!-- <div class="select-all"></div> -->
             <div
               class="filter col-2"
               @click="
@@ -182,16 +179,114 @@
         </div>
 
         <!-- contribution -->
-        <div>
-          <div class="row">
+        <div v-if="searchContribution.length > 0">
+          <div class="container-fluid d-none d-md-block">
+            <div class="row t-header">
+              <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
+                <div class="col-md-1 px-3"></div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Contribution</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Donor</div>
+                <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
+              <!-- </div> -->
+            </div>
+          </div>
+        <div class="row" style="margin:0;">
+            <div
+              class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
+              v-for="(item, index) in searchContribution"
+              :key="item.id"
+            >
+              <div class="row w-100" style="margin:0">
+                <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+                  <input
+                    type="checkbox"
+                    v-model="item.check"
+                    class="form-check"
+                  />
+                </div>
+
+                <div class="desc small-text col-md-2 px-1">
+                  <p class="mb-0 d-flex justify-content-between">
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
+                    <span>{{ date(item.date) }}</span>
+                  </p>
+                </div>
+
+                <div class="col-md-3 px-1">
+                  <div class="d-flex justify-content-between">
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Contribution</span>
+                  <div>
+                    
+                    <div class="desc small-text text-right text-md-left">{{ item.contribution }}</div>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="desc-head small-text col-md-3 px-1">
+                  <p class="mb-0 d-flex justify-content-between">
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
+                    <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
+                    <span>{{ item.currencyName }} {{ item.amount }}</span>
+                  </p>
+                </div>
+
+                <div class="small-text col-md-2 px-1">
+                  <p class="mb-0 d-flex justify-content-between">
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Donor</span>
+                    <span><span class="primary-text c-pointer"
+                    >{{ item.donor }}</span
+                  ></span>
+                  </p>
+                </div>
+
+                <div class="small-text col-md-1 px-1">
+                  <!-- <p class="mb-0 d-flex justify-content-between">
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
+                    <span>Marked</span>
+                  </p> -->
+                  <div class="action data action-icon">
+                    <div class="dropdown">
+                      <i
+                        class="fas fa-ellipsis-v cursor-pointer"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      ></i>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
+                        <a class="dropdown-item elipsis-items">
+                      View Report
+                      </a>
+                      </router-link>
+                      <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
+                        <a class="dropdown-item elipsis-items">
+                      Edit
+                      </a>
+                      </router-link>
+                      <a
+                        class="dropdown-item elipsis-items cursor-pointer"
+                        @click="showConfirmModal(item.id, index)"
+                        >Delete</a
+                      >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row">
             <div
               class="col-12 col-md-12 col-lg-12 overflow-auto border-bottom border-top border-left"
             >
               <div class="row table-header">
                 <div class="col-sm-3">DATE</div>
-                <!-- <div class="col-sm-2">
+                 <div class="col-sm-2">
                           EVENT
-                       </div> -->
+                       </div> 
                 <div class="col-sm-3 d-none d-sm-block">CONTRIBUTION</div>
                 <div class="col-sm-3 d-none d-sm-block">AMOUNT</div>
                 <div class="col-sm-3 d-none d-sm-block">DONOR</div>
@@ -203,9 +298,9 @@
               >
                 <div class="col-6 d-block d-sm-none">
                   <div class="col-sm-3">DATE</div>
-                  <!-- <div class="col-sm-2">
+                   <div class="col-sm-2">
                             EVENT
-                        </div> -->
+                        </div> 
                   <div class="col-sm-3">CONTRIBUTION</div>
                   <div class="col-sm-3">AMOUNT</div>
                   <div class="col-sm-3">DONOR</div>
@@ -215,9 +310,9 @@
                     <div class="col-sm-3">
                       <div>{{ date(offering.date) }}</div>
                     </div>
-                    <!-- <div class="col-sm-3">
+                     <div class="col-sm-3">
                             <div>{{ offering.eventName ? offering.eventName : "Online Giving" }}</div>
-                        </div> -->
+                        </div> 
                     <div class="col-sm-3">
                       <div>{{ offering.contribution }}</div>
                     </div>
@@ -246,13 +341,19 @@
                           aria-haspopup="true"
                           aria-expanded="false"
                         ></i>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <!-- <a class="dropdown-item elipsis-items">
-                                    Edit
-                                    </a> -->
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        
+                        
+                          <router-link :to="!offering.activityId || offering.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: offering.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: offering.date.split('T')[0], activityID: offering.activityId } }">
+                            <a class="dropdown-item elipsis-items">
+                          View Report
+                          </a>
+                          </router-link>
+                          <router-link :to="{ name: 'AddOffering', params: { offId: offering.id } }">
+                            <a class="dropdown-item elipsis-items">
+                          Edit
+                          </a>
+                          </router-link>
                           <a
                             class="dropdown-item elipsis-items cursor-pointer"
                             @click="showConfirmModal(offering.id, index)"
@@ -265,17 +366,22 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
-        <div class="text-danger">No records found</div>
+        <div class="text-danger" v-else>No records found</div>
+
+        
+
         <div class="col-12">
           <div class="table-footer">
             <Pagination
               @getcontent="getPeopleByPage"
               :itemsCount="offeringCount"
               :currentPage="currentPage"
+              :totalItems="totalItem"
             />
           </div>
+  
         </div>
 
         <ConfirmDialog />
@@ -302,9 +408,8 @@ import Dropdown from "primevue/dropdown";
 // import ContributionColumnChart from "../../../components/charts/ColumnChart.vue";
 import ContributionPieChart from "../../../components/charts/PieChart.vue";
 import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
-
 export default {
-  props: ["contributionTransactions"],
+  props: ["contributionTransactions", "totalItem"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
@@ -313,7 +418,6 @@ export default {
     ContributionPieChart,
     Dropdown,
   },
-
   setup(props, { emit }) {
     // const contributionTransactions = ref([]);
     // const getFirstTimerSummary = ref({});
@@ -342,16 +446,13 @@ export default {
     const contributionSummary = ref({});
     const series = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]);
     const attendanceSeries = ref("");
-
     const route = useRoute();
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
-
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
     };
-
     const getRoute = () => {
       console.log(route.fullPath);
       if (route.fullPath === "/tenant/offering") {
@@ -359,7 +460,6 @@ export default {
       }
     };
     getRoute();
-
     // const getContributionTranactions = () => {
     //   // let store = useStore()
     //   axios
@@ -375,7 +475,6 @@ export default {
     // // store.dispatch('contributions/contributionList')
     // };
     // getContributionTranactions();
-
     const searchContribution = computed(() => {
       if (searchText.value !== "") {
         return props.contributionTransactions.filter((i) => {
@@ -392,7 +491,6 @@ export default {
         return props.contributionTransactions;
       }
     });
-
     const printContribution = computed(() => {
       if (props.contributionTransactions.length === 0) return [];
       return props.contributionTransactions.map((i) => {
@@ -405,7 +503,6 @@ export default {
         };
       });
     });
-
     const deleteOffering = (id, index) => {
       axios
         .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
@@ -441,7 +538,6 @@ export default {
           }
         });
     };
-
     const confirm = useConfirm();
     let toast = useToast();
     const showConfirmModal = (id, index) => {
@@ -465,35 +561,46 @@ export default {
         },
       });
     };
-    const currentPage = ref(1);
-
+    const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
-      if (page < 1) return false;
+      console.log(page)
+      // if (page < 1) return false;
       try {
         const { data } = await axios.get(
           `/api/Financials/Contributions/Transactions?page=${page}`
         );
-        // filterResult.value = [ ];
-        // searchMember.value = [ ];
-        // noRecords.value = false;
-        // props.contributionTransactions = data;
+        if (data) {
+          console.log(data)
         emit("get-pages", data);
         currentPage.value = page;
+        }
       } catch (error) {
         console.log(error);
       }
     };
-
+    // const getSMSByPage = async (page) => {
+    //   try {
+    //     const data = await communicationService.getAllSentSMS(page);
+    //     if (data) {
+    //       sentSMS.value = data.sentSMS;
+    //       currentPage.value = page;
+    //       isSortedByStatus.value = true;
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
     const offeringCount = computed(() => {
-      if (props.contributionTransactions.length > 50)
-        return Math.ceil(props.contributionTransactions.length / 50);
-      return 1;
+      if (!props.contributionTransactions || props.contributionTransactions.length === 0) return 0;
+        return props.contributionTransactions.length;
     });
-
+    // const itemsCount = computed(() => {
+    //   if (!sentSMS.value || sentSMS.value.length === 0) return 0;
+    //   return sentSMS.value.length;
+    // });
     const date = (offDate) => {
       return monthDayYear.monthDayYear(offDate);
     };
-
     // onMounted(() => {
     //   console.log(route, "route");
     //   axios.get("/api/People/FirstTimer").then((res) => {
@@ -501,7 +608,6 @@ export default {
     //     console.log(churchMembers.value);
     //   });
     // });
-
     const applyFilter = () => {
       filter.value.contribution =
         filter.value.contribution == undefined ? "" : filter.value.contribution;
@@ -509,7 +615,6 @@ export default {
         filter.value.event == undefined ? "" : filter.value.event;
       filter.value.donor =
         filter.value.donor == undefined ? "" : filter.value.donor;
-
       let url =
         "/api/Financials/Contributions/FilteredTransactions?contribution=" +
         filter.value.contribution +
@@ -524,7 +629,6 @@ export default {
       // "&phone_number=" +
       // filter.value.phoneNumber +
       // "&page=1";
-
       axios
         .get(url)
         .then((res) => {
@@ -539,13 +643,11 @@ export default {
         })
         .catch((err) => console.log(err));
     };
-
     // const membersCount = computed(() => {
     //   if (getFirstTimerSummary.value.totalFirstTimer > 20)
     //     return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 20);
     //   return 0;
     // });
-
     const getContributionSummary = async () => {
       try {
         let { data } = await axios.get(
@@ -558,7 +660,6 @@ export default {
       }
     };
     getContributionSummary();
-
     const chartData = computed(() => {
       if (
         contributionSummary.value &&
@@ -609,10 +710,8 @@ export default {
       )
         return contributionSummary.value.oneYear;
       return [];
-
       // contributionSummary.value.oneWeek.barChart.data
     });
-
     const pieChart = computed(() => {
       if (
         contributionSummary.value &&
@@ -672,7 +771,6 @@ export default {
         return contributionSummary.value.oneYear.pieChart;
       return [];
     });
-
     const LineGraphXAxis = computed(() => {
       if(selectedPeriod.value.name === "This Week") return [1, 2, 3, 4, 5, 6, 7]
       if(selectedPeriod.value.name === "One Week") return [1, 2, 3, 4, 5, 6, 7]
@@ -683,7 +781,6 @@ export default {
       if(selectedPeriod.value.name === "Last 90days") return [1, 2, 3, 4, 5, 6, 7]
       if(selectedPeriod.value.name === "One Year") return [1, 2, 3, 4, 5, 6, 7]
     })
-
     return {
       // contributionTransactions,
       deleteOffering,
@@ -728,7 +825,6 @@ export default {
   box-sizing: border-box;
   color: #02172e;
 }
-
 .myselectContr {
   height: 2.5rem;
 }
@@ -737,12 +833,10 @@ export default {
   text-decoration: none;
   width: 241px;
 }
-
 .page-header {
   font-weight: 700;
   font-size: 1.7rem;
 }
-
 .summary {
   /* width: 20%; */
   border-radius: 30px;
@@ -752,7 +846,6 @@ export default {
   box-shadow: 0px 3px 6px #2c28281c;
   border: 1px solid #00204424;
 }
-
 .table {
   width: 100% !important;
   box-shadow: 0px 1px 4px #02172e45;
@@ -761,11 +854,9 @@ export default {
   text-align: left;
   margin-bottom: auto !important;
 }
-
 .boards {
   display: flex;
 }
-
 .board-top {
   display: flex;
   justify-content: space-between;
@@ -774,26 +865,21 @@ export default {
   box-shadow: 0px 3px 6px #2c28281c;
   padding: 4px;
 }
-
 .total {
   margin-bottom: 40px;
   font-size: 37px;
 }
-
 .total-text {
   font-size: 15px;
   font-weight: 700;
 }
-
 .percent {
   color: #136acd;
 }
-
 .hr {
   border: 1px solid #0020440a;
   margin: 0 4px 10px 0;
 }
-
 .tbl-footer-btn {
   background: transparent;
   padding: 4px;
@@ -804,76 +890,64 @@ export default {
   border: 1px solid #8898aa80;
   outline: transparent;
 }
-
 .action-icon {
   text-align: center;
 }
-
 .list-body {
   padding: 0 21px;
 }
-
 .data-value {
   display: flex;
   padding-left: 6px;
 }
-
 .theader {
   padding-left: 2px;
   text-align: left;
 }
-
 .filter-options {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .filter-options-shown {
   height: 80px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .clear-link,
 .hide-link {
   color: #136acd;
 }
-
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  display: flex;
+  justify-content: flex-end;
 }
-
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;
 }
-
 @media (max-width: 660px) {
   .select-all {
     display: none;
   }
 }
-
 .header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font: normal normal bold 13px/13px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
 }
-
 .header tr {
   color: #8898aa;
   font-size: 11px;
   box-shadow: 0px 3px 6px #2c28281c;
   background: #dde2e6 0% 0% no-repeat padding-box;
 }
-
 .select-all input {
   margin: 0 8px 0 -5px !important;
 }
-
 .currency {
   background: #fafafa 0% 0% no-repeat padding-box;
   /* border: 1px solid #C5D9F2; */
@@ -883,18 +957,15 @@ export default {
   padding: 4px;
   font-weight: bold;
 }
-
 .offering-amount {
   border: 1px solid #00204424;
   padding: 5px;
   border-radius: 5px;
 }
-
 .head-button {
   display: flex;
   justify-content: flex-end;
 }
-
 .add-btn {
   width: 180px;
   background: #136acd;
@@ -907,7 +978,6 @@ export default {
   height: 42px;
   text-decoration: none;
 }
-
 .more {
   background: #dde2e6;
   border-radius: 22px;
@@ -918,35 +988,28 @@ export default {
   height: 42px;
   margin-right: 1rem;
 }
-
 .fa-ellipsis-v:hover {
   cursor: pointer;
 }
-
 #chart {
   width: 48%;
   max-height: 310px;
   border-radius: 10px;
 }
-
 .board.members-count {
   padding: 24px;
 }
-
 .no-record {
   color: rgba(184, 5, 5, 0.726);
   font-size: 1.1em;
 }
-
 .chart1,
 .chart2 {
   border-radius: 10px;
 }
-
 .itemroute-color {
   color: #136acd;
 }
-
 @media (max-width: 767px) {
   .first-timers-text {
     text-align: center;
@@ -956,42 +1019,34 @@ export default {
     justify-content: center;
   }
 }
-
 @media screen and (max-width: 500px) {
   .board {
     width: 100% !important;
   }
 }
-
 @media screen and (min-width: 500px) {
   .theader {
     width: 23%;
   }
-
   .table-body .check {
     width: 3%;
   }
-
   .action {
     width: 5%;
   }
 }
-
 @media (max-width: 577px) {
   .head-button {
     flex-direction: column;
     align-items: center;
   }
-
   .more {
     margin-right: 0;
   }
-
   .add-btn {
     margin-top: 10px;
   }
 }
-
 @media (max-width: 575px) {
   .head-button {
     display: flex;
@@ -999,77 +1054,63 @@ export default {
     /* align-items: center; */
     justify-content: center;
   }
-
   /* .add-btn,
   .more {
     margin-top: 10px;
   } */
 }
-
 @media screen and (min-width: 501px) and (max-width: 768px) {
   /* .boards {
     flex-direction: column;
     align-items: center !important;
     flex-wrap: nowrap !important;
   }
-
   .chart-con {
     width: 85% !important;
   }
-
   .chart-con div {
     width: 40%;
   } */
-
   .board {
     width: 50% !important;
     margin-bottom: 10px;
   }
-
   .summary-header {
     width: 50%;
     margin-left: 25%;
   }
 }
-
 @media screen and (max-width: 768px) {
   .filter-options-shown {
     height: 150px !important;
     overflow: hidden;
     transition: all 0.5s ease-in-out;
   }
-
   .boards {
     flex-wrap: nowrap;
   }
-
   .responsive-table {
     max-width: 100%;
     overflow-x: scroll;
   }
 }
-
 @media screen and (max-width: 1024px) {
   .my-con {
     flex-direction: column;
   }
-
   .table {
     width: 98%;
     margin: 24px auto;
   }
-
   .summary {
     width: 98%;
     margin: auto;
   }
 }
-
 .row-divider {
   border: 1px solid #0020440a;
   margin: 0;
 }
-
 .table-footer {
   display: flex;
   justify-content: flex-end;
@@ -1077,11 +1118,9 @@ export default {
   padding: 10px 0;
   border-radius: 0px 0px 22px 22px;
 }
-
 .board.members-count {
   max-height: 216px;
 }
-
 .table-header {
   padding: 12px;
   color: black;
@@ -1089,19 +1128,33 @@ export default {
   font-size: 11px;
   font-weight: 700;
 }
-
 .table-body {
   padding: 12px;
   border-bottom: 1.5px solid #6d6d6d19;
 }
-
 .itemroute-color {
   color: #136acd;
 }
-
 .itemroute-color:hover {
   text-decoration: none;
 }
+.t-header div {
+  background: #dde2e6 0% 0% no-repeat padding-box;
+  font-size: 16px;
+  padding: .5rem 0;
+}
+.parent-desc.first {
+  color: #8898aa;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #2c28281c;
+  background: #dde2e6 0% 0% no-repeat padding-box;
+}
+.desc-head {
+  font-weight: 700;
+}
+.desc {
+  color: #9b9a9c;
+  /* opacity: 0.7; */
+}
 </style>
-
-

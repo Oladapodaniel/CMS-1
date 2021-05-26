@@ -1,13 +1,13 @@
 <template>
-    <div class="container">
+  <div class="container">
     <div class="row mt-4">
       <div class="col-md-5">
         <h2 class="font-weight-bold page-hder">New Contribution and Report</h2>
       </div>
       <div class="col-md-7 d-sm-flex justify-content-md-end">
-        <!-- <a class="def-btn mr-3 px-md-4 my-sm-1"
+        <a class="def-btn mr-3 px-md-4 my-sm-1"
           >More Actions <i class="fad fa-caret-circle-down"></i
-        ></a> -->
+        ></a>
         <router-link :to="{ name: 'AddOffering', path: '/tenant/addoffering' }">
           <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
         </router-link>
@@ -27,11 +27,11 @@
       </div>
 
       <div class="col-md-7">
-        <!-- <span class="theader">Event</span> -->
+        <span class="theader">{{ contributionReport.activityName? 'Event' : "" }}</span>
         <div class="my-3">
-          <!-- <span class="evt-name">
-            {{  }} 
-          </span> -->
+          <span class="evt-name">
+            {{ contributionReport.activityName ? contributionReport.activityName : ""  }} <i v-if="contributionReport.activityName" class="fa fa-info-circle"></i>
+          </span>
         </div>
       </div>
 
@@ -86,7 +86,7 @@
           </div>
         </div>
 
-        Approved 
+   
         <div class="row unapproved mt-4">
           <div class="col-md-12">
             <div class="row my-3">
@@ -111,17 +111,79 @@
                           class="def-btn approve-btn"
                           data-toggle="modal"
                           data-target="#sendReport"
-                          :class="{ 'resend-btn': markedAsSent }"
+                          :class="{ 'resend-btn': markedAsSent === 'marked as sent' }"
                         >
                           {{ sendBtnText }}
                         </a>
                       </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div
+                            class="modal fade"
+                            id="sendReport"
+                            tabindex="-1"
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true"
+                            :show="true"
+                          >
+                            <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5
+                                    class="modal-title font-weight-bold"
+                                    id="sendReport"
+                                  >
+                                    Send this report
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div
+                                  class="modal-body pt-0 px-0"
+                                  :data-dismiss="btnState"
+                                >
+                                  <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
+                                  <ReportModal
+                                    :eventName="
+                                      stats.activityToday
+                                        ? stats.activityToday.name
+                                        : ''
+                                    "
+                                    @sendreport="sendReport"
+                                    :stats="stats"
+                                  />
+                                </div>
+                                <!-- <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       <div class="col-6">
                         <a class="def-btn edit-btn">Get share link</a>
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="col-md-6 offset-md-1" style="">
                     <span class="mr-2">or</span>
@@ -196,10 +258,9 @@
         <div
           class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
         >
-      
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve"> {{ contributionReport ? contributionReport.totalToday : 0 }} </span>
+            <span class="recieve">{{ contributionReport.tenantCurrency }} {{ contributionReport ? contributionReport.totalToday : 0 }} </span>
           </span>
         </div>
 
@@ -218,7 +279,7 @@
       <div class="row pt-5 px-5" ref="middle">
         <div class="col-md-8">
           <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-             Contribution Details
+             {{ contributionReport. activityName ? contributionReport.activityName : "Contribution Details" }}
           </h2>
         </div>
         <div class="col-md-4">
@@ -262,10 +323,6 @@
 
       <div class="row mb-3" ref="bottom">
         <div class="col-md-12">
-          
-          
-    
-
           <!-- <div class="row px-5">
           <div class="col-sm-12">
             <div class="row">
@@ -332,7 +389,7 @@
           <div class="row px-5">
             <div class="col-md-12">
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                   <span class="bold-700">Contribution Item</span>
                 </div>
                 <div class="col-sm-3">
@@ -342,7 +399,7 @@
                   <span class="bold-700">Amount</span>
                 </div>
 
-                <div class="col-sm-3 text-sm-center">
+                <div class="col-sm-2">
                   <span class="bold-700 fs-1 fw-bolder">Total</span>
                 </div>
               </div>
@@ -357,51 +414,55 @@
             class="row"
             v-for="(item, index) in contributionReport.todayContributions"
             :key="index"
-          >
-          
-            <div class="col-md-12 py-2">
+          >          
+            <div class="col-md-12">
               <div class="row px-5">
                 <div class="col-sm-12">
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-4 py-2">
                       <span class="bold-400">{{ item.contribution }}</span>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 py-2">
                       <span class="bold-400">{{ item.channel }}</span>
                     </div>
-                    <div class="col-sm-3">
-                      <span class="bold-400">{{ item.amount }}</span>
+                    <div class="col-sm-3 py-2">
+                      <span class="bold-400">{{ item.currencyName }} {{ item.amount }}</span>
                     </div>
-                    <div class="col-sm-3 text-sm-center">
-                      <span class="bold-400">{{ item.amount }}</span>
+                    <div class="col-sm-2 py-2">
+                      <span class="bold-400">{{ item.currencyName }} {{ item.amount }}</span>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- <div class="row" v-if="index !== eventData.offerings.length - 1">
-                <div class="col-sm-12 pt-2">
+              <div class="row" v-if="index !== contributionReport.todayContributions.length - 1">
+                <div class="col-sm-12">
                   <hr class="hr" />
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-12">
-              <hr class="hr-dark" v-if="contributionReport.length > 0" />
+            <div class="col-sm-6 offset-sm-6 mt-3">
+              <hr class="hr-total" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 :''" />
             </div>
           </div>
-          <div class="row px-5" v-if="contributionReport.length > 0">
+          <div class="row px-5" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 :''">
             <div class="col-sm-12">
               <div class="row">
+                <div class="col-sm-4"></div>
                 <div class="col-sm-3"></div>
-                <div class="col-sm-3"></div>
-                <div class="col-sm-3 text-sm-right">
-                  <span class="bold-700">Total</span>
+                <div class="col-sm-1">
+                  <span class="text-style">Total</span>
                 </div>
-                <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700">{{ contributionReport ? contributionReport.totalToday : "" }}</span>
+                <div class="col-sm-3 total-text">
+                  <span class="text-danger">{{ contributionReport.tenantCurrency }}&nbsp;{{ contributionReport ? contributionReport.totalToday : "" }}</span>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 offset-sm-6">
+              <hr class="hr-total" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 :''" />
             </div>
           </div>
         </div>
@@ -1303,7 +1364,7 @@
       <!-- <div class="stats">
           <EventReportStats />
       </div> -->
-      <div class="row">
+      <div class="row" v-if="routeActivityId">
         <div class="col-md-12">
           <div class="pg-content">
             <h4 class="analytics min">Contribution Performance</h4>
@@ -1325,7 +1386,7 @@
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                          {{ contributionReport.todayVsLastWeek ? contributionReport.todayVsLastWeek.toFixed(2) : 0 }}
+                          {{ contributionReport.todayVsLastWeek ? contributionReport.todayVsLastWeek.toString().length > 4 ? `${contributionReport.todayVsLastWeek.toString().slice(0, 4)}..%` : contributionReport.todayVsLastWeek.toFixed(2) : 0 }}
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -1339,8 +1400,13 @@
                     </div>
                     <div class="ana-item-icon">
                       <div class="item-image">
-                        <div >
-    
+                        <div v-if="contributionReport.todayVsLastWeek > 0">
+                          <img
+                            src="../../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                        <div v-else>
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
@@ -1355,13 +1421,13 @@
                   <div>
                        <h5>
                         <span class="today-text">Today </span>
-                        <span class="versus"> vs Same time last month</span>
+                        <span class="versus"> vs Same Time Last Month</span>
                     </h5>
                       <div class="ana-item mt-5">
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                          {{ contributionReport.todayVsLastMonth ? contributionReport.todayVsLastMonth.toFixed(2) : 0 }}
+                          {{ contributionReport.todayVsLastMonth ? contributionReport.todayVsLastMonth.toString().length > 4 ? `${contributionReport.todayVsLastMonth.toString().slice(0, 4)}..%` : contributionReport.todayVsLastMonth.toFixed(2) : 0 }}
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -1375,10 +1441,13 @@
                     </div>
                     <div class="ana-item-icon">
                       <div class="item-image">
-                        <div
-                          
-                        >
-  
+                        <div v-if="contributionReport.todayVsLastMonth > 0">
+                          <img
+                            src="../../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                        <div v-else>
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
@@ -1392,13 +1461,13 @@
                   <div>
                       <h5>
                         <span class="today-text">Today </span>
-                        <span class="versus"> vs Same time last year</span>
+                        <span class="versus"> vs Same Time Last Year</span>
                     </h5>
                       <div class="ana-item mt-5">
                     <div class="ana-item-text">
                       <p class="ana-item-header">Offering</p>
                       <p class="ana-item-percentage">
-                        {{ contributionReport.todayVsLastYear ? contributionReport.todayVsLastYear : 0 }}
+                        {{ contributionReport.todayVsLastYear ? contributionReport.todayVsLastYear.toString().length > 4 ? `${contributionReport.todayVsLastYear.toString().slice(0, 4)}..%` : contributionReport.todayVsLastYear.toFixed(2) : 0 }}
                       </p>
                       <p>
                         <span class="ana-item-value">
@@ -1412,8 +1481,13 @@
                     </div>
                     <div class="ana-item-icon">
                       <div class="item-image">
-                        <div >
-             
+                        <div v-if="contributionReport.todayVsLastYear > 0">
+                          <img
+                            src="../../../assets/dashboardlinks/trend-icon.svg"
+                            alt=""
+                          />
+                        </div>
+                        <div v-else>
                           <img
                             src="../../../assets/dashboardlinks/negative-icon.svg"
                             alt=""
@@ -1449,11 +1523,11 @@
       </div>
       <Toast />
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 // import ReportAreaChart from "@/components/charts/AreaChart.vue";
 // import eventsService from '../../../services/events/eventsservice';
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
@@ -1477,7 +1551,8 @@ export default {
         const btnState = ref("");
         const toast = useToast();
         const churchName = ref("")
-        const routeParams = ref(route.params.report)
+        const routeParams = ref(route.query.report)
+        const routeActivityId = ref(route.query.activityID)
         const url = ref(`my.churchplus.co/tenant/report/${route.params.report}`)
         const sendBtnText = ref("Send Report")
         const markedAsSent =  ref('mark as sent')
@@ -1512,15 +1587,27 @@ export default {
         //       } 
 
         const getReport = () => {
-          axios.get(`https://churchplusv3coreapi.azurewebsites.net/api/Offering/contributionReport?date=${route.params.report}`)
-          .then(res =>  {
-            console.log(res)
-            contributionReport.value = res.data.returnObject
+          if (route.query.activityID) {
+            axios.get(`/api/Offering/contributionReport?date=${route.query.report}&activityId=${route.query.activityID}`)
+              .then(res =>  {
+                console.log(res)
+                contributionReport.value = res.data.returnObject
 
-               
-          }).catch(err => {
-              console.log(err)
-            })
+                  
+              }).catch(err => {
+                  console.log(err)
+                })
+          } else {
+            axios.get(`/api/Offering/contributionReport?date=${route.query.report}`)
+              .then(res =>  {
+                console.log(res)
+                contributionReport.value = res.data.returnObject
+
+                  
+              }).catch(err => {
+                  console.log(err)
+                })
+          }
         }
         getReport()
 
@@ -1634,7 +1721,7 @@ export default {
             }
 
         return {
-            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent
+            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent, routeActivityId
         }
     }
 }
@@ -1645,6 +1732,7 @@ export default {
     color: #1c252c;
     box-sizing: border-box;
     }
+    
 
     a {
     text-decoration: none;
@@ -1879,5 +1967,17 @@ export default {
     background: transparent !important;
     color: #4d6676 !important;
     border: 1px solid #dde2e6 !important;
+  }
+
+  .text-style {
+    font: normal normal bold 17px/16px Nunito Sans;
+  }
+
+  .total-text {
+    font: normal normal normal 30px/24px Nunito Sans;
+  }
+
+  .hr-total {
+    border: 1px solid #dde2e6
   }
 </style>

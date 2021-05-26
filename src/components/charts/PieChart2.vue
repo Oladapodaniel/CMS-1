@@ -62,7 +62,8 @@ export default {
               enabled: true,
               distance: -50,
             },
-          },
+            showInLegend: true
+          }
         },
         series: [
           {

@@ -3,11 +3,11 @@
      <div class="bg col-md-10 offset-md-1">
      <div class="container">
         <div class="row">
-          <div class="col-md-5 events">Contribution</div>
+          <div class="col-md-5 events">Offering</div>
           <div class="col-md-7">
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
-                <div class="dropdown">
+                <div class="dropdown" v-if="false">
                 <router-link to="/tenant/offeringcategory">
                 <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <span><i class="fa fa-angle-down btn-icon"></i></span></button></router-link>
                     <!-- <i
@@ -373,10 +373,10 @@
                 </div>
               </div>
        
-        <div class="col-12 offset-sm-1 add">Contribution</div>
+        <div class="col-12 offset-sm-1 add">Offering</div>
         <div class="attendance-header d-none d-lg-block">
           <div class="row">
-            <div class="col-sm-3">Contribution Item</div>
+            <div class="col-sm-3">Offering Item</div>
             <div class="col-sm-2" >Channel</div>
             <div class="col-sm-3" >Amount</div>
             <div class="col-sm-2 offset-sm-2" style="margin-left: 74px">Total</div>
@@ -550,7 +550,7 @@
           @click="addOffering"
         >
           <i class="fa fa-plus-circle ofering" aria-hidden="true"></i
-          >&nbsp;&nbsp;Add Contribution Item
+          >&nbsp;&nbsp;Add Offering Item
         </div>
         <div class="display ofering" id="showList" ref="offeringDrop">
           <input
@@ -577,7 +577,7 @@
            type="button" data-toggle="modal" data-target="#exampleModalCenter"
             class="create ofering pointer"
           >
-            Create New Contribution Item
+            Create New Offering Item
           </div>
           <!-- <div
             v-else
@@ -603,7 +603,7 @@
           <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header" style="border: none">
-                <h5 class="modal-title" id="exampleModalLongTitle">Add Contribution</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Offering</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -1501,24 +1501,21 @@ export default {
 
               console.log(contributions)
 
-          axios.post('/api/Financials/Contributions/Transactions/Save', contributions)
+          if (!route.params.offId) {
+            console.log('No Id')
+            axios.post('/api/Financials/Contributions/Transactions/Save', contributions)
             .then(res => {
-              // toast.add({severity:'success', summary: 'Successful', detail:'Contribution added', life: 3000})
               console.log(res)
               localStorage.setItem('contriTransact', JSON.stringify(res.data.returnObject))
-              router.push({ name: 'OfferingReport', params: { report: eventDate.value } })
               loading.value = false
-              
-              // let contriTransact = {
-              //   amount: res.data.returnObject.find(i => i).amount,
-              //   contribution: res.data.returnObject.find(i  => i).contribution.name,
-              //   date: res.data.returnObject.find(i  => i).date,
-              //   donor: res.data.returnObject.find(i  => i).personName,
-              //   eventDate: selectedEventAttended.value.name,
-              //   eventName: selectedEventAttended.value.name,
-              //   id: res.data.returnObject.find(i  => i).id,
-              // }
 
+
+              if (Object.keys(selectedEventAttended.value).length > 0) {
+                router.push({ name: 'OfferingReport', query: { report: eventDate.value, activityID: selectedEventAttended.value.activityID } })
+              } else {
+                router.push({ name: 'OfferingReport', query: { report: eventDate.value } })
+              }
+              
               let contriTransact = res.data.returnObject.map(i => {
                 return {
                   amount: i.amount,
@@ -1539,6 +1536,43 @@ export default {
               toast.add({severity:'error', summary: 'Error', detail:'Please try again', life: 3000});
               console.log(err)
             })
+          } else {
+            console.log('Id avalaible')
+            contributions[0].Id = route.params.offId
+            axios.post(`/api/Financials/Contributions/Transactions/Save`, contributions)
+            .then(res => {
+              console.log(res)
+              localStorage.setItem('contriTransact', JSON.stringify(res.data.returnObject))
+              loading.value = false
+
+
+              if (Object.keys(selectedEventAttended.value).length > 0) {
+                router.push({ name: 'OfferingReport', query: { report: eventDate.value, activityID: selectedEventAttended.value.activityID } })
+              } else {
+                router.push({ name: 'OfferingReport', query: { report: eventDate.value } })
+              }
+              
+              // let contriTransact = res.data.returnObject.map(i => {
+              //   return {
+              //     amount: i.amount,
+              //     contribution: i.contribution.name,
+              //     date: i.date,
+              //     donor: i.personName,
+              //     eventDate: selectedEventAttended.value.name,
+              //     eventName: selectedEventAttended.value.name,
+              //     id: i.id,
+              //     currencyName: currencyList.value.find(j =>  j.id === i.currencyID).name
+              //   }
+              // })
+              // console.log(contriTransact)
+              // store.dispatch('contributions/newlyAddedContribution', contriTransact)
+            })
+            .catch(err => {
+              loading.value = false
+              toast.add({severity:'error', summary: 'Error', detail:'Please try again', life: 3000});
+              console.log(err)
+            })
+          }
         }
 
         const addCurrency = (e, index, item) => {
@@ -1652,6 +1686,19 @@ export default {
             try {
                 let { data } = await axios.get(`/api/Financials/Contributions/Transactions/One?ID=${route.params.offId}`)
                 console.log(data)
+                selectedEventAttended.value = {
+                  name: data && data.activity ? data.activity.name : '',
+                  activityID: data.activityID
+                }
+                eventDate.value = data.date.split("T")[0]
+                offeringItem.value = [{
+                  name: data && data.contribution ? data.contribution.name :  "",
+                  financialContributionID: data.financialContributionID,
+                  paymentChannel: data.paymentChannel,
+                  donor: data.personName,
+                  currencyID: data.currencyID,
+                  amount: data.amount
+                }]
             }   catch (error) {
                     console.log(error);
             }
