@@ -261,11 +261,11 @@
                       View Report
                       </a>
                       </router-link>
-                      <!-- <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
+                      <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
                         <a class="dropdown-item elipsis-items">
                       Edit
                       </a>
-                      </router-link> -->
+                      </router-link>
                       <a
                         class="dropdown-item elipsis-items cursor-pointer"
                         @click="showConfirmModal(item.id, index)"
