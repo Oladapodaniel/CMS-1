@@ -656,34 +656,6 @@ export default {
             })
             .catch((err) => {
               console.log(err)
-        // if (response.response.toString().toLowerCase().includes("all")) {
-        //   toast.add({
-        //     severity: "success",
-        //     summary: "Confirmed",
-        //     detail: "Member Deleted",
-        //     life: 4000,
-        //   });
-        //   churchMembers.value = churchMembers.value.filter((item) => {
-        //     const y = marked.value.findIndex((i) => i.id === item.id);
-        //     if (y >= 0) return false;
-        //     return true;
-        //   });
-        // } else {
-        //   toast.add({
-        //     severity: "info",
-        //     // summary:'Confirmed',
-        //     detail: `${response.response}`,
-        //     // life: 4000
-        //   });
-        // }
-        // axios
-        //   .get(`/api/People/GetMembershipSummary`)
-        //   .then((res) => {
-        //     console.log(res, "new chart");
-        //     membershipSummary.value = res.data;
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
           });
       } catch (error) {
         console.log(error);
