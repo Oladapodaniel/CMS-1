@@ -408,7 +408,6 @@ import Dropdown from "primevue/dropdown";
 // import ContributionColumnChart from "../../../components/charts/ColumnChart.vue";
 import ContributionPieChart from "../../../components/charts/PieChart.vue";
 import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
-
 export default {
   props: ["contributionTransactions", "totalItem"],
   components: {
@@ -419,7 +418,6 @@ export default {
     ContributionPieChart,
     Dropdown,
   },
-
   setup(props, { emit }) {
     // const contributionTransactions = ref([]);
     // const getFirstTimerSummary = ref({});
@@ -448,16 +446,13 @@ export default {
     const contributionSummary = ref({});
     const series = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]);
     const attendanceSeries = ref("");
-
     const route = useRoute();
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
-
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
     };
-
     const getRoute = () => {
       console.log(route.fullPath);
       if (route.fullPath === "/tenant/offering") {
@@ -465,7 +460,6 @@ export default {
       }
     };
     getRoute();
-
     // const getContributionTranactions = () => {
     //   // let store = useStore()
     //   axios
@@ -481,7 +475,6 @@ export default {
     // // store.dispatch('contributions/contributionList')
     // };
     // getContributionTranactions();
-
     const searchContribution = computed(() => {
       if (searchText.value !== "") {
         return props.contributionTransactions.filter((i) => {
@@ -498,7 +491,6 @@ export default {
         return props.contributionTransactions;
       }
     });
-
     const printContribution = computed(() => {
       if (props.contributionTransactions.length === 0) return [];
       return props.contributionTransactions.map((i) => {
@@ -511,7 +503,6 @@ export default {
         };
       });
     });
-
     const deleteOffering = (id, index) => {
       axios
         .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
@@ -547,7 +538,6 @@ export default {
           }
         });
     };
-
     const confirm = useConfirm();
     let toast = useToast();
     const showConfirmModal = (id, index) => {
@@ -572,7 +562,6 @@ export default {
       });
     };
     const currentPage = ref(0);
-
     const getPeopleByPage = async (page) => {
       console.log(page)
       // if (page < 1) return false;
@@ -589,7 +578,6 @@ export default {
         console.log(error);
       }
     };
-
     // const getSMSByPage = async (page) => {
     //   try {
     //     const data = await communicationService.getAllSentSMS(page);
@@ -602,21 +590,17 @@ export default {
     //     console.log(error);
     //   }
     // };
-
     const offeringCount = computed(() => {
       if (!props.contributionTransactions || props.contributionTransactions.length === 0) return 0;
         return props.contributionTransactions.length;
     });
-
     // const itemsCount = computed(() => {
     //   if (!sentSMS.value || sentSMS.value.length === 0) return 0;
     //   return sentSMS.value.length;
     // });
-
     const date = (offDate) => {
       return monthDayYear.monthDayYear(offDate);
     };
-
     // onMounted(() => {
     //   console.log(route, "route");
     //   axios.get("/api/People/FirstTimer").then((res) => {
@@ -624,7 +608,6 @@ export default {
     //     console.log(churchMembers.value);
     //   });
     // });
-
     const applyFilter = () => {
       filter.value.contribution =
         filter.value.contribution == undefined ? "" : filter.value.contribution;
@@ -632,7 +615,6 @@ export default {
         filter.value.event == undefined ? "" : filter.value.event;
       filter.value.donor =
         filter.value.donor == undefined ? "" : filter.value.donor;
-
       let url =
         "/api/Financials/Contributions/FilteredTransactions?contribution=" +
         filter.value.contribution +
@@ -647,7 +629,6 @@ export default {
       // "&phone_number=" +
       // filter.value.phoneNumber +
       // "&page=1";
-
       axios
         .get(url)
         .then((res) => {
@@ -662,13 +643,11 @@ export default {
         })
         .catch((err) => console.log(err));
     };
-
     // const membersCount = computed(() => {
     //   if (getFirstTimerSummary.value.totalFirstTimer > 20)
     //     return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 20);
     //   return 0;
     // });
-
     const getContributionSummary = async () => {
       try {
         let { data } = await axios.get(
@@ -681,7 +660,6 @@ export default {
       }
     };
     getContributionSummary();
-
     const chartData = computed(() => {
       if (
         contributionSummary.value &&
@@ -732,10 +710,8 @@ export default {
       )
         return contributionSummary.value.oneYear;
       return [];
-
       // contributionSummary.value.oneWeek.barChart.data
     });
-
     const pieChart = computed(() => {
       if (
         contributionSummary.value &&
@@ -795,7 +771,6 @@ export default {
         return contributionSummary.value.oneYear.pieChart;
       return [];
     });
-
     const LineGraphXAxis = computed(() => {
       if(selectedPeriod.value.name === "This Week") return [1, 2, 3, 4, 5, 6, 7]
       if(selectedPeriod.value.name === "One Week") return [1, 2, 3, 4, 5, 6, 7]
@@ -806,7 +781,6 @@ export default {
       if(selectedPeriod.value.name === "Last 90days") return [1, 2, 3, 4, 5, 6, 7]
       if(selectedPeriod.value.name === "One Year") return [1, 2, 3, 4, 5, 6, 7]
     })
-
     return {
       // contributionTransactions,
       deleteOffering,
@@ -851,7 +825,6 @@ export default {
   box-sizing: border-box;
   color: #02172e;
 }
-
 .myselectContr {
   height: 2.5rem;
 }
@@ -860,12 +833,10 @@ export default {
   text-decoration: none;
   width: 241px;
 }
-
 .page-header {
   font-weight: 700;
   font-size: 1.7rem;
 }
-
 .summary {
   /* width: 20%; */
   border-radius: 30px;
@@ -875,7 +846,6 @@ export default {
   box-shadow: 0px 3px 6px #2c28281c;
   border: 1px solid #00204424;
 }
-
 .table {
   width: 100% !important;
   box-shadow: 0px 1px 4px #02172e45;
@@ -884,11 +854,9 @@ export default {
   text-align: left;
   margin-bottom: auto !important;
 }
-
 .boards {
   display: flex;
 }
-
 .board-top {
   display: flex;
   justify-content: space-between;
@@ -897,26 +865,21 @@ export default {
   box-shadow: 0px 3px 6px #2c28281c;
   padding: 4px;
 }
-
 .total {
   margin-bottom: 40px;
   font-size: 37px;
 }
-
 .total-text {
   font-size: 15px;
   font-weight: 700;
 }
-
 .percent {
   color: #136acd;
 }
-
 .hr {
   border: 1px solid #0020440a;
   margin: 0 4px 10px 0;
 }
-
 .tbl-footer-btn {
   background: transparent;
   padding: 4px;
@@ -927,78 +890,64 @@ export default {
   border: 1px solid #8898aa80;
   outline: transparent;
 }
-
 .action-icon {
   text-align: center;
 }
-
 .list-body {
   padding: 0 21px;
 }
-
 .data-value {
   display: flex;
   padding-left: 6px;
 }
-
 .theader {
   padding-left: 2px;
   text-align: left;
 }
-
 .filter-options {
   height: 0;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .filter-options-shown {
   height: 80px !important;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
-
 .clear-link,
 .hide-link {
   color: #136acd;
 }
-
 .table-top {
   font-weight: 800;
   font-size: 12px;
   display: flex;
   justify-content: flex-end;
 }
-
 .table-top label:hover,
 .table-top p:hover {
   cursor: pointer;
 }
-
 @media (max-width: 660px) {
   .select-all {
     display: none;
   }
 }
-
 .header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font: normal normal bold 13px/13px Nunito Sans;
   letter-spacing: 0px;
   color: #002044;
 }
-
 .header tr {
   color: #8898aa;
   font-size: 11px;
   box-shadow: 0px 3px 6px #2c28281c;
   background: #dde2e6 0% 0% no-repeat padding-box;
 }
-
 .select-all input {
   margin: 0 8px 0 -5px !important;
 }
-
 .currency {
   background: #fafafa 0% 0% no-repeat padding-box;
   /* border: 1px solid #C5D9F2; */
@@ -1008,18 +957,15 @@ export default {
   padding: 4px;
   font-weight: bold;
 }
-
 .offering-amount {
   border: 1px solid #00204424;
   padding: 5px;
   border-radius: 5px;
 }
-
 .head-button {
   display: flex;
   justify-content: flex-end;
 }
-
 .add-btn {
   width: 180px;
   background: #136acd;
@@ -1032,7 +978,6 @@ export default {
   height: 42px;
   text-decoration: none;
 }
-
 .more {
   background: #dde2e6;
   border-radius: 22px;
@@ -1043,35 +988,28 @@ export default {
   height: 42px;
   margin-right: 1rem;
 }
-
 .fa-ellipsis-v:hover {
   cursor: pointer;
 }
-
 #chart {
   width: 48%;
   max-height: 310px;
   border-radius: 10px;
 }
-
 .board.members-count {
   padding: 24px;
 }
-
 .no-record {
   color: rgba(184, 5, 5, 0.726);
   font-size: 1.1em;
 }
-
 .chart1,
 .chart2 {
   border-radius: 10px;
 }
-
 .itemroute-color {
   color: #136acd;
 }
-
 @media (max-width: 767px) {
   .first-timers-text {
     text-align: center;
@@ -1081,42 +1019,34 @@ export default {
     justify-content: center;
   }
 }
-
 @media screen and (max-width: 500px) {
   .board {
     width: 100% !important;
   }
 }
-
 @media screen and (min-width: 500px) {
   .theader {
     width: 23%;
   }
-
   .table-body .check {
     width: 3%;
   }
-
   .action {
     width: 5%;
   }
 }
-
 @media (max-width: 577px) {
   .head-button {
     flex-direction: column;
     align-items: center;
   }
-
   .more {
     margin-right: 0;
   }
-
   .add-btn {
     margin-top: 10px;
   }
 }
-
 @media (max-width: 575px) {
   .head-button {
     display: flex;
@@ -1124,77 +1054,63 @@ export default {
     /* align-items: center; */
     justify-content: center;
   }
-
   /* .add-btn,
   .more {
     margin-top: 10px;
   } */
 }
-
 @media screen and (min-width: 501px) and (max-width: 768px) {
   /* .boards {
     flex-direction: column;
     align-items: center !important;
     flex-wrap: nowrap !important;
   }
-
   .chart-con {
     width: 85% !important;
   }
-
   .chart-con div {
     width: 40%;
   } */
-
   .board {
     width: 50% !important;
     margin-bottom: 10px;
   }
-
   .summary-header {
     width: 50%;
     margin-left: 25%;
   }
 }
-
 @media screen and (max-width: 768px) {
   .filter-options-shown {
     height: 150px !important;
     overflow: hidden;
     transition: all 0.5s ease-in-out;
   }
-
   .boards {
     flex-wrap: nowrap;
   }
-
   .responsive-table {
     max-width: 100%;
     overflow-x: scroll;
   }
 }
-
 @media screen and (max-width: 1024px) {
   .my-con {
     flex-direction: column;
   }
-
   .table {
     width: 98%;
     margin: 24px auto;
   }
-
   .summary {
     width: 98%;
     margin: auto;
   }
 }
-
 .row-divider {
   border: 1px solid #0020440a;
   margin: 0;
 }
-
 .table-footer {
   display: flex;
   justify-content: flex-end;
@@ -1202,11 +1118,9 @@ export default {
   padding: 10px 0;
   border-radius: 0px 0px 22px 22px;
 }
-
 .board.members-count {
   max-height: 216px;
 }
-
 .table-header {
   padding: 12px;
   color: black;
@@ -1214,30 +1128,21 @@ export default {
   font-size: 11px;
   font-weight: 700;
 }
-
 .table-body {
   padding: 12px;
   border-bottom: 1.5px solid #6d6d6d19;
 }
-
 .itemroute-color {
   color: #136acd;
 }
-
 .itemroute-color:hover {
   text-decoration: none;
 }
-
-
-
-
-
 .t-header div {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
   padding: .5rem 0;
 }
-
 .parent-desc.first {
   color: #8898aa;
   font-size: 14px;
@@ -1245,11 +1150,9 @@ export default {
   box-shadow: 0px 3px 6px #2c28281c;
   background: #dde2e6 0% 0% no-repeat padding-box;
 }
-
 .desc-head {
   font-weight: 700;
 }
-
 .desc {
   color: #9b9a9c;
   /* opacity: 0.7; */

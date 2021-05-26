@@ -367,18 +367,27 @@ import store from "@/store/store";
                 this.$router.push('/tenant/settings')
             }).catch((error)=>{
                 console.log(error);
+                //   if(error && error.status >= 400 && error.status < 405){
                 this.$toast.add({
                 severity:'error', 
                 summary:'Confirmed', 
-                detail:'Check your Internet Connectivity', 
+                detail:'Users Already Exist', 
                 life: 4000
-                })
+                });
+
+                // this.$toast.add({
+                // severity:'error', 
+                // summary:'Confirmed', 
+                // detail:'', 
+                // life: 4000
+                // })
             })
             
 
             
 
-        }
+        },
+   
 
     },
 

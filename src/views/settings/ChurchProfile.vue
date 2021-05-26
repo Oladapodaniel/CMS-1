@@ -19,7 +19,7 @@
                 type="text" placeholder="name()"
                 class="form-control ml-0 input" 
                 id="firstname"
-                v-model="currentUser.churchName"
+                v-model="churchData.churchName"
                 required
               />
             </div>
@@ -61,7 +61,10 @@
               <label class="small-text lb font-weight-600" for="">Aka/Parish</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" placeholder="Aka/Parish" class="form-control ml-0 input" />
+              <input type="text" 
+              placeholder="Aka/Parish"
+              v-model="churchData.aka"
+               class="form-control ml-0 input" />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -71,7 +74,7 @@
               <label class="small-text lb font-weight-600">Address</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" placeholder="Address" v-model="uploadData.address" class="form-control ml-0 input" />
+              <input type="text" placeholder="Address" v-model="churchData.address" class="form-control ml-0 input" />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -81,7 +84,10 @@
               <label class="small-text lb font-weight-600" for="">Phone number</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" placeholder="Phone Number" class="form-control ml-0 input" />
+              <input type="text"
+               placeholder="Phone Number"
+               v-model="churchData.phoneNumber"
+                class="form-control ml-0 input" />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -139,6 +145,7 @@
               <input
                 type="text" placeholder="Website URL"
                 class="form-control ml-0 input"
+                v-model="churchData.websiteUrl"
               />
             </div>
             <div class="col-md-4"></div>
@@ -163,7 +170,9 @@
             </div>
             <div class="col-12 col-md-5 form-group">
               <input
-                type="text" placeholder="Name"
+                type="text"
+                 placeholder="Name"
+                 v-model="churchData.headPastorName"
                 class="form-control ml-0 input"
               />
             </div>
@@ -178,6 +187,7 @@
               <input
                 type="text" placeholder="Email"
                 class="form-control ml-0 input"
+                v-model="churchData.headPastorEmail"
               />
             </div>
             <div class="col-md-4"></div>
@@ -207,6 +217,7 @@ import { onMounted, ref} from 'vue';
 export default {
   components: { Dropdown },
   setup() {
+    const churchData =ref({});
     let url = ref("");
     let a= ref("");
     let b= ref("b")
@@ -221,6 +232,7 @@ export default {
     const uploadImage = () => { };
     let countries = ref("");
     const currentUser = ref(store.getters.currentUser);
+    //Get AllCountry
      const getCountries= async()=> {
       try {
         const { data } = await axios.get("/api/GetAllCountries");
@@ -233,6 +245,18 @@ export default {
       }
     }
     getCountries()
+    //Get AllChurchProfile
+    const getChurchProfile= async()=>{
+      try{
+        const {data} = await axios.get("/mobile/v1/Profile/GetChurchProfile");
+        churchData.value = data.returnObject;
+        console.log(churchData);
+
+      }catch(error){
+        console.log(error)
+      }
+    }
+     getChurchProfile()
     const uploadData= ref({ });
     const display= ref(false)
     //  const uploadChurchDetail =() =>{
@@ -275,12 +299,14 @@ export default {
         }
     })
     return {
+      churchData,
       url,
       imageSelected,
       uploadImage,
       currentUser,
       countries,
       getCountries,
+      getChurchProfile,
       selectCountry,
       selectTime,
       // uploadChurchDetail,
