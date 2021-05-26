@@ -636,37 +636,29 @@ const routes = [{
                 path: 'contributionCategory',
                 name: 'ContributionCategory',
                 component: () =>
-                  import(
-                    /* webpackChunkName: "facebookposts" */ "@/views/social&mobile/feed/general/Index"
-                  ),
-              },
-              {
-                path: "facebook",
-                name: "FacebookPosts",
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/ContributionCategory')
+            },
+            {
+                path: 'transactionlist',
+                name: 'TransactionList',
                 component: () =>
-                  import(
-                    /* webpackChunkName: "facebookposts" */ "@/views/social&mobile/feed/facebook/Index"
-                  ),
-              },
-              {
-                path: "twitter",
-                name: "TwitterPosts",
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
+            },
+            {
+                path: 'payments/:editPayment?',
+                name: 'PaymentTransaction',
                 component: () =>
-                  import(
-                    /* webpackChunkName: "facebookposts" */ "@/views/social&mobile/feed/twitter/Index"
-                  ),
-              },
-              {
-                path: "instagram",
-                name: "InstagramPosts",
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentTransaction')
+            },
+            {
+                path: 'paymentoptions/:paymentId',
+                name: 'PaymentOption',
                 component: () =>
-                  import(
-                    /* webpackChunkName: "facebookposts" */ "@/views/social&mobile/feed/instagram/Index"
-                  ),
-              },
-              {
-                path: "whatsapp",
-                name: "WhatsappPosts",
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/PaymentOption')
+            },
+            {
+                path: 'payment',
+                name: 'Payment',
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/Payment')
             },
@@ -794,9 +786,10 @@ const routes = [{
 
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes,
-});
+    history: createWebHistory(process.env.BASE_URL),
+    routes
+})
+
 
 router.beforeEach((to, from, next) => {
 
