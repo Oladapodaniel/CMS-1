@@ -93,7 +93,7 @@
             <div class="image mt-3">
               <img
                 class="w-100 mt-5"
-                src="../../../assets/mobileonboarding/Phone1.png"
+                src="../../../assets/mobileonboarding/phone1.png"
                 alt="phone image"
               />
             </div>

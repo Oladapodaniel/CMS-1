@@ -12,7 +12,7 @@
         </div>
 
 
-          <table class="table">
+          <table class="table table-border">
   <thead class="thead-light">
     <tr>
       <th scope="col-3">Name</th>
@@ -40,6 +40,28 @@
           </table>
 
 
+<div class="container">
+  <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
         <!-- <div class="container">
           <div class="row table-header space-between">
             <div class="col-sm-3 d-none d-sm-block">NAME</div>
@@ -59,7 +81,7 @@
           </div>
         </div> -->
 
-        <div class="row mt-4">
+        <!-- <div class="row mt-4">
           <div class="offset-1 offset-md-0 col-10">Choose Bank</div>
           <div class="offset-1 offset-md-0 col-10">
             <Dropdown
@@ -73,8 +95,8 @@
             >
             </Dropdown>
           </div>
-        </div>
-
+        </div> -->
+<!--
         <div class="row mt-4">
           <div class="offset-1 offset-md-0 col-10">Enter account number</div>
           <div class="offset-1 offset-md-0 col-10">
@@ -86,10 +108,10 @@
               placeholder="Account Number"
             />
           </div>
-        </div>
+        </div> -->
 
         <div class="row mt-4">
-          <div class="offset-1 offset-md-0 col-10">Enter account name</div>
+          <!-- <div class="offset-1 offset-md-0 col-10">Enter account name</div>
           <div class="offset-1 offset-md-0 col-10">
             <input
               type="text"
@@ -104,8 +126,8 @@
                 on save.</em
               >
             </div>
-          </div>
-          <div
+          </div> -->
+          <!-- <div
             class="offset-1 offset-md-0 col-md-2 align-self-start"
             v-if="loading"
           >
@@ -116,7 +138,7 @@
             >
               <span class="sr-only">Loading...</span>
             </div>
-          </div>
+          </div> -->
           <div
             class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0"
             @click="completeSetUp"
@@ -147,7 +169,7 @@
 </template>
 <script>
 import axios from "@/gateway/backendapi";
-import Dropdown from "primevue/dropdown";
+// import Dropdown from "primevue/dropdown";
 import { ref } from "vue";
 // import router from "../../../router";
 import finish from "../../../services/progressbar/progress";
@@ -158,7 +180,7 @@ import store from "../../../store/store";
 export default {
   components: {
     // DonationSetup
-    Dropdown,
+    // Dropdown,
   },
   setup() {
     const nigerianBanks = ref([]);
@@ -288,6 +310,10 @@ export default {
     width: 25vw;
     padding: .5rem 0;
     max-width : 0;
+  }
+
+  .table-border{
+    border-radius: 0;
   }
 
 .setup {

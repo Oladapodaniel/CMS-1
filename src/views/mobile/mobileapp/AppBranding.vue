@@ -353,7 +353,7 @@
 </template>
 
 <script>
-// import router from "../../../router";
+import router from "../../../router";
 import { ref, computed } from "vue";
 // import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
@@ -428,7 +428,7 @@ export default {
         const formData = new FormData();
         formData.append("Logo", image.value);
         formData.append("BackgroundColor", colorValid.value);
-              // router.push({ name: "DonationSetup" });
+              router.push({ name: "DonationSetup" });
         axios
           .put(`/mobile/v1/Profile/CustomizeApp`, formData)
           .then((res) => {
