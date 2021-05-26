@@ -95,7 +95,7 @@
     <!-- group box area -->
 
     <div class="table mx-0" :class="{ 'mt-0': marked.length > 0 }">
-      <div class="table-top mb-3">
+      <div class="table-top ">
         <div class="select-all">
           <input
             type="checkbox"
@@ -123,12 +123,12 @@
           ></i>
         </div>
         <div class="filter">
-          <p @click="toggleFilterFormVissibility" class="mt-2">
+          <p @click="toggleFilterFormVissibility" class="">
             <i class="fas fa-filter"></i>
             FILTER
           </p>
         </div>
-        <p @click="toggleSearch" class="search-text mt-2">
+        <p @click="toggleSearch" class="search-text ">
           <i class="fa fa-search"></i> SEARCH
         </p>
         <div class="search d-flex">
@@ -242,7 +242,7 @@
         v-for="(person, index) in searchMember"
         :key="person.id"
       >
-        <div class="g-row">
+        <div class="data-row">
           <div class="check data">
             <input
               type="checkbox"
@@ -263,16 +263,17 @@
                     <img
                       src="../../assets/people/avatar-male.png"
                       alt=""
-                      style="border-radius: 50%"
+                      style="border-radius: 50%; height:26px; width:55%;"
                     />
                   </div>
                   <div v-else-if="person.gender == 'Female'">
-                    <img src="../../assets/people/avatar-female.png" alt="" />
+                    <img src="../../assets/people/avatar-female.png" alt="" style="height:26px; width:55%;"/>
                   </div>
                   <div v-else>
                     <img
                       src="../../assets/people/no-gender-avatar.png"
                       alt=""
+                      style="height:26px; width:55%;"
                     />
                   </div>
                 </div>
@@ -286,7 +287,7 @@
               </div>
               <router-link
                 :to="`/tenant/people/add/${person.id}`"
-                class="data-value text-secondary itemroute-color"
+                class="data-value small-text text-secondary itemroute-color"
                 >{{ person.firstName }}</router-link
               >
             </div>
@@ -298,19 +299,19 @@
               </div>
               <router-link
                 :to="`/tenant/people/add/${person.id}`"
-                class="data-value text-secondary itemroute-color"
+                class="data-value small-text text-secondary itemroute-color"
                 >{{ person.lastName }}</router-link
               >
             </div>
           </div>
           <div class="phone data">
-            <div class="data-con">
+            <div class="data-con mr-4">
               <div class="data-text">
                 <p>Phone</p>
               </div>
               <router-link
                 :to="`/tenant/people/add/${person.id}`"
-                class="data-value text-secondary itemroute-color"
+                class="data-value small-text text-left  text-secondary itemroute-color"
                 >{{ person.mobilePhone }}</router-link
               >
             </div>
@@ -613,44 +614,41 @@ export default {
         const response = await membershipservice.deletePeople(IDs);
         console.log(response, "RESPONSE");
 
-        if (
-          response.response
-            .toString()
-            .toLowerCase()
-            .includes("all")
-        ) {
-          toast.add({
-            severity: "success",
-            summary: "Confirmed",
-            detail: "Member(s) Deleted",
-            life: 4000,
-          });
 
-          churchMembers.value = churchMembers.value.filter((item) => {
-            const y = marked.value.findIndex((i) => i.id === item.id);
-            if (y >= 0) return false;
-            return true;
-          });
-        } else {
-          let displayRes = response.response.split("@");
-          toast.add({
-            severity: "info",
-            detail: `${displayRes[0]}`,
-          });
+          if (response.response.toString().toLowerCase().includes("all")) {
+            toast.add({
+              severity:'success',
+              summary:'Confirmed',
+              detail:'Member(s) Deleted',
+              life: 4000
+            });
 
-          if (displayRes[1] !== "") {
-            if (!displayRes[1].includes(",")) {
-              churchMembers.value = churchMembers.value.filter((item) => {
-                console.log(item.id.includes(displayRes[1]));
-                return !item.id.includes(displayRes[1]);
+            churchMembers.value = churchMembers.value.filter((item) => {
+              const y = marked.value.findIndex((i) => i.id === item.id);
+              if (y >= 0) return false;
+              return true;
+            });
+          } else {
+            let displayRes = response.response.split("@")
+            toast.add({
+              severity:'info',
+              detail: `${displayRes[0]}`,
+            });
+
+            if (displayRes[1] !== '') {
+              if (!displayRes[1].includes(',')) {
+                churchMembers.value = churchMembers.value.filter((item) => {
+                console.log(item.id.includes(displayRes[1]))
+                return !item.id.includes(displayRes[1])
               });
-            } else {
-              let IDs = displayRes[1].split(",");
-              churchMembers.value = churchMembers.value.filter((item) => {
+              } else {
+                let IDs = displayRes[1].split(",")
+                churchMembers.value = churchMembers.value.filter((item) => {
                 const y = IDs.findIndex((i) => i === item.id);
                 if (y >= 0) return false;
                 return true;
               });
+              }
             }
           }
           marked.value = []
@@ -692,7 +690,6 @@ export default {
         //   .catch((err) => {
         //     console.log(err);
           });
-        }
       } catch (error) {
         console.log(error);
         if (error.response) {
@@ -783,36 +780,32 @@ export default {
 
     const chooseGrouptoMoveto = ref({});
     const moveMemberToGroup = () => {
-      let peopleMoved = marked.value.map((i) => {
-        return {
-          groupId: chooseGrouptoMoveto.value.id,
-          position: "member",
-          personId: i.id,
-        };
-      });
-      axios
-        .put(`/api/AssignPeopleToGroup/${chooseGrouptoMoveto.value.id}`, {
-          people: peopleMoved,
+      let peopleMoved = marked.value.map ((i) => {
+          return {
+            "groupId": chooseGrouptoMoveto.value.id,
+            "position": "member",
+            "personId": i.id,
+          }
         })
+      axios
+        .put(`/api/AssignPeopleToGroup/${chooseGrouptoMoveto.value.id}`,
+          {people: peopleMoved}
+        )
         .then((res) => {
-          console.log(res);
-          toast.add({
+          console.log(res,);
+            toast.add({
             severity: "success",
             summary: "Confirmed",
             detail: "Member(s) Added Successfully",
             life: 3000,
           });
 
-          store.dispatch("groups/updateGroupPeopleCount", {
-            groupId: chooseGrouptoMoveto.value.id,
-            count: marked.value.length,
-            operation: "add",
-          });
+         store.dispatch("groups/updateGroupPeopleCount", { groupId: chooseGrouptoMoveto.value.id, count: marked.value.length, operation:"add"});
 
           marked.value = [];
         })
         .catch((err) => {
-          stopProgressBar();
+            stopProgressBar();
           toast.add({
             severity: "error",
             summary: "Adding Error",
