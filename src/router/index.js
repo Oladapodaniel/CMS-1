@@ -615,7 +615,7 @@ const routes = [{
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/Offering')
             },
             {
-                path: 'offeringcategory',
+                path: 'offeringcategory/:offId?',
                 name: 'OfferingCategory',
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/SelectOffCat')

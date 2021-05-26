@@ -2,12 +2,12 @@
     <div class="container-wide container-top">
       <div class="row my-3">
       <div class="col-md-6 first-timers-text">
-        <h2 class="page-header">Contribution Items</h2>
+        <h2 class="page-header">Offering Items</h2>
       </div>
 
       <div class="col-md-6 head-button">
         <router-link to="/tenant/offeringcategory" class="add-btn">
-          Add Contribution Category
+          Add Offering Category
         </router-link>
       </div>
     </div>
@@ -28,7 +28,7 @@
     <div class="no-person"  v-if="contributionItems.length === 0 && !loading">
         <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't added any contribution category yet</p>
+            <p class="tip">You haven't added any offering category yet</p>
         </div>
     </div>
     <div v-if="contributionItems.length > 0 && !loading">

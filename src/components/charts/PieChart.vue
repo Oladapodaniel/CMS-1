@@ -46,8 +46,15 @@ var highchartsOptions = {
         plotShadow: false,
         type: 'pie',
         renderTo: props.domId,
-        height: 250
+        height: 250,
     },
+    legend : {
+          align: 'right',
+          layout: 'vertical',
+          verticalAlign: 'top',
+          x: 40,
+          y: 0
+        },
     title: {
         text: props.title
     },
@@ -64,9 +71,9 @@ var highchartsOptions = {
             allowPointSelect: true,
             cursor: 'pointer',
             // colors: pieColors,
-            colors: ["#0f0221", "#136acd", "#dde2e6", '#67a9cf', '#708eb1'],
+            colors: ["#136acd", "#dde2e6", '#67a9cf', '#708eb1', '#61915e', '#1f06ffc0', "#078292de", "#660792de", '#927d07c2'],
             dataLabels: {
-                enabled: true,
+                enabled: false,
                 format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
                 distance: -40,
                 filter: {
@@ -74,7 +81,8 @@ var highchartsOptions = {
                     operator: '>',
                     value: 4
                 }
-            }
+            },
+            showInLegend: true
         }
     },
     series: [{
@@ -133,6 +141,8 @@ var highchartsOptions = {
   /* box-shadow: 0px 1px 4px #02172E45; */
   /* border: 1px solid #DDE2E6; */
   border-radius: 22px;
+  color: #660792de
   /* margin-bottom: 24px; */
 }
+
 </style>

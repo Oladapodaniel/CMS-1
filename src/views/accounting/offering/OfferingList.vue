@@ -55,12 +55,9 @@
       </div>
     </div>
     <div class="row table">
-      <div class="col-12" id="table">
+      <div class="col-12 px-0" id="table">
         <div class="top-con" id="ignore2">
-          <!-- {{ selectedPeriod.name }} -->
-
           <div class="table-top">
-            <!-- <div class="select-all"></div> -->
             <div
               class="filter col-2"
               @click="
@@ -183,15 +180,113 @@
 
         <!-- contribution -->
         <div v-if="searchContribution.length > 0">
-          <div class="row">
+          <div class="container-fluid d-none d-md-block">
+            <div class="row t-header">
+              <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
+                <div class="col-md-1 px-3"></div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Contribution</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Donor</div>
+                <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
+              <!-- </div> -->
+            </div>
+          </div>
+        <div class="row" style="margin:0;">
+            <div
+              class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
+              v-for="(item, index) in searchContribution"
+              :key="item.id"
+            >
+              <div class="row w-100" style="margin:0">
+                <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+                  <input
+                    type="checkbox"
+                    v-model="item.check"
+                    class="form-check"
+                  />
+                </div>
+
+                <div class="desc small-text col-md-2 px-1">
+                  <p class="mb-0 d-flex justify-content-between">
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
+                    <span>{{ date(item.date) }}</span>
+                  </p>
+                </div>
+
+                <div class="col-md-3 px-1">
+                  <div class="d-flex justify-content-between">
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Contribution</span>
+                  <div>
+                    
+                    <div class="desc small-text text-right text-md-left">{{ item.contribution }}</div>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="desc-head small-text col-md-3 px-1">
+                  <p class="mb-0 d-flex justify-content-between">
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
+                    <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
+                    <span>{{ item.currencyName }} {{ item.amount }}</span>
+                  </p>
+                </div>
+
+                <div class="small-text col-md-2 px-1">
+                  <p class="mb-0 d-flex justify-content-between">
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Donor</span>
+                    <span><span class="primary-text c-pointer"
+                    >{{ item.donor }}</span
+                  ></span>
+                  </p>
+                </div>
+
+                <div class="small-text col-md-1 px-1">
+                  <!-- <p class="mb-0 d-flex justify-content-between">
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
+                    <span>Marked</span>
+                  </p> -->
+                  <div class="action data action-icon">
+                    <div class="dropdown">
+                      <i
+                        class="fas fa-ellipsis-v cursor-pointer"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      ></i>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
+                        <a class="dropdown-item elipsis-items">
+                      View Report
+                      </a>
+                      </router-link>
+                      <!-- <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
+                        <a class="dropdown-item elipsis-items">
+                      Edit
+                      </a>
+                      </router-link> -->
+                      <a
+                        class="dropdown-item elipsis-items cursor-pointer"
+                        @click="showConfirmModal(item.id, index)"
+                        >Delete</a
+                      >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row">
             <div
               class="col-12 col-md-12 col-lg-12 overflow-auto border-bottom border-top border-left"
             >
               <div class="row table-header">
                 <div class="col-sm-3">DATE</div>
-                <!-- <div class="col-sm-2">
+                 <div class="col-sm-2">
                           EVENT
-                       </div> -->
+                       </div> 
                 <div class="col-sm-3 d-none d-sm-block">CONTRIBUTION</div>
                 <div class="col-sm-3 d-none d-sm-block">AMOUNT</div>
                 <div class="col-sm-3 d-none d-sm-block">DONOR</div>
@@ -203,9 +298,9 @@
               >
                 <div class="col-6 d-block d-sm-none">
                   <div class="col-sm-3">DATE</div>
-                  <!-- <div class="col-sm-2">
+                   <div class="col-sm-2">
                             EVENT
-                        </div> -->
+                        </div> 
                   <div class="col-sm-3">CONTRIBUTION</div>
                   <div class="col-sm-3">AMOUNT</div>
                   <div class="col-sm-3">DONOR</div>
@@ -215,9 +310,9 @@
                     <div class="col-sm-3">
                       <div>{{ date(offering.date) }}</div>
                     </div>
-                    <!-- <div class="col-sm-3">
+                     <div class="col-sm-3">
                             <div>{{ offering.eventName ? offering.eventName : "Online Giving" }}</div>
-                        </div> -->
+                        </div> 
                     <div class="col-sm-3">
                       <div>{{ offering.contribution }}</div>
                     </div>
@@ -271,17 +366,22 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="text-danger" v-else>No records found</div>
+
+        
+
         <div class="col-12">
           <div class="table-footer">
             <Pagination
               @getcontent="getPeopleByPage"
               :itemsCount="offeringCount"
               :currentPage="currentPage"
+              :totalItems="totalItem"
             />
           </div>
+  
         </div>
 
         <ConfirmDialog />
@@ -310,7 +410,7 @@ import ContributionPieChart from "../../../components/charts/PieChart.vue";
 import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
 
 export default {
-  props: ["contributionTransactions"],
+  props: ["contributionTransactions", "totalItem"],
   components: {
     // ByGenderChart,
     // ByMaritalStatusChart,
@@ -471,30 +571,47 @@ export default {
         },
       });
     };
-    const currentPage = ref(1);
+    const currentPage = ref(0);
 
     const getPeopleByPage = async (page) => {
-      if (page < 1) return false;
+      console.log(page)
+      // if (page < 1) return false;
       try {
         const { data } = await axios.get(
           `/api/Financials/Contributions/Transactions?page=${page}`
         );
-        // filterResult.value = [ ];
-        // searchMember.value = [ ];
-        // noRecords.value = false;
-        // props.contributionTransactions = data;
+        if (data) {
+          console.log(data)
         emit("get-pages", data);
         currentPage.value = page;
+        }
       } catch (error) {
         console.log(error);
       }
     };
 
+    // const getSMSByPage = async (page) => {
+    //   try {
+    //     const data = await communicationService.getAllSentSMS(page);
+    //     if (data) {
+    //       sentSMS.value = data.sentSMS;
+    //       currentPage.value = page;
+    //       isSortedByStatus.value = true;
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+
     const offeringCount = computed(() => {
-      if (props.contributionTransactions.length > 50)
-        return Math.ceil(props.contributionTransactions.length / 50);
-      return 1;
+      if (!props.contributionTransactions || props.contributionTransactions.length === 0) return 0;
+        return props.contributionTransactions.length;
     });
+
+    // const itemsCount = computed(() => {
+    //   if (!sentSMS.value || sentSMS.value.length === 0) return 0;
+    //   return sentSMS.value.length;
+    // });
 
     const date = (offDate) => {
       return monthDayYear.monthDayYear(offDate);
@@ -849,6 +966,8 @@ export default {
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .table-top label:hover,
@@ -1108,6 +1227,31 @@ export default {
 .itemroute-color:hover {
   text-decoration: none;
 }
+
+
+
+
+
+.t-header div {
+  background: #dde2e6 0% 0% no-repeat padding-box;
+  font-size: 16px;
+  padding: .5rem 0;
+}
+
+.parent-desc.first {
+  color: #8898aa;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #2c28281c;
+  background: #dde2e6 0% 0% no-repeat padding-box;
+}
+
+.desc-head {
+  font-weight: 700;
+}
+
+.desc {
+  color: #9b9a9c;
+  /* opacity: 0.7; */
+}
 </style>
-
-

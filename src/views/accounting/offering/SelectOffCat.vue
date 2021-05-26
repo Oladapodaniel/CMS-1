@@ -3,14 +3,13 @@
         <div class="top container-wide mt-3">
           <div class="row">
               <div class="col-sm-12">
-                <div class="page-header">Contribution Category</div>
+                <div class="page-header">Offering Category</div>
                 <hr class="hr"/>
               </div>
             </div>
         </div>
-
         <Dialog v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '80vw'}">
-            <p>You have no income account to create a contribution item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
+            <p>You have no income account to create a offering item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
             <template #footer>
                 <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
                 <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
@@ -146,12 +145,14 @@ import Dialog from 'primevue/dialog';
 import Toast from 'primevue/toast';
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router"
+import { useRoute } from "vue-router"
 export default {
   components: {
     Dropdown, Toast, Dialog
   },
   setup() {
     const router = useRouter()
+    const route = useRoute()
     const applyRem = ref(false);
     const cashBankAccount = ref([]);
     const remitance = ref([{}])
@@ -291,10 +292,31 @@ export default {
     const openResponsive = () => {
             displayResponsive.value = true;
         }
-     const closeResponsive = () => {
+    const closeResponsive = () => {
             displayResponsive.value = false;
             router.push({ name: "ChartOfAccount" })
         }
+
+    const getOffItems = async() => {
+      if(route.params.offId) {
+        try {
+          let  res = await axios.get(`/api/Financials/Contributions/Items/One?ID=${route.params.offId}`)
+          name.value = res.data.name
+          selectedIncomeAccount.value = incomeAccount.value.find(i => {
+            return i.id  === res.data.incomeAccountID
+          })
+          selectedCashAccount.value = cashBankAccount.value.find(i => {
+            return i.id  === res.data.cashAccountID
+          })
+          isPublic.
+          console.log(res.data)
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+    }
+    getOffItems()
 
     return {
       applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage, openResponsive, closeResponsive, displayResponsive
