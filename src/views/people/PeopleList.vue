@@ -242,7 +242,7 @@
         v-for="(person, index) in searchMember"
         :key="person.id"
       >
-        <div class="data-row">
+        <div class="g-row">
           <div class="check data">
             <input
               type="checkbox"
