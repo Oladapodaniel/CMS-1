@@ -56,7 +56,7 @@
                 >Attendance Category</router-link
               >
             </div>
-            <div class="col-md-12 my-2">
+            <div class="col-md-12 my-2" v-if="false">
               <router-link class="font-weight-bold link" to="/tenant/settings/followupstatus"
                 >Follow Up Status</router-link
               >
@@ -66,14 +66,14 @@
                 >First Timer Settings</router-link
               >
             </div>
-            <div class="col-md-12 my-2">
+            <div class="col-md-12 my-2" v-if="false">
               <router-link class="font-weight-bold link" to="/tenant/settings/giving"
                 >Online Giving Setup</router-link
               >
             </div>
           </div>
 
-          <div class="row mb-3">
+          <div class="row mb-3" v-if="false">
             <div class="col-md-12 my-2">
               <span class="small-text">Accounting</span>
             </div>
