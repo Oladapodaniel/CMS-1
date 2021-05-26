@@ -247,11 +247,28 @@ const getEditTransactions = (ref) => {
     })
 }
 
+const getTransactionsByAccount = (id) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/Financials/Accounts/Transactions/Account?id=${id}`)
+            .then(res => {
+                resolve(res);
+            })
+            .catch(err => {
+                if (err.response) {
+                    reject(err.response);
+                } else {
+                    reject(err)
+                }
+            })
+    })
+}
+
 
 
 
 export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome, getCurrencies, getAccountHeads, getCashAndBankAccountBalances,
     saveJournalTransaction,
     deleteTransaction,
-    getEditTransactions
+    getEditTransactions,
+    getTransactionsByAccount,
 };

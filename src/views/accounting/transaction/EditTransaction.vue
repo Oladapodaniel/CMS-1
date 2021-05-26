@@ -21,7 +21,7 @@
         <div class="col-12">
           <!-- <label for="description">Write a Description</label> -->
         </div>
-        <div class="col-7 pr-0">
+        <div class="col-12">
           <div class="label-text">Write a Description <span class="text-danger">*</span></div>
           <input
             class="form-control"
@@ -33,7 +33,7 @@
             
           />
         </div>
-        <div class="col-5 pl-0">
+        <div class="col-12 mt-1">
           <div class="label-text">Date <span class="text-danger">*</span></div>
           <input
             type="date"
@@ -52,7 +52,7 @@
             @click="showAccount = !showAccount"
           >
             <span class="ofering close-modal">{{
-              !selectedCashAccount || !selectedCashAccount.name ? "Select" : selectedCashAccount.name
+              selectedCashAccount && selectedCashAccount.name ? selectedCashAccount.name : selectedCashAccount && selectedCashAccount.text ? selectedCashAccount.text : "Select"
             }}</span
             ><span>
               <i class="pi pi-angle-down close-modal" aria-hidden="true"></i
@@ -163,7 +163,7 @@
             </div>
             <div class="col-md-12">
               <div class="d-flex justify-content-end">
-                <div class="mt-2 vendor c-pointer" @click="() => i.showDonorField = !i.showDonorField">{{ i.donor ? i.donor : transactionDetails.type }}</div>
+                <div class="mt-2 vendor c-pointer" @click="() => i.showDonorField = !i.showDonorField">{{ i.donor ? i.donor : transactionDetails.account === "Income Account" || (transactionDetails.creditSplitAccounts && transactionDetails.creditSplitAccounts.length) > 0 ? "Add donor" : "" }}</div>
                 <div class="dot ml-2"></div>
                 <div class="mt-2 ml-2 vendor">Include Tax Sales</div>
               </div>
@@ -333,7 +333,6 @@ export default {
       // selectedIncomeOrExpenseAccount.value = account;
       splittedTransactions.value[index].accountID = account.id;
       splittedTransactions.value[index].text = account.text;
-      console.log(splittedTransactions.value, "SPLITET TTS");
     };
 
     const accountFlow = (e, account) => {
@@ -469,12 +468,12 @@ export default {
     const constructSaveTransactionReqBody = () => {
       const reqBody = {
         // id: props.transactionDetails.id ? props.transactionDetails.id : "",
-        amount: +transacObj.value.amount,
+        amount: Math.abs(+transacObj.value.amount),
         // amount: Math.abs(+transacObj.value.amount),
         creditSplitAccounts: splittedTransactions.value.map(i => {
           return {
             accountID: i.accountID,
-            amount: splittedTransactions.value.length ===1 ? +transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount,
+            amount: Math.abs(splittedTransactions.value.length ===1 ? +transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount),
             // amount: Math.abs(i.amount ? +i.amount : +transacObj.value.amount),
             contactID: i.donorId ? i.donorId : "",
             transactionID: i.transactionID
@@ -517,7 +516,7 @@ export default {
               debitSplitAccounts: splittedTransactions.value.map(i => {
                 return {
                   accountID: i.accountID,
-                  amount: splittedTransactions.value.length ===1 ? transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount,
+                  amount: Math.abs(splittedTransactions.value.length ===1 ? transacObj.value.amount : i.amount ? +i.amount : +transacObj.value.amount),
                   // amount: Math.abs(i.amount ? +i.amount : +transacObj.value.amount),
                   contactID: i.donorId ? i.donorId : "",
                   transactionID: i.transactionID
@@ -528,7 +527,7 @@ export default {
               date: transacObj.value.date,
               memo: transacObj.value.memo,
               transactionNumber: props.transactionDetails.transactionNumber ? props.transactionDetails.transactionNumber : "",
-              amount: +transacObj.value.amount,
+              amount: Math.abs(+transacObj.value.amount),
               // amount: Math.abs(+transacObj.value.amount),
               category: "outflow"
             }
@@ -556,7 +555,7 @@ export default {
     watch(() => props.transactionDetails, (data) => {
       console.log(data, "in watch");
       transacObj.value.date = new Date(data.date);
-      transacObj.value.amount = data.amount;
+      transacObj.value.amount = Math.abs(data.amount);
       transacObj.value.memo = data.memo;
       splittedTransactions.value = [ { }]
       console.log(transacObj.value, "TO");
@@ -565,9 +564,15 @@ export default {
       if (props.transactionDetails.id) {
         transacObj.value.date = new Date(data.date).toISOString().substr(0, 10)
         if (data.debitSplitAccounts && data.debitSplitAccounts.length > 0) {
-          splittedTransactions.value = data.debitSplitAccounts;
+          splittedTransactions.value = data.debitSplitAccounts.map(i => {
+            i.amount = Math.abs(i.amount);
+            return i;
+          });
         } else {
-          splittedTransactions.value = data.creditSplitAccounts;
+          splittedTransactions.value = data.creditSplitAccounts.map(i => {
+            i.amount = Math.abs(i.amount);
+            return i;
+          });
         }
         getSplittedAccountNames()
       }
