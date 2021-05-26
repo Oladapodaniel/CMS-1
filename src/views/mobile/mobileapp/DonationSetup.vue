@@ -4,7 +4,6 @@
     <div class="row">
       <div class="col-md-6 mt-5" :class="{ 'slide-right': slide }">
         <div class="row">
-          <!-- <DonationSetup  @payment-form="formCreated"/> -->
           <div class="col-12">
             <h2 class="events">Online Donation</h2>
             <p>Enter bank details to set up online donation</p>
@@ -50,7 +49,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+     <DonationSetup  @payment-form="formCreated"/>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -176,10 +175,10 @@ import finish from "../../../services/progressbar/progress";
 import { useToast } from "primevue/usetoast";
 import axio from "axios";
 import store from "../../../store/store";
-// import DonationSetup from "../../donation/PaymentTransaction"
+import DonationSetup from "../../donation/PaymentTransaction"
 export default {
   components: {
-    // DonationSetup
+    DonationSetup
     // Dropdown,
   },
   setup() {
