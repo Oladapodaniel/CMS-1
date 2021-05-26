@@ -1,8 +1,125 @@
 <template>
  <div class="row">
-          <div class="col-12 table">
-            <div class="top-con">
-              <div class="table-top my-4 px-4">
+          <div class="col-12 table px-0">
+            <div class="top-con" id="ignore2">
+          <div class="table-top">
+            <!-- <div
+              class="filter col-2"
+              @click="
+                printJS({
+                  ignoreElements: ['ignore1', 'ignore2'],
+                  maxWidth: 867,
+                  header: 'CONTRIBUTION TRANSACTIONS',
+                  printable: printContribution,
+                  properties: [
+                    'DATE',
+                    'EVENT',
+                    'CONTRIBUTION',
+                    'AMOUNT',
+                    'DONOR',
+                  ],
+                  type: 'json',
+                  headerStyle:
+                    'font-family: Nunito Sans, Calibri; text-align: center;',
+                  gridHeaderStyle:
+                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+                  gridStyle:
+                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+                })
+              "
+            >
+              <p class="mt-2">
+                <i class="fa fa-print"></i>
+                PRINT
+              </p>
+            </div> -->
+            <div class="filter col-2">
+              <p @click="toggleFilterFormVissibility" class="mt-2">
+                <i class="fas fa-filter"></i>
+                FILTER
+              </p>
+            </div>
+            <div class="col-2">
+              <p @click="toggleSearch" class="search-text w-100 mt-2">
+                <i class="fa fa-search"></i> SEARCH
+              </p>
+            </div>
+
+            <div class="search d-flex ml-2">
+              <label
+                class="label-search d-flex"
+                :class="{
+                  'show-search': searchIsVisible,
+                  'hide-search': !searchIsVisible,
+                }"
+              >
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  v-model="searchText"
+                />
+                <span class="empty-btn">x</span>
+                <span class="search-btn">
+                  <i class="fa fa-search"></i>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="filter-options"
+          :class="{ 'filter-options-shown': filterFormIsVissible }"
+        >
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-9">
+                <div class="row">
+                  <div
+                    class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
+                  >
+
+                    <input
+                      type="text"
+                      class="input w-100"
+                      placeholder="Name"
+                    />
+                  </div>
+
+                  <div class="col-12 col-md-4 form-group d-none d-md-block">
+                    <input
+                      type="text"
+                      class="input w-100"
+                      placeholder="Cash Account"
+    
+                    />
+                  </div>
+
+                  <div class="col-12 col-md-4 form-group d-none d-md-block">
+                    <input
+                      type="text"
+                      class="input w-100"
+                      placeholder="Income Account"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3 d-flex flex-column align-items-center">
+                <button class="apply-btn text-white" @click="applyFilter">
+                  Apply
+                </button>
+                <span class="mt-2">
+                  <a class="clear-link mr-2" @click="clearAll">Clear all</a>
+                  <span class="mx-2"
+                    ><i class="fas fa-circle" style="font-size: 4px"></i></span
+                  ><a class="hide-link ml-2" @click="hide">Hide</a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+            <!-- <div class="top-con">
+              <div class="table-top">
                 <div class="select-all"></div>
                 <div class="filter">
                   <p @click="toggleFilterFormVissibility" class="mt-2">
@@ -42,7 +159,7 @@
                       <div
                         class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
                       >
-                        <!-- <div class="input-field"> -->
+                        <- <div class="input-field"> --
 
                         <input
                           type="text"
@@ -50,7 +167,7 @@
                           placeholder="Contribution"
                       
                         />
-                        <!-- </div> -->
+                        </div> --
                       </div>
 
                       <div class="col-12 col-sm-6 form-group d-none d-md-block">
@@ -99,10 +216,10 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
            
-            <div class="row table-header">
+            <!-- <div class="row table-header">
                 <div class="col-sm-3 d-none d-sm-block">
                     NAME
                 </div>
@@ -115,9 +232,9 @@
                     <div class="col-sm-2 d-none d-sm-block">
                     REMITTANCE
                 </div>
-                    <!-- <div class="col-sm-2 d-none d-sm-block" >
+                    <div class="col-sm-2 d-none d-sm-block" >
                     DONOR
-                </div> -->
+                </div> -
             </div>
 
             <div class="table-body row" v-for="(offering, index) in searchContribution" :key="offering.id">
@@ -134,9 +251,9 @@
                     <div class="col-sm-2">
                     REMITTANCE
                 </div>
-                    <!-- <div class="col-sm-2" >
+                    <div class="col-sm-2" >
                     
-                </div> -->
+                </div> 
             </div>
             <div class="col-6 col-sm-12">
                 <div class="row">
@@ -152,9 +269,9 @@
                 <div class="col-sm-2">
                      <div>{{ offering.remiittances }}</div>
                 </div>
-                <!-- <div class="col-sm-2" >
+                 <div class="col-sm-2" >
                      <div>{{ offering.donor }}</div>
-                </div> -->
+                </div> 
                 <div class="col-sm-1">
                     <div class="dropdown">
               <i
@@ -166,10 +283,11 @@
               ></i>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                
-              
-                <!-- <a class="dropdown-item elipsis-items">
+              <router-link :to="{ name: 'OfferingCategory', params: { offId: offering.id } }">
+                <a class="dropdown-item elipsis-items">
                  Edit
-                </a> -->
+                </a>
+              </router-link>
                 <a
                   class="dropdown-item elipsis-items cursor-pointer"
                   @click="showConfirmModal(offering.id, index)"
@@ -181,6 +299,99 @@
             </div>
           
                 </div>
+            </div> -->
+            <div class="container-fluid d-none d-md-block">
+            <div class="row t-header">
+              <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
+                <div class="col-md-1 px-3"></div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Name</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Cash Account</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Income Account</div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Cash Account</div>
+                <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
+              <!-- </div> -->
+            </div>
+          </div>
+            <div class="row" style="margin:0;">
+            <div
+              class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
+              v-for="(item, index) in searchContribution"
+              :key="item.id"
+            >
+                <div class="row w-100" style="margin:0">
+                  <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+                    <input
+                      type="checkbox"
+                      v-model="item.check"
+                      class="form-check"
+                    />
+                  </div>
+
+                  <div class="desc small-text col-md-2 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Name</span>
+                      <span>{{ item.name }}</span>
+                    </p>
+                  </div>
+
+                  <div class="col-md-3 px-1">
+                    <div class="d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Cash Account</span>
+                    <div>
+                      
+                      <div class="desc small-text text-right text-md-left">{{ item.cashBankAccount }}</div>
+                    </div>
+                    </div>
+                  </div>
+
+                  <div class="desc-head small-text col-md-3 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Income Account</span>
+                      <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
+                      <span>{{ item.incomeAccount}}</span>
+                    </p>
+                  </div>
+
+                  <div class="small-text col-md-2 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Remittance</span>
+                      <span><span class="primary-text c-pointer"
+                      >{{ item.remiittances }}</span
+                    ></span>
+                    </p>
+                  </div>
+
+                  <div class="small-text col-md-1 px-1">
+                    <!-- <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
+                      <span>Marked</span>
+                    </p> -->
+                    <div class="action data action-icon">
+                      <div class="dropdown">
+                        <i
+                          class="fas fa-ellipsis-v cursor-pointer"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        ></i>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <!-- <router-link :to="{ name: 'OfferingCategory', params: { offId: item.id } }">
+                            <a class="dropdown-item elipsis-items">
+                            Edit
+                            </a>
+                          </router-link> -->
+                            <a
+                              class="dropdown-item elipsis-items cursor-pointer"
+                              @click="showConfirmModal(item.id, index)"
+                              >Delete</a
+                            >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="col-12">
                     <div class="table-footer">
@@ -548,6 +759,8 @@ export default {
 .table-top {
   font-weight: 800;
   font-size: 12px;
+  display: flex;
+  justify-content: flex-end
 }
 
 .table-top label:hover,
@@ -815,6 +1028,13 @@ export default {
 
 .itemroute-color:hover {
   text-decoration: none;
+}
+
+
+.t-header div {
+  background: #dde2e6 0% 0% no-repeat padding-box;
+  font-size: 16px;
+  padding: .5rem 0;
 }
 </style>
 

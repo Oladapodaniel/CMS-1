@@ -4,11 +4,11 @@
     class="container-wide shadow p-3 mb-5 bg-body rounded mt-5"
     style="max-width: 700px"
   >
-    <div class="row mt-5">
+    <div class="row mt-2">
       <div class="col-md-6 offset-md-3 mb-3"></div>
     </div>
     <div class="row">
-      <div class="col-12 p-0">
+      <div class="col-6 offset-sm-3 p-0">
         <img :src="bannerUrl" class="w-100">
       </div>
     </div>
@@ -18,11 +18,12 @@
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       ></div>
-      <div class="col-md-5 mb-3">
-        <h5 class="font-weight-bold text-center">EVENT REGISTRATION</h5>
-        <p class="text-center font-weight-500">
-          {{ eventData.name }} - {{ eventData.date }}
-        </p>
+      <div class="col-md-7 text-center mb-3">
+        <div class="font-weight-bold">
+          {{ eventData.name }}
+        </div>
+        <h5 class="mt-2">Event Registration</h5>
+        <div class="italicize">{{ eventData.date }}</div>
       </div>
     </div>
 
@@ -58,7 +59,7 @@
         <span class="p-input-icon-left w-100">
           <i class="pi pi-phone icon" />
           <InputText
-            @input="checkCharacter"
+            @blur="checkCharacter"
             class="w-100"
             type="text"
             v-model="enteredValue"
@@ -220,7 +221,7 @@
                 !person.name || person.name.length < 1 || !person.address
               "
             >
-              Confirm
+              Confirm To Register
             </button>
           </div>
         </div>
@@ -349,12 +350,12 @@ export default {
     const bannerUrl = ref("")
 
 
-    const checkCharacter = (e) => {
-      if (e.target.value.length < 11) {
-        person.value = {};
-        personHasAddress.value = false;
-        return false;
-      }
+    const checkCharacter = () => {
+      // if (e.target.value.length < 11) {
+      //   person.value = {};
+      //   personHasAddress.value = false;
+      //   return false;
+      // }
       loaded.value = false;
       personHasAddress.value = false;
       fetchingFailed.value = false;
@@ -709,5 +710,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.italicize {
+  font-style: italic;
+  font-size: 15px;
 }
 </style>

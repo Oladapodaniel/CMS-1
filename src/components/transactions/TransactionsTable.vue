@@ -179,7 +179,7 @@
               </div>
               <LoadingComponent :loading="loading" />
 
-              <div class="row" style="margin:0">
+              <div class="row" style="margin:0;">
                 <div
                   class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
                   v-for="(item, index) in selectedTransactions"

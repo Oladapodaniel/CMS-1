@@ -146,7 +146,7 @@
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.bankName }}</router-link>
                 </div>
                 <div class="col-sm-2">
-                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">10</router-link>
+                     <!-- <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">10</router-link> -->
                 </div>
                 <div class="col-sm-2">
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ date(item.date) }}</router-link>
