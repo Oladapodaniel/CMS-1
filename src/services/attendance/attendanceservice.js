@@ -125,7 +125,7 @@ const checkout = async (body) => {
 
 const generateEventReportDefaultMessage = (eventAnalysisData) => {
     console.log(eventAnalysisData, "data");
-    if (!eventAnalysisData || !eventAnalysisData.activityToday) return "";
+    if (eventAnalysisData.activityToday) {
     let message = `SERVICE REPORT\n          ======\n${eventAnalysisData.activityToday.name}\nDate: ${new Date(eventAnalysisData.activityToday.date).toLocaleDateString()}\n\nTotal Attendance: ${eventAnalysisData.todayAttendance}\nTotal Offering: ${eventAnalysisData.tenantCurrencyName} ${eventAnalysisData.todayOffering}`;
 
     if (eventAnalysisData.todayVsLastWeekAttendancePercentage > 0) {
@@ -146,6 +146,22 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
     }
     message += `\n          ------------\nPowered by churchplus.co`
     return message;
+    }
+    if (eventAnalysisData.todayContributions) {
+        let message = `CONTRIBUTION REPORT\n          ======\n\nTotal Offering: ${eventAnalysisData.totalToday}`
+
+
+    if (eventAnalysisData.todayVsLastWeek > 0) {
+        message += `\n\nWe recorded ${eventAnalysisData.todayVsLastWeek.toFixed(2)}% increase in offering since last week.`;
+    } else if (eventAnalysisData.todayVsLastWeek < 0) {
+        message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastWeek).toFixed(2)}% decrease in offering since last week.`;
+        // message += `\nThere was a ${Number.parseFloat(Math.abs(eventAnalysisData.todayVsLastweekOfferingPercentage)).toPrecision(4)}% decrease in offering since last week`;
+    } else {
+        message += `\n\nOffering was the same with last week.`;
+    }
+    message += `\n          ------------\nPowered by churchplus.co`
+    return message;
+    }
 }
 
 export default { saveCheckAttendanceItem, startCheckinProces, getItems, getItemByCode, getReport, checkin, checkout, generateEventReportDefaultMessage };

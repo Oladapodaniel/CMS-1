@@ -783,9 +783,13 @@ export default {
         } else if (data && data.returnObject.token && data.status) {
             let giverDetails = {
                 giverToken: data.returnObject.token,
-                giverId: data.returnObject.userId
+                giverId: data.returnObject.userId,
+                tenantId: data.returnObject.tenantID
             }
           localStorage.setItem("giverToken", JSON.stringify(giverDetails));
+
+          localStorage.setItem("token", JSON.stringify(data.returnObject.token));
+          
           toast.add({
             severity: "success",
             summary: "Successful",

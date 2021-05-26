@@ -212,6 +212,7 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                         console.log(res.data)
                         userEmail.value = res.data.userEmail
                         churchName.value = res.data.churchName
+                        emit("get-church-name", res.data.churchName)
                         isoCode.value = res.data.isoCode
                         recipients.value.push({ email: "", phone: "" })
                     })

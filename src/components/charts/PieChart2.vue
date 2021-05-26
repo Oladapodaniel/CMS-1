@@ -8,7 +8,7 @@ import Highcharts from "highcharts";
 
 export default {
     name: "Chart1",
-    props: ["chartType"],
+    props: ["chartType", "data"],
   setup(props) {
     const chart = ref(null);
     onMounted(() => {
@@ -62,13 +62,14 @@ export default {
               enabled: true,
               distance: -50,
             },
-          },
+            showInLegend: true
+          }
         },
         series: [
           {
             name: "Brands",
             colorByPoint: true,
-            data: [
+            data: props.data ? props.data : [
               {
                 name: "Chrome",
                 y: 61.41,

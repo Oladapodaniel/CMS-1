@@ -2239,7 +2239,7 @@
 
 
 <script>
-import ReportAreaChart from "@/components/charts/AreaChart.vue";
+import ReportAreaChart from "@/components/charts/EventAreaChart.vue";
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";

@@ -11,7 +11,7 @@ let converter = {
         let toIndex = propertyArr.indexOf(toDestinationCurrencyRate)
         let toRate = valueArr[toIndex]
         let result = ( amount / fromRate ) * toRate
-        console.log(result)
+        console.log(currencyRate)
         return result
     }
 }
