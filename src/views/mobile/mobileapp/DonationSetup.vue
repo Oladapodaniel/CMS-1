@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-wide">
     <!-- write up part -->
     <div class="row">
       <div class="col-md-6 mt-5" :class="{ 'slide-right': slide }">
@@ -11,19 +11,67 @@
           </div>
         </div>
 
+
+          <table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col-3">Name</th>
+      <th scope="col-3">Bank</th>
+      <th scope="col-3">Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Building Project</td>
+      <td>Benovalence</td>
+      <td>Offerings</td>
+    </tr>
+    <tr>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+          </table>
+
+
+        <!-- <div class="container">
+          <div class="row table-header space-between">
+            <div class="col-sm-3 d-none d-sm-block">NAME</div>
+            <div class="col-sm-3 d-none d-sm-block">BANK</div>
+            <div class="col-sm-3 d-none d-sm-block">AMOUNT</div>
+            <div class="col-sm-3 d-none d-sm-block">DATE</div>
+          </div>
+        </div>
+
+
+        <div class="container">
+          <div class="col-6 d-block d-sm-none">
+            <div class="col-sm-3">NAME</div>
+            <div class="col-sm-2">BANK</div>
+            <div class="col-sm-2">AMOUNT</div>
+            <div class="col-sm-2">DATE</div>
+          </div>
+        </div> -->
+
         <div class="row mt-4">
           <div class="offset-1 offset-md-0 col-10">Choose Bank</div>
           <div class="offset-1 offset-md-0 col-10">
             <Dropdown
-            v-model="selectedBank"
-            class="w-100"
-            :options="nigerianBanks"
-            optionLabel="name"
-            :filter="false"
-            :placeholder="selectedBank ? selectedBank.name : 'Select'"
-            :showClear="false"
-          >
-          </Dropdown>
+              v-model="selectedBank"
+              class="w-100"
+              :options="nigerianBanks"
+              optionLabel="name"
+              :filter="false"
+              :placeholder="selectedBank ? selectedBank.name : 'Select'"
+              :showClear="false"
+            >
+            </Dropdown>
           </div>
         </div>
 
@@ -31,13 +79,12 @@
           <div class="offset-1 offset-md-0 col-10">Enter account number</div>
           <div class="offset-1 offset-md-0 col-10">
             <input
-            class="form-control h-100"
-            type="number"
-            v-model="accountNumber"
-            @blur="resolveCustomerDetail"
-            placeholder="Account Number"
-          />
-
+              class="form-control h-100"
+              type="number"
+              v-model="accountNumber"
+              @blur="resolveCustomerDetail"
+              placeholder="Account Number"
+            />
           </div>
         </div>
 
@@ -45,31 +92,38 @@
           <div class="offset-1 offset-md-0 col-10">Enter account name</div>
           <div class="offset-1 offset-md-0 col-10">
             <input
-            type="text"
-            v-model="accountName"
-            placeholder="Account name"
-            ref="accNameRef"
-            class="form-control"
-          />
-          <div class="mt-1">
-            <em class="mt-1"
-              >This will automatically come up, kindly confirm before clicking
-              on save.</em
+              type="text"
+              v-model="accountName"
+              placeholder="Account name"
+              ref="accNameRef"
+              class="form-control"
+            />
+            <div class="mt-1">
+              <em class="mt-1"
+                >This will automatically come up, kindly confirm before clicking
+                on save.</em
+              >
+            </div>
+          </div>
+          <div
+            class="offset-1 offset-md-0 col-md-2 align-self-start"
+            v-if="loading"
+          >
+            <div
+              class="spinner-border text-primary"
+              style="width: 3rem; height: 3rem"
+              role="status"
             >
-          </div>
-
-          </div>
-          <div class="offset-1 offset-md-0 col-md-2 align-self-start" v-if="loading">
-                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-                </div>
+              <span class="sr-only">Loading...</span>
             </div>
-          <div class="col-10 offset-1 offset-md-0 btn primary-bg  mt-5 text-white default-btn border-0" @click="completeSetUp">
+          </div>
+          <div
+            class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0"
+            @click="completeSetUp"
+          >
             Save and continue
-            </div>
+          </div>
         </div>
-
-
       </div>
 
       <!-- image part -->
@@ -96,10 +150,10 @@ import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
 import { ref } from "vue";
 // import router from "../../../router";
-import finish from '../../../services/progressbar/progress'
+import finish from "../../../services/progressbar/progress";
 import { useToast } from "primevue/usetoast";
-import axio from  'axios'
-import store from '../../../store/store';
+import axio from "axios";
+import store from "../../../store/store";
 // import DonationSetup from "../../donation/PaymentTransaction"
 export default {
   components: {
@@ -110,20 +164,20 @@ export default {
     const nigerianBanks = ref([]);
     const selectedBank = ref("");
     const accountNumber = ref("");
-    const accountName = ref("")
-    const loading = ref(false)
-    const accNameRef = ref("")
-    const toast = useToast()
+    const accountName = ref("");
+    const loading = ref(false);
+    const accNameRef = ref("");
+    const toast = useToast();
 
     // const pastors = ref([{}]);
     const slide = ref(false);
-    const banks = ref([{
+    const banks = ref([
+      {
         accountName: accountName.value,
         accountNumber: accountNumber.value,
-        banks: selectedBank.value
-      }])
-
-
+        banks: selectedBank.value,
+      },
+    ]);
 
     const completeSetUp = () => {
       // router.push({ name: "SocialMedia" });
@@ -133,68 +187,80 @@ export default {
       //   banks: selectedBank.value
       // }
       // banks.value.push(bankDetails)
-      console.log(banks.value)
-      store.dispatch("completeSetUp", banks.value)
+      console.log(banks.value);
+      store.dispatch("completeSetUp", banks.value);
       axios
-            .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
-            .then((res) => {
-            console.log(res,  "🎄🎄🎄");
-            if (res.data.status) {
-              toast.add({
-                severity:'success',
-                summary: 'Setup complete',
-                detail:'Your setup is complete and succesful',
-                life: 3000});
-            }
-            })
-            .catch((err) => {
-            console.log(err);
+        .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
+        .then((res) => {
+          console.log(res, "🎄🎄🎄");
+          if (res.data.status) {
+            toast.add({
+              severity: "success",
+              summary: "Setup complete",
+              detail: "Your setup is complete and succesful",
+              life: 3000,
             });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     };
 
+    const getBanks = () => {
+      axios
+        .get("/api/Financials/GetBanks")
+        .then((res) => {
+          console.log(res);
+          nigerianBanks.value = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getBanks();
 
+    const resolveCustomerDetail = async () => {
+      loading.value = true;
+      try {
+        let header = {
+          headers: {
+            Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}`,
+          },
+        };
+        console.log(header, "header");
 
-           const getBanks = () => {
-            axios.get('/api/Financials/GetBanks')
-                .then(res => {
+        let { data } = await axio.get(
+          `https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`,
+          header
+        );
+        console.log(data);
+        accountName.value = data.data.account_name;
+        accNameRef.value.focus();
 
-                    console.log(res)
-                nigerianBanks.value = res.data
-                })
-                .catch(err => {
+        loading.value = false;
 
-                    console.log(err)
-                })
+        toast.add({
+          severity: "success",
+          summary: "Account Check Successful",
+          detail: "The account check was successful",
+          life: 3000,
+        });
+      } catch (error) {
+        finish();
+        console.log(error);
 
-        }
-        getBanks()
+        loading.value = false;
 
-        const resolveCustomerDetail = async() => {
-            loading.value = true
-            try {
-                let header = { headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` }}
-                console.log(header, "header");
-
-                let { data } = await axio.get(`https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`, header)
-                console.log(data)
-                accountName.value = data.data.account_name
-                accNameRef.value.focus()
-
-                loading.value = false
-
-                toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 3000});
-
-            }
-            catch (error) {
-                finish()
-                console.log(error)
-
-                loading.value = false
-
-                toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
-            }
-            console.log(selectedBank.value.code, accountNumber.value)
-        }
+        toast.add({
+          severity: "error",
+          summary: "Account Check Error",
+          detail: "Please check your banks details again",
+          life: 3000,
+        });
+      }
+      console.log(selectedBank.value.code, accountNumber.value);
+    };
 
     return {
       nigerianBanks,
@@ -206,12 +272,24 @@ export default {
       resolveCustomerDetail,
       loading,
       accNameRef,
-      banks
+      banks,
     };
   },
 };
 </script>
 <style scoped>
+
+.table-header1 {
+    background: #f1f3f9;
+    color: #8898aa;
+    font-size: 11px;
+    text-align: left;
+    box-shadow: 0px 3px 6px #2c28281c;
+    width: 25vw;
+    padding: .5rem 0;
+    max-width : 0;
+  }
+
 .setup {
   color: #031c39;
   font: normal normal 800 30px/40px Nunito Sans;

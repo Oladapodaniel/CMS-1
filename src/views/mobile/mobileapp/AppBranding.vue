@@ -15,153 +15,45 @@
 
               <!-- MOBILE AREA -->
               <div class="my-2">
-                <div class="container">
-                  <!-- <div class="row">
-                    <div class="col-12">
-                      <h4 class="profile-heading-text" style="font-size: 15px">
-                        My Profile
-                      </h4>
-                    </div>
-                  </div>
-                </div> -->
-
-                  <!-- picture area -->
-                  <!-- <div class="container mb-2">
-                  <div class="row d-flex justify-content-center">
-                    <div class="col-6">
-                      <div class="image-container">
-                        <img
-                          class="w-100 img-responsive"
-                          :style="{ border: colorPicked }"
-                          src="../../../assets/mobileonboarding/avatar-icon-images.png"
-                          alt=""
-                        />
-                      </div>
-                    <div class="col-sm-4 col-12" >
-                        <label for="colorpicker"></label>
-                            <input type="color" id="colorpicker" class="no-border form-control" v-model="colorPicker">
-                    </div>
-                    {{ colorPicker }}
-                    <hr class="mt-2 d-none d-sm-none  d-md-block">
-                    </div>
-                  </div>
-                </div> -->
-                  <!--end picture area -->
-
-                  <!-- profile list -->
-                  <!-- <div class="container my-2"> -->
-                  <!-- user area -->
-                  <!-- <div class="row">
-                    <div class="col-2">
-                      <i
-                        class="pi pi-user text-center c-pointer"
-                        :style="{ color: colorPicked }"
-                        style="font-size: 22px"
-                      ></i>
-                    </div>
-                    <div class="col-8">
-                      <p class="profile-text text-left c-pointer">Profile</p>
-                    </div>
-                  </div> -->
-                  <!--end user area -->
-
-                  <!-- download area -->
-                  <!-- <div class="row">
-                    <div class="col-2">
-                      <i
-                        class="pi pi-download text-center c-pointer"
-                        :style="{ color: colorPicked }"
-                        style="font-size: 22px"
-                      ></i>
-                    </div>
-                    <div class="col-8">
-                      <p class="profile-text text-left c-pointer">
-                        My Downloads
-                      </p>
-                    </div>
-                  </div> -->
-                  <!--end download area -->
-
-                  <!-- attendance area -->
-                  <!-- <div class="row">
-                    <div class="col-2">
-                      <i
-                        class="pi pi-check-circle text-center c-pointer"
-                        :style="{ color: colorPicked }"
-                        style="font-size: 22px"
-                      ></i>
-                    </div>
-                    <div class="col-8">
-                      <p class="profile-text text-left c-pointer">Attendance</p>
-                    </div>
-                  </div> -->
-                  <!--end attendance area -->
-
-                  <!-- church-information area -->
-                  <!-- <div class="row">
-                    <div class="col-2">
-                      <i
-                        class="pi pi-home text-center c-pointer"
-                        :style="{ color: colorPicked }"
-                        style="font-size: 22px"
-                      ></i>
-                    </div>
-                    <div class="col-8">
-                      <p class="profile-text text-left c-pointer">
-                        Church Information
-                      </p>
-                    </div>
-                  </div> -->
-                  <!--end church-information area -->
-
-                  <!-- log-in area -->
-                  <!-- <div class="row">
-                    <div class="col-2">
-                      <i
-                        class="pi pi-sign-in text-center c-pointer"
-                        :style="{ color: colorPicked }"
-                        style="font-size: 22px"
-                      ></i>
-                    </div>
-                    <div class="col-8">
-                      <p class="profile-text text-left c-pointer">Log in</p>
-                    </div>
-                  </div> -->
-                  <!--end log-in area -->
-                </div>
-                <!-- end profile list -->
-                <!--END MOBILE AREA -->
+                <div class="container"></div>
               </div>
-              <!--End MOBILE AREA -->
-              <!-- <hr class="mt-2 d-none d-sm-none d-md-block" /> -->
             </div>
           </div>
         </div>
 
         <div class="row mt-1">
           <div class="col-12 col-md-10">
-            <div class="row">
-              <div class="d-flex align-item-center col-4 col-sm-8">
-                <h5 class="primaryColour mt-4">Primary Colour</h5>
-                 <i class="fa fa-question-circle-o c-pointer "
-                              v-tooltip.top="'Sent | Processed | Failed'"
-                            ></i>
+            <div
+              class="row my-3 d-flex align-items-center justify-content-center"
+            >
+              <div class="d-flex align-items-center col-4 col-sm-8">
+                <h5 class="primaryColour mb-0">Primary Colour</h5>
+                <i
+                  class="mt-1 pl-2 fa fa-question-circle-o c-pointer"
+                  v-tooltip.top="'Choose brand color'"
+                ></i>
               </div>
 
-             <div class="col-4 color-picker">
-               <img class="c-pointer w-25 mt-4" src="../../../assets/mobileonboarding/colorpickericon.png" alt="color-picker"  @click="showColorPallet" >
-
-              <div class="col-4 col-sm-4 text-right">
-                <!-- <label for="colorpicker"></label> -->
-                <input
-                  type="color"
-                  id="colorpicker"
-                  class="no-border form-control c-pointer"
-                  v-model="colorPicked"
-                  ref="colorBox"
-                  style="width: 0;height:0"
+              <div class="col-4 color-picker">
+                <img
+                  class="c-pointer w-50"
+                  src="../../../assets/mobileonboarding/colorpickericon.png"
+                  alt="color-picker"
+                  @click="showColorPallet"
                 />
-              </div>
+
+                <div class="col-4 col-sm-4 text-right">
+                  <!-- <label for="colorpicker"></label> -->
+                  <input
+                    type="color"
+                    id="colorpicker"
+                    class="no-border form-control c-pointer"
+                    v-model="colorPicked"
+                    @change="saveAppBranding"
+                    ref="colorBox"
+                    style="width: 0; height: 0"
+                  />
+                </div>
               </div>
               <div class="col-md-3 col-12 col-sm-0"></div>
               <hr class="mt-2 d-none d-sm-none d-md-block" />
@@ -172,37 +64,61 @@
           <div class="col-12 col-md-10">
             <div class="row">
               <div class="col-12 col-sm-6">
-                <h5 class="logo">Ministery Logo</h5>
+                <h5 class="logo mt-3">Ministery Logo</h5>
               </div>
+              <Toast />
+              <!-- testrun -->
+              <!-- <div class="col-md-5 col-12">
+                  <div class="container mx-auto mx-md-0 mx-lg-0 pt-2">
+                    <div class="photo-box border ml-1">
+                      <img src="" class="w-100 h-100 img-responsive">
+                    </div>
+                    <div class="custom-file">
+                      <input
+                        type="file"
+                        class="custom-file-input"
+                        id="customFile"
+                        @change="uploadFile"
+                      />
+                      <label
+                        class="custom-file-label px-4"
+                        for="customFile"
+                      ></label>
+                    </div>
+                  </div>
+                </div> -->
+              <!-- testrun -->
               <div class="col-12 col-sm-6" id="logoBox">
                 <div class="cs-input border-0 mt-2 ml-4">
-
-<div>
-  <i
-                        class="pi-cloud-upload text-center c-pointer"
-                        :style="{ color: colorPicked }"
-                        style="font-size: 22px"
-                      ></i>
-</div>
-
-                  <label for="imgUpload" class="choose-file mr-sm-4">
-                    Choose file
+                  Upload logo
+                  <label
+                    for="imgUpload"
+                    class="choose-file mr-sm-4"
+                    :class="{ 'hide-input': imageURL }"
+                  >
                     <input
                       type="file"
                       class="input file-input"
-                      placeholder=""
                       id="imgUpload"
                       @change="imageSelected"
+                      :class="{ 'hide-input': imageURL }"
                     />
                   </label>
                 </div>
               </div>
+              <img
+                :src="imageURL"
+                alt="FAILED"
+                style="width: 50px; height: 50px"
+                @click="clickInput"
+              />
+              <LoadingComponent :loading="loading" style="fontsize: 1rem" />
 
               <div class="col-md-3 col-12 col-sm-0"></div>
               <div class="col-4"></div>
               <div
                 class="col-sm-12 btn primary-bg mt-5 mb-4 text-white default-btn border-0"
-                @click="saveAppBranding"
+                @click="saveAppDetails"
               >
                 Save and continue
               </div>
@@ -210,7 +126,7 @@
           </div>
         </div>
       </div>
-      <!-- v-show="" -->
+
       <div class="col-md-6 backgroundImage d-none d-md-block">
         <div class="smartphone">
           <div class="content">
@@ -437,73 +353,124 @@
 </template>
 
 <script>
-import router from "../../../router";
+// import router from "../../../router";
 import { ref, computed } from "vue";
-import store from '../../../store/store';
+// import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
 import Tooltip from "primevue/tooltip";
+import LoadingComponent from "../../../components/loading/LoadingComponent";
+import { useToast } from "primevue/usetoast";
+import mobile_service from "../../../services/mobile/mobile-service"
 
 // import {ref} from 'vue'
 export default {
-   directives: {
+  directives: {
     tooltip: Tooltip,
   },
+  components: {
+    LoadingComponent,
+  },
   setup() {
-    const image = ref("")
-    const colorBox = ref("")
+    const image = ref("");
+    const colorBox = ref("");
     const colorPicked = ref("");
-      const changeColors = computed(() => {
+    const colorValid = ref("");
+    const toast = useToast();
+
+    const changeColors = computed(() => {
       console.log(colorPicked);
       return { colorPicked: colorPicked.value };
     });
 
     const showColorPallet = () => {
-colorBox.value.click()
-console.log(colorBox);
-    }
+      colorBox.value.click();
+      console.log(colorBox);
+    };
 
-    const saveAppBranding = () => {
-      router.push({ name: "DonationSetup" });
-
-      // let dataInStore = store.getters.mobileAppUsersData;
-      //  const requestBody = new FormData();
-      //  requestBody.append("churchAppBackgroundColor", dataInStore.churchAppBackgroundColor);
-      //  requestBody.append("services", dataInStore.services);
-      //  requestBody.append("pastors", dataInStore.pastors);
-      //  requestBody.append("customAbouts", dataInStore.customAbouts);
-      //  requestBody.append("banks", dataInStore.banks);
-      store.dispatch("setChurchAppBackgroundColor", colorPicked.value)
-      console.log(colorPicked.value);
-      axios
-        .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
+    const loading = ref(false);
+    const saveAppBranding = (e) => {
+      // let x = e.target.value;
+      // console.log(colorPicked.value);
+      loading.value = true;
+      // axios
+      //   .get(
+      //     `/mobile/v1/Profile/CheckColorSaturation?backGroundColor=` + x.toString()
+      //   )
+      mobile_service.validateColor(e.target.value)
         .then((res) => {
-          console.log(res,  "🎄🎄🎄");
+          console.log(res, "🎄🎄🎄");
+          res.data = colorValid.value;
+          loading.value = false;
+          // console.log(colorValid.value);
+          if (res.data) {
+            toast.add({
+              severity: "success",
+              summary: "Color Matched",
+              detail: "Color Matched successfully",
+              life: 3000,
+            });
+          } else {
+            toast.add({
+              severity: "error",
+              summary: "Color not matched",
+              detail: "Choose darker shade of the color",
+              life: 3000,
+            });
+          }
         })
         .catch((err) => {
           console.log(err);
+          loading.value = false;
         });
-      // console.log(store.getters.formData)
     };
 
+ const saveAppDetails = () => {
+        const formData = new FormData();
+        formData.append("Logo", image.value);
+        formData.append("BackgroundColor", colorValid.value);
+              // router.push({ name: "DonationSetup" });
+        axios
+          .put(`/mobile/v1/Profile/CustomizeApp`, formData)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      //saveAppDetails();
+    const imageURL = ref("");
+    const imageSelected = (e) => {
+      image.value = e.target.files[0];
+      imageURL.value = URL.createObjectURL(image.value);
+      console.log(image.value);
+    };
 
-const imageSelected = (e) => {
-image.value = e.target.files[0]
- console.log(image.value);
-};
+    const clickInput = () => {};
 
     return {
+    saveAppDetails,
       saveAppBranding,
       colorPicked,
       changeColors,
-     showColorPallet,
-     colorBox,
-     imageSelected,
+      showColorPallet,
+      colorBox,
+      imageSelected,
+      imageURL,
+      clickInput,
+      colorValid,
+      loading,
     };
   },
 };
 </script>
 
 <style scoped>
+.hide-input {
+  height: 0;
+  width: 0;
+}
+
 /* profile image area */
 .image-container {
   border: 1px solid #ebeff4;
