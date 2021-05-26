@@ -1,202 +1,325 @@
 <template>
   <div class="container-wide container-top">
-      <div class="row mt-5">
-          <div
-            class="col-12 header"
-          >
-            Subscription
+    <div class="row mt-5">
+      <div class="col-12 header">
+        Subscription
+      </div>
+      <div class="col-12 normal-text mt-3">
+        Select the subscription that suit your church and the additional tolls
+        you need for your church growth.
+      </div>
+      <div class="col-md-6 mt-5">
+        <div class="row bg-white pb-2 sub">
+          <div class="col-md-6 col-lg-6  col-12">
+            <div class="py-2 small-header">Subscription Type*</div>
+            <Dropdown
+              class=" plandropdown w-100"
+              v-model="selectedPlan"
+              :options="subscriptionPlans"
+              optionLabel="description"
+              placeholder=""
+            />
           </div>
-          <div class="col-12 normal-text mt-3">
-              Select the subscription that suit your church and the additional tolls you need for your church growth.
+          <div class="col-md-6 col-lg-6 col-12">
+            <div class="py-2 small-header">Duration (month)</div>
+            <Dropdown
+              class="w-100"
+              v-model="selectMonth"
+              :options="selectMonths"
+              optionLabel="name"
+              placeholder="Select duration"
+            />
           </div>
-        <div class="col-md-6 mt-5">
-          
-          <div class="row bg-white pb-2 sub" >
-            <div class="col-md-6 col-lg-6  col-12">
-              <div class="py-2 small-header">Subscription Type*</div>
-              <Dropdown
-                class=" plandropdown w-100"
-                v-model="selectedPlan"
-                :options="subscriptionPlans"
-                optionLabel="description"
-                placeholder=""
-              />
-            </div>
-            <div class="col-md-6 col-lg-6 col-12">
-              <div class="py-2 small-header">Duration (month)</div>
-              <Dropdown
-                class="w-100"
-                v-model="selectMonth"
-                :options="selectMonths"
-                optionLabel="name"
-                placeholder="Select duration"
-              />
-            </div>
-            <div class="col-md-3 col-lg-3 col-3  ml-3 mt-3 normal-text">
-              {{ selectedPlan.amountInNaira }}
-            </div>
+          <div class="col-md-3 col-lg-3 col-3  ml-3 mt-3 normal-text">
+            {{ subselectedDuratn }}
           </div>
         </div>
-        <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5">
-          <div class="row bg-white rounded pb-2">
+      </div>
+      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5">
+        <div class="row bg-white rounded pb-2">
           <div class="col-12">
-              <div class="small-header">Current plan</div>
-              <div class="normal-text mt-1">{{ currentPlan }}</div>
+            <div class="small-header">Current plan</div>
+            <div class="normal-text mt-1">{{ currentPlan }}</div>
           </div>
-            <div class="col-12 mt-2">
-              <div class="small-header">Expiry Date</div>
-              <div class="normal-text mt-1">{{ expiryDate }}</div>
-            </div>
-              
+          <div class="col-12 mt-2">
+            <div class="small-header">Expiry Date</div>
+            <div class="normal-text mt-1">{{ expiryDate }}</div>
           </div>
         </div>
-        <!-- Add ons -->
-        <div class="col-md-12 col-lg-12 pt-3 mt-3">ADD-ONS</div>
+      </div>
+      <!-- Add ons -->
+      <div class="col-md-12 col-lg-12 pt-3 mt-3">ADD-ONS</div>
 
-        <div class="col-md-6 p-4 sub mt-3 bg-white" >
-            <div class="">
-              <div class="small-header">Communication</div>
-              <div class="row mt-3 normal-text">
-                <div class="col-md-2 col-lg-2 col-4">SMS</div>
-                <div class="col-md-6 offset-md-1 col-4 mb-2">
-                  <input
-                    type="number"
-                    v-model="smsValue"
-                    class="form-control"
-                  />
-                </div>
-                <div class="col-md-2 col-6">
-                  {{ smsValue * 2 }}
-                </div>
-              </div>
-              <div class="row mt-2 normal-text">
-                <div class="col-md-2 col-lg-2 col-4">Email</div>
-                <div class="col-md-6 offset-md-1 col-4 ">
-                  <Dropdown
-                    class="w-100"
-                    v-model="selectEmail"
-                    :options="selectEmailUnit"
-                    optionLabel="name"
-                    placeholder="Select "
-                  />
-                </div>
+      <div class="col-md-6 p-4 sub mt-3 bg-white">
+        <div class="">
+          <div class="small-header">Communication</div>
+          <div class="row mt-3 normal-text">
+            <div class="col-md-2 col-lg-2 col-4">SMS</div>
+            <div class="col-md-6 offset-md-1 col-4 mb-2">
+              <input
+                type="number"
+                v-model.number="smsValue"
+                class="form-control w-50"
+                placeholder="SMS Unit"
+              />
+            </div>
+            <div class="col-md-2 col-6">
+              {{ smsAmount }}
+            </div>
+          </div>
+          <div class="row mt-2 normal-text">
+            <div class="col-md-2 col-lg-2 col-4">Email</div>
+            <div class="col-md-6 offset-md-1 col-4 ">
+              <Dropdown
+                class="emailWidth"
+                v-model="selectEmail"
+                :options="selectEmailUnit"
+                optionLabel="name"
+                placeholder="Email Unit "
+              />
+            </div>
+            <div class="col-md-2 col-4">
+              {{ selectEmail.constValue ? emailAmount : 0 }}
+            </div>
+          </div>
+          <div class="my-3 small-header">Accounting</div>
+          <div
+            class="row normal-text"
+            v-for="(item, index) in productsList"
+            :key="item.id"
+          >
+            <div
+              class="col-12"
+              v-if="
+                item.name !== 'Email' &&
+                  item.name !== 'SMS' &&
+                  item.name !== 'Product' &&
+                  item.name !== 'Financial Analysis' &&
+                  item.name !== 'Fixed Assets'
+              "
+            >
+              <div class="row">
+                <div class="col-md-6 col-4">{{ item.name }}</div>
                 <div class="col-md-2 col-4">
-                  {{
-                    selectEmail.constValue
-                      ? emailAmount 
-                      : 0
-                  }}
+                  <input
+                    type="checkbox"
+                    @change="selectCheckbox(item, index)"
+                  />
                 </div>
-              </div>
-              <div class="my-3 small-header">Accounting</div>
-              <div class="row normal-text">
-                <div class="col-md-6 col-4">Fixed Assets</div>
-                <div class="col-md-2 col-4"><input type="checkbox" /></div>
-                <div class="col-md-2 text-center col-4">100</div>
-              </div>
-              <div class="row normal-text mt-2">
-                <div class="col-md-6 col-4 ">Expenses App</div>
-                <div class="col-md-2 col-4 "><input type="checkbox" /></div>
-                <div class="col-md-2 text-center col-4 ">1200</div>
-              </div>
-              <div class="row normal-text mt-2">
-                <div class="col-md-6  col-4">Account Receive</div>
-                <div class="col-md-2  col-4"><input type="checkbox" /></div>
-                <div class="col-md-2 text-center col-4">2000</div>
-              </div>
-            </div>
-        </div>
-        <!-- payment summary -->
-        <div
-          class="col-md-4 bg-white col-lg-4 col-12 sub mt-3 offset-md-1 "
-        >
-          <div class="h-100  rounded">
-            <div class="text-center small-header">Payment Summary</div>
-            <div class="row mt-3 normal-text">
-              <div class="col-md-6 col-6">Subscription</div>
-              <div class="col-md-6  col-6 text-right">
-                {{ selectedPlan.amountInNaira}}
-              </div>
-            </div>
-            <div class="row mt-2 normal-text">
-              <div class="col-md-6 col-6">SMS</div>
-              <div class="col-md-6 col-6 text-right">
-                {{ smsValue == "" ? "0" : smsValue }}
-              </div>
-            </div>
-            <div class="row mt-3 normal-text">
-              <div class="col-md-6 col-6">Email</div>
-              <div class="col-md-6 col-6 text-right">
-                {{
-                  emailSelectedValue
-                    ? emailAmount
-                    : 0
-                }}
-              </div>
-            </div>
-            
-            <div class="row mt-3 normal-text">
-              <div class="col-md-6 col-6">Total</div>
-              <div class="col-md-6 col-6 text-right">
-                {{ TotalAmount }}
-              </div>
-            </div>
-            <div class="row mt-5">
-              <div class="col-12" data-toggle="modal" data-target="#PaymentOptionModal">
-                  <button class="btn pay-now text-white w-100 normal-text">Pay Now</button>
+                <div class="col-md-4 text-center col-4">{{ item.price }}</div>
               </div>
             </div>
           </div>
         </div>
-        <!-- payment summary end -->
-        <!-- Modal -->
-        <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-modal">
-                <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" ref="close">&times;</span>
-                </button>
+      </div>
+      <!-- payment summary -->
+      <div class="col-md-4 bg-white col-lg-4 col-12 sub mt-3 offset-md-1 ">
+        <div class="h-100  rounded">
+          <div class="text-center small-header">
+            Payment Summary{{ currentUser.currency }}
+          </div>
+          <div class="row mt-3 normal-text">
+            <div class="col-md-6 col-6">Subscription</div>
+            <div class="col-md-6  col-6 text-right font-weight-bold">
+              {{ subselectedDuratn }}
+            </div>
+          </div>
+          <div class="row mt-2 normal-text">
+            <div class="col-md-6 col-6">SMS</div>
+            <div class="col-md-6 col-6 text-right font-weight-bold">
+              {{ smsAmount == "" ? "0" : smsAmount }}
+            </div>
+          </div>
+          <div class="row mt-3 normal-text">
+            <div class="col-md-6 col-6">Email</div>
+            <div class="col-md-6 col-6 text-right font-weight-bold">
+              {{ selectEmail.constValue ? emailAmount : 0 }}
+            </div>
+          </div>
+          <div
+            class="row mt-3 normal-text"
+            v-for="item in checkedBoxArr"
+            :key="item.id"
+          >
+            <div class="col-md-6 col-6">{{ item.name }}</div>
+            <div class="col-md-6 col-6 text-right font-weight-bold">
+              {{ item.price }}
+            </div>
+          </div>
+          <hr />
+          <div class="row mt-3 normal-text">
+            <div class="col-md-6 col-6">Total</div>
+            <div class="col-md-6 col-6 text-right font-weight-bold">
+              {{ TotalAmount }}
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div
+              class="col-12"
+              data-toggle="modal"
+              data-target="#PaymentOptionModal"
+            >
+              <button class="btn pay-now text-white w-100 normal-text">
+                Pay Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- payment summary end -->
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="PaymentOptionModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-modal">
+              <h5 class="modal-title" id="exampleModalLongTitle">
+                Payment methods
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true" ref="close">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body p-0 bg-modal pb-5">
+              <div class="row">
+                <div class="col-sm-12 p-4 text-center continue-text">
+                  Continue payment with
                 </div>
-                <div class="modal-body p-0 bg-modal pb-5">
+              </div>
+              <div class="row row-button" @click="payWithPaystack">
+                <div class="col-4 col-sm-7 offset-2">
+                  <img
+                    class="w-100"
+                    src="../../assets/4PaystackLogo.png"
+                    alt="paystack"
+                  />
+                </div>
                 <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
-                </div>
-                <!-- <div class="modal-footer bg-modal">
+              </div>
+              <!-- <div class="row row-button" @click="makePayment">
+                <div class="col-4 col-sm-7 offset-2">
+                  <img
+                    class="w-100"
+                    src="../../assets/flutterwave_logo_color@2x.png"
+                    alt="flutterwave"
+                  />
+                </div> -->
+
+              <!-- <div class="col-7 col-sm-4 option-text">Flutterwave</div> -->
+              <!-- <div class="row">
+        <div class="col-1 mt-n1 d-none d-sm-block">
+         <i
+          class="fas fa-circle circle"
+        ></i>
+      </div>
+      <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
+      </div> -->
+              <!-- </div> -->
+              <!-- <div class="row row-button d-flex justify-content-center">
+                <div class="col-8 col-sm-6">
+                  <img
+                    class="w-100 img-height"
+                    src="../../assets/paypal-logo-2@2x.png"
+                    alt="paypal"
+                  />
+                </div> -->
+
+              <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
+      <div class="row">
+        <div class="col-1 mt-n1 d-none d-sm-block">
+         <i
+          class="fas fa-circle circle"
+        ></i>
+      </div>
+      <div class="col-8 pl-0 d-none d-sm-block">International</div>
+      </div> -->
+              <!-- </div> -->
+
+              <!-- <div class="row row-button d-flex justify-content-center">
+                <div class="col-7 col-sm-4">
+                  <img
+                    class="w-100 img-height"
+                    src="../../assets/Stripe_logo.jpg"
+                    alt="stripe"
+                  />
+                </div> -->
+
+              <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
+      <div class="row">
+        <div class="col-1 mt-n1 d-none d-sm-block">
+         <i
+          class="fas fa-circle circle"
+        ></i>
+      </div>
+      <div class="col-8 pl-0 d-none d-sm-block">International</div>
+      </div> -->
+              <!-- </div> -->
+              <!-- <div class="modal-footer bg-modal">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
                 </div> -->
-                </div>
             </div>
-            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "@/gateway/backendapi";
+import { useStore } from "vuex";
 import Dropdown from "primevue/dropdown";
-import formatDate from "../../services/dates/dateformatter"
-import { ref } from "vue";
+import formatDate from "../../services/dates/dateformatter";
+import { computed, ref } from "vue";
+import { useToast } from "primevue/usetoast";
+import userService from "../../services/user/userservice";
+
 export default {
   components: { Dropdown },
   setup() {
+    const store = useStore();
+    const toast = useToast();
     const subscriptionPlans = ref([]);
     const productsList = ref([]);
     const selectMonth = ref({});
     const selectedPlan = ref({});
     const currentAmount = ref("");
     const currentPlan = ref("");
-    const smsValue = ref("");
+    const smsValue = ref();
     const selectAmount = ref("");
+    const constValue = ref(0);
     const selectEmail = ref({});
-    const emailPrice = ref();
-    const emailAmount = ref()
-    const emailSelectedValue = ref("")
-    const subSelectedAmount = ref("")
-    const TotalAmount = ref("")
-    const expiryDate = ref("")
+    const emailPrice = ref("");
+    const smsPrice = ref("");
+    const expenseApp = ref("");
+    const fixedAsset = ref("");
+    const currentUser = ref(store.getters.currentUser);
+    const acctReceived = ref("");
+    const paymentSummary = ref([]);
+    const paymentSummObj = ref({});
+    const isChecked = ref(false);
+    const checkedBoxArr = ref([]);
+    // const email = ref("");
+    // const firstname =
+    // const amount = ref("")
 
+    const emailSelectedValue = ref("");
+    const subSelectedAmount = ref("");
+
+    const expiryDate = ref("");
+    console.log(selectMonth.value.name);
     const selectMonths = ref([
       { name: "1", code: "NY" },
       { name: "2", code: "RM" },
@@ -234,15 +357,120 @@ export default {
         emailPrice.value = productsList.value.find(
           (i) => i.name === "Email"
         ).price;
-        
-        emailAmount.value = selectEmail.value.constValue * emailPrice.value
-        TotalAmount.value = selectedPlan.value.amountInNaira + smsValue.value + emailAmount.value 
+        smsPrice.value = productsList.value.find((i) => i.name === "SMS").price;
 
-        expiryDate.value = formatDate.monthDayYear(res.data.returnObject.subscriptionExpiration)
+        expiryDate.value = formatDate.monthDayYear(
+          res.data.returnObject.subscriptionExpiration
+        );
       });
     };
 
     selectSubscription();
+
+    const emailAmount = computed(() => {
+      if (!selectEmail.value.constValue) return 0;
+      return selectEmail.value.constValue * emailPrice.value;
+    });
+
+    const smsAmount = computed(() => {
+      if (!smsValue.value) return 0;
+      return smsValue.value * smsPrice.value;
+    });
+
+    const subselectedDuratn = computed(() => {
+      let multiValue = 1;
+      if (selectedPlan.value.amountInNaira)
+        multiValue *= selectedPlan.value.amountInNaira;
+      if (selectMonth.value.name) multiValue *= +selectMonth.value.name;
+      return multiValue;
+    });
+
+    const TotalAmount = computed(() => {
+      let sum = 0;
+      if (subselectedDuratn.value) sum += subselectedDuratn.value;
+      if (smsValue.value) sum += smsValue.value * 2;
+      sum += emailAmount.value;
+      return sum + sumCheckboxItem.value;
+    });
+    const sumCheckboxItem = computed(() => {
+      if (checkedBoxArr.value.length === 0) return 0;
+      return checkedBoxArr.value.map((i) => i.price).reduce((a, b) => a + b);
+    });
+
+    const selectCheckbox = (item) => {
+      const index = checkedBoxArr.value.findIndex((i) => i.id === item.id);
+      if (index < 0) {
+        checkedBoxArr.value.push(item);
+      } else {
+        checkedBoxArr.value.splice(index, 1);
+      }
+    };
+
+    const getCurrencySymbol = async () => {
+      userService
+        .getCurrentUser()
+        .then((res) => {
+          currentUser.value = res;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    if (!currentUser.value || !currentUser.value.currency) getCurrencySymbol();
+
+    const payWithPaystack = (e) => {
+      console.log(e.srcElement.alt);
+
+      // selectedGateway.value = e.srcElement.alt;
+      // emit("selected-gateway", selectedGateway.value);
+
+      // close.click();
+      /*eslint no-undef: "warn"*/
+      let handler = PaystackPop.setup({
+        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        email: "uche@gmail.com",
+        amount: TotalAmount.value * 100,
+        // firstname: name,
+        // ref: orderId,
+        onClose: function() {
+          // swal("Transaction Canceled!", { icon: "error" });
+          toast.add({
+            severity: "info",
+            summary: "Transaction cancelled",
+            detail: "You have cancelled the transaction",
+            life: 2500,
+          });
+          console.log("closed");
+        },
+        callback: function(response) {
+          //Route to where you confirm payment status
+          console.log(response, "Payment Received");
+          console.log(donation);
+
+          axios
+            .post(`/confirmDonation?txnref=${response.trxref}`, donation)
+            .then((res) => {
+              finish();
+              console.log(res, "success data");
+            })
+            .catch((err) => {
+              finish();
+              toast.add({
+                severity: "error",
+                summary: "Confirmation failed",
+                detail:
+                  "Confirming your purchase failed, please contact support at info@churchplus.co",
+                life: 4000,
+              });
+              console.log(err, "error confirming payment");
+            });
+
+          emit("payment-successful", true);
+        },
+      });
+      handler.openIframe();
+    };
 
     return {
       selectedPlan,
@@ -250,6 +478,7 @@ export default {
       subscriptionPlans,
       currentAmount,
       currentPlan,
+      constValue,
       smsValue,
       selectMonth,
       selectMonths,
@@ -262,7 +491,23 @@ export default {
       emailSelectedValue,
       subSelectedAmount,
       TotalAmount,
-      expiryDate
+      expiryDate,
+      subselectedDuratn,
+      expenseApp,
+      fixedAsset,
+      acctReceived,
+      payWithPaystack,
+      paymentSummary,
+      paymentSummObj,
+      isChecked,
+      selectCheckbox,
+      checkedBoxArr,
+      sumCheckboxItem,
+      smsPrice,
+      smsAmount,
+
+      getCurrencySymbol,
+      currentUser,
     };
   },
 };
@@ -270,15 +515,15 @@ export default {
 
 <style scoped>
 .header {
-    font: normal normal 800 34px/46px Nunito Sans;
+  font: normal normal 800 34px/46px Nunito Sans;
 }
 
 .normal-text {
-    font: normal normal normal 18px/24px Nunito Sans;
+  font: normal normal normal 18px/24px Nunito Sans;
 }
 
 .small-header {
-    font: normal normal bold 16px/22px Nunito Sans;
+  font: normal normal bold 16px/22px Nunito Sans;
 }
 
 .sub {
@@ -286,10 +531,10 @@ export default {
   /* box-shadow: 4px 10px 35px #0000000d; */
   box-shadow: 0px 1px 4px #02172e45;
   /* border: 1px solid #0f022021; */
-  
+
   border-radius: 15px;
   opacity: 1;
-  padding: 20px
+  padding: 20px;
 }
 
 .plandropdown {
@@ -316,7 +561,32 @@ export default {
 }
 
 .pay-now {
-    background: #136ACD 0% 0% no-repeat padding-box;
-    border-radius: 22px;
+  background: #136acd 0% 0% no-repeat padding-box;
+  border-radius: 22px;
+}
+
+.row-button {
+  padding: 10px;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  background: #fff;
+  margin: 12px 70px 15px 70px;
+  transition: all 0.4s ease-in-out;
+  max-height: 45px;
+}
+
+.continue-text {
+  font-family: Nunito Sans !important;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.emailWidth {
+  width: 60%;
+}
+
+.form-control {
+  width: 60% !important;
 }
 </style>

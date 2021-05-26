@@ -56,18 +56,24 @@
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" :to="`/tenant/firsttimerslist`"
+              <router-link
+                class="dd-link-item routelink"
+                :to="`/tenant/firsttimerslist`"
                 >First Timers</router-link
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/peoplegroups"
+              <router-link
+                class="dd-link-item routelink"
+                to="/tenant/peoplegroups"
                 >Groups</router-link
               >
             </li>
             <!-- Hidden -->
             <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" to="">Families</router-link>
+              <router-link class="dd-link-item routelink" to=""
+                >Families</router-link
+              >
             </li>
           </ul>
           <!-- </a> -->
@@ -102,17 +108,19 @@
             </li>
             <!-- Hidden -->
             <li class="dd-list-item">
-              <router-link
-                class="dd-link-item routelink"
-                to="/tenant/email"
+              <router-link class="dd-link-item routelink" to="/tenant/email"
                 >Email</router-link
               >
             </li>
             <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" to="">Whatsapp</router-link>
+              <router-link class="dd-link-item routelink" to=""
+                >Whatsapp</router-link
+              >
             </li>
             <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" to="">Voice</router-link>
+              <router-link class="dd-link-item routelink" to=""
+                >Voice</router-link
+              >
             </li>
           </ul>
           <!-- </a> -->
@@ -149,7 +157,9 @@
               >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/attendancecheckin"
+              <router-link
+                class="dd-link-item routelink"
+                to="/tenant/attendancecheckin"
                 >Attendance & Checkin</router-link
               >
             </li>
@@ -164,7 +174,6 @@
                 'tenant/accounting'
               ),
             }"
-          
           >
             <span @click="toggleAccDropDown">
               <img
@@ -185,27 +194,38 @@
           <ul
             class="dd-list acc-list"
             :class="{ 'dd-hide-list': !accLinkDropped }"
-           
           >
-            <li class="dd-list-item"  v-if="false">
-              <router-link class="dd-link-item routelink" to="">Dashboard</router-link>
+            <li class="dd-list-item" v-if="false">
+              <router-link class="dd-link-item routelink" to=""
+                >Dashboard</router-link
+              >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/offering">Contributions</router-link>
+              <router-link class="dd-link-item routelink" to="/tenant/offering"
+                >Contributions</router-link
+              >
             </li>
-            <li class="dd-list-item"  v-if="false">
-              <router-link class="dd-link-item routelink" to="">Pledges</router-link>
+            <li class="dd-list-item" v-if="false">
+              <router-link class="dd-link-item routelink" to=""
+                >Pledges</router-link
+              >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/transactionlist"
+              <router-link
+                class="dd-link-item routelink"
+                to="/tenant/transactionlist"
                 >Transactions</router-link
               >
             </li>
-            <li class="dd-list-item"  v-if="false">
-              <router-link class="dd-link-item routelink" to="">Expense workflow</router-link>
+            <li class="dd-list-item" v-if="false">
+              <router-link class="dd-link-item routelink" to=""
+                >Expense workflow</router-link
+              >
             </li>
             <li class="dd-list-item">
-              <router-link class="dd-link-item routelink" to="/tenant/chartofaccount"
+              <router-link
+                class="dd-link-item routelink"
+                to="/tenant/chartofaccount"
                 >Charts of Account</router-link
               >
             </li>
@@ -222,7 +242,6 @@
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"
               alt=""
-              
             />
             Reports
           </a>
@@ -240,7 +259,7 @@
               </p>
             </div>
             <div class="more-links" :class="{ 'hide-more-links': moreShown }">
-              <a v-if="false"  class="link follow-up routelink">
+              <a v-if="false" class="link follow-up routelink">
                 <img
                   src="../../assets/dashboardlinks/follow-up-icon.svg"
                   class="link-icon"
@@ -249,7 +268,10 @@
                 Follow up
               </a>
 
-              <router-link  to="/tenant/social" class="link routelink text-decoration-none">
+              <router-link
+                to="/tenant/social"
+                class="link routelink text-decoration-none"
+              >
                 <img
                   src="../../assets/dashboardlinks/social-icon.svg"
                   class="link-icon"
@@ -258,7 +280,10 @@
                 Social & Mobile App
               </router-link>
 
-              <router-link  to="/tenant/media" class="link routelink text-decoration-none">
+              <router-link
+                to="/tenant/media"
+                class="link routelink text-decoration-none"
+              >
                 <img
                   src="../../assets/dashboardlinks/social-icon.svg"
                   class="link-icon"
@@ -267,7 +292,7 @@
                 Media Library
               </router-link>
 
-              <a v-if="false"  class="link routelink">
+              <a v-if="false" class="link routelink">
                 <img
                   src="../../assets/dashboardlinks/media.svg"
                   class="link-icon"
@@ -276,7 +301,7 @@
                 Media & Monetization
               </a>
 
-              <a v-if="false"  class="link routelink">
+              <a v-if="false" class="link routelink">
                 <img
                   src="../../assets/dashboardlinks/branches.svg"
                   class="link-icon"
@@ -288,9 +313,16 @@
           </div>
           <hr class="hr" />
 
-          <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
+          <router-link class="link routelink" to="/tenant/settings">
+            Settings
+          </router-link>
           <hr class="hr" />
-          <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="link routelink">Visit ChurchPlus Classic</a> 
+          <a
+            href="https://churchplus.azurewebsites.net/Account/LogOn"
+            target="_a"
+            class="link routelink"
+            >Visit ChurchPlus Classic</a
+          >
           <div class="link" @click="logout">Logout</div>
 
           <!-- Hidden -->
@@ -306,12 +338,12 @@ import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import store from "@/store/store";
 import axios from "@/gateway/backendapi";
-import { useRouter } from 'vue-router'
-import setupService from '../../services/setup/setupservice';
+import { useRouter } from "vue-router";
+import setupService from "../../services/setup/setupservice";
 export default {
   setup(props, { emit }) {
     const route = useRoute();
-    const router = useRouter()
+    const router = useRouter();
     const moreShown = ref(false);
     const showMore = () => {
       moreShown.value = !moreShown.value;
@@ -360,7 +392,7 @@ export default {
         .get("/dashboard")
         .then((res) => {
           tenantInfo.value = res.data;
-          console.log(res.data)
+          console.log(res.data);
         })
         .catch((err) => console.log(err.respone));
     } else {
@@ -378,16 +410,16 @@ export default {
 
     const linkClicked = (e) => {
       if (e.target.classList.contains("routelink")) {
-        emit('linkclicked', true);
+        emit("linkclicked", true);
       }
-    }
+    };
 
     const logout = () => {
-      localStorage.clear()
-      router.push('/')
-      store.dispatch('clearCurrentUser', {})
+      localStorage.clear();
+      router.push("/");
+      store.dispatch("clearCurrentUser", {});
       setupService.clearStore();
-    }
+    };
 
     return {
       route,
@@ -404,7 +436,7 @@ export default {
       toggleEventsDropDown,
       tenantDisplayName,
       linkClicked,
-      logout
+      logout,
     };
   },
 };
@@ -538,7 +570,7 @@ export default {
   */
 .hide-more-links {
   transition: all 0.5s ease-in-out;
-  height: 100px; 
+  height: 100px;
 }
 
 .follow-up {

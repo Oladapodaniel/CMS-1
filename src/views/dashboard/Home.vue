@@ -58,7 +58,7 @@ export default {
       if (val && menuShouldShow.value) {
         menuShouldShow.value = false;
       }
-    }
+    };
 
     return {
       menuShouldShow,
@@ -98,8 +98,8 @@ export default {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .links-menu {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .main-con {
