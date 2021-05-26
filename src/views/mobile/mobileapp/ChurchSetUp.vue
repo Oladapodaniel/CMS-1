@@ -2,7 +2,7 @@
     <div class="container-wide">
         <!-- write up part -->
         <div class="row">
-          <div class="col-md-6 mt-5">
+          <div class="col-md-6 mt-6">
             <div class="row mt-5">
               <div class="col-12 setup">  Set up your church profile</div>
               <!-- <div class="col-md-6"></div> -->
@@ -22,7 +22,7 @@
               <div class="col-12 col-md-10 px-md-0">
                 <input type="text" class="form-control" v-model="address">
               </div>
-              <div  class="col-12 col-md-10 ">
+              <div  class="col-12 col-md-10 mt-3">
                 <div class=" row d-flex justify-content-md-between">
                   <div class="col-md-6 mt-3 px-md-0">Pastors and Ministers</div>
                   <div class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer" data-target="#add-pastor"  data-toggle="modal"   data-whatever="@fat">Add</div>
@@ -42,7 +42,7 @@
                   </div>
                 </div>
               </div> 
-             <div  class="col-12 col-md-10 ">
+             <div  class="col-12 col-md-10 mt-3">
                 <div class=" row d-flex justify-content-md-between">
                   <div class="col-md-6 mt-3 px-md-0">Other Information</div>
                   <div class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer" data-target="#other-info"  data-toggle="modal"   data-whatever="@fat">Add</div>
@@ -50,11 +50,12 @@
               </div>
               <div class="col-md-12">
                 <div class="row">
-                  <div class="col-md-12 col-12" v-for="(item, index) in infoArray" :key="index">
-                    <div class="col-12 col-md-10 mt-4 font-weight-bold"> <span class="display:block">{{ item.title }}</span></div>
-                    <div class="col-12 col-md-10"><p><span  v-if="!item.showFullMessage" class="display:block">{{ item.information && item.information.toString().length > 20 ? `${item.information.substring(0, 20)}...` : item.information }}</span> 
-                    <span v-else>{{ item.information }}</span>
-                    <span @click="() => item.showFullMessage = !item.showFullMessage" v-if="item.information && item.information.toString().length > 20 "> {{item.showFullMessage ?'see less' : 'see more'}} </span></p> </div>
+                  <div class="col-md-12 col-12 p-md-0" v-for="(item, index) in infoArray" :key="index">
+                    <div class="col-12 col-md-10 mt-4 p-md-0 font-weight-bold"> <span class="display:block">{{ item.title }}</span></div>
+                    <div class="col-12 col-md-10 p-md-0"><p>
+                      <span  v-if="!item.showFullMessage" class="display:block">{{ item.information && item.information.toString().length > 20 ? `${item.information.substring(0, 20)}...` : item.information }}</span> 
+                      <span v-else>{{ item.information }}</span>
+                    <span @click="() => item.showFullMessage = !item.showFullMessage" v-if="item.information && item.information.toString().length > 20 " class="text-primary c-pointer pl-2"> {{item.showFullMessage ?'see less' : 'see more'}} </span></p> </div>
                   </div>
                 </div>
               </div>
@@ -111,16 +112,16 @@
               </div>
             </div>
             <div
-              class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
+              class="col-md-11 col-12 ml-md-3 mb-4 text-center text-lg-right"
             >
-              <button
-                type="button"
-                class="btn btn-secondary mr-4"
-                data-dismiss="modal"
-              >
-                Cancel
-              </button>
-              <button type="button" ref="closeTextArea" class="btn btn-primary" @click="otherInfoDetails">Save</button>
+               <button
+                      class="default-btn primary-bg border-0 text-white"
+                       ref="closeTextArea"
+                      @click="otherInfoDetails"
+                    >
+                      Save
+                    </button>
+              <!-- <button type="button" ref="closeTextArea" class="btn btn-primary" @click="otherInfoDetails">Save</button> -->
             </div>
           </div>
         </div>
@@ -194,7 +195,7 @@
                 </div>
                 <div class="col-md-5 mt-3 col-12">
                   <div class="container-img mx-auto mx-md-0 mx-lg-0 pt-2">
-                    <div class="photo-box border ml-1"><img :src="pastorDetails.url" class="w-100 h-100 img-responsive"></div>
+                    <div class="photo-box "><img :src="pastorDetails.url" class="w-100 h-100 img-responsive"></div>
                     <div class="custom-file submit-img">
                       <input
                         type="file"
@@ -215,31 +216,31 @@
                   <div class="ml-4">
                     <p class="font-weight-bold">Social media Handles</p>
                   </div>
-                  <div class="row ml-3">
-                    <div class="col-md-1">
-                      <div class="font-container">
-                        <!-- <img src="../assets/facebook-icon.png" /> -->
+                  <div class="row ml-2">
+                    <div class="col-md-2">
+                      <div class="d-flex justify-content-center font-container">
+                        <img src="../../../assets/mobileonboarding/facebook-icon.png" style="width:78px" />
                       </div>
                     </div>
-                    <div class="col-md-11">
+                    <div class="col-md-9 mr-2 p-md-0 ">
                       <div class="">
                         <input type="text" class="social-input mb-2" v-model="pastorDetails.facebook" />
                       </div>
                     </div>
-                    <div class="col-md-1">
-                      <!-- <img src="../assets/instagram-icon.png" /> -->
+                    <div class="col-md-2">
+                      <img src="../../../assets/mobileonboarding/instagram-icon.png"/>
                     </div>
-                    <div class="col-md-11">
+                    <div class="col-md-9 mr-2 p-md-0 ">
                       <div class="">
                         <input type="text" class="social-input mb-2" v-model=" pastorDetails.instagram" />
                       </div>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                       <div class="font-container">
-                        <!-- <img src="../assets/twitter-icon.png " /> -->
+                        <img src="../../../assets/mobileonboarding/twitter-icon.png"/>
                       </div>
                     </div>
-                    <div class="col-md-11">
+                    <div class="col-md-9 mr-2 p-md-0 ">
                       <div class="">
                         <input type="text" class="social-input mb-2" v-model="pastorDetails.twitter" />
                       </div>
@@ -252,11 +253,12 @@
             <div
               class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
             >
-              <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button>
+              <!-- <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button> -->
               <button
                       class="default-btn primary-bg border-0 text-white"
+                      ref="closePastorModal"
                       :data-dismiss="dismissAddToGroupModal"
-                      @click="addMemberToGroup"
+                      @click="detailsForPastor"
                     >
                       Save
                     </button>
@@ -277,9 +279,9 @@
                 <div class="row mt-3">
                     <div class="col-md-12 text-center my-5 step">STEP 1 of 1</div>
                 </div>
-                <div class="image-dis"> 
-                    <img src="../../../assets/mobileonboarding/church1.svg" style="height:40%; width:40%;">
-                </div>
+                <!-- <div class="image-dis"> 
+                    <img src="../../../assets/mobileonboarding/setup-image.svg" style="height:100%; width:100%;">
+                </div> -->
             </div>
         </div>
     </div> 
@@ -299,8 +301,38 @@ export default {
         const deleteItem = (index) => {
           pastors.value.splice(index, 1)
         }
-        const saveSetUp = () => {
+        const saveSetUp = async() => {
+          // const pastorsArray = []
+          // pastorsArray.push(otherInfo.value)
+          // const pastorsDetailsArray = []
+          // pastorsDetailsArray.push(pastorDetails.value)
+          infoArray.value = infoArray.value.map(i => {
+            return {
+              title: i.title,
+              details: i.information
+            }
+          })
+
           router.push({ name: 'SocialMedia' })
+          const formData = new FormData()    
+          formData.append("churchName", churchName.value)
+          console.log(churchName.value);
+          formData.append("address", address.value)
+          console.log(address.value);
+          formData.append("phoneNumber", phoneNumber.value)
+          console.log(phoneNumber.value);
+          formData.append("abouts", infoArray.value);
+          formData.append("pastors",  pastors.value);
+          console.log(infoArray.value);
+          console.log(pastors.value);
+          // formData.append("logo", payload.logo)
+          try {
+           const response = await axios.put("/mobile/v1/Profile/UpdateChurchProfile", formData)
+           console.log(response);
+          } catch(error) {
+            console.log(error);
+          }
+
         }
         const pastorDetails = ref({})
         const pastorsName = ref("")
@@ -315,9 +347,10 @@ export default {
         const otherInfo = ref({showFullMessage: false})
         const infoArray = ref([])
         const closeTextArea = ref("")
-
+        
         const detailsForPastor = () => {
           pastors.value.push(pastorDetails.value)
+          console.log(pastors.value);
           // pastorsName.value = pastorDetails.value.pastorsName
           // pastorsEmail.value = pastorDetails.value.pastorsEmail
           // pastorImage.value = pastorDetails.value.url
@@ -353,17 +386,17 @@ export default {
           }
 
           console.log(tenantId.value)
-          axios.get(`/mobile/v1/MobileOnboarding/GetChurchProfile?TenantID=${tenantId.value}`).then(response => {
+          axios.get("/mobile/v1/Profile/GetChurchProfile").then(response => {
            console.log(response);
-           churchName.value = response.data.churchName
-           phoneNumber.value = response.data.phoneNumber
-           address.value = response.data.address
+           churchName.value = response.data.returnObject.churchName
+           phoneNumber.value = response.data.returnObject.phoneNumber
+           address.value = response.data.returnObject.address
           }).catch(error => {
             console.log(error);
           })
         }
         getTenantId()
-        
+
         return {
             pastors,
             deleteItem,
@@ -382,7 +415,8 @@ export default {
             otherInfo,
             otherInfoDetails,
             infoArray,
-            closeTextArea
+            closeTextArea,
+            address
         }
     }
 }
@@ -410,7 +444,12 @@ export default {
  line-height: 10px;
 }
 .bg-image{
-    background: transparent linear-gradient(180deg, #2E67CE 0%, #690C7F 100%) 0% 0% no-repeat padding-box;
+    background-image: url("../../../assets/mobileonboarding/groupMain.svg");
+      /* height: 500px;  */
+  /* background-position: center;  */
+  background-repeat: no-repeat; 
+  background-size: cover;
+    /* background: transparent linear-gradient(180deg, #2E67CE 0%, #690C7F 100%) 0% 0% no-repeat padding-box; */
     height: 100vh;
 }
 .image-dis {
