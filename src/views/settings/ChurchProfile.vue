@@ -100,6 +100,7 @@
               <input type="text"
                placeholder="Email"
                 class="form-control ml-0 input"
+                :disabled ="validate ? disabled : ''"
                 v-model="currentUser.userEmail" 
                 />
             </div>
@@ -121,7 +122,6 @@
             </div>
             <div class="col-md-4"></div>
           </div>
-
           <div class="row select-elem">
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text lb font-weight-600">Time zone</label>
@@ -150,7 +150,6 @@
             </div>
             <div class="col-md-4"></div>
           </div>
-
           <div class="row">
               <div class="col-md-12 px-">
                   <hr class="hr">
@@ -198,7 +197,7 @@
               <label class="small-text" for=""></label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <button class="primary-btn text-white px-4" @click="uploadChurchDetail">Save</button>
+              <button class="primary-btn text-white px-4" @click="churchProfile">Save</button>
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -213,7 +212,6 @@ import axios from "@/gateway/backendapi";
 import store from "@/store/store";
 import Dropdown from "primevue/dropdown";
 import { onMounted, ref} from 'vue';
-
 export default {
   components: { Dropdown },
   setup() {
@@ -230,7 +228,7 @@ export default {
     };
 
     const uploadImage = () => { };
-    let countries = ref("");
+    let countries = ref([]);
     const currentUser = ref(store.getters.currentUser);
     //Get AllCountry
      const getCountries= async()=> {
@@ -239,6 +237,7 @@ export default {
         data.sort((a,b)=> a.data - b.data);
         console.log(data);
         countries.value = data;
+        getChurchProfile()
         
       } catch (error) {
         console.log(error);
@@ -250,15 +249,53 @@ export default {
       try{
         const {data} = await axios.get("/mobile/v1/Profile/GetChurchProfile");
         churchData.value = data.returnObject;
+        if (countries.value.length > 0) {
+            selectCountry.value = countries.value.find(i => {
+            return i.id === churchData.value.countryID
+          })
+          console.log(countries.value);
+        }
+        console.log(selectCountry.value)
         console.log(churchData);
+        
 
       }catch(error){
         console.log(error)
       }
     }
-     getChurchProfile()
+     
     const uploadData= ref({ });
     const display= ref(false)
+    //formData
+    // let formData = new formData =()=>{
+    //   formData.append("ChurchName", formData.ChurchName.value);
+    //   formData.append("AKA", formData.AKA.value);
+    // }
+    const churchProfile = ()=>{
+      let formData = new FormData()
+      formData.append("ChurchName", churchData.value.churchName );
+      formData.append("AKA", churchData.value.aka );      
+      formData.append("Address", churchData.value.address );      
+      formData.append("PhoneNumber", churchData.value.phoneNumber );      
+      formData.append("CountryID", selectCountry.value.id );      
+      formData.append("TimeZone", selectTime.value );      
+      formData.append("WebsiteUrl", churchData.value.websiteUrl );      
+      formData.append("HeadPastorName", churchData.value.headPastorName );      
+      formData.append("HeadPastorEmail", churchData.value.headPastorEmail );      
+      formData.append("HeadPastorPhone", churchData.value.headPastorPhone );      
+      formData.append("ChurchLogo", image ); 
+
+      axios.put('/api/Settings/ChurchProfileSettings',formData)
+      .then(res =>{
+        console.log(res);
+
+
+      }).catch(error =>{
+        console.log(error);
+
+      })     
+
+    }
     //  const uploadChurchDetail =() =>{
     //    const churchDetail = new churchDetail()
     //    console.log();
@@ -312,6 +349,7 @@ export default {
       // uploadChurchDetail,
       uploadData,
       display,
+      churchProfile,
       a,
       b
   
