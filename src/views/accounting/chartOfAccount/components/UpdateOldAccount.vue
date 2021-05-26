@@ -46,7 +46,7 @@
                   </div>
                 </div>
 
-                <div class="row my-3" v-if="account.accountType !== 4">
+                <!-- <div class="row my-3" v-if="account.accountType !== 4">
                   <div class="col-md-4 text-md-right">Account ID</div>
                   <div class="col-md-7">
                     <input
@@ -55,7 +55,7 @@
                       class="form-control"
                     />
                   </div>
-                </div>
+                </div> -->
 
                 <div class="row my-3" v-if="account.accountType === 2 || account.accountType === 3">
                   <div class="col-md-4 text-md-right">Fund</div>

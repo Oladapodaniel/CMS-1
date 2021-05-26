@@ -10,7 +10,7 @@
       </div>
 </div>
   <div class="wrapper">
-    <div class="chart-div" :id="domId" style="height: 530px" ref="chartDiv"></div>
+    <div :class="{ 'chart-div' : !chartClass }" :id="domId" style="height: 530px" ref="chartDiv"></div>
   </div>
 </template>
 
@@ -20,14 +20,21 @@ import Highcharts from "highcharts";
 export default {
   components: {},
 
-  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries" ],
+  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries", "chartClass" ],
   
   setup(props) {
     const chart = ref(null);
     const headerText = ref(null);
+    
 
     onMounted(() => {
         headerText.value = props.header;
+        
+        // if (props.chartClass) {
+        //   console.log(props.chartClass)
+        // } else {
+        //   console.log("It is Undefined")
+        // }
 
       var highchartsOptions = {
         chart: {
@@ -55,7 +62,7 @@ export default {
         xAxis: {
           allowDecimals: false,
           title: {
-            text: props.series[0] == 1 ? "Weekly" : "Monthly",
+            text: props && props.series ? props.series[0] == 1 ? "Weekly" : "Monthly" : "No series",
           },
           categories: props.series
         },
@@ -119,7 +126,7 @@ export default {
 
     return {
       chart,
-      headerText,
+      headerText
     }
   },
 };

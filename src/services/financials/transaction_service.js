@@ -215,9 +215,43 @@ const saveJournalTransaction = (body) => {
     })
 }
 
+const deleteTransaction = (id) => {
+    return new Promise((resolve, reject) => {
+        axios.delete(`/api/Financials/Accounts/Transactions/Delete?id=${id}`)
+            .then(res => {
+                resolve(res);
+            })
+            .catch(err => {
+                if (err.response) {
+                    reject(err.response);
+                } else {
+                    reject(err)
+                }
+            })
+    })
+}
+
+const getEditTransactions = (ref) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/Financials/Accounts/GetEditFinancialTransaction?transactionNumber=${ref}`)
+            .then(res => {
+                resolve(res);
+            })
+            .catch(err => {
+                if (err.response) {
+                    reject(err.response);
+                } else {
+                    reject(err)
+                }
+            })
+    })
+}
+
 
 
 
 export default { getTransactionalAccounts, testPoint, getTransactions, getCashAndBank, saveAccount, getIncomeAccounts, getExpenseAccounts, saveExpense, saveIncome, getCurrencies, getAccountHeads, getCashAndBankAccountBalances,
-    saveJournalTransaction
+    saveJournalTransaction,
+    deleteTransaction,
+    getEditTransactions
 };

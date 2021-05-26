@@ -42,17 +42,19 @@
               </div>
             </div> -->
           </div>
-          <div class="col-md-1 col-2">
-            <!-- <img
-              class="imgee"
-              src="../../assets/best-Copy.jpg"
-              alt=""
-              srcset=""
-            /> -->
-          </div>
+  
           <div class="col-md-1 col-2">
             <i
-              @click="downloadPDF"
+              @click="printJS({ 
+                  ignoreElements: ['ignore1', 'ignore2'], 
+                  maxWidth: 867, 
+                  header: 'YOUR TRANSACTIONS', 
+                  printable: printTransactions, 
+                  properties: ['MEMO', 'DATE','PAYMENTGATEWAY', 'AMOUNT'], 
+                  type: 'json', 
+                  headerStyle: 'font-family: Nunito Sans, Calibri; text-align: center;', 
+                  gridHeaderStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;', 
+                  gridStyle: 'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300' })"
               class="pi pi-download bell-shadow bell p-3 d-flex justify-content-center align-items-center"
             ></i>
           </div>
@@ -94,7 +96,7 @@
             <label for="timestamp">Sort by Newest</label>
           </div>
         </div>
-        <div v-if="displayMessage" class="text-danger">You have not made anay transactions</div>
+        <div v-if="!displayMessage" class="text-danger">You have not made any transactions</div>
         <div v-else>
         <div
           ref="downloadArea"
@@ -175,13 +177,12 @@
 </template>
 
 <script>
-import jsPDF from "jspdf";
-import autoTable from 'jspdf-autotable'
 import { computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
 // import { useRoute } from "vue-router"
 import finish from "../../services/progressbar/progress";
+import printJS from 'print-js'
 export default {
   setup() {
     // const date = ref(new Date().toISOString().substr(0, 10));
@@ -242,18 +243,6 @@ export default {
     };
     getPaymentDetails();
 
-    const downloadPDF = () => {
-      let doc = new jsPDF();
-      // const html = this.$refs.content.innerHTML;
-      const html = downloadArea.value.innerText;
-      console.log(html);
-      doc.text("Contribution List Report", 10, 10)
-      doc.line(0, 15, 400, 15);
-       doc.text(html, 20, 20)
-      doc.save("ContributionDetails.pdf");
-      doc.autoTable(html)
-    };
-
     const searchRange = () => {
       let tenantId = localStorage.getItem("tenantId");
       let initialData = {
@@ -279,6 +268,18 @@ export default {
         });
     }
 
+    const printTransactions = computed(() => {
+      if (userTransaction.value.length === 0) return []
+      return userTransaction.value.map(i => {
+        return {
+          MEMO: i.memo,
+          DATE: i.date,
+          PAYMENTGATEWAY: i.paymentGatewayName,
+          AMOUNT: i.amount,
+        }
+      })
+    })
+
 
 
     return {
@@ -289,12 +290,11 @@ export default {
       loading,
       userInputs,
       searchInputs,
-      downloadPDF,
-      jsPDF,
-      autoTable,
       downloadArea,
       searchRange,
-      displayMessage
+      displayMessage,
+      printJS,
+      printTransactions
     };
   },
 };

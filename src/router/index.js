@@ -84,6 +84,12 @@ const routes = [{
                     import ( /* webpackChunkName: "dashboard" */ '../views/dashboard/ChurchDashboard.vue')
             },
             {
+                path: 'subscription',
+                name: 'Subscription',
+                component: () =>
+                    import ( /* webpackChunkName: "dashboard" */ '../views/dashboard/Subscription.vue')
+            },
+            {
                 path: 'people',
                 component: () =>
                     import ( /* webpackChunkName: "people" */ '../views/people/People.vue'),
@@ -609,19 +615,19 @@ const routes = [{
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/Offering')
             },
             {
-                path: 'offeringcategory',
+                path: 'offeringcategory/:offId?',
                 name: 'OfferingCategory',
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/SelectOffCat')
             },
             {
-                path: 'addoffering',
+                path: 'addoffering/:offId?',
                 name: 'AddOffering',
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/AddOffering')
             },
             {
-                path: 'offeringreport/:report',
+                path: 'offeringreport',
                 name: 'OfferingReport',
                 component: () =>
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
