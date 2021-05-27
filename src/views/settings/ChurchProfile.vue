@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="onSubmit">
+  <form @submit.prevent="churchProfile">
     <div class="container my-content">
       <div class="row page-header">
         <div class="col-12">
@@ -197,7 +197,7 @@
               <label class="small-text" for=""></label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <button class="primary-btn text-white px-4" @click="churchProfile">Save</button>
+              <button class="primary-btn text-white px-4">Save</button>
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -205,6 +205,7 @@
       </div>
     </div>
   </form>
+  <Toast />
 </template>
 
 <script>
@@ -212,9 +213,11 @@ import axios from "@/gateway/backendapi";
 import store from "@/store/store";
 import Dropdown from "primevue/dropdown";
 import { onMounted, ref} from 'vue';
+import { useToast } from "primevue/usetoast";
 export default {
   components: { Dropdown },
   setup() {
+    const toast = useToast()
     const churchData =ref({});
     let url = ref("");
     let a= ref("");
@@ -288,12 +291,18 @@ export default {
       axios.put('/api/Settings/ChurchProfileSettings',formData)
       .then(res =>{
         console.log(res);
-
+        toast.add({
+              severity: "success",
+              summary: "Successful",
+              detail: `${res.data.response}`,
+              life: 4000,
+            });
 
       }).catch(error =>{
         console.log(error);
 
       })     
+      console.log('log')
 
     }
     //  const uploadChurchDetail =() =>{
