@@ -149,8 +149,17 @@ export default {
   },
   computed:{
     churchProfile(){
-      if(!this.getCurrentUser.churchName) return "";
-      return this.getCurrentUser.churchName
+      if(this.getCurrentUser && this.getCurrentUser.churchName) return this.getCurrentUser.churchName;
+      let churchName;
+          axios.get("/api/Membership/GetCurrentSignedInUser")
+            .then(res => {
+              churchName = res.data.churchName
+            })
+       .catch ((err) => {
+         console.log(err)
+       })
+       return churchName
+                
     }
 
   },
@@ -216,23 +225,25 @@ export default {
                 }
             });
         },
+        async currentUser () {
+          if(!store.getters.currentUser){
+             try{
+                const { data } = await axios.get('/api/Membership/GetCurrentSignedInUser')
+                this.getCurrentUser = data;
+                console.log(this.getCurrentUser)
+              }catch(error){
+                console.log(error)
+              }    
+            } else {
+                this.getCurrentUser = store.getters.currentUser
+                console.log(this.getCurrentUser)
+            }
+        }
 
-  },
-  mounted(){
-    console.log(store.getters.currentUser)
-    if(!store.getters.currentUser.churchName){
-      axios
-      .get(`/api/Membership/GetCurrentSignedInUser`)
-      .then((response)=>{
-        this.getCurrentUser = response.data;
-      console.log(response.data)
-      })
-      .catch((error)=>console.log(error))
-    }
-  },
- 
+  }, 
   created() {
     this.churchUser()
+    this.currentUser()
   },
 };
 </script>
