@@ -14,14 +14,15 @@
                   class="w-100"
                 />
               </div>
-              <div class="col-12 w-100">
+              <div class="col-12 w-100"> 
                  <h2 class="font-weight-bold py-3 mb-3">
-                     NGN {{ chartData ? chartData.income : 0.0 }}
+                     NGN {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
                  </h2>
               </div>
            
           </div>
-          <div class="col-12 col-md-4" v-if="pieChart.length > 0">
+          <!-- {{ pieChart }} -->
+          <div class="col-12 col-md-4">
             <ContributionPieChart
               domId="chart"
               title="Analytics"
@@ -29,9 +30,6 @@
               :titleMargin="10"
               :summary="pieChart"
             />
-          </div>
-          <div class="col-12 col-md-4 text-primary" v-else>
-            You currently have no data for {{ selectedPeriod.name.toLowerCase() }}.
           </div>
           <div class="col-12 col-md-4 " >
             <!-- <div v-if="attendanceBoolean"> -->
@@ -196,10 +194,11 @@
           </div>
         <div class="row" style="margin:0;">
             <div
-              class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
+              class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom  hover"
               v-for="(item, index) in searchContribution"
               :key="item.id"
             >
+            <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
               <div class="row w-100" style="margin:0">
                 <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
                   <input
@@ -263,11 +262,11 @@
                       View Report
                       </a>
                       </router-link>
-                      <!-- <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
+                      <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
                         <a class="dropdown-item elipsis-items">
                       Edit
                       </a>
-                      </router-link> -->
+                      </router-link>
                       <a
                         class="dropdown-item elipsis-items cursor-pointer"
                         @click="showConfirmModal(item.id, index)"
@@ -278,6 +277,7 @@
                   </div>
                 </div>
               </div>
+              </router-link>
             </div>
           </div>
           <!-- <div class="row">
@@ -410,6 +410,7 @@ import Dropdown from "primevue/dropdown";
 // import ContributionColumnChart from "../../../components/charts/ColumnChart.vue";
 import ContributionPieChart from "../../../components/charts/PieChart.vue";
 import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
+import numbers_formatter from '../../../services/numbers/numbers_formatter';
 export default {
   props: ["contributionTransactions", "totalItem"],
   components: {
@@ -783,6 +784,10 @@ export default {
       if(selectedPeriod.value.name === "Last 90days") return [1, 2, 3, 4, 5, 6, 7]
       if(selectedPeriod.value.name === "One Year") return [1, 2, 3, 4, 5, 6, 7]
     })
+
+    const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount)
+
+
     return {
       // contributionTransactions,
       deleteOffering,
@@ -816,7 +821,8 @@ export default {
       series,
       attendanceSeries,
       pieChart,
-      LineGraphXAxis
+      LineGraphXAxis,
+      amountWithCommas
     };
   },
 };
@@ -1158,5 +1164,9 @@ export default {
 .desc {
   color: #9b9a9c;
   /* opacity: 0.7; */
+}
+
+.hover:hover {
+  background: #eee
 }
 </style>

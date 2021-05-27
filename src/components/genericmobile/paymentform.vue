@@ -1,22 +1,6 @@
 <template>
-    <div class="container-wide container-top">
-        <div class="row">
-            <div class="col-12  d-flex justify-content-between">
-                <div class="page-header">{{ header ? header : "Payment Form" }}</div>
-                <div v-if="!loadingEdit">
-                   <ToggleButton @is-active="active" :active="isActive"/>
-                </div>
-                <div v-else-if="!routeParams">
-                   <ToggleButton @is-active="active" :active="isActive"/>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-md-12">
-                    <hr class="mt-4"/>
-                </div>
-        </div>
-        <form class="form">
+    <div class="container-wide">
+        <form class="form  px-0 pt-2">
             <div class="row">
 
             <div class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
@@ -145,10 +129,10 @@
                 </div>
                 <div class="col-2 d-none d-sm-block"></div>
 
-                <div class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
+                <div v-if="accountName" class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
                     <div>Account Name</div>
                 </div>
-                <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
+                <div v-if="accountName" class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
                     <input type="text" v-model="accountName" placeholder="Account name" ref="accNameRef" class="form-control h-100" />
                     <div class="mt-1">
                         <em class="mt-1">This will automatically come up, kindly confirm before clicking on save.</em>
@@ -161,29 +145,23 @@
                     </div>
                 </div>
 
-                <div class="col-10 col-md-12 mt-5">
-                    <hr class="mt-4"/>
+                <div class="col-10 col-md-12 mt-5 d-flex align-items-center c-pointer" @click="showPaymentSection">
+                    <p class="mb-0" style="width:100px">Payment</p><hr class="mt-4" style="width: calc(100% - 80px)"/><span><i class="pi pi-angle-down"></i></span>
                 </div>
-                <div class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right mb-3 mb-md-0">
-                    <div>Select Payment Gateway</div>
+
+
+
+                <!-- <div class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
+                    <div>Payment Gateway</div>
+                </div> -->
+                <div class="d-flex justify-content-center   col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;" v-if="paymentGatewayNeeded.name" :class="{ 'payment-section': paymentSectionIsShown, 'payment-section-hidden': !paymentSectionIsShown }">
+                    <input type="checkbox" class="px-2" checked  >
+                        <h6 class="px-2">{{ paymentGatewayNeeded.name }}</h6>
                 </div>
-                <div class=" col-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 align-self-center">
-                  <div class="row">
-                      <div class="col-sm-4 d-flex" v-for="(item, index) in gateways" :key="item.id">
-                        <i class=" mr-2 check-box" @click="toggleCheckBox(item, index)">
-                           <img v-if="item.isChecked" src="../../assets/check.png" class="child w-100">
-                        </i>
-                        <h6>{{ item.name }}</h6>
-                      </div>
-                  </div>
-                </div>
+
+
             </div>
 
-            <div class="row" v-if="false">
-                <div class="col-10 col-md-12 mt-2">
-                    <hr class="mt-1"/>
-                </div>
-            </div>
         <div class="row" v-if="false">
             <div class="col-10 col-md-12 mt-4">
                     <div class="d-flex">
@@ -229,11 +207,11 @@
                     </div>
                 </div>
         </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-10 col-md-12 mt-2">
                     <hr class="mt-1"/>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row">
 
@@ -257,19 +235,6 @@
             <!-- <div class="col-12 col-sm-10 offset-sm-1 col-md-5 offset-md-4 mt-5">
                     <img src="../../assets/payment-options.png" class="w-100" style="opacity: 0.9">
             </div> -->
-            <div class="col-12 col-sm-10 col-md-6 col-lg-5 offset-sm-1 offset-md-3 offset-lg-4 pl-0 mt-5">
-                    <div class="row">
-                        <div class="col-4">
-                            <img src="../../assets/paystack.png" class="w-100">
-                        </div>
-                        <div class="col-5 pr-0">
-                            <img src="../../assets/flutterwave.png" class="w-100">
-                        </div>
-                        <div class="col-3 pl-0 text-right">
-                            <img src="../../assets/paypal.png" class="w-50">
-                        </div>
-                    </div>
-            </div>
             </div>
         </form>
         <ConfirmDialog />
@@ -291,13 +256,13 @@ import { useRoute } from "vue-router"
 import { useToast } from "primevue/usetoast";
 import store from '../../store/store';
 import ContributionItems from "@/components/firsttimer/contributionItemModal"
-import ImageModal from './ImageModal'
-import ToggleButton from './toggleButton'
+import ImageModal from '../../views/donation/ImageModal'
+// import ToggleButton from  '../../views/donation/toggleButton'
 import { useConfirm } from "primevue/useConfirm";
 
 export default {
     components: {
-        Dropdown, ContributionItems, ImageModal, ToggleButton
+        Dropdown, ContributionItems, ImageModal
     },
     props: [ "header"],
     directives: {
@@ -331,6 +296,11 @@ export default {
         const routeParams = ref(route.params.editPayment)
         const theContributionItems = ref([])
         const templateDisplay = ref(false)
+        const paymentSectionIsShown = ref(false)
+
+        const showPaymentSection = () => {
+            paymentSectionIsShown.value = !paymentSectionIsShown.value;
+        }
 
 
         const addContribution = () => {
@@ -414,6 +384,7 @@ export default {
         }
         getBanks()
 
+const paymentGatewayNeeded = ref({});
         const getGateWays = () => {
             // if (!route.params.editPayment) {
                 axios.get('/api/Financials/GetPaymentGateways')
@@ -429,6 +400,9 @@ export default {
                             isChecked: false
                         }
                     })
+                     paymentGatewayNeeded.value = paymentGateWaysDb.value.find((i) =>  i.name === "Paystack");
+                       console.log(paymentGatewayNeeded.value, "God is Good");
+                     console.log(paymentGateWaysDb.value);
                 // nigerianBanks.value = res.data.data
                 finish()
                 })
@@ -579,7 +553,7 @@ export default {
                 let { data } = await axio.get(`https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`, header)
                 console.log(data)
                 accountName.value = data.data.account_name
-                accNameRef.value.focus()
+                // accNameRef.value.focus()
                 disabled.value = false
 
                 loading.value = false
@@ -634,19 +608,15 @@ export default {
                     let id = i.financialContribution.id;
                     return { financialContributionID: id }
                 }),
-                 paymentGateWays: paymentGateWays.value.map(i => {
-                     return { paymentGateWayID: i.id }
-                 })
+                 paymentGateWays: [
+                     { paymentGateWayID: paymentGatewayNeeded.value.id }
+                 ]
             }
-            emit('form-details', paymentForm)
+
             console.log(newContribution.value.payments)
 
             console.log(paymentForm)
-                console.log(route.fullPath)
-                if (route.fullPath === "/donationsetup") {
-                        console.log('PaymentCreated')
-                        emit('payment-form', true)
-                    }
+
 
             if (!route.params.editPayment) {
 
@@ -655,15 +625,11 @@ export default {
                     console.log(res)
                     loadingSave.value = false
                     // toast.add({severity:'success', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
-                    store.dispatch('contributions/paymentData', res.data)
+                    // store.dispatch('contributions/paymentData', res.data)
 
-
-                    if (route.fullPath === "/tenant/payments") {
-                        router.push({ name: 'PaymentOption', params: { paymentId: res.data.result.id } })
-                    } else if (route.fullPath === "/donationsetup") {
-                        router.push({ name: 'OnboardingSuccessful' })
-                    }
                     finish()
+                    paymentForm.bank = selectedBank.value.name;
+                    emit('form-created', paymentForm)
                 }
                 catch (err) {
                     finish()
@@ -775,8 +741,6 @@ export default {
             const x = paymentGateWaysDb.value.filter(i => {
                 const index = paymentGateWays.value.findIndex(j => j.id === i.id);
                 if (index >= 0) {
-                    // alert(j)
-                    // console.log(i)
                     i.isChecked = true;
                 }
 
@@ -842,13 +806,25 @@ export default {
             toggleThirdTemplate, sourceModal, togglePopup, booleanModal, closeModal,
             paymentGateWaysDb, paymentGateWays, toggleCheckBox, gateways, removeContributionIDs,
             removePaymentGatewayIDs, isActive, active, routeParams, theContributionItems,
-            templateDisplay, toggleTemplate, showConfirmModal
+            templateDisplay, toggleTemplate, showConfirmModal,paymentGatewayNeeded, showPaymentSection, paymentSectionIsShown
         }
     }
 }
 </script>
 
 <style scoped>
+.payment-section-hidden {
+    transition: all .8s ease-in-out;
+    height: 0 !important;
+    overflow: hidden !important;
+}
+
+.payment-section {
+    transition: all .8s ease-in-out;
+    height: 25px !important;
+    overflow:hidden !important;
+}
+
 .form {
   padding: 25px;
 }
