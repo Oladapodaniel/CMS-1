@@ -222,7 +222,7 @@
                       <p class="mb-0 d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Category</span>
                         <span><span class="primary-text c-pointer"
-                        >Choose a category</span
+                        >{{ item.category }}</span
                       ></span>
                       </p>
                     </div>
@@ -304,7 +304,7 @@ export default {
     const confirm = useConfirm();
     const toast = useToast();
     const transactions = ref([]);
-    const types = ["assets", "liability", "income", "expense", "equity"];
+    // const types = ["assets", "liability", "income", "expense", "equity"];
     const cashAndBank = ref([
       {
         name: {
@@ -483,15 +483,16 @@ export default {
     const selectedTransactions = computed(() => {
       if (!allTransactions.value || allTransactions.value.length === 0)
         return [];
-      const targeted = allTransactions.value.filter(
-        (i) =>
-          i.accountType.toLowerCase() ===
-          types[
-            props.selectedTransactionType > 0
-              ? props.selectedTransactionType
-              : 0
-          ]
-      );
+      const targeted = allTransactions.value;
+      // const targeted = allTransactions.value.filter(
+      //   (i) =>
+      //     i.accountType.toLowerCase() ===
+      //     types[
+      //       props.selectedTransactionType > 0
+      //         ? props.selectedTransactionType
+      //         : 0
+      //     ]
+      // );
       if (!searchText.value) return targeted;
       return targeted.filter((i) => {
         return (
@@ -523,10 +524,32 @@ export default {
       }
     };
 
+    // watch(
+    //   () => props.transactionDetails,
+    //   (data) => {
+    //     console.log(data, "in watch");
+    //     getGroupedTransactions(data)
+    //   }
+    // );
+
+    const getGroupedTransactions = async accountGroupId => {
+      try {
+        refreshing.value = true;
+        const { data } = await transaction_service.getTransactionsByAccount(accountGroupId);
+        refreshing.value = false;
+        allTransactions.value = data;
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+        refreshing.value = false;
+      }
+    }
+
     watch(
-      () => props.transactionDetails,
+      () => props.selectedTransactionType,
       (data) => {
-        console.log(data, "in watch");
+        if (data) getGroupedTransactions(data);
+        if (!data) getTransactions();
       }
     );
 
@@ -544,6 +567,7 @@ export default {
         if (response.data.status) {
           allTransactions.value.splice(index, 1);
           refreshing.value = true;
+          emit("reload-accounts")
           getTransactions();
           toast.add({
             severity: "success",

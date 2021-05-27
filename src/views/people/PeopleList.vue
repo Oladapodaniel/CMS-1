@@ -95,7 +95,7 @@
     <!-- group box area -->
 
     <div class="table mx-0" :class="{ 'mt-0': marked.length > 0 }">
-      <div class="table-top mb-3">
+      <div class="table-top ">
         <div class="select-all">
           <input
             type="checkbox"
@@ -123,12 +123,12 @@
           ></i>
         </div>
         <div class="filter">
-          <p @click="toggleFilterFormVissibility" class="mt-2">
+          <p @click="toggleFilterFormVissibility" class="">
             <i class="fas fa-filter"></i>
             FILTER
           </p>
         </div>
-        <p @click="toggleSearch" class="search-text mt-2">
+        <p @click="toggleSearch" class="search-text ">
           <i class="fa fa-search"></i> SEARCH
         </p>
         <div class="search d-flex">
@@ -220,20 +220,21 @@
       </div>
       <div class="table-header font-weight-700">
         <div class="check"></div>
-        <div class="picture">
-          <p>PICTURE</p>
+        <div class="picture text-dark  small-text text-capitalize  font-weight-bold" style="font-size: 16px">
+          <p>picture</p>
         </div>
-        <div class="firstname">
-          <p>FIRSTNAME</p>
+        <div class="firstname small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+          <p>firstname</p>
         </div>
-        <div class="lastname">
-          <p>LASTNAME</p>
+        <div class="lastname small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+          <p>lastname</p>
         </div>
-        <div class="phone">
-          <p>PHONE</p>
+        <div class="phone small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+          <p>phone</p>
         </div>
-        <div class="action"></div>
-        -
+        <div class="action small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+          <p>action</p> 
+        </div>
       </div>
 
       <div
@@ -262,16 +263,17 @@
                     <img
                       src="../../assets/people/avatar-male.png"
                       alt=""
-                      style="border-radius: 50%"
+                      style="border-radius: 50%; height:26px; width:55%;"
                     />
                   </div>
                   <div v-else-if="person.gender == 'Female'">
-                    <img src="../../assets/people/avatar-female.png" alt="" />
+                    <img src="../../assets/people/avatar-female.png" alt="" style="height:26px; width:55%;"/>
                   </div>
                   <div v-else>
                     <img
                       src="../../assets/people/no-gender-avatar.png"
                       alt=""
+                      style="height:26px; width:55%;"
                     />
                   </div>
                 </div>
@@ -285,7 +287,7 @@
               </div>
               <router-link
                 :to="`/tenant/people/add/${person.id}`"
-                class="data-value itemroute-color"
+                class="data-value small-text text-secondary itemroute-color"
                 >{{ person.firstName }}</router-link
               >
             </div>
@@ -297,25 +299,28 @@
               </div>
               <router-link
                 :to="`/tenant/people/add/${person.id}`"
-                class="data-value itemroute-color"
+                class="data-value small-text text-secondary itemroute-color"
                 >{{ person.lastName }}</router-link
               >
             </div>
           </div>
           <div class="phone data">
-            <div class="data-con">
+            <div class="data-con mr-4">
               <div class="data-text">
                 <p>Phone</p>
               </div>
               <router-link
                 :to="`/tenant/people/add/${person.id}`"
-                class="data-value itemroute-color"
+                class="data-value small-text text-left  text-secondary itemroute-color"
                 >{{ person.mobilePhone }}</router-link
               >
             </div>
           </div>
           <div class="action data action-icon">
-            <div class="dropdown">
+            <div class="data-text">
+                <p>Action</p>
+              </div>
+            <div class="dropdown text-left">
               <i
                 class="fas fa-ellipsis-v cursor-pointer"
                 id="dropdownMenuButton"
@@ -838,6 +843,15 @@ a {
   text-decoration: none;
 }
 
+.picture,
+  .firstname,
+  .lastname,
+  .phone,
+  .action {
+    width: 100%;
+    /* font-size: 20px; */
+  }
+
 .my-con {
   /* display: flex; */
   justify-content: space-between;
@@ -1010,8 +1024,10 @@ a {
   .picture,
   .firstname,
   .lastname,
-  .phone {
+  .phone,
+  .action {
     width: 100%;
+    /* font-size: 20px; */
   }
 
   .table {
@@ -1034,6 +1050,7 @@ a {
   }
 
   .data-con {
+ 
     /* text-align: center; */
     display: flex;
     justify-content: space-between;

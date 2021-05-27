@@ -1,13 +1,13 @@
 <template>
-    <div class="container">
+  <div class="container">
     <div class="row mt-4">
       <div class="col-md-5">
         <h2 class="font-weight-bold page-hder">New Contribution and Report</h2>
       </div>
       <div class="col-md-7 d-sm-flex justify-content-md-end">
-        <!-- <a class="def-btn mr-3 px-md-4 my-sm-1"
+        <a class="def-btn mr-3 px-md-4 my-sm-1"
           >More Actions <i class="fad fa-caret-circle-down"></i
-        ></a> -->
+        ></a>
         <router-link :to="{ name: 'AddOffering', path: '/tenant/addoffering' }">
           <a class="def-btn px-sm-2 px-lg-4 my-sm-1">Create another report</a>
         </router-link>
@@ -116,12 +116,74 @@
                           {{ sendBtnText }}
                         </a>
                       </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div
+                            class="modal fade"
+                            id="sendReport"
+                            tabindex="-1"
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true"
+                            :show="true"
+                          >
+                            <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5
+                                    class="modal-title font-weight-bold"
+                                    id="sendReport"
+                                  >
+                                    Send this report
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div
+                                  class="modal-body pt-0 px-0"
+                                  :data-dismiss="btnState"
+                                >
+                                  <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
+                                  <ReportModal
+                                    :eventName="
+                                      stats.activityToday
+                                        ? stats.activityToday.name
+                                        : ''
+                                    "
+                                    @sendreport="sendReport"
+                                    :stats="stats"
+                                  />
+                                </div>
+                                <!-- <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       <div class="col-6">
                         <a class="def-btn edit-btn">Get share link</a>
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="col-md-6 offset-md-1" style="">
                     <span class="mr-2">or</span>
@@ -196,7 +258,6 @@
         <div
           class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
         >
-      
           <span>
             <span>Total Offering: </span> <br />
             <span class="recieve">{{ contributionReport.tenantCurrency }} {{ contributionReport ? contributionReport.totalToday : 0 }} </span>
@@ -262,10 +323,6 @@
 
       <div class="row mb-3" ref="bottom">
         <div class="col-md-12">
-          
-          
-    
-
           <!-- <div class="row px-5">
           <div class="col-sm-12">
             <div class="row">
@@ -398,7 +455,7 @@
                   <span class="text-style">Total</span>
                 </div>
                 <div class="col-sm-3 total-text">
-                  <span class="text-danger">{{ contributionReport.tenantCurrency }}&nbsp;{{ contributionReport ? contributionReport.totalToday : "" }}</span>
+                  <span class="text-danger">{{ contributionReport.tenantCurrency }}&nbsp;{{ contributionReport ? amountWithCommas(Math.round(contributionReport.totalToday)) : "" }}</span>
                 </div>
               </div>
             </div>
@@ -1466,11 +1523,11 @@
       </div>
       <Toast />
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 // import ReportAreaChart from "@/components/charts/AreaChart.vue";
 // import eventsService from '../../../services/events/eventsservice';
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
@@ -1481,6 +1538,7 @@ import axios from "@/gateway/backendapi";
 // // import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import formatDate from "../../../services/dates/dateformatter"
+import numbers_formatter from '../../../services/numbers/numbers_formatter';
 
 export default {
     components: {
@@ -1663,8 +1721,11 @@ export default {
               markedAsSent.value = "marked as sent"
             }
 
+            const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount)
+
         return {
-            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent, routeActivityId
+            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent, routeActivityId, amountWithCommas
+            
         }
     }
 }
