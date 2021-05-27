@@ -1,13 +1,10 @@
 import axios from "@/gateway/backendapi";
 
 const validateColor = (color) => {
-    alert(color, "in service")
     return new Promise((resolve, reject) => {
-        let url = '/mobile/v1/Profile/CheckColorSaturation?a=' + `${color}2`;
-        alert(url)
+        let url = '/mobile/v1/Profile/CheckColorSaturation?backGroundColor=' + `${color.slice(1, color.length)}`;
         axios.get(url)
             .then(res => {
-                alert(`${color} ${2}`)
                 resolve(res.data);
             })
             .catch(error => {

@@ -4,81 +4,78 @@
     <div class="row">
       <div class="col-md-6 mt-5" :class="{ 'slide-right': slide }">
         <div class="row">
-          <div class="col-12">
+          <div class="col-md-7">
             <h2 class="events">Online Donation</h2>
             <p>Enter bank details to set up online donation</p>
           </div>
-        </div>
-
-
-          <table class="table table-border">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col-3">Name</th>
-      <th scope="col-3">Bank</th>
-      <th scope="col-3">Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Building Project</td>
-      <td>Benovalence</td>
-      <td>Offerings</td>
-    </tr>
-    <tr>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-          </table>
-
-
-<div class="container">
-  <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-     <DonationSetup  @payment-form="formCreated"/>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
-
-        <!-- <div class="container">
-          <div class="row table-header space-between">
-            <div class="col-sm-3 d-none d-sm-block">NAME</div>
-            <div class="col-sm-3 d-none d-sm-block">BANK</div>
-            <div class="col-sm-3 d-none d-sm-block">AMOUNT</div>
-            <div class="col-sm-3 d-none d-sm-block">DATE</div>
+          <div class="col-md-5">
+            <button
+              class="default-btn primary-bg border-0 font-weight-700 text-white" data-toggle="modal" data-target="#paymentModal"
+              style="font-size:13px"
+            >
+              Add Payment Form
+            </button>
           </div>
         </div>
 
+        <table class="table table-border">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col-3">Name</th>
+              <th scope="col-3">Bank</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(form, index) in formsArr" :key="index">
+              <td>{{ form.name }}</td>
+              <td>{{ form.bank }}</td>
+            </tr>
+          </tbody>
+        </table>
 
-        <div class="container">
-          <div class="col-6 d-block d-sm-none">
-            <div class="col-sm-3">NAME</div>
-            <div class="col-sm-2">BANK</div>
-            <div class="col-sm-2">AMOUNT</div>
-            <div class="col-sm-2">DATE</div>
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="paymentModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg" style="max-width: 600px;">
+              <div class="modal-content">
+                <div class="modal-header pb-0">
+                  <h5 class="modal-title" style="font: normal normal 800 28px Nunito sans;" id="exampleModalLabel">
+                  Online Donation
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close border-0"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    ref="closeModalButton"
+                  >X</button>
+                </div>
+                <div class="modal-body pt-0">
+                  <paymentform @form-created="formCreated" />
+                </div>
+                <!-- <div class="modal-footer">
+                   <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button type="button" class="btn-primary default-btn primary-bg border-0 font-weight-700 text-white">
+                    Save
+                  </button>
+                </div> -->
+              </div>
+            </div>
           </div>
-        </div> -->
+
+
 
         <!-- <div class="row mt-4">
           <div class="offset-1 offset-md-0 col-10">Choose Bank</div>
@@ -95,7 +92,7 @@
             </Dropdown>
           </div>
         </div> -->
-<!--
+        <!--
         <div class="row mt-4">
           <div class="offset-1 offset-md-0 col-10">Enter account number</div>
           <div class="offset-1 offset-md-0 col-10">
@@ -142,7 +139,7 @@
             class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0"
             @click="completeSetUp"
           >
-            Save and continue
+             continue
           </div>
         </div>
       </div>
@@ -156,10 +153,10 @@
           <div class="col-md-12 text-center my-5 step">STEP 4 of 4</div>
         </div>
         <div class="image-dis">
-          <img
+          <!-- <img
             src="../../../assets/mobileonboarding/church1.svg"
             style="height: 40%; width: 40%"
-          />
+          /> -->
         </div>
       </div>
     </div>
@@ -170,15 +167,16 @@
 import axios from "@/gateway/backendapi";
 // import Dropdown from "primevue/dropdown";
 import { ref } from "vue";
-// import router from "../../../router";
+import router from "../../../router";
 import finish from "../../../services/progressbar/progress";
 import { useToast } from "primevue/usetoast";
 import axio from "axios";
 import store from "../../../store/store";
-import DonationSetup from "../../donation/PaymentTransaction"
+import paymentform from "../../../components/genericmobile/paymentform";
 export default {
   components: {
-    DonationSetup
+    paymentform
+    // DonationSetup,
     // Dropdown,
   },
   setup() {
@@ -226,6 +224,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+        setTimeout(() => {
+ router.push({ name:'OnboardingSuccessful'});
+        }, 4000)
     };
 
     const getBanks = () => {
@@ -261,27 +262,21 @@ export default {
 
         loading.value = false;
 
-        toast.add({
-          severity: "success",
-          summary: "Account Check Successful",
-          detail: "The account check was successful",
-          life: 3000,
-        });
       } catch (error) {
         finish();
         console.log(error);
-
         loading.value = false;
-
-        toast.add({
-          severity: "error",
-          summary: "Account Check Error",
-          detail: "Please check your banks details again",
-          life: 3000,
-        });
       }
       console.log(selectedBank.value.code, accountNumber.value);
     };
+
+    const closeModalButton = ref(null);
+    const formsArr = ref([ ]);
+    const formCreated = data => {
+      closeModalButton.value.click();
+      console.log(data)
+      formsArr.value.push({ name: data.name, accountName: data.accountName, bank: data.bank });
+    }
 
     return {
       nigerianBanks,
@@ -294,26 +289,28 @@ export default {
       loading,
       accNameRef,
       banks,
+      formCreated,
+      closeModalButton,
+      formsArr,
     };
   },
 };
 </script>
 <style scoped>
-
 .table-header1 {
-    background: #f1f3f9;
-    color: #8898aa;
-    font-size: 11px;
-    text-align: left;
-    box-shadow: 0px 3px 6px #2c28281c;
-    width: 25vw;
-    padding: .5rem 0;
-    max-width : 0;
-  }
+  background: #f1f3f9;
+  color: #8898aa;
+  font-size: 11px;
+  text-align: left;
+  box-shadow: 0px 3px 6px #2c28281c;
+  width: 25vw;
+  padding: 0.5rem 0;
+  max-width: 0;
+}
 
-  .table-border{
-    border-radius: 0;
-  }
+.table-border {
+  border-radius: 0;
+}
 
 .setup {
   color: #031c39;
@@ -336,10 +333,13 @@ export default {
   height: 25px;
   line-height: 10px;
 }
+
 .bg-image {
-  background: transparent linear-gradient(180deg, #2e67ce 0%, #690c7f 100%) 0%
-    0% no-repeat padding-box;
-  height: 133vh;
+  background-image: url("../../../assets/mobileonboarding/onlineDonation.svg");
+  background-repeat: no-repeat, repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
 }
 .image-dis {
   display: flex;

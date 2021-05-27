@@ -125,7 +125,7 @@
           <div class="col-2"></div>
  </div> -->
         <div
-          class="col-10 offset-1 offset-md-0 btn primary-bg ml-2 mt-5 text-white default-btn border-0"
+          class="col-10 offset-1 offset-md-0 btn primary-bg ml-2 mt-5 text-white default-btn border-0 w-100"
           @click="saveSocialMedia"
         >
           Save and continue
@@ -141,7 +141,7 @@
       </div>
     </div>
   </div>
-
+ <Toast />
   <div></div>
 </template>
 
@@ -149,6 +149,8 @@
 import axios from "@/gateway/backendapi";
 import router from "../../../router";
 // import store from '../../../store/store'
+import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../../services/progressbar/progress";
 import { ref } from "vue";
 
 export default {
@@ -166,6 +168,7 @@ export default {
         image: "../../../assets/mobileonboarding/youtube.svg",
       },
     ]);
+    let toast = useToast();
 
     const saveSocialMedia = () => {
       const body = {
@@ -180,9 +183,24 @@ export default {
       axios
         .put(`/mobile/v1/Profile/UpdateSocialMedia`, body)
         .then((res) => {
+          if(res){
+           toast.add({
+              severity: "success",
+              summary: "Update is Successful",
+              detail: "Social Media Handles successfully Updated",
+              life: 3000,
+            });
+          }
           console.log(res, "🎄🎄🎄");
         })
         .catch((err) => {
+           stopProgressBar();
+             toast.add({
+              severity: "error",
+              summary: "Social Media Handles",
+              detail: "Already Exist",
+              life: 3000,
+            });
           console.log(err);
         });
 

@@ -106,12 +106,16 @@
                   </label>
                 </div>
               </div>
-              <img
+               <div class="row d-flex justify-content-end">
+               <div class="col-md-4 d-flex justify-content-end">
+                  <img
                 :src="imageURL"
-                alt="FAILED"
+                alt="logo"
                 style="width: 50px; height: 50px"
                 @click="clickInput"
               />
+               </div>
+             </div>
               <LoadingComponent :loading="loading" style="fontsize: 1rem" />
 
               <div class="col-md-3 col-12 col-sm-0"></div>
@@ -389,20 +393,13 @@ export default {
 
     const loading = ref(false);
     const saveAppBranding = (e) => {
-      // let x = e.target.value;
-      // console.log(colorPicked.value);
       loading.value = true;
-      // axios
-      //   .get(
-      //     `/mobile/v1/Profile/CheckColorSaturation?backGroundColor=` + x.toString()
-      //   )
       mobile_service.validateColor(e.target.value)
         .then((res) => {
           console.log(res, "🎄🎄🎄");
-          res.data = colorValid.value;
+           colorValid.value = res.data ;
           loading.value = false;
-          // console.log(colorValid.value);
-          if (res.data) {
+          if (res) {
             toast.add({
               severity: "success",
               summary: "Color Matched",
@@ -419,6 +416,12 @@ export default {
           }
         })
         .catch((err) => {
+           toast.add({
+              severity: "error",
+              summary: "Validation Failed",
+              detail: "Color could not be validated",
+              life: 3000,
+            });
           console.log(err);
           loading.value = false;
         });
