@@ -215,18 +215,18 @@
                               v-model="pastorDetails.pastorsName"
                             />
                           </div>
-                          <div class="form-group">
+                          <!-- <div class="form-group"> -->
                             <!-- <label for="recipient-email" class="col-form-label"
                           ></label
                         > -->
-                            <input
+                            <!-- <input
                               type="email"
                               class="form-control"
                               id="recipient-email"
                               placeholder="Email"
                               v-model="pastorDetails.pastorsEmail"
-                            />
-                          </div>
+                            /> -->
+                          <!-- </div> -->
                           <div class="form-group">
                             <!-- <label for="message-text" class="col-form-label"
                           ></label
@@ -392,7 +392,7 @@ export default {
         };
       });
 
-      router.push({ name: "SocialMedia" });
+
       const formData = new FormData();
       formData.append("churchName", churchName.value);
       console.log(churchName.value);
@@ -430,6 +430,10 @@ export default {
         });
         console.log(error);
       }
+
+      setTimeout(() => {
+        router.push({ name: "SocialMedia" });
+      }, 4000)
     };
     const pastorDetails = ref({});
     const pastorsName = ref("");

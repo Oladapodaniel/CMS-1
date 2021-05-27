@@ -88,30 +88,29 @@
                   </div>
                 </div> -->
               <!-- testrun -->
-              <div class="col-12 col-sm-6" id="logoBox">
-                <div class="cs-input border-0 mt-2 ml-4">
+              <div class="col-12 col-sm-6">
+                <!-- <div class="cs-input border-0 mt-2 ml-4">
                   Upload logo
                   <label
                     for="imgUpload"
                     class="choose-file mr-sm-4"
                     :class="{ 'hide-input': imageURL }"
                   >
-                    <input
+                  </label> -->
+                  <input
                       type="file"
-                      class="input file-input"
+                      class=" form-control"
                       id="imgUpload"
                       @change="imageSelected"
-                      :class="{ 'hide-input': imageURL }"
                     />
-                  </label>
-                </div>
+                <!-- </div> -->
               </div>
                <div class="row d-flex justify-content-end">
-               <div class="col-md-4 d-flex justify-content-end">
+               <div class="col-4 mt-3 col-md-12 d-flex justify-content-center">
                   <img
                 :src="imageURL"
-                alt="logo"
-                style="width: 50px; height: 50px"
+
+                style="width: 50%"
                 @click="clickInput"
               />
                </div>
@@ -357,7 +356,7 @@
 </template>
 
 <script>
-import router from "../../../router";
+// import router from "../../../router";
 import { ref, computed } from "vue";
 // import store from "../../../store/store";
 import axios from "@/gateway/backendapi";
@@ -365,6 +364,7 @@ import Tooltip from "primevue/tooltip";
 import LoadingComponent from "../../../components/loading/LoadingComponent";
 import { useToast } from "primevue/usetoast";
 import mobile_service from "../../../services/mobile/mobile-service"
+import { useRouter } from "vue-router"
 
 // import {ref} from 'vue'
 export default {
@@ -380,6 +380,7 @@ export default {
     const colorPicked = ref("");
     const colorValid = ref("");
     const toast = useToast();
+     const router = useRouter()
 
     const changeColors = computed(() => {
       console.log(colorPicked);
@@ -392,34 +393,30 @@ export default {
     };
 
     const loading = ref(false);
-    const saveAppBranding = (e) => {
+    const saveAppBranding = () => {
       loading.value = true;
-      mobile_service.validateColor(e.target.value)
+      let stringedColor = `${colorPicked.value}`
+      mobile_service.validateColor(stringedColor)
         .then((res) => {
           console.log(res, "🎄🎄🎄");
            colorValid.value = res.data ;
           loading.value = false;
-          if (res) {
+
             toast.add({
               severity: "success",
               summary: "Color Matched",
               detail: "Color Matched successfully",
               life: 3000,
             });
-          } else {
-            toast.add({
-              severity: "error",
-              summary: "Color not matched",
-              detail: "Choose darker shade of the color",
-              life: 3000,
-            });
-          }
+
+
+
         })
         .catch((err) => {
-           toast.add({
-              severity: "error",
-              summary: "Validation Failed",
-              detail: "Color could not be validated",
+               toast.add({
+              severity: "info",
+              summary: "",
+              detail: "Choose darker shade of the color",
               life: 3000,
             });
           console.log(err);
@@ -430,12 +427,13 @@ export default {
  const saveAppDetails = () => {
         const formData = new FormData();
         formData.append("Logo", image.value);
-        formData.append("BackgroundColor", colorValid.value);
-              router.push({ name: "DonationSetup" });
+        formData.append("BackgroundColor", colorPicked.value);
+
         axios
           .put(`/mobile/v1/Profile/CustomizeApp`, formData)
           .then((res) => {
             console.log(res);
+            router.push({ name: "DonationSetup" });
           })
           .catch((err) => {
             console.log(err);

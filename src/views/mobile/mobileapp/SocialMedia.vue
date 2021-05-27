@@ -176,35 +176,38 @@ export default {
           return {
             name: i.name,
             url: i.url,
-            socialMediaId: i.socialMediaId ? i.socialMediaId : ""
+            // socialMediaId: i.socialMediaId ? i.socialMediaId : ""
           };
         }),
       };
       axios
         .put(`/mobile/v1/Profile/UpdateSocialMedia`, body)
         .then((res) => {
-          if(res){
+          // if(res){
            toast.add({
               severity: "success",
               summary: "Update is Successful",
               detail: "Social Media Handles successfully Updated",
               life: 3000,
             });
-          }
-          console.log(res, "🎄🎄🎄");
+            router.push({ name: "AppBranding" });
+
+          // }
+
+          console.log(res.data, "🎄🎄🎄");
         })
         .catch((err) => {
            stopProgressBar();
-             toast.add({
-              severity: "error",
-              summary: "Social Media Handles",
-              detail: "Already Exist",
-              life: 3000,
-            });
+            //  toast.add({
+            //   severity: "error",
+            //   summary: "Social Media Handles",
+            //   detail: "Already Exist",
+            //   life: 3000,
+            // });
           console.log(err);
         });
 
-      router.push({ name: "AppBranding" });
+
     };
 
     const getSocialMediaDetails = () => {

@@ -160,7 +160,7 @@
         </div>
       </div>
     </div>
-    <Toast />
+    <!-- <Toast /> -->
   </div>
 </template>
 <script>
@@ -169,7 +169,7 @@ import axios from "@/gateway/backendapi";
 import { ref } from "vue";
 import router from "../../../router";
 import finish from "../../../services/progressbar/progress";
-import { useToast } from "primevue/usetoast";
+// import { useToast } from "primevue/usetoast";
 import axio from "axios";
 import store from "../../../store/store";
 import paymentform from "../../../components/genericmobile/paymentform";
@@ -186,7 +186,7 @@ export default {
     const accountName = ref("");
     const loading = ref(false);
     const accNameRef = ref("");
-    const toast = useToast();
+    // const toast = useToast();
 
     // const pastors = ref([{}]);
     const slide = ref(false);
@@ -212,14 +212,7 @@ export default {
         .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
         .then((res) => {
           console.log(res, "🎄🎄🎄");
-          if (res.data.status) {
-            toast.add({
-              severity: "success",
-              summary: "Setup complete",
-              detail: "Your setup is complete and succesful",
-              life: 3000,
-            });
-          }
+
         })
         .catch((err) => {
           console.log(err);

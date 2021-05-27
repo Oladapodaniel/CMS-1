@@ -553,7 +553,7 @@ const paymentGatewayNeeded = ref({});
                 let { data } = await axio.get(`https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`, header)
                 console.log(data)
                 accountName.value = data.data.account_name
-                accNameRef.value.focus()
+                // accNameRef.value.focus()
                 disabled.value = false
 
                 loading.value = false
