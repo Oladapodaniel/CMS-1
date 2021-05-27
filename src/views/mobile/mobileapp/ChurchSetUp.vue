@@ -1,7 +1,7 @@
 <template>
   <div class="container-wide">
     <!-- write up part -->
-    <div class="row">
+    <div class="row" style="height: 100vh">
       <Toast />
       <div class="col-md-6 mt-6">
         <div class="row mt-5">

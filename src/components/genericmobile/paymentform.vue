@@ -146,7 +146,7 @@
                 </div>
 
                 <div class="col-10 col-md-12 mt-5 d-flex align-items-center c-pointer" @click="showPaymentSection">
-                    <p class="mb-0" style="width:100px">Payment</p><hr class="mt-4" style="width: calc(100% - 80px)"/><span><i class="pi pi-chevrolet-down">A</i></span>
+                    <p class="mb-0" style="width:100px">Payment</p><hr class="mt-4" style="width: calc(100% - 80px)"/><span><i class="pi pi-angle-down"></i></span>
                 </div>
 
 
