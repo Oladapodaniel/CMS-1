@@ -793,7 +793,7 @@ const routes = [
           ),
       },
       {
-        path: "offeringcategory",
+        path: "offeringcategory/:offId?",
         name: "OfferingCategory",
         component: () =>
           import(
@@ -809,7 +809,7 @@ const routes = [
           ),
       },
       {
-        path: "offeringreport/:report",
+        path: "offeringreport",
         name: "OfferingReport",
         component: () =>
           import(

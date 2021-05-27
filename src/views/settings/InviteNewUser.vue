@@ -12,51 +12,51 @@
                        <span v-html="currency.symbol"></span>{{ currency.rate_float | currencydecimal }}
                     </span>
                     <h1 class="bg-danger text-light"> {{currency.code}}</h1>
-                   
+
 
                 </div>
-                
+
                 <h4>{{info}}</h4> -->
                 <Toast />
                <div class="row">
                    <div class="col-lg-7 col-sm-12 border-right pr-3 mt-3 mt-lg-3 pr-lg-5 pr-sm-3" style="">
                        <div class="row mb-3">
-                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Username</label> 
-                            </div>  
+                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Username</label>
+                            </div>
                             <div class="col-lg-8 col-sm-12"> <InputText type="text" required v-model="userName" class="form-control" /></div>
                         </div>
                         <div class="row mb-3 mt-5">
-                        
-                            <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span> 
-                            </div>  
+
+                            <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span>
+                            </div>
                             <div class="col-lg-8 col-sm-12 "> <InputText type="text" required v-model="mail" class="form-control"/></div>
                         </div>
                         <div class="row mb-3 mt-5">
-                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Phone Number</span> 
-                            </div>  
+                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Phone Number</span>
+                            </div>
                             <div class="col-lg-8 col-sm-12 "> <InputText type="number" class="form-control" required v-model="phoneNumber"  /></div>
                         </div>
                          <div class="row mb-3 mt-5">
-                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span> 
-                            </div>  
+                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span>
+                            </div>
                             <div class="col-lg-8 col-sm-12 "> <Password class="form-control" required v-model="password1"  /></div>
                         </div>
                         <div class="row mb-5 mt-5">
-                         <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span> 
-                            </div>  
+                         <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span>
+                            </div>
                             <div class="col-lg-8 col-sm-12 "> <Password class="form-control" v-model="password2" required /></div>
                         </div>
-                         
+
                         <!-- <div class="row mb-3">
-                        
-                            <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Questions</span> 
-                            </div>  
+
+                            <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Questions</span>
+                            </div>
                             <div class="col-lg-8 col-sm-12 "> <InputText type="text" class="form-control"/></div>
                         </div> -->
                         <!-- <div class="row mb-3">
-                        
-                            <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Answers</span> 
-                            </div>  
+
+                            <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Secret Answers</span>
+                            </div>
                             <div class="col-lg-8 col-sm-12"> <InputText type="text" class="form-control" /></div>
                         </div> -->
                    </div>
@@ -104,7 +104,7 @@
                                         </tr>
                                     </tbody>
                                     </table>
-                                  
+
                             </div>
 
                         </div>
@@ -115,68 +115,68 @@
                     <div class="col-lg-7 col-sm-12 mt-sm-4 mt-4 mt-lg-3">
                         <!-- Roles -->
                         <div class="ml-5 mt-2 mt-lg-0">
-                            <div class="row mb-2 mb-lg-2"> 
+                            <div class="row mb-2 mb-lg-2">
                                 <span class="col-lg-2 mb-lg-0 mb-3"></span> <span class="col-lg-1 mb-lg-0 mb-3 font-weight-bold">Role</span> <div class="col-md-7">
-                                    <Checkbox  
+                                    <Checkbox
                                     v-model="roles1"
-                                    value="Admin" 
+                                    value="Admin"
                                     />
                                      Admin
                                      </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="BasicUser" 
-                                   v-model="roles1" 
-                                   /> 
+                                   <Checkbox value="BasicUser"
+                                   v-model="roles1"
+                                   />
                                    BasicUser
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="CanAccessFirstTimers" 
-                                   v-model="roles1" 
+                                   <Checkbox value="CanAccessFirstTimers"
+                                   v-model="roles1"
                                    />
                                     CanAccessFirstTimers
                                     </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="CanAccessFollowUps" 
+                                   <Checkbox value="CanAccessFollowUps"
                                    v-model="roles1"
-                                   /> 
+                                   />
                                    CanAccessFollowUps
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
                                    <Checkbox value="CenterLeader"
-                                   v-model="roles1"   
-                                   /> 
+                                   v-model="roles1"
+                                   />
                                    CenterLeader
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="FinancialAccount" 
-                                   v-model="roles1" 
-                                   /> 
+                                   <Checkbox value="FinancialAccount"
+                                   v-model="roles1"
+                                   />
                                    FinancialAccount
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="mobileAdmin" 
-                                   v-model="roles1" 
-                                   /> 
+                                   <Checkbox value="mobileAdmin"
+                                   v-model="roles1"
+                                   />
                                    MobileAdmin
                                    </div>
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="Reports" 
-                                   v-model="roles1" 
-                                   /> 
+                                   <Checkbox value="Reports"
+                                   v-model="roles1"
+                                   />
                                    Reports
                                    </div>
                             </div>
@@ -189,7 +189,7 @@
                         <div class=" col-lg-12 d-flex justify-content-center col-sm-12 col-12 w-100 button-add mt-5">
                            <button type="button" class="btn btn-primary saveButton mr-2" style="border-radius:22px; font-size: 16px; font-weight: 600">Save User</button>
                            <button type="button" class="btn btn-outline-secondary ml-2" style="border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button>
-                        </div> 
+                        </div>
                         </div> -->
                     </div>
                 </div>
@@ -206,11 +206,6 @@
 
     </div>
 </template>
-
-
-
-
-
 
 
 <script>
@@ -312,38 +307,32 @@ import store from "@/store/store";
                 this.roles1.push(e)
 
             }
-
-
         },
         createNewUser(){
             if( this.userName === '' || this.password1 === '' || this.mail === '' || this.password2 === '' || this.phoneNumber === ''){
                 this.$toast.add({
-                severity:'error', 
-                summary:'Confirmed', 
-                detail:'Input Your Complete Details', 
+                severity:'error',
+                summary:'Confirmed',
+                detail:'Input Your Complete Details',
                 life: 4000
                 });
-                
-
             }
             if(this.password1.length < 6){
                 this.$toast.add({
-                severity:'error', 
-                summary:'Confirmed', 
-                detail:'Ensured Your Password is More than 6 character', 
+                severity:'error',
+                summary:'Confirmed',
+                detail:'Ensured Your Password is More than 6 character',
                 life: 4000
 
                 })
             }
             if(this.password1 !== this.password2){
                 this.$toast.add({
-                severity:'error', 
-                summary:'Confirmed', 
-                detail:'Ensured Your Password is same', 
+                severity:'error',
+                summary:'Confirmed',
+                detail:'Ensured Your Password is same',
                 life: 4000
                 });
-                
-
             }
 
             let createNew = {
@@ -352,14 +341,14 @@ import store from "@/store/store";
                 name : this.userName,
                 roles : this.roles1,
                 phone: this.phoneNumber
-                
+
             }
             axios.post(`/api/Settings/CreatNewUser`,createNew)
             .then((res)=>{
                 this.$toast.add({
-                severity:'success', 
-                summary:'Confirmed', 
-                detail:'New User Saved Successfully', 
+                severity:'success',
+                summary:'Confirmed',
+                detail:'New User Saved Successfully',
                 life: 4000
                 });
                 console.log(res);
@@ -367,30 +356,39 @@ import store from "@/store/store";
                 this.$router.push('/tenant/settings')
             }).catch((error)=>{
                 console.log(error);
+                //   if(error && error.status >= 400 && error.status < 405){
                 this.$toast.add({
                 severity:'error', 
                 summary:'Confirmed', 
-                detail:'Check your Internet Connectivity', 
+                detail:'Users Already Exist', 
                 life: 4000
-                })
+                });
+
+                // this.$toast.add({
+                // severity:'error', 
+                // summary:'Confirmed', 
+                // detail:'', 
+                // life: 4000
+                // })
             })
-            
 
-            
 
-        }
+
+
+        },
+   
 
     },
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
     mounted(){
         //     axios
         // .get(`/api/Settings/GetTenantPeopleClassification`)
@@ -408,13 +406,13 @@ import store from "@/store/store";
             .then((response) =>{
                 this.currentUser = response.data;
             console.log(response.data)
-        
+
         })
             .catch((error)=> console.log(error))
-            
+
         }
-     
-    
+
+
     }
     // const: getCurrentName = computed(() => {
     //   return store.getters.churchName ;

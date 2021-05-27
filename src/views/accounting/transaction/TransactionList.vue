@@ -2,7 +2,7 @@
   <div class="whole-co container-wid container-top" @click="hideModals">
     <div class="main-co">
       <div class="main-bod">
-        <div class="top container-wid mt-3">
+        <div class="top container-wide mt-3">
           <div class="header">
             <div class="events">Transaction</div>
           </div>
@@ -11,14 +11,14 @@
               class="more-btn align-items-center default-btn border-0"
               @click="toggleTransac(1)"
             >
-              Add Income<span><i class="fa fa-angle-down btn-icon"></i></span>
+              Add Income
             </button>
 
             <button
               class="more-btn align-items-center default-btn border-0"
               @click="toggleTransac(2)"
             >
-              Add Expense<span><i class="fa fa-angle-down btn-icon"></i></span>
+              Add Expense
             </button>
 
             <!-- <button class="more-btn align-items-center default-btn border-0"> -->
@@ -36,14 +36,14 @@
         </div>
 
         <div class="container-wide">
-          <div class="col-12 col-sm-6 col-lg-4 px-0 mt-5">
+          <div class="col-12 col-sm-8 col-lg-6 px-0 mt-5">
             <div class="d-flex">
               <button
                 class="form-control transaction-button close-modal"
                 @click="toggleAccount"
               >
                 <div class="close-modal">{{ selectedTransaction.type }}</div>
-                <div class="close-modal">{{ selectedTransaction.amount }}</div>
+                <div class="close-modal"> {{ selectedTransaction.amount }}</div>
               </button>
               <i
                 class="pi pi-angle-down arrow-icon close-modal"
@@ -55,7 +55,7 @@
               <div class="header-border close-modal">
                 <div
                   class="manual-dd-item close-modal"
-                  v-for="(cash, index) in accountsAndBalances"
+                  v-for="(cash, index) in accountsAndBalancesList"
                   :key="index"
                   @click="selectAnAccount(cash, index)"
                 >
@@ -63,7 +63,7 @@
                     class="d-flex justify-content-between py-1 px-3 close-modal"
                   >
                     <div class="close-modal">{{ cash.text }}</div>
-                    <div class="close-modal">{{ cash.currency && cash.currency.name ? cash.currency.name : "" }}{{ cash.balance }}</div>
+                    <div class="close-modal">{{ cash.currency && cash.currency.shortCode ? cash.currency.shortCode : currentUser.currency }}{{ cash.balance }}</div>
                   </div>
                 </div>
               </div>
@@ -260,7 +260,14 @@
             </template>
           </Dialog>
 
-          <TransactionTable :showEditTransaction="showEditTransaction" :transactionDetails="transacPropsValue" :selectedTransactionType="selectedTransactionType" @toggle-edit-form="closeIt" @select-row="selectRow" />
+          <TransactionTable 
+            :showEditTransaction="showEditTransaction" 
+            :transactionDetails="transacPropsValue" 
+            :selectedTransactionType="selectedTransactionType" 
+            @toggle-edit-form="closeIt" 
+            @select-row="selectRow"
+            @reload-accounts="reloadAccounts"
+            />
           <!-- <LedgerForm /> -->
         </div>
       </div>
@@ -274,7 +281,11 @@ import axios from "@/gateway/backendapi";
 import transactionService from "../../../services/financials/transaction_service";
 import TransactionTable from "../../../components/transactions/TransactionsTable"
 import transaction_service from '../../../services/financials/transaction_service';
+import numbers_formatter from '../../../services/numbers/numbers_formatter';
 // import LedgerForm from "../transaction/components/LedgerForm";
+import { useStore } from "vuex";
+import userService from '../../../services/user/userservice';
+import currencyConverter from "../../../services/currency-converter/currencyConverter"
 
 export default {
   components: {
@@ -359,6 +370,31 @@ export default {
         },
       },
     ]);
+
+    const store = useStore();
+    const currentUser = ref(store.getters.currentUser);
+
+    const getCurrentUser = async () => {
+      try {
+        const response = await userService.getCurrentUser();
+        currentUser.value = response;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (!currentUser.value || !currentUser.value.tenantId) getCurrentUser();
+
+    const rates = ref({ });
+      const getConversionRates = async () => {
+        try {
+          const response = await currencyConverter.getConversionData();
+          rates.value = response;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+     getConversionRates();
+
     const creditCard = ref([
       { name: { type: "tobi", amount: "N2.10" } },
       { name: { type: "afe", amount: "N5.21" } },
@@ -371,7 +407,7 @@ export default {
     const searchIsVisible = ref(false);
     const accountDisplay = ref(false);
     const selectedTransaction = ref({
-      type: "All acounts",
+      type: "All accounts",
       amount: "N0.00",
     });
     const displayModal = ref(false);
@@ -487,12 +523,13 @@ export default {
     const toggleTransac = (e) => {
       if (e === 1) {
         transacPropsValue.value = {
-          type: "Add Customer",
+          type: "Add Donor",
           account: "Income Account",
         };
       } else if (e === 2) {
         transacPropsValue.value = {
-          type: "Add Vendor",
+          type: "",
+          // type: "Add Vendor",
           account: "Expense Account",
         };
       } else {
@@ -524,7 +561,6 @@ export default {
           );
           transactionalAccounts.value.push(groupItems);
         }
-        console.log(transactionalAccounts.value, "TAs");
       } catch (error) {
         console.log(error);
       }
@@ -538,31 +574,31 @@ export default {
         const response = await transactionService.getCashAndBank();
         // cashAndBank.value = response;
         cashAndBankItems.value = response;
-        console.log(cashAndBankItems.value, "CABI");
       } catch (error) {
         console.log(error);
       }
     }
     getCashAndBanks();
 
-    const testPoint = async () => {
-      try {
-        const response = await transactionService.getTransactions();
-        console.log(response, "test point");
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    testPoint();
+    // const testPoint = async () => {
+    //   try {
+    //     const response = await transactionService.getTransactions();
+    //     console.log(response, "test point");
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
+    // testPoint();
 
     const selectedTransactionType = ref(-1)
     const selectAnAccount = (account, index) => {
       selectedTransaction.value = {
         type: account.text,
-        amount: account.currency ? `${account.currency.name}${account.balance}` : `${account.balance}`
+        amount: account.currency ? `${account.currency.shortCode}${amountWithCommas(account.balance)}` : `${amountWithCommas(account.balance)}`
       }
       accountDisplay.value = false;
-      selectedTransactionType.value = index;
+      console.log(index);
+      selectedTransactionType.value = account.id ? account.id : ""; 
     }
 
     const newAccount = ref({ });
@@ -579,7 +615,6 @@ export default {
     const selectRow = (rowData) => {
       showEditTransaction.value = true;
       transacPropsValue.value = rowData;
-      console.log(rowData, "row Data");
     }
     // saveAccount()
 
@@ -590,21 +625,51 @@ export default {
         accountsAndBalances.value = response;
         accountsAndBalances.value.unshift({ text: "All Accounts", balance: totalAccountBalances.value })
         console.log(response, "account and balances");
+        let index = response.findIndex(i => i.text === "All Accounts")
+
+        if (index >= 0) {
+          selectedTransaction.value.amount = `${currentUser.value && currentUser.value.currency ? currentUser.value.currency: ''}${accountsAndBalances.value[index] && accountsAndBalances.value[index].balance ? amountWithCommas(accountsAndBalances.value[index].balance) : 0}`;
+          accountsAndBalances.value[index].currency = { shortCode: currentUser.value ? currentUser.value.currency : '' };
+        }
+        // if (!currentUser.value || !currentUser.value.tenantId) await getCurrentUser();
       } catch (error) {
         console.log(error);
       }
     }
     getAccountBalances()
 
+    const accountsAndBalancesList = computed(() => {
+      if (!accountsAndBalances.value || accountsAndBalances.value.length === 0) return [ ];
+      return accountsAndBalances.value.map(i => {
+        i.balance = amountWithCommas(i.balance);
+        return i;
+      })
+    })
+
     const totalAccountBalances = computed(() => {
       if (!accountsAndBalances.value || accountsAndBalances.value.length === 0) return 0;
       let sum = 0;
-
       for (let account of accountsAndBalances.value) {
-        sum += account.balance;
+        sum += convertAmountToTenantCurrency(account);
+        console.log(sum, "sum");
       }
       return Number.parseFloat(sum).toFixed(2);
     })
+
+    const convertAmountToTenantCurrency = (account) => {
+      console.log(rates.value, "rates");
+      console.log(account);
+      if (!account.currency.shortCode) return 0;
+      if (currentUser.value.currency.toLowerCase() === account.currency.shortCode.toLowerCase()) return account.balance;
+      console.log(`usd${account.currency.shortCode.toLowerCase()}`, "BB");
+      console.log(rates.value[`usd${account.currency.shortCode.toLowerCase()}`, "AAAA"]);
+      const amountInDollars = account.currency.shortCode !== "USD" ? rates.value[`usd${account.currency.shortCode.toLowerCase()}`] * account.balance : account.balance;
+      console.log(amountInDollars, "AMOunt inDOllars");
+      console.log(rates.value[`usd${currentUser.value.currency.toLowerCase()}`], "Tenant strint");
+      const tenantAmount = rates.value[`usd${currentUser.value.currency.toLowerCase()}`] * amountInDollars;
+      console.log(tenantAmount, "Tenant Amount");
+      return tenantAmount;
+    }
 
     axios.get("/api/Financials/Accounts/Transactions/GetIncomeAndExpense")
       .then(res => {
@@ -613,6 +678,13 @@ export default {
       .catch(err => {
         console.log(err);
       })
+
+      const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
+      const reloadAccounts = () => {
+        getAccountBalances()
+      }
+
+      
 
     return {
       transactions,
@@ -658,6 +730,10 @@ export default {
       selectRow,
       accountsAndBalances,
       totalAccountBalances,
+      amountWithCommas,
+      currentUser,
+      accountsAndBalancesList,
+      reloadAccounts,
     };
   },
 };

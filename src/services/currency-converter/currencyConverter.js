@@ -1,4 +1,4 @@
-// import axios from "@/gateway/backendapi";
+import axios from "@/gateway/backendapi";
 import store from "../../store/store";
 
 let converter = {
@@ -11,8 +11,34 @@ let converter = {
         let toIndex = propertyArr.indexOf(toDestinationCurrencyRate)
         let toRate = valueArr[toIndex]
         let result = ( amount / fromRate ) * toRate
-        console.log(result)
+        console.log(currencyRate)
         return result
+    },
+
+    conversionData: { },
+
+    getConversionData() {
+        let vm = this;
+        return new Promise((resolve, reject) => {
+            if (vm.conversionData.usdngn) {
+                resolve(vm.conversionData);
+            } else {
+                axios.get('/fxRates')
+                .then(res => {
+                    console.log(res, "Blah");
+                    vm.conversionData = res.data;
+                    resolve(res.data);
+                })
+                .catch(err => {
+                    if (err.response) {
+                        reject(err.response);
+                    } else {
+                        reject(err)
+                    }
+                })
+            }
+            
+        })
     }
 }
 

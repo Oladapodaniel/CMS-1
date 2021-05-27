@@ -3,6 +3,8 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12 px-0">
+          <ConfirmDialog />
+          <Toast />
           <div class="parent-table">
             <div class="table" style="height: fit-content" :class="{ 'bordered': !showEditTransaction }">
               <div class="container-fluid small-text py-2">
@@ -100,7 +102,7 @@
                           <input
                             type="text"
                             class="input w-100"
-                            placeholder="First Name"
+                            placeholder="Category"
                           />
                           <!-- </div> -->
                         </div>
@@ -122,18 +124,18 @@
                           <input
                             type="text"
                             class="input w-100"
-                            placeholder="Last Name"
+                            placeholder="Description"
                           />
                         </div>
 
                         <div
                           class="col-12 col-sm-6 form-group d-none d-md-block"
                         >
-                          <input
+                          <!-- <input
                             type="text"
                             class="input w-100"
                             placeholder="Phone Number"
-                          />
+                          /> -->
                         </div>
                       </div>
                     </div>
@@ -163,21 +165,25 @@
                     <div class="col-md-1 px-3"></div>
                     <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
                     <div class="small-text text-capitalize col-md-3 font-weight-bold">Description</div>
-                    <div class="small-text text-capitalize col-md-2 font-weight-bold">Amount</div>
+                    <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
                     <div class="small-text text-capitalize col-md-2 font-weight-bold">Category</div>
-                    <div class="small-text text-capitalize col-md-2 font-weight-bold">Mark</div>
+                    <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
                   <!-- </div> -->
                 </div>
               </div>
 
+              <div class="row mt-3" v-if="refreshing && !loading">
+                <div class="col-md-12 text-center">
+                  <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
+                </div>
+              </div>
               <LoadingComponent :loading="loading" />
 
-              <div class="row" style="margin:0">
+              <div class="row" style="margin:0;">
                 <div
                   class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
                   v-for="(item, index) in selectedTransactions"
                   :key="index"
-                  @click="rowSelected(item)"
                 >
                   <div class="row w-100" style="margin:0">
                     <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
@@ -188,14 +194,14 @@
                       />
                     </div>
 
-                    <div class="desc small-text col-md-2 px-1">
+                    <div class="desc small-text col-md-2 px-1" @click="rowSelected(item)">
                       <p class="mb-0 d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
                         <span>{{ formatDate(item.date) }}</span>
                       </p>
                     </div>
 
-                    <div class="col-md-3 px-1">
+                    <div class="col-md-3 px-1" @click="rowSelected(item)">
                       <div class="d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Description</span>
                       <div>
@@ -205,10 +211,10 @@
                       </div>
                     </div>
 
-                    <div class="desc-head small-text col-md-2 px-1">
+                    <div class="desc-head small-text col-md-3 px-1" @click="rowSelected(item)">
                       <p class="mb-0 d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
-                        <span>{{ item.amount }}</span>
+                        <span :class="{ 'text-danger': item.amount < 0, 'text-success': item.amount > 0 }">N{{ amountWithCommas(Math.abs(item.amount)) }}</span>
                       </p>
                     </div>
 
@@ -216,16 +222,34 @@
                       <p class="mb-0 d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Category</span>
                         <span><span class="primary-text c-pointer"
-                        >Choose a category</span
+                        >{{ item.category }}</span
                       ></span>
                       </p>
                     </div>
 
-                    <div class="small-text col-md-2 px-1">
-                      <p class="mb-0 d-flex justify-content-between">
+                    <div class="small-text col-md-1 px-1">
+                      <!-- <p class="mb-0 d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
                         <span>Marked</span>
-                      </p>
+                      </p> -->
+                      <div class="action data action-icon">
+                        <div class="dropdown">
+                          <i
+                            class="fas fa-ellipsis-v cursor-pointer"
+                            id="dropdownMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          ></i>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a
+                              class="dropdown-item elipsis-items text-color cursor-pointer"
+                              @click.prevent="showConfirmModal(item.id, index)"
+                              >Delete</a
+                            >
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -240,11 +264,13 @@
                 :transactionDetails="transactionDetails"
                 :showEditTransaction="showEditTransaction"
                 @reload="getTransactions"
+                :gettingSelectedTrsn="gettingSelectedTrsn"
               />
               <LedgerForm v-else @close-ledger="closeLedgerForm" />
               <!-- :transacProp="transacPropsValue" -->
             </div>
           </div>
+          
         </div>
       </div>
     </div>
@@ -259,7 +285,9 @@ import dateFormatter from "../../services/dates/dateformatter";
 // import transactionService from "../../services/financials/transaction_service";
 import LedgerForm from "../../views/accounting/transaction/components/LedgerForm";
 import LoadingComponent from "../loading/LoadingComponent";
-
+import numbers_formatter from "../../services/numbers/numbers_formatter"
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
 
 export default {
   props: [
@@ -273,8 +301,10 @@ export default {
     LoadingComponent,
   },
   setup(props, { emit }) {
+    const confirm = useConfirm();
+    const toast = useToast();
     const transactions = ref([]);
-    const types = ["assets", "liability", "income", "expense", "equity"];
+    // const types = ["assets", "liability", "income", "expense", "equity"];
     const cashAndBank = ref([
       {
         name: {
@@ -431,15 +461,19 @@ export default {
 
     const allTransactions = ref([]);
     const loading = ref(true);
+    const refreshing = ref(false);
     const getTransactions = async () => {
       try {
+        refreshing.value = true;
         const response = await transaction_service.getTransactions();
         loading.value = false;
+        refreshing.value = false;
         allTransactions.value = response;
         console.log(response, "ALL TRANS");
       } catch (error) {
         console.log(error);
         loading.value = false;
+        refreshing.value = false;
       }
     };
     getTransactions();
@@ -449,15 +483,16 @@ export default {
     const selectedTransactions = computed(() => {
       if (!allTransactions.value || allTransactions.value.length === 0)
         return [];
-      const targeted = allTransactions.value.filter(
-        (i) =>
-          i.accountType.toLowerCase() ===
-          types[
-            props.selectedTransactionType > 0
-              ? props.selectedTransactionType
-              : 0
-          ]
-      );
+      const targeted = allTransactions.value;
+      // const targeted = allTransactions.value.filter(
+      //   (i) =>
+      //     i.accountType.toLowerCase() ===
+      //     types[
+      //       props.selectedTransactionType > 0
+      //         ? props.selectedTransactionType
+      //         : 0
+      //     ]
+      // );
       if (!searchText.value) return targeted;
       return targeted.filter((i) => {
         return (
@@ -474,19 +509,47 @@ export default {
       return dateFormatter.monthDayYear(date);
     };
 
-    const rowSelected = (item) => {
-      const data = {
-        amount: item.amount,
-        date: item.date,
-        memo: item.narration,
-      };
-      emit("select-row", data);
+    const gettingSelectedTrsn = ref(false);
+    const rowSelected = async (item) => {
+      try {
+        gettingSelectedTrsn.value = true;
+        emit("select-row", { });
+        const response = await transaction_service.getEditTransactions(item.transactionNumber);
+        gettingSelectedTrsn.value = false;
+        console.log(response, "Edit Transaction");
+         emit("select-row", response.data);
+      } catch (error) {
+        console.log(error);
+        gettingSelectedTrsn.value = false;
+      }
     };
 
+    // watch(
+    //   () => props.transactionDetails,
+    //   (data) => {
+    //     console.log(data, "in watch");
+    //     getGroupedTransactions(data)
+    //   }
+    // );
+
+    const getGroupedTransactions = async accountGroupId => {
+      try {
+        refreshing.value = true;
+        const { data } = await transaction_service.getTransactionsByAccount(accountGroupId);
+        refreshing.value = false;
+        allTransactions.value = data;
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+        refreshing.value = false;
+      }
+    }
+
     watch(
-      () => props.transactionDetails,
+      () => props.selectedTransactionType,
       (data) => {
-        console.log(data, "in watch");
+        if (data) getGroupedTransactions(data);
+        if (!data) getTransactions();
       }
     );
 
@@ -494,11 +557,63 @@ export default {
       emit("toggle-edit-form", false);
     }
 
-    // const filterText = ref("")
-    // const filteredTransactions = ref([]);
-    // // const filteredTransactions = computed(() => {
-    // //   if ()
-    // // })
+    const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
+
+    
+    const deleteTransaction = async (id, index) => {
+      try {
+        const response = await transaction_service.deleteTransaction(id);
+        console.log(response.data, "delete response");
+        if (response.data.status) {
+          allTransactions.value.splice(index, 1);
+          refreshing.value = true;
+          emit("reload-accounts")
+          getTransactions();
+          toast.add({
+            severity: "success",
+            summary: "Delete Successful",
+            detail: "The transaction was deleted successfully",
+            life: 3000,
+          });
+        } else {
+          toast.add({
+            severity: "error",
+            summary: "Delete Failed",
+            detail: "The transaction could not be deleted",
+            life: 3000,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        toast.add({
+          severity: "error",
+          summary: "Delete Failed",
+          detail: "The transaction could not be deleted",
+          life: 3000,
+        });
+      }
+    }
+
+    const showConfirmModal = (id, index) => {
+      confirm.require({
+        message: "Are you sure you want to delete this transaction? This operation can't be reversed.",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteTransaction(id, index);
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "Operation Cancelled",
+            life: 3000,
+          });
+        },
+      });
+    };
 
     return {
       transactions,
@@ -538,6 +653,11 @@ export default {
       getTransactions,
       closeLedgerForm,
       loading,
+      amountWithCommas,
+      deleteTransaction,
+      showConfirmModal,
+      refreshing,
+      gettingSelectedTrsn,
     };
   },
 };

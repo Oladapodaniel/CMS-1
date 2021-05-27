@@ -1335,6 +1335,15 @@ tbody tr:nth-child(even) {
   vertical-align: baseline;
 }
 
+.chart-div {
+  border: 1px solid #dde2e6;
+  border-radius: 30px;
+  margin: 0 0 24px 0;
+  box-shadow: 0px 1px 4px #02172e45;
+  border: 1px solid #dde2e6;
+  padding: 25px 0;
+}
+
 /* WIP */
 
 /* @media screen and (max-width: 376px) {

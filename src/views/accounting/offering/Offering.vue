@@ -2,15 +2,15 @@
     <div class="container-wide container-top">
       <div class="row my-3">
       <div class="col-md-4 first-timers-text">
-        <h2 class="page-header">Contributions</h2>
+        <h2 class="page-header">Offerings</h2>
       </div>
 
       <div class="col-md-8 d-flex head-button">
         <router-link to="/tenant/contributionCategory">
-          <button class="default-btn mr-3">View Contribution Items</button>
+          <button class="default-btn mr-3">View Offering Items</button>
         </router-link>
         <router-link to="/tenant/addoffering" class="add-btn">
-          Add Contribution
+          Add Offering
         </router-link>
       </div>
     </div>
@@ -31,11 +31,11 @@
     <div class="no-person"  v-if="contributionTransactions.length === 0 && !loading">
         <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't added any contribution transaction yet</p>
+            <p class="tip">You haven't added any offering transaction yet</p>
         </div>
     </div>
     <div v-if="contributionTransactions.length > 0 && !loading">
-        <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac"/>
+        <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/>
     </div> 
 </div>
 </template>
@@ -53,6 +53,7 @@ export default {
     },
     setup () {
         const contributionTransactions = ref([])
+        const totalItem = ref(0)
         const loading = ref(false)
 
 
@@ -67,7 +68,8 @@ export default {
                     .get("/api/Financials/Contributions/Transactions")
                     .then((res) => {
                         loading.value = false
-                    contributionTransactions.value = res.data;
+                    contributionTransactions.value = res.data.returnObject.contribution;
+                    totalItem.value = res.data.returnObject.totalItem
                     console.log(res.data);
                     })
                     .catch((err) => {
@@ -84,14 +86,14 @@ export default {
     getContributionTransactions();
 
     const getOfferingPages = (payload) => {
-      contributionTransactions.value = payload
+      contributionTransactions.value = payload.returnObject.contribution
     }
 
     const updateTransac = (payload) => {
       contributionTransactions.value.splice(payload, 1)
     }
         return {
-            contributionTransactions, loading, getOfferingPages, updateTransac
+            contributionTransactions, loading, getOfferingPages, updateTransac, totalItem
         }
     }
 }

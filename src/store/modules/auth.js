@@ -17,6 +17,10 @@ export default {
     },
 
     mutations: {
+    setCurrentUser(state, payload) {
+        state.currentUser = payload;
+    },
+    
     setUserEmail(state, payload) {
       state.userEmail = payload;
     },

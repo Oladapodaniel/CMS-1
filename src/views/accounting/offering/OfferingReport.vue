@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+  <div class="container">
     <div class="row mt-4">
       <div class="col-md-5">
         <h2 class="font-weight-bold page-hder">New Contribution and Report</h2>
@@ -27,10 +27,20 @@
       </div>
 
       <div class="col-md-7">
-        <span class="theader">Hello</span>
+        <span class="theader">{{
+          contributionReport.activityName ? "Event" : ""
+        }}</span>
         <div class="my-3">
           <span class="evt-name">
-            {{ churchName }} 
+            {{
+              contributionReport.activityName
+                ? contributionReport.activityName
+                : ""
+            }}
+            <i
+              v-if="contributionReport.activityName"
+              class="fa fa-info-circle"
+            ></i>
           </span>
         </div>
       </div>
@@ -42,7 +52,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="row mx-1 mb-5">
       <div class="col-md-12">
         <div class="row unapproved">
@@ -86,7 +96,6 @@
           </div>
         </div>
 
-        Approved 
         <div class="row unapproved mt-4">
           <div class="col-md-12">
             <div class="row my-3">
@@ -111,9 +120,11 @@
                           class="def-btn approve-btn"
                           data-toggle="modal"
                           data-target="#sendReport"
-                          :class="{ 'resend-btn': markedAsSent }"
+                          :class="{
+                            'resend-btn': markedAsSent === 'marked as sent',
+                          }"
                         >
-                          sendBtnText
+                          {{ sendBtnText }}
                         </a>
                       </div>
                       <div class="col-6">
@@ -128,7 +139,7 @@
                     <a
                       style="color: #136acd; cursor: pointer"
                       @click="markAsSent"
-                      >mark as sent</a
+                      >{{ markedAsSent }}</a
                     >
                   </div>
                 </div>
@@ -165,10 +176,10 @@
           <div class="modal-body pt-0 px-0" :data-dismiss="btnState">
             <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
             <ReportModal
-              :eventName="stats.activityToday ? stats.activityToday.name : ''"
+              :eventName="`This Contribution`"
               @sendreport="sendReport"
               @get-church-name="getChurchName"
-              :stats="stats"
+              :stats="contributionReport"
             />
           </div>
           <!-- <div class="modal-footer">
@@ -186,7 +197,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="container-fluid bottom-section px-0">
       <div class="row mx-0" ref="topmost">
         <div class="col-md-8 dark-red-section pl-5">
@@ -196,10 +207,12 @@
         <div
           class="col-md-4 d-flex flex-column light-red-section pr-5 text-center"
         >
-      
           <span>
             <span>Total Offering: </span> <br />
-            <span class="recieve"> {{ contributionReport ? contributionReport.totalToday : 0 }} </span>
+            <span class="recieve"
+              >{{ contributionReport.tenantCurrency }}
+              {{ contributionReport ? contributionReport.totalToday : 0 }}
+            </span>
           </span>
         </div>
 
@@ -218,7 +231,11 @@
       <div class="row pt-5 px-5" ref="middle">
         <div class="col-md-8">
           <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-             Contribution Details
+            {{
+              contributionReport.activityName
+                ? contributionReport.activityName
+                : "Contribution Details"
+            }}
           </h2>
         </div>
         <div class="col-md-4">
@@ -262,10 +279,6 @@
 
       <div class="row mb-3" ref="bottom">
         <div class="col-md-12">
-          
-          
-    
-
           <!-- <div class="row px-5">
           <div class="col-sm-12">
             <div class="row">
@@ -332,7 +345,7 @@
           <div class="row px-5">
             <div class="col-md-12">
               <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                   <span class="bold-700">Contribution Item</span>
                 </div>
                 <div class="col-sm-3">
@@ -342,7 +355,7 @@
                   <span class="bold-700">Amount</span>
                 </div>
 
-                <div class="col-sm-3 text-sm-center">
+                <div class="col-sm-2">
                   <span class="bold-700 fs-1 fw-bolder">Total</span>
                 </div>
               </div>
@@ -358,58 +371,100 @@
             v-for="(item, index) in contributionReport.todayContributions"
             :key="index"
           >
-          
-            <div class="col-md-12 py-2">
+            <div class="col-md-12">
               <div class="row px-5">
                 <div class="col-sm-12">
                   <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-4 py-2">
                       <span class="bold-400">{{ item.contribution }}</span>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-3 py-2">
                       <span class="bold-400">{{ item.channel }}</span>
                     </div>
-                    <div class="col-sm-3">
-                      <span class="bold-400">{{ item.amount }}</span>
+                    <div class="col-sm-3 py-2">
+                      <span class="bold-400"
+                        >{{ item.currencyName }} {{ item.amount }}</span
+                      >
                     </div>
-                    <div class="col-sm-3 text-sm-center">
-                      <span class="bold-400">{{ item.amount }}</span>
+                    <div class="col-sm-2 py-2">
+                      <span class="bold-400"
+                        >{{ item.currencyName }} {{ item.amount }}</span
+                      >
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- <div class="row" v-if="index !== eventData.offerings.length - 1">
-                <div class="col-sm-12 pt-2">
+              <div
+                class="row"
+                v-if="
+                  index !== contributionReport.todayContributions.length - 1
+                "
+              >
+                <div class="col-sm-12">
                   <hr class="hr" />
-                </div>
-              </div> -->
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <hr class="hr-dark" v-if="contributionReport.length > 0" />
-            </div>
-          </div>
-          <div class="row px-5" v-if="contributionReport.length > 0">
-            <div class="col-sm-12">
-              <div class="row">
-                <div class="col-sm-3"></div>
-                <div class="col-sm-3"></div>
-                <div class="col-sm-3 text-sm-right">
-                  <span class="bold-700">Total</span>
-                </div>
-                <div class="col-sm-3 text-sm-center">
-                  <span class="bold-700">{{ contributionReport ? contributionReport.totalToday : "" }}</span>
                 </div>
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-sm-6 offset-sm-6 mt-3">
+              <hr
+                class="hr-total"
+                v-if="
+                  contributionReport && contributionReport.todayContributions
+                    ? contributionReport.todayContributions.length > 0
+                    : ''
+                "
+              />
+            </div>
+          </div>
+          <div
+            class="row px-5"
+            v-if="
+              contributionReport && contributionReport.todayContributions
+                ? contributionReport.todayContributions.length > 0
+                : ''
+            "
+          >
+            <div class="col-sm-12">
+              <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-3"></div>
+                <div class="col-sm-1">
+                  <span class="text-style">Total</span>
+                </div>
+                <div class="col-sm-3 total-text">
+                  <span class="text-danger"
+                    >{{ contributionReport.tenantCurrency }}&nbsp;{{
+                      contributionReport
+                        ? amountWithCommas(
+                            Math.round(contributionReport.totalToday)
+                          )
+                        : ""
+                    }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 offset-sm-6">
+              <hr
+                class="hr-total"
+                v-if="
+                  contributionReport && contributionReport.todayContributions
+                    ? contributionReport.todayContributions.length > 0
+                    : ''
+                "
+              />
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row email-data" ref="emaildata" v-show="false">
-          <table
-            align="center"
-            style="
+      <div class="row email-data" ref="emaildata" v-if="false">
+        <table
+          align="center"
+          style="
               border-collapse: collapse;
               max-width: 800px;
               padding: 0pt 0pt 0pt 0pt;
@@ -417,763 +472,393 @@
               border: 1px solid #dde2e6;
               border-radius: 5px;
             "
-          >
-            <tbody>
-              <tr>
-                <td
-                  colspan="3"
-                  style="
+        >
+          <tbody>
+            <tr>
+              <td
+                colspan="3"
+                style="
                     width: 337.5pt;
                     padding: 0pt 5.4pt;
                     background: rgb(255, 27, 27);
                     vertical-align: top;
                   "
-                >
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span
-                      style="
+              >
+                <p style="margin-bottom: 0pt; margin-top: 0pt">
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+                <p style="margin-bottom: 0pt; margin-top: 0pt">
+                  <span
+                    style="
                         color: rgb(255, 255, 255);
                         font-weight: bold;
                         font-size: 16px;
                       "
-                      >&nbsp;</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp; &nbsp; &nbsp; &nbsp;</span
-                    ><span style="font-weight: bold; font-size: 29px"
-                      >&nbsp;</span
-                    ><span
-                      style="
+                    >&nbsp;</span
+                  >
+                </p>
+                <p style="margin-bottom: 0pt; margin-top: 0pt">
+                  <span style="font-weight: bold; font-size: 16px"
+                    >&nbsp; &nbsp; &nbsp; &nbsp;</span
+                  ><span style="font-weight: bold; font-size: 29px">&nbsp;</span
+                  ><span
+                    style="
                         color: rgb(255, 255, 255);
                         font-weight: bold;
                         font-size: 29px;
+                        padding-bottom: 20px;
                       "
-                      >Event&nbsp;and&nbsp;Report</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
+                    >Contribution&nbsp;Report</span
+                  >
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
                     width: 203.3pt;
                     padding: 0pt 5.4pt;
                     background: rgb(175, 31, 31);
                     vertical-align: top;
                   "
-                >
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span
-                      style="
+              >
+                <p style="margin-bottom: 0pt; margin-top: 0pt">
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+                <p style="margin-bottom: 0pt; margin-top: 0pt">
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+                <p style="margin-bottom: 0pt; margin-top: 0pt">
+                  <span
+                    style="
                         color: rgb(255, 255, 255);
                         font-weight: bold;
                         font-size: 16px;
                       "
-                      >Total&nbsp;Attendance:
-                      {{ stats.todayAttendance }}</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span
-                      style="
+                    >Total&nbsp;Offering:
+                    {{ contributionReport.totalToday }}</span
+                  >
+                </p>
+                <p style="margin-bottom: 0pt; margin-top: 0pt">
+                  <span
+                    style="
                         color: rgb(255, 255, 255);
                         font-weight: bold;
                         font-size: 16px;
                       "
-                      >&nbsp;</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span
-                      style="
-                        color: rgb(255, 255, 255);
-                        font-weight: bold;
-                        font-size: 16px;
-                      "
-                      >Total&nbsp;Offering: {{ stats.todayOffering }}</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  colspan="3"
-                  style="
+                    >&nbsp;</span
+                  >
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td
+                colspan="3"
+                style="
                     width: 337.5pt;
                     padding: 0pt 5.4pt;
                     vertical-align: top;
                   "
-                >
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                  <p
-                    style="
-                      text-indent: 20pt;
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                    "
-                  >
-                    <span
-                      style="
-                        color: rgb(192, 192, 192);
-                        font-weight: bold;
-                        font-size: 13px;
-                      "
-                      >Event&nbsp;Name</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 24px"
-                      >&nbsp;
-                      {{
-                        stats.activityToday ? stats.activityToday.name : ""
-                      }}
-                      <br />
-                      <span
-                        style="
-                          font-size: 14px;
-                          color: red;
-                          padding-left: 20px;
-                        "
-                        >{{ eventDateString }}.</span
-                      ></span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
+              >
+                <p style="margin-bottom: 0pt; margin-top: 0pt">
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+
+                <p style="margin-bottom: 0pt; margin-top: 0pt">
+                  <span style="font-weight: bold; font-size: 24px"
+                    >&nbsp; CONTRIBUTION DETAILS
+                    <br />
+                  </span>
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
                     width: 203.3pt;
                     padding: 0pt 5.4pt;
                     vertical-align: top;
                   "
-                >
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >Preacher:
-                      {{
-                        stats.activityToday
-                          ? stats.activityToday.preacher
-                          : ""
-                      }}</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >Topic:
-                      {{
-                        stats.activityToday ? stats.activityToday.topic : ""
-                      }}</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >First&nbsp;timers: {{ stats.todayFirstTimer }}</span
-                    >
-                  </p>
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >New&nbsp;Converts: {{ stats.todayNewConvert }}</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    background: rgb(0, 0, 0);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="
-                        font-weight: normal;
-                        font-size: 21px;
-                        color: rgb(255, 255, 255);
-                      "
-                      >Attendance</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="5"
-                  style="
-                    width: 388.5pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: normal; font-size: 21px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="5"
-                  style="
-                    width: 388.5pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p style="margin-bottom: 0pt; margin-top: 0pt">
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    border-bottom: 2.25pt solid rgb(0, 0, 0);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      text-indent: 21pt;
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
-                      >Attendance&nbsp;item</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
-                    width: 188.2pt;
-                    padding: 0pt 5.4pt;
-                    border-bottom: 2.25pt solid rgb(0, 0, 0);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="
-                        font-weight: bolder;
-                        font-size: 18px;
-                        color: #000;
-                      "
-                      >Count</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="2"
-                  style="
-                    width: 200.3pt;
-                    padding: 0pt 5.4pt;
-                    border-bottom: 2.25pt solid rgb(0, 0, 0);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
-                      >Total</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr
-                style="font-weight: normal"
-                v-for="(attendance, index) in activityAttendances"
-                :key="index"
               >
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    border-bottom: 31.875pt none rgb(255, 255, 255);
-                    vertical-align: top;
-                  "
-                >
-                  <p
+                <p style="margin-bottom: 0pt; margin-top: 15pt">
+                  <span
                     style="
-                      text-indent: 21pt;
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
+                          font-size: 14px;
+                          color: red;
+                          padding-left: 20px;
+                        "
+                    >{{ format(routeParams) }}.</span
                   >
-                    <span style="font-weight: normal; font-size: 13px">{{
-                      attendance.attendanceTypeName
-                    }}</span>
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
-                    width: 188.2pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    border-bottom: 31.875pt none rgb(255, 255, 255);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: normal; font-size: 13px">{{
-                      attendance.number
-                    }}</span>
-                  </p>
-                </td>
-                <td
-                  colspan="2"
-                  style="
-                    width: 200.3pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    border-bottom: 31.875pt none rgb(255, 255, 255);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: normal; font-size: 13px">{{
-                      attendance.number
-                    }}</span>
-                  </p>
-                </td>
-              </tr>
-              <tr style="border-top: 3px solid">
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      text-indent: 21pt;
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
-                    width: 188.2pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >Total</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="2"
-                  style="
-                    width: 200.3pt;
-                    padding: 0pt 5.4pt;
-                    border-top: none;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px">{{
-                      stats.todayAttendance
-                    }}</span>
-                  </p>
-                </td>
-              </tr>
+                </p>
+              </td>
+            </tr>
 
-              <tr>
-                <td
-                  style="
+            <tr>
+              <td
+                style="
                     width: 152.3pt;
                     padding: 0pt 5.4pt;
                     border-top: none;
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       text-indent: 21pt;
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
                     width: 188.2pt;
                     padding: 0pt 5.4pt;
                     border-top: none;
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="2"
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+              <td
+                colspan="2"
+                style="
                     width: 200.3pt;
                     padding: 0pt 5.4pt;
                     border-top: none;
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
                     width: 152.3pt;
                     padding: 0pt 5.4pt;
                     background: rgb(0, 0, 0);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-size: 21px; color: rgb(255, 255, 255)"
-                      >Offering</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
-                    width: 188.2pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="2"
-                  style="
-                    width: 200.3pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-size: 21px">&nbsp;</span>
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
-                    width: 188.2pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="2"
-                  style="
-                    width: 200.3pt;
-                    padding: 0pt 5.4pt;
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr style="border-bottom: 3px solid">
-                <td
-                  style="
-                    width: 152.3pt;
-                    padding: 0pt 5.4pt;
-                    border-right: 31.875pt none rgb(255, 255, 255);
-                    border-bottom: 31.875pt none rgb(255, 255, 255);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
-                      >Offering&nbsp;Item</span
-                    >
-                  </p>
-                </td>
-                <td
-                  style="
-                    width: 126.75pt;
-                    padding: 0pt 5.4pt;
-                    border-left: none;
-                    border-right: 31.875pt none rgb(255, 255, 255);
-                    border-bottom: 31.875pt none rgb(255, 255, 255);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
-                      >Channel</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
-                    width: 155.25pt;
-                    padding: 0pt 5.4pt;
-                    border-left: none;
-                    border-right: 31.875pt none rgb(255, 255, 255);
-                    border-bottom: 31.875pt none rgb(255, 255, 255);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
-                      >Amount</span
-                    >
-                  </p>
-                </td>
-                <td
-                  style="
-                    width: 106.5pt;
-                    padding: 0pt 5.4pt;
-                    border-left: none;
-                    border-bottom: 31.875pt none rgb(255, 255, 255);
-                    vertical-align: top;
-                  "
-                >
-                  <p
-                    style="
-                      margin-bottom: 0pt;
-                      margin-top: 0pt;
-                      text-align: center;
-                    "
-                  >
-                    <span
-                      style="font-weight: bold; font-size: 18px; color: #000"
-                      >Total</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr
-                style="font-weight: normal; font-size: 13px"
-                v-for="(offering, index) in activityOfferings"
-                :key="index"
               >
-                <td
+                <p
                   style="
+                      margin-bottom: 0pt;
+                      margin-top: 0pt;
+                      text-align: center;
+                    "
+                >
+                  <span style="font-size: 21px; color: rgb(255, 255, 255)"
+                    >Contribution</span
+                  >
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
+                    width: 188.2pt;
+                    padding: 0pt 5.4pt;
+                    vertical-align: top;
+                  "
+              >
+                <p
+                  style="
+                      margin-bottom: 0pt;
+                      margin-top: 0pt;
+                      text-align: center;
+                    "
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+              <td
+                colspan="2"
+                style="
+                    width: 200.3pt;
+                    padding: 0pt 5.4pt;
+                    vertical-align: top;
+                  "
+              >
+                <p
+                  style="
+                      margin-bottom: 0pt;
+                      margin-top: 0pt;
+                      text-align: center;
+                    "
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
+                    width: 152.3pt;
+                    padding: 0pt 5.4pt;
+                    vertical-align: top;
+                  "
+              >
+                <p
+                  style="
+                      margin-bottom: 0pt;
+                      margin-top: 0pt;
+                      text-align: center;
+                    "
+                >
+                  <span style="font-size: 21px">&nbsp;</span>
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
+                    width: 188.2pt;
+                    padding: 0pt 5.4pt;
+                    vertical-align: top;
+                  "
+              >
+                <p
+                  style="
+                      margin-bottom: 0pt;
+                      margin-top: 0pt;
+                      text-align: center;
+                    "
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+              <td
+                colspan="2"
+                style="
+                    width: 200.3pt;
+                    padding: 0pt 5.4pt;
+                    vertical-align: top;
+                  "
+              >
+                <p
+                  style="
+                      margin-bottom: 0pt;
+                      margin-top: 0pt;
+                      text-align: center;
+                    "
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+            </tr>
+            <tr style="border-bottom: 3px solid">
+              <td
+                style="
+                    width: 152.3pt;
+                    padding: 0pt 5.4pt;
+                    border-right: 31.875pt none rgb(255, 255, 255);
+                    border-bottom: 31.875pt none rgb(255, 255, 255);
+                    vertical-align: top;
+                  "
+              >
+                <p
+                  style="
+                      margin-bottom: 0pt;
+                      margin-top: 0pt;
+                      text-align: center;
+                    "
+                >
+                  <span style="font-weight: bold; font-size: 18px; color: #000"
+                    >Contribution&nbsp;Item</span
+                  >
+                </p>
+              </td>
+              <td
+                style="
+                    width: 126.75pt;
+                    padding: 0pt 5.4pt;
+                    border-left: none;
+                    border-right: 31.875pt none rgb(255, 255, 255);
+                    border-bottom: 31.875pt none rgb(255, 255, 255);
+                    vertical-align: top;
+                  "
+              >
+                <p
+                  style="
+                      margin-bottom: 0pt;
+                      margin-top: 0pt;
+                      text-align: center;
+                    "
+                >
+                  <span style="font-weight: bold; font-size: 18px; color: #000"
+                    >Channel</span
+                  >
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
+                    width: 155.25pt;
+                    padding: 0pt 5.4pt;
+                    border-left: none;
+                    border-right: 31.875pt none rgb(255, 255, 255);
+                    border-bottom: 31.875pt none rgb(255, 255, 255);
+                    vertical-align: top;
+                  "
+              >
+                <p
+                  style="
+                      margin-bottom: 0pt;
+                      margin-top: 0pt;
+                      text-align: center;
+                    "
+                >
+                  <span style="font-weight: bold; font-size: 18px; color: #000"
+                    >Amount</span
+                  >
+                </p>
+              </td>
+              <td
+                style="
+                    width: 106.5pt;
+                    padding: 0pt 5.4pt;
+                    border-left: none;
+                    border-bottom: 31.875pt none rgb(255, 255, 255);
+                    vertical-align: top;
+                  "
+              >
+                <p
+                  style="
+                      margin-bottom: 0pt;
+                      margin-top: 0pt;
+                      text-align: center;
+                    "
+                >
+                  <span style="font-weight: bold; font-size: 18px; color: #000"
+                    >Total</span
+                  >
+                </p>
+              </td>
+            </tr>
+            <tr
+              style="font-weight: normal; font-size: 13px"
+              v-for="(offering, index) in contributionReport.todayContributions"
+              :key="index"
+            >
+              <td
+                style="
                     width: 152.3pt;
                     padding: 0pt 5.4pt;
                     border-right: 31.875pt none rgb(255, 255, 255);
@@ -1181,21 +866,21 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: normal; font-size: 13px">{{
-                      offering.name
-                    }}</span>
-                  </p>
-                </td>
-                <td
-                  style="
+                >
+                  <span style="font-weight: normal; font-size: 16px">{{
+                    offering.name
+                  }}</span>
+                </p>
+              </td>
+              <td
+                style="
                     width: 126.75pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1204,22 +889,22 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: normal; font-size: 13px">{{
-                      offering.channel
-                    }}</span>
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
+                >
+                  <span style="font-weight: normal; font-size: 16px">{{
+                    offering.channel
+                  }}</span>
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
                     width: 155.25pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1228,21 +913,21 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: normal; font-size: 13px">{{
-                      offering.amount
-                    }}</span>
-                  </p>
-                </td>
-                <td
-                  style="
+                >
+                  <span style="font-weight: normal; font-size: 16px">{{
+                    offering.amount
+                  }}</span>
+                </p>
+              </td>
+              <td
+                style="
                     width: 106.5pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1250,23 +935,23 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: normal; font-size: 13px">{{
-                      offering.amount
-                    }}</span>
-                  </p>
-                </td>
-              </tr>
-              <tr style="border-top: 3px solid">
-                <td
-                  style="
+                >
+                  <span style="font-weight: normal; font-size: 16px">{{
+                    offering.amount
+                  }}</span>
+                </p>
+              </td>
+            </tr>
+            <tr style="border-top: 3px solid">
+              <td
+                style="
                     width: 152.3pt;
                     padding: 0pt 5.4pt;
                     border-right: 31.875pt none rgb(255, 255, 255);
@@ -1274,21 +959,19 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+              <td
+                style="
                     width: 126.75pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1297,22 +980,20 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
                     width: 155.25pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1321,21 +1002,19 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >Total</span
-                    >
-                  </p>
-                </td>
-                <td
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">Total</span>
+                </p>
+              </td>
+              <td
+                style="
                     width: 106.5pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1343,23 +1022,23 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px">{{
-                      tottalOfferings
-                    }}</span>
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">{{
+                    contributionReport.totalToday
+                  }}</span>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
                     width: 152.3pt;
                     padding: 0pt 5.4pt;
                     border-right: 31.875pt none rgb(255, 255, 255);
@@ -1367,21 +1046,19 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+              <td
+                style="
                     width: 126.75pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1390,22 +1067,20 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
                     width: 155.25pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1414,21 +1089,19 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-                <td
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+              <td
+                style="
                     width: 106.5pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1436,23 +1109,21 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      >&nbsp;</span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px">&nbsp;</span>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="
                     width: 152.3pt;
                     padding: 0pt 5.4pt;
                     border-right: 31.875pt none rgb(255, 255, 255);
@@ -1460,19 +1131,19 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"></span>
-                  </p>
-                </td>
-                <td
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px"></span>
+                </p>
+              </td>
+              <td
+                style="
                     width: 126.75pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1481,20 +1152,20 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"></span>
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px"></span>
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
                     width: 155.25pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1503,19 +1174,19 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"></span>
-                  </p>
-                </td>
-                <td
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px"></span>
+                </p>
+              </td>
+              <td
+                style="
                     width: 106.5pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1523,25 +1194,28 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
+                >
+                  <span style="font-weight: bold; font-size: 16px"
+                    ><a
+                      :href="url"
+                      target="_blank"
+                      style="color: blue; font-weight: bold"
+                      >View full report</a
+                    ></span
                   >
-                    <span style="font-weight: bold; font-size: 16px"
-                      ><a :href="url" style="color: blue; font-weight: bold"
-                        >View full report</a
-                      ></span
-                    >
-                  </p>
-                </td>
-              </tr>
-              <tr style="height: 40px; background: #eee">
-                <td
-                  style="
+                </p>
+              </td>
+            </tr>
+            <tr style="height: 40px; background: #eee">
+              <td
+                style="
                     width: 152.3pt;
                     padding: 0pt 5.4pt;
                     border-right: 31.875pt none rgb(255, 255, 255);
@@ -1549,20 +1223,20 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"></span>
-                  </p>
-                </td>
-                <td
-                  colspan="3"
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px"></span>
+                </p>
+              </td>
+              <td
+                colspan="3"
+                style="
                     width: 126.75pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1571,26 +1245,26 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span
-                      style="
+                >
+                  <span
+                    style="
                         font-weight: bold;
                         font-size: 14px;
                         margin-top: 20px;
                       "
-                      >Powered By ChurchPlus</span
-                    >
-                  </p>
-                </td>
-                <td
-                  style="
+                    >Powered By ChurchPlus</span
+                  >
+                </p>
+              </td>
+              <td
+                style="
                     width: 155.25pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1599,19 +1273,19 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"></span>
-                  </p>
-                </td>
-                <td
-                  style="
+                >
+                  <span style="font-weight: bold; font-size: 16px"></span>
+                </p>
+              </td>
+              <td
+                style="
                     width: 106.5pt;
                     padding: 0pt 5.4pt;
                     border-left: none;
@@ -1619,160 +1293,187 @@
                     border-bottom: 31.875pt none rgb(255, 255, 255);
                     vertical-align: top;
                   "
-                >
-                  <p
-                    style="
+              >
+                <p
+                  style="
                       margin-bottom: 0pt;
                       margin-top: 0pt;
                       text-align: center;
                     "
-                  >
-                    <span style="font-weight: bold; font-size: 16px"
-                      ><a
-                        :href="url"
-                        style="color: blue; font-weight: bold"
-                      ></a
-                    ></span>
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                >
+                  <span style="font-weight: bold; font-size: 16px"
+                    ><a :href="url" style="color: blue; font-weight: bold"></a
+                  ></span>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <!-- <div class="stats">
           <EventReportStats />
       </div> -->
-      <div class="row">
+      <div class="row" v-if="routeActivityId">
         <div class="col-md-12">
           <div class="pg-content">
             <h4 class="analytics min">Contribution Performance</h4>
 
             <div class="analytics-container first-con">
               <div class="ana-group">
-                <div class="ana-header">
-                  
- 
-                </div>
+                <div class="ana-header"></div>
                 <div class="ana-items">
-                 
                   <div>
-                      <h5>
-                        <span class="today-text">Today </span>
-                        <span class="versus"> vs Lastweek</span>
+                    <h5>
+                      <span class="today-text">Today </span>
+                      <span class="versus"> vs Lastweek</span>
                     </h5>
-                      <div class="ana-item mt-5">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">Offering</p>
-                      <p class="ana-item-percentage">
-                          {{ contributionReport.todayVsLastWeek }}
-                      </p>
-                      <p>
-                        <span class="ana-item-value">
-                          {{ contributionReport.totalToday }}
-                        </span>
-                        vs
-                        <span class="ana-item-value">
-                          {{ contributionReport.totalLastWeek }}
-                        </span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <div >
-    
-                          <img
-                            src="../../../assets/dashboardlinks/negative-icon.svg"
-                            alt=""
-                          />
+                    <div class="ana-item mt-5">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">Offering</p>
+                        <p class="ana-item-percentage">
+                          {{
+                            contributionReport.todayVsLastWeek
+                              ? contributionReport.todayVsLastWeek.toString()
+                                  .length > 4
+                                ? `${contributionReport.todayVsLastWeek
+                                    .toString()
+                                    .slice(0, 4)}..%`
+                                : contributionReport.todayVsLastWeek.toFixed(2)
+                              : 0
+                          }}
+                        </p>
+                        <p>
+                          <span class="ana-item-value">
+                            {{ contributionReport.totalToday }}
+                          </span>
+                          vs
+                          <span class="ana-item-value">
+                            {{ contributionReport.totalLastWeek }}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <div v-if="contributionReport.todayVsLastWeek > 0">
+                            <img
+                              src="../../../assets/dashboardlinks/trend-icon.svg"
+                              alt=""
+                            />
+                          </div>
+                          <div v-else>
+                            <img
+                              src="../../../assets/dashboardlinks/negative-icon.svg"
+                              alt=""
+                            />
+                          </div>
                         </div>
-                  
                       </div>
                     </div>
                   </div>
-                  </div>
 
                   <div>
-                       <h5>
-                        <span class="today-text">Today </span>
-                        <span class="versus"> vs Same time last month</span>
+                    <h5>
+                      <span class="today-text">Today </span>
+                      <span class="versus"> vs Same Time Last Month</span>
                     </h5>
-                      <div class="ana-item mt-5">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">Offering</p>
-                      <p class="ana-item-percentage">
-                          {{ contributionReport.todayVsLastMonth }}
-                      </p>
-                      <p>
-                        <span class="ana-item-value">
-                          {{ contributionReport.totalToday }}
-                        </span>
-                        vs
-                        <span class="ana-item-value">
-                         {{ contributionReport.totalLastMonth }}
-                        </span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <div
-                          
-                        >
-  
-                          <img
-                            src="../../../assets/dashboardlinks/negative-icon.svg"
-                            alt=""
-                          />
+                    <div class="ana-item mt-5">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">Offering</p>
+                        <p class="ana-item-percentage">
+                          {{
+                            contributionReport.todayVsLastMonth
+                              ? contributionReport.todayVsLastMonth.toString()
+                                  .length > 4
+                                ? `${contributionReport.todayVsLastMonth
+                                    .toString()
+                                    .slice(0, 4)}..%`
+                                : contributionReport.todayVsLastMonth.toFixed(2)
+                              : 0
+                          }}
+                        </p>
+                        <p>
+                          <span class="ana-item-value">
+                            {{ contributionReport.totalToday }}
+                          </span>
+                          vs
+                          <span class="ana-item-value">
+                            {{ contributionReport.totalLastMonth }}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <div v-if="contributionReport.todayVsLastMonth > 0">
+                            <img
+                              src="../../../assets/dashboardlinks/trend-icon.svg"
+                              alt=""
+                            />
+                          </div>
+                          <div v-else>
+                            <img
+                              src="../../../assets/dashboardlinks/negative-icon.svg"
+                              alt=""
+                            />
+                          </div>
                         </div>
-                        </div>
-                    </div>
-                  </div>
-                  </div>
-                  
-                  <div>
-                      <h5>
-                        <span class="today-text">Today </span>
-                        <span class="versus"> vs Same time last year</span>
-                    </h5>
-                      <div class="ana-item mt-5">
-                    <div class="ana-item-text">
-                      <p class="ana-item-header">Offering</p>
-                      <p class="ana-item-percentage">
-                        {{ contributionReport.todayVsLastYear }}
-                      </p>
-                      <p>
-                        <span class="ana-item-value">
-                          {{ contributionReport.totalToday }}
-                        </span>
-                        vs
-                        <span class="ana-item-value">
-                          {{ contributionReport.totalLastYear }}
-                        </span>
-                      </p>
-                    </div>
-                    <div class="ana-item-icon">
-                      <div class="item-image">
-                        <div >
-             
-                          <img
-                            src="../../../assets/dashboardlinks/negative-icon.svg"
-                            alt=""
-                          />
-                        </div>
-                        
                       </div>
                     </div>
                   </div>
+
+                  <div>
+                    <h5>
+                      <span class="today-text">Today </span>
+                      <span class="versus"> vs Same Time Last Year</span>
+                    </h5>
+                    <div class="ana-item mt-5">
+                      <div class="ana-item-text">
+                        <p class="ana-item-header">Offering</p>
+                        <p class="ana-item-percentage">
+                          {{
+                            contributionReport.todayVsLastYear
+                              ? contributionReport.todayVsLastYear.toString()
+                                  .length > 4
+                                ? `${contributionReport.todayVsLastYear
+                                    .toString()
+                                    .slice(0, 4)}..%`
+                                : contributionReport.todayVsLastYear.toFixed(2)
+                              : 0
+                          }}
+                        </p>
+                        <p>
+                          <span class="ana-item-value">
+                            {{ contributionReport.totalToday }}
+                          </span>
+                          vs
+                          <span class="ana-item-value">
+                            {{ contributionReport.totalLastYear }}
+                          </span>
+                        </p>
+                      </div>
+                      <div class="ana-item-icon">
+                        <div class="item-image">
+                          <div v-if="contributionReport.todayVsLastYear > 0">
+                            <img
+                              src="../../../assets/dashboardlinks/trend-icon.svg"
+                              alt=""
+                            />
+                          </div>
+                          <div v-else>
+                            <img
+                              src="../../../assets/dashboardlinks/negative-icon.svg"
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-
-
                 </div>
                 <hr class="hr" />
               </div>
             </div>
-           
 
-          <div class="area-charts analytics-container mb-5">
-            
+            <div class="area-charts analytics-container mb-5">
               <div class="area-chart mt-5">
                 <ReportAreaChart
                   elemId="chart"
@@ -1782,17 +1483,17 @@
                   lineColor="#1F78B4"
                 />
               </div>
-            </div> 
+            </div>
           </div>
         </div>
       </div>
       <Toast />
     </div>
-    </div>
+  </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 // import ReportAreaChart from "@/components/charts/AreaChart.vue";
 // import eventsService from '../../../services/events/eventsservice';
 import ReportModal from "@/components/firsttimer/ReportModal.vue";
@@ -1801,155 +1502,88 @@ import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../../services/progressbar/progress";
 import axios from "@/gateway/backendapi";
 // // import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
-import formatDate from "../../../services/dates/dateformatter"
+import { useRoute } from "vue-router";
+import formatDate from "../../../services/dates/dateformatter";
+import numbers_formatter from "../../../services/numbers/numbers_formatter";
 
 export default {
-    components: {
-      ReportModal
-    },
-    setup () {
-        const route = useRoute()
-        const reportApproved = ref(false)
-        const contributionReport = ref([])
-        const emaildata = ref(null)
-        const btnState = ref("");
-        const toast = useToast();
-        const churchName = ref("")
-        const routeParams = ref(route.params.report)
-        const stats = ref({
-  "activityToday": {
-    "id": "ebec2866-63f9-43d9-87c7-08d919f43494",
-    "firstTimersCount": 0,
-    "newConvertsCount": 0,
-    "name": "PFN-TEST",
-    "venue": null,
-    "details": null,
-    "adImagePath": "",
-    "adImagePathBlobName": "",
-    "date": "2021-05-18T12:09:21.96",
-    "makePublic": false,
-    "enableRegisteration": true,
-    "enableRegisterationPayment": true,
-    "registrationAmount": 200,
-    "eventRegistrationRules": null,
-    "eventRegistrationSMS": "Thanks",
-    "eventRegistrationEmail": "Thanks",
-    "adAudioPath": null,
-    "adVideoPath": null,
-    "isPushed": false,
-    "activityDate": "2021-05-24T00:00:00",
-    "startTime": null,
-    "endTime": null,
-    "description": null,
-    "preacher": null,
-    "topic": null,
-    "text": null,
-    "note": null,
-    "tenantID": "e9749fad-85e8-4130-b553-37acc8acde61",
-    "eventId": "f7de6ca5-47a6-4e4e-de41-08d919f42a41",
-    "event": null,
-    "attendances": null,
-    "offerings": null,
-    "testimonies": [],
-    "firstTimers": [],
-    "converts": [],
-    "activityRegistrations": null
+  components: {
+    ReportModal,
   },
-  "activityOfferings": [],
-  "todayOffering": 0,
-  "lastWeekOffering": 0,
-  "lastMonthOffering": 0,
-  "lastYearOffering": 0,
-  "todayVsLastweekOfferingPercentage": 0,
-  "todayVsLastMonthOfferingPercentage": 0,
-  "todayVsLastYearOfferingPercentage": 0,
-  "tenantCurrencyName": "NGN",
-  "todayFirstTimer": 0,
-  "lastWeekFirstTimer": 0,
-  "lastMonthFirstTimer": 0,
-  "lastYearFirstTimer": 0,
-  "todayVsLastYearFirstTimerPercentage": 0,
-  "todayVsLastWeekFirstTimerPercentage": 0,
-  "todayVsLastMonthFirstTimerPercentage": 0,
-  "activityAttendances": [],
-  "todayAttendance": 0,
-  "lastWeekAttendance": 0,
-  "lastMonthAttendance": 0,
-  "lastYearAttendance": 0,
-  "todayVsLastYearAttendancePercentage": 0,
-  "todayVsLastWeekAttendancePercentage": 0,
-  "todayVsLastMonthAttendancePercentage": 0,
-  "todayNewConvert": 0,
-  "attendanceSoFar": [
-    0,
-    0,
-    0,
-    0,
-    0
-  ],
-  "firstTimerSoFar": [
-    0,
-    0,
-    0,
-    0,
-    0
-  ],
-  "offeringSoFar": [
-    0,
-    0,
-    0,
-    0,
-    0
-  ]
-})
+  setup() {
+    const route = useRoute();
+    const reportApproved = ref(false);
+    const contributionReport = ref([]);
+    const emaildata = ref(null);
+    const btnState = ref("");
+    const toast = useToast();
+    const churchName = ref("");
+    const routeParams = ref(route.query.report);
+    const routeActivityId = ref(route.query.activityID);
+    const url = ref(`my.churchplus.co/tenant/report/${route.params.report}`);
+    const sendBtnText = ref("Send Report");
+    const markedAsSent = ref("mark as sent");
 
-        const toggleReportState = () => {
-        reportApproved.value = !reportApproved.value;
-        status.value = "Unsent";
-        };
-        
-        // const getContributionReport = async() => {
-        //   contributionReport.value = JSON.parse(localStorage.getItem('contriTransact'))
-        //   console.log(contributionReport.value)
+    const toggleReportState = () => {
+      reportApproved.value = !reportApproved.value;
+      status.value = "Unsent";
+    };
 
-        //   try {
-        //     await eventsService.getEventsByActivity(contributionReport.value[0].activityID)
-        //     .then(res => console.log(res))
-        //     .catch(err => console.log(err))
-        //   }
-        //   catch (err) {
-        //     console.log(err)
-        //   }          
-        // }
-        // getContributionReport()
+    // const getContributionReport = async() => {
+    //   contributionReport.value = JSON.parse(localStorage.getItem('contriTransact'))
+    //   console.log(contributionReport.value)
 
-        // try {
-        //         await eventsService.getEventsByActivity(contributionReport.value.todayContributions[0].id)
-        //         .then(res => console.log(res))
-        //         .catch(err => console.log(err))
-        //       }
-        //       catch (err) {
-        //         console.log(err)
-        //       } 
+    //   try {
+    //     await eventsService.getEventsByActivity(contributionReport.value[0].activityID)
+    //     .then(res => console.log(res))
+    //     .catch(err => console.log(err))
+    //   }
+    //   catch (err) {
+    //     console.log(err)
+    //   }
+    // }
+    // getContributionReport()
 
-        const getReport = () => {
-          axios.get(`https://churchplusv3coreapi.azurewebsites.net/api/Offering/contributionReport?date=${route.params.report}`)
-          .then(res =>  {
-            console.log(res)
-            contributionReport.value = res.data.returnObject
+    // try {
+    //         await eventsService.getEventsByActivity(contributionReport.value.todayContributions[0].id)
+    //         .then(res => console.log(res))
+    //         .catch(err => console.log(err))
+    //       }
+    //       catch (err) {
+    //         console.log(err)
+    //       }
 
-               
-          }).catch(err => {
-              console.log(err)
-            })
-        }
-        getReport()
+    const getReport = () => {
+      if (route.query.activityID) {
+        axios
+          .get(
+            `/api/Offering/contributionReport?date=${route.query.report}&activityId=${route.query.activityID}`
+          )
+          .then((res) => {
+            console.log(res);
+            contributionReport.value = res.data.returnObject;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        axios
+          .get(`/api/Offering/contributionReport?date=${route.query.report}`)
+          .then((res) => {
+            console.log(res);
+            contributionReport.value = res.data.returnObject;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    };
+    getReport();
 
-        const sendReport = (messageObj) => {
-          console.log(messageObj)
-          const emailData = ref(emaildata.value.innerHTML);
-          const message = `
+    const sendReport = (messageObj) => {
+      console.log(messageObj);
+      const emailData = ref(emaildata.value.innerHTML);
+      const message = `
                 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
                 <html xmlns="http://www.w3.org/1999/xhtml" style="box-sizing: border-box; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; margin: 0; padding: 0;">
                   <head>
@@ -1981,315 +1615,355 @@ export default {
                   ${emailData.value}
                   </body>
                   `;
-              const body = {
-                // message: topmost.value.innerHTMl.toString(),
+      const body = {
+        // message: topmost.value.innerHTMl.toString(),
 
-                ispersonalized: false,
-                contacts: messageObj.data.contacts,
-                subject: messageObj.data.subject,
-                // user: "+2349086767765",
-              };
-              if (messageObj.medium === "sms") {
-                body.gateWayToUse = "hostedsms";
-                body.category = "";
-                body.emailAddress = "";
-                body.emailDisplayName = "";
-                body.isoCode = messageObj.data.isoCode;
-                body.toOthers = messageObj.data.toOthers;
-              }
+        ispersonalized: false,
+        contacts: messageObj.data.contacts,
+        subject: messageObj.data.subject,
+        // user: "+2349086767765",
+      };
+      if (messageObj.medium === "sms") {
+        body.gateWayToUse = "hostedsms";
+        body.category = "";
+        body.emailAddress = "";
+        body.emailDisplayName = "";
+        body.isoCode = messageObj.data.isoCode;
+        body.toOthers = messageObj.data.toOthers;
+      }
 
-              body.message =
-                messageObj.medium === "sms" ? messageObj.data.message : message;
+      body.message =
+        messageObj.medium === "sms" ? messageObj.data.message : message;
 
-              const url =
-                messageObj.medium === "sms"
-                  ? "/api/Messaging/sendSms"
-                  : "/api/Messaging/sendEmail";
+      const url =
+        messageObj.medium === "sms"
+          ? "/api/Messaging/sendSms"
+          : "/api/Messaging/sendEmail";
 
-              composerObj
-                .sendMessage(url, body)
-                .then((res) => {
-                  btnState.value = "";
-                  console.log(res, "report response");
-                  if (res.status === false) {
-                    toast.add({
-                      severity: "error",
-                      summary: "Sending Failed",
-                      detail: res.message,
-                      life: 3000,
-                    });
-                  } else {
-                    toast.add({
-                      severity: "success",
-                      summary: "Send Success",
-                      detail: "Your report has been sent",
-                      life: 3000,
-                    });
-                  }
-                })
-                .catch((err) => {
-                  btnState.value = "";
-                  console.log(err);
-                  stopProgressBar();
-                  toast.add({
-                    severity: "error",
-                    summary: "Sending Failed",
-                    detail: "Report was not sent, please try again",
-                    life: 3000,
-                  });
-                });
-              btnState.value = "modal";
-              console.log(btnState.value)
-            };
+      composerObj
+        .sendMessage(url, body)
+        .then((res) => {
+          btnState.value = "";
+          console.log(res, "report response");
+          if (res.status === false) {
+            toast.add({
+              severity: "error",
+              summary: "Sending Failed",
+              detail: res.message,
+              life: 3000,
+            });
+          } else {
+            toast.add({
+              severity: "success",
+              summary: "Send Success",
+              detail: "Your report has been sent",
+              life: 3000,
+            });
+          }
+        })
+        .catch((err) => {
+          btnState.value = "";
+          console.log(err);
+          stopProgressBar();
+          toast.add({
+            severity: "error",
+            summary: "Sending Failed",
+            detail: "Report was not sent, please try again",
+            life: 3000,
+          });
+        });
+      btnState.value = "modal";
+      console.log(btnState.value);
+    };
 
-            const getChurchName = (payload) => {
-              churchName.value = payload
-            }
+    const getChurchName = (payload) => {
+      churchName.value = payload;
+    };
 
-            const format = (date) => {
-              return formatDate.monthDayYear(date)
-            }
+    const format = (date) => {
+      return formatDate.monthDayYear(date);
+    };
 
-        return {
-            reportApproved, toggleReportState, contributionReport, stats, sendReport,
-            emaildata, btnState, churchName, getChurchName, routeParams, format
-        }
-    }
-}
+    const markAsSent = () => {
+      sendBtnText.value = "Resend Report";
+      markedAsSent.value = "marked as sent";
+    };
+
+    const amountWithCommas = (amount) =>
+      numbers_formatter.amountWithCommas(amount);
+
+    return {
+      reportApproved,
+      toggleReportState,
+      contributionReport,
+      sendReport,
+      emaildata,
+      btnState,
+      churchName,
+      getChurchName,
+      routeParams,
+      format,
+      url,
+      sendBtnText,
+      markAsSent,
+      markedAsSent,
+      routeActivityId,
+      amountWithCommas,
+    };
+  },
+};
 </script>
 
 <style scoped>
-    * {
-    color: #1c252c;
-    box-sizing: border-box;
-    }
+* {
+  color: #1c252c;
+  box-sizing: border-box;
+}
 
-    a {
-    text-decoration: none;
-    font-weight: 700;
-    }
+a {
+  text-decoration: none;
+  font-weight: 700;
+}
 
-    .page-hder {
-    font-size: 28px;
-    }
+.page-hder {
+  font-size: 28px;
+}
 
-    .theader {
-    font-size: 14px;
-    font-weight: 800;
-    color: #0f0220;
-    }
+.theader {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f0220;
+}
 
-    .draft {
-    border: 0.5px solid #252a2f;
-    padding: 10px;
-    border-radius: 22px 0 0 22px;
-    background: grey;
-    }
+.draft {
+  border: 0.5px solid #252a2f;
+  padding: 10px;
+  border-radius: 22px 0 0 22px;
+  background: grey;
+}
 
-    .evt-name {
-    color: #136acd;
-    font-weight: 800;
-    font-size: 22px;
-    }
+.evt-name {
+  color: #136acd;
+  font-weight: 800;
+  font-size: 22px;
+}
 
-    .def-btn {
-    height: 40px;
-    border-radius: 22px;
-    padding: 8px 10px;
-    width: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #dde2e6;
-    }
+.def-btn {
+  height: 40px;
+  border-radius: 22px;
+  padding: 8px 10px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #dde2e6;
+}
 
-    .def-btn:hover {
-    cursor: pointer;
-    }
+.def-btn:hover {
+  cursor: pointer;
+}
 
-    @media screen and (max-width: 1000px) {
-    .container {
-        width: 100% !important;
-    }
+@media screen and (max-width: 1000px) {
+  .container {
+    width: 100% !important;
+  }
 
-    .def-btn {
-        max-width: 280px;
-    }
-    }
+  .def-btn {
+    max-width: 280px;
+  }
+}
 
-    .unapproved {
-    background: #ffffff 0% 0% no-repeat padding-box;
-    box-shadow: 0px 3px 15px #00000029;
-    border: 1px solid #dde2e6;
-    border-radius: 5px;
-    }
+.unapproved {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 15px #00000029;
+  border: 1px solid #dde2e6;
+  border-radius: 5px;
+}
 
-    .info-div {
-    background: #f9f8db;
-    border: 1px solid #dde2e6;
-    border-radius: 5px 5px 0px 0px;
-    text-align: center;
-    }
+.info-div {
+  background: #f9f8db;
+  border: 1px solid #dde2e6;
+  border-radius: 5px 5px 0px 0px;
+  text-align: center;
+}
 
-    .file-icon {
-    color: #136acd;
-    border: 1px solid #136acd;
-    padding: 10px;
-    border-radius: 50%;
-    height: 40px;
-    width: 40px;
-    text-align: center;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    }
+.file-icon {
+  color: #136acd;
+  border: 1px solid #136acd;
+  padding: 10px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
 
-    .grey-text {
-    color: #8296ae;
-    }
+.grey-text {
+  color: #8296ae;
+}
 
-    .dark-text {
-    color: #1d262d;
-    font-weight: 800;
-    }
+.dark-text {
+  color: #1d262d;
+  font-weight: 800;
+}
 
-    .edit-btn {
-    border: 1px solid #dde2e6;
-    }
+.edit-btn {
+  border: 1px solid #dde2e6;
+}
 
-    .bottom-section {
-    box-shadow: 0px 3px 10px #00000029;
-    border: 1px solid #dde2e6;
-    border-radius: 5px;
-    }
+.bottom-section {
+  box-shadow: 0px 3px 10px #00000029;
+  border: 1px solid #dde2e6;
+  border-radius: 5px;
+}
 
-    .dark-red-section {
-    /* background: #980404; */
-    background: #ff0000b5;
-    color: #fff;
-    height: 133px;
-    display: flex;
-    align-items: center;
-    border-radius: 5px 0px 0px 0px;
-    height: 133px;
-    display: flex;
-    align-items: center;
-    border-radius: 5px 0px 0px 0px;
-    }
+.dark-red-section {
+  /* background: #980404; */
+  background: #ff0000b5;
+  color: #fff;
+  height: 133px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px 0px 0px 0px;
+  height: 133px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px 0px 0px 0px;
+}
 
-    .light-red-section {
-    /* background: #ff0000b5; */
-    background: #980404;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 0px 5px 0px 0px;
-    }
+.light-red-section {
+  /* background: #ff0000b5; */
+  background: #980404;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px 5px 0px 0px;
+}
 
-    .dark-red-section h2,
-    .light-red-section span {
-    color: #fff;
-    font-weight: 800;
-    }
+.dark-red-section h2,
+.light-red-section span {
+  color: #fff;
+  font-weight: 800;
+}
 
-    .evt-report {
-    font-size: 25px;
-    }
+.evt-report {
+  font-size: 25px;
+}
 
-    .recieve {
-    font-size: 22px;
-    }
+.recieve {
+  font-size: 22px;
+}
 
-    .analytics,
-    .attendance-header {
-    background: #1c252c;
-    color: #fff;
-    width: 155px;
-    height: 37px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 24px;
-    }
+.analytics,
+.attendance-header {
+  background: #1c252c;
+  color: #fff;
+  width: 155px;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
 
-    .analytics-container {
-    /* padding: 0 24px 24px 24px; */
-    width: 90%;
-    margin: auto;
-    }
+.analytics-container {
+  /* padding: 0 24px 24px 24px; */
+  width: 90%;
+  margin: auto;
+}
 
-    .analytics.min {
-        width: 230px;
-        font-size: 17px;
-    }
+.analytics.min {
+  width: 230px;
+  font-size: 17px;
+}
 
-    .ana-items {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding-bottom: 24px;
-    }
+.ana-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding-bottom: 24px;
+}
 
-    .ana-item {
-    width: 200px;
-    display: flex;
-    justify-content: space-between;
-    box-shadow: 0px 3px 10px #00000029;
-    border: 1px solid #dde2e6;
-    border-radius: 5px;
-    padding: 10px 4px 10px 10px;
-    margin: 4px 0;
-    }
+.ana-item {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0px 3px 10px #00000029;
+  border: 1px solid #dde2e6;
+  border-radius: 5px;
+  padding: 10px 4px 10px 10px;
+  margin: 4px 0;
+}
 
-    .ana-header {
-    margin-bottom: 40px;
-    }
+.ana-header {
+  margin-bottom: 40px;
+}
 
-    .ana-item p {
-    margin-bottom: 0;
-    }
+.ana-item p {
+  margin-bottom: 0;
+}
 
-    .ana-item-header {
-    font-size: 14px;
-    text-transform: uppercase;
-    }
+.ana-item-header {
+  font-size: 14px;
+  text-transform: uppercase;
+}
 
-    .ana-item-percentage {
-    color: #1c252c;
-    font-weight: bold;
-    font-size: 40px;
-    }
+.ana-item-percentage {
+  color: #1c252c;
+  font-weight: bold;
+  font-size: 40px;
+}
 
-    .ana-item-value,
-    .today-text {
-    color: #136acd;
-    font-weight: 700;
-    }
+.ana-item-value,
+.today-text {
+  color: #136acd;
+  font-weight: 700;
+}
 
-    .ana-items h5 {
-        font-size: 16px;
-    }
+.ana-items h5 {
+  font-size: 16px;
+}
 
-    .versus {
-    color: #1c252c;
-    font-weight: 700;
-    }
+.versus {
+  color: #1c252c;
+  font-weight: 700;
+}
 
-    .bold-400 {
-    font-weight: 400;
-    }
+.bold-400 {
+  font-weight: 400;
+}
 
-    .bold-700 {
-    font-weight: 700;
-    }
+.bold-700 {
+  font-weight: 700;
+}
 
-    .hr-dark {
-    border: 1px solid #000;
-    }
+.hr-dark {
+  border: 1px solid #000;
+}
 
-    .approve-btn {
-    background: #136acd;
-    color: white;
-    }
+.approve-btn {
+  background: #136acd;
+  color: white;
+}
+
+.resend-btn {
+  background: transparent !important;
+  color: #4d6676 !important;
+  border: 1px solid #dde2e6 !important;
+}
+
+.text-style {
+  font: normal normal bold 17px/16px Nunito Sans;
+}
+
+.total-text {
+  font: normal normal normal 30px/24px Nunito Sans;
+}
+
+.hr-total {
+  border: 1px solid #dde2e6;
+}
 </style>

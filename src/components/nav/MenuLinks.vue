@@ -202,7 +202,7 @@
             </li>
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/offering"
-                >Contributions</router-link
+                >Offerings</router-link
               >
             </li>
             <li class="dd-list-item" v-if="false">
