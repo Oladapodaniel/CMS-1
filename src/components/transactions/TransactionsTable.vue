@@ -524,13 +524,13 @@ export default {
       }
     };
 
-    watch(
-      () => props.transactionDetails,
-      (data) => {
-        console.log(data, "in watch");
-        getGroupedTransactions(data)
-      }
-    );
+    // watch(
+    //   () => props.transactionDetails,
+    //   (data) => {
+    //     console.log(data, "in watch");
+    //     getGroupedTransactions(data)
+    //   }
+    // );
 
     const getGroupedTransactions = async accountGroupId => {
       try {
