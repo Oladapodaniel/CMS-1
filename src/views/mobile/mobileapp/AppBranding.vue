@@ -7,10 +7,8 @@
             <div class="row">
               <div class="col-12">
                 <h5 class="appBranding mt-3">Customize Your App</h5>
-                <div class="mt-2"
-                  >Click on color tab, brand the App using your church
-                  colors</div
-                >
+                
+                <div class="mt-3"><span class="font-weight-700">NB:</span> Please choose a dark shade color, click out of the color box, the system will verify your color, then click save to continue.</div>
               </div>
 
               <!-- MOBILE AREA -->
@@ -408,8 +406,8 @@ export default {
             toast.add({
               severity: "success",
               summary: "Color Matched",
-              detail: "Color Matched successfully",
-              life: 3000,
+              detail: "Choose logo or click save button to continue",
+              life: 6000,
             });
 
 
@@ -420,17 +418,31 @@ export default {
               severity: "info",
               summary: "",
               detail: "Choose darker shade of the color",
-              life: 3000,
+              life: 4000,
             });
           console.log(err);
           loading.value = false;
         });
     };
 
+    const getSocialMediaDetails = () => {
+      axios
+        .get(`/mobile/v1/Profile/GetChurchProfile`)
+        .then((res) => {
+          console.log(res);
+          imageURL.value = res.data.returnObject.logoUrl
+            
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getSocialMediaDetails()
+
  const saveAppDetails = () => {
         const formData = new FormData();
         formData.append("Logo", image.value);
-        formData.append("BackgroundColor", colorPicked.value);
+        formData.append("BackgroundColour", colorPicked.value);
 
         axios
           .put(`/mobile/v1/Profile/CustomizeApp`, formData)
@@ -448,6 +460,7 @@ export default {
       image.value = e.target.files[0];
       imageURL.value = URL.createObjectURL(image.value);
       console.log(image.value);
+      console.log(e)
     };
 
     const skip = () => {
@@ -556,7 +569,7 @@ export default {
   width: 200px;
   height: 350px;
   margin: auto;
-  top: 15.7rem;
+  top: 7.7rem;
   left: 13%;
   transform: translate(-50%, -50%);
   border: 16px black solid;
@@ -724,17 +737,9 @@ opacity: 1;
 }
 
 .skip-text {
-  border-top: 1px solid rgb(173, 173, 173);;
-  border-bottom: 1px solid rgb(173, 173, 173);;
-  position: relative;
-  top: 32em;
-}
-
-.skip-text:hover {
   background: rgb(62, 68, 160);
-  border: 1px solid rgb(62, 68, 160);;
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-  cursor: pointer;
+  position: relative;
+  top: 25em;
 }
 
 .step {

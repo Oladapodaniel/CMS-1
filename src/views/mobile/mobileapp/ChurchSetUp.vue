@@ -28,7 +28,7 @@
           </div>
           <div class="col-12 col-md-10 mt-3">
             <div class="row d-flex justify-content-md-between">
-              <div class="col-md-6 mt-3 px-md-0">Pastors and Ministers</div>
+              <div class="col-md-6 mt-3 px-md-0 col-9">Pastors and Ministers</div>
               <div
                 class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
                 data-target="#add-pastor"
@@ -42,20 +42,19 @@
           <div class="col-11 px-md-0">
             <div class="row" v-for="(item, index) in pastors" :key="index">
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
-              <div class="col-9 col-md-10 mt-4">
+              <div class="col-12 mt-4">
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-4 col-12 col-sm-5 fill">
                     <img
                       :src="item.url"
-                      class="w-100 rounded-circle"
-                      style="border: 1px solid #707070; border-radius: 13px"
+                      class="w-100 "
                     />
                   </div>
-                  <div class="col-md-6 align-self-center">
+                  <div class="col-10 col-sm-5 align-self-center">
                     <div class="pastorname">{{ item.pastorsName }}</div>
                     <div>{{ item.text }}</div>
                   </div>
-                  <div class="col-md-2 align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId)">
+                  <div class="col-2 col-sm-2  align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId, index)">
                     <i class="fa fa-trash"></i>
                   </div>
                 </div>
@@ -64,7 +63,7 @@
           </div>
           <div class="col-12 col-md-10 mt-3">
             <div class="row d-flex justify-content-md-between">
-              <div class="col-md-6 mt-3 px-md-0">Other Information</div>
+              <div class="col-md-6 mt-3 px-md-0 col-9">Other Information</div>
               <div
                 class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
                 data-target="#other-info"
@@ -79,7 +78,7 @@
             <div class="row" v-for="(item, index) in infoArray"
                 :key="index">
               <div
-                class="col-10 p-md-0"
+                class="col-10 px-0"
               >
                 <div class="col-12 col-md-10 mt-4 p-md-0 font-weight-bold">
                   <span class="display:block">{{ item.title }}</span>
@@ -398,20 +397,23 @@ export default {
     const infoArray = ref([]);
     const closeTextArea = ref("");
 
-    const deleteItem = (index) => {
-      pastors.value.splice(index, 1);
-    };
+
     const saveSetUp = async () => {
       // const pastorsArray = []
       // pastorsArray.push(otherInfo.value)
       // const pastorsDetailsArray = []
       // pastorsDetailsArray.push(pastorDetails.value)
-      infoArray.value = infoArray.value.map((i) => {
-        return {
-          title: i.title,
-          details: i.information,
-        };
-      });
+      // infoArray.value = infoArray.value.map((i) => {
+      //   return {
+      //     title: i.title,
+      //     details: i.information,
+      //   };
+      // });
+
+    
+        infoArray.value.map(i => {
+          if(!i.customAboutId) delete i.showFullMessage
+        })
 
 
       const formData = new FormData();
@@ -527,7 +529,7 @@ export default {
       router.push({ name: "SocialMedia" })
     }
 
-    const showConfirmModal = (id) => {
+    const showConfirmModal = (id, index) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
         header: "Confirmation",
@@ -535,7 +537,7 @@ export default {
         acceptClass: "confirm-delete",
         rejectClass: "cancel-delete",
         accept: () => {
-          deletePastor(id);
+          deletePastor(id, index);
           // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
         },
         reject: () => {
@@ -549,31 +551,36 @@ export default {
       });
     };
 
-    const deletePastor = (id) => {
-        axios
-          .delete(`/mobile/v1/Profile/DeletePastor?pastorId=${id}`)
-          .then((res) => {
-            console.log(res);
-            toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: `${res.data.response}`,
-              life: 4000,
-            });
-            pastors.value = pastors.value.filter(
-              (item) => item.pastorId !== id
-            );
-
-          })
-          .catch((err) => {
-            console.log(err)
+    const deletePastor = (id, index) => {
+      if (!id) {
+        pastors.value.splice(index, 1);
+      } else {
+            axios
+            .delete(`/mobile/v1/Profile/DeletePastor?pastorId=${id}`)
+            .then((res) => {
+              console.log(res);
               toast.add({
-                severity: "error",
-                summary: "Unable to delete",
-                detail: "An error occurred, please try again",
+                severity: "success",
+                summary: "Confirmed",
+                detail: `${res.data.response}`,
                 life: 4000,
               });
-          });
+              pastors.value = pastors.value.filter(
+                (item) => item.pastorId !== id
+              );
+
+            })
+            .catch((err) => {
+              console.log(err)
+                toast.add({
+                  severity: "error",
+                  summary: "Unable to delete",
+                  detail: "An error occurred, please try again",
+                  life: 4000,
+                });
+            });
+        }
+     
       };
 
       const showConfirmModalAbout = (id) => {
@@ -627,7 +634,6 @@ export default {
 
     return {
       pastors,
-      deleteItem,
       saveSetUp,
       pastorDetails,
       pastorsName,
@@ -823,16 +829,8 @@ export default {
 }
 
 .skip-text {
-  border-top: 1px solid rgb(173, 173, 173);;
-  border-bottom: 1px solid rgb(173, 173, 173);;
-  position: relative;
-  top: 32em;
-}
-
-.skip-text:hover {
   background: rgb(62, 68, 160);
-  border: 1px solid rgb(62, 68, 160);;
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-  cursor: pointer;
+  position: relative;
+  top: 25em;
 }
 </style>

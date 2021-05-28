@@ -379,7 +379,7 @@
               <img src="../../assets/mobile_app.svg">
               <div class="mt-4">Mobile App</div>
               <div class="more-body mt-2">Get a customized mobile app for your church.</div>
-              <div class="learn-more mt-3 col-6 offset-3 cursor-pointer">Set Up Now</div>
+              <router-link :to="{ name: 'MobileOnboarding' }"><div class="learn-more mt-3 col-6 offset-3 cursor-pointer">Set Up Now</div></router-link>
             </div>
           </div>
         </div>

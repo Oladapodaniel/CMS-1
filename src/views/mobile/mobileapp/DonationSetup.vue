@@ -178,7 +178,7 @@ import router from "../../../router";
 import finish from "../../../services/progressbar/progress";
 // import { useToast } from "primevue/usetoast";
 import axio from "axios";
-import store from "../../../store/store";
+// import store from "../../../store/store";
 import paymentform from "../../../components/genericmobile/paymentform";
 export default {
   components: {
@@ -214,19 +214,19 @@ export default {
       //   banks: selectedBank.value
       // }
       // banks.value.push(bankDetails)
-      console.log(banks.value);
-      store.dispatch("completeSetUp", banks.value);
-      axios
-        .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
-        .then((res) => {
-          console.log(res, "🎄🎄🎄");
+      // console.log(banks.value);
+      // store.dispatch("completeSetUp", banks.value);
+      // axios
+      //   .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
+      //   .then((res) => {
+      //     console.log(res, "🎄🎄🎄");
 
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
         setTimeout(() => {
- router.push({ name:'OnboardingSuccessful'});
+          router.push({ name:'OnboardingSuccessful'});
         }, 4000)
     };
 
@@ -519,17 +519,9 @@ export default {
 }
 
 .skip-text {
-  border-top: 1px solid rgb(173, 173, 173);
-  border-bottom: 1px solid rgb(173, 173, 173);
+  background: rgb(62, 68, 160);
   position: relative;
-  top: 32em;
+  top: 25em;
 }
 
-.skip-text:hover {
-  background: rgb(62, 68, 160);
-  border-top: 1px solid rgb(62, 68, 160);;
-  border-bottom: 1px solid rgb(62, 68, 160);;
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-  cursor: pointer;
-}
 </style>

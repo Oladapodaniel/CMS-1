@@ -299,17 +299,9 @@ hr {
 }
 
 .skip-text {
-  border-top: 1px solid rgb(173, 173, 173);
-  border-bottom: 1px solid rgb(173, 173, 173);
+  background: rgb(62, 68, 160);
   position: relative;
-  top: 32em;
+  top: 25em;
 }
 
-.skip-text:hover {
-  background: rgb(62, 68, 160);
-  border-top: 1px solid rgb(62, 68, 160);;
-  border-bottom: 1px solid rgb(62, 68, 160);;
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-  cursor: pointer;
-}
 </style>
