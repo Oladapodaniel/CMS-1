@@ -1,15 +1,15 @@
 <template>
   <div class="container-wide">
     <div class="row">
-      <div class="col-md-6 mt-5">
+      <div class="col-md-6 mt-4">
         <div class="row">
           <div class="col-12 col-md-10">
             <div class="row">
               <div class="col-12">
                 <h5 class="appBranding mt-3">Customize Your App</h5>
-                <small class="mt-n2 mb-n5"
+                <div class="mt-2"
                   >Click on color tab, brand the App using your church
-                  colors</small
+                  colors</div
                 >
               </div>
 
@@ -64,7 +64,7 @@
           <div class="col-12 col-md-10">
             <div class="row">
               <div class="col-12 col-sm-6">
-                <h5 class="logo mt-3">Ministery Logo</h5>
+                <h5 class="logo mt-3">Ministry Logo</h5>
               </div>
               <Toast />
               <!-- testrun -->
@@ -111,7 +111,6 @@
                 :src="imageURL"
 
                 style="width: 50%"
-                @click="clickInput"
               />
                </div>
              </div>
@@ -131,6 +130,10 @@
       </div>
 
       <div class="col-md-6 backgroundImage d-none d-md-block">
+        <div class="row">
+          <div class="col-12 text-center my-5 step">STEP 3 OF 4</div>
+          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
+        </div>
         <div class="smartphone">
           <div class="content">
             <iframe style="width: 100%; border: none; height: 100%" />
@@ -447,7 +450,9 @@ export default {
       console.log(image.value);
     };
 
-    const clickInput = () => {};
+    const skip = () => {
+      router.push({ name: 'DonationSetup' })
+    }
 
     return {
     saveAppDetails,
@@ -458,9 +463,9 @@ export default {
       colorBox,
       imageSelected,
       imageURL,
-      clickInput,
       colorValid,
       loading,
+      skip
     };
   },
 };
@@ -716,6 +721,27 @@ opacity: 1;
   opacity: 1;
   width: 180px;
   height: 46px;
+}
+
+.skip-text {
+  border-top: 1px solid rgb(173, 173, 173);;
+  border-bottom: 1px solid rgb(173, 173, 173);;
+  position: relative;
+  top: 32em;
+}
+
+.skip-text:hover {
+  background: rgb(62, 68, 160);
+  border: 1px solid rgb(62, 68, 160);;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  cursor: pointer;
+}
+
+.step {
+  font: normal normal bold 18px/24px Nunito Sans;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
 }
 </style>
 
