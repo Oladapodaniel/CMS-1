@@ -302,7 +302,7 @@ hr {
   border-top: 1px solid rgb(173, 173, 173);
   border-bottom: 1px solid rgb(173, 173, 173);
   position: relative;
-  top: 32em;
+  top: 25em;
 }
 
 .skip-text:hover {
