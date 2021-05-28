@@ -1,479 +1,714 @@
 <template>
-    <div class="container-wide">
-        <!-- write up part -->
-        <div class="row">
-          <div class="col-md-6 mt-6">
-            <div class="row mt-5">
-              <div class="col-12 setup">  Set up your church profile</div>
-              <!-- <div class="col-md-6"></div> -->
-              <div class="col-sm-12 align-self-center mt-4 px-md-0">Name</div>
-              <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control" v-model="churchName">
-              </div>
-              <!-- <div class="col-sm-2"></div> -->
-              
-              <div class="col-sm-12 align-self-center mt-3 px-md-0">Phone Number</div>
-              <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control" v-model="phoneNumber">
-              </div>
-              <!-- <div class="col-sm-2"></div> -->
-              
-              <div class="col-sm-12 align-self-center mt-3 px-md-0">Address</div>
-              <div class="col-12 col-md-10 px-md-0">
-                <input type="text" class="form-control" v-model="address">
-              </div>
-              <div  class="col-12 col-md-10 mt-3">
-                <div class=" row d-flex justify-content-md-between">
-                  <div class="col-md-6 mt-3 px-md-0">Pastors and Ministers</div>
-                  <div class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer" data-target="#add-pastor"  data-toggle="modal"   data-whatever="@fat">Add</div>
-                </div>
-              </div>
-              <div class="col-11 px-md-0">
-                <div class="row" v-for="(item, index) in pastors" :key="index">
-                  <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
-                  <div class="col-9 col-md-10 mt-4">
-                    <div class="row">
-                      <div class="col-md-3"><img :src="item.url" class="w-50 rounded-circle" style="border: 1px solid #707070;border-radius: 13px;"></div>
-                      <div class=" col-md-3 pastorname">{{ item.pastorsName }}</div>
-                      <div class="col-md-5 pastorname">{{ item.pastorsEmail }}</div>
-                      <div class="col-1 col-md-1" @click="deleteItem(index)"><i class="fa fa-trash"></i></div>
+  <div class="container-wide">
+    <!-- write up part -->
+    <div class="row" style="height: 100vh">
+      <Toast />
+      <ConfirmDialog />
+      <div class="col-md-6 mt-6">
+        <div class="row mt-5">
+          <div class="col-12 setup">Set up your church profile</div>
+          <!-- <div class="col-md-6"></div> -->
+          <div class="col-sm-12 align-self-center mt-4 px-md-0">Name</div>
+          <div class="col-12 col-md-10 px-md-0">
+            <input type="text" class="form-control" v-model="churchName" />
+          </div>
+          <!-- <div class="col-sm-2"></div> -->
 
-                    </div>
-                  </div>
-                </div>
-              </div> 
-             <div  class="col-12 col-md-10 mt-3">
-                <div class=" row d-flex justify-content-md-between">
-                  <div class="col-md-6 mt-3 px-md-0">Other Information</div>
-                  <div class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer" data-target="#other-info"  data-toggle="modal"   data-whatever="@fat">Add</div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-12 col-12 p-md-0" v-for="(item, index) in infoArray" :key="index">
-                    <div class="col-12 col-md-10 mt-4 p-md-0 font-weight-bold"> <span class="display:block">{{ item.title }}</span></div>
-                    <div class="col-12 col-md-10 p-md-0"><p>
-                      <span  v-if="!item.showFullMessage" class="display:block">{{ item.information && item.information.toString().length > 20 ? `${item.information.substring(0, 20)}...` : item.information }}</span> 
-                      <span v-else>{{ item.information }}</span>
-                    <span @click="() => item.showFullMessage = !item.showFullMessage" v-if="item.information && item.information.toString().length > 20 " class="text-primary c-pointer pl-2"> {{item.showFullMessage ?'see less' : 'see more'}} </span></p> </div>
-                  </div>
-                </div>
-              </div>
-              <!-- modal for other info -->
+          <div class="col-sm-12 align-self-center mt-3 px-md-0">
+            Phone Number
+          </div>
+          <div class="col-12 col-md-10 px-md-0">
+            <input type="text" class="form-control" v-model="phoneNumber" />
+          </div>
+          <!-- <div class="col-sm-2"></div> -->
+
+          <div class="col-sm-12 align-self-center mt-3 px-md-0">Address</div>
+          <div class="col-12 col-md-10 px-md-0">
+            <input type="text" class="form-control" v-model="address" />
+          </div>
+          <div class="col-12 col-md-10 mt-3">
+            <div class="row d-flex justify-content-md-between">
+              <div class="col-md-6 mt-3 px-md-0 col-9">Pastors and Ministers</div>
               <div
-                class="modal fade"
-                id="other-info"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
+                class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
+                data-target="#add-pastor"
+                data-toggle="modal"
+                data-whatever="@fat"
               >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-             
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-11 col-12">
-                  <div class="form-cover w-100">
-                    <form class=" mr-lg-0">
-                      <div class="form-group">
-                        <label for="recipient-title" class="col-form-label"
-                          >Title:</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="title"
-                          v-model="otherInfo.title"
-                        />
-                      </div>
-                       <div class="form-group">
-                        <label for="message-text" class="col-form-label"
-                          >Other Information:</label
-                        >
-                        <textarea
-                          class="form-control h-200"
-                          id="message-text"
-                          v-model="otherInfo.information"
-                        ></textarea>
-                      </div>
-                    </form>
-                  </div>
-                </div> 
+                Add
               </div>
             </div>
-            <div
-              class="col-md-11 col-12 ml-md-3 mb-4 text-center text-lg-right"
-            >
-               <button
-                      class="default-btn primary-bg border-0 text-white"
-                       ref="closeTextArea"
-                      @click="otherInfoDetails"
-                    >
-                      Save
-                    </button>
-              <!-- <button type="button" ref="closeTextArea" class="btn btn-primary" @click="otherInfoDetails">Save</button> -->
+          </div>
+          <div class="col-11 px-md-0">
+            <div class="row" v-for="(item, index) in pastors" :key="index">
+              <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
+              <div class="col-12 mt-4">
+                <div class="row">
+                  <div class="col-md-4 col-12 col-sm-5 fill">
+                    <img
+                      :src="item.url"
+                      class="w-100 "
+                    />
+                  </div>
+                  <div class="col-10 col-sm-5 align-self-center">
+                    <div class="pastorname">{{ item.pastorsName }}</div>
+                    <div>{{ item.text }}</div>
+                  </div>
+                  <div class="col-2 col-sm-2  align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId, index)">
+                    <i class="fa fa-trash"></i>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="col-12 col-md-10 mt-3">
+            <div class="row d-flex justify-content-md-between">
+              <div class="col-md-6 mt-3 px-md-0 col-9">Other Information</div>
+              <div
+                class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
+                data-target="#other-info"
+                data-toggle="modal"
+                data-whatever="@fat"
+              >
+                Add
+              </div>
+            </div>
+          </div>
+          <div class="col-md-10">
+            <div class="row" v-for="(item, index) in infoArray"
+                :key="index">
+              <div
+                class="col-10"
+              >
+                <div class="col-12 col-md-10 mt-4 p-md-0 font-weight-bold">
+                  <span class="display:block">{{ item.title }}</span>
+                </div>
+                <div class="col-10 p-md-0">
+                  <p>
+                    <span v-if="!item.showFullMessage" class="display:block">{{
+                      item.information &&
+                      item.information.toString().length > 20
+                        ? `${item.information.substring(0, 20)}...`
+                        : item.information
+                    }}</span>
+                    <span v-else>{{ item.information }}</span>
+                    <span
+                      @click="
+                        () => (item.showFullMessage = !item.showFullMessage)
+                      "
+                      v-if="
+                        item.information &&
+                        item.information.toString().length > 20
+                      "
+                      class="text-primary c-pointer pl-2"
+                    >
+                      {{ item.showFullMessage ? "see less" : "see more" }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div class="col-2 pl-0 align-self-center cursor-pointer" @click.prevent="showConfirmModalAbout(item.customAboutId)">
+                <i class="fa fa-trash"></i>
+              </div>
+            </div>
+          </div>
+          <!-- modal for other info -->
+          <div
+            class="modal fade"
+            id="other-info"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-11 col-12">
+                      <div class="form-cover w-100">
+                        <form class="mr-lg-0">
+                          <div class="form-group">
+                            <label for="recipient-title" class="col-form-label"
+                              >Title:</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="title"
+                              v-model="otherInfo.title"
+                            />
+                          </div>
+                          <div class="form-group">
+                            <label for="message-text" class="col-form-label"
+                              >Other Information:</label
+                            >
+                            <textarea
+                              class="form-control h-200"
+                              id="message-text"
+                              v-model="otherInfo.information"
+                            ></textarea>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col-md-11 col-12 ml-md-3 mb-4 text-center text-lg-right"
+                >
+                
+                  <button
+                    class="default-btn primary-bg border-0 text-white"
+                    ref="closeTextArea"
+                    @click="otherInfoDetails"
+                  >
+                    Save
+                  </button>
+                  <!-- <button type="button" ref="closeTextArea" class="btn btn-primary" @click="otherInfoDetails">Save</button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- modal -->
+          <div
+            class="modal fade"
+            id="add-pastor"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Add Pastor/Minister
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-7 mt-4 col-12">
+                      <div class="form-cover w-100">
+                        <form class="mr-5 mr-md-0 mr-lg-0">
+                          <div class="form-group">
+                            <!-- <label for="recipient-name" class="col-form-label"
+                          ></label
+                        > -->
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="recipient-name"
+                              placeholder="Name"
+                              v-model="pastorDetails.pastorsName"
+                            />
+                          </div>
+                          <!-- <div class="form-group"> -->
+                            <!-- <label for="recipient-email" class="col-form-label"
+                          ></label
+                        > -->
+                            <!-- <input
+                              type="email"
+                              class="form-control"
+                              id="recipient-email"
+                              placeholder="Email"
+                              v-model="pastorDetails.pastorsEmail"
+                            /> -->
+                          <!-- </div> -->
+                          <div class="form-group">
+                            <!-- <label for="message-text" class="col-form-label"
+                          ></label
+                        > -->
+                            <textarea
+                              class="form-control h-100"
+                              id="message-text"
+                              v-model="pastorDetails.text"
+                              placeholder="About Pastor/Minister"
+                            ></textarea>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-md-5 mt-3 col-12">
+                      <div class="container-img mx-auto mx-md-0 mx-lg-0 pt-2">
+                        <div class="photo-box">
+                          <img
+                            :src="pastorDetails.url"
+                            class="w-100 h-100 img-responsive"
+                          />
+                        </div>
+                        <div class="custom-file submit-img">
+                          <input
+                            type="file"
+                            class="custom-file-input"
+                            id="customFile"
+                            @change="uploadFile"
+                          />
+                          <label
+                            class="custom-file-label px-4"
+                            for="customFile"
+                          ></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mr-3 mr-md-0 mr-lg-0">
+                    <div class="col-md-8 col-12 text-md-left mt-2">
+                      <div class="ml-4">
+                        <p class="font-weight-bold">Social media Handles</p>
+                      </div>
+                      <div class="row ml-2">
+                        <div class="col-md-2">
+                          <div
+                            class="d-flex justify-content-center font-container"
+                          >
+                            <img
+                              src="../../../assets/mobileonboarding/facebook-icon.png"
+                              style="width: 78px"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-9 mr-2 p-md-0">
+                          <div class="">
+                            <input
+                              type="text"
+                              class="social-input mb-2"
+                              v-model="pastorDetails.facebook"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <img
+                            src="../../../assets/mobileonboarding/instagram-icon.png"
+                          />
+                        </div>
+                        <div class="col-md-9 mr-2 p-md-0">
+                          <div class="">
+                            <input
+                              type="text"
+                              class="social-input mb-2"
+                              v-model="pastorDetails.instagram"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <div class="font-container">
+                            <img
+                              src="../../../assets/mobileonboarding/twitter-icon.png"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-md-9 mr-2 p-md-0">
+                          <div class="">
+                            <input
+                              type="text"
+                              class="social-input mb-2"
+                              v-model="pastorDetails.twitter"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                  </div>
+                </div>
+                <div
+                  class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
+                >
+                  <!-- <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button> -->
+                  <button
+                    class="default-btn primary-bg border-0 text-white"
+                    ref="closePastorModal"
+                    :data-dismiss="dismissAddToGroupModal"
+                    @click="detailsForPastor"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0"
+            @click="saveSetUp"
+          >
+            Save and continue
           </div>
         </div>
       </div>
 
-              <!-- modal -->
-               <div
-                class="modal fade"
-                id="add-pastor"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">
-                Add Pastor/Minister
-              </h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-7 mt-4 col-12">
-                  <div class="form-cover w-100">
-                    <form class=" mr-5 mr-md-0 mr-lg-0">
-                      <div class="form-group">
-                        <!-- <label for="recipient-name" class="col-form-label"
-                          ></label
-                        > -->
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="recipient-name"
-                          placeholder="Name"
-                          v-model="pastorDetails.pastorsName"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <!-- <label for="recipient-email" class="col-form-label"
-                          ></label
-                        > -->
-                        <input
-                          type="email"
-                          class="form-control"
-                          id="recipient-email"
-                          placeholder="Email"
-                          v-model="pastorDetails.pastorsEmail"
-                        />
-                      </div>
-                      <div class="form-group">
-                        <!-- <label for="message-text" class="col-form-label"
-                          ></label
-                        > -->
-                        <textarea
-                          class="form-control h-100"
-                          id="message-text"
-                          v-model="pastorDetails.text"
-                          placeholder="About Pastor/Minister"
-                        ></textarea>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div class="col-md-5 mt-3 col-12">
-                  <div class="container-img mx-auto mx-md-0 mx-lg-0 pt-2">
-                    <div class="photo-box "><img :src="pastorDetails.url" class="w-100 h-100 img-responsive"></div>
-                    <div class="custom-file submit-img">
-                      <input
-                        type="file"
-                        class="custom-file-input"
-                        id="customFile"
-                        @change="uploadFile"
-                      />
-                      <label
-                        class="custom-file-label px-4"
-                        for="customFile"
-                      ></label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row mr-3 mr-md-0 mr-lg-0">
-                <div class="col-md-8 col-12 text-md-left mt-2">
-                  <div class="ml-4">
-                    <p class="font-weight-bold">Social media Handles</p>
-                  </div>
-                  <div class="row ml-2">
-                    <div class="col-md-2">
-                      <div class="d-flex justify-content-center font-container">
-                        <img src="../../../assets/mobileonboarding/facebook-icon.png" style="width:78px" />
-                      </div>
-                    </div>
-                    <div class="col-md-9 mr-2 p-md-0 ">
-                      <div class="">
-                        <input type="text" class="social-input mb-2" v-model="pastorDetails.facebook" />
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <img src="../../../assets/mobileonboarding/instagram-icon.png"/>
-                    </div>
-                    <div class="col-md-9 mr-2 p-md-0 ">
-                      <div class="">
-                        <input type="text" class="social-input mb-2" v-model=" pastorDetails.instagram" />
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <div class="font-container">
-                        <img src="../../../assets/mobileonboarding/twitter-icon.png"/>
-                      </div>
-                    </div>
-                    <div class="col-md-9 mr-2 p-md-0 ">
-                      <div class="">
-                        <input type="text" class="social-input mb-2" v-model="pastorDetails.twitter" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4"></div>
-              </div>
-            </div>
-            <div
-              class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
-            >
-              <!-- <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button> -->
-              <button
-                      class="default-btn primary-bg border-0 text-white"
-                      ref="closePastorModal"
-                      :data-dismiss="dismissAddToGroupModal"
-                      @click="detailsForPastor"
-                    >
-                      Save
-                    </button>
-            </div>
-          </div>
+      <!-- image part -->
+      <div class="col-md-6 col-12 bg-image d-none d-md-block">
+        <div class="row mt-3">
+          <div class="col-md-12 text-center my-5 step">STEP 1 of 4</div>
+          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
         </div>
-      </div>
-                     
-              <div class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0" @click="saveSetUp">
-              Save and continue
-              </div>
-              
-            </div>
-          </div>
-
-            <!-- image part -->
-            <div class="col-md-6 col-12 bg-image d-none d-md-block">
-                <div class="row mt-3">
-                    <div class="col-md-12 text-center my-5 step">STEP 1 of 1</div>
-                </div>
-                <!-- <div class="image-dis"> 
+        <!-- <div class="image-dis">
                     <img src="../../../assets/mobileonboarding/setup-image.svg" style="height:100%; width:100%;">
                 </div> -->
-            </div>
-        </div>
-    </div> 
+      </div>
+    </div>
+  </div>
 </template>
 <script>
-import { ref } from "vue"
-import router from '../../../router'
+import { ref } from "vue";
+import router from "../../../router";
 import axios from "@/gateway/backendapi";
-import store from '../../../store/store';
+import store from "../../../store/store";
+import { useToast } from "primevue/usetoast";
+import stopProgressBar from "../../../services/progressbar/progress";
+import { useConfirm } from "primevue/useConfirm";
 // import { useStore } from "vuex"
 
 export default {
-    setup () {
-      // let store = useStore()
-        const pastors = ref([])
-  
-        const deleteItem = (index) => {
-          pastors.value.splice(index, 1)
+  setup() {
+    // let store = useStore()
+    const toast = useToast();
+    const confirm = useConfirm()
+    const pastors = ref([]);
+    const pastorDetails = ref({});
+    const pastorsName = ref("");
+    const pastorsEmail = ref("");
+    const closePastorModal = ref("");
+    const image = ref("");
+    const pastorImage = ref("");
+    const tenantId = ref("");
+    const churchName = ref("");
+    const phoneNumber = ref("");
+    const address = ref("");
+    const otherInfo = ref({ showFullMessage: false });
+    const infoArray = ref([]);
+    const closeTextArea = ref("");
+
+    const deleteItem = (index) => {
+      pastors.value.splice(index, 1);
+    };
+    const saveSetUp = async () => {
+      // const pastorsArray = []
+      // pastorsArray.push(otherInfo.value)
+      // const pastorsDetailsArray = []
+      // pastorsDetailsArray.push(pastorDetails.value)
+      infoArray.value = infoArray.value.map((i) => {
+        return {
+          title: i.title,
+          details: i.information,
+        };
+      });
+
+
+      const formData = new FormData();
+      formData.append("churchName", churchName.value);
+      formData.append("address", address.value);
+      formData.append("phoneNumber", phoneNumber.value);
+      formData.append("abouts", infoArray.value);
+      formData.append("pastors", pastors.value);
+      console.log(churchName.value)
+      console.log(phoneNumber.value)
+      console.log(infoArray.value);
+      console.log(pastors.value);
+      // formData.append("logo", payload.logo)
+
+      try {
+        const response = await axios.put(
+          "/mobile/v1/Profile/UpdateChurchProfile",
+          formData
+        );
+        if (response) {
+          toast.add({
+            severity: "success",
+            summary: "Profile Updated",
+            detail: "Church Profile Updated Successfully",
+            life: 3000,
+          });
+
+          setTimeout(() => {
+            router.push({ name: "SocialMedia" });
+          }, 2000)
         }
-        const saveSetUp = async() => {
-          // const pastorsArray = []
-          // pastorsArray.push(otherInfo.value)
-          // const pastorsDetailsArray = []
-          // pastorsDetailsArray.push(pastorDetails.value)
-          infoArray.value = infoArray.value.map(i => {
+        console.log(response);
+      } catch (error) {
+        stopProgressBar();
+        toast.add({
+          severity: "error",
+          summary: "Time Out",
+          detail: "Network Error",
+          life: 3000,
+        });
+        console.log(error);
+      }
+    };
+
+    const detailsForPastor = () => {
+      pastors.value.push(pastorDetails.value);
+      console.log(pastors.value);
+      // pastorsName.value = pastorDetails.value.pastorsName
+      // pastorsEmail.value = pastorDetails.value.pastorsEmail
+      // pastorImage.value = pastorDetails.value.url
+      closePastorModal.value.setAttribute("data-dismiss", "modal");
+      pastorDetails.value = {};
+    };
+
+    const otherInfoDetails = () => {
+      infoArray.value.push(otherInfo.value);
+      closeTextArea.value.setAttribute("data-dismiss", "modal");
+      otherInfo.value = {};
+    };
+
+    const uploadFile = (e) => {
+      image.value = e.target.files[0];
+      pastorDetails.value.url = URL.createObjectURL(image.value);
+    };
+
+    const getTenantId = async () => {
+      if (Object.keys(store.getters.currentUser).length > 0) {
+        console.log(store.getters.currentUser);
+        tenantId.value = store.getters.currentUser.tenantId;
+      } else {
+        try {
+          const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+          store.dispatch("setCurrentUser", res.data);
+          console.log(res.data);
+          tenantId.value = res.data.tenantId;
+        } catch (err) {
+          console.log(err.response);
+        }
+      }
+
+      console.log(tenantId.value);
+      axios
+        .get("/mobile/v1/Profile/GetChurchProfile")
+        .then((response) => {
+          console.log(response);
+          churchName.value = response.data.returnObject.churchName;
+          phoneNumber.value = response.data.returnObject.phoneNumber;
+          address.value = response.data.returnObject.address;
+          pastors.value = response.data.returnObject.pastors.map(i => {
             return {
-              title: i.title,
-              details: i.information
+              pastorsName: i.name,
+              url: i.photoUrl,
+              pastorId: i.pastorId,
+              text: i.bio,
+              tenantId: i.tenantID
             }
           })
-
-          router.push({ name: 'SocialMedia' })
-          const formData = new FormData()    
-          formData.append("churchName", churchName.value)
-          console.log(churchName.value);
-          formData.append("address", address.value)
-          console.log(address.value);
-          formData.append("phoneNumber", phoneNumber.value)
-          console.log(phoneNumber.value);
-          formData.append("abouts", infoArray.value);
-          formData.append("pastors",  pastors.value);
-          console.log(infoArray.value);
-          console.log(pastors.value);
-          // formData.append("logo", payload.logo)
-          try {
-           const response = await axios.put("/mobile/v1/Profile/UpdateChurchProfile", formData)
-           console.log(response);
-          } catch(error) {
-            console.log(error);
-          }
-
-        }
-        const pastorDetails = ref({})
-        const pastorsName = ref("")
-        const pastorsEmail = ref("")
-        const closePastorModal = ref("")
-        const image = ref("")
-        const pastorImage = ref("")
-        const tenantId = ref("")
-        const churchName = ref("")
-        const phoneNumber = ref("")
-        const address = ref("")
-        const otherInfo = ref({showFullMessage: false})
-        const infoArray = ref([])
-        const closeTextArea = ref("")
-        
-        const detailsForPastor = () => {
-          pastors.value.push(pastorDetails.value)
-          console.log(pastors.value);
-          // pastorsName.value = pastorDetails.value.pastorsName
-          // pastorsEmail.value = pastorDetails.value.pastorsEmail
-          // pastorImage.value = pastorDetails.value.url
-          closePastorModal.value.setAttribute("data-dismiss", "modal")
-          pastorDetails.value = {}
-        }
-
-        const otherInfoDetails = () => {
-          infoArray.value.push(otherInfo.value)
-          closeTextArea.value.setAttribute("data-dismiss", "modal")
-          otherInfo.value = {}
-        }  
-
-        const uploadFile = (e) => {
-          image.value = e.target.files[0]
-          pastorDetails.value.url = URL.createObjectURL(image.value);
-        }
-
-        const getTenantId = async() => {
-          if(Object.keys(store.getters.currentUser).length > 0) {
-              console.log(store.getters.currentUser)
-              tenantId.value = store.getters.currentUser.tenantId
-              
-            } else {
-                try {
-                    const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-                    store.dispatch("setCurrentUser", res.data);
-                    console.log(res.data);
-                    tenantId.value = res.data.tenantId
-                  } catch (err) {
-                    console.log(err.response);
-                  }
-          }
-
-          console.log(tenantId.value)
-          axios.get("/mobile/v1/Profile/GetChurchProfile").then(response => {
-           console.log(response);
-           churchName.value = response.data.returnObject.churchName
-           phoneNumber.value = response.data.returnObject.phoneNumber
-           address.value = response.data.returnObject.address
-          }).catch(error => {
-            console.log(error);
+          infoArray.value = response.data.returnObject.customAbouts.map(i => {
+            return {
+              title: i.title,
+              information:  i.details,
+              customAboutId: i.customAboutId
+            }
           })
-        }
-        getTenantId()
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    getTenantId();
 
-        return {
-            pastors,
-            deleteItem,
-            saveSetUp,
-            pastorDetails,
-            pastorsName,
-            pastorsEmail,
-            detailsForPastor,
-            closePastorModal,
-            uploadFile,
-            image,
-            pastorImage,
-            tenantId,
-            churchName,
-            phoneNumber,
-            otherInfo,
-            otherInfoDetails,
-            infoArray,
-            closeTextArea,
-            address
-        }
+    const skip = () => {
+      router.push({ name: "SocialMedia" })
     }
-}
+
+    const showConfirmModal = (id, index) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deletePastor(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
+
+    const deletePastor = (id, index) => {
+      if (!id) {
+        pastors.value.splice(index, 1);
+      } else {
+            axios
+            .delete(`/mobile/v1/Profile/DeletePastor?pastorId=${id}`)
+            .then((res) => {
+              console.log(res);
+              toast.add({
+                severity: "success",
+                summary: "Confirmed",
+                detail: `${res.data.response}`,
+                life: 4000,
+              });
+              pastors.value = pastors.value.filter(
+                (item) => item.pastorId !== id
+              );
+
+            })
+            .catch((err) => {
+              console.log(err)
+                toast.add({
+                  severity: "error",
+                  summary: "Unable to delete",
+                  detail: "An error occurred, please try again",
+                  life: 4000,
+                });
+            });
+        }
+     
+      };
+
+      const showConfirmModalAbout = (id) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteAbout(id);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
+
+    const deleteAbout = (id) => {
+        axios
+          .delete(`/mobile/v1/Profile/DeleteCustomAbout?customAboutId=${id}`)
+          .then((res) => {
+            console.log(res);
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `${res.data.response}`,
+              life: 4000,
+            });
+            infoArray.value = infoArray.value.filter(
+              (item) => item.customAboutId !== id
+            );
+
+          })
+          .catch((err) => {
+            console.log(err)
+              toast.add({
+                severity: "error",
+                summary: "Unable to delete",
+                detail: "An error occurred, please try again",
+                life: 4000,
+              });
+          });
+      };
+
+    return {
+      pastors,
+      deleteItem,
+      saveSetUp,
+      pastorDetails,
+      pastorsName,
+      pastorsEmail,
+      detailsForPastor,
+      closePastorModal,
+      uploadFile,
+      image,
+      pastorImage,
+      tenantId,
+      churchName,
+      phoneNumber,
+      otherInfo,
+      otherInfoDetails,
+      infoArray,
+      closeTextArea,
+      address,
+      skip,
+      showConfirmModal,
+      showConfirmModalAbout
+    };
+  },
+};
 </script>
 <style scoped>
 .setup {
-     color: #031C39;
-     font: normal normal 800 30px/40px Nunito Sans;
+  color: #031c39;
+  font: normal normal 800 30px/40px Nunito Sans;
 }
-    .check-icon {
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    background-color:#136ACD;
+.check-icon {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color: #136acd;
 }
 .pi {
-    color: #fff;
-    margin-top: 6px;
-    margin-left: 2px;
+  color: #fff;
+  margin-top: 6px;
+  margin-left: 2px;
 }
-.btn-button{
- border-radius: 25px!important;
- width: 40%;
- height: 25px;
- line-height: 10px;
+.btn-button {
+  border-radius: 25px !important;
+  width: 40%;
+  height: 25px;
+  line-height: 10px;
 }
-.bg-image{
-    background-image: url("../../../assets/mobileonboarding/groupMain.svg");
-      /* height: 500px;  */
+.bg-image {
+  background-image: url("../../../assets/mobileonboarding/groupMain.svg");
+  /* height: 500px;  */
   /* background-position: center;  */
-  background-repeat: no-repeat; 
+  background-repeat: no-repeat;
   background-size: cover;
-    /* background: transparent linear-gradient(180deg, #2E67CE 0%, #690C7F 100%) 0% 0% no-repeat padding-box; */
-    height: 100vh;
+  /* background: transparent linear-gradient(180deg, #2E67CE 0%, #690C7F 100%) 0% 0% no-repeat padding-box; */
+  min-height: 100vh;
 }
 .image-dis {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .next-btn {
-    background: #F1FAFF 0% 0% no-repeat padding-box;
-    border: 0.20000000298023224px solid #7894A6;
-    border-radius: 23px;
-    opacity: 1;
+  background: #f1faff 0% 0% no-repeat padding-box;
+  border: 0.20000000298023224px solid #7894a6;
+  border-radius: 23px;
+  opacity: 1;
 }
 .next-text {
-    font: normal normal bold 16px/22px Nunito Sans;
-    letter-spacing: 0px;
-    color: #136ACD;
-    opacity: 1;
+  font: normal normal bold 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #136acd;
+  opacity: 1;
 }
 .step {
-    font: normal normal bold 18px/24px Nunito Sans;
-    letter-spacing: 0px;
-    color: #FFFFFF;
-    opacity: 1;
+  font: normal normal bold 18px/24px Nunito Sans;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
 }
 /* Add pastor style */
 .modal-title {
@@ -543,23 +778,23 @@ export default {
   /* end add pastor detail */
 }
 .bg-mission {
-    background: #DEDEDE61 0% 0% no-repeat padding-box;
-    border: 1px solid #D2CFCF5C;
-    border-radius: 24px;
-    opacity: 0.64;
-    height: 30px;
-    padding-right: 50px
+  background: #dedede61 0% 0% no-repeat padding-box;
+  border: 1px solid #d2cfcf5c;
+  border-radius: 24px;
+  opacity: 0.64;
+  height: 30px;
+  padding-right: 50px;
 }
 .mission {
-    font: normal normal bold 16px/22px Nunito Sans;
-    letter-spacing: 0px;
-    color: #002044;
+  font: normal normal bold 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #002044;
 }
 .edit {
-    font: normal normal bold 16px/22px Nunito Sans;
-    letter-spacing: 0px;
-    color: #136ACD;
-    cursor: pointer;
+  font: normal normal bold 16px/22px Nunito Sans;
+  letter-spacing: 0px;
+  color: #136acd;
+  cursor: pointer;
 }
 
 .pastors-name {
@@ -569,25 +804,50 @@ export default {
 .edit-pastor-details {
   font: normal normal bold 16px/22px Nunito Sans;
   letter-spacing: 0px;
-  color: #136ACD;
+  color: #136acd;
   cursor: pointer;
 }
 
 .btnIcons {
-    color: #136acd;
-    background-color: #dde2e6;
-    border-radius: 40px;
-    border: none;
-    padding: 7px;
-    text-align: center
+  color: #136acd;
+  background-color: #dde2e6;
+  border-radius: 40px;
+  border: none;
+  padding: 7px;
+  text-align: center;
 }
-.pastorname{
-  font: normal normal 300 16px/22px Nunito Sans;
+.pastorname {
+  font: normal normal 700 16px/22px Nunito Sans;
   letter-spacing: 0px;
-  color: #020E1C;
+  color: #020e1c;
 }
 .submit-img {
   width: 87%;
-  margin-left: 12px
+  margin-left: 12px;
+}
+
+.skip-text {
+  border-top: 1px solid rgb(173, 173, 173);;
+  border-bottom: 1px solid rgb(173, 173, 173);;
+  position: relative;
+  top: 32em;
+}
+
+.skip-text:hover {
+  background: rgb(62, 68, 160);
+  border: 1px solid rgb(62, 68, 160);;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  cursor: pointer;
+}
+.fill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+.fill img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%
 }
 </style>
