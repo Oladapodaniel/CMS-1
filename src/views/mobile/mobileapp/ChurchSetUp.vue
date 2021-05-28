@@ -78,7 +78,7 @@
             <div class="row" v-for="(item, index) in infoArray"
                 :key="index">
               <div
-                class="col-10"
+                class="col-10 px-0"
               >
                 <div class="col-12 col-md-10 mt-4 p-md-0 font-weight-bold">
                   <span class="display:block">{{ item.title }}</span>
@@ -397,9 +397,7 @@ export default {
     const infoArray = ref([]);
     const closeTextArea = ref("");
 
-    const deleteItem = (index) => {
-      pastors.value.splice(index, 1);
-    };
+
     const saveSetUp = async () => {
       // const pastorsArray = []
       // pastorsArray.push(otherInfo.value)
@@ -631,7 +629,6 @@ export default {
 
     return {
       pastors,
-      deleteItem,
       saveSetUp,
       pastorDetails,
       pastorsName,

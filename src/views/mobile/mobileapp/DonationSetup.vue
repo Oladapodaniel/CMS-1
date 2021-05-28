@@ -178,7 +178,7 @@ import router from "../../../router";
 import finish from "../../../services/progressbar/progress";
 // import { useToast } from "primevue/usetoast";
 import axio from "axios";
-import store from "../../../store/store";
+// import store from "../../../store/store";
 import paymentform from "../../../components/genericmobile/paymentform";
 export default {
   components: {
