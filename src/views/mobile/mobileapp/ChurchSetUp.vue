@@ -403,12 +403,17 @@ export default {
       // pastorsArray.push(otherInfo.value)
       // const pastorsDetailsArray = []
       // pastorsDetailsArray.push(pastorDetails.value)
-      infoArray.value = infoArray.value.map((i) => {
-        return {
-          title: i.title,
-          details: i.information,
-        };
-      });
+      // infoArray.value = infoArray.value.map((i) => {
+      //   return {
+      //     title: i.title,
+      //     details: i.information,
+      //   };
+      // });
+
+    
+        infoArray.value.map(i => {
+          if(!i.customAboutId) delete i.showFullMessage
+        })
 
 
       const formData = new FormData();
