@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
         <div class="col-md-8 col-lg-8 col-sm-6">
-          <h2 class="font-weight-bolder">{{  churchProfile }}</h2>
+          <h2 class="font-weight-bolder">{{  churchProfile ? churchProfile : "" }}</h2>
         </div>
         <div class="col-lg-4 col-sm-6 mt-2 link d-lg-flex justify-content-end">
           <router-link
@@ -145,21 +145,13 @@ export default {
     return{
       getCurrentUser: store.getters.currentUser,
       churchUsers: [],
+      churchNames: {}
     }
   },
   computed:{
     churchProfile(){
-      if(this.getCurrentUser && this.getCurrentUser.churchName) return this.getCurrentUser.churchName;
-      let churchName;
-          axios.get("/api/Membership/GetCurrentSignedInUser")
-            .then(res => {
-              churchName = res.data.churchName
-            })
-       .catch ((err) => {
-         console.log(err)
-       })
-       return churchName
-                
+      if(!this.getCurrentUser || !this.getCurrentUser.churchName) return "";
+      return this.getCurrentUser.churchName;
     }
 
   },
@@ -173,7 +165,6 @@ export default {
         console.log(error)
       }
     },
-  
     async activateChurchUser(email, index){
       try{
         let response = await axios.post(`/api/Settings/ActivateChurchUser?churchUserEmail=${email}`);
