@@ -3,6 +3,7 @@
     <!-- write up part -->
     <div class="row" style="height: 100vh">
       <Toast />
+      <ConfirmDialog />
       <div class="col-md-6 mt-6">
         <div class="row mt-5">
           <div class="col-12 setup">Set up your church profile</div>
@@ -43,16 +44,18 @@
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
               <div class="col-9 col-md-10 mt-4">
                 <div class="row">
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                     <img
                       :src="item.url"
-                      class="w-50 rounded-circle"
+                      class="w-100 rounded-circle"
                       style="border: 1px solid #707070; border-radius: 13px"
                     />
                   </div>
-                  <div class="col-md-3 pastorname">{{ item.pastorsName }}</div>
-                  <div class="col-md-5 pastorname">{{ item.pastorsEmail }}</div>
-                  <div class="col-1 col-md-1" @click="deleteItem(index)">
+                  <div class="col-md-6 align-self-center">
+                    <div class="pastorname">{{ item.pastorsName }}</div>
+                    <div>{{ item.text }}</div>
+                  </div>
+                  <div class="col-md-2 align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId)">
                     <i class="fa fa-trash"></i>
                   </div>
                 </div>
@@ -72,17 +75,16 @@
               </div>
             </div>
           </div>
-          <div class="col-md-12">
-            <div class="row">
+          <div class="col-md-10">
+            <div class="row" v-for="(item, index) in infoArray"
+                :key="index">
               <div
-                class="col-md-12 col-12 p-md-0"
-                v-for="(item, index) in infoArray"
-                :key="index"
+                class="col-10 p-md-0"
               >
                 <div class="col-12 col-md-10 mt-4 p-md-0 font-weight-bold">
                   <span class="display:block">{{ item.title }}</span>
                 </div>
-                <div class="col-12 col-md-10 p-md-0">
+                <div class="col-10 p-md-0">
                   <p>
                     <span v-if="!item.showFullMessage" class="display:block">{{
                       item.information &&
@@ -105,6 +107,9 @@
                     </span>
                   </p>
                 </div>
+              </div>
+              <div class="col-2 pl-0 align-self-center cursor-pointer" @click.prevent="showConfirmModalAbout(item.customAboutId)">
+                <i class="fa fa-trash"></i>
               </div>
             </div>
           </div>
@@ -162,6 +167,7 @@
                 <div
                   class="col-md-11 col-12 ml-md-3 mb-4 text-center text-lg-right"
                 >
+                
                   <button
                     class="default-btn primary-bg border-0 text-white"
                     ref="closeTextArea"
@@ -340,7 +346,6 @@
               </div>
             </div>
           </div>
-
           <div
             class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0"
             @click="saveSetUp"
@@ -353,7 +358,8 @@
       <!-- image part -->
       <div class="col-md-6 col-12 bg-image d-none d-md-block">
         <div class="row mt-3">
-          <div class="col-md-12 text-center my-5 step">STEP 1 of 1</div>
+          <div class="col-md-12 text-center my-5 step">STEP 1 of 4</div>
+          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
         </div>
         <!-- <div class="image-dis">
                     <img src="../../../assets/mobileonboarding/setup-image.svg" style="height:100%; width:100%;">
@@ -369,13 +375,28 @@ import axios from "@/gateway/backendapi";
 import store from "../../../store/store";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../../services/progressbar/progress";
+import { useConfirm } from "primevue/useConfirm";
 // import { useStore } from "vuex"
 
 export default {
   setup() {
     // let store = useStore()
-    let toast = useToast();
+    const toast = useToast();
+    const confirm = useConfirm()
     const pastors = ref([]);
+    const pastorDetails = ref({});
+    const pastorsName = ref("");
+    const pastorsEmail = ref("");
+    const closePastorModal = ref("");
+    const image = ref("");
+    const pastorImage = ref("");
+    const tenantId = ref("");
+    const churchName = ref("");
+    const phoneNumber = ref("");
+    const address = ref("");
+    const otherInfo = ref({ showFullMessage: false });
+    const infoArray = ref([]);
+    const closeTextArea = ref("");
 
     const deleteItem = (index) => {
       pastors.value.splice(index, 1);
@@ -395,13 +416,12 @@ export default {
 
       const formData = new FormData();
       formData.append("churchName", churchName.value);
-      console.log(churchName.value);
       formData.append("address", address.value);
-      console.log(address.value);
       formData.append("phoneNumber", phoneNumber.value);
-      console.log(phoneNumber.value);
       formData.append("abouts", infoArray.value);
       formData.append("pastors", pastors.value);
+      console.log(churchName.value)
+      console.log(phoneNumber.value)
       console.log(infoArray.value);
       console.log(pastors.value);
       // formData.append("logo", payload.logo)
@@ -418,6 +438,10 @@ export default {
             detail: "Church Profile Updated Successfully",
             life: 3000,
           });
+
+          setTimeout(() => {
+            router.push({ name: "SocialMedia" });
+          }, 2000)
         }
         console.log(response);
       } catch (error) {
@@ -430,24 +454,7 @@ export default {
         });
         console.log(error);
       }
-
-      setTimeout(() => {
-        router.push({ name: "SocialMedia" });
-      }, 4000)
     };
-    const pastorDetails = ref({});
-    const pastorsName = ref("");
-    const pastorsEmail = ref("");
-    const closePastorModal = ref("");
-    const image = ref("");
-    const pastorImage = ref("");
-    const tenantId = ref("");
-    const churchName = ref("");
-    const phoneNumber = ref("");
-    const address = ref("");
-    const otherInfo = ref({ showFullMessage: false });
-    const infoArray = ref([]);
-    const closeTextArea = ref("");
 
     const detailsForPastor = () => {
       pastors.value.push(pastorDetails.value);
@@ -493,12 +500,130 @@ export default {
           churchName.value = response.data.returnObject.churchName;
           phoneNumber.value = response.data.returnObject.phoneNumber;
           address.value = response.data.returnObject.address;
+          pastors.value = response.data.returnObject.pastors.map(i => {
+            return {
+              pastorsName: i.name,
+              url: i.photoUrl,
+              pastorId: i.pastorId,
+              text: i.bio,
+              tenantId: i.tenantID
+            }
+          })
+          infoArray.value = response.data.returnObject.customAbouts.map(i => {
+            return {
+              title: i.title,
+              information:  i.details,
+              customAboutId: i.customAboutId
+            }
+          })
         })
         .catch((error) => {
           console.log(error);
         });
     };
     getTenantId();
+
+    const skip = () => {
+      router.push({ name: "SocialMedia" })
+    }
+
+    const showConfirmModal = (id) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deletePastor(id);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
+
+    const deletePastor = (id) => {
+        axios
+          .delete(`/mobile/v1/Profile/DeletePastor?pastorId=${id}`)
+          .then((res) => {
+            console.log(res);
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `${res.data.response}`,
+              life: 4000,
+            });
+            pastors.value = pastors.value.filter(
+              (item) => item.pastorId !== id
+            );
+
+          })
+          .catch((err) => {
+            console.log(err)
+              toast.add({
+                severity: "error",
+                summary: "Unable to delete",
+                detail: "An error occurred, please try again",
+                life: 4000,
+              });
+          });
+      };
+
+      const showConfirmModalAbout = (id) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteAbout(id);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
+
+    const deleteAbout = (id) => {
+        axios
+          .delete(`/mobile/v1/Profile/DeleteCustomAbout?customAboutId=${id}`)
+          .then((res) => {
+            console.log(res);
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `${res.data.response}`,
+              life: 4000,
+            });
+            infoArray.value = infoArray.value.filter(
+              (item) => item.customAboutId !== id
+            );
+
+          })
+          .catch((err) => {
+            console.log(err)
+              toast.add({
+                severity: "error",
+                summary: "Unable to delete",
+                detail: "An error occurred, please try again",
+                life: 4000,
+              });
+          });
+      };
 
     return {
       pastors,
@@ -520,6 +645,9 @@ export default {
       infoArray,
       closeTextArea,
       address,
+      skip,
+      showConfirmModal,
+      showConfirmModalAbout
     };
   },
 };
@@ -553,7 +681,7 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   /* background: transparent linear-gradient(180deg, #2E67CE 0%, #690C7F 100%) 0% 0% no-repeat padding-box; */
-  max-height: 100vh;
+  min-height: 100vh;
 }
 .image-dis {
   display: flex;
@@ -685,12 +813,26 @@ export default {
   text-align: center;
 }
 .pastorname {
-  font: normal normal 300 16px/22px Nunito Sans;
+  font: normal normal 700 16px/22px Nunito Sans;
   letter-spacing: 0px;
   color: #020e1c;
 }
 .submit-img {
   width: 87%;
   margin-left: 12px;
+}
+
+.skip-text {
+  border-top: 1px solid rgb(173, 173, 173);;
+  border-bottom: 1px solid rgb(173, 173, 173);;
+  position: relative;
+  top: 32em;
+}
+
+.skip-text:hover {
+  background: rgb(62, 68, 160);
+  border: 1px solid rgb(62, 68, 160);;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  cursor: pointer;
 }
 </style>

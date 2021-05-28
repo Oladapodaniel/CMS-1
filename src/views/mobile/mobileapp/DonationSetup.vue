@@ -6,7 +6,6 @@
         <div class="row">
           <div class="col-md-7">
             <h2 class="events">Online Donation</h2>
-            <p>Enter bank details to set up online donation</p>
           </div>
           <div class="col-md-5">
             <button
@@ -16,19 +15,22 @@
               Add Payment Form
             </button>
           </div>
+          <div class="col-12">
+            <p>Enter bank details to set up online donation</p>
+          </div>
         </div>
 
         <table class="table table-border">
           <thead class="thead-light">
             <tr>
               <th scope="col-3">Name</th>
-              <th scope="col-3">Bank</th>
+              <th scope="col-3"></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(form, index) in formsArr" :key="index">
               <td>{{ form.name }}</td>
-              <td>{{ form.bank }}</td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -136,7 +138,8 @@
             </div>
           </div> -->
           <div
-            class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0"
+            class="col-11 ml-3
+             btn primary-bg mt-5 text-white default-btn border-0"
             @click="completeSetUp"
           >
              continue
@@ -151,6 +154,10 @@
       >
         <div class="row mt-3">
           <div class="col-md-12 text-center my-5 step">STEP 4 of 4</div>
+          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
+          <div class="col-12 text-center mt-n5" v-if="setupSpinner">
+            <i class="pi pi-spin pi-spinner text-white"  style="fontSize: 5rem"></i>
+          </div>
         </div>
         <div class="image-dis">
           <!-- <img
@@ -197,6 +204,7 @@ export default {
         banks: selectedBank.value,
       },
     ]);
+    const setupSpinner = ref(false)
 
     const completeSetUp = () => {
       // router.push({ name: "SocialMedia" });
@@ -271,6 +279,33 @@ export default {
       formsArr.value.push({ name: data.name, accountName: data.accountName, bank: data.bank });
     }
 
+    
+    const getPaymentForm = () => {
+      axios
+        .get("/api/PaymentForm/GetAll")
+        .then((res) => {
+          console.log(res);
+          formsArr.value = res.data
+          // formsArr.value = nigerianBanks.value.forEach(i => {
+          //   // return i.id === formsArr.
+          //   let index = formsArr.value.findIndex(j => j.id === i.id)
+          //   if(index > 0) return formsArr.value[index] = i
+          // })
+          // console.log(formsArr.value)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getPaymentForm();
+
+    const skip = () => {
+      slide.value = true
+      setupSpinner.value = true
+      setTimeout(() => {
+        router.push({ name: "OnboardingSuccessful" })
+      }, 4000)
+    }
     return {
       nigerianBanks,
       selectedBank,
@@ -285,6 +320,8 @@ export default {
       formCreated,
       closeModalButton,
       formsArr,
+      skip,
+      setupSpinner
     };
   },
 };
@@ -464,12 +501,12 @@ export default {
 
 .slide-left {
   transition: all 1s ease-in-out;
-  transform: translateX(-609px);
+  transform: translateX(-100%);
 }
 
 .slide-right {
   transition: all 1s ease-in-out;
-  transform: translateX(478px);
+  transform: translateX(100%);
 }
 
 .events {
@@ -479,5 +516,20 @@ export default {
 .dropdown-menu {
   max-height: 300px;
   overflow: auto;
+}
+
+.skip-text {
+  border-top: 1px solid rgb(173, 173, 173);
+  border-bottom: 1px solid rgb(173, 173, 173);
+  position: relative;
+  top: 32em;
+}
+
+.skip-text:hover {
+  background: rgb(62, 68, 160);
+  border-top: 1px solid rgb(62, 68, 160);;
+  border-bottom: 1px solid rgb(62, 68, 160);;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  cursor: pointer;
 }
 </style>

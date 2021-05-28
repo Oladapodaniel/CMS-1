@@ -4,16 +4,8 @@
     <div class="row" style="height: 100vh">
       <div class="col-md-6 mt-5">
         <div class="row">
-          <div class="col-12 setup">Add Social Media Handles</div>
-        </div>
-        <div
-          class="row d-flex justify-content-md-between px-5 px-md-0 px-xl-0 px-lg-0"
-        >
-          <div class="col-md-5 col-12">
-            <h5 class="colourText"></h5>
-          </div>
-          <div class="col-md-1 col-12"></div>
-          <div class="col-md-3 col-12"></div>
+          <div class="col-12 setup">Social Media Handles</div>
+          <div class="col-12 mt-4">Add your social media handles that you want to make social post with.</div>
         </div>
 
         <div
@@ -23,29 +15,29 @@
         >
           <div class="col-12 col-sm-2 mt-2">
             <img
-              v-if="socialMedia.name === 'facebook'"
+              v-if="socialMedia.name === 'facebook handle'"
               src="../../../assets/social/facebook.svg"
-              alt="gggg"
+              alt="facebook"
             />
             <img
-              v-if="socialMedia.name === 'twitter'"
+              v-if="socialMedia.name === 'twitter handle'"
               src="../../../assets/social/twitter.svg"
-              alt="gggg"
+              alt="twitter"
             />
             <img
-              v-if="socialMedia.name === 'instagram'"
+              v-if="socialMedia.name === 'instagram handle'"
               src="../../../assets/social/instagram.svg"
-              alt="gggg"
+              alt="instagram"
             />
             <img
-              v-if="socialMedia.name === 'youtube'"
+              v-if="socialMedia.name === 'youtube handle'"
               src="../../../assets/mobileonboarding/youtube.svg"
-              alt="gggg"
+              alt="youtube"
             />
             <img
-              v-if="socialMedia.name === 'youtubeChannel'"
+              v-if="socialMedia.name === 'youtube channel ID'"
               src="../../../assets/mobileonboarding/youtube.svg"
-              alt="gggg"
+              alt="youtube channel id"
             />
           </div>
           <div class="col-md-8 col-12 mt-3" id="logoBox">
@@ -57,73 +49,6 @@
             />
           </div>
         </div>
-        <!-- <div class="col-2"></div> -->
-
-        <!-- <div class="row mt-5">
-          <div class="col-12 col-sm-2 mt-3">
-            <img src="../../../assets/social/facebook.svg" alt="" />
-          </div>
-          <div class="col-md-8 col-12 mt-3" id="logoBox">
-            <input
-              type="text"
-              placeholder="Facebook Handle"
-              v-model="facebook.url"
-              class="w-100 py-1 border-0 outline-none px-2"
-            />
-          </div>
-           <div class="col-2"></div>
-          <div class="col-12 col-sm-2 mt-3">
-            <img src="../../../assets/social/twitter.svg" alt="" />
-          </div>
-          <div class="col-md-8 col-12 mt-3" id="logoBox">
-            <input
-              type="text"
-              placeholder="Twitter Handle"
-              v-model="twitter.url"
-              class="w-100 py-1 border-0 outline-none px-2"
-            />
-          </div>
-          <div class="col-2"></div>
-
-          <div class="col-12 col-sm-2 mt-3">
-            <img src="../../../assets/social/instagram.svg" alt="" />
-          </div>
-          <div class="col-md-8 col-12 mt-3" id="logoBox">
-            <input
-              type="text"
-              placeholder="Instagram Handle"
-              v-model="instagram.url"
-              class="w-100 py-1 border-0 outline-none px-2"
-            />
-          </div>
-          <div class="col-2"></div>
-
-          <div class="col-12 col-sm-2 mt-3">
-            <img src="../../../assets/mobileonboarding/youtube.svg" alt="" />
-          </div>
-          <div class="col-md-8 col-12 mt-3" id="logoBox">
-            <input
-              type="text"
-              placeholder="Youtube URL"
-              v-model="youtube.url"
-              class="w-100 py-1 border-0 outline-none px-2"
-            />
-          </div>
-          <div class="col-2"></div>
-
-          <div class="col-12 col-sm-2 mt-3">
-            <img src="../../../assets/mobileonboarding/youtube.svg" alt="" />
-          </div>
-          <div class="col-md-8 col-12 mt-3" id="logoBox">
-            <input
-              type="text"
-              placeholder="Youtube Channel ID"
-              v-model="youtubeChannel.url"
-              class="w-100 py-1 border-0 outline-none px-2"
-            />
-          </div>
-          <div class="col-2"></div>
- </div> -->
         <div
           class="col-10 offset-1 offset-md-0 btn primary-bg ml-2 mt-5 text-white default-btn border-0 w-100"
           @click="saveSocialMedia"
@@ -136,6 +61,7 @@
       <div class="col-md-6 col-12 bg-image d-none d-md-block">
         <div class="row mt-3">
           <div class="col-md-12 text-center my-5 step">STEP 2 of 4</div>
+          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
         </div>
         <div></div>
       </div>
@@ -156,17 +82,11 @@ import { ref } from "vue";
 export default {
   setup() {
     const handles = ref([
-      { name: "facebook", image: "../../../assets/social/facebook.svg" },
-      { name: "twitter", image: "../../../assets/social/twitter.svg" },
-      { name: "instagram", image: "../../../assets/social/instagram.svg" },
-      {
-        name: "youtube",
-        image: "../../../assets/mobileonboarding/youtube.svg",
-      },
-      {
-        name: "youtubeChannel",
-        image: "../../../assets/mobileonboarding/youtube.svg",
-      },
+      { name: "facebook handle", image: "../../../assets/social/facebook.svg" },
+      { name: "twitter handle", image: "../../../assets/social/twitter.svg" },
+      { name: "instagram handle", image: "../../../assets/social/instagram.svg" },
+      { name: "youtube handle", image: "../../../assets/mobileonboarding/youtube.svg" },
+      { name: "youtube channel ID", image: "../../../assets/mobileonboarding/youtube.svg" },
     ]);
     let toast = useToast();
 
@@ -228,9 +148,14 @@ export default {
     };
     getSocialMediaDetails()
 
+    const skip = () => {
+      router.push({ name: 'AppBranding' })
+    }
+
     return {
       saveSocialMedia,
       handles,
+      skip
     };
   },
 };
@@ -371,5 +296,20 @@ hr {
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
+}
+
+.skip-text {
+  border-top: 1px solid rgb(173, 173, 173);
+  border-bottom: 1px solid rgb(173, 173, 173);
+  position: relative;
+  top: 32em;
+}
+
+.skip-text:hover {
+  background: rgb(62, 68, 160);
+  border-top: 1px solid rgb(62, 68, 160);;
+  border-bottom: 1px solid rgb(62, 68, 160);;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  cursor: pointer;
 }
 </style>

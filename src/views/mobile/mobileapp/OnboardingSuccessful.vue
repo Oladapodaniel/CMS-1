@@ -15,9 +15,9 @@
             <!-- track 2 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-                <h5 class="text-wrap h6 line-height">
-                  Welldone, you successfully set up your Churchplus App.
-                  Curious what you can do? Head on over to the menu
+                <h5 class="text-wrap h6 ">
+                  Congrats, you have successfully set up your Churchplus App.
+                  Curious what you can do? Head on over to the menu.
                 </h5>
               </div>
             </div>
@@ -26,21 +26,21 @@
             <!-- track 3 -->
             <div class="row mt-3  align-text d-flex">
               <div class="col-lg-9 mt-4">
-                <h4 class="ctatext">Start Sharing with members of your church</h4>
+                <h5 class="text-wrap h6">Start Sharing with members of your church</h5>
               </div>
               <div class="col-lg-9 mt-4">
-                <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext" row="5" style="background: transparent"></textarea>
+                <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" row="5" style="background: transparent"></textarea>
               </div>
-              <div class="col-3 cta px-0 d-none d-lg-block " @click="copyLink">
-                <button class="btn default-btn c-pointer mt-3">Copy</button>
+              <div class="col-3 cta px-0 d-none d-lg-block align-self-center" @click="copyLink">
+                <button class="btn default-btn c-pointer">Copy</button>
               </div>
             </div>
             <!-- end track 3 -->
 
             <!-- end track 4 -->
             <div class="row d-sm-block d-lg-none text-center show-on-small-screen at-screen">
-                <div class="col-12 cta px-0  ">
-                <button class="btn default-btn c-pointer mt-3">Copy</button>
+                <div class="col-12 cta px-0">
+                <button class="btn default-btn c-pointer">Copy</button>
               </div>
             </div>
             <!-- end track 4 -->
@@ -315,6 +315,11 @@ export default {
     height: 100vh;
     position: fixed;
   }
+}
+
+.link-area:focus {
+  border: none;
+  outline: none
 }
 </style>
 
