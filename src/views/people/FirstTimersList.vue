@@ -1,26 +1,5 @@
 <template>
   <div class="container-wide">
-    <!-- <div class="row my-3">
-      <div class="col-sm-4 first-timers-text">
-        <h2 class="page-header">First Timers</h2>
-      </div>
-
-      <div class="col-sm-8 d-flex head-button">
-        <button class="more default-btn">More <i class="fa fa-angle-down ml-2"></i></button>
-        <router-link to="/tenant/people/addfirsttimer" class="add-btn">
-          Add First timer
-        </router-link>
-      </div>
-    </div> -->
-
-    <!-- <div class="row">
-      <div class="col-md-12">
-        <hr class="hr" />
-      </div>
-    </div> -->
-
-    <!-- <div class="row">
-      <div class="col-md-12"> -->
     <div class="my-con">
       <div class="summary px-3">
         <p class="summary-header">Summary</p>
@@ -67,7 +46,7 @@
       <!-- tosin 1 -->
       <div class="table">
         <div class="top-con">
-          <div class="table-top my-4 px-4">
+          <div class="table-top px-2">
             <div class="select-all" v-if="churchMembers.length > 0">
               <input
                 type="checkbox"
@@ -150,14 +129,7 @@
                 </div>
 
                 <div class="row">
-                  <!-- <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                  <input
-                    type="text"
-                    class="input w-100"
-                    placeholder="Last Name"
-                    v-model="filter.filterLastName"
-                  />
-                </div> -->
+              
                 </div>
               </div>
 
@@ -176,6 +148,7 @@
           </div>
         </div>
 
+
         <div class="responsive-table">
           <table class="table-borderless w-100">
             <thead class="header">
@@ -192,7 +165,7 @@
             </thead>
             <tbody>
               <tr v-for="person in searchMember" :key="person.id">
-                <!-- tosin 2 -->
+    
                 <td>
                   <input
                     type="checkbox"
@@ -302,6 +275,160 @@
           </table>
         </div>
 
+        <!-- <div class="container-fluid d-none d-md-block">
+            <div class="row t-header">
+           
+                <div class="col-md-1 px-3"></div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Name</div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Phone Number</div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Source</div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Interested</div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
+  
+                <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
+              
+            </div>
+          </div>
+          {{checkedFirstTimer}}
+        <div class="row" style="margin:0;">
+            <div
+              class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
+              v-for="(item) in searchMember"
+              :key="item.id"
+            >
+                <div class="row w-100" style="margin:0">
+                  <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+                    <input
+                      type="checkbox"
+                        name=""
+                        id=""
+                        @change="check1item(person)"
+                        :checked="
+                          checkedFirstTimer.findIndex((i) => i.id === person.id) >=
+                          0
+                        "
+                    />
+                  </div>
+
+                  <div class="desc small-text col-md-2 pl-0">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Name</span>
+                      <span>{{
+                      item.fullName
+                        ? item.fullName
+                        : `${item.firstName} ${item.lastName}`
+                    }}</span>
+                    </p>
+                  </div>
+
+                  <div class="col-md-2 pl-0">
+                    <div class="d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Phone Number</span>
+                    <div>
+                      
+                      <div class="desc small-text text-right text-md-left">{{ item.phoneNumber }}</div>
+                    </div>
+                    </div>
+                  </div>
+
+                  <div class="desc-head small-text col-md-2 pl-0">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Source</span>
+                   
+                      <span>{{ item.howDidYouAboutUsName}}</span>
+                    </p>
+                  </div>
+
+                  <div class="small-text col-md-2 pl-0">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Interested</span>
+                      <span><span class="primary-text c-pointer"
+                      >{{
+                      item.interestedInJoining === "Not_Specified"
+                        ? "Not Sure"
+                        : item.interestedInJoining
+                    }}</span
+                    ></span>
+                    </p>
+                  </div>
+                  <div class="small-text col-md-2 pl-0">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
+                      <span><span class="primary-text c-pointer"
+                      >{{
+                      moment
+                        .parseZone(
+                          new Date(item.date).toDateString(),
+                          "YYYY MM DD HH ZZ"
+                        )
+                        ._i.substr(4, 11)
+                    }}</span
+                    ></span>
+                    </p>
+                  </div>
+                  <div class="small-text col-md-1 pl-0">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Status</span>
+                      <span><span class="primary-text c-pointer"
+                      >st</span
+                    ></span>
+                    </p>
+                  </div>
+                  <div class="small-text col-md-1 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Action</span>
+                      <span><span class="primary-text c-pointer"
+                      >ee</span
+                    ></span>
+                    </p>
+                  </div>
+
+                  <div class="small-text col-md-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
+                      <span>Marked</span>
+                    </p>
+                    <div class="action data action-icon">
+                      <div class="dropdown">
+                        <i
+                          class="fas fa-ellipsis-v cursor-pointer"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        ></i>
+                        <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <a class="dropdown-item" @mouseover="toggle($event, item.id)" href="#">Convert to member</a>
+                      <a class="dropdown-item" v-if="item.phoneNumber">
+                        <router-link
+                          :to="`/tenant/sms/compose?phone=${item.phoneNumber}`"
+                          >Send SMS</router-link
+                        >
+                      </a>
+                      <a class="dropdown-item" v-if="item.email">
+                        <router-link
+                          :to="`/tenant/email/compose?phone=${item.email}`"
+                        >
+                          Send Email
+                        </router-link>
+                      </a>
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        @click.prevent="showConfirmModal(item.id)"
+                        >Delete</a
+                      >
+                    </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
         <ConfirmDialog />
         <Toast />
         <div class="table-footer">
@@ -314,6 +441,8 @@
         </div>
       </div>
     </div>
+
+    
 
     <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" style="width: 134px; margin-top: -25px; box-shadow: 0px 1px 4px #02172e45; border: 1px solid #dde2e6;" :breakpoints="{'960px': '75vw', '640px': '100vw'}">
         <div v-for="item in membershipCategory" :key="item.id">
@@ -1366,6 +1495,26 @@ a {
 
 .board.members-count {
   max-height: 216px;
+}
+
+.t-header div {
+  background: #dde2e6 0% 0% no-repeat padding-box;
+  font-size: 16px;
+  padding: .5rem 0;
+}
+.parent-desc.first {
+  color: #8898aa;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #2c28281c;
+  background: #dde2e6 0% 0% no-repeat padding-box;
+}
+.desc-head {
+  font-weight: 700;
+}
+.desc {
+  color: #9b9a9c;
+  /* opacity: 0.7; */
 }
 </style>
 

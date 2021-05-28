@@ -269,6 +269,7 @@ export default {
           } else {
               toast.add({severity:'success', summary:'Account Created', detail:`The account ${newAccount.value.name} was created successfully`, life: 2500});
               newAccount.value = { };
+              savingAccount.value = false;
               emit("save-account", { success: true, type: props.financialAccountType });
               transactionals.getTransactionalAccounts(true);
               selectedFund.value = { }

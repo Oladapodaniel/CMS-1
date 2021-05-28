@@ -258,6 +258,7 @@
         <button
           class="default-btn primary-bg text-white font-weight-700 border-0"
           @click="saveTransaction"
+          :disabled="unbalanced"
         >
           Save
         </button>

@@ -839,15 +839,4 @@ export default {
   transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
   cursor: pointer;
 }
-.fill {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden
-}
-.fill img {
-    flex-shrink: 0;
-    min-width: 100%;
-    min-height: 100%
-}
 </style>

@@ -159,13 +159,13 @@ dapo
         <img class="w-100" src="../../../assets/4PaystackLogo.png" alt="paystack"/>
       </div>
     </div>
-  
+
 
     <div class="row row-button" v-if="flutterwaveGate" @click="makePayment">
       <div class="col-4 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/flutterwave_logo_color@2x.png" alt="flutterwave"/>
       </div>
-       
+
       <!-- <div class="col-7 col-sm-4 option-text">Flutterwave</div> -->
       <!-- <div class="row">
         <div class="col-1 mt-n1 d-none d-sm-block">
@@ -176,13 +176,13 @@ dapo
       <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
       </div> -->
     </div>
-    
+
 
     <div class="row row-button d-flex justify-content-center" v-if="paypalGate">
       <div class="col-8 col-sm-6">
         <img class="w-100 img-height" src="../../../assets/paypal-logo-2@2x.png" alt="paypal"/>
       </div>
-      
+
       <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
       <div class="row">
         <div class="col-1 mt-n1 d-none d-sm-block">
@@ -193,12 +193,12 @@ dapo
       <div class="col-8 pl-0 d-none d-sm-block">International</div>
       </div> -->
     </div>
-    
+
     <div class="row row-button d-flex justify-content-center" v-if="stripe">
       <div class="col-7 col-sm-4">
         <img class="w-100 img-height" src="../../../assets/Stripe_logo.jpg" alt="stripe"/>
       </div>
-      
+
       <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
       <div class="row">
         <div class="col-1 mt-n1 d-none d-sm-block">
@@ -214,7 +214,7 @@ dapo
         <img class="w-100" src="../../../assets/4PaystackLogo.png" alt=""/>
         {{ gateway.paymentGateway.name }}
       </div>
-      
+
     </div> -->
 
 
@@ -223,6 +223,7 @@ dapo
 
 <script>
 // import PaystackPay from "../../../components/payment/PaystackPay"
+
 import { ref, computed } from 'vue'
 import axios from "@/gateway/backendapi";
 import finish from "../../../services/progressbar/progress"
@@ -255,7 +256,7 @@ export default {
       if(!props.gateways) return false
       return props.gateways.find(i => i.paymentGateway.name === "PayPal")
     })
-    
+
     const stripe = computed(() => {
       if(!props.gateways) return false
       return props.gateways.find(i => i.paymentGateway.name === "Stripe")
@@ -263,7 +264,7 @@ export default {
 
     const payWithPaystack = (e) => {
       console.log(e.srcElement.alt)
-      
+
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
 
@@ -285,25 +286,25 @@ export default {
           //Route to where you confirm payment status
           console.log(response, "Payment Received");
           console.log(props.donation);
-  
+
           axios
             .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
             .then((res) => {
               finish()
               console.log(res, "success data");
-              
+
             })
             .catch((err) => {
               finish()
-              toast.add({ severity: 'error', 
-              summary: 'Confirmation failed', 
-              detail: "Confirming your purchase failed, please contact support at info@churchplus.co", 
+              toast.add({ severity: 'error',
+              summary: 'Confirmation failed',
+              detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
               life: 4000
               })
               console.log(err, "error confirming payment");
             });
-            
-          emit('payment-successful', true)  
+
+          emit('payment-successful', true)
         },
       });
       handler.openIframe();
@@ -341,7 +342,7 @@ export default {
                 callback: (response) => {
                   console.log("Payment callback", response)
                     // props.donation.usedPaymentGateway = selectedGateway.value
-                    
+
                     console.log(props.donation)
 
                     axios
@@ -349,20 +350,20 @@ export default {
                           .then((res) => {
                             finish()
                             console.log(res, "success data");
-                            
+
                           })
                           .catch((err) => {
                             finish()
-                            toast.add({ 
-                              severity: 'error', 
-                              summary: 'Confirmation failed', 
+                            toast.add({
+                              severity: 'error',
+                              summary: 'Confirmation failed',
                               detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
                               life: 4000
                               })
                             console.log(err, "error confirming payment");
                           });
-                          
-                        emit('payment-successful', true) 
+
+                        emit('payment-successful', true)
                   },
                 onclose: () => console.log('Payment closed'),
                 customizations: {

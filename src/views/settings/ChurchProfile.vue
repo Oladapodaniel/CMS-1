@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="onSubmit">
+  <form @submit.prevent="churchProfile">
     <div class="container my-content">
       <div class="row page-header">
         <div class="col-12">
@@ -19,7 +19,7 @@
                 type="text" placeholder="name()"
                 class="form-control ml-0 input" 
                 id="firstname"
-                v-model="currentUser.churchName"
+                v-model="churchData.churchName"
                 required
               />
             </div>
@@ -61,7 +61,10 @@
               <label class="small-text lb font-weight-600" for="">Aka/Parish</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" placeholder="Aka/Parish" class="form-control ml-0 input" />
+              <input type="text" 
+              placeholder="Aka/Parish"
+              v-model="churchData.aka"
+               class="form-control ml-0 input" />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -71,7 +74,7 @@
               <label class="small-text lb font-weight-600">Address</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" placeholder="Address" v-model="uploadData.address" class="form-control ml-0 input" />
+              <input type="text" placeholder="Address" v-model="churchData.address" class="form-control ml-0 input" />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -81,7 +84,10 @@
               <label class="small-text lb font-weight-600" for="">Phone number</label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <input type="text" placeholder="Phone Number" class="form-control ml-0 input" />
+              <input type="text"
+               placeholder="Phone Number"
+               v-model="churchData.phoneNumber"
+                class="form-control ml-0 input" />
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -94,6 +100,7 @@
               <input type="text"
                placeholder="Email"
                 class="form-control ml-0 input"
+                :disabled ="validate ? disabled : ''"
                 v-model="currentUser.userEmail" 
                 />
             </div>
@@ -115,7 +122,6 @@
             </div>
             <div class="col-md-4"></div>
           </div>
-
           <div class="row select-elem">
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text lb font-weight-600">Time zone</label>
@@ -139,11 +145,11 @@
               <input
                 type="text" placeholder="Website URL"
                 class="form-control ml-0 input"
+                v-model="churchData.websiteUrl"
               />
             </div>
             <div class="col-md-4"></div>
           </div>
-
           <div class="row">
               <div class="col-md-12 px-">
                   <hr class="hr">
@@ -163,7 +169,9 @@
             </div>
             <div class="col-12 col-md-5 form-group">
               <input
-                type="text" placeholder="Name"
+                type="text"
+                 placeholder="Name"
+                 v-model="churchData.headPastorName"
                 class="form-control ml-0 input"
               />
             </div>
@@ -178,6 +186,7 @@
               <input
                 type="text" placeholder="Email"
                 class="form-control ml-0 input"
+                v-model="churchData.headPastorEmail"
               />
             </div>
             <div class="col-md-4"></div>
@@ -188,7 +197,7 @@
               <label class="small-text" for=""></label>
             </div>
             <div class="col-12 col-md-5 form-group">
-              <button class="primary-btn text-white px-4" @click="uploadChurchDetail">Save</button>
+              <button class="primary-btn text-white px-4">Save</button>
             </div>
             <div class="col-md-4"></div>
           </div>
@@ -196,6 +205,7 @@
       </div>
     </div>
   </form>
+  <Toast />
 </template>
 
 <script>
@@ -203,10 +213,12 @@ import axios from "@/gateway/backendapi";
 import store from "@/store/store";
 import Dropdown from "primevue/dropdown";
 import { onMounted, ref} from 'vue';
-
+import { useToast } from "primevue/usetoast";
 export default {
   components: { Dropdown },
   setup() {
+    const toast = useToast()
+    const churchData =ref({});
     let url = ref("");
     let a= ref("");
     let b= ref("b")
@@ -219,22 +231,80 @@ export default {
     };
 
     const uploadImage = () => { };
-    let countries = ref("");
+    let countries = ref([]);
     const currentUser = ref(store.getters.currentUser);
+    //Get AllCountry
      const getCountries= async()=> {
       try {
         const { data } = await axios.get("/api/GetAllCountries");
         data.sort((a,b)=> a.data - b.data);
         console.log(data);
         countries.value = data;
+        getChurchProfile()
         
       } catch (error) {
         console.log(error);
       }
     }
     getCountries()
+    //Get AllChurchProfile
+    const getChurchProfile= async()=>{
+      try{
+        const {data} = await axios.get("/mobile/v1/Profile/GetChurchProfile");
+        churchData.value = data.returnObject;
+        if (countries.value.length > 0) {
+            selectCountry.value = countries.value.find(i => {
+            return i.id === churchData.value.countryID
+          })
+          console.log(countries.value);
+        }
+        console.log(selectCountry.value)
+        console.log(churchData);
+        
+
+      }catch(error){
+        console.log(error)
+      }
+    }
+     
     const uploadData= ref({ });
     const display= ref(false)
+    //formData
+    // let formData = new formData =()=>{
+    //   formData.append("ChurchName", formData.ChurchName.value);
+    //   formData.append("AKA", formData.AKA.value);
+    // }
+    const churchProfile = ()=>{
+      let formData = new FormData()
+      formData.append("ChurchName", churchData.value.churchName );
+      formData.append("AKA", churchData.value.aka );      
+      formData.append("Address", churchData.value.address );      
+      formData.append("PhoneNumber", churchData.value.phoneNumber );      
+      formData.append("CountryID", selectCountry.value.id );      
+      formData.append("TimeZone", selectTime.value );      
+      formData.append("WebsiteUrl", churchData.value.websiteUrl );      
+      formData.append("HeadPastorName", churchData.value.headPastorName );      
+      formData.append("HeadPastorEmail", churchData.value.headPastorEmail );      
+      formData.append("HeadPastorPhone", churchData.value.headPastorPhone );      
+      formData.append("ChurchLogo", image ); 
+
+      axios.put('/api/Settings/ChurchProfileSettings',formData)
+      .then(res =>{
+        console.log(res);
+        toast.add({
+              severity: "success",
+              summary: "Successful",
+              detail: `${res.data.response}`,
+              life: 4000,
+            });
+
+      }).catch(error =>{
+        console.log(error);
+
+      })     
+      console.log('log')
+
+    }
     //  const uploadChurchDetail =() =>{
     //    const churchDetail = new churchDetail()
     //    console.log();
@@ -275,17 +345,20 @@ export default {
         }
     })
     return {
+      churchData,
       url,
       imageSelected,
       uploadImage,
       currentUser,
       countries,
       getCountries,
+      getChurchProfile,
       selectCountry,
       selectTime,
       // uploadChurchDetail,
       uploadData,
       display,
+      churchProfile,
       a,
       b
   
