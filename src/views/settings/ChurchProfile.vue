@@ -123,12 +123,13 @@
             </div>
             <div class="col-md-4"></div>
           </div>
-          <div class="row select-elem">
+          <div class="row select-elem " v-if="false">
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text lb font-weight-600">Time zone</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <Dropdown
+              
                 :options="[1, 2, 3, 4, 5]"
                 placeholder="Select time zone"
                 style="width: 100%"
@@ -213,7 +214,7 @@
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
 import Dropdown from "primevue/dropdown";
-import { onMounted, ref} from 'vue';
+import { ref} from 'vue';
 import { useToast } from "primevue/usetoast";
 export default {
   components: { Dropdown },
