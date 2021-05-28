@@ -214,19 +214,19 @@ export default {
       //   banks: selectedBank.value
       // }
       // banks.value.push(bankDetails)
-      console.log(banks.value);
-      store.dispatch("completeSetUp", banks.value);
-      axios
-        .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
-        .then((res) => {
-          console.log(res, "🎄🎄🎄");
+      // console.log(banks.value);
+      // store.dispatch("completeSetUp", banks.value);
+      // axios
+      //   .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
+      //   .then((res) => {
+      //     console.log(res, "🎄🎄🎄");
 
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
         setTimeout(() => {
- router.push({ name:'OnboardingSuccessful'});
+          router.push({ name:'OnboardingSuccessful'});
         }, 4000)
     };
 
