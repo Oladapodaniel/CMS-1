@@ -46,13 +46,13 @@
                 <div class="row">
                   <div class="col-md-4 col-12 col-sm-5 fill">
                     <img
-                      :src="item.url"
+                      :src="item.photo"
                       class="w-100 "
                     />
                   </div>
                   <div class="col-10 col-sm-5 align-self-center">
-                    <div class="pastorname">{{ item.pastorsName }}</div>
-                    <div>{{ item.text }}</div>
+                    <div class="pastorname">{{ item.name }}</div>
+                    <div>{{ item.bio }}</div>
                   </div>
                   <div class="col-2 col-sm-2  align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId, index)">
                     <i class="fa fa-trash"></i>
@@ -86,19 +86,19 @@
                 <div class="col-10 p-md-0">
                   <p>
                     <span v-if="!item.showFullMessage" class="display:block">{{
-                      item.information &&
-                      item.information.toString().length > 20
-                        ? `${item.information.substring(0, 20)}...`
-                        : item.information
+                      item.details &&
+                      item.details.toString().length > 20
+                        ? `${item.details.substring(0, 20)}...`
+                        : item.details
                     }}</span>
-                    <span v-else>{{ item.information }}</span>
+                    <span v-else>{{ item.details }}</span>
                     <span
                       @click="
                         () => (item.showFullMessage = !item.showFullMessage)
                       "
                       v-if="
-                        item.information &&
-                        item.information.toString().length > 20
+                        item.details &&
+                        item.details.toString().length > 20
                       "
                       class="text-primary c-pointer pl-2"
                     >
@@ -155,7 +155,7 @@
                             <textarea
                               class="form-control h-200"
                               id="message-text"
-                              v-model="otherInfo.information"
+                              v-model="otherInfo.details"
                             ></textarea>
                           </div>
                         </form>
@@ -217,7 +217,7 @@
                               class="form-control"
                               id="recipient-name"
                               placeholder="Name"
-                              v-model="pastorDetails.pastorsName"
+                              v-model="pastorDetails.name"
                             />
                           </div>
                           <!-- <div class="form-group"> -->
@@ -239,7 +239,7 @@
                             <textarea
                               class="form-control h-100"
                               id="message-text"
-                              v-model="pastorDetails.text"
+                              v-model="pastorDetails.bio"
                               placeholder="About Pastor/Minister"
                             ></textarea>
                           </div>
@@ -250,7 +250,7 @@
                       <div class="container-img mx-auto mx-md-0 mx-lg-0 pt-2">
                         <div class="photo-box">
                           <img
-                            :src="pastorDetails.url"
+                            :src="pastorDetails.photo"
                             class="w-100 h-100 img-responsive"
                           />
                         </div>
@@ -476,7 +476,7 @@ export default {
 
     const uploadFile = (e) => {
       image.value = e.target.files[0];
-      pastorDetails.value.url = URL.createObjectURL(image.value);
+      pastorDetails.value.photo = URL.createObjectURL(image.value);
     };
 
     const getTenantId = async () => {
@@ -504,17 +504,17 @@ export default {
           address.value = response.data.returnObject.address;
           pastors.value = response.data.returnObject.pastors.map(i => {
             return {
-              pastorsName: i.name,
-              url: i.photoUrl,
+              name: i.name,
+              photo: i.photoUrl,
               pastorId: i.pastorId,
-              text: i.bio,
+              bio: i.bio,
               tenantId: i.tenantID
             }
           })
           infoArray.value = response.data.returnObject.customAbouts.map(i => {
             return {
               title: i.title,
-              information:  i.details,
+              details:  i.details,
               customAboutId: i.customAboutId
             }
           })
