@@ -84,8 +84,14 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
             const createCategory = async () => {
                 try {
                     const formData = new FormData();
-                    formData.append("categoryImage", file.value ? file.value : "");
-                    // formData.append("categoryImageUrl", categoryImageUrl.value ? categoryImageUrl.value : "");
+                    
+                    if (file.value) {
+                        formData.append("categoryImage", file.value ? file.value : "");
+                    }
+
+                    if (categoryImageUrl.value) {
+                        formData.append("categoryImageUrl", categoryImageUrl.value ? categoryImageUrl.value : "");
+                    }
                     formData.append("name", category.value.name);
                     formData.append("tenantId", tenantId.value);
 
@@ -116,6 +122,7 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
             const fileUrl = ref("");
             const file = ref("");
             const fileUploaded = (payload) => {
+                console.log(payload, "payload");
                 if (payload.isUrl) {
                     fileUrl.value = payload.data;
                     categoryImageUrl.value = payload.data;
