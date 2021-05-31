@@ -108,8 +108,6 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
                 try {
                     const response = await membershipService.getSignedInUser()
                     tenantId.value = response.tenantId;
-                    console.log(response, "response");
-                    console.log(tenantId.value, "inside call");
                 } catch (error) {
                     console.log(error);
                 }
@@ -122,7 +120,6 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
             const fileUrl = ref("");
             const file = ref("");
             const fileUploaded = (payload) => {
-                console.log(payload, "payload");
                 if (payload.isUrl) {
                     fileUrl.value = payload.data;
                     categoryImageUrl.value = payload.data;
