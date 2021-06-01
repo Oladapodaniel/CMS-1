@@ -503,7 +503,7 @@ export default {
     const saveIncome = async () => {
         try {
           let reqBody = { };
-          if (props.transactionDetails.account === "Income Account" || (!props.transactionDetails.debitSplitAccounts)) {
+          if (props.transactionDetails.account === "Income Account" || (props.transactionDetails.creditSplitAccounts && props.transactionDetails.creditSplitAccounts.length >   0)) {
             transacObj.value.creditAccountID = selectedIncomeOrExpenseAccount.value.id;
             transacObj.value.debitAccountID = selectedCashAccount.value.id;
             reqBody = constructSaveTransactionReqBody();
@@ -522,7 +522,6 @@ export default {
                   transactionID: i.transactionID
                 }
               }),
-              id: props.transactionDetails.id ? props.transactionDetails.id : "",
               creditAccountID: selectedCashAccount.value.id,
               date: transacObj.value.date,
               memo: transacObj.value.memo,
@@ -530,6 +529,10 @@ export default {
               amount: Math.abs(+transacObj.value.amount),
               // amount: Math.abs(+transacObj.value.amount),
               category: "outflow"
+            }
+
+            if (props.transactionDetails.id) {
+              body.id = props.transactionDetails.id;
             }
             const response = await transaction_service.saveExpense(body);
             toastMessage(response)

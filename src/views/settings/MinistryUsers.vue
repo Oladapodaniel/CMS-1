@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
         <div class="col-md-8 col-lg-8 col-sm-6">
-          <h2 class="font-weight-bolder">{{  churchProfile }}</h2>
+          <h2 class="font-weight-bolder">{{  churchProfile ? churchProfile : "" }}</h2>
         </div>
         <div class="col-lg-4 col-sm-6 mt-2 link d-lg-flex justify-content-end">
           <router-link
@@ -145,12 +145,13 @@ export default {
     return{
       getCurrentUser: store.getters.currentUser,
       churchUsers: [],
+      churchNames: {}
     }
   },
   computed:{
     churchProfile(){
-      if(!this.getCurrentUser.churchName) return "";
-      return this.getCurrentUser.churchName
+      if(!this.getCurrentUser || !this.getCurrentUser.churchName) return "";
+      return this.getCurrentUser.churchName;
     }
 
   },
@@ -164,7 +165,6 @@ export default {
         console.log(error)
       }
     },
-  
     async activateChurchUser(email, index){
       try{
         let response = await axios.post(`/api/Settings/ActivateChurchUser?churchUserEmail=${email}`);
@@ -216,23 +216,25 @@ export default {
                 }
             });
         },
+        async currentUser () {
+          if(!store.getters.currentUser){
+             try{
+                const { data } = await axios.get('/api/Membership/GetCurrentSignedInUser')
+                this.getCurrentUser = data;
+                console.log(this.getCurrentUser)
+              }catch(error){
+                console.log(error)
+              }    
+            } else {
+                this.getCurrentUser = store.getters.currentUser
+                console.log(this.getCurrentUser)
+            }
+        }
 
-  },
-  mounted(){
-    console.log(store.getters.currentUser)
-    if(!store.getters.currentUser.churchName){
-      axios
-      .get(`/api/Membership/GetCurrentSignedInUser`)
-      .then((response)=>{
-        this.getCurrentUser = response.data;
-      console.log(response.data)
-      })
-      .catch((error)=>console.log(error))
-    }
-  },
- 
+  }, 
   created() {
     this.churchUser()
+    this.currentUser()
   },
 };
 </script>

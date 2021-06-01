@@ -26,12 +26,13 @@
             <div class="col-md-4">
               <div class="grey-bg light-grey-bg mt-0 py-2">
                 <div class="person-img">
+                  <img v-if="url" :src="url" alt="Uploaded Image" />
                   <img
-                    v-if="!url"
+                    v-else-if="!churchData.logoUrl"
                     src="../../assets/people/phone-import.svg"
                     alt="Uploaded Image"
                   />
-                  <img v-else :src="url" alt="Uploaded Image" />
+                  <img v-else :src="churchData.logoUrl" alt="Uploaded Image" />
                 </div>
                 <div>
                   <div class="cs-input">
@@ -122,12 +123,13 @@
             </div>
             <div class="col-md-4"></div>
           </div>
-          <div class="row select-elem">
+          <div class="row select-elem " v-if="false">
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text lb font-weight-600">Time zone</label>
             </div>
             <div class="col-12 col-md-5 form-group">
               <Dropdown
+              
                 :options="[1, 2, 3, 4, 5]"
                 placeholder="Select time zone"
                 style="width: 100%"
@@ -212,7 +214,7 @@
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
 import Dropdown from "primevue/dropdown";
-import { onMounted, ref} from 'vue';
+import { ref} from 'vue';
 import { useToast } from "primevue/usetoast";
 export default {
   components: { Dropdown },
@@ -232,7 +234,7 @@ export default {
 
     const uploadImage = () => { };
     let countries = ref([]);
-    const currentUser = ref(store.getters.currentUser);
+    const currentUser = ref({});
     //Get AllCountry
      const getCountries= async()=> {
       try {
@@ -305,34 +307,9 @@ export default {
       console.log('log')
 
     }
-    //  const uploadChurchDetail =() =>{
-    //    const churchDetail = new churchDetail()
-    //    console.log();
-    //    console.log(uploadData.value);
-    //    churchDetail.append("address", uploadData.value.address ? uploadData.value.address : "");
-    //    churchDetail.append("aka", uploadData.value.aka ? uploadData.value.aka : "");
-    //    churchDetail.append("phoneNumber", uploadData.value.phoneNumber ? uploadData.value.phoneNumber : "");
-    //    churchDetail.append("email", uploadData.value.email ? uploadData.value.email : "");
-    //    churchDetail.append("country", uploadData.value.country ? uploadData.value.country : "");
-    //    churchDetail.append("timeZone", uploadData.value.timeZone ? uploadData.value.timeZone : "");
-    //    churchDetail.append("website", uploadData.value.website ? uploadData.value.website : "");
-    //    churchDetail.append("website", uploadData.value.website ? uploadData.value.website : "");
-    //    churchDetail.append("pastorName", uploadData.value.pastorName ? uploadData.value.pastorName : "");
-    //    churchDetail.append("pastorEmail", uploadData.value.pastorEmail ? uploadData.value.pastorEmail : "");
-    //    display.value = true;
-    //   //  axios.put('/api/Dashboard/UpdateTenantProfile', churchDetail)
-    //   //  .then(res =>{
 
-    //   //  })
-    //   //  .catch(err =>{
-
-    //   //  })
-
-
-    // };
-
-    onMounted(() => {
-      if(!store.getters.currentUser.churchName){
+    const getCurrentUser = () => {
+      if(!store.getters.currentUser){
             axios
             .get(`/api/Membership/GetCurrentSignedInUser`)
             .then((response) =>{
@@ -342,8 +319,12 @@ export default {
         })
             .catch((error)=> console.log(error))
             
+        } else {
+                currentUser.value = store.getters.currentUser
         }
-    })
+    }
+    getCurrentUser()
+
     return {
       churchData,
       url,

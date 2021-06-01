@@ -84,8 +84,14 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
             const createCategory = async () => {
                 try {
                     const formData = new FormData();
-                    formData.append("categoryImage", file.value ? file.value : "");
-                    // formData.append("categoryImageUrl", categoryImageUrl.value ? categoryImageUrl.value : "");
+                    
+                    if (file.value) {
+                        formData.append("categoryImage", file.value ? file.value : "");
+                    }
+
+                    if (categoryImageUrl.value) {
+                        formData.append("categoryImageUrl", categoryImageUrl.value ? categoryImageUrl.value : "");
+                    }
                     formData.append("name", category.value.name);
                     formData.append("tenantId", tenantId.value);
 
@@ -102,8 +108,6 @@ import ImagePicker from '@/components/image-picker/ImagePicker';
                 try {
                     const response = await membershipService.getSignedInUser()
                     tenantId.value = response.tenantId;
-                    console.log(response, "response");
-                    console.log(tenantId.value, "inside call");
                 } catch (error) {
                     console.log(error);
                 }
