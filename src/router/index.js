@@ -25,6 +25,12 @@ const routes = [{
             import ( /* webpackChunkName: "login" */ '../views/account/Login.vue')
     },
     {
+        path: '/publicresetpassword',
+        name: 'PublicResetPassword',
+        component: () =>
+            import ( /* webpackChunkName: "PublicResetPassword" */ '../views/account/PublicResetPassword.vue')
+    },
+    {
         path: '/register',
         name: 'Register',
         component: () =>
@@ -123,10 +129,10 @@ const routes = [{
                         component: () =>
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
                     },
-                    
+
                 ]
             },
-            
+
             // {
                 //     path: 'event',
                 //     name: 'Event',

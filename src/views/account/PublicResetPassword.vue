@@ -6,154 +6,151 @@
           ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
         /></a>
       </div>
-      <div class="fp-header mt-5 mb-4">
-        <h2>Enter a New Password</h2>
+      <div v-if="!passwordChanged" class="fp-header mt-5 mb-4">
+        <h2>
+          {{
+            credentials.resetToken ? "Enter Your Password" : "Enter Your Email"
+          }}
+        </h2>
       </div>
       <div class="fp-form-con">
-        <form action="" @submit.prevent="resetPassword">
-          <div class="container" v-if="errorMessage">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="error-div">
-                  <p class="error-message mb-0">
-                    {{ errorMessage }}
-                    <a class="primary-text font-weight-700 text-decoration-none c-pointer" @click="requestNewLink" v-if="resetGuideBtnShould">Request new reset link</a>
-                  </p>
-                </div>
-              </div>
+        <form v-if="!passwordChanged" @submit="resetCredentials">
+          <div class="container"></div>
+          <div>
+            <input
+              v-if="!credentials.resetToken"
+              class="input"
+              type="email"
+              placeholder="Enter Email"
+              required
+              v-model.trim="credentials.email"
+            />
+            <input
+              v-else
+              class="input"
+              :type="text"
+              placeholder="Enter Password"
+              required
+              v-model.trim="credentials.password"
+            />
+          </div>
+
+          <Loading :loading="loading" />
+          <button
+            v-if="!credentials.resetToken && credentials.email"
+            @click.prevent="getResetToken"
+            class="submit-btn sign-in-btn"
+            type="submit"
+          >
+            Continue
+          </button>
+
+          <button
+            v-if="credentials.resetToken"
+            @click.prevent="changedPassword"
+            class="submit-btn sign-in-btn"
+          >
+            Save
+          </button>
+        </form>
+        <div v-if="passwordChanged" class="container my-5">
+          <div class="row">
+            <div class="col-12">
+              <p class="text-center">Updated Credentials</p>
+            </div>
+            <div class="col-12">
+              <p>Email: {{ credentials.email }}</p>
+            </div>
+            <div class="col-12">
+              <p>Password: {{ credentials.password }}</p>
+            </div>
+            <div class="col-12">
+              <button class="submit-btn sign-in-btn" @click="resetCredentials">
+                Reset
+              </button>
             </div>
           </div>
-          <div>
-            <input
-              class="input"
-              v-model="credentials.password"
-              :type="passwordType"
-              placeholder="New Password"
-              required
-              @input="clearErrorMessage"
-            />
-          </div>
-          <div class="password-help">
-            <span class="password-tip"
-              >At least 6 characters, but longer is better.</span
-            >
-            <span class="show-password"
-              ><a href="" class="show-password-link" @click="showPassword">{{
-                showBtnText
-              }}</a></span
-            >
-          </div>
-
-          <div>
-            <input
-              class="input"
-              v-model="credentials.confirmPassword"
-              type="password"
-              placeholder="Confirm Password"
-              required
-              @input="clearErrorMessage"
-            />
-            <span v-if="mismatch" class="text-danger"
-              >Password do not match</span
-            >
-          </div>
-
-          <button class="submit-btn sign-in-btn">Reset Password</button>
-        </form>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import authService from "@/services/auth/authservice";
-
+import { ref } from "@vue/reactivity";
+import axios from "@/gateway/backendapi";
+import Loading from "../../components/loading/LoadingComponent";
+import { useToast } from "primevue/usetoast";
 export default {
-  data() {
-    return {
-      credentials: {},
-      passwordType: "password",
-      showBtnText: "Show",
-      mismatch: false,
-      resetGuideBtnShould: false,
-      errorMessage: "",
+  components: { Loading },
+  setup() {
+    const loading = ref(false);
+    const toast = useToast();
+    let passwordChanged = ref(false);
 
-    };
-  },
-
-  methods: {
-    resetPassword() {
-      this.errorMessage = "";
-      this.resetGuideBtnShould = false;
-      if (this.credentials.password !== this.credentials.confirmPassword) {
-        this.mismatch = true;
-        return false;
-      }
-      authService
-        .resetPassword({ email: this.credentials.email, password: this.credentials.password, resetToken: this.credentials.resetToken })
+    const getResetToken = () => {
+      loading.value = true;
+      axios
+        .post(`/existingUserPasswordReset/${credentials.value.email}`)
         .then((res) => {
-          localStorage.setItem("token", res.result.value.token);
-          if (res.result.value.churchSize > 0) {
-            this.$router.push("/tenant");
-          } else {
-            this.$router.push("/next");
+          credentials.value.resetToken = res.data.resetToken;
+          loading.value = false;
+          if (res.status === 200) {
+            toast.add({
+              severity: "success",
+              summary: "",
+              detail: "Choose logo or click save button to continue",
+              life: 6000,
+            });
           }
+          console.log(res);
         })
-        .catch((error) => {
-          if (error.status) {
-            if (error.status === 404) this.errorMessage = "An error occurred, if this link was copied, check to make sure you copied the whole link";
-            if (error.status === 400) {
-              this.resetGuideBtnShould = true;
-              this.errorMessage = "An error occured, if this link was copied check to make sure you copied the whole link. If you have the correct link, then try requesting for a new reset link";
-            }
-          } else {
-            if (error.message.includes("timeout")) {
-              this.errorMessage = "The request was taking too long, please try again";
-            } else {
-              this.errorMessage = "There seems to be an error, please make sure you are connected to the internet and try again";
-            }
-          }
+        .catch((err) => {
+          loading.value = false;
+          toast.add({
+            severity: "info",
+            summary: "",
+            detail: "Choose darker shade of the color",
+            life: 4000,
+          });
+          console.log(err);
         });
-    },
+    };
 
-    showPassword(e) {
-      e.preventDefault();
-      if (!this.credentials.password) return false;
-      this.passwordType = this.passwordIsVissible ? "password" : "text";
-      this.passwordIsVissible = !this.passwordIsVissible;
-      this.showBtnText = this.passwordIsVissible ? "Hide" : "Show";
-    },
+    const credentials = ref({});
 
-    clearErrorMessage() {
-      this.mismatch = false;
-    },
-
-    requestNewLink() {
-      authService.forgotPassword(this.credentials.email)
-        .then(res => {
-          console.log(res.id);
-          this.$router.push({
-            name: "EmailSent",
-            params: { email: this.credentials.email }
-          })
+    const changedPassword = () => {
+      loading.value = true;
+      axios
+        .post(`/passwordreset`, credentials.value)
+        .then((res) => {
+          loading.value = false;
+          passwordChanged.value = true;
+          console.log(res);
         })
-        .catch(error => {
-          console.log(error);
-          this.$router.push({
-            name: "EmailSent",
-            params: { email: this.credentials.email }
-          })
-        })
-    }
-  },
+        .catch((err) => {
+          loading.value = false;
+          console.log(err);
+        });
+    };
 
-  created() {
-    this.credentials.email = this.$route.query.email;
-    this.credentials.resetToken = this.$route.query.resetToken;
+    const resetCredentials = () => {
+      credentials.value = {};
+      passwordChanged.value = false;
+      console.log("am here");
+    };
+
+    return {
+      getResetToken,
+      credentials,
+      changedPassword,
+      loading,
+      resetCredentials,
+      passwordChanged,
+    };
   },
 };
 </script>
-
 <style scoped>
 .logo-con {
   display: flex;
