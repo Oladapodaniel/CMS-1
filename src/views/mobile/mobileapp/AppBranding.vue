@@ -22,9 +22,9 @@
         <div class="row mt-1">
           <div class="col-12 col-md-10">
             <div
-              class="row my-3 d-flex align-items-center justify-content-center"
+              class="row  align-items-center"
             >
-              <div class="d-flex align-items-center col-4 col-sm-8">
+              <div class="d-flex align-items-center col-8">
                 <h5 class="primaryColour mb-0">Primary Colour</h5>
                 <i
                   class="mt-1 pl-2 fa fa-question-circle-o c-pointer"
@@ -103,8 +103,8 @@
                     />
                 <!-- </div> -->
               </div>
-               <div class="row d-flex justify-content-end">
-               <div class="col-4 mt-3 col-md-12 d-flex justify-content-center">
+               <div class="row">
+               <div class="col-12 mt-3 d-flex justify-content-center">
                   <img
                 :src="imageURL"
 
@@ -114,17 +114,21 @@
              </div>
               <LoadingComponent :loading="loading" style="fontsize: 1rem" />
 
-              <div class="col-md-3 col-12 col-sm-0"></div>
-              <div class="col-4"></div>
-              <div
-                class="col-sm-12 btn primary-bg mt-5 mb-4 text-white default-btn border-0"
+              <!-- <div class="col-md-3 col-12 col-sm-0"></div>
+              <div class="col-4"></div> -->
+              
+            </div>
+          </div>
+         
+        </div>
+         <div class="row">
+            <div
+                class="col-6 offset-3 offset-md-2 btn primary-bg mt-5 mb-4 text-white default-btn border-0 px-0"
                 @click="saveAppDetails"
               >
                 Save and continue
               </div>
-            </div>
           </div>
-        </div>
       </div>
 
       <div class="col-md-6 backgroundImage d-none d-md-block">
@@ -431,6 +435,8 @@ export default {
         .then((res) => {
           console.log(res);
           imageURL.value = res.data.returnObject.logoUrl
+          colorPicked.value = res.data.returnObject.churchAppBackgroundColor
+
             
         })
         .catch((err) => {
@@ -737,9 +743,10 @@ opacity: 1;
 }
 
 .skip-text {
-  background: rgb(62, 68, 160);
-  position: relative;
-  top: 25em;
+  background: rgba(0, 0, 0, 0.707);
+  position: fixed;
+  top: 32em;
+  width: 20%
 }
 
 .step {

@@ -29,7 +29,7 @@
                 <h5 class="text-wrap h6">Start Sharing with members of your church</h5>
               </div>
               <div class="col-lg-9 mt-4">
-                <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" row="5" style="background: transparent"></textarea>
+                <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" rows="3" style="background: transparent" :disabled="true"></textarea>
               </div>
               <div class="col-3 cta px-0 d-none d-lg-block align-self-center" @click="copyLink">
                 <button class="btn default-btn c-pointer">Copy</button>
@@ -199,6 +199,7 @@ export default {
   font: normal normal bold 18px/27px Nunito Sans;
   font-family: Nunito Sans;
  color: #020e1ca1;
+ overflow: hidden;
 }
 
 .cta {
