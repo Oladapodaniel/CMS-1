@@ -269,6 +269,15 @@
                 />
                 Media Library
               </router-link>
+             
+              <router-link  to="/onboardingprocess" class="link routelink text-decoration-none">
+                <img
+                  src="../../assets/dashboardlinks/social-icon.svg"
+                  class="link-icon"
+                  alt=""
+                />
+                Mobile App Onboarding
+              </router-link>
 
               <a v-if="false"  class="link routelink">
                 <img
@@ -541,7 +550,7 @@ export default {
   */
 .hide-more-links {
   transition: all 0.5s ease-in-out;
-  height: 100px; 
+  height: 160px; 
 }
 
 .follow-up {

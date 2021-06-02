@@ -137,6 +137,9 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div> -->
+          <div class="col-12 text-center d-block d-md-none" v-if="setupSpinner">
+            <i class="pi pi-spin pi-spinner text-dark"  style="fontSize: 5rem"></i>
+          </div>
           <div
             class="col-11 ml-3
              btn primary-bg mt-5 text-white default-btn border-0"
@@ -180,6 +183,7 @@ import finish from "../../../services/progressbar/progress";
 import axio from "axios";
 // import store from "../../../store/store";
 import paymentform from "../../../components/genericmobile/paymentform";
+import store from '../../../store/store';
 export default {
   components: {
     paymentform
@@ -207,27 +211,22 @@ export default {
     const setupSpinner = ref(false)
 
     const completeSetUp = () => {
-      // router.push({ name: "SocialMedia" });
-      // let bankDetails = {
-      //   accountName: accountName.value,
-      //   accountNumber: accountNumber.value,
-      //   banks: selectedBank.value
-      // }
-      // banks.value.push(bankDetails)
-      // console.log(banks.value);
-      // store.dispatch("completeSetUp", banks.value);
-      // axios
-      //   .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
-      //   .then((res) => {
-      //     console.log(res, "🎄🎄🎄");
+      const currentUser = store.getters.currentUser
+      setupSpinner.value = true
+      axios
+        .post(`/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`)
+        .then((res) => {
+          console.log(res);
+          setupSpinner.value = false
 
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-        setTimeout(() => {
-          router.push({ name:'OnboardingSuccessful'});
-        }, 4000)
+          setTimeout(() => {
+            router.push({ name:'OnboardingSuccessful'});
+          }, 4000)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        
     };
 
     const getBanks = () => {
@@ -300,11 +299,20 @@ export default {
     getPaymentForm();
 
     const skip = () => {
-      slide.value = true
       setupSpinner.value = true
-      setTimeout(() => {
-        router.push({ name: "OnboardingSuccessful" })
-      }, 4000)
+      const currentUser = store.getters.currentUser
+      axios
+        .post(`/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`)
+        .then((res) => {
+          console.log(res);
+          slide.value = true
+          setTimeout(() => {
+            router.push({ name: "OnboardingSuccessful" })
+          }, 4000)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
     return {
       nigerianBanks,
@@ -519,9 +527,10 @@ export default {
 }
 
 .skip-text {
-  background: rgb(62, 68, 160);
-  position: relative;
-  top: 25em;
+  background: rgba(0, 0, 0, 0.707);
+  position: fixed;
+  top: 32em;
+  width: 20%
 }
 
 </style>

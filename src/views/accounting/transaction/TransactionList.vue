@@ -441,12 +441,6 @@ export default {
     };
 
     const transactionItem = (e) => {
-      // selectedTransaction.value = e.target.innerHTML
-
-      console.log(
-        e.target.children[0].innerHTML,
-        e.target.children[0].nextElementSibling.innerHTML
-      );
       selectedTransaction.value = {
         type: e.target.children[0].innerHTML,
         amount: e.target.children[0].nextElementSibling.innerHTML,
@@ -475,7 +469,6 @@ export default {
               country: i.name,
             };
           });
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
     };
@@ -624,7 +617,6 @@ export default {
         const response = await transaction_service.getCashAndBankAccountBalances();
         accountsAndBalances.value = response;
         accountsAndBalances.value.unshift({ text: "All Accounts", balance: totalAccountBalances.value })
-        console.log(response, "account and balances");
         let index = response.findIndex(i => i.text === "All Accounts")
 
         if (index >= 0) {
@@ -651,40 +643,24 @@ export default {
       let sum = 0;
       for (let account of accountsAndBalances.value) {
         sum += convertAmountToTenantCurrency(account);
-        console.log(sum, "sum");
       }
       return Number.parseFloat(sum).toFixed(2);
     })
 
     const convertAmountToTenantCurrency = (account) => {
-      console.log(rates.value, "rates");
-      console.log(account);
       if (!account.currency.shortCode) return 0;
-      if (currentUser.value.currency.toLowerCase() === account.currency.shortCode.toLowerCase()) return account.balance;
-      console.log(`usd${account.currency.shortCode.toLowerCase()}`, "BB");
-      console.log(rates.value[`usd${account.currency.shortCode.toLowerCase()}`, "AAAA"]);
+      if (currentUser.value && currentUser.value.currency.toLowerCase() === account.currency.shortCode.toLowerCase()) return account.balance;
+      
       const amountInDollars = account.currency.shortCode !== "USD" ? rates.value[`usd${account.currency.shortCode.toLowerCase()}`] * account.balance : account.balance;
-      console.log(amountInDollars, "AMOunt inDOllars");
-      console.log(rates.value[`usd${currentUser.value.currency.toLowerCase()}`], "Tenant strint");
+      
       const tenantAmount = rates.value[`usd${currentUser.value.currency.toLowerCase()}`] * amountInDollars;
-      console.log(tenantAmount, "Tenant Amount");
       return tenantAmount;
     }
 
-    axios.get("/api/Financials/Accounts/Transactions/GetIncomeAndExpense")
-      .then(res => {
-        console.log(res, "INCEXP TRANS");
-      })
-      .catch(err => {
-        console.log(err);
-      })
-
-      const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
-      const reloadAccounts = () => {
-        getAccountBalances()
-      }
-
-      
+    const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
+    const reloadAccounts = () => {
+      getAccountBalances()
+    }
 
     return {
       transactions,
