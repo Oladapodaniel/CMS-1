@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="fp-con">
+      <Toast />
       <div class="logo-con">
         <a href="" class="logo-link"
           ><img src="../../assets/churchplus-logo.png" alt="Churchplus Logo"
@@ -25,10 +26,16 @@
               required
               v-model.trim="credentials.email"
             />
+            <p
+              class="text-danger"
+              v-if="!credentials.resetToken && emailIsInvalid"
+            >
+              <span><small>Email is invalid</small> </span>
+            </p>
             <input
-              v-else
+              v-if="credentials.resetToken"
               class="input"
-              :type="text"
+              type="text"
               placeholder="Enter Password"
               required
               v-model.trim="credentials.password"
@@ -40,7 +47,6 @@
             v-if="!credentials.resetToken && credentials.email"
             @click.prevent="getResetToken"
             class="submit-btn sign-in-btn"
-            type="submit"
           >
             Continue
           </button>
@@ -87,8 +93,15 @@ export default {
     const loading = ref(false);
     const toast = useToast();
     let passwordChanged = ref(false);
+    let pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+    const emailIsInvalid = ref(false);
 
     const getResetToken = () => {
+      emailIsInvalid.value = false;
+      if (!pattern.test(credentials.value.email)) {
+        emailIsInvalid.value = true;
+        return false;
+      }
       loading.value = true;
       axios
         .post(`/existingUserPasswordReset/${credentials.value.email}`)
@@ -98,21 +111,23 @@ export default {
           if (res.status === 200) {
             toast.add({
               severity: "success",
-              summary: "",
-              detail: "Choose logo or click save button to continue",
-              life: 6000,
+              summary: "Email Verified",
+              detail: "Email Verified Successfully",
+              life: 4000,
             });
           }
           console.log(res);
         })
         .catch((err) => {
           loading.value = false;
+        if(!res.status === 200) {
           toast.add({
             severity: "info",
-            summary: "",
-            detail: "Choose darker shade of the color",
+            summary: "Email Not Verified",
+            detail: "Enter Correct Email",
             life: 4000,
           });
+        }
           console.log(err);
         });
     };
@@ -125,11 +140,27 @@ export default {
         .post(`/passwordreset`, credentials.value)
         .then((res) => {
           loading.value = false;
+           if (res.status === 200) {
+            toast.add({
+              severity: "success",
+              summary: "Password Reset",
+              detail: "Email & Password Reset Successfully",
+              life: 4000,
+            });
+          }
           passwordChanged.value = true;
           console.log(res);
         })
         .catch((err) => {
           loading.value = false;
+           if(!res.status === 200) {
+          toast.add({
+            severity: "info",
+            summary: "Password Not Verified",
+            detail: "Password Must be 6 Characters or Longer",
+            life: 4000,
+          });
+        }
           console.log(err);
         });
     };
@@ -147,6 +178,7 @@ export default {
       loading,
       resetCredentials,
       passwordChanged,
+      emailIsInvalid,
     };
   },
 };
