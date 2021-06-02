@@ -1,12 +1,12 @@
 <template>
   <div class="container-wide">
     <div class="row">
-      <div class="col-md-6 mt-4">
+      <div class="col-md-7 mt-5">
         <div class="row">
           <div class="col-12 col-md-10">
             <div class="row">
               <div class="col-12">
-                <h5 class="appBranding mt-3">Customize Your App</h5>
+                <h5 class="appBranding">Customize Your App</h5>
                 
                 <div class="mt-3"><span class="font-weight-700">NB:</span> Please choose a dark shade color, click out of the color box, the system will verify your color, then click save to continue.</div>
               </div>
@@ -128,14 +128,16 @@
               >
                 Save and continue
               </div>
+               <div
+                  @click="skip"
+                  class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-2">
+                  Skip >>>
+                </div>
           </div>
       </div>
 
-      <div class="col-md-6 backgroundImage d-none d-md-block">
-        <div class="row">
-          <div class="col-12 text-center my-5 step">STEP 3 OF 4</div>
-          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
-        </div>
+      <div class="col-md-5 d-none d-md-block">
+     
         <div class="smartphone">
           <div class="content">
             <iframe style="width: 100%; border: none; height: 100%" />
@@ -369,7 +371,6 @@ import Tooltip from "primevue/tooltip";
 import LoadingComponent from "../../../components/loading/LoadingComponent";
 import { useToast } from "primevue/usetoast";
 import mobile_service from "../../../services/mobile/mobile-service"
-import { useRouter } from "vue-router"
 
 // import {ref} from 'vue'
 export default {
@@ -379,13 +380,12 @@ export default {
   components: {
     LoadingComponent,
   },
-  setup() {
+  setup(props, context) {
     const image = ref("");
     const colorBox = ref("");
     const colorPicked = ref("");
     const colorValid = ref("");
     const toast = useToast();
-     const router = useRouter()
 
     const changeColors = computed(() => {
       console.log(colorPicked);
@@ -403,7 +403,7 @@ export default {
       let stringedColor = `${colorPicked.value}`
       mobile_service.validateColor(stringedColor)
         .then((res) => {
-          console.log(res, "🎄🎄🎄");
+          console.log(res);
            colorValid.value = res.data ;
           loading.value = false;
 
@@ -454,7 +454,14 @@ export default {
           .put(`/mobile/v1/Profile/CustomizeApp`, formData)
           .then((res) => {
             console.log(res);
-            router.push({ name: "DonationSetup" });
+            let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: false,
+            donationForm: true
+          }
+          context.emit('saved-appbranding', changeState)
           })
           .catch((err) => {
             console.log(err);
@@ -470,7 +477,14 @@ export default {
     };
 
     const skip = () => {
-      router.push({ name: 'DonationSetup' })
+      let changeState = {
+          // tab: true,
+          churchSetup: false,
+          socialMedia: false,
+          appBranding: false,
+          donationForm: true
+        }
+        context.emit('saved-appbranding', changeState)
     }
 
     return {
@@ -528,7 +542,8 @@ export default {
 /* style in iframe */
 .mobile-container-holder {
   position: absolute;
-  top: -40px;
+  top: -16px;
+  width: 194px
 }
 
 /* .image-container-small {
@@ -572,10 +587,10 @@ export default {
 /* The device with borders */
 .smartphone {
   position: relative;
-  width: 200px;
-  height: 350px;
+  width: 226px;
+  height: 439px;
   margin: auto;
-  top: 7.7rem;
+  top: 17.2rem;
   left: 13%;
   transform: translate(-50%, -50%);
   border: 16px black solid;
@@ -742,12 +757,6 @@ opacity: 1;
   height: 46px;
 }
 
-.skip-text {
-  background: rgba(0, 0, 0, 0.707);
-  position: fixed;
-  top: 32em;
-  width: 20%
-}
 
 .step {
   font: normal normal bold 18px/24px Nunito Sans;

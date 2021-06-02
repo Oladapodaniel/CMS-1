@@ -270,7 +270,7 @@
                 Media Library
               </router-link>
              
-              <router-link  to="/onboardingprocess" class="link routelink text-decoration-none">
+              <router-link  to="/mobileonboarding" class="link routelink text-decoration-none">
                 <img
                   src="../../assets/dashboardlinks/social-icon.svg"
                   class="link-icon"
