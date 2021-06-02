@@ -120,14 +120,12 @@ export default {
         })
         .catch((err) => {
           loading.value = false;
-        if(!res.status === 200) {
-          toast.add({
+        toast.add({
             severity: "info",
             summary: "Email Not Verified",
             detail: "Enter Correct Email",
             life: 4000,
           });
-        }
           console.log(err);
         });
     };
@@ -153,14 +151,12 @@ export default {
         })
         .catch((err) => {
           loading.value = false;
-           if(!res.status === 200) {
           toast.add({
             severity: "info",
             summary: "Password Not Verified",
             detail: "Password Must be 6 Characters or Longer",
             life: 4000,
           });
-        }
           console.log(err);
         });
     };
