@@ -664,6 +664,12 @@ const routes = [{
             },
             {
                 path: '/onboardingprocess',
+                name: 'OnboardingProcess',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/OnboardingProcess')
+            },
+            {
+                path: '/mobileonboarding',
                 name: 'MobileOnboarding',
                 component: () =>
                     import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')
