@@ -91,13 +91,20 @@ export default {
     let toast = useToast();
 
     const saveSocialMedia = () => {
+
+      const filtered = handles.value.filter(i => i.url)
+      console.log(filtered)
       const body = {
-        socialMediaList: handles.value.map((i) => {
+        socialMediaList: filtered.map((i) => {
+          if(i.socialMediaId) return {
+            name: i.name,
+            url: i.url,
+            socialMediaId: i.socialMediaId
+          };
           return {
             name: i.name,
             url: i.url,
-            // socialMediaId: i.socialMediaId ? i.socialMediaId : ""
-          };
+          }
         }),
       };
       axios
@@ -299,9 +306,10 @@ hr {
 }
 
 .skip-text {
-  background: rgb(62, 68, 160);
-  position: relative;
-  top: 25em;
+  background: rgba(0, 0, 0, 0.707);;
+  position: fixed;
+  top: 32em;
+  width: 20%
 }
 
 </style>
