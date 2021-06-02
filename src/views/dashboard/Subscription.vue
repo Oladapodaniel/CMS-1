@@ -176,6 +176,31 @@
           </div>
         </div>
       </div>
+
+      <Dialog
+        header="Payment Status"
+        v-model:visible="display"
+        :style="{ width: '70vw', maxWidth: '600px' }"
+        :modal="true"
+      >
+        <div class="row">
+          <div class="col-md-12" v-if="!paymentFailed">
+            <h4 class="text-success">
+              Congrats,
+            </h4>
+            <p>Your payment was successful</p>
+          </div>
+          <div class="col-md-12" v-else>
+            <h4 class="text-danger">
+              Oops,
+            </h4>
+            <p>
+              Your payment was not successful, contact support at
+              <span class="font-weight-bold">info@churchplus.co</span>
+            </p>
+          </div>
+        </div>
+      </Dialog>
       <!-- payment summary end -->
       <!-- Modal -->
       <div
@@ -207,7 +232,7 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button" @click="payWithPaystack">
+              <div class="row row-button c-pointer" @click="payWithPaystack">
                 <div class="col-4 col-sm-7 offset-2">
                   <img
                     class="w-100"
@@ -217,7 +242,7 @@
                 </div>
                 <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
               </div>
-              <div class="row row-button" @click="makePayment">
+              <div class="row row-button c-pointer" @click="makePayment">
                 <div class="col-4 col-sm-7 offset-2">
                   <img
                     class="w-100"
@@ -233,19 +258,6 @@
                   </div>
                   <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
                 </div>
-              </div>
-
-              <div class="modal-footer bg-modal">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                  Save changes
-                </button>
               </div>
             </div>
           </div>
@@ -295,8 +307,10 @@ export default {
     const checkedBoxArr = ref([]);
     const selectCurrencyArr = ref([]);
     const Plans = ref("");
-    const currencies = ref({});
+    const close = ref(null);
 
+    const display = ref(false);
+    const currencies = ref({});
     // const email = ref("");
     // const firstname =
     // const amount = ref("")
@@ -365,7 +379,72 @@ export default {
     };
 
     selectSubscription();
+    const paymentFailed = ref(false);
 
+    const subscriptionPayment = (paystackResponse) => {
+      close.value.click();
+      paymentFailed.value = false;
+      try {
+        const products = checkedBoxArr.value.map((i) => {
+          return {
+            productName: i.name,
+            productID: i.id,
+            productPrice: i.price,
+          };
+        });
+        if (selectEmail.value.name) {
+          const emailObj = productsList.value.find((i) => i.name === "Email");
+          if (emailObj.name) {
+            products.push({
+              productName: emailObj.name,
+              productID: emailObj.id,
+              productPrice: emailObj.price,
+            });
+          }
+        }
+        if (smsValue.value) {
+          const smsObj = productsList.value.find((i) => i.name === "SMS");
+          if (smsObj.name) {
+            products.push({
+              productName: smsObj.name,
+              productID: smsObj.id,
+              productPrice: smsObj.price,
+            });
+          }
+        }
+        const body = {
+          subscriptionPlanID: selectedPlan.value.id,
+          durationInMonths: selectMonth.value.name
+            ? +selectMonth.value.name
+            : 0,
+          smsUnits: smsValue.value ? smsValue.value : 0,
+          emailUnits: selectEmail.value.name
+            ? +selectEmail.value.name.split("-")[1]
+            : 0,
+          totalAmount: TotalAmount.value,
+          paymentGateway: "Paystack",
+          txnRefID: paystackResponse.trxref,
+          productItems: products,
+          currencyID: "NGN",
+        };
+        axios
+          .post("/api/Subscription/SubscriptionPayment", body)
+          .then((res) => {
+            console.log(res);
+            display.value = true;
+            if (!res.data.returnObject.status) {
+              paymentFailed.value = true;
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            display.value = true;
+            paymentFailed.value = true;
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
     const getRates = () => {
       converter.getConversionData().then((res) => {
         currencies.value = res;
@@ -450,14 +529,11 @@ export default {
       // close.click();
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_KEY,
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: currentUser.value.userEmail,
         amount: TotalAmount.value * 100,
-        orderId: `${formattedDate.substring(0, 4)}${uuidv4().substring(
-          0,
-          4
-        )}sub`,
+        ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
 
         // firstname: name,
         // ref: orderId,
@@ -472,29 +548,30 @@ export default {
           console.log("closed");
         },
         callback: function(response) {
+          subscriptionPayment(response);
           //Route to where you confirm payment status
           console.log(response, "Payment Received");
           console.log(donation);
 
-          axios
-            .post(`/confirmDonation?txnref=${response.trxref}`, donation)
-            .then((res) => {
-              finish();
-              console.log(res, "success data");
-            })
-            .catch((err) => {
-              finish();
-              toast.add({
-                severity: "error",
-                summary: "Confirmation failed",
-                detail:
-                  "Confirming your purchase failed, please contact support at info@churchplus.co",
-                life: 4000,
-              });
-              console.log(err, "error confirming payment");
-            });
+          // axios
+          //   .post(`/confirmDonation?txnref=${response.trxref}`, donation)
+          //   .then((res) => {
+          //     finish();
+          //     console.log(res, "success data");
+          //   })
+          //   .catch((err) => {
+          //     finish();
+          //     toast.add({
+          //       severity: "error",
+          //       summary: "Confirmation failed",
+          //       detail:
+          //         "Confirming your purchase failed, please contact support at info@churchplus.co",
+          //       life: 4000,
+          //     });
+          //     console.log(err, "error confirming payment");
+          // });
 
-          emit("payment-successful", true);
+          // emit("payment-successful", true);
         },
       });
       handler.openIframe();
@@ -540,6 +617,9 @@ export default {
       selectCurrencyArr,
       selectedCurrency,
       currencies,
+      display,
+      close,
+      paymentFailed,
     };
   },
 };
