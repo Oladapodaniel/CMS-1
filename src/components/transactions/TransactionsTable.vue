@@ -214,7 +214,7 @@
                     <div class="desc-head small-text col-md-3 px-1" @click="rowSelected(item)">
                       <p class="mb-0 d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
-                        <span :class="{ 'text-danger': item.amount < 0, 'text-success': item.amount > 0 }">N{{ amountWithCommas(Math.abs(item.amount)) }}</span>
+                        <span class="font-weight-bold" :class="{ 'text-danger': item.amount < 0, 'text-success': item.amount > 0 }">{{ item.currency ? item.currency.symbol : "" }}{{ amountWithCommas(Math.abs(item.amount)) }}</span>
                       </p>
                     </div>
 
