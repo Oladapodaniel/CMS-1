@@ -425,7 +425,7 @@ export default {
           paymentGateway: "Paystack",
           txnRefID: paystackResponse.trxref,
           productItems: products,
-          currencyID: "NGN",
+          currency: "NGN",
         };
         axios
           .post("/api/Subscription/SubscriptionPayment", body)
