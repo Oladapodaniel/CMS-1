@@ -127,7 +127,11 @@
                 <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
                     <input class="form-control h-100" type="number" v-model="accountNumber" @blur="resolveCustomerDetail">
                 </div>
-                <div class="col-2 d-none d-sm-block"></div>
+                <div class="col-2 d-none d-sm-block">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"  v-if="loading">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
 
                 <div v-if="accountName" class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
                     <div>Account Name</div>
@@ -139,10 +143,7 @@
                     </div>
 
                 </div>
-                <div class="col-sm-3 align-self-end" v-if="loading">
-                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="sr-only">Loading...</span>
-                    </div>
+                <div class="col-sm-3 align-self-end">
                 </div>
 
                 <div class="col-10 col-md-12 mt-5 d-flex align-items-center c-pointer" @click="showPaymentSection">
@@ -558,7 +559,7 @@ const paymentGatewayNeeded = ref({});
 
                 loading.value = false
 
-                toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 3000});
+                toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 4000});
 
             }
             catch (error) {
@@ -567,7 +568,13 @@ const paymentGatewayNeeded = ref({});
 
                 loading.value = false
 
-                toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
+                if (!accountNumber.value || accountNumber.value === "") {
+                    toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
+                }   else if (!selectedBank.value.code) {
+                    toast.add({severity:'warn', summary: 'No bank selected', detail:'Please select your bank', life: 4000});
+                } else {
+                    toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
+                }
             }
             console.log(selectedBank.value.code, accountNumber.value)
         }
