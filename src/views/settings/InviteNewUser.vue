@@ -4,7 +4,8 @@
             <h1 class="mt-3 pl-3 mb-3 font-weight-bolder" style="font-size:34px">{{ name1 }}</h1>
             <p class="pl-3" style="font-size:16px" >You can invite a new user to access your ChurchPlus account. Only give access to people you trust, since users can see your transactions and other business information.</p>
             <div class="invite-container" style="font-size:14px">
-                <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">Invite New User</h4>
+                <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">{{ $route.query.email ? 'Edit User' : inviteNew}}</h4>
+                <!-- <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">{{editContent}}</h4> -->
                 <!-- <h4>Bitcoin Price Index</h4>
                 <div v-for="currency in info" :key="currency">
                     {{currency.description}}
@@ -34,7 +35,7 @@
                         <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Phone Number</span>
                             </div>
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="number" :disabled="disabled" class="form-control" required v-model="phoneNumber"  /></div>
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="number"  class="form-control" required v-model="phoneNumber"  /></div>
                         </div>
                          <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span>
@@ -79,33 +80,45 @@
                                     <tbody>
                                         <tr>
                                         <td>Basic User</td>
-                                        <td>
-                                             {{ canAccessFT ? "Full Access" : "No Access"}}</td>
+                                        <td :class ="{ 'text-success' : canAccessBasicUser }">
+                                             {{ canAccessBasicUser ? "Full Access" : "No Access"}}
+                                        </td>
                                         </tr>
                                         <tr>
                                         <td>First timers</td>
-                                        <td>
-                                             {{ canAccessFT ? "Full Access" : "No Access"}}</td>
+                                        <td :class ="{ 'text-success' : canAccessFT}">
+                                             {{ canAccessFT ? "Full Access" : "No Access"}}
+                                        </td>
                                         </tr>
                                         <tr>
                                         <td>Follow Ups</td>
-                                        <td>{{  canAccessFT ? "Full Access" : "No Access" }}</td>
-                                        </tr>
-                                        <tr>
-                                        <td>Financial Account</td>
-                                        <td>{{ canAccessFT ? "Full Access" : "No Access" }}</td>
+                                        <td :class ="{ 'text-success' : canAccessFollowUps}">
+                                            {{ canAccessFollowUps ? "Full Access" : "No Access" }}
+                                        </td>
                                         </tr>
                                         <tr>
                                         <td>Center Leader</td>
-                                        <td>{{  canAccessFT ? "Full Access" : "No Access"  }}</td>
+                                        <td :class ="{ 'text-success' : canAccessCenterLeader}">
+                                            {{  canAccessCenterLeader ? "Full Access" : "No Access"  }}
+                                        </td>
+                                        </tr>
+                                        <tr>
+                                        <td>Financial Account</td>
+                                        <td :class ="{ 'text-success' : canAccessFinancialAccount}">
+                                            {{ canAccessFinancialAccount ? "Full Access" : "No Access" }}
+                                        </td>
                                         </tr>
                                         <tr>
                                         <td>Mobile Admin</td>
-                                        <td>{{ canAccessFT ? "Full Access" : "No Access" }}</td>
+                                        <td :class ="{ 'text-success' : mobileAdmin}">
+                                            {{ mobileAdmin ? "Full Access" : "No Access" }}
+                                        </td>
                                         </tr>
                                          <tr>
                                         <td>Reports</td>
-                                        <td>{{ canAccessFT ? "Full Access" : "No Access"  }}</td>
+                                        <td :class ="{ 'text-success' : canAccessReports}">
+                                            {{ canAccessReports ? "Full Access" : "No Access"  }}
+                                        </td>
                                         </tr>
                                     </tbody>
                                     </table>
@@ -171,7 +184,7 @@
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="mobileAdmin"
+                                   <Checkbox value="MobileAdmin"
                                    v-model="roles1"
                                    />
                                    MobileAdmin
@@ -226,6 +239,7 @@ import store from "@/store/store";
         components:{InputText, Password, Checkbox,Toast},
         data() {
 		return {
+            inviteNew: 'Invite New User',
             roles1: [],
             userName:'',
             disabled: false,
@@ -237,8 +251,8 @@ import store from "@/store/store";
             info: null,
             defaultEmail: {},
             currentUser: store.getters.currentUser,
-            FtRoles: [ "Admin","BasicUser",],
-            FtRoles: [ "Admin","FirstTimer",],
+            BURoles: [ "Admin","BasicUser",],
+            FtRoles: [ "Admin","CanAccessFirstTimers",],
             FuRoles: [ "Admin", "CanAccessFollowUps" ],
             FaRoles: [ "Admin","FinancialAccount"],
             ClRoles: [ "Admin", "CenterLeader" ],
@@ -256,11 +270,30 @@ import store from "@/store/store";
         },
 
         canAccessFT() {
-            if (this.roles1.indexOf("Admin") >= 0) return true;
-            // if (this.roles1.indexOf("CanAccessFirstTimers") >= 0) return true;
-            // return false;
+            // if (this.roles1.indexOf("Admin") >= 0) return true;
+            // if (this.roles1.indexOf("CanAccessFirstTimers") >= 2) return true;
+            //  return false;
+            let result = false;
+            this.roles1.forEach(i =>{
+                if(this.FtRoles.indexOf(i) !== -1){
+                    result = true;
+                    return true
+                }
+            })
+            return result
         },
-        canAccessFu() {
+        canAccessBasicUser(){
+            let result = false;
+            this.roles1.forEach(i =>{
+                if(this.BURoles.indexOf(i) !== -1){
+                    result = true;
+                    return true
+                }
+            })
+            return result
+
+        },
+        canAccessFollowUps() {
             let result = false;
             this.roles1.forEach(i => {
                 if (this.FuRoles.indexOf(i) !== -1) {
@@ -270,9 +303,9 @@ import store from "@/store/store";
             })
             return result;
         },
-        canAccessCl() {
+        canAccessCenterLeader() {
             let result = false;
-            this.roles.forEach(i => {
+            this.roles1.forEach(i => {
                 if (this.ClRoles.indexOf(i) !== -1) {
                     result = true;
                     return true;
@@ -280,9 +313,9 @@ import store from "@/store/store";
             })
             return result;
         },
-         canAccessFa() {
+         canAccessFinancialAccount() {
             let result = false;
-            this.roles.forEach(i => {
+            this.roles1.forEach(i => {
                 if (this.FaRoles.indexOf(i) !== -1) {
                     result = true;
                     return true;
@@ -290,9 +323,19 @@ import store from "@/store/store";
             })
             return result;
         },
-        canAccessRe(){
+         mobileAdmin() {
+            let result = false;
+            this.roles1.forEach(i => {
+                if (this.MaRoles.indexOf(i) !== -1) {
+                    result = true;
+                    return true;
+                }
+            })
+            return result;
+        },
+        canAccessReports(){
             let result= false;
-            this.roles.forEach(i => {
+            this.roles1.forEach(i => {
                 if( this.ReRoles.indexOf(i) !== -1){
                     result = true;
                     return true;
@@ -515,5 +558,8 @@ import store from "@/store/store";
     opacity: 1;
     height: auto;
     padding: 10px 10px;
+}
+.rolesBackground{
+    color: green;
 }
 </style>
