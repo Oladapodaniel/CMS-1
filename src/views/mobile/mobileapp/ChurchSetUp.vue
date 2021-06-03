@@ -412,43 +412,10 @@ export default {
 
 
     const saveSetUp = async () => {
-      // if (pastorFacebook.value) {
-      //   pastorSocialMedia.value.push({
-      //     name: 'facebook',
-      //     profileUrl: pastorFacebook.value
-      //   })
-      // }
       
-      // if (pastorInstagram.value) {
-      //   pastorSocialMedia.value.push({
-      //     name: 'instagram',
-      //     profileUrl: pastorInstagram.value
-      //   })
-      // }
-      
-      // if (pastorTwitter.value) {
-      //   pastorSocialMedia.value.push({
-      //     name: 'twitter',
-      //     profileUrl: pastorTwitter.value
-      //   })
-      // }
-  
-
-      // pastors.value = pastors.value.map(i => {
-      //   return {
-      //     name: i.name,
-      //     bio: i.bio,
-      //     photo: i.photo,
-      //     socialMedia: pastorSocialMedia.value,
-      //     pastorId: i.pastorId
-      //   }
-      // })
-      
-        infoArray.value.map(i => {
-          if(!i.customAboutId) delete i.showFullMessage
-        })
-
-
+      infoArray.value.map(i => {
+        if(!i.customAboutId) delete i.showFullMessage
+      })
 
       const formObj = {
         churchName: churchName.value,
@@ -456,18 +423,7 @@ export default {
         phoneNumber: phoneNumber.value,
         abouts: infoArray.value
       }
-      // const formData = new FormData();
-      // formData.append("churchName", churchName.value);
-      // formData.append("address", address.value);
-      // formData.append("phoneNumber", phoneNumber.value);
-      // formData.append("abouts", infoArray.value);
-      // formData.append("pastors", pastors.value);
-      // console.log(churchName.value)
-      // console.log(phoneNumber.value)
-      // console.log(infoArray.value);
-      // console.log(pastors.value);
-      // formData.append("logo", payload.logo)
-
+      
       try {
         const response = await axios.put(
           "/mobile/v1/Profile/UpdateChurchProfile",
@@ -508,9 +464,6 @@ export default {
     };
 
     const detailsForPastor = async() => {
-      // console.log(pastorSocialMedia.value)
-
-      
        pastorSocialMedia.value.forEach(i => {
         if (i.socialMediaId && i.url) {
             pastorPayload.value.push(`${i.socialMediaId},${i.name},${i.url},${i.owner}`)
@@ -674,10 +627,7 @@ export default {
       });
     };
 
-    const deletePastor = (id, index) => {
-      if (!id) {
-        pastors.value.splice(index, 1);
-      } else {
+    const deletePastor = (id) => {
             axios
             .delete(`/mobile/v1/Profile/DeletePastor?pastorId=${id}`)
             .then((res) => {
@@ -702,7 +652,6 @@ export default {
                   life: 4000,
                 });
             });
-        }
      
       };
 
@@ -732,7 +681,7 @@ export default {
         axios
           .delete(`/mobile/v1/Profile/DeleteCustomAbout?customAboutId=${id}`)
           .then((res) => {
-            console.log(res);
+            console.log(res, 'godstar');
             toast.add({
               severity: "success",
               summary: "Confirmed",
