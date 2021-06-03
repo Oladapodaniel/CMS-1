@@ -4,29 +4,31 @@
     <div class="row" style="height: 100vh">
       <Toast />
       <ConfirmDialog />
-      <div class="col-md-6 mt-6">
-        <div class="row mt-5">
-          <div class="col-12 setup">Set up your church profile</div>
-          <!-- <div class="col-md-6"></div> -->
-          <div class="col-sm-12 align-self-center mt-4 px-md-0">Name</div>
-          <div class="col-12 col-md-10 px-md-0">
+      <!-- <div class="col-md-6 mt-3"> -->
+        <!-- <div class="row mt-5"> -->
+          <div class="col-12 col-sm-6 offset-sm-3 setup mt-5">Set up your church profile</div>
+          <div class="col-sm-3"></div>
+          <div class="col-sm-3 align-self-center mt-4 text-right">Name</div>
+          <div class="col-12 col-md-6 mt-4">
             <input type="text" class="form-control" v-model="churchName" />
           </div>
-          <!-- <div class="col-sm-2"></div> -->
+          <div class="col-sm-3"></div>
 
-          <div class="col-sm-12 align-self-center mt-3 px-md-0">
+          <div class="col-sm-3 align-self-center mt-4 text-right">
             Phone Number
           </div>
-          <div class="col-12 col-md-10 px-md-0">
+          <div class="col-12 col-sm-6 mt-4">
             <input type="text" class="form-control" v-model="phoneNumber" />
           </div>
-          <!-- <div class="col-sm-2"></div> -->
+          <div class="col-sm-3"></div>
 
-          <div class="col-sm-12 align-self-center mt-3 px-md-0">Address</div>
-          <div class="col-12 col-md-10 px-md-0">
+          <div class="col-sm-3 align-self-center mt-4 text-right">Address</div>
+          <div class="col-12 col-md-6 mt-4">
             <input type="text" class="form-control" v-model="address" />
           </div>
-          <div class="col-12 col-md-10 mt-3">
+          <div class="col-sm-3"></div>
+
+          <div class="col-12 col-sm-6 mt-4 offset-sm-3">
             <div class="row d-flex justify-content-md-between">
               <div class="col-md-6 mt-3 px-md-0 col-9">Pastors and Ministers</div>
               <div
@@ -39,7 +41,7 @@
               </div>
             </div>
           </div>
-          <div class="col-11 px-md-0">
+          <div class="col-12 col-sm-6 offset-sm-3">
             <div class="row" v-for="(item, index) in pastors" :key="index">
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
               <div class="col-12 mt-4">
@@ -54,17 +56,17 @@
                     <div class="pastorname">{{ item.name }}</div>
                     <div>{{ item.bio }}</div>
                   </div>
+                  <div class="col-1 align-self-center cursor-pointer mr-3" data-target="#add-pastor" data-toggle="modal" data-whatever="@fat" @click.prevent="editPastor(index)">
+                    edit
+                  </div>
                   <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId, index)">
                     <i class="fa fa-trash"></i>
-                  </div>
-                  <div class="col-1 align-self-center cursor-pointer" data-target="#add-pastor" data-toggle="modal" data-whatever="@fat" @click.prevent="editPastor(index)">
-                    edit
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-12 col-md-10 mt-3">
+          <div class="col-12 col-sm-6 offset-sm-3 mt-3">
             <div class="row d-flex justify-content-md-between">
               <div class="col-md-6 mt-3 px-md-0 col-9">Other Information</div>
               <div
@@ -77,7 +79,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-10">
+          <div class="col-12 col-sm-6 offset-sm-3">
             <div class="row" v-for="(item, index) in infoArray"
                 :key="index">
               <div
@@ -110,7 +112,7 @@
                   </p>
                 </div>
               </div>
-              <div class="col-2 pl-0 align-self-center cursor-pointer" @click.prevent="showConfirmModalAbout(item.customAboutId)">
+              <div class="col-2 align-self-center cursor-pointer" @click.prevent="showConfirmModalAbout(item.customAboutId)">
                 <i class="fa fa-trash"></i>
               </div>
             </div>
@@ -223,8 +225,22 @@
                               v-model="pastorDetails.name"
                             />
                           </div>
-                        
+                          <!-- <div class="form-group"> -->
+                            <!-- <label for="recipient-email" class="col-form-label"
+                          ></label
+                        > -->
+                            <!-- <input
+                              type="email"
+                              class="form-control"
+                              id="recipient-email"
+                              placeholder="Email"
+                              v-model="pastorDetails.pastorsEmail"
+                            /> -->
+                          <!-- </div> -->
                           <div class="form-group">
+                            <!-- <label for="message-text" class="col-form-label"
+                          ></label
+                        > -->
                             <textarea
                               class="form-control h-100"
                               id="message-text"
@@ -328,30 +344,31 @@
             </div>
           </div>
           <div
-            class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0"
+            class="btn primary-bg mt-5 text-white default-btn border-0 col-12 col-sm-6 offset-sm-3"
             @click="saveSetUp"
           >
             Save and continue
           </div>
-        </div>
-      </div>
+          <div
+            @click="skip"
+            class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-3">
+            Skip >>>
+          </div>
+        <!-- </div> -->
+      <!-- </div> -->
 
       <!-- image part -->
-      <div class="col-md-6 col-12 bg-image d-none d-md-block">
+      <!-- <div class="col-md-6 col-12 bg-image d-none d-md-block">
         <div class="row mt-3">
           <div class="col-md-12 text-center my-5 step">STEP 1 of 4</div>
           <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
         </div>
-        <!-- <div class="image-dis">
-                    <img src="../../../assets/mobileonboarding/setup-image.svg" style="height:100%; width:100%;">
-                </div> -->
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 <script>
 import { ref } from "vue";
-import router from "../../../router";
 import axios from "@/gateway/backendapi";
 import store from "../../../store/store";
 import { useToast } from "primevue/usetoast";
@@ -360,7 +377,8 @@ import { useConfirm } from "primevue/useConfirm";
 // import { useStore } from "vuex"
 
 export default {
-  setup() {
+  props: [],
+  setup(props, context) {
     // let store = useStore()
     const toast = useToast();
     const confirm = useConfirm()
@@ -396,12 +414,15 @@ export default {
     const closeTextArea = ref("");
     const pastorPayload = ref([])
 
-  
+
     const saveSetUp = async () => {
       
-      infoArray.value.map(i => {
-        if(!i.customAboutId) delete i.showFullMessage
-      })
+      
+        infoArray.value.map(i => {
+          if(!i.customAboutId) delete i.showFullMessage
+        })
+
+
 
       const formObj = {
         churchName: churchName.value,
@@ -409,7 +430,18 @@ export default {
         phoneNumber: phoneNumber.value,
         abouts: infoArray.value
       }
-      
+      // const formData = new FormData();
+      // formData.append("churchName", churchName.value);
+      // formData.append("address", address.value);
+      // formData.append("phoneNumber", phoneNumber.value);
+      // formData.append("abouts", infoArray.value);
+      // formData.append("pastors", pastors.value);
+      // console.log(churchName.value)
+      // console.log(phoneNumber.value)
+      // console.log(infoArray.value);
+      // console.log(pastors.value);
+      // formData.append("logo", payload.logo)
+
       try {
         const response = await axios.put(
           "/mobile/v1/Profile/UpdateChurchProfile",
@@ -422,10 +454,14 @@ export default {
             detail: "Church Profile Updated Successfully",
             life: 3000,
           });
-
-          setTimeout(() => {
-            router.push({ name: "SocialMedia" });
-          }, 1000)
+          let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: true,
+            appBranding: false,
+            donationForm: false
+          }
+          context.emit('saved-churchsetup', changeState)
         }
         console.log(response);
       } catch (error) {
@@ -450,6 +486,9 @@ export default {
     };
 
     const detailsForPastor = async() => {
+      // console.log(pastorSocialMedia.value)
+
+      
        pastorSocialMedia.value.forEach(i => {
         if (i.socialMediaId && i.url) {
             pastorPayload.value.push(`${i.socialMediaId},${i.name},${i.url},${i.owner}`)
@@ -578,8 +617,6 @@ export default {
             }
           })
 
-          // pastorSocialMedia.value = response.data.returnObject.pastors.find(i => i).socialMedias
-
         })
         .catch((error) => {
           console.log(error);
@@ -588,7 +625,14 @@ export default {
     getTenantId();
 
     const skip = () => {
-      router.push({ name: "SocialMedia" })
+      let changeState = {
+            // tab: true,
+            churchSetup: false,
+            socialMedia: true,
+            appBranding: false,
+            donationForm: false
+          }
+          context.emit('saved-churchsetup', changeState)
     }
 
     const showConfirmModal = (id, index) => {
@@ -613,7 +657,10 @@ export default {
       });
     };
 
-    const deletePastor = (id) => {
+    const deletePastor = (id, index) => {
+      if (!id) {
+        pastors.value.splice(index, 1);
+      } else {
             axios
             .delete(`/mobile/v1/Profile/DeletePastor?pastorId=${id}`)
             .then((res) => {
@@ -638,6 +685,7 @@ export default {
                   life: 4000,
                 });
             });
+        }
      
       };
 
@@ -667,7 +715,7 @@ export default {
         axios
           .delete(`/mobile/v1/Profile/DeleteCustomAbout?customAboutId=${id}`)
           .then((res) => {
-            console.log(res, 'godstar');
+            console.log(res);
             toast.add({
               severity: "success",
               summary: "Confirmed",
