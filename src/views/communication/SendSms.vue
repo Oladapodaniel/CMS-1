@@ -890,7 +890,9 @@ export default {
               }
               console.log(sentObj)
               store.dispatch("communication/addSmsToSentList", sentObj)
-              router.push({ name: "SentMessages" })
+              setTimeout(() => {
+                router.push({ name: "SentMessages" })
+              }, 3500)
 
             }
             
