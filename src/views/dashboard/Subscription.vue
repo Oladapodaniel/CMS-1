@@ -21,7 +21,9 @@
             />
           </div>
           <div class="col-md-6 col-lg-6 col-12">
-            <div class="py-2 small-header">Duration (month)</div>
+            <div class="py-2 small-header">
+              Duration (month)<span class="text-danger">*</span>
+            </div>
             <Dropdown
               class="w-100"
               v-model="selectMonth"
@@ -173,7 +175,10 @@
               data-toggle="modal"
               data-target="#PaymentOptionModal"
             >
-              <button class="btn pay-now text-white w-100 normal-text">
+              <button
+                class="btn pay-now text-white w-100 normal-text"
+                :disabled="!selectMonth.name || +selectMonth.name <= 0"
+              >
                 Pay Now
               </button>
             </div>
@@ -402,7 +407,7 @@ export default {
             products.push({
               productName: emailObj.name,
               productID: emailObj.id,
-              productPrice: emailObj.price,
+              productPrice: emailAmount.value,
             });
           }
         }
@@ -412,7 +417,7 @@ export default {
             products.push({
               productName: smsObj.name,
               productID: smsObj.id,
-              productPrice: smsObj.price,
+              productPrice: smsAmount.value,
             });
           }
         }
@@ -505,6 +510,7 @@ export default {
     const selectCheckbox = (item) => {
       const index = checkedBoxArr.value.findIndex((i) => i.id === item.id);
       if (index < 0) {
+        console.log(item);
         checkedBoxArr.value.push(item);
       } else {
         checkedBoxArr.value.splice(index, 1);
@@ -557,11 +563,13 @@ export default {
         key: process.env.VUE_APP_PAYSTACK_API_KEY,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: currentUser.value.userEmail,
-        amount: selectedCurrency.value
-          ? convertAmountToTenantCurrency.value
-          : TotalAmount.value,
+        amount:
+          (selectedCurrency.value
+            ? Math.ceil(convertAmountToTenantCurrency.value)
+            : TotalAmount.value) * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
         currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
+        // currency: "zar",
 
         // firstname: name,
         // ref: orderId,
