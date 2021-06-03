@@ -197,7 +197,7 @@
               v-for="(item, index) in searchDonation"
               :key="item.id"
             >
-            <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
+            <!-- <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }"> -->
               <div class="row w-100" style="margin:0">
                 <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
                   <input
@@ -256,7 +256,7 @@
                         aria-expanded="false"
                       ></i>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
+                        <!-- <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
                         <a class="dropdown-item elipsis-items">
                       View Report
                       </a>
@@ -265,7 +265,7 @@
                         <a class="dropdown-item elipsis-items">
                       Edit
                       </a>
-                      </router-link>
+                      </router-link> -->
                       <a
                         class="dropdown-item elipsis-items cursor-pointer"
                         @click="showConfirmModal(item.id, index)"
@@ -276,7 +276,7 @@
                   </div>
                 </div>
               </div>
-              </router-link>
+              <!-- </router-link> -->
             </div>
           </div>
           <!-- <div class="row">
