@@ -4,7 +4,8 @@
             <h1 class="mt-3 pl-3 mb-3 font-weight-bolder" style="font-size:34px">{{ name1 }}</h1>
             <p class="pl-3" style="font-size:16px" >You can invite a new user to access your ChurchPlus account. Only give access to people you trust, since users can see your transactions and other business information.</p>
             <div class="invite-container" style="font-size:14px">
-                <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">Invite New User</h4>
+                <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">{{ $route.query.email ? 'Edit New User' : inviteNew}}</h4>
+                <!-- <h4 class="font-weight-bold ml-0 ml-md-3 ml-sm-0">{{editContent}}</h4> -->
                 <!-- <h4>Bitcoin Price Index</h4>
                 <div v-for="currency in info" :key="currency">
                     {{currency.description}}
@@ -21,7 +22,7 @@
                <div class="row">
                    <div class="col-lg-7 col-sm-12 border-right pr-3 mt-3 mt-lg-3 pr-lg-5 pr-sm-3" style="">
                        <div class="row mb-3">
-                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Username</label>
+                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <label class="">Name</label>
                             </div>
                             <div class="col-lg-8 col-sm-12"> <InputText type="text" required v-model="userName" class="form-control" /></div>
                         </div>
@@ -29,22 +30,22 @@
 
                             <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Email</span>
                             </div>
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" required v-model="mail" class="form-control"/></div>
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="text" :disabled="disabled" required v-model="mail" class="form-control"/></div>
                         </div>
                         <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Phone Number</span>
                             </div>
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="number" class="form-control" required v-model="phoneNumber"  /></div>
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="number"  class="form-control" required v-model="phoneNumber"  /></div>
                         </div>
                          <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span>
                             </div>
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" required v-model="password1"  /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" required v-model="password1"  /></div>
                         </div>
                         <div class="row mb-5 mt-5">
                          <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Confirm Password</span>
                             </div>
-                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" v-model="password2" required /></div>
+                            <div class="col-lg-8 col-sm-12 "> <Password class="form-control" :disabled="disabled" v-model="password2" required /></div>
                         </div>
 
                         <!-- <div class="row mb-3">
@@ -63,7 +64,7 @@
 
                    <div class="col-lg-5 col-sm-12 mt-lg-0 mt-sm-5 mt-md-5 mt-lg-0 mt-5 pl-lg-5 pr-lg-5 pl-sm-3 pr-3 pr-sm-2">
                        <div class="row">
-                            <div class="col-12 mt-5">
+                            <div class="col-12 mt-xl-0 mt-md-5">
                                 <h4 class="mt-sm-5 mt-5 mt-xl-0 mt-md-5 mt-lg-0">Admin Permission</h4>
                             </div>
 
@@ -78,29 +79,46 @@
                                 <table class="table border-none m-0">
                                     <tbody>
                                         <tr>
-                                        <td>First timers</td>
-                                        <td>
-                                             {{ canAccessFT ? "Full Access" : "No Access"}}</td>
+                                        <td>Basic User</td>
+                                        <td :class ="{ 'text-success' : canAccessBasicUser }">
+                                             {{ canAccessBasicUser ? "Full Access" : "No Access"}}
+                                        </td>
                                         </tr>
                                         <tr>
-                                        <td>New Converts</td>
-                                        <td>{{ canAccessFT ? "Full Access" : "No Access" }}</td>
+                                        <td>First timers</td>
+                                        <td :class ="{ 'text-success' : canAccessFT}">
+                                             {{ canAccessFT ? "Full Access" : "No Access"}}
+                                        </td>
                                         </tr>
-                                         <tr>
-                                        <td>FollowUps</td>
-                                        <td>{{  canAccessFu ? "Full Access" : "No Access" }}</td>
+                                        <tr>
+                                        <td>Follow Ups</td>
+                                        <td :class ="{ 'text-success' : canAccessFollowUps}">
+                                            {{ canAccessFollowUps ? "Full Access" : "No Access" }}
+                                        </td>
                                         </tr>
-                                         <tr>
+                                        <tr>
                                         <td>Center Leader</td>
-                                        <td>{{  canAccessCl ? "Full Access" : "No Access"  }}</td>
+                                        <td :class ="{ 'text-success' : canAccessCenterLeader}">
+                                            {{  canAccessCenterLeader ? "Full Access" : "No Access"  }}
+                                        </td>
                                         </tr>
-                                         <tr>
+                                        <tr>
                                         <td>Financial Account</td>
-                                        <td>{{ canAccessFa ? "Full Access" : "No Access" }}</td>
+                                        <td :class ="{ 'text-success' : canAccessFinancialAccount}">
+                                            {{ canAccessFinancialAccount ? "Full Access" : "No Access" }}
+                                        </td>
+                                        </tr>
+                                        <tr>
+                                        <td>Mobile Admin</td>
+                                        <td :class ="{ 'text-success' : mobileAdmin}">
+                                            {{ mobileAdmin ? "Full Access" : "No Access" }}
+                                        </td>
                                         </tr>
                                          <tr>
                                         <td>Reports</td>
-                                        <td>{{ canAccessRe ? "Full Access" : "No Access"  }}</td>
+                                        <td :class ="{ 'text-success' : canAccessReports}">
+                                            {{ canAccessReports ? "Full Access" : "No Access"  }}
+                                        </td>
                                         </tr>
                                     </tbody>
                                     </table>
@@ -166,7 +184,7 @@
                             </div>
                             <div class="row mb-2">
                                <span class="col-lg-3"></span><div class="col-lg-7">
-                                   <Checkbox value="mobileAdmin"
+                                   <Checkbox value="MobileAdmin"
                                    v-model="roles1"
                                    />
                                    MobileAdmin
@@ -198,7 +216,7 @@
                     </div>
                     <div class="col-lg-5 col-md-12 col-sm-12 d-flex justify-content-around">
                         <router-link to="/tenant/settings"> <button type="button" class="btn px-3 btn-outline-secondary mr-3" style="border-radius: 22px; font-size: 16px; font-weight: 600; outline: none; hover:none">Discard</button></router-link>
-                        <button type="button" class="btn px-3 btn-primary saveButton ml-3" style="border-radius:22px; font-size: 16px; font-weight: 600" @click="createNewUser">Save User</button>
+                        <button type="button" class="btn px-3 btn-primary saveButton ml-3" style="border-radius:22px; font-size: 16px; font-weight: 600" @click="callButton">Save User</button>
                     </div>
                 </div>
             </div>
@@ -221,20 +239,24 @@ import store from "@/store/store";
         components:{InputText, Password, Checkbox,Toast},
         data() {
 		return {
-            roles: [],
+            inviteNew: 'Invite New User',
             roles1: [],
             userName:'',
+            disabled: false,
             mail:'',
             password1: '',
             password2: '',
             phoneNumber: '',
             name2: '',
             info: null,
+            defaultEmail: {},
             currentUser: store.getters.currentUser,
-            FtRoles: [ "Admin","BasicUser",],
+            BURoles: [ "Admin","BasicUser",],
+            FtRoles: [ "Admin","CanAccessFirstTimers",],
             FuRoles: [ "Admin", "CanAccessFollowUps" ],
-            ClRoles: [ "Admin", "CenterLeader" ],
             FaRoles: [ "Admin","FinancialAccount"],
+            ClRoles: [ "Admin", "CenterLeader" ],
+            MaRoles: [ "Admin", "MobileAdmin" ],
             ReRoles: [ "Admin", "Reports"]
 
 
@@ -248,18 +270,32 @@ import store from "@/store/store";
         },
 
         canAccessFT() {
+            // if (this.roles1.indexOf("Admin") >= 0) return true;
+            // if (this.roles1.indexOf("CanAccessFirstTimers") >= 2) return true;
+            //  return false;
             let result = false;
-            this.roles.forEach(i => {
-                if (this.FtRoles.indexOf(i) !== -1) {
+            this.roles1.forEach(i =>{
+                if(this.FtRoles.indexOf(i) !== -1){
                     result = true;
-                    return true;
+                    return true
                 }
             })
-            return result;
+            return result
         },
-        canAccessFu() {
+        canAccessBasicUser(){
             let result = false;
-            this.roles.forEach(i => {
+            this.roles1.forEach(i =>{
+                if(this.BURoles.indexOf(i) !== -1){
+                    result = true;
+                    return true
+                }
+            })
+            return result
+
+        },
+        canAccessFollowUps() {
+            let result = false;
+            this.roles1.forEach(i => {
                 if (this.FuRoles.indexOf(i) !== -1) {
                     result = true;
                     return true;
@@ -267,9 +303,9 @@ import store from "@/store/store";
             })
             return result;
         },
-        canAccessCl() {
+        canAccessCenterLeader() {
             let result = false;
-            this.roles.forEach(i => {
+            this.roles1.forEach(i => {
                 if (this.ClRoles.indexOf(i) !== -1) {
                     result = true;
                     return true;
@@ -277,9 +313,9 @@ import store from "@/store/store";
             })
             return result;
         },
-         canAccessFa() {
+         canAccessFinancialAccount() {
             let result = false;
-            this.roles.forEach(i => {
+            this.roles1.forEach(i => {
                 if (this.FaRoles.indexOf(i) !== -1) {
                     result = true;
                     return true;
@@ -287,9 +323,19 @@ import store from "@/store/store";
             })
             return result;
         },
-        canAccessRe(){
+         mobileAdmin() {
+            let result = false;
+            this.roles1.forEach(i => {
+                if (this.MaRoles.indexOf(i) !== -1) {
+                    result = true;
+                    return true;
+                }
+            })
+            return result;
+        },
+        canAccessReports(){
             let result= false;
-            this.roles.forEach(i => {
+            this.roles1.forEach(i => {
                 if( this.ReRoles.indexOf(i) !== -1){
                     result = true;
                     return true;
@@ -308,14 +354,23 @@ import store from "@/store/store";
 
             }
         },
+          callButton(){
+        if(!this.$route.query.email){
+            this.createNewUser()
+        } else {
+            this.updateChurchUser()
+        }
+
+    },
         createNewUser(){
-            if( this.userName === '' || this.password1 === '' || this.mail === '' || this.password2 === '' || this.phoneNumber === ''){
+            if(this.userName === '' || this.password1 === '' || this.mail === '' || this.password2 === '' || this.phoneNumber === ''){
                 this.$toast.add({
                 severity:'error',
                 summary:'Confirmed',
                 detail:'Input Your Complete Details',
                 life: 4000
                 });
+                return false
             }
             if(this.password1.length < 6){
                 this.$toast.add({
@@ -323,8 +378,8 @@ import store from "@/store/store";
                 summary:'Confirmed',
                 detail:'Ensured Your Password is More than 6 character',
                 life: 4000
-
                 })
+                return false
             }
             if(this.password1 !== this.password2){
                 this.$toast.add({
@@ -333,11 +388,12 @@ import store from "@/store/store";
                 detail:'Ensured Your Password is same',
                 life: 4000
                 });
+                return false
             }
 
             let createNew = {
                 email : this.mail,
-                password: this.password1,
+                password: this.password1,                
                 name : this.userName,
                 roles : this.roles1,
                 phone: this.phoneNumber
@@ -376,19 +432,65 @@ import store from "@/store/store";
 
 
         },
+        async updateChurchUser(){
+            let newUpdate ={
+                email: this.mail,
+                phone: this.phoneNumber,
+                password: this.password1,
+                name : this.userName,
+                roles : this.roles1,
+            }
+            axios.put(`/api/Settings/UpdateChurchUser`,newUpdate)
+            .then((res)=>{
+                this.$toast.add({
+                severity:'success',
+                summary:'Confirmed',
+                detail:'New User Saved Successfully',
+                life: 4000
+                });
+                console.log(res);
+                this.$router.push('/tenant/settings')
+
+            }).catch((error)=>{
+                console.log(error);
+                
+
+            })
+        },
+        async getEmail(){
+      if (this.$route.query.email) {
+          this.disabled = true
+          try{
+            const {data} = await axios.get(`/api/Settings/GetChurchUserByEmail?email=${this.$route.query.email}`);
+                // this.defaultEmail = data;
+                // this.mail= data.Object.email
+                // this.message = data.returnObject.message;
+                // this.subject = data.returnObject.subject;
+                // this.selectCategory = this.Membership.find(i =>i.value === data.returnObject.messageType)
+                // this.selectType = this.Sms.find(i => i.value === data.returnObject.category )
+                // console.log(this.defaultEmail);
+                this.userName = data.name;
+                this.mail = data.email;
+                this.password1 = data.password;
+                this.password2 = data.password;
+                this.phoneNumber = data.phone;
+                this.roles1 = data.roles;
+                console.log(data);
+
+            }catch(error){
+                console.log(error);
+            }
+      }
+
    
 
+    }
     },
+    created(){
+         this.getEmail()
+        
 
-
-
-
-
-
-
-
-
-
+    },
     mounted(){
         //     axios
         // .get(`/api/Settings/GetTenantPeopleClassification`)
@@ -411,6 +513,7 @@ import store from "@/store/store";
             .catch((error)=> console.log(error))
 
         }
+        
 
 
     }
@@ -455,5 +558,8 @@ import store from "@/store/store";
     opacity: 1;
     height: auto;
     padding: 10px 10px;
+}
+.rolesBackground{
+    color: green;
 }
 </style>

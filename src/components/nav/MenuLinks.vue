@@ -193,6 +193,9 @@
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/offering">Offerings</router-link>
             </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/onlinedonation">Donation</router-link>
+            </li>
             <li class="dd-list-item"  v-if="false">
               <router-link class="dd-link-item routelink" to="">Pledges</router-link>
             </li>
@@ -267,7 +270,7 @@
                 Media Library
               </router-link>
              
-              <router-link  to="/onboardingprocess" class="link routelink text-decoration-none">
+              <router-link  to="/mobileonboarding" class="link routelink text-decoration-none">
                 <img
                   src="../../assets/dashboardlinks/social-icon.svg"
                   class="link-icon"

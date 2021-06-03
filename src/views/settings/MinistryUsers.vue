@@ -26,11 +26,11 @@
         <div class="col-md-2">
           <span class="py-2 font-weight-bold">NAME</span>
         </div>
-        <div class="col-md-2">
-          <span class="py-2 font-weight-bold">PHONE</span>
+          <div class="col-md-2">
+          <span class="py-3 font-weight-bold">EMAIL</span>
         </div>
         <div class="col-md-2">
-          <span class="py-3 font-weight-bold">EMAIL</span>
+          <span class="py-2 font-weight-bold">PHONE</span>
         </div>
         <div class="col-md-2">
           <span class="py-2 font-weight-bold">STATUS</span>
@@ -59,16 +59,17 @@
              <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
-              <span class="py-2 hidden-header">PHONE</span>
-              <span class="py-2">{{ churchMem.phone}}</span>
-            </div>
-            <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
-            >
               <span class="py-2 hidden-header">EMAIL</span>
               <span class="py-2 text-xs-left"  v-if="churchMem.email.length<10">{{ churchMem.email}}</span>
               <span v-else v-tooltip.top="`${churchMem.email}`">{{churchMem.email.substring(0,10)+ "..."}}</span>
             </div>
+             <div
+              class="col-md-2 d-flex justify-content-between align-items-center"
+            >
+              <span class="py-2 hidden-header">PHONE</span>
+              <span class="py-2">{{ churchMem.phone}}</span>
+            </div>
+           
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
@@ -107,6 +108,7 @@
                       >Send Email</router-link
                     >
                   </a>
+                  <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> <a class="dropdown-item button">Edit</a></router-link>
                   <a class="dropdown-item button" @click="deletePop(churchMem.email)">Delete</a>
                   <a class="dropdown-item button" @click="deactivateChurchUser(churchMem.email, index)">Inactive</a>
                   <a class="dropdown-item button" @click="activateChurchUser(churchMem.email, index)">Active</a>

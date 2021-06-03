@@ -223,22 +223,8 @@
                               v-model="pastorDetails.name"
                             />
                           </div>
-                          <!-- <div class="form-group"> -->
-                            <!-- <label for="recipient-email" class="col-form-label"
-                          ></label
-                        > -->
-                            <!-- <input
-                              type="email"
-                              class="form-control"
-                              id="recipient-email"
-                              placeholder="Email"
-                              v-model="pastorDetails.pastorsEmail"
-                            /> -->
-                          <!-- </div> -->
+                        
                           <div class="form-group">
-                            <!-- <label for="message-text" class="col-form-label"
-                          ></label
-                        > -->
                             <textarea
                               class="form-control h-100"
                               id="message-text"
@@ -410,7 +396,7 @@ export default {
     const closeTextArea = ref("");
     const pastorPayload = ref([])
 
-
+  
     const saveSetUp = async () => {
       
       infoArray.value.map(i => {
