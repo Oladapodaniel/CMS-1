@@ -251,7 +251,7 @@
                 </div>
                 <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
               </div>
-              <div class="row row-button c-pointer" @click="makePayment">
+              <!-- <div class="row row-button c-pointer" @click="makePayment">
                 <div class="col-4 col-sm-7 offset-2">
                   <img
                     class="w-100"
@@ -267,7 +267,7 @@
                   </div>
                   <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
