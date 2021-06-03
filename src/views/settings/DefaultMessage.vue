@@ -13,28 +13,30 @@
           >
         </div>
       </div>
-
-      <div class="row table-header-row py-2 mt-5">
-        <div class="col-md-4">
-          <span class="py-2 font-weight-bold">MESSAGE</span>
-        </div>
-         <div class="col-md-2">
-          <span class="py-2 font-weight-bold">SUBJECT</span>
-        </div>
-        <div class="col-md-2">
-          <span class="py-2 font-weight-bold">TYPE</span>
-        </div>
-        <div class="col-md-4">
-          <span class="py-2 font-weight-bold">CATEGORY</span>
-        </div>
-        <!-- <div class="col-md-2">
-          <span class="py-2 font-weight-bold">MESSAGE</span>
-        </div> -->
-      </div>
-
-      <div class="row py-2">
+      <div class="row header1 mt-5">
         <div class="col-md-12">
-          <div class="row" v-for="(allMessages, index) in defaultMessage" :key="index">
+          <div class="row table-header-row py-2 ">
+        <div class="col-md-4">
+          <span class="py-2 font-weight-bold">Message</span>
+        </div>
+         <div class="col-md-3">
+          <span class="py-2 font-weight-bold">Subject</span>
+        </div>
+        <div class="col-md-3">
+          <span class="py-2 font-weight-bold">Type</span>
+        </div>
+        <div class="col-md-1">
+          <span class="py-2 font-weight-bold">Category</span>
+        </div>
+        <div class="col-md-1">
+          <span class="py-2 font-weight-bold"></span> 
+        </div>
+      </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row py-0">
+        <div class="col-md-12">
+          <div class="row tr-border-bottom py-2" v-for="(allMessages, index) in defaultMessage" :key="index">
             <div
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
@@ -45,24 +47,24 @@
               <span v-else v-tooltip.top="`${churchMem.email}`">{{churchMem.email.substring(0,10)+ "..."}}</span> -->
             </div>
             <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
+              class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">SUBJECT</span>
-              <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 10">{{allMessages.subject}}</span>
-              <span v-else v-tooltip.top="`${allMessages.subject}`">{{allMessages.subject.substring(0,10)+ "..."}}</span>
+              <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 20">{{allMessages.subject}}</span>
+              <span v-else v-tooltip.top="`${allMessages.subject}`">{{allMessages.subject.substring(0,)+ "..."}}</span>
             </div>
             <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
+              class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">TYPE</span>
-              <span class="py-2" v-if="messageName(allMessages.messageType).length < 10">{{messageName(allMessages.messageType)}}</span>
-              <span v-else v-tooltip.top="`${messageName(allMessages.messageType)}`">{{messageName(allMessages.messageType).substring(0,10) + "..."}}</span>
+              <span class="py-2" v-if="messageName(allMessages.messageType).length < 20">{{messageName(allMessages.messageType)}}</span>
+              <span v-else v-tooltip.top="`${messageName(allMessages.messageType)}`">{{messageName(allMessages.messageType).substring(0,20) + "..."}}</span>
               
               
              
             </div>
             <div
-              class="col-md-3 d-flex justify-content-between align-items-center"
+              class="col-md-1 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">CATEGORY</span>
               <span class="py-2">{{categoryName(allMessages.category)}}</span>
@@ -96,11 +98,13 @@
           <Toast/>
           <ConfirmDialog/>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-12 px-0">
               <hr class="hr my-0" />
             </div>
-          </div>
+          </div> -->
+        </div>
+      </div>
         </div>
       </div>
     </div>
@@ -186,6 +190,12 @@ export default {
 </script>
 
 <style scoped>
+.header1{
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #2c282821;
+  border-radius: 8px;
+}
 .table-header-row {
   background: #ebeff4;
   border-top: 1px solid #dde2e6;

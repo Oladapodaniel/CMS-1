@@ -21,41 +21,40 @@
         </p>
       </div>
         
-
-      <div class="row table-header-row py-2 mt-5">
-        <div class="col-md-2">
-          <span class="py-2 font-weight-bold">NAME</span>
+ 
+ <div class="row header1 mt-5">
+   <div class="col-md-12">
+     <div class="border-0 bg-danger">
+      <div class="row table-header-row py-2  small-text">
+        <div class="col-md-3">
+          <span class="py-2 font-weight-bold">Name</span>
         </div>
           <div class="col-md-2">
-          <span class="py-3 font-weight-bold">EMAIL</span>
+          <span class="py-3 font-weight-bold">Email</span>
         </div>
         <div class="col-md-2">
-          <span class="py-2 font-weight-bold">PHONE</span>
+          <span class="py-2 font-weight-bold">Phone</span>
         </div>
         <div class="col-md-2">
-          <span class="py-2 font-weight-bold">STATUS</span>
+          <span class="py-2 font-weight-bold">Status</span>
         </div>
-        <div class="col-md-3">
-          <span class="py-2 font-weight-bold">ROLES</span>
+        <div class="col-md-2">
+          <span class="py-2 font-weight-bold">Roles</span>
         </div>
         <div class="col-md-1">
           <span class="py-2 font-weight-bold"></span>
         </div>
       </div>
-      <div
-        class="row py-2"
-        
-      >
-      <Toast/>
-      <ConfirmDialog/>
-        <div class="col-md-12">
-          <div class="row" v-for="(churchMem, index) in churchUsers.users" :key="index">
+ </div>
+   </div>
+   <div class="col-md-12">
+      <div class="row small-text tr-border-bottom py-2" v-for="(churchMem, index) in churchUsers.users" :key="index">
             <div
-              class="col-md-2 d-flex justify-content-between"
+              class="col-md-3 d-flex justify-content-between"
             >
               <span class="py-2 hidden-header">NAME</span>
-              <span class="py-2" v-if="churchMem.name.length<10">{{ churchMem.name}}</span>
-              <span v-else v-tooltip.top="`${churchMem.name}`">{{churchMem.name.substring(0,10)+ "..."}}</span>
+              <span class="py-2" v-if="churchMem.name.length<20">{{ churchMem.name}}</span>
+              <span v-else v-tooltip.top="`${churchMem.name}`">{{churchMem.name.substring(0,20)+ "..."}}</span>
             </div>
              <div
               class="col-md-2 d-flex justify-content-between align-items-center"
@@ -88,7 +87,7 @@
             </div>
             <!-- {{churchMem && churchMem.roles[0] ? churchMem.roles[0]? churchMem.roles[0] : '' : '' }} -->
             <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
+              class="col-md-1 d-flex justify-content-between align-items-center"
             >
               <div class="dropdown">
                 <i
@@ -110,7 +109,7 @@
                       >Send Email</router-link
                     >
                   </a>
-                  <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ id:churchMem.email } }"> <a class="dropdown-item button">Edit</a></router-link>
+                  <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> <a class="dropdown-item button">Edit</a></router-link>
                   <a class="dropdown-item button" @click="deletePop(churchMem.email)">Delete</a>
                   <a class="dropdown-item button" @click="deactivateChurchUser(churchMem.email, index)">Inactive</a>
                   <a class="dropdown-item button" @click="activateChurchUser(churchMem.email, index)">Active</a>
@@ -118,14 +117,28 @@
               </div>
             </div>
           </div>
+   </div>
 
-          <div class="row">
+ </div>
+      <!-- <div
+        class="row py-2"
+        
+      > -->
+      <Toast/>
+      <ConfirmDialog/>
+        <!-- <div class="col-md-12"> -->
+         
+
+          <!-- <div class="row">
             <div class="col-md-12 px-0">
               <hr class="hr my-0" />
             </div>
-          </div>
-        </div>
-      </div>
+          </div> -->
+        <!-- </div> -->
+
+
+       <!-- </div> -->
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -249,6 +262,15 @@ export default {
   background: #ebeff4;
   border-top: 1px solid #dde2e6;
   border-radius: 8px 8px 0 0;
+  
+}
+.header1{
+  /* color: #8898aa; */
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #2c282821;
+  border-radius: 8px;
+  /* background: #dde2e6 0% 0% no-repeat padding-box; */
 }
 
 .hidden-header {
