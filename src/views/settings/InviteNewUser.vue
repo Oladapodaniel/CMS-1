@@ -459,7 +459,6 @@ import store from "@/store/store";
         },
         async getEmail(){
       if (this.$route.query.email) {
-          this.disabled = true
           try{
             const {data} = await axios.get(`/api/Settings/GetChurchUserByEmail?email=${this.$route.query.email}`);
                 // this.defaultEmail = data;

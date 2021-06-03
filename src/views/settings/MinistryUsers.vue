@@ -54,7 +54,8 @@
               class="col-md-2 d-flex justify-content-between"
             >
               <span class="py-2 hidden-header">NAME</span>
-              <span class="py-2">{{ churchMem.name}}</span>
+              <span class="py-2" v-if="churchMem.name.length<10">{{ churchMem.name}}</span>
+              <span v-else v-tooltip.top="`${churchMem.name}`">{{churchMem.name.substring(0,10)+ "..."}}</span>
             </div>
              <div
               class="col-md-2 d-flex justify-content-between align-items-center"
@@ -67,7 +68,8 @@
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">PHONE</span>
-              <span class="py-2">{{ churchMem.phone}}</span>
+              <span class="py-2" v-if="churchMem.phone.length<11">{{ churchMem.phone}}</span>
+              <span v-else v-tooltip.top="`${churchMem.phone}`">{{churchMem.phone.substring(0,11)+ "..."}}</span>
             </div>
            
             <div
@@ -108,7 +110,7 @@
                       >Send Email</router-link
                     >
                   </a>
-                  <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> <a class="dropdown-item button">Edit</a></router-link>
+                  <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ id:churchMem.email } }"> <a class="dropdown-item button">Edit</a></router-link>
                   <a class="dropdown-item button" @click="deletePop(churchMem.email)">Delete</a>
                   <a class="dropdown-item button" @click="deactivateChurchUser(churchMem.email, index)">Inactive</a>
                   <a class="dropdown-item button" @click="activateChurchUser(churchMem.email, index)">Active</a>
