@@ -155,6 +155,10 @@
           </div>
           <div class="row mt-4">
             <div class="col-12">
+              {{ convertAmountToTenantCurrency.toFixed(2) }}
+              {{ selectedCurrency }}
+            </div>
+            <div class="col-12">
               <Dropdown
                 class="w-100"
                 v-model="selectedCurrency"
@@ -342,7 +346,7 @@ export default {
       { name: "4000-5000", constValue: 8 },
     ]);
 
-    selectCurrencyArr.value = ["NGN", "USD", "GHS", "RAND"];
+    selectCurrencyArr.value = ["NGN", "USD", "GHS", "ZAR"];
 
     const existingPlan = ref({});
     const selectSubscription = () => {
@@ -421,11 +425,13 @@ export default {
           emailUnits: selectEmail.value.name
             ? +selectEmail.value.name.split("-")[1]
             : 0,
-          totalAmount: TotalAmount.value,
+          totalAmount: selectedCurrency.value
+            ? convertAmountToTenantCurrency.value
+            : TotalAmount.value,
           paymentGateway: "Paystack",
           txnRefID: paystackResponse.trxref,
           productItems: products,
-          currency: "NGN",
+          currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
         };
         axios
           .post("/api/Subscription/SubscriptionPayment", body)
@@ -445,12 +451,26 @@ export default {
         console.log(error);
       }
     };
+    const conversionrates = ref({});
     const getRates = () => {
       converter.getConversionData().then((res) => {
-        currencies.value = res;
+        conversionrates.value = res;
       });
     };
     getRates();
+    const convertAmountToTenantCurrency = computed(() => {
+      if (!selectedCurrency.value) return TotalAmount.value;
+      let amountInDollar = 0;
+      if (TotalAmount.value) {
+        amountInDollar = TotalAmount.value / conversionrates.value[`usdngn`];
+      } else {
+        return 0;
+      }
+      return (
+        conversionrates.value[`usd${selectedCurrency.value.toLowerCase()}`] *
+        amountInDollar
+      );
+    });
 
     const emailAmount = computed(() => {
       if (!selectEmail.value.name) return 0;
@@ -503,6 +523,11 @@ export default {
         });
     };
 
+    const convertedAmount = computed(() => {
+      if (!selectedCurrency.value) return "";
+      return converter.convertCurrencyTo(500, "usdngn", "usdghs");
+    });
+
     if (!currentUser.value || !currentUser.value.currency) getCurrencySymbol();
     const appendLeadingZeroes = (n) => {
       if (n <= 9) {
@@ -532,8 +557,11 @@ export default {
         key: process.env.VUE_APP_PAYSTACK_API_KEY,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: currentUser.value.userEmail,
-        amount: TotalAmount.value * 100,
+        amount: selectedCurrency.value
+          ? convertAmountToTenantCurrency.value
+          : TotalAmount.value,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
+        currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
 
         // firstname: name,
         // ref: orderId,
@@ -620,6 +648,8 @@ export default {
       display,
       close,
       paymentFailed,
+      convertedAmount,
+      convertAmountToTenantCurrency,
     };
   },
 };
