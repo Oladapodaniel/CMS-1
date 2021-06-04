@@ -7,12 +7,12 @@
       </div>
 
       <div class="col-md-8 d-flex head-button">
-        <router-link to="/tenant/contributionCategory">
-          <!-- <button class="default-btn mr-3">View Donation Items</button> -->
+        <router-link to="/tenant/payment">
+          <button class="default-btn mr-3">View Payment form</button>
         </router-link>
-        <!-- <router-link to="/tenant/addoffering" class="add-btn">
-          Add Donation
-        </router-link> -->
+        <router-link to="/tenant/payments" class="add-btn">
+          Add Payment form
+        </router-link>
       </div>
     </div>
     </div>
@@ -32,7 +32,12 @@
     <div class="no-person"  v-if="donationTransactions.length === 0 && !loading">
         <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
-            <p class="tip">You haven't added any online donation yet</p>
+            <p class="tip">You have not added any online donation yet, Set up now to enable your church to recieve online donation</p>
+            <div >
+                <router-link to="/tenant/payments" class=" set-up py-2 px-3  ">
+                   Set up now
+                </router-link>
+            </div>
         </div>
     </div>
     <div v-if="donationTransactions.length > 0 && !loading">
@@ -122,6 +127,9 @@ export default {
   .add-btn {
     margin-top: 10px
   } 
+  .set-up {
+    margin-top: 10px
+  } 
 }
 
 @media (max-width: 575px) {
@@ -152,6 +160,18 @@ export default {
   height: 42px;
   text-decoration: none;
 }
+.set-up{
+  width: 250px;
+  background: #136acd;
+  border-radius: 22px;
+  color: #ffffff;
+  font-weight: bold;
+  /* display: flex; */
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  text-decoration: none;
+}
 
 .no-person {
   height: 80vh;
@@ -160,7 +180,7 @@ export default {
 }
 
 .empty-img {
-  width: 30%;
+  width: 70%;
   min-width: 397px;
   margin: auto;
 }

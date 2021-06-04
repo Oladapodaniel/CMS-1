@@ -377,7 +377,7 @@
           <div class="table-footer">
             <Pagination
               @getcontent="getPeopleByPage"
-              :itemsCount="50"
+              :itemsCount="50 "
               :currentPage="currentPage"
               :totalItems="totalItem"
             />
