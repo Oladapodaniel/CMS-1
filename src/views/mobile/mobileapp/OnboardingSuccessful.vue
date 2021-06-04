@@ -1,12 +1,12 @@
 <template>
   <div class="wave">
     <div class="container">
-      <div class="row d-flex align-items-center containerheight">
+      <div class="row containerheight">
         <div class="col-lg-6 col-sm-12">
           <div class="col">
             <!-- track 1 -->
-            <div class="row">
-              <div class="col-lg-12 text-sm-center text-md-left fss align-text-main">
+            <div class="row mt-5">
+              <div class="col-lg-12 text-sm-center text-lg-left fss align-text-main">
                 <h2 class="font-weight-bold mainheader">Welldone! Your app is ready</h2>
               </div>
             </div>
@@ -15,82 +15,44 @@
             <!-- track 2 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-                <h5 class="text-wrap h6 ">
-                  Congrats, you have successfully set up your Churchplus App.
-                  Curious what you can do? share the link below with your members.
+                <h5 class="text-wrap h6 line-height">
+                  Congrats, you have successfully set up your Churchplus App. <br />
+                  <span>But what  should i really do next?</span> <span class="d-none d-lg-inline">👉👉👉</span><span class="d-inline d-lg-none">👇👇👇</span>
                 </h5>
               </div>
             </div>
             <!-- end track 2 -->
 
             <!-- track 3 -->
-            <div class="row  align-text d-flex">
-              <div class="col-12 subheader">
-                But Hey! There's still one more thing to do
-              </div>
-              <div class="col-12 mt-3">
-                Click on this link to make a post to your social media page.
-              </div>
-              <div class="col-3  mt-3 text-white bg-primary default-btn border-0" @click="post">
-                 Click Here
-              </div>
-            </div>
-            <!-- end track 3 -->
-
-            <!-- end track 4 -->
-            <!-- <div class="row d-sm-block d-lg-none text-center show-on-small-screen at-screen">
-                <div class="col-12 cta px-0">
-                <button class="btn default-btn c-pointer">Copy</button>
-              </div> -->
-            </div>
-            <!-- end track 4 -->
-
-
-
-            <!-- track 5 -->
-            <!-- <div class="row mt-3 align-text d-none d-lg-block">
-              <div class="col-lg-12 d-flex pl-0">
-                <div class="col-4 col-sm-3">
-                  <img
-                    class="w-100 mt-5"
-                    src="../../../assets/mobileonboarding/Google-play-logo.png"
-                    alt="phone image"
-                  />
-                </div>
-                <div class="col-4 col-sm-3">
-                  <img
-                    src="../../../assets/mobileonboarding/app-store-logo.png"
-                    alt="phone image"
-                  />
-                </div>
-              </div>
-            </div> -->
-             <!-- end track 5 -->
-
- <!--  track 6 -->
-            
-            <!-- end track 6 -->
-          </div>
-        
-
-        <div class="col-lg-6 col-sm-12">
-          <div class="row">
-            <div class="col-12 text-center">
-            <div class="image mt-3">
+            <div class="row mt-5">
+              <div class="col-12">
+            <div class="image">
               <img
-                class="w-100 mt-5"
+                class="w-100 "
                 src="../../../assets/mobileonboarding/phone1.png"
                 alt="phone image"
               />
             </div>
           </div>
-          <div class="col-12 bring-front">
-            <div class="row">
-              <div class="col-lg-9 mt-1">
-                <h5 class="text-wrap h6">Start Sharing with members of your church</h5>
+              
+            </div>
+            </div>
+          </div>
+        
+
+        <div class="col-lg-6 col-sm-12">
+          <div class="row mt-5">
+            <div class="col-12 subheader">
+                Here are your next steps 😎
               </div>
-              <div class="col-lg-12 mt-1">
-                <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" rows="3" style="background: transparent" :disabled="true"></textarea>
+              <div class="col-12">
+            <div class="row">
+              <div class="col-12  number-text">1</div>
+              <div class="col-lg-9 mt-1">
+                <h5 class="text-wrap h6"> Start Sharing with members of your church</h5>
+              </div>
+              <div class="col-lg-12 mt-2">
+                <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" rows="2" style="background: transparent" :disabled="false"></textarea>
               </div>
               <div class="col-12 cta px-0 align-self-center" @click="copyLink">
                 <button class="btn default-btn c-pointer ml-md-3">Copy Link</button>
@@ -99,7 +61,7 @@
 
           </div>
           
-              <div class="col-lg-12 d-flex pl-0">
+              <!-- <div class="col-lg-12 d-flex pl-0 bring-forward">
                 <div class="col-4 col-sm-3">
                   <img
                     class="w-100 mt-5"
@@ -114,7 +76,18 @@
                     alt="phone image"
                   />
                 </div>
+              </div> -->
+              <div class="col-12 number-text push-down">2</div>
+              <div class="col-12 mt-1 bring-forward line-height">
+                Click on the button below to make a post to your social media page and get your members engaged with events and activities going on in your churh
               </div>
+              <div class="col-12 cta px-0 align-self-center mt-2 bring-forward" @click="post">
+                <button class="btn default-btn c-pointer ml-md-3">Post Now</button>
+              </div>
+              <!-- <div class="col-3 ml-3 mt-3 text-white bg-primary default-btn border-0" >
+                 
+              </div> -->
+
             
           </div>
           
@@ -167,7 +140,8 @@ export default {
       const toast = useToast()
 
       const copyLink = () => {
-                link.value.select();
+        console.log(link.value.value)
+                // link.value.select();
                 link.value.setSelectionRange(0, link.value.value.length); /* For mobile devices */
 
                 /* Copy the text inside the text field */
@@ -200,7 +174,7 @@ export default {
 }
 
 .containerheight {
-  height: 80vh;
+  height: 100vh;
 }
 .wave {
   position: relative;
@@ -217,7 +191,7 @@ export default {
   font: normal normal bold 25px Nunito Sans;
   font-family: Nunito Sans;
   color: #020e1c9f;
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 
 .ctatext {
@@ -356,6 +330,24 @@ export default {
 .bring-front h5 {
   font-size: 19px;
   font-weight: 700
+}
+
+.bring-forward {
+  z-index: 1;
+}
+
+.number-text {
+  font-size: 32px;
+}
+
+.line-height{
+  line-height: 28px;
+}
+
+@media (min-width: 996px) {
+  .push-down {
+    margin-top: 45px
+  }
 }
 </style>
 
