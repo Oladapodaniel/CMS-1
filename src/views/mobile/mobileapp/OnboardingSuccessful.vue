@@ -147,7 +147,7 @@ export default {
 
       const copyLink = () => {
         console.log(link.value.value)
-                // link.value.select();
+                link.value.select();
                 link.value.setSelectionRange(0, link.value.value.length); /* For mobile devices */
 
                 /* Copy the text inside the text field */

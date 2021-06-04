@@ -28,7 +28,7 @@
                   />
                     </a>
                 </div>
-                <div class="col-6">
+                <div class="col-6" v-if="false">
                   <img
                     class="w-100 mt-5"
                     src="../../../../assets/mobileonboarding/app-store-logo.png"
