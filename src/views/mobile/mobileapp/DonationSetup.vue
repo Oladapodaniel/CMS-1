@@ -265,7 +265,7 @@ export default {
           console.log(res);
           setTimeout(() => {
             router.push({ name: "OnboardingSuccessful" })
-          }, 4000)
+          }, 1000)
         })
         .catch((err) => {
           console.log(err);

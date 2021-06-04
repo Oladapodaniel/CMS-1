@@ -47,15 +47,26 @@
               </div>
               <div class="col-12">
             <div class="row">
-              <div class="col-12  number-text">1</div>
-              <div class="col-lg-9 mt-1">
+              <div class="col-1 mt-3  number-text">1.</div>
+              <div class="col-9 mt-4">
                 <h5 class="text-wrap h6"> Start Sharing with members of your church</h5>
-              </div>
-              <div class="col-lg-12 mt-2">
-                <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" rows="2" style="background: transparent" :disabled="false"></textarea>
-              </div>
-              <div class="col-12 cta px-0 align-self-center" @click="copyLink">
+                <div class="mt-2">
+                  <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" rows="2" style="background: transparent" :disabled="false"></textarea>
+                </div>
+                <div class="px-0 cta text-center" @click="copyLink">
                 <button class="btn default-btn c-pointer ml-md-3">Copy Link</button>
+              </div>
+              </div>
+              
+              
+            </div>
+            <div class="row push-down">
+              <div class="col-1 number-text">2.</div>
+              <div class="col-9 mt-1 bring-forward line-height">
+                Click on the button below to make a post to your mobile app and your social media page for you to get your members engaged with events and activities going on in your church.
+                <div class="col-12  px-0 text-center mt-2 bring-forward" @click="post">
+                <button class="btn default-btn bg-primary border-0 text-white c-pointer ml-md-3">Post Now</button>
+              </div>
               </div>
             </div>
 
@@ -77,13 +88,8 @@
                   />
                 </div>
               </div> -->
-              <div class="col-12 number-text push-down">2</div>
-              <div class="col-12 mt-1 bring-forward line-height">
-                Click on the button below to make a post to your social media page and get your members engaged with events and activities going on in your churh
-              </div>
-              <div class="col-12 cta px-0 align-self-center mt-2 bring-forward" @click="post">
-                <button class="btn default-btn c-pointer ml-md-3">Post Now</button>
-              </div>
+              
+              
               <!-- <div class="col-3 ml-3 mt-3 text-white bg-primary default-btn border-0" >
                  
               </div> -->
@@ -112,9 +118,9 @@
           </svg>
         </div>
       </div>
+    </div>
       <!-- end wave area -->
     </div>
-  </div>
   
 
   <!-- footer Area -->
@@ -176,11 +182,7 @@ export default {
 .containerheight {
   height: 100vh;
 }
-.wave {
-  position: relative;
-  background: #f1faff;
-  height: 80vh;
-}
+
 .mainheader {
   font: normal normal 800 55px/64px Nunito Sans;
   font-family: Nunito Sans;
@@ -346,8 +348,17 @@ export default {
 
 @media (min-width: 996px) {
   .push-down {
-    margin-top: 45px
+    margin-top: 60px
   }
+}
+
+.wave {
+    position: relative;
+  background: linear-gradient(
+45deg
+, #ebeff4, transparent);
+  height: 80vh;
+  width: 83vw;
 }
 </style>
 

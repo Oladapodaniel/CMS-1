@@ -269,15 +269,6 @@
                 />
                 Media Library
               </router-link>
-             
-              <router-link  to="/mobileonboarding" class="link routelink text-decoration-none">
-                <img
-                  src="../../assets/dashboardlinks/social-icon.svg"
-                  class="link-icon"
-                  alt=""
-                />
-                Mobile App Onboarding
-              </router-link>
 
               <a v-if="false"  class="link routelink">
                 <img
