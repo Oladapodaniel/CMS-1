@@ -1,5 +1,13 @@
 <template>
     <div>
+    <div
+                class="spinner-border"
+                style="width: 4rem; height: 4rem"
+                role="status"
+                v-if="loading"
+            >
+                <span class="sr-only">Loading...</span>
+    </div> 
         <div container>
             <h1 class="mt-3 pl-3 mb-3 font-weight-bolder" style="font-size:34px">{{ name1 }}</h1>
             <p class="pl-3" style="font-size:16px" >You can invite a new user to access your ChurchPlus account. Only give access to people you trust, since users can see your transactions and other business information.</p>
@@ -228,6 +236,7 @@
 
 <script>
 import InputText from 'primevue/inputtext';
+// import ProgressSpinner from 'primvue/progressspinner';
 import Toast from 'primevue/toast'
 import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
@@ -249,6 +258,7 @@ import store from "@/store/store";
             phoneNumber: '',
             name2: '',
             info: null,
+            loading: false,
             defaultEmail: {},
             currentUser: store.getters.currentUser,
             BURoles: [ "Admin","BasicUser",],

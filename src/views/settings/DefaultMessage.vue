@@ -36,7 +36,7 @@
         <div class="col-md-12">
           <div class="row py-0">
         <div class="col-md-12">
-          <div class="row tr-border-bottom py-2" v-for="(allMessages, index) in defaultMessage" :key="index">
+          <div class="row tr-border-bottom py-1 header2" v-for="(allMessages, index) in defaultMessage" :key="index">
             <div
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
@@ -104,6 +104,9 @@
             </div>
           </div> -->
         </div>
+        <div class=" col-12 text-center p-5" v-if="loading">
+             <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
+            </div>
       </div>
         </div>
       </div>
@@ -132,8 +135,8 @@ export default {
 		Membership: messageOptions.Membership,
     selectType: null,
 		Sms: messageOptions.Sms,
-    defaultMessage: []
-
+    defaultMessage: [],
+    loading: false
     }
   },
   methods: {
@@ -164,8 +167,10 @@ export default {
     },
      async AllDefaultMessages(){
       try{
+        this.loading = true
         const  {data} = await axios.get('/api/Settings/AllDefaultMessages')
         this.defaultMessage = data.returnObject;
+        this.loading = false
         console.log(this.defaultMessage)
       }catch(error){
         console.log(error)
@@ -190,6 +195,13 @@ export default {
 </script>
 
 <style scoped>
+.header2{
+  cursor: pointer;
+
+}
+.header2:hover{
+  background-color: #eee;
+}
 .header1{
   font-size: 14px;
   font-weight: 600;
@@ -197,7 +209,7 @@ export default {
   border-radius: 8px;
 }
 .table-header-row {
-  background: #ebeff4;
+  background: #dde2e6;
   border-top: 1px solid #dde2e6;
   border-radius: 8px 8px 0 0;
 }

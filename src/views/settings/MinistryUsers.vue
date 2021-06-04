@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div> 
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
         <div class="col-md-8 col-lg-8 col-sm-6">
@@ -48,7 +48,7 @@
  </div>
    </div>
    <div class="col-md-12">
-      <div class="row small-text tr-border-bottom py-2" v-for="(churchMem, index) in churchUsers.users" :key="index">
+      <div class="row small-text tr-border-bottom py-1 header2" v-for="(churchMem, index) in churchUsers.users" :key="index">
             <div
               class="col-md-3 d-flex justify-content-between"
             >
@@ -81,7 +81,7 @@
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">ROLES</span>
-              <span class="py-2">{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</span>
+              <span class="py-2" v-tooltip.top="`${churchMem.roles}`">{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</span>
               <!-- <span v-else>{{ churchMem ? churchMem.roles ? churchMem.roles[0].substring(0,14)+ ".." : '' : '' }}</span> -->
               <!-- "churchMem ? churchMem.roles ? churchMem.roles[0].length<14 : '' : '' " -->
             </div>
@@ -118,6 +118,9 @@
             </div>
           </div>
    </div>
+   <div class=" col-12 text-center p-5" v-if="loading">
+      <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
+    </div>
 
  </div>
       <!-- <div
@@ -149,6 +152,7 @@ import Tooltip from 'primevue/tooltip';
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog'
 import axios from "@/gateway/backendapi";
+// import finish from "../../services/progressbar/progress";
 export default {
   components:{
     Toast,
@@ -162,7 +166,8 @@ export default {
     return{
       getCurrentUser: store.getters.currentUser,
       churchUsers: [],
-      churchNames: {}
+      churchNames: {},
+      loading: false,
     }
   },
   computed:{
@@ -174,10 +179,12 @@ export default {
   },
   methods:{
     async churchUser(){
+      this.loading = true
       try{
         const { data } = await axios.get('/api/Settings/ChurchUsers')
         this.churchUsers = data;
         console.log(this.churchUsers)
+        this.loading = false
       }catch(error){
         console.log(error)
       }
@@ -259,18 +266,23 @@ export default {
 <style scoped>
 
 .table-header-row {
-  background: #ebeff4;
+  background: #dde2e6;
   border-top: 1px solid #dde2e6;
   border-radius: 8px 8px 0 0;
   
 }
+.header2{
+  cursor: pointer;
+
+}
+.header2:hover{
+  background-color: #eee;
+}
 .header1{
-  /* color: #8898aa; */
   font-size: 14px;
   font-weight: 600;
   box-shadow: 0px 3px 6px #2c282821;
   border-radius: 8px;
-  /* background: #dde2e6 0% 0% no-repeat padding-box; */
 }
 
 .hidden-header {

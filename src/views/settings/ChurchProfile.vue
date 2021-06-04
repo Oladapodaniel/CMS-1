@@ -289,7 +289,6 @@ export default {
       formData.append("HeadPastorEmail", churchData.value.headPastorEmail );      
       formData.append("HeadPastorPhone", churchData.value.headPastorPhone );      
       formData.append("ChurchLogo", image ); 
-
       axios.put('/api/Settings/ChurchProfileSettings',formData)
       .then(res =>{
         console.log(res);
@@ -341,8 +340,7 @@ export default {
       display,
       churchProfile,
       a,
-      b
-  
+      b,
     }
   },
   

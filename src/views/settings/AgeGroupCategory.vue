@@ -100,6 +100,9 @@
               </div>
             </div>
           </div>
+          <div class=" col-12 text-center p-5" v-if="loading">
+             <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
+         </div>
         </div>
       </div>
     </div>
@@ -124,15 +127,18 @@ export default {
       vissibleTab: "",
       typeName: "",
       ageGroup: "",
-      tenantId: ""
+      tenantId: "",
+      loading: false
     }
   },
 
   methods: {
     async getGroup() {
       try {
+        this.loading = true
         const { data } = await axios.get("/api/Settings/GetTenantAgeGroups");
         this.types = data;
+        this.loading = false
       } catch (error) {
         console.log(error);
       }

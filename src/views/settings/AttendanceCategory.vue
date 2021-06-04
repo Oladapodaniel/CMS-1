@@ -101,6 +101,9 @@
               </div>
             </div>
           </div>
+          <div class=" col-12 text-center p-5" v-if="loading">
+             <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
+         </div>
         </div>
       </div>
     </div>
@@ -125,14 +128,17 @@ export default {
       typeName: "",
       attendanceName: "",
       ageGroup: "",
+      loading: false
     }
   },
 
   methods: {
     async getTypes() {
       try {
+        this.loading = true
         const { data } = await axios.get("/api/Settings/TenantAttentandaceTypes");
         this.types = data;
+        this.loading = false
       } catch (error) {
         console.log(error);
       }
