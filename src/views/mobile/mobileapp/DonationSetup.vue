@@ -2,7 +2,7 @@
   <div class="container-wide">
     <!-- write up part -->
     <div class="row">
-      <div class="col-md-6 mt-5" :class="{ 'slide-right': slide }">
+      <div class="col-md-6 offset-sm-3 mt-5" :class="{ 'slide-right': slide }">
         <div class="row">
           <div class="col-md-7">
             <h2 class="events">Online Donation</h2>
@@ -12,7 +12,7 @@
               class="default-btn primary-bg border-0 font-weight-700 text-white" data-toggle="modal" data-target="#paymentModal"
               style="font-size:13px"
             >
-              Add Payment Form
+              Add Donation Form
             </button>
           </div>
           <div class="col-12">
@@ -137,36 +137,23 @@
               <span class="sr-only">Loading...</span>
             </div>
           </div> -->
+          <div class="col-12 text-center d-block d-md-none" v-if="setupSpinner">
+            <i class="pi pi-spin pi-spinner text-dark"  style="fontSize: 5rem"></i>
+          </div>
           <div
             class="col-11 ml-3
              btn primary-bg mt-5 text-white default-btn border-0"
             @click="completeSetUp"
           >
-             continue
+             Continue
           </div>
-        </div>
-      </div>
-
-      <!-- image part -->
-      <div
-        class="col-md-6 col-12 bg-image d-none d-md-block"
-        :class="{ 'slide-left': slide }"
-      >
-        <div class="row mt-3">
-          <div class="col-md-12 text-center my-5 step">STEP 4 of 4</div>
-          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
-          <div class="col-12 text-center mt-n5" v-if="setupSpinner">
+          <!-- <div class="col-12 text-center mt-n5" v-if="setupSpinner">
             <i class="pi pi-spin pi-spinner text-white"  style="fontSize: 5rem"></i>
-          </div>
-        </div>
-        <div class="image-dis">
-          <!-- <img
-            src="../../../assets/mobileonboarding/church1.svg"
-            style="height: 40%; width: 40%"
-          /> -->
+          </div> -->
         </div>
       </div>
-    </div>
+      </div>
+   
     <!-- <Toast /> -->
   </div>
 </template>
@@ -180,13 +167,14 @@ import finish from "../../../services/progressbar/progress";
 import axio from "axios";
 // import store from "../../../store/store";
 import paymentform from "../../../components/genericmobile/paymentform";
+import store from '../../../store/store';
 export default {
   components: {
     paymentform
     // DonationSetup,
     // Dropdown,
   },
-  setup() {
+  setup(props, context) {
     const nigerianBanks = ref([]);
     const selectedBank = ref("");
     const accountNumber = ref("");
@@ -207,27 +195,31 @@ export default {
     const setupSpinner = ref(false)
 
     const completeSetUp = () => {
-      // router.push({ name: "SocialMedia" });
-      // let bankDetails = {
-      //   accountName: accountName.value,
-      //   accountNumber: accountNumber.value,
-      //   banks: selectedBank.value
-      // }
-      // banks.value.push(bankDetails)
-      // console.log(banks.value);
-      // store.dispatch("completeSetUp", banks.value);
-      // axios
-      //   .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
-      //   .then((res) => {
-      //     console.log(res, "🎄🎄🎄");
+      let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: false,
+            donationForm: true
+          }
+          context.emit('saved-donation', changeState)
 
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-        setTimeout(() => {
-          router.push({ name:'OnboardingSuccessful'});
-        }, 4000)
+      const currentUser = store.getters.currentUser
+      setupSpinner.value = true
+      axios
+        .post(`/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`)
+        .then((res) => {
+          console.log(res);
+          setupSpinner.value = false
+
+          setTimeout(() => {
+            router.push({ name:'OnboardingSuccessful'});
+          }, 4000)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+        
     };
 
     const getBanks = () => {
@@ -286,12 +278,6 @@ export default {
         .then((res) => {
           console.log(res);
           formsArr.value = res.data
-          // formsArr.value = nigerianBanks.value.forEach(i => {
-          //   // return i.id === formsArr.
-          //   let index = formsArr.value.findIndex(j => j.id === i.id)
-          //   if(index > 0) return formsArr.value[index] = i
-          // })
-          // console.log(formsArr.value)
         })
         .catch((err) => {
           console.log(err);
@@ -300,11 +286,20 @@ export default {
     getPaymentForm();
 
     const skip = () => {
-      slide.value = true
       setupSpinner.value = true
-      setTimeout(() => {
-        router.push({ name: "OnboardingSuccessful" })
-      }, 4000)
+      const currentUser = store.getters.currentUser
+      axios
+        .post(`/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`)
+        .then((res) => {
+          console.log(res);
+          slide.value = true
+          setTimeout(() => {
+            router.push({ name: "OnboardingSuccessful" })
+          }, 4000)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
     return {
       nigerianBanks,
@@ -519,9 +514,10 @@ export default {
 }
 
 .skip-text {
-  background: rgb(62, 68, 160);
-  position: relative;
-  top: 25em;
+  background: rgba(0, 0, 0, 0.707);
+  position: fixed;
+  top: 32em;
+  width: 20%
 }
 
 </style>

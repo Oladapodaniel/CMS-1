@@ -3,7 +3,7 @@
     <div class="row table " style="height: 300px">
       <div class="col-12 mt-4  w-100">
         <div class="row">
-          <!-- {{contributionSummary}} -->
+          <!-- {{donationSummary}} -->
           <div class="col-12 col-md-4">
              <div class="col-12 mb-5">
                 <Dropdown
@@ -23,9 +23,9 @@
           </div>
           <!-- {{ pieChart }} -->
           <div class="col-12 col-md-4">
-            <ContributionPieChart
+            <DonationPieChart
               domId="chart"
-              title="Analytics"
+            
               distance="5"
               :titleMargin="10"
               :summary="pieChart"
@@ -40,7 +40,7 @@
 
             <!-- 2{{ chartData }} -->
        
-            <ContributionAreaChart
+            <DonationAreaChart
                elemId="chart"
                   domId="areaChart3"
                   title="So Far"
@@ -64,12 +64,11 @@
                 printJS({
                   ignoreElements: ['ignore1', 'ignore2'],
                   maxWidth: 867,
-                  header: 'CONTRIBUTION TRANSACTIONS',
-                  printable: printContribution,
+                  header: 'DONATION TRANSACTIONS',
+                  printable: printDonation,
                   properties: [
                     'DATE',
-                    'EVENT',
-                    'CONTRIBUTION',
+                    'DONATION',
                     'AMOUNT',
                     'DONOR',
                   ],
@@ -131,28 +130,28 @@
               <div class="col-md-9">
                 <div class="row">
                   <div
-                    class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
+                    class="col-12 col-sm-6 col-md-6 offset-sm-3 offset-md-0 form-group inp w-100"
                   >
                     <!-- <div class="input-field"> -->
 
                     <input
                       type="text"
                       class="input w-100"
-                      placeholder="Contribution"
+                      placeholder="Donation"
                       v-model="filter.contribution"
                     />
                   </div>
 
-                  <div class="col-12 col-md-4 form-group d-none d-md-block">
+                  <!-- <div class="col-12 col-md-4 form-group d-none d-md-block">
                     <input
                       type="text"
                       class="input w-100"
                       placeholder="event"
                       v-model="filter.event"
                     />
-                  </div>
+                  </div> -->
 
-                  <div class="col-12 col-md-4 form-group d-none d-md-block">
+                  <div class="col-12 col-md-6 form-group d-none d-md-block">
                     <input
                       type="text"
                       class="input w-100"
@@ -179,13 +178,13 @@
         </div>
 
         <!-- contribution -->
-        <div v-if="searchContribution.length > 0">
+        <div v-if="searchDonation.length > 0">
           <div class="container-fluid d-none d-md-block">
             <div class="row t-header">
               <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
                 <div class="col-md-1 px-3"></div>
                 <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Contribution</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Donation</div>
                 <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
                 <div class="small-text text-capitalize col-md-2 font-weight-bold">Donor</div>
                 <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
@@ -195,10 +194,10 @@
         <div class="row" style="margin:0;">
             <div
               class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom  hover"
-              v-for="(item, index) in searchContribution"
+              v-for="(item, index) in searchDonation"
               :key="item.id"
             >
-            
+            <!-- <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }"> -->
               <div class="row w-100" style="margin:0">
                 <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
                   <input
@@ -211,16 +210,16 @@
                 <div class="desc small-text col-md-2 px-1">
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                    <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }"><span>{{ date(item.date) }}</span></router-link>
+                    <span>{{ date(item.date) }}</span>
                   </p>
                 </div>
 
                 <div class="col-md-3 px-1">
                   <div class="d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Contribution</span>
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Donation</span>
                   <div>
                     
-                    <div class="desc small-text text-right text-md-left"><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.contribution }}</router-link></div>
+                    <div class="desc small-text text-right text-md-left">{{ item.contribution }}</div>
                   </div>
                   </div>
                 </div>
@@ -229,7 +228,7 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
                     <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
-                    <span><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
+                    <span>{{ item.currencyName }} {{ item.amount }}</span>
                   </p>
                 </div>
 
@@ -237,7 +236,7 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Donor</span>
                     <span><span class="primary-text c-pointer"
-                    ><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.donor }}</router-link></span
+                    >{{ item.donor }}</span
                   ></span>
                   </p>
                 </div>
@@ -257,7 +256,7 @@
                         aria-expanded="false"
                       ></i>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
+                        <!-- <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
                         <a class="dropdown-item elipsis-items">
                       View Report
                       </a>
@@ -266,7 +265,7 @@
                         <a class="dropdown-item elipsis-items">
                       Edit
                       </a>
-                      </router-link>
+                      </router-link> -->
                       <a
                         class="dropdown-item elipsis-items cursor-pointer"
                         @click="showConfirmModal(item.id, index)"
@@ -277,6 +276,7 @@
                   </div>
                 </div>
               </div>
+              <!-- </router-link> -->
             </div>
           </div>
           <!-- <div class="row">
@@ -294,7 +294,7 @@
               </div>
               <div
                 class="table-body row"
-                v-for="(offering, index) in searchContribution"
+                v-for="(offering, index) in searchDonation"
                 :key="offering.id"
               >
                 <div class="col-6 d-block d-sm-none">
@@ -377,7 +377,7 @@
           <div class="table-footer">
             <Pagination
               @getcontent="getPeopleByPage"
-              :itemsCount="50"
+              :itemsCount="50 "
               :currentPage="currentPage"
               :totalItems="totalItem"
             />
@@ -395,34 +395,27 @@
 <script>
 import { ref, computed } from "vue";
 import axios from "@/gateway/backendapi";
-// import { useStore } from 'vuex'
-// import { store } from "../../../store/store"
-import Pagination from "../../../components/pagination/PaginationButtons";
+import Pagination from "../../../../components/pagination/PaginationButtons";
 import { useRoute } from "vue-router";
 import moment from "moment";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
-import finish from "../../../services/progressbar/progress";
-import monthDayYear from "../../../services/dates/dateformatter";
+import finish from "../../../../services/progressbar/progress";
+import monthDayYear from "../../../../services/dates/dateformatter";
 import printJS from "print-js";
 import Dropdown from "primevue/dropdown";
-// import ContributionColumnChart from "../../../components/charts/ColumnChart.vue";
-import ContributionPieChart from "../../../components/charts/PieChart.vue";
-import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
-import numbers_formatter from '../../../services/numbers/numbers_formatter';
+import DonationPieChart from "../../../../components/charts/PieChart.vue";
+import DonationAreaChart from "../../../../components/charts/AreaChart.vue";
+import numbers_formatter from '../../../../services/numbers/numbers_formatter';
 export default {
-  props: ["contributionTransactions", "totalItem"],
+  props: ["donationTransactions", "totalItem"],
   components: {
-    // ByGenderChart,
-    // ByMaritalStatusChart,
     Pagination,
-    ContributionAreaChart,
-    ContributionPieChart,
+    DonationAreaChart,
+    DonationPieChart,
     Dropdown,
   },
   setup(props, { emit }) {
-    // const contributionTransactions = ref([]);
-    // const getFirstTimerSummary = ref({});
     const filter = ref({});
     const searchIsVisible = ref(false);
     const filterResult = ref([]);
@@ -445,7 +438,7 @@ export default {
       { name: "One Year" },
     ]);
     const selectedPeriod = ref({ name: "This Week" });
-    const contributionSummary = ref({});
+    const donationSummary = ref({});
     const series = ref([1, 2, 3, 4, 5, 6, 7, 8, 9]);
     const attendanceSeries = ref("");
     const route = useRoute();
@@ -457,7 +450,7 @@ export default {
     };
     const getRoute = () => {
       console.log(route.fullPath);
-      if (route.fullPath === "/tenant/offering") {
+      if (route.fullPath === "/tenant/onlinedonate") {
         chartClass.value = true;
       }
     };
@@ -467,7 +460,7 @@ export default {
     //   axios
     //     .get("/api/Financials/Contributions/Transactions")
     //     .then((res) => {
-    //       contributionTransactions.value = res.data;
+    //       donationTransactions.value = res.data;
     //       console.log(res.data);
     //     })
     //     .catch((err) => console.log(err));
@@ -477,9 +470,9 @@ export default {
     // // store.dispatch('contributions/contributionList')
     // };
     // getContributionTranactions();
-    const searchContribution = computed(() => {
+    const searchDonation = computed(() => {
       if (searchText.value !== "") {
-        return props.contributionTransactions.filter((i) => {
+        return props.donationTransactions.filter((i) => {
           return i.contribution
             .toLowerCase()
             .includes(searchText.value.toLowerCase());
@@ -490,16 +483,16 @@ export default {
       ) {
         return filterResult.value;
       } else {
-        return props.contributionTransactions;
+        return props.donationTransactions;
       }
     });
-    const printContribution = computed(() => {
-      if (props.contributionTransactions.length === 0) return [];
-      return props.contributionTransactions.map((i) => {
+    const printDonation = computed(() => {
+      if (props.donationTransactions.length === 0) return [];
+      return props.donationTransactions.map((i) => {
         return {
           DATE: monthDayYear.monthDayYear(i.eventDate),
           EVENT: i.eventName,
-          CONTRIBUTION: i.contribution,
+          DONATION: i.contribution,
           AMOUNT: i.amount,
           DONOR: i.donor ? i.donor : "",
         };
@@ -569,7 +562,7 @@ export default {
       // if (page < 1) return false;
       try {
         const { data } = await axios.get(
-          `/api/Financials/Contributions/Transactions?page=${page}`
+          `/api/Financials/Donation/Transactions?page=${page}`
         );
         if (data) {
           console.log(data)
@@ -592,9 +585,9 @@ export default {
     //     console.log(error);
     //   }
     // };
-    const offeringCount = computed(() => {
-      if (!props.contributionTransactions || props.contributionTransactions.length === 0) return 0;
-        return props.contributionTransactions.length;
+    const donationCount = computed(() => {
+      if (!props.donationTransactions || props.donationTransactions.length === 0) return 0;
+        return props.donationTransactions.length;
     });
     // const itemsCount = computed(() => {
     //   if (!sentSMS.value || sentSMS.value.length === 0) return 0;
@@ -650,127 +643,127 @@ export default {
     //     return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 20);
     //   return 0;
     // });
-    const getContributionSummary = async () => {
+    const getdonationSummary = async () => {
       try {
         let { data } = await axios.get(
-          "/api/financials/contributions/transactions/summary"
+          "/api/financials/donation/transactions/summary"
         );
         console.log(data);
-        contributionSummary.value = data;
+        donationSummary.value = data;
       } catch (err) {
         console.log(err);
       }
     };
-    getContributionSummary();
+    getdonationSummary();
     const chartData = computed(() => {
       if (
-        contributionSummary.value &&
-        contributionSummary.value.oneWeek &&
+        donationSummary.value &&
+        donationSummary.value.oneWeek &&
         selectedPeriod.value.name === "One Week"
       )
-        return contributionSummary.value.oneWeek;
+        return donationSummary.value.oneWeek;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.thisWeek &&
+        donationSummary.value &&
+        donationSummary.value.thisWeek &&
         selectedPeriod.value.name === "This Week"
       )
-        return contributionSummary.value.thisWeek;
+        return donationSummary.value.thisWeek;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.lastThirtyDays &&
+        donationSummary.value &&
+        donationSummary.value.lastThirtyDays &&
         selectedPeriod.value.name === "Last 30days"
       )
-        return contributionSummary.value.lastThirtyDays;
+        return donationSummary.value.lastThirtyDays;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.lastNinetyDays &&
+        donationSummary.value &&
+        donationSummary.value.lastNinetyDays &&
         selectedPeriod.value.name === "Last 90days"
       )
-        return contributionSummary.value.lastNinetyDays;
+        return donationSummary.value.lastNinetyDays;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.thisMonth &&
+        donationSummary.value &&
+        donationSummary.value.thisMonth &&
         selectedPeriod.value.name === "This Month"
       )
-        return contributionSummary.value.thisMonth;
+        return donationSummary.value.thisMonth;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.lastWeek &&
+        donationSummary.value &&
+        donationSummary.value.lastWeek &&
         selectedPeriod.value.name === "Last Week"
       )
-        return contributionSummary.value.lastWeek;
+        return donationSummary.value.lastWeek;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.lastMonth &&
+        donationSummary.value &&
+        donationSummary.value.lastMonth &&
         selectedPeriod.value.name === "Last Month"
       )
-        return contributionSummary.value.lastMonth;
+        return donationSummary.value.lastMonth;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.oneYear &&
+        donationSummary.value &&
+        donationSummary.value.oneYear &&
         selectedPeriod.value.name === "One Year"
       )
-        return contributionSummary.value.oneYear;
+        return donationSummary.value.oneYear;
       return [];
-      // contributionSummary.value.oneWeek.barChart.data
+      // donationSummary.value.oneWeek.barChart.data
     });
     const pieChart = computed(() => {
       if (
-        contributionSummary.value &&
-        contributionSummary.value.oneWeek &&
-        contributionSummary.value.oneWeek.pieChart.length > 0 &&
+        donationSummary.value &&
+        donationSummary.value.oneWeek &&
+        donationSummary.value.oneWeek.pieChart.length > 0 &&
         selectedPeriod.value.name === "One Week"
       )
-        return contributionSummary.value.oneWeek.pieChart;
+        return donationSummary.value.oneWeek.pieChart;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.thisWeek &&
-        contributionSummary.value.thisWeek.pieChart.length > 0 &&
+        donationSummary.value &&
+        donationSummary.value.thisWeek &&
+        donationSummary.value.thisWeek.pieChart.length > 0 &&
         selectedPeriod.value.name === "This Week"
       )
-        return contributionSummary.value.thisWeek.pieChart;
+        return donationSummary.value.thisWeek.pieChart;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.lastThirtyDays &&
-        contributionSummary.value.lastThirtyDays.pieChart.length > 0 &&
+        donationSummary.value &&
+        donationSummary.value.lastThirtyDays &&
+        donationSummary.value.lastThirtyDays.pieChart.length > 0 &&
         selectedPeriod.value.name === "Last 30days"
       )
-        return contributionSummary.value.lastThirtyDays.pieChart;
+        return donationSummary.value.lastThirtyDays.pieChart;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.lastNinetyDays &&
-        contributionSummary.value.lastNinetyDays.pieChart.length > 0 &&
+        donationSummary.value &&
+        donationSummary.value.lastNinetyDays &&
+        donationSummary.value.lastNinetyDays.pieChart.length > 0 &&
         selectedPeriod.value.name === "Last 90days"
       )
-        return contributionSummary.value.lastNinetyDays.pieChart;
+        return donationSummary.value.lastNinetyDays.pieChart;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.thisMonth &&
-        contributionSummary.value.thisMonth.pieChart.length > 0 &&
+        donationSummary.value &&
+        donationSummary.value.thisMonth &&
+        donationSummary.value.thisMonth.pieChart.length > 0 &&
         selectedPeriod.value.name === "This Month"
       )
-        return contributionSummary.value.thisMonth.pieChart;
+        return donationSummary.value.thisMonth.pieChart;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.lastWeek &&
-        contributionSummary.value.lastWeek.pieChart.length > 0 &&
+        donationSummary.value &&
+        donationSummary.value.lastWeek &&
+        donationSummary.value.lastWeek.pieChart.length > 0 &&
         selectedPeriod.value.name === "Last Week"
       )
-        return contributionSummary.value.lastWeek.pieChart;
+        return donationSummary.value.lastWeek.pieChart;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.lastMonth &&
-        contributionSummary.value.lastMonth.pieChart.length > 0 &&
+        donationSummary.value &&
+        donationSummary.value.lastMonth &&
+        donationSummary.value.lastMonth.pieChart.length > 0 &&
         selectedPeriod.value.name === "Last Month"
       )
-        return contributionSummary.value.lastMonth.pieChart;
+        return donationSummary.value.lastMonth.pieChart;
       if (
-        contributionSummary.value &&
-        contributionSummary.value.oneYear &&
-        contributionSummary.value.oneYear.pieChart.length > 0 &&
+        donationSummary.value &&
+        donationSummary.value.oneYear &&
+        donationSummary.value.oneYear.pieChart.length > 0 &&
         selectedPeriod.value.name === "One Year"
       )
-        return contributionSummary.value.oneYear.pieChart;
+        return donationSummary.value.oneYear.pieChart;
       return [];
     });
     const LineGraphXAxis = computed(() => {
@@ -788,7 +781,7 @@ export default {
 
 
     return {
-      // contributionTransactions,
+      // donationTransactions,
       deleteOffering,
       filterFormIsVissible,
       toggleFilterFormVissibility,
@@ -802,21 +795,21 @@ export default {
       filterResult,
       noRecords,
       searchText,
-      searchContribution,
+      searchDonation,
       showConfirmModal,
       // deleteMember,
-      offeringCount,
+      donationCount,
       currentPage,
       getPeopleByPage,
       date,
       printJS,
-      printContribution,
+      printDonation,
       Allsummary,
       chartData,
       chartClass,
       periods,
       selectedPeriod,
-      contributionSummary,
+      donationSummary,
       series,
       attendanceSeries,
       pieChart,

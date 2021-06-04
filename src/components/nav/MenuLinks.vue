@@ -193,6 +193,9 @@
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/offering">Offerings</router-link>
             </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/onlinedonation">Online Donation</router-link>
+            </li>
             <li class="dd-list-item"  v-if="false">
               <router-link class="dd-link-item routelink" to="">Pledges</router-link>
             </li>
@@ -209,11 +212,11 @@
                 >Charts of Account</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <!-- <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/payment"
                 >Payment Form</router-link
               >
-            </li>
+            </li> -->
           </ul>
 
           <!-- Hidden -->
@@ -265,6 +268,15 @@
                   alt=""
                 />
                 Media Library
+              </router-link>
+             
+              <router-link  to="/mobileonboarding" class="link routelink text-decoration-none">
+                <img
+                  src="../../assets/dashboardlinks/social-icon.svg"
+                  class="link-icon"
+                  alt=""
+                />
+                Mobile App Onboarding
               </router-link>
 
               <a v-if="false"  class="link routelink">
@@ -538,7 +550,7 @@ export default {
   */
 .hide-more-links {
   transition: all 0.5s ease-in-out;
-  height: 100px; 
+  height: 160px; 
 }
 
 .follow-up {

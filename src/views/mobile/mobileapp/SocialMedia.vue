@@ -2,7 +2,7 @@
   <div class="container-wide">
     <!-- write up part -->
     <div class="row" style="height: 100vh">
-      <div class="col-md-6 mt-5">
+      <div class="col-md-6 offset-md-3 mt-5">
         <div class="row">
           <div class="col-12 setup">Social Media Handles</div>
           <div class="col-12 mt-4">Add your social media handles that you want to make social post with.</div>
@@ -13,7 +13,7 @@
           v-for="(socialMedia, index) in handles"
           :key="index"
         >
-          <div class="col-12 col-sm-2 mt-2">
+          <div class="col-2 mt-2">
             <img
               v-if="socialMedia.name === 'facebook handle'"
               src="../../../assets/social/facebook.svg"
@@ -40,31 +40,38 @@
               alt="youtube channel id"
             />
           </div>
-          <div class="col-md-8 col-12 mt-3" id="logoBox">
+          <div class="col-10 mt-3" id="logoBox">
             <input
               type="text"
-              :placeholder="socialMedia.name"
+              :placeholder="handles.length - 1 === index ? `Enter your youtube channel id` : `Enter your ${socialMedia.name.split(' ')[0]} page url`"
               v-model="socialMedia.url"
               class="w-100 py-1 border-0 outline-none px-2"
             />
           </div>
         </div>
-        <div
-          class="col-10 offset-1 offset-md-0 btn primary-bg ml-2 mt-5 text-white default-btn border-0 w-100"
+        <div class="row">
+          <div
+          class="col-12 offset-1 offset-md-0 btn primary-bg ml-2 mt-5 text-white default-btn border-0 w-100"
           @click="saveSocialMedia"
         >
           Save and continue
         </div>
+        </div>
+      </div>
+      <div
+        @click="skip"
+        class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-3">
+        Skip >>>
       </div>
 
       <!-- image part -->
-      <div class="col-md-6 col-12 bg-image d-none d-md-block">
+      <!-- <div class="col-md-6 col-12 bg-image d-none d-md-block">
         <div class="row mt-3">
           <div class="col-md-12 text-center my-5 step">STEP 2 of 4</div>
           <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
         </div>
         <div></div>
-      </div>
+      </div> -->
     </div>
   </div>
  <Toast />
@@ -73,14 +80,13 @@
 
 <script>
 import axios from "@/gateway/backendapi";
-import router from "../../../router";
 // import store from '../../../store/store'
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../../services/progressbar/progress";
 import { ref } from "vue";
 
 export default {
-  setup() {
+  setup(props, context) {
     const handles = ref([
       { name: "facebook handle", image: "../../../assets/social/facebook.svg" },
       { name: "twitter handle", image: "../../../assets/social/twitter.svg" },
@@ -91,13 +97,20 @@ export default {
     let toast = useToast();
 
     const saveSocialMedia = () => {
+
+      const filtered = handles.value.filter(i => i.url)
+      console.log(filtered)
       const body = {
-        socialMediaList: handles.value.map((i) => {
+        socialMediaList: filtered.map((i) => {
+          if(i.socialMediaId) return {
+            name: i.name,
+            url: i.url,
+            socialMediaId: i.socialMediaId
+          };
           return {
             name: i.name,
             url: i.url,
-            // socialMediaId: i.socialMediaId ? i.socialMediaId : ""
-          };
+          }
         }),
       };
       axios
@@ -110,11 +123,18 @@ export default {
               detail: "Social Media Handles successfully Updated",
               life: 3000,
             });
-            router.push({ name: "AppBranding" });
+            let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: true,
+            donationForm: false
+          }
+          context.emit('saved-socialmedia', changeState)
 
           // }
 
-          console.log(res.data, "🎄🎄🎄");
+          console.log(res.data, changeState);
         })
         .catch((err) => {
            stopProgressBar();
@@ -149,7 +169,14 @@ export default {
     getSocialMediaDetails()
 
     const skip = () => {
-      router.push({ name: 'AppBranding' })
+     let changeState = {
+          // tab: true,
+          churchSetup: false,
+          socialMedia: false,
+          appBranding: true,
+          donationForm: false
+        }
+        context.emit('saved-socialmedia', changeState)
     }
 
     return {
@@ -299,9 +326,10 @@ hr {
 }
 
 .skip-text {
-  background: rgb(62, 68, 160);
-  position: relative;
-  top: 25em;
+  background: rgba(0, 0, 0, 0.707);;
+  position: fixed;
+  top: 32em;
+  width: 20%
 }
 
 </style>

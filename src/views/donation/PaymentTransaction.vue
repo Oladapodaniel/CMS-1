@@ -571,6 +571,7 @@ export default {
         // getCurrentlySignedInUser()
 
         const resolveCustomerDetail = async() => {
+            console.log(accountNumber.value)
             loading.value = true
             try {
                 let header = { headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` }}
@@ -584,7 +585,7 @@ export default {
 
                 loading.value = false
 
-                toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 3000});
+                toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 4000});
 
             }
             catch (error) {
@@ -593,7 +594,11 @@ export default {
 
                 loading.value = false
 
-                toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
+                if (!accountNumber.value || accountNumber.value === "") {
+                    toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
+                }   else {
+                    toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
+                }
             }
             console.log(selectedBank.value.code, accountNumber.value)
         }

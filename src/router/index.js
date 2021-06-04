@@ -639,16 +639,28 @@ const routes = [{
                     import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
             },
             {
+                path: 'offeringreport',
+                name: 'OfferingReport',
+                component: () =>
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/OfferingReport')
+            },
+            {
                 path: 'contributionCategory',
                 name: 'ContributionCategory',
                 component: () =>
-                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/ContributionCategory')
+                import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/ContributionCategory')
             },
             {
                 path: 'transactionlist',
                 name: 'TransactionList',
                 component: () =>
-                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
+                import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
+            },
+            {
+                path: 'onlinedonation',
+                name: 'Index',
+                component: () =>
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/churchdonation/onlinedonation/Index')
             },
             {
                 path: 'payments/:editPayment?',
@@ -670,6 +682,12 @@ const routes = [{
             },
             {
                 path: '/onboardingprocess',
+                name: 'OnboardingProcess',
+                component: () =>
+                    import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/OnboardingProcess')
+            },
+            {
+                path: '/mobileonboarding',
                 name: 'MobileOnboarding',
                 component: () =>
                     import ( /* webpackChunkName: "giving" */ '@/views/mobile/mobileapp/MobileOnboarding')

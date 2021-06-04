@@ -17,38 +17,38 @@
               <div class="col-lg-12">
                 <h5 class="text-wrap h6 ">
                   Congrats, you have successfully set up your Churchplus App.
-                  Curious what you can do? Head on over to the menu.
+                  Curious what you can do? share the link below with your members.
                 </h5>
               </div>
             </div>
             <!-- end track 2 -->
 
             <!-- track 3 -->
-            <div class="row mt-3  align-text d-flex">
-              <div class="col-lg-9 mt-4">
-                <h5 class="text-wrap h6">Start Sharing with members of your church</h5>
+            <div class="row  align-text d-flex">
+              <div class="col-12 subheader">
+                But Hey! There's still one more thing to do
               </div>
-              <div class="col-lg-9 mt-4">
-                <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" row="5" style="background: transparent"></textarea>
+              <div class="col-12 mt-3">
+                Click on this link to make a post to your social media page.
               </div>
-              <div class="col-3 cta px-0 d-none d-lg-block align-self-center" @click="copyLink">
-                <button class="btn default-btn c-pointer">Copy</button>
+              <div class="col-3  mt-3 text-white bg-primary default-btn border-0" @click="post">
+                 Click Here
               </div>
             </div>
             <!-- end track 3 -->
 
             <!-- end track 4 -->
-            <div class="row d-sm-block d-lg-none text-center show-on-small-screen at-screen">
+            <!-- <div class="row d-sm-block d-lg-none text-center show-on-small-screen at-screen">
                 <div class="col-12 cta px-0">
                 <button class="btn default-btn c-pointer">Copy</button>
-              </div>
+              </div> -->
             </div>
             <!-- end track 4 -->
 
 
 
             <!-- track 5 -->
-            <div class="row mt-3 align-text d-none d-lg-block">
+            <!-- <div class="row mt-3 align-text d-none d-lg-block">
               <div class="col-lg-12 d-flex pl-0">
                 <div class="col-4 col-sm-3">
                   <img
@@ -59,40 +59,23 @@
                 </div>
                 <div class="col-4 col-sm-3">
                   <img
-                    class="w-100 mt-5"
                     src="../../../assets/mobileonboarding/app-store-logo.png"
                     alt="phone image"
                   />
                 </div>
               </div>
-            </div>
+            </div> -->
              <!-- end track 5 -->
 
  <!--  track 6 -->
-            <div class="row mt-3 align-text d-sm-block d-lg-none text-center show-on-small-screen">
-              <div class="col-lg-12 d-flex pl-0">
-                <div class="col-4 offset-2 col-sm-3">
-                  <img
-                    class="w-100 mt-5"
-                    src="../../../assets/mobileonboarding/Google-play-logo.png"
-                    alt="phone image"
-                  />
-                </div>
-                <div class="col-4 col-sm-3">
-                  <img
-                    class="w-100 mt-5"
-                    src="../../../assets/mobileonboarding/app-store-logo.png"
-                    alt="phone image"
-                  />
-                </div>
-              </div>
-            </div>
+            
             <!-- end track 6 -->
           </div>
-        </div>
+        
 
         <div class="col-lg-6 col-sm-12">
-          <div class="col text-center">
+          <div class="row">
+            <div class="col-12 text-center">
             <div class="image mt-3">
               <img
                 class="w-100 mt-5"
@@ -101,6 +84,42 @@
               />
             </div>
           </div>
+          <div class="col-12 bring-front">
+            <div class="row">
+              <div class="col-lg-9 mt-1">
+                <h5 class="text-wrap h6">Start Sharing with members of your church</h5>
+              </div>
+              <div class="col-lg-12 mt-1">
+                <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" rows="3" style="background: transparent" :disabled="true"></textarea>
+              </div>
+              <div class="col-12 cta px-0 align-self-center" @click="copyLink">
+                <button class="btn default-btn c-pointer ml-md-3">Copy Link</button>
+              </div>
+            </div>
+
+          </div>
+          
+              <div class="col-lg-12 d-flex pl-0">
+                <div class="col-4 col-sm-3">
+                  <img
+                    class="w-100 mt-5"
+                    src="../../../assets/mobileonboarding/Google-play-logo.png"
+                    alt="phone image"
+                  />
+                </div>
+                <div class="col-4 col-sm-3">
+                  <img
+                    class="w-100 mt-5"
+                    src="../../../assets/mobileonboarding/app-store-logo.png"
+                    alt="phone image"
+                  />
+                </div>
+              </div>
+            
+          </div>
+          
+
+          
         </div>
       </div>
 
@@ -123,6 +142,7 @@
       <!-- end wave area -->
     </div>
   </div>
+  
 
   <!-- footer Area -->
   <div class="container mt-5 footer-area">
@@ -139,6 +159,7 @@
 <script>
 import { ref } from 'vue'
 import { useToast } from "primevue/usetoast";
+import router from '../../../router';
 export default {
   setup() {
 
@@ -158,9 +179,13 @@ export default {
                     life: 3000,
                 });
             }
+      const  post = () => {
+        router.push({ name: 'SocialPost' })
+      }
     return {
       copyLink,
-      link
+      link,
+      post
     }
   },
 }
@@ -189,16 +214,17 @@ export default {
 }
 
 .subheader {
-  font: normal normal normal 18px Nunito Sans;
+  font: normal normal bold 25px Nunito Sans;
   font-family: Nunito Sans;
-  font-size: 18px;
-  color: #fff;
+  color: #020e1c9f;
+  margin-top: 80px;
 }
 
 .ctatext {
   font: normal normal bold 18px/27px Nunito Sans;
   font-family: Nunito Sans;
  color: #020e1ca1;
+ overflow: hidden;
 }
 
 .cta {
@@ -320,6 +346,16 @@ export default {
 .link-area:focus {
   border: none;
   outline: none
+}
+
+.bring-front {
+  z-index: 1;
+  margin-top: 56px;
+}
+
+.bring-front h5 {
+  font-size: 19px;
+  font-weight: 700
 }
 </style>
 

@@ -1,12 +1,12 @@
 <template>
   <div class="container-wide">
     <div class="row">
-      <div class="col-md-6 mt-4">
+      <div class="col-md-7 mt-5">
         <div class="row">
           <div class="col-12 col-md-10">
             <div class="row">
               <div class="col-12">
-                <h5 class="appBranding mt-3">Customize Your App</h5>
+                <h5 class="appBranding">Customize Your App</h5>
                 
                 <div class="mt-3"><span class="font-weight-700">NB:</span> Please choose a dark shade color, click out of the color box, the system will verify your color, then click save to continue.</div>
               </div>
@@ -22,9 +22,9 @@
         <div class="row mt-1">
           <div class="col-12 col-md-10">
             <div
-              class="row my-3 d-flex align-items-center justify-content-center"
+              class="row  align-items-center"
             >
-              <div class="d-flex align-items-center col-4 col-sm-8">
+              <div class="d-flex align-items-center col-8">
                 <h5 class="primaryColour mb-0">Primary Colour</h5>
                 <i
                   class="mt-1 pl-2 fa fa-question-circle-o c-pointer"
@@ -103,8 +103,8 @@
                     />
                 <!-- </div> -->
               </div>
-               <div class="row d-flex justify-content-end">
-               <div class="col-4 mt-3 col-md-12 d-flex justify-content-center">
+               <div class="row">
+               <div class="col-12 mt-3 d-flex justify-content-center">
                   <img
                 :src="imageURL"
 
@@ -114,24 +114,30 @@
              </div>
               <LoadingComponent :loading="loading" style="fontsize: 1rem" />
 
-              <div class="col-md-3 col-12 col-sm-0"></div>
-              <div class="col-4"></div>
-              <div
-                class="col-sm-12 btn primary-bg mt-5 mb-4 text-white default-btn border-0"
+              <!-- <div class="col-md-3 col-12 col-sm-0"></div>
+              <div class="col-4"></div> -->
+              
+            </div>
+          </div>
+         
+        </div>
+         <div class="row">
+            <div
+                class="col-6 offset-3 offset-md-2 btn primary-bg mt-5 mb-4 text-white default-btn border-0 px-0"
                 @click="saveAppDetails"
               >
                 Save and continue
               </div>
-            </div>
+               <div
+                  @click="skip"
+                  class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-2">
+                  Skip >>>
+                </div>
           </div>
-        </div>
       </div>
 
-      <div class="col-md-6 backgroundImage d-none d-md-block">
-        <div class="row">
-          <div class="col-12 text-center my-5 step">STEP 3 OF 4</div>
-          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
-        </div>
+      <div class="col-md-5 d-none d-md-block">
+     
         <div class="smartphone">
           <div class="content">
             <iframe style="width: 100%; border: none; height: 100%" />
@@ -365,7 +371,6 @@ import Tooltip from "primevue/tooltip";
 import LoadingComponent from "../../../components/loading/LoadingComponent";
 import { useToast } from "primevue/usetoast";
 import mobile_service from "../../../services/mobile/mobile-service"
-import { useRouter } from "vue-router"
 
 // import {ref} from 'vue'
 export default {
@@ -375,13 +380,12 @@ export default {
   components: {
     LoadingComponent,
   },
-  setup() {
+  setup(props, context) {
     const image = ref("");
     const colorBox = ref("");
     const colorPicked = ref("");
     const colorValid = ref("");
     const toast = useToast();
-     const router = useRouter()
 
     const changeColors = computed(() => {
       console.log(colorPicked);
@@ -399,7 +403,7 @@ export default {
       let stringedColor = `${colorPicked.value}`
       mobile_service.validateColor(stringedColor)
         .then((res) => {
-          console.log(res, "🎄🎄🎄");
+          console.log(res);
            colorValid.value = res.data ;
           loading.value = false;
 
@@ -431,6 +435,8 @@ export default {
         .then((res) => {
           console.log(res);
           imageURL.value = res.data.returnObject.logoUrl
+          colorPicked.value = res.data.returnObject.churchAppBackgroundColor
+
             
         })
         .catch((err) => {
@@ -448,7 +454,14 @@ export default {
           .put(`/mobile/v1/Profile/CustomizeApp`, formData)
           .then((res) => {
             console.log(res);
-            router.push({ name: "DonationSetup" });
+            let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: false,
+            donationForm: true
+          }
+          context.emit('saved-appbranding', changeState)
           })
           .catch((err) => {
             console.log(err);
@@ -464,7 +477,14 @@ export default {
     };
 
     const skip = () => {
-      router.push({ name: 'DonationSetup' })
+      let changeState = {
+          // tab: true,
+          churchSetup: false,
+          socialMedia: false,
+          appBranding: false,
+          donationForm: true
+        }
+        context.emit('saved-appbranding', changeState)
     }
 
     return {
@@ -522,7 +542,8 @@ export default {
 /* style in iframe */
 .mobile-container-holder {
   position: absolute;
-  top: -40px;
+  top: -16px;
+  width: 194px
 }
 
 /* .image-container-small {
@@ -566,10 +587,10 @@ export default {
 /* The device with borders */
 .smartphone {
   position: relative;
-  width: 200px;
-  height: 350px;
+  width: 226px;
+  height: 439px;
   margin: auto;
-  top: 7.7rem;
+  top: 17.2rem;
   left: 13%;
   transform: translate(-50%, -50%);
   border: 16px black solid;
@@ -736,11 +757,6 @@ opacity: 1;
   height: 46px;
 }
 
-.skip-text {
-  background: rgb(62, 68, 160);
-  position: relative;
-  top: 25em;
-}
 
 .step {
   font: normal normal bold 18px/24px Nunito Sans;

@@ -21,7 +21,9 @@
             />
           </div>
           <div class="col-md-6 col-lg-6 col-12">
-            <div class="py-2 small-header">Duration (month)</div>
+            <div class="py-2 small-header">
+              Duration (month)<span class="text-danger">*</span>
+            </div>
             <Dropdown
               class="w-100"
               v-model="selectMonth"
@@ -31,7 +33,7 @@
             />
           </div>
           <div class="col-md-3 col-lg-3 col-3  ml-3 mt-3 normal-text">
-            {{ subselectedDuratn }}
+            {{ currentUser.currencySymbol }} {{ subselectedDuratn }}
           </div>
         </div>
       </div>
@@ -63,7 +65,7 @@
                 placeholder="SMS Unit"
               />
             </div>
-            <div class="col-md-2 col-6">
+            <div class="col-md-2 col-4">
               {{ smsAmount }}
             </div>
           </div>
@@ -116,7 +118,7 @@
       <div class="col-md-4 bg-white col-lg-4 col-12 sub mt-3 offset-md-1 ">
         <div class="h-100  rounded">
           <div class="text-center small-header">
-            Payment Summary{{ currentUser.currency }}
+            Payment Summary({{ currentUser.currencySymbol }})
           </div>
           <div class="row mt-3 normal-text">
             <div class="col-md-6 col-6">Subscription</div>
@@ -153,19 +155,61 @@
               {{ TotalAmount }}
             </div>
           </div>
+          <div class="row mt-4">
+            <div class="col-12">
+              {{ convertAmountToTenantCurrency.toFixed(2) }}
+              {{ selectedCurrency }}
+            </div>
+            <div class="col-12">
+              <Dropdown
+                class="w-100"
+                v-model="selectedCurrency"
+                :options="selectCurrencyArr"
+                placeholder="Select Currency Type"
+              />
+            </div>
+          </div>
           <div class="row mt-5">
             <div
               class="col-12"
               data-toggle="modal"
               data-target="#PaymentOptionModal"
             >
-              <button class="btn pay-now text-white w-100 normal-text">
+              <button
+                class="btn pay-now text-white w-100 normal-text"
+                :disabled="!selectMonth.name || +selectMonth.name <= 0"
+              >
                 Pay Now
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      <Dialog
+        header="Payment Status"
+        v-model:visible="display"
+        :style="{ width: '70vw', maxWidth: '600px' }"
+        :modal="true"
+      >
+        <div class="row">
+          <div class="col-md-12" v-if="!paymentFailed">
+            <h4 class="text-success">
+              Congrats,
+            </h4>
+            <p>Your payment was successful</p>
+          </div>
+          <div class="col-md-12" v-else>
+            <h4 class="text-danger">
+              Oops,
+            </h4>
+            <p>
+              Your payment was not successful, contact support at
+              <span class="font-weight-bold">info@churchplus.co</span>
+            </p>
+          </div>
+        </div>
+      </Dialog>
       <!-- payment summary end -->
       <!-- Modal -->
       <div
@@ -197,7 +241,7 @@
                   Continue payment with
                 </div>
               </div>
-              <div class="row row-button" @click="payWithPaystack">
+              <div class="row row-button c-pointer" @click="payWithPaystack">
                 <div class="col-4 col-sm-7 offset-2">
                   <img
                     class="w-100"
@@ -207,68 +251,23 @@
                 </div>
                 <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
               </div>
-              <!-- <div class="row row-button" @click="makePayment">
+              <!-- <div class="row row-button c-pointer" @click="makePayment">
                 <div class="col-4 col-sm-7 offset-2">
                   <img
                     class="w-100"
                     src="../../assets/flutterwave_logo_color@2x.png"
                     alt="flutterwave"
                   />
-                </div> -->
+                </div>
 
-              <!-- <div class="col-7 col-sm-4 option-text">Flutterwave</div> -->
-              <!-- <div class="row">
-        <div class="col-1 mt-n1 d-none d-sm-block">
-         <i
-          class="fas fa-circle circle"
-        ></i>
-      </div>
-      <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
-      </div> -->
-              <!-- </div> -->
-              <!-- <div class="row row-button d-flex justify-content-center">
-                <div class="col-8 col-sm-6">
-                  <img
-                    class="w-100 img-height"
-                    src="../../assets/paypal-logo-2@2x.png"
-                    alt="paypal"
-                  />
-                </div> -->
-
-              <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
-      <div class="row">
-        <div class="col-1 mt-n1 d-none d-sm-block">
-         <i
-          class="fas fa-circle circle"
-        ></i>
-      </div>
-      <div class="col-8 pl-0 d-none d-sm-block">International</div>
-      </div> -->
-              <!-- </div> -->
-
-              <!-- <div class="row row-button d-flex justify-content-center">
-                <div class="col-7 col-sm-4">
-                  <img
-                    class="w-100 img-height"
-                    src="../../assets/Stripe_logo.jpg"
-                    alt="stripe"
-                  />
-                </div> -->
-
-              <!-- <div class="col-7 col-sm-4 option-text">Paypal</div>
-      <div class="row">
-        <div class="col-1 mt-n1 d-none d-sm-block">
-         <i
-          class="fas fa-circle circle"
-        ></i>
-      </div>
-      <div class="col-8 pl-0 d-none d-sm-block">International</div>
-      </div> -->
-              <!-- </div> -->
-              <!-- <div class="modal-footer bg-modal">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-                </div> -->
+                <div class="col-7 col-sm-4 option-text">Flutterwave</div>
+                <div class="row">
+                  <div class="col-1 mt-n1 d-none d-sm-block">
+                    <i class="fas fa-circle circle"></i>
+                  </div>
+                  <div class="col-8 pl-0 d-none d-sm-block">Nigeria</div>
+                </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -285,6 +284,8 @@ import formatDate from "../../services/dates/dateformatter";
 import { computed, ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import userService from "../../services/user/userservice";
+import { v4 as uuidv4 } from "uuid";
+import converter from "../../services/currency-converter/currencyConverter";
 
 export default {
   components: { Dropdown },
@@ -305,12 +306,20 @@ export default {
     const smsPrice = ref("");
     const expenseApp = ref("");
     const fixedAsset = ref("");
+    const selectedCurrency = ref("");
     const currentUser = ref(store.getters.currentUser);
+    // const userEmail = ref(store.getters.email);
     const acctReceived = ref("");
     const paymentSummary = ref([]);
     const paymentSummObj = ref({});
     const isChecked = ref(false);
     const checkedBoxArr = ref([]);
+    const selectCurrencyArr = ref([]);
+    const Plans = ref("");
+    const close = ref(null);
+
+    const display = ref(false);
+    const currencies = ref({});
     // const email = ref("");
     // const firstname =
     // const amount = ref("")
@@ -342,23 +351,36 @@ export default {
       { name: "4000-5000", constValue: 8 },
     ]);
 
+    selectCurrencyArr.value = ["NGN", "USD", "GHS", "ZAR"];
+
+    const existingPlan = ref({});
     const selectSubscription = () => {
       axios.get("/api/Subscription/GetSubscription").then((res) => {
         console.log(res.data);
+        Plans.value = res.data.returnObject;
+        existingPlan.value.id = Plans.value.id;
+        existingPlan.value.amountInNaira = Plans.value.amountInNaira;
+        existingPlan.value.description = Plans.value.description;
+        existingPlan.value.amountInDollar = Plans.value.amountInDollar;
+        existingPlan.value.membershipSize = Plans.value.membershipSize;
         subscriptionPlans.value = res.data.returnObject.subscriptionPlans;
-        selectedPlan.value = subscriptionPlans.value.find(
-          (i) => i.description === "GROWTH PLAN"
-        );
+        // selectedPlan.value = subscriptionPlans.value.find(
+        //   (i) => i.description === "PLAN"
+        // );
         // subSelectedAmount.value = selectedPlan.value.amountInNaira
+        // selectedPlan.value = res.data.returnObject.description;
+        selectedPlan.value = subscriptionPlans.value.find(
+          (i) => i.id === Plans.value.id
+        );
+        console.log(selectedPlan.value);
         currentAmount.value = res.data.returnObject.amountInNaira;
-        currentPlan.value = res.data.returnObject.description;
+        currentPlan.value = existingPlan.value.description;
         productsList.value = res.data.returnObject.productsList;
         console.log(productsList.value);
         emailPrice.value = productsList.value.find(
           (i) => i.name === "Email"
         ).price;
         smsPrice.value = productsList.value.find((i) => i.name === "SMS").price;
-
         expiryDate.value = formatDate.monthDayYear(
           res.data.returnObject.subscriptionExpiration
         );
@@ -366,10 +388,98 @@ export default {
     };
 
     selectSubscription();
+    const paymentFailed = ref(false);
+
+    const subscriptionPayment = (paystackResponse) => {
+      close.value.click();
+      paymentFailed.value = false;
+      try {
+        const products = checkedBoxArr.value.map((i) => {
+          return {
+            productName: i.name,
+            productID: i.id,
+            productPrice: i.price,
+          };
+        });
+        if (selectEmail.value.name) {
+          const emailObj = productsList.value.find((i) => i.name === "Email");
+          if (emailObj.name) {
+            products.push({
+              productName: emailObj.name,
+              productID: emailObj.id,
+              productPrice: emailAmount.value,
+            });
+          }
+        }
+        if (smsValue.value) {
+          const smsObj = productsList.value.find((i) => i.name === "SMS");
+          if (smsObj.name) {
+            products.push({
+              productName: smsObj.name,
+              productID: smsObj.id,
+              productPrice: smsAmount.value,
+            });
+          }
+        }
+        const body = {
+          subscriptionPlanID: selectedPlan.value.id,
+          durationInMonths: selectMonth.value.name
+            ? +selectMonth.value.name
+            : 0,
+          smsUnits: smsValue.value ? smsValue.value : 0,
+          emailUnits: selectEmail.value.name
+            ? +selectEmail.value.name.split("-")[1]
+            : 0,
+          totalAmount: selectedCurrency.value
+            ? convertAmountToTenantCurrency.value
+            : TotalAmount.value,
+          paymentGateway: "Paystack",
+          txnRefID: paystackResponse.trxref,
+          productItems: products,
+          currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
+        };
+        axios
+          .post("/api/Subscription/SubscriptionPayment", body)
+          .then((res) => {
+            console.log(res);
+            display.value = true;
+            if (!res.data.returnObject.status) {
+              paymentFailed.value = true;
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            display.value = true;
+            paymentFailed.value = true;
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const conversionrates = ref({});
+    const getRates = () => {
+      converter.getConversionData().then((res) => {
+        conversionrates.value = res;
+      });
+    };
+    getRates();
+    const convertAmountToTenantCurrency = computed(() => {
+      if (!selectedCurrency.value) return TotalAmount.value;
+      let amountInDollar = 0;
+      if (TotalAmount.value) {
+        amountInDollar = TotalAmount.value / conversionrates.value[`usdngn`];
+      } else {
+        return 0;
+      }
+      return (
+        conversionrates.value[`usd${selectedCurrency.value.toLowerCase()}`] *
+        amountInDollar
+      );
+    });
 
     const emailAmount = computed(() => {
-      if (!selectEmail.value.constValue) return 0;
-      return selectEmail.value.constValue * emailPrice.value;
+      if (!selectEmail.value.name) return 0;
+      return +selectEmail.value.name.split("-")[1] * emailPrice.value;
     });
 
     const smsAmount = computed(() => {
@@ -400,6 +510,7 @@ export default {
     const selectCheckbox = (item) => {
       const index = checkedBoxArr.value.findIndex((i) => i.id === item.id);
       if (index < 0) {
+        console.log(item);
         checkedBoxArr.value.push(item);
       } else {
         checkedBoxArr.value.splice(index, 1);
@@ -411,13 +522,35 @@ export default {
         .getCurrentUser()
         .then((res) => {
           currentUser.value = res;
+          console.log(currentUser.value);
         })
         .catch((err) => {
           console.log(err);
         });
     };
-    if (!currentUser.value || !currentUser.value.currency) getCurrencySymbol();
 
+    const convertedAmount = computed(() => {
+      if (!selectedCurrency.value) return "";
+      return converter.convertCurrencyTo(500, "usdngn", "usdghs");
+    });
+
+    if (!currentUser.value || !currentUser.value.currency) getCurrencySymbol();
+    const appendLeadingZeroes = (n) => {
+      if (n <= 9) {
+        return "0" + n;
+      }
+      return n;
+    };
+    let currentDate = new Date();
+    let formattedDate = `${currentDate.getFullYear()}${appendLeadingZeroes(
+      currentDate.getMonth() + 1
+    )}${appendLeadingZeroes(currentDate.getDate())}${appendLeadingZeroes(
+      currentDate.getHours()
+    )}${appendLeadingZeroes(currentDate.getMinutes())}
+ ${appendLeadingZeroes(currentDate.getSeconds())}${appendLeadingZeroes(
+      currentDate.getMilliseconds()
+    )}`;
+    console.log(formattedDate);
     const payWithPaystack = (e) => {
       console.log(e.srcElement.alt);
 
@@ -427,10 +560,17 @@ export default {
       // close.click();
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: "uche@gmail.com",
-        amount: TotalAmount.value * 100,
+        email: currentUser.value.userEmail,
+        amount:
+          (selectedCurrency.value
+            ? Math.ceil(convertAmountToTenantCurrency.value)
+            : TotalAmount.value) * 100,
+        ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
+        currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
+        // currency: "zar",
+
         // firstname: name,
         // ref: orderId,
         onClose: function() {
@@ -444,29 +584,30 @@ export default {
           console.log("closed");
         },
         callback: function(response) {
+          subscriptionPayment(response);
           //Route to where you confirm payment status
           console.log(response, "Payment Received");
           console.log(donation);
 
-          axios
-            .post(`/confirmDonation?txnref=${response.trxref}`, donation)
-            .then((res) => {
-              finish();
-              console.log(res, "success data");
-            })
-            .catch((err) => {
-              finish();
-              toast.add({
-                severity: "error",
-                summary: "Confirmation failed",
-                detail:
-                  "Confirming your purchase failed, please contact support at info@churchplus.co",
-                life: 4000,
-              });
-              console.log(err, "error confirming payment");
-            });
+          // axios
+          //   .post(`/confirmDonation?txnref=${response.trxref}`, donation)
+          //   .then((res) => {
+          //     finish();
+          //     console.log(res, "success data");
+          //   })
+          //   .catch((err) => {
+          //     finish();
+          //     toast.add({
+          //       severity: "error",
+          //       summary: "Confirmation failed",
+          //       detail:
+          //         "Confirming your purchase failed, please contact support at info@churchplus.co",
+          //       life: 4000,
+          //     });
+          //     console.log(err, "error confirming payment");
+          // });
 
-          emit("payment-successful", true);
+          // emit("payment-successful", true);
         },
       });
       handler.openIframe();
@@ -505,9 +646,18 @@ export default {
       sumCheckboxItem,
       smsPrice,
       smsAmount,
-
       getCurrencySymbol,
       currentUser,
+      existingPlan,
+      Plans,
+      selectCurrencyArr,
+      selectedCurrency,
+      currencies,
+      display,
+      close,
+      paymentFailed,
+      convertedAmount,
+      convertAmountToTenantCurrency,
     };
   },
 };
