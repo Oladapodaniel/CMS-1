@@ -269,7 +269,6 @@ export default {
   background: #dde2e6;
   border-top: 1px solid #dde2e6;
   border-radius: 8px 8px 0 0;
-  
 }
 .header2{
   cursor: pointer;
