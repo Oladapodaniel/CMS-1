@@ -50,7 +50,7 @@
               <span>Recipient</span>
             </div>
             <div class="col-md-3">
-              <span>Status</span>
+              <span @click="sortAttendanceDataByPresent">Status <i class="pi pi-sort-alt c-pointer"></i></span>
             </div>
             <div class="col-md-3">
               <span>Date</span>
@@ -189,16 +189,28 @@ export default {
 
     const statsData = computed(() => {
         const data = getSMSStats(messages.value);
-        console.log(data, "stats data");
         return data;
     })
 
     const finished = computed(() => {
         const unsent = messages.value.filter(i => i.deliveryReport === "sms queued").length;
-        console.log(unsent, "unsent");
         if (unsent > 0) return false;
         return true;
     })
+
+    const sortedBy = ref(0)
+    const sortAttendanceDataByPresent = () => {
+      if (sortedBy.value === 0) {
+        messages.value = messages.value.sort(m => m.deliveryReport === 'sent' ? -1 : 1)
+      } else if (sortedBy.value === 1) {
+        messages.value = messages.value.sort(m => m.deliveryReport === 'sms queued' ? -1 : 1)
+      } else if (sortedBy.value === 2) {
+        messages.value = messages.value.sort(m => m.deliveryReport === 'sms processed' ? -1 : 1)
+      } else if (sortedBy.value === 3) {
+        messages.value = messages.value.sort(m => m.deliveryReport === 'failed' ? -1 : 1)
+      }
+      sortedBy.value = sortedBy.value === 3 ? 0 : sortedBy.value + 1;
+    }
 
     return {
       messages,
@@ -208,6 +220,7 @@ export default {
       finished,
       statsData,
       formatDate,
+      sortAttendanceDataByPresent,
     };
   },
 };
