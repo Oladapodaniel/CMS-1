@@ -68,7 +68,7 @@
           </div>
         </div>
 
-       
+
 
         <div v-if="tenantInfoBasic.memberCount === 0">
           <img src="../../assets/welcome_user.svg" class="welcome-user">
@@ -94,10 +94,11 @@
               <div class="box-bottom">
                 <router-link :to="{ name: 'Subscription' }">
                 <!-- <span class="plan-text">YOU'RE ON A FREE PLAN</span> -->
-                <button class="upgrade-btn">
-                  <h4 class="box-btn-text">UPGRADE</h4>
+                <button class="upgrade-btn" :class="{ 'bg-warning': calculatedPercentage >= 90 }"  >
+                  <h4 class="box-btn-text">UPGRADE </h4>
                 </button>
                 </router-link>
+                <span>{{  planUserIs }}</span>
               </div>
             </div>
           </div>
@@ -145,7 +146,7 @@
               <div class="more-body mt-2">Make online donations to your church.</div>
               <router-link to="/tenant/payments"><div class="learn-more mt-3 col-12 cursor-pointer">Set Up Now</div></router-link>
             </div>
-            
+
             <div class="more-things side p-3 mt-4" v-if="!tenantInfoExtra.hasMobileApp">
               <img src="../../assets/mobile_app.svg" class="w-100">
               <div class="mt-4">Mobile App</div>
@@ -153,7 +154,7 @@
               <router-link :to="{ name: 'MobileOnboarding' }"><div class="learn-more mt-3 col-12 cursor-pointer">Set Up Now</div></router-link>
             </div>
           </div>
-         
+
           <div class="pl-5 pr-0" :class="{ 'col-12 col-md-9' : !tenantInfoExtra.hasMobileApp || !tenantInfoExtra.hasOnlineGiving || !tenantInfoExtra.hasWebsite, 'col-md-12' : tenantInfoExtra.hasMobileApp && tenantInfoExtra.hasOnlineGiving && tenantInfoExtra.hasWebsite }">
             <!-- Celebrations -->
           <div v-if="tenantInfoCeleb && tenantInfoCeleb.length > 0">
@@ -236,7 +237,7 @@
               </table>
             </div>
           </div>
-  
+
    <!-- 2   {{ tenantInfoAttendanceWeekly }}
    22   {{ tenantInfoAttendanceWeekly[0] }}
    3   {{ tenantInfoCeleb }}
@@ -287,7 +288,7 @@
                   />
                 </div>
               </div>
-              
+
             <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist">
               <div class="adjust-view col-10 col-sm-3 offset-sm-9">
                 <div class="view-report">View Reports</div>
@@ -356,7 +357,7 @@
           </div>
         </div>
       </div>
-  
+
       <div v-if="tenantInfoCeleb.length === 0 && tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0 && tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data[0] === 0">
         <div class="container-fluid">
           <div class="row">
@@ -387,7 +388,7 @@
         <div class="text-center" v-if="attendanceLoading">
           <i class="pi pi-spin pi-spinner text-primary" style="fontSize: 3rem"></i>
         </div>
-        
+
         <!-- <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
             <i class="fa fa-angle-left"></i>
@@ -400,7 +401,7 @@
         </div> -->
       <!-- </div> -->
       <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
-      
+
         <!-- <div>{{ tenantInfo.eventAttendanceChartData }}</div> -->
         <!-- <div>{{ chartData2 }}</div> -->
 
@@ -451,6 +452,7 @@ import moment from "moment";
 import stopProgressBar from "../../services/progressbar/progress"
 import setupService from '../../services/setup/setupservice';
 import formatDate from "../../services/dates/dateformatter"
+import useSubscription from "../../services/subscription/useSubscription"
 
 export default {
   components: {
@@ -471,6 +473,7 @@ export default {
     const firstTimerDataExist = ref(false)
     const firstTimerPieExist = ref(false)
     const summed = ref(0)
+     const planUserIs = ref('');
 
     // const attendance
 
@@ -497,6 +500,8 @@ export default {
 
     // const monthlyFirstTimerObj = ref({})
 
+const subscriptionPlan = ref([]);
+
     const xAxis = ref([])
     const monthXaxis = ref(['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
 
@@ -518,8 +523,8 @@ export default {
         console.log(tenantInfoBasic.value)
         console.log(res.data)
 
-        tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp 
-        tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving 
+        tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp
+        tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving
         tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite
         // tenantInfo.value.eventAttendanceChartDataWeekly[0].data.forEach(element => {
         //   if (element > 0) {
@@ -533,7 +538,7 @@ export default {
         // });
         let sum = 0
         tenantInfo.value.firstTimerSummary.invitationSource.forEach((i) => {
-       
+
           sum += +i.value
 
         });
@@ -695,7 +700,34 @@ export default {
       return formatDate.monthDayYear(payload)
     }
 
+    const retrieveSubscriptionInfo = () => {
 
+    }
+
+  const useSubscriptionResponse = ref([])
+
+    useSubscription.getPlan()
+      .then(res => {
+      planUserIs.value = res.description;
+      useSubscriptionResponse.value = res
+        console.log(useSubscriptionResponse.value, "gggg");
+      });
+
+    const calculatedPercentage = computed(() => {
+if (!useSubscriptionResponse.value || !useSubscriptionResponse.value.id ) return 0
+      return calculatePercentage(99999)
+      // return calculatePercentage(tenantInfoBasic.value.memberCount)
+    })
+
+let currentPlan;
+const calculatePercentage = (totalMembers) => {
+  currentPlan = useSubscriptionResponse.value.subscriptionPlans.find((i) => {
+    return i.id === useSubscriptionResponse.value.id;
+  });
+  alert(totalMembers)
+  alert(currentPlan.membershipSize)
+  return ((totalMembers / currentPlan.membershipSize) * 100);
+};
 
     return {
       celebrations,
@@ -737,7 +769,13 @@ export default {
       tenantInfoFirstTimerMonthly,
       tenantInfoInvitationSource,
       tenantInfoInterestedInJoining,
-      tenantInfoExtra
+      tenantInfoExtra,
+      subscriptionPlan,
+      retrieveSubscriptionInfo,
+      planUserIs,
+      useSubscriptionResponse,
+      calculatedPercentage,
+      calculatePercentage
     };
   },
 };
@@ -1292,9 +1330,9 @@ tbody tr:nth-child(even) {
 }
 
 @media screen and (min-width: 1300px) {
-  .box-middle {
-    /* padding: 43px 0; */
-  }
+  /* .box-middle {
+     padding: 43px 0;
+  } */
 }
 
 @media (max-width: 556px) {
