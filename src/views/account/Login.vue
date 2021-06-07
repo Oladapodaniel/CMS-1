@@ -156,7 +156,6 @@ export default {
         'event_category' : 'login',
         'event_label' : 'ccc'
       })
-        alert("Hello")
     };
 
     track();
