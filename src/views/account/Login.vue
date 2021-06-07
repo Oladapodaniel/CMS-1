@@ -146,9 +146,21 @@ import { reactive, ref } from "vue";
 import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import finish from "../../services/progressbar/progress";
+import { useGtag } from "vue-gtag-next";
 
 export default {
   setup() {
+    const { event } = useGtag()
+    const track = () => {
+      event('aaa', {
+        'event_category' : 'login',
+        'event_label' : 'ccc'
+      })
+        alert("Hello")
+    };
+
+    track();
+
     const state = reactive({
       passwordType: "password",
       credentials: {},

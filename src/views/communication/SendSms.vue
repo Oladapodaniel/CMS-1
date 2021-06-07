@@ -560,8 +560,15 @@
                           data-dismiss="modal"
                           @click="contructScheduleMessageBody(1, '')"
                         >
-                          Send SMS Now {{ `${nigerian}` }}
+                          Send SMS Now
                         </button>
+                        <!-- <button
+                          class="primary-btn default-btn border-0 px-4 my-2 primary-bg text-white outline-none extra-btn"
+                          data-dismiss="modal"
+                          @click="contructScheduleMessageBody(1, '')"
+                        >
+                          Send SMS Now {{ `${nigerian}` }}
+                        </button> -->
                       </div>
                     </div>
 
