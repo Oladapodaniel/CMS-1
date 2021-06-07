@@ -35,7 +35,7 @@
                         <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Phone Number</span>
                             </div>
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="number"  class="form-control" required v-model="phoneNumber"  /></div>
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="Text"  class="form-control" required v-model="phoneNumber"  /></div>
                         </div>
                          <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span>
@@ -487,6 +487,9 @@ import store from "@/store/store";
     }
     },
     created(){
+        if (this.$route.query.email){
+            this.disabled = true
+        }
          this.getEmail()
         
 
