@@ -169,16 +169,32 @@ export default {
     getSocialMediaDetails()
 
     const skip = () => {
-     let changeState = {
-          // tab: true,
-          churchSetup: false,
-          socialMedia: false,
-          appBranding: true,
-          donationForm: false
+      let urlArray = handles.value.map(i => {
+        return {
+          url: i.url
         }
-        context.emit('saved-socialmedia', changeState)
-    }
+      })
 
+      if (urlArray.length > 0){
+        let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: true,
+            donationForm: false
+          }
+          context.emit('saved-socialmedia', changeState)
+      } else {
+        let changeState = {
+          // tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: true,
+            donationForm: false
+          }
+          context.emit('saved-socialmedia', changeState)
+      }
+    }
     return {
       saveSocialMedia,
       handles,
@@ -330,6 +346,47 @@ hr {
   position: fixed;
   top: 32em;
   width: 20%
+}
+
+/* WebKit, Edge */
+::-webkit-input-placeholder {
+  color: rgba(184, 184, 184, 0.866);
+  font-size: 0.8em;
+  font-style: italic;
+}
+/* Firefox 4-18 */
+:-moz-placeholder { 
+  color: rgba(184, 184, 184, 0.866);
+  font-size: 0.8em;
+  font-style: italic;
+  opacity: 1;
+}
+/* Firefox 19+ */
+::-moz-placeholder { 
+  color: rgba(203, 203, 203, 0.866);
+  font-size: 0.8em;
+  font-style: italic;
+  opacity: 1;
+}
+/* IE 10-11 */
+:-ms-input-placeholder { 
+  color: rgba(184, 184, 184, 0.866);
+  font-size: 0.8em;
+  font-style: italic;
+}
+/* Edge */
+::-ms-input-placeholder { 
+  color: rgba(184, 184, 184, 0.866);
+  font-size: 0.8em;
+  font-style: italic;;
+}
+/* MODERN BROWSER */
+::placeholder { 
+  color: rgba(184, 184, 184, 0.866);
+  font-size: 0.8em;
+  font-style: italic;
+  font-size: 0.8em;
+  font-style: italic;
 }
 
 </style>

@@ -198,7 +198,7 @@
               v-for="(item, index) in searchContribution"
               :key="item.id"
             >
-            <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
+            
               <div class="row w-100" style="margin:0">
                 <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
                   <input
@@ -211,7 +211,7 @@
                 <div class="desc small-text col-md-2 px-1">
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                    <span>{{ date(item.date) }}</span>
+                    <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }"><span>{{ date(item.date) }}</span></router-link>
                   </p>
                 </div>
 
@@ -220,7 +220,7 @@
                     <span class="text-dark font-weight-bold d-flex d-md-none">Contribution</span>
                   <div>
                     
-                    <div class="desc small-text text-right text-md-left">{{ item.contribution }}</div>
+                    <div class="desc small-text text-right text-md-left"><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.contribution }}</router-link></div>
                   </div>
                   </div>
                 </div>
@@ -229,7 +229,7 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
                     <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
-                    <span>{{ item.currencyName }} {{ item.amount }}</span>
+                    <span><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
                   </p>
                 </div>
 
@@ -237,7 +237,7 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Donor</span>
                     <span><span class="primary-text c-pointer"
-                    >{{ item.donor }}</span
+                    ><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.donor }}</router-link></span
                   ></span>
                   </p>
                 </div>
@@ -277,7 +277,6 @@
                   </div>
                 </div>
               </div>
-              </router-link>
             </div>
           </div>
           <!-- <div class="row">

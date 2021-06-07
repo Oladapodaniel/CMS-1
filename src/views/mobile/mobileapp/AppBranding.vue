@@ -477,14 +477,36 @@ export default {
     };
 
     const skip = () => {
-      let changeState = {
+      if (imageURL.value && colorPicked.value) {
+        let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: false,
+            donationForm: true
+          }
+          context.emit('saved-appbranding', changeState)
+          console.log('all filllted');
+      } else {
+        let changeState = {
           // tab: true,
-          churchSetup: false,
-          socialMedia: false,
-          appBranding: false,
-          donationForm: true
-        }
-        context.emit('saved-appbranding', changeState)
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: false,
+            donationForm: true
+          }
+          context.emit('saved-appbranding', changeState)
+          console.log('not all')
+      }
+
+    //   let changeState = {
+    //       // tab: true,
+    //       churchSetup: false,
+    //       socialMedia: false,
+    //       appBranding: false,
+    //       donationForm: true
+    //     }
+    //     context.emit('saved-appbranding', changeState)
     }
 
     return {

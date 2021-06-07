@@ -83,11 +83,26 @@ const routes = [{
         name: 'Home',
         component: () =>
             import ( /* webpackChunkName: "home" */ '../views/dashboard/Home.vue'),
-        children: [{
+        children: [
+            {
                 path: '',
                 name: 'Dashboard',
                 component: () =>
                     import ( /* webpackChunkName: "dashboard" */ '../views/dashboard/ChurchDashboard.vue')
+            },
+            {
+                path: 'workflow',
+                name: 'WorkFlow',
+                component: () =>
+                    import ( /* webpackChunkName: "workflow" */ '../views/workflow/Index.vue'),
+                children: [
+                    {
+                        path: 'add',
+                        name: 'AddWorkflow',
+                        component: () =>
+                            import ( /* webpackChunkName: "addworkflow" */ '../views/workflow/components/MainBoard.vue')
+                    },
+                ]
             },
             {
                 path: 'subscription',
