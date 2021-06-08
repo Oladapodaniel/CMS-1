@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-4 border" style="height: 400px">
+                            <div class=" border" style="height: 400px" :class="{ 'col-md-4': !showTriggers, 'col-md-2': showTriggers && selectedTriggers.length > 0 }">
                                 <div class="row">
                                     <div class="col-md-12" v-for="(trigger, index) in selectedTriggers" :key="index">
                                         {{ trigger.name }}

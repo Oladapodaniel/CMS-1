@@ -110,6 +110,21 @@ const communicationService = {
         }
     },
 
+    async getDefaultMessage(messageId) {
+        return new Promise((resolve, reject) => {
+            axios.get(`/api/Settings/GetDefaultMessage/${messageId}`)
+                .then(res => {
+                    console.log(res);
+                    resolve(res.data);
+                })
+                .catch(error => {
+                    stopProgressBar();
+                    if (error.response) reject(error.response);
+                    if (!error.response) reject(error);
+                })
+        })
+    },
+
     getSchedules(url) {
         return new Promise((resolve, reject) => {
             axios.get(url)
