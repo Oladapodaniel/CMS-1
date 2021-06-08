@@ -280,7 +280,7 @@
       <div class="row pt-5 px-5" ref="middle">
         <div class="col-md-8">
           <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-             {{ contributionReport. activityName ? contributionReport.activityName : "Contribution Details" }}
+             {{ contributionReport. activityName ? contributionReport.activityName : "Offering Details" }}
           </h2>
         </div>
         <div class="col-md-4">
@@ -1381,7 +1381,7 @@
                   <div>
                       <h5>
                         <span class="today-text">Today </span>
-                        <span class="versus"> vs Lastweek</span>
+                        <span class="versus"> vs Last</span>
                     </h5>
                       <div class="ana-item mt-5">
                     <div class="ana-item-text">

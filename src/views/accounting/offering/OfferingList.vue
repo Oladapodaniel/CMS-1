@@ -210,7 +210,7 @@
                 <div class="desc small-text col-md-2 px-1">
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                    <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }"><span>{{ date(item.date) }}</span></router-link>
+                    <router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }"><span class="text-decoration-none">{{ date(item.date) }}</span></router-link>
                   </p>
                 </div>
 
@@ -219,7 +219,7 @@
                     <span class="text-dark font-weight-bold d-flex d-md-none">Offering</span>
                   <div>
                     
-                    <div class="desc small-text text-right text-md-left"><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.contribution }}</router-link></div>
+                    <div class="desc small-text text-right text-md-left"><router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.contribution }}</router-link></div>
                   </div>
                   </div>
                 </div>
@@ -228,7 +228,7 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
                     <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
-                    <span><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
+                    <span><router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
                   </p>
                 </div>
 
@@ -236,7 +236,7 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Donor</span>
                     <span><span class="primary-text c-pointer"
-                    ><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.donor }}</router-link></span
+                    ><router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.donor }}</router-link></span
                   ></span>
                   </p>
                 </div>
@@ -278,7 +278,7 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div
               class="col-12 col-md-12 col-lg-12 overflow-auto border-bottom border-top border-left"
             >
@@ -366,7 +366,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="text-danger" v-else>No records found</div>
 
@@ -515,7 +515,7 @@ export default {
             toast.add({
               severity: "success",
               summary: "Delete Successful",
-              detail: `Contribution Transaction Deleted`,
+              detail: `Offering Transaction Deleted`,
               life: 3000,
             });
             emit("contri-transac", index);
