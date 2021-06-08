@@ -88,6 +88,22 @@
   <!-- end footer Area -->
 </template>
 
+<script>
+import { useRoute } from "vue-router"
+export default {
+  setup () {
+    const route = useRoute()
+    const getRoute = () => {
+      console.log(route.fullPath)
+    }
+    getRoute()
+    return {
+
+    }
+  }
+}
+</script>
+
 
 <style scoped>
 /* Animation Area */
@@ -149,8 +165,11 @@ h4{
 }
 .wave {
     position: relative;
-  background: #f1faff;
+  background: linear-gradient(
+45deg
+, #ebeff4, transparent);
   height: 80vh;
+  width: 83vw;
 }
 
 .mainheader {
@@ -292,6 +311,10 @@ h4{
   height: 100vh;
     position: fixed;
 }
+}
+
+.main-con {
+  margin: 0;
 }
 </style>
 

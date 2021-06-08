@@ -1,0 +1,47 @@
+<template>
+    <div class="container">
+        <div class="row my-3">
+            <div class="col-md-12">
+                <h1>Ministry Workflows</h1>
+            </div>
+        </div>
+        <div class="row mt-3 mb-4">
+            <div class="col-md-12 py-2 w-links-con">
+                <router-link to="" class="text-decoration-none text-dark font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/list') }">List</router-link>
+                <router-link to="" class="text-decoration-none text-dark font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/add') }">Add</router-link>
+                <router-link to="" class="text-decoration-none text-dark font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/log') }">Log</router-link>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <router-view></router-view>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import { useRoute } from "vue-router";
+export default {
+    setup () {
+        const route = useRoute();
+
+        return {
+            route,
+        }
+    }
+}
+</script>
+
+<style scoped>
+    .w-tab {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        border-bottom: 5px solid #fff;
+    }
+
+    .w-links-con {
+        border-bottom: 1px solid #ced4da;
+    }
+</style>
