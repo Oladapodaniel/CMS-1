@@ -177,7 +177,7 @@ export default {
       try {
         await axios.delete('/api/Membership/howYouHeardAboutUs/'+id);
         this.classifications = this.classifications.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'How You Hear About Us Deleted Successfully', life: 3000});
+         this.$toast.add({severity:'success', summary: '', detail:'Delete Successfully', life: 3000});
       } catch (error){
         finish()
         console.log(error);
