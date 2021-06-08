@@ -116,6 +116,7 @@
 import axios from "@/gateway/backendapi";
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
+import finish from "../../services/progressbar/progress"
 
 export default {
   components:{
@@ -149,8 +150,10 @@ export default {
       try{
         await axios.post('/api/Settings/CreateTenantPeopleClassification/' + this.classificationTypes);
         this.getClassifications()
+        this.classificationTypes = ""
         this.$toast.add({severity:'success', summary: '', detail:' Membership Save Successfully', life: 3000});
       }catch(error){
+        finish()
         console.log(error)
       }
     },
@@ -161,6 +164,7 @@ export default {
         this.discard()
         this.$toast.add({severity:'success', summary: '', detail:'Membership Updated Successfully', life: 3000});
       }catch (error){
+        finish()
         console.log(error)
       }
     },
@@ -170,6 +174,7 @@ export default {
         this.classifications = this.classifications.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Membership Deleted Successfully', life: 3000});
       } catch (error){
+        finish()
         console.log(error);
       }
     },

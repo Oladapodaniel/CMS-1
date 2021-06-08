@@ -114,6 +114,7 @@
 import axios from "@/gateway/backendapi";
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
+import finish from '../../services/progressbar/progress'
 
 export default {
   components:{
@@ -166,6 +167,7 @@ export default {
         this.types = this.types.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Attendance Deleted Successfully', life: 3000});
       } catch (error){
+        finish()
         console.log(error);
       }
     },
@@ -176,6 +178,7 @@ export default {
         this.discard()
         this.$toast.add({severity:'success', summary: '', detail:'Attendance Updated Successfully', life: 3000});
       }catch (error){
+        finish()
         console.log(error)
       }
 
@@ -185,8 +188,10 @@ export default {
       try{
          await axios.post('/api/Settings/NewAttendanceType/'+ this.attendanceName);
         this.getTypes()
+        this.attendanceName = ""
         this.$toast.add({severity:'success', summary: '', detail:' Attendance Save Successfully', life: 3000});
       }catch (error) {
+        finish()
         console.log(error)
       }
     },

@@ -114,6 +114,7 @@ import axios from "@/gateway/backendapi";
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
 import membershipService from '../../services/membership/membershipservice';
+import finish from '../../services/progressbar/progress'
 
 export default {
   components:{
@@ -148,8 +149,10 @@ export default {
       try{
          await axios.post('/api/Settings/CreateTenantAgeGroup/'+ this.ageGroup);
         this.getGroup()
+        this.ageGroup = ""
         this.$toast.add({severity:'success', summary: '', detail:' Age Group Save Successfully', life: 3000});
       }catch (error) {
+        finish()
         console.log(error)
       }
     },  
@@ -159,6 +162,7 @@ export default {
         this.types = this.types.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Age Group Deleted Successfully', life: 3000});
       } catch (error){
+        finish()
         console.log(error);
       }
     },
@@ -185,6 +189,7 @@ export default {
         this.discard()
         this.$toast.add({severity:'success', summary: '', detail:'Age Group Updated Successfully', life: 3000});
       }catch (error){
+        finish()
         console.log(error)
       }
 

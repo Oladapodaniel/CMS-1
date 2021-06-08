@@ -98,21 +98,21 @@
                   aria-expanded="false"
                 ></i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item button">
+                  <a class="dropdown-item">
                     <router-link
                     :to="`/tenant/sms/compose?phone=${churchMem.phone}`"
                       >Send SMS</router-link>
                     </a>
-                  <a class="dropdown-item button" v-if="churchMem.email">
+                  <a class="dropdown-item" v-if="churchMem.email">
                     <router-link
                     :to="`/tenant/email/compose?phone=${churchMem.email}`"
                       >Send Email</router-link
                     >
                   </a>
-                  <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> <a class="dropdown-item button">Edit</a></router-link>
-                  <a class="dropdown-item button" @click="deletePop(churchMem.email)">Delete</a>
-                  <a class="dropdown-item button" @click="deactivateChurchUser(churchMem.email, index)">Inactive</a>
-                  <a class="dropdown-item button" @click="activateChurchUser(churchMem.email, index)">Active</a>
+                  <a class="dropdown-item"><router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> Edit</router-link></a>
+                  <a class="dropdown-item" @click="deletePop(churchMem.email)"> <router-link to=""> Delete </router-link></a>
+                  <a class="dropdown-item" @click="deactivateChurchUser(churchMem.email, index)"> <router-link to=""> Inactive </router-link></a>
+                  <a class="dropdown-item" @click="activateChurchUser(churchMem.email, index)"> <router-link to=""> Active </router-link></a>
                 </div>
               </div>
             </div>
@@ -152,7 +152,7 @@ import Tooltip from 'primevue/tooltip';
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog'
 import axios from "@/gateway/backendapi";
-// import finish from "../../services/progressbar/progress";
+import finish from "../../services/progressbar/progress";
 export default {
   components:{
     Toast,
@@ -195,8 +195,9 @@ export default {
         console.log(response);
          this.churchUsers.users[index].status = "Active";
         console.log();
-        this.$toast.add({severity:'success', summary: '', detail:'Active Status Successfully', life: 3000});
+        this.$toast.add({severity:'success', summary: '', detail:'Status Make Active', life: 3000});
       }catch(error){
+        finish()
         console.log(error);
 
       }
@@ -206,9 +207,10 @@ export default {
          let response = await axios.post(`/api/Settings/DeactivateChurchUser?churchUserEmail=${email}`);
          console.log(response);
         this.churchUsers.users[index].status = "Inactive";
-        this.$toast.add({severity:'success', summary: '', detail:'Inactive Status Successfully', life: 3000});
+        this.$toast.add({severity:'success', summary: '', detail:'Status Make Inactive', life: 3000});
 
       }catch(error){
+        finish()
         console.log(error);
 
       }
@@ -219,8 +221,9 @@ export default {
       try {
         await axios.post(`/api/Settings/DeleteChurchUser?churchUserEmail=${email}`);
         this.churchUsers.users = this.churchUsers.users.filter(i => i.email !== email);
-         this.$toast.add({severity:'success', summary: '', detail:'Church Users Deleted Successfully', life: 3000});
+         this.$toast.add({severity:'success', summary: '', detail:'Church User Deleted Successfully', life: 3000});
       } catch (error){
+        finish()
         console.log(error);
       }
     },
@@ -264,6 +267,13 @@ export default {
 </script>
 
 <style scoped>
+.dropdown a{
+  color: black!important;
+  text-decoration: none;
+}
+.dropdown a:hover{
+  color: #136acd!important;
+}
 
 .table-header-row {
   background: #dde2e6;

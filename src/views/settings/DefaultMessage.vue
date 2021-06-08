@@ -89,8 +89,8 @@
                   <a class="dropdown-item">
                     <router-link :to="`/tenant/sms/compose?defaultId=${allMessages.id}`">Send Email</router-link>
                   </a>
-                  <router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}"><a class="dropdown-item button">Edit</a></router-link>
-                  <a class="dropdown-item button" @click="deletePop(allMessages.id)">Delete</a>
+                  <a class="dropdown-item"><router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">Edit</router-link></a>
+                  <a class="dropdown-item" @click="deletePop(allMessages.id)"> <router-link to="">Delete</router-link></a>
                 </div>
               </div>
             </div>
@@ -118,8 +118,9 @@
 import axios from "@/gateway/backendapi";
 import messageOptions from '../../services/defaultmessage/default_message_service';
 import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog'
+import ConfirmDialog from 'primevue/confirmdialog';
 import Tooltip from 'primevue/tooltip';
+import finish from '../../services/progressbar/progress'
 export default {
   components:{
     Toast,
@@ -162,6 +163,7 @@ export default {
         this.defaultMessage = this.defaultMessage.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Message Deleted Successfully', life: 3000});
       } catch (error){
+        finish()
         console.log(error);
       }
     },
@@ -195,6 +197,13 @@ export default {
 </script>
 
 <style scoped>
+.dropdown a{
+  color: black!important;
+  text-decoration: none;
+}
+.dropdown a:hover{
+  color: #136acd!important;
+}
 .header2{
   cursor: pointer;
 

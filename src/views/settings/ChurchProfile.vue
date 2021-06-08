@@ -112,7 +112,28 @@
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text lb font-weight-600">Country</label>
             </div>
+            <!-- <div>
+              <Dropdown v-model="selectCountry"
+               :options="countries" 
+               optionLabel="name" 
+               :filter="true"
+               :filterMatchMode="'startsWith'" 
+               placeholder="Select a Country" 
+               />
+            </div> -->
             <div class="col-12 col-md-5 form-group">
+              <Drop v-model="selectCountry" 
+              :options="countries"
+               filterMatchMode="startsWith" 
+                optionLabel="name" 
+                :filter="true" 
+                placeholder="Select a Country" 
+                style="width:100%"
+                :showClear="true"/>
+
+            </div>
+        
+            <!-- <div class="col-12 col-md-5 form-group">
               <Dropdown
                 :options="countries"
                 optionLabel="name"
@@ -120,7 +141,7 @@
                 style="width: 100%"
                 v-model="selectCountry"
               />
-            </div>
+            </div> -->
             <div class="col-md-4"></div>
           </div>
           <div class="row select-elem " v-if="false">
@@ -129,7 +150,7 @@
             </div>
             <div class="col-12 col-md-5 form-group">
               <Dropdown
-              
+                :fd="['kkj']"
                 :options="[1, 2, 3, 4, 5]"
                 placeholder="Select time zone"
                 style="width: 100%"
@@ -214,13 +235,15 @@
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
 import Dropdown from "primevue/dropdown";
+import Drop from "primevue/dropdown";
 import { ref} from 'vue';
 import { useToast } from "primevue/usetoast";
 export default {
-  components: { Dropdown },
+  components: { Dropdown, Drop },
   setup() {
     const toast = useToast()
     const churchData =ref({});
+    let filterFields= ref([]);
     let url = ref("");
     let a= ref("");
     let b= ref("b")
@@ -341,6 +364,7 @@ export default {
       churchProfile,
       a,
       b,
+      filterFields
     }
   },
   

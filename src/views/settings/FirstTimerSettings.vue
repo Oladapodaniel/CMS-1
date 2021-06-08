@@ -66,7 +66,7 @@
                       <button class="btn secondary-btn py-1 px-4" @click="openClassification(index)">View</button>
                     </div>
                     <div class="col-md-6">
-                      <button class="btn btn-danger py-1 primary-btn" @click="deletePop(classification.id)" >Delete</button>
+                      <button class="btn btn-danger py-1 primary-btn delete-btn" @click="deletePop(classification.id)" >Delete</button>
                     </div>
                   </div>
                 </div>
@@ -115,7 +115,8 @@
 import axios from "@/gateway/backendapi";
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
-import membershipService from '../../services/membership/membershipservice'
+import membershipService from '../../services/membership/membershipservice';
+import finish from '../../services/progressbar/progress'
 
 export default {
   components:{
@@ -150,8 +151,10 @@ export default {
       try{
         await axios.post('/api/Membership/howYouHeardAboutUs/' + this.classificationTypes);
         this.getClassifications()
+        this.classificationTypes = ""
          this.$toast.add({severity:'success', summary: '', detail:' How Did you Hear About Us Save Successfully', life: 3000});
       }catch(error){
+        finish()
         console.log(error)
       }
     },
@@ -165,6 +168,7 @@ export default {
         this.discard()
         this.$toast.add({severity:'success', summary: '', detail:'How Did you Hear About Us Updated Successfully', life: 3000});
       }catch (error){
+        finish()
         console.log(error)
       }
     },
@@ -175,6 +179,7 @@ export default {
         this.classifications = this.classifications.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'How You Hear About Us Deleted Successfully', life: 3000});
       } catch (error){
+        finish()
         console.log(error);
       }
     },
@@ -221,7 +226,14 @@ export default {
 input::placeholder {
   text-align: center;
 }
-
+.delete-btn{
+  background: #F2BC9E!important;
+  color: black!important;
+}
+.delete-btn:hover{
+    background-color:red!important;
+    color: white!important;
+  }
 .table-header-row {
   background: #ebeff4;
   border-top: 1px solid #dde2e6;
