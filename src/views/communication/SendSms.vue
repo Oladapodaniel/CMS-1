@@ -1176,6 +1176,17 @@ export default {
       console.log(data)
     }
 
+    const getDefaultMessage = async messageId => {
+      try {
+        const { returnObject: { message }} = await communicationService.getDefaultMessage(messageId);
+        editorData.value = message;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (route.query.defaultId) getDefaultMessage(route.query.defaultId);
+
     return {
       editor,
       editorData,
