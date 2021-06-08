@@ -840,9 +840,7 @@ export default {
     useSubscription.getPlan().then((res) => {
       planUserIs.value = res.description;
       getRenewalDate.value = res.subscriptionExpiration;
-      console.log(getRenewalDate.value, "🧨🧨🧨");
       useSubscriptionResponse.value = res;
-      console.log(useSubscriptionResponse.value, "gggg");
     });
 
     const calculatedPercentage = computed(() => {
