@@ -121,7 +121,7 @@
                placeholder="Select a Country" 
                />
             </div> -->
-            <div class="col-12 col-md-5 form-group">
+            <!-- <div class="col-12 col-md-5 form-group">
               <Drop v-model="selectCountry" 
               :options="countries"
                filterMatchMode="startsWith" 
@@ -131,9 +131,9 @@
                 style="width:100%"
                 :showClear="true"/>
 
-            </div>
+            </div> -->
         
-            <!-- <div class="col-12 col-md-5 form-group">
+            <div class="col-12 col-md-5 form-group">
               <Dropdown
                 :options="countries"
                 optionLabel="name"
@@ -141,7 +141,7 @@
                 style="width: 100%"
                 v-model="selectCountry"
               />
-            </div> -->
+            </div>
             <div class="col-md-4"></div>
           </div>
           <div class="row select-elem " v-if="false">
@@ -235,11 +235,11 @@
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
 import Dropdown from "primevue/dropdown";
-import Drop from "primevue/dropdown";
+// import Drop from "primevue/dropdown";
 import { ref} from 'vue';
 import { useToast } from "primevue/usetoast";
 export default {
-  components: { Dropdown, Drop },
+  components: { Dropdown},
   setup() {
     const toast = useToast()
     const churchData =ref({});
