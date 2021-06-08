@@ -170,9 +170,16 @@ export default {
     },
     async deleteMembership(id){
       try {
-        await axios.delete('/api/Settings/DeleteTenantPeopleClassification/'+id);
-        this.classifications = this.classifications.filter(i => i.id !== id);
+        let {data} = await axios.delete('/api/Settings/DeleteTenantPeopleClassification/'+id);
+        console.log(data.status);
+        if(data.status === false){
+          this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.', life: 9000})
+        }else{
+          this.classifications = this.classifications.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Membership Deleted Successfully', life: 3000});
+
+        }
+        
       } catch (error){
         finish()
         console.log(error);
