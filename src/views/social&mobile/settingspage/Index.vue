@@ -61,7 +61,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btnfb" data-target="#exampleModal" data-toggle="modal">Connect</button>
+              <button class="btn default-btn btnfb" data-toggle="modal" @click"facebookLogin">Connect</button>
             </div>
           </div>
         </div>
@@ -219,6 +219,7 @@ const facebookLogin = () => {
    /*eslint no-undef: "warn"*/
       FB.login(
         function(response) {
+          console.log(response);
           let token = {
             accessToken: response.authResponse.accessToken,
           };
