@@ -109,47 +109,19 @@
         </div> -->
 
         <div class="row mt-4">
-          <!-- <div class="offset-1 offset-md-0 col-10">Enter account name</div>
-          <div class="offset-1 offset-md-0 col-10">
-            <input
-              type="text"
-              v-model="accountName"
-              placeholder="Account name"
-              ref="accNameRef"
-              class="form-control"
-            />
-            <div class="mt-1">
-              <em class="mt-1"
-                >This will automatically come up, kindly confirm before clicking
-                on save.</em
-              >
-            </div>
-          </div> -->
-          <!-- <div
-            class="offset-1 offset-md-0 col-md-2 align-self-start"
-            v-if="loading"
-          >
-            <div
-              class="spinner-border text-primary"
-              style="width: 3rem; height: 3rem"
-              role="status"
-            >
-              <span class="sr-only">Loading...</span>
-            </div>
-          </div> -->
-          <div class="col-12 text-center d-block d-md-none" v-if="setupSpinner">
-            <i class="pi pi-spin pi-spinner text-dark"  style="fontSize: 5rem"></i>
-          </div>
+        
           <div
             class="col-11 ml-3
-             btn primary-bg mt-5 text-white default-btn border-0"
+             btn primary-bg my-2 text-white default-btn border-0"
             @click="completeSetUp"
-          >
-             Continue
+          ><i class="pi pi-spin pi-spinner text-white mr-2" v-show="setupSpinner"  style="fontSize: 16px"></i>
+             Finish Setup
           </div>
-          <!-- <div class="col-12 text-center mt-n5" v-if="setupSpinner">
-            <i class="pi pi-spin pi-spinner text-white"  style="fontSize: 5rem"></i>
-          </div> -->
+          <div
+            @click="skip"
+            class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-3">
+            Skip >>>
+          </div>
         </div>
       </div>
       </div>
@@ -214,7 +186,7 @@ export default {
 
           setTimeout(() => {
             router.push({ name:'OnboardingSuccessful'});
-          }, 4000)
+          }, 1000)
         })
         .catch((err) => {
           console.log(err);
@@ -276,7 +248,6 @@ export default {
       axios
         .get("/api/PaymentForm/GetAll")
         .then((res) => {
-          console.log(res);
           formsArr.value = res.data
         })
         .catch((err) => {
@@ -292,10 +263,9 @@ export default {
         .post(`/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`)
         .then((res) => {
           console.log(res);
-          slide.value = true
           setTimeout(() => {
             router.push({ name: "OnboardingSuccessful" })
-          }, 4000)
+          }, 1000)
         })
         .catch((err) => {
           console.log(err);

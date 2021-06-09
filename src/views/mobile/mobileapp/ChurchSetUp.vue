@@ -354,16 +354,6 @@
             class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-3">
             Skip >>>
           </div>
-        <!-- </div> -->
-      <!-- </div> -->
-
-      <!-- image part -->
-      <!-- <div class="col-md-6 col-12 bg-image d-none d-md-block">
-        <div class="row mt-3">
-          <div class="col-md-12 text-center my-5 step">STEP 1 of 4</div>
-          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -486,7 +476,9 @@ export default {
     };
 
     const detailsForPastor = async() => {
-      // console.log(pastorSocialMedia.value)
+      console.log(pastors.value)
+      console.log(pastorDetails.value)
+      console.log(pastorSocialMedia.value)
 
       
        pastorSocialMedia.value.forEach(i => {
@@ -505,7 +497,12 @@ export default {
         if (pastorDetails.value.pastorId) {
           formData.append("pastorId", pastorDetails.value.pastorId)
         } else {
-          pastors.value.push(pastorDetails.value);
+          pastors.value.push({
+         name:pastorDetails.value.name,
+         bio: pastorDetails.value.bio,
+         photo: pastorDetails.value.photo,
+         socialMedia: pastorSocialMedia.value
+       });
         }
         pastorPayload.value.forEach(i => {
           formData.append("socialMedia", i)
@@ -539,7 +536,7 @@ export default {
     const editPastor = (index) => {
       pastorDetails.value = pastors.value[index]
       // pastorSocialMedia.value = pastors.value[index].socialMedia
-      if (pastors.value[index].socialMedia.length > 0) {
+      if (pastors.value[index] && pastors.value[index].socialMedia.length > 0) {
         if (pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "facebook")) {
           pastorSocialMedia.value[0] = pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "facebook")
         } else{
@@ -574,6 +571,7 @@ export default {
     const uploadFile = (e) => {
       image.value = e.target.files[0];
       pastorDetails.value.photo = URL.createObjectURL(image.value);
+      console.log('uploaded', pastorDetails.value)
     };
 
     const getTenantId = async () => {
@@ -625,14 +623,27 @@ export default {
     getTenantId();
 
     const skip = () => {
-      let changeState = {
-            // tab: true,
+      if (churchName.value && address.value &&  phoneNumber.value && pastors.value.length > 0 && infoArray.value.length > 0) {
+        let changeState = {
+            tab: true,
             churchSetup: false,
             socialMedia: true,
             appBranding: false,
             donationForm: false
           }
           context.emit('saved-churchsetup', changeState)
+          console.log('sent true to parent')
+      } else {
+        let changeState = {
+          // tab: true,
+            churchSetup: false,
+            socialMedia: true,
+            appBranding: false,
+            donationForm: false
+          }
+          context.emit('saved-churchsetup', changeState)
+          console.log('didnt send true')
+      }
     }
 
     const showConfirmModal = (id, index) => {

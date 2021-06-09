@@ -21,7 +21,9 @@
             />
           </div>
           <div class="col-md-6 col-lg-6 col-12">
-            <div class="py-2 small-header">Duration (month)</div>
+            <div class="py-2 small-header">
+              Duration (month)<span class="text-danger">*</span>
+            </div>
             <Dropdown
               class="w-100"
               v-model="selectMonth"
@@ -155,6 +157,10 @@
           </div>
           <div class="row mt-4">
             <div class="col-12">
+              {{ convertAmountToTenantCurrency.toFixed(2) }}
+              {{ selectedCurrency }}
+            </div>
+            <div class="col-12">
               <Dropdown
                 class="w-100"
                 v-model="selectedCurrency"
@@ -169,7 +175,10 @@
               data-toggle="modal"
               data-target="#PaymentOptionModal"
             >
-              <button class="btn pay-now text-white w-100 normal-text">
+              <button
+                class="btn pay-now text-white w-100 normal-text"
+                :disabled="!selectMonth.name || +selectMonth.name <= 0"
+              >
                 Pay Now
               </button>
             </div>
@@ -342,7 +351,7 @@ export default {
       { name: "4000-5000", constValue: 8 },
     ]);
 
-    selectCurrencyArr.value = ["NGN", "USD", "GHS", "RAND"];
+    selectCurrencyArr.value = ["NGN", "USD", "GHS", "ZAR"];
 
     const existingPlan = ref({});
     const selectSubscription = () => {
@@ -398,7 +407,7 @@ export default {
             products.push({
               productName: emailObj.name,
               productID: emailObj.id,
-              productPrice: emailObj.price,
+              productPrice: emailAmount.value,
             });
           }
         }
@@ -408,7 +417,7 @@ export default {
             products.push({
               productName: smsObj.name,
               productID: smsObj.id,
-              productPrice: smsObj.price,
+              productPrice: smsAmount.value,
             });
           }
         }
@@ -421,11 +430,13 @@ export default {
           emailUnits: selectEmail.value.name
             ? +selectEmail.value.name.split("-")[1]
             : 0,
-          totalAmount: TotalAmount.value,
+          totalAmount: selectedCurrency.value
+            ? convertAmountToTenantCurrency.value
+            : TotalAmount.value,
           paymentGateway: "Paystack",
           txnRefID: paystackResponse.trxref,
           productItems: products,
-          currency: "NGN",
+          currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
         };
         axios
           .post("/api/Subscription/SubscriptionPayment", body)
@@ -445,12 +456,26 @@ export default {
         console.log(error);
       }
     };
+    const conversionrates = ref({});
     const getRates = () => {
       converter.getConversionData().then((res) => {
-        currencies.value = res;
+        conversionrates.value = res;
       });
     };
     getRates();
+    const convertAmountToTenantCurrency = computed(() => {
+      if (!selectedCurrency.value) return TotalAmount.value;
+      let amountInDollar = 0;
+      if (TotalAmount.value) {
+        amountInDollar = TotalAmount.value / conversionrates.value[`usdngn`];
+      } else {
+        return 0;
+      }
+      return (
+        conversionrates.value[`usd${selectedCurrency.value.toLowerCase()}`] *
+        amountInDollar
+      );
+    });
 
     const emailAmount = computed(() => {
       if (!selectEmail.value.name) return 0;
@@ -464,8 +489,8 @@ export default {
 
     const subselectedDuratn = computed(() => {
       let multiValue = 1;
-      if (selectedPlan.value.amountInNaira)
-        multiValue *= selectedPlan.value.amountInNaira;
+      if (selectedPlan.value.amount)
+        multiValue *= selectedPlan.value.amount;
       if (selectMonth.value.name) multiValue *= +selectMonth.value.name;
       return multiValue;
     });
@@ -485,6 +510,7 @@ export default {
     const selectCheckbox = (item) => {
       const index = checkedBoxArr.value.findIndex((i) => i.id === item.id);
       if (index < 0) {
+        console.log(item);
         checkedBoxArr.value.push(item);
       } else {
         checkedBoxArr.value.splice(index, 1);
@@ -502,6 +528,11 @@ export default {
           console.log(err);
         });
     };
+
+    const convertedAmount = computed(() => {
+      if (!selectedCurrency.value) return "";
+      return converter.convertCurrencyTo(500, "usdngn", "usdghs");
+    });
 
     if (!currentUser.value || !currentUser.value.currency) getCurrencySymbol();
     const appendLeadingZeroes = (n) => {
@@ -532,8 +563,13 @@ export default {
         key: process.env.VUE_APP_PAYSTACK_API_KEY,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: currentUser.value.userEmail,
-        amount: TotalAmount.value * 100,
+        amount:
+          (selectedCurrency.value
+            ? Math.ceil(convertAmountToTenantCurrency.value)
+            : TotalAmount.value) * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
+        currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
+        // currency: "zar",
 
         // firstname: name,
         // ref: orderId,
@@ -620,6 +656,8 @@ export default {
       display,
       close,
       paymentFailed,
+      convertedAmount,
+      convertAmountToTenantCurrency,
     };
   },
 };

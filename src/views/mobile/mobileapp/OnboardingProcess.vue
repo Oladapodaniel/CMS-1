@@ -1,27 +1,32 @@
 <template>
+<!-- v-if="churchSetupSaved -->
     <div class="container container-top font">
         <div class="row">
             <div class="col-6 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showChurchSetup">
-                    <div v-if="churchSetupSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div>    
+                    <div v-if="churchSetup" :class="{ 'active-tab' : churchSetup, 'circle' : !churchSetup }">1</div>    
+                    <div v-else-if="churchSetupSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div>
                     <div v-else :class="{ 'active-tab' : churchSetup, 'circle' : !churchSetup }">1</div>    
                     <div>Church setup</div> 
                     <hr class="hr">   
             </div>
             <div class="col-6 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showSocialMedia">
-                    <div v-if="socialMediaSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div> 
-                    <div v-else :class="{ 'active-tab' : socialMedia, 'circle' : !socialMedia }">2</div>    
+                    <div v-if="socialMedia" :class="{ 'active-tab' : socialMedia, 'circle' : !socialMedia }">2</div>    
+                    <div v-else-if="socialMediaSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div> 
+                     <div v-else :class="{ 'active-tab' : socialMedia, 'circle' : !socialMedia }">2</div>
                     <div>Social Media</div>    
                     <hr class="hr">
             </div>
             <div class="col-6 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showAppBranding">
-                    <div v-if="appBrandingSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div>
-                    <div v-else :class="{ 'active-tab' : appBranding, 'circle' : !appBranding }">3</div>    
+                    <div v-if="appBranding" :class="{ 'active-tab' : appBranding, 'circle' : !appBranding }">3</div>    
+                    <div v-else-if="appBrandingSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div>
+                    <div v-else :class="{ 'active-tab' : appBranding, 'circle' : !appBranding }">3</div>
                     <div>App Branding</div>   
                     <hr class="hr"> 
             </div>
             <div class="col-6 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showOnlineDonation">
-                    <div v-if="donationSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div>
-                    <div v-else :class="{ 'active-tab' : donationForm, 'circle' : !donationForm }">4</div>    
+                    <div v-if="donationForm" :class="{ 'active-tab' : donationForm, 'circle' : !donationForm }">4</div>    
+                    <div v-else-if="donationSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div>
+                    <div v-else :class="{ 'active-tab' : donationForm, 'circle' : !donationForm }">4</div>
                     <div>Online Donation</div>  
             </div>
         </div>
