@@ -33,7 +33,7 @@
             />
           </div>
           <div class="col-md-3 col-lg-3 col-3  ml-3 mt-3 normal-text">
-            {{ currentUser.currencySymbol }} {{ subselectedDuratn }}
+            {{ subselectedDuratn >  1 ? currentUser.currencySymbol : "" }} {{ subselectedDuratn >  1 ? subselectedDuratn : ""}}
           </div>
         </div>
       </div>
@@ -158,8 +158,8 @@
           </div>
           <div class="row mt-4">
             <div class="col-12">
-              {{ convertAmountToTenantCurrency.toFixed(2) }}
-              {{ selectedCurrency }}
+              {{ convertAmountToTenantCurrency ? convertAmountToTenantCurrency.toFixed(2) : 0.00 }}
+              <!-- {{ selectedCurrency }} -->
             </div>
             <div class="col-12">
               <Dropdown
@@ -441,6 +441,7 @@ export default {
           .then((res) => {
             console.log(res);
             display.value = true;
+            selectSubscription();
             if (!res.data.returnObject.status) {
               paymentFailed.value = true;
             }
@@ -514,11 +515,20 @@ export default {
       }
     };
 
+    const setSelectedPaymentCurrency = () => {
+      if (selectCurrencyArr.value.includes(currentUser.value.currency)) {
+          selectedCurrency.value = currentUser.value.currency;
+        } else {
+          selectedCurrency.value = "USD";
+        }
+    }
+
     const getCurrencySymbol = async () => {
       userService
         .getCurrentUser()
         .then((res) => {
           currentUser.value = res;
+          setSelectedPaymentCurrency()
         })
         .catch((err) => {
           console.log(err);
@@ -530,7 +540,11 @@ export default {
       return converter.convertCurrencyTo(500, "usdngn", "usdghs");
     });
 
-    if (!currentUser.value || !currentUser.value.currency) getCurrencySymbol();
+    if (!currentUser.value || !currentUser.value.currency) {
+      getCurrencySymbol();
+    } else {
+      setSelectedPaymentCurrency()
+    }
     const appendLeadingZeroes = (n) => {
       if (n <= 9) {
         return "0" + n;
