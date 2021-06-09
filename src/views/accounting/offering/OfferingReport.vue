@@ -81,7 +81,11 @@
                 <a class="def-btn approve-btn mr-4" @click="toggleReportState"
                   >Approve draft</a
                 >
-                <a class="def-btn edit-btn">Edit draft</a>
+                      <!-- <router-link
+                        :to="{ name: 'AddOffering', params: { offId: activityId } }"
+                      >
+                        <a class="def-btn edit-btn">Edit offering</a>
+                      </router-link> -->
               </div>
             </div>
           </div>
@@ -152,7 +156,7 @@
                                   <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
                                   <ReportModal
                                     :eventName="
-                                      stats.activityToday
+                                      stats && stats.activityToday
                                         ? stats.activityToday.name
                                         : ''
                                     "

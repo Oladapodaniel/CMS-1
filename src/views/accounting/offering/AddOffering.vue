@@ -1541,12 +1541,14 @@ export default {
           } else {
             console.log('Id avalaible')
             contributions[0].Id = route.params.offId
+
+            console.log(contributions)
+
             axios.post(`/api/Financials/Contributions/Transactions/Save`, contributions)
             .then(res => {
               console.log(res)
               localStorage.setItem('contriTransact', JSON.stringify(res.data.returnObject))
               loading.value = false
-
 
               if (Object.keys(selectedEventAttended.value).length > 0) {
                 router.push({ name: 'OfferingReport', query: { report: eventDate.value, activityID: selectedEventAttended.value.activityID } })
@@ -1712,6 +1714,8 @@ export default {
                 offeringItem.value = [{
                   name: data && data.contribution ? data.contribution.name :  "",
                   financialContributionID: data.financialContributionID,
+                  date: data.date.split("T")[0],
+                  // activityID: route.params.offId,
                   paymentChannel: data.paymentChannel,
                   donor: data.personName,
                   currencyID: data.currencyID,
@@ -1737,11 +1741,6 @@ export default {
                   catch (err) {
                     console.log(err)
                   }
-                  console.log(tenantCurrency.value)
-                  console.log(offeringItem.value)
-                  console.log(toDestinationCurrencyRate)
-                  console.log(fromCurrencyRate)
-                  console.log(amount)
                   
                 }
                 
@@ -1754,7 +1753,7 @@ export default {
         
         
         const getOnePerson = async(personId) => {
-          if(route.params.offId) {
+          if(route.params.offId && personId) {
             try {
                 let { data } = await axios.get(`/api/People/GetPersonInfoWithAssignments/${personId}`)
                 console.log(data)
