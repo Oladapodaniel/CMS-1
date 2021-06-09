@@ -223,10 +223,15 @@ const facebookLogin = () => {
             accessToken: response.authResponse.accessToken,
           };
           console.log(response);
+          console.log(token);
         },
         { scope: "user_birthday" }
       );
     };
+    facebookLogin()
+    return{
+      facebookLogin
+    }
 
   }
 };
