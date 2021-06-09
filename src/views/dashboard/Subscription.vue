@@ -22,7 +22,7 @@
           </div>
           <div class="col-md-6 col-lg-6 col-12">
             <div class="py-2 small-header">
-              Duration (month) <span class="text-danger">*</span>
+              Duration (month)
             </div>
             <Dropdown
               class="w-100"
@@ -32,7 +32,7 @@
               placeholder="Select duration"
             />
           </div>
-          <div class="col-md-3 col-lg-3 col-3  ml-3 mt-3 normal-text">
+          <div class="col-md-3 col-lg-3 col-3  ml-3 mt-3 normal-text pl-md-0">
             {{ subselectedDuratn >  1 ? currentUser.currencySymbol : "" }} {{ subselectedDuratn >  1 ? subselectedDuratn : ""}}
           </div>
         </div>
@@ -84,7 +84,7 @@
               {{ selectEmail.constValue ? emailAmount : 0 }}
             </div>
           </div>
-          <div class="my-3 small-header">Accounting</div>
+          <div class="my-3 small-header">Accounting <br><small>Product price is multiplied by subscrption duration</small></div>
           <div
             class="row normal-text"
             v-for="(item) in productsList"
@@ -108,7 +108,7 @@
                     @change="selectCheckbox(item)"
                   />
                 </div>
-                <div class="col-md-4 text-center col-4">{{ item.price }}</div>
+                <div class="col-md-4 text-center col-4">{{ item.price  }}</div>
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@
           <div class="text-center small-header">
             Payment Summary({{ currentUser.currencySymbol }})
           </div>
-          <div class="row mt-3 normal-text">
+          <div class="row mt-3 normal-text" v-if="+selectMonth.name > 0">
             <div class="col-md-6 col-6">Subscription</div>
             <div class="col-md-6  col-6 text-right font-weight-bold">
               {{ subselectedDuratn }}
@@ -146,7 +146,7 @@
           >
             <div class="col-md-6 col-6">{{ item.name }}</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ item.price }}
+              {{ item.price * subscriptionDuration }}
             </div>
           </div>
           <hr />
@@ -157,9 +157,12 @@
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-12">
-              {{ convertAmountToTenantCurrency ? convertAmountToTenantCurrency.toFixed(2) : 0.00 }}
-              <!-- {{ selectedCurrency }} -->
+            <div class="col-12 d-flex justify-content-between" v-if="selectedCurrency !== currentUser.currency">
+              <span>Converted amount</span>
+              <span>
+                <span v-if="selectedCurrency !== currentUser.currency" style="font-size:14px">{{ selectedCurrency }}</span>
+                <span class="font-weight-bold ml-1">{{ convertAmountToTenantCurrency ? convertAmountToTenantCurrency.toFixed(2) : 0.00 }}</span>
+              </span>
             </div>
             <div class="col-12">
               <Dropdown
@@ -178,7 +181,6 @@
             >
               <button
                 class="btn pay-now text-white w-100 normal-text"
-                :disabled="!selectMonth.name || +selectMonth.name <= 0"
               >
                 Pay Now
               </button>
@@ -355,6 +357,7 @@ export default {
     selectCurrencyArr.value = ["NGN", "USD", "GHS", "ZAR"];
 
     const existingPlan = ref({});
+    const daysToEndOfSubscription = ref(0);
     const selectSubscription = () => {
       axios.get("/api/Subscription/GetSubscription").then((res) => {
         Plans.value = res.data.returnObject;
@@ -382,6 +385,8 @@ export default {
         expiryDate.value = formatDate.monthDayYear(
           res.data.returnObject.subscriptionExpiration
         );
+
+        daysToEndOfSubscription.value = calculateRemomainingMonthsOfSubscription(res.data.returnObject.subscriptionExpiration)
       });
     };
 
@@ -391,6 +396,7 @@ export default {
     const subscriptionPayment = (paystackResponse) => {
       close.value.click();
       paymentFailed.value = false;
+
       try {
         const products = checkedBoxArr.value.map((i) => {
           return {
@@ -420,7 +426,7 @@ export default {
           }
         }
         const body = {
-          subscriptionPlanID: selectedPlan.value.id,
+          // subscriptionPlanID: selectedPlan.value.id,
           durationInMonths: selectMonth.value.name
             ? +selectMonth.value.name
             : 0,
@@ -436,6 +442,11 @@ export default {
           productItems: products,
           currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
         };
+
+        if (selectMonth.value) {
+          body.subscriptionPlanID = selectedPlan.value.id;
+        }
+
         axios
           .post("/api/Subscription/SubscriptionPayment", body)
           .then((res) => {
@@ -496,14 +507,15 @@ export default {
 
     const TotalAmount = computed(() => {
       let sum = 0;
-      if (subselectedDuratn.value) sum += subselectedDuratn.value;
+      if (subselectedDuratn.value && selectMonth.value.name > 0) sum += subselectedDuratn.value;
       if (smsValue.value) sum += smsValue.value * 2;
       sum += emailAmount.value;
       return sum + sumCheckboxItem.value;
     });
     const sumCheckboxItem = computed(() => {
       if (checkedBoxArr.value.length === 0) return 0;
-      return checkedBoxArr.value.map((i) => i.price).reduce((a, b) => a + b);
+      // return checkedBoxArr.value.map((i) => i.price).reduce((a, b) => a + b);
+      return checkedBoxArr.value.map((i) => i.price * subscriptionDuration.value).reduce((a, b) => a + b);
     });
 
     const selectCheckbox = (item) => {
@@ -623,6 +635,23 @@ export default {
       handler.openIframe();
     };
 
+    const calculateRemomainingMonthsOfSubscription = expiryDate => {
+      const endDate = new Date(expiryDate);
+      const startDate = new Date(Date.now());
+
+      const differenceInTime = Math.abs(endDate - startDate);
+      const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
+
+      return Math.round(differenceInDays / 30);
+    }
+
+    const subscriptionDuration = computed(() => {
+      if (selectMonth.value.name && daysToEndOfSubscription.value) return +selectMonth.value.name + daysToEndOfSubscription.value;
+      if (!daysToEndOfSubscription.value && selectMonth.value.name) return +selectMonth.value.name;
+
+      return daysToEndOfSubscription.value;
+    })
+
     return {
       selectedPlan,
       selectSubscription,
@@ -668,6 +697,8 @@ export default {
       paymentFailed,
       convertedAmount,
       convertAmountToTenantCurrency,
+      daysToEndOfSubscription,
+      subscriptionDuration,
     };
   },
 };
