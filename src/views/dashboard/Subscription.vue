@@ -1,17 +1,17 @@
 <template>
   <div class="container-wide container-top">
     <div class="row mt-5">
-      <div class="col-12 header">
+      <div class="col-12 pl-md-0 header">
         Subscription
       </div>
-      <div class="col-12 normal-text mt-3">
+      <div class="col-12 normal-text mt-3 pl-md-0 ">
         Select the subscription that suit your church and the additional tolls
         you need for your church growth.
       </div>
       <div class="col-md-6 mt-5">
         <div class="row bg-white pb-2 sub">
           <div class="col-md-6 col-lg-6  col-12">
-            <div class="py-2 small-header">Subscription Type*</div>
+            <div class="py-2 small-header">Subscription Type <span class="text-danger">*</span></div>
             <Dropdown
               class=" plandropdown w-100"
               v-model="selectedPlan"
@@ -22,7 +22,7 @@
           </div>
           <div class="col-md-6 col-lg-6 col-12">
             <div class="py-2 small-header">
-              Duration (month)<span class="text-danger">*</span>
+              Duration (month) <span class="text-danger">*</span>
             </div>
             <Dropdown
               class="w-100"
@@ -87,7 +87,7 @@
           <div class="my-3 small-header">Accounting</div>
           <div
             class="row normal-text"
-            v-for="(item, index) in productsList"
+            v-for="(item) in productsList"
             :key="item.id"
           >
             <div
@@ -105,7 +105,7 @@
                 <div class="col-md-2 col-4">
                   <input
                     type="checkbox"
-                    @change="selectCheckbox(item, index)"
+                    @change="selectCheckbox(item)"
                   />
                 </div>
                 <div class="col-md-4 text-center col-4">{{ item.price }}</div>
@@ -138,6 +138,7 @@
               {{ selectEmail.constValue ? emailAmount : 0 }}
             </div>
           </div>
+          <!-- Selected Products -->
           <div
             class="row mt-3 normal-text"
             v-for="item in checkedBoxArr"
@@ -356,7 +357,6 @@ export default {
     const existingPlan = ref({});
     const selectSubscription = () => {
       axios.get("/api/Subscription/GetSubscription").then((res) => {
-        console.log(res.data);
         Plans.value = res.data.returnObject;
         existingPlan.value.id = Plans.value.id;
         existingPlan.value.amountInNaira = Plans.value.amountInNaira;
@@ -372,11 +372,9 @@ export default {
         selectedPlan.value = subscriptionPlans.value.find(
           (i) => i.id === Plans.value.id
         );
-        console.log(selectedPlan.value);
         currentAmount.value = res.data.returnObject.amountInNaira;
         currentPlan.value = existingPlan.value.description;
         productsList.value = res.data.returnObject.productsList;
-        console.log(productsList.value);
         emailPrice.value = productsList.value.find(
           (i) => i.name === "Email"
         ).price;
@@ -508,9 +506,8 @@ export default {
     });
 
     const selectCheckbox = (item) => {
-      const index = checkedBoxArr.value.findIndex((i) => i.id === item.id);
+      const index = checkedBoxArr.value.findIndex((i) => i.name === item.name);
       if (index < 0) {
-        console.log(item);
         checkedBoxArr.value.push(item);
       } else {
         checkedBoxArr.value.splice(index, 1);
@@ -522,7 +519,6 @@ export default {
         .getCurrentUser()
         .then((res) => {
           currentUser.value = res;
-          console.log(currentUser.value);
         })
         .catch((err) => {
           console.log(err);
