@@ -216,6 +216,7 @@ export default {
 
 //   },
 const facebookLogin = () => {
+   /*eslint no-undef: "warn"*/
       FB.login(
         function(response) {
           let token = {
