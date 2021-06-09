@@ -202,6 +202,7 @@
 <script>
 export default {
   setup() {
+    /*eslint no-undef: "warn"*/
     FB.login(function(response) {
     if (response.authResponse) {
      console.log('Welcome!  Fetching your information.... ');
