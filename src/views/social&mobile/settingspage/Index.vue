@@ -216,16 +216,22 @@ export default {
 
 //   },
 const facebookLogin = () => {
+   /*eslint no-undef: "warn"*/
       FB.login(
         function(response) {
           let token = {
             accessToken: response.authResponse.accessToken,
           };
           console.log(response);
+          console.log(token);
         },
         { scope: "user_birthday" }
       );
     };
+    facebookLogin()
+    return{
+      facebookLogin
+    }
 
   }
 };
