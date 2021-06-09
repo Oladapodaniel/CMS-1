@@ -61,7 +61,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btnfb" data-toggle="modal" @click"facebookLogin">Connect</button>
+              <button class="btn default-btn btnfb" @click="facebookLogin">Connect</button>
             </div>
           </div>
         </div>
@@ -229,7 +229,6 @@ const facebookLogin = () => {
         { scope: "user_birthday" }
       );
     };
-    facebookLogin()
     return{
       facebookLogin
     }
