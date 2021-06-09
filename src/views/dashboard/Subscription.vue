@@ -489,8 +489,8 @@ export default {
 
     const subselectedDuratn = computed(() => {
       let multiValue = 1;
-      if (selectedPlan.value.amountInNaira)
-        multiValue *= selectedPlan.value.amountInNaira;
+      if (selectedPlan.value.amount)
+        multiValue *= selectedPlan.value.amount;
       if (selectMonth.value.name) multiValue *= +selectMonth.value.name;
       return multiValue;
     });
