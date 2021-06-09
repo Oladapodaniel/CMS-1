@@ -112,6 +112,27 @@
             <div class="col-12 col-md-3 text-md-right pr-0">
               <label class="small-text lb font-weight-600">Country</label>
             </div>
+            <!-- <div>
+              <Dropdown v-model="selectCountry"
+               :options="countries" 
+               optionLabel="name" 
+               :filter="true"
+               :filterMatchMode="'startsWith'" 
+               placeholder="Select a Country" 
+               />
+            </div> -->
+            <!-- <div class="col-12 col-md-5 form-group">
+              <Drop v-model="selectCountry" 
+              :options="countries"
+               filterMatchMode="startsWith" 
+                optionLabel="name" 
+                :filter="true" 
+                placeholder="Select a Country" 
+                style="width:100%"
+                :showClear="true"/>
+
+            </div> -->
+        
             <div class="col-12 col-md-5 form-group">
               <Dropdown
                 :options="countries"
@@ -129,7 +150,7 @@
             </div>
             <div class="col-12 col-md-5 form-group">
               <Dropdown
-              
+                :fd="['kkj']"
                 :options="[1, 2, 3, 4, 5]"
                 placeholder="Select time zone"
                 style="width: 100%"
@@ -214,13 +235,15 @@
 import axios from "@/gateway/backendapi";
 import store from "@/store/store";
 import Dropdown from "primevue/dropdown";
+// import Drop from "primevue/dropdown";
 import { ref} from 'vue';
 import { useToast } from "primevue/usetoast";
 export default {
-  components: { Dropdown },
+  components: { Dropdown},
   setup() {
     const toast = useToast()
     const churchData =ref({});
+    let filterFields= ref([]);
     let url = ref("");
     let a= ref("");
     let b= ref("b")
@@ -289,7 +312,6 @@ export default {
       formData.append("HeadPastorEmail", churchData.value.headPastorEmail );      
       formData.append("HeadPastorPhone", churchData.value.headPastorPhone );      
       formData.append("ChurchLogo", image ); 
-
       axios.put('/api/Settings/ChurchProfileSettings',formData)
       .then(res =>{
         console.log(res);
@@ -341,8 +363,8 @@ export default {
       display,
       churchProfile,
       a,
-      b
-  
+      b,
+      filterFields
     }
   },
   

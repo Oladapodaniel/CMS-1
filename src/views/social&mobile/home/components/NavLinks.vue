@@ -18,6 +18,24 @@
                     </li>
                 </ul>
             </div>
+            <div class="col-lg-12 d-flex pl-0 bring-forward">
+                <div class="col-6">
+                    <a href="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp">
+                  <img
+                    class="w-100 mt-5"
+                    src="../../../../assets/mobileonboarding/Google-play-logo.png"
+                    alt="phone image"
+                  />
+                    </a>
+                </div>
+                <div class="col-6" v-if="false">
+                  <img
+                    class="w-100 mt-5"
+                    src="../../../../assets/mobileonboarding/app-store-logo.png"
+                    alt="phone image"
+                  />
+                </div>
+              </div>
         </div>
     </div>
 </template>
@@ -48,16 +66,16 @@ import Badge from 'primevue/badge';
                     icon: "pi pi-clock",
                     to: "/tenant/social/schedule",
                 },
-                {
-                    text: "Overview",
-                    icon: "pi pi-th-large",
-                    to: "/tenant/social",
-                },
-                {
-                    text: "Involvement",
-                    icon: "pi pi-heart",
-                    to: "/tenant/social/involvement",
-                },
+                // {
+                //     text: "Overview",
+                //     icon: "pi pi-th-large",
+                //     to: "/tenant/social",
+                // },
+                // {
+                //     text: "Involvement",
+                //     icon: "pi pi-heart",
+                //     to: "/tenant/social/involvement",
+                // },
                 {
                     text: "Setting",
                     icon: "pi pi-cog",
@@ -67,6 +85,11 @@ import Badge from 'primevue/badge';
                     text: "Post Category",
                     icon: "pi pi-sitemap",
                     to: "/tenant/social/category",
+                },
+                {
+                    text: "Mobile App Onboarding",
+                    icon: "pi pi-mobile",
+                    to: "/mobileonboarding",
                 }
             ]
 

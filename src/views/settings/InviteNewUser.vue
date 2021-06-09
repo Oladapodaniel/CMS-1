@@ -35,7 +35,7 @@
                         <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Phone Number</span>
                             </div>
-                            <div class="col-lg-8 col-sm-12 "> <InputText type="number"  class="form-control" required v-model="phoneNumber"  /></div>
+                            <div class="col-lg-8 col-sm-12 "> <InputText type="Text"  class="form-control" required v-model="phoneNumber"  /></div>
                         </div>
                          <div class="row mb-3 mt-5">
                           <div class="col-lg-4 col-sm-12 text-lg-right text-sm-left"> <span class="">Password</span>
@@ -228,6 +228,7 @@
 
 <script>
 import InputText from 'primevue/inputtext';
+// import ProgressSpinner from 'primvue/progressspinner';
 import Toast from 'primevue/toast'
 import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
@@ -459,7 +460,6 @@ import store from "@/store/store";
         },
         async getEmail(){
       if (this.$route.query.email) {
-          this.disabled = true
           try{
             const {data} = await axios.get(`/api/Settings/GetChurchUserByEmail?email=${this.$route.query.email}`);
                 // this.defaultEmail = data;
@@ -487,6 +487,9 @@ import store from "@/store/store";
     }
     },
     created(){
+        if (this.$route.query.email){
+            this.disabled = true
+        }
          this.getEmail()
         
 
