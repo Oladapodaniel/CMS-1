@@ -201,7 +201,39 @@
 
 <script>
 export default {
-  setup() {},
+  setup() {
+    /*eslint no-undef: "warn"*/
+//     FB.login(function(response) {
+//     if (response.authResponse) {
+//      console.log('Welcome!  Fetching your information.... ');
+//      FB.api('/me', function(response) {
+//        console.log('Good to see you, ' + response.name + '.');
+//      });
+//     } else {
+//      console.log('User cancelled login or did not fully authorize.');
+//     }
+// });
+
+//   },
+const facebookLogin = () => {
+   /*eslint no-undef: "warn"*/
+      FB.login(
+        function(response) {
+          let token = {
+            accessToken: response.authResponse.accessToken,
+          };
+          console.log(response);
+          console.log(token);
+        },
+        { scope: "user_birthday" }
+      );
+    };
+    facebookLogin()
+    return{
+      facebookLogin
+    }
+
+  }
 };
 </script>
 

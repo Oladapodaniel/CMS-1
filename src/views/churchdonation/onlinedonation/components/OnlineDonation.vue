@@ -16,7 +16,7 @@
               </div>
               <div class="col-12 w-100"> 
                  <h2 class="font-weight-bold py-3 mb-3">
-                     NGN {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
+                    {{tenantCurrency.currency}} {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
                  </h2>
               </div>
            
@@ -407,6 +407,7 @@ import Dropdown from "primevue/dropdown";
 import DonationPieChart from "../../../../components/charts/PieChart.vue";
 import DonationAreaChart from "../../../../components/charts/AreaChart.vue";
 import numbers_formatter from '../../../../services/numbers/numbers_formatter';
+import store from '../../../../store/store';
 export default {
   props: ["donationTransactions", "totalItem"],
   components: {
@@ -421,6 +422,7 @@ export default {
     const filterResult = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
+    const tenantCurrency = ref(store.getters.currentUser)
     const Allsummary = ref([
       { name: "Not Sure", y: 20 },
       { name: "Male", y: 16 },
@@ -507,7 +509,7 @@ export default {
             toast.add({
               severity: "success",
               summary: "Delete Successful",
-              detail: `Contribution Transaction Deleted`,
+              detail: `Donation Transaction Deleted`,
               life: 3000,
             });
             emit("contri-transac", index);
@@ -573,6 +575,11 @@ export default {
         console.log(error);
       }
     };
+
+    const getTenantCurrency = () =>{
+      
+    }
+    getTenantCurrency();
     // const getSMSByPage = async (page) => {
     //   try {
     //     const data = await communicationService.getAllSentSMS(page);
@@ -814,7 +821,8 @@ export default {
       attendanceSeries,
       pieChart,
       LineGraphXAxis,
-      amountWithCommas
+      amountWithCommas,
+      tenantCurrency
     };
   },
 };

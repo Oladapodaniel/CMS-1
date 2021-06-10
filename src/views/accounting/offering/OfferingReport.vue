@@ -1,8 +1,9 @@
 <template>
+<div>
   <div class="container">
     <div class="row mt-4">
       <div class="col-md-5">
-        <h2 class="font-weight-bold page-hder">New Contribution and Report</h2>
+        <h2 class="font-weight-bold page-hder">New Offerings and Report</h2>
       </div>
       <div class="col-md-7 d-sm-flex justify-content-md-end">
         <a class="def-btn mr-3 px-md-4 my-sm-1"
@@ -80,7 +81,11 @@
                 <a class="def-btn approve-btn mr-4" @click="toggleReportState"
                   >Approve draft</a
                 >
-                <a class="def-btn edit-btn">Edit draft</a>
+                      <!-- <router-link
+                        :to="{ name: 'AddOffering', params: { offId: activityId } }"
+                      >
+                        <a class="def-btn edit-btn">Edit offering</a>
+                      </router-link> -->
               </div>
             </div>
           </div>
@@ -151,7 +156,7 @@
                                   <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
                                   <ReportModal
                                     :eventName="
-                                      stats.activityToday
+                                      stats && stats.activityToday
                                         ? stats.activityToday.name
                                         : ''
                                     "
@@ -252,7 +257,7 @@
     <div class="container-fluid bottom-section px-0">
       <div class="row mx-0" ref="topmost">
         <div class="col-md-8 dark-red-section pl-5">
-          <h2 class="evt-report">Contribution Report</h2>
+          <h2 class="evt-report">Offering Report</h2>
         </div>
 
         <div
@@ -279,7 +284,7 @@
       <div class="row pt-5 px-5" ref="middle">
         <div class="col-md-8">
           <h2 class="font-weight-bold mb-3" style="font-size: 25px">
-             {{ contributionReport. activityName ? contributionReport.activityName : "Contribution Details" }}
+             {{ contributionReport. activityName ? contributionReport.activityName : "Offering Details" }}
           </h2>
         </div>
         <div class="col-md-4">
@@ -383,14 +388,14 @@
         <div class="col-md-12">
           <div class="row mb-4">
             <div class="col-md-12">
-              <span class="attendance-header">Contribution</span>
+              <span class="attendance-header">Offering</span>
             </div>
           </div>
           <div class="row px-5">
             <div class="col-md-12">
               <div class="row">
                 <div class="col-sm-4">
-                  <span class="bold-700">Contribution Item</span>
+                  <span class="bold-700">Offering Item</span>
                 </div>
                 <div class="col-sm-3">
                   <span class="bold-700">Channel</span>
@@ -517,7 +522,7 @@
                         font-size: 29px;
                         padding-bottom: 20px;
                       "
-                      >Contribution&nbsp;Report</span
+                      >Offering&nbsp;Report</span
                     >
                   </p>
                 </td>
@@ -582,7 +587,7 @@
                   <p style="margin-bottom: 0pt; margin-top: 0pt">
                     <span style="font-weight: bold; font-size: 24px"
                       >&nbsp;
-                      CONTRIBUTION DETAILS
+                      OFFERING DETAILS
                       <br />
                       </span
                     >
@@ -692,7 +697,7 @@
                     "
                   >
                     <span style="font-size: 21px; color: rgb(255, 255, 255)"
-                      >Contribution</span
+                      >Offering</span
                     >
                   </p>
                 </td>
@@ -815,7 +820,7 @@
                   >
                     <span
                       style="font-weight: bold; font-size: 18px; color: #000"
-                      >Contribution&nbsp;Item</span
+                      >Offering&nbsp;Item</span
                     >
                   </p>
                 </td>
@@ -1367,7 +1372,7 @@
       <div class="row" v-if="routeActivityId">
         <div class="col-md-12">
           <div class="pg-content">
-            <h4 class="analytics min">Contribution Performance</h4>
+            <h4 class="analytics min">Offering Performance</h4>
 
             <div class="analytics-container first-con">
               <div class="ana-group">
@@ -1380,7 +1385,7 @@
                   <div>
                       <h5>
                         <span class="today-text">Today </span>
-                        <span class="versus"> vs Lastweek</span>
+                        <span class="versus"> vs Last</span>
                     </h5>
                       <div class="ana-item mt-5">
                     <div class="ana-item-text">
@@ -1524,6 +1529,7 @@
       <Toast />
     </div>
   </div>
+</div>  
 </template>
 
 <script>
