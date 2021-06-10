@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div> 
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
         <div class="col-md-8 col-lg-8 col-sm-6">
@@ -21,72 +21,73 @@
         </p>
       </div>
         
-
-      <div class="row table-header-row py-2 mt-5">
-        <div class="col-md-2">
-          <span class="py-2 font-weight-bold">NAME</span>
+ 
+ <div class="row header1 mt-5">
+   <div class="col-md-12">
+     <div class="border-0 bg-danger">
+      <div class="row table-header-row py-2  small-text">
+        <div class="col-md-3">
+          <span class="py-2 font-weight-bold">Name</span>
         </div>
           <div class="col-md-2">
-          <span class="py-3 font-weight-bold">EMAIL</span>
+          <span class="py-3 font-weight-bold">Email</span>
         </div>
         <div class="col-md-2">
-          <span class="py-2 font-weight-bold">PHONE</span>
+          <span class="py-2 font-weight-bold">Phone</span>
         </div>
         <div class="col-md-2">
-          <span class="py-2 font-weight-bold">STATUS</span>
+          <span class="py-2 font-weight-bold">Status</span>
         </div>
-        <div class="col-md-3">
-          <span class="py-2 font-weight-bold">ROLES</span>
+        <div class="col-md-2">
+          <span class="py-2 font-weight-bold">Roles</span>
         </div>
         <div class="col-md-1">
           <span class="py-2 font-weight-bold"></span>
         </div>
       </div>
-      <div
-        class="row py-2"
-        
-      >
-      <Toast/>
-      <ConfirmDialog/>
-        <div class="col-md-12">
-          <div class="row" v-for="(churchMem, index) in churchUsers.users" :key="index">
+ </div>
+   </div>
+   <div class="col-md-12">
+      <div class="row small-text tr-border-bottom py-1 header2" v-for="(churchMem, index) in churchUsers.users" :key="index">
             <div
-              class="col-md-2 d-flex justify-content-between"
+              class="col-md-3 d-flex justify-content-between"
             >
               <span class="py-2 hidden-header">NAME</span>
-              <span class="py-2">{{ churchMem.name}}</span>
+               <span class="py-2" v-if="churchMem.name.length<20"> <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name}}</router-link></span>
+              <span v-else v-tooltip.top="`${churchMem.name}`"> <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{churchMem.name.substring(0,20)+ "..."}}</router-link></span>
             </div>
              <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">EMAIL</span>
-              <span class="py-2 text-xs-left"  v-if="churchMem.email.length<10">{{ churchMem.email}}</span>
-              <span v-else v-tooltip.top="`${churchMem.email}`">{{churchMem.email.substring(0,10)+ "..."}}</span>
+              <span class="py-2 text-xs-left"  v-if="churchMem.email.length<10"> <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.email}}</router-link></span>
+              <span v-else v-tooltip.top="`${churchMem.email}`"> <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{churchMem.email.substring(0,10)+ "..."}} </router-link></span>
             </div>
              <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">PHONE</span>
-              <span class="py-2">{{ churchMem.phone}}</span>
+              <span class="py-2" v-if="churchMem.phone.length<11"> <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.phone}}</router-link></span>
+              <span v-else v-tooltip.top="`${churchMem.phone}`"> <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{churchMem.phone.substring(0,11)+ "..."}}</router-link></span>
             </div>
            
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">STATUS</span>
-              <span class="py-2">{{churchMem.status}}</span>
+              <span class="py-2"><router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{churchMem.status}}</router-link></span>
             </div>
             <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">ROLES</span>
-              <span class="py-2">{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</span>
+              <span class="py-2" v-tooltip.top="`${churchMem.roles}`"> <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</router-link></span>
               <!-- <span v-else>{{ churchMem ? churchMem.roles ? churchMem.roles[0].substring(0,14)+ ".." : '' : '' }}</span> -->
               <!-- "churchMem ? churchMem.roles ? churchMem.roles[0].length<14 : '' : '' " -->
             </div>
             <!-- {{churchMem && churchMem.roles[0] ? churchMem.roles[0]? churchMem.roles[0] : '' : '' }} -->
             <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
+              class="col-md-1 d-flex justify-content-between align-items-center"
             >
               <div class="dropdown">
                 <i
@@ -97,33 +98,50 @@
                   aria-expanded="false"
                 ></i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item button">
+                  <a class="dropdown-item">
                     <router-link
                     :to="`/tenant/sms/compose?phone=${churchMem.phone}`"
                       >Send SMS</router-link>
                     </a>
-                  <a class="dropdown-item button" v-if="churchMem.email">
+                  <a class="dropdown-item" v-if="churchMem.email">
                     <router-link
                     :to="`/tenant/email/compose?phone=${churchMem.email}`"
                       >Send Email</router-link
                     >
                   </a>
-                  <router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> <a class="dropdown-item button">Edit</a></router-link>
-                  <a class="dropdown-item button" @click="deletePop(churchMem.email)">Delete</a>
-                  <a class="dropdown-item button" @click="deactivateChurchUser(churchMem.email, index)">Inactive</a>
-                  <a class="dropdown-item button" @click="activateChurchUser(churchMem.email, index)">Active</a>
+                  <a class="dropdown-item"><router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> Edit</router-link></a>
+                  <a class="dropdown-item" @click="deletePop(churchMem.email)"> <router-link to=""> Delete </router-link></a>
+                  <a class="dropdown-item" @click="deactivateChurchUser(churchMem.email, index)"> <router-link to=""> Inactive </router-link></a>
+                  <a class="dropdown-item" @click="activateChurchUser(churchMem.email, index)"> <router-link to=""> Active </router-link></a>
                 </div>
               </div>
             </div>
           </div>
+   </div>
+   <div class=" col-12 text-center p-5" v-if="loading">
+      <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
+    </div>
 
-          <div class="row">
+ </div>
+      <!-- <div
+        class="row py-2"
+        
+      > -->
+      <Toast/>
+      <ConfirmDialog/>
+        <!-- <div class="col-md-12"> -->
+         
+
+          <!-- <div class="row">
             <div class="col-md-12 px-0">
               <hr class="hr my-0" />
             </div>
-          </div>
-        </div>
-      </div>
+          </div> -->
+        <!-- </div> -->
+
+
+       <!-- </div> -->
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -134,6 +152,7 @@ import Tooltip from 'primevue/tooltip';
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog'
 import axios from "@/gateway/backendapi";
+import finish from "../../services/progressbar/progress";
 export default {
   components:{
     Toast,
@@ -147,7 +166,8 @@ export default {
     return{
       getCurrentUser: store.getters.currentUser,
       churchUsers: [],
-      churchNames: {}
+      churchNames: {},
+      loading: false,
     }
   },
   computed:{
@@ -159,10 +179,12 @@ export default {
   },
   methods:{
     async churchUser(){
+      this.loading = true
       try{
         const { data } = await axios.get('/api/Settings/ChurchUsers')
         this.churchUsers = data;
         console.log(this.churchUsers)
+        this.loading = false
       }catch(error){
         console.log(error)
       }
@@ -173,8 +195,9 @@ export default {
         console.log(response);
          this.churchUsers.users[index].status = "Active";
         console.log();
-        this.$toast.add({severity:'success', summary: '', detail:'Active Status Successfully', life: 3000});
+        this.$toast.add({severity:'success', summary: '', detail:'Status Make Active', life: 3000});
       }catch(error){
+        finish()
         console.log(error);
 
       }
@@ -184,9 +207,10 @@ export default {
          let response = await axios.post(`/api/Settings/DeactivateChurchUser?churchUserEmail=${email}`);
          console.log(response);
         this.churchUsers.users[index].status = "Inactive";
-        this.$toast.add({severity:'success', summary: '', detail:'Inactive Status Successfully', life: 3000});
+        this.$toast.add({severity:'success', summary: '', detail:'Status Make Inactive', life: 3000});
 
       }catch(error){
+        finish()
         console.log(error);
 
       }
@@ -197,8 +221,9 @@ export default {
       try {
         await axios.post(`/api/Settings/DeleteChurchUser?churchUserEmail=${email}`);
         this.churchUsers.users = this.churchUsers.users.filter(i => i.email !== email);
-         this.$toast.add({severity:'success', summary: '', detail:'Church Users Deleted Successfully', life: 3000});
+         this.$toast.add({severity:'success', summary: '', detail:'Church User Deleted Successfully', life: 3000});
       } catch (error){
+        finish()
         console.log(error);
       }
     },
@@ -242,11 +267,31 @@ export default {
 </script>
 
 <style scoped>
+.dropdown a{
+  color: black!important;
+  text-decoration: none;
+}
+.dropdown a:hover{
+  color: #136acd!important;
+}
 
 .table-header-row {
-  background: #ebeff4;
+  background: #dde2e6;
   border-top: 1px solid #dde2e6;
   border-radius: 8px 8px 0 0;
+}
+.header2{
+  cursor: pointer;
+
+}
+.header2:hover{
+  background-color: #eee;
+}
+.header1{
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #2c282821;
+  border-radius: 8px;
 }
 
 .hidden-header {

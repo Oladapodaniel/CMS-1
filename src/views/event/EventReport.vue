@@ -342,14 +342,14 @@
               <div class="col-md-12">
                 <div class="row mb-4">
                   <div class="col-md-12">
-                    <span class="attendance-header">Contribution</span>
+                    <span class="attendance-header">Offering</span>
                   </div>
                 </div>
                 <div class="row px-5">
                   <div class="col-md-12">
                     <div class="row">
                       <div class="col-sm-5">
-                        <span class="bold-700">Contribution Item</span>
+                        <span class="bold-700">Offering Item</span>
                       </div>
                       <div class="col-sm-5">
                         <span class="bold-700">Channel</span>
@@ -896,7 +896,7 @@
                       <ReportAreaChart
                         elemId="chart"
                         domId="areaChart2"
-                        title="CONTRIBUTION"
+                        title="OFFERING"
                         subtitle="So Far"
                         lineColor="#1F78B4"
                         :series="stats.offeringSoFar"
@@ -2418,22 +2418,22 @@ export default {
     const isPending = ref(true);
     const errorGettingReport = ref(false);
     const getStats = async () => {
-      errorGettingReport.value = false;
-      try {
-        const res = await axios.get(
-          `/api/Events/GetAnalysis?activityId=${activityId.value}`
-        );
-        stats.value = res.data;
-        isPending.value = false;
-        store.dispatch("setReportData", res.data);
-      } catch (err) {
-        isPending.value = false;
-        errorGettingReport.value = true;
-        console.log(err.response);
-        stopProgressBar();
-      }
+        errorGettingReport.value = false;
+        try {
+          const res = await axios.get(
+            `/api/Events/GetAnalysis?activityId=${activityId.value}`
+          );
+          stats.value = res.data;
+          isPending.value = false;
+          store.dispatch("setReportData", res.data);
+        } catch (err) {
+          isPending.value = false;
+          errorGettingReport.value = true;
+          console.log(err.response);
+          stopProgressBar();
+        }    
     };
-    if (!stats.value || !stats.value.activityToday || stats.value.activityToday.id !== route.params.id) {
+    if (!stats.value || !stats.value.activityToday || stats.value.activityToday.id !== route.params.id || route.query.edit) {
       getStats();
     } else {
       isPending.value = false;

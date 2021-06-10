@@ -16,7 +16,7 @@
               </div>
               <div class="col-12 w-100"> 
                  <h2 class="font-weight-bold py-3 mb-3">
-                     NGN {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
+                     {{tenantCurrency.currency}} {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
                  </h2>
               </div>
            
@@ -64,12 +64,11 @@
                 printJS({
                   ignoreElements: ['ignore1', 'ignore2'],
                   maxWidth: 867,
-                  header: 'CONTRIBUTION TRANSACTIONS',
+                  header: 'OFFERING TRANSACTIONS',
                   printable: printContribution,
                   properties: [
                     'DATE',
-                    'EVENT',
-                    'CONTRIBUTION',
+                    'OFFERING',
                     'AMOUNT',
                     'DONOR',
                   ],
@@ -138,19 +137,19 @@
                     <input
                       type="text"
                       class="input w-100"
-                      placeholder="Contribution"
+                      placeholder="Offering"
                       v-model="filter.contribution"
                     />
                   </div>
 
-                  <div class="col-12 col-md-4 form-group d-none d-md-block">
+                  <!-- <div class="col-12 col-md-4 form-group d-none d-md-block">
                     <input
                       type="text"
                       class="input w-100"
                       placeholder="event"
-                      v-model="filter.event"
+                      v-model="filter.event"  
                     />
-                  </div>
+                  </div> -->
 
                   <div class="col-12 col-md-4 form-group d-none d-md-block">
                     <input
@@ -185,7 +184,7 @@
               <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
                 <div class="col-md-1 px-3"></div>
                 <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Contribution</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Offering</div>
                 <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
                 <div class="small-text text-capitalize col-md-2 font-weight-bold">Donor</div>
                 <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
@@ -211,16 +210,16 @@
                 <div class="desc small-text col-md-2 px-1">
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                    <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }"><span>{{ date(item.date) }}</span></router-link>
+                    <router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }"><span class="text-decoration-none">{{ date(item.date) }}</span></router-link>
                   </p>
                 </div>
 
                 <div class="col-md-3 px-1">
                   <div class="d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Contribution</span>
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Offering</span>
                   <div>
                     
-                    <div class="desc small-text text-right text-md-left"><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.contribution }}</router-link></div>
+                    <div class="desc small-text text-right text-md-left"><router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.contribution }}</router-link></div>
                   </div>
                   </div>
                 </div>
@@ -229,7 +228,7 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
                     <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
-                    <span><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
+                    <span><router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
                   </p>
                 </div>
 
@@ -237,7 +236,7 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Donor</span>
                     <span><span class="primary-text c-pointer"
-                    ><router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.donor }}</router-link></span
+                    ><router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.donor }}</router-link></span
                   ></span>
                   </p>
                 </div>
@@ -288,7 +287,7 @@
                  <div class="col-sm-2">
                           EVENT
                        </div> 
-                <div class="col-sm-3 d-none d-sm-block">CONTRIBUTION</div>
+                <div class="col-sm-3 d-none d-sm-block">OFFERING</div>
                 <div class="col-sm-3 d-none d-sm-block">AMOUNT</div>
                 <div class="col-sm-3 d-none d-sm-block">DONOR</div>
               </div>
@@ -302,7 +301,7 @@
                    <div class="col-sm-2">
                             EVENT
                         </div> 
-                  <div class="col-sm-3">CONTRIBUTION</div>
+                  <div class="col-sm-3">OFFERING</div>
                   <div class="col-sm-3">AMOUNT</div>
                   <div class="col-sm-3">DONOR</div>
                 </div>
@@ -410,6 +409,7 @@ import Dropdown from "primevue/dropdown";
 import ContributionPieChart from "../../../components/charts/PieChart.vue";
 import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
 import numbers_formatter from '../../../services/numbers/numbers_formatter';
+import store from '../../../store/store';
 export default {
   props: ["contributionTransactions", "totalItem"],
   components: {
@@ -428,6 +428,7 @@ export default {
     const filterResult = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
+    const tenantCurrency = ref(store.getters.currentUser)
     const Allsummary = ref([
       { name: "Not Sure", y: 20 },
       { name: "Male", y: 16 },
@@ -498,8 +499,8 @@ export default {
       return props.contributionTransactions.map((i) => {
         return {
           DATE: monthDayYear.monthDayYear(i.eventDate),
-          EVENT: i.eventName,
-          CONTRIBUTION: i.contribution,
+          // EVENT: i.eventName,
+          OFFERING: i.contribution,
           AMOUNT: i.amount,
           DONOR: i.donor ? i.donor : "",
         };
@@ -514,7 +515,7 @@ export default {
             toast.add({
               severity: "success",
               summary: "Delete Successful",
-              detail: `Contribution Transaction Deleted`,
+              detail: `Offering Transaction Deleted`,
               life: 3000,
             });
             emit("contri-transac", index);
@@ -662,6 +663,11 @@ export default {
       }
     };
     getContributionSummary();
+
+    const getTenantCurrency = () =>{
+      
+    }
+    getTenantCurrency();
     const chartData = computed(() => {
       if (
         contributionSummary.value &&
@@ -821,7 +827,8 @@ export default {
       attendanceSeries,
       pieChart,
       LineGraphXAxis,
-      amountWithCommas
+      amountWithCommas,
+       tenantCurrency
     };
   },
 };

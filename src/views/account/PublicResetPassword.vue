@@ -74,6 +74,9 @@
               <button class="submit-btn sign-in-btn" @click="resetCredentials">
                 Reset
               </button>
+              <!-- "We've always done it that way" is not a valid reason for anything.
+              Don't follow traditions because the status quo is comfortable and change makes you uncomfortable.
+              Question whether past routines are serving you well in the present and guiding you toward a better future.-->
             </div>
           </div>
         </div>
@@ -120,7 +123,7 @@ export default {
         })
         .catch((err) => {
           loading.value = false;
-        toast.add({
+          toast.add({
             severity: "info",
             summary: "Email Not Verified",
             detail: "Enter Correct Email",
@@ -138,7 +141,7 @@ export default {
         .post(`/passwordreset`, credentials.value)
         .then((res) => {
           loading.value = false;
-           if (res.status === 200) {
+          if (res.status === 200) {
             toast.add({
               severity: "success",
               summary: "Password Reset",

@@ -9,7 +9,7 @@
       <Toast />
       <ConfirmDialog></ConfirmDialog>
 
-      <div class="row grey-rounded-border pt-1 pb-5">
+      <div class="row grey-border pt-1 pb-5">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-12">
@@ -42,7 +42,7 @@
             <div class="col-md-7">
               <span class="py-2 font-weight-bold">NAME</span>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 text-center">
               <span class="py-2 font-weight-bold">ACTION</span>
             </div>
           </div>
@@ -57,7 +57,7 @@
                   <span class="py-2 text-xs-left">{{ type.name }}</span>
                 </div>
                 <div
-                  class="col-md-5 d-flex justify-content-between align-items-center"
+                  class="col-md-5 d-flex justify-content-end align-items-center"
                 >
                   <span class="py-4 hidden-header">ACTION</span>
                   <div class="row">
@@ -71,17 +71,17 @@
                 </div>
               </div>
 
-              <div class="row grey-background py-2" v-if="vissibleTab === `tab_${index}`">
+              <div class="row grey-background py-2 mt-2" v-if="vissibleTab === `tab_${index}`">
                 <div
                   class="col-md-7 d-flex justify-content-between align-items-center"
                 >
-                  <label for="" class="d-flex">
+                  <label for="" class="d-flex mt-4">
                     <span class="mr-2">Name</span>
                     <input type="text" class="form-control" v-model="typeName">
                   </label>
                 </div>
                 <div
-                  class="col-md-5 d-flex justify-content-between align-items-center"
+                  class="col-md-5 d-flex justify-content-end align-items-center"
                 >
                   <div class="row">
                     <div class="col-md-6">
@@ -101,6 +101,9 @@
               </div>
             </div>
           </div>
+          <div class=" col-12 text-center p-5" v-if="loading">
+             <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
+         </div>
         </div>
       </div>
     </div>
@@ -111,6 +114,7 @@
 import axios from "@/gateway/backendapi";
 import Toast from 'primevue/toast';
 import ConfirmDialog from 'primevue/confirmdialog';
+import finish from '../../services/progressbar/progress'
 
 export default {
   components:{
@@ -125,14 +129,17 @@ export default {
       typeName: "",
       attendanceName: "",
       ageGroup: "",
+      loading: false
     }
   },
 
   methods: {
     async getTypes() {
       try {
+        this.loading = true
         const { data } = await axios.get("/api/Settings/TenantAttentandaceTypes");
         this.types = data;
+        this.loading = false
       } catch (error) {
         console.log(error);
       }
@@ -160,6 +167,7 @@ export default {
         this.types = this.types.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Attendance Deleted Successfully', life: 3000});
       } catch (error){
+        finish()
         console.log(error);
       }
     },
@@ -170,6 +178,7 @@ export default {
         this.discard()
         this.$toast.add({severity:'success', summary: '', detail:'Attendance Updated Successfully', life: 3000});
       }catch (error){
+        finish()
         console.log(error)
       }
 
@@ -179,8 +188,10 @@ export default {
       try{
          await axios.post('/api/Settings/NewAttendanceType/'+ this.attendanceName);
         this.getTypes()
+        this.attendanceName = ""
         this.$toast.add({severity:'success', summary: '', detail:' Attendance Save Successfully', life: 3000});
       }catch (error) {
+        finish()
         console.log(error)
       }
     },

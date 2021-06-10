@@ -397,6 +397,11 @@ export default {
           ],
         },
       },
+      facebook : '',
+      instagram : '',
+      twitter : '',
+      whatsapp : '',
+      like : '',
     };
   },
 };

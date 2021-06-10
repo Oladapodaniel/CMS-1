@@ -30,6 +30,8 @@ import 'primevue/resources/themes/saga-blue/theme.css'       //theme
 import 'primevue/resources/primevue.min.css'                 //core css
 import 'primeicons/primeicons.css'                          //icons
 
+import VueGtag from "vue-gtag-next";
+
 
 
 NProgress.configure({ showSpinner: false });
@@ -53,6 +55,15 @@ axios.interceptors.request.use((config) => {
   })
 
 const app = createApp(App);
+
+app.use(VueGtag, {
+  property: {
+    id: "G-YNZ7GTSYZV"
+    // id: "UA-123456-7"
+  }
+});
+
+
 app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')
 // createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).mount('#app')
 app.component("Toast", Toast);

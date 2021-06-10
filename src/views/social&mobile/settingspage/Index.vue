@@ -9,6 +9,42 @@
       </div>
 
  <!--facebook area  -->
+ <!-- Modal -->
+ <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Church Facebook Page</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-3">
+            <span class="">Page Id:</span>
+          </div>
+          <div class="col-md-9">
+            <input type="text" class="rounded form-control px-l-5"  placeholder="Input Your Church Id">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn default-btn btnfb">Connect</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!--  End Modal -->
+
       <div class="row mx-2 mx-md-0">
         <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
@@ -25,7 +61,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btnfb">Connect</button>
+              <button class="btn default-btn btnfb" data-target="#exampleModal" data-toggle="modal">Connect</button>
             </div>
           </div>
         </div>
@@ -33,6 +69,36 @@
 <!--end facebook area  -->
 
       <!--twitter area  -->
+      
+<!-- Modal -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Church Twitter Page</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-3">
+            <span class="">Page Id:</span>
+          </div>
+          <div class="col-md-9">
+            <input type="text" class="rounded form-control px-l-5"  placeholder="Input Your Church Id">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" class="btn default-btn btntwi">Connect</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!--  End Modal -->
       <div class="row mx-2 mx-md-0 my-4">
         <div class="col-md-9 bordersocials py-3 box box-shadow ">
           <div class="row">
@@ -49,7 +115,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btntwi">Connect</button>
+              <button class="btn default-btn btntwi" data-target="#exampleModal1" data-toggle="modal">Connect</button>
             </div>
           </div>
         </div>
@@ -67,7 +133,7 @@
                 </div>
                 <div class="col-10 d-flex align-items-center">
                   <p class="link-text mb-0 pl-2 pl-md-0">
-                    Connect your instergram account to Churchplus
+                    Connect your instagram account to Churchplus
                   </p>
                 </div>
               </div>
@@ -135,7 +201,39 @@
 
 <script>
 export default {
-  setup() {},
+  setup() {
+    /*eslint no-undef: "warn"*/
+//     FB.login(function(response) {
+//     if (response.authResponse) {
+//      console.log('Welcome!  Fetching your information.... ');
+//      FB.api('/me', function(response) {
+//        console.log('Good to see you, ' + response.name + '.');
+//      });
+//     } else {
+//      console.log('User cancelled login or did not fully authorize.');
+//     }
+// });
+
+//   },
+const facebookLogin = () => {
+   /*eslint no-undef: "warn"*/
+      FB.login(
+        function(response) {
+          let token = {
+            accessToken: response.authResponse.accessToken,
+          };
+          console.log(response);
+          console.log(token);
+        },
+        { scope: "user_birthday" }
+      );
+    };
+    facebookLogin()
+    return{
+      facebookLogin
+    }
+
+  }
 };
 </script>
 
