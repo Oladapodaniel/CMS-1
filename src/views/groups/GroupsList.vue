@@ -19,11 +19,11 @@
         </div>
       </div>
 
-      <div class="row mt-4 grey-rounded-border">
+      <div class="row mt-4 grey-rounded-border grey-rounded-border2">
         <div class="col-md-12">
           <div class="row main-header">
             <div class="col-md-12">
-              <div class="row">
+              <div class="row row-bg-color">
                 <div class="col-sm-2 d-md-flex align-items-center">
                   <input class="my-2" type="checkbox" />
                 </div>
@@ -211,7 +211,7 @@ export default {
         (loading.value = false), console.log(error.response);
       }
     };
-    
+
     if (!groups.value || groups.value.length === 0) getgroups();
 
     return {
@@ -229,10 +229,24 @@ export default {
   box-sizing: border-box;
 }
 
+
+.row-bg-color {
+    background-color: #f1f3f9;
+     border-radius: 30px 30px 0 0;
+}
+
+.grey-rounded-border2 {
+    border: 1px solid #dde2e6 !important;
+    box-shadow: 0 3px 6px rgba(44,40,40,.10980392156862745);
+    border-radius: 30px;
+    text-align: center;
+    width: 100%;
+}
+
 .events {
       font: normal normal 800 29px Nunito sans;
       }
-      
+
 .yu {
   margin-top: 5rem !important;
 }
@@ -244,10 +258,10 @@ export default {
 .link a {
   text-decoration: none;
 }
-
+/*
 .main-header {
   background: #e9ecef;
-}
+} */
 
 .link a:hover {
   color: #fff;
