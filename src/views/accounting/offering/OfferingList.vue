@@ -22,10 +22,10 @@
            
           </div>
           <!-- {{ pieChart }} -->
+          <!-- title="Analytics" -->
           <div class="col-12 col-md-4">
             <ContributionPieChart
               domId="chart"
-              title="Analytics"
               distance="5"
               :titleMargin="10"
               :summary="pieChart"

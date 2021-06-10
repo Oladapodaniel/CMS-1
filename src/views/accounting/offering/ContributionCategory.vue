@@ -25,15 +25,19 @@
     </div>
     
 
-    <div class="no-person"  v-if="contributionItems.length === 0 && !loading">
+    <div v-if="contributionItems.length > 0 && !loading && !networkError">
+        <ContributionCategoryList :contributionItems="contributionItems" @get-pages="getOfferingPages" @contri-items="updateItems"/>
+    </div> 
+    <div class="no-person"  v-if="contributionItems.length === 0 && !loading && !networkError">
         <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any offering category yet</p>
         </div>
     </div>
-    <div v-if="contributionItems.length > 0 && !loading">
-        <ContributionCategoryList :contributionItems="contributionItems" @get-pages="getOfferingPages" @contri-items="updateItems"/>
-    </div> 
+    <div v-else-if="networkError" class="adjust-network">
+      <img src="../../../assets/network-disconnected.png" >
+      <div>Opps, Your internet connection was disrupted</div>
+    </div>
 </div>
 </template>
 
@@ -51,6 +55,7 @@ export default {
     setup () {
         const contributionItems = ref([])
         const loading = ref(false)
+        const networkError = ref(false)
 
 
         const getContributionCategory = () => {
@@ -69,6 +74,11 @@ export default {
                     })
                     .catch((err) => {
                         loading.value = false
+                        if(err.toString().toLowerCase().includes("network error")) {
+                          networkError.value = true
+                        } else {
+                          networkError.value = false
+                        }
                         console.log(err)
                     });
             }
@@ -88,7 +98,7 @@ export default {
       contributionItems.value.splice(payload, 1)
     }
         return {
-            contributionItems, loading, getOfferingPages, updateItems
+            contributionItems, loading, getOfferingPages, updateItems, networkError
         }
     }
 }
