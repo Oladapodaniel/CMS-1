@@ -51,15 +51,19 @@
         </Dialog>
       <!-- </div> -->
         <hr class="hr container-wide" />
-         <div v-if="firstTimersList.length === 0 && !loading" class="no-person" >
+        <div v-if="firstTimersList.length > 0 && !loading && !networkError" class="event-list">
+            <FirstTimersList />
+        </div>
+         <div v-if="firstTimersList.length === 0 && !loading && !networkError" class="no-person" >
         <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any first timer yet</p>
         </div>
       </div>
-      <div v-else-if="firstTimersList.length > 0 && !loading" class="event-list">
-            <FirstTimersList />
-        </div>
+      <div v-else-if="networkError && !loading" class="adjust-network">
+        <img src="../../assets/network-disconnected.png" >
+        <div>Opps, Your internet connection was disrupted</div>
+      </div>  
 
         <div class="row container-wide" v-if="loading">
     <div class="col-md-12">
@@ -150,6 +154,7 @@ export default {
       const image = ref("");
       const displayModal = ref(false)
       const firstTimerData = ref([])
+      const networkError = ref(false)
 
       const getFirstTmersList = () => {
         loading.value = true
@@ -158,6 +163,16 @@ export default {
             firstTimersList.value = res.data;
             loading.value = false
             console.log(res.data)
+          })
+          .catch(err => {
+            finish()
+            console.log(err)
+          if(err.toString().toLowerCase().includes("network error")) {
+            networkError.value = true
+          } else {
+            networkError.value = false
+          }
+            loading.value = false
           })
       }
       getFirstTmersList()
@@ -271,7 +286,7 @@ export default {
       router.push({ name: 'ImportInstruction', query: { query: 'importfirsttimer' } })
     }
 
-    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer };
+    return { firstTimersList, getFirstTmersList, loading, fileUpload, imageSelected, image, displayModal, importFile, firstTimerData, addToFirstTimers, closeModal, importFirstTimer, networkError };
 
   },
 };

@@ -468,7 +468,7 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, computed } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
@@ -679,13 +679,14 @@ export default {
       });
     };
 
-    onMounted(() => {
+    const getFirstTimers = () => {
       console.log(route, "route");
       axios.get("/api/People/FirstTimer").then((res) => {
         churchMembers.value = res.data;
         console.log(churchMembers.value, "Al iz well");
-      });
-    });
+      })
+    };
+    getFirstTimers()
 
     const applyFilter = () => {
       filter.value.name =
