@@ -48,6 +48,7 @@ import { useStore } from 'vuex'
 import axios from "@/gateway/backendapi"
 import ContributionCategoryList from './ContributionCategoryList'
 import Loader from './SkeletonLoader'
+import finish from '../../../services/progressbar/progress'
 export default {
     components: {
         ContributionCategoryList, Loader
@@ -73,6 +74,7 @@ export default {
                     console.log(res.data);
                     })
                     .catch((err) => {
+                      finish()
                         loading.value = false
                         if(err.toString().toLowerCase().includes("network error")) {
                           networkError.value = true

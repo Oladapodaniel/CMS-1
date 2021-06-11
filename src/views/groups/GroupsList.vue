@@ -106,7 +106,7 @@
                 </div>
                 <div class="col-sm-3 d-md-flex align-items-center">
                   <span class="hidden-header font-weight-600">Mobile Group</span>
-                  <span class="my-2 f-right">{{ group.isMobileGroup }}</span>
+                  <span class="my-2 f-right"><i class="pi pi-check text-success" v-if="group.isMobileGroup "></i></span>
                 </div>
                 <div class="col-sm-1 d-md-flex align-items-center text-right small-text">
                   <div class="dropdown">
@@ -211,7 +211,7 @@ export default {
               id: i.id,
               tenantID: i.tenantID,
               peopleInGroupsCount: i.peopleInGroupsCount,
-              isMobileGroup: i.isMobileGroup ? 'Yes' : 'No'
+              isMobileGroup: i.isMobileGroup
             };
           }));
         console.log(groups.value);
