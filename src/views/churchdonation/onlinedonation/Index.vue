@@ -29,7 +29,10 @@
     </div>
     
 
-    <div class="no-person"  v-if="donationTransactions.length === 0 && !loading">
+    <div v-if="donationTransactions.length > 0 && !loading && !networkError">
+        <OnlineDonation :donationTransactions="donationTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/>
+    </div>
+    <div class="no-person"  v-else-if="donationTransactions.length === 0 && !loading && !networkError">
         <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You have not added any online donation yet, Set up now to enable your church to recieve online donation</p>
@@ -40,8 +43,9 @@
             </div>
         </div>
     </div>
-    <div v-if="donationTransactions.length > 0 && !loading">
-        <OnlineDonation :donationTransactions="donationTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/>
+    <div v-else-if="networkError" class="adjust-network">
+      <img src="../../../assets/network-disconnected.png" >
+      <div>Opps, Your internet connection was disrupted</div>
     </div>
 </div>
 </div>
@@ -63,6 +67,7 @@ export default {
         const donationTransactions = ref([])
         const totalItem = ref(0)
         const loading = ref(false)
+        const networkError = ref(false)
 
 
         const getDonationTransaction = () => {
@@ -80,6 +85,11 @@ export default {
                     .catch((err) => {
                         loading.value = false
                         console.log(err)
+                        if(err.toString().toLowerCase().includes("network error")) {
+                          networkError.value = true
+                        } else {
+                          networkError.value = false
+                        }
                     });
             
     
@@ -98,7 +108,7 @@ export default {
      donationTransactions.value.splice(payload, 1)
     }
         return {
-           donationTransactions, loading, getOfferingPages, updateTransac, totalItem
+           donationTransactions, loading, getOfferingPages, updateTransac, totalItem, networkError
         }
     }
 }
