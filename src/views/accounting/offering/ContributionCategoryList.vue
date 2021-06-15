@@ -55,7 +55,7 @@
               >
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder="Search by name"
                   v-model="searchText"
                 />
                 <span class="empty-btn">x</span>
@@ -82,6 +82,7 @@
                       type="text"
                       class="input w-100"
                       placeholder="Name"
+                      v-model="filter.name"
                     />
                   </div>
 
@@ -90,7 +91,7 @@
                       type="text"
                       class="input w-100"
                       placeholder="Cash Account"
-    
+                      v-model="filter.cashAccount"
                     />
                   </div>
 
@@ -99,6 +100,7 @@
                       type="text"
                       class="input w-100"
                       placeholder="Income Account"
+                      v-model="filter.incomeAccount"
                     />
                   </div>
                 </div>
@@ -429,17 +431,11 @@ export default {
   },
 
   setup(props, { emit }) {
-    // const contributionTransactions = ref([]);
-    // const getFirstTimerSummary = ref({});
-    const filter = ref({});
     const searchIsVisible = ref(false);
     // const filterResult = ref([]);
     // const noRecords = ref(false);
     const searchText = ref("");
-
-    // if ()
-
-    // const route = useRoute();
+    const filter = ref({})
     const filterFormIsVissible = ref(false);
     const toggleFilterFormVissibility = () =>
       (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -447,22 +443,6 @@ export default {
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
     };
-
-    // const getContributionTranactions = () => {
-    //   // let store = useStore()
-    //   axios
-    //     .get("/api/Financials/Contributions/Transactions")
-    //     .then((res) => {
-    //       contributionTransactions.value = res.data;
-    //       console.log(res.data);
-    //     })
-    //     .catch((err) => console.log(err));
-    // // get from  to store
-    // // console.log(store.getters['contributions/contributionList'])
-    // // savev to sstore
-    // // store.dispatch('contributions/contributionList')
-    // };
-    // getContributionTranactions();
 
     const searchContribution = computed(() => {
       if (searchText.value !== "") {
@@ -498,14 +478,6 @@ export default {
             life: 3000,
           });
           }
-          // let contriItems= props.contributionTransactions.filter(
-          //   (item) => item.id !== id
-          // );
-          
-          // props.contributionTransactions = props.contributionTransactions.filter(
-          //   (item) => item.id !== id
-          // );
-          // console.log(index)
         })
         .catch((err) => {
           finish()
@@ -611,6 +583,14 @@ export default {
     //   return 0;
     // });
 
+    const clearAll = () => {
+      filter.value = {}
+    }
+
+    const hide = () => {
+      filterFormIsVissible.value = false
+    }
+
 
     return {
       // contributionTransactions,
@@ -618,8 +598,7 @@ export default {
       filterFormIsVissible,
       toggleFilterFormVissibility,
       moment,
-      // firstTimerSummary,
-      // getFirstTimerSummary,
+      clearAll,
       // applyFilter,
       filter,
       toggleSearch,
@@ -632,7 +611,8 @@ export default {
       // deleteMember,
       offeringCount,
       currentPage,
-      getPeopleByPage
+      getPeopleByPage,
+      hide
     };
   },
 };

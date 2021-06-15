@@ -93,11 +93,8 @@
             <div
               class="col-12"
               v-if="
-                item.name !== 'Email' &&
-                  item.name !== 'SMS' &&
-                  item.name !== 'Product' &&
-                  item.name !== 'Financial Analysis' &&
-                  item.name !== 'Fixed Assets'
+                item.type === 0
+              
               "
             >
               <div class="row">
@@ -123,19 +120,19 @@
           <div class="row mt-3 normal-text" v-if="+selectMonth.name > 0">
             <div class="col-md-6 col-6">Subscription</div>
             <div class="col-md-6  col-6 text-right font-weight-bold">
-              {{ subselectedDuratn }}
+              {{ subselectedDuratn.toFixed(2) }}
             </div>
           </div>
           <div class="row mt-2 normal-text">
             <div class="col-md-6 col-6">SMS</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ smsAmount == "" ? "0" : smsAmount }}
+              {{ smsAmount == "" ? "0.00" : smsAmount.toFixed(2) }}
             </div>
           </div>
           <div class="row mt-3 normal-text">
             <div class="col-md-6 col-6">Email</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ selectEmail.constValue ? emailAmount : 0 }}
+              {{ selectEmail.constValue ? emailAmount.toFixed(2) : '0.00' }}
             </div>
           </div>
           <!-- Selected Products -->
@@ -146,14 +143,15 @@
           >
             <div class="col-md-6 col-6">{{ item.name }}</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ item.price * subscriptionDuration }}
+              {{ daysToEndOfSubscription > 0 ? ((item.price * subscriptionDuration) + ((item.price / 30) * daysToEndOfSubscription)).toFixed(2) : (item.price * subscriptionDuration).toFixed(2) }}
+              <!-- {{ subscriptionDuration }} {{ (item.price * subscriptionDuration) }} {{ ((item.price / 30) * daysToEndOfSubscription) }} -->
             </div>
           </div>
           <hr />
           <div class="row mt-3 normal-text">
             <div class="col-md-6 col-6">Total</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ TotalAmount }}
+              {{ TotalAmount.toFixed(2) }}
             </div>
           </div>
           <div class="row mt-4">
@@ -360,9 +358,10 @@ export default {
     const daysToEndOfSubscription = ref(0);
     const selectSubscription = () => {
       axios.get("/api/Subscription/GetSubscription").then((res) => {
+        console.log(res.data.returnObject, "RES");
         Plans.value = res.data.returnObject;
         existingPlan.value.id = Plans.value.id;
-        existingPlan.value.amountInNaira = Plans.value.amountInNaira;
+        existingPlan.value.amount = Plans.value.amount;
         existingPlan.value.description = Plans.value.description;
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
         existingPlan.value.membershipSize = Plans.value.membershipSize;
@@ -499,6 +498,7 @@ export default {
 
     const subselectedDuratn = computed(() => {
       let multiValue = 1;
+      // if (daysToEndOfSubscription.value > 0) multiValue += existingPlan.value.amount * daysToEndOfSubscription.value;
       if (selectedPlan.value.amount)
         multiValue *= selectedPlan.value.amount;
       if (selectMonth.value.name) multiValue *= +selectMonth.value.name;
@@ -510,12 +510,13 @@ export default {
       if (subselectedDuratn.value && selectMonth.value.name > 0) sum += subselectedDuratn.value;
       if (smsValue.value) sum += smsValue.value * 2;
       sum += emailAmount.value;
-      return sum + sumCheckboxItem.value;
+      return sum + (+sumCheckboxItem.value.toFixed(2));
     });
     const sumCheckboxItem = computed(() => {
       if (checkedBoxArr.value.length === 0) return 0;
       // return checkedBoxArr.value.map((i) => i.price).reduce((a, b) => a + b);
-      return checkedBoxArr.value.map((i) => i.price * subscriptionDuration.value).reduce((a, b) => a + b);
+      return checkedBoxArr.value.map((i) => calculatedProductPrice(i.price)).reduce((a, b) => a + b);
+      // return checkedBoxArr.value.map((i) => i.price * subscriptionDuration.value).reduce((a, b) => a + b);
     });
 
     const selectCheckbox = (item) => {
@@ -642,15 +643,21 @@ export default {
       const differenceInTime = Math.abs(endDate - startDate);
       const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
 
-      return Math.round(differenceInDays / 30);
+      return differenceInDays;
     }
 
     const subscriptionDuration = computed(() => {
-      if (selectMonth.value.name && daysToEndOfSubscription.value) return +selectMonth.value.name + daysToEndOfSubscription.value;
-      if (!daysToEndOfSubscription.value && selectMonth.value.name) return +selectMonth.value.name;
-
-      return daysToEndOfSubscription.value;
+      // if (selectMonth.value.name && daysToEndOfSubscription.value) return +selectMonth.value.name + daysToEndOfSubscription.value;
+      // if (!daysToEndOfSubscription.value && selectMonth.value.name) return +selectMonth.value.name;
+      // return daysToEndOfSubscription.value;
+      if (selectMonth.value.name) return +selectMonth.value.name
+      return 0
     })
+
+    const calculatedProductPrice = price => {
+      if (daysToEndOfSubscription.value < 1) return selectMonth.value.name ? price * +selectMonth.value.name : 0;
+      return (selectMonth.value.name ? price * +selectMonth.value.name : 0) + ((price / 30) * daysToEndOfSubscription.value);
+    }
 
     return {
       selectedPlan,

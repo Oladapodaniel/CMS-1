@@ -366,6 +366,24 @@ const routes = [{
                 ]
             },
             {
+                path: 'childcheckin',
+                name: 'ChildCheckin',
+                meta: {
+                    title: 'Churchplus - Child Checkin',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "wardcheckin" */ '@/views/event/childcheckin/Index.vue')
+            },
+            {
+                path: 'checkinachild',
+                name: 'CheckinAChild',
+                meta: {
+                    title: 'Churchplus - Child Checkin',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "checkinachild" */ '@/views/event/childcheckin/pages/WardCheckin.vue')
+            },
+            {
                 path: 'checkins',
                 name: 'AttendanceAndCheckinList',
                 meta: {
