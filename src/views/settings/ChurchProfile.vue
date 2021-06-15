@@ -49,9 +49,9 @@
                   </div>
                 </div>
                 <div>
-                  <button class="upload-btn cursor-pointer outline-none" @click.prevent="uploadImage">
+                  <!-- <button class="upload-btn cursor-pointer outline-none" @click.prevent="uploadImage">
                     Upload
-                  </button>
+                  </button> -->
                 </div>
               </div>
             </div>
@@ -238,6 +238,7 @@ import Dropdown from "primevue/dropdown";
 // import Drop from "primevue/dropdown";
 import { ref} from 'vue';
 import { useToast } from "primevue/usetoast";
+import router from '../../router';
 export default {
   components: { Dropdown},
   setup() {
@@ -319,8 +320,9 @@ export default {
               severity: "success",
               summary: "Successful",
               detail: `${res.data.response}`,
-              life: 4000,
+              life: 9000,
             });
+            router.push('/tenant/settings/defaultmessage')
 
       }).catch(error =>{
         console.log(error);

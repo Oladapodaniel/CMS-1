@@ -41,8 +41,8 @@
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">CATEGORY</span>
-              <span class="py-2" v-if="allMessages.message.length < 20"><router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
-              <span v-else v-tooltip.top="`${allMessages.message}`"><router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message.substring(0,20)+"..."}}</router-link></span>
+              <span class="py-2" v-if="allMessages.message.length < 20"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
+              <span v-else v-tooltip.top="`${allMessages.message}`"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message.substring(0,20)+"..."}}</router-link></span>
                <!-- <span class="py-2 text-xs-left"  v-if="churchMem.email.length<10">{{ churchMem.email}}</span>
               <span v-else v-tooltip.top="`${churchMem.email}`">{{churchMem.email.substring(0,10)+ "..."}}</span> -->
             </div>
@@ -50,15 +50,15 @@
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">SUBJECT</span>
-              <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 20"> <router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
+              <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 20"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
               <span v-else v-tooltip.top="`${allMessages.subject}`">{{allMessages.subject.substring(0,)+ "..."}}</span>
             </div>
             <div
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">TYPE</span>
-              <span class="py-2" v-if="messageName(allMessages.messageType).length < 20"> <router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
-              <span v-else v-tooltip.top="`${messageName(allMessages.messageType)}`"> <router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType).substring(0,20) + "..."}}</router-link></span>
+              <span class="py-2" v-if="messageName(allMessages.messageType).length < 20"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
+              <span v-else v-tooltip.top="`${messageName(allMessages.messageType)}`"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType).substring(0,20) + "..."}}</router-link></span>
               
               
              
@@ -67,7 +67,7 @@
               class="col-md-1 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">CATEGORY</span>
-              <span class="py-2"><router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{categoryName(allMessages.category)}}</router-link></span>
+              <span class="py-2"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{categoryName(allMessages.category)}}</router-link></span>
               
               
             </div>
@@ -197,6 +197,15 @@ export default {
 </script>
 
 <style scoped>
+.route{
+  color: black!important;
+  text-decoration: none!important;
+
+}
+.route:hover{
+  color: #136acd!important;
+
+}
 .dropdown a{
   color: black!important;
   text-decoration: none;

@@ -8,42 +8,61 @@
         </div>
       </div>
 
- <!--facebook area  -->
- <!-- Modal -->
- <!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      <!--facebook area  -->
+      <!-- Modal -->
+      <!-- Button trigger modal -->
+      <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
   Launch demo modal
 </button> -->
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Church Facebook Page</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-3">
-            <span class="">Page Id:</span>
-          </div>
-          <div class="col-md-9">
-            <input type="text" class="rounded form-control px-l-5"  placeholder="Input Your Church Id">
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Church Facebook Page
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <span class="">Page Id:</span>
+                </div>
+                <div class="col-md-9">
+                  <input
+                    type="text"
+                    class="rounded form-control px-l-5"
+                    placeholder="Input Your Church Id"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+              <button type="button" class="btn default-btn btnfb">
+                Connect
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-        <button type="button" class="btn default-btn btnfb">Connect</button>
-      </div>
-    </div>
-  </div>
-</div>
 
- <!--  End Modal -->
+      <!--  End Modal -->
 
       <div class="row mx-2 mx-md-0">
         <div class="col-md-9 bordersocials py-3 box box-shadow">
@@ -51,7 +70,9 @@
             <div class="col-md-8">
               <div class="row">
                 <div class="col-2">
-                  <i class="pi pifb pi-facebook d-flex justify-content-center ml-4 ml-md-0 "></i>
+                  <i
+                    class="pi pifb pi-facebook d-flex justify-content-center ml-4 ml-md-0"
+                  ></i>
                 </div>
                 <div class="col-10 d-flex align-items-center">
                   <p class="link-text mb-0 pl-2 pl-md-0">
@@ -61,51 +82,74 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btnfb" @click="facebookLogin">Connect</button>
+              <button class="btn default-btn btnfb" @click="facebookLogin">
+                Connect
+              </button>
             </div>
           </div>
         </div>
       </div>
-<!--end facebook area  -->
+      <!--end facebook area  -->
 
       <!--twitter area  -->
-      
-<!-- Modal -->
-<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Church Twitter Page</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-3">
-            <span class="">Page Id:</span>
-          </div>
-          <div class="col-md-9">
-            <input type="text" class="rounded form-control px-l-5"  placeholder="Input Your Church Id">
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal1"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Church Twitter Page
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <span class="">Page Id:</span>
+                </div>
+                <div class="col-md-9">
+                  <input
+                    type="text"
+                    class="rounded form-control px-l-5"
+                    placeholder="Input Your Church Id"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+              <button type="button" class="btn default-btn btntwi">
+                Connect
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-        <button type="button" class="btn default-btn btntwi">Connect</button>
-      </div>
-    </div>
-  </div>
-</div>
 
- <!--  End Modal -->
+      <!--  End Modal -->
       <div class="row mx-2 mx-md-0 my-4">
-        <div class="col-md-9 bordersocials py-3 box box-shadow ">
+        <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
             <div class="col-md-8">
               <div class="row">
                 <div class="col-2">
-                  <i class="pi pitwi pi-twitter d-flex justify-content-center ml-4 ml-md-0 "></i>
+                  <i
+                    class="pi pitwi pi-twitter d-flex justify-content-center ml-4 ml-md-0"
+                  ></i>
                 </div>
                 <div class="col-10 d-flex align-items-center">
                   <p class="link-text mb-0 pl-2 pl-md-0">
@@ -115,21 +159,29 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btntwi" data-target="#exampleModal1" data-toggle="modal">Connect</button>
+              <button
+                class="btn default-btn btntwi"
+                data-target="#exampleModal1"
+                data-toggle="modal"
+              >
+                Connect
+              </button>
             </div>
           </div>
         </div>
       </div>
- <!--twitter area ended  -->
+      <!--twitter area ended  -->
 
       <!--instergram area  -->
-       <div class="row mx-2 mx-md-0 my-4">
-        <div class="col-md-9 bordersocials py-3 box box-shadow ">
+      <div class="row mx-2 mx-md-0 my-4">
+        <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
             <div class="col-md-8">
               <div class="row">
                 <div class="col-2">
-                  <i class="fa piinsta fa-instagram d-flex justify-content-center ml-4 ml-md-0 "></i>
+                  <i
+                    class="fa piinsta fa-instagram d-flex justify-content-center ml-4 ml-md-0"
+                  ></i>
                 </div>
                 <div class="col-10 d-flex align-items-center">
                   <p class="link-text mb-0 pl-2 pl-md-0">
@@ -144,16 +196,18 @@
           </div>
         </div>
       </div>
- <!--instergram area ended  -->
+      <!--instergram area ended  -->
 
       <!--what'sApp area  -->
-       <div class="row mx-2 mx-md-0 my-4">
-        <div class="col-md-9 bordersocials py-3 box box-shadow ">
+      <div class="row mx-2 mx-md-0 my-4">
+        <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
             <div class="col-md-8">
               <div class="row">
                 <div class="col-2">
-                  <i class="pitwhatapp fab fa-whatsapp d-flex justify-content-center ml-4 ml-md-0"></i>
+                  <i
+                    class="pitwhatapp fab fa-whatsapp d-flex justify-content-center ml-4 ml-md-0"
+                  ></i>
                 </div>
                 <div class="col-10 d-flex align-items-center">
                   <p class="link-text mb-0 pl-2 pl-md-0">
@@ -168,16 +222,20 @@
           </div>
         </div>
       </div>
- <!--what'sApp area ended  -->
+      <!--what'sApp area ended  -->
 
       <!--mobile-App area  -->
-       <div class="row mx-2 mx-md-0 my-4">
-        <div class="col-md-9 bordersocials py-3 box box-shadow ">
+      <div class="row mx-2 mx-md-0 my-4">
+        <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
             <div class="col-md-8">
               <div class="row">
                 <div class="col-2">
-                   <img src="../../../assets/mobileapp.svg" style="width:54px; height:54px" alt="Mobile app image">
+                  <img
+                    src="../../../assets/mobileapp.svg"
+                    style="width: 54px; height: 54px"
+                    alt="Mobile app image"
+                  />
                   <!-- <i class=" fab fa-whatsapp d-flex justify-content-center ml-4 ml-md-0"></i> -->
                 </div>
                 <div class="col-10 d-flex align-items-center">
@@ -188,52 +246,95 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btntmobileapp">Connect</button>
+              <button
+                class="btn default-btn btntmobileapp"
+                @click="facebookLogin2"
+              >
+                Connect
+              </button>
             </div>
           </div>
         </div>
       </div>
- <!--mobile-App area ended  -->
-
+      <!--mobile-App area ended  -->
     </div>
   </div>
 </template>
 
 <script>
+import firebase from "../../../services/firebase/firebase";
 export default {
   setup() {
     /*eslint no-undef: "warn"*/
-//     FB.login(function(response) {
-//     if (response.authResponse) {
-//      console.log('Welcome!  Fetching your information.... ');
-//      FB.api('/me', function(response) {
-//        console.log('Good to see you, ' + response.name + '.');
-//      });
-//     } else {
-//      console.log('User cancelled login or did not fully authorize.');
-//     }
-// });
+    //     FB.login(function(response) {
+    //     if (response.authResponse) {
+    //      console.log('Welcome!  Fetching your information.... ');
+    //      FB.api('/me', function(response) {
+    //        console.log('Good to see you, ' + response.name + '.');
+    //      });
+    //     } else {
+    //      console.log('User cancelled login or did not fully authorize.');
+    //     }
+    // });
 
-//   },
-const facebookLogin = () => {
-   /*eslint no-undef: "warn"*/
-      FB.login(
-        function(response) {
-          console.log(response);
-          let token = {
-            accessToken: response.authResponse.accessToken,
-          };
-          console.log(response);
-          console.log(token);
-        },
-        { scope: "user_birthday" }
-      );
+    //   },
+    // const facebookLogin = () => {
+    //   /*eslint no-undef: "warn"*/
+    //   FB.login(
+    //     function (response) {
+    //       console.log(response);
+    //       let token = {
+    //         accessToken: response.authResponse.accessToken,
+    //       };
+    //       console.log(response);
+    //       console.log(token);
+    //     },
+    //     { scope: "user_birthday" }
+    //   );
+    // };
+    const facebookLogin2 = () => {
+      
+      /*eslint no-undef: "warn"*/
+      var provider = new firebase.auth.FacebookAuthProvider();
+      provider.addScope('user_birthday');
+      alert(1)
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          alert(2)
+          
+          console.log(result);
+          /** @type {firebase.auth.OAuthCredential} */
+          //var credential = result.credential;
+
+          // The signed-in user info.
+          //var user = result.user;
+          
+
+          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+         // var accessToken = credential.accessToken;
+
+          // ...
+        })
+        .catch((error) => {
+          // Handle Errors here.
+          //var errorCode = error.code;
+          //var errorMessage = error.message;
+          // The email of the user's account used.
+          //var email = error.email;
+          // The firebase.auth.AuthCredential type that was used.
+          //var credential = error.credential;
+          console.log(error);
+
+          // ...
+        });
     };
-    return{
-      facebookLogin
-    }
-
-  }
+    return {
+      facebookLogin,
+      facebookLogin2,
+    };
+  },
 };
 </script>
 
@@ -254,11 +355,11 @@ const facebookLogin = () => {
 
 .pifb {
   font-size: 3rem;
-  color: #0F529F;
+  color: #0f529f;
 }
 
 .btnfb {
-  background-color: #0F529F;
+  background-color: #0f529f;
   color: #fff;
   border: none;
   outline: 0;
@@ -289,44 +390,53 @@ const facebookLogin = () => {
 
 .pitwi {
   color: #1a91da;
-    font-size: 3rem;
+  font-size: 3rem;
 }
 /* end of twitter Area */
 
-
 /* instagram Area */
 .btninsta {
-  background: rgb(233,2,99);
-background: linear-gradient(90deg, rgba(233,2,99,1) 0%, rgba(253,6,4,1) 35%, rgba(255,93,0,1) 100%);
+  background: rgb(233, 2, 99);
+  background: linear-gradient(
+    90deg,
+    rgba(233, 2, 99, 1) 0%,
+    rgba(253, 6, 4, 1) 35%,
+    rgba(255, 93, 0, 1) 100%
+  );
   color: #fff;
   border: none;
   outline: 0;
 }
 
 .piinsta {
-color: rgb(233,2,99);
-color: linear-gradient(90deg, rgba(233,2,99,1) 0%, rgba(253,6,4,1) 35%, rgba(255,93,0,1) 100%);
-    font-size: 3rem;
+  color: rgb(233, 2, 99);
+  color: linear-gradient(
+    90deg,
+    rgba(233, 2, 99, 1) 0%,
+    rgba(253, 6, 4, 1) 35%,
+    rgba(255, 93, 0, 1) 100%
+  );
+  font-size: 3rem;
 }
 /* end of instagram Area */
 
 /* whatsapp Area */
 .btntwhatapp {
-  background-color: #2EB743;
+  background-color: #2eb743;
   color: #fff;
   border: none;
   outline: 0;
 }
 
 .pitwhatapp {
-  color: #2EB743;
-    font-size: 3rem;
+  color: #2eb743;
+  font-size: 3rem;
 }
 /* end of whatsapp Area */
 
 /* mobile-app Area */
 .btntmobileapp {
-  background-color: #E87109;
+  background-color: #e87109;
   color: #fff;
   border: none;
   outline: 0;
