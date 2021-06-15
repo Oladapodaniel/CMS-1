@@ -276,10 +276,6 @@ export default {
   color: #136acd!important;
 
 }
-span router-link{
-  color: black!important;
-  text-decoration: none!important;
-}
 .dropdown a{
   color: black!important;
   text-decoration: none;
