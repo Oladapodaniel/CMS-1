@@ -33,14 +33,14 @@
                                             <ul class="list-group w-100">
                                                 <li class="list-group-item c-pointer" v-for="(i, j) in triggers" :key="j" @click="selectTrigger(i)">
                                                     <h4 class="mb-0">
-                                                        <span><i :class="[ i.icon ]" style="font-size: 2rem"></i></span>
+                                                        <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 2rem"></i></span>
                                                         <span :class="{ 'd-none': !showTriggers &&  selectedTriggers.length > 0 }">{{ i.name }}</span>
                                                     </h4>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 trigger-btn-div">
+                                    <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch">
                                         <button class="btn btn-secondary w-100 trigger-btn"
                                             @click="toggleTriggers">
                                             <span><i class="pi pi-plus"></i></span>
@@ -74,8 +74,15 @@
                                         <div class="row">
                                             <div class="col-12 border px-0 scr-height"  style="height: 400px" :class="{ 'col-md-6': actionSelected }">
                                                 <div class="row">
-                                                    <div class="col-md-12" v-for="(trigger, index) in selectedActions" :key="index">
-                                                        {{ trigger.name }}
+                                                    <div class="col-md-12">
+                                                        <ul class="list-group w-100">
+                                                            <li class="list-group-item c-pointer" v-for="(i, j) in selectedActions" :key="j">
+                                                                <h4 class="mb-0">
+                                                                    <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 2rem"></i></span>
+                                                                    <span class="font-weight-bold">{{ i.name }}</span>
+                                                                </h4>
+                                                            </li>
+                                                        </ul>
                                                     </div>
                                                 </div>
                                                 <div class="row h-100" >
@@ -104,7 +111,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 trigger-btn-div">
-                                                        <button class="btn btn-secondary w-100 trigger-btn"
+                                                        <button class="btn btn-secondary w-100 trigger-btn d-flex justify-content-center btn-100"
                                                             @click="toggleActions">
                                                             Actions
                                                         </button>
@@ -118,6 +125,12 @@
                                                         <input type="checkbox" name="" id="">  Email <br>
                                                         <input type="checkbox" name="" id="">  SMS
                                                     </div>
+                                                </div>
+                                                
+                                                <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch">
+                                                    <button class="btn btn-success w-100 trigger-btn">
+                                                        Done
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -256,5 +269,9 @@ export default {
 
     .scr-height {
         height: calc(100vh - 220px) !important;
+    }
+
+    .btn-100 {
+        width: 100% !important
     }
 </style>
