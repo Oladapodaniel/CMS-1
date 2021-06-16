@@ -74,6 +74,7 @@
                     class="pi pifb pi-facebook d-flex justify-content-center ml-4 ml-md-0"
                   ></i>
                 </div>
+                
                 <div class="col-10 d-flex align-items-center">
                   <p class="link-text mb-0 pl-2 pl-md-0">
                     Connect your facebook account to Churchplus
@@ -82,15 +83,18 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btnfb" @click="facebookLogin">
+              <button class="btn default-btn btnfb" @click="facebookLogin2">
                 Connect
               </button>
+              
             </div>
           </div>
         </div>
       </div>
       <!--end facebook area  -->
-
+      <Dialog header="Header" v-model:visible="display" >
+        <h1>Hello World</h1>
+      </Dialog>
       <!--twitter area  -->
 
       <!-- Modal -->
@@ -248,7 +252,6 @@
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
               <button
                 class="btn default-btn btntmobileapp"
-                @click="facebookLogin2"
               >
                 Connect
               </button>
@@ -263,7 +266,12 @@
 
 <script>
 import firebase from "../../../services/firebase/firebase";
+import {ref} from 'vue';
+import Dialog from 'primevue/dialog'
+
+
 export default {
+  components:{Dialog},
   setup() {
     /*eslint no-undef: "warn"*/
     //     FB.login(function(response) {
@@ -292,6 +300,7 @@ export default {
     //     { scope: "user_birthday" }
     //   );
     // };
+    const display =ref(false)
     const facebookLogin2 = () => {
       
       /*eslint no-undef: "warn"*/
@@ -303,7 +312,8 @@ export default {
         .signInWithPopup(provider)
         .then((result) => {
           alert(2)
-          
+          setTimeout(function(){ display.value = true;}, 3000);
+         
           console.log(result);
           /** @type {firebase.auth.OAuthCredential} */
           //var credential = result.credential;
@@ -332,6 +342,7 @@ export default {
     };
     return {
       facebookLogin2,
+      display,
     };
   },
 };
