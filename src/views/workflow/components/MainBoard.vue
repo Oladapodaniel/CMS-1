@@ -18,49 +18,48 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="border col-4" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-2': !showTriggers &&  selectedTriggers.length > 0 }">
+                            <div class="border col-4 scr-height" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row">
                                     <div class="col-md-12" v-for="(trigger, index) in selectedTriggers" :key="index">
-                                        {{ trigger.name }}
+                                        <h5>
+                                            <span><i class="pi pi-users mr-3" style="font-size: 2rem"></i></span>
+                                            <span class="d-none">{{ trigger.name }}</span>
+                                        </h5>
                                     </div>
                                 </div>
                                 <div class="row h-100" >
                                     <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showTriggers }">
                                         <div class="row d-flex justify-content-around">
-                                            <div class="col-md-5 card my-2" v-for="(i, j) in triggers" :key="j" @click="selectTrigger(i)">
-                                                <div class="row card-body">
-                                                    <div class="col-md-12 text-center">
-                                                        <i class="pi pi-users"></i>
-                                                    </div>
-                                                    <div class="col-md-12 text-center">
-                                                        <h4 class="mb-0">{{ i.name }}</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5 my-2">
-                                                <div class="row bottom-space my-3">
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5 bottom-space my-2">
-                                                <div class="row my-3">
-                                                    
-                                                </div>
-                                            </div>
+                                            <ul class="list-group w-100">
+                                                <li class="list-group-item c-pointer" v-for="(i, j) in triggers" :key="j" @click="selectTrigger(i)">
+                                                    <h4 class="mb-0">
+                                                        <span><i :class="[ i.icon ]" style="font-size: 2rem"></i></span>
+                                                        <span :class="{ 'd-none': !showTriggers &&  selectedTriggers.length > 0 }">{{ i.name }}</span>
+                                                    </h4>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                     <div class="col-md-12 trigger-btn-div">
                                         <button class="btn btn-secondary w-100 trigger-btn"
                                             @click="toggleTriggers">
-                                            Add a trigger
+                                            <span><i class="pi pi-plus"></i></span>
+                                            <span :class="{ 'd-none': !showTriggers &&  selectedTriggers.length > 0 }">Add a trigger</span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-8 border" :class="{ 'col-md-8': showTriggers, 'col-md-10': !showTriggers &&  selectedTriggers.length > 0 }">
-                            <!-- <div class="col-md-8 border" :class="{ 'col-md-10': !showActions &&  selectedActions.length > 0 }" style="height: 400px"> -->
-                                <div class="row">
-                                    <div class="col-6 border"  style="height: 400px" :class="{ 'col-md-4': actionSelected, 'col-md-6': !actionSelected }">
+                            <div class="col-8 border" :class="{ 'col-md-8': showTriggers, 'col-md-11': !showTriggers &&  selectedTriggers.length > 0 }">
+                                <div class="row" :class="{ 'd-none': selectedTriggers.length === 0 }">
+                                    <div class="col-6 border scr-height"  style="height: 400px" :class="{ 'col-md-4': actionSelected, 'col-md-6': !actionSelected }">
+                                        <div class="row">
+                                            <div class="col-md-12 text-center">
+                                                <p class="mb-0"><i class="pi pi-heart my-2" style="font-size:2rem"></i></p>
+                                            </div>
+                                            <div class="col-md-12 text-center">
+                                                <p>When a member does <span class="text-info">something</span> about <span class="text-info">something</span> <span>Lorem ipsum dolor sit amet consectetur adipisicing elit..</span></p>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-12 font-weight-bold">
                                                 <label for="">When a member gives more than</label>
@@ -71,9 +70,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 border"  style="height: 400px" :class="{ 'col-md-8': actionSelected, 'col-md-6': !actionSelected }">
+                                    <div class="col-md-6 border scr-height"  style="height: 400px" :class="{ 'col-md-8': actionSelected, 'col-md-6': !actionSelected }">
                                         <div class="row">
-                                            <div class="col-12 border px-0"  style="height: 400px" :class="{ 'col-md-6': actionSelected }">
+                                            <div class="col-12 border px-0 scr-height"  style="height: 400px" :class="{ 'col-md-6': actionSelected }">
                                                 <div class="row">
                                                     <div class="col-md-12" v-for="(trigger, index) in selectedActions" :key="index">
                                                         {{ trigger.name }}
@@ -142,22 +141,28 @@ export default {
         // const triggersIsVissible = ref(false);
         const triggers = [
             {
-                name: "Group"
+                name: "Group",
+                icon: "pi pi-users"
             },
             {
-                name: "Giving"
+                name: "Giving",
+                icon: "pi pi-users"
             },
             {
-                name: "Trigger 3"
+                name: "Trigger 3",
+                icon: "pi pi-users"
             },
             {
-                name: "Trigger 4"
+                name: "Trigger 4",
+                icon: "pi pi-users"
             },
             {
-                name: "Trigger 5"
+                name: "Trigger 5",
+                icon: "pi pi-users"
             },
             {
-                name: "Trigger 6"
+                name: "Trigger 6",
+                icon: "pi pi-users"
             }
         ]
 
@@ -247,5 +252,9 @@ export default {
         position: absolute;
         bottom: 0;
         max-width: 100% !important;
+    }
+
+    .scr-height {
+        height: calc(100vh - 220px) !important;
     }
 </style>
