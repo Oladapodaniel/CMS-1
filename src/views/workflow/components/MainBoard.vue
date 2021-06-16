@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class=" border" style="height: 400px" :class="{ 'col-md-4': !showTriggers, 'col-md-2': showTriggers && selectedTriggers.length > 0 }">
+                            <div class="border col-4" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-2': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row">
                                     <div class="col-md-12" v-for="(trigger, index) in selectedTriggers" :key="index">
                                         {{ trigger.name }}
@@ -57,8 +57,73 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-8 border" style="height: 400px">
-                                <h1>Bigger</h1>
+                            <div class="col-md-8 border">
+                            <!-- <div class="col-md-8 border" :class="{ 'col-md-10': !showActions &&  selectedActions.length > 0 }" style="height: 400px"> -->
+                                <div class="row">
+                                    <div class="col-md-6 border"  style="height: 400px">
+                                        <div class="row">
+                                            <div class="col-md-12 font-weight-bold">
+                                                <label for="">When a member gives more than</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 border"  style="height: 400px">
+                                        <div class="row">
+                                            <div class="col-12 border px-0"  style="height: 400px" :class="{ 'col-md-6': actionSelected }">
+                                                <div class="row">
+                                                    <div class="col-md-12" v-for="(trigger, index) in selectedActions" :key="index">
+                                                        {{ trigger.name }}
+                                                    </div>
+                                                </div>
+                                                <div class="row h-100" >
+                                                    <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showActions }">
+                                                        <div class="row d-flex justify-content-around">
+                                                            <div class="col-md-5 card my-2" v-for="(i, j) in triggers" :key="j" @click="selectAction(i)">
+                                                                <div class="row card-body">
+                                                                    <div class="col-md-12 text-center">
+                                                                        <i class="pi pi-users"></i>
+                                                                    </div>
+                                                                    <div class="col-md-12 text-center">
+                                                                        <h4 class="mb-0">{{ i.name }}</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5 my-2">
+                                                                <div class="row bottom-space my-3">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-5 bottom-space my-2">
+                                                                <div class="row my-3">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 trigger-btn-div">
+                                                        <button class="btn btn-secondary w-100 trigger-btn"
+                                                            @click="toggleActions">
+                                                            Actions
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 border">
+                                                <div class="row">
+                                                    <div class="d-none" :class="{ 'col-md-6': actionSelected }"> 
+                                                        <input type="checkbox" name="" id="">  Email <br>
+                                                        <input type="checkbox" name="" id="">  SMS
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -73,6 +138,7 @@ import { ref } from '@vue/reactivity'
 export default {
     setup () {
         const showTriggers = ref(false);
+        const showActions = ref(false);
         // const triggersIsVissible = ref(false);
         const triggers = [
             {
@@ -96,13 +162,22 @@ export default {
         ]
 
         const selectedTriggers = ref([ ]);
+        const selectedActions = ref([ ]);
 
         const toggleTriggers = () => {
             showTriggers.value = !showTriggers.value;
         }
 
+        const toggleActions = () => {
+            showActions.value = !showActions.value;
+        }
+
         const checkIfAlreadySelected = trigger => {
             const index = selectedTriggers.value.findIndex(t => t.name === trigger.name);
+            return index >= 0 ? true : false;
+        }
+        const checkIfActionIsAlreadySelected = trigger => {
+            const index = selectedActions.value.findIndex(t => t.name === trigger.name);
             return index >= 0 ? true : false;
         }
 
@@ -113,6 +188,16 @@ export default {
             }
             showTriggers.value = false
         }
+        const selectAction = (trigger) => {
+            console.log(checkIfActionIsAlreadySelected(trigger));
+            if (!checkIfActionIsAlreadySelected(trigger)) {
+                selectedActions.value.push(trigger)
+            }
+            showActions.value = false
+            actionSelected.value = true;
+        }
+
+        const actionSelected = ref(false);
 
         return {
             showTriggers,
@@ -121,6 +206,13 @@ export default {
             triggers,
             selectedTriggers,
             selectTrigger,
+
+            showActions,
+            selectedActions,
+            toggleActions,
+            selectAction,
+
+            actionSelected,
         }
     }
 }
