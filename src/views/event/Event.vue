@@ -147,11 +147,12 @@
           </div>
         </div>
         <div class="col-sm-12 offset-sm-1 add">Add Attendance</div>
+
         <div class="attendance-header d-none d-md-block">
           <div class="row">
             <div class="col-sm-3">Attendance Type</div>
             <div class="col-sm-3 offset-sm-2">Count</div>
-            <div class="col-sm-2 offset-sm-1" style="margin-left: 74px;">Total</div>
+            <div class="col-sm-2" style="margin-left: 74px;">Total</div>
           </div>
         </div>
         <!-- Attendance Items -->
@@ -206,7 +207,7 @@
             <div class="d-none d-md-block col-sm-1 offset-sm-1" style="margin-left: 74px;">
               {{ item.number }}
             </div>
-            <div class="col-1" @click="delAttendance(index)">
+            <div class="col-2" @click="deleteAttendance(item.attendanceId, index)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
           </div>
@@ -1991,22 +1992,21 @@ export default {
     setCurrencyRate (payload) {
       this.currencyRate = payload
     },
-    delAttendance(index) {
-      this.attendanceItem.splice(index, 1);
-    },
-    deleteOffering(id, index) {
+
+     delAttendance(id, index) {
       if (id) {
           axios
-        .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
+        .delete(`/deleteAttendance?ID=${id}`)
         .then((res) => {
           console.log(res, 'delete response from back');
-          if (res.data.status) {
+          if (res.data) {
             this.$toast.add({
               severity: "success",
               summary: "Confirmed",
-              detail: `Offering Successfully Deleted`,
+              detail: `attendance Successfully Deleted`,
               life: 3000,
             });
+            this.attendanceItem.splice(index, 1);
             emit("contri-transac", index);
           } else {
             toast.add({
@@ -2029,10 +2029,70 @@ export default {
             });
           }
         });
-      } else {
-        this.offeringItem.splice(index, 1);
-        this.convertedAmount2.splice(index, 1)
-      }
+      } 
+        // this.convertedAmount2.splice(index, 1)
+    },
+      deleteAttendance(id,index) {
+       this.$confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          this.delAttendance(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
+            this.$toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+      
+    },
+
+    deleteOffering(id, index) {
+      if (id) {
+          axios
+        .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
+        .then((res) => {
+          console.log(res, 'delete response from back');
+          if (res.data.status) {
+            this.$toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `Offering Successfully Deleted`,
+              life: 3000,
+            });
+            this.offeringItem.splice(index, 1);
+            emit("contri-transac", index);
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "Delete Failed",
+              detail: `Please Try Again`,
+              life: 3000,
+            });
+          }
+        })
+        .catch((err) => {
+          finish();
+          if (err.response) {
+            console.log(err.response);
+            this.$toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: `${err.response}`,
+              life: 3000,
+            });
+          }
+        });
+      } 
     },
 
     delOffering(id,index) {
@@ -2526,8 +2586,6 @@ export default {
         try {
           let res = await axios.get(`/api/Events/${this.$route.params.event}`)
           this.routeParams = this.$route.params.event
-        
-
           this.eventDate = res.data.activity.date.substr(0, 10)
           this.topic = res.data.activity.topic
           this.preacher = res.data.activity.preacher
@@ -2629,7 +2687,6 @@ export default {
     },
     updateOfferingId (e) {
       // this.offeringItem[index].financialContributionID = id
-      
           let index = this.offeringItem.findIndex(i => i.financialContributionID === e.target.value)
           console.log(e.target.value, index, 'target', e.target.textContent)
            let offText = this.newOfferings.find(i => i.id === e.target.value).name
@@ -3191,7 +3248,7 @@ export default {
   border-bottom: 1px solid rgb(204, 204, 204);
 }
 .attendance-body {
-  padding: 0 50px;
+  padding: 0 50px; 
   background-color: #ecf0f3;
 }
 
