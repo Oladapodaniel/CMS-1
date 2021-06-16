@@ -126,6 +126,14 @@
     color: #136ACD;
   }
 
+  .adjust-network {
+    margin: 10em auto;
+    width: 100vh;
+    text-align: center;
+    height: 100vh;
+    font-size: 1.3em;
+ }
+
   .px-14 {
     font-size: 14px;
   }

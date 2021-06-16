@@ -1,28 +1,4 @@
 <template>
-  <!-- <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="top mt-3">
-          <div class="header">
-            <h2>Events</h2>
-          </div>
-          <div class="actions">
-            <button class="more-btn button">
-              More
-              <span><i class="fa fa-angle-down btn-icon"></i></span>
-            </button>
-            
-            <button @click="addPersonClicked" class="button add-person-btn">
-              Add Event
-            </button>
-    
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <!-- <hr class="hr" /> -->
-  <!-- <div class="container"> -->
     <div class="row"> 
       <div class="col-sm-12">
         <div class="avg">Overall Average</div>
@@ -121,39 +97,6 @@
       <div class="col-sm-12 p-0">
         <div class="table table-responsive">
           <div class="top-con">
-            <!-- <div class="table-top my-2">
-                <div class="select-all">
-                  <input type="checkbox" name="all" id="all" />
-                  <label>SELECT ALL</label>
-                </div>
-                <div class="filter">
-                  <p @click="toggleFilterFormVissibility">
-                    <i class="fas fa-filter"></i>
-                    FILTER
-                  </p>
-                </div>
-                <div class="filter">
-                  <p>
-                    <i class="fas fa-filter"></i>
-                    SORT
-                  </p>
-                </div>
-                <div class="search d-flex">
-                  <label
-                    class="label-search d-flex"
-                    :class="{ 'show-search': filterFormIsVissible }"
-                  >
-                    <input type="text" />
-                    <span class="empty-btn">x</span>
-                    <span class="search-btn">
-                      <i class="fa fa-search"></i>
-                    </span>
-                  </label>
-                  <p v-if="!filterFormIsVissible">
-                    <i class="fa fa-search"></i> SEARCH
-                  </p>
-                </div>
-              </div> -->
             <div class="table-top my-3">
               <div class="select-all">
                 <input
@@ -187,53 +130,6 @@
                 </label>
               </div>
             </div>
-            <!-- <div
-                class="filter-options"
-                :class="{ 'filter-options-shown': filterFormIsVissible }"
-              >
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-9">
-                      <div class="row">
-                        <div class="col-md-5 form-group">
-                          <select name="" id="" class="form-control inp">
-                            <option value="">Option 1</option>
-                            <option value="">Option 2</option>
-                          </select>
-                        </div>
-
-                        <div class="col-md-5 form-group">
-                          <select name="" id="" class="form-control inp">
-                            <option value="">Option 1</option>
-                            <option value="">Option 2</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        
-
-                        <div class="col-md-5 form-group">
-                          <input type="date" class="form-control inp" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-md-3 d-flex flex-column align-items-end">
-                      <button class="apply-btn">Apply</button>
-                      <span class="mt-2">
-                        <a class="clear-link mr-2">Clear all</a>
-                        <span class="mx-2"
-                          ><i
-                            class="fas fa-circle"
-                            style="font-size: 4px"
-                          ></i></span
-                        ><a class="hide-link ml-2">Hide</a>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
             <div
               class="filter-options"
               :class="{ 'filter-options-shown': filterFormIsVissible }"

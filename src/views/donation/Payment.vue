@@ -28,14 +28,18 @@
         <Loader />
     </div>
 
-    <div class="no-person" v-if="paymentList.length === 0 && !loading">
+    <div v-if="paymentList.length > 0 && !loading && !networkError">
+        <PaymentList :paymentList="paymentList" @delete-payment="deletePayment"/>
+    </div>
+    <div class="no-person" v-else-if="paymentList.length === 0 && !loading && !networkError">
         <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any payment forms yet</p>
         </div>
     </div>
-    <div v-if="paymentList.length > 0 && !loading">
-        <PaymentList :paymentList="paymentList" @delete-payment="deletePayment"/>
+    <div v-else-if="networkError" class="adjust-network">
+      <img src="../../assets/network-disconnected.png" >
+      <div>Opps, Your internet connection was disrupted</div>
     </div>
 </div>
 
@@ -55,6 +59,7 @@ export default {
     setup () {
         const paymentList = ref([])
         const loading = ref(false)
+        const networkError = ref(false)
 
 
         const getPaymentList = () => {
@@ -74,6 +79,11 @@ export default {
                     .catch((err) => {
                         loading.value = false
                         console.log(err)
+                        if(err.toString().toLowerCase().includes("network error")) {
+                          networkError.value = true
+                        } else {
+                          networkError.value = false
+                        }
                     });
             // }
     
@@ -90,7 +100,7 @@ export default {
                 );
     }
         return  {
-            paymentList, loading, deletePayment
+            paymentList, loading, deletePayment, networkError
         }
     }
 }
