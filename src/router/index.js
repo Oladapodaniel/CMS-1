@@ -1153,6 +1153,12 @@ const routes = [{
         name: 'TransactionPage',
         component: () =>
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
+    },
+    {
+        path: '/childcheckin',
+        name: 'PublibView',
+        component: () =>
+            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/childcheckin/components/PublicView')
     }
 ]
 
