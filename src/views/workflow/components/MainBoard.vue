@@ -57,10 +57,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-8 border">
+                            <div class="col-8 border" :class="{ 'col-md-8': showTriggers, 'col-md-10': !showTriggers &&  selectedTriggers.length > 0 }">
                             <!-- <div class="col-md-8 border" :class="{ 'col-md-10': !showActions &&  selectedActions.length > 0 }" style="height: 400px"> -->
                                 <div class="row">
-                                    <div class="col-md-6 border"  style="height: 400px">
+                                    <div class="col-6 border"  style="height: 400px" :class="{ 'col-md-4': actionSelected, 'col-md-6': !actionSelected }">
                                         <div class="row">
                                             <div class="col-md-12 font-weight-bold">
                                                 <label for="">When a member gives more than</label>
@@ -71,7 +71,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 border"  style="height: 400px">
+                                    <div class="col-md-6 border"  style="height: 400px" :class="{ 'col-md-8': actionSelected, 'col-md-6': !actionSelected }">
                                         <div class="row">
                                             <div class="col-12 border px-0"  style="height: 400px" :class="{ 'col-md-6': actionSelected }">
                                                 <div class="row">
@@ -113,9 +113,9 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6 border">
+                                            <div class="border" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected }">
                                                 <div class="row">
-                                                    <div class="d-none" :class="{ 'col-md-6': actionSelected }"> 
+                                                    <div class="col-md-12" > 
                                                         <input type="checkbox" name="" id="">  Email <br>
                                                         <input type="checkbox" name="" id="">  SMS
                                                     </div>
