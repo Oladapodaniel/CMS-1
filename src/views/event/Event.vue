@@ -2007,7 +2007,6 @@ export default {
               life: 3000,
             });
             this.attendanceItem.splice(index, 1);
-            emit("contri-transac", index);
           } else {
             toast.add({
               severity: "warn",
@@ -2029,7 +2028,9 @@ export default {
             });
           }
         });
-      } 
+      } else {
+          this.attendanceItem.splice(index, 1);
+      }
         // this.convertedAmount2.splice(index, 1)
     },
       deleteAttendance(id,index) {
@@ -2092,7 +2093,10 @@ export default {
             });
           }
         });
-      } 
+      } else {
+          this.offeringItem.splice(index, 1);
+      }
+
     },
 
     delOffering(id,index) {
