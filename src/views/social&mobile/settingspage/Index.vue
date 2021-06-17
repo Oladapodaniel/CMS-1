@@ -92,7 +92,7 @@
         </div>
       </div>
       <!--end facebook area  -->
-      <Dialog header="Header" v-model:visible="display" >
+      <Dialog header="Input Your Facebook Page Id" v-model:visible="display" >
         <h1>Hello World</h1>
       </Dialog>
       <!--twitter area  -->
@@ -260,6 +260,41 @@
         </div>
       </div>
       <!--mobile-App area ended  -->
+          <form action="">
+            <div class="row">
+              <div class="md-6">
+                <label for="email">Email address:</label>
+              </div>
+              <div class="form-group col-md-6">
+                
+                <input type="text" class="form-control" placeholder="Facebook Page Id">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+              </div>
+              <div class="form-group form-check col-md-6">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox"> Remember me
+                </label>
+              </div>
+              <div class="col-md-3">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+
+              </div>
+              <div class="col-md-6">
+                <button class="btn default-btn btnfb text-center">
+                  Connect
+                </button>
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+           
+          </form>
+
     </div>
   </div>
 </template>
@@ -312,7 +347,7 @@ export default {
         .signInWithPopup(provider)
         .then((result) => {
           alert(2)
-          setTimeout(function(){ display.value = true;}, 3000);
+          setTimeout(function(){ display.value = true;}, 1500);
          
           console.log(result);
           /** @type {firebase.auth.OAuthCredential} */
@@ -353,6 +388,17 @@ export default {
 .box {
   background: #fff;
   transition: all 0.4s ease-in-out;
+}
+.btn-primary{
+  background-color: #0f529f!important;
+  color: #fff!important;
+  border: none!important;
+  outline: 0!important;
+  border-radius: 20px;
+
+}
+.navTop{
+  justify-content: center!important;
 }
 
 .box-shadow:hover {
