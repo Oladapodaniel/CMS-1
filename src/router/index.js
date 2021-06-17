@@ -154,6 +154,12 @@ const routes = [{
                 ]
             },
             {
+                path: 'childcheckin',
+                name:'ChildCheck',
+                component: () =>
+                import ( /* webpackChunkName: "workflow" */ '../views/childcheckin/component/childcheck.vue'),
+            },
+            {
                 path: 'subscription',
                 name: 'Subscription',
                 meta: {
