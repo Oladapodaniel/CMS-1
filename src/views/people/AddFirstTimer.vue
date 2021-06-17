@@ -103,7 +103,7 @@
               <!-- Test -->
               <div class="input-field">
                 <label for="" class="label">Event or Service Attended</label>
-                <i class="pi pi-chevron-down manual-dd-icon" @click="selectEventAttended"></i>
+                <i class="pi pi-chevron-down dd manual-dd-icon" @click="selectEventAttended"></i>
                 
                 <button
                   @click.prevent="selectEventAttended"

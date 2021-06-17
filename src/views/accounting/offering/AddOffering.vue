@@ -10,28 +10,12 @@
                 <div class="dropdown" v-if="false">
                 <router-link to="/tenant/offeringcategory">
                 <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <span><i class="fa fa-angle-down btn-icon"></i></span></button></router-link>
-                    <!-- <i
-                      class="fas fa-ellipsis-v"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    ></i> -->
                     <div
                       class="dropdown-menu"
                       aria-labelledby="dropdownMenuButton"
                     >
                       <a class="dropdown-item">
                         <router-link to="/tenant/addoffering">Add Offering Category</router-link></a>
-                      <!-- <a class="dropdown-item" href="#">Assign to follow-up</a>
-                      <a class="dropdown-item">
-                        <router-link
-                          :to="`/tenant/sms/compose`"
-                          >Send SMS</router-link
-                        >
-                      </a>
-                      <a class="dropdown-item" href="#">Send Email</a>
-                      <a class="dropdown-item" href="#" >Delete</a> -->
                     </div>
                   </div>
                 <button
