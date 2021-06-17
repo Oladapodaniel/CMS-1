@@ -92,12 +92,12 @@
         </div>
       </div>
       <!--end facebook area  -->
-      <Dialog header="Input Your Facebook Page Id" v-model:visible="display" >
+      <Dialog header="Input Your Facebook Page Id" class="dialogFacebook" v-model:visible="display" style="width:100%;max-width:600px" >
          <!--facebook id-->
           <form action="">
             <div class="row justify-content-center">
               <div class="col-md-4 text-right">
-                <label for="email">Facebook Page Id :</label>
+                <label for="email"> Page Id :</label>
               </div>
               <div class="form-group col-md-6"> 
                 <input type="text" class="form-control" placeholder="Facebook Page Id">
@@ -415,6 +415,10 @@ export default {
 .pifb {
   font-size: 3rem;
   color: #0f529f;
+}
+.dialogFacebook{
+  width: 100%;
+  max-width: 600px;
 }
 
 .btnfb {
