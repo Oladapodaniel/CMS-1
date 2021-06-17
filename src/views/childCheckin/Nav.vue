@@ -5,10 +5,10 @@
                 <img src="../../assets/churchplus-logo.png"/>
             </div>
             <div class="col-12">
-                <div class="row style-font">
+                <!-- <div class="row" :class="{ 'active' : route.inclues('fjk') }">
                     <div class="col-4">Query</div>
                     <div class="col-8">Dashboard</div>
-                </div>
+                </div> -->
 
                 <div class="row">
                     <div class="col-4">Query</div>
