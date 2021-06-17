@@ -1159,7 +1159,26 @@ const routes = [{
         name: 'PublibView',
         component: () =>
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/childcheckin/components/PublicView')
-    }
+    },
+    {
+        path: '/checkin',
+        name: 'Index',
+        component: () =>
+            import ( /* webpackChunkName: "defaultmessage" */ '@/views/childCheckin/Index'),
+            children: [{
+                path: '',
+                name: 'Dashboard',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/childCheckin/Dashboard')
+            },
+            {
+                path: '/family',
+                name: 'Family',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/childCheckin/Family')
+            }
+        ]
+    },
 ]
 
 
@@ -1219,7 +1238,8 @@ router.beforeEach((to, from, next) => {
      to.name === "SignInPayment" || 
      to.name === "TransactionPage" || 
      to.name === "PublicResetPassword" || 
-     to.name === "EventRegistration") && !tokenIsValid) return next(true)
+     to.name === "EventRegistration" ||
+     to.name === "Index") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;
