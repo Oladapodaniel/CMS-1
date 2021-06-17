@@ -121,7 +121,7 @@
 
               </div>
               <div class="col-md-6">
-                <button class="btn default-btn btnfb text-center">
+                <button class="btn default-btn btnfb text-center" @click="accessFacebook">
                   Connect
                 </button>
               </div>
@@ -306,11 +306,16 @@
 import firebase from "../../../services/firebase/firebase";
 import {ref} from 'vue';
 import Dialog from 'primevue/dialog'
+import axios from 'axios';
 
 
 export default {
   components:{Dialog},
   setup() {
+    let pageId =ref('103263464868380');
+    let accessToken = ref(
+      "EAAGz7wxosTIBAJP2DtHTmCgqVjpm4R2vVnZCTEi0NVQVExGINQaHjzZBrusI6F99ZAVfcNNEVQXvq5WSgH6cFNNN6ZCXeg4YXSmywKiYqVHkj8LToOZBG2IEN6U8KctgGY2qLc0PJB7DzIRZBhJAp2sOJiOZAO38G0EU0FNwkrmeeTreNLbMcHI"
+    );
     /*eslint no-undef: "warn"*/
     //     FB.login(function(response) {
     //     if (response.authResponse) {
@@ -378,6 +383,43 @@ export default {
           // ...
         });
     };
+    // const accessFacebook = async () =>{
+    //   try{
+    //     const data = await axios.post(`https://graph.facebook.com/${pageId.value}/feed?message=Hello Fans!&access_token=${accessToken.value}`)
+    //       console.log(data);
+
+    //   }catch(error){
+    //     console.log(error);
+
+
+    //   }
+
+    // }
+    //   accessFacebook()
+      const pageAccessToken = async () =>{
+        try{
+          const data = await axios.get(`https://graph.facebook.com/103263464868380?fields=access_token&access_token=EAAGz7wxosTIBAJP2DtHTmCgqVjpm4R2vVnZCTEi0NVQVExGINQaHjzZBrusI6F99ZAVfcNNEVQXvq5WSgH6cFNNN6ZCXeg4YXSmywKiYqVHkj8LToOZBG2IEN6U8KctgGY2qLc0PJB7DzIRZBhJAp2sOJiOZAO38G0EU0FNwkrmeeTreNLbMcHI`)
+          console.log(data);
+        }catch(error){
+          console.log(error);
+        }
+
+      }
+      pageAccessToken()
+
+    // const gt =  async () =>{
+    //   try{
+    //     const data = await axios.get(`https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=479314263454002&client_secret=9028e1ba07fbf65f670c30c6db0c676b&fb_exchange_token=EAAGz7wxosTIBAKOr7iNyhYqtqj1drZBnQnpaqgBse0dt61wNL57oBk738eidP0IExKtgszs1NgZCi9pa9bZBAGPZCYyp18CIx4nsJZBDJIsnN7vuQrfVY4iqalTKpCTFMQZCcNbYluQxJjLvxG9yqofNN0lrdJktvC1iZAKiCYczgZDZD`)
+    //       console.log(data);
+
+    //   }catch(error){
+    //     console.log(error);
+
+
+    //   }
+
+    // }
+    // gt()
     return {
       facebookLogin2,
       display,
