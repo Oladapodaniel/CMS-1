@@ -93,7 +93,43 @@
       </div>
       <!--end facebook area  -->
       <Dialog header="Input Your Facebook Page Id" v-model:visible="display" >
-        <h1>Hello World</h1>
+         <!--facebook id-->
+          <form action="">
+            <div class="row justify-content-center">
+              <div class="col-md-4 text-right">
+                <label for="email">Facebook Page Id :</label>
+              </div>
+              <div class="form-group col-md-6"> 
+                <input type="text" class="form-control" placeholder="Facebook Page Id">
+              </div>
+              <div class="col-md-2">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+              </div>
+              <div class="form-group form-check col-md-6 ml-3">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox"> Remember me
+                </label>
+              </div>
+              <div class="col-md-2"> 
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+
+              </div>
+              <div class="col-md-6">
+                <button class="btn default-btn btnfb text-center">
+                  Connect
+                </button>
+              </div>
+              <div class="col-md-2"></div>
+            </div>
+           
+          </form>
+          <!--facebook id-->
       </Dialog>
       <!--twitter area  -->
 
@@ -260,40 +296,7 @@
         </div>
       </div>
       <!--mobile-App area ended  -->
-          <form action="">
-            <div class="row">
-              <div class="md-6">
-                <label for="email">Email address:</label>
-              </div>
-              <div class="form-group col-md-6">
-                
-                <input type="text" class="form-control" placeholder="Facebook Page Id">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-3">
-              </div>
-              <div class="form-group form-check col-md-6">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox"> Remember me
-                </label>
-              </div>
-              <div class="col-md-3">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-3">
-
-              </div>
-              <div class="col-md-6">
-                <button class="btn default-btn btnfb text-center">
-                  Connect
-                </button>
-              </div>
-              <div class="col-md-3"></div>
-            </div>
-           
-          </form>
+     
 
     </div>
   </div>
