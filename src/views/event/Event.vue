@@ -207,7 +207,7 @@
             <div class="d-none d-md-block col-sm-1 offset-sm-1" style="margin-left: 74px;">
               {{ item.number }}
             </div>
-            <div class="col-2" @click="deleteAttendance(item.attendanceId, index)">
+            <div class="col-1" @click="deleteAttendance(item.attendanceId, indx)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
           </div>
@@ -1572,6 +1572,13 @@
             </div>
           </div>
         </div>
+        <Dialog v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '80vw'}">
+            <p>You have no income account to create a offering item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
+            <template #footer>
+                <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
+                <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
+            </template>
+        </Dialog>
   </div>
   <ConfirmDialog />
 </template>
@@ -1750,7 +1757,8 @@ export default {
       isPhoneValidNewConvert: true,
       isEmailValidNewConvert: true,
       currencyRate: [],
-      convertedResult: 0
+      convertedResult: 0,
+      displayResponsive: false
     };
   },
 
@@ -2003,10 +2011,10 @@ export default {
             this.$toast.add({
               severity: "success",
               summary: "Confirmed",
-              detail: `attendance Successfully Deleted`,
+              detail: `Attendance Successfully Deleted`,
               life: 3000,
             });
-            this.attendanceItem.splice(index, 1);
+            this.attendanceItem = this.attendanceItem.filter(i => id !== i.attendanceId)
           } else {
             toast.add({
               severity: "warn",
@@ -2070,8 +2078,7 @@ export default {
               detail: `Offering Successfully Deleted`,
               life: 3000,
             });
-            this.offeringItem.splice(index, 1);
-            emit("contri-transac", index);
+            this.offeringItem = this.offeringItem.filter(i => id !== i.id)
           } else {
             toast.add({
               severity: "warn",
@@ -2838,6 +2845,9 @@ export default {
               NProgress.done();
               console.log(res)
             this.incomeAccount = res.data
+            if (res.data.length < 1) {
+            this.displayResponsive = true
+          }
           })
           .catch(err => {
               NProgress.done();
@@ -2854,6 +2864,10 @@ export default {
               console.log(err)
             })
       },
+       closeResponsive () {
+            this.displayResponsive = false;
+            this.$router.push({ name: "ChartOfAccount" })
+        },
       createNewCon (e) {
           let contributionCategory = {
             name: this.contributionItemName,

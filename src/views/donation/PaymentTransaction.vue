@@ -103,7 +103,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                <ContributionItems @item-name="newConItems" />
+                <ContributionItems @item-name="newConItems" @show-update-modal="toggleDisplayModal"/>
             </div>
 
             </div>
@@ -274,6 +274,13 @@
         </form>
         <ConfirmDialog />
         <Toast />
+        <Dialog v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '80vw'}">
+            <p>You have no income account to create a offering item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
+            <template #footer>
+                <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
+                <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
+            </template>
+        </Dialog>
     </div>
 </template>
 
@@ -331,6 +338,7 @@ export default {
         const routeParams = ref(route.params.editPayment)
         const theContributionItems = ref([])
         const templateDisplay = ref(false)
+        const displayResponsive = ref(false)
 
 
         const addContribution = () => {
@@ -359,45 +367,9 @@ export default {
                         console.log(error)
                     }
             }
-            // {
-            //     name: "Global Conference",
-            //     bankID: "029c3a8a-35be-4f14-aca5-ff267e6ef2eb",
-        //  //     bank: "Guaranty Trust Bank",
-            //     accountName: "OLASUNKANMI OLADAPO DANIEL",
-            //     accountNumber: "0222909641",
-            //     contributionItems: [{"financialContributionID":"e3dd486f-5c8a-497b-9a24-1ad86622dfc7"},{"id":"d015fe29-78b8-4fe9-a1e0-8c943a47ef71"}],
-            //     paymentGateWays: [{"paymentGateWayID":"a6e25a93-eb1f-4ddb-ab70-29ee48434038"}, {"paymentGateWayID": "b0845ed6-e94b-4b4e-8ccd-0a9efadbe301"},{"paymentGateWayID": "029c3a8a-35be-4f14-aca5-ff267e6ef2eb"}]
-            // }
         }
         getContributionItems()
 
-        // const getListofBanks = () => {
-        //     axios.get('https://api.paystack.co/bank')/api/Financials/GetBanks
-        //         .then(res => {
-
-        //             console.log(res)
-        //         nigerianBanks.value = res.data.data
-        //         })
-        //         .catch(err => {
-
-        //             console.log(err)
-        //         })
-        //     }
-            // getListofBanks()
-            // const Banko = () => {
-            // axio.get('https://api.paystack.co/bank', { headers: { Authorization: 'Bearer 771901a47711ceb27bc0e325ddfefd92f2191534' } })
-            //         .then(res => {
-
-            //             console.log(res)
-            //         bankList.value = res.data
-            //         })
-            //         .catch(err => {
-
-            //             console.log(err)
-            //         })
-
-            // }
-            // Banko()
 
         const getBanks = () => {
             axios.get('/api/Financials/GetBanks')
@@ -838,6 +810,15 @@ export default {
                 templateDisplay.value = !templateDisplay.value
             }
 
+            const toggleDisplayModal = (payload) => {
+                displayResponsive.value = payload
+            }
+
+            const closeResponsive = () => {
+            displayResponsive.value = false;
+                router.push({ name: "ChartOfAccount" })
+            }
+
         return {
             contributionItems, newContribution, addContribution,
             deleteContribution, nigerianBanks, selectedBank, resolveCustomerDetail,
@@ -847,7 +828,7 @@ export default {
             toggleThirdTemplate, sourceModal, togglePopup, booleanModal, closeModal,
             paymentGateWaysDb, paymentGateWays, toggleCheckBox, gateways, removeContributionIDs,
             removePaymentGatewayIDs, isActive, active, routeParams, theContributionItems,
-            templateDisplay, toggleTemplate, showConfirmModal
+            templateDisplay, toggleTemplate, showConfirmModal, displayResponsive, toggleDisplayModal, closeResponsive
         }
     }
 }

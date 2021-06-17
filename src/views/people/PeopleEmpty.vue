@@ -10,10 +10,10 @@
     class="no-person mt-5"
     v-else-if="!loading && people.length === 0 && !errorGettingPeople"
   >
-    <div class="empty-img">
+    <!-- <div class="empty-img">
       <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
       <p class="tip">You haven't added any member yet</p>
-    </div>
+    </div> -->
     <div class="container">
       <div class="row">
         <div class="col-md-12">
