@@ -15,7 +15,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="row">
                             <div class="border col-4 scr-height" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
@@ -41,7 +41,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch">
-                                        <button class="btn btn-secondary w-100 trigger-btn"
+                                        <button class="btn btn-secondary w-100 trigger-btn btn-100 ml-n3"
                                             @click="toggleTriggers">
                                             <span><i class="pi pi-plus"></i></span>
                                             <span :class="{ 'd-none': !showTriggers &&  selectedTriggers.length > 0 }">Add a trigger</span>
@@ -127,8 +127,8 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch">
-                                                    <button class="btn btn-success w-100 trigger-btn">
+                                                <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch" style="padding:10px">
+                                                    <button class="btn btn-success w-100 trigger-btn btn-100 ml-n4">
                                                         Done
                                                     </button>
                                                 </div>
