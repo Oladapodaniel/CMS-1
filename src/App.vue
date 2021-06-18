@@ -68,13 +68,13 @@ export default {
     
   },
 
-  mounted() {
-    window.addEventListener('DOMContentLoaded', () => {
-      const script = document.createElement("script");
-      script.src = 'https://embed.tawk.to/60ba6591de99a4282a1b7128/1f7c1pgqv';
-      document.getElementsByTagName("head")[0].appendChild(script);
-    });
-  }
+  // mounted() {
+  //   window.addEventListener('DOMContentLoaded', () => {
+  //     const script = document.createElement("script");
+  //     script.src = 'https://embed.tawk.to/60ba6591de99a4282a1b7128/1f7c1pgqv';
+  //     document.getElementsByTagName("head")[0].appendChild(script);
+  //   });
+  // }
 };
 </script>
 

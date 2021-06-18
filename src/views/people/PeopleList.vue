@@ -388,7 +388,7 @@
 </template>
 
 <script>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import ByMaritalStatusChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
@@ -787,14 +787,6 @@ export default {
           console.log(err);
         });
     };
-
-    onMounted(() => {
-      // window.addEventListener('DOMContentLoaded', () => {
-        const script = document.createElement("script");
-        script.src = 'https://embed.tawk.to/60ba6591de99a4282a1b7128/1f7c1pgqv';
-        document.getElementsByTagName("head")[0].appendChild(script);
-      // });
-    })
 
     return {
       churchMembers,
