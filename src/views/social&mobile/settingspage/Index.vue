@@ -312,10 +312,10 @@ import axios from 'axios';
 export default {
   components:{Dialog},
   setup() {
-    let pageId =ref('103263464868380');
-    let accessToken = ref(
-      "EAAGz7wxosTIBAJP2DtHTmCgqVjpm4R2vVnZCTEi0NVQVExGINQaHjzZBrusI6F99ZAVfcNNEVQXvq5WSgH6cFNNN6ZCXeg4YXSmywKiYqVHkj8LToOZBG2IEN6U8KctgGY2qLc0PJB7DzIRZBhJAp2sOJiOZAO38G0EU0FNwkrmeeTreNLbMcHI"
-    );
+    // let pageId =ref('103263464868380');
+    // let accessToken = ref(
+    //   "EAAGz7wxosTIBAJP2DtHTmCgqVjpm4R2vVnZCTEi0NVQVExGINQaHjzZBrusI6F99ZAVfcNNEVQXvq5WSgH6cFNNN6ZCXeg4YXSmywKiYqVHkj8LToOZBG2IEN6U8KctgGY2qLc0PJB7DzIRZBhJAp2sOJiOZAO38G0EU0FNwkrmeeTreNLbMcHI"
+    // );
     /*eslint no-undef: "warn"*/
     //     FB.login(function(response) {
     //     if (response.authResponse) {
@@ -349,15 +349,17 @@ export default {
       /*eslint no-undef: "warn"*/
       var provider = new firebase.auth.FacebookAuthProvider();
       provider.addScope('user_birthday');
-      alert(1)
       firebase
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
-          alert(2)
           setTimeout(function(){ display.value = true;}, 1500);
          
           console.log(result);
+          let accessToken = result.credential.accessToken;
+          let profileId = result.additionalUserInfo.profile.id;
+          getAccessToken(accessToken, profileId)
+           
           /** @type {firebase.auth.OAuthCredential} */
           //var credential = result.credential;
 
@@ -396,16 +398,28 @@ export default {
 
     // }
     //   accessFacebook()
-      const pageAccessToken = async () =>{
-        try{
-          const data = await axios.get(`https://graph.facebook.com/103263464868380?fields=access_token&access_token=EAAGz7wxosTIBAJP2DtHTmCgqVjpm4R2vVnZCTEi0NVQVExGINQaHjzZBrusI6F99ZAVfcNNEVQXvq5WSgH6cFNNN6ZCXeg4YXSmywKiYqVHkj8LToOZBG2IEN6U8KctgGY2qLc0PJB7DzIRZBhJAp2sOJiOZAO38G0EU0FNwkrmeeTreNLbMcHI`)
-          console.log(data);
-        }catch(error){
-          console.log(error);
-        }
+      // const pageAccessToken = async () =>{
+      //   try{
+      //     const data = await axios.get(`https://graph.facebook.com/103263464868380?fields=access_token&access_token=EAAGz7wxosTIBALCkyngN1F5ERc9F1fo1Il4WiayBtMZCbnzOc3KZBTqzZAsYPL5Egqk7fEEiDAxfeV9QHxwRIS4slDLOqpM6GzTdZAAadN7oSKWRROjdlZATh9ZCWRDP5pCnkDKeDQRgQ2z97snaOekXoZCtDZCTVrnnsN9UAfmvWtiEOXDWvyAS`)
+      //     console.log(data);
+      //   }catch(error){
+      //     console.log(error);
+      //   }
 
-      }
-      pageAccessToken()
+      // }
+      // pageAccessToken()
+       const getAccessToken= async ( accessToken, profileId) =>{
+         try{
+           const data = await axios.get(`https://graph.facebook.com/${profileId}/accounts?
+  fields=name,access_token&
+  access_token=${accessToken}`)
+           console.log(data);
+
+         }catch(error){
+           console.log(error);
+         }
+       }
+     
 
     // const gt =  async () =>{
     //   try{
