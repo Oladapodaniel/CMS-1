@@ -154,28 +154,85 @@ export default {
         // const triggersIsVissible = ref(false);
         const triggers = [
             {
-                name: "Group",
+                name: "Giving- amount",
+                icon: "pi pi-users",
+
+            },
+            {
+                name: "Giving - new regular giver",
                 icon: "pi pi-users"
             },
             {
-                name: "Giving",
+                name: "Giving - no longer giving",
+                icon: "pi pi-users",
+
+            },
+            {
+                name: "Pledge creation",
                 icon: "pi pi-users"
             },
             {
-                name: "Trigger 3",
+                name: "Member - new member",
                 icon: "pi pi-users"
             },
             {
-                name: "Trigger 4",
+                name: "Member - birthday",
                 icon: "pi pi-users"
             },
             {
-                name: "Trigger 5",
+                name: "Member - new convert",
                 icon: "pi pi-users"
             },
             {
-                name: "Trigger 6",
+                name: "Member - first timer",
                 icon: "pi pi-users"
+            },
+            {
+                name: "Group - add/remove",
+                icon: "pi pi-users"
+            },
+            {
+                name: "Group - membership duration",
+                icon: "pi pi-users"
+            },
+            {
+                name: "Attendance",
+                icon: "pi pi-users"
+            }
+        ]
+
+        const actions = [
+            {
+                name: "Email",
+                icon: "pi pi-users",
+            },
+            {
+                name: "SMS",
+                icon: "pi pi-users",
+            },
+            {
+                name: "Add to group",
+                icon: "pi pi-users",
+            },
+            {
+                name: "Assign task",
+                icon: "pi pi-users",
+            },
+            {
+                name: "Message admin",
+                icon: "pi pi-users",
+            },
+            {
+                name: "Update progress",
+                icon: "pi pi-users",
+            },
+            {
+                name: "Send voice vote",
+                icon: "pi pi-users",
+            },
+            {
+                name: "Timer",
+                icon: "pi pi-users",
             }
         ]
 
@@ -231,6 +288,7 @@ export default {
             selectAction,
 
             actionSelected,
+            actions,
         }
     }
 }
