@@ -338,43 +338,19 @@ import axios from "axios";
 export default {
   components: { Dialog },
   setup() {
-    // let pageId =ref('103263464868380');
-    // let accessToken = ref(
-    //   "EAAGz7wxosTIBAJP2DtHTmCgqVjpm4R2vVnZCTEi0NVQVExGINQaHjzZBrusI6F99ZAVfcNNEVQXvq5WSgH6cFNNN6ZCXeg4YXSmywKiYqVHkj8LToOZBG2IEN6U8KctgGY2qLc0PJB7DzIRZBhJAp2sOJiOZAO38G0EU0FNwkrmeeTreNLbMcHI"
-    // );
-    /*eslint no-undef: "warn"*/
-    //     FB.login(function(response) {
-    //     if (response.authResponse) {
-    //      console.log('Welcome!  Fetching your information.... ');
-    //      FB.api('/me', function(response) {
-    //        console.log('Good to see you, ' + response.name + '.');
-    //      });
-    //     } else {
-    //      console.log('User cancelled login or did not fully authorize.');
-    //     }
-    // });
-
-    //   },
-    // const facebookLogin = () => {
-    //   /*eslint no-undef: "warn"*/
-    //   FB.login(
-    //     function (response) {
-    //       console.log(response);
-    //       let token = {
-    //         accessToken: response.authResponse.accessToken,
-    //       };
-    //       console.log(response);
-    //       console.log(token);
-    //     },
-    //     { scope: "user_birthday" }
-    //   );
-    // };
+    
     const display = ref(false);
+
+    
     const facebookLogin2 = () => {
-      /*eslint no-undef: "warn"*/
+
       var provider = new firebase.auth.FacebookAuthProvider();
       provider.addScope("user_birthday");
-      firebase
+
+      firebase.auth().signOut().then(() => {
+        // Sign-out successful.
+        console.log("logged out");
+        firebase
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
@@ -388,51 +364,35 @@ export default {
           getAccessToken(accessToken, profileId);
 
           /** @type {firebase.auth.OAuthCredential} */
-          //var credential = result.credential;
-
-          // The signed-in user info.
-          //var user = result.user;
-
-          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-          // var accessToken = credential.accessToken;
-
-          // ...
         })
         .catch((error) => {
-          // Handle Errors here.
-          //var errorCode = error.code;
-          //var errorMessage = error.message;
-          // The email of the user's account used.
-          //var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          //var credential = error.credential;
           console.log(error, "sign in error");
-
-          // ...
         });
+      }).catch((error) => {
+        // An error happened.
+        console.log(error, "log out failed");
+        firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          setTimeout(function () {
+            display.value = true;
+          }, 1500);
+
+          console.log(result, "sign in result");
+          let accessToken = result.credential.accessToken;
+          let profileId = result.additionalUserInfo.profile.id;
+          getAccessToken(accessToken, profileId);
+
+          /** @type {firebase.auth.OAuthCredential} */
+        })
+        .catch((error) => {
+          console.log(error, "sign in error");
+        });
+      });
+
+      
     };
-    // const accessFacebook = async () =>{
-    //   try{
-    //     const data = await axios.post(`https://graph.facebook.com/${pageId.value}/feed?message=Hello Fans!&access_token=${accessToken.value}`)
-    //       console.log(data);
-
-    //   }catch(error){
-    //     console.log(error);
-
-    //   }
-
-    // }
-    //   accessFacebook()
-    // const pageAccessToken = async () =>{
-    //   try{
-    //     const data = await axios.get(`https://graph.facebook.com/103263464868380?fields=access_token&access_token=EAAGz7wxosTIBALCkyngN1F5ERc9F1fo1Il4WiayBtMZCbnzOc3KZBTqzZAsYPL5Egqk7fEEiDAxfeV9QHxwRIS4slDLOqpM6GzTdZAAadN7oSKWRROjdlZATh9ZCWRDP5pCnkDKeDQRgQ2z97snaOekXoZCtDZCTVrnnsN9UAfmvWtiEOXDWvyAS`)
-    //     console.log(data);
-    //   }catch(error){
-    //     console.log(error);
-    //   }
-
-    // }
-    // pageAccessToken()
     const getAccessToken = async (accessToken, profileId) => {
       try {
         const data =
@@ -443,18 +403,6 @@ export default {
       }
     };
 
-    // const gt =  async () =>{
-    //   try{
-    //     const data = await axios.get(`https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=479314263454002&client_secret=9028e1ba07fbf65f670c30c6db0c676b&fb_exchange_token=EAAGz7wxosTIBAKOr7iNyhYqtqj1drZBnQnpaqgBse0dt61wNL57oBk738eidP0IExKtgszs1NgZCi9pa9bZBAGPZCYyp18CIx4nsJZBDJIsnN7vuQrfVY4iqalTKpCTFMQZCcNbYluQxJjLvxG9yqofNN0lrdJktvC1iZAKiCYczgZDZD`)
-    //       console.log(data);
-
-    //   }catch(error){
-    //     console.log(error);
-
-    //   }
-
-    // }
-    // gt()
     return {
       facebookLogin2,
       display,
