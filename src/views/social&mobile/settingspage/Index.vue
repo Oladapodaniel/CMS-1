@@ -92,12 +92,12 @@
         </div>
       </div>
       <!--end facebook area  -->
-      <Dialog header="Input Your Facebook Page Id" v-model:visible="display" >
+      <Dialog header="Input Your Facebook Page Id" class="dialogFacebook" v-model:visible="display" style="width:100%;max-width:600px" >
          <!--facebook id-->
           <form action="">
             <div class="row justify-content-center">
               <div class="col-md-4 text-right">
-                <label for="email">Facebook Page Id :</label>
+                <label for="email"> Page Id :</label>
               </div>
               <div class="form-group col-md-6"> 
                 <input type="text" class="form-control" placeholder="Facebook Page Id">
@@ -121,7 +121,7 @@
 
               </div>
               <div class="col-md-6">
-                <button class="btn default-btn btnfb text-center">
+                <button class="btn default-btn btnfb text-center" @click="accessFacebook">
                   Connect
                 </button>
               </div>
@@ -306,11 +306,16 @@
 import firebase from "../../../services/firebase/firebase";
 import {ref} from 'vue';
 import Dialog from 'primevue/dialog'
+import axios from 'axios';
 
 
 export default {
   components:{Dialog},
   setup() {
+    // let pageId =ref('103263464868380');
+    // let accessToken = ref(
+    //   "EAAGz7wxosTIBAJP2DtHTmCgqVjpm4R2vVnZCTEi0NVQVExGINQaHjzZBrusI6F99ZAVfcNNEVQXvq5WSgH6cFNNN6ZCXeg4YXSmywKiYqVHkj8LToOZBG2IEN6U8KctgGY2qLc0PJB7DzIRZBhJAp2sOJiOZAO38G0EU0FNwkrmeeTreNLbMcHI"
+    // );
     /*eslint no-undef: "warn"*/
     //     FB.login(function(response) {
     //     if (response.authResponse) {
@@ -344,15 +349,17 @@ export default {
       /*eslint no-undef: "warn"*/
       var provider = new firebase.auth.FacebookAuthProvider();
       provider.addScope('user_birthday');
-      alert(1)
       firebase
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
-          alert(2)
           setTimeout(function(){ display.value = true;}, 1500);
          
           console.log(result);
+          let accessToken = result.credential.accessToken;
+          let profileId = result.additionalUserInfo.profile.id;
+          getAccessToken(accessToken, profileId)
+           
           /** @type {firebase.auth.OAuthCredential} */
           //var credential = result.credential;
 
@@ -378,6 +385,55 @@ export default {
           // ...
         });
     };
+    // const accessFacebook = async () =>{
+    //   try{
+    //     const data = await axios.post(`https://graph.facebook.com/${pageId.value}/feed?message=Hello Fans!&access_token=${accessToken.value}`)
+    //       console.log(data);
+
+    //   }catch(error){
+    //     console.log(error);
+
+
+    //   }
+
+    // }
+    //   accessFacebook()
+      // const pageAccessToken = async () =>{
+      //   try{
+      //     const data = await axios.get(`https://graph.facebook.com/103263464868380?fields=access_token&access_token=EAAGz7wxosTIBALCkyngN1F5ERc9F1fo1Il4WiayBtMZCbnzOc3KZBTqzZAsYPL5Egqk7fEEiDAxfeV9QHxwRIS4slDLOqpM6GzTdZAAadN7oSKWRROjdlZATh9ZCWRDP5pCnkDKeDQRgQ2z97snaOekXoZCtDZCTVrnnsN9UAfmvWtiEOXDWvyAS`)
+      //     console.log(data);
+      //   }catch(error){
+      //     console.log(error);
+      //   }
+
+      // }
+      // pageAccessToken()
+       const getAccessToken= async ( accessToken, profileId) =>{
+         try{
+           const data = await axios.get(`https://graph.facebook.com/${profileId}/accounts?
+  fields=name,access_token&
+  access_token=${accessToken}`)
+           console.log(data);
+
+         }catch(error){
+           console.log(error);
+         }
+       }
+     
+
+    // const gt =  async () =>{
+    //   try{
+    //     const data = await axios.get(`https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=479314263454002&client_secret=9028e1ba07fbf65f670c30c6db0c676b&fb_exchange_token=EAAGz7wxosTIBAKOr7iNyhYqtqj1drZBnQnpaqgBse0dt61wNL57oBk738eidP0IExKtgszs1NgZCi9pa9bZBAGPZCYyp18CIx4nsJZBDJIsnN7vuQrfVY4iqalTKpCTFMQZCcNbYluQxJjLvxG9yqofNN0lrdJktvC1iZAKiCYczgZDZD`)
+    //       console.log(data);
+
+    //   }catch(error){
+    //     console.log(error);
+
+
+    //   }
+
+    // }
+    // gt()
     return {
       facebookLogin2,
       display,
@@ -415,6 +471,10 @@ export default {
 .pifb {
   font-size: 3rem;
   color: #0f529f;
+}
+.dialogFacebook{
+  width: 100%;
+  max-width: 600px;
 }
 
 .btnfb {
