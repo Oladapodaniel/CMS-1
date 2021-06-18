@@ -71,10 +71,17 @@
               <div class="row">
                 <div class="col-2">
                   <i
-                    class="pi pifb pi-facebook d-flex justify-content-center ml-4 ml-md-0"
+                    class="
+                      pi
+                      pifb
+                      pi-facebook
+                      d-flex
+                      justify-content-center
+                      ml-4 ml-md-0
+                    "
                   ></i>
                 </div>
-                
+
                 <div class="col-10 d-flex align-items-center">
                   <p class="link-text mb-0 pl-2 pl-md-0">
                     Connect your facebook account to Churchplus
@@ -86,50 +93,55 @@
               <button class="btn default-btn btnfb" @click="facebookLogin2">
                 Connect
               </button>
-              
             </div>
           </div>
         </div>
       </div>
       <!--end facebook area  -->
-      <Dialog header="Input Your Facebook Page Id" class="dialogFacebook" v-model:visible="display" style="width:100%;max-width:600px" >
-         <!--facebook id-->
-          <form action="">
-            <div class="row justify-content-center">
-              <div class="col-md-4 text-right">
-                <label for="email"> Page Id :</label>
-              </div>
-              <div class="form-group col-md-6"> 
-                <input type="text" class="form-control" placeholder="Facebook Page Id">
-              </div>
-              <div class="col-md-2">
-              </div>
+      <Dialog
+        header="Input Your Facebook Page Id"
+        class="dialogFacebook"
+        v-model:visible="display"
+        style="width: 100%; max-width: 600px"
+      >
+        <!--facebook id-->
+        <form action="">
+          <div class="row justify-content-center">
+            <div class="col-md-4 text-right">
+              <label for="email"> Page Id :</label>
             </div>
-            <div class="row">
-              <div class="col-md-4">
-              </div>
-              <div class="form-group form-check col-md-6 ml-3">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox"> Remember me
-                </label>
-              </div>
-              <div class="col-md-2"> 
-              </div>
+            <div class="form-group col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Facebook Page Id"
+              />
             </div>
-            <div class="row">
-              <div class="col-md-4">
-
-              </div>
-              <div class="col-md-6">
-                <button class="btn default-btn btnfb text-center" @click="accessFacebook">
-                  Connect
-                </button>
-              </div>
-              <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="form-group form-check col-md-6 ml-3">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" /> Remember me
+              </label>
             </div>
-           
-          </form>
-          <!--facebook id-->
+            <div class="col-md-2"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-6">
+              <button
+                class="btn default-btn btnfb text-center"
+                @click="accessFacebook"
+              >
+                Connect
+              </button>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+        </form>
+        <!--facebook id-->
       </Dialog>
       <!--twitter area  -->
 
@@ -188,7 +200,14 @@
               <div class="row">
                 <div class="col-2">
                   <i
-                    class="pi pitwi pi-twitter d-flex justify-content-center ml-4 ml-md-0"
+                    class="
+                      pi
+                      pitwi
+                      pi-twitter
+                      d-flex
+                      justify-content-center
+                      ml-4 ml-md-0
+                    "
                   ></i>
                 </div>
                 <div class="col-10 d-flex align-items-center">
@@ -220,7 +239,14 @@
               <div class="row">
                 <div class="col-2">
                   <i
-                    class="fa piinsta fa-instagram d-flex justify-content-center ml-4 ml-md-0"
+                    class="
+                      fa
+                      piinsta
+                      fa-instagram
+                      d-flex
+                      justify-content-center
+                      ml-4 ml-md-0
+                    "
                   ></i>
                 </div>
                 <div class="col-10 d-flex align-items-center">
@@ -246,7 +272,14 @@
               <div class="row">
                 <div class="col-2">
                   <i
-                    class="pitwhatapp fab fa-whatsapp d-flex justify-content-center ml-4 ml-md-0"
+                    class="
+                      pitwhatapp
+                      fab
+                      fa-whatsapp
+                      d-flex
+                      justify-content-center
+                      ml-4 ml-md-0
+                    "
                   ></i>
                 </div>
                 <div class="col-10 d-flex align-items-center">
@@ -286,31 +319,24 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button
-                class="btn default-btn btntmobileapp"
-              >
-                Connect
-              </button>
+              <button class="btn default-btn btntmobileapp">Connect</button>
             </div>
           </div>
         </div>
       </div>
       <!--mobile-App area ended  -->
-     
-
     </div>
   </div>
 </template>
 
 <script>
 import firebase from "../../../services/firebase/firebase";
-import {ref} from 'vue';
-import Dialog from 'primevue/dialog'
-import axios from 'axios';
-
+import { ref } from "vue";
+import Dialog from "primevue/dialog";
+import axios from "axios";
 
 export default {
-  components:{Dialog},
+  components: { Dialog },
   setup() {
     // let pageId =ref('103263464868380');
     // let accessToken = ref(
@@ -343,32 +369,32 @@ export default {
     //     { scope: "user_birthday" }
     //   );
     // };
-    const display =ref(false)
+    const display = ref(false);
     const facebookLogin2 = () => {
-      
       /*eslint no-undef: "warn"*/
       var provider = new firebase.auth.FacebookAuthProvider();
-      provider.addScope('user_birthday');
+      provider.addScope("user_birthday");
       firebase
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
-          setTimeout(function(){ display.value = true;}, 1500);
-         
-          console.log(result);
+          setTimeout(function () {
+            display.value = true;
+          }, 1500);
+
+          console.log(result, "sign in result");
           let accessToken = result.credential.accessToken;
           let profileId = result.additionalUserInfo.profile.id;
-          getAccessToken(accessToken, profileId)
-           
+          getAccessToken(accessToken, profileId);
+
           /** @type {firebase.auth.OAuthCredential} */
           //var credential = result.credential;
 
           // The signed-in user info.
           //var user = result.user;
-          
 
           // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-         // var accessToken = credential.accessToken;
+          // var accessToken = credential.accessToken;
 
           // ...
         })
@@ -380,7 +406,7 @@ export default {
           //var email = error.email;
           // The firebase.auth.AuthCredential type that was used.
           //var credential = error.credential;
-          console.log(error);
+          console.log(error, "sign in error");
 
           // ...
         });
@@ -393,33 +419,29 @@ export default {
     //   }catch(error){
     //     console.log(error);
 
-
     //   }
 
     // }
     //   accessFacebook()
-      // const pageAccessToken = async () =>{
-      //   try{
-      //     const data = await axios.get(`https://graph.facebook.com/103263464868380?fields=access_token&access_token=EAAGz7wxosTIBALCkyngN1F5ERc9F1fo1Il4WiayBtMZCbnzOc3KZBTqzZAsYPL5Egqk7fEEiDAxfeV9QHxwRIS4slDLOqpM6GzTdZAAadN7oSKWRROjdlZATh9ZCWRDP5pCnkDKeDQRgQ2z97snaOekXoZCtDZCTVrnnsN9UAfmvWtiEOXDWvyAS`)
-      //     console.log(data);
-      //   }catch(error){
-      //     console.log(error);
-      //   }
+    // const pageAccessToken = async () =>{
+    //   try{
+    //     const data = await axios.get(`https://graph.facebook.com/103263464868380?fields=access_token&access_token=EAAGz7wxosTIBALCkyngN1F5ERc9F1fo1Il4WiayBtMZCbnzOc3KZBTqzZAsYPL5Egqk7fEEiDAxfeV9QHxwRIS4slDLOqpM6GzTdZAAadN7oSKWRROjdlZATh9ZCWRDP5pCnkDKeDQRgQ2z97snaOekXoZCtDZCTVrnnsN9UAfmvWtiEOXDWvyAS`)
+    //     console.log(data);
+    //   }catch(error){
+    //     console.log(error);
+    //   }
 
-      // }
-      // pageAccessToken()
-       const getAccessToken= async ( accessToken, profileId) =>{
-         try{
-           const data = await axios.get(`https://graph.facebook.com/${profileId}/accounts?
-  fields=name,access_token&
-  access_token=${accessToken}`)
-           console.log(data);
-
-         }catch(error){
-           console.log(error);
-         }
-       }
-     
+    // }
+    // pageAccessToken()
+    const getAccessToken = async (accessToken, profileId) => {
+      try {
+        const data =
+          await axios.get(`https://graph.facebook.com/${profileId}/accounts?fields=name,access_token&access_token=${accessToken}`);
+        console.log(data, "get pages data");
+      } catch (error) {
+        console.log(error, "get pages error");
+      }
+    };
 
     // const gt =  async () =>{
     //   try{
@@ -428,7 +450,6 @@ export default {
 
     //   }catch(error){
     //     console.log(error);
-
 
     //   }
 
@@ -448,16 +469,15 @@ export default {
   background: #fff;
   transition: all 0.4s ease-in-out;
 }
-.btn-primary{
-  background-color: #0f529f!important;
-  color: #fff!important;
-  border: none!important;
-  outline: 0!important;
+.btn-primary {
+  background-color: #0f529f !important;
+  color: #fff !important;
+  border: none !important;
+  outline: 0 !important;
   border-radius: 20px;
-
 }
-.navTop{
-  justify-content: center!important;
+.navTop {
+  justify-content: center !important;
 }
 
 .box-shadow:hover {
@@ -472,7 +492,7 @@ export default {
   font-size: 3rem;
   color: #0f529f;
 }
-.dialogFacebook{
+.dialogFacebook {
   width: 100%;
   max-width: 600px;
 }
