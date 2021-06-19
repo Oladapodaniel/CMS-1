@@ -482,10 +482,10 @@
                 <!-- <div class="col-md-2">
                   <span class="py-2 font-weight-bold">ADDRESS</span>
                 </div> -->
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <span class="py-2 font-weight-bold">EMAIL</span>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <span class="py-2 font-weight-bold">PHONE</span>
                 </div>
                 <div class="col-md-1">

@@ -34,7 +34,7 @@
     </div>
   </div>
   <div class="toggle" @click="toggleMenu">
-    <i class="fa fa-bars"></i>
+    <i class="pi pi-bars"></i>
   </div>
 </template>
 

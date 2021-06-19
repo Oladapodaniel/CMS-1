@@ -147,11 +147,12 @@
           </div>
         </div>
         <div class="col-sm-12 offset-sm-1 add">Add Attendance</div>
+
         <div class="attendance-header d-none d-md-block">
           <div class="row">
             <div class="col-sm-3">Attendance Type</div>
             <div class="col-sm-3 offset-sm-2">Count</div>
-            <div class="col-sm-2 offset-sm-1" style="margin-left: 74px;">Total</div>
+            <div class="col-sm-2" style="margin-left: 74px;">Total</div>
           </div>
         </div>
         <!-- Attendance Items -->
@@ -206,7 +207,7 @@
             <div class="d-none d-md-block col-sm-1 offset-sm-1" style="margin-left: 74px;">
               {{ item.number }}
             </div>
-            <div class="col-1" @click="delAttendance(index)">
+            <div class="col-1" @click="deleteAttendance(item.attendanceId, indx)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
           </div>
@@ -331,25 +332,6 @@
             </div>
             
             <div class="col-3 col-sm-2 col-lg-1">
-              <!-- <select class="currency" v-model="item.currency">
-                <option v-for="currency in currencyList" :key="currency.id">{{ currency.name }}</option>
-              </select> -->
-              <!-- <div class="codeModal">
-                <div class="currency country-code form-control codeModal" @click="toggleCode"><div class="d-flex justify-content-between align-items-center"><span class="codeModal">{{ item.currency }}</span><i class="pi pi-angle-down"></i></div></div>
-            </div>
-
-                <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal ">
-                    <input class="codeInput input form-control codeModal" v-model="currencyText">
-                <div v-for="currency in filterCurrency" :key="currency.id" class="codeModal" >
-                    <div class="col-sm-3"><span style="display: inline-block;" @click="getCurrency">{{ currency.name }}</span>&nbsp;&nbsp;<span style="font-size: 0.8em">{{ currency.country }}</span></div>
-                </div>
-                <div v-if="filterCurrency.length == 0">No match found</div>
-                </div> -->
-                <!-- <Dropdown v-model="item.currency" :options="currencyList" :filter="true" class="currency p-0" placeholder="NGN" :showClear="false">
-                    
-                </Dropdown> -->
-            
-
                 <div
                 class="currency pointer d-flex justify-content-around align-items-center close-modal"
                 @click="item.showCurrency = !item.showCurrency"
@@ -410,11 +392,6 @@
             >
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
-
-          
-            
-            <!-- <div v-if="item.giver == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Donor</div>
-            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.giver }}     <span class="donor-text">edit</span></div> -->
             <div v-if="item.donor == '' " data-toggle="modal" data-target="#exampleModal" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">Add Donor</div>
             <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal" >{{ item.donor }}     <span class="donor-text">edit</span></div>
                </div>
@@ -1571,6 +1548,13 @@
             </div>
           </div>
         </div>
+        <Dialog v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '80vw'}">
+            <p>You have no income account to create a offering item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
+            <template #footer>
+                <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
+                <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
+            </template>
+        </Dialog>
   </div>
   <ConfirmDialog />
 </template>
@@ -1749,7 +1733,8 @@ export default {
       isPhoneValidNewConvert: true,
       isEmailValidNewConvert: true,
       currencyRate: [],
-      convertedResult: 0
+      convertedResult: 0,
+      displayResponsive: false
     };
   },
 
@@ -1991,23 +1976,21 @@ export default {
     setCurrencyRate (payload) {
       this.currencyRate = payload
     },
-    delAttendance(index) {
-      this.attendanceItem.splice(index, 1);
-    },
-    deleteOffering(id, index) {
+
+     delAttendance(id, index) {
       if (id) {
           axios
-        .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
+        .delete(`/deleteAttendance?ID=${id}`)
         .then((res) => {
           console.log(res, 'delete response from back');
-          if (res.data.status) {
+          if (res.data) {
             this.$toast.add({
               severity: "success",
               summary: "Confirmed",
-              detail: `Offering Successfully Deleted`,
+              detail: `Attendance Successfully Deleted`,
               life: 3000,
             });
-            emit("contri-transac", index);
+            this.attendanceItem = this.attendanceItem.filter(i => id !== i.attendanceId)
           } else {
             toast.add({
               severity: "warn",
@@ -2030,9 +2013,73 @@ export default {
           }
         });
       } else {
-        this.offeringItem.splice(index, 1);
-        this.convertedAmount2.splice(index, 1)
+          this.attendanceItem.splice(index, 1);
       }
+        // this.convertedAmount2.splice(index, 1)
+    },
+      deleteAttendance(id,index) {
+       this.$confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          this.delAttendance(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
+            this.$toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+      
+    },
+
+    deleteOffering(id, index) {
+      if (id) {
+          axios
+        .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
+        .then((res) => {
+          console.log(res, 'delete response from back');
+          if (res.data.status) {
+            this.$toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `Offering Successfully Deleted`,
+              life: 3000,
+            });
+            this.offeringItem = this.offeringItem.filter(i => id !== i.id)
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "Delete Failed",
+              detail: `Please Try Again`,
+              life: 3000,
+            });
+          }
+        })
+        .catch((err) => {
+          finish();
+          if (err.response) {
+            console.log(err.response);
+            this.$toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: `${err.response}`,
+              life: 3000,
+            });
+          }
+        });
+      } else {
+          this.offeringItem.splice(index, 1);
+      }
+
     },
 
     delOffering(id,index) {
@@ -2526,8 +2573,6 @@ export default {
         try {
           let res = await axios.get(`/api/Events/${this.$route.params.event}`)
           this.routeParams = this.$route.params.event
-        
-
           this.eventDate = res.data.activity.date.substr(0, 10)
           this.topic = res.data.activity.topic
           this.preacher = res.data.activity.preacher
@@ -2550,7 +2595,7 @@ export default {
               person: i.person,
               personEmail: i.personEmail,
               personID: i.personID,
-              personName: i.personName,
+              donor: i.personName,
               personPhoneNumber: i.personPhoneNumber,
               tenantID: i.tenantID,
               transactionNumber: i.transactionNumber
@@ -2629,7 +2674,6 @@ export default {
     },
     updateOfferingId (e) {
       // this.offeringItem[index].financialContributionID = id
-      
           let index = this.offeringItem.findIndex(i => i.financialContributionID === e.target.value)
           console.log(e.target.value, index, 'target', e.target.textContent)
            let offText = this.newOfferings.find(i => i.id === e.target.value).name
@@ -2777,6 +2821,9 @@ export default {
               NProgress.done();
               console.log(res)
             this.incomeAccount = res.data
+            if (res.data.length < 1) {
+            this.displayResponsive = true
+          }
           })
           .catch(err => {
               NProgress.done();
@@ -2793,6 +2840,10 @@ export default {
               console.log(err)
             })
       },
+       closeResponsive () {
+            this.displayResponsive = false;
+            this.$router.push({ name: "ChartOfAccount" })
+        },
       createNewCon (e) {
           let contributionCategory = {
             name: this.contributionItemName,
@@ -3191,7 +3242,7 @@ export default {
   border-bottom: 1px solid rgb(204, 204, 204);
 }
 .attendance-body {
-  padding: 0 50px;
+  padding: 0 50px; 
   background-color: #ecf0f3;
 }
 

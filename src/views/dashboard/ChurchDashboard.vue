@@ -94,7 +94,11 @@
             </div>
             <div class="bottom">
               <div class="box-bottom">
-                <router-link :to="{ name: 'Subscription' }">
+                <div style="font-size: 0.8em; padding-top:0.3rem; font-weight: 700"  v-tooltip.top="planUserIs">
+                  {{ planUserIs }}
+                  <!-- {{ planUserIs.length > 11 ? `${planUserIs.slice(0, 9)}...` : planUserIs }} -->
+                </div>
+                <router-link :to="{ name: 'Subscription' }" class="mt-1">
                   <!-- <span class="plan-text">YOU'RE ON A FREE PLAN</span> -->
                   <button
 
@@ -104,7 +108,6 @@
                     <h4 class="box-btn-text" :class="[buttonTextCheck.color]"> {{buttonTextCheck.text}} </h4>
                   </button>
                 </router-link>
-                <span style="font-size: 0.9rem; padding-top:0.3rem;"  v-tooltip.top="planUserIs">{{ planUserIs.length > 8 ? `${planUserIs.slice(0, 7)}...` : planUserIs }}</span>
               </div>
             </div>
           </div>
@@ -124,7 +127,7 @@
             <div class="bottom">
               <div class="box-bottom">
                 <span class="plan-text"></span>
-                <router-link :to="{ name: 'BuyUnits', path: '/tenant/units' }">
+                <router-link :to="{ name: 'BuyUnits', path: '/tenant/units' }" class="push-down">
                   <button class="upgrade-btn buy-btn">
                     <h4 class="box-btn-text">BUY UNIT</h4>
                   </button>
@@ -277,24 +280,6 @@
                               >Send SMS</router-link
                             >
                           </a>
-                          <!-- v-if="person.email" -->
-                          <!-- <a class="dropdown-item elipsis-items" >
-                        <router-link
-                          :to="`/tenant/email/compose?phone=${person.email}`"
-                          >Send Email</router-link
-                        >
-                      </a> -->
-                          <!-- <a class="dropdown-item elipsis-items">
-                        <router-link :to="`/tenant/people/add/${person.id}`"
-                          >Edit</router-link
-                        >
-                      </a> -->
-                          <!-- <a
-                        class="dropdown-item elipsis-items"
-                        href="#"
-                        @click.prevent="showConfirmModal(person.id)"
-                        >Delete</a
-                    > -->
                         </div>
                       </td>
                     </tr>
@@ -302,16 +287,6 @@
                 </table>
               </div>
             </div>
-
-            <!-- 2   {{ tenantInfoAttendanceWeekly }}
-   22   {{ tenantInfoAttendanceWeekly[0] }}
-   3   {{ tenantInfoCeleb }}
-   4   {{ tenantInfoFirstTimerWeekly[0] }}
-
-   1{{ tenantInfoCeleb.length === 0 }}
-   2{{ tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0  }}
-   3{{ tenantInfoAttendanceWeekly[0] ? tenantInfoAttendanceWeekly[0].data[0] === 0 : "" }} -->
-            <!-- Column Charts -->
             <div
               v-show="
                 tenantInfoCeleb.length > 0 ||
@@ -1105,10 +1080,10 @@ export default {
 
 .box-bottom {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   border-radius: 0px 0px 28px 28px;
   background: #f1f5f8;
-  padding: 10px;
+  padding: 10px 20px;
   border: 1px solid #e6e5f2;
   box-shadow: 0px 1px 4px #02172e45;
   border-top: transparent;
@@ -1535,5 +1510,10 @@ tbody tr:nth-child(even) {
   .top-row {
     margin-top: 40px;
   }
+
+}
+  
+.push-down {
+  margin-top: 26px;
 }
 </style>
