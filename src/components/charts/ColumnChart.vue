@@ -10,13 +10,15 @@
       </div>
 </div>
   <div class="wrapper">
-    <div :class="{ 'chart-div' : !chartClass }" :id="domId" style="height: 530px" ref="chartDiv"></div>
+    <div :class="{ 'chart-div' :  !fullPath.includes('/checkin'), 'no-chart-class' : fullPath.includes('/checkin') }" :id="domId" :style="!fullPath.includes('/checkin') ? 'height: 530px' : 'height: 100%'" ref="chartDiv"></div>
+    <!-- :class="{ 'chart-div' : !route.fullPath.includes('/checkin'), 'no-chart-div' : route.fullPath.includes('/checkin') }" -->
   </div>
 </template>
 
 <script>
 import { onMounted, onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
+import { useRoute } from 'vue-router'
 export default {
   components: {},
 
@@ -25,6 +27,8 @@ export default {
   setup(props) {
     const chart = ref(null);
     const headerText = ref(null);
+    const route = useRoute()
+    const fullPath = ref("")
     
 
     onMounted(() => {
@@ -40,6 +44,7 @@ export default {
         chart: {
           type: "column",
           renderTo: props.domId,
+          height: fullPath.value.includes('/checkin') ? '300px' : '100%'
         },
         credits: {
           enabled: false,
@@ -123,10 +128,17 @@ export default {
       
     })
 
+const getRoute = () => {
+      console.log(route.fullPath)
+      fullPath.value = route.fullPath
+    }
+    getRoute()
 
     return {
       chart,
-      headerText
+      headerText,
+      route,
+      fullPath
     }
   },
 };
@@ -187,5 +199,11 @@ export default {
         box-shadow: 0px 1px 4px #02172E45;
         border: 1px solid #DDE2E6;
         padding: 25px 0;
+    }
+    
+    .no-chart-div {
+         border: none;
+        border-radius: 0px;
+        box-shadow: none;
     }
 </style>

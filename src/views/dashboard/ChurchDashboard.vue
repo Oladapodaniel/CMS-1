@@ -280,24 +280,6 @@
                               >Send SMS</router-link
                             >
                           </a>
-                          <!-- v-if="person.email" -->
-                          <!-- <a class="dropdown-item elipsis-items" >
-                        <router-link
-                          :to="`/tenant/email/compose?phone=${person.email}`"
-                          >Send Email</router-link
-                        >
-                      </a> -->
-                          <!-- <a class="dropdown-item elipsis-items">
-                        <router-link :to="`/tenant/people/add/${person.id}`"
-                          >Edit</router-link
-                        >
-                      </a> -->
-                          <!-- <a
-                        class="dropdown-item elipsis-items"
-                        href="#"
-                        @click.prevent="showConfirmModal(person.id)"
-                        >Delete</a
-                    > -->
                         </div>
                       </td>
                     </tr>
@@ -305,16 +287,6 @@
                 </table>
               </div>
             </div>
-
-            <!-- 2   {{ tenantInfoAttendanceWeekly }}
-   22   {{ tenantInfoAttendanceWeekly[0] }}
-   3   {{ tenantInfoCeleb }}
-   4   {{ tenantInfoFirstTimerWeekly[0] }}
-
-   1{{ tenantInfoCeleb.length === 0 }}
-   2{{ tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.length === 0  }}
-   3{{ tenantInfoAttendanceWeekly[0] ? tenantInfoAttendanceWeekly[0].data[0] === 0 : "" }} -->
-            <!-- Column Charts -->
             <div
               v-show="
                 tenantInfoCeleb.length > 0 ||

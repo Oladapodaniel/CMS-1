@@ -1167,9 +1167,9 @@ const routes = [{
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/childCheckin/Index'),
             children: [{
                 path: '',
-                name: 'Dashboard',
+                name: 'CheckinDashboard',
                 component: () =>
-                    import ( /* webpackChunkName: "sentemails" */ '@/views/childCheckin/Dashboard')
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/childCheckin/CheckinDashboard')
             },
             {
                 path: '/family',

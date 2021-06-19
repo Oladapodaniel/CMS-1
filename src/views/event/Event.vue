@@ -332,25 +332,6 @@
             </div>
             
             <div class="col-3 col-sm-2 col-lg-1">
-              <!-- <select class="currency" v-model="item.currency">
-                <option v-for="currency in currencyList" :key="currency.id">{{ currency.name }}</option>
-              </select> -->
-              <!-- <div class="codeModal">
-                <div class="currency country-code form-control codeModal" @click="toggleCode"><div class="d-flex justify-content-between align-items-center"><span class="codeModal">{{ item.currency }}</span><i class="pi pi-angle-down"></i></div></div>
-            </div>
-
-                <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal ">
-                    <input class="codeInput input form-control codeModal" v-model="currencyText">
-                <div v-for="currency in filterCurrency" :key="currency.id" class="codeModal" >
-                    <div class="col-sm-3"><span style="display: inline-block;" @click="getCurrency">{{ currency.name }}</span>&nbsp;&nbsp;<span style="font-size: 0.8em">{{ currency.country }}</span></div>
-                </div>
-                <div v-if="filterCurrency.length == 0">No match found</div>
-                </div> -->
-                <!-- <Dropdown v-model="item.currency" :options="currencyList" :filter="true" class="currency p-0" placeholder="NGN" :showClear="false">
-                    
-                </Dropdown> -->
-            
-
                 <div
                 class="currency pointer d-flex justify-content-around align-items-center close-modal"
                 @click="item.showCurrency = !item.showCurrency"
@@ -411,11 +392,6 @@
             >
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
-
-          
-            
-            <!-- <div v-if="item.giver == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Donor</div>
-            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.giver }}     <span class="donor-text">edit</span></div> -->
             <div v-if="item.donor == '' " data-toggle="modal" data-target="#exampleModal" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">Add Donor</div>
             <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal" >{{ item.donor }}     <span class="donor-text">edit</span></div>
                </div>
@@ -2619,7 +2595,7 @@ export default {
               person: i.person,
               personEmail: i.personEmail,
               personID: i.personID,
-              personName: i.personName,
+              donor: i.personName,
               personPhoneNumber: i.personPhoneNumber,
               tenantID: i.tenantID,
               transactionNumber: i.transactionNumber
