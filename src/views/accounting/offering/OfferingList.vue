@@ -1173,7 +1173,7 @@ export default {
 .itemroute-color:hover {
   text-decoration: none;
 }
-.t-header div {
+.t-header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
   padding: .5rem 0;
