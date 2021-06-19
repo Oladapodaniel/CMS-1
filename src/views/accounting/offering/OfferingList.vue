@@ -669,7 +669,7 @@ export default {
                 const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
                 axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
                 .then(res => {
-                    tenantCurrency.value = res.data.currency
+                    tenantCurrency.value = res.data
                     console.log(res.data)
                   })
                   .catch(err => console.log(err))
@@ -680,7 +680,7 @@ export default {
         }
 
     const getTenantCurrency = () => {
-      if (Object.keys(store.getters.currentUser).length > 0) {
+      if (store.getters.currentUser && Object.keys(store.getters.currentUser).length > 0) {
           tenantCurrency.value = store.getters.currentUser
         } else {
             getCurrentlySignedInUser()

@@ -44,7 +44,7 @@ export default {
         chart: {
           type: "column",
           renderTo: props.domId,
-          height: fullPath.value.includes('/checkin') ? '300px' : '100%'
+          height: fullPath.value.includes('/checkin') ? '300px' : '500px'
         },
         credits: {
           enabled: false,

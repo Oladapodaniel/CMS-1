@@ -1162,9 +1162,9 @@ const routes = [{
     },
     {
         path: '/checkin',
-        name: 'Index',
+        name: 'BaseIndex',
         component: () =>
-            import ( /* webpackChunkName: "defaultmessage" */ '@/views/childCheckin/Index'),
+            import ( /* webpackChunkName: "defaultmessage" */ '@/views/ChildCheckinPortal/BaseIndex'),
             children: [{
                 path: '',
                 name: 'CheckinDashboard',
@@ -1239,7 +1239,7 @@ router.beforeEach((to, from, next) => {
      to.name === "TransactionPage" || 
      to.name === "PublicResetPassword" || 
      to.name === "EventRegistration" ||
-     to.name === "Index") && !tokenIsValid) return next(true)
+     to.name === "BaseIndex") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;
