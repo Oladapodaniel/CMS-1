@@ -1176,6 +1176,12 @@ const routes = [{
                 name: 'Family',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Family')
+            },
+            {
+                path: '/checkinevent',
+                name: 'CheckinEvent',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinEvent')
             }
         ]
     },
