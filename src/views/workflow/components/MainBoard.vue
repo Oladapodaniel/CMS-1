@@ -1,11 +1,16 @@
 <template>
-    <div class="container">
+    <div class="container mb-4">
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-6 pl-md-0">
                         <label for="name">Name</label>
                         <input type="text" class="form-control">
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <input type="checkbox" name="" id=""> Active
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6 pr-md-0">
                         <label for="name">Description</label>
@@ -20,24 +25,26 @@
                         <div class="row">
                             <div class="border col-4 scr-height" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row">
-                                    <div class="col-md-12" v-for="(trigger, index) in selectedTriggers" :key="index">
-                                        <h5>
-                                            <span><i class="pi pi-users mr-3" style="font-size: 2rem"></i></span>
+                                    <div class="col-md-12 py-3" v-for="(trigger, index) in selectedTriggers" :key="index">
+                                        <h6>
+                                            <span><i class="pi pi-users mr-3" style="font-size: 1rem"></i></span>
                                             <span class="d-none">{{ trigger.name }}</span>
-                                        </h5>
+                                        </h6>
                                     </div>
                                 </div>
-                                <div class="row h-100" >
+                                <div class="row" >
                                     <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showTriggers }">
                                         <div class="row d-flex justify-content-around">
-                                            <ul class="list-group w-100">
+                                            <div class="col-md-12">
+                                                <ul class="list-group w-100">
                                                 <li class="list-group-item c-pointer" v-for="(i, j) in triggers" :key="j" @click="selectTrigger(i)">
-                                                    <h4 class="mb-0">
-                                                        <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 2rem"></i></span>
+                                                    <h5 class="mb-0">
+                                                        <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 1rem"></i></span>
                                                         <span :class="{ 'd-none': !showTriggers &&  selectedTriggers.length > 0 }">{{ i.name }}</span>
-                                                    </h4>
+                                                    </h5>
                                                 </li>
                                             </ul>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch">
@@ -52,22 +59,13 @@
                             <div class="col-8 border" :class="{ 'col-md-8': showTriggers, 'col-md-11': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row" :class="{ 'd-none': selectedTriggers.length === 0 }">
                                     <div class="col-6 border scr-height"  style="height: 400px" :class="{ 'col-md-4': actionSelected, 'col-md-6': !actionSelected }">
-                                        <div class="row">
-                                            <div class="col-md-12 text-center">
-                                                <p class="mb-0"><i class="pi pi-heart my-2" style="font-size:2rem"></i></p>
-                                            </div>
-                                            <div class="col-md-12 text-center">
-                                                <p>When a member does <span class="text-info">something</span> about <span class="text-info">something</span> <span>Lorem ipsum dolor sit amet consectetur adipisicing elit..</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12 font-weight-bold">
-                                                <label for="">When a member gives more than</label>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <input type="text" class="form-control">
-                                            </div>
-                                        </div>
+                                        <GivingAmount v-if="selectedTrigger.id === 1" />
+                                        <GivingNewRegular v-else-if="selectedTrigger.id === 11" />
+                                        <NoLongerGiving v-else-if="selectedTrigger.id === 2" />
+                                        <PledgeCreation v-else-if="selectedTrigger.id === 3" />
+                                        <GroupAddOrRemove v-else-if="selectedTrigger.id === 8" />
+                                        <GroupMembershipDuration  v-else-if="selectedTrigger.id === 9" />
+                                        <GroupMembershipDuration  v-else />
                                     </div>
 
                                     <div class="col-md-6 border scr-height"  style="height: 400px" :class="{ 'col-md-8': actionSelected, 'col-md-6': !actionSelected }">
@@ -76,25 +74,25 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <ul class="list-group w-100">
-                                                            <li class="list-group-item c-pointer" v-for="(i, j) in selectedActions" :key="j">
-                                                                <h4 class="mb-0">
-                                                                    <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 2rem"></i></span>
-                                                                    <span class="font-weight-bold">{{ i.name }}</span>
-                                                                </h4>
+                                                            <li class="list-group-item c-pointer py-4" v-for="(i, j) in selectedActions" :key="j">
+                                                                <h5 class="mb-0">
+                                                                    <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 1rem"></i></span>
+                                                                    <span class="font-weight">{{ i.name }}</span>
+                                                                </h5>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <div class="row h-100" >
+                                                <div class="row" >
                                                     <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showActions }">
                                                         <div class="row d-flex justify-content-around">
-                                                            <div class="col-md-5 card my-2" v-for="(i, j) in triggers" :key="j" @click="selectAction(i)">
+                                                            <div class="col-md-5 card my-2" v-for="(i, j) in actions" :key="j" @click="selectAction(i)">
                                                                 <div class="row card-body">
                                                                     <div class="col-md-12 text-center">
-                                                                        <i class="pi pi-users"></i>
+                                                                        <i :class="i.icon"></i>
                                                                     </div>
                                                                     <div class="col-md-12 text-center">
-                                                                        <h4 class="mb-0">{{ i.name }}</h4>
+                                                                        <h6 class="mb-0">{{ i.name }}</h6>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -122,8 +120,10 @@
                                             <div class="border" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected }">
                                                 <div class="row">
                                                     <div class="col-md-12" > 
-                                                        <input type="checkbox" name="" id="">  Email <br>
-                                                        <input type="checkbox" name="" id="">  SMS
+                                                        <EmailAction v-if="selectedAction.id === 1" />
+                                                        <GroupAction v-else-if="selectedAction.id === 3" />
+                                                        <AdminMessage v-else-if="selectedAction.id === 5"  />
+                                                        <AdminMessage v-else  />
                                                     </div>
                                                 </div>
                                                 
@@ -140,6 +140,12 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-12 px-0">
+                        <button class="default-btn border-0 primary-bg font-weight-700 text-white">Save</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -147,7 +153,28 @@
 
 <script>
 import { ref } from '@vue/reactivity'
+import GivingAmount from "./triggers/GivingAmount"
+import GroupMembershipDuration from "./triggers/GroupMembershipDuration"
+import GroupAddOrRemove from "./triggers/GroupAddOrRemove"
+import PledgeCreation from "./triggers/PledgeCreation"
+import NoLongerGiving from "./triggers/NoLongerGiving.vue"
+import GivingNewRegular from "./triggers/GivingNewRegular.vue"
+import GroupAction from "./actions/GroupAction"
+import AdminMessage from "./actions/AdminMessage"
+import { computed } from '@vue/runtime-core'
+import EmailAction from "./actions/Email"
 export default {
+    components: { 
+        GivingAmount,
+        GivingNewRegular,
+        GroupMembershipDuration,
+        GroupAddOrRemove,
+        PledgeCreation,
+        NoLongerGiving,
+        AdminMessage,
+        GroupAction,
+        EmailAction
+    },
     setup () {
         const showTriggers = ref(false);
         const showActions = ref(false);
@@ -156,83 +183,100 @@ export default {
             {
                 name: "Giving- amount",
                 icon: "pi pi-users",
-
+                id: 1
             },
             {
                 name: "Giving - new regular giver",
-                icon: "pi pi-users"
+                icon: "pi pi-users",
+                id: 11
             },
             {
                 name: "Giving - no longer giving",
                 icon: "pi pi-users",
-
+                id: 2
             },
             {
                 name: "Pledge creation",
-                icon: "pi pi-users"
+                icon: "pi pi-users",
+                id: 3
             },
             {
                 name: "Member - new member",
-                icon: "pi pi-users"
+                icon: "pi pi-users",
+                id: 4
             },
             {
                 name: "Member - birthday",
-                icon: "pi pi-users"
+                icon: "pi pi-users",
+                id: 5
             },
             {
                 name: "Member - new convert",
-                icon: "pi pi-users"
+                icon: "pi pi-users",
+                id: 6
             },
             {
                 name: "Member - first timer",
-                icon: "pi pi-users"
+                icon: "pi pi-users",
+                id: 7
             },
             {
                 name: "Group - add/remove",
-                icon: "pi pi-users"
+                icon: "pi pi-users",
+                id: 8
             },
             {
                 name: "Group - membership duration",
-                icon: "pi pi-users"
+                icon: "pi pi-users",
+                id: 9
             },
             {
                 name: "Attendance",
-                icon: "pi pi-users"
+                icon: "pi pi-users",
+                id: 10
             }
         ]
 
         const actions = [
             {
                 name: "Email",
-                icon: "pi pi-users",
+                icon: "pi pi-envelope",
+                id: 1
             },
             {
                 name: "SMS",
-                icon: "pi pi-users",
+                icon: "pi pi-comment",
+                id: 2
             },
             {
                 name: "Add to group",
                 icon: "pi pi-users",
+                id: 3
             },
             {
                 name: "Assign task",
                 icon: "pi pi-users",
+                id: 4
             },
             {
                 name: "Message admin",
                 icon: "pi pi-users",
+                id: 5
             },
             {
                 name: "Update progress",
-                icon: "pi pi-users",
+                icon: "pi pi-chart-line",
+                id: 6
             },
             {
                 name: "Send voice vote",
-                icon: "pi pi-users",
+                icon: "pi pi-volume-up",
+                id: 7
             },
             {
                 name: "Timer",
-                icon: "pi pi-users",
+                icon: "pi pi-clock",
+                id: 8
             }
         ]
 
@@ -274,6 +318,17 @@ export default {
 
         const actionSelected = ref(false);
 
+        const selectedTriggerIndex = ref(0);
+        const selectedTrigger = computed(() => {
+            if (selectedTriggers.value.length === 0) return { };
+            return selectedTriggers.value[selectedTriggerIndex.value];
+        })
+        const selectedActionIndex = ref(0);
+        const selectedAction = computed(() => {
+            if (selectedActions.value.length === 0) return { };
+            return selectedActions.value[selectedActionIndex.value];
+        })
+
         return {
             showTriggers,
             // triggersIsVissible,
@@ -289,6 +344,8 @@ export default {
 
             actionSelected,
             actions,
+            selectedTrigger,
+            selectedAction,
         }
     }
 }
@@ -327,6 +384,7 @@ export default {
 
     .scr-height {
         height: calc(100vh - 220px) !important;
+        overflow-y: scroll;
     }
 
     .btn-100 {
