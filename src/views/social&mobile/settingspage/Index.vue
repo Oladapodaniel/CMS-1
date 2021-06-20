@@ -426,7 +426,7 @@ export default {
               console.log(res, "err response");
 
               //Get Page access token
-              axios.get(`https://graph.facebook.com/206226513988805?fields=access_token&access_token=${error.credential.accessToken}`)
+              axios.get(`https://graph.facebook.com/108291174831555?fields=access_token&access_token=${error.credential.accessToken}`)
                 .then(res => {
                   console.log(res, "page 1 data");
                 })
