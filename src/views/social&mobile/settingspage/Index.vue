@@ -402,7 +402,7 @@ export default {
         console.log(error, "get pages error");
       }
     };
-    
+
     var provider = new firebase.auth.FacebookAuthProvider();
     firebase
         .auth()
@@ -417,10 +417,16 @@ export default {
           // let profileId = result.additionalUserInfo.profile.id;
           // getAccessToken(accessToken, profileId);
 
-          /** @type {firebase.auth.OAuthCredential} */
         })
         .catch((error) => {
           console.log(error, "sign in error");
+          axios.get(`https://graph.facebook.com/me?fields=id&access_token=${error.credential.accessToken}`)
+            .then(res => {
+              console.log(res, "err response");
+            })
+            .catch(err => {
+              console.log(err, "err error");
+            })
         });
 
     return {
