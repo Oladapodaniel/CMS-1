@@ -424,7 +424,7 @@ export default {
             .then(res => {
               getAccessToken(error.credential.accessToken, res.data.id)
               console.log(res, "err response");
-              axios.get(`"https://graph.facebook.com/${res.data.id}/accounts?access_token=${error.credential.accessToken}`)
+              axios.get(`https://graph.facebook.com/${res.data.id}/accounts?access_token=${error.credential.accessToken}`)
                 .then(res => {
                   console.log(res, "page data");
                 })
