@@ -402,6 +402,26 @@ export default {
         console.log(error, "get pages error");
       }
     };
+    
+    var provider = new firebase.auth.FacebookAuthProvider();
+    firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          setTimeout(function () {
+            display.value = true;
+          }, 1500);
+
+          console.log(result, "sign in result");
+          // let accessToken = result.credential.accessToken;
+          // let profileId = result.additionalUserInfo.profile.id;
+          // getAccessToken(accessToken, profileId);
+
+          /** @type {firebase.auth.OAuthCredential} */
+        })
+        .catch((error) => {
+          console.log(error, "sign in error");
+        });
 
     return {
       facebookLogin2,
