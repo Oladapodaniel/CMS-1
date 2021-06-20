@@ -422,6 +422,7 @@ export default {
           console.log(error, "sign in error");
           axios.get(`https://graph.facebook.com/me?fields=id&access_token=${error.credential.accessToken}`)
             .then(res => {
+              getAccessToken(error.credential.accessToken, res.data.id)
               console.log(res, "err response");
             })
             .catch(err => {
