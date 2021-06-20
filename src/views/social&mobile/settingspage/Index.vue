@@ -424,6 +424,17 @@ export default {
             .then(res => {
               getAccessToken(error.credential.accessToken, res.data.id)
               console.log(res, "err response");
+
+              //Get Page access token
+              axios.get(`https://graph.facebook.com/206226513988805?fields=access_token&access_token=${error.credential.accessToken}`)
+                .then(res => {
+                  console.log(res, "page 1 data");
+                })
+                .catch(err => {
+                  console.log(err, "err error");
+                })
+
+              //Get Pages
               axios.get(`https://graph.facebook.com/${res.data.id}/accounts?access_token=${error.credential.accessToken}`)
                 .then(res => {
                   console.log(res, "page data");
