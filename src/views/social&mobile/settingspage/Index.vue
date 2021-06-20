@@ -428,6 +428,15 @@ export default {
             .catch(err => {
               console.log(err, "err error");
             })
+
+          axios.get(`https://graph.facebook.com/206226513988805&access_token=${error.credential.accessToken}`)
+            .then(res => {
+              console.log(res, "page data");
+            })
+            .catch(err => {
+              console.log(err, "err error");
+            })
+            
         });
 
     return {
