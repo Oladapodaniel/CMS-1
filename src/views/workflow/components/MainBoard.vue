@@ -25,9 +25,9 @@
                         <div class="row">
                             <div class="border col-4 scr-height" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row">
-                                    <div class="col-md-12 py-3" v-for="(trigger, index) in selectedTriggers" :key="index">
+                                    <div class="col-md-12 py-3" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in selectedTriggers" :key="index">
                                         <h6>
-                                            <span><i class="pi pi-users mr-3" style="font-size: 1rem"></i></span>
+                                            <span><i class="mr-3" :class="[trigger.icon]" style="font-size: 1.5rem"></i></span>
                                             <span class="d-none">{{ trigger.name }}</span>
                                         </h6>
                                     </div>
@@ -48,9 +48,9 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch">
-                                        <button class="btn btn-secondary w-100 trigger-btn btn-100 ml-n3"
+                                        <button class="btn our-grey-bg w-100 trigger-btn btn-100 ml-n3 font-weight-bold"
                                             @click="toggleTriggers">
-                                            <span><i class="pi pi-plus"></i></span>
+                                            <span><i class="pi pi-plus mx-2"></i></span>
                                             <span :class="{ 'd-none': !showTriggers &&  selectedTriggers.length > 0 }">Add a trigger</span>
                                         </button>
                                     </div>
@@ -109,7 +109,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 trigger-btn-div">
-                                                        <button class="btn btn-secondary w-100 trigger-btn d-flex justify-content-center btn-100"
+                                                        <button class="btn our-grey-bg w-100 trigger-btn d-flex justify-content-center btn-100 font-weight-bold"
                                                             @click="toggleActions">
                                                             Actions
                                                         </button>
@@ -128,7 +128,7 @@
                                                 </div>
                                                 
                                                 <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch" style="padding:10px">
-                                                    <button class="btn btn-success w-100 trigger-btn btn-100 ml-n4">
+                                                    <button class="btn btn-success w-100 trigger-btn btn-100 ml-n4 font-weight-bold">
                                                         Done
                                                     </button>
                                                 </div>
@@ -182,42 +182,42 @@ export default {
         const triggers = [
             {
                 name: "Giving- amount",
-                icon: "pi pi-users",
+                icon: "pi pi-money-bill",
                 id: 1
             },
             {
                 name: "Giving - new regular giver",
-                icon: "pi pi-users",
+                icon: "pi pi-money-bill",
                 id: 11
             },
             {
                 name: "Giving - no longer giving",
-                icon: "pi pi-users",
+                icon: "pi pi-money-bill",
                 id: 2
             },
             {
                 name: "Pledge creation",
-                icon: "pi pi-users",
+                icon: "pi pi-money-bill",
                 id: 3
             },
             {
                 name: "Member - new member",
-                icon: "pi pi-users",
+                icon: "pi pi-user",
                 id: 4
             },
             {
                 name: "Member - birthday",
-                icon: "pi pi-users",
+                icon: "pi pi-user",
                 id: 5
             },
             {
                 name: "Member - new convert",
-                icon: "pi pi-users",
+                icon: "pi pi-user",
                 id: 6
             },
             {
                 name: "Member - first timer",
-                icon: "pi pi-users",
+                icon: "pi pi-user",
                 id: 7
             },
             {
@@ -232,7 +232,7 @@ export default {
             },
             {
                 name: "Attendance",
-                icon: "pi pi-users",
+                icon: "pi pi-calendar",
                 id: 10
             }
         ]
@@ -383,11 +383,15 @@ export default {
     }
 
     .scr-height {
-        height: calc(100vh - 220px) !important;
+        height: calc(100vh - 300px) !important;
         overflow-y: scroll;
     }
 
     .btn-100 {
         width: 100% !important
+    }
+
+    .active-trigger {
+        border-left: 1px solid #007bff;
     }
 </style>

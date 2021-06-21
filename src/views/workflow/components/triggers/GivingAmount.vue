@@ -2,7 +2,7 @@
     <div class="container px-0 max-height">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription />
+                <TriggerDescription :description="description" />
             </div>
         </div>
 
@@ -11,7 +11,7 @@
                 <label for="" class="font-weight-600">Match an individual who is a member of</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown :options="[ 'Workers', 'Choir', 'New comers' ]" class="w-100" />
+                <Dropdown @change="groupSelected" v-model="selectedGroup" :options="[ 'Workers', 'Choir', 'New comers' ]" class="w-100" />
             </div>
         </div>
 
@@ -20,7 +20,7 @@
                 <label for="" class="font-weight-600">And who gives</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown :options="[ 'Greater than', 'Less than' ]" class="w-100" />
+                <Dropdown @change="rangeSelected" v-model="selectedRange" :options="[ 'Greater than', 'Less than' ]" class="w-100" />
             </div>
         </div>
 
@@ -29,7 +29,7 @@
                 <label for="" class="font-weight-600">$</label>
             </div>
             <div class="col-md-12 mb-2">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" @change="handleAmount" v-model="amount">
             </div>
         </div>
 
@@ -38,7 +38,7 @@
                 <label for="" class="font-weight-600">To</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown :options="[ 'Any category...', 'General', 'Building' ]" class="w-100" />
+                <Dropdown :options="[ 'Any category...', 'General', 'Building' ]" class="w-100" @change="categorySelected" v-model="category" />
             </div>
         </div>
 
@@ -47,7 +47,7 @@
                 <label for="" class="font-weight-600">In</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown :options="[ 'A single gift', 'General', 'The last...' ]" class="w-100" />
+                <Dropdown  @change="givingTimeSelected" v-model="givingTime" :options="[ 'A single gift', 'General', 'The last...' ]" class="w-100" />
             </div>
         </div>
     </div>
@@ -56,13 +56,60 @@
 <script>
 import Dropdown from "primevue/dropdown"
 import TriggerDescription from "../TriggerDescription.vue"
+import { ref } from '@vue/reactivity'
+import { computed } from '@vue/runtime-core'
 export default {
     components: { Dropdown, TriggerDescription },
 
     setup () {
-        
+        const selectedGroup = ref('')
+        const groupSelected = (e) => {
+            console.log(e.value, "Value");
+        }
 
-        return {}
+        const selectedRange = ref('')
+        const rangeSelected = (e) => {
+            console.log(e.value, "Value");
+        }
+
+        const amount = ref(0)
+        const handleAmount = (e) => {
+            console.log(e.value, "Value");
+        }
+
+        const category = ref('')
+        const categorySelected = (e) => {
+            console.log(e.value, "Value");
+        }
+
+        const givingTime = ref('')
+        const givingTimeSelected = (e) => {
+            console.log(e.value, "Value");
+        }
+
+        const description = computed(() => {
+            return {
+                groups: selectedGroup.value ? [ selectedGroup.value ] : ['_____'],
+                range: selectedRange.value === 'Greater than' ? '>' : '<',
+                category: category.value === 'Any category' ? 'any' : category.value,
+                amount: amount.value,
+                time: givingTime.value ? givingTime.value : '____'
+             };            
+        })
+
+        return {
+            groupSelected,
+            selectedGroup,
+            selectedRange,
+            rangeSelected,
+            handleAmount,
+            amount,
+            categorySelected,
+            category,
+            givingTimeSelected,
+            givingTime,
+            description,
+        }
     }
 }
 </script>
