@@ -113,18 +113,16 @@ const routes = [{
         name: 'Home',
         component: () =>
             import ( /* webpackChunkName: "home" */ '../views/dashboard/Home.vue'),
-        children: [
-            {
+        children: [{
                 path: '',
                 name: 'Dashboard',
                 component: () =>
                     import ( /* webpackChunkName: "dashboard" */ '../views/dashboard/ChurchDashboard.vue'),
                 meta: {
                     title: 'Churchplus - Dashboard',
-                    metaTags: [
-                        {
-                        name: 'description',
-                        content: 'The home page of Churchplus app.'
+                    metaTags: [{
+                            name: 'description',
+                            content: 'The home page of Churchplus app.'
                         },
                         // {
                         // property: 'og:description',
@@ -141,17 +139,15 @@ const routes = [{
                 meta: {
                     title: 'Churchplus - Ministry Workflow',
                 },
-                children: [
-                    {
-                        path: 'add',
-                        name: 'AddWorkflow',
-                        component: () =>
-                            import ( /* webpackChunkName: "addworkflow" */ '../views/workflow/components/MainBoard.vue'),
-                        meta: {
-                            title: 'Churchplus - Add Workflow',
-                        }
-                    },
-                ]
+                children: [{
+                    path: 'add',
+                    name: 'AddWorkflow',
+                    component: () =>
+                        import ( /* webpackChunkName: "addworkflow" */ '../views/workflow/components/MainBoard.vue'),
+                    meta: {
+                        title: 'Churchplus - Add Workflow',
+                    }
+                }, ]
             },
             {
                 path: 'subscription',
@@ -216,28 +212,28 @@ const routes = [{
             },
 
             // {
-                //     path: 'event',
-                //     name: 'Event',
-                //     component: () =>
-                //         import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
-                // },
-                {
-                    path: 'importinstruction',
-                    name: 'ImportInstruction',
-                    meta: {
-                        title: 'Churchplus - Import Members',
-                    },
-                    component: () =>
-                        import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/ImportInstruction.vue')
+            //     path: 'event',
+            //     name: 'Event',
+            //     component: () =>
+            //         import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+            // },
+            {
+                path: 'importinstruction',
+                name: 'ImportInstruction',
+                meta: {
+                    title: 'Churchplus - Import Members',
                 },
-                {
-                    path: 'events',
-                    name: 'Events',
-                    meta: {
-                        title: 'Churchplus - Event Form',
-                    },
-                    component: () =>
-                        import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/ImportInstruction.vue')
+            },
+            {
+                path: 'events',
+                name: 'Events',
+                meta: {
+                    title: 'Churchplus - Event Form',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "emptyevent" */ '@/views/event/Events.vue')
             },
             // {
             //     path: 'events',
@@ -245,17 +241,17 @@ const routes = [{
             //     component: () =>
             //         import ( /* webpackChunkName: "eventlsit" */ '@/views/event/EventList.vue')
             // },
-                {
-                    path: 'event/:event?',
-                    name: 'Event',
-                    meta: {
-                        title: 'Churchplus - Event Form',
-                    },
-                    component: () =>
-                        import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+            {
+                path: 'event/:event?',
+                name: 'Event',
+                meta: {
+                    title: 'Churchplus - Event Form',
                 },
+                component: () =>
+                    import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
+            },
 
-                {
+            {
                 path: 'attendancecheckin',
                 name: 'Attendance',
                 component: () =>
@@ -955,7 +951,7 @@ const routes = [{
                 path: 'contributionCategory',
                 name: 'ContributionCategory',
                 component: () =>
-                import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/ContributionCategory')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/offering/ContributionCategory')
             },
             {
                 path: 'transactionlist',
@@ -964,7 +960,7 @@ const routes = [{
                     title: 'Churchplus - Transactions',
                 },
                 component: () =>
-                import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
+                    import ( /* webpackChunkName: "defaultmessage" */ '@/views/accounting/transaction/TransactionList')
             },
             {
                 path: 'onlinedonation',
@@ -1165,7 +1161,7 @@ const routes = [{
         name: 'BaseIndex',
         component: () =>
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/ChildCheckinPortal/BaseIndex'),
-            children: [{
+        children: [{
                 path: '',
                 name: 'CheckinDashboard',
                 component: () =>
@@ -1176,6 +1172,12 @@ const routes = [{
                 name: 'Family',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Family')
+            },
+            {
+                path: '/checkinprofile',
+                name: 'CheckinProfile',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinProfile')
             }
         ]
     },
@@ -1193,53 +1195,53 @@ router.beforeEach((to, from, next) => {
 
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
 
-  // Find the nearest route element with meta tags.
-  const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+    // Find the nearest route element with meta tags.
+    const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
 
-  const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
+    const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
 
-  // If a route with a title was found, set the document (page) title to that value.
-  if(nearestWithTitle) {
-    document.title = nearestWithTitle.meta.title;
-  } else if(previousNearestWithMeta) {
-    document.title = previousNearestWithMeta.meta.title;
-  }
+    // If a route with a title was found, set the document (page) title to that value.
+    if (nearestWithTitle) {
+        document.title = nearestWithTitle.meta.title;
+    } else if (previousNearestWithMeta) {
+        document.title = previousNearestWithMeta.meta.title;
+    }
 
-  // Remove any stale meta tags from the document using the key attribute we set below.
-  Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode.removeChild(el));
+    // Remove any stale meta tags from the document using the key attribute we set below.
+    Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode.removeChild(el));
 
-  // Skip rendering meta tags if there are none.
-  if(!nearestWithMeta) return next();
+    // Skip rendering meta tags if there are none.
+    if (!nearestWithMeta) return next();
 
-  // Turn the meta tag definitions into actual elements in the head.
-  nearestWithMeta.meta.metaTags.map(tagDef => {
-    const tag = document.createElement('meta');
+    // Turn the meta tag definitions into actual elements in the head.
+    nearestWithMeta.meta.metaTags.map(tagDef => {
+            const tag = document.createElement('meta');
 
-    Object.keys(tagDef).forEach(key => {
-      tag.setAttribute(key, tagDef[key]);
-    });
+            Object.keys(tagDef).forEach(key => {
+                tag.setAttribute(key, tagDef[key]);
+            });
 
-    // We use this to track which meta tags we create so we don't interfere with other ones.
-    tag.setAttribute('data-vue-router-controlled', '');
+            // We use this to track which meta tags we create so we don't interfere with other ones.
+            tag.setAttribute('data-vue-router-controlled', '');
 
-    return tag;
-  })
-  // Add the meta tags to the document head.
-  .forEach(tag => document.head.appendChild(tag));
+            return tag;
+        })
+        // Add the meta tags to the document head.
+        .forEach(tag => document.head.appendChild(tag));
 
 
     if ((to.name === "ResetPassword" ||
-     to.name === "EmailSent" || 
-     to.name === "OnboardingForm" || 
-     to.name === "WebCheckin" ||
-     to.name === "OnlineGiving4" ||
-     to.name === "iFrame" || 
-     to.name === "SignUpPayment" || 
-     to.name === "SignInPayment" || 
-     to.name === "TransactionPage" || 
-     to.name === "PublicResetPassword" || 
-     to.name === "EventRegistration" ||
-     to.name === "BaseIndex") && !tokenIsValid) return next(true)
+            to.name === "EmailSent" ||
+            to.name === "OnboardingForm" ||
+            to.name === "WebCheckin" ||
+            to.name === "OnlineGiving4" ||
+            to.name === "iFrame" ||
+            to.name === "SignUpPayment" ||
+            to.name === "SignInPayment" ||
+            to.name === "TransactionPage" ||
+            to.name === "PublicResetPassword" ||
+            to.name === "EventRegistration" ||
+            to.name === "BaseIndex") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;
