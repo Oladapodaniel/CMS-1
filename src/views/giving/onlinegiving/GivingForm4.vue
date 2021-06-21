@@ -559,6 +559,7 @@ export default {
           selectedContributionType.value = formResponse.value.currencyId;
           console.log(formResponse.value);
           localStorage.setItem('tenantId', res.data.tenantID)
+          tcurrency();
         })
         .catch((err) => {
           console.log(err.response)
@@ -585,7 +586,7 @@ export default {
         })
         .catch((err) => console.log(err.response, "You know me! yes gang"));
     };
-    tcurrency();
+    
 
     const getRates = async() => {
             try {

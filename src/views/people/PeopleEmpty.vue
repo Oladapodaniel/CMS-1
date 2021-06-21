@@ -1,7 +1,14 @@
 <template>
   <div
+    class="container-wide"
+    v-if="!loading && (people.length > 0 || errorGettingPeople)"
+  >
+    <PeopleList :list="people" :peopleCount="people.length" :membershipSummary="membershipSummary" />
+  </div>
+
+  <div
     class="no-person mt-5"
-    v-if="!loading && people.length === 0 && !errorGettingPeople"
+    v-else-if="!loading && people.length === 0 && !errorGettingPeople"
   >
     <!-- <div class="empty-img">
       <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
@@ -57,12 +64,6 @@
     </div>
   </div>
 
-  <div
-    class="container-wide"
-    v-if="!loading && (people.length > 0 || errorGettingPeople)"
-  >
-    <PeopleList :list="people" :peopleCount="people.length" :membershipSummary="membershipSummary" />
-  </div>
 </template>
 
 <script>

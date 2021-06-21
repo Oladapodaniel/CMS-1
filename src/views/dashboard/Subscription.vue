@@ -93,11 +93,8 @@
             <div
               class="col-12"
               v-if="
-                item.name !== 'Email' &&
-                  item.name !== 'SMS' &&
-                  item.name !== 'Product' &&
-                  item.name !== 'Financial Analysis' &&
-                  item.name !== 'Fixed Assets'
+                item.type === 0
+              
               "
             >
               <div class="row">
@@ -123,19 +120,19 @@
           <div class="row mt-3 normal-text" v-if="+selectMonth.name > 0">
             <div class="col-md-6 col-6">Subscription</div>
             <div class="col-md-6  col-6 text-right font-weight-bold">
-              {{ subselectedDuratn }}
+              {{ subselectedDuratn.toFixed(2) }}
             </div>
           </div>
           <div class="row mt-2 normal-text">
             <div class="col-md-6 col-6">SMS</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ smsAmount == "" ? "0" : smsAmount }}
+              {{ smsAmount == "" ? "0.00" : smsAmount.toFixed(2) }}
             </div>
           </div>
           <div class="row mt-3 normal-text">
             <div class="col-md-6 col-6">Email</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ selectEmail.constValue ? emailAmount : 0 }}
+              {{ selectEmail.constValue ? emailAmount.toFixed(2) : '0.00' }}
             </div>
           </div>
           <!-- Selected Products -->
@@ -146,14 +143,15 @@
           >
             <div class="col-md-6 col-6">{{ item.name }}</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ item.price * subscriptionDuration }}
+              {{ daysToEndOfSubscription > 0 ? ((item.price * subscriptionDuration) + ((item.price / 30) * daysToEndOfSubscription)).toFixed(2) : (item.price * subscriptionDuration).toFixed(2) }}
+              <!-- {{ subscriptionDuration }} {{ (item.price * subscriptionDuration) }} {{ ((item.price / 30) * daysToEndOfSubscription) }} -->
             </div>
           </div>
           <hr />
           <div class="row mt-3 normal-text">
             <div class="col-md-6 col-6">Total</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ TotalAmount }}
+              {{ TotalAmount.toFixed(2) }}
             </div>
           </div>
           <div class="row mt-4">
@@ -245,7 +243,7 @@
                 </div>
               </div>
               <div class="row row-button c-pointer" @click="payWithPaystack">
-                <div class="col-4 col-sm-7 offset-2">
+                <div class="col-12 col-md-4 col-sm-7 offset-2">
                   <img
                     class="w-100"
                     src="../../assets/4PaystackLogo.png"
@@ -253,6 +251,15 @@
                   />
                 </div>
                 <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
+              </div>
+              <div class="row row-button c-pointer" @click="payWithFlutterwave">
+                <div class="col-12 col-md-4 col-sm-7 offset-2">
+                  <img
+                    class="w-100"
+                    src="../../assets/flutterwave_logo_color@2x.png"
+                    alt="flutterwave"
+                  />
+                </div>
               </div>
               <!-- <div class="row row-button c-pointer" @click="makePayment">
                 <div class="col-4 col-sm-7 offset-2">
@@ -289,6 +296,7 @@ import { useToast } from "primevue/usetoast";
 import userService from "../../services/user/userservice";
 import { v4 as uuidv4 } from "uuid";
 import converter from "../../services/currency-converter/currencyConverter";
+// import PaymentOptionModal from "./PaymentOptionModal";
 
 export default {
   components: { Dropdown },
@@ -329,6 +337,8 @@ export default {
 
     const emailSelectedValue = ref("");
     const subSelectedAmount = ref("");
+    const isProduction = false
+    const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
 
     const expiryDate = ref("");
     console.log(selectMonth.value.name);
@@ -360,9 +370,10 @@ export default {
     const daysToEndOfSubscription = ref(0);
     const selectSubscription = () => {
       axios.get("/api/Subscription/GetSubscription").then((res) => {
+        console.log(res.data.returnObject, "RES");
         Plans.value = res.data.returnObject;
         existingPlan.value.id = Plans.value.id;
-        existingPlan.value.amountInNaira = Plans.value.amountInNaira;
+        existingPlan.value.amount = Plans.value.amount;
         existingPlan.value.description = Plans.value.description;
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
         existingPlan.value.membershipSize = Plans.value.membershipSize;
@@ -499,6 +510,7 @@ export default {
 
     const subselectedDuratn = computed(() => {
       let multiValue = 1;
+      // if (daysToEndOfSubscription.value > 0) multiValue += existingPlan.value.amount * daysToEndOfSubscription.value;
       if (selectedPlan.value.amount)
         multiValue *= selectedPlan.value.amount;
       if (selectMonth.value.name) multiValue *= +selectMonth.value.name;
@@ -510,12 +522,13 @@ export default {
       if (subselectedDuratn.value && selectMonth.value.name > 0) sum += subselectedDuratn.value;
       if (smsValue.value) sum += smsValue.value * 2;
       sum += emailAmount.value;
-      return sum + sumCheckboxItem.value;
+      return sum + (+sumCheckboxItem.value.toFixed(2));
     });
     const sumCheckboxItem = computed(() => {
       if (checkedBoxArr.value.length === 0) return 0;
       // return checkedBoxArr.value.map((i) => i.price).reduce((a, b) => a + b);
-      return checkedBoxArr.value.map((i) => i.price * subscriptionDuration.value).reduce((a, b) => a + b);
+      return checkedBoxArr.value.map((i) => calculatedProductPrice(i.price)).reduce((a, b) => a + b);
+      // return checkedBoxArr.value.map((i) => i.price * subscriptionDuration.value).reduce((a, b) => a + b);
     });
 
     const selectCheckbox = (item) => {
@@ -582,8 +595,9 @@ export default {
       // close.click();
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
+
         email: currentUser.value.userEmail,
         amount:
           (selectedCurrency.value
@@ -609,7 +623,7 @@ export default {
           subscriptionPayment(response);
           //Route to where you confirm payment status
           console.log(response, "Payment Received");
-          console.log(donation);
+          // console.log(donation);
 
           // axios
           //   .post(`/confirmDonation?txnref=${response.trxref}`, donation)
@@ -635,6 +649,73 @@ export default {
       handler.openIframe();
     };
 
+      const getFlutterwaveModules = () => {
+       const script = document.createElement("script");
+            script.src = !isProduction
+              ? "https://ravemodal-dev.herokuapp.com/v3.js"
+              : "https://checkout.flutterwave.com/v3.js";
+            document.getElementsByTagName("head")[0].appendChild(script);
+            console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
+    }
+    getFlutterwaveModules()
+
+    const payWithFlutterwave = (e) => {
+      console.log(e.srcElement.alt)
+      // Get and send clicked payment gateway to parent
+      // selectedGateway.value = e.srcElement.alt
+      // emit('selected-gateway', selectedGateway.value)
+
+      // Close payment modal
+      // props.close.click()
+       console.log(TotalAmount.value)
+                    console.log(selectedCurrency.value)
+                    // console.log(email)
+
+      window.FlutterwaveCheckout({
+                public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+                // tx_ref: props.orderId,
+                amount: TotalAmount.value,
+                currency: selectedCurrency.value,
+                payment_options: 'card,ussd',
+                customer: {
+                  // name: props.name,
+                  // email: currentUser.value.userEmail,
+                  email: "info@churchplus.co"
+                },
+                callback: (response) => {
+                  console.log("Payment callback", response)
+                    // props.donation.usedPaymentGateway = selectedGateway.value
+
+                   
+
+                    axios
+                          .post(`/confirmDonation?txnref=${response.tx_ref}`,)
+                          .then((res) => {
+                            // finish()
+                            console.log(res, "success data");
+
+                          })
+                          .catch((err) => {
+                            // finish()
+                            toast.add({
+                              severity: 'error',
+                              summary: 'Confirmation failed',
+                              detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
+                              life: 4000
+                              })
+                            console.log(err, "error confirming payment");
+                          });
+
+                        // emit('payment-successful', true)
+                  },
+                onclose: () => console.log('Payment closed'),
+                customizations: {
+                  title: 'Subscription',
+                  description: "Payment for Subcription ",
+                  logo: logoUrl,
+                },
+              });
+    }
     const calculateRemomainingMonthsOfSubscription = expiryDate => {
       const endDate = new Date(expiryDate);
       const startDate = new Date(Date.now());
@@ -642,15 +723,21 @@ export default {
       const differenceInTime = Math.abs(endDate - startDate);
       const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
 
-      return Math.round(differenceInDays / 30);
+      return differenceInDays;
     }
 
     const subscriptionDuration = computed(() => {
-      if (selectMonth.value.name && daysToEndOfSubscription.value) return +selectMonth.value.name + daysToEndOfSubscription.value;
-      if (!daysToEndOfSubscription.value && selectMonth.value.name) return +selectMonth.value.name;
-
-      return daysToEndOfSubscription.value;
+      // if (selectMonth.value.name && daysToEndOfSubscription.value) return +selectMonth.value.name + daysToEndOfSubscription.value;
+      // if (!daysToEndOfSubscription.value && selectMonth.value.name) return +selectMonth.value.name;
+      // return daysToEndOfSubscription.value;
+      if (selectMonth.value.name) return +selectMonth.value.name
+      return 0
     })
+
+    const calculatedProductPrice = price => {
+      if (daysToEndOfSubscription.value < 1) return selectMonth.value.name ? price * +selectMonth.value.name : 0;
+      return (selectMonth.value.name ? price * +selectMonth.value.name : 0) + ((price / 30) * daysToEndOfSubscription.value);
+    }
 
     return {
       selectedPlan,
@@ -697,6 +784,7 @@ export default {
       paymentFailed,
       convertedAmount,
       convertAmountToTenantCurrency,
+      payWithFlutterwave,
       daysToEndOfSubscription,
       subscriptionDuration,
     };

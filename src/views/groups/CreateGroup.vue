@@ -74,33 +74,23 @@
                     </div>
                     <div class="col-md-8">
                 <div class="row">
-                  <div class="col-5">
-                    <div class="mt-n3">
-                      <input
-                        type="checkbox"
-                        class=" mr-2"
-                        id="formGroup"
-                      />
-
-                      <label for="description" class="font-weight-600">
+                  <div class="col-12 d-flex" v-if="false">
+                    <!-- <div class="mt-n3"> -->
+                      <Checkbox :binary="true" />
+                      <label for="description" class="font-weight-600 ml-3">
                         Make Public
                       </label>
-                    </div>
+                    <!-- </div> -->
                   </div>
 
-                   <div class="col-7 ml-n3">
-                    <div class="mt-n3">
-                      <input
-                        type="checkbox"
-                        v-model="groupData.isMobileGroup"
-                        class=" mr-2"
-                        id="formGroup"
-                      />
+                   <div class="col-12 d-flex mt-2">
+                    <!-- <div class="mt-n3"> -->
+                      <Checkbox v-model="groupData.isMobileGroup" :binary="true" :disabled="groupData.isMobileGroup"/>
 
-                      <label for="description" class="font-weight-600 ">
+                      <label for="description" class="font-weight-600 ml-3">
                         Enable on Mobile App
                       </label>
-                    </div>
+                    <!-- </div> -->
                   </div>
                 </div>
                     </div>
@@ -492,10 +482,10 @@
                 <!-- <div class="col-md-2">
                   <span class="py-2 font-weight-bold">ADDRESS</span>
                 </div> -->
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <span class="py-2 font-weight-bold">EMAIL</span>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <span class="py-2 font-weight-bold">PHONE</span>
                 </div>
                 <div class="col-md-1">
@@ -541,7 +531,13 @@
                 </div>
               </div>
 
-              <div
+              <div class="row" style="border-bottom: 1px solid #00204412;" v-if="groupMembers.length > 0">
+                <div class="col text-center p-3 text-success font-weight-700">
+                  Approved
+                </div>
+              </div>
+
+              <div style="border-bottom: 1px solid #00204412;"
                 class="row py-2"
                 v-for="(member, index) in groupMembers"
                 :key="index"
@@ -639,11 +635,116 @@
                     </div>
                   </div>
 
+                </div>
+              </div>
+
+              <div class="row" style="border-bottom: 1px solid #00204412;" v-if="awaitingApprovals.length > 0">
+                <div class="col text-center p-3 text-warning font-weight-700">
+                  Waiting Approval
+                </div>
+              </div>
+
+              <div style="border-bottom: 1px solid #00204412;"
+                class="row py-2"
+                v-for="(member, index) in awaitingApprovals"
+                :key="index"
+              >
+                <div class="col-md-12">
                   <div class="row">
-                    <div class="col-md-12 px-0">
-                      <hr class="hr my-0" />
+                    <div
+                      class="col-md-1 d-flex justify-content-between align-items-center"
+                    >
+                      <input
+                        type="checkbox"
+                        class="py-2"
+                        name=""
+                        id=""
+                        @change="mark1Item(member)"
+                        :checked="
+                          marked.findIndex(
+                            (i) => i.personID === member.personID
+                          ) >= 0
+                        "
+                      />
+                    </div>
+                    <div
+                      class="col-md-3 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">NAME</span>
+                      <span class="py-2">{{ member.name }}</span>
+                    </div>
+                    <div
+                      class="col-md-2 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">POSITION</span>
+                      <span class="py-2 text-xs-left">{{
+                        member.position
+                      }}</span>
+                    </div>
+                    <!-- <div
+                      class="col-md-2 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">ADDRESS</span>
+                      <span class="py-2">{{ member.addres }}</span>
+                    </div> -->
+                    <div
+                      class="col-md-2 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">EMAIL</span>
+                      <span class="py-2">{{
+                        member.email && member.email.length > 10
+                          ? `${member.email.split("").slice(0, 14).join("")}...`
+                          : member.email
+                          ? member.email
+                          : ""
+                      }}</span>
+                    </div>
+                    <div
+                      class="col-md-3 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">PHONE</span>
+                      <span class="py-2">{{ member.phone }}</span>
+                    </div>
+                    <div
+                      class="col-md-1 d-flex justify-content-between align-items-center"
+                    >
+                      <div class="dropdown">
+                        <i
+                          class="fas fa-ellipsis-v cursor-pointer"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        ></i>
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <a class="dropdown-item" v-if="member.phone">
+                            <router-link
+                              :to="`/tenant/sms/compose?phone=${member.phone}`"
+                              >Send SMS</router-link
+                            >
+                          </a>
+                          <a class="dropdown-item" v-if="member.email">
+                            <router-link
+                              :to="`/tenant/email/compose?phone=${member.email}`"
+                              >Send Email</router-link
+                            >
+                          </a>
+                          <a class="dropdown-item cursor-pointer" @click="requestApproval(member)">
+                            Request Approval
+                          </a>
+                          <a
+                            class="dropdown-item c-pointer"
+                            @click="confirmDelete(member.personID, index)"
+                            >Remove</a
+                          >
+                        </div>
+                      </div>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -714,6 +815,7 @@ export default {
     const getAllGroup = ref([]);
     const selectGroupTo = ref({});
     const copyGroupTo = ref({});
+    const awaitingApprovals = ref([])
     // const moveMembers =() =>{
     //   let memberChange = convert(marked.value);
     //   console.log(memberChange,'wisdom')
@@ -988,9 +1090,8 @@ export default {
       }
     };
 
-    /*eslint no-undef: "warn"*/
+
     const updateGroup = (data, redirect) => {
-      NProgress.start();
       axios
         .put(`/api/UpdateGroup/${route.params.groupId}`, data)
         .then((res) => {
@@ -1010,7 +1111,7 @@ export default {
           }
         })
         .catch((err) => {
-          NProgress.done();
+          finish();
           savingGroup.value = false;
           console.log(err.response);
           toast.add({
@@ -1023,7 +1124,6 @@ export default {
     };
 
     const createGroup = (data) => {
-      NProgress.start();
       axios
         .post("/api/CreateGroup", data)
         .then((res) => {
@@ -1034,7 +1134,7 @@ export default {
           router.push("/tenant/peoplegroups");
         })
         .catch((err) => {
-          NProgress.done();
+          finish();
           savingGroup.value = false;
           console.log(err.response);
           toast.add({
@@ -1057,7 +1157,7 @@ export default {
     const getGroupById = async () => {
       try {
         loadingMembers.value = true;
-        NProgress.start();
+        
         const { data } = await axios.get(
           `/api/GetGroupsFromId/${route.params.groupId}`,
           groupData.value
@@ -1066,25 +1166,39 @@ export default {
         loadingMembers.value = false;
         groupData.value.name = data.name;
         groupData.value.description = data.description;
+        groupData.value.isMobileGroup = data.isMobileGroup
 
         data.peopleInGroups.forEach((i) => {
           const person = {
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
-            name: i.person.firstName + " " + i.person.lastName,
+            name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
             phone: i.person.phoneNumber,
-            position: i.position,
+            position: i.position
           };
 
           groupMembers.value.push(person);
         });
+
+        awaitingApprovals.value = data.awaitingApprovals.map(i => {
+            return {
+              personID: i.person.id,
+              address: i.person.address,
+              email: i.person.email,
+              name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
+              phone: i.person.phoneNumber,
+              position: i.position,
+              groupID: i.groupID
+            }
+          })
+
         console.log(selectedMembers.value, "SM");
       } catch (error) {
-        NProgress.done();
+        finish();
         loadingMembers.value = false;
         console.log(error.response);
-        if (err0r.toString().toLowerCase().includes("network error")) {
+        if (error.toString().toLowerCase().includes("network error")) {
           toast.add({
             severity: "warn",
             summary: "Network error",
@@ -1117,6 +1231,51 @@ export default {
         memberSearchResults.value = [];
       }
     };
+
+    const requestApproval = async(member) => {
+      const memberToApprove = {
+          groupId: member.groupID,
+          email: member.email,
+          personId: member.personID,
+          approvalName: member.name,
+          position: member.position
+      }
+      console.log(memberToApprove)
+      try {
+        const res = await axios.post('/api/ApproveMemberFromApp', memberToApprove)
+        console.log(res)
+        toast.add({
+            severity: "success",
+            summary: "Approved",
+            detail: "Member approved successfully",
+            life: 4000,
+          });
+          awaitingApprovals.value = awaitingApprovals.value.filter(i => {
+            return i.personID !== member.personID
+          })
+          
+          groupMembers.value.push(member)
+      }
+      catch (error) {
+        finish();
+        if (error.toString().toLowerCase().includes("network error")) {
+          toast.add({
+            severity: "warn",
+            summary: "Network error",
+            detail: "Please ensure you have a strong internet",
+            life: 4000,
+          });
+        } else if (error.toString().toLowerCase().includes("timeout")) {
+          toast.add({
+            severity: "warn",
+            summary: "Request took too long",
+            detail: "Please refresh the page",
+            life: 4000,
+          });
+        }
+        console.log(error)
+      }
+    }
 
     return {
       groupData,
@@ -1155,6 +1314,8 @@ export default {
       moveMembers,
       copyGroupTo,
       copyMemberToGroup,
+      awaitingApprovals,
+      requestApproval
     };
   },
 };

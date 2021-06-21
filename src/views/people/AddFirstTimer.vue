@@ -103,7 +103,7 @@
               <!-- Test -->
               <div class="input-field">
                 <label for="" class="label">Event or Service Attended</label>
-                <i class="pi pi-chevron-down manual-dd-icon"></i>
+                <i class="pi pi-chevron-down dd manual-dd-icon" @click="selectEventAttended"></i>
                 
                 <button
                   @click.prevent="selectEventAttended"
@@ -386,9 +386,10 @@
                           >
                             <span class="ofering">{{ selectEvent }}</span
                             ><span>
+                              <!-- :class="{ roll3: showForm3 }" -->
                               <i
                                 class="pi pi-angle-down"
-                                :class="{ roll3: showForm3 }"
+                                
                                 aria-hidden="true"
                               ></i
                             ></span>

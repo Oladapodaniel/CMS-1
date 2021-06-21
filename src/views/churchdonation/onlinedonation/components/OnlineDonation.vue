@@ -16,7 +16,7 @@
               </div>
               <div class="col-12 w-100"> 
                  <h2 class="font-weight-bold py-3 mb-3">
-                    {{tenantCurrency.currency}} {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
+                    {{ tenantCurrency ? tenantCurrency.currency : "" }} {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
                  </h2>
               </div>
            
@@ -422,7 +422,7 @@ export default {
     const filterResult = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
-    const tenantCurrency = ref(store.getters.currentUser)
+    const tenantCurrency = ref({})
     const Allsummary = ref([
       { name: "Not Sure", y: 20 },
       { name: "Male", y: 16 },
@@ -576,22 +576,30 @@ export default {
       }
     };
 
-    const getTenantCurrency = () =>{
-      
+   
+    const getCurrentlySignedInUser = async() => {
+            try {
+                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+                axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
+                .then(res => {
+                    tenantCurrency.value = res.data
+                    console.log(res.data)
+                  })
+                  .catch(err => console.log(err))
+                
+              } catch (err) {
+                console.log(err);
+            }
+        }
+
+    const getTenantCurrency = () => {
+      if (store.getters.currentUser && Object.keys(store.getters.currentUser).length > 0) {
+          tenantCurrency.value = store.getters.currentUser
+        } else {
+            getCurrentlySignedInUser()
+        }
     }
     getTenantCurrency();
-    // const getSMSByPage = async (page) => {
-    //   try {
-    //     const data = await communicationService.getAllSentSMS(page);
-    //     if (data) {
-    //       sentSMS.value = data.sentSMS;
-    //       currentPage.value = page;
-    //       isSortedByStatus.value = true;
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
     const donationCount = computed(() => {
       if (!props.donationTransactions || props.donationTransactions.length === 0) return 0;
         return props.donationTransactions.length;
