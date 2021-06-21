@@ -1,10 +1,10 @@
 <template>
     <div class="container-fluid ">
-        <div class="row border">
-            <div class="col-12 border col-md-7 col-lg-7" style="height: 99.5vh; border-radius: 30px;">
+        <div class="row">
+            <div class="col-12 col-md-7 col-lg-7" style="height: 99.5vh; ">
                 <div class=" container  ">
                     <div class="row justify-content-center">
-                        <div class=" col-10 my-5 "><img src="../../../assets/logoblue.png" style="height: 35px; width: 250px" alt=""></div>
+                        <div class=" col-10 my-5 "><img src="../../assets/logoblue.png" style="height: 35px; width: 250px" alt=""></div>
                         <div class="col-10 my-3">
                             <h1 class="font-weight-bold ">Create an account</h1>
                         </div>
@@ -46,9 +46,9 @@
                     
                     <div class="row justify-content-center ">
                         <!-- Social Media -->
-                        <div class="col-2"><img src="../../../assets/google.png" alt=""></div>
+                        <div class="col-2"><img src="../../assets/google.png" alt=""></div>
                         <div class="col-2"><img src="" alt=""></div>
-                        <div class="col-2"><img src="../../../assets/facebook.png" alt=""></div>
+                        <div class="col-2"><img src="../../assets/facebook.png" alt=""></div>
                         <div class="col-10 my-4 text-center font-weight-bold"><span>Already have an account?</span><a href="">Sign in now</a></div>
                         <div class="col-10 mt-3 font-weight-bold">All Right Reserved 2021</div>
                     </div>
@@ -56,7 +56,7 @@
                     
                 </div>
             </div>
-            <div class="col-5  childimage d-none d-md-block  d-lg-block" >
+            <div class="col-5 col-md-5 col-lg-5 childimage d-none d-md-block  d-lg-block" >
                    <div class="text-white "><h1>Churchplus <br> Child Checkin <br> System</h1></div>
                 <!-- <img src="../../../assets/child1.png" alt=""> -->
             </div>
@@ -105,11 +105,11 @@ export default ({
 }
 .childimage{
     /* height: 700px; */
-    background: transparent url('../../../assets/child1.png') 0% 0% no-repeat padding-box;
-    opacity: 1;
+    background: transparent url('../../assets/child1.png') 0% 0% no-repeat padding-box;
+    /* opacity: 1; */
     top: 0px;
-    /* left: 1133px; */
-    width: 650px;
+    /* left: 30px; */
+    width: 1000px;
     height: 99.5vh; 
     /* border-radius: 30px; */
     position: relative;
