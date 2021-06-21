@@ -53,22 +53,22 @@
               class="col-md-3 d-flex justify-content-between"
             >
               <span class="py-2 hidden-header">NAME</span>
-               <span class="py-2" v-if="churchMem.name.length<20"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.name}`" class="route"> <router-link  class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{churchMem.name.substring(0,20)+ "..."}}</router-link></span>
+               <span class="py-2" v-if="churchMem.name && churchMem.name.length<20"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name}}</router-link></span>
+              <span v-else v-tooltip.top="`${churchMem.name}`" class="route"> <router-link  class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.name && churchMem.name.substring(0,20)+ "..."}}</router-link></span>
             </div>
              <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">EMAIL</span>
-              <span class="py-2 text-xs-left"  v-if="churchMem.email.length<10"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.email}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.email}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{churchMem.email.substring(0,10)+ "..."}} </router-link></span>
+              <span class="py-2 text-xs-left"  v-if=" churchMem.email && churchMem.email.length<10"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.email}}</router-link></span>
+              <span v-else v-tooltip.top="`${churchMem.email}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.email && churchMem.email.substring(0,10)+ "..."}} </router-link></span>
             </div>
              <div
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">PHONE</span>
-              <span class="py-2" v-if="churchMem.phone.length<11"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.phone}}</router-link></span>
-              <span v-else v-tooltip.top="`${churchMem.phone}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{churchMem.phone.substring(0,11)+ "..."}}</router-link></span>
+              <span class="py-2" v-if=" churchMem.phone && churchMem.phone.length < 11"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }">{{ churchMem.phone}}</router-link></span>
+              <span v-else v-tooltip.top="`${churchMem.phone}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ churchMem.phone && churchMem.phone.substring(0,11)+ "..."}}</router-link></span>
             </div>
            
             <div
