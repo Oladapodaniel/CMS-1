@@ -7,16 +7,7 @@ import Pagination from '@/components/payment/PaymentSuccessful.vue';
 import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
-    {
-        path: '/checkinsignup',
-        name:'CheckinSignUp',
-        component: () =>
-        import ( /* webpackChunkName: "workflow" */ '../views/childcheckinsignup/component/CheckinSignup.vue'),
-        meta: {
-            title: 'Churchplus - ChildSignup',
-        }
-    },
-    
+
     {
         path: '/pagination',
         name: 'Pagination',
@@ -1175,6 +1166,15 @@ const routes = [
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/childcheckin/components/PublicView')
     },
     {
+        path: '/checkinsignup',
+        name:'CheckinSignUp',
+        component: () =>
+        import ( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignup.vue'),
+        meta: {
+            title: 'Churchplus - ChildSignup',
+        }
+    },
+    {
         path: '/checkin',
         name: 'BaseIndex',
         component: () =>
@@ -1196,7 +1196,8 @@ const routes = [
                 name: 'CheckinEvent',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinEvent')
-            }
+            },
+            
         ]
     },
 ]
@@ -1258,8 +1259,7 @@ router.beforeEach((to, from, next) => {
      to.name === "SignInPayment" || 
      to.name === "TransactionPage" || 
      to.name === "PublicResetPassword" || 
-     to.name === "EventRegistration" ||
-     to.name === "BaseIndex") && !tokenIsValid) return next(true)
+     to.name === "EventRegistration") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;

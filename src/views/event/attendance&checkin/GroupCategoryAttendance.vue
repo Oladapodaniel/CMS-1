@@ -276,14 +276,7 @@
 
         <div class="col-md-12 mb-3"></div>
 
-        <div class="col-md-12 px-0 tr-border-bottom mt-3">
-            <!-- <hr class="tr-border-bottom"> -->
-        </div>
-
-        <div class="col-md-12 py-2" style="opacity:.4">
-          <h5 class="check">Not Currently Available</h5>
-        </div>
-        <div class="row w-100" style="opacity:.3">
+        <div class="row w-100">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -311,6 +304,15 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-12 px-0 tr-border-bottom mt-3">
+            <!-- <hr class="tr-border-bottom"> -->
+        </div>
+
+        <div class="col-md-12 py-2" style="opacity:.4">
+          <h5 class="check">Not Currently Available</h5>
+        </div>
+        
         <div class="col-md-12 mb-3"></div>
 
         <div class="row w-100"  style="opacity:.3">
