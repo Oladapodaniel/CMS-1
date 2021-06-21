@@ -243,7 +243,7 @@
                 </div>
               </div>
               <div class="row row-button c-pointer" @click="payWithPaystack">
-                <div class="col-4 col-sm-7 offset-2">
+                <div class="col-12 col-md-4 col-sm-7 offset-2">
                   <img
                     class="w-100"
                     src="../../assets/4PaystackLogo.png"
@@ -251,6 +251,15 @@
                   />
                 </div>
                 <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
+              </div>
+              <div class="row row-button c-pointer" @click="payWithFlutterwave">
+                <div class="col-12 col-md-4 col-sm-7 offset-2">
+                  <img
+                    class="w-100"
+                    src="../../assets/flutterwave_logo_color@2x.png"
+                    alt="flutterwave"
+                  />
+                </div>
               </div>
               <!-- <div class="row row-button c-pointer" @click="makePayment">
                 <div class="col-4 col-sm-7 offset-2">
@@ -287,6 +296,7 @@ import { useToast } from "primevue/usetoast";
 import userService from "../../services/user/userservice";
 import { v4 as uuidv4 } from "uuid";
 import converter from "../../services/currency-converter/currencyConverter";
+// import PaymentOptionModal from "./PaymentOptionModal";
 
 export default {
   components: { Dropdown },
@@ -327,6 +337,8 @@ export default {
 
     const emailSelectedValue = ref("");
     const subSelectedAmount = ref("");
+    const isProduction = false
+    const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
 
     const expiryDate = ref("");
     console.log(selectMonth.value.name);
@@ -611,7 +623,7 @@ export default {
           subscriptionPayment(response);
           //Route to where you confirm payment status
           console.log(response, "Payment Received");
-          console.log(donation);
+          // console.log(donation);
 
           // axios
           //   .post(`/confirmDonation?txnref=${response.trxref}`, donation)
@@ -637,6 +649,73 @@ export default {
       handler.openIframe();
     };
 
+      const getFlutterwaveModules = () => {
+       const script = document.createElement("script");
+            script.src = !isProduction
+              ? "https://ravemodal-dev.herokuapp.com/v3.js"
+              : "https://checkout.flutterwave.com/v3.js";
+            document.getElementsByTagName("head")[0].appendChild(script);
+            console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
+    }
+    getFlutterwaveModules()
+
+    const payWithFlutterwave = (e) => {
+      console.log(e.srcElement.alt)
+      // Get and send clicked payment gateway to parent
+      // selectedGateway.value = e.srcElement.alt
+      // emit('selected-gateway', selectedGateway.value)
+
+      // Close payment modal
+      // props.close.click()
+       console.log(TotalAmount.value)
+                    console.log(selectedCurrency.value)
+                    // console.log(email)
+
+      window.FlutterwaveCheckout({
+                public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+                // tx_ref: props.orderId,
+                amount: TotalAmount.value,
+                currency: selectedCurrency.value,
+                payment_options: 'card,ussd',
+                customer: {
+                  // name: props.name,
+                  // email: currentUser.value.userEmail,
+                  email: "info@churchplus.co"
+                },
+                callback: (response) => {
+                  console.log("Payment callback", response)
+                    // props.donation.usedPaymentGateway = selectedGateway.value
+
+                   
+
+                    axios
+                          .post(`/confirmDonation?txnref=${response.tx_ref}`,)
+                          .then((res) => {
+                            // finish()
+                            console.log(res, "success data");
+
+                          })
+                          .catch((err) => {
+                            // finish()
+                            toast.add({
+                              severity: 'error',
+                              summary: 'Confirmation failed',
+                              detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
+                              life: 4000
+                              })
+                            console.log(err, "error confirming payment");
+                          });
+
+                        // emit('payment-successful', true)
+                  },
+                onclose: () => console.log('Payment closed'),
+                customizations: {
+                  title: 'Subscription',
+                  description: "Payment for Subcription ",
+                  logo: logoUrl,
+                },
+              });
+    }
     const calculateRemomainingMonthsOfSubscription = expiryDate => {
       const endDate = new Date(expiryDate);
       const startDate = new Date(Date.now());
@@ -705,6 +784,7 @@ export default {
       paymentFailed,
       convertedAmount,
       convertAmountToTenantCurrency,
+      payWithFlutterwave,
       daysToEndOfSubscription,
       subscriptionDuration,
     };

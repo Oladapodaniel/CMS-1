@@ -71,9 +71,17 @@
               <div class="row">
                 <div class="col-2">
                   <i
-                    class="pi pifb pi-facebook d-flex justify-content-center ml-4 ml-md-0"
+                    class="
+                      pi
+                      pifb
+                      pi-facebook
+                      d-flex
+                      justify-content-center
+                      ml-4 ml-md-0
+                    "
                   ></i>
                 </div>
+
                 <div class="col-10 d-flex align-items-center">
                   <p class="link-text mb-0 pl-2 pl-md-0">
                     Connect your facebook account to Churchplus
@@ -82,7 +90,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btnfb" @click="facebookLogin">
+              <button class="btn default-btn btnfb" @click="facebookLogin2">
                 Connect
               </button>
             </div>
@@ -90,7 +98,51 @@
         </div>
       </div>
       <!--end facebook area  -->
-
+      <Dialog
+        header="Input Your Facebook Page Id"
+        class="dialogFacebook"
+        v-model:visible="display"
+        style="width: 100%; max-width: 600px"
+      >
+        <!--facebook id-->
+        <form action="">
+          <div class="row justify-content-center">
+            <div class="col-md-4 text-right">
+              <label for="email"> Page Id :</label>
+            </div>
+            <div class="form-group col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Facebook Page Id"
+              />
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="form-group form-check col-md-6 ml-3">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" /> Remember me
+              </label>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-6">
+              <button
+                class="btn default-btn btnfb text-center"
+                @click="accessFacebook"
+              >
+                Connect
+              </button>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+        </form>
+        <!--facebook id-->
+      </Dialog>
       <!--twitter area  -->
 
       <!-- Modal -->
@@ -148,7 +200,14 @@
               <div class="row">
                 <div class="col-2">
                   <i
-                    class="pi pitwi pi-twitter d-flex justify-content-center ml-4 ml-md-0"
+                    class="
+                      pi
+                      pitwi
+                      pi-twitter
+                      d-flex
+                      justify-content-center
+                      ml-4 ml-md-0
+                    "
                   ></i>
                 </div>
                 <div class="col-10 d-flex align-items-center">
@@ -180,7 +239,14 @@
               <div class="row">
                 <div class="col-2">
                   <i
-                    class="fa piinsta fa-instagram d-flex justify-content-center ml-4 ml-md-0"
+                    class="
+                      fa
+                      piinsta
+                      fa-instagram
+                      d-flex
+                      justify-content-center
+                      ml-4 ml-md-0
+                    "
                   ></i>
                 </div>
                 <div class="col-10 d-flex align-items-center">
@@ -206,7 +272,14 @@
               <div class="row">
                 <div class="col-2">
                   <i
-                    class="pitwhatapp fab fa-whatsapp d-flex justify-content-center ml-4 ml-md-0"
+                    class="
+                      pitwhatapp
+                      fab
+                      fa-whatsapp
+                      d-flex
+                      justify-content-center
+                      ml-4 ml-md-0
+                    "
                   ></i>
                 </div>
                 <div class="col-10 d-flex align-items-center">
@@ -246,12 +319,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button
-                class="btn default-btn btntmobileapp"
-                @click="facebookLogin2"
-              >
-                Connect
-              </button>
+              <button class="btn default-btn btntmobileapp">Connect</button>
             </div>
           </div>
         </div>
@@ -263,75 +331,129 @@
 
 <script>
 import firebase from "../../../services/firebase/firebase";
-export default {
-  setup() {
-    /*eslint no-undef: "warn"*/
-    //     FB.login(function(response) {
-    //     if (response.authResponse) {
-    //      console.log('Welcome!  Fetching your information.... ');
-    //      FB.api('/me', function(response) {
-    //        console.log('Good to see you, ' + response.name + '.');
-    //      });
-    //     } else {
-    //      console.log('User cancelled login or did not fully authorize.');
-    //     }
-    // });
+import { ref } from "vue";
+import Dialog from "primevue/dialog";
+import axios from "axios";
 
-    //   },
-    // const facebookLogin = () => {
-    //   /*eslint no-undef: "warn"*/
-    //   FB.login(
-    //     function (response) {
-    //       console.log(response);
-    //       let token = {
-    //         accessToken: response.authResponse.accessToken,
-    //       };
-    //       console.log(response);
-    //       console.log(token);
-    //     },
-    //     { scope: "user_birthday" }
-    //   );
-    // };
+export default {
+  components: { Dialog },
+  setup() {
+    
+    const display = ref(false);
+
+    
     const facebookLogin2 = () => {
-      
-      /*eslint no-undef: "warn"*/
+
       var provider = new firebase.auth.FacebookAuthProvider();
-      provider.addScope('user_birthday');
-      alert(1)
-      firebase
+      provider.addScope("user_birthday");
+
+      firebase.auth().signOut().then(() => {
+        // Sign-out successful.
+        console.log("logged out");
+        firebase
         .auth()
         .signInWithPopup(provider)
         .then((result) => {
-          alert(2)
-          
-          console.log(result);
+          setTimeout(function () {
+            display.value = true;
+          }, 1500);
+
+          console.log(result, "sign in result");
+          let accessToken = result.credential.accessToken;
+          let profileId = result.additionalUserInfo.profile.id;
+          getAccessToken(accessToken, profileId);
+
           /** @type {firebase.auth.OAuthCredential} */
-          //var credential = result.credential;
-
-          // The signed-in user info.
-          //var user = result.user;
-          
-
-          // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-         // var accessToken = credential.accessToken;
-
-          // ...
         })
         .catch((error) => {
-          // Handle Errors here.
-          //var errorCode = error.code;
-          //var errorMessage = error.message;
-          // The email of the user's account used.
-          //var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          //var credential = error.credential;
-          console.log(error);
-
-          // ...
+          console.log(error, "sign in error");
         });
+      }).catch((error) => {
+        // An error happened.
+        console.log(error, "log out failed");
+        firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          setTimeout(function () {
+            display.value = true;
+          }, 1500);
+
+          console.log(result, "sign in result");
+          let accessToken = result.credential.accessToken;
+          let profileId = result.additionalUserInfo.profile.id;
+          getAccessToken(accessToken, profileId);
+
+          /** @type {firebase.auth.OAuthCredential} */
+        })
+        .catch((error) => {
+          console.log(error, "sign in error");
+        });
+      });
+
+      
     };
+    const getAccessToken = async (accessToken, profileId) => {
+      try {
+        const data =
+          await axios.get(`https://graph.facebook.com/${profileId}/accounts?fields=name,access_token&access_token=${accessToken}`);
+        console.log(data, "get pages data");
+      } catch (error) {
+        console.log(error, "get pages error");
+      }
+    };
+
+    var provider = new firebase.auth.FacebookAuthProvider();
+    firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          setTimeout(function () {
+            display.value = true;
+          }, 1500);
+
+          console.log(result, "sign in result");
+          let accessToken = result.credential.accessToken;
+          let profileId = result.additionalUserInfo.profile.id;
+          getAccessToken(accessToken, profileId);
+
+        })
+        .catch((error) => {
+          console.log(error, "sign in error");
+          axios.get(`https://graph.facebook.com/me?fields=id&access_token=${error.credential.accessToken}`)
+            .then(res => {
+              getAccessToken(error.credential.accessToken, res.data.id)
+              console.log(res, "err response");
+
+              //Get Page access token
+              axios.get(`https://graph.facebook.com/108291174831555?fields=access_token&access_token=${error.credential.accessToken}`)
+                .then(res => {
+                  console.log(res, "page 1 data");
+                })
+                .catch(err => {
+                  console.log(err, "err error");
+                })
+
+              //Get Pages
+              axios.get(`https://graph.facebook.com/${res.data.id}/accounts?access_token=${error.credential.accessToken}`)
+                .then(res => {
+                  console.log(res, "page data");
+                })
+                .catch(err => {
+                  console.log(err, "err error");
+                })
+            })
+            .catch(err => {
+              console.log(err, "err error");
+            })
+
+          
+            
+        });
+
     return {
       facebookLogin2,
+      display,
     };
   },
 };
@@ -342,6 +464,16 @@ export default {
 .box {
   background: #fff;
   transition: all 0.4s ease-in-out;
+}
+.btn-primary {
+  background-color: #0f529f !important;
+  color: #fff !important;
+  border: none !important;
+  outline: 0 !important;
+  border-radius: 20px;
+}
+.navTop {
+  justify-content: center !important;
 }
 
 .box-shadow:hover {
@@ -355,6 +487,10 @@ export default {
 .pifb {
   font-size: 3rem;
   color: #0f529f;
+}
+.dialogFacebook {
+  width: 100%;
+  max-width: 600px;
 }
 
 .btnfb {

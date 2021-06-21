@@ -3,7 +3,7 @@
     <div class="links-menu" :class="{ show: menuShouldShow }">
       <MenuLinks @linkclicked="hideNav" />
     </div>
-    <div :class="{ 'main-con dim' :  !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful') }" @click="hideMenu">
+    <div :class="{ 'main-con dim' :  !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }" @click="hideMenu">
       <!-- <transition name="fade" mode="out-in"> -->
       <!-- <div
         aria-live="polite"
@@ -185,5 +185,9 @@ export default {
 .fade-leave-to {
   transition: translateX(20px);
   opacity: 0;
+}
+
+.top-router {
+  max-width: 1300px;
 }
 </style>
