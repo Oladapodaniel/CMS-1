@@ -34,7 +34,7 @@
                         <div class="col-5 form-group">
                             <label class="font-weight-bold"> Password </label>
                             <input type="password" class=" form-control all-input font-italic" placeholder="Enter password">
-                            <span>Must be six character long</span>
+                            <span class="py-2">Must be six character long</span>
                         </div>
                         <div class="col-10"><button class="btn btn-primary create-btn font-weight-bold w-100">Create an account</button></div>                       
                     </form>
@@ -111,7 +111,7 @@ export default ({
     /* left: 1133px; */
     width: 650px;
     height: 99.5vh; 
-    border-radius: 30px;
+    /* border-radius: 30px; */
     position: relative;
 }
 .childimage h1 {

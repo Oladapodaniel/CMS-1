@@ -147,11 +147,12 @@
           </div>
         </div>
         <div class="col-sm-12 offset-sm-1 add">Add Attendance</div>
+
         <div class="attendance-header d-none d-md-block">
           <div class="row">
             <div class="col-sm-3">Attendance Type</div>
             <div class="col-sm-3 offset-sm-2">Count</div>
-            <div class="col-sm-2 offset-sm-1" style="margin-left: 74px;">Total</div>
+            <div class="col-sm-2" style="margin-left: 74px;">Total</div>
           </div>
         </div>
         <!-- Attendance Items -->
@@ -206,7 +207,7 @@
             <div class="d-none d-md-block col-sm-1 offset-sm-1" style="margin-left: 74px;">
               {{ item.number }}
             </div>
-            <div class="col-1" @click="delAttendance(index)">
+            <div class="col-1" @click="deleteAttendance(item.attendanceId, indx)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
           </div>
@@ -264,10 +265,10 @@
         </div>
         <!-- <textarea class="col-sm-12 textarea form-control" rows="5">Note ...</textarea> -->
 
-        <div class="col-12 offset-sm-1 add">Add Contribution</div>
+        <div class="col-12 offset-sm-1 add">Add Offering</div>
         <div class="attendance-header d-none d-lg-block">
           <div class="row">
-            <div class="col-sm-3">Contribution Item</div>
+            <div class="col-sm-3">Offering Item</div>
             <div class="col-sm-2" >Channel</div>
             <div class="col-sm-4" >Amount</div>
             <div class="col-sm-2">Total</div>
@@ -331,25 +332,6 @@
             </div>
             
             <div class="col-3 col-sm-2 col-lg-1">
-              <!-- <select class="currency" v-model="item.currency">
-                <option v-for="currency in currencyList" :key="currency.id">{{ currency.name }}</option>
-              </select> -->
-              <!-- <div class="codeModal">
-                <div class="currency country-code form-control codeModal" @click="toggleCode"><div class="d-flex justify-content-between align-items-center"><span class="codeModal">{{ item.currency }}</span><i class="pi pi-angle-down"></i></div></div>
-            </div>
-
-                <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal ">
-                    <input class="codeInput input form-control codeModal" v-model="currencyText">
-                <div v-for="currency in filterCurrency" :key="currency.id" class="codeModal" >
-                    <div class="col-sm-3"><span style="display: inline-block;" @click="getCurrency">{{ currency.name }}</span>&nbsp;&nbsp;<span style="font-size: 0.8em">{{ currency.country }}</span></div>
-                </div>
-                <div v-if="filterCurrency.length == 0">No match found</div>
-                </div> -->
-                <!-- <Dropdown v-model="item.currency" :options="currencyList" :filter="true" class="currency p-0" placeholder="NGN" :showClear="false">
-                    
-                </Dropdown> -->
-            
-
                 <div
                 class="currency pointer d-flex justify-content-around align-items-center close-modal"
                 @click="item.showCurrency = !item.showCurrency"
@@ -406,15 +388,10 @@
             </div>
             <div
               class="col-1"
-              @click="delOffering(index)"
+              @click="delOffering(item.id, index)"
             >
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
-
-          
-            
-            <!-- <div v-if="item.giver == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Donor</div>
-            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.giver }}     <span class="donor-text">edit</span></div> -->
             <div v-if="item.donor == '' " data-toggle="modal" data-target="#exampleModal" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">Add Donor</div>
             <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal" >{{ item.donor }}     <span class="donor-text">edit</span></div>
                </div>
@@ -426,7 +403,7 @@
           @click="addOffering"
         >
           <i class="fa fa-plus-circle ofering" aria-hidden="true"></i
-          >&nbsp;&nbsp;Add Contribution Item
+          >&nbsp;&nbsp;Add Offering Item
         </div>
         <div class="display ofering" id="showList" ref="offeringDrop">
           <input
@@ -1012,7 +989,7 @@
                   </div>
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
  
-                    <Dropdown :options="[...maritalStatuses]" :filter="false" v-model="valueMarital" @change="dropDownMarital" placeholder="Marital Status" class="w-100" :showClear="false">
+                    <Dropdown :options="maritalStatusArr" optionLabel="value" :filter="false" v-model="valueMarital" @change="dropDownMarital" placeholder="Marital Status" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
                   <div class="col-sm-3 mb-4">
@@ -1255,7 +1232,7 @@
                   </div>
 
                   <div class="col-sm-3 mb-4 offset-sm-3 pr-sm-0">
-                    <Dropdown :options="[...maritalStatuses]" :filter="false" v-model="valueMarital" @change="dropDownMaritalNewConvert" placeholder="Marital Status" class="w-100" :showClear="false">
+                    <Dropdown :options="[...maritalStatusArr]" optionLabel="value" :filter="false" v-model="firstTimersObj.valueMarital" @change="dropDownMaritalNewConvert" placeholder="Marital Status" class="w-100" :showClear="false">
                     </Dropdown>
                   </div>
 
@@ -1487,7 +1464,7 @@
           <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header" style="border: none">
-                <h5 class="modal-title" id="exampleModalLongTitle">Add Contribution</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Offering</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -1571,20 +1548,32 @@
             </div>
           </div>
         </div>
+        <Dialog v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '80vw'}">
+            <p>You have no income account to create a offering item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
+            <template #footer>
+                <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
+                <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
+            </template>
+        </Dialog>
   </div>
+  <ConfirmDialog />
 </template>
 
 <script>
 // import { onMounted, ref } from "vue";
 // import SelectElem from "@/components/select/SelectElement.vue";
 import axios from "@/gateway/backendapi";
-// import store from "@/store/store.js"
+import store from "@/store/store.js"
+// import { useConfirm } from "primevue/useConfirm";
+
 // import { useToast } from 'primevue/usetoast';
 
 import membershipService from "../../services/membership/membershipservice";
 import CurrencyConverter from "./CurrencyConverter"
 import Dropdown from 'primevue/dropdown';
 import CurrencyConverterService from '../../services/currency-converter/currencyConverter'
+import finish from "../../services/progressbar/progress";
+
 export default {
   components: {
     CurrencyConverter, Dropdown
@@ -1744,16 +1733,17 @@ export default {
       isPhoneValidNewConvert: true,
       isEmailValidNewConvert: true,
       currencyRate: [],
-      convertedResult: 0
+      convertedResult: 0,
+      displayResponsive: false
     };
   },
+
   methods: {
     currentDate(){
       this.currDate= this.eventDate
       console.log(this.currDate)
-      
-
     },
+   
     hideModals(e) {
       if (!e.target.classList.contains("ofering")) {
         this.$refs.offeringDrop.classList.remove("offering-drop");
@@ -1957,7 +1947,8 @@ export default {
       }
       console.log(this.eventText, this.eventCreate)
     },
-    addCurrency (e, index, item) {
+    async addCurrency (e, index, item) {
+
       console.log(e.target.innerHTML, index)
       this.offeringItem[index].currencyID = item.id
       this.offeringItem[index].showCurrency = false
@@ -1966,17 +1957,155 @@ export default {
 
       this.offeringItem[index].fromCurrencyRate = `usd${item.name.toLowerCase()}`
 
+      let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
+      let fromCurrencyRate = this.offeringItem[index].fromCurrencyRate
+
+      let amount = this.offeringItem[index].amount ? +this.offeringItem[index].amount : 0
+
+      try {
+        let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+        console.log(result)
+        this.convertedAmount2[index] = result
+      }
+      catch (err) {
+        console.log(err)
+      }
+
     },
+    
     setCurrencyRate (payload) {
       this.currencyRate = payload
     },
-    delAttendance(index) {
-      this.attendanceItem.splice(index, 1);
+
+     delAttendance(id, index) {
+      if (id) {
+          axios
+        .delete(`/deleteAttendance?ID=${id}`)
+        .then((res) => {
+          console.log(res, 'delete response from back');
+          if (res.data) {
+            this.$toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `Attendance Successfully Deleted`,
+              life: 3000,
+            });
+            this.attendanceItem = this.attendanceItem.filter(i => id !== i.attendanceId)
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "Delete Failed",
+              detail: `Please Try Again`,
+              life: 3000,
+            });
+          }
+        })
+        .catch((err) => {
+          finish();
+          if (err.response) {
+            console.log(err.response);
+            this.$toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: `${err.response}`,
+              life: 3000,
+            });
+          }
+        });
+      } else {
+          this.attendanceItem.splice(index, 1);
+      }
+        // this.convertedAmount2.splice(index, 1)
     },
-    delOffering(index) {
-      this.offeringItem.splice(index, 1);
-      this.convertedAmount.splice(index, 1)
+      deleteAttendance(id,index) {
+       this.$confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          this.delAttendance(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
+            this.$toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+      
     },
+
+    deleteOffering(id, index) {
+      if (id) {
+          axios
+        .delete(`/api/Financials/Contributions/Transactions/Delete?ID=${id}`)
+        .then((res) => {
+          console.log(res, 'delete response from back');
+          if (res.data.status) {
+            this.$toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `Offering Successfully Deleted`,
+              life: 3000,
+            });
+            this.offeringItem = this.offeringItem.filter(i => id !== i.id)
+          } else {
+            toast.add({
+              severity: "warn",
+              summary: "Delete Failed",
+              detail: `Please Try Again`,
+              life: 3000,
+            });
+          }
+        })
+        .catch((err) => {
+          finish();
+          if (err.response) {
+            console.log(err.response);
+            this.$toast.add({
+              severity: "error",
+              summary: "Unable to delete",
+              detail: `${err.response}`,
+              life: 3000,
+            });
+          }
+        });
+      } else {
+          this.offeringItem.splice(index, 1);
+      }
+
+    },
+
+    delOffering(id,index) {
+       this.$confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          this.deleteOffering(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          //  this.$toast.add({severity:'info', summary:'Confirmed', detail:'Record deleted', life: 3000});
+            this.$toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+      
+    },
+    
     toggleForm1() {
       this.showForm1 = !this.showForm1;
     },
@@ -2024,16 +2153,12 @@ export default {
 
         this.eventObj = {
         attendances: this.attendanceItem,
-        // offerings: this.offeringItem,
         offerings: this.offeringItem.map(i => {
            delete i.showCurrency
            delete i.fromCurrencyRate
            return i
         }),
-        // offerings: this.offeringItem.map(i => {
-        //   i.currency = i.currency.split(" ")[0]
-        //   return i
-        // }),
+        
         activityFirstTimers: this.firstTimers,
         activityNewConverts: this.newConverts
       };
@@ -2075,6 +2200,7 @@ export default {
         } else {
           this.eventObj.activity.eventCategoryId = this.selectedEventCategoryId;
         }
+
       }
 
 
@@ -2117,7 +2243,7 @@ export default {
                 "eventDataResponse",
                 JSON.stringify(currentEvent )
               );
-              this.$router.push({ name: "Report", params: { id: activityId } });
+              this.$router.push({ name: "Report", params: { id: activityId }, query: { edit: true } });
               console.log(res.data, currentEvent, 'markers')
           })
           .catch(err => {
@@ -2269,7 +2395,9 @@ export default {
     },
     dropDownMarital (e) {
       this.firstTimersObj.maritalStatusId = this.maritalStatusArr.find(
-          (i) => i.value === e.value
+          (i) => {
+            return i.value === e.value.value
+          }
         ).id;
     },
     dropDownGender (e) {
@@ -2348,7 +2476,7 @@ export default {
     },
     dropDownMaritalNewConvert (e) {
       this.newConvertsObj.maritalStatusId = this.maritalStatusArr.find(
-          (i) => i.value === e.value
+          (i) => i.value === e.value.value
         ).id;
     },
     dropDownGenderNewConvert (e) {
@@ -2440,36 +2568,86 @@ export default {
         });
       });
     },
-    getEventById () {
+    async getEventById () {
       if (this.$route.params.event) {
-        axios.get(`/api/Events/${this.$route.params.event}`)
-          .then(res => {
-            this.routeParams = this.$route.params.event
-          
-
-            this.eventDate = res.data.activity.date.substr(0, 10)
-                // let date = new Date(res.data.activity.date)
-                // this.eventDate = (date.getMonth()+1) + '/'+date.getDate()+ '/' + date.getFullYear()
-                // .toLocaleDateString("sq-AL",{ month: '2-digit', day: '2-digit', year: 'numeric' })
-                // .toISOString().substr(0, 10);
-            //.toISOString().substr(0, 10)
-            this.topic = res.data.activity.topic
-            this.preacher = res.data.activity.preacher
-            this.selectedEventCategoryId = res.data.activity.eventCategoryId
-            this.attendanceItem = res.data.attendances
-            this.offeringItem = res.data.offerings
-            
-            this.firstTimers = res.data.activityFirstTimers
-            this.newConverts = res.data.activityNewConverts
-            this.updatePreEvent = res.data.preEvent
-            // this.offeringItem.find(i => console.log(i))
-            console.log(res.data)
-            if (this.currencyList.length > 0 ) {
-              // this.currencyList.find(i => i.currencyId == )
+        try {
+          let res = await axios.get(`/api/Events/${this.$route.params.event}`)
+          this.routeParams = this.$route.params.event
+          this.eventDate = res.data.activity.date.substr(0, 10)
+          this.topic = res.data.activity.topic
+          this.preacher = res.data.activity.preacher
+          this.selectedEventCategoryId = res.data.activity.eventCategoryId
+          this.attendanceItem = res.data.attendances
+          this.offeringItem = res.data.offerings.map(i => {
+            return {
+              activity: i.activity,
+              activityID: i.activityID,
+              amount: i.amount,
+              contribution: i.contribution,
+              fromCurrencyRate: i.currency.name,
+              currencyName: i.currency.shortCode,
+              currencyID: i.currencyID,
+              date: i.date,
+              financialContributionID: i.financialContributionID,
+              id: i.id,
+              memo: i.memo,
+              paymentChannel: i.paymentChannel,
+              person: i.person,
+              personEmail: i.personEmail,
+              personID: i.personID,
+              donor: i.personName,
+              personPhoneNumber: i.personPhoneNumber,
+              tenantID: i.tenantID,
+              transactionNumber: i.transactionNumber
             }
           })
-          .catch (err => console.log(err, "get by id error"))
+          this.firstTimers = res.data.activityFirstTimers
+          this.newConverts = res.data.activityNewConverts
+          this.updatePreEvent = res.data.preEvent
+          // this.offeringItem.find(i => console.log(i))
+          console.log(res.data)
+          if (this.currencyList.length > 0 ) {
+            // this.currencyList.find(i => i.currencyId == )
+          }
+          for (let index = 0; index < this.offeringItem.length; index++) {
+            const i = this.offeringItem[index];
+            let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
+            let fromCurrencyRate = i.fromCurrencyRate
+            let amount = i.amount ? +i.amount : 0
+            console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
+          try {
+            let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+            this.convertedAmount2.push(result)
+            console.log(result, this.convertedAmount2)
+          }
+          catch (err) {
+            console.log(err)
+          }
+          }
+        }
+        catch (err) {
+          console.log(err)
+        }    
       }
+    },
+      convertCurrencyForExistingEvent () {
+        console.log(this.offeringItem)
+       
+      // this.offeringItem.forEach((i) => {
+      //     let toDestinationCurrencyRate = `usd${this.tenantCurrency.currency.toLowerCase()}`
+      //     let fromCurrencyRate = i.fromCurrencyRate
+      //     let amount = i.amount ? +i.amount : 0
+      //   console.log(amount, fromCurrencyRate, toDestinationCurrencyRate)
+      // try {
+      //   let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+      //   this.convertedAmount2.push(result)
+      //   console.log(result, this.convertedAmount2)
+      // }
+      // catch (err) {
+      //   console.log(err)
+      // }
+      //     })
+
     },
     getCurrenciesFromCountries () {
       let url = "/api/getallcountries"
@@ -2496,7 +2674,6 @@ export default {
     },
     updateOfferingId (e) {
       // this.offeringItem[index].financialContributionID = id
-      
           let index = this.offeringItem.findIndex(i => i.financialContributionID === e.target.value)
           console.log(e.target.value, index, 'target', e.target.textContent)
            let offText = this.newOfferings.find(i => i.id === e.target.value).name
@@ -2574,6 +2751,8 @@ export default {
               axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
               .then(res => {
                 this.tenantCurrency = res.data
+                this.getEventById()
+                this.convertCurrencyForExistingEvent()
                 console.log(this.tenantCurrency)
               })
               .catch(err => console.log(err))
@@ -2642,6 +2821,9 @@ export default {
               NProgress.done();
               console.log(res)
             this.incomeAccount = res.data
+            if (res.data.length < 1) {
+            this.displayResponsive = true
+          }
           })
           .catch(err => {
               NProgress.done();
@@ -2658,6 +2840,10 @@ export default {
               console.log(err)
             })
       },
+       closeResponsive () {
+            this.displayResponsive = false;
+            this.$router.push({ name: "ChartOfAccount" })
+        },
       createNewCon (e) {
           let contributionCategory = {
             name: this.contributionItemName,
@@ -2810,9 +2996,24 @@ export default {
         },
         
   },
-  created() {
-    this.currentDate()
-    this.getCurrentlySignedInUser()
+  async created() {
+    if( (store.getters["lookups/maritalStatus"]).length > 0) {
+      this.maritalStatusArr = (store.getters["lookups/maritalStatus"])
+    }else {
+       await axios
+        .get("/api/LookUp/GetAllLookUps")
+        .then((res) => {
+          console.log(res, "lksa");
+          this.maritalStatusArr = res.data.find(
+            (i) => {
+              return i.type.toLowerCase() === "maritalstatus"
+            }
+          ).lookUps;
+        })
+        .catch((err) => console.log(err.response));
+    console.log(this.maritalStatus, 'maritalSS')
+    }
+
 
     axios.get("/api/Financials/Contributions/Items").then((res) => {
       this.newOfferings = res.data.map((i) => {
@@ -2825,10 +3026,13 @@ export default {
         return { attendanceTypeID: i.id, name: i.name };
       });
     });
+
+    this.currentDate()
+    this.getCurrentlySignedInUser()
     this.getEventCategories();
     this.getLookUps();
     this.getHowDidYouAboutUsId();
-    this.getEventById();
+    
     this.getCurrenciesFromCountries();
     this.getIncomeAccount()
     this.getCashBankAccount()
@@ -3038,7 +3242,7 @@ export default {
   border-bottom: 1px solid rgb(204, 204, 204);
 }
 .attendance-body {
-  padding: 0 50px;
+  padding: 0 50px; 
   background-color: #ecf0f3;
 }
 

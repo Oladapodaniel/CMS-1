@@ -380,6 +380,24 @@ const routes = [
                 ]
             },
             {
+                path: 'childcheckin',
+                name: 'ChildCheckin',
+                meta: {
+                    title: 'Churchplus - Child Checkin',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "wardcheckin" */ '@/views/event/childcheckin/Index.vue')
+            },
+            {
+                path: 'checkinachild',
+                name: 'CheckinAChild',
+                meta: {
+                    title: 'Churchplus - Child Checkin',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "checkinachild" */ '@/views/event/childcheckin/pages/WardCheckin.vue')
+            },
+            {
                 path: 'checkins',
                 name: 'AttendanceAndCheckinList',
                 meta: {
@@ -1149,7 +1167,32 @@ const routes = [
         name: 'TransactionPage',
         component: () =>
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/donation/TransactionPage')
-    }
+    },
+    {
+        path: '/childcheckin',
+        name: 'PublibView',
+        component: () =>
+            import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/childcheckin/components/PublicView')
+    },
+    {
+        path: '/checkin',
+        name: 'BaseIndex',
+        component: () =>
+            import ( /* webpackChunkName: "defaultmessage" */ '@/views/ChildCheckinPortal/BaseIndex'),
+            children: [{
+                path: '',
+                name: 'CheckinDashboard',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinDashboard')
+            },
+            {
+                path: '/family',
+                name: 'Family',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Family')
+            }
+        ]
+    },
 ]
 
 
@@ -1209,7 +1252,8 @@ router.beforeEach((to, from, next) => {
      to.name === "SignInPayment" || 
      to.name === "TransactionPage" || 
      to.name === "PublicResetPassword" || 
-     to.name === "EventRegistration") && !tokenIsValid) return next(true)
+     to.name === "EventRegistration" ||
+     to.name === "BaseIndex") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;

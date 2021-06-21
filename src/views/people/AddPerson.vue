@@ -495,7 +495,7 @@
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-6 d-md-flex justify-content-end">
-                    <button class="default-btn">Cancel</button>
+                    <button class="default-btn" data-dismiss="modal">Cancel</button>
                   </div>
                   <div class="col-md-6">
                     <button
@@ -1014,7 +1014,7 @@ export default {
           { personId: route.params.personId, groupId: groupToAddTo.value.id },
           groupToAddTo.value.id
         );
-        console.log(response, "RESPONSE");
+        console.log("RESPONSE", response);
         toast.add({
           severity: "success",
           summary: "Added Successfully",

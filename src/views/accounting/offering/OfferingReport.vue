@@ -6,7 +6,7 @@
         <h2 class="font-weight-bold page-hder">New Offerings and Report</h2>
       </div>
       <div class="col-md-7 d-sm-flex justify-content-md-end">
-        <a class="def-btn mr-3 px-md-4 my-sm-1"
+        <a class="def-btn mr-3 px-md-4 my-sm-1" v-if="false"
           >More Actions <i class="fad fa-caret-circle-down"></i
         ></a>
         <router-link :to="{ name: 'AddOffering', path: '/tenant/addoffering' }">
@@ -182,7 +182,7 @@
                         </div>
                       </div>
 
-                      <div class="col-6">
+                      <div class="col-6" @click="copyLink">
                         <a class="def-btn edit-btn">Get share link</a>
                       </div>
                     </div>
@@ -200,6 +200,21 @@
                   </div>
                 </div>
               </div>
+              
+              <div class="col-md-12 pt-2" v-if="willCopyLink">
+                  <span class="d-flex" @click="copyLink">
+                    <input
+                      type="text"
+                      name=""
+                      @keydown="(e) => e.preventDefault()"
+                      class="form-control mr-2"
+                      :value="location"
+                      ref="shareableLinkField"
+                      style="width:90%"
+                    />
+                    <span><i class="pi pi-copy c-pointer" style="font-size: 1.5rem"></i></span>
+                  </span>
+                </div>
             </div>
           </div>
         </div>
@@ -1563,6 +1578,11 @@ export default {
         const url = ref(`my.churchplus.co/tenant/report/${route.params.report}`)
         const sendBtnText = ref("Send Report")
         const markedAsSent =  ref('mark as sent')
+        const willCopyLink = ref(false);    
+        const shareableLinkField = ref(null);
+        const location = ref(window.location);
+
+
 
         const toggleReportState = () => {
         reportApproved.value = !reportApproved.value;
@@ -1729,8 +1749,29 @@ export default {
 
             const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount)
 
+            
+            const copyLink = () => {
+              try {
+                willCopyLink.value = true;
+                const a = shareableLinkField.value;
+                a.select();
+                a.setSelectionRange(0, 200); /* For mobile devices */
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+                toast.add({
+                  severity: "info",
+                  summary: "Link Copied",
+                  detail: "Shareable link copied to your clipboard",
+                  life: 4000,
+                });
+              } catch (error) {
+                console.log(error);
+              }
+            };
+
         return {
-            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent, routeActivityId, amountWithCommas
+            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent, routeActivityId, amountWithCommas, copyLink, shareableLinkField, location, willCopyLink
             
         }
     }

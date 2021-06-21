@@ -37,7 +37,7 @@ export default {
         },
 
         addGroup(state, payload) {
-            state.groups.push(payload);
+            state.groups.unshift(payload);
         },
 
         removeGroup(state, payload) {
@@ -71,6 +71,7 @@ export default {
         async getGroups({ commit }) {
             try {
                 const { data } = await axios.get("/api/GetAllGroupBasicInformation");
+                console.log(data)
                 commit("setGroups", data);
             } catch (error) {
                 stopProgressBar();

@@ -66,6 +66,39 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row pb-2">
+                <div class="col-md-8 col-lg-7">
+                  <div class="row">
+                    <div class="col-md-4 text-lg-right">
+                    </div>
+                    <div class="col-md-8">
+                <div class="row">
+                  <div class="col-12 d-flex" v-if="false">
+                    <!-- <div class="mt-n3"> -->
+                      <Checkbox :binary="true" />
+                      <label for="description" class="font-weight-600 ml-3">
+                        Make Public
+                      </label>
+                    <!-- </div> -->
+                  </div>
+
+                   <div class="col-12 d-flex mt-2">
+                    <!-- <div class="mt-n3"> -->
+                      <Checkbox v-model="groupData.isMobileGroup" :binary="true" :disabled="groupData.isMobileGroup"/>
+
+                      <label for="description" class="font-weight-600 ml-3">
+                        Enable on Mobile App
+                      </label>
+                    <!-- </div> -->
+                  </div>
+                </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
           </div>
 
@@ -132,9 +165,7 @@
                                   >
                                 </div>
                                 <div class="col-md-7">
-                                  <div
-                                    class="row"
-                                  >
+                                  <div class="row">
                                     <div
                                       class="col-md-12 pl-0 grey-rounded-border"
                                     >
@@ -184,7 +215,7 @@
                                                 ? ''
                                                 : 'Select from members'
                                             }`"
-                                            @blur="() => inputBlurred = true"
+                                            @blur="() => (inputBlurred = true)"
                                           />
                                         </li>
                                       </ul>
@@ -206,7 +237,9 @@
                                           >
                                           <p
                                             class="bg-secondary p-1 mb-0 disable m-dd-item"
-                                            v-if="invalidSearchText && !inputBlurred"
+                                            v-if="
+                                              invalidSearchText && !inputBlurred
+                                            "
                                           >
                                             Enter 3 or more characters
                                           </p>
@@ -283,128 +316,162 @@
                 </div>
               </div>
               <!-- Modal -->
-                 <div class="container">
-                      <!-- Button to Open the Modal -->
-                      <!-- <button type="button" class="btn btn-primary" >
+              <div class="container">
+                <!-- Button to Open the Modal -->
+                <!-- <button type="button" class="btn btn-primary" >
                         Open modal
                       </button> -->
 
-                      <!-- The Modal -->
-                      <div class="modal fade" id="myModal">
-                        <div class="modal-dialog modal-sm">
-                          <div class="modal-content">
-                          
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                              <h4 class="modal-title">
-                                 <label class="font-weight-900 w-100">Move Members To Groups</label>
-                                                    
-                              </h4>
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            
-                            <!-- Modal body -->
-                            <div class="modal-body">
-                              <div class="col-md-12">
-                                                       
-                                                      </div>
-                                                      <div class="col-md-12 form-group w-100">
-                                                        <Dropdown
-                                                          :options="getAllGroup"
-                                                          optionLabel="name"
-                                                          placeholder="Select Groups"
-                                                          style="width: 100%"
-                                                          v-model="selectGroupTo"
-                                                        />
-                                                      </div>
-                            </div>
-                            
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-primary" data-dismiss="modal" @click="moveMembers">Move</button>
-                            </div>
-                            
-                          </div>
+                <!-- The Modal -->
+                <div class="modal fade" id="myModal">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                      <!-- Modal Header -->
+                      <div class="modal-header">
+                        <h4 class="modal-title">
+                          <label class="font-weight-900 w-100"
+                            >Move Members To Groups</label
+                          >
+                        </h4>
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="modal"
+                        >
+                          &times;
+                        </button>
+                      </div>
+
+                      <!-- Modal body -->
+                      <div class="modal-body">
+                        <div class="col-md-12"></div>
+                        <div class="col-md-12 form-group w-100">
+                          <Dropdown
+                            :options="getAllGroup"
+                            optionLabel="name"
+                            placeholder="Select Groups"
+                            style="width: 100%"
+                            v-model="selectGroupTo"
+                          />
                         </div>
-                     </div>
-  
-               </div>
-               <!-- Modal -->
-                 <div class="container">
-                      <!-- Button to Open the Modal -->
-                      <!-- <button type="button" class="btn btn-primary" >
+                      </div>
+
+                      <!-- Modal footer -->
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-dismiss="modal"
+                          @click="moveMembers"
+                        >
+                          Move
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Modal -->
+              <div class="container">
+                <!-- Button to Open the Modal -->
+                <!-- <button type="button" class="btn btn-primary" >
                         Open modal
                       </button> -->
 
-                      <!-- The Modal2 -->
-                      <div class="modal fade" id="myModal1">
-                        <div class="modal-dialog modal-sm">
-                          <div class="modal-content">
-                          
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                              <h4 class="modal-title">
-                                 <label class="font-weight-900 w-100">Copy Members To Groups</label>
-                                                    
-                              </h4>
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            
-                            <!-- Modal body2 -->
-                            <div class="modal-body">
-                              <div class="col-md-12">
-                                                       
-                                                      </div>
-                                                      <div class="col-md-12 form-group w-100">
-                                                        <Dropdown
-                                                          :options="getAllGroup"
-                                                          optionLabel="name"
-                                                          placeholder="Select Groups"
-                                                          style="width: 100%"
-                                                          v-model="copyGroupTo"
-                                                        />
-                                                      </div>
-                            </div>
-                            
-                            <!-- Modal footer2 -->
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-primary" data-dismiss="modal" @click="copyMemberToGroup">Copy</button>
-                            </div>
-                            
-                          </div>
+                <!-- The Modal2 -->
+                <div class="modal fade" id="myModal1">
+                  <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                      <!-- Modal Header -->
+                      <div class="modal-header">
+                        <h4 class="modal-title">
+                          <label class="font-weight-900 w-100"
+                            >Copy Members To Groups</label
+                          >
+                        </h4>
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="modal"
+                        >
+                          &times;
+                        </button>
+                      </div>
+
+                      <!-- Modal body2 -->
+                      <div class="modal-body">
+                        <div class="col-md-12"></div>
+                        <div class="col-md-12 form-group w-100">
+                          <Dropdown
+                            :options="getAllGroup"
+                            optionLabel="name"
+                            placeholder="Select Groups"
+                            style="width: 100%"
+                            v-model="copyGroupTo"
+                          />
                         </div>
-                     </div>
-  
-               </div>
-              <div class="row" v-if="marked.length >  0 && groupMembers.length > 0">
+                      </div>
+
+                      <!-- Modal footer2 -->
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-dismiss="modal"
+                          @click="copyMemberToGroup"
+                        >
+                          Copy
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row"
+                v-if="marked.length > 0 && groupMembers.length > 0"
+              >
                 <div class="col-md-12 d-flex align-content-between">
-                      <a href="#" class="tool" data-toggle="modal" data-target="#myModal">
-                        <i
-                          class="pi pi-reply text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4 mr-3"
-                          style="font-size: 20px; font-weight:bold" v-tooltip.top="'move to group'">
-                          </i>
-                    </a>
-                    
-                    <a href="#" class="tool" data-toggle="modal" data-target="#myModal1">
-                        <i
-                          class="pi pi-copy text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
-                          style="font-size: 20px; font-weight:bold" v-tooltip.right="'copy to group'"
-                          > 
-                        </i>
-                    </a>
-                    
-                </div>
-                </div>
+                  <a
+                    href="#"
+                    class="tool"
+                    data-toggle="modal"
+                    data-target="#myModal"
+                  >
+                    <i
+                      class="pi pi-reply text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4 mr-3"
+                      style="font-size: 20px; font-weight: bold"
+                      v-tooltip.top="'move to group'"
+                    >
+                    </i>
+                  </a>
 
-              <div class="row table-header-row py-2"   >
+                  <a
+                    href="#"
+                    class="tool"
+                    data-toggle="modal"
+                    data-target="#myModal1"
+                  >
+                    <i
+                      class="pi pi-copy text-primary ml-n4 mb-2 c-pointer d-flex align-items-center px-4"
+                      style="font-size: 20px; font-weight: bold"
+                      v-tooltip.right="'copy to group'"
+                    >
+                    </i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="row table-header-row py-2">
                 <div class="col-md-1" v-if="groupMembers.length > 0">
-                  <input 
-                  type="checkbox"
-                   @change="markAllItem" 
-                   :checked="marked.length === groupMembers.length" 
-                   id="all" 
-                   name="all" 
-                   class="py-2"/>
+                  <input
+                    type="checkbox"
+                    @change="markAllItem"
+                    :checked="marked.length === groupMembers.length"
+                    id="all"
+                    name="all"
+                    class="py-2"
+                  />
                 </div>
                 <div class="col-md-3">
                   <span class="py-2 font-weight-bold">NAME</span>
@@ -415,10 +482,10 @@
                 <!-- <div class="col-md-2">
                   <span class="py-2 font-weight-bold">ADDRESS</span>
                 </div> -->
-                <div class="col-md-2">
+                <div class="col-md-3">
                   <span class="py-2 font-weight-bold">EMAIL</span>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <span class="py-2 font-weight-bold">PHONE</span>
                 </div>
                 <div class="col-md-1">
@@ -464,7 +531,13 @@
                 </div>
               </div>
 
-              <div
+              <div class="row" style="border-bottom: 1px solid #00204412;" v-if="groupMembers.length > 0">
+                <div class="col text-center p-3 text-success font-weight-700">
+                  Approved
+                </div>
+              </div>
+
+              <div style="border-bottom: 1px solid #00204412;"
                 class="row py-2"
                 v-for="(member, index) in groupMembers"
                 :key="index"
@@ -474,13 +547,24 @@
                     <div
                       class="col-md-1 d-flex justify-content-between align-items-center"
                     >
-                      <input type="checkbox" class="py-2" name="" id="" @change="mark1Item(member)" :checked="marked.findIndex((i) => i.personID === member.personID) >=0" />
+                      <input
+                        type="checkbox"
+                        class="py-2"
+                        name=""
+                        id=""
+                        @change="mark1Item(member)"
+                        :checked="
+                          marked.findIndex(
+                            (i) => i.personID === member.personID
+                          ) >= 0
+                        "
+                      />
                     </div>
                     <div
                       class="col-md-3 d-flex justify-content-between align-items-center"
                     >
                       <span class="py-2 hidden-header">NAME</span>
-                      <span class="py-2">{{member.name }}</span>
+                      <span class="py-2">{{ member.name }}</span>
                     </div>
                     <div
                       class="col-md-2 d-flex justify-content-between align-items-center"
@@ -541,17 +625,126 @@
                               >Send Email</router-link
                             >
                           </a>
-                          <a class="dropdown-item c-pointer" @click="confirmDelete(member.personID, index)">Remove</a>
+                          <a
+                            class="dropdown-item c-pointer"
+                            @click="confirmDelete(member.personID, index)"
+                            >Remove</a
+                          >
                         </div>
                       </div>
                     </div>
                   </div>
 
+                </div>
+              </div>
+
+              <div class="row" style="border-bottom: 1px solid #00204412;" v-if="awaitingApprovals.length > 0">
+                <div class="col text-center p-3 text-warning font-weight-700">
+                  Waiting Approval
+                </div>
+              </div>
+
+              <div style="border-bottom: 1px solid #00204412;"
+                class="row py-2"
+                v-for="(member, index) in awaitingApprovals"
+                :key="index"
+              >
+                <div class="col-md-12">
                   <div class="row">
-                    <div class="col-md-12 px-0">
-                      <hr class="hr my-0" />
+                    <div
+                      class="col-md-1 d-flex justify-content-between align-items-center"
+                    >
+                      <input
+                        type="checkbox"
+                        class="py-2"
+                        name=""
+                        id=""
+                        @change="mark1Item(member)"
+                        :checked="
+                          marked.findIndex(
+                            (i) => i.personID === member.personID
+                          ) >= 0
+                        "
+                      />
+                    </div>
+                    <div
+                      class="col-md-3 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">NAME</span>
+                      <span class="py-2">{{ member.name }}</span>
+                    </div>
+                    <div
+                      class="col-md-2 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">POSITION</span>
+                      <span class="py-2 text-xs-left">{{
+                        member.position
+                      }}</span>
+                    </div>
+                    <!-- <div
+                      class="col-md-2 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">ADDRESS</span>
+                      <span class="py-2">{{ member.addres }}</span>
+                    </div> -->
+                    <div
+                      class="col-md-2 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">EMAIL</span>
+                      <span class="py-2">{{
+                        member.email && member.email.length > 10
+                          ? `${member.email.split("").slice(0, 14).join("")}...`
+                          : member.email
+                          ? member.email
+                          : ""
+                      }}</span>
+                    </div>
+                    <div
+                      class="col-md-3 d-flex justify-content-between align-items-center"
+                    >
+                      <span class="py-2 hidden-header">PHONE</span>
+                      <span class="py-2">{{ member.phone }}</span>
+                    </div>
+                    <div
+                      class="col-md-1 d-flex justify-content-between align-items-center"
+                    >
+                      <div class="dropdown">
+                        <i
+                          class="fas fa-ellipsis-v cursor-pointer"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        ></i>
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <a class="dropdown-item" v-if="member.phone">
+                            <router-link
+                              :to="`/tenant/sms/compose?phone=${member.phone}`"
+                              >Send SMS</router-link
+                            >
+                          </a>
+                          <a class="dropdown-item" v-if="member.email">
+                            <router-link
+                              :to="`/tenant/email/compose?phone=${member.email}`"
+                              >Send Email</router-link
+                            >
+                          </a>
+                          <a class="dropdown-item cursor-pointer" @click="requestApproval(member)">
+                            Request Approval
+                          </a>
+                          <a
+                            class="dropdown-item c-pointer"
+                            @click="confirmDelete(member.personID, index)"
+                            >Remove</a
+                          >
+                        </div>
+                      </div>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -597,19 +790,18 @@ import { useRoute } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useConfirm";
 import groupsService from "../../services/groups/groupsservice";
-import Tooltip from 'primevue/tooltip';
+import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
-import store from "../../store/store"
-import finish from "../../services/progressbar/progress.js"
-
+import store from "../../store/store";
+import finish from "../../services/progressbar/progress.js";
 
 export default {
   directives: {
-    'tooltip': Tooltip
-},
- components: { Dropdown,},
+    tooltip: Tooltip,
+  },
+  components: { Dropdown },
   setup() {
-    const memberDia =ref(true)
+    const memberDia = ref(true);
     const groupData = ref({});
     const searchText = ref("");
     const loading = ref(false);
@@ -617,117 +809,139 @@ export default {
     const memberSearchResults = ref([]);
     const position = ref("");
     const memberSelectInput = ref(null);
-    const marked= ref([]);
+    const marked = ref([]);
     const confirm = useConfirm();
     let selectMembers = ref("");
     const getAllGroup = ref([]);
     const selectGroupTo = ref({});
     const copyGroupTo = ref({});
+    const awaitingApprovals = ref([])
     // const moveMembers =() =>{
     //   let memberChange = convert(marked.value);
     //   console.log(memberChange,'wisdom')
     // }
-    onMounted( async() => {
-      try{
-        const{data} = await axios.get("/api/GetAllGroupBasicInformation");
+    onMounted(async () => {
+      try {
+        const { data } = await axios.get("/api/GetAllGroupBasicInformation");
         getAllGroup.value = data;
         console.log(getAllGroup);
-      }catch(error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
       }
-      
-    })
-    const moveMembers=()=>{
+    });
+    const moveMembers = () => {
       let memberMove = {
-        memberIDList: marked.value.map(i => i.personID),
+        memberIDList: marked.value.map((i) => i.personID),
         groupTo: selectGroupTo.value.id,
-        groupFrom: route.params.groupId
-      }
-      axios.post(`/api/Group/MoveMembers`,memberMove)
-      .then((res)=>{
-        toast.add({
-          severity:'success', 
-          summary:'Confirmed', 
-          detail:'Member(s) Moved Successfully', 
-          life: 4000
-        });
-        console.log(res)
-        store.dispatch('groups/updateGroupPeopleCount', { groupId: selectGroupTo.value.id, count: marked.value.length, operation: 'add' })
-        store.dispatch('groups/updateGroupPeopleCount', { groupId: route.params.groupId, count: marked.value.length, operation: 'remove' })
-
-        // Remove from view
-      groupMembers.value = groupMembers.value.filter(i => {
-        let match = marked.value.findIndex(j => j.personID === i.personID)
-        if (match >= 0) return false
-        return true
-      })
-
-      }).catch (err => {
-        finish()
-        if (err.toString().toLowerCase().includes('network error')) {
+        groupFrom: route.params.groupId,
+      };
+      axios
+        .post(`/api/Group/MoveMembers`, memberMove)
+        .then((res) => {
           toast.add({
-          severity:'warn', 
-          summary:'Network error', 
-          detail:'Please ensure you have a strong internet',
-          life: 4000
-        });
-        } else if (err.toString().toLowerCase().includes('timeout')) {
-          toast.add({
-            severity:'warn', 
-            summary:'Request took too long', 
-            detail:'Please refresh the page',
-            life: 4000
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Member(s) Moved Successfully",
+            life: 4000,
           });
-        }
-      })
-      
+          console.log(res);
+          store.dispatch("groups/updateGroupPeopleCount", {
+            groupId: selectGroupTo.value.id,
+            count: marked.value.length,
+            operation: "add",
+          });
+          store.dispatch("groups/updateGroupPeopleCount", {
+            groupId: route.params.groupId,
+            count: marked.value.length,
+            operation: "remove",
+          });
 
-    }
-    const copyMemberToGroup=()=>{
-      let copyMember={
-        memberIDList: marked.value.map(i =>i.personID),
+          // Remove from view
+          groupMembers.value = groupMembers.value.filter((i) => {
+            let match = marked.value.findIndex(
+              (j) => j.personID === i.personID
+            );
+            if (match >= 0) return false;
+            return true;
+          });
+        })
+        .catch((err) => {
+          finish();
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "Network error",
+              detail: "Please ensure you have a strong internet",
+              life: 4000,
+            });
+          } else if (err.toString().toLowerCase().includes("timeout")) {
+            toast.add({
+              severity: "warn",
+              summary: "Request took too long",
+              detail: "Please refresh the page",
+              life: 4000,
+            });
+          }
+        });
+    };
+    const copyMemberToGroup = () => {
+      let copyMember = {
+        memberIDList: marked.value.map((i) => i.personID),
         groupTo: copyGroupTo.value.id,
-        groupFrom: route.params.groupId
-      }
-      axios.post(`/api/Group/CopyMembers`,copyMember)
-      .then((res)=>{
-        toast.add({severity:'success', summary: 'Confirmed' , detail:'Member(s) Copy Successfully', life:2500});
-        console.log(res)
-        store.dispatch('groups/updateGroupPeopleCopy', { groupId: copyGroupTo.value.id,
-        count: marked.value.length})
-      }).catch (err => {
-        finish()
-        if (err.toString().toLowerCase().includes('network error')) {
+        groupFrom: route.params.groupId,
+      };
+      axios
+        .post(`/api/Group/CopyMembers`, copyMember)
+        .then((res) => {
           toast.add({
-          severity:'warn', 
-          summary:'Network error', 
-          detail:'Please ensure you have a strong internet',
-          life: 4000
-        });
-        } else if (err.toString().toLowerCase().includes('timeout')) {
-          toast.add({
-            severity:'warn', 
-            summary:'Request took too long', 
-            detail:'Please refresh the page',
-            life: 4000
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Member(s) Copy Successfully",
+            life: 2500,
           });
-        }
-      })
-    }
-    const mark1Item =(member) =>{
+          console.log(res);
+          store.dispatch("groups/updateGroupPeopleCopy", {
+            groupId: copyGroupTo.value.id,
+            count: marked.value.length,
+          });
+        })
+        .catch((err) => {
+          finish();
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "Network error",
+              detail: "Please ensure you have a strong internet",
+              life: 4000,
+            });
+          } else if (err.toString().toLowerCase().includes("timeout")) {
+            toast.add({
+              severity: "warn",
+              summary: "Request took too long",
+              detail: "Please refresh the page",
+              life: 4000,
+            });
+          }
+        });
+    };
+    const mark1Item = (member) => {
       console.log(member);
-      const memberIndex= marked.value.findIndex((i) => i.personID === member.personID);
-      if(memberIndex < 0) {
+      const memberIndex = marked.value.findIndex(
+        (i) => i.personID === member.personID
+      );
+      if (memberIndex < 0) {
         marked.value.push(member);
-      }else{
+      } else {
         marked.value.splice(memberIndex, 1);
       }
-      console.log(marked.value, "wisdom")
-    }
+      console.log(marked.value, "wisdom");
+    };
     const markAllItem = () => {
       if (marked.value.length < groupMembers.value.length) {
         groupMembers.value.forEach((i) => {
-          const groupInMarked = marked.value.findIndex((q) => q.personID === i.personID);
+          const groupInMarked = marked.value.findIndex(
+            (q) => q.personID === i.personID
+          );
           if (groupInMarked < 0) {
             marked.value.push(i);
           }
@@ -742,28 +956,39 @@ export default {
 
     const confirmDelete = (id, index) => {
       confirm.require({
-          message: 'Do you want to remove this member?',
-          header: 'Remove Confirmation',
-          icon: 'pi pi-info-circle',
-          acceptClass: 'confirm-delete',
-          rejectClass: 'cancel-delete',
-          accept: () => {
-            groupsService.removeFromGroup(route.params.groupId, { groupId: route.params.id, personIds:  [ `${id}`]})
-              .then(res => {
-                console.log(res);
-                if (res !== false) {
-                  groupMembers.value.splice(index, 1);
-                  toast.add({severity:'success', summary:'Confirmed', detail:'The member was removed', life: 2500});
-                  groupsService.editGroupInStore({name: groupData.value.name, id: route.params.groupId }, groupMembers.value.length);
-                }
-              })
-            
-          },
-          reject: () => {
-            // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
-          }
+        message: "Do you want to remove this member?",
+        header: "Remove Confirmation",
+        icon: "pi pi-info-circle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          groupsService
+            .removeFromGroup(route.params.groupId, {
+              groupId: route.params.id,
+              personIds: [`${id}`],
+            })
+            .then((res) => {
+              console.log(res);
+              if (res !== false) {
+                groupMembers.value.splice(index, 1);
+                toast.add({
+                  severity: "success",
+                  summary: "Confirmed",
+                  detail: "The member was removed",
+                  life: 2500,
+                });
+                groupsService.editGroupInStore(
+                  { name: groupData.value.name, id: route.params.groupId },
+                  groupMembers.value.length
+                );
+              }
+            });
+        },
+        reject: () => {
+          // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+        },
       });
-    }
+    };
 
     const searchForMembers = (e) => {
       if (e.target.value.length >= 3) {
@@ -780,11 +1005,13 @@ export default {
               const memberInExistingMembers = selectedMembers.value.findIndex(
                 (j) => j.id === i.id
               );
-              if (memberInExistingMembers >= 0 || groupMembers.value.findIndex(k => k.personID === i.id) >=0) return false;
+              if (
+                memberInExistingMembers >= 0 ||
+                groupMembers.value.findIndex((k) => k.personID === i.id) >= 0
+              )
+                return false;
               return true;
-              
             });
-
           });
       } else {
         memberSearchResults.value = [];
@@ -805,7 +1032,7 @@ export default {
       memberSearchResults.value.splice(index, 1);
       searchText.value = "";
       memberListShown.value = false;
-      memberSearchResults.value = [ ];
+      memberSearchResults.value = [];
     };
 
     const removeMember = (index) => {
@@ -863,9 +1090,8 @@ export default {
       }
     };
 
-    /*eslint no-undef: "warn"*/
+
     const updateGroup = (data, redirect) => {
-      NProgress.start();
       axios
         .put(`/api/UpdateGroup/${route.params.groupId}`, data)
         .then((res) => {
@@ -885,7 +1111,7 @@ export default {
           }
         })
         .catch((err) => {
-          NProgress.done();
+          finish();
           savingGroup.value = false;
           console.log(err.response);
           toast.add({
@@ -898,18 +1124,17 @@ export default {
     };
 
     const createGroup = (data) => {
-      NProgress.start();
       axios
         .post("/api/CreateGroup", data)
         .then((res) => {
           console.log(res, "create res");
-          groupsService.addGroupToStore(res.data,  groupMembers.value.length);
+          groupsService.addGroupToStore(res.data, groupMembers.value.length);
           // store.dispatch("groups/getGroups")
           savingGroup.value = false;
           router.push("/tenant/peoplegroups");
         })
         .catch((err) => {
-          NProgress.done();
+          finish();
           savingGroup.value = false;
           console.log(err.response);
           toast.add({
@@ -932,7 +1157,7 @@ export default {
     const getGroupById = async () => {
       try {
         loadingMembers.value = true;
-        NProgress.start();
+        
         const { data } = await axios.get(
           `/api/GetGroupsFromId/${route.params.groupId}`,
           groupData.value
@@ -941,37 +1166,51 @@ export default {
         loadingMembers.value = false;
         groupData.value.name = data.name;
         groupData.value.description = data.description;
+        groupData.value.isMobileGroup = data.isMobileGroup
 
         data.peopleInGroups.forEach((i) => {
           const person = {
             personID: i.person.id,
             address: i.person.address,
             email: i.person.email,
-            name: i.person.firstName + ' '+ i.person.lastName,
+            name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
             phone: i.person.phoneNumber,
-            position: i.position,
+            position: i.position
           };
 
           groupMembers.value.push(person);
         });
+
+        awaitingApprovals.value = data.awaitingApprovals.map(i => {
+            return {
+              personID: i.person.id,
+              address: i.person.address,
+              email: i.person.email,
+              name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
+              phone: i.person.phoneNumber,
+              position: i.position,
+              groupID: i.groupID
+            }
+          })
+
         console.log(selectedMembers.value, "SM");
       } catch (error) {
-        NProgress.done();
+        finish();
         loadingMembers.value = false;
         console.log(error.response);
-        if (err0r.toString().toLowerCase().includes('network error')) {
+        if (error.toString().toLowerCase().includes("network error")) {
           toast.add({
-          severity:'warn', 
-          summary:'Network error', 
-          detail:'Please ensure you have a strong internet',
-          life: 4000
-        });
-        } else if (error.toString().toLowerCase().includes('timeout')) {
+            severity: "warn",
+            summary: "Network error",
+            detail: "Please ensure you have a strong internet",
+            life: 4000,
+          });
+        } else if (error.toString().toLowerCase().includes("timeout")) {
           toast.add({
-            severity:'warn', 
-            summary:'Request took too long', 
-            detail:'Please refresh the page',
-            life: 4000
+            severity: "warn",
+            summary: "Request took too long",
+            detail: "Please refresh the page",
+            life: 4000,
           });
         }
       }
@@ -989,9 +1228,54 @@ export default {
         memberListShown.value = false;
         searchText.value = "";
         memberListShown.value = false;
-        memberSearchResults.value = [ ];
+        memberSearchResults.value = [];
       }
     };
+
+    const requestApproval = async(member) => {
+      const memberToApprove = {
+          groupId: member.groupID,
+          email: member.email,
+          personId: member.personID,
+          approvalName: member.name,
+          position: member.position
+      }
+      console.log(memberToApprove)
+      try {
+        const res = await axios.post('/api/ApproveMemberFromApp', memberToApprove)
+        console.log(res)
+        toast.add({
+            severity: "success",
+            summary: "Approved",
+            detail: "Member approved successfully",
+            life: 4000,
+          });
+          awaitingApprovals.value = awaitingApprovals.value.filter(i => {
+            return i.personID !== member.personID
+          })
+          
+          groupMembers.value.push(member)
+      }
+      catch (error) {
+        finish();
+        if (error.toString().toLowerCase().includes("network error")) {
+          toast.add({
+            severity: "warn",
+            summary: "Network error",
+            detail: "Please ensure you have a strong internet",
+            life: 4000,
+          });
+        } else if (error.toString().toLowerCase().includes("timeout")) {
+          toast.add({
+            severity: "warn",
+            summary: "Request took too long",
+            detail: "Please refresh the page",
+            life: 4000,
+          });
+        }
+        console.log(error)
+      }
+    }
 
     return {
       groupData,
@@ -1029,7 +1313,9 @@ export default {
       selectGroupTo,
       moveMembers,
       copyGroupTo,
-      copyMemberToGroup
+      copyMemberToGroup,
+      awaitingApprovals,
+      requestApproval
     };
   },
 };
@@ -1156,7 +1442,7 @@ export default {
   font-size: 14px;
   text-decoration: none;
 }
-.tool{
+.tool {
   text-decoration: none;
 }
 
@@ -1192,8 +1478,8 @@ export default {
 .remove-email:hover {
   cursor: pointer;
 }
-.btn-primary{
-  background: #136acd!important;
+.btn-primary {
+  background: #136acd !important;
 }
 
 @media screen and (max-width: 767px) {
@@ -1205,6 +1491,5 @@ export default {
   .table-header-row {
     display: none;
   }
-
 }
 </style>

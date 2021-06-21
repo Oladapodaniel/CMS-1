@@ -146,6 +146,8 @@
                                <span class="col-lg-3"></span><div class="col-lg-7">
                                    <Checkbox value="BasicUser"
                                    v-model="roles1"
+                                   :class="{'bg-secondary': roles1.includes('Admin')}"
+                                   :disabled="roles1.includes('Admin')"
                                    />
                                    BasicUser
                                    </div>
@@ -154,6 +156,8 @@
                                <span class="col-lg-3"></span><div class="col-lg-7">
                                    <Checkbox value="CanAccessFirstTimers"
                                    v-model="roles1"
+                                   :class="{'bg-secondary': roles1.includes('Admin')}"
+                                   :disabled="roles1.includes('Admin')"
                                    />
                                     CanAccessFirstTimers
                                     </div>
@@ -162,6 +166,8 @@
                                <span class="col-lg-3"></span><div class="col-lg-7">
                                    <Checkbox value="CanAccessFollowUps"
                                    v-model="roles1"
+                                   :class="{'bg-secondary':roles1.includes('Admin')}"
+                                   :disabled="roles1.includes('Admin')"
                                    />
                                    CanAccessFollowUps
                                    </div>
@@ -170,6 +176,8 @@
                                <span class="col-lg-3"></span><div class="col-lg-7">
                                    <Checkbox value="CenterLeader"
                                    v-model="roles1"
+                                   :class="{'bg-secondary': roles1.includes('Admin')}"
+                                   :disabled="roles1.includes('Admin')"
                                    />
                                    CenterLeader
                                    </div>
@@ -178,6 +186,8 @@
                                <span class="col-lg-3"></span><div class="col-lg-7">
                                    <Checkbox value="FinancialAccount"
                                    v-model="roles1"
+                                   :class="{'bg-secondary': roles1.includes('Admin') }"
+                                   :disabled="roles1.includes('Admin')"
                                    />
                                    FinancialAccount
                                    </div>
@@ -186,6 +196,8 @@
                                <span class="col-lg-3"></span><div class="col-lg-7">
                                    <Checkbox value="MobileAdmin"
                                    v-model="roles1"
+                                   :class="{'bg-secondary': roles1.includes('Admin') }"
+                                   :disabled="roles1.includes('Admin')"
                                    />
                                    MobileAdmin
                                    </div>
@@ -194,6 +206,8 @@
                                <span class="col-lg-3"></span><div class="col-lg-7">
                                    <Checkbox value="Reports"
                                    v-model="roles1"
+                                   :class="{'bg-secondary' : roles1.includes('Admin')}"
+                                   :disabled="roles1.includes('Admin')"
                                    />
                                    Reports
                                    </div>
@@ -244,6 +258,7 @@ import store from "@/store/store";
             roles1: [],
             userName:'',
             disabled: false,
+            disable: false,
             mail:'',
             password1: '',
             password2: '',
@@ -269,6 +284,7 @@ import store from "@/store/store";
             if (!this.currentUser.churchName) return "";
             return this.currentUser.churchName;
         },
+        
 
         canAccessFT() {
             // if (this.roles1.indexOf("Admin") >= 0) return true;
@@ -490,6 +506,7 @@ import store from "@/store/store";
         if (this.$route.query.email){
             this.disabled = true
         }
+        
          this.getEmail()
         
 
@@ -534,6 +551,9 @@ import store from "@/store/store";
     margin-left: 14px;
     height: 800px;
 
+}
+.bg-secondary{
+   background-color: #00000063!important
 }
 .new span{
     text-align: right;

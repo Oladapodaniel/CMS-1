@@ -7,9 +7,9 @@
         </div>
         <div class="row mt-3 mb-4">
             <div class="col-md-12 py-2 w-links-con">
-                <router-link to="" class="text-decoration-none text-dark font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/list') }">List</router-link>
-                <router-link to="" class="text-decoration-none text-dark font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/add') }">Add</router-link>
-                <router-link to="" class="text-decoration-none text-dark font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/log') }">Log</router-link>
+                <router-link to="/tenant/workflow/list" class="text-decoration-none font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/list') }">List</router-link>
+                <router-link to="/tenant/workflow/add" class="text-decoration-none font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/add') }">Add</router-link>
+                <router-link to="/tenant/workflow/log" class="text-decoration-none font-weight-bold px-3 mx-2 p-2" :class="{ 'w-tab': route.path.includes('workflow/log') }">Log</router-link>
             </div>
         </div>
 
@@ -43,5 +43,9 @@ export default {
 
     .w-links-con {
         border-bottom: 1px solid #ced4da;
+    }
+
+    .router-link-exact-active {
+        color: #000 !important;
     }
 </style>

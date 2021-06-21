@@ -28,15 +28,19 @@
     </div>
     
 
-    <div class="no-person"  v-if="contributionTransactions.length === 0 && !loading">
+    <div v-if="contributionTransactions.length > 0 && !loading && !networkError">
+        <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/>
+    </div> 
+    <div class="no-person"  v-else-if="contributionTransactions.length === 0 && !loading && !networkError">
         <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any offering transaction yet</p>
         </div>
     </div>
-    <div v-if="contributionTransactions.length > 0 && !loading">
-        <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/>
-    </div> 
+    <div v-else-if="networkError" class="adjust-network">
+      <img src="../../../assets/network-disconnected.png" >
+      <div>Opps, Your internet connection was disrupted</div>
+    </div>
 </div>
 </template>
 
@@ -55,6 +59,7 @@ export default {
         const contributionTransactions = ref([])
         const totalItem = ref(0)
         const loading = ref(false)
+        const networkError = ref(false)
 
 
         const getContributionTransactions = () => {
@@ -75,6 +80,11 @@ export default {
                     .catch((err) => {
                         loading.value = false
                         console.log(err)
+                        if(err.toString().toLowerCase().includes("network error")) {
+                          networkError.value = true
+                        } else {
+                          networkError.value = false
+                        }
                     });
             }
     
@@ -93,7 +103,7 @@ export default {
       contributionTransactions.value.splice(payload, 1)
     }
         return {
-            contributionTransactions, loading, getOfferingPages, updateTransac, totalItem
+            contributionTransactions, loading, getOfferingPages, updateTransac, totalItem, networkError
         }
     }
 }

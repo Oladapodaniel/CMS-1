@@ -22,10 +22,10 @@
            
           </div>
           <!-- {{ pieChart }} -->
+          <!-- title="Analytics" -->
           <div class="col-12 col-md-4">
             <ContributionPieChart
               domId="chart"
-              title="Analytics"
               distance="5"
               :titleMargin="10"
               :summary="pieChart"
@@ -428,7 +428,7 @@ export default {
     const filterResult = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
-    const tenantCurrency = ref(store.getters.currentUser)
+    const tenantCurrency = ref({})
     const Allsummary = ref([
       { name: "Not Sure", y: 20 },
       { name: "Male", y: 16 },
@@ -664,10 +664,30 @@ export default {
     };
     getContributionSummary();
 
-    const getTenantCurrency = () =>{
-      
+    const getCurrentlySignedInUser = async() => {
+            try {
+                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+                axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
+                .then(res => {
+                    tenantCurrency.value = res.data
+                    console.log(res.data)
+                  })
+                  .catch(err => console.log(err))
+                
+              } catch (err) {
+                console.log(err);
+            }
+        }
+
+    const getTenantCurrency = () => {
+      if (store.getters.currentUser && Object.keys(store.getters.currentUser).length > 0) {
+          tenantCurrency.value = store.getters.currentUser
+        } else {
+            getCurrentlySignedInUser()
+        }
     }
     getTenantCurrency();
+        
     const chartData = computed(() => {
       if (
         contributionSummary.value &&
@@ -828,7 +848,8 @@ export default {
       pieChart,
       LineGraphXAxis,
       amountWithCommas,
-       tenantCurrency
+       tenantCurrency,
+       getCurrentlySignedInUser
     };
   },
 };
@@ -1152,7 +1173,7 @@ export default {
 .itemroute-color:hover {
   text-decoration: none;
 }
-.t-header div {
+.t-header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
   padding: .5rem 0;

@@ -1,17 +1,17 @@
 <template>
   <div class="container-wide container-top">
     <div class="row mt-5">
-      <div class="col-12 header">
+      <div class="col-12 pl-md-0 header">
         Subscription
       </div>
-      <div class="col-12 normal-text mt-3">
+      <div class="col-12 normal-text mt-3 pl-md-0 ">
         Select the subscription that suit your church and the additional tolls
         you need for your church growth.
       </div>
       <div class="col-md-6 mt-5">
         <div class="row bg-white pb-2 sub">
           <div class="col-md-6 col-lg-6  col-12">
-            <div class="py-2 small-header">Subscription Type*</div>
+            <div class="py-2 small-header">Subscription Type <span class="text-danger">*</span></div>
             <Dropdown
               class=" plandropdown w-100"
               v-model="selectedPlan"
@@ -22,7 +22,7 @@
           </div>
           <div class="col-md-6 col-lg-6 col-12">
             <div class="py-2 small-header">
-              Duration (month)<span class="text-danger">*</span>
+              Duration (month)
             </div>
             <Dropdown
               class="w-100"
@@ -32,8 +32,8 @@
               placeholder="Select duration"
             />
           </div>
-          <div class="col-md-3 col-lg-3 col-3  ml-3 mt-3 normal-text">
-            {{ currentUser.currencySymbol }} {{ subselectedDuratn }}
+          <div class="col-md-3 col-lg-3 col-3  ml-3 mt-3 normal-text pl-md-0">
+            {{ subselectedDuratn >  1 ? currentUser.currencySymbol : "" }} {{ subselectedDuratn >  1 ? subselectedDuratn : ""}}
           </div>
         </div>
       </div>
@@ -84,20 +84,17 @@
               {{ selectEmail.constValue ? emailAmount : 0 }}
             </div>
           </div>
-          <div class="my-3 small-header">Accounting</div>
+          <div class="my-3 small-header">Accounting <br><small>Product price is multiplied by subscrption duration</small></div>
           <div
             class="row normal-text"
-            v-for="(item, index) in productsList"
+            v-for="(item) in productsList"
             :key="item.id"
           >
             <div
               class="col-12"
               v-if="
-                item.name !== 'Email' &&
-                  item.name !== 'SMS' &&
-                  item.name !== 'Product' &&
-                  item.name !== 'Financial Analysis' &&
-                  item.name !== 'Fixed Assets'
+                item.type === 0
+              
               "
             >
               <div class="row">
@@ -105,10 +102,10 @@
                 <div class="col-md-2 col-4">
                   <input
                     type="checkbox"
-                    @change="selectCheckbox(item, index)"
+                    @change="selectCheckbox(item)"
                   />
                 </div>
-                <div class="col-md-4 text-center col-4">{{ item.price }}</div>
+                <div class="col-md-4 text-center col-4">{{ item.price  }}</div>
               </div>
             </div>
           </div>
@@ -120,24 +117,25 @@
           <div class="text-center small-header">
             Payment Summary({{ currentUser.currencySymbol }})
           </div>
-          <div class="row mt-3 normal-text">
+          <div class="row mt-3 normal-text" v-if="+selectMonth.name > 0">
             <div class="col-md-6 col-6">Subscription</div>
             <div class="col-md-6  col-6 text-right font-weight-bold">
-              {{ subselectedDuratn }}
+              {{ subselectedDuratn.toFixed(2) }}
             </div>
           </div>
           <div class="row mt-2 normal-text">
             <div class="col-md-6 col-6">SMS</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ smsAmount == "" ? "0" : smsAmount }}
+              {{ smsAmount == "" ? "0.00" : smsAmount.toFixed(2) }}
             </div>
           </div>
           <div class="row mt-3 normal-text">
             <div class="col-md-6 col-6">Email</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ selectEmail.constValue ? emailAmount : 0 }}
+              {{ selectEmail.constValue ? emailAmount.toFixed(2) : '0.00' }}
             </div>
           </div>
+          <!-- Selected Products -->
           <div
             class="row mt-3 normal-text"
             v-for="item in checkedBoxArr"
@@ -145,20 +143,24 @@
           >
             <div class="col-md-6 col-6">{{ item.name }}</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ item.price }}
+              {{ daysToEndOfSubscription > 0 ? ((item.price * subscriptionDuration) + ((item.price / 30) * daysToEndOfSubscription)).toFixed(2) : (item.price * subscriptionDuration).toFixed(2) }}
+              <!-- {{ subscriptionDuration }} {{ (item.price * subscriptionDuration) }} {{ ((item.price / 30) * daysToEndOfSubscription) }} -->
             </div>
           </div>
           <hr />
           <div class="row mt-3 normal-text">
             <div class="col-md-6 col-6">Total</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
-              {{ TotalAmount }}
+              {{ TotalAmount.toFixed(2) }}
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-12">
-              {{ convertAmountToTenantCurrency.toFixed(2) }}
-              {{ selectedCurrency }}
+            <div class="col-12 d-flex justify-content-between" v-if="selectedCurrency !== currentUser.currency">
+              <span>Converted amount</span>
+              <span>
+                <span v-if="selectedCurrency !== currentUser.currency" style="font-size:14px">{{ selectedCurrency }}</span>
+                <span class="font-weight-bold ml-1">{{ convertAmountToTenantCurrency ? convertAmountToTenantCurrency.toFixed(2) : 0.00 }}</span>
+              </span>
             </div>
             <div class="col-12">
               <Dropdown
@@ -177,7 +179,6 @@
             >
               <button
                 class="btn pay-now text-white w-100 normal-text"
-                :disabled="!selectMonth.name || +selectMonth.name <= 0"
               >
                 Pay Now
               </button>
@@ -366,12 +367,13 @@ export default {
     selectCurrencyArr.value = ["NGN", "USD", "GHS", "ZAR"];
 
     const existingPlan = ref({});
+    const daysToEndOfSubscription = ref(0);
     const selectSubscription = () => {
       axios.get("/api/Subscription/GetSubscription").then((res) => {
-        console.log(res.data);
+        console.log(res.data.returnObject, "RES");
         Plans.value = res.data.returnObject;
         existingPlan.value.id = Plans.value.id;
-        existingPlan.value.amountInNaira = Plans.value.amountInNaira;
+        existingPlan.value.amount = Plans.value.amount;
         existingPlan.value.description = Plans.value.description;
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
         existingPlan.value.membershipSize = Plans.value.membershipSize;
@@ -384,11 +386,9 @@ export default {
         selectedPlan.value = subscriptionPlans.value.find(
           (i) => i.id === Plans.value.id
         );
-        console.log(selectedPlan.value);
         currentAmount.value = res.data.returnObject.amountInNaira;
         currentPlan.value = existingPlan.value.description;
         productsList.value = res.data.returnObject.productsList;
-        console.log(productsList.value);
         emailPrice.value = productsList.value.find(
           (i) => i.name === "Email"
         ).price;
@@ -396,6 +396,8 @@ export default {
         expiryDate.value = formatDate.monthDayYear(
           res.data.returnObject.subscriptionExpiration
         );
+
+        daysToEndOfSubscription.value = calculateRemomainingMonthsOfSubscription(res.data.returnObject.subscriptionExpiration)
       });
     };
 
@@ -405,6 +407,7 @@ export default {
     const subscriptionPayment = (paystackResponse) => {
       close.value.click();
       paymentFailed.value = false;
+
       try {
         const products = checkedBoxArr.value.map((i) => {
           return {
@@ -434,7 +437,7 @@ export default {
           }
         }
         const body = {
-          subscriptionPlanID: selectedPlan.value.id,
+          // subscriptionPlanID: selectedPlan.value.id,
           durationInMonths: selectMonth.value.name
             ? +selectMonth.value.name
             : 0,
@@ -450,11 +453,17 @@ export default {
           productItems: products,
           currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
         };
+
+        if (selectMonth.value) {
+          body.subscriptionPlanID = selectedPlan.value.id;
+        }
+
         axios
           .post("/api/Subscription/SubscriptionPayment", body)
           .then((res) => {
             console.log(res);
             display.value = true;
+            selectSubscription();
             if (!res.data.returnObject.status) {
               paymentFailed.value = true;
             }
@@ -501,6 +510,7 @@ export default {
 
     const subselectedDuratn = computed(() => {
       let multiValue = 1;
+      // if (daysToEndOfSubscription.value > 0) multiValue += existingPlan.value.amount * daysToEndOfSubscription.value;
       if (selectedPlan.value.amount)
         multiValue *= selectedPlan.value.amount;
       if (selectMonth.value.name) multiValue *= +selectMonth.value.name;
@@ -509,32 +519,41 @@ export default {
 
     const TotalAmount = computed(() => {
       let sum = 0;
-      if (subselectedDuratn.value) sum += subselectedDuratn.value;
+      if (subselectedDuratn.value && selectMonth.value.name > 0) sum += subselectedDuratn.value;
       if (smsValue.value) sum += smsValue.value * 2;
       sum += emailAmount.value;
-      return sum + sumCheckboxItem.value;
+      return sum + (+sumCheckboxItem.value.toFixed(2));
     });
     const sumCheckboxItem = computed(() => {
       if (checkedBoxArr.value.length === 0) return 0;
-      return checkedBoxArr.value.map((i) => i.price).reduce((a, b) => a + b);
+      // return checkedBoxArr.value.map((i) => i.price).reduce((a, b) => a + b);
+      return checkedBoxArr.value.map((i) => calculatedProductPrice(i.price)).reduce((a, b) => a + b);
+      // return checkedBoxArr.value.map((i) => i.price * subscriptionDuration.value).reduce((a, b) => a + b);
     });
 
     const selectCheckbox = (item) => {
-      const index = checkedBoxArr.value.findIndex((i) => i.id === item.id);
+      const index = checkedBoxArr.value.findIndex((i) => i.name === item.name);
       if (index < 0) {
-        console.log(item);
         checkedBoxArr.value.push(item);
       } else {
         checkedBoxArr.value.splice(index, 1);
       }
     };
 
+    const setSelectedPaymentCurrency = () => {
+      if (selectCurrencyArr.value.includes(currentUser.value.currency)) {
+          selectedCurrency.value = currentUser.value.currency;
+        } else {
+          selectedCurrency.value = "USD";
+        }
+    }
+
     const getCurrencySymbol = async () => {
       userService
         .getCurrentUser()
         .then((res) => {
           currentUser.value = res;
-          console.log(currentUser.value);
+          setSelectedPaymentCurrency()
         })
         .catch((err) => {
           console.log(err);
@@ -546,7 +565,11 @@ export default {
       return converter.convertCurrencyTo(500, "usdngn", "usdghs");
     });
 
-    if (!currentUser.value || !currentUser.value.currency) getCurrencySymbol();
+    if (!currentUser.value || !currentUser.value.currency) {
+      getCurrencySymbol();
+    } else {
+      setSelectedPaymentCurrency()
+    }
     const appendLeadingZeroes = (n) => {
       if (n <= 9) {
         return "0" + n;
@@ -572,8 +595,9 @@ export default {
       // close.click();
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
+
         email: currentUser.value.userEmail,
         amount:
           (selectedCurrency.value
@@ -692,6 +716,28 @@ export default {
                 },
               });
     }
+    const calculateRemomainingMonthsOfSubscription = expiryDate => {
+      const endDate = new Date(expiryDate);
+      const startDate = new Date(Date.now());
+
+      const differenceInTime = Math.abs(endDate - startDate);
+      const differenceInDays = Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
+
+      return differenceInDays;
+    }
+
+    const subscriptionDuration = computed(() => {
+      // if (selectMonth.value.name && daysToEndOfSubscription.value) return +selectMonth.value.name + daysToEndOfSubscription.value;
+      // if (!daysToEndOfSubscription.value && selectMonth.value.name) return +selectMonth.value.name;
+      // return daysToEndOfSubscription.value;
+      if (selectMonth.value.name) return +selectMonth.value.name
+      return 0
+    })
+
+    const calculatedProductPrice = price => {
+      if (daysToEndOfSubscription.value < 1) return selectMonth.value.name ? price * +selectMonth.value.name : 0;
+      return (selectMonth.value.name ? price * +selectMonth.value.name : 0) + ((price / 30) * daysToEndOfSubscription.value);
+    }
 
     return {
       selectedPlan,
@@ -738,7 +784,9 @@ export default {
       paymentFailed,
       convertedAmount,
       convertAmountToTenantCurrency,
-      payWithFlutterwave
+      payWithFlutterwave,
+      daysToEndOfSubscription,
+      subscriptionDuration,
     };
   },
 };

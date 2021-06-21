@@ -29,29 +29,23 @@
           <Loader />
       </div>
 
-        <div v-if="eventList.length === 0 && !loading" class="no-person" >
+        <div v-if="eventList.length > 0 && !loading && !networkError" class="container-wide">
+            <EventList :eventList="eventList" :eventSummary="eventSummary" @activity-per-page="getPageActivity"/>
+        </div>
+        <div v-else-if="eventList.length === 0 && !loading &!networkError" class="no-person" >
         <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any event yet</p>
         </div>
         </div>
-        <div v-if="eventList.length > 0 && !loading" class="container-wide">
-            <EventList :eventList="eventList" :eventSummary="eventSummary" @activity-per-page="getPageActivity"/>
-        </div>
+          <div v-else-if="networkError" class="adjust-network">
+        <img src="../../assets/network-disconnected.png" >
+        <div>Opps, Your internet connection was disrupted</div>
+      </div>
 
-        <!-- Transitio area -->
-        <!-- <transition
-          :name="$store.state.pageTransition.name"
-          :mode="$store.state.pageTransition.mode"
-          v-on:after-enter="afterEvent"
-          v-on:after-leave="afterLeave"
-        >
-          <router-view class="view transition" />
-        </transition> -->
-        <!-- End of Transition -->
-        <!-- <transition name="fade" mode="out-in"> -->
-          <router-view class="view" />
-        <!-- </transition> -->
+  
+          <!-- <router-view class="view" /> -->
+   
       </div>
     </div>
   </div>
@@ -77,6 +71,7 @@ export default {
       const eventList = ref([])
       const eventSummary = ref({})
       const loading = ref(false)
+      const networkError = ref(false)
 
 
       const getEventList = () => {
@@ -94,6 +89,11 @@ export default {
             console.log(err)
             loading.value = false
             finish()
+             if(err.toString().toLowerCase().includes("network error")) {
+                networkError.value = true
+              } else {
+                networkError.value = false
+              }
           })
         // }
         // console.log(store.getters['event/eventList'])
@@ -117,7 +117,7 @@ export default {
       eventList.value = payload
     }
   
-    return { eventList, getEventList, loading, eventSummary, getPageActivity };
+    return { eventList, getEventList, loading, eventSummary, getPageActivity, networkError };
 
   },
 };
