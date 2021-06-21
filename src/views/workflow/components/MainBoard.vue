@@ -87,7 +87,7 @@
                                                     <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showActions }">
                                                         <div class="row d-flex justify-content-around">
                                                             <div class="col-md-5 card my-2" v-for="(i, j) in actions" :key="j" @click="selectAction(i)">
-                                                                <div class="row card-body">
+                                                                <div class="row card-body c-pointer">
                                                                     <div class="col-md-12 text-center">
                                                                         <i :class="i.icon"></i>
                                                                     </div>

@@ -413,9 +413,9 @@ export default {
           }, 1500);
 
           console.log(result, "sign in result");
-          // let accessToken = result.credential.accessToken;
-          // let profileId = result.additionalUserInfo.profile.id;
-          // getAccessToken(accessToken, profileId);
+          let accessToken = result.credential.accessToken;
+          let profileId = result.additionalUserInfo.profile.id;
+          getAccessToken(accessToken, profileId);
 
         })
         .catch((error) => {

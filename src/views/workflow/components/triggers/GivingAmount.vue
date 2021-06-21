@@ -1,5 +1,5 @@
 <template>
-    <div class="container max-height">
+    <div class="container px-0 max-height">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
                 <TriggerDescription />
