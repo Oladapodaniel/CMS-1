@@ -25,7 +25,7 @@
                         <div class="row">
                             <div class="border col-4 scr-height" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row">
-                                    <div class="col-md-12 py-3" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in selectedTriggers" :key="index">
+                                    <div class="col-md-12 py-3 c-pointer" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in selectedTriggers" :key="index" @click="changeActiveTrigger(index)">
                                         <h6>
                                             <span><i class="mr-3" :class="[trigger.icon]" style="font-size: 1.5rem"></i></span>
                                             <span class="d-none">{{ trigger.name }}</span>
@@ -329,6 +329,11 @@ export default {
             return selectedActions.value[selectedActionIndex.value];
         })
 
+        const changeActiveTrigger = (index) => {
+            console.log(index, "triggerId");
+            selectedTriggerIndex.value = index;
+        };
+
         return {
             showTriggers,
             // triggersIsVissible,
@@ -346,6 +351,8 @@ export default {
             actions,
             selectedTrigger,
             selectedAction,
+            changeActiveTrigger,
+            selectedTriggerIndex,
         }
     }
 }
