@@ -92,8 +92,9 @@ export default {
                 groups: selectedGroup.value ? [ selectedGroup.value ] : ['_____'],
                 range: selectedRange.value === 'Greater than' ? '>' : '<',
                 category: category.value === 'Any category' ? 'any' : category.value,
-                amount: amount.value,
-                time: givingTime.value ? givingTime.value : '____'
+                amount: amount.value ? amount.value : '',
+                time: givingTime.value ? givingTime.value : '____',
+                id: 1,
              };            
         })
 
