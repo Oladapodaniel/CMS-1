@@ -59,7 +59,7 @@
                             <div class="col-8 border" :class="{ 'col-md-8': showTriggers, 'col-md-11': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row" :class="{ 'd-none': selectedTriggers.length === 0 }">
                                     <div class="col-6 border scr-height"  style="height: 400px" :class="{ 'col-md-4': actionSelected, 'col-md-6': !actionSelected }">
-                                        <GivingAmount v-if="selectedTrigger.id === 1" />
+                                        <GivingAmount v-if="selectedTrigger.id === 1" @givingamount="givingAmount" />
                                         <GivingNewRegular v-else-if="selectedTrigger.id === 11" />
                                         <NoLongerGiving v-else-if="selectedTrigger.id === 2" />
                                         <PledgeCreation v-else-if="selectedTrigger.id === 3" />
@@ -300,7 +300,6 @@ export default {
             return index >= 0 ? true : false;
         }
 
-        console.log(window.innerHeight, "Inner Height");
         const selectTrigger = (trigger) => {
             if (!checkIfAlreadySelected(trigger)) {
                 selectedTriggers.value.push(trigger)
@@ -330,9 +329,12 @@ export default {
         })
 
         const changeActiveTrigger = (index) => {
-            console.log(index, "triggerId");
             selectedTriggerIndex.value = index;
         };
+
+        const givingAmount = data => {
+            console.log(data, "data");
+        }
 
         return {
             showTriggers,
@@ -353,6 +355,7 @@ export default {
             selectedAction,
             changeActiveTrigger,
             selectedTriggerIndex,
+            givingAmount,
         }
     }
 }
