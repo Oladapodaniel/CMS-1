@@ -17,7 +17,7 @@
                         <div class="col-12 col-md-8 ml-md-0 ml-5 form-group">
                         <Dropdown 
                         v-model="selectedRole" 
-                        :options="cities" 
+                        :options="roles" 
                         optionLabel="name"
                         style="width: 100%" 
                         placeholder="Select a Role" />
@@ -135,24 +135,31 @@
 import { ref } from "vue"
 import Dropdown from "primevue/dropdown";
 import router from '../../router';
+import axios from "@/gateway/backendapi";
     export default {
         components: {Dropdown},
         setup(){
           const selectedRole = ref(null)
-          const cities = [
-            {name: 'New York', code: 'NY'},
-            {name: 'Rome', code: 'RM'},
-            {name: 'London', code: 'LDN'},
-            {name: 'Istanbul', code: 'IST'},
-            {name: 'Paris', code: 'PRS'}
-          ]
+          const roles = ref([])
+
+          const getFamilyRoles = async () => {
+            try {
+                let { data } = await axios.get('/getfamilyroles')
+                console.log(data)
+                roles.value = data.result
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getFamilyRoles()
 
           const save = () => {
             router.push({ name: 'CheckinDashboard' })
           }
           return{
             selectedRole,
-            cities,
+            roles,
             save
           }
 

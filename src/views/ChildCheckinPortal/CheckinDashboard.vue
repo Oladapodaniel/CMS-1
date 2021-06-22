@@ -2,7 +2,9 @@
     <div class="container-wide container-top">
         <div class="row d-flex justify-content-center justify-content-sm-between">
             <div class="dashboard-header">Dashboard</div>
+            <router-link :to="{ name: 'CheckinEvent' }">
             <div class="register-event default-btn border-0 text-white">Register for this event</div>
+            </router-link>
         </div>
         <div class="row d-flex justify-content-center justify-content-sm-between mt-5" >
             <div class="analytics-text">Analytics Overview</div>
@@ -420,14 +422,14 @@
 <script>
 import { ref } from 'vue'
 import ColumnChart from "@/components/charts/ColumnChart.vue";
-import { useRoute } from "vue-router"
-import axios from "@/gateway/backendapi";
+// import { useRoute } from "vue-router"
+// import axios from "@/gateway/backendapi";
 export default {
     components: {
         ColumnChart
     },
     setup () {
-        const route = useRoute()
+        // const route = useRoute()
         const filterFormIsVissible = ref(false);
         const searchIsVisible = ref(false);
         const chartData = ref({ "name": "Attendance", "color": "", "data": [ 175, 220, 75, 31, 151, 7, 540 ] })
@@ -442,18 +444,18 @@ export default {
         };
 
 
-        const getFamilyMembers = async() => {
-            try {
-                const res = await axios.get(`/api/Family/family?personId=${route.query.person}`)
-                console.log(res)
-                console.log("gkfd,mnklvdnklnlkn")
+        // const getFamilyMembers = async() => {
+        //     try {
+        //         const res = await axios.get(`/api/Family/family?personId=${route.query.person}`)
+        //         console.log(res)
+        //         console.log("gkfd,mnklvdnklnlkn")
 
-            }
-            catch (error) {
-                console.log(error)
-            }
-        }
-        getFamilyMembers()
+        //     }
+        //     catch (error) {
+        //         console.log(error)
+        //     }
+        // }
+        // getFamilyMembers()
         return {
             filterFormIsVissible, toggleFilterFormVissibility, searchIsVisible, toggleSearch, chartData, series, attendanceSeries
         }

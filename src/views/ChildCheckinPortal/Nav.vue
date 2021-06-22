@@ -14,14 +14,16 @@
                 </div>
                 </router-link>
 
+                <router-link :to="{ name: 'CheckinProfile' }">
                 <div class="row push-down" :class="{ 'active' : route.fullPath.includes('profile'), 'style-font' : !route.fullPath.includes('profile') }">
                     <div class="col-2">
                         <img src="../../assets/checkin-assets/Icon-ionic-ios-person.svg" >
                     </div>
                     <div class="col-10">Profile</div>
                 </div>
+                </router-link>
 
-                <router-link to="/family">
+                <router-link to="/checkin/family">
                     <div class="row push-down" :class="{ 'active' : route.fullPath.includes('family'), 'style-font' : !route.fullPath.includes('family') }">
                         <div class="col-2">
                             <img src="../../assets/checkin-assets/family-silhouette.svg" >
@@ -37,12 +39,14 @@
                     <div class="col-10">Guardian</div>
                 </div>
                 
+                <router-link :to="{ name: 'UpcomingEvents' }">
                 <div class="row push-down" :class="{ 'active' : route.fullPath.includes('checkin-event'), 'style-font' : !route.fullPath.includes('checkin-event') }">
                     <div class="col-2">
                         <img src="../../assets/checkin-assets/Group-157.svg" >
                     </div>
                     <div class="col-10">Events</div>
                 </div>
+                </router-link>
             </div>
         </div>
     </div>

@@ -71,7 +71,7 @@ export default ({
             try {
                 let res = await axios.post('/familyLogin', userDetails.value)
                 console.log(res)
-                localStorage.setItem('checkinToken', res.data.loginData.result.value.token)
+                localStorage.setItem('checkinToken', res.data.login.result.value.token)
                 router.push({ name: 'CheckinDashboard', query: { person: res.data.personID} })
             }
             catch (err) {
