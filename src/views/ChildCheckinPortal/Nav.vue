@@ -29,13 +29,14 @@
                         <div class="col-10">Family</div>
                     </div>
                 </router-link>
-
+                <router-link to="/guardian">
                 <div class="row push-down" :class="{ 'active' : route.fullPath.includes('guardian'), 'style-font' : !route.fullPath.includes('guardian') }">
                     <div class="col-2">
                         <img src="../../assets/checkin-assets/Group-16991.svg" >
                     </div>
                     <div class="col-10">Guardian</div>
                 </div>
+                </router-link>
                 
                 <div class="row push-down" :class="{ 'active' : route.fullPath.includes('checkin-event'), 'style-font' : !route.fullPath.includes('checkin-event') }">
                     <div class="col-2">
