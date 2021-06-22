@@ -48,6 +48,7 @@ export default {
 
 .body-view {
     max-width: 75%;
+    width: 75%;
 }
 
 .toggle {
