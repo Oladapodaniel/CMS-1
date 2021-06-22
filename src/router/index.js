@@ -7,22 +7,13 @@ import Pagination from '@/components/payment/PaymentSuccessful.vue';
 import TermsOfUse from '../components/temp/PaymentPage';
 
 const routes = [
-    {
-        path: '/checkinsignup',
-        name:'CheckinSignUp',
-        component: () =>
-        import ( /* webpackChunkName: "workflow" */ '../views/childcheckinsignup/component/CheckinSignup.vue'),
-        meta: {
-            title: 'Churchplus - ChildSignup',
-        }
-    },
-    
+
     {
         path: '/pagination',
         name: 'Pagination',
         component: Pagination
     },
-    
+
 
     {
         path: '/terms',
@@ -60,7 +51,7 @@ const routes = [
             title: 'Churchplus - Register',
         }
     },
-   
+
     {
         path: '/onboarding',
         name: 'Onboarding',
@@ -162,7 +153,7 @@ const routes = [
                     }
                 }, ]
             },
-            
+
             {
                 path: 'subscription',
                 name: 'Subscription',
@@ -1192,7 +1183,18 @@ const routes = [
                 name: 'CheckinProfile',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinProfile')
-            }
+            },
+
+            {
+                path: '/checkinsignup',
+                name: 'CheckinSignUp',
+                component: () =>
+                    import ( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignup.vue'),
+                meta: {
+                    title: 'Churchplus - ChildSignup',
+                }
+            },
+
         ]
     },
 ]
