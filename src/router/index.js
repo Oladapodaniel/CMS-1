@@ -1193,8 +1193,7 @@ const routes = [
                 meta: {
                     title: 'Churchplus - ChildSignup',
                 }
-            },
-
+            }
         ]
     },
 ]

@@ -11,7 +11,7 @@
                 <label for="" class="font-weight-600">Match an individual who is a member of</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown @change="groupSelected" v-model="selectedGroup" :options="[ 'Workers', 'Choir', 'New comers' ]" class="w-100" />
+                <MultiSelect @change="groupSelected" v-model="selectedGroup" :options="[ 'Workers', 'Choir', 'New comers' ]"  placeholder="Select groups" class="w-100"  display="chip" />
             </div>
         </div>
 
@@ -29,7 +29,7 @@
                 <label for="" class="font-weight-600">$</label>
             </div>
             <div class="col-md-12 mb-2">
-                <input type="text" class="form-control" @change="handleAmount" v-model="amount">
+                <input type="text" class="form-control" @input="handleAmount" v-model="amount">
             </div>
         </div>
 
@@ -55,36 +55,43 @@
 
 <script>
 import Dropdown from "primevue/dropdown"
+import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
-import { ref } from '@vue/reactivity'
+import { reactive, ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
 export default {
-    components: { Dropdown, TriggerDescription },
+    components: { Dropdown, TriggerDescription, MultiSelect },
 
-    setup () {
+    setup (props, { emit }) {
+        const data = reactive({ id: 1 });
         const selectedGroup = ref('')
         const groupSelected = (e) => {
-            console.log(e.value, "Value");
+            data.groups = e.value;
+            emit('givingamount', data);
         }
 
         const selectedRange = ref('')
         const rangeSelected = (e) => {
-            console.log(e.value, "Value");
+            data.range = e.value;
+            emit('givingamount', data);
         }
 
         const amount = ref(0)
         const handleAmount = (e) => {
-            console.log(e.value, "Value");
+            data.amount = e.target.value;
+            emit('givingamount', data);
         }
 
         const category = ref('')
         const categorySelected = (e) => {
-            console.log(e.value, "Value");
+            data.category = e.value;
+            emit('givingamount', data);
         }
 
         const givingTime = ref('')
         const givingTimeSelected = (e) => {
-            console.log(e.value, "Value");
+            data.givingTime = e.value;
+            emit('givingamount', data);
         }
 
         const description = computed(() => {
