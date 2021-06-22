@@ -42,6 +42,12 @@ axios.interceptors.request.use((config) => {
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    const checkinToken =  localStorage.getItem('checkinToken');
+console.log(checkinToken)
+    if (checkinToken) {
+      config.headers.Authorization = `Bearer ${checkinToken}`;
+    }
     // config.headers.Authorization = `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}`
     /*eslint no-undef: "warn"*/
     NProgress.start()

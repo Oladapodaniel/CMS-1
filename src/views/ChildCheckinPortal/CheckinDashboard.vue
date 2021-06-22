@@ -571,11 +571,14 @@
 <script>
 import { ref } from 'vue'
 import ColumnChart from "@/components/charts/ColumnChart.vue";
+import { useRoute } from "vue-router"
+import axios from "@/gateway/backendapi";
 export default {
     components: {
         ColumnChart
     },
     setup () {
+        const route = useRoute()
         const filterFormIsVissible = ref(false);
         const searchIsVisible = ref(false);
         const chartData = ref({ "name": "Attendance", "color": "", "data": [ 175, 220, 75, 31, 151, 7, 540 ] })
@@ -588,6 +591,20 @@ export default {
         const toggleSearch = () => {
         searchIsVisible.value = !searchIsVisible.value;
         };
+
+
+        const getFamilyMembers = async() => {
+            try {
+                const res = await axios.get(`/api/Family/family?personId=${route.query.person}`)
+                console.log(res)
+                console.log("gkfd,mnklvdnklnlkn")
+
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        getFamilyMembers()
         return {
             filterFormIsVissible, toggleFilterFormVissibility, searchIsVisible, toggleSearch, chartData, series, attendanceSeries
         }

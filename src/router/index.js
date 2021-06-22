@@ -1166,7 +1166,7 @@ const routes = [
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/childcheckin/components/PublicView')
     },
     {
-        path: '/checkinsignup',
+        path: '/checkinsignup/:tenantId',
         name:'CheckinSignUp',
         component: () =>
         import ( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignup.vue'),
@@ -1186,16 +1186,22 @@ const routes = [
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinDashboard')
             },
             {
-                path: '/family',
+                path: 'family',
                 name: 'Family',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Family')
             },
             {
-                path: '/checkinevent',
+                path: 'checkinevent',
                 name: 'CheckinEvent',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinEvent')
+            },
+            {
+                path: 'upcomingevents',
+                name: 'UpcomingEvents',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/UpcomingEvents')
             },
             
         ]
@@ -1247,7 +1253,15 @@ router.beforeEach((to, from, next) => {
   })
   // Add the meta tags to the document head.
   .forEach(tag => document.head.appendChild(tag));
-
+//   const checkinToken = localStorage.getItem('checkinToken')
+//   alert(4)
+//   if ((to.name === "CheckinSignUp" || to.name === "CheckinSignin") && checkinToken) {
+//       alert("hello")
+//     return next({ name: 'CheckinDashboard' })
+//   } else {
+//       alert(false)
+//   }
+  next(true)
 
     if ((to.name === "ResetPassword" ||
      to.name === "EmailSent" || 
@@ -1265,8 +1279,13 @@ router.beforeEach((to, from, next) => {
     const tokenIsValid = token && token.length > 30 ? true : false;
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
-
     next(true)
+
+    // 
+
+    // if((to.name === "BaseIndex") && tokenIsValid) return next("true")
+    // return next("/")
+
 })
 
 export default router

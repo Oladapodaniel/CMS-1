@@ -227,6 +227,52 @@
             <div class="row">
               <div class="col-md-2 col-sm-2 image mt-3">
                 <img
+                  src="../../../assets/childcheckin.svg" style="width:54px; height:54px"
+                  alt="marked Attendance image"
+                />
+              </div>
+              <div class="col-md-10 col-sm-10 mt-3">
+                <h4 class="header4">
+                  <a
+                    class="text-decoration-none link-color"
+                    >Child Checkin</a
+                  >
+                  <!-- <router-link
+                    class="text-decoration-none"
+                    to="/tenant/attendancecheckin/childcheckin"
+                    >Child Checking</router-link
+                  > -->
+                </h4>
+                <p class="para">Child check-in and print labels</p>
+                <p class="para">
+                  <span class="d-flex align-items-center"
+                    ><input
+                      type="text"
+                      ref="checkinLink"
+                      @keydown="preventChangingOfCheckinLink"
+                      @click="copyLink"
+                      :value="childCheckinLink"
+                      class="form-control"
+                      style="width: 95%" />
+                    <i
+                      class="pi pi-copy ml-2 c-pointer"
+                      @click="copyLink"
+                      style="font-size: 22px"
+                    ></i
+                  ></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row w-100">
+          <div
+            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          >
+            <div class="row">
+              <div class="col-md-2 col-sm-2 image mt-3">
+                <img
                   src="../../../assets/group2.svg"
                   alt="marked Attendance image"
                 />
@@ -276,34 +322,7 @@
 
         <div class="col-md-12 mb-3"></div>
 
-        <div class="row w-100">
-          <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
-          >
-            <div class="row">
-              <div class="col-md-2 col-sm-2 image mt-3">
-                <img
-                  src="../../../assets/childcheckin.svg" style="width:54px; height:54px"
-                  alt="marked Attendance image"
-                />
-              </div>
-              <div class="col-md-10 col-sm-10 mt-3">
-                <h4 class="header4">
-                  <a
-                    class="text-decoration-none link-color"
-                    >Child Checkin</a
-                  >
-                  <!-- <router-link
-                    class="text-decoration-none"
-                    to="/tenant/attendancecheckin/childcheckin"
-                    >Child Checking</router-link
-                  > -->
-                </h4>
-                <p class="para">Child check-in and print labels</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        
 
         <div class="col-md-12 px-0 tr-border-bottom mt-3">
             <!-- <hr class="tr-border-bottom"> -->
@@ -377,6 +396,7 @@ export default {
     const toast = useToast();
     const eventLinkResponse = ref("")
     const paymentFormIdResponse = ref("")
+    const tenantId = ref("")
     
 
     if (route.query.activityID) {
@@ -429,6 +449,7 @@ export default {
 
         eventLinkResponse.value = response.eventRegistrationLink
         paymentFormIdResponse.value = response.paymentFormId
+        tenantId.value = response.tenantID
         console.log(response.paymentFormId)
         console.log(response)
       } catch (error) {
@@ -548,6 +569,11 @@ export default {
       return `<iframe loading="lazy" src="https://my.churchplus.co/iframe/${paymentFormID.value}" style="border:0px #f4f4f4 dashed;" name="online-giving" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="1190px" width="720px" allowfullscreen></iframe>`
     })
 
+    const childCheckinLink = computed(() => {
+      if (!tenantId.value) return ""
+      return `https://my.churchplus.co/childcheckin/${tenantId.value}`
+    })
+
     const preventChangingOfCheckinLink = (e) => {
       e.preventDefault();
     };
@@ -581,7 +607,9 @@ export default {
       eventLinkResponse,
       paymentFormIdResponse,
       paymentFormID,
-      iFrameLink
+      iFrameLink,
+      tenantId,
+      childCheckinLink
     };
   },
 };
