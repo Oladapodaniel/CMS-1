@@ -63,7 +63,7 @@ export default {
     components: { Dropdown, TriggerDescription, MultiSelect },
 
     setup (props, { emit }) {
-        const data = reactive({ });
+        const data = reactive({ id: 1 });
         const selectedGroup = ref('')
         const groupSelected = (e) => {
             data.groups = e.value;
