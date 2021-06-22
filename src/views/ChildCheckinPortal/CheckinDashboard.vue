@@ -103,7 +103,7 @@
                                         <input
                                         type="text"
                                         class="input w-100"
-                                        placeholder="Offering"
+                                        placeholder="First name"
                         
                                         />
                                     </div>
@@ -113,7 +113,7 @@
                                         <input
                                         type="text"
                                         class="input w-100"
-                                        placeholder="donor"
+                                        placeholder="Role"
                                 
                                         />
                                     </div>
@@ -155,47 +155,49 @@
                                 >
                                 
                                 <div class="row w-100" style="margin:0">
-                                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+                                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end align-self-center">
                                     <input
                                         type="checkbox"
                                         class="form-check"
                                     />
                                     </div>
 
-                                    <div class="desc small-text col-md-2">
+                                    <div class="col-md-2" style="height: 52px">
                                     <p class="mb-0 d-flex justify-content-between">
                                         <span class="text-dark font-weight-bold d-flex d-md-none">PHONE</span>
-                                        <span class="text-decoration-none">23/32/1234</span>
+                                        <span class="text-decoration-none">
+                                            <div class="child-pic"></div>
+                                        </span>
                                     </p>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 align-self-center">
                                     <div class="d-flex justify-content-between">
                                         <span class="text-dark font-weight-bold d-flex d-md-none">FIRSTNAME</span>
                                     <div>
                                         
-                                        <div class="desc small-text text-right text-md-left"> item.contribution </div>
+                                        <div class="desc text-right text-md-left"> Oladapo </div>
                                     </div>
                                     </div>
                                     </div>
 
-                                    <div class="desc-head small-text col-md-3">
+                                    <div class="col-md-3 align-self-center">
                                     <p class="mb-0 d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">LASTNAME</span>
-                                        <span> item.currencyName</span>
+                                        <span class="text-dark font-weight-bold d-flex d-md-none">PHONE</span>
+                                        <span>080912384833</span>
                                     </p>
                                     </div>
 
-                                    <div class="small-text col-md-2">
+                                    <div class="col-md-2 align-self-center">
                                     <p class="mb-0 d-flex justify-content-between">
                                         <span class="text-dark font-weight-bold d-flex d-md-none">ROLE</span>
-                                        <span><span class="primary-text c-pointer"
-                                        > item.donor</span
+                                        <span><span class="c-pointer"
+                                        > Father</span
                                     ></span>
                                     </p>
                                     </div>
 
-                                    <div class="small-text col-md-1">
+                                    <div class="col-md-1 align-self-center">
                                     <div class="action data action-icon">
                                         <div class="dropdown">
                                         <i
@@ -207,17 +209,17 @@
                                         ></i>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             
-                                            <a class="dropdown-item elipsis-items">
-                                        View Report
-                                        </a>
-                                            <a class="dropdown-item elipsis-items">
-                                        Edit
-                                        </a>
                                         <a
                                             class="dropdown-item elipsis-items cursor-pointer"
                                             @click="showConfirmModal(item.id, index)"
                                             >Delete</a
                                         >
+                                            <a class="dropdown-item elipsis-items">
+                                        Delete
+                                        </a>
+                                            <a class="dropdown-item elipsis-items">
+                                        Edit
+                                        </a>
                                         </div>
                                         </div>
                                     </div>
@@ -225,55 +227,55 @@
                                 </div>
                                 </div>
                             </div>
-
-
                             <div class="row" style="margin:0;">
                                 <div
                                 class="col-12 parent-desc py-3 px-0 c-pointer tr-border-bottom  hover"
                                 >
                                 
                                 <div class="row w-100" style="margin:0">
-                                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+                                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end align-self-center">
                                     <input
                                         type="checkbox"
                                         class="form-check"
                                     />
                                     </div>
 
-                                    <div class="desc small-text col-md-2">
+                                    <div class="col-md-2" style="height: 52px">
                                     <p class="mb-0 d-flex justify-content-between">
                                         <span class="text-dark font-weight-bold d-flex d-md-none">PHONE</span>
-                                        <span class="text-decoration-none">23/32/1234</span>
+                                        <span class="text-decoration-none">
+                                            <div class="child-pic"></div>
+                                        </span>
                                     </p>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 align-self-center">
                                     <div class="d-flex justify-content-between">
                                         <span class="text-dark font-weight-bold d-flex d-md-none">FIRSTNAME</span>
                                     <div>
                                         
-                                        <div class="desc small-text text-right text-md-left"> item.contribution </div>
+                                        <div class="desc text-right text-md-left"> Oladapo </div>
                                     </div>
                                     </div>
                                     </div>
 
-                                    <div class="desc-head small-text col-md-3">
+                                    <div class="col-md-3 align-self-center">
                                     <p class="mb-0 d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">LASTNAME</span>
-                                        <span> item.currencyName</span>
+                                        <span class="text-dark font-weight-bold d-flex d-md-none">PHONE</span>
+                                        <span>080912384833</span>
                                     </p>
                                     </div>
 
-                                    <div class="small-text col-md-2">
+                                    <div class="col-md-2 align-self-center">
                                     <p class="mb-0 d-flex justify-content-between">
                                         <span class="text-dark font-weight-bold d-flex d-md-none">ROLE</span>
-                                        <span><span class="primary-text c-pointer"
-                                        > item.donor</span
+                                        <span><span class="c-pointer"
+                                        > Father</span
                                     ></span>
                                     </p>
                                     </div>
 
-                                    <div class="small-text col-md-1">
+                                    <div class="col-md-1 align-self-center">
                                     <div class="action data action-icon">
                                         <div class="dropdown">
                                         <i
@@ -285,17 +287,17 @@
                                         ></i>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             
-                                            <a class="dropdown-item elipsis-items">
-                                        View Report
-                                        </a>
-                                            <a class="dropdown-item elipsis-items">
-                                        Edit
-                                        </a>
                                         <a
                                             class="dropdown-item elipsis-items cursor-pointer"
                                             @click="showConfirmModal(item.id, index)"
                                             >Delete</a
                                         >
+                                            <a class="dropdown-item elipsis-items">
+                                        Delete
+                                        </a>
+                                            <a class="dropdown-item elipsis-items">
+                                        Edit
+                                        </a>
                                         </div>
                                         </div>
                                     </div>
@@ -303,55 +305,55 @@
                                 </div>
                                 </div>
                             </div>
-
-
                             <div class="row" style="margin:0;">
                                 <div
                                 class="col-12 parent-desc py-3 px-0 c-pointer tr-border-bottom  hover"
                                 >
                                 
                                 <div class="row w-100" style="margin:0">
-                                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+                                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end align-self-center">
                                     <input
                                         type="checkbox"
                                         class="form-check"
                                     />
                                     </div>
 
-                                    <div class="desc small-text col-md-2">
+                                    <div class="col-md-2" style="height: 52px">
                                     <p class="mb-0 d-flex justify-content-between">
                                         <span class="text-dark font-weight-bold d-flex d-md-none">PHONE</span>
-                                        <span class="text-decoration-none">23/32/1234</span>
+                                        <span class="text-decoration-none">
+                                            <div class="child-pic"></div>
+                                        </span>
                                     </p>
                                     </div>
 
-                                    <div class="col-md-3">
+                                    <div class="col-md-3 align-self-center">
                                     <div class="d-flex justify-content-between">
                                         <span class="text-dark font-weight-bold d-flex d-md-none">FIRSTNAME</span>
                                     <div>
                                         
-                                        <div class="desc small-text text-right text-md-left"> item.contribution </div>
+                                        <div class="desc text-right text-md-left"> Oladapo </div>
                                     </div>
                                     </div>
                                     </div>
 
-                                    <div class="desc-head small-text col-md-3">
+                                    <div class="col-md-3 align-self-center">
                                     <p class="mb-0 d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">LASTNAME</span>
-                                        <span> item.currencyName</span>
+                                        <span class="text-dark font-weight-bold d-flex d-md-none">PHONE</span>
+                                        <span>080912384833</span>
                                     </p>
                                     </div>
 
-                                    <div class="small-text col-md-2">
+                                    <div class="col-md-2 align-self-center">
                                     <p class="mb-0 d-flex justify-content-between">
                                         <span class="text-dark font-weight-bold d-flex d-md-none">ROLE</span>
-                                        <span><span class="primary-text c-pointer"
-                                        > item.donor</span
+                                        <span><span class="c-pointer"
+                                        > Father</span
                                     ></span>
                                     </p>
                                     </div>
 
-                                    <div class="small-text col-md-1">
+                                    <div class="col-md-1 align-self-center">
                                     <div class="action data action-icon">
                                         <div class="dropdown">
                                         <i
@@ -363,173 +365,17 @@
                                         ></i>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             
-                                            <a class="dropdown-item elipsis-items">
-                                        View Report
-                                        </a>
-                                            <a class="dropdown-item elipsis-items">
-                                        Edit
-                                        </a>
                                         <a
                                             class="dropdown-item elipsis-items cursor-pointer"
                                             @click="showConfirmModal(item.id, index)"
                                             >Delete</a
                                         >
-                                        </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-
-
-                            <div class="row" style="margin:0;">
-                                <div
-                                class="col-12 parent-desc py-3 px-0 c-pointer tr-border-bottom  hover"
-                                >
-                                
-                                <div class="row w-100" style="margin:0">
-                                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
-                                    <input
-                                        type="checkbox"
-                                        class="form-check"
-                                    />
-                                    </div>
-
-                                    <div class="desc small-text col-md-2">
-                                    <p class="mb-0 d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">PHONE</span>
-                                        <span class="text-decoration-none">23/32/1234</span>
-                                    </p>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                    <div class="d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">FIRSTNAME</span>
-                                    <div>
-                                        
-                                        <div class="desc small-text text-right text-md-left"> item.contribution </div>
-                                    </div>
-                                    </div>
-                                    </div>
-
-                                    <div class="desc-head small-text col-md-3">
-                                    <p class="mb-0 d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">LASTNAME</span>
-                                        <span> item.currencyName</span>
-                                    </p>
-                                    </div>
-
-                                    <div class="small-text col-md-2">
-                                    <p class="mb-0 d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">ROLE</span>
-                                        <span><span class="primary-text c-pointer"
-                                        > item.donor</span
-                                    ></span>
-                                    </p>
-                                    </div>
-
-                                    <div class="small-text col-md-1">
-                                    <div class="action data action-icon">
-                                        <div class="dropdown">
-                                        <i
-                                            class="fas fa-ellipsis-v cursor-pointer"
-                                            id="dropdownMenuButton"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                        ></i>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            
                                             <a class="dropdown-item elipsis-items">
-                                        View Report
+                                        Delete
                                         </a>
                                             <a class="dropdown-item elipsis-items">
                                         Edit
                                         </a>
-                                        <a
-                                            class="dropdown-item elipsis-items cursor-pointer"
-                                            @click="showConfirmModal(item.id, index)"
-                                            >Delete</a
-                                        >
-                                        </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-
-
-                            <div class="row" style="margin:0;">
-                                <div
-                                class="col-12 parent-desc py-3 px-0 c-pointer tr-border-bottom  hover"
-                                >
-                                
-                                <div class="row w-100" style="margin:0">
-                                    <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
-                                    <input
-                                        type="checkbox"
-                                        class="form-check"
-                                    />
-                                    </div>
-
-                                    <div class="desc small-text col-md-2">
-                                    <p class="mb-0 d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">PHONE</span>
-                                        <span class="text-decoration-none">23/32/1234</span>
-                                    </p>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                    <div class="d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">FIRSTNAME</span>
-                                    <div>
-                                        
-                                        <div class="desc small-text text-right text-md-left"> item.contribution </div>
-                                    </div>
-                                    </div>
-                                    </div>
-
-                                    <div class="desc-head small-text col-md-3">
-                                    <p class="mb-0 d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">LASTNAME</span>
-                                        <span> item.currencyName</span>
-                                    </p>
-                                    </div>
-
-                                    <div class="small-text col-md-2">
-                                    <p class="mb-0 d-flex justify-content-between">
-                                        <span class="text-dark font-weight-bold d-flex d-md-none">ROLE</span>
-                                        <span><span class="primary-text c-pointer"
-                                        > item.donor</span
-                                    ></span>
-                                    </p>
-                                    </div>
-
-                                    <div class="small-text col-md-1">
-                                    <div class="action data action-icon">
-                                        <div class="dropdown">
-                                        <i
-                                            class="fas fa-ellipsis-v cursor-pointer"
-                                            id="dropdownMenuButton"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                        ></i>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            
-                                            <a class="dropdown-item elipsis-items">
-                                        View Report
-                                        </a>
-                                            <a class="dropdown-item elipsis-items">
-                                        Edit
-                                        </a>
-                                        <a
-                                            class="dropdown-item elipsis-items cursor-pointer"
-                                            @click="showConfirmModal(item.id, index)"
-                                            >Delete</a
-                                        >
                                         </div>
                                         </div>
                                     </div>
@@ -540,13 +386,15 @@
 
 
 
-                            
-                            <!-- </div> -->
+                           
+
+
                     </div>
                 </div>
             </div>
             <div class="col-10 col-sm-3 p-0 offset-1">
                 <div class="upcoming-event">
+                    <router-link :to="{ name: 'CheckinEvent' }">
                     <div class="container">
                         <div class="row mt-2 p-3 d-flex justify-content-between align-items-center">
                             <div class="upcoming-text">Upcoming Event</div>
@@ -555,13 +403,14 @@
                                 <img src="../../assets/checkin-assets/Rectangle17190.png" class="mt-4 w-100">
                             </div>
                             <div class="col-12 mt-4 text-white text-center">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Taste and see that the Lord is Good. Join us this Sunday at 9am, Let's worship Him together.
                             </div>
                             <div class="col-12 mt-2 text-white text-center font-weight-700 cursor-pointer">
                                 See all upcoming events.
                             </div>
                         </div>
                     </div>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -700,5 +549,12 @@ color: #020E1C;
 .card.analytic {
     box-shadow: 0px 3px 6px #2c28281c;
     border-radius: 30px;
+}
+
+.child-pic {
+    border: 1px solid black;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%
 }
 </style>

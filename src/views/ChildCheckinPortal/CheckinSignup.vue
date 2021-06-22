@@ -20,8 +20,8 @@
                             <input type="text" class=" form-control all-input" v-model="userDetails.lastName" placeholder="Last name">
                         </div>
                         <div class="col-10 form-group">
-                            <label class="font-weight-bold ">Email/Phone number</label>
-                            <input type="text" class=" form-control all-input " v-model="userDetails.email" placeholder="Enter email/phone number">
+                            <label class="font-weight-bold ">Email</label>
+                            <input type="text" class=" form-control all-input " v-model="userDetails.email" placeholder="Enter email">
                         </div>
                         <div class="col-5 ">
                             <label class="font-weight-bold" >Role</label>
@@ -51,7 +51,10 @@
                         <div class="col-2"><img src="../../assets/google.png" alt=""></div>
                         <div class="col-2"><img src="" alt=""></div>
                         <div class="col-2"><img src="../../assets/facebook.png" alt=""></div>
-                        <div class="col-10 my-4 text-center font-weight-bold"><span>Already have an account?</span><a href="">Sign in now</a></div>
+                        <div class="col-10 my-4 text-center font-weight-bold">
+                            <span>Already have an account?</span> 
+                            <router-link :to="{ name: 'CheckinSignin', params: { tenantId: route.params.tenantId } }">Sign in now</router-link>
+                        </div>
                         <div class="col-10 mt-3 font-weight-bold">All Right Reserved 2021</div>
                     </div>
                     
@@ -86,10 +89,15 @@ export default ({
             try {
                 let { data } = await axios.get('/getfamilyroles')
                 console.log(data)
-                roles.value = data.result
-                // .map(i => {
-                //     return i.name === "Father" && i.name === "Mother"
-                // })
+                const father = data.result.find(i => {
+                    return i.name === "Father"
+                })
+                roles.value.push(father)
+                
+                const mother = data.result.find(i => {
+                    return i.name === "Mother"
+                })
+                roles.value.push(mother)
             }
             catch (err) {
                 console.log(err)
@@ -116,7 +124,8 @@ export default ({
             userDetails,
             signUp,
             roles,
-            selectedRole
+            selectedRole,
+            route
         }
     },
 })

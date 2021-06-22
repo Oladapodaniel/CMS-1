@@ -13,9 +13,11 @@
                         <div class="event-time">12/2/2012 12:00am</div>
                     </div>
                     <div class="col-10 offset-1 offset-sm-0 mt-2 mt-sm-0 col-sm-3 align-self-center">
+                        <router-link :to="{ name: 'UpcomingEvents' }">
                         <div class="change text-center p-2">
                             Change
                         </div>
+                        </router-link>
                     </div>
                 </div>
             </div>
