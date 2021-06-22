@@ -403,6 +403,15 @@ export default {
       }
     };
 
+    const pageAccessToken = async (token) =>{
+      try{
+        const data = await axios.get(`https://graph.facebook.com/103263464868380?fields=access_token&access_token=${token}`)
+        console.log(data, "w data");
+      } catch(error){
+        console.log(error);
+      }
+    }
+
     var provider = new firebase.auth.FacebookAuthProvider();
     firebase
         .auth()
@@ -420,10 +429,12 @@ export default {
         })
         .catch((error) => {
           console.log(error, "sign in error");
+          if (!error.credential) return false;
           axios.get(`https://graph.facebook.com/me?fields=id&access_token=${error.credential.accessToken}`)
             .then(res => {
               getAccessToken(error.credential.accessToken, res.data.id)
               console.log(res, "err response");
+              pageAccessToken(error.credential.accessToken)
 
               //Get Page access token
               axios.get(`https://graph.facebook.com/108291174831555?fields=access_token&access_token=${error.credential.accessToken}`)

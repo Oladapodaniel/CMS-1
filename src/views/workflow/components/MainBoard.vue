@@ -25,7 +25,7 @@
                         <div class="row">
                             <div class="border col-4 scr-height" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row">
-                                    <div class="col-md-12 py-3" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in selectedTriggers" :key="index">
+                                    <div class="col-md-12 py-3 c-pointer" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in selectedTriggers" :key="index" @click="changeActiveTrigger(index)">
                                         <h6>
                                             <span><i class="mr-3" :class="[trigger.icon]" style="font-size: 1.5rem"></i></span>
                                             <span class="d-none">{{ trigger.name }}</span>
@@ -59,7 +59,7 @@
                             <div class="col-8 border" :class="{ 'col-md-8': showTriggers, 'col-md-11': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row" :class="{ 'd-none': selectedTriggers.length === 0 }">
                                     <div class="col-6 border scr-height"  style="height: 400px" :class="{ 'col-md-4': actionSelected, 'col-md-6': !actionSelected }">
-                                        <GivingAmount v-if="selectedTrigger.id === 1" />
+                                        <GivingAmount v-if="selectedTrigger.id === 1" @givingamount="givingAmount" />
                                         <GivingNewRegular v-else-if="selectedTrigger.id === 11" />
                                         <NoLongerGiving v-else-if="selectedTrigger.id === 2" />
                                         <PledgeCreation v-else-if="selectedTrigger.id === 3" />
@@ -300,7 +300,6 @@ export default {
             return index >= 0 ? true : false;
         }
 
-        console.log(window.innerHeight, "Inner Height");
         const selectTrigger = (trigger) => {
             if (!checkIfAlreadySelected(trigger)) {
                 selectedTriggers.value.push(trigger)
@@ -329,6 +328,14 @@ export default {
             return selectedActions.value[selectedActionIndex.value];
         })
 
+        const changeActiveTrigger = (index) => {
+            selectedTriggerIndex.value = index;
+        };
+
+        const givingAmount = data => {
+            console.log(data, "data");
+        }
+
         return {
             showTriggers,
             // triggersIsVissible,
@@ -346,6 +353,9 @@ export default {
             actions,
             selectedTrigger,
             selectedAction,
+            changeActiveTrigger,
+            selectedTriggerIndex,
+            givingAmount,
         }
     }
 }

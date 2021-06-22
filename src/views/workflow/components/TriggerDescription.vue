@@ -2,8 +2,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <p class="text-center" style="font-size:28px">{{ header ? header : 'Giving - Amount' }} {{ description ? description.groups : '' }}</p>
-                <p class="text-center" v-if="description">A member of <span class="text-success">{{ description.groups.join(' ') }}</span> gives <span class="text-success">{{ description.range }}</span> <span class="text-success">{{ description.amount }}</span> to <span class="text-success">{{ description.category }}</span> category in <span class="text-success">{{ description.time }}</span></p>
+                <p class="text-center" style="font-size:28px">{{ header ? header : 'Giving - Amount' }}</p>
+                <p class="text-center" v-if="description && description.id === 1">A member of <span class="text-success">{{ description.groups.join('or') }}</span> gives <span class="text-success">{{ description.range }}</span> <span class="text-success">N{{ description.amount }}</span> to <span class="text-success">{{ description.category }}</span> category in <span class="text-success">{{ description.time.toLowerCase() }}</span></p>
+                <p class="text-center" v-if="description && description.id === 11">A member of <span class="text-success">{{ description.groups.join(' ') }}</span> gives less than <span class="text-success">{{ description.prevTimes }}</span> per month for <span class="text-success">{{ description.prevMonths }}</span> to <span class="text-success">{{ description.category }}</span> category and then gives at least <span class="text-success">{{ description.currentTimes }} per month for <span class="text-success">{{ description.currentMonths }}</span></span></p>
             </div>
         </div>
     </div>

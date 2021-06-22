@@ -1,6 +1,6 @@
 
 <template>
-  <div class="mt-4 parent-element" >
+  <div class="mt-4 parent-element" style=" border-radius: 30px;">
 
     <!-- table area -->
     <div class="container-fluid small-text">
@@ -17,7 +17,7 @@
           <!-- <p style="font-size:14px">Date</p> -->
           Date
         </div>
-        
+
         <div class="col-md-3">
           <!-- <p style="font-size:14px">Group Name</p> -->
           Group Name
@@ -54,7 +54,7 @@
           </p> -->
         </div>
 
-       
+
         <div class="col-md-3">
           <!-- <p class="d-flex justify-content-between mb-0">
             <span class="d-flex d-md-none dcreated2">Group Name</span>
@@ -86,7 +86,7 @@
         </div>
       </div>
 
-      <div class="row" v-if="errorOccurred">
+      <div  class="row" v-if="errorOccurred">
         <div class="col-md-12 text-center">
           <p>Error getting items</p>
         </div>
@@ -165,9 +165,9 @@ export default {
           }
         });
     };
-    
+
     const confirm = useConfirm();
-    
+
     const showConfirmModal = (id, index) => {
       confirm.require({
         message: "Are you sure you want to proceed?",
@@ -202,15 +202,18 @@ export default {
 </script>
 
 <style scoped>
-
 .table {
-  border-radius: 0.5rem;
+  border-radius: 30px;
 }
 
 .table-header {
-  /* border-radius: 0.5rem 0.5rem 0 0; */
   padding: 10px;
   font-size: 14px;
+  border-radius: 30px 30px 0 0;
+  text-align: left;
+  color: #000;
+  font-weight: 700;
+
 }
 
 .t-body {
