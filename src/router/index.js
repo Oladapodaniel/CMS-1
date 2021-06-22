@@ -1214,7 +1214,6 @@ const routes = [
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinProfile')
             }
-
         ]
     },
 ]
