@@ -13,7 +13,7 @@ const routes = [
         name: 'Pagination',
         component: Pagination
     },
-    
+
 
     {
         path: '/terms',
@@ -51,7 +51,7 @@ const routes = [
             title: 'Churchplus - Register',
         }
     },
-   
+
     {
         path: '/onboarding',
         name: 'Onboarding',
@@ -153,7 +153,7 @@ const routes = [
                     }
                 }, ]
             },
-            
+
             {
                 path: 'subscription',
                 name: 'Subscription',
@@ -1181,9 +1181,9 @@ const routes = [
 
             {
                 path: '/checkinsignup',
-                name:'CheckinSignUp',
+                name: 'CheckinSignUp',
                 component: () =>
-                import ( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignup.vue'),
+                    import ( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignup.vue'),
                 meta: {
                     title: 'Churchplus - ChildSignup',
                 }
@@ -1195,6 +1195,7 @@ const routes = [
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinProfile')
             }
+
         ]
     },
 ]
