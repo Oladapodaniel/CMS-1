@@ -523,7 +523,7 @@ import store from "@/store/store";
         // .then(response => (this.info = response.data.bpi))
         // .catch(error=> console.log(error))
         console.log(store.getters.currentUser)
-        if(!store.getters.currentUser.churchName){
+        if(!store.getters.currentUser || store.getters.currentUser.churchName){
             axios
             .get(`/api/Membership/GetCurrentSignedInUser`)
             .then((response) =>{
