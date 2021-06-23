@@ -65,6 +65,7 @@
                                         <PledgeCreation v-else-if="selectedTrigger.id === 3" />
                                         <GroupAddOrRemove v-else-if="selectedTrigger.id === 8" />
                                         <GroupMembershipDuration  v-else-if="selectedTrigger.id === 9" />
+                                        <AttendanceTrigger  v-else-if="selectedTrigger.id === 10" />
                                         <GroupMembershipDuration  v-else />
                                     </div>
 
@@ -159,6 +160,8 @@ import GroupAddOrRemove from "./triggers/GroupAddOrRemove"
 import PledgeCreation from "./triggers/PledgeCreation"
 import NoLongerGiving from "./triggers/NoLongerGiving.vue"
 import GivingNewRegular from "./triggers/GivingNewRegular.vue"
+import AttendanceTrigger from "./triggers/AttendanceTrigger.vue"
+
 import GroupAction from "./actions/GroupAction"
 import AdminMessage from "./actions/AdminMessage"
 import { computed } from '@vue/runtime-core'
@@ -171,6 +174,8 @@ export default {
         GroupAddOrRemove,
         PledgeCreation,
         NoLongerGiving,
+        AttendanceTrigger,
+
         AdminMessage,
         GroupAction,
         EmailAction
@@ -234,6 +239,11 @@ export default {
                 name: "Attendance",
                 icon: "pi pi-calendar",
                 id: 10
+            },
+            {
+                name: "Form Submission",
+                icon: "pi pi-book",
+                id: 12
             }
         ]
 
