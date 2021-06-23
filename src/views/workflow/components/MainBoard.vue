@@ -63,6 +63,7 @@
                                         <GivingNewRegular v-else-if="selectedTrigger.id === 11" />
                                         <NoLongerGiving v-else-if="selectedTrigger.id === 2" />
                                         <PledgeCreation v-else-if="selectedTrigger.id === 3" />
+                                        <MemberBirthday  v-else-if="selectedTrigger.id === 5" />
                                         <GroupAddOrRemove v-else-if="selectedTrigger.id === 8" />
                                         <GroupMembershipDuration  v-else-if="selectedTrigger.id === 9" />
                                         <GroupMembershipDuration  v-else />
@@ -120,7 +121,7 @@
                                             <div class="border" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected }">
                                                 <div class="row">
                                                     <div class="col-md-12" > 
-                                                        <EmailAction v-if="selectedAction.id === 1" />
+                                                        <EmailAction @emailupdated="handleEmailUpdate" v-if="selectedAction.id === 1" />
                                                         <GroupAction v-else-if="selectedAction.id === 3" />
                                                         <AdminMessage v-else-if="selectedAction.id === 5"  />
                                                         <AdminMessage v-else  />
@@ -163,6 +164,7 @@ import GroupAction from "./actions/GroupAction"
 import AdminMessage from "./actions/AdminMessage"
 import { computed } from '@vue/runtime-core'
 import EmailAction from "./actions/Email"
+import MemberBirthday from "./triggers/MemberBirthday.vue"
 export default {
     components: { 
         GivingAmount,
@@ -173,7 +175,8 @@ export default {
         NoLongerGiving,
         AdminMessage,
         GroupAction,
-        EmailAction
+        EmailAction,
+        MemberBirthday,
     },
     setup () {
         const showTriggers = ref(false);
@@ -336,6 +339,10 @@ export default {
             console.log(data, "data");
         }
 
+        const handleEmailUpdate = (data) => {
+            console.log(data);
+        }
+
         return {
             showTriggers,
             // triggersIsVissible,
@@ -356,6 +363,8 @@ export default {
             changeActiveTrigger,
             selectedTriggerIndex,
             givingAmount,
+
+            handleEmailUpdate,
         }
     }
 }
