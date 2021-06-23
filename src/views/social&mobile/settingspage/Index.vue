@@ -399,7 +399,7 @@ export default {
           await axios.get(`https://graph.facebook.com/${profileId}/accounts?fields=name,access_token&access_token=${accessToken}`);
         console.log(data, "get pages data");
       } catch (error) {
-        console.log(error, "get pages error");
+        console.log(error, "get pages error")
       }
     };
 
@@ -428,7 +428,8 @@ export default {
 
         })
         .catch((error) => {
-          console.log(error, "sign in error");
+          console.log(error, "🤣🤣");
+          if (!error.credential) return false;
           axios.get(`https://graph.facebook.com/me?fields=id&access_token=${error.credential.accessToken}`)
             .then(res => {
               getAccessToken(error.credential.accessToken, res.data.id)
@@ -436,9 +437,10 @@ export default {
               pageAccessToken(error.credential.accessToken)
 
               //Get Page access token
-              axios.get(`https://graph.facebook.com/108291174831555?fields=access_token&access_token=${error.credential.accessToken}`)
+              axios.get(`https://graph.facebook.com/114361443274202
+?fields=access_token&access_token=${error.credential.accessToken}`)
                 .then(res => {
-                  console.log(res, "page 1 data");
+                  console.log(res, "🎉🌹🌹");
                 })
                 .catch(err => {
                   console.log(err, "err error");
