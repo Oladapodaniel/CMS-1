@@ -7,6 +7,15 @@
                 <p class="text-center" v-if="description && description.id === 11">A member of <span class="text-success">{{ description.groups.join(' ') }}</span> gives less than <span class="text-success">{{ description.prevTimes }}</span> per month for <span class="text-success">{{ description.prevMonths }}</span> to <span class="text-success">{{ description.category }}</span> category and then gives at least <span class="text-success">{{ description.currentTimes }} per month for <span class="text-success">{{ description.currentMonths }}</span></span></p>
             
                 <p class="text-center"
+                    v-if="description && description.id === 5"
+                >
+                    <span>A member of </span>
+                    <span class="text-success">{{ description.selectedGroups.join(', ') }}</span> group
+                    <span> whose birthday is the </span>
+                    <span class="text-success">current day</span>
+                </p>
+            
+                <p class="text-center"
                     v-if="description && description.id === 10"
                 >
                     <span>A member of </span>

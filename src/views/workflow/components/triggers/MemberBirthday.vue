@@ -36,7 +36,7 @@ export default {
         const description = computed(() => {
             return {
                 id: 5,
-                selectedGroups: selectedGroups.value
+                selectedGroups: selectedGroups.value.length > 0 ? selectedGroups.value : [ 'any' ]
             }
         })
 

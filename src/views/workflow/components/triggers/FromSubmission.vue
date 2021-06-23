@@ -8,29 +8,48 @@
 
         <div class="row mt-4">
             <div class="col-md-12">
-                <label for="" class="font-weight-600 mb-0">Match an individual who is</label>
+                <label for="" class="font-weight-600 mb-0">When the following form is submitted</label>
             </div>
             <div class="col-md-12 mb-2 mt-3">
                 <MultiSelect @change="handleStatus" v-model="selectedStatus" :options="[ 'Present', 'Excused', 'Unexcused' ]"  class="w-100"  display="chip" />
+            </div>
+
+            <div class="col-md-12 mt-4">
+                <label for="" class="font-weight-600">Map</label>
+            </div>
+            <div class="col-md-12 mb-2">
                 <div class="row">
-                    <div class="col-md-12 mt-3">
-                        <input type="text" class="form-control" placeholder="Number of times" v-model="numOfTimes" @input="handleNumOfTimes">
+                    <div class="col-md-6">
+                        <Dropdown :options="[ '1 day', '1 week', '4 weeks' ]" class="w-100" v-model="timesInLastWeek" @change="handleTimesInLastWeek" />
+                    </div>
+                    <div class="col-md-6">
+                        to Full Name
                     </div>
                 </div>
             </div>
 
             <div class="col-md-12 mt-4">
-                <label for="" class="font-weight-600">Time(s) in the last</label>
+                <label for="" class="font-weight-600 mb-0 primary-text">Map more fields</label>
+            </div>
+            <div class="col-md-12 mt-2">
+                <label for="" class="font-weight-600">An match individuals based on</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown :options="[ '1 day', '1 week', '4 weeks' ]" class="w-100" v-model="timesInLastWeek" @change="handleTimesInLastWeek" />
+                <Dropdown :options="[ 'Name', 'Name and Email', 'Name and Birthday' ]" class="w-100" v-model="timesInLastWeek" @change="handleTimesInLastWeek" />
             </div>
 
             <div class="col-md-12 mt-4">
-                <label for="" class="font-weight-600">From/in in the following Groups</label>
+                <label for="" class="font-weight-600">And</label>
             </div>
             <div class="col-md-12 mb-2">
-                <MultiSelect @change="groupSelected" v-model="selectedGroups" :options="[ 'Workers', 'Choir', 'New comers' ]"  placeholder="Select groups" class="w-100"  display="chip" />
+                <Dropdown :options="[ 'Create people who do not match', 'Do not create people who do not match' ]" class="w-100" v-model="timesInLastWeek" @change="handleTimesInLastWeek" />
+            </div>
+
+            <div class="col-md-12 mt-4">
+                <label for="" class="font-weight-600">And</label>
+            </div>
+            <div class="col-md-12 mb-2">
+                <Dropdown :options="[ 'Replace data in matched fields with form data', 'Do not' ]" class="w-100" v-model="timesInLastWeek" @change="handleTimesInLastWeek" />
             </div>
         </div>
         
@@ -41,11 +60,10 @@
 import Dropdown from "primevue/dropdown"
 import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
-import { computed } from '@vue/runtime-core'
 export default {
     components: { Dropdown, TriggerDescription, MultiSelect },
 
-    setup (props, { emit }) {
+    setup () {
 
         return {
 
