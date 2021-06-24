@@ -433,22 +433,21 @@ export default {
           axios.get(`https://graph.facebook.com/v11.0/me?fields=id&access_token=${error.credential.accessToken}`)
             .then(res => {
               getAccessToken(error.credential.accessToken, res.data.id)
-              console.log(res, "err response");
-              pageAccessToken(error.credential.accessToken)
 
               //Get Page access token
-              axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+              axios.get(`https://graph.facebook.com/v11.0/me/accounts`)
+              // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
                 .then(res => {
                   console.log(res, "🎉🌹🌹");
                 })
                 .catch(err => {
                   console.log(err, "err error");
                 })
-
-              //Get Pages
-              axios.get(`https://graph.facebook.com/v11.0/${res.data.id}/accounts?access_token=${error.credential.accessToken}`)
+              //Get Page access token
+              axios.get(`https://graph.facebook.com/v11.0/me?fields=accounts`)
+              // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
                 .then(res => {
-                  console.log(res, "page data");
+                  console.log(res, "🎉");
                 })
                 .catch(err => {
                   console.log(err, "err error");
@@ -465,6 +464,7 @@ export default {
     return {
       facebookLogin2,
       display,
+      pageAccessToken,
     };
   },
 };
