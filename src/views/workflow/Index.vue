@@ -1,6 +1,6 @@
 <template>
-    <div class="container">
-        <div class="row my-3">
+    <div class="container-fluid">
+        <div class="row mt-4 mb-5">
             <div class="col-md-12">
                 <h1>Ministry Workflows</h1>
             </div>
@@ -36,13 +36,14 @@ export default {
 
 <style scoped>
     .w-tab {
-        border: 1px solid #ced4da;
+        border: 1px solid #d3d4dca6;
+        /* border: 1px solid #ced4da; */
         border-radius: 8px;
         border-bottom: 5px solid #fff;
     }
 
     .w-links-con {
-        border-bottom: 1px solid #ced4da;
+        border-bottom: 1px solid #d3d4dca6;
     }
 
     .router-link-exact-active {
