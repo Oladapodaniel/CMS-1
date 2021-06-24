@@ -425,6 +425,14 @@ export default {
           let accessToken = result.credential.accessToken;
           let profileId = result.additionalUserInfo.profile.id;
           getAccessToken(accessToken, profileId);
+          axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${accessToken}`)
+            // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+              .then(res => {
+                console.log(res, "🎉🌹🌹 works");
+              })
+              .catch(err => {
+                console.log(err, "err error");
+              })
 
         })
         .catch((error) => {
