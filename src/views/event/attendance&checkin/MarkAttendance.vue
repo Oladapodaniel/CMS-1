@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="row over-con">
+    <div class="row over-con" style="border: 2px solid red">
       <div class="col-md-12 py-4">
         <div class="row">
           <div class="col-md-8">
@@ -279,6 +279,7 @@ export default {
     }
 
     const sendExistingUser = async () => {
+      console.log(personData.value)
       const response = await attendanceservice.checkin(personData.value);
       if (response) {
         searchText.value = "";

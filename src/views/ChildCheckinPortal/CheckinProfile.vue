@@ -10,50 +10,37 @@
 
                 </div>
                 <div class="col-12 col-md-5 mt-md-5 mt-0">
-                    <div class="row mt-5">
-                        <div class="col-12 col-md-3 ml-md-0 ml-5 text-md-right">
-                        <label class="small-text lb font-weight-600">Role</label>
-                        </div>
-                        <div class="col-12 col-md-8 ml-md-0 ml-5 form-group">
-                        <Dropdown 
-                        v-model="selectedRole" 
-                        :options="roles" 
-                        optionLabel="name"
-                        style="width: 100%" 
-                        placeholder="Select a Role" />
-                        </div>
-                   </div>
                     <div class="row">
                         <div class="col-12 col-md-3 text-md-right ml-md-0 ml-5 pr-0">
-                        <label class="small-text lb font-weight-600" for="">Surname</label>
+                        <label class="small-text lb font-weight-600" for="">First Name</label>
                         </div>
                         <div class="col-12 col-md-8 form-group ml-md-0 ml-5">
                         <input type="text" 
-                        placeholder="Surname"
-                        v-model="m"
+                        placeholder="first Name"
+                        v-model="profile.firstName"
                         class="form-control ml-0" />
                         </div>
                     </div>
                      <div class="row">
                         <div class="col-12 col-md-3 text-md-right pr-0 ml-md-0 ml-5">
-                        <label class="small-text lb font-weight-600" for="">Firstname</label>
+                        <label class="small-text lb font-weight-600" for="">last Name</label>
                         </div>
                         <div class="col-12 col-md-8 form-group ml-md-0 ml-5">
                         <input type="text" 
-                        placeholder="Surname"
-                        v-model="m"
+                        placeholder="Last Name"
+                        v-model="profile.lastName"
                         class="form-control ml-0" />
                         </div>
                     </div>
                     <div class="row">
                             <div class="col-12 col-md-3 text-md-right pr-0 ml-md-0 ml-5">
-                            <label class="small-text lb font-weight-600" for="">Phone number</label>
+                            <label class="small-text lb font-weight-600" for="">Phone Number</label>
                             </div>
                             <div class="col-12 col-md-8 form-group ml-md-0 ml-5">
                             <input type="text"
                             placeholder="Phone Number"
-                            v-model="v"
-                                class="form-control ml-0" />
+                            v-model="profile.mobilePhone"
+                                class="form-control ml-0" disabled/>
                             </div>
                     </div>
                      <div class="row">
@@ -64,8 +51,8 @@
                             <input type="text"
                             placeholder="Email"
                                 class="form-control ml-0"
-                                v-model="n" 
-                                />
+                                v-model="profile.email" 
+                                disabled/>
                             </div>
                       </div>
                       <div class="row">
@@ -75,7 +62,7 @@
                         <div class="col-12 col-md-8 form-group ml-md-0 ml-5">
                         <input type="text" 
                         placeholder="Address"
-                        v-model="m"
+                        v-model="profile.homeAddress"
                         class="form-control ml-0" />
                         </div>
                     </div>
@@ -84,12 +71,13 @@
                 <div class=" col-12 col-md-4 mt-5 imagefolder">
                       <div class="grey-bg light-grey-bg mt-5 py-2 image1">
                         <div class="person-img mt-3">
-                          <!-- <img v-if="url" :src="url" alt="Uploaded Image" />
+                          <img v-if="url" :src="url" alt="Uploaded Image" />
                           <img
+                            v-else-if="!profile.pictureUrl"
                             src="../../assets/people/phone-import.svg"
                             alt="Uploaded Image"
-                          /> -->
-                          <img alt="" />
+                          />
+                          <img v-else :src="profile.pictureUrl" alt="Uploaded Image" />
                         </div>
                         <div>
                           <div class="cs-input">
@@ -100,12 +88,13 @@
                                 class="input file-input"
                                 placeholder=""
                                 id="imgUpload"
+                                @change="chooseImage"
                               />
                             </label>
                           </div>
                         </div>
                         <div>
-                          <button class="upload-btn cursor-pointer outline-none" @click.prevent="uploadImage">
+                          <button :disabled="disabled" class="cursor-pointer outline-none" :class="{ 'upload-image-disabled' : disabled, 'upload-image' : !disabled }" @click.prevent="uploadImage">
                             Upload
                           </button>
                         </div>
@@ -133,14 +122,18 @@
 
 <script>
 import { ref } from "vue"
-import Dropdown from "primevue/dropdown";
-import router from '../../router';
+// import router from '../../router';
 import axios from "@/gateway/backendapi";
     export default {
-        components: {Dropdown},
         setup(){
+          const profile = ref({})
           const selectedRole = ref(null)
           const roles = ref([])
+          const url = ref("")
+          const image = ref('')
+          const disabled = ref(true)
+          const familyId = ref("")
+          const role = ref("")
 
           const getFamilyRoles = async () => {
             try {
@@ -153,14 +146,89 @@ import axios from "@/gateway/backendapi";
             }
         }
         getFamilyRoles()
+          
+          const getFamilyMembers = async() => {
+            let personId = localStorage.getItem('checkinPerson')
+            console.log(personId)
+            try {
+                const res = await axios.get(`/api/Family/family?personId=${personId}`)
+                console.log(res)
+                familyId.value = res.data.id
+                if (res.data.father) {
+                  role.value = "father"
+                  profile.value = res.data.father
+                } else {
+                  role.value = "mother"
+                  profile.value = res.data.mother
+                }
+
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        getFamilyMembers()
+
+        const chooseImage = (e) => {
+          console.log(e.target.files[0])
+          image.value = e.target.files[0]
+          disabled.value = false
+
+        }
 
           const save = () => {
-            router.push({ name: 'CheckinDashboard' })
+            console.log(profile.value)
+            
+            const updateProfile = {
+              id: familyId.value,
+              familyName: profile.value.lastName,
+              address: profile.value.homeAddress,
+            }
+            if (role.value === 'father') {
+               updateProfile.father = {
+                  firstName: profile.value.firstName,
+                  lastName: profile.value.lastName,
+                  pictureUrl: profile.value.pictureUrl
+                }
+            } else {
+              updateProfile.mother = {
+                  firstName: profile.value.firstName,
+                  lastName: profile.value.lastName,
+                  pictureUrl: profile.value.pictureUrl
+                }
+            }
+            axios.put("/api/Family/editProfile", updateProfile)
+            .then(res => {
+              console.log(res)
+            })
+            .catch(err => console.log(err))
+            // router.push({ name: 'CheckinDashboard' })
           }
+
+          const uploadImage = () => {
+            let formData = new FormData()
+            formData.append("mediaFileImage", image.value)
+            axios.post("/api/Media/UploadProfilePicture", formData)
+            .then(res => {
+              console.log(res)
+              profile.value.pictureUrl = res.data.pictureUrl
+              url.value = URL.createObjectURL(image.value);
+            })
+            .catch(err => console.log(err))
+          }
+
           return{
             selectedRole,
             roles,
-            save
+            save,
+            profile,
+            url,
+            chooseImage,
+            uploadImage,
+            disabled,
+            familyId,
+            role
+
           }
 
         }
@@ -188,5 +256,26 @@ border: 1px solid #707070;
 border-radius: 20px;
 opacity: 1;
 }
+
+.upload-image-disabled {
+    padding: 8px 10px;
+    background: #dde2e6;
+    border-radius: 22px;
+    width: 135px;
+    border: none;
+    outline: none;
+    color: #fff;
+}
+
+.upload-image {
+    background: #136acd;
+    cursor: pointer;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 22px;
+    width: 135px;
+    border: none;
+    outline: none;
+  }
 
 </style>

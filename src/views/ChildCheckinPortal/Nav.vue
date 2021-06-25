@@ -2,7 +2,9 @@
     <div class="container-fluid background">
         <div class="row">
             <div class="col-7 offset-1 container-top">
-                <img src="../../assets/churchplus-logo.png" class="w-100"/>
+                <img  src="../../assets/churchplus-logo.png" class="w-100"/>
+                <!-- :src="churchLogo" -->
+                
             </div>
             <div class="col-10 offset-1 menu-links">
                 <router-link to="/checkin">
@@ -31,13 +33,14 @@
                         <div class="col-10">Family</div>
                     </div>
                 </router-link>
-
+                <router-link :to="{ name: 'Guardian' }">
                 <div class="row push-down" :class="{ 'active' : route.fullPath.includes('guardian'), 'style-font' : !route.fullPath.includes('guardian') }">
                     <div class="col-2">
                         <img src="../../assets/checkin-assets/Group-16991.svg" >
                     </div>
                     <div class="col-10">Guardian</div>
                 </div>
+                </router-link>
                 
                 <router-link :to="{ name: 'UpcomingEvents' }">
                 <div class="row push-down" :class="{ 'active' : route.fullPath.includes('checkin-event'), 'style-font' : !route.fullPath.includes('checkin-event') }">
@@ -54,11 +57,26 @@
 
 <script>
 import { useRoute }  from "vue-router"
+import { ref } from "vue"
+import axios from "@/gateway/backendapi";
 export default {
     setup () {
         const route = useRoute()
+    const churchLogo = ref("")
+        const getChurchProfile = async() => {
+            try {
+                let res = await axios.get(`/GetChurchProfileById?tenantId=${route.params.tenantId}`)
+                console.log(res)
+                churchLogo.value = res.data.returnObject.logo
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getChurchProfile()
         return {
-            route
+            route,
+            churchLogo
         }
     }
 }

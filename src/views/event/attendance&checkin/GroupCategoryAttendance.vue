@@ -235,15 +235,10 @@
                 <h4 class="header4">
                   <a
                     class="text-decoration-none link-color"
-                    >Child Checkin</a
+                    >Family Registration</a
                   >
-                  <!-- <router-link
-                    class="text-decoration-none"
-                    to="/tenant/attendancecheckin/childcheckin"
-                    >Child Checking</router-link
-                  > -->
                 </h4>
-                <p class="para">Child check-in and print labels</p>
+                <p class="para">Register your family members for this event</p>
                 <p class="para">
                   <span class="d-flex align-items-center"
                     ><input
@@ -261,6 +256,32 @@
                     ></i
                   ></span>
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+       
+        <div class="row w-100 c-pointer" @click="routeToChildCheckin">
+          <div
+            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          >
+            <div class="row">
+              <div class="col-md-2 col-sm-2 image mt-3">
+                <img
+                  src="../../../assets/childcheckin.svg" style="width:54px; height:54px"
+                  alt="marked Attendance image"
+                />
+              </div>
+              <div class="col-md-10 col-sm-10 mt-3">
+                <h4 class="header4">
+                  <a
+                    class="text-decoration-none link-color"
+                    >Child Checkin</a
+                  >
+             
+                </h4>
+                <p class="para">Click to checkin your children</p>
+               
               </div>
             </div>
           </div>
@@ -378,6 +399,7 @@ import { computed, ref } from "vue";
 import attendanceservice from "../../../services/attendance/attendanceservice";
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
+import router from '../../../router';
 
 export default {
   components: { Dropdown, MultiSelect },
@@ -586,6 +608,10 @@ export default {
 
     // getDetails()
 
+    const routeToChildCheckin = () => {
+      router.push('/tenant/childcheckin')
+    }
+
     return {
       groups,
       selectedEvent,
@@ -609,7 +635,8 @@ export default {
       paymentFormID,
       iFrameLink,
       tenantId,
-      childCheckinLink
+      childCheckinLink,
+      routeToChildCheckin
     };
   },
 };

@@ -7,10 +7,10 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="checkbox" name="" id=""> The person
+                        <input type="checkbox" name="" id="" v-model="sendPersonMail" @change="handleSendPersonMail"> The person
                     </div>
                     <div class="col-md-12">
-                        <input type="checkbox" name="" id=""> The person's parent
+                        <input type="checkbox" name="" id="" v-model="sendPersonsParentMail" @change="handleSendPersonsParentMail"> The person's parent
                     </div>
                     <div class="col-md-12">
                         <input type="checkbox" name="" id=""> The person's spouse
@@ -95,11 +95,25 @@
 </template>
 
 <script>
+import { ref } from '@vue/reactivity';
 export default {
     setup () {
-        
+        const sendPersonMail = ref(false);
+        const handleSendPersonMail = (e) => {
+            console.log(e.target.value);
+        }
 
-        return {}
+        const sendPersonsParentMail = ref(false);
+        const handleSendPersonsParentMail = (e) => {
+            console.log(e.target.value);
+        }
+
+        return {
+            sendPersonMail,
+            handleSendPersonMail,
+            sendPersonsParentMail,
+            handleSendPersonsParentMail,
+        }
     }
 }
 </script>

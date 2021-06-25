@@ -44,7 +44,6 @@ axios.interceptors.request.use((config) => {
     }
     
     const checkinToken =  localStorage.getItem('checkinToken');
-console.log(checkinToken)
     if (checkinToken) {
       config.headers.Authorization = `Bearer ${checkinToken}`;
     }

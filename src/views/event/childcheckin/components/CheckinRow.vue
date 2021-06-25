@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container"  style="border: 2px solid red">
         <div class="row py-2">
             <div class="col-md-2">
                 <div class="ward-img-box">
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+
 export default {
     setup () {
         

@@ -1171,7 +1171,7 @@ const routes = [
         }
     },
     {
-        path: '/checkinsignin/:tenantId',
+        path: '/childcheckin/:tenantId',
         name:'CheckinSignin',
         component: () =>
         import ( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue'),
@@ -1197,7 +1197,7 @@ const routes = [
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Family')
             },
             {
-                path: 'checkinevent',
+                path: 'checkinevent/:eventId',
                 name: 'CheckinEvent',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinEvent')
@@ -1213,6 +1213,12 @@ const routes = [
                 name: 'CheckinProfile',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinProfile')
+            },
+            {
+                path: 'checkinguardian',
+                name: 'Guardian',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Guardian')
             }
         ]
     },
