@@ -1,20 +1,20 @@
 <template>
-    <div class="container mb-4">
+    <div class="container-fluid mb-4">
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-6 pl-md-0">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control">
+                        <label for="name" class="font-weight-600">Name</label>
+                        <input type="text" class="form-control border">
                         <div class="row mt-2">
                             <div class="col-md-12">
-                                <input type="checkbox" name="" id=""> Active
+                                <input type="checkbox" class="mr-2 border" name="" id=""> Active
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-md-0">
-                        <label for="name">Description</label>
-                        <textarea name="" id="" class="w-100" rows="2" 
+                        <label for="name" class="font-weight-600">Description</label>
+                        <textarea name="" id="" class="w-100 border" rows="3" 
                             style="border-color: #ced4da"
                         ></textarea>
                     </div>
@@ -23,11 +23,11 @@
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="border col-4 scr-height" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
+                            <div class="border col-4 scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row">
-                                    <div class="col-md-12 py-3 c-pointer" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in selectedTriggers" :key="index" @click="changeActiveTrigger(index)">
+                                    <div class="col-md-12 py-3 c-pointer d-flex justify-content-center border" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in selectedTriggers" :key="index" @click="changeActiveTrigger(index)">
                                         <h6>
-                                            <span><i class="mr-3" :class="[trigger.icon]" style="font-size: 1.5rem"></i></span>
+                                            <span><i class="mr-3" :class="[trigger.icon, { 'bigger-icon': !showTriggers &&  selectedTriggers.length > 0 }]" style="font-size: 1.5rem"></i></span>
                                             <span class="d-none">{{ trigger.name }}</span>
                                         </h6>
                                     </div>
@@ -48,7 +48,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch">
-                                        <button class="btn our-grey-bg w-100 trigger-btn btn-100 ml-n3 font-weight-bold"
+                                        <button class="btn btn-secondary w-100 trigger-btn btn-100 ml-n3 font-weight-bold"
                                             @click="toggleTriggers">
                                             <span><i class="pi pi-plus mx-2"></i></span>
                                             <span :class="{ 'd-none': !showTriggers &&  selectedTriggers.length > 0 }">Add a trigger</span>
@@ -63,18 +63,21 @@
                                         <GivingNewRegular v-else-if="selectedTrigger.id === 11" />
                                         <NoLongerGiving v-else-if="selectedTrigger.id === 2" />
                                         <PledgeCreation v-else-if="selectedTrigger.id === 3" />
+                                        <MemberBirthday  v-else-if="selectedTrigger.id === 5" />
                                         <GroupAddOrRemove v-else-if="selectedTrigger.id === 8" />
                                         <GroupMembershipDuration  v-else-if="selectedTrigger.id === 9" />
+                                        <AttendanceTrigger  v-else-if="selectedTrigger.id === 10" />
+                                        <FromSubmission  v-else-if="selectedTrigger.id === 12" />
                                         <GroupMembershipDuration  v-else />
                                     </div>
 
                                     <div class="col-md-6 border scr-height"  style="height: 400px" :class="{ 'col-md-8': actionSelected, 'col-md-6': !actionSelected }">
                                         <div class="row">
-                                            <div class="col-12 border px-0 scr-height"  style="height: 400px" :class="{ 'col-md-6': actionSelected }">
+                                            <div class="col-12 border px-0 scr-height our-grey-bg"  style="height: 400px" :class="{ 'col-md-6': actionSelected }">
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <ul class="list-group w-100">
-                                                            <li class="list-group-item c-pointer py-4" v-for="(i, j) in selectedActions" :key="j">
+                                                            <li class="list-group-item c-pointer py-4 border" :class="{ 'bg-white': i.id === selectedAction.id, 'bg-transparent': i.id !== selectedAction.id, 'd-none': showActions }" v-for="(i, j) in selectedActions" :key="j" @click="setActiveAction(j)">
                                                                 <h5 class="mb-0">
                                                                     <span class="mr-2"><i :class="[ i.icon ]" style="font-size: 1rem"></i></span>
                                                                     <span class="font-weight">{{ i.name }}</span>
@@ -109,7 +112,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12 trigger-btn-div">
-                                                        <button class="btn our-grey-bg w-100 trigger-btn d-flex justify-content-center btn-100 font-weight-bold"
+                                                        <button class="btn btn-secondary w-100 trigger-btn d-flex justify-content-center btn-100 font-weight-bold"
                                                             @click="toggleActions">
                                                             Actions
                                                         </button>
@@ -120,9 +123,12 @@
                                             <div class="border" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected }">
                                                 <div class="row">
                                                     <div class="col-md-12" > 
-                                                        <EmailAction v-if="selectedAction.id === 1" />
+                                                        <EmailAction @emailupdated="handleEmailUpdate" v-if="selectedAction.id === 1" />
                                                         <GroupAction v-else-if="selectedAction.id === 3" />
                                                         <AdminMessage v-else-if="selectedAction.id === 5"  />
+                                                        <UpdateProgress v-else-if="selectedAction.id === 6"  />
+                                                        <MarkPresent v-else-if="selectedAction.id === 9"  />
+                                                        <Interactions v-else-if="selectedAction.id === 10"  />
                                                         <AdminMessage v-else  />
                                                     </div>
                                                 </div>
@@ -159,10 +165,17 @@ import GroupAddOrRemove from "./triggers/GroupAddOrRemove"
 import PledgeCreation from "./triggers/PledgeCreation"
 import NoLongerGiving from "./triggers/NoLongerGiving.vue"
 import GivingNewRegular from "./triggers/GivingNewRegular.vue"
+import AttendanceTrigger from "./triggers/AttendanceTrigger.vue"
+import FromSubmission from "./triggers/FromSubmission.vue"
+
 import GroupAction from "./actions/GroupAction"
 import AdminMessage from "./actions/AdminMessage"
+import MarkPresent from "./actions/MarkPresent"
+import UpdateProgress from "./actions/UpdateProgress"
+import Interactions from "./actions/InteractionsAction"
 import { computed } from '@vue/runtime-core'
 import EmailAction from "./actions/Email"
+import MemberBirthday from "./triggers/MemberBirthday.vue"
 export default {
     components: { 
         GivingAmount,
@@ -171,9 +184,16 @@ export default {
         GroupAddOrRemove,
         PledgeCreation,
         NoLongerGiving,
+        AttendanceTrigger,
+        FromSubmission,
+
         AdminMessage,
         GroupAction,
-        EmailAction
+        EmailAction,
+        MarkPresent,
+        UpdateProgress,
+        MemberBirthday,
+        Interactions,
     },
     setup () {
         const showTriggers = ref(false);
@@ -234,6 +254,11 @@ export default {
                 name: "Attendance",
                 icon: "pi pi-calendar",
                 id: 10
+            },
+            {
+                name: "Form Submission",
+                icon: "pi pi-book",
+                id: 12
             }
         ]
 
@@ -277,6 +302,16 @@ export default {
                 name: "Timer",
                 icon: "pi pi-clock",
                 id: 8
+            },
+            {
+                name: "Present In Group",
+                icon: "pi pi-clock",
+                id: 9
+            },
+            {
+                name: "Interactions",
+                icon: "pi pi-users",
+                id: 10
             }
         ]
 
@@ -336,6 +371,14 @@ export default {
             console.log(data, "data");
         }
 
+        const handleEmailUpdate = (data) => {
+            console.log(data);
+        }
+
+        const setActiveAction = index => {
+            selectedActionIndex.value = index;
+        }
+
         return {
             showTriggers,
             // triggersIsVissible,
@@ -356,6 +399,9 @@ export default {
             changeActiveTrigger,
             selectedTriggerIndex,
             givingAmount,
+
+            handleEmailUpdate,
+            setActiveAction,
         }
     }
 }
@@ -403,5 +449,14 @@ export default {
 
     .active-trigger {
         border-left: 1px solid #007bff;
+        background: #fff;
+    }
+
+    .bigger-icon {
+        font-size: 2.5rem !important;
+    }
+
+    .border {
+        border: 1px solid #d3d4dca6!important;
     }
 </style>
