@@ -29,7 +29,7 @@
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-large">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title header1" id="exampleModalLabel">Add New Member</h5>
@@ -301,9 +301,10 @@ export default {
 
     const getFamilyMembers = async() => {
             loading.value = true
-            let personId = localStorage.getItem('checkinPerson')
+            let getBaseAuth = localStorage.getItem('baseAuth')
+            let baseAuth = JSON.parse(getBaseAuth)
             try {
-                const res = await axios.get(`/api/Family/family?personId=${personId}`)
+                const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
                 console.log(res)
                 familyDetails.value = res.data
                 loading.value = false

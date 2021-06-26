@@ -38,12 +38,12 @@ NProgress.configure({ showSpinner: false });
 axios.interceptors.request.use((config) => {
     if (typeof window === 'undefined') return config;
     const token =  localStorage.getItem('token');
+    const checkinToken =  localStorage.getItem('checkinToken');
   
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     
-    const checkinToken =  localStorage.getItem('checkinToken');
     if (checkinToken) {
       config.headers.Authorization = `Bearer ${checkinToken}`;
     }

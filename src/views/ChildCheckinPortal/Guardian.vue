@@ -5,7 +5,7 @@
             <div class="col-6  text-right ">
                 <!-- <button class="btn btn-primary font-weight-bold" ></button> -->
                 <button class="default-btn border-0 text-white font-weight-bold primary-bg"
-                    data-toggle="modal" data-target="#exampleModal" 
+                    data-toggle="modal" data-target="#guardianModal" 
                 >
                  Add Guardian
                 </button>
@@ -261,9 +261,10 @@ export default {
 
         const getFamilyMembers = async() => {
             loading.value = true
-            let personId = localStorage.getItem('checkinPerson')
+            let getBaseAuth = localStorage.getItem('baseAuth')
+            let baseAuth = JSON.parse(getBaseAuth)
             try {
-                const res = await axios.get(`/api/Family/family?personId=${personId}`)
+                const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
                 console.log(res)
                 fullDetails.value = res.data
                 getGuardian(res.data.id)

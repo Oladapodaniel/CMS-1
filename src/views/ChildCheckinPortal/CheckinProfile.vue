@@ -66,6 +66,11 @@
                         class="form-control ml-0" />
                         </div>
                     </div>
+                    <div class="row">
+                      <div class="col-md-2 offset-1 offset-md-5 mt-5" @click="save">
+                          <button class="primary-btn text-white px-5">Save</button>
+                      </div>
+                    </div>
 
                 </div>
                 <div class=" col-12 col-md-4 mt-5 imagefolder">
@@ -106,9 +111,7 @@
                 <div class="col-12 col-md-5">
 
                 </div>
-                <div class="col-md-2 mt-5" @click="save">
-                    <button class="primary-btn text-white px-5">Save</button>
-                </div>
+                
                 <div class="col-12 col-md-5">
 
                 </div>
@@ -148,10 +151,10 @@ import axios from "@/gateway/backendapi";
         getFamilyRoles()
           
           const getFamilyMembers = async() => {
-            let personId = localStorage.getItem('checkinPerson')
-            console.log(personId)
+            let getBaseAuth = localStorage.getItem('baseAuth')
+            let baseAuth = JSON.parse(getBaseAuth)
             try {
-                const res = await axios.get(`/api/Family/family?personId=${personId}`)
+                const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
                 console.log(res)
                 familyId.value = res.data.id
                 if (res.data.father) {

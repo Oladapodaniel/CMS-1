@@ -78,8 +78,13 @@ export default ({
             try {
                 let res = await axios.post('/familyLogin', userDetails.value)
                 console.log(res)
+                const baseAuth = {
+                    checkinPerson: res.data.personID,
+                    tenantId: res.data.login.result.value.tenantID
+                }
+
                 localStorage.setItem('checkinToken', res.data.login.result.value.token)
-                localStorage.setItem('checkinPerson', res.data.personID)
+                localStorage.setItem('baseAuth', JSON.stringify(baseAuth))
                 router.push({ name: 'CheckinDashboard' })
             }
             catch (err) {
@@ -99,7 +104,7 @@ export default ({
             }
         }
         getChurchProfile()
-        
+
         return {
             userDetails,
             logIn,

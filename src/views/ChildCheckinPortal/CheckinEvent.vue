@@ -9,6 +9,7 @@
                 <div class="row">
                     <div class="col-3 offset-4 offset-sm-0">
                         <img :src="eventDetails.eventBanner" class="member-image" v-if="eventDetails.eventBanner" />
+                        <img src="../../assets/checkin-assets/worship-service.jpeg" class="member-image" v-else />
                     </div>
                     <div class="col-sm-6 mt-3 mt-sm-0">
                         <div class="event-service">{{ eventDetails.name }}</div>
@@ -57,7 +58,7 @@
                             <div class="col-8">
                                 <Dropdown class="p-0 w-100" :options="attendanceCheckin" v-model="item.selectedAttendanceCheckin" optionLabel="fullGroupName" :filter="false" placeholder="Select" @change="setSlot(index, item)" :showClear="false">
                                 </Dropdown>
-                            <!-- <div class="slot mt-2">{{ selectedSlot ? `${selectedSlot} slots available` : "" }} </div> -->
+                            <!-- <div class="slot mt-2">{{ item.slot ? `${item.slot} slots available` : "" }} </div> -->
                             </div>
                         </div>
                         
@@ -67,38 +68,17 @@
                 </div>
             </div>
         </div>
+        <!-- {{ slotAvailable }} -->
 
 
         <div class="row d-flex d-flex flex-column flex-sm-row justify-content-between my-5">
             <div class="col-12 mb-3 p-0 font-weight-700">Check In By</div>
             <div class="col-10 offset-1 offset-md-0 col-md-4 p-0">
-                <Dropdown class="p-0 w-100 guardian" :options="guardians" optionLabel="person.firstName" v-model="checkInBy" :filter="false" @change="setGuardian" placeholder="Select guardian" :showClear="false">
+                <Dropdown class="p-0 w-100 guardian" :options="guardians" optionLabel="person.firstName" v-model="checkInBy" :filter="false" placeholder="Select guardian" :showClear="false">
                 </Dropdown> 
             </div>
-            <div @click="register" class="col-10 offset-1 offset-md-0 col-md-4 number-checkin-child px-4 py-2 text-white text-center mt-3 mt-md-0" >
+            <div @click="register" class="col-10 offset-1 offset-md-0 col-md-4 number-checkin-child px-4 py-2 text-white text-center mt-3 mt-md-0 c-pointer font-weight-700" >
                 Register
-            </div>
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header py-4">
-                                <!-- <h4 class="modal-title font-weight-bold px-4" id="exampleModalLabel">Add New Guardian</h4> -->
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                               <div class="row">
-                                    <div class="col-2 offset-5"><img src="../../assets/smile.jpg" class="w-100"></div>
-                                    <div class="col-12 stylish-text primary-text text-center">
-                                    
-                                    274KK4J
-                                    </div>
-                                    <div class="col-12 font-weight-700 text-center p-5 mt-4 primary-bg text-white success-card">You have successfully registered your family members for this event!</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
             </div>
         </div>
         <div class="row">
@@ -146,19 +126,22 @@
                 <Button label="Done" icon="pi pi-check" @click="() => displayModal = false" autofocus />
             </template>
         </Dialog>
+        <Toast />
 
         
     </div>
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import Dropdown from 'primevue/dropdown';
 import axios from "@/gateway/backendapi";
 import Memberform from "./MemberForm";
 import Dialog from 'primevue/dialog';
 import { useRoute } from "vue-router"
 import dateFormatter from '../../services/dates/dateformatter';
+import { useToast } from "primevue/usetoast";
+import finish from '../../services/progressbar/progress';
 export default {
     components: {
         Dropdown,
@@ -167,6 +150,7 @@ export default {
     },
     setup () {
         const route = useRoute()
+        const toast = useToast()
         const check = ref(true)
         const check2 = ref(false)
         const check3 = ref(false)
@@ -183,19 +167,10 @@ export default {
         const selectedSlot = ref("")
         const checkinIndex = ref(0)
         const checkInBy = ref({})
+        const selectedGroup = ref({})
+        const number = ref(200)
+        
 
-
-
-        // const getSlot = async() => {
-        //     try {
-        //         const res = await axios.get(`/api/CheckInAttendance/EventSlot?attendanceCode=${eventDetails.value.attendanceCode}`)
-        //         console.log(res)
-        //         slot.value = res.data
-        //     }
-        //     catch (error) {
-        //         console.log(error)
-        //     }
-        // }
 
         const getEventDetails = () => {
             let retrievedObj = localStorage.getItem('event_register')
@@ -207,8 +182,6 @@ export default {
 
         const getAttendanceCheckin = async() => {
             
-            
-            //  getSlot()
             try {
                 const res = await axios.get(`/api/CheckInAttendance/checkinevents?activityId=${route.params.eventId}`)
                 console.log(res)
@@ -221,9 +194,10 @@ export default {
         getAttendanceCheckin()
 
         const getFamilyMembers = async() => {
-            let personId = localStorage.getItem('checkinPerson')
+            let getBaseAuth = localStorage.getItem('baseAuth')
+            let baseAuth = JSON.parse(getBaseAuth)
             try {
-                const res = await axios.get(`/api/Family/family?personId=${personId}`)
+                const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
                 console.log(res)
                 familyDetails.value = res.data
                 getGuardian(res.data.id)
@@ -239,62 +213,29 @@ export default {
             try {
                 const res = await axios.get(`/api/Family/familyGuidians?familyId=${id}`)
                 console.log(res)
-                    guardians.value = res.data.returnObject
-              
+                guardians.value = res.data.returnObject
+                finish()
             
             }
             catch (error) {
                 console.log(error)
-             
+                finish()
             }
             
         }
 
 
 
-        const checkChild = (index) => {
-            // console.log(familyDetails.value.familyMembers)
-            // console.log(index)
-            checkinIndex.value = index
-            if(familyDetails.value.familyMembers[index].check) {
-
-
-               selectedMember.value.push(
-                   {
-                       personId: familyDetails.value.familyMembers[index].person.id,
-                       activityId: eventDetails.value.activityID
-                   }
-               )
-                
-                // selectedMember.value[index].personId = familyDetails.value.familyMembers[index].person.id
-                
+        const checkChild = () => {
             
+            // if(familyDetails.value.familyMembers[index].check) {
+            //     selectedSlot.value = selectedSlot.value - 1
+            // }   else {
+            //     selectedMember.value.splice(index, 1)
 
-                console.log(selectedMember.value)
-
-                // selectedMember.value.push(familyDetails.value.familyMembers[index].person.id)
-
-                selectedSlot.value = selectedSlot.value - 1
-            }   else {
-                selectedMember.value.splice(index, 1)
-
-                selectedSlot.value = selectedSlot.value + 1
-            }
-
-            // console.log(familyDetails.value.familyMembers[index].id)
-            // console.log(selectedMember.value)
-            
+            //     selectedSlot.value = selectedSlot.value + 1
+            // }
         }
-
-        // const slotAvailable = computed(() => {
-        //     if (selectedMember.value.length === 0) return slot.value.availableSlots
-        //     return slot.value.availableSlots - selectedMember.value.length
-        // })
-
-        // const calc = () => {
-        //     // if (familyDetails.value.familyMembers[index].check) return item - selectedMember.value.length
-        //     // return item + selectedMember.value.length
-        // }
 
         const getMemberRoles = (payload) => {
             memberRoles.value = payload
@@ -324,56 +265,96 @@ export default {
         // public Guid CheckInAttendanceId { get; set; }
         // public Guid GroupId { get; set; }
         // public Guid CheckInBy { get; set; }
-
-            // const registerChildren = {
-            //     childrenIds: selectedMember.value,
-            //     activityId: eventDetails.value.eventID,
-            //     checkInAttendanceId: eventDetails.value.id,
-            //     checkinBy: selectedGuardian.value.person.id
-            // }
-
+        let checkedMembers = []
+        familyDetails.value.familyMembers.forEach(i => {
+            if (i.check) {
+                checkedMembers.push(i)
+            }
+        })
+        console.log(checkedMembers)
+        let mappedMembers = checkedMembers.map(i => {
+                 if (i && i.selectedAttendanceCheckin && i.selectedAttendanceCheckin.groupID) return {
+                        personId: i.person.id,
+                        activityId: eventDetails.value.activityID,
+                        checkInAttendanceId: i.selectedAttendanceCheckin.id,
+                        groupId: i.selectedAttendanceCheckin.groupID,
+                        checkInBy: checkInBy.value ? checkInBy.value.person ? checkInBy.value.person.id : familyDetails.value.fatherID ? familyDetails.value.fatherID : familyDetails.value.motherID : ""
+                    }
+                    return true
+            })
+           const checking = mappedMembers.find(i =>  {
+               return i === true
+            })
+     
+        if (checking) {
+            toast.add({
+                severity: "warn",
+                summary: "An error occurred",
+                detail: "Please select a class or group for each member(s) you want to register.",
+            });
+        }   else {
+  
             try {
-                const res = await axios.post(`/api/CheckInAttendance/RegisterChildren`, selectedMember.value)
+                const res = await axios.post(`/api/CheckInAttendance/RegisterChildren`, mappedMembers)
                 console.log(res)
                 if (res.data.response.toLowerCase().includes("successfull")) {
                     checkinCode.value = res.data.returnObject.childCheckInCode
                 }
           
                 displayModal.value = true
+                finish()
             }
             catch (error) {
                 console.log(error)
+                finish()
             }
-            
-            // {
-//   "childrenIds": [
-//     "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-//   ],
-//   "activityId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-//   "checkInAttendanceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-//   checkinBy: 'rjklbmlrmfkk'
-// }
         }
+ 
+
+            console.log(familyDetails.value.familyMembers)
+
+            
+        }
+
+        const slotAvailable = computed(() => {
+            //  if (number.value ) {
+            //      let newNumber = number.value - 1
+            //      return newNumber
+            //  }else {
+            //      return '200m'
+            //  }
+            //  return number.value - 1
+            //  selectedGroup.value.selectedAttendanceCheckin.registrationSlot - 1
+            //  return "200m"
+            // let multiValue = 1;
+      // if (daysToEndOfSubscription.value > 0) multiValue += existingPlan.value.amount * daysToEndOfSubscription.value;
+            if (number.value) {
+                let newNumber = number.value - +selectedMember.value.length
+                 return newNumber;
+            } else {
+                return "200g"
+            }
+
+        })
 
         const setSlot = (index, item) => {
             checkinIndex.value = index
-            selectedSlot.value = familyDetails.value.familyMembers[index].selectedAttendanceCheckin.registrationSlot
+            selectedGroup.value = item
+            familyDetails.value.familyMembers[index].slot = slotAvailable.value
             console.log(item)
-            // checkinObj.value.CheckInAttendanceId = item.selectedAttendanceCheckin.id
-            // checkinObj.value.groupId = item.selectedAttendanceCheckin.groupID
-            selectedMember.value[index].checkInAttendanceId = item.selectedAttendanceCheckin.id
-            selectedMember.value[index].groupId = item.selectedAttendanceCheckin.groupID
-            
-            console.log(selectedMember.value)
-        }
+            if (selectedMember.value.length === 0) {
+            selectedMember.value.push(item)
+            }  
 
-        const setGuardian = () => {
-            // selectedMember.value[checkinIndex.value].checkInBy = checkInBy.value.person.id
             selectedMember.value.forEach(i => {
-                i["checkInBy"] = checkInBy.value.person.id
+                if (selectedMember.value.length > 0 && i.selectedAttendanceCheckin.groupID !== item.selectedAttendanceCheckin.groupID) {
+                    selectedMember.value.push(item)
+                }   else {
+                    console.log('Dont push')
+                }
             })
-            
             console.log(selectedMember.value)
+
         }
 
         const formatDate = (date) => {
@@ -404,8 +385,10 @@ export default {
             setSlot,
             checkinIndex,
             checkInBy,
-            setGuardian,
-            formatDate
+            formatDate,
+            slotAvailable,
+            selectedGroup,
+            number
 
         }
     }

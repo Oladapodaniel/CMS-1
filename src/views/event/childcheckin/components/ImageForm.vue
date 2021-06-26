@@ -22,7 +22,7 @@
                         <div>
                             <div class="cs-input">
                                 <label for="imgUpload" class="choose-file">
-                                Choose file
+                                Choose Picture
                                 <input
                                     type="file"
                                     class="input file-input"

@@ -2,8 +2,9 @@
     <div class="container-fluid background">
         <div class="row">
             <div class="col-7 offset-1 container-top">
-                <img  src="../../assets/churchplus-logo.png" class="w-100"/>
-                <!-- :src="churchLogo" -->
+                <img :src="churchLogo" v-if="churchLogo" class="w-100"/>
+                <!-- <img src="../../assets/churchplus-logo.png" v-else class="w-100"/> -->
+                
                 
             </div>
             <div class="col-10 offset-1 menu-links">
@@ -64,8 +65,10 @@ export default {
         const route = useRoute()
     const churchLogo = ref("")
         const getChurchProfile = async() => {
+            let getTenantId = localStorage.getItem('baseAuth')
+            let tenantId = JSON.parse(getTenantId)
             try {
-                let res = await axios.get(`/GetChurchProfileById?tenantId=${route.params.tenantId}`)
+                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantId.tenantId}`)
                 console.log(res)
                 churchLogo.value = res.data.returnObject.logo
             }

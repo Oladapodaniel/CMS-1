@@ -261,7 +261,7 @@
           </div>
         </div>
        
-        <div class="row w-100 c-pointer" @click="routeToChildCheckin">
+        <div class="row w-100 c-pointer mt-3" @click="routeToChildCheckin">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -287,7 +287,7 @@
           </div>
         </div>
 
-        <div class="row w-100">
+        <div class="row w-100 mt-3">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -592,7 +592,7 @@ export default {
     })
 
     const childCheckinLink = computed(() => {
-      if (!tenantId.value) return ""
+      if (!tenantId.value) return `https://my.churchplus.co/childcheckin/${attendanceCheckinInStore.value.tenantID}`
       return `https://my.churchplus.co/childcheckin/${tenantId.value}`
     })
 

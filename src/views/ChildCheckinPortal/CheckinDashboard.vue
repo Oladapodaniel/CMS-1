@@ -1,21 +1,21 @@
 <template>
      <div class="container-wide container-top">
-     <!-- <div class="row d-flex justify-content-center justify-content-sm-between">
+     <div class="row d-flex justify-content-center justify-content-sm-between">
             <div class="dashboard-header">Dashboard</div>
-            <router-link :to="{ name: 'CheckinEvent' }">
-            <div class="register-event default-btn border-0 text-white">Register for this event</div>
-            </router-link>
+            
+            <!-- <div class="register-event default-btn border-0 text-white">Register for this event</div> -->
+            
         </div>
         <div class="row d-flex justify-content-center justify-content-sm-between mt-5" >
             <div class="analytics-text">Analytics Overview</div>
-            <div class="mt-2 mt-sm-0"><input type="datetime-local" class="form-control"></div>
+            <!-- <div class="mt-2 mt-sm-0"><input type="datetime-local" class="form-control"></div> -->
         </div>
         <div class="row mt-4">
             <div class="col-12 card analytic">
                 <div class="row">
                     <div class="col-12 col-sm-6 py-2 pl-4">
                        
-                        <ColumnChart
+                        <!-- <ColumnChart
                             domId="chart1"
                             title="Event Attendance"
                             subtitle="Weekly Attendance of Events"
@@ -23,21 +23,33 @@
                             :data="chartData"
                             :series="series"
                             :attendanceSeries="attendanceSeries"
+                        /> -->
+                        <ByGenderChart
+                            domId="source"
+                            title="Register"
+                            distance="5"
+                            :titleMargin="10"
+                            :data="analyticData"
                         />
                         
                     </div>
-                    <div class="col-10 col-sm-4 my-3 d-flex align-items-center total-attendant offset-1">
+                    <div class="col-10 col-sm-4 my-3 total-attendant offset-1">
                         <div class="container">
                             <div class="row mt-5">
-                                <div class="col-12 attendant-text">Total Event Attendant</div>
-                                <div class="col-12 attendant-amount">123,456</div>
-                                <div class="col-12 mt-4">+3.48% Since last month</div>
+                                <div class="col-12 attendant-text">Total Event Attended</div>
+                                <div class="col-12 attendant-amount">{{ analyticValue.allAttendedEvents }}</div>
+                                <div class="col-12 attendant-text mt-3">Total Event Registered</div>
+                                <div class="col-12 attendant-amount">{{ analyticValue.allRegisteredEvents }}</div>
+                                <!-- <div class="col-12 attendant-text mt-3">Percentage of Number of people in your family that</div>
+                                <div class="col-12 attendant-amount">{{ analyticValue.allRegisteredEvents }}</div>
+                                <div class="col-12 attendant-text mt-3">Total Event Registered</div>
+                                <div class="col-12 attendant-amount">{{ analyticValue.allRegisteredEvents }}</div> -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
         <div class="row mt-5">
             <div class="col-12 col-sm-8">
                 <div class="row">
@@ -240,7 +252,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-else-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading" class="col-5 offset-1">
+                    <div v-else-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading" class="col-10 col-sm-6 offset-1">
                         <div class=" empty-img mt-5 text-center">
                             <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
                             <div class="mt-3">You have not added any family members yet</div>
@@ -254,26 +266,35 @@
                     </div>
                 </div>
             </div>
-            <div class="col-10 col-sm-3 p-0 offset-1">
-                <div class="upcoming-event">
-                    <router-link :to="{ name: 'CheckinEvent', params: { eventId: upcomingEvent.activityID } }">
+            <div class="col-10  p-0 offset-1 " :class="{ 'col-sm-3' : upcomingEvent, 'col-sm-5' : !upcomingEvent }" >
+                <div class="upcoming-event table" v-if="upcomingEvent">
+                    <div class="remove-decoration" @click="viewUpcomingEventDetails">
                     <div class="container">
                         <div class="row mt-2 p-3 d-flex justify-content-between align-items-center">
                             <div class="upcoming-text">Upcoming Event</div>
-                            <div class="upcoming-date"><i class="pi pi-calendar"></i>{{ upcomingEvent.date }}</div>
+                            <div class="upcoming-date"><i class="pi pi-calendar"></i>  {{ formatDate(upcomingEvent.date) }}</div>
                             <div class="col-12 p-0">
                                 <img :src="upcomingEvent.eventBanner" v-if="upcomingEvent.eventBanner" class="mt-4 w-100">
+                                <div v-else-if="loading" class="text-center col-12">
+                                    <div class=" mt-5">
+                                        <ProgressSpinner />
+                                    </div>
+                                </div>
+                                <img src="../../assets/checkin-assets/worship-service.jpeg" v-else class="mt-4 w-100">
                             </div>
-                            <div class="col-12 mt-4 text-white text-center">
+                            <div class="col-12 mt-4 font-weight-700 text-dark text-center">
                                 {{ upcomingEvent.name }}
                             </div>
-                            <div class="col-12 mt-2 text-white text-center font-weight-700 cursor-pointer">
-                                See all upcoming events.
+                            <div class="col-12 mt-2 link-text text-center add-decoration cursor-pointer">
+                                Register your family for this event.
                             </div>
                         </div>
                     </div>
-                    </router-link>
+                    </div>
                 </div>
+            <div v-else>
+               <img src="../../assets/checkin-assets/CatThumb_UpcomingEvents.jpeg" class="w-100">
+            </div>
             </div>
         </div>
     </div>
@@ -289,9 +310,12 @@ import axios from "@/gateway/backendapi";
 import ProgressSpinner from 'primevue/progressspinner';
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
+import dateFormatter from '../../services/dates/dateformatter';
+import ByGenderChart from "@/components/charts/PieChart2";
+import router from '../../router';
 export default {
     components: {
-        ProgressSpinner
+        ProgressSpinner, ByGenderChart
     },
     setup () {
         // const route = useRoute()
@@ -307,7 +331,8 @@ export default {
         const memberRoles = ref([])
         const loading = ref(false)
         const upcomingEvent = ref({})
-
+        const analyticData = ref([])
+        const analyticValue = ref({})
 
         const toggleFilterFormVissibility = () =>
         (filterFormIsVissible.value = !filterFormIsVissible.value);
@@ -330,11 +355,13 @@ export default {
 
         const getFamilyMembers = async() => {
             loading.value = true
-            let personId = localStorage.getItem('checkinPerson')
-            console.log(personId)
+            let getBaseAuth = localStorage.getItem('baseAuth')
+            let baseAuth = JSON.parse(getBaseAuth)
+            console.log(baseAuth)
             try {
-                const res = await axios.get(`/api/Family/family?personId=${personId}`)
+                const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
                 familyDetails.value = res.data
+                getAttendanceAnalytics(res.data.id)
                 console.log(res.data)
                 console.log(familyDetails.value.familyMembers)
                 loading.value = false
@@ -393,20 +420,45 @@ export default {
 
 
         const getUpcomingEvents = () => {
+            loading.value = true
             axios.get('/api/CheckInAttendance/upcomingCheckinEvents')
                 .then(res => {
                     console.log(res)
                     upcomingEvent.value = res.data[0]
+                    loading.value = false
+                })
+                .catch(err => {
+                    console.log(err)
+                    loading.value = false
+                })
+        }
+        getUpcomingEvents()
+
+        const formatDate = (date) => {
+            return dateFormatter.monthDayYear(date)
+        }
+
+        const getAttendanceAnalytics = (id) => {
+            axios.get(`/api/CheckInAttendance/FamilyAttendanceRecord?familyId=${id}`)
+                .then(res => {
+                    console.log(res)
+                    analyticData.value = [ { name: 'Present', y: res.data.returnObject.allRegisteredEvents - res.data.returnObject.totalAbsent }, { name: 'Absent', y: res.data.returnObject.totalAbsent } ]
+
+                    analyticValue.value = res.data.returnObject
                 })
                 .catch(err => {
                     console.log(err)
                 })
         }
-        getUpcomingEvents()
+
+        const viewUpcomingEventDetails = () => {
+            localStorage.setItem("event_register", JSON.stringify(upcomingEvent.value))
+            router.push({ name: 'CheckinEvent', params: { eventId: upcomingEvent.value.activityID } })
+        }
 
 
         return {
-            filterFormIsVissible, toggleFilterFormVissibility, searchIsVisible, toggleSearch, chartData, series, attendanceSeries, familyDetails, searchText, memberRoles, searchMember, loading, showConfirmModal, deleteMember, upcomingEvent
+            filterFormIsVissible, toggleFilterFormVissibility, searchIsVisible, toggleSearch, chartData, series, attendanceSeries, familyDetails, searchText, memberRoles, searchMember, loading, showConfirmModal, deleteMember, upcomingEvent, formatDate, analyticData, analyticValue, viewUpcomingEventDetails
         }
     }
 }
@@ -459,22 +511,21 @@ export default {
 }
 
 .upcoming-event {
-    background: #1369CD 0% 0% no-repeat padding-box;
+    background: #dde2e6bb 0% 0% no-repeat padding-box;
     border-radius: 20px;
     opacity: 1;
-    /* width: 275px; */
 }
 
 .upcoming-text {
     font: normal normal bold 16px/27px Nunito Sans;
     letter-spacing: 0px;
-    color: #FFFFFF;
+    color: #050505;
 }
 
 .upcoming-date {
     font: normal normal 600 12px/12px Nunito Sans;
     letter-spacing: 0px;
-    color: #FEFEFF;
+    color: #000000;
 }
 
 .total-attendant {
@@ -494,7 +545,7 @@ color: #020E1C;
     font: normal normal bold 53px/54px Nunito Sans;
     letter-spacing: 0px;
     color: #020E1C;
-    margin-top: 50px
+    margin-top: 15px
 }
 
 .card.analytic {
@@ -524,4 +575,14 @@ color: #020E1C;
   width: 100%;
   max-width: 200px;
 } */
+.add-decoration:hover {
+    text-decoration: underline;
+}
+.remove-decoration:hover {
+    text-decoration: none
+}
+
+.link-text {
+    color: #136ACD
+}
 </style>

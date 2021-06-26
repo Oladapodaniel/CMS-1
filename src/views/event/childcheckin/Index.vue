@@ -34,7 +34,7 @@
                     <div class="col-md-12 mx-auto">
                         <div class="row mb-3 mt-3">
                             <div class="col-md-12 mx-auto d-flex justify-content-end">
-                                <button class="default-btn font-weight-bold border primary-text add-ward-btn"
+                                <button v-if="false" class="default-btn font-weight-bold border primary-text add-ward-btn"
                                     data-toggle="modal" data-target="#wardModal"
                                 >Add ward</button>
                             </div>
@@ -95,12 +95,13 @@
                 <div class="modal-content">
                 <div class="modal-header py-4">
                     <h4 class="modal-title font-weight-bold px-4" id="exampleModalLabel">Add New Ward</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <button type="button" ref="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="pi pi-times"></i></span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <AddWard />
+                    <MemberForm />
+                    <!-- :familyDetails="checkinDetails" @member-roles="getMemberRoles" @remove-modal="dismissModal" @push-to-view="pushToView" -->
                 </div>
                 </div>
             </div>
@@ -116,12 +117,13 @@ import AddFamily from "./components/AddFamily";
 import CheckinTable from "./components/CheckinTable";
 import ParentCard from "./components/ParentCard";
 import FamilyDescriptionCard from "./components/FamilyDescriptionCard";
-import AddWard from "./components/AddWard";
+// import AddWard from "./components/AddWard";
 import { useToast } from "primevue/usetoast";
+import MemberForm from "../../ChildCheckinPortal/MemberForm"
 // import SearchWithDropdown from "@/components/search/SearchWithDropdown";
 
 export default {
-    components: { AddFamily, CheckinTable, ParentCard, FamilyDescriptionCard, AddWard },
+    components: { AddFamily, CheckinTable, ParentCard, FamilyDescriptionCard, MemberForm },
     setup () {
         const toast = useToast()
         const code = ref("")
@@ -129,6 +131,7 @@ export default {
         const guardians = ref()
         const searched = ref(false)
         const updatedGuardian = ref({})
+        // const close = ref("")
 
         const checkIn = async() => {
             try {
@@ -166,14 +169,35 @@ export default {
                     detail: ``,
                     life: 4000,
                 });
-                code.value = false
-                searched.value = ""
+                code.value = ""
+                searched.value = false
             }
 
             const updateGuardian = (payload) => {
                 updatedGuardian.value = payload
                 checkinDetails.value.checkInBy = payload
             }
+
+            // const getMemberRoles = (payload) => {
+            //     memberRoles.value = payload
+            // }
+
+            // const dismissModal = () => {
+            //     close.value.click()
+            // }
+
+            // const pushToView = (payload) => {
+            //     let data = {
+            //         person: {
+            //             firstName: payload.firstName,
+            //             lastName: payload.lastName,
+            //             pictureUrl: payload.pictureUrl
+            //         },
+            //         familyRoleID: payload.roleId
+            //     }
+            //     familyDetails.value.familyMembers.push(data)
+            //     console.log(data)
+            // }
         return {
             checkIn,
             code,
@@ -182,7 +206,11 @@ export default {
             searched,
             save,
             updatedGuardian,
-            updateGuardian
+            updateGuardian,
+            // getMemberRoles,
+            // dismissModal,
+            // close,
+            // pushToView
         }
     }
 }
@@ -197,9 +225,5 @@ export default {
         background: #FFFFFF 0% 0% no-repeat padding-box;
         border: 1px solid #DDE2E6;
         border-radius: 30px;
-    }
-
-    .modal-lg {
-        max-width: 660px !important;
     }
 </style>

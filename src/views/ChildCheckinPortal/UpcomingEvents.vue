@@ -5,13 +5,19 @@
             <div class="col-12 mt-5 checkin-text">Upcoming Events</div>
         </div>
         <div class="row mt-3">
-            <div class="col-12">18th June 2019</div>
+            <div class="col-12">{{ formatDate(new Date().toISOString()) }}</div>
+            <div v-if="loading" class="text-center col-12">
+                <div class=" mt-5">
+                    <ProgressSpinner />
+                </div>
+            </div>
         </div>
-        <div class="row mt-4" v-for="item in eventDetails" :key="item.id">
-            <div class="col-12 card" :class="{ 'hover' : hoverIt, 'remove-hover' : !hoverIt }" @mouseover="onHover" @mouseleave="onLeave" @click="selectEvent(item)">
+        <div class="row mt-4" v-for="(item, index) in eventDetails" :key="item.id">
+            <div class="col-12 card" :class="{ 'hover' : item.hoverIt, 'remove-hover' : !item.hoverIt }" @mouseover="onHover(index)" @mouseleave="onLeave(index)" @click="selectEvent(item)">
                 <div class="row p-3 align-items-center">
                     <div class="col-2 offset-8 offset-md-0 col-md-1">
-                        <img :src="item.eventBanner" class="member-image" v-if="item.eventBanner" />
+                        <img :src="item.eventBanner" class="member-image" v-if="item && item.eventBanner ? item.eventBanner : ''" />
+                        <img src="../../assets/checkin-assets/worship-service.jpeg" v-else class="member-image" />
                     </div>
                     <div class="col-12 mt-3 mt-md-0 col-md-6">
                         <div class="child-name">{{ item.name }}</div>
@@ -36,17 +42,22 @@ import axios from "@/gateway/backendapi";
 import router from '../../router';
 // import dateformatter from '../../services/dates/dateformatter'
 import dateFormatter from '../../services/dates/dateformatter';
+import ProgressSpinner from 'primevue/progressspinner';
 export default {
+    components: {
+        ProgressSpinner
+    },
     setup () {
         const hoverIt = ref(false)
         const eventDetails = ref([])
+        const loading = ref(false)
 
-        const onHover = () => {
-            hoverIt.value = true
+        const onHover = (index) => {
+            eventDetails.value[index].hoverIt = true
         }
 
-        const onLeave = () => {
-            hoverIt.value = false
+        const onLeave = (index) => {
+            eventDetails.value[index].hoverIt = false
         }
 
         const selectEvent = (item) => {
@@ -56,13 +67,16 @@ export default {
         }
 
         const getUpcomingEvents = () => {
+            loading.value = true
             axios.get('/api/CheckInAttendance/upcomingCheckinEvents')
                 .then(res => {
+                    loading.value = false
                     console.log(res)
                     eventDetails.value = res.data
                 })
                 .catch(err => {
                     console.log(err)
+                    loading.value = false
                 })
         }
         getUpcomingEvents()
@@ -78,6 +92,7 @@ export default {
             eventDetails,
             selectEvent,
             formatDate,
+            loading
         }
     }
 }
@@ -130,11 +145,11 @@ export default {
 .hover {
     cursor: pointer;
     box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    transition: all 0.5s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 .remove-hover {
     box-shadow: none;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .register {
