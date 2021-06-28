@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <div class="row pt-4 pb-2 my-5">
-            <div class="col-md-8 offset-md-2 border parent-img-box">
-
+            <div class="col-md-8 offset-md-2 border p-0 parent-img-box">
+                <img :src="guardian && guardian.person ? guardian.person.pictureUrl : ''" class="w-100" v-if="guardian && guardian.person ? guardian.person.pictureUrl : ''"/>
             </div>
         </div>
 
@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-md-9">
                         <span class="font-weight-600">
-                            Colossal Boss
+                            {{ guardian && guardian.person ? guardian.person.firstName : "" }} {{ guardian && guardian.person ? guardian.person.lastName : "" }}
                         </span>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-9">
                         <span class="font-weight-600">
-                            Colossal@Boss.Com
+                            {{ guardian && guardian.person ? guardian.person.email : "" }}
                         </span>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-md-9">
                         <span class="font-weight-600">
-                            1234567890
+                           {{ guardian && guardian.person ? guardian.person.mobilePhone : "" }}
                         </span>
                     </div>
                 </div>
@@ -55,23 +55,37 @@
                     </div>
                     <div class="col-md-9">
                         <span class="font-weight-600">
-                            Father
+                            {{ roles.length > 0 && guardian && guardian.familyRoleID ? roles.find(i => i.id === guardian.familyRoleID).name : "" }}
                         </span>
                     </div>
                 </div>
             </div>
         </div>
-
-        
     </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+import axios from "@/gateway/backendapi";
 export default {
+    props: ['guardian'],
     setup () {
+        const roles = ref([])
         
-
-        return {}
+        const getFamilyRoles = async () => {
+            try {
+                let { data } = await axios.get('/getfamilyroles')
+                console.log(data)
+                roles.value = data.result
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getFamilyRoles()
+        return {
+            roles
+        }
     }
 }
 </script>

@@ -1162,6 +1162,24 @@ const routes = [
             import ( /* webpackChunkName: "defaultmessage" */ '@/views/event/childcheckin/components/PublicView')
     },
     {
+        path: '/checkinsignup/:tenantId',
+        name:'CheckinSignup',
+        component: () =>
+        import ( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignup.vue'),
+        meta: {
+            title: 'Churchplus - ChildSignup',
+        }
+    },
+    {
+        path: '/childcheckin/:tenantId',
+        name:'CheckinSignin',
+        component: () =>
+        import ( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue'),
+        meta: {
+            title: 'Churchplus - ChildSignin',
+        }
+    },
+    {
         path: '/checkin',
         name: 'BaseIndex',
         component: () =>
@@ -1173,24 +1191,34 @@ const routes = [
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinDashboard')
             },
             {
-                path: '/family',
+                path: 'family',
                 name: 'Family',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Family')
-            }, {
-                path: '/checkinprofile',
+            },
+            {
+                path: 'checkinevent/:eventId',
+                name: 'CheckinEvent',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinEvent')
+            },
+            {
+                path: 'upcomingevents',
+                name: 'UpcomingEvents',
+                component: () =>
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/UpcomingEvents')
+            },
+            {
+                path: 'checkinprofile',
                 name: 'CheckinProfile',
                 component: () =>
                     import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinProfile')
             },
             {
-                path: '/checkinsignup',
-                name: 'CheckinSignUp',
+                path: 'checkinguardian',
+                name: 'Guardian',
                 component: () =>
-                    import ( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignup.vue'),
-                meta: {
-                    title: 'Churchplus - ChildSignup',
-                }
+                    import ( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Guardian')
             }
         ]
     },
@@ -1237,31 +1265,43 @@ router.beforeEach((to, from, next) => {
             // We use this to track which meta tags we create so we don't interfere with other ones.
             tag.setAttribute('data-vue-router-controlled', '');
 
-            return tag;
-        })
-        // Add the meta tags to the document head.
-        .forEach(tag => document.head.appendChild(tag));
-
+    return tag;
+  })
+  // Add the meta tags to the document head.
+  .forEach(tag => document.head.appendChild(tag));
+//   const checkinToken = localStorage.getItem('checkinToken')
+//   alert(4)
+//   if ((to.name === "CheckinSignUp" || to.name === "CheckinSignin") && checkinToken) {
+//       alert("hello")
+//     return next({ name: 'CheckinDashboard' })
+//   } else {
+//       alert(false)
+//   }
+  next(true)
 
     if ((to.name === "ResetPassword" ||
-            to.name === "EmailSent" ||
-            to.name === "OnboardingForm" ||
-            to.name === "WebCheckin" ||
-            to.name === "OnlineGiving4" ||
-            to.name === "iFrame" ||
-            to.name === "SignUpPayment" ||
-            to.name === "SignInPayment" ||
-            to.name === "TransactionPage" ||
-            to.name === "PublicResetPassword" ||
-            to.name === "EventRegistration" ||
-            to.name === "BaseIndex") && !tokenIsValid) return next(true)
+     to.name === "EmailSent" || 
+     to.name === "OnboardingForm" || 
+     to.name === "WebCheckin" ||
+     to.name === "OnlineGiving4" ||
+     to.name === "iFrame" || 
+     to.name === "SignUpPayment" || 
+     to.name === "SignInPayment" || 
+     to.name === "TransactionPage" || 
+     to.name === "PublicResetPassword" || 
+     to.name === "EventRegistration") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     const tokenIsValid = token && token.length > 30 ? true : false;
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
-
     next(true)
+
+    // 
+
+    // if((to.name === "BaseIndex") && tokenIsValid) return next("true")
+    // return next("/")
+
 })
 
 export default router
