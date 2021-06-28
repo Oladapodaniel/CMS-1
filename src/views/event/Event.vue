@@ -207,7 +207,7 @@
             <div class="d-none d-md-block col-sm-1 offset-sm-1" style="margin-left: 74px;">
               {{ item.number }}
             </div>
-            <div class="col-2" @click="deleteAttendance(item.attendanceId, index)">
+            <div class="col-1" @click="deleteAttendance(item.attendanceId, indx)">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
           </div>
@@ -332,25 +332,6 @@
             </div>
             
             <div class="col-3 col-sm-2 col-lg-1">
-              <!-- <select class="currency" v-model="item.currency">
-                <option v-for="currency in currencyList" :key="currency.id">{{ currency.name }}</option>
-              </select> -->
-              <!-- <div class="codeModal">
-                <div class="currency country-code form-control codeModal" @click="toggleCode"><div class="d-flex justify-content-between align-items-center"><span class="codeModal">{{ item.currency }}</span><i class="pi pi-angle-down"></i></div></div>
-            </div>
-
-                <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal ">
-                    <input class="codeInput input form-control codeModal" v-model="currencyText">
-                <div v-for="currency in filterCurrency" :key="currency.id" class="codeModal" >
-                    <div class="col-sm-3"><span style="display: inline-block;" @click="getCurrency">{{ currency.name }}</span>&nbsp;&nbsp;<span style="font-size: 0.8em">{{ currency.country }}</span></div>
-                </div>
-                <div v-if="filterCurrency.length == 0">No match found</div>
-                </div> -->
-                <!-- <Dropdown v-model="item.currency" :options="currencyList" :filter="true" class="currency p-0" placeholder="NGN" :showClear="false">
-                    
-                </Dropdown> -->
-            
-
                 <div
                 class="currency pointer d-flex justify-content-around align-items-center close-modal"
                 @click="item.showCurrency = !item.showCurrency"
@@ -411,11 +392,6 @@
             >
               <i class="fa fa-trash" aria-hidden="true"></i>
             </div>
-
-          
-            
-            <!-- <div v-if="item.giver == '' " @click="triggerGiverModal(index)" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center">Add Donor</div>
-            <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="triggerGiverModal(index)">{{ item.giver }}     <span class="donor-text">edit</span></div> -->
             <div v-if="item.donor == '' " data-toggle="modal" data-target="#exampleModal" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">Add Donor</div>
             <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal" >{{ item.donor }}     <span class="donor-text">edit</span></div>
                </div>
@@ -1572,6 +1548,13 @@
             </div>
           </div>
         </div>
+        <Dialog v-model:visible="displayResponsive" :breakpoints="{'960px': '75vw', '640px': '100vw'}" :style="{width: '80vw'}">
+            <p>You have no income account to create a offering item, go to Chart of Account and click 'Update Account' to update your accounts.</p>
+            <template #footer>
+                <!-- <Button label="No" icon="pi pi-times" @click="closeResponsive" class="p-button-text"/> -->
+                <Button label="Go to Chart Of Accounts" icon="pi pi-check" @click="closeResponsive" autofocus />
+            </template>
+        </Dialog>
   </div>
   <ConfirmDialog />
 </template>
@@ -1750,7 +1733,8 @@ export default {
       isPhoneValidNewConvert: true,
       isEmailValidNewConvert: true,
       currencyRate: [],
-      convertedResult: 0
+      convertedResult: 0,
+      displayResponsive: false
     };
   },
 
@@ -2003,10 +1987,10 @@ export default {
             this.$toast.add({
               severity: "success",
               summary: "Confirmed",
-              detail: `attendance Successfully Deleted`,
+              detail: `Attendance Successfully Deleted`,
               life: 3000,
             });
-            this.attendanceItem.splice(index, 1);
+            this.attendanceItem = this.attendanceItem.filter(i => id !== i.attendanceId)
           } else {
             toast.add({
               severity: "warn",
@@ -2070,8 +2054,7 @@ export default {
               detail: `Offering Successfully Deleted`,
               life: 3000,
             });
-            this.offeringItem.splice(index, 1);
-            emit("contri-transac", index);
+            this.offeringItem = this.offeringItem.filter(i => id !== i.id)
           } else {
             toast.add({
               severity: "warn",
@@ -2612,7 +2595,7 @@ export default {
               person: i.person,
               personEmail: i.personEmail,
               personID: i.personID,
-              personName: i.personName,
+              donor: i.personName,
               personPhoneNumber: i.personPhoneNumber,
               tenantID: i.tenantID,
               transactionNumber: i.transactionNumber
@@ -2838,6 +2821,9 @@ export default {
               NProgress.done();
               console.log(res)
             this.incomeAccount = res.data
+            if (res.data.length < 1) {
+            this.displayResponsive = true
+          }
           })
           .catch(err => {
               NProgress.done();
@@ -2854,6 +2840,10 @@ export default {
               console.log(err)
             })
       },
+       closeResponsive () {
+            this.displayResponsive = false;
+            this.$router.push({ name: "ChartOfAccount" })
+        },
       createNewCon (e) {
           let contributionCategory = {
             name: this.contributionItemName,

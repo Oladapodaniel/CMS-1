@@ -10,28 +10,12 @@
                 <div class="dropdown" v-if="false">
                 <router-link to="/tenant/offeringcategory">
                 <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <span><i class="fa fa-angle-down btn-icon"></i></span></button></router-link>
-                    <!-- <i
-                      class="fas fa-ellipsis-v"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    ></i> -->
                     <div
                       class="dropdown-menu"
                       aria-labelledby="dropdownMenuButton"
                     >
                       <a class="dropdown-item">
                         <router-link to="/tenant/addoffering">Add Offering Category</router-link></a>
-                      <!-- <a class="dropdown-item" href="#">Assign to follow-up</a>
-                      <a class="dropdown-item">
-                        <router-link
-                          :to="`/tenant/sms/compose`"
-                          >Send SMS</router-link
-                        >
-                      </a>
-                      <a class="dropdown-item" href="#">Send Email</a>
-                      <a class="dropdown-item" href="#" >Delete</a> -->
                     </div>
                   </div>
                 <button
@@ -383,41 +367,6 @@
             <div class="col-sm-2 offset-sm-2" style="margin-left: 74px">Total</div>
           </div>
         </div>
-        <!-- <div class="attendance-body"> -->
-            <!-- <div v-for="(item, index) in remitance" :key="index" class="row">
-         
-            <div class="col-sm-3 col-12">
-            <Dropdown v-model="item.account" class="w-100 p-0" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-
-                  </Dropdown>
-            </div>
-
-            <div class="col-sm-5 col-12">
-              <div>
-                <input type="text" v-model="item.percentage" class="form-control textbox-height" placeholder="" />
-              </div>
-            </div> -->
-
-            <!-- <div class="col-sm-2 col-12 mt-4 mt-sm-0">
-              <button
-                v-on:click="addRemittance"
-                class="btn btnIcons btn-secondary"
-              >
-                <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
-                Add
-              </button>
-            </div> -->
-            <!-- <div class="col-sm-1 mt-1 align-self-center offset-sm-1" @click="deleteItem(index)">
-              <i class="pi pi-trash"></i>
-            </div>
-    
-          </div> -->
-        <!-- </div> -->
-
-        <!-- Selected offerings -->
-        <!-- <div>{{ offeringItem }}</div> -->
-        <!-- <div>{{newOfferings}}</div> -->
-        <!-- <div>{{ currencyList }}</div> -->
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -1496,7 +1445,7 @@ export default {
                   amount: i.amount ? i.amount : 0,
                   paymentChannel: i.paymentChannel,
                   activityID: i.activityID,
-                  personID: i.personID ? i.personID : "00000000-0000-0000-0000-000000000000",
+                  personID: i.personID ? i.personID : "",
                   currencyID: i.currencyID
                 }
               })
@@ -1504,7 +1453,6 @@ export default {
               console.log(contributions)
 
           if (!route.params.offId) {
-            console.log('No Id')
             axios.post('/api/Financials/Contributions/Transactions/Save', contributions)
             .then(res => {
               console.log(res)
@@ -1539,12 +1487,11 @@ export default {
               console.log(err)
             })
           } else {
-            console.log('Id avalaible')
-            contributions[0].Id = route.params.offId
+            contributions[0].id = route.params.offId
 
             console.log(contributions)
 
-            axios.post(`/api/Financials/Contributions/Transactions/Save`, contributions)
+            axios.put(`/api/Financials/Contributions/Transactions/Edit`, contributions)
             .then(res => {
               console.log(res)
               localStorage.setItem('contriTransact', JSON.stringify(res.data.returnObject))
@@ -1715,9 +1662,8 @@ export default {
                   name: data && data.contribution ? data.contribution.name :  "",
                   financialContributionID: data.financialContributionID,
                   date: data.date.split("T")[0],
-                  // activityID: route.params.offId,
+                  activityID: data.activityID,
                   paymentChannel: data.paymentChannel,
-                  donor: data.personName,
                   currencyID: data.currencyID,
                   amount: data.amount,
                   currencyName: data.currency.shortCode,
@@ -1757,7 +1703,9 @@ export default {
             try {
                 let { data } = await axios.get(`/api/People/GetPersonInfoWithAssignments/${personId}`)
                 console.log(data)
-                offeringItem.value[offeringToAddDonor.value].donor = data.firstName
+                offeringItem.value[offeringToAddDonor.value].donor = `${data.firstName ? data.firstName : ''} ${data.lastName ? data.lastName : ''}`
+
+                offeringItem.value[offeringToAddDonor.value].personID = personId
             }   catch (error) {
                     console.log(error);
             }

@@ -11,7 +11,7 @@
             <label>Income Account</label>
         </div>
         <div class="col-lg-5 col-sm-12 mt-3">
-            <Dropdown v-model="selectedIncomeAccount" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
+            <Dropdown v-model="selectedIncomeAccount" class="w-100 " :options="incomeAccount" optionLabel="text" :filter="false" placeholder="Select" :showClear="false">
             </Dropdown>
         </div>
         <div class="col-sm-4 mt-3 text-right pr-0">
@@ -103,6 +103,9 @@ export default {
                 NProgress.done();
                 console.log(res)
               incomeAccount.value = res.data
+              if (res.data.length < 1) {
+                    emit("show-update-modal", true)
+                }
             })
             .catch(err => {
                 NProgress.done();

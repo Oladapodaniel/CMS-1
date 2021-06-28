@@ -3,36 +3,7 @@
           <div class="col-12 table px-0">
             <div class="top-con" id="ignore2">
           <div class="table-top">
-            <!-- <div
-              class="filter col-2"
-              @click="
-                printJS({
-                  ignoreElements: ['ignore1', 'ignore2'],
-                  maxWidth: 867,
-                  header: 'CONTRIBUTION TRANSACTIONS',
-                  printable: printContribution,
-                  properties: [
-                    'DATE',
-                    'EVENT',
-                    'CONTRIBUTION',
-                    'AMOUNT',
-                    'DONOR',
-                  ],
-                  type: 'json',
-                  headerStyle:
-                    'font-family: Nunito Sans, Calibri; text-align: center;',
-                  gridHeaderStyle:
-                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-                  gridStyle:
-                    'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-                })
-              "
-            >
-              <p class="mt-2">
-                <i class="fa fa-print"></i>
-                PRINT
-              </p>
-            </div> -->
+
             <div class="filter col-2">
               <p @click="toggleFilterFormVissibility" class="mt-2">
                 <i class="fas fa-filter"></i>
@@ -120,197 +91,15 @@
             </div>
           </div>
         </div>
-            <!-- <div class="top-con">
-              <div class="table-top">
-                <div class="select-all"></div>
-                <div class="filter">
-                  <p @click="toggleFilterFormVissibility" class="mt-2">
-                    <i class="fas fa-filter"></i>
-                    FILTER
-                  </p>
-                </div>
-                <p @click="toggleSearch" class="search-text text-right mt-2">
-                  <i class="fa fa-search"></i> SEARCH
-                </p>
-                <div class="search d-flex ml-2">
-                  <label
-                    class="label-search d-flex"
-                    :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
-                  >
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      v-model="searchText"
-                    />
-                    <span class="empty-btn">x</span>
-                    <span class="search-btn">
-                      <i class="fa fa-search"></i>
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div
-              class="filter-options"
-              :class="{ 'filter-options-shown': filterFormIsVissible }"
-            >
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-md-9">
-                    <div class="row">
-                      <div
-                        class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
-                      >
-                        <- <div class="input-field"> --
-
-                        <input
-                          type="text"
-                          class="input w-100"
-                          placeholder="Contribution"
-                      
-                        />
-                        </div> --
-                      </div>
-
-                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
-                          type="date"
-                          class="form-control input inp w-100"
-                     
-                        />
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
-                          type="text"
-                          class="input w-100"
-                          placeholder="event"
             
-                        />
-                      </div>
-
-                      <div class="col-12 col-sm-6 form-group d-none d-md-block">
-                        <input
-                          type="text"
-                          class="input w-100"
-                          placeholder="donor"
-                  
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-3 d-flex flex-column align-items-center">
-                    <button class="apply-btn text-white" @click="applyFilter">
-                      Apply
-                    </button>
-                    <span class="mt-2">
-                      <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                      <span class="mx-2"
-                        ><i
-                          class="fas fa-circle"
-                          style="font-size: 4px"
-                        ></i></span
-                      ><a class="hide-link ml-2" @click="hide">Hide</a>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-
-           
-            <!-- <div class="row table-header">
-                <div class="col-sm-3 d-none d-sm-block">
-                    NAME
-                </div>
-                    <div class="col-sm-3 d-none d-sm-block">
-                    CASH ACCOUNT
-                </div>
-                    <div class="col-sm-3 d-none d-sm-block">
-                    INCOME ACCOUNT
-                </div>
-                    <div class="col-sm-2 d-none d-sm-block">
-                    REMITTANCE
-                </div>
-                    <div class="col-sm-2 d-none d-sm-block" >
-                    DONOR
-                </div> -
-            </div>
-
-            <div class="table-body row" v-for="(offering, index) in searchContribution" :key="offering.id">
-                <div class="col-6 d-block d-sm-none">
-                <div class="col-sm-3">
-                    NAME
-                </div>
-                    <div class="col-sm-2">
-                    CASH ACCOUNT
-                </div>
-                    <div class="col-sm-2">
-                    INCOME ACCOUNT
-                </div>
-                    <div class="col-sm-2">
-                    REMITTANCE
-                </div>
-                    <div class="col-sm-2" >
-                    
-                </div> 
-            </div>
-            <div class="col-6 col-sm-12">
-                <div class="row">
-                <div class="col-sm-3">
-                    <div>{{ offering.name }}</div>
-                </div>
-                <div class="col-sm-3">
-                     <div>{{ offering.cashBankAccount }}</div>
-                </div>
-                <div class="col-sm-3">
-                     <div>{{ offering.incomeAccount }}</div>
-                </div>
-                <div class="col-sm-2">
-                     <div>{{ offering.remiittances }}</div>
-                </div>
-                 <div class="col-sm-2" >
-                     <div>{{ offering.donor }}</div>
-                </div> 
-                <div class="col-sm-1">
-                    <div class="dropdown">
-              <i
-                class="fas fa-ellipsis-v cursor-pointer"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              ></i>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-               
-              <router-link :to="{ name: 'OfferingCategory', params: { offId: offering.id } }">
-                <a class="dropdown-item elipsis-items">
-                 Edit
-                </a>
-              </router-link>
-                <a
-                  class="dropdown-item elipsis-items cursor-pointer"
-                  @click="showConfirmModal(offering.id, index)"
-                  >Delete</a
-                >
-              </div>
-            </div>
-            </div>
-            </div>
-          
-                </div>
-            </div> -->
             <div class="container-fluid d-none d-md-block">
             <div class="row t-header">
               <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
                 <div class="col-md-1 px-3"></div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Name</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Name</div>
                 <div class="small-text text-capitalize col-md-3 font-weight-bold">Cash Account</div>
                 <div class="small-text text-capitalize col-md-3 font-weight-bold">Income Account</div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Cash Account</div>
-                <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Action</div>
               <!-- </div> -->
             </div>
           </div>
@@ -329,14 +118,14 @@
                     />
                   </div>
 
-                  <div class="desc small-text col-md-2 px-1">
+                  <div class="desc small-text col-md-3">
                     <p class="mb-0 d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none">Name</span>
                       <span>{{ item.name }}</span>
                     </p>
                   </div>
 
-                  <div class="col-md-3 px-1">
+                  <div class="col-md-3">
                     <div class="d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none">Cash Account</span>
                     <div>
@@ -346,7 +135,7 @@
                     </div>
                   </div>
 
-                  <div class="desc-head small-text col-md-3 px-1">
+                  <div class="desc-head small-text col-md-3">
                     <p class="mb-0 d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none">Income Account</span>
                       <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
@@ -354,16 +143,9 @@
                     </p>
                   </div>
 
-                  <div class="small-text col-md-2 px-1">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span class="text-dark font-weight-bold d-flex d-md-none">Remittance</span>
-                      <span><span class="primary-text c-pointer"
-                      >{{ item.remiittances }}</span
-                    ></span>
-                    </p>
-                  </div>
+        
 
-                  <div class="small-text col-md-1 px-1">
+                  <div class="small-text col-md-2">
                     <!-- <p class="mb-0 d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
                       <span>Marked</span>
@@ -538,50 +320,6 @@ export default {
       if (props.contributionItems.length > 100) return Math.ceil(props.contributionItems.length / 100);
       return 1;
     })
-
-    // onMounted(() => {
-    //   console.log(route, "route");
-    //   axios.get("/api/People/FirstTimer").then((res) => {
-    //     churchMembers.value = res.data;
-    //     console.log(churchMembers.value);
-    //   });
-    // });
-
-    // const applyFilter = () => {
-    //   filter.value.filterFirstName =
-    //     filter.value.filterFirstName == undefined
-    //       ? ""
-    //       : filter.value.filterFirstName;
-    //   filter.value.filterLastName =
-    //     filter.value.filterLastName == undefined
-    //       ? ""
-    //       : filter.value.filterLastName;
-    //   filter.value.phoneNumber =
-    //     filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
-
-    //   let url =
-    //     "/api/People/FilterMembers?firstname=" +
-    //     filter.value.filterFirstName +
-    //     "&lastname=" +
-    //     filter.value.filterLastName +
-    //     "&phone_number=" +
-    //     filter.value.phoneNumber +
-    //     "&page=1";
-    //   axios
-    //     .get(url)
-    //     .then((res) => {
-    //       noRecords.value = true;
-    //       filterResult.value = res.data;
-    //       console.log(filterResult.value);
-    //     })
-    //     .catch((err) => console.log(err));
-    // };
-
-    // const membersCount = computed(() => {
-    //   if (getFirstTimerSummary.value.totalFirstTimer > 20)
-    //     return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 20);
-    //   return 0;
-    // });
 
     const clearAll = () => {
       filter.value = {}
@@ -1011,7 +749,7 @@ export default {
 }
 
 
-.t-header div {
+.t-header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
   padding: .5rem 0;
