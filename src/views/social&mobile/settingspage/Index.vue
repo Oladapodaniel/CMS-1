@@ -413,9 +413,9 @@ export default {
     }
 
     var provider = new firebase.auth.FacebookAuthProvider();
-    facebookProvider.addScope('email');
-    facebookProvider.addScope('user_birthday');
-    facebookProvider.addScope('user_friends');
+    provider.addScope('email');
+    provider.addScope('user_birthday');
+    provider.addScope('user_friends');
     firebase
         .auth()
         .signInWithPopup(provider)
