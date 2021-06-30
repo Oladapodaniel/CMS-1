@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row my-3">
+        <!-- <div class="row my-3">
             <div class="col-md-12 text-center">
                 <h5 class="font-weight-700">
                     Not yet in any family?
@@ -14,11 +14,11 @@
                     data-toggle="modal" data-target="#addToFamilyModal"
                 >Add to family</button>
             </div>
-        </div>
+        </div> -->
 
 
         <!-- Add To Family Modal -->
-        <div class="modal fade" id="addToFamilyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- <div class="modal fade" id="addToFamilyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header py-4">
@@ -32,24 +32,38 @@
                 </div>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <Dropdown :options="guardians" optionLabel="person.firstName" class="my-5" v-model="selectedGuardian" @change="updateGuardian" placeholder="Change Guardian" style="width: 100%" />
 
     </div>
 </template>
 
 <script>
-import AddToFamily from "./AddToFamily";
+import { ref } from "vue"
+// import AddToFamily from "./AddToFamily";
+import Dropdown from "primevue/dropdown"
 
 export default {
-    components: { AddToFamily },
+    props: ['guardians'],
+    components: {
+        Dropdown
+    },
     setup (props, { emit }) {
+        const selectedGuardian = ref({})
         
         const openAddToFamilyModal = () => {
             emit('addtofamily');
         }
 
+        const updateGuardian = () => {
+            console.log(selectedGuardian.value)
+            emit('update-guardian', selectedGuardian.value)
+        }
+
         return {
             openAddToFamilyModal,
+            selectedGuardian,
+            updateGuardian
         }
     }
 }

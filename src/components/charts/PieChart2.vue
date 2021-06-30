@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onUpdated, ref } from "vue";
 import Highcharts from "highcharts";
 
 export default {
@@ -11,7 +11,7 @@ export default {
     props: ["chartType", "data"],
   setup(props) {
     const chart = ref(null);
-    onMounted(() => {
+    onUpdated(() => {
       var highchartsOptions = {
         chart: {
           type: "pie",
@@ -20,11 +20,19 @@ export default {
         credits: {
           enabled: false,
         },
-        tooltip: {
-          enabled: false,
-        },
+        // tooltip: {
+        //   enabled: false,
+        // },
         title: {
           text: props.chartType,
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
         },
         xAxis: {
           allowDecimals: false,
@@ -58,9 +66,16 @@ export default {
           pie: {
             allowPointSelect: true,
             cursor: "pointer",
+            colors: ["#136acd", "#dde2e6", '#67a9cf', '#708eb1', '#61915e', '#1f06ffc0', "#078292de", "#660792de", '#927d07c2'],
             dataLabels: {
-              enabled: true,
-              distance: -50,
+                enabled: false,
+                format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                distance: -40,
+                filter: {
+                    property: 'percentage',
+                    operator: '>',
+                    value: 4
+                }
             },
             showInLegend: true
           }
