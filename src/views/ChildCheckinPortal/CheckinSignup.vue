@@ -4,8 +4,8 @@
             <div class="col-12 col-md-5 offset-md-1 ">
                 <div class=" container">
                     <div class="row justify-content-center">
-                        <div class=" col-10 my-5 "><img :src="churchLogo" style="width: 85px" alt=""></div>
-                        <div class="col-10 my-3">
+                        <div class=" col-sm-10 my-5 "><img :src="churchLogo" style="width: 85px" alt=""></div>
+                        <div class="col-sm-10 my-3">
                             <h1 class="font-weight-bold ">Create an account</h1>
                         </div>
                     </div>
@@ -15,20 +15,20 @@
                                 <p class="error-message">{{ errorMessage }}</p>
                             </div>
                         </div>
-                        <div class="col-10">
+                        <div class="col-sm-10">
                              <label class="font-weight-bold">What's your name?</label>
                         </div>
-                        <div class="col-5  form-group">
+                        <div class="col-sm-5  form-group">
                             <input type="text" class=" form-control  font-italic all-input " v-model="userDetails.firstName" placeholder="First name">
                         </div>
-                        <div class="col-5 form-group">
+                        <div class="col-sm-5 form-group">
                             <input type="text" class=" form-control all-input" v-model="userDetails.lastName" placeholder="Last name">
                         </div>
-                        <div class="col-10 form-group">
+                        <div class="col-sm-10 form-group">
                             <label class="font-weight-bold ">Email / Phone Number</label>
                             <input type="text" class=" form-control all-input " v-model="username" placeholder="Enter email / phone number">
                         </div>
-                        <div class="col-5 ">
+                        <div class="col-sm-5 ">
                             <label class="font-weight-bold" >Role</label>
                             <Dropdown 
                             class="w-100  all-input"
@@ -38,12 +38,12 @@
                             v-model="selectedRole"
                              />
                         </div>
-                        <div class="col-5 form-group">
+                        <div class="col-sm-5 form-group mt-3">
                             <label class="font-weight-bold"> Password </label>
                             <input type="password" class=" form-control all-input" v-model="userDetails.password" placeholder="Enter password">
                             <span class="py-2">Must be six character long</span>
                         </div>
-                        <div class="col-10"><button class="btn btn-primary create-btn font-weight-bold w-100">Create an account</button></div>                       
+                        <div class="col-sm-10"><button class="btn btn-primary create-btn font-weight-bold w-100">Create an account</button></div>                       
                     </form>
                     <!-- <div class="row my-3 justify-content-center ">
                         <div class="col-4  border-bottom "></div>
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="col-5 col-md-5 offset-md-1 childimage d-none d-md-block  d-lg-block" >
-                   <div class="text-white "><h1>Olive Tree Parish <br> Child Checkin <br> System</h1></div>
+                   <div class="text-white "><h1>{{ churchName }} <br> Child Checkin <br> System</h1></div>
                 <!-- <img src="../../../assets/child1.png" alt=""> -->
             </div>
         </div>
@@ -93,6 +93,7 @@ export default ({
         const selectedRole = ref({})
         const churchLogo = ref("")
         const errorMessage = ref("")
+        const churchName = ref("")
 
         const getFamilyRoles = async () => {
             try {
@@ -170,6 +171,7 @@ export default ({
                     let res = await axios.get(`/GetChurchProfileById?tenantId=${route.params.tenantId}`)
                     console.log(res)
                     churchLogo.value = res.data.returnObject.logo
+                    churchName.value = res.data.returnObject.name
                 }
                 catch (err) {
                     console.log(err)
@@ -185,7 +187,8 @@ export default ({
             route,
             username,
             churchLogo,
-            errorMessage
+            errorMessage,
+            churchName
         }
     },
 })
@@ -214,7 +217,7 @@ export default ({
 .childimage h1 {
     position: absolute;
     top: 40%;
-    left: 230px ;
+    left: 170px ;
     font-weight: bolder;
     font-size: 60px;
 }

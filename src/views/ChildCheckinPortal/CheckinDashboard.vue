@@ -299,9 +299,9 @@
                     </div>
                     </div>
                 </div>
-            <div v-else>
+            <!-- <div v-else>
                <img src="../../assets/checkin-assets/CatThumb_UpcomingEvents.jpeg" class="w-100">
-            </div>
+            </div> -->
             </div>
         </div>
     </div>
