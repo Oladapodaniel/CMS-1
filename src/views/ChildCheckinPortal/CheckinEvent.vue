@@ -31,22 +31,23 @@
             </div>
         </div> -->
 
-        
-        <div class="row mt-4" :class="{ 'fix-card' : addScrollClass, 'default-position' : !addScrollClass }">
-            <div class="offset-1 offset-md-3 card p-3" :class="{ 'col-10 col-md-6' : !addScrollClass}">
+         <!-- :class="{ 'fix-card' : addScrollClass, 'default-position' : !addScrollClass }" -->
+         <!-- :class="{ 'col-10 col-md-6' : !addScrollClass}" -->
+        <div class="row mt-4">
+            <div class="offset-1 offset-md-3 card col-10 col-sm-6 p-3" >
                 <div class="row">
-                    <div class="col-5 checkin-text">
+                    <div class="col-6 checkin-text">
                         Groups
                     </div>
-                    <div class="col-7 checkin-text">
-                        Available Space
+                    <div class="col-6 checkin-text">
+                        Slot
                     </div>
                 </div>
                 <div class="row" v-for="(item, index) in groupSlots" :key="index">
-                    <div class="col-5 mt-3 event-time">
+                    <div class="col-6 mt-3 event-time">
                         {{ item.group }}
                     </div>
-                    <div class="col-7 mt-3 font-weight-700"> 
+                    <div class="col-6 mt-3 font-weight-700"> 
                         {{ item.slot !== null ? item !== 0 ? item.slot : "" : 'Unlimited' }}
                     </div>
                 </div>
@@ -87,7 +88,7 @@
                             <div class="col-8">
                                 <Dropdown class="p-0 w-100" :options="attendanceCheckin" v-model="item.selectedAttendanceCheckin" optionLabel="fullGroupName" :filter="false" placeholder="Select" @change="setSlot(index, item)" :showClear="false">
                                 </Dropdown>
-                            <div class="slot mt-2 text-danger">{{ item.error ? "You cannot select this group, it's filled up already" : "" }} </div>
+                            <!-- <div class="slot mt-2 text-danger">{{ item.error ? "You cannot select this group, it's filled up already" : "" }} </div> -->
                             </div>
                         </div>
                         
@@ -133,7 +134,7 @@
                 </div>
                 <div class="modal-body">
                     <Memberform :familyDetails="familyDetails" @member-roles="getMemberRoles" @remove-modal="dismissModal" @push-to-view="pushToView"/>
-                </div>
+                </div>{{ familyDetails }}
 
                 </div>
             </div>
@@ -265,6 +266,11 @@ export default {
                 const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
                 console.log(res)
                 familyDetails.value = res.data
+                familyDetails.value.familyMembers = res.data.familyMembers.map(i => {
+                    i.addToGroup = false
+                    i.initialGroup = null
+                    return i
+                })
                 getGuardian(res.data.id)
             }
             catch (error) {
@@ -410,6 +416,18 @@ export default {
 
         })
 
+        const checkForGroup = (item) => {
+            if (!item.initialGroup) {
+                const index = attendanceCheckin.value.findIndex(i => i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName);
+                if (index >= 0) attendanceCheckin.value[index].registrationSlot -= 1;
+            } else {
+                const index = attendanceCheckin.value.findIndex(i => i.fullGroupName === item.initialGroup);
+                const indx = attendanceCheckin.value.findIndex(i => i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName);
+                if (index >= 0) attendanceCheckin.value[index].registrationSlot += 1;
+                if (indx >= 0) attendanceCheckin.value[indx].registrationSlot -= 1;
+            }
+        }
+
         const setSlot = (index, item) => {
             checkinIndex.value = index
             selectedGroup.value = item
@@ -445,6 +463,7 @@ export default {
             let checkSlot = groupSlots.value.find(i => {
                 return i.group === item.selectedAttendanceCheckin.fullGroupName
             })
+            console.log(checkSlot)
             
             if (checkSlot.slot !== null) {
                 if (checkSlot.slot > 0) {
@@ -462,15 +481,12 @@ export default {
                         /*eslint no-undef: "warn"*/
                         break_code
                 }
-
-                // checkSlot.slot < 0 ? familyDetails.value.familyMembers[index].error = true : ""
-                // checkSlot.slot < 1 ? attendanceCheckin.value.filter(i => i.fullGroupName !== checkSlot.group) : ""
-                // if(checkSlot.slot) {
-                    
-                        
-                //     }
                 }
             }
+
+
+            checkForGroup(item)
+            item.initialGroup = item.selectedAttendanceCheckin.fullGroupName;
 
 
 
@@ -653,22 +669,24 @@ opacity: 1;
 
 }
 
-.fix-card {
-    position: fixed;
-    top: 10px;
-    width: 70%;
-    z-index: 1;
-    transition: all 0.5s ease-in-out;
-}
+/* @media (min-width: 768px) {
+    .fix-card {
+        position: fixed;
+        top: 10px;
+        width: 70%;
+        z-index: 1;
+        transition: all 0.5s ease-in-out;
+    }
 
-div.fix-card .card {
-    box-shadow: 0px 3px 6px #2c28281c;
-}
+    div.fix-card .card {
+        box-shadow: 0px 3px 6px #2c28281c;
+    }
 
-.default-position {
-    position: relative;
-    transition: all 0.5s ease-in-out;
-}
+    .default-position {
+        position: relative;
+        transition: all 0.5s ease-in-out;
+    }
+} */
 
 .nb {
     font-size: 0.9em;
