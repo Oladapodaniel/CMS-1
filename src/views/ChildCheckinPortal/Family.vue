@@ -5,7 +5,7 @@
     class="container-fluid container-wide container-top">
     <!-- Header Area -->
     <div
-      class="row d-flex justify-content-center justify-content-sm-between">
+      class="row d-flex justify-content-between">
       <div class="family-header">Family</div>
       <div
         class="

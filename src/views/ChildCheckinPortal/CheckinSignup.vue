@@ -10,6 +10,11 @@
                         </div>
                     </div>
                     <form @submit.prevent="signUp" class="row justify-content-center mb-3">
+                        <div class="col-10" v-if="errorMessage">
+                            <div class="error-div">
+                                <p class="error-message">{{ errorMessage }}</p>
+                            </div>
+                        </div>
                         <div class="col-10">
                              <label class="font-weight-bold">What's your name?</label>
                         </div>
@@ -40,20 +45,20 @@
                         </div>
                         <div class="col-10"><button class="btn btn-primary create-btn font-weight-bold w-100">Create an account</button></div>                       
                     </form>
-                    <div class="row my-3 justify-content-center ">
+                    <!-- <div class="row my-3 justify-content-center ">
                         <div class="col-4  border-bottom "></div>
                         <div class="col-1 text-center">or </div>
                         <div class="col-4  border-bottom "></div>
-                    </div>
+                    </div> -->
                     
                     <div class="row justify-content-center ">
                         <!-- Social Media -->
-                        <div class="col-2"><img src="../../assets/google.png" alt=""></div>
+                        <!-- <div class="col-2"><img src="../../assets/google.png" alt=""></div>
                         <div class="col-2"><img src="" alt=""></div>
-                        <div class="col-2"><img src="../../assets/facebook.png" alt=""></div>
-                        <div class="col-10 my-4 text-center font-weight-bold">
+                        <div class="col-2"><img src="../../assets/facebook.png" alt=""></div> -->
+                        <div class="col-10 my-4 font-weight-bold">
                             <span>Already have an account?</span> 
-                            <router-link :to="{ name: 'CheckinSignin', params: { tenantId: route.params.tenantId } }">Sign in now</router-link>
+                            &nbsp; <router-link :to="{ name: 'CheckinSignin', params: { tenantId: route.params.tenantId } }">Sign in now</router-link>
                         </div>
                         <div class="col-10 mt-3 font-weight-bold">All Right Reserved 2021</div>
                     </div>
@@ -75,6 +80,7 @@ import Dropdown from "primevue/dropdown";
 import { useRoute } from "vue-router"
 import axios from "@/gateway/backendapi";
 import router from "../../router";
+import finish from "../../services/progressbar/progress";
 export default ({
     components: { Dropdown },
     setup() {
@@ -86,6 +92,7 @@ export default ({
         const roles = ref([])
         const selectedRole = ref({})
         const churchLogo = ref("")
+        const errorMessage = ref("")
 
         const getFamilyRoles = async () => {
             try {
@@ -103,6 +110,7 @@ export default ({
             }
             catch (err) {
                 console.log(err)
+                finish()
             }
         }
         getFamilyRoles()
@@ -119,16 +127,40 @@ export default ({
             try {
                 let res = await axios.post('/familyRegister', userDetails.value)
                 console.log(res)
-                const baseAuth = {
-                    checkinPerson: res.data.personID,
-                    tenantId: res.data.login.result.value.tenantID
+                if (res.status === 200 && res.data.loginData.value.login.result.statusCode === 401) {
+                    errorMessage.value = res.data.loginData.value.login.result.value.message
+                }   else if (res.status === 200 && res.data.loginData.value.login.result.statusCode === 200) {
+                     const baseAuth = {
+                        checkinPerson: res.data.personID,
+                        tenantId: res.data.loginData.value.login.result.value.tenantID
+                    }
+                    localStorage.setItem('checkinToken', res.data.loginData.value.login.result.value.token)
+                    localStorage.setItem('baseAuth', JSON.stringify(baseAuth))
+                    router.push({ name: 'CheckinDashboard' })
+                    errorMessage.value = ""
+                }   else if (res.status === 200 && res.data.loginData.value.login.result.statusCode === 400) {
+                    errorMessage.value = res.data.loginData.value.login.result.value.message
+                }   else {
+                    console.log(res)
                 }
-                localStorage.setItem('checkinToken', res.data.loginData.result.value.token)
-                localStorage.setItem('baseAuth', JSON.parse(baseAuth))
-                router.push({ name: 'CheckinDashboard' })
+                
             }
             catch (err) {
                 console.log(err)
+                finish()
+                if (err && err.response && err.response.status === 400) {
+                    if (userDetails.value.password.length < 6) {
+                        errorMessage.value = "Your password should not be less than 6 characters"
+                    }   else {
+                        errorMessage.value = err.response.data
+                    }
+                }  else if (err.toString().toLowerCase().includes('network error')) {
+                    errorMessage.value = "Network error, please make sure you have a strong internet connection"  
+                }  else if (err.toString().toLowerCase().includes('timeout')) {
+                    errorMessage.value = "Request took too long to respond, please reload and try again"
+                }   else {
+                    console.log(err)
+                }
             }
 
             
@@ -141,6 +173,7 @@ export default ({
                 }
                 catch (err) {
                     console.log(err)
+                    finish()
                 }
             }
             getChurchProfile()
@@ -151,7 +184,8 @@ export default ({
             selectedRole,
             route,
             username,
-            churchLogo
+            churchLogo,
+            errorMessage
         }
     },
 })
@@ -184,5 +218,21 @@ export default ({
     font-weight: bolder;
     font-size: 60px;
 }
+
+.error-div {
+  background: #fff8f8;
+  border-color: #ffe9e9;
+  padding: 10px 5px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  border-left: 5px solid #b52626;
+}
+
+.error-message {
+  color: #b52626;
+  margin-bottom: 0;
+}
+
 
 </style>

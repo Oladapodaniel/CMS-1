@@ -10,7 +10,11 @@
                         </div>
                     </div>
                     <form @submit.prevent="logIn" class="row justify-content-center mb-3">
-                        
+                        <div class="col-10" v-if="errorMessage">
+                            <div class="error-div">
+                                <p class="error-message">{{ errorMessage }}</p>
+                            </div>
+                        </div>
                 
                         <div class="col-10 form-group">
                             <label class="font-weight-bold ">Email / Phone Number</label>
@@ -37,7 +41,7 @@
                         <div class="col-2"><img src="../../assets/facebook.png" alt=""></div> -->
                         <div class="col-10 my-4 font-weight-bold">
                             <span>Don't have an account?</span> 
-                             <router-link :to="{ name: 'CheckinSignup', params: { tenantId: route.params.tenantId } }">Sign up now</router-link>
+                             &nbsp; <router-link :to="{ name: 'CheckinSignup', params: { tenantId: route.params.tenantId } }">Sign up now</router-link>
                         </div>
                         <div class="col-10 mt-3 font-weight-bold">All Right Reserved 2021</div>
                     </div>
@@ -57,6 +61,7 @@
 import { ref } from "vue"
 import { useRoute } from "vue-router"
 import axios from "@/gateway/backendapi";
+import finish from "../../services/progressbar/progress";
 import router from "../../router";
 export default ({
     setup() {
@@ -64,6 +69,7 @@ export default ({
         const userDetails = ref({})
         const username = ref("")
         const churchLogo = ref("")
+        const errorMessage = ref("")
 
 
         const logIn = async() => {
@@ -78,17 +84,35 @@ export default ({
             try {
                 let res = await axios.post('/familyLogin', userDetails.value)
                 console.log(res)
-                const baseAuth = {
-                    checkinPerson: res.data.personID,
-                    tenantId: res.data.login.result.value.tenantID
-                }
+                if (res.status === 200 && res.data.login.result.statusCode === 401) {
+                    errorMessage.value = res.data.login.result.value.message
+                }   else if (res.status === 200 && res.data.login.result.statusCode === 200) {
+                     const baseAuth = {
+                        checkinPerson: res.data.personID,
+                        tenantId: res.data.login.result.value.tenantID
+                    }
 
-                localStorage.setItem('checkinToken', res.data.login.result.value.token)
-                localStorage.setItem('baseAuth', JSON.stringify(baseAuth))
-                router.push({ name: 'CheckinDashboard' })
+                    localStorage.setItem('checkinToken', res.data.login.result.value.token)
+                    localStorage.setItem('baseAuth', JSON.stringify(baseAuth))
+                    router.push({ name: 'CheckinDashboard' })
+                    errorMessage.value = ""
+                }   else {
+                    console.log(res)
+                }
+               
             }
             catch (err) {
-                console.log(err)
+                finish()
+                console.log(err.response)
+                if (err && err.response && err.response.status === 400) {
+                    errorMessage.value = err.response.data
+                }  else if (err.toString().toLowerCase().includes('network error')) {
+                    errorMessage.value = "Network error, please make sure you have a strong internet connection"  
+                }  else if (err.toString().toLowerCase().includes('timeout')) {
+                    errorMessage.value = "Request took too long to respond, please reload and try again"
+                }   else {
+                    console.log(err)
+                }
             }
             
         }
@@ -101,6 +125,7 @@ export default ({
             }
             catch (err) {
                 console.log(err)
+                finish()
             }
         }
         getChurchProfile()
@@ -110,7 +135,8 @@ export default ({
             logIn,
             route,
             username,
-            churchLogo
+            churchLogo,
+            errorMessage
         }
     },
 })
@@ -142,6 +168,21 @@ export default ({
     left: 230px ;
     font-weight: bolder;
     font-size: 60px;
+}
+
+.error-div {
+  background: #fff8f8;
+  border-color: #ffe9e9;
+  padding: 10px 5px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  border-left: 5px solid #b52626;
+}
+
+.error-message {
+  color: #b52626;
+  margin-bottom: 0;
 }
 
 </style>

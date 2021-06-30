@@ -9,7 +9,7 @@
             </div>
             <div class="col-10 offset-1 menu-links">
                 <router-link to="/checkin">
-                <div class="row" :class="{ 'active' : route.fullPath.includes('checkin'), 'style-font' : !route.fullPath.includes('checkin') }">
+                <div class="row" :class="{ 'active' : route.fullPath.includes('checkin'), 'style-font' : !route.fullPath.includes('checkin') }" @click="closeNav">
                     <div class="col-2">
                         <img src="../../assets/checkin-assets/dashboard.svg" >
                     </div>
@@ -18,7 +18,7 @@
                 </router-link>
 
                 <router-link :to="{ name: 'CheckinProfile' }">
-                <div class="row push-down" :class="{ 'active' : route.fullPath.includes('profile'), 'style-font' : !route.fullPath.includes('profile') }">
+                <div class="row push-down" :class="{ 'active' : route.fullPath.includes('profile'), 'style-font' : !route.fullPath.includes('profile') }" @click="closeNav">
                     <div class="col-2">
                         <img src="../../assets/checkin-assets/Icon-ionic-ios-person.svg" >
                     </div>
@@ -27,7 +27,7 @@
                 </router-link>
 
                 <router-link to="/checkin/family">
-                    <div class="row push-down" :class="{ 'active' : route.fullPath.includes('family'), 'style-font' : !route.fullPath.includes('family') }">
+                    <div class="row push-down" :class="{ 'active' : route.fullPath.includes('family'), 'style-font' : !route.fullPath.includes('family') }" @click="closeNav">
                         <div class="col-2">
                             <img src="../../assets/checkin-assets/family-silhouette.svg" >
                         </div>
@@ -35,7 +35,7 @@
                     </div>
                 </router-link>
                 <router-link :to="{ name: 'Guardian' }">
-                <div class="row push-down" :class="{ 'active' : route.fullPath.includes('guardian'), 'style-font' : !route.fullPath.includes('guardian') }">
+                <div class="row push-down" :class="{ 'active' : route.fullPath.includes('guardian'), 'style-font' : !route.fullPath.includes('guardian') }" @click="closeNav">
                     <div class="col-2">
                         <img src="../../assets/checkin-assets/Group-16991.svg" >
                     </div>
@@ -44,7 +44,7 @@
                 </router-link>
                 
                 <router-link :to="{ name: 'UpcomingEvents' }">
-                <div class="row push-down" :class="{ 'active' : route.fullPath.includes('checkin-event'), 'style-font' : !route.fullPath.includes('checkin-event') }">
+                <div class="row push-down" :class="{ 'active' : route.fullPath.includes('checkin-event'), 'style-font' : !route.fullPath.includes('checkin-event') }" @click="closeNav">
                     <div class="col-2">
                         <img src="../../assets/checkin-assets/Group-157.svg" >
                     </div>
@@ -61,7 +61,7 @@ import { useRoute }  from "vue-router"
 import { ref } from "vue"
 import axios from "@/gateway/backendapi";
 export default {
-    setup () {
+    setup (props, { emit }) {
         const route = useRoute()
     const churchLogo = ref("")
         const getChurchProfile = async() => {
@@ -77,9 +77,14 @@ export default {
             }
         }
         getChurchProfile()
+
+        const closeNav = () => {
+            emit('close-nav', false)
+        }
         return {
             route,
-            churchLogo
+            churchLogo,
+            closeNav
         }
     }
 }

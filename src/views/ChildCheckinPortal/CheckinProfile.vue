@@ -1,20 +1,52 @@
 <template>
     <div>
-        <div class="profile">
-            <div class="row justify-content-between">
-                <div class=" col-12 col-md-1">
+        <div class="container-wide container-top">
+            <div class="row">
+              <div class="col-12 header1">Profile</div>
+
+
+              <div class=" col-12 col-md-4 imagefolder d-block d-md-none">
+                      <div class="grey-bg light-grey-bg mt-5 py-2 image1">
+                        <div class="person-img mt-3">
+                          <img v-if="url" :src="url" alt="Uploaded Image" />
+                          <img
+                            v-else-if="!profile.pictureUrl"
+                            src="../../assets/people/phone-import.svg"
+                            alt="Uploaded Image"
+                          />
+                          <img v-else :src="profile.pictureUrl" alt="Uploaded Image" />
+                        </div>
+                        <div>
+                          <div class="cs-input">
+                            <label for="imgUpload" class="choose-file">
+                              Choose file
+                              <input
+                                type="file"
+                                class="input file-input"
+                                placeholder=""
+                                id="imgUpload"
+                                @change="chooseImage"
+                              />
+                            </label>
+                          </div>
+                        </div>
+                        <div>
+                          <button :disabled="disabled" class="cursor-pointer outline-none" :class="{ 'upload-image-disabled' : disabled, 'upload-image' : !disabled }" @click.prevent="uploadImage">
+                            Upload
+                          </button>
+                        </div>
+                      </div>
 
                 </div>
-                <div class=" col-12 col-md-2 mt-md-5 mt-0 ml-md-0 ml-5">
-                    <h1 class="header1">Profile</h1>
 
-                </div>
-                <div class="col-12 col-md-5 mt-md-5 mt-0">
+
+                <div class=" col-10 offset-1 offset-md-0 col-md-8 mt-5">
                     <div class="row">
-                        <div class="col-12 col-md-3 text-md-right ml-md-0 ml-5 pr-0">
+                    
+                        <div class="col-12 col-md-3 text-md-right ">
                         <label class="small-text lb font-weight-600" for="">First Name</label>
                         </div>
-                        <div class="col-12 col-md-8 form-group ml-md-0 ml-5">
+                        <div class="col-12 col-md-8 form-group">
                         <input type="text" 
                         placeholder="first Name"
                         v-model="profile.firstName"
@@ -22,10 +54,10 @@
                         </div>
                     </div>
                      <div class="row">
-                        <div class="col-12 col-md-3 text-md-right pr-0 ml-md-0 ml-5">
+                        <div class="col-12 col-md-3 text-md-right ">
                         <label class="small-text lb font-weight-600" for="">last Name</label>
                         </div>
-                        <div class="col-12 col-md-8 form-group ml-md-0 ml-5">
+                        <div class="col-12 col-md-8 form-group ">
                         <input type="text" 
                         placeholder="Last Name"
                         v-model="profile.lastName"
@@ -33,10 +65,10 @@
                         </div>
                     </div>
                     <div class="row">
-                            <div class="col-12 col-md-3 text-md-right pr-0 ml-md-0 ml-5">
+                            <div class="col-12 col-md-3 text-md-right">
                             <label class="small-text lb font-weight-600" for="">Phone Number</label>
                             </div>
-                            <div class="col-12 col-md-8 form-group ml-md-0 ml-5">
+                            <div class="col-12 col-md-8 form-group">
                             <input type="text"
                             placeholder="Phone Number"
                             v-model="profile.mobilePhone"
@@ -44,10 +76,10 @@
                             </div>
                     </div>
                      <div class="row">
-                            <div class="col-12 col-md-3 text-md-right pr-0 ml-md-0 ml-5">
+                            <div class="col-12 col-md-3 text-md-right ">
                             <label class="small-text lb font-weight-600" for="">Email</label>
                             </div>
-                            <div class="col-12 col-md-8 form-group ml-md-0 ml-5">
+                            <div class="col-12 col-md-8 form-group ">
                             <input type="text"
                             placeholder="Email"
                                 class="form-control ml-0"
@@ -56,10 +88,10 @@
                             </div>
                       </div>
                       <div class="row">
-                        <div class="col-12 col-md-3 text-md-right pr-0 ml-md-0 ml-5">
+                        <div class="col-12 col-md-3 text-md-right">
                         <label class="small-text lb font-weight-600" for="">Address</label>
                         </div>
-                        <div class="col-12 col-md-8 form-group ml-md-0 ml-5">
+                        <div class="col-12 col-md-8 form-group">
                         <input type="text" 
                         placeholder="Address"
                         v-model="profile.homeAddress"
@@ -73,7 +105,7 @@
                     </div>
 
                 </div>
-                <div class=" col-12 col-md-4 mt-5 imagefolder">
+                <div class="d-none d-md-block col-12 col-md-4 mt-5 imagefolder">
                       <div class="grey-bg light-grey-bg mt-5 py-2 image1">
                         <div class="person-img mt-3">
                           <img v-if="url" :src="url" alt="Uploaded Image" />

@@ -15,7 +15,7 @@
         <div class="row mt-4" v-for="(item, index) in eventDetails" :key="item.id">
             <div class="col-12 card" :class="{ 'hover' : item.hoverIt, 'remove-hover' : !item.hoverIt }" @mouseover="onHover(index)" @mouseleave="onLeave(index)" @click="selectEvent(item)">
                 <div class="row p-3 align-items-center">
-                    <div class="col-2 offset-8 offset-md-0 col-md-1">
+                    <div class="col-12 offset-md-0 col-md-1">
                         <img :src="item.eventBanner" class="member-image" v-if="item && item.eventBanner ? item.eventBanner : ''" />
                         <img src="../../assets/checkin-assets/worship-service.jpeg" v-else class="member-image" />
                     </div>
@@ -23,7 +23,7 @@
                         <div class="child-name">{{ item.name }}</div>
                         <div class="checkin-time mt-3">{{ formatDate(item.date) }}</div>
                     </div>
-                    <div class="col-10 col-md-3">
+                    <div class="col-10 col-md-3 mt-3 mt-md-0">
                         <div class="register p-2 text-center">  
                             Register for this event
                         </div>
