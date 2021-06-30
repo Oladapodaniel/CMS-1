@@ -23,7 +23,9 @@
 
 <script>
 import { useRoute } from "vue-router";
+import authMixin from "../../mixins/auth.mixins"
 export default {
+    mixins: [ authMixin ],
     setup () {
         const route = useRoute();
 

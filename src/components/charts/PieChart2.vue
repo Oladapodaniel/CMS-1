@@ -16,6 +16,7 @@ export default {
         chart: {
           type: "pie",
           renderTo: "chart",
+          height: 250,
         },
         credits: {
           enabled: false,

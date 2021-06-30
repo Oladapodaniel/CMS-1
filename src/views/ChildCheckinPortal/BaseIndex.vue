@@ -3,7 +3,7 @@
         <div class="row">
             <div class="nav-side">
                 <div :class="{ 'slide-nav' : menuLink, 'adjust-width' : !menuLink }">
-                    <Nav />
+                    <Nav @close-nav="closeNav"/>
                 </div>
             </div>
             <div class="body-view">
@@ -30,8 +30,12 @@ export default {
             menuLink.value = !menuLink.value
             console.log(menuLink.value)
         }
+
+        const closeNav = (payload) => {
+            menuLink.value = payload
+        }
         return {
-            menuLink, togglenavLinks
+            menuLink, togglenavLinks, closeNav
         }
     }
 }

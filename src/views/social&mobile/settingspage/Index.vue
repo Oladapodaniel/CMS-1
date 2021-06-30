@@ -412,60 +412,87 @@ export default {
       }
     }
 
-    var provider = new firebase.auth.FacebookAuthProvider();
-    firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-          setTimeout(function () {
-            display.value = true;
-          }, 1500);
+  /*eslint no-undef: "warn"*/
+    FB.login(function(response) {
+      // handle the response
+      console.log(response, "SDK response");
+    }, {scope: 'public_profile,email'});
 
-          console.log(result, "sign in result");
-          let accessToken = result.credential.accessToken;
-          let profileId = result.additionalUserInfo.profile.id;
-          getAccessToken(accessToken, profileId);
+    // var provider = new firebase.auth.FacebookAuthProvider();
+    // provider.addScope('email');
+    // provider.addScope('user_birthday');
+    // provider.addScope('user_friends');
+    // firebase
+    //     .auth()
+    //     .signInWithPopup(provider)
+    //     .then((result) => {
+    //       setTimeout(function () {
+    //         display.value = true;
+    //       }, 1500);
 
-        })
-        .catch((error) => {
-          console.log(error, "🤣🤣");
-          if (!error.credential) return false;
-          axios.get(`https://graph.facebook.com/me?fields=id&access_token=${error.credential.accessToken}`)
-            .then(res => {
-              getAccessToken(error.credential.accessToken, res.data.id)
-              console.log(res, "err response");
-              pageAccessToken(error.credential.accessToken)
+    //       console.log(result, "sign in result");
+    //       let accessToken = result.credential.accessToken;
+    //       let profileId = result.additionalUserInfo.profile.id;
+    //       getAccessToken(accessToken, profileId);
+    //       axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${accessToken}`)
+    //         // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+    //           .then(res => {
+    //             console.log(res, "🎉🌹🌹 works");
+    //           })
+    //           .catch(err => {
+    //             console.log(err, "err error");
+    //           })
 
-              //Get Page access token
-              axios.get(`https://graph.facebook.com/114361443274202
-?fields=access_token&access_token=${error.credential.accessToken}`)
-                .then(res => {
-                  console.log(res, "🎉🌹🌹");
-                })
-                .catch(err => {
-                  console.log(err, "err error");
-                })
+    //     })
+    //     .catch((error) => {
+    //       console.log(error, "🤣🤣");
+    //       if (!error.credential) return false;
+    //       axios.get(`https://graph.facebook.com/v11.0/me?fields=id&access_token=${error.credential.accessToken}`)
+    //         .then(res => {
+    //           getAccessToken(error.credential.accessToken, res.data.id)
 
-              //Get Pages
-              axios.get(`https://graph.facebook.com/${res.data.id}/accounts?access_token=${error.credential.accessToken}`)
-                .then(res => {
-                  console.log(res, "page data");
-                })
-                .catch(err => {
-                  console.log(err, "err error");
-                })
-            })
-            .catch(err => {
-              console.log(err, "err error");
-            })
+    //           //Get Page access token
+    //           axios.get(`https://graph.facebook.com/108291174831555?fields=access_token&access_token=${error.credential.accessToken}`)
+    //           // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+    //             .then(res => {
+    //               console.log(res, "🎉🌹🌹 NEW");
+    //             })
+    //             .catch(err => {
+    //               console.log(err, "err error");
+    //             })
+
+    //           //Get Page access token
+    //           axios.get(`https://graph.facebook.com/v11.0/${res.data.id}/accounts?fields=id,picture,name&access_token=${error.credential.accessToken}`)
+    //           // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+    //             .then(res => {
+    //               console.log(res, "🎉🌹🌹");
+    //             })
+    //             .catch(err => {
+    //               console.log(err, "err error");
+    //             })
+
+    //           //Get Page access token
+    //           axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`)
+    //           // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+    //             .then(res => {
+    //               console.log(res, "🎉🌹🌹");
+    //             })
+    //             .catch(err => {
+    //               console.log(err, "err error");
+    //             })
+    //         })
+    //         .catch(err => {
+    //           console.log(err, "err error");
+    //         })
 
           
             
-        });
+    //     });
 
     return {
       facebookLogin2,
       display,
+      pageAccessToken,
     };
   },
 };
