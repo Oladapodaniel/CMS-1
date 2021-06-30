@@ -134,7 +134,7 @@
                 </div>
                 <div class="modal-body">
                     <Memberform :familyDetails="familyDetails" @member-roles="getMemberRoles" @remove-modal="dismissModal" @push-to-view="pushToView"/>
-                </div>{{ familyDetails }}
+                </div>
 
                 </div>
             </div>
@@ -446,19 +446,19 @@ export default {
             })
             console.log(selectedMember.value)
 
-            // const groupObj = attendanceCheckin.value.find(i => {
-            //     return i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName
-            // })
+            const groupObj = attendanceCheckin.value.find(i => {
+                return i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName
+            })
 
-            // const personInGroup = groupObj.personsinAttendance.find(i => {
-            //     if (i.id === familyDetails.value.familyMembers[index].person.id) return i.id === familyDetails.value.familyMembers[index].person.id
-            // })
-            // console.log(personInGroup)
-            // if (personInGroup) {
-            //     familyDetails.value.familyMembers[index].check = true
-            // }   else {
-            //     familyDetails.value.familyMembers[index].check = false
-            // }
+            const personInGroup = groupObj.personsinAttendance.find(i => {
+                if (i.id === familyDetails.value.familyMembers[index].person.id) return i.id === familyDetails.value.familyMembers[index].person.id
+            })
+            console.log(personInGroup)
+            if (personInGroup) {
+                familyDetails.value.familyMembers[index].check = true
+            }   else {
+                familyDetails.value.familyMembers[index].check = false
+            }
 
             let checkSlot = groupSlots.value.find(i => {
                 return i.group === item.selectedAttendanceCheckin.fullGroupName
