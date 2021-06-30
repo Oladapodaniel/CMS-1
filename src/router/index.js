@@ -1297,11 +1297,6 @@ router.beforeEach((to, from, next) => {
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
     next(true)
 
-    // 
-
-    // if((to.name === "BaseIndex") && tokenIsValid) return next("true")
-    // return next("/")
-
 })
 
 export default router
