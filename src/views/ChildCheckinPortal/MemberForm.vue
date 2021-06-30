@@ -156,7 +156,8 @@ export default {
                 firstName: person.value.firstName,
                 lastName: person.value.lastName,
                 pictureUrl: pictureUrl.value,
-                roleId: role.value.id
+                roleId: role.value.id,
+                personId: data.person.id
             }
             emit("remove-modal")
             emit("push-to-view", member)

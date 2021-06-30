@@ -276,6 +276,15 @@
             </div>
           </div>
           
+          <div class="row my-3">
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
+              <label for="" class="font-weight-600">Slot</label>
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5">
+              <input type="number" class="form-control" v-model="slot" placeholder="slot available"/>         
+            </div>
+          </div>
+          
           <div class="row mt-4">
             <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
               
@@ -538,6 +547,7 @@ export default {
     const binImage = ref("")
     const image = ref ("")
     const imageUrl = ref("")
+    const slot = ref("")
 
 
     const selectedGroup = ref({});
@@ -644,12 +654,26 @@ export default {
     getGroups();
 
     const onContinue = async () => {
+
+      // const baseFormData = new FormData()
+      // selectedEvent.value ? baseFormData.append("eventId", selectedEvent.value.id) : ""
+      // selectedGroup.value ? baseFormData.append("groupId", selectedGroup.value.id) : ""
+      // baseFormData.append("eventDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0])
+      // slot.value ? baseFormData.append("registrationSlot", slot.value) : ""
+      // eventDetails.value ? baseFormData.append("details", eventDetails.value) : ""
+      // registrationSMS.value ? baseFormData.append("registrationSMS", registrationSMS.value) : ""
+      // registrationEmail.value ? baseFormData.append("registrationEmail", registrationEmail.value) : ""
+      // checkinSMS.value ? baseFormData.append("checkinSMS", checkinSMS.value) : ""
+      // checkinEmail.value ? baseFormData.append("checkinEmail", checkinEmail.value) : ""
+      // image.value ? baseFormData.append("bannerPhoto", image.value) : ""
+
       let checkinEvent = {
           eventId: selectedEvent.value.id,
           groupID: selectedGroup.value.id,
-          eventDate: moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0]
+          eventDate: moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0],
         }
-        console.log(checkinEvent)
+        slot.value ? checkinEvent.registrationSlot = slot.value : ""
+      //   console.log(checkinEvent)
       const formData = new FormData();
 
       image.value ? formData.append("bannerPhoto", image.value) : ""
@@ -660,17 +684,19 @@ export default {
       formData.append("contributionItemName", selectedEvent.value.name)
       selectedCashAccount.value ? formData.append("cashAccountId", selectedCashAccount.value ? selectedCashAccount.value.id : "") : ""
       selectedIncomeAccount.value ? formData.append("incomeAccountId", selectedIncomeAccount.value ? selectedIncomeAccount.value.id : "") : ""
-      formData.append("registrationSMS", registrationSMS.value)
-      formData.append("registrationEmail", registrationEmail.value)
-      formData.append("checkinSMS", checkinSMS.value)
-      formData.append("checkinEmail", checkinEmail.value)
-      formData.append("activityDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0])
-      formData.append("isPaidFor", addPaidClass.value)
+      registrationSMS.value ? formData.append("registrationSMS", registrationSMS.value) : ""
+      registrationEmail.value ? formData.append("registrationEmail", registrationEmail.value) : ""
+      checkinSMS.value ? formData.append("checkinSMS", checkinSMS.value) : ""
+      checkinEmail.value ? formData.append("checkinEmail", checkinEmail.value) : ""
+      selectedEvent.value ? formData.append("activityDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0]) : ""
+      addPaidClass.value ? formData.append("isPaidFor", addPaidClass.value) : ""
       amount.value ? formData.append("amount", amount.value) : ""
-      formData.append("activityId", selectedEvent.value.id)
-      formData.append("groupId", selectedGroup.value.id)
+      selectedEvent.value ? formData.append("activityId", selectedEvent.value.id) : ""
+      selectedGroup.value ? formData.append("groupId", selectedGroup.value.id) : ""
       formData.append("enableRegistration", true)
-      if (!amount.value && !selectedBank.value && !accountNumber.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value && !registrationEmail.value && !registrationSMS.value && !checkinEmail.value && !checkinSMS.value) {
+      slot.value ? formData.append("registrationSlot", slot.value) : ""
+
+      if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  !image.value) {
         
       try {
           const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
@@ -691,8 +717,32 @@ export default {
           console.log(error);
         }
       console.log("Only Top")
-      } else {
+      } 
+      
+      if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  image.value) {
         console.log("All fields  filled")
+        try {
+            let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
+            console.log(data)
+            store.dispatch("attendance/setEventReg", data.returnObject);
+            router.push({
+              name: "CheckinType",
+              query: {
+                activityID: selectedEvent.value.id,
+                activityName: selectedEvent.value.name,
+                groupId: selectedGroup.value.id,
+                groupName: selectedGroup.value.name,
+                id: data.returnObject.checkInAttendanceResult.id,
+                code: data.returnObject.checkInAttendanceResult.attendanceCode
+              },
+            });
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+
+      if (amount.value && selectedBank.value && accountNumber.value && selectedCashAccount.value && selectedIncomeAccount.value &&  image.value) {
         try {
             let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
             console.log(data)
@@ -870,7 +920,8 @@ export default {
       imageUrl,
       setBank,
       bankSearchText,
-      filteredBanks
+      filteredBanks,
+      slot
     };
   },
 };

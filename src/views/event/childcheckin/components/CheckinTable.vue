@@ -4,8 +4,11 @@
             <div class="col-md-2">
                 <span class="py-2 font-weight-700">Picture</span>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <span class="py-2 font-weight-700">Name</span>
+            </div>
+            <div class="col-md-3">
+                <span class="py-2 font-weight-700">Group</span>
             </div>
             <div class="col-md-2">
                 <span class="py-2 font-weight-700">Check in</span>
@@ -25,8 +28,11 @@
                                 <img :src="item.person ? item.person.pictureUrl : ''" class="member-image" v-if="item.person ? item.person.pictureUrl : ''"/>
                             </div>
                         </div>
-                        <div class="col-md-6  d-flex align-items-center">
+                        <div class="col-md-3  d-flex align-items-center">
                             <span class="py-2">{{ item.person.firstName }} {{ item.person.lastName }}</span>
+                        </div>
+                        <div class="col-md-3  d-flex align-items-center">
+                            <span class="py-2">{{ item.group }}</span>
                         </div>
                         <div class="col-md-2  d-flex align-items-center">
                             <span class="py-2">
