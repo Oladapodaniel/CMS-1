@@ -1,5 +1,5 @@
 <template>
-    <div class="container max-height px-0">
+    <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
                 <TriggerDescription :header="'Attendance'" :description="description" />
