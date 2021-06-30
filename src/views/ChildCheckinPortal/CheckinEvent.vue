@@ -201,6 +201,7 @@ export default {
         const selectedGroup = ref({})
         const number = ref(200)
         const addScrollClass = ref(false)
+        const registeredPeople = ref([])
         
 
 
@@ -235,17 +236,43 @@ export default {
                 const res = await axios.get(`/api/CheckInAttendance/checkinevents?activityId=${route.params.eventId}`)
                 console.log(res)
                 attendanceCheckin.value = res.data
-                // personInAttendance.value = res.data.map(i => {
-                //     return i.personsinAttendance
-                // })
-                // console.log(personInAttendance)
                 
+                let registeredPeopleWithGroup = []
+                res.data.forEach(i => {
+                    const eachPerson = i.personsinAttendance.map(j => {
+                        j.groupId = i.groupID
+                        j.fullGroupName = i.fullGroupName
+                        return j
+                    })
+                    registeredPeopleWithGroup.push(eachPerson)
+                })
+                registeredPeopleWithGroup.forEach(i => {
+                    i.forEach(j => {
+                        registeredPeople.value.push(j)
+                    })
+                })
+                console.log(registeredPeople.value)
+                findPersonInGroup(res.data)        
             }
             catch (error) {
                 console.log(error)
             }
         }
-        getAttendanceCheckin()
+        
+
+        const findPersonInGroup = (groups) => {
+            familyDetails.value.familyMembers.map(i => {
+                const locatePerson = registeredPeople.value.find(j => {
+                    if(j.id === i.person.id) return j.id === i.person.id
+                })
+                i.check = locatePerson ? locatePerson.isActive : false
+                i.selectedAttendanceCheckin = groups.find(i => {
+                    if (locatePerson) return i.groupID === locatePerson.groupId
+                })
+                console.log(locatePerson)
+                return i
+            })
+        }
 
         
 
@@ -271,6 +298,7 @@ export default {
                     i.initialGroup = null
                     return i
                 })
+                getAttendanceCheckin()
                 getGuardian(res.data.id)
             }
             catch (error) {
@@ -446,19 +474,19 @@ export default {
             })
             console.log(selectedMember.value)
 
-            const groupObj = attendanceCheckin.value.find(i => {
-                return i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName
-            })
+            // const groupObj = attendanceCheckin.value.find(i => {
+            //     return i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName
+            // })
 
-            const personInGroup = groupObj.personsinAttendance.find(i => {
-                if (i.id === familyDetails.value.familyMembers[index].person.id) return i.id === familyDetails.value.familyMembers[index].person.id
-            })
-            console.log(personInGroup)
-            if (personInGroup) {
-                familyDetails.value.familyMembers[index].check = true
-            }   else {
-                familyDetails.value.familyMembers[index].check = false
-            }
+            // const personInGroup = groupObj.personsinAttendance.find(i => {
+            //     if (i.id === familyDetails.value.familyMembers[index].person.id) return i.id === familyDetails.value.familyMembers[index].person.id
+            // })
+            // console.log(personInGroup)
+            // if (personInGroup) {
+            //     familyDetails.value.familyMembers[index].check = true
+            // }   else {
+            //     familyDetails.value.familyMembers[index].check = false
+            // }
 
             let checkSlot = groupSlots.value.find(i => {
                 return i.group === item.selectedAttendanceCheckin.fullGroupName
@@ -537,7 +565,8 @@ export default {
             selectedGroup,
             number,
             addScrollClass,
-            groupSlots
+            groupSlots,
+            registeredPeople
         }
     }
 }
