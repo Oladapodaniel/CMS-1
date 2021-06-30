@@ -24,7 +24,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="border col-4 scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
-                                <div class="row">
+                                <div class="row h-100" style="overflow-y:scroll">
                                     <div class="col-md-12 py-3 c-pointer d-flex justify-content-center border" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in selectedTriggers" :key="index" @click="changeActiveTrigger(index)">
                                         <h6>
                                             <span><i class="mr-3" :class="[trigger.icon, { 'bigger-icon': !showTriggers &&  selectedTriggers.length > 0 }]" style="font-size: 1.5rem"></i></span>
@@ -47,6 +47,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch">
                                         <button class="btn btn-secondary w-100 trigger-btn btn-100 ml-n3 font-weight-bold"
                                             @click="toggleTriggers">
@@ -74,7 +75,7 @@
                                     <div class="col-md-6 border scr-height"  style="height: 400px" :class="{ 'col-md-8': actionSelected, 'col-md-6': !actionSelected }">
                                         <div class="row">
                                             <div class="col-12 border px-0 scr-height our-grey-bg"  style="height: 400px" :class="{ 'col-md-6': actionSelected }">
-                                                <div class="row">
+                                                <div class="row h-100 scroll-div">
                                                     <div class="col-md-12">
                                                         <ul class="list-group w-100">
                                                             <li class="list-group-item c-pointer py-4 border" :class="{ 'bg-white': i.id === selectedAction.id, 'bg-transparent': i.id !== selectedAction.id, 'd-none': showActions }" v-for="(i, j) in selectedActions" :key="j" @click="setActiveAction(j)">
@@ -86,7 +87,7 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <div class="row" >
+                                                <div class="row h-100" style="overflow-y: scroll;" >
                                                     <div class="col-md-12 trigger-btn-con" :class="{ 'trigger-btn-con-height': showActions }">
                                                         <div class="row d-flex justify-content-around">
                                                             <div class="col-md-5 card my-2" v-for="(i, j) in actions" :key="j" @click="selectAction(i)">
@@ -120,7 +121,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="border" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected }">
+                                            <div class="border h-100" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected }">
                                                 <div class="row">
                                                     <div class="col-md-12" > 
                                                         <EmailAction @emailupdated="handleEmailUpdate" v-if="selectedAction.id === 1" />
@@ -440,7 +441,6 @@ export default {
 
     .scr-height {
         height: calc(100vh - 300px) !important;
-        overflow-y: scroll;
     }
 
     .btn-100 {
@@ -458,5 +458,9 @@ export default {
 
     .border {
         border: 1px solid #d3d4dca6!important;
+    }
+
+    .scroll-div {
+        overflow-y: scroll
     }
 </style>
