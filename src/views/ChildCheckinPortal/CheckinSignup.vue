@@ -132,7 +132,7 @@ export default ({
                 }   else if (res.status === 200 && res.data.loginData.value.login.result.statusCode === 200) {
                      const baseAuth = {
                         checkinPerson: res.data.personID,
-                        tenantId: res.data.loginData.result.value.tenantID
+                        tenantId: res.data.loginData.value.login.result.value.tenantID
                     }
                     localStorage.setItem('checkinToken', res.data.loginData.value.login.result.value.token)
                     localStorage.setItem('baseAuth', JSON.stringify(baseAuth))
@@ -149,7 +149,11 @@ export default ({
                 console.log(err)
                 finish()
                 if (err && err.response && err.response.status === 400) {
-                    errorMessage.value = err.response.data
+                    if (userDetails.value.password.length < 6) {
+                        errorMessage.value = "Your password should not be less than 6 characters"
+                    }   else {
+                        errorMessage.value = err.response.data
+                    }
                 }  else if (err.toString().toLowerCase().includes('network error')) {
                     errorMessage.value = "Network error, please make sure you have a strong internet connection"  
                 }  else if (err.toString().toLowerCase().includes('timeout')) {

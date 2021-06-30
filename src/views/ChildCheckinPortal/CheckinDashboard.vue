@@ -6,11 +6,11 @@
             <!-- <div class="register-event default-btn border-0 text-white">Register for this event</div> -->
             
       </div>
-        <div class="row d-flex justify-content-center justify-content-sm-between mt-5" >
+        <div class="row d-flex justify-content-center justify-content-sm-between mt-5" v-if="analyticValue && analyticValue.allRegisteredEvents">
             <div class="analytics-text">Analytics Overview</div>
             <!-- <div class="mt-2 mt-sm-0"><input type="datetime-local" class="form-control"></div> -->
         </div>
-        <div class="row mt-4">
+        <div class="row mt-4" v-show="analyticValue && analyticValue.allRegisteredEvents">
             <div class="col-12 card analytic">
                 <div class="row align-items-center">
                     <div class="col-12 col-md-5 py-2 pl-4">
@@ -259,7 +259,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-else-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading" class="col-10 col-sm-4 offset-3">
+                    <div v-else-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading" class="col-10 col-sm-4 offset-1 offset-sm-3">
                         <div class=" empty-img my-5 text-center">
                             <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
                             <div class="mt-3">You have not added any family member yet</div>
@@ -273,7 +273,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6  p-0 offset-3 offset-md-1 " :class="{ 'col-md-3' : upcomingEvent, 'col-md-5' : !upcomingEvent }" >
+            <div class="col-10 col-sm-6  p-0 offset-1 offset-sm-3 offset-md-1 col-md-3" :class="{ 'col-md-3' : upcomingEvent, 'col-md-5' : !upcomingEvent }" >
                 <div class="upcoming-event table" v-if="upcomingEvent">
                     <div class="remove-decoration" @click="viewUpcomingEventDetails">
                     <div class="container">
