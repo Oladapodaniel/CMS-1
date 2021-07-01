@@ -53,10 +53,15 @@
       <div class="row mx-0">
         <div class="col-12 px-0">
           <div class="img">
-            <p class="text-center text-white pt-5 main-font">Giving</p>
-            <p class="text-center mt-n3 sub-main-font">
-              Give and you shall recieve. Luke - 6:38
-            </p>
+            <div class="row d-flex justify-content-center">
+              <div class="col-6">
+                <p class="text-center text-white pt-5 main-font">Giving</p>
+              <p class="text-center mt-n3 sub-main-font">
+                Give, and it will be given to you. A good measure, pressed down, shaken together and running over, will be poured into your lap. For with the measure you use, it will be measured to you.”
+              </p>
+              <p class="text-white text-center">- Luke 6:38 NIV</p>
+              </div>
+            </div>
 
             <!-- form area -->
             <div class="container">

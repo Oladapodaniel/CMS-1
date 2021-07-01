@@ -86,6 +86,11 @@
     background: #EBEFF4;
   }
 
+  .scroll-div {
+    overflow-y: scroll;
+    height: 100%;
+  }
+
   .apply-btn {
     background: #136acd;
     color: #fff;

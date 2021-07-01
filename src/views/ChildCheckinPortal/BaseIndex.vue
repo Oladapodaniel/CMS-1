@@ -3,7 +3,7 @@
         <div class="row">
             <div class="nav-side">
                 <div :class="{ 'slide-nav' : menuLink, 'adjust-width' : !menuLink }">
-                    <Nav />
+                    <Nav @close-nav="closeNav"/>
                 </div>
             </div>
             <div class="body-view">
@@ -30,8 +30,12 @@ export default {
             menuLink.value = !menuLink.value
             console.log(menuLink.value)
         }
+
+        const closeNav = (payload) => {
+            menuLink.value = payload
+        }
         return {
-            menuLink, togglenavLinks
+            menuLink, togglenavLinks, closeNav
         }
     }
 }
@@ -48,7 +52,6 @@ export default {
 
 .body-view {
     width: 75%;
-    max-width: 1200px;
 }
 
 .toggle {
@@ -62,8 +65,10 @@ export default {
 }
 
 .slide-nav {
-    margin-left: 0;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 266px;
+    position: fixed;
+    left: 0;
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 @media (max-width: 1036px) {
@@ -74,13 +79,14 @@ export default {
     }
 
     .body-view {
-        max-width: 100%;
+        width: 100%;
     }
 
     .adjust-width {
-        margin-left: -275px;
-        z-index: 1;
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: fixed;
+        left: -266px;
+        z-index: 9;
+        transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
 
     .toggle {
