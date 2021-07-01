@@ -1,5 +1,5 @@
 <template>
-    <div class="container max-height">
+    <div class="container max-height scroll-div">
         <div class="row mt-4">
             <div class="col-md-12 px-0">
                 <label for="" class="font-weight-600">Email</label>

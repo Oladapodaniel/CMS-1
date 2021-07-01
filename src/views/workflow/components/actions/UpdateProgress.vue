@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container scroll-div">
         <div class="row">
             <div class="col-md-10 px-0">
                 <p class="mb-0">
