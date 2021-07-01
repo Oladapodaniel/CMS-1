@@ -413,10 +413,10 @@ export default {
     }
 
   /*eslint no-undef: "warn"*/
-    FB.login(function(response) {
-      // handle the response
-      console.log(response, "SDK response");
-    }, {scope: 'public_profile,email'});
+    // FB.login(function(response) {
+    //   // handle the response
+    //   console.log(response, "SDK response");
+    // }, {scope: 'public_profile,email'});
 
     var provider = new firebase.auth.FacebookAuthProvider();
     provider.addScope('email');
