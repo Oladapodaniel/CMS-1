@@ -132,6 +132,7 @@ export default {
         const searched = ref(false)
         const updatedGuardian = ref({})
         // const close = ref("")
+        const registeredMember = ref([])
 
         const checkIn = async() => {
             try {
@@ -140,6 +141,18 @@ export default {
                 console.log(res)
                 checkinDetails.value = res.data.returnObject
                 getGuardian(res.data.returnObject.family.id)
+
+                res.data.returnObject.registeredMember.map((item) => {
+                    const y = res.data.returnObject.groupsInvolved.findIndex((i) => i.id === item.checkInAttendanceID);
+                    if (y >= 0) {
+                        item['group'] = res.data.returnObject.groupsInvolved[y].fullGroupName;
+                    }   else {
+                        item['group'] = ''
+                    }
+                    return item
+                })
+               
+                console.log(registeredMember.value)
             }
             catch (err) {
                 console.log(err)
@@ -211,6 +224,7 @@ export default {
             // dismissModal,
             // close,
             // pushToView
+            registeredMember
         }
     }
 }

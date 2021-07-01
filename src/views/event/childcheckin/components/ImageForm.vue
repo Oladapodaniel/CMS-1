@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-10 offset-md-1 upl-img-box border" style="border: 2px solid red;">
+                    <div class="col-6 offset-3 col-md-10 offset-md-1 upl-img-box border" style="border: 2px solid red;">
                         <img v-if="url" class="w-100" :src="url" alt="Uploaded Image" />
                           <img
                             v-else-if="!pictureUrl"
@@ -103,8 +103,8 @@ import axios from "@/gateway/backendapi"
     }
 
     .upl-img-box {
-        width: 90px;
-        height: 150px;
+        /* width: 90px;
+        height: 150px; */
         border-radius: 22px;
     }
 

@@ -5,7 +5,7 @@
             <div class="col-12 mt-5 checkin-text">Checkin</div>
         </div>
         <div class="row">
-            <div class="card col-10 offset-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 spacen-up">
+            <div class="card col-10 offset-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 p-3">
                 <div class="row">
                     <div class="col-3 offset-4 offset-sm-0">
                         <img :src="eventDetails.eventBanner" class="member-image" v-if="eventDetails.eventBanner" />
@@ -25,11 +25,41 @@
                 </div>
             </div>
         </div>
+        <!-- <div class="row">
+            <div class="col-12 my-3">
+                <hr />
+            </div>
+        </div> -->
+
+         <!-- :class="{ 'fix-card' : addScrollClass, 'default-position' : !addScrollClass }" -->
+         <!-- :class="{ 'col-10 col-md-6' : !addScrollClass}" -->
+        <div class="row mt-4">
+            <div class="offset-1 offset-md-3 card col-10 col-sm-6 p-3" >
+                <div class="row">
+                    <div class="col-6 checkin-text">
+                        Groups
+                    </div>
+                    <div class="col-6 checkin-text">
+                        Slot
+                    </div>
+                </div>
+                <div class="row" v-for="(item, index) in groupSlots" :key="index">
+                    <div class="col-6 mt-3 event-time">
+                        {{ item.group }}
+                    </div>
+                    <div class="col-6 mt-3 font-weight-700"> 
+                        {{ item.slot !== null ? item !== 0 ? item.slot : "" : 'Unlimited' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-12 my-3">
                 <hr />
             </div>
         </div>
+
         <div class="row d-flex flex-column flex-sm-row justify-content-between p-3">
             <div class="family-name align-self-sm-center">{{ familyDetails.familyName ? `${familyDetails.familyName}'s Household` : "" }}</div>
             <div class="mt-3 mt-sm-0">
@@ -52,13 +82,13 @@
                         <div class="child-name">{{ item.person.firstName }}  {{ item.person.lastName }}</div>
                         <!-- <div class="checkin-time mt-2">08:00am</div> -->
                     </div>
-                    <div class="col-4 col-md-5 mt-3">   
+                    <div class="col-12 col-md-5 mt-3">   
                         <div class="row">
                             <div class="col-4 mt-2"> Group: </div>
                             <div class="col-8">
                                 <Dropdown class="p-0 w-100" :options="attendanceCheckin" v-model="item.selectedAttendanceCheckin" optionLabel="fullGroupName" :filter="false" placeholder="Select" @change="setSlot(index, item)" :showClear="false">
                                 </Dropdown>
-                            <!-- <div class="slot mt-2">{{ item.slot ? `${item.slot} slots available` : "" }} </div> -->
+                            <!-- <div class="slot mt-2 text-danger">{{ item.error ? "You cannot select this group, it's filled up already" : "" }} </div> -->
                             </div>
                         </div>
                         
@@ -112,11 +142,12 @@
             </div>
         </div>
 
-        <Dialog v-model:visible="displayModal" :style="{width: '50vw'}" :modal="true">
+        <Dialog v-model:visible="displayModal" :style="{width: '80vw'}" :modal="true">
             <div class="row">
                 <div class="col-2 offset-5"><img src="../../assets/smile.jpg" class="w-100"></div>
                 <div class="col-12 mt-3 text-center">
-                    You have successfully registered your family members for this event!
+                    <div>You have successfully registered your family members for this event!</div>
+                    <div class="nb">NB: Keep this code, it is what will be used to check you in.</div>
                </div>
                 <div class="col-12 stylish-text text-white text-center text-center p-5 mt-4 primary-bg text-white success-card">
                      {{ checkinCode }}
@@ -133,7 +164,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue"
+import { ref, computed, onUpdated } from "vue"
 import Dropdown from 'primevue/dropdown';
 import axios from "@/gateway/backendapi";
 import Memberform from "./MemberForm";
@@ -169,6 +200,7 @@ export default {
         const checkInBy = ref({})
         const selectedGroup = ref({})
         const number = ref(200)
+        const addScrollClass = ref(false)
         
 
 
@@ -179,6 +211,23 @@ export default {
         }
         getEventDetails()
 
+        // const autoCheckRegisteredMembers = () => {
+        //     familyDetails.value.familyMembers.forEach((item) => {
+        //             personInAttendance.value.forEach((i) => {
+        //                 const y = i.findIndex(i => i.id === item.person.id)
+        //             if (y >= 0) {
+        //                 console.log('found a match')
+        //                 item.check = true
+        //             }   else {
+        //                 console.log('didnt find a match')
+        //                 item.check = false
+        //             }
+        //             });
+        //             return item
+        //         })
+        //         console.log('raegjnkjernvkjernbvjkernvaekjnjk')
+        // }
+
 
         const getAttendanceCheckin = async() => {
             
@@ -186,12 +235,29 @@ export default {
                 const res = await axios.get(`/api/CheckInAttendance/checkinevents?activityId=${route.params.eventId}`)
                 console.log(res)
                 attendanceCheckin.value = res.data
+                // personInAttendance.value = res.data.map(i => {
+                //     return i.personsinAttendance
+                // })
+                // console.log(personInAttendance)
+                
             }
             catch (error) {
                 console.log(error)
             }
         }
         getAttendanceCheckin()
+
+        
+
+        const groupSlots = computed(() => {
+            if (attendanceCheckin.value.length === 0) return []
+            return attendanceCheckin.value.map(i => {
+                return {
+                    group: i.fullGroupName,
+                    slot: i.registrationSlot
+                }
+            })
+        })
 
         const getFamilyMembers = async() => {
             let getBaseAuth = localStorage.getItem('baseAuth')
@@ -200,6 +266,11 @@ export default {
                 const res = await axios.get(`/api/Family/family?personId=${baseAuth.checkinPerson}`)
                 console.log(res)
                 familyDetails.value = res.data
+                familyDetails.value.familyMembers = res.data.familyMembers.map(i => {
+                    i.addToGroup = false
+                    i.initialGroup = null
+                    return i
+                })
                 getGuardian(res.data.id)
             }
             catch (error) {
@@ -250,7 +321,8 @@ export default {
                 person: {
                     firstName: payload.firstName,
                     lastName: payload.lastName,
-                    pictureUrl: payload.pictureUrl
+                    pictureUrl: payload.pictureUrl,
+                    id: payload.personId
                 },
                 familyRoleID: payload.roleId
             }
@@ -291,6 +363,7 @@ export default {
                 severity: "warn",
                 summary: "An error occurred",
                 detail: "Please select a class or group for each member(s) you want to register.",
+                life: 10000
             });
         }   else {
   
@@ -299,10 +372,16 @@ export default {
                 console.log(res)
                 if (res.data.response.toLowerCase().includes("successfull")) {
                     checkinCode.value = res.data.returnObject.childCheckInCode
+                    displayModal.value = true
+                    finish()
+                }   else {
+                    toast.add({
+                        severity: "warn",
+                        summary: "Oops",
+                        detail: "Something went wrong while trying to register, please reload and try again try again.",
+                    });
                 }
           
-                displayModal.value = true
-                finish()
             }
             catch (error) {
                 console.log(error)
@@ -337,6 +416,18 @@ export default {
 
         })
 
+        const checkForGroup = (item) => {
+            if (!item.initialGroup) {
+                const index = attendanceCheckin.value.findIndex(i => i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName);
+                if (index >= 0) attendanceCheckin.value[index].registrationSlot -= 1;
+            } else {
+                const index = attendanceCheckin.value.findIndex(i => i.fullGroupName === item.initialGroup);
+                const indx = attendanceCheckin.value.findIndex(i => i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName);
+                if (index >= 0) attendanceCheckin.value[index].registrationSlot += 1;
+                if (indx >= 0) attendanceCheckin.value[indx].registrationSlot -= 1;
+            }
+        }
+
         const setSlot = (index, item) => {
             checkinIndex.value = index
             selectedGroup.value = item
@@ -355,11 +446,67 @@ export default {
             })
             console.log(selectedMember.value)
 
+            const groupObj = attendanceCheckin.value.find(i => {
+                return i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName
+            })
+
+            const personInGroup = groupObj.personsinAttendance.find(i => {
+                if (i.id === familyDetails.value.familyMembers[index].person.id) return i.id === familyDetails.value.familyMembers[index].person.id
+            })
+            console.log(personInGroup)
+            if (personInGroup) {
+                familyDetails.value.familyMembers[index].check = true
+            }   else {
+                familyDetails.value.familyMembers[index].check = false
+            }
+
+            let checkSlot = groupSlots.value.find(i => {
+                return i.group === item.selectedAttendanceCheckin.fullGroupName
+            })
+            console.log(checkSlot)
+            
+            if (checkSlot.slot !== null) {
+                if (checkSlot.slot > 0) {
+                    checkSlot.slot = checkSlot.slot - 1
+                    console.log(checkSlot)
+                }   else {
+                    if(checkSlot.slot === 0) {
+                        toast.add({
+                            severity: "warn",
+                            summary: "No slot available",
+                            detail: "The group to which you want to register this child is full.",
+                            life: 10000
+                        });
+                        // This is meant to 
+                        /*eslint no-undef: "warn"*/
+                        break_code
+                }
+                }
+            }
+
+
+            checkForGroup(item)
+            item.initialGroup = item.selectedAttendanceCheckin.fullGroupName;
+
+
+
+
         }
 
         const formatDate = (date) => {
             return dateFormatter.monthDayYear(date)
         }
+
+        onUpdated(() => {
+            window.addEventListener('scroll', function() {
+            // console.log(window.pageYOffset + 'px')
+            if (window.pageYOffset >= 285) {
+                addScrollClass.value = true
+            }   else {
+                addScrollClass.value = false
+            }
+            });
+        })
 
 
         return {
@@ -388,8 +535,9 @@ export default {
             formatDate,
             slotAvailable,
             selectedGroup,
-            number
-
+            number,
+            addScrollClass,
+            groupSlots
         }
     }
 }
@@ -413,9 +561,9 @@ export default {
     color: #02172E;
 }
 
-.spacen-up {
+/* .spacen-up {
     padding: 30px
-}
+} */
 
 .event-time {
     font: normal normal 600 16px/22px Nunito Sans;
@@ -514,6 +662,35 @@ opacity: 1;
 .modal-large.family{
   width:100%;
   max-width: 680px;
+}
+
+.add-bg-list div:nth-child(odd) {
+    background:#2E67CE
+
+}
+
+/* @media (min-width: 768px) {
+    .fix-card {
+        position: fixed;
+        top: 10px;
+        width: 70%;
+        z-index: 1;
+        transition: all 0.5s ease-in-out;
+    }
+
+    div.fix-card .card {
+        box-shadow: 0px 3px 6px #2c28281c;
+    }
+
+    .default-position {
+        position: relative;
+        transition: all 0.5s ease-in-out;
+    }
+} */
+
+.nb {
+    font-size: 0.9em;
+    font-weight: 700
 }
 
 </style>
