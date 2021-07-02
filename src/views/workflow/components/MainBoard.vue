@@ -23,7 +23,7 @@
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="border col-4 scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
+                            <div class="border col-4 scroll-div scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row h-100" style="overflow-y:scroll">
                                     <div class="col-md-12 py-3 c-pointer d-flex justify-content-center border" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in selectedTriggers" :key="index" @click="changeActiveTrigger(index)">
                                         <h6>
@@ -121,7 +121,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="border h-100" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected }">
+                                            <div class="border scr-height" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected }">
                                                 <div class="row">
                                                     <div class="col-md-12" > 
                                                         <EmailAction @emailupdated="handleEmailUpdate" v-if="selectedAction.id === 1" />

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid" v-lazy-container="{ selector: 'img' }">
     <div class="row bordered">
       <div class="col-md-12">
         <div class="row bordered-bottom">
@@ -26,7 +26,7 @@
           <div class="col-sm-4 my-2" v-for="(image, index) in gallery" :key="index" style="max-height: 200px" @click="uploaded(true, image)">
               <div class="row">
                   <div class="col-md-11 mx-auto c-pointer img-box">
-                      <img :src="image" style="height:100%;width:100%" alt="">
+                      <img :data-src="image" style="height:100%;width:100%" alt="">
                   </div>
               </div>
           </div>
