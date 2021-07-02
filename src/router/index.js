@@ -1222,6 +1222,12 @@ const routes = [
             }
         ]
     },
+    {
+        path: '/individual',
+        name: 'Individual',
+        component: () =>
+        import ( /* webpackChunkName: "workflow" */ '../views/workflow/components/triggers/Individual.vue'),
+    },
 ]
 
 
@@ -1280,15 +1286,15 @@ router.beforeEach((to, from, next) => {
   next(true)
 
     if ((to.name === "ResetPassword" ||
-     to.name === "EmailSent" || 
-     to.name === "OnboardingForm" || 
+     to.name === "EmailSent" ||
+     to.name === "OnboardingForm" ||
      to.name === "WebCheckin" ||
      to.name === "OnlineGiving4" ||
-     to.name === "iFrame" || 
-     to.name === "SignUpPayment" || 
-     to.name === "SignInPayment" || 
-     to.name === "TransactionPage" || 
-     to.name === "PublicResetPassword" || 
+     to.name === "iFrame" ||
+     to.name === "SignUpPayment" ||
+     to.name === "SignInPayment" ||
+     to.name === "TransactionPage" ||
+     to.name === "PublicResetPassword" ||
      to.name === "EventRegistration") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
@@ -1297,7 +1303,7 @@ router.beforeEach((to, from, next) => {
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
     next(true)
 
-    // 
+    //
 
     // if((to.name === "BaseIndex") && tokenIsValid) return next("true")
     // return next("/")
