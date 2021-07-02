@@ -31,6 +31,9 @@ import 'primevue/resources/primevue.min.css'                 //core css
 import 'primeicons/primeicons.css'                          //icons
 
 import VueGtag from "vue-gtag-next";
+import VueLazyloadNext from 'vue-lazyload-next'
+import loadimage from './assets/loading.gif';
+import errorimage from './assets/file-not-found.png';
 
 
 
@@ -66,7 +69,18 @@ app.use(VueGtag, {
     id: "G-YNZ7GTSYZV"
     // id: "UA-123456-7"
   }
-});
+})
+
+app
+  .use(
+    VueLazyloadNext, 
+    {
+      preLoad: 1.3,
+      error: errorimage,
+      loading: loadimage,
+      attempt: 1
+    }
+  )
 
 
 app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')
