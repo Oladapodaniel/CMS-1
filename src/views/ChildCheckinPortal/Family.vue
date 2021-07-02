@@ -1,3 +1,5 @@
+
+
 <template>
   <div
     class="container-fluid container-wide container-top">
@@ -109,6 +111,7 @@
                             class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
                         >
 
+
                             <input
                             type="text"
                             class="input w-100"
@@ -116,6 +119,7 @@
 
                             />
                         </div>
+
 
                         <div class="col-12 col-md-4 form-group d-none d-md-block">
                             <input
@@ -127,6 +131,7 @@
                         </div>
                         </div>
                     </div>
+
                     <div class="col-md-3 d-flex flex-column align-items-center">
                         <button class="apply-btn text-white" @click="applyFilter">
                         Apply
@@ -284,12 +289,16 @@ export default {
     const close = ref("")
     const searchText = ref("")
     const loading = ref(false)
+
+
+
     const toggleFilterFormVissibility = () =>
       (showFilterForm.value = !showFilterForm.value);
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
     };
     const familyDetails = ref({})
+
     const getFamilyMembers = async() => {
             loading.value = true
             let getBaseAuth = localStorage.getItem('baseAuth')
@@ -306,9 +315,11 @@ export default {
             }
         }
         getFamilyMembers()
+
     const getMemberRoles = (payload) => {
         memberRoles.value = payload
     }
+
     const deleteMember = async(id, index) => {
         try {
             const res = await axios.delete(`/api/Family/removeAFamilyMember?id=${id}`)
@@ -326,6 +337,8 @@ export default {
         }
 
     }
+
+
     const showConfirmModal = (id, index) => {
         confirm.require({
             message: "Are you sure you want to proceed?",
@@ -346,9 +359,11 @@ export default {
             },
         });
         };
+
         const dismissModal = () => {
             close.value.click()
         }
+
         const pushToView = (payload) => {
             let data = {
                 person: {
@@ -361,10 +376,13 @@ export default {
             familyDetails.value.familyMembers.push(data)
             console.log(data)
         }
+
         const searchMember = computed(() => {
             if (!searchText.value && familyDetails.value.familyMembers.length === 0) return familyDetails.value.familyMembers
             return familyDetails.value.familyMembers.filter(i => i.person.firstName.toLowerCase().includes(searchText.value.toLowerCase()))
         })
+
+
     return {
       showFilterForm,
       toggleFilterFormVissibility,
@@ -396,15 +414,18 @@ export default {
   font-size: 16px;
   padding: .5rem 0;
 }
+
 .button-add-member {
   background: #136acd 0% 0% no-repeat padding-box;
   border-radius: 22px;
 }
+
 .family-header {
   font: normal normal 800 29px/46px Nunito Sans;
   letter-spacing: 0px;
   color: #02172e;
 }
+
 .table-top {
   font-weight: 800;
   font-size: 12px;
@@ -415,6 +436,7 @@ export default {
 .table-top p:hover {
   cursor: pointer;
 }
+
 .filter-options {
   height: 0;
   overflow: hidden;
@@ -425,19 +447,23 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease-in-out;
 }
+
 .header-textarea{
   font: normal normal normal 11px/13px Nunito Sans;
   color: #8898AA;
 }
+
 .img-resize{
   width:2.2rem ;
   height:2.2rem ;
 }
+
 .img-resize2{
  width:100%;
   height:100%;
   border-radius: 50%;
 }
+
 /* modal style */
 .header1{
 font: normal normal 800 34px/46px Nunito Sans;
@@ -458,18 +484,22 @@ border: 1px solid #707070;
 border-radius: 20px;
 opacity: 1;
 }
+
 .child-pic {
     border: 1px solid black;
     width: 55px;
     height: 55px;
     border-radius: 50%
 }
+
 .member-image {
     height: 60px;
     width: 60px;
     border-radius: 50%;
 }
+
 .empty-img {
   font-size: 1.1em
 }
+
 </style>
