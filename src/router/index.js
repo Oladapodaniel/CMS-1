@@ -1257,7 +1257,8 @@ router.beforeEach((to, from, next) => {
         to.name === "SignInPayment" ||
         to.name === "TransactionPage" ||
         to.name === "PublicResetPassword" ||
-        to.name === "EventRegistration") && !tokenIsValid) return next(true)
+        to.name === "EventRegistration" ||
+        to.name === "CheckinSignin") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
