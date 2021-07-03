@@ -71,7 +71,7 @@
 
         <div class="row" v-if="familyDetails && familyDetails.familyMembers && familyDetails.familyMembers.length > 0">
             <div class="col-12">&nbsp;&nbsp;
-                <img src="../../assets/checkin-assets/down-emoji.png" style="width: 25px"/>  &nbsp;&nbsp;<span class="event-time">Click the checkbox to select the ward you want to register for this event.</span>
+                <img src="../../assets/checkin-assets/down-emoji.png" class="emoji"/>  &nbsp;&nbsp;<span class="event-time">Click the checkbox to select the ward you want to register for this event.</span>
             </div>
         </div>
         <div class="row" v-else>
@@ -732,6 +732,24 @@ opacity: 1;
 .nb {
     font-size: 0.9em;
     font-weight: 700
+}
+
+
+.emoji {
+    width: 25px;;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(20px);
+  }
+  100% {
+   transform: translateY(0px);
+  }
 }
 
 </style>
