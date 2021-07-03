@@ -134,17 +134,17 @@
                                 <!-- </div> -->
                                 </div>
                             </div>
-                            <div class="row" style="margin:0;" v-for="item in familyDetails.familyMembers" :key="item.id">
+                            <div class="row" style="margin:0;" v-for="(item, index) in familyDetails.familyMembers" :key="item.id">
                                 <div
                                 class="col-12 parent-desc py-3 px-0 c-pointer tr-border-bottom  hover"
                                 >
                                 
                                 <div class="row align-items-center w-100" style="margin:0">
                                     <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
-                                    <input
+                                    <!-- <input
                                         type="checkbox"
                                         class="form-check"
-                                    />
+                                    /> -->
                                     </div>
 
                                     <div class="col-md-2">
@@ -183,7 +183,7 @@
                                     </div>
 
                                     <div class=" col-md-1">
-                                    <div class="action data action-icon">
+                                    <!-- <div class="action data action-icon">
                                         <div class="dropdown">
                                         <i
                                             class=" pi pi-trash  cursor-pointer"
@@ -193,10 +193,6 @@
                                             aria-expanded="false"
                                         ></i>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            
-                                            <a class="dropdown-item elipsis-items">
-                                        View Report
-                                        </a>
                                             <a class="dropdown-item elipsis-items">
                                         Edit
                                         </a>
@@ -207,14 +203,15 @@
                                         >
                                         </div>
                                         </div>
-                                    </div>
+                                    </div> -->
+                                    <i class=" pi pi-trash  cursor-pointer" @click="showConfirmModal(item.id, index)"></i>
                                     </div>
                                 </div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="col-8 offset-2 col-sm-5 offset-sm-3 empty-img mt-5 text-center" v-else-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading">
+                        <div class="col-8 offset-2 col-sm-5 col-md-3 offset-sm-3 offset-md-4 empty-img mt-5 text-center" v-else-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading">
                             <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
                             <div class="mt-3">You have not added any guardian yet</div>
                             <div class="default-btn border-0 text-white mt-4 primary-bg c-pointer" data-toggle="modal" data-target="#guardianModal">Add guardian</div>
@@ -316,19 +313,29 @@ export default {
         }
 
         const deleteGuardian = async(id, index) => {
-            try {
-                const res = await axios.delete(`/api/Family/removeAFamilyMember?id=${id}`)
-                console.log(res)
+            if (id) {
+                try {
+                    const res = await axios.delete(`/api/Family/removeAFamilyMember?id=${id}`)
+                    console.log(res)
+                    toast.add({
+                        severity: "success",
+                        summary: "Deleted",
+                        detail: "Deleted Successfully",
+                        life: 3000,
+                    });
+                    familyDetails.value.familyMembers.splice(index, 1)
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            }   else {
                 toast.add({
-                    severity: "success",
-                    summary: "Deleted",
-                    detail: "Deleted Successfully",
-                    life: 3000,
-                });
-                familyDetails.value.familyMembers.splice(index, 1)
-            }
-            catch (error) {
-                console.log(error)
+                        severity: "success",
+                        summary: "Deleted",
+                        detail: "Deleted Successfully",
+                        life: 3000,
+                    });
+                    familyDetails.value.familyMembers.splice(index, 1)
             }
             
         }
@@ -422,5 +429,6 @@ export default {
     width: 60px;
     border-radius: 50%;
 }
+
 
 </style>
