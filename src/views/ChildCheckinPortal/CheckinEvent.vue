@@ -68,6 +68,17 @@
                         </div>
             </div>
         </div>
+
+        <div class="row" v-if="familyDetails && familyDetails.familyMembers && familyDetails.familyMembers.length > 0">
+            <div class="col-12">&nbsp;&nbsp;
+                <img src="../../assets/checkin-assets/down-emoji.png" style="width: 25px"/>  &nbsp;&nbsp;<span class="event-time">Click the checkbox to select the ward you want to register for this event.</span>
+            </div>
+        </div>
+        <div class="row" v-else>
+            <div class="col-12">
+                <span class="event-time">When you add members of your family, you will see them here</span>
+            </div>
+        </div>
    
         <div class="row mt-4" v-for="(item, index) in familyDetails.familyMembers" :key="item.id">
             <div class="col-12 card">
@@ -86,7 +97,7 @@
                         <div class="row">
                             <div class="col-4 mt-2"> Group: </div>
                             <div class="col-8">
-                                <Dropdown class="p-0 w-100" :options="attendanceCheckin" v-model="item.selectedAttendanceCheckin" optionLabel="fullGroupName" :filter="false" placeholder="Select" @change="setSlot(index, item)" :showClear="false">
+                                <Dropdown class="p-0 w-100" :options="attendanceCheckin" v-model="item.selectedAttendanceCheckin" optionLabel="fullGroupName" :filter="false" placeholder="Checkin to a class" @change="setSlot(index, item)" :showClear="false">
                                 </Dropdown>
                             <!-- <div class="slot mt-2 text-danger">{{ item.error ? "You cannot select this group, it's filled up already" : "" }} </div> -->
                             </div>
@@ -101,13 +112,14 @@
         <!-- {{ slotAvailable }} -->
 
 
-        <div class="row d-flex d-flex flex-column flex-sm-row justify-content-between my-5">
+        <div class="row d-flex d-flex flex-column flex-sm-row justify-content-between my-5" v-if="familyDetails && familyDetails.familyMembers && familyDetails.familyMembers.length > 0">
             <div class="col-12 mb-3 p-0 font-weight-700">Check In By</div>
             <div class="col-10 offset-1 offset-md-0 col-md-4 p-0">
                 <Dropdown class="p-0 w-100 guardian" :options="guardians" optionLabel="person.firstName" v-model="checkInBy" :filter="false" placeholder="Select guardian" :showClear="false">
                 </Dropdown> 
             </div>
             <div @click="register" class="col-10 offset-1 offset-md-0 col-md-4 number-checkin-child px-4 py-2 text-white text-center mt-3 mt-md-0 c-pointer font-weight-700" >
+                <i class="pi pi-spin pi-spinner text-white" v-if="loading"></i>&nbsp;
                 Register
             </div>
         </div>
@@ -201,6 +213,8 @@ export default {
         const selectedGroup = ref({})
         const number = ref(200)
         const addScrollClass = ref(false)
+        const registeredPeople = ref([])
+        const loading = ref(false)
         
 
 
@@ -235,17 +249,43 @@ export default {
                 const res = await axios.get(`/api/CheckInAttendance/checkinevents?activityId=${route.params.eventId}`)
                 console.log(res)
                 attendanceCheckin.value = res.data
-                // personInAttendance.value = res.data.map(i => {
-                //     return i.personsinAttendance
-                // })
-                // console.log(personInAttendance)
                 
+                let registeredPeopleWithGroup = []
+                res.data.forEach(i => {
+                    const eachPerson = i.personsinAttendance.map(j => {
+                        j.groupId = i.groupID
+                        j.fullGroupName = i.fullGroupName
+                        return j
+                    })
+                    registeredPeopleWithGroup.push(eachPerson)
+                })
+                registeredPeopleWithGroup.forEach(i => {
+                    i.forEach(j => {
+                        registeredPeople.value.push(j)
+                    })
+                })
+                console.log(registeredPeople.value)
+                findPersonInGroup(res.data)        
             }
             catch (error) {
                 console.log(error)
             }
         }
-        getAttendanceCheckin()
+        
+
+        const findPersonInGroup = (groups) => {
+            familyDetails.value.familyMembers.map(i => {
+                const locatePerson = registeredPeople.value.find(j => {
+                    if(j.id === i.person.id) return j.id === i.person.id
+                })
+                i.check = locatePerson ? locatePerson.isActive : false
+                i.selectedAttendanceCheckin = groups.find(i => {
+                    if (locatePerson) return i.groupID === locatePerson.groupId
+                })
+                console.log(locatePerson)
+                return i
+            })
+        }
 
         
 
@@ -271,6 +311,7 @@ export default {
                     i.initialGroup = null
                     return i
                 })
+                getAttendanceCheckin()
                 getGuardian(res.data.id)
             }
             catch (error) {
@@ -332,11 +373,7 @@ export default {
 
         const register = async() => {
 
-        // public Guid PersonId { get; set; }
-        // public Guid ActivityId { get; set; }
-        // public Guid CheckInAttendanceId { get; set; }
-        // public Guid GroupId { get; set; }
-        // public Guid CheckInBy { get; set; }
+        loading.value = true
         let checkedMembers = []
         familyDetails.value.familyMembers.forEach(i => {
             if (i.check) {
@@ -370,6 +407,7 @@ export default {
             try {
                 const res = await axios.post(`/api/CheckInAttendance/RegisterChildren`, mappedMembers)
                 console.log(res)
+                loading.value = false
                 if (res.data.response.toLowerCase().includes("successfull")) {
                     checkinCode.value = res.data.returnObject.childCheckInCode
                     displayModal.value = true
@@ -385,6 +423,7 @@ export default {
             }
             catch (error) {
                 console.log(error)
+                loading.value = false
                 finish()
             }
         }
@@ -446,19 +485,19 @@ export default {
             })
             console.log(selectedMember.value)
 
-            const groupObj = attendanceCheckin.value.find(i => {
-                return i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName
-            })
+            // const groupObj = attendanceCheckin.value.find(i => {
+            //     return i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName
+            // })
 
-            const personInGroup = groupObj.personsinAttendance.find(i => {
-                if (i.id === familyDetails.value.familyMembers[index].person.id) return i.id === familyDetails.value.familyMembers[index].person.id
-            })
-            console.log(personInGroup)
-            if (personInGroup) {
-                familyDetails.value.familyMembers[index].check = true
-            }   else {
-                familyDetails.value.familyMembers[index].check = false
-            }
+            // const personInGroup = groupObj.personsinAttendance.find(i => {
+            //     if (i.id === familyDetails.value.familyMembers[index].person.id) return i.id === familyDetails.value.familyMembers[index].person.id
+            // })
+            // console.log(personInGroup)
+            // if (personInGroup) {
+            //     familyDetails.value.familyMembers[index].check = true
+            // }   else {
+            //     familyDetails.value.familyMembers[index].check = false
+            // }
 
             let checkSlot = groupSlots.value.find(i => {
                 return i.group === item.selectedAttendanceCheckin.fullGroupName
@@ -537,7 +576,9 @@ export default {
             selectedGroup,
             number,
             addScrollClass,
-            groupSlots
+            groupSlots,
+            registeredPeople,
+            loading
         }
     }
 }

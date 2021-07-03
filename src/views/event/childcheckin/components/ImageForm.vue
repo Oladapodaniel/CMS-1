@@ -34,10 +34,10 @@
                             </div>
                         </div>
                         <div>
-                          <button :disabled="false" class="cursor-pointer outline-none" :class="{ 'upload-image-disabled' : disabled, 'upload-image' : !disabled }" @click.prevent="uploadImage">
+                          <!-- <button :disabled="false" class="cursor-pointer outline-none" :class="{ 'upload-image-disabled' : disabled, 'upload-image' : !disabled }" @click.prevent="uploadImage">
                               <i class="pi pi-spin pi-spinner" v-if="loading"></i>
                             Upload
-                          </button>
+                          </button> -->
                         </div>
                     </div>
                 </div>
@@ -47,11 +47,12 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-import axios from "@/gateway/backendapi"
+import { onUpdated, ref } from 'vue'
+// import axios from "@/gateway/backendapi"
     export default {
+        props: ['editPicture'],
         setup (props, { emit }) {
-            const disabled =ref(true)
+            // const disabled =ref(true)
             const pictureUrl = ref("")
             const url = ref("")
             const image = ref({})
@@ -60,33 +61,41 @@ import axios from "@/gateway/backendapi"
 
             const imageSelected = (e) => {
                 image.value = e.target.files[0]
-                disabled.value = false
-            }
-
-            const uploadImage = () => {
-                loading.value = true
-                let formData = new FormData()
-                formData.append("mediaFileImage", image.value)
-
-                axios.post("/api/Media/UploadProfilePicture", formData)
-                .then(res => {
-                    loading.value = false
-                console.log(res)
-                pictureUrl.value = res.data.pictureUrl
+                // disabled.value = false
                 url.value = URL.createObjectURL(image.value);
-
-                emit("picture-url", pictureUrl.value)
-                })
-                .catch(err => {
-                    loading.value = false
-                    console.log(err)
-                })
+                emit("image", image.value)
             }
+
+            // const uploadImage = () => {
+            //     loading.value = true
+            //     let formData = new FormData()
+            //     formData.append("mediaFileImage", image.value)
+
+            //     axios.post("/api/Media/UploadProfilePicture", formData)
+            //     .then(res => {
+            //         loading.value = false
+            //     console.log(res)
+            //     pictureUrl.value = res.data.pictureUrl
+            //     // url.value = URL.createObjectURL(image.value);
+
+            //     emit("picture-url", pictureUrl.value)
+            //     })
+            //     .catch(err => {
+            //         loading.value = false
+            //         console.log(err)
+            //     })
+            // }
+
+            onUpdated(() => {
+                if (props.editPicture) {
+                    pictureUrl.value = props.editPicture
+                }
+            })
 
             return {
-                disabled,
+                // disabled,
                 imageSelected,
-                uploadImage,
+                // uploadImage,
                 pictureUrl,
                 url,
                 image,
