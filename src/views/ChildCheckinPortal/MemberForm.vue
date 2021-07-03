@@ -2,7 +2,7 @@
     <div class="container">
        <div class="row">
            <div class="col-md-12 px-0">
-               <form @submit.prevent="addMember">
+               <form @submit.prevent="uploadImageToAddMember">
                     <div class="row">
                         <div class="col-md-8">
 
@@ -62,14 +62,14 @@
                         </div>
 
                         <div class="col-md-4">
-                            <ImageForm @picture-url="setPictureUrl"/>
+                            <ImageForm :editPicture="pictureUrl" @image="setImage"/>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-center my-5">
                             <div class="c-pointer text-decoration-none text-dark default-btn text-center border font-weight-bold mx-md-3 mx-2" @click="removeModal">Cancel</div>
-                            <button class="default-btn text-white border-0 primary-bg font-weight-bold mx-md-3 mx-2">Save</button>
+                            <button class="default-btn text-white border-0 primary-bg font-weight-bold mx-md-3 mx-2"><i class="pi pi-spin pi-spinner text-white" v-if="loading"></i>&nbsp;Save</button>
                         </div>
                     </div>
                </form>
@@ -79,14 +79,14 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { watch, ref } from "vue"
 import axios from "@/gateway/backendapi";
 import Dropdown from "primevue/dropdown";
 import ImageForm from "../event/childcheckin/components/ImageForm";
 import { useRoute } from "vue-router"
 
 export default {
-    props: ['familyDetails'],
+    props: ['familyDetails', 'memberDetails'],
     components: { Dropdown, ImageForm },
     setup (props, { emit }) {
         const route = useRoute()
@@ -97,6 +97,9 @@ export default {
         const role = ref({})
         const selectedGender = ref({})
         const pictureUrl = ref("")
+        const memberId = ref("")
+        const image = ref({})
+        const loading = ref(false)
 
 
         const getFamilyRoles = async () => {
@@ -125,9 +128,27 @@ export default {
     }
     getGender()
 
-    const setPictureUrl = (payload) => {
-        pictureUrl.value = payload
-    }
+    const uploadImageToAddMember = () => {
+        if (image.value instanceof File) {
+                    loading.value = true
+                    console.log(image.value)
+                    let formData = new FormData()
+                    formData.append("mediaFileImage", image.value)
+                    axios.post("/api/Media/UploadProfilePicture", formData)
+                    .then(res => {
+                        console.log(res)
+                        pictureUrl.value = res.data.pictureUrl
+                        loading.value = false
+                        addMember()
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        loading.value = false
+                    })
+                } else {
+                    addMember()
+                }
+            }
 
     const addMember = async() => {
         const memberDetails = {
@@ -137,7 +158,7 @@ export default {
                 firstName: person.value.firstName,
                 lastName: person.value.lastName,
                 pictureUrl: pictureUrl.value,
-                dateOfBirth: dateOfBirth.value,
+                // dateOfBirth: dateOfBirth.value,
                 genderId: selectedGender.value.id
             },
             tenantId: props.familyDetails.tenantID
@@ -148,28 +169,76 @@ export default {
                 memberDetails.familyRoleId = 6
             }
         console.log(memberDetails)
-
-        try {
-            let { data } = await axios.post('/api/Family/addFamilyMember', memberDetails)
-            console.log(data)
-            const member = {
-                firstName: person.value.firstName,
-                lastName: person.value.lastName,
-                pictureUrl: pictureUrl.value,
-                roleId: role.value.id,
-                personId: data.person.id
+        console.log(props.memberDetails)
+        if (Object.keys(props.memberDetails).length === 0) {
+            try {
+                let { data } = await axios.post('/api/Family/addFamilyMember', memberDetails)
+                loading.value = false
+                console.log(data)
+                const member = {
+                    firstName: person.value.firstName,
+                    lastName: person.value.lastName,
+                    pictureUrl: pictureUrl.value,
+                    roleId: role.value.id,
+                    personId: data.person.id,
+                    genderID: selectedGender.value.id
+                }
+                emit("remove-modal")
+                emit("push-to-view", member)
             }
-            emit("remove-modal")
-            emit("push-to-view", member)
-        }
-        catch (err) {
-            console.log(err)
+            catch (err) {
+                loading.value = false
+                console.log(err)
+            }
+        }   else {
+            delete memberDetails.familyId
+            memberDetails.person.id = person.value.personId
+            memberDetails.id = memberId.value
+            try {
+            let { data } = await axios.put('/api/family/editfamilymember', memberDetails)
+                console.log(data)
+                loading.value = false
+                const member = {
+                    firstName: person.value.firstName,
+                    lastName: person.value.lastName,
+                    pictureUrl: pictureUrl.value,
+                    roleId: role.value.id,
+                    personId: person.value.personId,
+                    genderID: selectedGender.value.id
+                }
+                console.log(member)
+                emit("remove-modal")
+                emit("editted-value", member)
+            }
+            catch (err) {
+                console.log(err)
+                loading.value = false
+            }
         }
         
     }
 
     const removeModal = () => {
         emit("remove-modal")
+    }
+
+    const watchForMember = watch(() => {
+        // console.log(props.memberDetails)
+        if(props.memberDetails && person.value) {
+            person.value.firstName = props.memberDetails.person ? props.memberDetails.person.firstName : ""
+            person.value.lastName = props.memberDetails.person ? props.memberDetails.person.lastName : ""
+            person.value.personId = props.memberDetails.person ? props.memberDetails.person.id : ""
+            memberId.value = props.memberDetails ? props.memberDetails.id : ""
+            role.value = roles.value ? roles.value.find(i => i.id === props.memberDetails.familyRoleID) : {}
+            selectedGender.value = gender.value ? gender.value.lookUps ? gender.value.lookUps.find(i => {
+                if (props.memberDetails.person) return i.id === props.memberDetails.person.genderID
+            }) : {} : {}
+            pictureUrl.value = props.memberDetails.person ? props.memberDetails.person.pictureUrl : ""
+        }
+    })
+
+    const setImage = (payload) => {
+        image.value = payload
     }
 
     return {
@@ -180,10 +249,15 @@ export default {
         addMember,
         role,
         selectedGender,
-        setPictureUrl,
         pictureUrl,
         removeModal,
-        route
+        route,
+        watchForMember,
+        memberId,
+        uploadImageToAddMember,
+        setImage,
+        image,
+        loading
     }
     }
 }

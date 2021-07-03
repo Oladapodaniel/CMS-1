@@ -461,7 +461,7 @@
                   v-model="groupToAddTo"
                   :options="allGroups"
                   style="width: 100%"
-                  :filter="true"
+                  :filter="false"
                   placeholder="Select a group"
                   optionLabel="name"
                 />
@@ -1003,6 +1003,8 @@ export default {
     const dismissAddToGroupModal = ref("");
 
     const addMemberToGroup = async () => {
+      console.log('personId:'+ route.params.personId, "groupId:"+ groupToAddTo.value.id,
+          groupToAddTo.value.id)
       addToGroupError.value = false;
       if (!groupToAddTo.value || !groupToAddTo.value.id) {
         addToGroupError.value = true;

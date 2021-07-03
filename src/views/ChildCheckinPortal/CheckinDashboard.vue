@@ -263,7 +263,7 @@
                         <div class=" empty-img my-5 text-center">
                             <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
                             <div class="mt-3">You have not added any family member yet</div>
-                            <router-link :to="{ name: 'Family' }"><div>Go to family to add now</div></router-link>
+                            <router-link :to="{ name: 'Family' }" class="remove-underline"><div class="default-btn border-0 primary-bg text-white mt-2">Go to family to add now</div></router-link>
                         </div>
                     </div>
                     <div v-if="loading" class="text-center col-12">
@@ -591,5 +591,9 @@ color: #020E1C;
 
 .link-text {
     color: #136ACD
+}
+
+.remove-underline:hover {
+    text-decoration: none
 }
 </style>
