@@ -1235,15 +1235,16 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 
 
-    //   const checkinToken = localStorage.getItem('checkinToken')
+      const checkinToken = localStorage.getItem('checkinToken')
     //   alert(4)
-    //   if ((to.name === "CheckinSignUp" || to.name === "CheckinSignin") && checkinToken) {
-    //       alert("hello")
-    //     return next({ name: 'CheckinDashboard' })
-    //   } else {
+      if ((to.name === "CheckinSignUp" || to.name === "CheckinSignin") && checkinToken) {
+        //   alert("hello")
+        return next({ name: 'CheckinDashboard' })
+      } 
+    //   else {
     //       alert(false)
     //   }
-    //   next(true)
+      next(true)
     const tokenIsValid = token && token.length > 30 ? true : false;
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
 
@@ -1257,10 +1258,7 @@ router.beforeEach((to, from, next) => {
         to.name === "SignInPayment" ||
         to.name === "TransactionPage" ||
         to.name === "PublicResetPassword" ||
-        to.name === "EventRegistration" ||
-        to.name === "CheckinSignin" ||
-        to.name === "CheckinSignup" ||
-        to.name === "BaseIndex") && !tokenIsValid) return next(true)
+        to.name === "EventRegistration") && !tokenIsValid) return next(true)
     const token = localStorage.getItem("token")
 
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
