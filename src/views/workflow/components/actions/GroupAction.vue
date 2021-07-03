@@ -1,5 +1,5 @@
 <template>
-    <div class="container px-0">
+    <div class="container px-0 scroll-div">
         <div class="row">
             <div class="col-md-12 my-3">
                 <Dropdown :options="['Add the person to', 'Remove the person from']" placeholder="Add the person to" class="w-100" />

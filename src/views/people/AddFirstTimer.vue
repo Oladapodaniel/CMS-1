@@ -52,7 +52,7 @@
                     Phone number exist, type a unique phone number.
                   </div>
                 </div>
-                
+
               </div>
               <div class="input-field">
                 <label for=""></label>
@@ -104,7 +104,7 @@
               <div class="input-field">
                 <label for="" class="label">Event or Service Attended</label>
                 <i class="pi pi-chevron-down dd manual-dd-icon" @click="selectEventAttended"></i>
-                
+
                 <button
                   @click.prevent="selectEventAttended"
                   class="form-control input dd small-text"
@@ -314,7 +314,7 @@
                 </div>
               </div>
 
-              
+
             </div>
 
             <div class="image-div other">
@@ -389,7 +389,7 @@
                               <!-- :class="{ roll3: showForm3 }" -->
                               <i
                                 class="pi pi-angle-down"
-                                
+
                                 aria-hidden="true"
                               ></i
                             ></span>
@@ -1058,27 +1058,27 @@ console.log(updateMember)
             firstTimersObj.value = res.data;
             firstTimersObj.value.sendWelcomeSMS = res.data.sendSms;
             firstTimersObj.value.sendWelcomeEmail = res.data.sendEmail;
-            
+
             selectedGender.value = res.data.genderId ? genderArr.value.find(i => i.id === res.data.genderId) : { };
-            
+
             selectedMaritalStatus.value = res.data.maritalStatusId ? maritalStatusArr.value.find(i => i.id === res.data.maritalStatusId) : { };
-            
+
             selectedAboutUsSource.value = getUserSource(res.data.howDidYouAboutUsId)
-            
+
             selectedCommunicationMeans.value = res.data.communicationMeans ? comMeansArr.value[res.data.communicationMeans - 1] : ""
-            
+
             selectedJoinInterest.value = res.data.interestedInJoining ? joinInterestArr.value[res.data.interestedInJoining - 1] : ""
-            
+
             selectedVisitOption.value = res.data.wantsToBeVisited ? wantVisitArr.value[res.data.wantsToBeVisited - 1] : ""
             console.log(wantVisitArr.value[res.data.wantsToBeVisited - 1], res.data.wantsToBeVisited)
 
             firstTimersObj.value.birthday = res.data.birthday ? Number(res.data.birthday) : "";
-            
+
             firstTimersObj.value.birthYear = res.data.birthYear ? +res.data.birthYear : "";
-            
+
             birthMonth.value = res.data.birthMonth ? month.value[Number(res.data.birthMonth) - 1] : "";
             console.log(eventsAttended.value, "EA");
-            
+
             selectedEventAttended.value = getEventUserAttended(res.data.activityID)
           })
           .catch(err => {
@@ -1140,7 +1140,7 @@ console.log(updateMember)
           }
             if (firstTimersObj.value.phoneNumber !== firstTimerPhone.value) {
               try {
-      
+
             let { data } = await axios.get(`api/People/checkDuplicate?phoneNumber=${firstTimersObj.value.phoneNumber}`)
             console.log(data, validatePhone.value)
               if (data === "phone number") {
@@ -1151,7 +1151,7 @@ console.log(updateMember)
             } else {
               isPhoneValid.value = true
               validatePhone.value.classList.add('is-valid')
-              
+
             }
           }
           catch (error) {
@@ -1175,7 +1175,7 @@ console.log(updateMember)
           if (firstTimersObj.value.email !== firstTimerEmail.value) {
           try {
             let { data } = await axios.get(`api/People/checkDuplicate?email=${firstTimersObj.value.email}`)
-            console.log(data) 
+            console.log(data)
               if (data === "email") {
                 isEmailValid.value = false
               } else if (data === "email and phone number") {
