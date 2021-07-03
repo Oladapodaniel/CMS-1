@@ -1262,7 +1262,7 @@ router.beforeEach((to, from, next) => {
 
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
-    next(true)
+    // return next(true)
 
     // Find the nearest route element with meta tags.
     const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
