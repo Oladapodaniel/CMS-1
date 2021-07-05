@@ -385,6 +385,7 @@ export default {
         const getGroups = async () => {
             try {
                 const response = await grousService.getGroups();
+                console.log(response[0], "Work groups");
                 groups.value = response.map(i => {
                     return { id: i.id, name: i.name };
                 })
