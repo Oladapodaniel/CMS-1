@@ -264,6 +264,7 @@ export default {
 
     const payWithPaystack = (e) => {
       console.log(e.srcElement.alt)
+      console.log(props.donation)
 
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
