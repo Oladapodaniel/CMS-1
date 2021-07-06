@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead mt-5"> Members Excel/CSV template file </div>
                     <div class="col-12 col-md-12 mb-3">
-                        <a href="#" class="text-decoration-none font-weight-bold">Download and view our members Excel/CSV template.</a>
+                        <a href="/files/Template.csv" class="text-decoration-none font-weight-bold" download>Download and view our members Excel/CSV template.</a>
                         <span>You can use this as a template for creating your Excel/CSV file.</span>
                     </div>
                     <div class="col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead my-3 "> File format </div>

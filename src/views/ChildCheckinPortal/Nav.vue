@@ -26,7 +26,7 @@
                 </div>
                 </router-link>
 
-                <router-link to="/checkin/family">
+                <router-link to="/checkin/checkinfamily">
                     <div class="row push-down" :class="{ 'active' : route.fullPath.includes('family'), 'style-font' : !route.fullPath.includes('family') }" @click="closeNav">
                         <div class="col-2">
                             <img src="../../assets/checkin-assets/family-silhouette.svg" >
