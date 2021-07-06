@@ -6,10 +6,10 @@
       <div class="container">
         <nav class="navbar navbar-expand-lg nav-color2">
           <a class="navbar-brand" href="#">
-            <img v-bind:src="formResponse.churchLogo" width="100px" alt="" />
+            <img :src="formResponse.churchLogo" v-if="formResponse.churchLogo" width="100px" alt="" />
           </a>
           <button
-            class="navbar-toggler"
+            class="navbar-toggler border"
             type="button"
             data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -17,7 +17,8 @@
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <!-- <span class="navbar-toggler-icon text-light"></span> -->
+            <i class="pi pi-align-justify text-light"></i>
           </button>
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -381,13 +382,6 @@
                       <img
                         class="w-100"
                         src="../../../assets/2flutterwave.png"
-                        alt=""
-                      />
-                    </div>
-                    <div class="col-1 px-1">
-                      <img
-                        class="w-100"
-                        src="../../../assets/1s519863150871.png"
                         alt=""
                       />
                     </div>
