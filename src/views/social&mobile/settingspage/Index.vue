@@ -99,7 +99,7 @@
       </div>
       <!--end facebook area  -->
       <Dialog
-        header="Input Your Facebook Page Id"
+        header="Account Connected"
         class="dialogFacebook"
         v-model:visible="display"
         style="width: 100%; max-width: 600px"
@@ -107,24 +107,24 @@
         <!--facebook id-->
         <form action="">
           <div class="row justify-content-center">
-            <div class="col-md-4 text-right">
-              <label for="email"> Page Id :</label>
+            <div class="col-md-12 text-right">
+              <label for="email">Share Your Post to Facebook</label>
             </div>
-            <div class="form-group col-md-6">
+            <!-- <div class="form-group col-md-6">
               <input
                 type="text"
                 class="form-control"
                 placeholder="Facebook Page Id"
               />
-            </div>
+            </div> -->
             <div class="col-md-2"></div>
           </div>
           <div class="row">
             <div class="col-md-4"></div>
             <div class="form-group form-check col-md-6 ml-3">
-              <label class="form-check-label">
+              <!-- <label class="form-check-label">
                 <input class="form-check-input" type="checkbox" /> Remember me
-              </label>
+              </label> -->
             </div>
             <div class="col-md-2"></div>
           </div>
