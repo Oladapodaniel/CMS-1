@@ -179,7 +179,7 @@
 import { ref, computed, onUpdated } from "vue"
 import Dropdown from 'primevue/dropdown';
 import axios from "@/gateway/backendapi";
-import Memberform from "./MemberForm";
+import Memberform from "./FormMember";
 import Dialog from 'primevue/dialog';
 import { useRoute } from "vue-router"
 import dateFormatter from '../../services/dates/dateformatter';

@@ -228,7 +228,7 @@
 <script>
 import { ref } from 'vue'
 import axios from "@/gateway/backendapi";
-import MemberForm from './MemberForm'
+import MemberForm from './FormMember'
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import ProgressSpinner from 'primevue/progressspinner';
