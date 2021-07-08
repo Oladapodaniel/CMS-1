@@ -11,7 +11,7 @@
                 <label for="" class="font-weight-600">Match an individual who is</label>
             </div>
             <div class="col-md-12 mb-2">
-                <MultiSelect @change="groupSelected" v-model="selectedGroup" :options="[ 'Workers', 'Choir', 'New comers' ]"  placeholder="Select groups" class="w-100"  display="chip" />
+                <MultiSelect @change="handleSelectedGroups" v-model="selectedGroups" :options="groups" optionLabel="name"  placeholder="Select groups" class="w-100"  display="chip" />
             </div>
         </div>
 
@@ -22,26 +22,30 @@
 <script>
 import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
-import { ref } from '@vue/reactivity';
+import { reactive, ref } from '@vue/reactivity';
 import { computed } from '@vue/runtime-core';
 export default {
     components: { MultiSelect, TriggerDescription },
+    props: [ "groups", "selectedTriggerIndex" ],
+    setup (props, { emit }) {
+        const data = reactive({ })
 
-    setup () {
-        const selectedGroups = ref([]);
-        const groupSelected = e => {
-            selectedGroups.value = e.value;
+        const selectedGroups = ref([ ]);
+        const handleSelectedGroups = e => {
+        const allGroupsIndex = selectedGroups.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
+        data.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
         const description = computed(() => {
             return {
                 id: 5,
-                selectedGroups: selectedGroups.value.length > 0 ? selectedGroups.value : [ 'any' ]
+                selectedGroups: selectedGroups.value.length > 0 ? selectedGroups.value.map(i => i.name) : [ 'any' ]
             }
         })
 
         return {
-            groupSelected,
+            handleSelectedGroups,
             selectedGroups,
             description,
         }

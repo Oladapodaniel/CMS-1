@@ -218,7 +218,6 @@ dapo
     </div> -->
     <!-- {{ paymentGatewayObject }} -->
 
-
   </div>
 </template>
 
@@ -242,7 +241,7 @@ export default {
     const isProduction = false
     const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
     const selectedGateway = ref("")
-    // const gatewayObject = ref({})
+    
 
     const paystackGate = computed(() => {
       if(!props.gateways) return false
@@ -263,14 +262,6 @@ export default {
       if(!props.gateways) return false
       return props.gateways.find(i => i.paymentGateway.name === "Stripe")
     })
-
-    const gatewayObject = computed(() => {
-      if (props.donation && props.donation.paymentGateway && props.donation.paymentGateway.length > 0 && selectedGateway.value) return props.donation.paymentGateway.find(i => {
-            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
-          })
-      return {}
-    })
-
       
 
     const payWithPaystack = (e) => {
@@ -282,8 +273,6 @@ export default {
    
     //  console.log(selectedGateway.value)
 
-    //   console.log(gatewayObject.value)
-
       props.close.click()
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
@@ -293,7 +282,10 @@ export default {
         amount: props.converted * 100,
         firstname: props.name,
         ref: props.orderId,
-        subaccount: gatewayObject.value.subAccountID,
+        subaccount: props.donation.paymentGateway.find(i => {
+            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+          }).subAccountID,
+        // gatewayObject.value.subAccountID,
         bearer: 'subaccount',
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
@@ -393,7 +385,7 @@ export default {
     }
 
     return {
-      payWithPaystack, paystackGate, flutterwaveGate, paypalGate, stripe, makePayment,  selectedGateway, gatewayObject
+      payWithPaystack, paystackGate, flutterwaveGate, paypalGate, stripe, makePayment,  selectedGateway
     }
     }
 
