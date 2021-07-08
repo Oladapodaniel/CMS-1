@@ -26,6 +26,35 @@
                     </span>
                     <span class="text-success"> in the last {{ description.timesInLastWeek }} </span>
                 </p>
+
+                <p class="text-center"
+                    v-if="description && description.id === 4"
+                >
+                    <span>A member of </span>
+                    <span class="text-success">{{ description.selectedGroups.join(', ') }}</span> group
+                    
+                </p>
+                <p class="text-center"
+                    v-if="description && description.id === 6"
+                >
+                    <span>A member of </span>
+                    <span class="text-success">{{ description.selectedGroups.join(', ') }}</span> group
+                    
+                </p>
+                <p class="text-center"
+                    v-if="description && description.id === 9"
+                >
+                    <span>Individual has been in one of these groups</span>
+                    <span class="text-success">({{ description.selectedGroups.join(', ') }})</span> for <span class="text-success">{{ description.days }}</span> days
+                    
+                </p>
+                <p class="text-center"
+                    v-if="description && description.id === 8"
+                >
+                    <span>A member was </span> <span class="text-success"> {{ description.logicalOperatorAddOrRemove }} </span>
+                    <span class="text-success mx-2"> {{ description.selectedGroups.join(', ') }}</span>
+                    
+                </p>
             </div>
         </div>
     </div>

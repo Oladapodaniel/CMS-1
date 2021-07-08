@@ -26,7 +26,7 @@
 
         <div class="row mt-4">
             <div class="col-md-12">
-                <label for="" class="font-weight-600">$</label>
+                <label for="" class="font-weight-600">{{ currency }}</label>
             </div>
             <div class="col-md-12 mb-2">
                 <input type="text" class="form-control" @input="handleAmount" v-model="amount">
@@ -38,7 +38,7 @@
                 <label for="" class="font-weight-600">To</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown :options="[ 'Any category...', 'General', 'Building' ]" class="w-100" @change="categorySelected" v-model="category" />
+                <Dropdown :options="contributionItems" optionLabel="name" class="w-100" @change="categorySelected" v-model="category" />
             </div>
         </div>
 
@@ -47,7 +47,7 @@
                 <label for="" class="font-weight-600">In</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown  @change="givingTimeSelected" v-model="givingTime" :options="[ 'A single gift', 'The last' ]" class="w-100" />
+                <Dropdown @change="givingTimeSelected" v-model="givingTime" :options="[ 'A single gift', 'The last' ]" class="w-100" />
             </div>
         </div>
     </div>
@@ -59,52 +59,65 @@ import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
 import { reactive, ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
+import { useStore } from "vuex";
+
 export default {
-    props: [ "groups" ],
+    props: [ "groups", "selectedTriggerIndex", "contributionItems" ],
     components: { Dropdown, TriggerDescription, MultiSelect },
 
     setup (props, { emit }) {
-        const data = reactive({ id: 1 });
-        const selectedGroup = ref('')
+        const store = useStore();
+
+        const currentUser = ref(store.getters.currentUser);
+        console.log(currentUser.value, "currentUser");
+
+        const data = reactive({ });
+        const selectedGroup = ref([ ])
         const groupSelected = (e) => {
-            
-            data.groups = e.value.map(i => i.name).join(',');
-            emit('givingamount', data);
+            const allGroupsIndex = selectedGroup.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
+            data.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
         }
 
         const selectedRange = ref('')
         const rangeSelected = (e) => {
-            data.logicalOperator = e.value === 'Greater than' ? '>' : '<';
-            emit('givingamount', data);
+            // data.logicalOperator = e.value === 'Greater than' ? '>' : '<';
+            data.logicalOperator = e.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
         }
 
         const amount = ref(0)
         const handleAmount = (e) => {
             data.amount = e.target.value;
-            emit('givingamount', data);
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
         }
 
         const category = ref('')
         const categorySelected = (e) => {
-            data.financialContributionID = e.value;
-            emit('givingamount', data);
+            data.financialContributionID = e.value.id;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
         }
 
         const givingTime = ref('')
         const givingTimeSelected = (e) => {
             data.singleOrLast = e.value;
-            emit('givingamount', data);
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
         }
 
         const description = computed(() => {
             return {
                 groups: selectedGroup.value ? selectedGroup.value.map(i => i.name) : ['_____'],
                 range: selectedRange.value === 'Greater than' ? '>' : '<',
-                category: category.value === 'Any category' ? 'any' : category.value,
+                category: category.value && category.value.name ? category.value : '____',
                 amount: amount.value ? amount.value : '',
                 time: givingTime.value ? givingTime.value : '____',
                 id: 1,
-             };            
+            };            
+        })
+
+        const currency = computed(() => {
+            if (!currentUser.value || !currentUser.value.currencySymbol) return "Amount";
+            return currentUser.value.currencySymbol;
         })
 
         return {
@@ -119,6 +132,7 @@ export default {
             givingTimeSelected,
             givingTime,
             description,
+            currency,
         }
     }
 }

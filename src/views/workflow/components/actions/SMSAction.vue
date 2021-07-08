@@ -2,7 +2,7 @@
     <div class="container max-height scroll-div">
         <div class="row mt-4">
             <div class="col-md-12 px-0">
-                <label for="" class="font-weight-600">Email</label>
+                <label for="" class="font-weight-600">SMS</label>
             </div>
             <div class="col-md-12">
                 <div class="row">
@@ -22,35 +22,6 @@
             </div>
         </div>
 
-        <!-- <div class="row mt-4">
-            <div class="col-md-12 px-0">
-                <label for="" class="font-weight-600">And the following</label>
-            </div>
-            <div class="col-md-12">
-                <input type="text" class="form-control" v-model="otherToContacts" @change="handleOtherAddresses">
-                <span class="small-text">Separate the addresses with comma</span>
-            </div>
-        </div> -->
-
-        <div class="row mt-4">
-            <div class="col-md-12 px-0">
-                <label for="" class="font-weight-600">Add BBC</label>
-            </div>
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <input type="checkbox" name="" id="" v-model="parentBBC" @change="handleParentBBC"> The person's parent
-                    </div>
-                    <div class="col-md-12">
-                        <input type="checkbox" name="" id="" v-model="spouseBBC" @change="handleSpouseBBC"> The person's spouse
-                    </div>
-                    <div class="col-md-12">
-                        <input type="checkbox" name="" id="" v-model="BCCGroupLeader" @change="handleBCCGroupLeader"> The Group Leaders
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="row mt-4">
             <div class="col-md-12 px-0">
                 <label for="" class="font-weight-600">And the following</label>
@@ -58,25 +29,6 @@
             <div class="col-md-12">
                 <input type="text" class="form-control" v-model="otherToContacts" @change="handleOtherAddresses">
                 <span class="small-text">Separate the addresses with comma</span>
-            </div>
-        </div>
-
-        <!-- <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <input type="checkbox" name="" id="" v-model="sendIndividualMails" @change="handleSendIndividualMails"> Send individual emails to recipients
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-        <div class="row mt-4">
-            <div class="col-md-12 px-0">
-                <label for="" class="font-weight-600">Specify email for "Reply To"</label>
-            </div>
-            <div class="col-md-12">
-                <input type="text" class="form-control" v-model="replyToEmailAddress" @change="handleReplyEmail">
             </div>
         </div>
 
@@ -105,7 +57,7 @@ import { reactive, ref } from '@vue/reactivity';
 export default {
     props: [ "selectedActionIndex" ],
     setup (props, { emit }) {
-        const data = reactive({ ActionType: 0, JSONActionParameters: { } })
+        const data = reactive({ ActionType: 1, JSONActionParameters: { } })
         const person = ref(false);
         const handleSendPersonMail = (e) => {
             data.JSONActionParameters.person = e.target.checked;
