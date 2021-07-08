@@ -372,7 +372,7 @@
 <script>
 import { ref } from "vue"
 import FamilyWards from "./FamilyWards";
-// import MemberForm from "../ChildCheckinPortal/MemberForm.vue"
+// import MemberForm from "../ChildCheckinPortal/FormMember.vue"
 import membershipService from "../../services/membership/membershipservice";
 import Dialog from "primevue/dialog";
 import NewPerson from '../accounting/offering/NewDonor.vue';
