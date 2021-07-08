@@ -136,7 +136,7 @@
 
                                     <div class="col-md-6 border scr-height animate" :class="{ 'col-md-8': actionSelected, 'col-md-6': !actionSelected }">
                                         <div class="row ani">
-                                            <div class="col-12 animate border px-0 scr-height our-grey-bg"  style="height: 400px" :class="{ 'col-md-6': actionSelected && triggerActions.length > 0 }">
+                                            <div class="col-12 border px-0 scr-height our-grey-bg"  style="height: 400px" :class="{ 'col-md-6': actionSelected && triggerActions.length > 0 }">
                                                 <div class="row h-100 scroll-div">
                                                     <div class="col-md-12">
                                                         <ul class="list-group w-100">
@@ -186,9 +186,9 @@
                                                 </div>
                                             </div>
 
-                                            <div class="border scr-height" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected || !selectedAction || !(selectedActionIndex >= 0) || triggerActions.length < 1 }">
-                                                <div class="row h-100">
-                                                    <div class="col-md-12 ani" > 
+                                            <div class="border scr-height" :class="{ 'col-md-6 ani': actionSelected, 'd-none': !actionSelected || !selectedAction || !(selectedActionIndex >= 0) || triggerActions.length < 1 }">
+                                                <div class="row h-100" style="overflow-y:scroll">
+                                                    <div class="col-md-12" > 
                                                         <EmailAction 
                                                             @updateaction="updateAction"
                                                             v-if="selectedAction && selectedAction.id === 1"
