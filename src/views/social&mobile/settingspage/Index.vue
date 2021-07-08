@@ -107,13 +107,14 @@
         <!--facebook id-->
         <form action="">
           <div class="row justify-content-center">
-            <div class="col-md-4 text-right">
+            <div class="col-md-1 text-right">
               <label for="email"></label>
             </div>
-            <div class="form-group col-md-6">
-              <h4>Share Your Post to Facebook</h4>
+            <div class="form-group col-md-10 text-center">
+              <h6>Your Account as be connected to facebook Successfully click the button below to make your post</h6>
+              <!-- <h6>Share Your Post to Facebook</h6> -->
             </div>
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
           </div>
           <div class="row">
             <div class="col-md-4"></div>
@@ -127,12 +128,12 @@
           <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-6">
-              <button
+              <router-link to="/tenant/social/post"
                 class="btn default-btn btnfb text-center"
-                @click="accessFacebook"
+              
               >
-                Connect
-              </button>
+                Create Post
+              </router-link>
             </div>
             <div class="col-md-2"></div>
           </div>
@@ -335,7 +336,7 @@ export default {
   components: { Dialog },
   setup() {
     
-    const display = ref(false);
+    const display = ref(true);
 
     
     const facebookLogin2 = () => {
