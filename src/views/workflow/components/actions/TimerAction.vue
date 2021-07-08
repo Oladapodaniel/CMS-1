@@ -6,7 +6,7 @@
                 <label for="" class="font-weight-600">Delay</label>
             </div>
             <div class="col-md-12 px-0">
-                <input type="text" class="form-control" v-model.number="delay" @input="handleDelay">
+                <Dropdown v-model="delay" @input="handleDelay" optionLabel="name" :options="daysOptions" class="w-100" />
             </div>
         </div>
 
@@ -24,15 +24,18 @@
 
 <script>
 import { reactive, ref } from '@vue/reactivity';
+import Dropdown from "primevue/dropdown"
+import { computed } from '@vue/runtime-core';
 
 export default {
     props: [ "selectedActionIndex" ],
+    components: { Dropdown },
     setup (props, { emit }) {
         const data = reactive({ ActionType: 8, JSONActionParameters: { } })
 
         const delay = ref('');
         const handleDelay = (e) => {
-            data.JSONActionParameters.delay = e.target.value;
+            data.JSONActionParameters.delay = e.value.type.includes('day') ? delay.length : delay.type.includes('week') ? delay.length * 7 : delay.length * 30;
             emit('updateaction', data, props.selectedActionIndex);
         }
 
@@ -42,11 +45,33 @@ export default {
             emit('updateaction', data, props.selectedActionIndex);
         }
 
+        const daysArr = [
+            { type: 'day', length: 0, name: 'Today' },
+            { type: 'day', length: 1 },
+            { type: 'days', length: 2 },
+            { type: 'days', length: 3 },
+            { type: 'days', length: 5 },
+            { type: 'week', length: 1 },
+            { type: 'weeks', length: 2 },
+            { type: 'weeks', length: 3 },
+            { type: 'month', length: 1 },
+            { type: 'months', length: 2 },
+            { type: 'months', length: 3 }
+        ]
+
+        const daysOptions = computed(() => {
+            return daysArr.map(i => {
+                i.name = i.name ? i.name : `${i.length} ${i.type}`;
+                return i;
+            })
+        })
+
         return {
             delay,
             handleDelay,
             executeTime,
-            handleExecuteTime
+            handleExecuteTime,
+            daysOptions,
         }
     }
 }

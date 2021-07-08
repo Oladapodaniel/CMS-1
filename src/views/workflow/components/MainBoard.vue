@@ -186,7 +186,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="border scr-height" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected || !selectedAction || !(selectedActionIndex >= 0) }">
+                                            <div class="border scr-height" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected || !selectedAction || !(selectedActionIndex >= 0) || triggerActions.length < 1 }">
                                                 <div class="row h-100">
                                                     <div class="col-md-12 ani" > 
                                                         <EmailAction 
