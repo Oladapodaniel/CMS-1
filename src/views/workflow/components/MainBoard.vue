@@ -23,7 +23,7 @@
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="border col-4 scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
+                            <div class="border col-4 scroll-div scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row h-100" style="overflow-y:scroll">
                                     <div class="col-md-12 py-3 c-pointer d-flex justify-content-center border" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in selectedTriggers" :key="index" @click="changeActiveTrigger(index)">
                                         <h6>
@@ -60,16 +60,16 @@
                             <div class="col-8 border" :class="{ 'col-md-8': showTriggers, 'col-md-11': !showTriggers &&  selectedTriggers.length > 0 }">
                                 <div class="row" :class="{ 'd-none': selectedTriggers.length === 0 }">
                                     <div class="col-6 border scr-height"  style="height: 400px" :class="{ 'col-md-4': actionSelected, 'col-md-6': !actionSelected }">
-                                        <GivingAmount v-if="selectedTrigger.id === 1" @givingamount="givingAmount" />
-                                        <GivingNewRegular v-else-if="selectedTrigger.id === 11" />
-                                        <NoLongerGiving v-else-if="selectedTrigger.id === 2" />
-                                        <PledgeCreation v-else-if="selectedTrigger.id === 3" />
-                                        <MemberBirthday  v-else-if="selectedTrigger.id === 5" />
-                                        <GroupAddOrRemove v-else-if="selectedTrigger.id === 8" />
-                                        <GroupMembershipDuration  v-else-if="selectedTrigger.id === 9" />
-                                        <AttendanceTrigger  v-else-if="selectedTrigger.id === 10" />
-                                        <FromSubmission  v-else-if="selectedTrigger.id === 12" />
-                                        <GroupMembershipDuration  v-else />
+                                        <GivingAmount :groups="groups" v-if="selectedTrigger.id === 1" @givingamount="givingAmount" />
+                                        <GivingNewRegular :groups="groups" v-else-if="selectedTrigger.id === 11" />
+                                        <NoLongerGiving :groups="groups" v-else-if="selectedTrigger.id === 2" />
+                                        <PledgeCreation :groups="groups" v-else-if="selectedTrigger.id === 3" />
+                                        <MemberBirthday :groups="groups" v-else-if="selectedTrigger.id === 5" />
+                                        <GroupAddOrRemove :groups="groups" v-else-if="selectedTrigger.id === 8" />
+                                        <GroupMembershipDuration :groups="groups" v-else-if="selectedTrigger.id === 9" />
+                                        <AttendanceTrigger :groups="groups" v-else-if="selectedTrigger.id === 10" />
+                                        <FromSubmission v-else-if="selectedTrigger.id === 12" />
+                                        <GroupMembershipDuration :groups="groups" v-else />
                                     </div>
 
                                     <div class="col-md-6 border scr-height"  style="height: 400px" :class="{ 'col-md-8': actionSelected, 'col-md-6': !actionSelected }">
@@ -121,7 +121,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="border h-100" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected }">
+                                            <div class="border scr-height" :class="{ 'col-md-6': actionSelected, 'd-none': !actionSelected }">
                                                 <div class="row">
                                                     <div class="col-md-12" > 
                                                         <EmailAction @emailupdated="handleEmailUpdate" v-if="selectedAction.id === 1" />
@@ -177,6 +177,7 @@ import Interactions from "./actions/InteractionsAction"
 import { computed } from '@vue/runtime-core'
 import EmailAction from "./actions/Email"
 import MemberBirthday from "./triggers/MemberBirthday.vue"
+import grousService from '../../../services/groups/groupsservice'
 export default {
     components: { 
         GivingAmount,
@@ -380,6 +381,19 @@ export default {
             selectedActionIndex.value = index;
         }
 
+        const groups = ref([]);
+        const getGroups = async () => {
+            try {
+                const response = await grousService.getGroups();
+                groups.value = response.map(i => {
+                    return { id: i.id, name: i.name };
+                })
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getGroups();
+
         return {
             showTriggers,
             // triggersIsVissible,
@@ -403,6 +417,8 @@ export default {
 
             handleEmailUpdate,
             setActiveAction,
+
+            groups,
         }
     }
 }

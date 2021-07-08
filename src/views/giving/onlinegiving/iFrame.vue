@@ -33,11 +33,11 @@
         <div class="col-12 px-0">
             <div class="row d-flex justify-content-center">
               <div class="col-6">
-                <p class="text-center pt-5 main-font">Giving</p>
-              <p class="text-center mt-n3 sub-main-font">
+                <p class="text-center pt-2 main-font">Giving</p>
+              <!-- <p class="text-center mt-n3 sub-main-font">
                 Give, and it will be given to you. A good measure, pressed down, shaken together and running over, will be poured into your lap. For with the measure you use, it will be measured to you.”
               </p>
-              <p class="text-center">- Luke 6:38 NIV</p>
+              <p class="text-center">- Luke 6:38 NIV</p> -->
               </div>
             </div>
 
@@ -88,7 +88,7 @@
 
 
                   <!-- start of dynamic Area 1-->
-                  <div class="row">
+                  <div class="row" v-if="false">
                     <div class="col-md-12">
                       <section>
                         <p class="col-12 hfont px-0 mb-1">
@@ -179,7 +179,7 @@
                     </div>
                   </section>
                   <!-- end of date area -->
-                  <div class="col-12">
+                  <div class="col-12" v-if="false">
                   <div class="row mt-4 stroke" v-if="!signedIn" >
                     <!-- <div class="col-1">
                      

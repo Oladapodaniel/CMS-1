@@ -4,7 +4,7 @@
             <div class="col-12 col-md-5 offset-md-1 ">
                 <div class=" container">
                     <div class="row justify-content-center">
-                        <div class=" col-sm-10 my-5 "><img :src="churchLogo" style="width: 85px" alt=""></div>
+                        <div class=" col-sm-10 my-5 "><img :src="churchLogo" style="width: 250px" alt=""></div>
                         <div class="col-sm-10 my-3">
                             <h1 class="font-weight-bold ">Create an account</h1>
                         </div>
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="col-5 col-md-5 offset-md-1 childimage d-none d-md-block  d-lg-block" >
-                   <div class="text-white "><h1>{{ churchName }} <br> Child Checkin <br> System</h1></div>
+                   <div class="text-white "><h1>{{ churchName }} <br> Child Checkin</h1></div>
                 <!-- <img src="../../../assets/child1.png" alt=""> -->
             </div>
         </div>

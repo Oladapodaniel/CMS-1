@@ -18,6 +18,7 @@
         "
         data-toggle="modal"
         data-target="#familyModal"
+        @click="() => memberDetails = {}"
       >
         Add Member
       </div>
@@ -32,7 +33,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title header1" id="exampleModalLabel">Add New Member</h5>
+            <h5 class="modal-title header1" id="exampleModalLabel">{{ Object.keys(memberDetails).length > 0 ? 'Update' : 'Add New' }} Member</h5>
             <div
               type="button"
               class="btn-close"
@@ -42,7 +43,7 @@
             ><i class="pi pi-times"></i></div>
           </div>
           <div class="modal-body">
-            <Memberform :familyDetails="familyDetails" @member-roles="getMemberRoles" @remove-modal="dismissModal" @push-to-view="pushToView"/>
+            <Memberform :familyDetails="familyDetails" @member-roles="getMemberRoles" @remove-modal="dismissModal" @push-to-view="pushToView" :memberDetails="memberDetails" @editted-value="edittedValue"/>
           </div>
 
         </div>
@@ -110,23 +111,23 @@
                         <div
                             class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
                         >
-                          
+
 
                             <input
                             type="text"
                             class="input w-100"
                             placeholder="First name"
-            
+
                             />
                         </div>
 
-                    
+
                         <div class="col-12 col-md-4 form-group d-none d-md-block">
                             <input
                             type="text"
                             class="input w-100"
                             placeholder="Role"
-                    
+
                             />
                         </div>
                         </div>
@@ -161,17 +162,17 @@
                     </div>
                 </div>
                 <div v-if="searchMember.length > 0">
-                    <div class="row" style="margin:0;" v-for="(item, index) in searchMember" :key="item.id">
+                    <div class="row row-hover" style="margin:0;" v-for="(item, index) in searchMember" :key="item.id">
                         <div
                         class="col-12 parent-desc py-3 px-0 c-pointer tr-border-bottom  hover"
                         >
-                        
+
                         <div class="row w-100" style="margin:0">
                             <div class="col-md-1 d-flex d-md-block px-3 justify-content-end align-self-center">
-                            <input
+                            <!-- <input
                                 type="checkbox"
                                 class="form-check"
-                            />
+                            /> -->
                             </div>
 
                             <div class="col-md-2" style="height: 52px">
@@ -189,7 +190,7 @@
                                 <span class="text-dark font-weight-bold d-flex d-md-none">FIRSTNAME</span>
                             <div>
                                 
-                                <div class="desc text-right text-md-left">{{ item.person.firstName }}</div>
+                                <div class="desc text-right text-md-left" data-toggle="modal" data-target="#familyModal" @click="editMember(item, index)">{{ item.person.firstName }}</div>
                             </div>
                             </div>
                             </div>
@@ -197,14 +198,14 @@
                             <div class="col-md-3 align-self-center">
                             <p class="mb-0 d-flex justify-content-between">
                                 <span class="text-dark font-weight-bold d-flex d-md-none">LASTNAME</span>
-                                <span>{{ item.person.lastName }}</span>
+                                <span data-toggle="modal" data-target="#familyModal" @click="editMember(item, index)">{{ item.person.lastName }}</span>
                             </p>
                             </div>
 
                             <div class="col-md-2 align-self-center">
                             <p class="mb-0 d-flex justify-content-between">
                                 <span class="text-dark font-weight-bold d-flex d-md-none">ROLE</span>
-                                <span><span class="c-pointer"
+                                <span><span class="c-pointer" data-toggle="modal" data-target="#familyModal" @click="editMember(item, index)"
                                 > {{ memberRoles.length > 0 ? memberRoles.find(i => i.id === item.familyRoleID).name : "" }}</span
                             ></span>
                             </p>
@@ -212,7 +213,7 @@
 
                             <div class="col-md-1 align-self-center">
                             <div class="action data action-icon">
-                                <!-- <div class="dropdown">
+                                <div class="dropdown">
                                 <i
                                     class="fas fa-ellipsis-v cursor-pointer"
                                     id="dropdownMenuButton"
@@ -222,20 +223,17 @@
                                 ></i>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     
-                                <a
-                                    class="dropdown-item elipsis-items cursor-pointer"
-                                    @click="showConfirmModal(item.id, index)"
-                                    >Delete</a
-                                >
-                                    <a class="dropdown-item elipsis-items">
-                                Delete
-                                </a>
-                                    <a class="dropdown-item elipsis-items">
-                                Edit
-                                </a>
+                                    <a class="dropdown-item elipsis-items" data-toggle="modal" data-target="#familyModal" @click="editMember(item, index)">
+                                  Edit
+                                  </a>
+                                  <a
+                                      class="dropdown-item elipsis-items cursor-pointer"
+                                      @click="showConfirmModal(item.id, index)"
+                                      >Delete</a
+                                  >
+                                  </div>
                                 </div>
-                                </div> -->
-                                <i class="pi pi-trash" @click="showConfirmModal(item.id, index)"></i>
+                                <!-- <i class="pi pi-trash" @click="showConfirmModal(item.id, index)"></i> -->
                             </div>
                             </div>
                         </div>
@@ -249,13 +247,13 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
       </div>
     </div>
     <div class="row" v-else-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading" >
-            <div class="col-8 offset-2 col-sm-5 offset-sm-3 empty-img mt-5 text-center">
+            <div class="col-8 offset-2 col-sm-5 col-md-3 offset-sm-3 offset-md-4 empty-img mt-5 text-center">
                 <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
                 <div class="mt-3">You have not added any family members yet</div>
                 <div class="default-btn border-0 text-white mt-4 button-add-member c-pointer" data-toggle="modal" data-target="#familyModal">Add member</div>
@@ -264,7 +262,7 @@
         <div class="text-center mt-5" v-if="loading">
             <ProgressSpinner />
         </div>
-    
+
     <!--End of Table Area -->
     <ConfirmDialog />
     <Toast />
@@ -289,6 +287,8 @@ export default {
     const close = ref("")
     const searchText = ref("")
     const loading = ref(false)
+    const memberDetails = ref({})
+    const memberToEditIndex = ref(0)
 
 
 
@@ -321,21 +321,31 @@ export default {
     }
 
     const deleteMember = async(id, index) => {
-        try {
-            const res = await axios.delete(`/api/Family/removeAFamilyMember?id=${id}`)
-            console.log(res)
-            toast.add({
-                severity: "success",
-                summary: "Deleted",
-                detail: "Deleted Successfully",
-                life: 3000,
-            });
-            familyDetails.value.familyMembers.splice(index, 1)
+        if (id) {
+          try {
+              const res = await axios.delete(`/api/Family/removeAFamilyMember?id=${id}`)
+              console.log(res)
+              toast.add({
+                  severity: "success",
+                  summary: "Deleted",
+                  detail: "Deleted Successfully",
+                  life: 3000,
+              });
+              familyDetails.value.familyMembers.splice(index, 1)
+          }
+          catch (error) {
+              console.log(error)
+          }
+        } else {
+          familyDetails.value.familyMembers.splice(index, 1)
+          toast.add({
+                  severity: "success",
+                  summary: "Deleted",
+                  detail: "Deleted Successfully",
+                  life: 3000,
+              });
         }
-        catch (error) {
-            console.log(error)
-        }
-        
+
     }
 
 
@@ -369,7 +379,8 @@ export default {
                 person: {
                     firstName: payload.firstName,
                     lastName: payload.lastName,
-                    pictureUrl: payload.pictureUrl
+                    pictureUrl: payload.pictureUrl,
+                    genderID: payload.genderID
                 },
                 familyRoleID: payload.roleId
             }
@@ -381,6 +392,30 @@ export default {
             if (!searchText.value && familyDetails.value.familyMembers.length === 0) return familyDetails.value.familyMembers
             return familyDetails.value.familyMembers.filter(i => i.person.firstName.toLowerCase().includes(searchText.value.toLowerCase()))
         })
+
+        const editMember = (member, index) => {
+          memberDetails.value = member
+          memberToEditIndex.value = index
+
+        }
+
+        const edittedValue = (payload) => {
+         
+       
+          let edittedData = {
+            person: {
+              firstName: payload.firstName,
+                    lastName: payload.lastName,
+                    pictureUrl: payload.pictureUrl,
+                    id: payload.personId,
+                    genderID: payload.genderID
+                },
+                familyRoleID: payload.roleId
+            }
+              console.log(edittedData)
+            familyDetails.value.familyMembers.splice(memberToEditIndex.value, 1, edittedData)
+          }
+        
 
 
     return {
@@ -398,7 +433,11 @@ export default {
       pushToView,
       searchMember,
       searchText,
-      loading
+      loading,
+      editMember,
+      memberDetails,
+      edittedValue,
+      memberToEditIndex
     };
   },
 };
@@ -500,6 +539,11 @@ opacity: 1;
 
 .empty-img {
   font-size: 1.1em
+}
+
+.row-hover:hover {
+  background: #eee;
+  transition: all 0.1s ease-in-out;
 }
 
 </style>

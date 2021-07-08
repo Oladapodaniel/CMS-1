@@ -1,5 +1,5 @@
 <template>
-    <div class="container px-0">
+    <div class="container px-0 scroll-div">
         <div class="row">
             <div class="col-md-12">
                 <label for="" class="font-weight-600">Message</label>

@@ -243,15 +243,15 @@
                   <span class="d-flex align-items-center"
                     ><input
                       type="text"
-                      ref="checkinLink"
+                      ref="familyLink"
                       @keydown="preventChangingOfCheckinLink"
-                      @click="copyLink"
+                      @click="copyFamilyLink"
                       :value="childCheckinLink"
                       class="form-control"
                       style="width: 95%" />
                     <i
                       class="pi pi-copy ml-2 c-pointer"
-                      @click="copyLink"
+                      @click="copyFamilyLink"
                       style="font-size: 22px"
                     ></i
                   ></span>
@@ -412,6 +412,7 @@ export default {
     const selectedGroups = ref([]);
     const store = useStore();
     const checkinLink = ref(null);
+    const familyLink = ref(null);
     const regLink = ref(null);
     const paymentFormLink = ref(null);
     const iframeLink = ref(null);
@@ -549,6 +550,24 @@ export default {
         life: 3000,
       });
     }
+    
+    const copyFamilyLink = () => {
+      
+      familyLink.value.select();
+      familyLink.value.setSelectionRange(
+        0,
+        familyLink.value.value.length
+      ); /* For mobile devices */
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      toast.add({
+        severity: "info",
+        summary: "Link Copied",
+        detail: "Family link copied to your clipboard",
+        life: 3000,
+      });
+    }
 
     const link = computed(() => {
       if (
@@ -619,8 +638,10 @@ export default {
       selectedGroups,
       route,
       checkinLink,
+      familyLink,
       regLink,
       copyLink,
+      copyFamilyLink,
       preventChangingOfCheckinLink,
       link,
       eventRegistration,
