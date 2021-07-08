@@ -107,16 +107,12 @@
         <!--facebook id-->
         <form action="">
           <div class="row justify-content-center">
-            <div class="col-md-12 text-right">
-              <label for="email">Share Your Post to Facebook</label>
+            <div class="col-md-4 text-right">
+              <label for="email"></label>
             </div>
-            <!-- <div class="form-group col-md-6">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Facebook Page Id"
-              />
-            </div> -->
+            <div class="form-group col-md-6">
+              <h4>Share Your Post to Facebook</h4>
+            </div>
             <div class="col-md-2"></div>
           </div>
           <div class="row">
