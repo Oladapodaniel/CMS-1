@@ -387,6 +387,18 @@ export default {
           /** @type {firebase.auth.OAuthCredential} */
         })
         .catch((error) => {
+          
+          if(error.credential && error.credential.accessToken){
+            //Get Page access token
+              axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`)
+                .then(res => {
+                  console.log(res, "🎉🌹🌹");
+                })
+                .catch(err => {
+                  console.log(err, "err error");
+                })
+          }
+
           console.log(error, "sign in error");
         });
       });
