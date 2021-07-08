@@ -188,6 +188,6 @@ export default {
 }
 
 .top-router {
-  max-width: 1300px;
+  max-width: 1536px !important;
 }
 </style>

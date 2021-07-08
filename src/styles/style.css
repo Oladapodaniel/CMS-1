@@ -19,7 +19,7 @@
 }
 
 .our-grey-bg {
-  background: #ebeff4 !important;
+  background: #ebeff485 !important;
 }
 
 .table {
@@ -84,6 +84,11 @@
     text-decoration: none;
     box-sizing: border-box;
     background: #EBEFF4;
+  }
+
+  .scroll-div {
+    overflow-y: scroll;
+    height: 100%;
   }
 
   .apply-btn {

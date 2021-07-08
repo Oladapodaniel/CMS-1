@@ -4,52 +4,13 @@
     <!-- nav section area -->
     <div class="container-fluid nav-color">
       <div class="container">
-        <!-- <nav class="navbar navbar-expand-lg nav-color2">
-          <a class="navbar-brand" href="#">
-            <img v-bind:src="formResponse.churchLogo" width="100px" alt="" />
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="text-white" href="#">{{ formResponse.churchName }}</a>
-              </li>
-            </ul>
-            <div class="form-inline my-2 my-lg-0">
-              <li class="nav-item lstyle mr-3">
-                <a class="text-white" href="#">English</a>
-              </li>
-              <li class="nav-item lstyle" @click="checkForToken">
-                <div class="text-white" href="#" style="cursor: pointer"
-                  >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} <i class="fas fa-user text-white" v-if="signedIn"></i
-                ></div>
-              </li>
-              <li class="nav-item lstyle ml-4" @click="signOut" v-if="signedIn">
-                <div class="text-white" href="#" style="cursor: pointer"
-                  >
-                  Sign Out
-                  </div>
-              </li>
-            </div>
-          </div>
-        </nav> -->
+      
       </div>
     </div>
     <!--end of nav section area -->
     
         <div class="container-fluid">
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-sm-10 col-md-8 mx-auto  pt-1">
                     <div class="row">
                       <div class="col-6">{{ formResponse.churchName }}</div>
@@ -70,11 +31,15 @@
     <div class="container-fluid">
       <div class="row mx-0">
         <div class="col-12 px-0">
-          <div>
-            <p class="text-center pt-2 main-font">Giving</p>
-            <p class="text-center mt-n3 sub-main-font">
-              Give and you shall recieve. Luke - 6:38
-            </p>
+            <div class="row d-flex justify-content-center">
+              <div class="col-6">
+                <p class="text-center pt-2 main-font">Giving</p>
+              <!-- <p class="text-center mt-n3 sub-main-font">
+                Give, and it will be given to you. A good measure, pressed down, shaken together and running over, will be poured into your lap. For with the measure you use, it will be measured to you.”
+              </p>
+              <p class="text-center">- Luke 6:38 NIV</p> -->
+              </div>
+            </div>
 
             <!-- form area -->
             <div>
@@ -123,7 +88,7 @@
 
 
                   <!-- start of dynamic Area 1-->
-                  <div class="row">
+                  <div class="row" v-if="false">
                     <div class="col-md-12">
                       <section>
                         <p class="col-12 hfont px-0 mb-1">
@@ -214,7 +179,7 @@
                     </div>
                   </section>
                   <!-- end of date area -->
-                  <div class="col-12">
+                  <div class="col-12" v-if="false">
                   <div class="row mt-4 stroke" v-if="!signedIn" >
                     <!-- <div class="col-1">
                      
@@ -459,7 +424,6 @@
               <!--End of Footer area -->
               <!-- end of form area -->
             </div>
-          </div>
         </div>
       </div>
       <!--end of body area -->

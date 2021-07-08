@@ -450,7 +450,7 @@
               <img src="../../assets/online_giving.png" />
               <div class="mt-4">Online Giving</div>
               <div class="more-body mt-2">
-                Make online donations to your church.
+                Allow members to make online donations to your church.
               </div>
               <router-link to="/tenant/payments"
                 ><div class="learn-more second col-6 offset-3 cursor-pointer">

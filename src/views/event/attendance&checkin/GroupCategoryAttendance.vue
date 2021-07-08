@@ -227,6 +227,73 @@
             <div class="row">
               <div class="col-md-2 col-sm-2 image mt-3">
                 <img
+                  src="../../../assets/childcheckin.svg" style="width:54px; height:54px"
+                  alt="marked Attendance image"
+                />
+              </div>
+              <div class="col-md-10 col-sm-10 mt-3">
+                <h4 class="header4">
+                  <a
+                    class="text-decoration-none link-color"
+                    >Family Registration</a
+                  >
+                </h4>
+                <p class="para">Register your family members for this event</p>
+                <p class="para">
+                  <span class="d-flex align-items-center"
+                    ><input
+                      type="text"
+                      ref="familyLink"
+                      @keydown="preventChangingOfCheckinLink"
+                      @click="copyFamilyLink"
+                      :value="childCheckinLink"
+                      class="form-control"
+                      style="width: 95%" />
+                    <i
+                      class="pi pi-copy ml-2 c-pointer"
+                      @click="copyFamilyLink"
+                      style="font-size: 22px"
+                    ></i
+                  ></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+       
+        <div class="row w-100 c-pointer mt-3" @click="routeToChildCheckin">
+          <div
+            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          >
+            <div class="row">
+              <div class="col-md-2 col-sm-2 image mt-3">
+                <img
+                  src="../../../assets/childcheckin.svg" style="width:54px; height:54px"
+                  alt="marked Attendance image"
+                />
+              </div>
+              <div class="col-md-10 col-sm-10 mt-3">
+                <h4 class="header4">
+                  <a
+                    class="text-decoration-none link-color"
+                    >Child Checkin</a
+                  >
+             
+                </h4>
+                <p class="para">Click to checkin your children</p>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row w-100 mt-3">
+          <div
+            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
+          >
+            <div class="row">
+              <div class="col-md-2 col-sm-2 image mt-3">
+                <img
                   src="../../../assets/group2.svg"
                   alt="marked Attendance image"
                 />
@@ -276,6 +343,8 @@
 
         <div class="col-md-12 mb-3"></div>
 
+        
+
         <div class="col-md-12 px-0 tr-border-bottom mt-3">
             <!-- <hr class="tr-border-bottom"> -->
         </div>
@@ -283,34 +352,7 @@
         <div class="col-md-12 py-2" style="opacity:.4">
           <h5 class="check">Not Currently Available</h5>
         </div>
-        <div class="row w-100" style="opacity:.3">
-          <div
-            class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
-          >
-            <div class="row">
-              <div class="col-md-2 col-sm-2 image mt-3">
-                <img
-                  src="../../../assets/childcheckin.svg" style="width:54px; height:54px"
-                  alt="marked Attendance image"
-                />
-              </div>
-              <div class="col-md-10 col-sm-10 mt-3">
-                <h4 class="header4">
-                  <a
-                    class="text-decoration-none link-color"
-                    >Child Checkin</a
-                  >
-                  <!-- <router-link
-                    class="text-decoration-none"
-                    to="/tenant/attendancecheckin/childcheckin"
-                    >Child Checking</router-link
-                  > -->
-                </h4>
-                <p class="para">Child check-in and print labels</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        
         <div class="col-md-12 mb-3"></div>
 
         <div class="row w-100"  style="opacity:.3">
@@ -357,6 +399,7 @@ import { computed, ref } from "vue";
 import attendanceservice from "../../../services/attendance/attendanceservice";
 import { useStore } from "vuex";
 import { useToast } from "primevue/usetoast";
+import router from '../../../router';
 
 export default {
   components: { Dropdown, MultiSelect },
@@ -369,12 +412,14 @@ export default {
     const selectedGroups = ref([]);
     const store = useStore();
     const checkinLink = ref(null);
+    const familyLink = ref(null);
     const regLink = ref(null);
     const paymentFormLink = ref(null);
     const iframeLink = ref(null);
     const toast = useToast();
     const eventLinkResponse = ref("")
     const paymentFormIdResponse = ref("")
+    const tenantId = ref("")
     
 
     if (route.query.activityID) {
@@ -427,6 +472,7 @@ export default {
 
         eventLinkResponse.value = response.eventRegistrationLink
         paymentFormIdResponse.value = response.paymentFormId
+        tenantId.value = response.tenantID
         console.log(response.paymentFormId)
         console.log(response)
       } catch (error) {
@@ -504,6 +550,24 @@ export default {
         life: 3000,
       });
     }
+    
+    const copyFamilyLink = () => {
+      
+      familyLink.value.select();
+      familyLink.value.setSelectionRange(
+        0,
+        familyLink.value.value.length
+      ); /* For mobile devices */
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      toast.add({
+        severity: "info",
+        summary: "Link Copied",
+        detail: "Family link copied to your clipboard",
+        life: 3000,
+      });
+    }
 
     const link = computed(() => {
       if (
@@ -546,6 +610,11 @@ export default {
       return `<iframe loading="lazy" src="https://my.churchplus.co/iframe/${paymentFormID.value}" style="border:0px #f4f4f4 dashed;" name="online-giving" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="1190px" width="720px" allowfullscreen></iframe>`
     })
 
+    const childCheckinLink = computed(() => {
+      if (!tenantId.value) return `https://my.churchplus.co/childcheckin/${attendanceCheckinInStore.value.tenantID}`
+      return `https://my.churchplus.co/childcheckin/${tenantId.value}`
+    })
+
     const preventChangingOfCheckinLink = (e) => {
       e.preventDefault();
     };
@@ -558,6 +627,10 @@ export default {
 
     // getDetails()
 
+    const routeToChildCheckin = () => {
+      router.push('/tenant/childcheckin')
+    }
+
     return {
       groups,
       selectedEvent,
@@ -565,8 +638,10 @@ export default {
       selectedGroups,
       route,
       checkinLink,
+      familyLink,
       regLink,
       copyLink,
+      copyFamilyLink,
       preventChangingOfCheckinLink,
       link,
       eventRegistration,
@@ -579,7 +654,10 @@ export default {
       eventLinkResponse,
       paymentFormIdResponse,
       paymentFormID,
-      iFrameLink
+      iFrameLink,
+      tenantId,
+      childCheckinLink,
+      routeToChildCheckin
     };
   },
 };

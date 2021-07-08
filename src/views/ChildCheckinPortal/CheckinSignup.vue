@@ -1,63 +1,73 @@
 <template>
     <div class="container-fluid ">
         <div class="row">
-            <div class="col-12 col-md-7 col-lg-7" style="height: 99.5vh; ">
-                <div class=" container  ">
+            <div class="col-12 col-md-5 offset-md-1 ">
+                <div class=" container">
                     <div class="row justify-content-center">
-                        <div class=" col-10 my-5 "><img src="../../assets/logoblue.png" style="height: 35px; width: 250px" alt=""></div>
-                        <div class="col-10 my-3">
+                        <div class=" col-sm-10 my-5 "><img :src="churchLogo" style="width: 250px" alt=""></div>
+                        <div class="col-sm-10 my-3">
                             <h1 class="font-weight-bold ">Create an account</h1>
                         </div>
                     </div>
-                    <form action="" class="row justify-content-center mb-3">
-                        <div class="col-10">
+                    <form @submit.prevent="signUp" class="row justify-content-center mb-3">
+                        <div class="col-10" v-if="errorMessage">
+                            <div class="error-div">
+                                <p class="error-message">{{ errorMessage }}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">
                              <label class="font-weight-bold">What's your name?</label>
                         </div>
-                        <div class="col-5  form-group">
-                            <input type="text" class=" form-control  font-italic all-input " placeholder="Last name">
+                        <div class="col-sm-5  form-group">
+                            <input type="text" class=" form-control  font-italic all-input " v-model="userDetails.firstName" placeholder="First name">
                         </div>
-                        <div class="col-5 form-group">
-                            <input type="text" class=" form-control all-input font-italic" placeholder="First name">
+                        <div class="col-sm-5 form-group">
+                            <input type="text" class=" form-control all-input" v-model="userDetails.lastName" placeholder="Last name">
                         </div>
-                        <div class="col-10 form-group">
-                            <label class="font-weight-bold ">Email/Phone number</label>
-                            <input type="text" class=" form-control all-input  font-italic" placeholder="Enter email/phone number">
+                        <div class="col-sm-10 form-group">
+                            <label class="font-weight-bold ">Email / Phone Number</label>
+                            <input type="text" class=" form-control all-input " v-model="username" placeholder="Enter email / phone number">
                         </div>
-                        <div class="col-5 ">
+                        <div class="col-sm-5 ">
                             <label class="font-weight-bold" >Role</label>
                             <Dropdown 
-                            class="w-100  all-input font-italic"
-                            :options="selectMonths"
+                            class="w-100  all-input"
+                            :options="roles"
+                            optionLabel="name"
                             placeholder="Select role"
+                            v-model="selectedRole"
                              />
                         </div>
-                        <div class="col-5 form-group">
+                        <div class="col-sm-5 form-group mt-3">
                             <label class="font-weight-bold"> Password </label>
-                            <input type="password" class=" form-control all-input font-italic" placeholder="Enter password">
+                            <input type="password" class=" form-control all-input" v-model="userDetails.password" placeholder="Enter password">
                             <span class="py-2">Must be six character long</span>
                         </div>
-                        <div class="col-10"><button class="btn btn-primary create-btn font-weight-bold w-100">Create an account</button></div>                       
+                        <div class="col-sm-10"><button class="btn btn-primary create-btn font-weight-bold w-100">Create an account</button></div>                       
                     </form>
-                    <div class="row my-3 justify-content-center ">
+                    <!-- <div class="row my-3 justify-content-center ">
                         <div class="col-4  border-bottom "></div>
                         <div class="col-1 text-center">or </div>
                         <div class="col-4  border-bottom "></div>
-                    </div>
+                    </div> -->
                     
                     <div class="row justify-content-center ">
                         <!-- Social Media -->
-                        <div class="col-2"><img src="../../assets/google.png" alt=""></div>
+                        <!-- <div class="col-2"><img src="../../assets/google.png" alt=""></div>
                         <div class="col-2"><img src="" alt=""></div>
-                        <div class="col-2"><img src="../../assets/facebook.png" alt=""></div>
-                        <div class="col-10 my-4 text-center font-weight-bold"><span>Already have an account?</span><a href="">Sign in now</a></div>
+                        <div class="col-2"><img src="../../assets/facebook.png" alt=""></div> -->
+                        <div class="col-10 my-4 font-weight-bold">
+                            <span>Already have an account?</span> 
+                            &nbsp; <router-link :to="{ name: 'CheckinSignin', params: { tenantId: route.params.tenantId } }">Sign in now</router-link>
+                        </div>
                         <div class="col-10 mt-3 font-weight-bold">All Right Reserved 2021</div>
                     </div>
                     
                     
                 </div>
             </div>
-            <div class="col-5 col-md-5 col-lg-5 childimage d-none d-md-block  d-lg-block" >
-                   <div class="text-white "><h1>Churchplus <br> Child Checkin <br> System</h1></div>
+            <div class="col-5 col-md-5 offset-md-1 childimage d-none d-md-block  d-lg-block" >
+                   <div class="text-white "><h1>{{ churchName }} <br> Child Checkin</h1></div>
                 <!-- <img src="../../../assets/child1.png" alt=""> -->
             </div>
         </div>
@@ -65,31 +75,121 @@
     
 </template>
 <script>
+import { ref } from "vue"
 import Dropdown from "primevue/dropdown";
-
+import { useRoute } from "vue-router"
+import axios from "@/gateway/backendapi";
+import router from "../../router";
+import finish from "../../services/progressbar/progress";
 export default ({
     components: { Dropdown },
     setup() {
-    //       const selectMonths = ref([
-    //   { name: "1", code: "NY" },
-    //   { name: "2", code: "RM" },
-    //   { name: "3", code: "LDN" },
-    //   { name: "4", code: "IST" },
-    //   { name: "5", code: "PRS" },
-    //   { name: "6", code: "NY" },
-    //   { name: "7", code: "RM" },
-    //   { name: "8", code: "LDN" },
-    //   { name: "9", code: "IST" },
-    //   { name: "10", code: "PRS" },
-    //   { name: "11", code: "IST" },
-    //   { name: "12", code: "PRS" },
-    // ]);
+        const route = useRoute()
+        const userDetails = ref({
+            tenantId: route.params.tenantId
+        })
+        const username = ref("")
+        const roles = ref([])
+        const selectedRole = ref({})
+        const churchLogo = ref("")
+        const errorMessage = ref("")
+        const churchName = ref("")
 
+        const getFamilyRoles = async () => {
+            try {
+                let { data } = await axios.get('/getfamilyroles')
+                console.log(data)
+                const father = data.result.find(i => {
+                    return i.name === "Father"
+                })
+                roles.value.push(father)
+                
+                const mother = data.result.find(i => {
+                    return i.name === "Mother"
+                })
+                roles.value.push(mother)
+            }
+            catch (err) {
+                console.log(err)
+                finish()
+            }
+        }
+        getFamilyRoles()
 
+        const signUp = async() => {
+            if (username.value.includes("@")) {
+                userDetails.value.email = username.value
+            }   else {
+                userDetails.value.phoneNumber = username.value
+            }
+            userDetails.value.familyRole = selectedRole.value.id
+            console.log(userDetails.value)
 
-    // return {
-    //     selectMonths
-    // };
+            try {
+                let res = await axios.post('/familyRegister', userDetails.value)
+                console.log(res)
+                if (res.status === 200 && res.data.loginData.value.login.result.statusCode === 401) {
+                    errorMessage.value = res.data.loginData.value.login.result.value.message
+                }   else if (res.status === 200 && res.data.loginData.value.login.result.statusCode === 200) {
+                     const baseAuth = {
+                        checkinPerson: res.data.personID,
+                        tenantId: res.data.loginData.value.login.result.value.tenantID
+                    }
+                    localStorage.setItem('checkinToken', res.data.loginData.value.login.result.value.token)
+                    localStorage.setItem('baseAuth', JSON.stringify(baseAuth))
+                    router.push({ name: 'CheckinDashboard' })
+                    errorMessage.value = ""
+                }   else if (res.status === 200 && res.data.loginData.value.login.result.statusCode === 400) {
+                    errorMessage.value = res.data.loginData.value.login.result.value.message
+                }   else {
+                    console.log(res)
+                }
+                
+            }
+            catch (err) {
+                console.log(err)
+                finish()
+                if (err && err.response && err.response.status === 400) {
+                    if (userDetails.value.password.length < 6) {
+                        errorMessage.value = "Your password should not be less than 6 characters"
+                    }   else {
+                        errorMessage.value = err.response.data
+                    }
+                }  else if (err.toString().toLowerCase().includes('network error')) {
+                    errorMessage.value = "Network error, please make sure you have a strong internet connection"  
+                }  else if (err.toString().toLowerCase().includes('timeout')) {
+                    errorMessage.value = "Request took too long to respond, please reload and try again"
+                }   else {
+                    console.log(err)
+                }
+            }
+
+            
+        }
+            const getChurchProfile = async() => {
+                try {
+                    let res = await axios.get(`/GetChurchProfileById?tenantId=${route.params.tenantId}`)
+                    console.log(res)
+                    churchLogo.value = res.data.returnObject.logo
+                    churchName.value = res.data.returnObject.name
+                }
+                catch (err) {
+                    console.log(err)
+                    finish()
+                }
+            }
+            getChurchProfile()
+        return {
+            userDetails,
+            signUp,
+            roles,
+            selectedRole,
+            route,
+            username,
+            churchLogo,
+            errorMessage,
+            churchName
+        }
     },
 })
 </script>
@@ -117,9 +217,25 @@ export default ({
 .childimage h1 {
     position: absolute;
     top: 40%;
-    left: 230px ;
+    left: 170px ;
     font-weight: bolder;
     font-size: 60px;
 }
+
+.error-div {
+  background: #fff8f8;
+  border-color: #ffe9e9;
+  padding: 10px 5px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  border-left: 5px solid #b52626;
+}
+
+.error-message {
+  color: #b52626;
+  margin-bottom: 0;
+}
+
 
 </style>

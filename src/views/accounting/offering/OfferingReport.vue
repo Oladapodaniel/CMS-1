@@ -23,7 +23,9 @@
       <div class="col-md-2 pl-0">
         <span class="theader mb-1">Status</span>
         <div class="my-3">
-          <span class="draft">unsent</span>
+          <div class="my-3">
+                <span class="draft">{{ status }}</span>
+              </div>
         </div>
       </div>
 
@@ -116,7 +118,7 @@
                           class="def-btn approve-btn"
                           data-toggle="modal"
                           data-target="#sendReport"
-                          :class="{ 'resend-btn': markedAsSent === 'marked as sent' }"
+                          :class="{ 'resend-btn': markedAsSent }"
                         >
                           {{ sendBtnText }}
                         </a>
@@ -155,13 +157,9 @@
                                 >
                                   <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
                                   <ReportModal
-                                    :eventName="
-                                      stats && stats.activityToday
-                                        ? stats.activityToday.name
-                                        : ''
-                                    "
+                                    :eventName="contributionReport.activityName? contributionReport.activityName : '' "
                                     @sendreport="sendReport"
-                                    :stats="stats"
+                                    :stats="contributionReport"
                                   />
                                 </div>
                                 <!-- <div class="modal-footer">
@@ -195,7 +193,7 @@
                     <a
                       style="color: #136acd; cursor: pointer"
                       @click="markAsSent"
-                      >{{ markedAsSent  }}</a
+                      >mark as sent</a
                     >
                   </div>
                 </div>
@@ -221,17 +219,17 @@
       </div>
     </div>
 
-    <div
+    <!-- <div
       class="modal fade"
       id="sendReport"
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
       :show="true"
-    >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
+    > -->
+      <!-- <div class="modal-dialog modal-lg"> -->
+        <!-- <div class="modal-content"> -->
+          <!-- <div class="modal-header">
             <h5 class="modal-title font-weight-bold" id="sendReport">
               Send this report
             </h5>
@@ -243,16 +241,9 @@
             >
               <span aria-hidden="true">&times;</span>
             </button>
-          </div>
-          <div class="modal-body pt-0 px-0" :data-dismiss="btnState">
-            <!-- <ReportModal :eventName="eventDataResponse.name"/> -->
-            <ReportModal
-              :eventName="`This Contribution`"
-              @sendreport="sendReport"
-              @get-church-name="getChurchName"
-              :stats="contributionReport"
-            />
-          </div>
+          </div> -->
+         
+        
           <!-- <div class="modal-footer">
       <button
         type="button"
@@ -265,9 +256,9 @@
         Save changes
       </button>
     </div> -->
-        </div>
-      </div>
-    </div>
+        <!-- </div> -->
+      <!-- </div> -->
+    <!-- </div> -->
     
     <div class="container-fluid bottom-section px-0">
       <div class="row mx-0" ref="topmost">
@@ -463,10 +454,10 @@
           </div>
           <div class="row">
             <div class="col-sm-6 offset-sm-6 mt-3">
-              <hr class="hr-total" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 :''" />
+              <hr class="hr-total" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 : '' " />
             </div>
           </div>
-          <div class="row px-5" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 :''">
+          <div class="row px-5" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 : '' ">
             <div class="col-sm-12">
               <div class="row">
                 <div class="col-sm-4"></div>
@@ -475,19 +466,19 @@
                   <span class="text-style">Total</span>
                 </div>
                 <div class="col-sm-3 total-text">
-                  <span class="text-danger">{{ contributionReport.tenantCurrency }}&nbsp;{{ contributionReport ? amountWithCommas(Math.round(contributionReport.totalToday)) : "" }}</span>
+                  <span class="text-danger">{{ contributionReport.tenantCurrency }}&nbsp;{{ contributionReport ? amountWithCommas(Math.round(contributionReport.totalToday)) : '' }}</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-6 offset-sm-6">
-              <hr class="hr-total" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 :''" />
+              <hr class="hr-total" v-if="contributionReport && contributionReport.todayContributions ? contributionReport.todayContributions.length > 0 : '' " />
             </div>
           </div>
         </div>
       </div>
-      <div class="row email-data" ref="emaildata" v-if="false" >
+      <div class="row email-data" ref="emaildata" v-show="false" >
           <table
             align="center"
             style="
@@ -1501,7 +1492,7 @@
                     </div>
                     <div class="ana-item-icon">
                       <div class="item-image">
-                        <div v-if="contributionReport.todayVsLastYear > 0">
+                        <div v-if="contributionReport.todayVsLastYear > 0 ">
                           <img
                             src="../../../assets/dashboardlinks/trend-icon.svg"
                             alt=""
@@ -1577,8 +1568,11 @@ export default {
         const routeActivityId = ref(route.query.activityID)
         const url = ref(`my.churchplus.co/tenant/report/${route.params.report}`)
         const sendBtnText = ref("Send Report")
-        const markedAsSent =  ref('mark as sent')
-        const willCopyLink = ref(false);    
+        // const markedAsSent =  ref('mark as sent')
+        const lastSent = ref("just a moment ago");
+        const markedAsSent = ref(false);
+        const willCopyLink = ref(false);  
+        const status = ref("Draft");  
         const shareableLinkField = ref(null);
         const location = ref(window.location);
 
@@ -1612,13 +1606,14 @@ export default {
         //       catch (err) {
         //         console.log(err)
         //       } 
-
+     
         const getReport = () => {
           if (route.query.activityID) {
             axios.get(`/api/Offering/contributionReport?date=${route.query.report}&activityId=${route.query.activityID}`)
               .then(res =>  {
                 console.log(res)
                 contributionReport.value = res.data.returnObject
+                console.log(contributionReport)
 
                   
               }).catch(err => {
@@ -1743,8 +1738,11 @@ export default {
             }
 
             const markAsSent =  () => {
+              lastSent.value = "Marked as sent today";
+              status.value = "Sent";
+              markedAsSent.value = true;
               sendBtnText.value = "Resend Report"
-              markedAsSent.value = "marked as sent"
+              // markedAsSent.value = "marked as sent"
             }
 
             const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount)
@@ -1771,7 +1769,7 @@ export default {
             };
 
         return {
-            reportApproved, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent, routeActivityId, amountWithCommas, copyLink, shareableLinkField, location, willCopyLink
+            reportApproved, lastSent, status, toggleReportState, contributionReport, sendReport, emaildata, btnState, churchName, getChurchName, routeParams, format, url, sendBtnText, markAsSent, markedAsSent, routeActivityId, amountWithCommas, copyLink, shareableLinkField, location, willCopyLink
             
         }
     }

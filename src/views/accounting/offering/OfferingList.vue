@@ -257,9 +257,9 @@
                       ></i>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
-                        <a class="dropdown-item elipsis-items">
-                      View Report
-                      </a>
+                          <a class="dropdown-item elipsis-items">
+                            View Report
+                          </a>
                       </router-link>
                       <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
                         <a class="dropdown-item elipsis-items">
