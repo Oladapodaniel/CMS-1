@@ -6,10 +6,10 @@
           <div class="table-top">
        
             <div class="filter col-2">
-              <p @click="toggleFilterFormVissibility" class="mt-2">
+              <!-- <p @click="toggleFilterFormVissibility" class="mt-2">
                 <i class="fas fa-filter"></i>
                 FILTER
-              </p>
+              </p> -->
             </div>
             <div class="col-2">
               <p @click="toggleSearch" class="search-text w-100 mt-2">
@@ -100,11 +100,11 @@
           <div class="container-fluid d-none d-md-block">
             <div class="row t-header">
        
-                <div class="col-md-1 px-3"></div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Offering</div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Donor</div>
+                <!-- <div class="col-md-1 px-3"></div> -->
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Date</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Family Name</div>
+                <div class="small-text text-capitalize col-md-3 font-weight-bold">Email</div>
+                <div class="small-text text-capitalize col-md-2 font-weight-bold">Phone</div>
                 <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
    
             </div>
@@ -113,54 +113,54 @@
               :key="item.id" -->
         <div class="row" style="margin:0;">
             <div
-              class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom  hover"
+              class="col-12 parent-desc py-2 px-0 c-pointer hover"
               
             >
             
-              <div class="row w-100" style="margin:0">
-                <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+              <div class="row w-100 tr-border-bottom " style="margin:0" v-for="item in searchFamily" :key="item.id">
+                <!-- <div class="col-md-1 d-flex d-md-block px-3 justify-content-end py-2">
                   <input
                     type="checkbox"
                
                     class="form-check"
                   />
-                </div>
+                </div> -->
 
-                <div class="desc small-text col-md-2">
+                <div class="desc small-text col-md-3 py-2">
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                    <span class="text-decoration-none">dateee</span>
+                    <span class="text-decoration-none">{{ formatDate(item.dateCreated) }}</span>
                   </p>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 py-2">
                   <div class="d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Offering</span>
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Family Name</span>
                   <div>
                     
-                    <div class="desc small-text text-right text-md-left">erhejkrf</div>
+                    <div class="desc small-text text-right text-md-left">{{ item.familyName }}</div>
                   </div>
                   </div>
                 </div>
 
-                <div class="desc-head small-text col-md-3">
+                <div class="desc-head small-text col-md-3 py-2">
                   <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Email</span>
                     <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
-                    <span>erfjknerf</span>
+                    <span>{{ item.email }}</span>
                   </p>
                 </div>
 
-                <div class="small-text col-md-2">
+                <div class="small-text col-md-2 py-2">
                   <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Donor</span>
+                    <span class="text-dark font-weight-bold d-flex d-md-none">Phone Number</span>
                     <span><span class=" c-pointer"
-                    >sefrnjekfnj</span
+                    >{{ item.homePhone }}</span
                   ></span>
                   </p>
                 </div>
 
-                <div class="small-text col-md-1">
+                <div class="small-text col-md-1 py-2">
                   <!-- <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
                     <span>Marked</span>
@@ -175,19 +175,19 @@
                         aria-expanded="false"
                       ></i>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <router-link to="">
+                        <!-- <router-link to="">
                           <a class="dropdown-item elipsis-items">
                             View Report
                           </a>
-                      </router-link>
-                      <router-link to="">
+                      </router-link> -->
+                      <router-link :to="{ name: 'AddFamily', params: { familyId: item.id } }">
                         <a class="dropdown-item elipsis-items">
                       Edit
                       </a>
                       </router-link>
                       <a
                         class="dropdown-item elipsis-items cursor-pointer"
-                        @click="showConfirmModal(item.id, index)"
+                        @click="showConfirmModal(item.id)"
                         >Delete</a
                       >
                       </div>
@@ -214,17 +214,97 @@
   
         </div>
 
-        <!-- <ConfirmDialog />
-        <Toast /> -->
+        <ConfirmDialog />
+        <Toast />
       </div>
     </div>
     </div>
 </template>
 
 <script>
+import { ref, computed } from 'vue'
+import dateFormatter from '../../services/dates/dateformatter'
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
+import axios from "@/gateway/backendapi"
+import finish from "../../services/progressbar/progress";
+// import Pagination from "../../components/pagination/PaginationButtons";
 export default {
-    setup () {
-        return {}
+    
+    props: ['familyList'],
+    components: {
+        // Pagination
+    },
+    setup (props, { emit }) {
+        const searchText = ref("")
+        const searchIsVisible = ref(false);
+
+        const toggleSearch = () => {
+        searchIsVisible.value = !searchIsVisible.value;
+        };
+
+        const formatDate = (date) => {
+            return dateFormatter.monthDayYear(date)
+        }
+
+        const searchFamily = computed(() => {
+            if(props.familyList.length === 0 && searchText.value === "") return props.familyList
+            return props.familyList.filter(i => i.familyName.toLowerCase().includes(searchText.value.toLowerCase()))
+        })
+
+        const deleteFamily = (id) => {
+        axios
+            .delete(`/api/Family/deleteFamily?id=${id}`)
+            .then((res) => {
+            console.log(res); 
+                toast.add({
+                    severity:'success', 
+                    summary:'Confirmed', 
+                    detail:'Family Deleted', 
+                    life: 3000
+                });
+                let listFiltered = props.familyList.filter(i => i.id !== id)
+                emit("list-filtered", listFiltered)
+            })
+            .catch((err) => {
+                console.log(err)
+            finish();
+            });
+        };
+
+        const confirm = useConfirm();
+        let toast = useToast();
+        const showConfirmModal = (id) => {
+        confirm.require({
+            message: "Are you sure you want to proceed?",
+            header: "Confirmation",
+            icon: "pi pi-exclamation-triangle",
+            acceptClass: "confirm-delete",
+            rejectClass: "cancel-delete",
+            accept: () => {
+            deleteFamily(id);
+            
+            },
+            reject: () => {
+            toast.add({
+                severity: "info",
+                summary: "Rejected",
+                detail: "You have rejected",
+                life: 3000,
+            });
+            },
+        });
+        };
+
+        return {
+            formatDate,
+            searchFamily,
+            searchText,
+            searchIsVisible,
+            toggleSearch,
+            showConfirmModal,
+            deleteFamily
+        }
     }
 }
 </script>
@@ -266,6 +346,10 @@ export default {
   font-weight: 600;
   box-shadow: 0px 3px 6px #2c28281c;
   background: #dde2e6 0% 0% no-repeat padding-box;
+}
+
+.tr-border-bottom {
+    border-bottom: 1px solid #4762f01f;
 }
 
 </style>

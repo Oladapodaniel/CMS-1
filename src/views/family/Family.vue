@@ -7,7 +7,7 @@
         </div>
 
         <div class="col-md-6 d-flex justify-content-end head-button">
-          <router-link to="/tenant/contributionCategory">
+          <router-link to="/tenant/addfamily">
             <button class="default-btn primary-bg border-0 text-white mr-3">Add Family</button>
           </router-link>
         </div>
@@ -27,7 +27,7 @@
 <!-- v-if="contributionTransactions.length > 0 && !loading && !networkError" -->
     <div class="row">
         <!-- <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/> -->
-        <FamilyList />
+        <FamilyList :familyList="familyList" @list-filtered="resetList"/>
     </div> 
     <!-- v-else-if="contributionTransactions.length === 0 && !loading && !networkError" -->
     <!-- <div class="no-person">
@@ -48,6 +48,9 @@
 </template>
 
 <script>
+import { ref } from "vue"
+import axios from "@/gateway/backendapi";
+import finish from '../../services/progressbar/progress'
 import FamilyList from "./FamilyList.vue"
 import Loader from '../accounting/offering/SkeletonLoader.vue'
 export default {
@@ -56,7 +59,35 @@ export default {
         Loader
     },
     setup () {
-        return {}
+      const familyList = ref([])
+      const loading = ref(false)
+
+      const getAllFamilies = async() => {
+        loading.value = true
+        try {
+          let data = await axios.get("/api/family/allfamilies")
+          console.log(data)
+          familyList.value = data.data
+          loading.value = false
+        }
+        catch (err) {
+          finish()
+          console.log(err)
+          loading.value = false
+        }
+      }
+      getAllFamilies()
+
+      const resetList = (payload) => {
+        familyList.value = payload
+      }
+
+      return {
+        familyList,
+        getAllFamilies,
+        resetList,
+        loading
+      }
     }
 }
 </script>

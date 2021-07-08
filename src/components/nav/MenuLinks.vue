@@ -66,8 +66,8 @@
               >
             </li>
             <!-- Hidden -->
-            <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" to="">Families</router-link>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" :to="{ name: 'Family' }">Families</router-link>
             </li>
           </ul>
           <!-- </a> -->
@@ -578,7 +578,7 @@ export default {
   margin-left: 20px !important;
   overflow: hidden;
   /* Change to 180px */
-  height: 125px;
+  height: 170px;
   transition: all 0.3s ease-in-out;
 }
 

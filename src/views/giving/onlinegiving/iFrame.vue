@@ -611,7 +611,7 @@ export default {
           
             contributionItems: [
                         {
-                          contributionItemId: selectedContributionType.value.financialContributionID,
+                          contributionItemId: selectedContributionType.value.financialContribution.id,
                           contributionItemName: selectedContributionType.value.financialContribution.name,
                           amount: amount.value,
                           contributionCurrencyId: dfaultCurrency.value.id
