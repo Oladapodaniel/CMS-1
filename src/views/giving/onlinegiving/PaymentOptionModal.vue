@@ -216,7 +216,7 @@ dapo
       </div>
 
     </div> -->
-
+    <!-- {{ paymentGatewayObject }} -->
 
   </div>
 </template>
@@ -241,6 +241,7 @@ export default {
     const isProduction = false
     const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
     const selectedGateway = ref("")
+    
 
     const paystackGate = computed(() => {
       if(!props.gateways) return false
@@ -261,22 +262,31 @@ export default {
       if(!props.gateways) return false
       return props.gateways.find(i => i.paymentGateway.name === "Stripe")
     })
+      
 
     const payWithPaystack = (e) => {
-      console.log(e.srcElement.alt)
+
+      // console.log(props.donation)
 
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
+   
+    //  console.log(selectedGateway.value)
 
       props.close.click()
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: props.email,
         amount: props.converted * 100,
         firstname: props.name,
         ref: props.orderId,
+        subaccount: props.donation.paymentGateway.find(i => {
+            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+          }).subAccountID,
+        // gatewayObject.value.subAccountID,
+        bearer: 'subaccount',
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
