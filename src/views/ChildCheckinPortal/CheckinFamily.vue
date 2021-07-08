@@ -271,7 +271,7 @@
 
 <script>
 import { ref, computed } from "vue";
-import Memberform from "./MemberForm";
+import Memberform from "./FormMember";
 import axios from "@/gateway/backendapi";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
