@@ -24,24 +24,24 @@
         <Loader />
     </div>
     
-<!-- v-if="contributionTransactions.length > 0 && !loading && !networkError" -->
-    <div class="row">
+
+    <div class="row" v-if="familyList.length > 0 && !loading && !networkError">
         <!-- <OfferingList :contributionTransactions="contributionTransactions" @get-pages="getOfferingPages" @contri-transac="updateTransac" :totalItem="totalItem"/> -->
         <FamilyList :familyList="familyList" @list-filtered="resetList"/>
     </div> 
-    <!-- v-else-if="contributionTransactions.length === 0 && !loading && !networkError" -->
-    <!-- <div class="no-person">
+    
+    <div class="no-person" v-else-if="familyList.length === 0 && !loading && !networkError">
         <div class="empty-img">
             <p><img src="../../assets/people/people-empty.svg" alt="" /></p>
             <p class="tip">You haven't added any family yet</p>
-            <div class="primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white">Add Family</div>
+            <div class="c-pointer primary-bg col-sm-6 col-md-4 offset-sm-3 offset-md-4 default-btn border-0 text-white" @click="navigateToAddFamily">Add Family</div>
         </div>
-    </div> -->
-    <!-- v-else-if="networkError" -->
-    <!-- <div  class="adjust-network">
+    </div>
+    
+    <div  class="adjust-network" v-else-if="networkError">
       <img src="../../assets/network-disconnected.png" >
       <div>Opps, Your internet connection was disrupted</div>
-    </div> -->
+    </div>
 
   
     </div>
@@ -53,6 +53,7 @@ import axios from "@/gateway/backendapi";
 import finish from '../../services/progressbar/progress'
 import FamilyList from "./FamilyList.vue"
 import Loader from '../accounting/offering/SkeletonLoader.vue'
+import router from '../../router';
 export default {
     components: {
         FamilyList,
@@ -61,6 +62,7 @@ export default {
     setup () {
       const familyList = ref([])
       const loading = ref(false)
+      const networkError = ref(false)
 
       const getAllFamilies = async() => {
         loading.value = true
@@ -74,6 +76,12 @@ export default {
           finish()
           console.log(err)
           loading.value = false
+          loading.value = false
+              if(err.toString().toLowerCase().includes("network error")) {
+                networkError.value = true
+              } else {
+                networkError.value = false
+              }
         }
       }
       getAllFamilies()
@@ -82,11 +90,17 @@ export default {
         familyList.value = payload
       }
 
+      const navigateToAddFamily = () => {
+        router.push({ name: 'AddFamily' })
+      }
+
       return {
         familyList,
         getAllFamilies,
         resetList,
-        loading
+        loading,
+        networkError,
+        navigateToAddFamily
       }
     }
 }
