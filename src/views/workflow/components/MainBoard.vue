@@ -534,6 +534,7 @@ export default {
             if (!checkIfActionIsAlreadySelected(trigger)) {
                 if (!workflow.triggers[selectedTriggerIndex.value] || !workflow.triggers[selectedTriggerIndex.value].triggerActions) {
                     workflow.triggers[selectedTriggerIndex.value].triggerActions = [ trigger ];
+                    selectedActionIndex.value = 0;
                 } else {
                     workflow.triggers[selectedTriggerIndex.value].triggerActions.push(trigger)
                     const index = workflow.triggers[selectedTriggerIndex.value].triggerActions.findIndex(i => i.id === trigger.id);
