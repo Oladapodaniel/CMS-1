@@ -6,18 +6,29 @@
             </div>
 
             <div class="col-md-12">
-                <textarea name="" id="" class="w-100" rows="4"></textarea>
+                <textarea name="" id="" class="w-100" v-model="message" @change="handleMessage" rows="4"></textarea>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { reactive, ref } from '@vue/reactivity';
 export default {
-    setup () {
-        
+    props: [ "selectedActionIndex" ],
+    setup (props, { emit }) {
+        const data = reactive({ ActionType: 6, JSONActionParameters: { } })
 
-        return {}
+        const message = ref('');
+        const handleMessage = (e) => {
+            data.JSONActionParameters.message = e.target.value;
+            emit('updateaction', data, props.selectedActionIndex);
+        }
+
+        return {
+            handleMessage,
+            message,
+        }
     }
 }
 </script>

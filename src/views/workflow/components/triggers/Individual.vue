@@ -1,28 +1,16 @@
 <template>
-  <div class="container">
+  <div class="container max-height px-0 scroll-div">
     <div>
       <div class="row mt-5">
         <div class="col">
           <label for="" class="font-weight-700"
-            >Match a Individual who has been in</label
+            >Match a Individual of</label
           >
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <Dropdown
-            :options="[
-              'Prayer Team',
-              'Welfare Team',
-              'Ushering Team',
-              'Music Team',
-              'Security Team',
-              'Sanctuary Keepers',
-            ]"
-            v-model="role"
-            placeholder="These Groups..."
-            style="width: 100%"
-          />
+          <MultiSelect v-model="selectedGroups" optionLabel="name" @change="handleSelectedGroups" :options="groups"  placeholder="Select groups" class="w-100"  display="chip" />
         </div>
       </div>
     </div>
@@ -31,7 +19,7 @@
       <div class="row mt-4">
         <div class="col">
           <label for="" class="font-weight-700"
-            >Choose Events</label
+            >Who's</label
           >
         </div>
       </div>
@@ -40,14 +28,13 @@
           <Dropdown
             :options="[
               'Birthday',
-              'Date Died',
-              'Baptism Date',
+              'Wedding Date',
+              'Baptism',
               'Last Attended',
-              'Last Activity',
               'Last Contributed',
-              'Last Backgroundcheck',
             ]"
-            v-model="role"
+            v-model="eventType"
+            @change="handleEventType"
             placeholder="Birthday"
             style="width: 100%"
           />
@@ -59,18 +46,17 @@
       <div class="row mt-4">
         <div class="col">
           <label for="" class="font-weight-700"
-            >Treat this event as an anniversary</label
+            >is</label
           >
         </div>
       </div>
       <div class="row">
         <div class="col">
           <Dropdown
-            :options="[
-              'No',
-              'Yes',
-            ]"
-            v-model="role"
+            :options="daysOptions"
+            v-model="days"
+            @change="handleDays"
+            optionLabel="name"
             placeholder="No"
             style="width: 100%"
           />
@@ -82,7 +68,7 @@
       <div class="row mt-4">
         <div class="col">
           <label for="" class="font-weight-700"
-            >When the event is (use 0 for "today")</label
+            >In the</label
           >
         </div>
       </div>
@@ -90,63 +76,12 @@
         <div class="col">
           <Dropdown
             :options="[
-              '1',
-              '2',
-                '3',
-              '4',
-                '5',
-              '6',
+              'Past',
+              'Future'
             ]"
-            v-model="role"
+            v-model="pastOrFuture"
+            @change="handlePastOrFuture"
             placeholder="0"
-            style="width: 100%"
-          />
-        </div>
-      </div>
-    </div>
-
-       <div>
-      <div class="row mt-4">
-        <div class="col">
-          <label for="" class="font-weight-700"
-            >Days</label
-          >
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <Dropdown
-            :options="[
-              'Days',
-              'Weeks',
-                'Months',
-              'Years',
-            ]"
-            v-model="role"
-            placeholder="Weeks"
-            style="width: 100%"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <div class="row mt-4">
-        <div class="col">
-          <label for="" class="font-weight-700"
-            >In the future</label
-          >
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <Dropdown
-            :options="[
-              'In the future',
-              'In the past',
-            ]"
-            v-model="role"
-            placeholder="In the future"
             style="width: 100%"
           />
         </div>
@@ -157,13 +92,75 @@
 
 <script>
 import Dropdown from "primevue/dropdown";
+import MultiSelect from "primevue/multiselect";
+import { reactive, ref } from '@vue/reactivity';
+import { computed } from '@vue/runtime-core';
+
 export default {
+  props: [ "groups", "selectedTriggerIndex" ],
   components: {
-    Dropdown,
+    Dropdown, MultiSelect
   },
-  setup() {
+  setup(props, { emit }) {
+    const data = reactive({ })
+
+    const selectedGroups = ref([ ]);
+    const handleSelectedGroups = e => {
+      const allGroupsIndex = selectedGroups.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
+      data.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
+      emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
+    }
+
+    const eventType = ref('');
+    const handleEventType = e => {
+      data.event = e.value;
+      emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
+    }
+
+    const daysArr = [
+      { type: 'day', length: 0, name: 'Today' },
+      { type: 'day', length: 1 },
+      { type: 'day', length: 1 },
+      { type: 'days', length: 2 },
+      { type: 'days', length: 3 },
+      { type: 'days', length: 5 },
+      { type: 'week', length: 1 },
+      { type: 'weeks', length: 2 },
+      { type: 'weeks', length: 3 },
+      { type: 'month', length: 1 },
+      { type: 'months', length: 2 },
+      { type: 'months', length: 3 }
+    ]
+    const daysOptions = computed(() => {
+      return daysArr.map(i => {
+        i.name = i.name ? i.name : `${i.length} ${i.type}`;
+        return i;
+      })
+    })
+    const days = ref('');
+    const handleDays = e => {
+      const selectedDuration = e.value;
+      data.days = selectedDuration.type.includes('day') ? selectedDuration.length : selectedDuration.type.includes('week') ? selectedDuration.length * 7 : selectedDuration.length * 30;
+      emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
+    }
+
+    const pastOrFuture = ref('');
+    const handlePastOrFuture = e => {
+      data.pastOrFuture = e.value === 'Past' ? 1 : 0;
+      emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
+    }
+
+
     return {
-      // Dropdown,
+      selectedGroups,
+      handleSelectedGroups,
+      eventType,
+      handleEventType,
+      daysOptions,
+      days,
+      handleDays,
+      pastOrFuture,
+      handlePastOrFuture
     };
   },
 };

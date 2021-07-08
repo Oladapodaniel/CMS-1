@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="row mt-4 mb-5">
+        <div class="row my-4">
             <div class="col-md-12">
                 <h1>Ministry Workflows</h1>
             </div>

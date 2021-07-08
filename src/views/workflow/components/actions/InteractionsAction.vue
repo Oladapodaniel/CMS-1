@@ -1,5 +1,5 @@
 <template>
-    <div class="container px-0 scroll-div">
+    <div class="container scroll-div">
         <div class="row">
             <div class="col-md-10 my-3">
                 <label for="" class="mb-0 font-weight-600">Assign a</label>
