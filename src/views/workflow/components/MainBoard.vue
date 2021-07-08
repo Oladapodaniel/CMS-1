@@ -593,7 +593,7 @@ export default {
                 groups.value = response.map(i => {
                     return { id: i.id, name: i.name };
                 })
-                groups.value.unshift({ id: "0000-000-0000-0000-0000-0000", name: "All groups" })
+                groups.value.unshift({ id: "0000-000-0000-0000-0000-0000", name: "Entire ministry" })
             } catch (error) {
                 console.log(error);
             }
@@ -641,7 +641,6 @@ export default {
                 }
             } catch (error) {
                 console.log(error);
-                
             }
             
         }

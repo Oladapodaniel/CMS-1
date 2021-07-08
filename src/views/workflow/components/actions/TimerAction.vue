@@ -6,7 +6,7 @@
                 <label for="" class="font-weight-600">Delay</label>
             </div>
             <div class="col-md-12 px-0">
-                <Dropdown v-model="delay" @input="handleDelay" optionLabel="name" :options="daysOptions" class="w-100" />
+                <Dropdown v-model="delay" @change="handleDelay" optionLabel="name" :options="daysOptions" class="w-100" />
             </div>
         </div>
 
@@ -35,7 +35,7 @@ export default {
 
         const delay = ref('');
         const handleDelay = (e) => {
-            data.JSONActionParameters.delay = e.value.type.includes('day') ? delay.length : delay.type.includes('week') ? delay.length * 7 : delay.length * 30;
+            data.JSONActionParameters.delay = e.value.type.includes('day') ? e.value.length : e.value.type.includes('week') ? e.value.length * 7 : e.value.length * 30;
             emit('updateaction', data, props.selectedActionIndex);
         }
 
