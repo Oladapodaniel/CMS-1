@@ -215,13 +215,18 @@ const routes = [
 
             ]
         },
-
-        // {
-        //     path: 'event',
-        //     name: 'Event',
-        //     component: () =>
-        //         import ( /* webpackChunkName: "event" */ '@/views/event/Event.vue')
-        // },
+        {
+            path: 'family',
+            name: 'Family',
+            component: () =>
+                import ( /* webpackChunkName: "event" */ '@/views/family/Family.vue')
+        },
+        {
+            path: 'addfamily/:familyId?',
+            name: 'AddFamily',
+            component: () =>
+                import ( /* webpackChunkName: "event" */ '@/views/family/AddFamily.vue')
+        },
         {
             path: 'importinstruction',
             name: 'ImportInstruction',
@@ -1191,10 +1196,10 @@ const routes = [
                 import( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinDashboard')
         },
         {
-            path: 'family',
-            name: 'Family',
+            path: 'checkinfamily',
+            name: 'CheckinFamily',
             component: () =>
-                import( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Family')
+                import( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/CheckinFamily')
         },
         {
             path: 'checkinevent/:eventId',

@@ -271,7 +271,7 @@
 
 <script>
 import { ref, computed } from "vue";
-import Memberform from "./MemberForm";
+import Memberform from "./FormMember";
 import axios from "@/gateway/backendapi";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
@@ -289,6 +289,7 @@ export default {
     const loading = ref(false)
     const memberDetails = ref({})
     const memberToEditIndex = ref(0)
+    const familyDetails = ref({})
 
 
 
@@ -297,7 +298,6 @@ export default {
     const toggleSearch = () => {
       searchIsVisible.value = !searchIsVisible.value;
     };
-    const familyDetails = ref({})
 
     const getFamilyMembers = async() => {
             loading.value = true
@@ -321,6 +321,7 @@ export default {
     }
 
     const deleteMember = async(id, index) => {
+      console.log(id)
         if (id) {
           try {
               const res = await axios.delete(`/api/Family/removeAFamilyMember?id=${id}`)
@@ -380,9 +381,11 @@ export default {
                     firstName: payload.firstName,
                     lastName: payload.lastName,
                     pictureUrl: payload.pictureUrl,
-                    genderID: payload.genderID
+                    genderID: payload.genderID,
+                    id: payload.personId
                 },
-                familyRoleID: payload.roleId
+                familyRoleID: payload.roleId,
+                id: payload.id
             }
             familyDetails.value.familyMembers.push(data)
             console.log(data)
