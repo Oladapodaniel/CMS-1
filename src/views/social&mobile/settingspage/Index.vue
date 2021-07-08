@@ -336,7 +336,7 @@ export default {
   components: { Dialog },
   setup() {
     
-    const display = ref(true);
+    const display = ref(false);
 
     
     const facebookLogin2 = () => {
@@ -386,6 +386,7 @@ export default {
         .catch((error) => {
           
           if(error.credential && error.credential.accessToken){
+            display.value = true;
             //Get Page access token
               axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`)
                 .then(res => {
