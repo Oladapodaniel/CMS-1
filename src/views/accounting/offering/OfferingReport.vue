@@ -1754,6 +1754,7 @@ export default {
                 const a = shareableLinkField.value;
                 a.select();
                 a.setSelectionRange(0, 200); /* For mobile devices */
+                console.log(willCopyLink, "Samson")
 
                 /* Copy the text inside the text field */
                 document.execCommand("copy");
