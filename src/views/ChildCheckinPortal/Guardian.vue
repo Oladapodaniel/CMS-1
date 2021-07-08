@@ -306,7 +306,8 @@ export default {
                     lastName: payload.lastName,
                     pictureUrl: payload.pictureUrl
                 },
-                familyRoleID: payload.roleId
+                familyRoleID: payload.roleId,
+                id: payload.id
             }
             familyDetails.value.familyMembers.push(data)
             console.log(data)

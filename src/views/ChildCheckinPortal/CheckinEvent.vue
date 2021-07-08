@@ -396,6 +396,7 @@ export default {
             })
      
         if (checking) {
+            loading.value = false
             toast.add({
                 severity: "warn",
                 summary: "An error occurred",

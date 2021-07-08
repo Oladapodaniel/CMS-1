@@ -632,7 +632,7 @@ export default {
             paymentGateway: formResponse.value.paymentGateWays,
             contributionItems: [
                         {
-                          contributionItemId: selectedContributionType.value.financialContributionID,
+                          contributionItemId: selectedContributionType.value.financialContribution.id,
                           contributionItemName: selectedContributionType.value.financialContribution.name,
                           amount: amount.value,
                           contributionCurrencyId: dfaultCurrency.value.id

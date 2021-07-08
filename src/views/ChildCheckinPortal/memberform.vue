@@ -170,7 +170,7 @@ export default {
             }
         console.log(memberDetails)
         console.log(props.memberDetails)
-        if (Object.keys(props.memberDetails).length === 0) {
+        if (!props.memberDetails || Object.keys(props.memberDetails).length === 0) {
             try {
                 let { data } = await axios.post('/api/Family/addFamilyMember', memberDetails)
                 loading.value = false
@@ -181,10 +181,19 @@ export default {
                     pictureUrl: pictureUrl.value,
                     roleId: role.value.id,
                     personId: data.person.id,
-                    genderID: selectedGender.value.id
+                    genderID: selectedGender.value.id,
+                    id: data.id
                 }
+                console.log(member)
                 emit("remove-modal")
                 emit("push-to-view", member)
+
+                // Re-initialize the variables when upload is successful
+                person.value = {}
+                dateOfBirth.value = {}
+                role.value = {}
+                selectedGender.value = {}
+                pictureUrl.value = ""
             }
             catch (err) {
                 loading.value = false

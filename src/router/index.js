@@ -222,6 +222,12 @@ const routes = [
                 import ( /* webpackChunkName: "event" */ '@/views/family/Family.vue')
         },
         {
+            path: 'addfamily/:familyId?',
+            name: 'AddFamily',
+            component: () =>
+                import ( /* webpackChunkName: "event" */ '@/views/family/AddFamily.vue')
+        },
+        {
             path: 'importinstruction',
             name: 'ImportInstruction',
             meta: {

@@ -51,6 +51,15 @@
                     <div class="col-10">Events</div>
                 </div>
                 </router-link>
+
+                <router-link :to="{ name: 'CheckinSignin', params: { tenantId: tenantID } }">
+                <div class="row push-down" @click="logOut">
+                    <div class="col-2">
+                        <img src="../../assets/checkin-assets/Group-157.svg" >
+                    </div>
+                    <div class="col-10">Logout</div>
+                </div>
+                </router-link>
             </div>
         </div>
     </div>
@@ -63,10 +72,13 @@ import axios from "@/gateway/backendapi";
 export default {
     setup (props, { emit }) {
         const route = useRoute()
-    const churchLogo = ref("")
+        const churchLogo = ref("")
+        const tenantID = ref("")    
+
         const getChurchProfile = async() => {
             let getTenantId = localStorage.getItem('baseAuth')
             let tenantId = JSON.parse(getTenantId)
+            tenantID.value = tenantId.tenantId
             try {
                 let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantId.tenantId}`)
                 console.log(res)
@@ -81,10 +93,16 @@ export default {
         const closeNav = () => {
             emit('close-nav', false)
         }
+
+        const logOut = () => {
+            localStorage.clear()
+        }
         return {
             route,
             churchLogo,
-            closeNav
+            closeNav,
+            tenantID,
+            logOut
         }
     }
 }
