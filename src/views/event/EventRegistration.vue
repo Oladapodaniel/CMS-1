@@ -250,7 +250,7 @@
                   </button>
                 </div>
                 <div class="modal-body p-0 bg-modal pb-5">
-                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway"/>
+                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation"/>
                   <!-- :orderId="formResponse.orderId" :donation="donationObj"  :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" -->
                 </div>
                 <!-- <div class="modal-footer bg-modal">
@@ -307,6 +307,7 @@ export default {
     const donationObj = ref({})
     const fullEventData = ref({})
     const selectedGateway = ref("")
+    const confirmDonation = ref(false)
 
     const birthMonth = ref("");
     const months = [
@@ -589,19 +590,18 @@ export default {
         });
     };
 
+    if(confirmDonation.value) confirm()
+
     // confirm button check
 
     const confirmCheck = async() => {
-      // confirm();
+      
       donationObj.value = {
             name: person.value.name,
             email: person.value.email,
             phone: enteredValue.value,
             paymentFormId: fullEventData.value.paymentFormId,
-            // churchLogoUrl: formResponse.value.churchLogo,
-            // churchName: formResponse.value.churchName,
             tenantID: fullEventData.value.paymentForm.tenantID,
-            // merchantID: formResponse.value.merchantId,
             orderID: fullEventData.value.paymentFormOrderID,
             currencyID: fullEventData.value.currencyID,
             paymentGateway: fullEventData.value.paymentForm.paymentGateWays,
@@ -707,6 +707,10 @@ export default {
       donationObj.value.usedPaymentGateway = payload
     }
 
+    const setConfirmDonation = (payload) => {
+      confirmDonation.value = payload
+    }
+
     /*end of masking functions */
 
     //not me button
@@ -759,7 +763,9 @@ export default {
       fullEventData,
       donationObj,
       setGateway,
-      selectedGateway
+      selectedGateway,
+      confirmDonation,
+      setConfirmDonation
     };
   },
 };
