@@ -82,7 +82,7 @@
           </div>
         </div>
         
-        <div class="row w-100 mt-3" v-if="paymentFormID">
+        <!-- <div class="row w-100 mt-3" v-if="paymentFormID">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -97,7 +97,7 @@
                 <a class="text-decoration-none"
                   ><h4 class="header4 link-color c-pointer" @click="copyPaymentFormLink">Payment Form Link</h4></a
                 >
-                <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+              
                 <p class="para">
                   <span class="d-flex align-items-center"
                     ><input
@@ -118,9 +118,9 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         
-        <div class="row w-100 mt-3" v-if="paymentFormID">
+        <!-- <div class="row w-100 mt-3" v-if="paymentFormID">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -135,7 +135,7 @@
                 <a class="text-decoration-none"
                   ><h4 class="header4 link-color c-pointer" @click="copyIframeLink">iFrame</h4></a
                 >
-                <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+             
                 <p class="para">
                   <span class="d-flex align-items-center"
                     ><code class="w-100">
@@ -152,7 +152,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="row w-100 mt-3">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
@@ -596,19 +596,19 @@ export default {
       return attendanceCheckinInStore.value.eventRegistrationLink
     });
     
-    const paymentFormID = computed(() => {
-      if (
-        !attendanceCheckinInStore.value ||
-        !attendanceCheckinInStore.value.paymentFormId
-      )
-        return paymentFormIdResponse.value;
-      return attendanceCheckinInStore.value.paymentFormId
-    });
+    // const paymentFormID = computed(() => {
+    //   if (
+    //     !attendanceCheckinInStore.value ||
+    //     !attendanceCheckinInStore.value.paymentFormId
+    //   )
+    //     return paymentFormIdResponse.value;
+    //   return attendanceCheckinInStore.value.paymentFormId
+    // });
 
-    const iFrameLink = computed(() => {
-      if (!paymentFormID.value) return ""
-      return `<iframe loading="lazy" src="https://my.churchplus.co/iframe/${paymentFormID.value}" style="border:0px #f4f4f4 dashed;" name="online-giving" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="1190px" width="720px" allowfullscreen></iframe>`
-    })
+    // const iFrameLink = computed(() => {
+    //   if (!paymentFormID.value) return ""
+    //   return `<iframe loading="lazy" src="https://my.churchplus.co/iframe/${paymentFormID.value}" style="border:0px #f4f4f4 dashed;" name="online-giving" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="1190px" width="720px" allowfullscreen></iframe>`
+    // })
 
     const childCheckinLink = computed(() => {
       if (!tenantId.value) return `https://my.churchplus.co/childcheckin/${attendanceCheckinInStore.value.tenantID}`
@@ -653,8 +653,8 @@ export default {
       copyIframeLink,
       eventLinkResponse,
       paymentFormIdResponse,
-      paymentFormID,
-      iFrameLink,
+      // paymentFormID,
+      // iFrameLink,
       tenantId,
       childCheckinLink,
       routeToChildCheckin

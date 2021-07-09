@@ -180,7 +180,7 @@
                             View Report
                           </a>
                       </router-link> -->
-                      <router-link :to="{ name: 'AddFamily', params: { familyId: item.id } }">
+                      <router-link :to="{ name: 'AddFamily', params: { familyId: item.fatherID } }">
                         <a class="dropdown-item elipsis-items">
                       Edit
                       </a>
