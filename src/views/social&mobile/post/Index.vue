@@ -93,7 +93,7 @@
                             <span class="mx-1">All Platforms</span>
                             <input type="checkbox" class="c-pointer" :disabled="true" name="" id="">
                         </a>
-                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center" style="opacity:0.4">
+                        <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center">
                             <span class="c-pointer"><img class="icon-height" src="../../../assets/social/facebook.svg" alt="Whatsapp icon"></span>
                             <span class="mx-1">Facebook</span>
                             <input type="checkbox" class="c-pointer" :disabled="false" name="" id="">
