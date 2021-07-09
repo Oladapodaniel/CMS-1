@@ -53,7 +53,6 @@ export default {
         const daysArr = [
             { type: 'day', length: 0, name: 'Today' },
             { type: 'day', length: 1 },
-            { type: 'day', length: 1 },
             { type: 'days', length: 2 },
             { type: 'days', length: 3 },
             { type: 'days', length: 5 },

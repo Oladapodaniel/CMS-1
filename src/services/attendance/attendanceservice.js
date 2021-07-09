@@ -131,7 +131,7 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
     if (eventAnalysisData.todayVsLastWeekAttendancePercentage > 0) {
         message += `\n\nWe recorded a ${eventAnalysisData.todayVsLastWeekAttendancePercentage}% increase in attendance since last week.`;
     } else if (eventAnalysisData.todayVsLastWeekAttendancePercentage < 0) {
-        message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastWeekAttendancePercentage)}% decrease in attendance since last week.`;
+        message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastWeekAttendancePercentage).toFixed(2)}% decrease in attendance since last week.`;
     } else {
         message += `\n\nNo increase or decrease in attendance since last week`;
     }
