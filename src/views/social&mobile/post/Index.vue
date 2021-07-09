@@ -146,7 +146,6 @@ import membershipService from '../../../services/membership/membershipservice';
     import ImagePicker from "../../../components/image-picker/ImagePicker"
 import { computed } from '@vue/runtime-core';
 import { useRoute } from "vue-router"
-// import { useStore } from "vuex"
 
     export default {
         components: { Dropdown, ProgressBar, Dialog, ImagePicker },
