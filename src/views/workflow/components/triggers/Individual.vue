@@ -1,6 +1,12 @@
 <template>
   <div class="container max-height px-0 scroll-div">
     <div>
+      <div class="row text-center dotted-border-bottom">
+          <div class="col-md-12 my-3">
+              <TriggerDescription :header="'Individual - Event'" :description="description" />
+          </div>
+      </div>
+
       <div class="row mt-5">
         <div class="col">
           <label for="" class="font-weight-700"
@@ -57,7 +63,6 @@
             v-model="days"
             @change="handleDays"
             optionLabel="name"
-            placeholder="No"
             style="width: 100%"
           />
         </div>
@@ -81,7 +86,7 @@
             ]"
             v-model="pastOrFuture"
             @change="handlePastOrFuture"
-            placeholder="0"
+            placeholder=""
             style="width: 100%"
           />
         </div>
@@ -95,11 +100,12 @@ import Dropdown from "primevue/dropdown";
 import MultiSelect from "primevue/multiselect";
 import { reactive, ref } from '@vue/reactivity';
 import { computed } from '@vue/runtime-core';
+import TriggerDescription from '../TriggerDescription.vue'
 
 export default {
   props: [ "groups", "selectedTriggerIndex" ],
   components: {
-    Dropdown, MultiSelect
+    Dropdown, MultiSelect, TriggerDescription
   },
   setup(props, { emit }) {
     const data = reactive({ })
@@ -150,6 +156,15 @@ export default {
       emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
     }
 
+    const description = computed(() => {
+      return {
+          id: 12,
+          groups: selectedGroups.value && selectedGroups.value.length > 0 ? selectedGroups.value.map(i => i.name) : ['_____'],
+          event: data.event  ? data.event : "____",
+          days: data.days ? data.days : "____",
+          pastOrFuture: pastOrFuture.value ? pastOrFuture.value : "____",
+      }
+    })
 
     return {
       selectedGroups,
@@ -160,7 +175,8 @@ export default {
       days,
       handleDays,
       pastOrFuture,
-      handlePastOrFuture
+      handlePastOrFuture,
+      description,
     };
   },
 };

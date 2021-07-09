@@ -15,9 +15,10 @@
                     </div>
                     <div class="col-md-6 pr-md-0">
                         <label for="name" class="font-weight-600">Description</label>
-                        <textarea name="" id="" class="w-100 border" rows="3" 
+                        <input type="text" class="form-control">
+                        <!-- <textarea name="" id="" class="w-100 border" rows="3" 
                             style="border-color: #ced4da"
-                        ></textarea>
+                        ></textarea> -->
                     </div>
                 </div>
 
@@ -419,12 +420,12 @@ export default {
                 id: 10,
                 triggerType: 12
             },
-            {
-                name: "Form Submission",
-                icon: "pi pi-book",
-                id: 12,
-                triggerType: 13
-            },
+            // {
+            //     name: "Form Submission",
+            //     icon: "pi pi-book",
+            //     id: 12,
+            //     triggerType: 13
+            // },
             {
                 name: "Individual - Event",
                 icon: "pi pi-book",
@@ -460,11 +461,11 @@ export default {
                 icon: "pi pi-users",
                 id: 5
             },
-            {
-                name: "Update progress",
-                icon: "pi pi-chart-line",
-                id: 6
-            },
+            // {
+            //     name: "Update progress",
+            //     icon: "pi pi-chart-line",
+            //     id: 6
+            // },
             {
                 name: "Send voice note",
                 icon: "pi pi-volume-up",
@@ -480,11 +481,11 @@ export default {
                 icon: "pi pi-clock",
                 id: 9
             },
-            {
-                name: "Interactions",
-                icon: "pi pi-users",
-                id: 10
-            },
+            // {
+            //     name: "Interactions",
+            //     icon: "pi pi-users",
+            //     id: 10
+            // },
             {
                 name: "WhatsApp",
                 icon: "pi pi-volume-up",

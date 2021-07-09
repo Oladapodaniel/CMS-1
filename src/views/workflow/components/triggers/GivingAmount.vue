@@ -2,7 +2,7 @@
     <div class="container px-0 max-height scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :description="description" />
+                <TriggerDescription :description="description" :currency="currency" />
             </div>
         </div>
 

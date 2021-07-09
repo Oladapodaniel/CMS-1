@@ -11,11 +11,18 @@
 
         <div class="row mt-4">
             <div class="col-md-12 px-0">
-                <label for="" class="font-weight-600">Group Leaders</label>
+                <span class="d-flex align-items-center">
+                    <input type="checkbox" class="form-check mr-2" v-model="groupLeaders" @change="handleGroupLeaders"> <span>Group Leaders</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <label for="" class="font-weight-600">Other Contacts</label>
             </div>
             <div class="col-md-12 px-0">
-                <input type="text" class="form-control" v-model="groupLeaders" @input="handleGroupLeaders">
-                <span class="small-text">Separate the addresses with comma</span>
+                <SearchWithDropdown @selectmember="memberSelected" />
             </div>
         </div>
 
@@ -43,9 +50,10 @@
 <script>
 import { reactive, ref } from '@vue/reactivity';
 import Dropdown from 'primevue/dropdown'
+import SearchWithDropdown from '@/components/search/SearchWithDropdown'
 
 export default {
-    components: { Dropdown },
+    components: { Dropdown, SearchWithDropdown },
     props: [ "selectedActionIndex" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 5, JSONActionParameters: { } })
@@ -56,9 +64,9 @@ export default {
             emit('updateaction', data, props.selectedActionIndex);
         }
 
-        const groupLeaders = ref([ ]);
+        const groupLeaders = ref(false);
         const handleGroupLeaders = (e) => {
-            data.JSONActionParameters.groupLeaders = e.target.value;
+            data.JSONActionParameters.groupLeaders = e.target.checked;
             emit('updateaction', data, props.selectedActionIndex);
         }
 
@@ -80,6 +88,11 @@ export default {
             { name: 'Visit', index: 2}
         ]
 
+        const memberSelected = memberData => {
+            if (memberData.member) otherToContacts.value.push(memberData.member);
+            console.log(otherToContacts.value, "Other contacts");
+        }
+
         return {
             taskTypes,
             selectedTaskType,
@@ -90,6 +103,7 @@ export default {
             otherToContacts,
             handleInstructions,
             instructions,
+            memberSelected,
         }
     }
 }
