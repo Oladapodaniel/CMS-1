@@ -215,6 +215,8 @@
           <div class="col-md-7 py-4 text-center">
             <button class="default-btn mr-3" @click="notme">Not Me</button>
             <button
+              data-toggle="modal"
+              data-target="#PaymentOptionModal"
               class="default-btn add-btn"
               @click="confirmCheck"
               :disabled="
@@ -237,7 +239,28 @@
           Powered by CHURCHPLUS
         </p>
       </div>
-
+       <!-- Modal -->
+          <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header bg-modal">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ref="close">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body p-0 bg-modal pb-5">
+                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway"/>
+                  <!-- :orderId="formResponse.orderId" :donation="donationObj"  :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" -->
+                </div>
+                <!-- <div class="modal-footer bg-modal">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div> -->
+                </div>
+              </div>
+            </div>
+      <ConfirmDialog />
       <Toast />
     </div>
   </div>
@@ -255,9 +278,15 @@ import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import swal from "sweetalert";
 import Dropdown from "primevue/dropdown";
+import PaymentOptionModal from "../../components/paymentoption/EventRegPayment.vue"
+import finish from '../../services/progressbar/progress';
+// import Dialog from 'primevue/dialog';
 
 export default {
-  components: { Dropdown },
+  components: {
+    Dropdown,
+    PaymentOptionModal
+  },
   setup() {
     const connectName = ref("");
     const appltoggle = ref(false);
@@ -274,6 +303,10 @@ export default {
     const toast = useToast();
     const submitBtn = ref(null);
     const loaded = ref(false);
+    const close = ref("")
+    const donationObj = ref({})
+    const fullEventData = ref({})
+    const selectedGateway = ref("")
 
     const birthMonth = ref("");
     const months = [
@@ -348,6 +381,7 @@ export default {
     const personHasAddress = ref(false);
     const personData = ref({});
     const bannerUrl = ref("")
+    
 
 
     const checkCharacter = () => {
@@ -557,8 +591,42 @@ export default {
 
     // confirm button check
 
-    const confirmCheck = () => {
-      confirm();
+    const confirmCheck = async() => {
+      // confirm();
+      donationObj.value = {
+            name: person.value.name,
+            email: person.value.email,
+            phone: enteredValue.value,
+            paymentFormId: fullEventData.value.paymentFormId,
+            // churchLogoUrl: formResponse.value.churchLogo,
+            // churchName: formResponse.value.churchName,
+            tenantID: fullEventData.value.paymentForm.tenantID,
+            // merchantID: formResponse.value.merchantId,
+            orderID: fullEventData.value.paymentFormOrderID,
+            currencyID: fullEventData.value.currencyID,
+            paymentGateway: fullEventData.value.paymentForm.paymentGateWays,
+            contributionItems: fullEventData.value.paymentForm.contributionItems.map(i => {
+              return {
+                contributionItemId: i.financialContribution.id,
+                contributionCurrencyId: fullEventData.value.currencyID,
+                contributionItemName: i.financialContribution.name,
+                amount: fullEventData.value.registrationAmount
+              }
+            }),
+
+          }
+
+
+          try {
+              let  res = await axios.post('/donation', donationObj.value)
+              console.log(res)
+            
+              finish()
+            }
+            catch (error) {
+              finish()
+              console.log(error)
+            }
     };
 
     // function to clear input
@@ -583,6 +651,7 @@ export default {
           eventData.value.date = dateFormatter.monthDayTime(res.data.eventDate);
           bannerUrl.value = res.data.bannerUrl
 
+          fullEventData.value = res.data
           console.log(eventData);
           console.log(res, "response");
         })
@@ -634,6 +703,10 @@ export default {
       return autosearch.value && !person.value.name;
     });
 
+    const setGateway = (payload) => {
+      donationObj.value.usedPaymentGateway = payload
+    }
+
     /*end of masking functions */
 
     //not me button
@@ -681,7 +754,12 @@ export default {
       birthMonth,
       birthDay,
       personData,
-      bannerUrl
+      bannerUrl,
+      close,
+      fullEventData,
+      donationObj,
+      setGateway,
+      selectedGateway
     };
   },
 };

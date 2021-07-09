@@ -378,6 +378,7 @@ import Dialog from "primevue/dialog";
 import NewPerson from '../accounting/offering/NewDonor.vue';
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
+import { useRoute } from "vue-router"
 
 export default {
     components: { 
@@ -387,6 +388,7 @@ export default {
         NewPerson
      },
     setup () {
+        const route = useRoute()
         const familyMembers = ref([])
         const memberRoles = ref([])
         const close = ref("")
@@ -416,6 +418,7 @@ export default {
             let { data } = await axios.get('/getfamilyroles')
             console.log(data)
             memberRoles.value = data.result
+            getFamilyDetails()
         }
         catch (err) {
             console.log(err)
@@ -635,6 +638,45 @@ export default {
                 console.log(err)
             }
         }
+
+        const getFamilyDetails = async() => {
+            if(route.params.familyId) {
+                try {
+                    const res = await axios.get(`/api/Family/family?personId=${route.params.familyId}`)
+                    console.log(res)
+                    familyName.value = res.data.familyName
+
+                    userSearchString.value = `${res.data.father.firstName ? res.data.father.firstName : ""} ${res.data.father.lastName ? res.data.father.lastName : ""}`
+
+                    motherSearchString.value = `${res.data.mother.firstName ? res.data.mother.firstName : ""} ${res.data.mother.lastName ? res.data.mother.lastName : ""}`
+
+                    father.value = { id: res.data.fatherID }
+
+                    mother.value = { id: res.data.motherID }
+
+                    email.value = res.data.email
+
+                    homePhone.value = res.data.homePhone
+
+                    familyMembers.value = res.data.familyMembers.map(i => {
+                        return {
+                            name: i.person.firstName,
+                            personId: i.person.id,
+                            roleId: memberRoles.value.find(j => j.id === i.familyRoleID)
+                        }
+                    })
+
+                console.log(memberRoles.value)
+                    console.log(familyMembers.value)
+
+
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            }
+        }
+         
 
         return {
             memberRoles,
