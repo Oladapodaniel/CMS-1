@@ -119,6 +119,7 @@ export default {
             .then((res) => {
               finish()
               console.log(res, "success data");
+              emit("donation-confirmed", true)
 
             })
             .catch((err) => {
