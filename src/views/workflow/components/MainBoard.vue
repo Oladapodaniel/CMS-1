@@ -763,4 +763,32 @@ export default {
     .scroll-div {
         overflow-y: scroll
     }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .scr-height::-webkit-scrollbar,
+    .animate::-webkit-scrollbar
+     {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .scr-height,
+    .animate {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    div::-webkit-scrollbar,
+    div::-webkit-scrollbar
+     {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    div,
+    div {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
 </style>
