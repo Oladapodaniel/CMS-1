@@ -11,11 +11,9 @@
 
         <div class="row mt-4">
             <div class="col-md-12 px-0">
-                <label for="" class="font-weight-600">Group Leaders</label>
-            </div>
-            <div class="col-md-12 px-0">
-                <input type="text" class="form-control" v-model="groupLeaders" @input="handleGroupLeaders">
-                <span class="small-text">Separate the addresses with comma</span>
+                <span class="d-flex align-items-center">
+                    <input type="checkbox" class="form-check mr-2" v-model="groupLeaders" @change="handleGroupLeaders"> <span>Group Leaders</span>
+                </span>
             </div>
         </div>
 
@@ -24,10 +22,29 @@
                 <label for="" class="font-weight-600">Other Contacts</label>
             </div>
             <div class="col-md-12 px-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="d-flex flex-wrap">
+                            <span v-for="(contact, index) in otherToContacts" :key="index" class="d-flex my-1 p-1 justify-content-between our-grey-bg mx-1" style="width: fit-content">
+                                <span>{{ contact.name }}</span>
+                                <span class="mx-2 font-weight-bold text-danger c-pointer" @click="removeContact(index)">x</span>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <SearchWithDropdown @selectmember="memberSelected" />
+            </div>
+        </div>
+
+        <!-- <div class="row mt-4">
+            <div class="col-md-12 px-0">
+                <label for="" class="font-weight-600">Other Contacts</label>
+            </div>
+            <div class="col-md-12 px-0">
                 <input type="text" class="form-control" v-model="otherToContacts" @input="handleOtherToContacts">
                 <span class="small-text">Separate the addresses with comma</span>
             </div>
-        </div>
+        </div> -->
 
         <div class="row mt-4 mb-5">
             <div class="col-md-12 px-0">
@@ -43,9 +60,10 @@
 <script>
 import { reactive, ref } from '@vue/reactivity';
 import Dropdown from 'primevue/dropdown'
+import SearchWithDropdown from '@/components/search/SearchWithDropdown'
 
 export default {
-    components: { Dropdown },
+    components: { Dropdown, SearchWithDropdown },
     props: [ "selectedActionIndex" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 5, JSONActionParameters: { } })
@@ -56,9 +74,9 @@ export default {
             emit('updateaction', data, props.selectedActionIndex);
         }
 
-        const groupLeaders = ref([ ]);
+        const groupLeaders = ref(false);
         const handleGroupLeaders = (e) => {
-            data.JSONActionParameters.groupLeaders = e.target.value;
+            data.JSONActionParameters.groupLeaders = e.target.checked;
             emit('updateaction', data, props.selectedActionIndex);
         }
 
@@ -80,6 +98,16 @@ export default {
             { name: 'Visit', index: 2}
         ]
 
+        const memberSelected = memberData => {
+            if (memberData.member) otherToContacts.value.push(memberData.member);
+            data.JSONActionParameters.otherToContacts = otherToContacts.value.length > 0 ? otherToContacts.value.map(i => i.id).join(',') : "";
+        }
+
+        const removeContact = index => {
+            otherToContacts.value.splice(index, 1);
+            data.JSONActionParameters.otherToContacts = otherToContacts.value.length > 0 ? otherToContacts.value.map(i => i.id).join(',') : "";
+        }
+
         return {
             taskTypes,
             selectedTaskType,
@@ -90,6 +118,8 @@ export default {
             otherToContacts,
             handleInstructions,
             instructions,
+            memberSelected,
+            removeContact,
         }
     }
 }

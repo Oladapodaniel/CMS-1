@@ -15,21 +15,22 @@
                     </div>
                     <div class="col-md-6 pr-md-0">
                         <label for="name" class="font-weight-600">Description</label>
-                        <textarea name="" id="" class="w-100 border" rows="3" 
+                        <input type="text" class="form-control">
+                        <!-- <textarea name="" id="" class="w-100 border" rows="3" 
                             style="border-color: #ced4da"
-                        ></textarea>
+                        ></textarea> -->
                     </div>
                 </div>
 
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="border animate col-4 scroll-div scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers, 'col-md-1': !showTriggers &&  workflow.triggers.length > 0 }">
+                            <div class="border animate col-4 scroll-div scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers || done, 'col-md-1': !showTriggers &&  workflow.triggers.length > 0 }">
                                 <div class="row h-100" style="overflow-y:scroll">
-                                    <div class="col-md-12 py-3 c-pointer d-flex justify-content-center border" :class="{ 'active-trigger': selectedTrigger.id === trigger.id}" v-for="(trigger, index) in workflow.triggers" :key="index" @click="changeActiveTrigger(index)">
-                                        <h6>
+                                    <div class="col-md-12 py-3 c-pointer d-flex justify-content-center border" :class="{ 'active-trigger':  selectedTrigger.id === trigger.id}" v-for="(trigger, index) in workflow.triggers" :key="index" @click="changeActiveTrigger(index)">
+                                        <h6 class="d-flex align-items-center" style="height: fit-content">
                                             <span><i class="mr-3" :class="[trigger.icon, { 'bigger-icon': !showTriggers &&  workflow.triggers.length > 0 }]" style="font-size: 1.5rem"></i></span>
-                                            <span class="d-none">{{ trigger.name }}</span>
+                                            <span :class="{'d-none': !done }">{{ trigger.name }}</span>
                                         </h6>
                                     </div>
                                 </div>
@@ -58,9 +59,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-8 border animate" :class="{ 'col-md-8': showTriggers, 'col-md-11': !showTriggers &&  workflow.triggers.length > 0 }">
-                                <div class="row" :class="{ 'd-none': workflow.triggers.length === 0 }">
-                                    <div class="col-12 animate border  scr-height"  style="height: 400px" :class="{ 'col-md-4': actionSelected, 'col-md-6': !actionSelected }">
+                            <div class="col-8 border animate" :class="{ 'col-md-8': showTriggers || done, 'col-md-11': !showTriggers &&  workflow.triggers.length > 0 && !done }">
+                                <div class="row" :class="{ 'd-none': workflow.triggers.length === 0 || done }">
+                                    <div class="col-12 animate border  scr-height"  style="height: 400px" :class="{ 'col-md-4': actionSelected, 'col-md-6': !actionSelected, 'd-none': done }">
                                         <GivingAmount 
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                             :groups="groups" v-if="selectedTrigger.id === 1"
@@ -245,7 +246,7 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch" style="padding:10px">
+                                                <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch" style="padding:10px" v-if="false">
                                                     <button class="btn btn-success w-100 trigger-btn btn-100 ml-n4 font-weight-bold">
                                                         Done
                                                     </button>
@@ -419,12 +420,12 @@ export default {
                 id: 10,
                 triggerType: 12
             },
-            {
-                name: "Form Submission",
-                icon: "pi pi-book",
-                id: 12,
-                triggerType: 13
-            },
+            // {
+            //     name: "Form Submission",
+            //     icon: "pi pi-book",
+            //     id: 12,
+            //     triggerType: 13
+            // },
             {
                 name: "Individual - Event",
                 icon: "pi pi-book",
@@ -460,11 +461,11 @@ export default {
                 icon: "pi pi-users",
                 id: 5
             },
-            {
-                name: "Update progress",
-                icon: "pi pi-chart-line",
-                id: 6
-            },
+            // {
+            //     name: "Update progress",
+            //     icon: "pi pi-chart-line",
+            //     id: 6
+            // },
             {
                 name: "Send voice note",
                 icon: "pi pi-volume-up",
@@ -480,11 +481,11 @@ export default {
                 icon: "pi pi-clock",
                 id: 9
             },
-            {
-                name: "Interactions",
-                icon: "pi pi-users",
-                id: 10
-            },
+            // {
+            //     name: "Interactions",
+            //     icon: "pi pi-users",
+            //     id: 10
+            // },
             {
                 name: "WhatsApp",
                 icon: "pi pi-volume-up",
@@ -527,6 +528,7 @@ export default {
                 selectedActionIndex.value = 0;
             }
             showTriggers.value = false;
+            done.value = false;
             
         }
         const selectAction = (trigger) => {
@@ -550,11 +552,13 @@ export default {
         const selectedTriggerIndex = ref(0);
         const selectedTrigger = computed(() => {
             if (workflow.triggers.length === 0) return { };
+            if (selectedTriggerIndex.value !== 0 && !selectedTriggerIndex.value) return { };
             return workflow.triggers[selectedTriggerIndex.value];
         })
         const selectedActionIndex = ref(0);
         const selectedAction = computed(() => {
             if (workflow.triggers.length === 0) return { };
+            if (selectedTriggerIndex.value !== 0 && !selectedTriggerIndex.value) return { };
             if (!workflow.triggers[selectedTriggerIndex.value].triggerActions || workflow.triggers[selectedTriggerIndex.value].triggerActions.length === 0) return { };
             return workflow.triggers[selectedTriggerIndex.value].triggerActions[selectedActionIndex.value];
         })
@@ -562,6 +566,7 @@ export default {
         const changeActiveTrigger = (index) => {
             selectedTriggerIndex.value = index;
             selectedActionIndex.value = null;
+            done.value = false;
         };
 
         const updateTrigger = (data, selectedTriggerIndex) => {
@@ -646,6 +651,13 @@ export default {
             
         }
 
+        const done = ref(false)
+        const completed = () => {
+            selectedActionIndex.value = null;
+            selectedTriggerIndex.value = null;
+            done.value = true;
+        }
+
         return {
             showTriggers,
             // triggersIsVissible,
@@ -678,6 +690,9 @@ export default {
             saveWorkflow,
             name,
             isActive,
+
+            done,
+            completed,
         }
     }
 }
@@ -747,5 +762,33 @@ export default {
 
     .scroll-div {
         overflow-y: scroll
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .scr-height::-webkit-scrollbar,
+    .animate::-webkit-scrollbar
+     {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .scr-height,
+    .animate {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    div::-webkit-scrollbar,
+    div::-webkit-scrollbar
+     {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    div,
+    div {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
     }
 </style>
