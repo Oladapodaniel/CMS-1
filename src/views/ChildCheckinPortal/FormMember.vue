@@ -153,16 +153,15 @@ export default {
     const addMember = async() => {
         const memberDetails = {
             familyId: props.familyDetails.id,
-            
-            person: {
-                firstName: person.value.firstName,
-                lastName: person.value.lastName,
-                pictureUrl: pictureUrl.value,
-                // dateOfBirth: dateOfBirth.value,
-                genderId: selectedGender.value.id
-            },
-            tenantId: props.familyDetails.tenantID
-        }
+                person: {
+                    firstName: person.value.firstName,
+                    lastName: person.value.lastName,
+                    pictureUrl: pictureUrl.value,
+                    // dateOfBirth: dateOfBirth.value,
+                    genderId: selectedGender.value.id
+                },
+                tenantId: props.familyDetails.tenantID
+            }
             if (!route.fullPath.includes('/checkin/checkinguardian')) {
                 memberDetails.familyRoleId = role.value.id
             }   else {
@@ -203,6 +202,7 @@ export default {
             delete memberDetails.familyId
             memberDetails.person.id = person.value.personId
             memberDetails.id = memberId.value
+            // console.log(m)
             try {
             let { data } = await axios.put('/api/family/editfamilymember', memberDetails)
                 console.log(data)
@@ -232,7 +232,7 @@ export default {
     }
 
     const watchForMember = watch(() => {
-        // console.log(props.memberDetails)
+        console.log(props.memberDetails)
         if(props.memberDetails && person.value) {
             person.value.firstName = props.memberDetails.person ? props.memberDetails.person.firstName : ""
             person.value.lastName = props.memberDetails.person ? props.memberDetails.person.lastName : ""
