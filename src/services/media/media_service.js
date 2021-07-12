@@ -22,7 +22,9 @@ const getMedia = (tenantId) => {
     return new Promise((resolve, reject) => {
         axios.get(`/api/Media/GetAllMedia?tenantId=${tenantId}`)
         .then(res => {
+            console.log(res)
             resolve(res.data);
+          
         })
         .catch(err => {
             if (err.response) {
