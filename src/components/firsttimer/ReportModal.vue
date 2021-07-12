@@ -5,7 +5,7 @@
                 <div class="col-sm-12 py-2">
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'churchplus'}" @click="changeTab('churchplus')">Churchplus</a>
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'sms'}" @click="changeTab('sms')" >SMS</a>
-                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sharelink'}" @click="copyLink">Share link</a>
+                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sharelink'}" @click="changeTab('sharelink')">Share link</a>
                 </div>
             </div>
             <hr style="margin: 0">
