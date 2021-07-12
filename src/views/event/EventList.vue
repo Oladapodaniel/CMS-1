@@ -507,32 +507,36 @@ export default {
         .delete(`/api/Events/DeleteActivity?activityId=${id}`)
         .then((res) => {
           console.log(res);
-          if (res.data) {
             toast.add({
               severity: "success",
               summary: "Delete Successful",
-              detail: `Offering Transaction Deleted`,
-              life: 3000,
+              detail: `Event Deleted`,
+              life: 4000,
             });
-            emit("contri-transac", index);
-          } else {
-            toast.add({
-              severity: "warn",
-              summary: "Delete Failed",
-              detail: `Please Try Again`,
-              life: 3000,
-            });
-          }
+            emit("delete-event", index)
+          // } else {
+          //   toast.add({
+          //     severity: "warn",
+          //     summary: "Delete Failed",
+          //     detail: `Please Try Again`,
+          //     life: 3000,
+          //   });
+          // }
         })
         .catch((err) => {
           finish();
-          if (err.response) {
-            console.log(err.response);
+          if (err.response.toString().toLowerCase().includes('network error')) {
             toast.add({
-              severity: "error",
-              summary: "Unable to delete",
-              detail: `${err.response}`,
-              life: 3000,
+              severity: "info",
+              summary: "Network Error",
+              detail: `Please ensure you have a strong internet connection`,
+              life: 4000,
+            });
+          } else {
+            toast.add({
+              severity:"Delete Failed",
+              detail: `Unable to delete, please try again`,
+              life: 4000,
             });
           }
         });

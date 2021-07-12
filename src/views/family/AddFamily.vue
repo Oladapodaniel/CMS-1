@@ -211,7 +211,7 @@
 
         <div class="row mt-5">
             <div class="col-md-10 mx-auto">
-                <FamilyWards :familyMembers="familyMembers" :memberRoles="memberRoles"/>
+                <FamilyWards :familyMembers="familyMembers" :memberRoles="memberRoles" @edit-member="editMember" @clear-field="clearField" @member-index="memberOfIndex" :showWardModal="showWardModal"/>
             </div>
         </div>
 
@@ -238,87 +238,94 @@
                 <!-- @editted-value="edittedValue" -->
                 <div class="modal-body">
                     <!-- <MemberForm  @member-roles="getMemberRoles" @remove-modal="dismissModal" @push-to-view="pushToView" /> -->
-                    <div class="col-sm-10 offset-sm-1 font-weight-700">Search for ward in church</div>
-                    <div class="dropdown col-sm-10 offset-sm-1">
-                            
-                            <input
-                                type="text"
-                                placeholder="Enter ward name"
-                                class="form-control mt-2"
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                v-model="wardSearchString"
-                                @input="wardSearchForUsers"
-                            />
-                            <div
-                                class="dropdown-menu w-100"
-                                aria-labelledby="dropdownMenuButton"
-                            >
-                                <div class="row w-100 mx-auto" v-if="false">
-                                <div class="col-md-12">
-                                    <input
+                    <div class="row px-4 pb-3">
+                        <div class="col-sm-10">Search for ward in church</div>
+                        <div class="dropdown col-sm-10">
+                                
+                                <input
                                     type="text"
-                                    class="form-control"
-                                    placeholder="Find event"
-                                    />
-                                </div>
-                                </div>
+                                    placeholder="Enter ward name"
+                                    class="form-control mt-2"
+                                    id="dropdownMenuButton"
+                                    data-toggle="dropdown"
+                                    v-model="wardSearchString"
+                                    @input="wardSearchForUsers"
+                                />
+                                <div
+                                    class="dropdown-menu w-100"
+                                    aria-labelledby="dropdownMenuButton"
+                                >
+                                    <div class="row w-100 mx-auto" v-if="false">
+                                    <div class="col-md-12">
+                                        <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Find event"
+                                        />
+                                    </div>
+                                    </div>
 
-                                <a
-                                class="dropdown-item font-weight-700 small-text"
-                                href="#"
-                                v-for="(member, index) in wardSearchedMembers"
-                                :key="index"
-                                @click="addExistingMemberForWard(member)"
-                                >{{ member.name }}</a
-                                >
-                                <a
-                                class="dropdown-item font-weight-700 small-text"
-                                href="#"
-                                v-if="
-                                    wardSearchingForMembers && wardSearchedMembers.length === 0
-                                "
-                                ><i class="pi pi-spin pi-spinner"></i
-                                ></a>
-                                <p
-                                class="modal-promt pl-1 bg-secondary m-0"
-                                v-if="
-                                    wardSearchString.length < 3 &&
-                                    wardSearchedMembers.length === 0
-                                "
-                                >
-                                Enter 3 or more characters
-                                </p>
-                                <a
-                                class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
-                                style="border-top: 1px solid #002044; color: #136acd"
-                                @click="showAddMemberFormForWard"
-                                data-dismiss="modal"
-                                >
-                                <i
-                                    class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
-                                    style="color: #136acd"
-                                ></i>
-                                    Add new member
-                                </a>
-                            </div>
-                            </div>
-
-                            <div class="row mt-4">
-                                <div class="col-md-6 d-md-flex justify-content-end">
-                                    <button class="default-btn" data-dismiss="modal">Cancel</button>
-                                </div>
-                                <div class="col-md-6">
-                                    <button
-                                    class="default-btn primary-bg border-0 text-white"
-                                    data-dismiss="modal"
-                                    @click="addWard"
+                                    <a
+                                    class="dropdown-item font-weight-700 small-text"
+                                    href="#"
+                                    v-for="(member, index) in wardSearchedMembers"
+                                    :key="index"
+                                    @click="addExistingMemberForWard(member)"
+                                    >{{ member.name }}</a
                                     >
-                                    Save
-                                    </button>
+                                    <a
+                                    class="dropdown-item font-weight-700 small-text"
+                                    href="#"
+                                    v-if="
+                                        wardSearchingForMembers && wardSearchedMembers.length === 0
+                                    "
+                                    ><i class="pi pi-spin pi-spinner"></i
+                                    ></a>
+                                    <p
+                                    class="modal-promt pl-1 bg-secondary m-0"
+                                    v-if="
+                                        wardSearchString.length < 3 &&
+                                        wardSearchedMembers.length === 0
+                                    "
+                                    >
+                                    Enter 3 or more characters
+                                    </p>
+                                    <a
+                                    class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                                    style="border-top: 1px solid #002044; color: #136acd"
+                                    @click="showAddMemberFormForWard"
+                                    data-dismiss="modal"
+                                    >
+                                    <i
+                                        class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
+                                        style="color: #136acd"
+                                    ></i>
+                                        Add new member
+                                    </a>
                                 </div>
-                            </div>
-                </div>
+                                </div>
+
+                                <div class="col-sm-10 mt-3">Role</div>
+                                <div class="col-sm-10">
+                                    <Dropdown class="p-0 w-100" :options="memberRoles" v-model="roleId" optionLabel="name" :filter="false" placeholder="Select role" :showClear="false">
+                                    </Dropdown>
+                                </div>
+
+
+                                    <div class="col-md-6 mt-4">
+                                        <button class="default-btn" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                    <div class="col-md-6 mt-4">
+                                        <button
+                                        class="default-btn primary-bg border-0 text-white"
+                                        data-dismiss="modal"
+                                        @click="addWard"
+                                        >
+                                        Save
+                                        </button>
+                                    </div>
+                                </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -360,7 +367,7 @@
         >
         <div class="row">
             <div class="col-md-12">
-            <NewPerson @cancel="() => wardDisplay = false" @person-id="getWardId($event)"/>
+            <NewPerson @cancel="() => wardDisplay = false" @person-id="getWardId($event)" @show-ward-modal="setWardModal"/>
             </div>
       </div>
     </Dialog>
@@ -379,13 +386,15 @@ import NewPerson from '../accounting/offering/NewDonor.vue';
 import axios from "@/gateway/backendapi";
 import router from "@/router/index";
 import { useRoute } from "vue-router"
+import Dropdown from 'primevue/dropdown';
 
 export default {
     components: { 
         FamilyWards,
         // MemberForm,
         Dialog,
-        NewPerson
+        NewPerson,
+        Dropdown
      },
     setup () {
         const route = useRoute()
@@ -410,6 +419,13 @@ export default {
         const homePhone = ref("")
         const email = ref("")
         const familyName = ref("")
+        const roleId = ref({})
+        const familyMain = ref({})
+        const editPersonId = ref("")
+        const wardState = ref(1)
+        const memberIndex = ref(0)
+        // const constructSelectedMember = ref({})
+        const showWardModal = ref(false)
 
         
 
@@ -585,21 +601,48 @@ export default {
           console.log(payload)
           wardSearchString.value = payload.personFirstName
 
-          const constructSelectedMember = new Object()
-          constructSelectedMember.name = payload.personFirstName
-          constructSelectedMember.personId = payload.personId
-          familyMembers.value.push(constructSelectedMember)
-          console.log(constructSelectedMember)
+        //   const constructSelectedMember = new Object()
+          selectedMember.value.name = payload.personFirstName
+          selectedMember.value.id = payload.personId
+        //   familyMembers.value.push(constructSelectedMember)
+          console.log(selectedMember)
         }
 
-        const addWard = () => {
-            const constructSelectedMember = new Object()
+        const addWard = async() => {
+            console.log(wardState.value)
+            if (wardState.value === 1) {
+                const constructSelectedMember = new Object()
                 constructSelectedMember.name = selectedMember.value.name
                 constructSelectedMember.personId = selectedMember.value.id
+                constructSelectedMember.roleId = roleId.value
                 familyMembers.value.push(constructSelectedMember)
                 console.log(constructSelectedMember)
                 console.log(familyMembers.value)
                 wardSearchString.value = ""
+            }   else {
+
+                const memberDetails = {
+                    // familyId: props.familyDetails.id,
+                        id: familyMain.value.id,
+                        familyRoleId: roleId.value.id,
+                        person: {
+                            firstName: wardSearchString.value,
+                            // lastName: person.value.lastName,
+                            id: editPersonId.value
+                        },
+                        tenantId: familyMain.value.tenantId
+                    }
+                    familyMembers.value.splice(memberIndex.value, 1, { name: wardSearchString.value, roleId: roleId.value })
+                    console.log(memberDetails)
+                    // delete memberDetails.familyId
+                try {
+                    let { data } = await axios.put("/api/Family/editFamilyMember", memberDetails)
+                    console.log(data)
+                }
+                catch (err) {
+                    console.log(err)
+                }
+            }
            }
 
         const createFamily = async() => {
@@ -615,27 +658,54 @@ export default {
                         familyRoleId: i.roleId.id
                     }
                 })
-                // familyMembers.value.map(i => {
-                //     return {
-                //         person: {
-                //             firstName: i.person.firstName,
-                //             lastName: i.person.lastName,
-                //             pictureUrl: i.person.pictureUrl,
-                //             genderID: i.person.genderID
-                //         },
-                //         familyRoleID: i.familyRoleID,
-                //     }
-                // })
             }
             console.log(family)
 
-            try {
-                let res = await axios.post("/api/family/createFamily", family)
-                console.log(res)
-                router.push('/tenant/family')
+
+            const updateProfile = {
+              id: familyMain.value.familyId,
+              familyName: familyName.value,
+              email: email.value,
+              homePhone: homePhone.value,
+              father: { id: father.value.id },
+              mother: { id: mother.value.id }
             }
-            catch (err) {
-                console.log(err)
+            // if (userSearchString.value) {
+            //    updateProfile.father = {
+            //        id: father.value.id
+            //     //   firstName: userSearchString.value,
+            //     //   lastName: profile.value.lastName,
+            //     //   pictureUrl: profile.value.pictureUrl
+            //     }
+            // } 
+            // if (motherSearchString.value) {
+            //   updateProfile.mother = {
+            //       id: mother.value.id
+            //     //   firstName: motherSearchString.value,
+            //     //   lastName: profile.value.lastName,
+            //     //   pictureUrl: profile.value.pictureUrl
+            //     }
+            // }
+
+            
+            if (!route.params.familyId) {
+                try {
+                    let res = await axios.post("/api/family/createFamily", family)
+                    console.log(res)
+                    router.push('/tenant/family')
+                }
+                catch (err) {
+                    console.log(err)
+                }
+            }   else {
+                try {
+                    let res = await axios.put("/api/family/editProfile", updateProfile)
+                    console.log(res)
+                    router.push('/tenant/family')
+                }
+                catch (err) {
+                    console.log(err)
+                }
             }
         }
 
@@ -646,9 +716,9 @@ export default {
                     console.log(res)
                     familyName.value = res.data.familyName
 
-                    userSearchString.value = `${res.data.father.firstName ? res.data.father.firstName : ""} ${res.data.father.lastName ? res.data.father.lastName : ""}`
+                    userSearchString.value = `${res.data.father && res.data.father.firstName ? res.data.father.firstName : ""} ${res.data.father && res.data.father.lastName? res.data.father.lastName : ""}`
 
-                    motherSearchString.value = `${res.data.mother.firstName ? res.data.mother.firstName : ""} ${res.data.mother.lastName ? res.data.mother.lastName : ""}`
+                    motherSearchString.value = `${res.data.mother && res.data.mother.firstName ? res.data.mother.firstName : ""} ${res.data.mother && res.data.mother.lastName ? res.data.mother.lastName : ""}`
 
                     father.value = { id: res.data.fatherID }
 
@@ -666,6 +736,12 @@ export default {
                         }
                     })
 
+                    familyMain.value = {
+                        familyId: res.data.id,
+                        id: res.data.familyMembers[memberIndex.value].id,
+                        tenantId: res.data.tenantID
+                    }
+
                 console.log(memberRoles.value)
                     console.log(familyMembers.value)
 
@@ -675,6 +751,28 @@ export default {
                     console.log(error)
                 }
             }
+        }
+
+        const editMember = (payload) => {
+            wardSearchString.value = payload.name
+            roleId.value = payload.roleId
+            editPersonId.value = payload.personId
+            wardState.value = 2
+            
+        }
+
+        const clearField = (payload) => {
+            wardSearchString.value = payload.name
+            roleId.value = payload.roleId
+            wardState.value = 1
+        }
+
+        const memberOfIndex = (payload) => {
+            memberIndex.value = payload
+        }
+
+        const setWardModal = (payload) => {
+            showWardModal.value = payload
         }
          
 
@@ -717,7 +815,17 @@ export default {
             selectedMember,
             homePhone,
             email,
-            familyName
+            familyName,
+            roleId,
+            editMember,
+            clearField,
+            familyMain,
+            editPersonId,
+            wardState,
+            memberIndex,
+            memberOfIndex,
+            showWardModal,
+            setWardModal
         }
     }
 }

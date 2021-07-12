@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="row over-con" style="border: 2px solid red">
+    <div class="row over-con">
       <div class="col-md-12 py-4">
         <div class="row">
           <div class="col-md-8">
