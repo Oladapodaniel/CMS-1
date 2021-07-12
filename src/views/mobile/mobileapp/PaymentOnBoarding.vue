@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import { ref,  computed } from 'vue';
+import { ref } from 'vue';
 import Dropdown from 'primevue/dropdown';
 import axios from "@/gateway/backendapi";
 import axio from  'axios';
