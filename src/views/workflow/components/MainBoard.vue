@@ -66,12 +66,14 @@
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                             :groups="groups" v-if="selectedTrigger.id === 1"
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :contributionItems="contributionItems"
                                         />
                                         <GivingNewRegular  
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                             :groups="groups" v-else-if="selectedTrigger.id === 11" 
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :contributionItems="contributionItems"
                                         />
                                         <NoLongerGiving 
@@ -79,30 +81,35 @@
                                             v-else-if="selectedTrigger.id === 2"
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :contributionItems="contributionItems"
                                         />
                                         <PledgeCreation 
                                             :groups="groups" 
                                             v-else-if="selectedTrigger.id === 3"
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                         />
                                         <NewMember 
                                             :groups="groups" 
                                             v-else-if="selectedTrigger.id === 4"
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                         />
                                         <FirstTimer 
                                             :groups="groups" 
                                             v-else-if="selectedTrigger.id === 7"
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                         />
                                         <NewConvert 
                                             :groups="groups" 
                                             v-else-if="selectedTrigger.id === 6"
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                         />
                                         <MemberBirthday :groups="groups" v-else-if="selectedTrigger.id === 5" />
@@ -111,26 +118,31 @@
                                             :groups="groups" 
                                             v-else-if="selectedTrigger.id === 9"
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :selectedTriggerIndex="selectedTriggerIndex"
                                         />
-                                        <AttendanceTrigger :groups="groups" v-else-if="selectedTrigger.id === 10" />
+                                        <AttendanceTrigger :groups="groups" 
+                                        v-else-if="selectedTrigger.id === 10" />
                                         <FromSubmission v-else-if="selectedTrigger.id === 13" />
                                         <Individual 
                                             v-else-if="selectedTrigger.id === 12"
                                             :groups="groups" 
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                          />
                                         <PledgeRedemption 
                                             v-else-if="selectedTrigger.id === 14"
                                             :groups="groups" 
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                          />
                                         <PledgeCancellation 
                                             v-else-if="selectedTrigger.id === 15"
                                             :groups="groups" 
                                             @updatetrigger="updateTrigger"
+                                            @removetrigger="removeTrigger"
                                             :selectedTriggerIndex="selectedTriggerIndex" 
                                          />
                                     </div>
@@ -189,7 +201,18 @@
 
                                             <div class="border scr-height" :class="{ 'col-md-6 ani': actionSelected, 'd-none': !actionSelected || !selectedAction || !(selectedActionIndex >= 0) || triggerActions.length < 1 }">
                                                 <div class="row h-100" style="overflow-y:scroll">
-                                                    <div class="col-md-12" > 
+                                                    <div class="col-md-12" >
+                                                        <div class="row d-flex justify-content-end">
+                                                            <div class="col-md-4">
+                                                                <div class="dropdown text-right">
+                                                                    <span class="font-weight-bold text-dark c-pointer"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="pi pi-ellipsis-h" style="font-size: 1.5rem"></i></span>
+                                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                                        <a class="dropdown-item font-weight-700 c-pointer" @click="removeActiveAction">Remove</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
                                                         <EmailAction 
                                                             @updateaction="updateAction"
                                                             v-if="selectedAction && selectedAction.id === 1"
@@ -532,7 +555,6 @@ export default {
             
         }
         const selectAction = (trigger) => {
-            console.log(trigger);
             if (!checkIfActionIsAlreadySelected(trigger)) {
                 if (!workflow.triggers[selectedTriggerIndex.value] || !workflow.triggers[selectedTriggerIndex.value].triggerActions) {
                     workflow.triggers[selectedTriggerIndex.value].triggerActions = [ trigger ];
@@ -595,7 +617,6 @@ export default {
         const getGroups = async () => {
             try {
                 const response = await grousService.getGroups();
-                console.log(response[0], "Work groups");
                 groups.value = response.map(i => {
                     return { id: i.id, name: i.name };
                 })
@@ -623,7 +644,6 @@ export default {
         const name = ref('');
         const isActive = ref(false);
         const saveWorkflow = async () => {
-            console.log(workflow, "workflow data");
             const data = workflow.triggers.map(i => {
                 return {
                     JSONCondition: i.JSONCondition,
@@ -656,6 +676,28 @@ export default {
             selectedActionIndex.value = null;
             selectedTriggerIndex.value = null;
             done.value = true;
+        }
+
+        const removeTrigger = () => {
+            if (selectedTriggerIndex.value >= 0) {
+                workflow.triggers.splice(selectedTriggerIndex.value, 1);
+                if (workflow.triggers.length === 0) {
+                    selectedTriggerIndex.value = null;
+                } else {
+                    selectedTriggerIndex.value = 0;
+                }
+            }
+        }
+
+        const removeActiveAction = () => {
+            if (selectedActionIndex.value >= 0) {
+                workflow.triggers[selectedTriggerIndex.value].triggerActions.splice(selectedActionIndex.value, 1);
+                if (workflow.triggers[selectedTriggerIndex.value].triggerActions && workflow.triggers[selectedTriggerIndex.value].triggerActions.length === 0) {
+                    selectedActionIndex.value = null;
+                } else {
+                    selectedActionIndex.value = 0;
+                }
+            }
         }
 
         return {
@@ -693,6 +735,8 @@ export default {
 
             done,
             completed,
+            removeTrigger,
+            removeActiveAction,
         }
     }
 }

@@ -2,7 +2,7 @@
     <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :header="'Pledge creation'" :description="description" />
+                <TriggerDescription :header="'Pledge creation'" :description="description" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -77,6 +77,10 @@ export default {
             }
         })
 
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
         return {
             handleSelectedGroups,
             selectedGroups,
@@ -85,6 +89,7 @@ export default {
             amount,
             handleAmount,
             description,
+            removeTrigger,
         }
     }
 }

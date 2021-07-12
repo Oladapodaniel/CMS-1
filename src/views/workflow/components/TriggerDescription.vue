@@ -1,5 +1,18 @@
 <template>
     <div class="container-fluid">
+        <div class="row d-flex justify-content-end">
+            <div class="col-md-4">
+                <div class="dropdown text-right">
+                    <span class="font-weight-bold text-dark c-pointer"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="pi pi-ellipsis-h" style="font-size: 1.5rem"></i></span>
+                    <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown button
+                    </button> -->
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item font-weight-700 c-pointer" @click="removeCurrentTrigger">Remove</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <p class="text-center" style="font-size:28px">{{ header ? header : 'Giving - Amount' }}</p>
@@ -95,10 +108,14 @@
 export default {
     props: [ 'header', 'description', 'currency' ],
 
-    setup () {
-        
+    setup (props, { emit }) {
+        const removeCurrentTrigger = () => {
+            emit("removetrigger");
+        }
 
-        return {}
+        return {
+            removeCurrentTrigger,
+        }
     }
 }
 </script>

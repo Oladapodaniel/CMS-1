@@ -2,7 +2,7 @@
     <div class="container px-0 max-height scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :header="'Pledge - Cancellation'" />
+                <TriggerDescription :header="'Pledge - Cancellation'" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -44,10 +44,15 @@ export default {
         //     };            
         // })
 
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
         return {
             groupSelected,
             selectedGroups,
             // description,
+            removeTrigger,
         }
     }
 }
