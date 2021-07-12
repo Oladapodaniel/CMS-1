@@ -2,7 +2,7 @@
     <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :description="description" :header="'Giving - New regular giver'" />
+                <TriggerDescription :description="description" :header="'Giving - New regular giver'" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -154,6 +154,10 @@ export default {
              };            
         })
 
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
         return {
             selectedGroups,
             groupSelected,
@@ -168,6 +172,7 @@ export default {
             currentNumOfMonths,
             handleCurrentNumOfMonths,
             description,
+            removeTrigger,
         }
     }
 }

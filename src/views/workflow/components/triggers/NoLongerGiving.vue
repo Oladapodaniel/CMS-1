@@ -2,7 +2,7 @@
     <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :header="'Giving - No longer giving'" :description="description" />
+                <TriggerDescription :header="'Giving - No longer giving'" :description="description" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -134,6 +134,10 @@ export default {
             }
         })
 
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
         return {
             handleSelectedGroups,
             selectedGroups,
@@ -146,6 +150,7 @@ export default {
             notGivenForTheLastMonth,
             handleNotGivenForTheLastMonth,
             description,
+            removeTrigger,
         }
     }
 }

@@ -2,7 +2,7 @@
     <div class="container px-0 max-height scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :description="description" :header="'Member - New Member'" />
+                <TriggerDescription :description="description" :header="'Member - New Member'" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -44,10 +44,15 @@ export default {
             };            
         })
 
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
         return {
             groupSelected,
             selectedGroups,
             description,
+            removeTrigger,
         }
     }
 }

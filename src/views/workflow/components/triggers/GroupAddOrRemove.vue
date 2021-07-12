@@ -2,7 +2,7 @@
     <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :header="'Group — Add/Remove'" :description="description" />
+                <TriggerDescription :header="'Group — Add/Remove'" :description="description" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -56,12 +56,17 @@ export default {
             };            
         });
 
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
         return {
             selectedGroups,
             handleSelectedGroups,
             description,
             logicalOperatorAddOrRemove,
             handleLogicalOperatorAddOrRemove,
+            removeTrigger,
         }
     }
 }
