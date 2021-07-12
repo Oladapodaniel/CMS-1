@@ -697,6 +697,7 @@ export default {
       slot.value ? formData.append("registrationSlot", slot.value) : ""
 
       if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  !image.value) {
+        console.log('free and no image')
         
       try {
           const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
@@ -720,7 +721,7 @@ export default {
       } 
       
       if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  image.value) {
-        console.log("All fields  filled")
+        console.log("Free and image")
         try {
             let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
             console.log(data)
@@ -743,6 +744,7 @@ export default {
       }
 
       if (amount.value && selectedBank.value && accountNumber.value && selectedCashAccount.value && selectedIncomeAccount.value &&  image.value) {
+        console.log('image and paid')
         try {
             let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
             console.log(data)

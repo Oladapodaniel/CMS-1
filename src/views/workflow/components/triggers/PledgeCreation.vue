@@ -2,7 +2,7 @@
     <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :header="'Pledge creation'" />
+                <TriggerDescription :header="'Pledge creation'" :description="description" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -42,6 +42,7 @@ import Dropdown from "primevue/dropdown"
 import TriggerDescription from "../TriggerDescription.vue"
 import { reactive, ref } from '@vue/reactivity'
 import MultiSelect from "primevue/multiselect"
+import { computed } from '@vue/runtime-core'
 export default {
     components: { Dropdown, TriggerDescription, MultiSelect },
     props: [ "groups", "selectedTriggerIndex"],
@@ -67,6 +68,19 @@ export default {
             emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
+        const description = computed(() => {
+            return {
+                id: 3,
+                groups: selectedGroups.value && selectedGroups.value.length > 0 ? selectedGroups.value.map(i => i.name) : ['_____'],
+                logicalOperator: data.logicalOperator === "Greater than" ? ">" : "<",
+                amount: data.amount ? data.amount : "____",
+            }
+        })
+
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
         return {
             handleSelectedGroups,
             selectedGroups,
@@ -74,6 +88,8 @@ export default {
             logicalOperator,
             amount,
             handleAmount,
+            description,
+            removeTrigger,
         }
     }
 }

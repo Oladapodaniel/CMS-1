@@ -7,7 +7,7 @@
                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                         @input="searchForPerson"
                     >
-                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton"
+                    <div class="dropdown-menu w-100 our-grey-bg" aria-labelledby="dropdownMenuButton"
                         style="max-height: 300px;overflow-y:scroll"
                     >
                         <div class="row" v-if="!loading && memberSearchResults.length === 0">

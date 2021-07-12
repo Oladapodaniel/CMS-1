@@ -30,7 +30,7 @@
       </div>
 
         <div v-if="eventList.length > 0 && !loading && !networkError" class="container-wide">
-            <EventList :eventList="eventList" :eventSummary="eventSummary" @activity-per-page="getPageActivity"/>
+            <EventList :eventList="eventList" :eventSummary="eventSummary" @activity-per-page="getPageActivity" @delete-event="deleteFromView"/>
         </div>
         <div v-else-if="eventList.length === 0 && !loading &!networkError" class="no-person" >
         <div class="empty-img">
@@ -116,8 +116,12 @@ export default {
     const getPageActivity = (payload) => {
       eventList.value = payload
     }
+
+    const deleteFromView = (payload) => {
+      eventList.value.splice(payload, 1)
+    }
   
-    return { eventList, getEventList, loading, eventSummary, getPageActivity, networkError };
+    return { eventList, getEventList, loading, eventSummary, getPageActivity, networkError, deleteFromView };
 
   },
 };

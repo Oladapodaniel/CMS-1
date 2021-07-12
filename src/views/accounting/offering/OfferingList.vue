@@ -1,6 +1,6 @@
 <template>
   <div class="pb-4">
-    <div class="row table " >
+    <div class="row table " style="height: 310px;">
       <div class="col-12 mt-4  w-100">
         <div class="row">
           <!-- {{contributionSummary}} -->

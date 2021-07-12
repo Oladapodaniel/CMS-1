@@ -2,7 +2,7 @@
     <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :header="'Group — Membership Duration'" :description="description" />
+                <TriggerDescription :header="'Group — Membership Duration'" :description="description" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -53,7 +53,6 @@ export default {
         const daysArr = [
             { type: 'day', length: 0, name: 'Today' },
             { type: 'day', length: 1 },
-            { type: 'day', length: 1 },
             { type: 'days', length: 2 },
             { type: 'days', length: 3 },
             { type: 'days', length: 5 },
@@ -80,6 +79,10 @@ export default {
             };            
         })
 
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
         return {
             daysOptions,
             selectedGroups,
@@ -87,6 +90,7 @@ export default {
             days,
             handleDays,
             description,
+            removeTrigger,
         }
     }
 }

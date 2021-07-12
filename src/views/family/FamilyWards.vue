@@ -2,8 +2,8 @@
     <div class="container ward-table-wrapper">
         <div class="row my-3">
             <div class="col-md-10 mx-auto d-flex justify-content-end">
-                <button class="default-btn font-weight-bold border primary-text add-ward-btn"
-                    data-toggle="modal" data-target="#addWard"
+                <button class="default-btn font-weight-bold border primary-text add-ward-btn" ref="showModal"
+                    data-toggle="modal" data-target="#addWard" @click="addNewWard"
                 >Add ward</button>
             </div>
         </div>
@@ -35,13 +35,14 @@
             <div class="col-md-7 align-self-center">
                 <span class="py-2">{{ member.name ? member.name : "" }}</span>
             </div>
-            <div class="col-md-3 align-self-center">
+            <div class="col-md-2 align-self-center">
                 <!-- <span class="py-2">{{ memberRoles.length > 0 ? memberRoles.find(i => i.id === member.familyRoleID).name : "" }}</span> -->
-                <Dropdown class="p-0 w-100" :options="memberRoles" v-model="member.roleId" optionLabel="name" :filter="false" placeholder="Select role" :showClear="false">
-                </Dropdown>
+                <!-- <Dropdown class="p-0 w-100" :options="memberRoles" v-model="member.roleId" optionLabel="name" :filter="false" placeholder="Select role" :showClear="false">
+                </Dropdown> -->
+                {{ member.roleId ? member.roleId.name : "" }}
             </div>
-            <div class="col-md-1 align-self-center">
-                <!-- <span class="py-2">{{ member.name ? member.name : "" }}</span> -->
+            <div class="col-md-2 align-self-center" data-toggle="modal" data-target="#addWard" @click="editMember(member, index)">
+                <i class="pi pi-pencil text-primary"></i>
             </div>
         </div>
 
@@ -55,17 +56,36 @@
 </template>
 
 <script>
-// import Ward from "./Ward"
-import Dropdown from 'primevue/dropdown';
+import { ref } from "vue"
+import { watch } from '@vue/runtime-core'
 export default {
-    props: ['familyMembers', 'memberRoles'],
-    components: {
-        Dropdown
-    },
-    setup () {
+    props: ['familyMembers', 'memberRoles', 'showWardModal'],
+    setup (props, { emit }) {
         
+        const showModal = ref("")
 
-        return {}
+        const editMember = (member, index) => {
+            console.log(member)
+            emit('edit-member', member)
+            emit('member-index', index)
+        }
+
+        const addNewWard = () => {
+            emit("clear-field", { name: "", roleId: new Object() })
+        }
+
+        watch(() => {
+            console.log(props.showWardModal)
+            console.log("what happen")
+            if(props.showWardModal) {
+                showModal.value.click()
+            }
+        })
+        return {
+            editMember,
+            addNewWard,
+            showModal
+        }
     }
 }
 </script>

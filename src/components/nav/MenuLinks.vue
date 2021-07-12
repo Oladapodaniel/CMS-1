@@ -5,7 +5,14 @@
         <div class="nav" @click="linkClicked">
           <div class="user">
             <img
+              :src="churchLogo"
+              v-if="churchLogo"
+              class="link-image"
+              alt=""
+            />
+            <img
               src="../../assets/dashboardlinks/churchcloud.png"
+              v-else
               class="link-image"
               alt=""
             />
@@ -292,6 +299,7 @@
           <hr class="hr" />
 
           <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
+          <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
           <hr class="hr" />
           <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="link routelink">Visit ChurchPlus Classic</a> 
           <div class="link" @click="logout">Logout</div>
@@ -316,6 +324,7 @@ export default {
     const route = useRoute();
     const router = useRouter()
     const moreShown = ref(false);
+    const churchLogo = ref("");
     const showMore = () => {
       moreShown.value = !moreShown.value;
     };
@@ -368,6 +377,7 @@ export default {
         .catch((err) => console.log(err.respone));
     } else {
       tenantInfo.value.churchName = store.getters.currentUser.churchName;
+      tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
     }
 
     const tenantDisplayName = computed(() => {
@@ -384,6 +394,18 @@ export default {
         emit('linkclicked', true);
       }
     }
+
+    const getChurchProfile = async() => {
+            try {
+                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantInfo.value.tenantId}`)
+                console.log(res)
+                churchLogo.value = res.data.returnObject.logo
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getChurchProfile()
 
     const logout = () => {
       localStorage.clear()
@@ -407,6 +429,7 @@ export default {
       toggleEventsDropDown,
       tenantDisplayName,
       linkClicked,
+      churchLogo,
       logout
     };
   },

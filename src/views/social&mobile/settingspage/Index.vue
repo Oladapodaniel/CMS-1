@@ -99,7 +99,7 @@
       </div>
       <!--end facebook area  -->
       <Dialog
-        header="Input Your Facebook Page Id"
+        header="Account Connected"
         class="dialogFacebook"
         v-model:visible="display"
         style="width: 100%; max-width: 600px"
@@ -107,36 +107,33 @@
         <!--facebook id-->
         <form action="">
           <div class="row justify-content-center">
-            <div class="col-md-4 text-right">
-              <label for="email"> Page Id :</label>
+            <div class="col-md-1 text-right">
+              <label for="email"></label>
             </div>
-            <div class="form-group col-md-6">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Facebook Page Id"
-              />
+            <div class="form-group col-md-10 text-center">
+              <h6>Your Account as be connected to facebook Successfully click the button below to make your post</h6>
+              <!-- <h6>Share Your Post to Facebook</h6> -->
             </div>
-            <div class="col-md-2"></div>
+            <div class="col-md-1"></div>
           </div>
           <div class="row">
             <div class="col-md-4"></div>
             <div class="form-group form-check col-md-6 ml-3">
-              <label class="form-check-label">
+              <!-- <label class="form-check-label">
                 <input class="form-check-input" type="checkbox" /> Remember me
-              </label>
+              </label> -->
             </div>
             <div class="col-md-2"></div>
           </div>
           <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-6">
-              <button
+              <router-link to="/tenant/social/post"
                 class="btn default-btn btnfb text-center"
-                @click="accessFacebook"
+              
               >
-                Connect
-              </button>
+                Create Post
+              </router-link>
             </div>
             <div class="col-md-2"></div>
           </div>
@@ -387,6 +384,19 @@ export default {
           /** @type {firebase.auth.OAuthCredential} */
         })
         .catch((error) => {
+          
+          if(error.credential && error.credential.accessToken){
+            display.value = true;
+            //Get Page access token
+              axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`)
+                .then(res => {
+                  console.log(res, "🎉🌹🌹");
+                })
+                .catch(err => {
+                  console.log(err, "err error");
+                })
+          }
+
           console.log(error, "sign in error");
         });
       });

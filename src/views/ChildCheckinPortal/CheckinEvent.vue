@@ -70,8 +70,11 @@
         </div>
 
         <div class="row" v-if="familyDetails && familyDetails.familyMembers && familyDetails.familyMembers.length > 0">
-            <div class="col-12">&nbsp;&nbsp;
-                <img src="../../assets/checkin-assets/down-emoji.png" class="emoji"/>  &nbsp;&nbsp;<span class="event-time">Click the checkbox to select the ward you want to register for this event.</span>
+            <div class="col-1">
+                <img src="../../assets/checkin-assets/down-emoji.png" class="emoji"/>
+            </div>
+            <div class="col-11 px-sm-0">
+                <span class="event-time">Click the checkbox to select the ward you want to register for this event.</span>
             </div>
         </div>
         <div class="row" v-else>
@@ -80,8 +83,8 @@
             </div>
         </div>
    
-        <div class="row mt-4" v-for="(item, index) in familyDetails.familyMembers" :key="item.id">
-            <div class="col-12 card">
+        <div class="row mt-3" v-for="(item, index) in familyDetails.familyMembers" :key="item.id">
+            <div class="col-12 card mt-2">
                 <div class="row p-3 align-items-center">
                     <div class="col-1 col-md-1">
                         <Checkbox :binary="true" v-model="item.check" @change="checkChild(index)" />

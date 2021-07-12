@@ -2,7 +2,7 @@
     <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :header="'Giving - No longer giving'" />
+                <TriggerDescription :header="'Giving - No longer giving'" :description="description" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -26,7 +26,7 @@
             <div class="col-md-12 mb-2">
                 <div class="row">
                     <div class="col-3 pr-0">
-                        <input type="text" class="form-control" v-model="givenAtLeastTimes" @input="handleGivenAtLeastTimes" placeholder="#">
+                        <input type="text" class="form-control" v-model.number="givenAtLeastTimes" @input="handleGivenAtLeastTimes" placeholder="#">
                     </div>
                     <div class="col-8 border pl-0 text-center d-flex align-items-center justify-content-center bg-secondary">
                         <span>Times per month</span>
@@ -42,7 +42,7 @@
             <div class="col-md-12 mb-2">
                 <div class="row">
                     <div class="col-3 pr-0">
-                        <input type="text" class="form-control" v-model="givenForTheLastMonth" @input="handleGivenForTheLastMonth" placeholder="#">
+                        <input type="text" class="form-control" v-model.number="givenForTheLastMonth" @input="handleGivenForTheLastMonth" placeholder="#">
                     </div>
                     <div class="col-8 border pl-0 text-center d-flex align-items-center justify-content-center bg-secondary">
                         <span>Months</span>
@@ -67,7 +67,7 @@
             <div class="col-md-12 mb-2">
                 <div class="row">
                     <div class="col-3 pr-0">
-                        <input type="text" class="form-control" placeholder="#">
+                        <input type="text" class="form-control" placeholder="#" v-model.number="notGivenForTheLastMonth" @input="handleNotGivenForTheLastMonth">
                     </div>
                     <div class="col-8 border pl-0 text-center d-flex align-items-center justify-content-center bg-secondary">
                         <span>Months</span>
@@ -84,6 +84,7 @@ import Dropdown from "primevue/dropdown"
 import TriggerDescription from "../TriggerDescription.vue"
 import { reactive, ref } from '@vue/reactivity'
 import MultiSelect from "primevue/multiselect"
+import { computed } from '@vue/runtime-core'
 export default {
     components: { Dropdown, TriggerDescription, MultiSelect },
     props: [ "groups", "contributionItems", "selectedTriggerIndex" ],
@@ -116,6 +117,27 @@ export default {
             emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
+        const notGivenForTheLastMonth = ref();
+        const handleNotGivenForTheLastMonth = e => {
+            data.notGivenForTheLastMonth = e.target.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
+        }
+
+        const description = computed(() => {
+            return {
+                id: 2,
+                groups: selectedGroups.value && selectedGroups.value.length > 0 ? selectedGroups.value.map(i => i.name) : ['_____'],
+                givenAtLeastTimes: data.givenAtLeastTimes ? data.givenAtLeastTimes : "____",
+                givenForTheLastMonth: data.givenForTheLastMonth ? data.givenForTheLastMonth : "____",
+                category: data.financialContributionID ? financialContribution.value.name : "____",
+                notGivenForTheLastMonth: data.notGivenForTheLastMonth ? data.notGivenForTheLastMonth : "____",
+            }
+        })
+
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
         return {
             handleSelectedGroups,
             selectedGroups,
@@ -125,6 +147,10 @@ export default {
             givenForTheLastMonth,
             financialContribution,
             handleFinancialContribution,
+            notGivenForTheLastMonth,
+            handleNotGivenForTheLastMonth,
+            description,
+            removeTrigger,
         }
     }
 }
