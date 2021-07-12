@@ -1,10 +1,10 @@
 <template>
   <div class="pb-4">
-    <div class="row table " style="height: 300px">
+    <div class="row table " style="height: 310px;">
       <div class="col-12 mt-4  w-100">
         <div class="row">
           <!-- {{contributionSummary}} -->
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-4" style="height: 50vh;">
              <div class="col-12 mb-5">
                 <Dropdown
                   v-model="selectedPeriod"
@@ -23,7 +23,7 @@
           </div>
           <!-- {{ pieChart }} -->
           <!-- title="Analytics" -->
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-4" style="height: 50vh;">
             <ContributionPieChart
               domId="chart"
               distance="5"
@@ -31,7 +31,7 @@
               :summary="pieChart"
             />
           </div>
-          <div class="col-12 col-md-4 " >
+          <div class="col-12 col-md-4 " style="height: 50vh;" >
             <!-- <div v-if="attendanceBoolean"> -->
                 <!-- :subtitle="chartData.name"
               :data="chartData && chartData.barChart ? chartData.barChart : {}"
@@ -182,7 +182,7 @@
           <div class="container-fluid d-none d-md-block">
             <div class="row t-header">
               <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
-                <div class="col-md-1 px-3"></div>
+                <div class="col-md-1"></div>
                 <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
                 <div class="small-text text-capitalize col-md-3 font-weight-bold">Offering</div>
                 <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
@@ -215,7 +215,7 @@
                 </div>
 
                 <div class="col-md-3 px-1">
-                  <div class="d-flex justify-content-between">
+                  <div class="d-flex small justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Offering</span>
                   <div>
                     
@@ -228,7 +228,7 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
                     <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
-                    <span><router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
+                    <span><router-link class="text-decoration-none ml-3" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
                   </p>
                 </div>
 
@@ -241,37 +241,41 @@
                   </p>
                 </div>
 
-                <div class="small-text col-md-1 px-1">
+                <div class=" col-md-1  ">
                   <!-- <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
                     <span>Marked</span>
                   </p> -->
-                  <div class="action data action-icon">
-                    <div class="dropdown">
-                      <i
-                        class="fas fa-ellipsis-v cursor-pointer"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      ></i>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
-                          <a class="dropdown-item elipsis-items">
-                            View Report
-                          </a>
-                      </router-link>
-                      <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
-                        <a class="dropdown-item elipsis-items">
-                      Edit
-                      </a>
-                      </router-link>
-                      <a
-                        class="dropdown-item elipsis-items cursor-pointer"
-                        @click="showConfirmModal(item.id, index)"
-                        >Delete</a
-                      >
-                      </div>
+                  <div>
+                    <div class="dropdown ">
+                      <span class="d-flex justify-content-between">
+                          <span class="d-md-none d-sm-flex"></span>
+                          <span class=" d-sm-flex  small ">
+                          <i
+                          class="fas fa-ellipsis-v cursor-pointer ml-2"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        ></i>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
+                              <a class="dropdown-item elipsis-items">
+                                View Report
+                              </a>
+                            </router-link>
+                            <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
+                              <a class="dropdown-item elipsis-items">
+                                Edit
+                              </a>
+                            </router-link>
+                            <a
+                              class="dropdown-item elipsis-items cursor-pointer"
+                              @click="showConfirmModal(item.id, index)"
+                              >Delete</a>
+                        </div>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>

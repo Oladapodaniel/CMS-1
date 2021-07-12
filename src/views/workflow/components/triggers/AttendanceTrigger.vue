@@ -2,35 +2,37 @@
     <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :header="'Attendance'" :description="description" />
+                <TriggerDescription :header="'Attendance'" :description="description" @removetrigger="removeTrigger" />
             </div>
         </div>
 
         <div class="row mt-4">
             <div class="col-md-12">
-                <label for="" class="font-weight-600">Match an individual who is</label>
+                <label for="" class="font-weight-600">A member of</label>
             </div>
             <div class="col-md-12 mb-2 mt-3">
-                <MultiSelect @change="handleStatus" v-model="selectedStatus" :options="[ 'Present', 'Excused', 'Unexcused' ]"  class="w-100"  display="chip" />
-                <div class="row">
-                    <div class="col-md-12 mt-3">
-                        <input type="text" class="form-control" placeholder="Number of times" v-model="numOfTimes" @input="handleNumOfTimes">
-                    </div>
-                </div>
+                <MultiSelect @change="handleSelectedGroups" v-model="selectedGroups" optionLabel="name" :options="groups"  class="w-100"  display="chip" />
+            </div>
+
+            <div class="col-md-12">
+                <label for="" class="font-weight-600">A member of</label>
+            </div>
+            <div class="col-md-12 mb-2 mt-3">
+                <Dropdown @change="handleStatus" v-model="selectedStatus" :options="[ 'Present', 'Excused', 'Unexcused' ]" class="w-100" />
             </div>
 
             <div class="col-md-12 mt-4">
-                <label for="" class="font-weight-600">Time(s) in the last</label>
+                <label for="" class="font-weight-600">Time(s)</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown :options="[ '1 day', '1 week', '4 weeks' ]" class="w-100" v-model="timesInLastWeek" @change="handleTimesInLastWeek" />
+                <input type="text" v-model="times" @change="handleTimes" class="form-control">
             </div>
 
             <div class="col-md-12 mt-4">
-                <label for="" class="font-weight-600">From/in in the following Groups</label>
+                <label for="" class="font-weight-600">In the last</label>
             </div>
             <div class="col-md-12 mb-2">
-                <MultiSelect @change="groupSelected" v-model="selectedGroups" :options="[ 'Workers', 'Choir', 'New comers' ]"  placeholder="Select groups" class="w-100"  display="chip" />
+                <input type="text" class="form-control" v-model.number="days" @change="handleDays">
             </div>
         </div>
         
@@ -43,34 +45,36 @@ import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
 import { reactive, ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
+
 export default {
     components: { Dropdown, TriggerDescription, MultiSelect },
-
+    props: [ "groups", "contributionItems", "selectedTriggerIndex" ],
     setup (props, { emit }) {
         const data = reactive({ });
 
         const selectedStatus = ref([ ]);
         const handleStatus = e => {
-            data.selectedStatus = e.value;
-            emit('attendanceupdated', data);
+            data.attendanceStatus = e.value;
+            emit('updatetrigger', JSON.stringify(data));
         }
 
-        const numOfTimes = ref(0);
-        const handleNumOfTimes = e => {
-            data.numOfTimes = e.target.value;
-            emit('attendanceupdated', data);
+        const days = ref(0);
+        const handleDays = e => {
+            data.groups = e.target.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
-        const timesInLastWeek = ref([ ]);
-        const handleTimesInLastWeek = e => {
-            data.timesInLastWeek = e.value;
-            emit('attendanceupdated', data);
+        const times = ref([ ]);
+        const handleTimes = e => {
+            data.timmes = e.value;
+            emit('updatetrigger', JSON.stringify(data));
         }
 
         const selectedGroups = ref([ ]);
         const groupSelected = e => {
-            data.selectedGroups = e.value;
-            emit('attendanceupdated', data);
+            const allGroupsIndex = selectedGroups.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
+            data.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
         const description = computed(() => {
@@ -83,16 +87,21 @@ export default {
             }
         })
 
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
         return {
             handleStatus,
             selectedStatus,
-            numOfTimes,
-            handleNumOfTimes,
-            timesInLastWeek,
-            handleTimesInLastWeek,
+            days,
+            handleDays,
+            times,
+            handleTimes,
             selectedGroups,
             groupSelected,
             description,
+            removeTrigger,
         }
     }
 }

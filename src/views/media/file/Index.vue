@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid"  v-lazy-container="{ selector: 'img' }">
         <div class="row my-5">
             <!-- <div class="col-md-12 text-center my-4">
                 <span><img :src="file.imagePath" style="height:100%;width:auto;max-height:300px;max-width:100%" alt="Media File"></span>
@@ -58,7 +58,7 @@
             <div class="col-md-12" v-if="route.query.t === '3'">
                 <div class="row">
                     <div class="col-md-8 mx-auto">
-                        <span><img :src="route.query.f" style="height:100%;width:auto;max-height:300px;max-width:100%" alt="Media File"></span>
+                        <span><img :data-src="route.query.f" style="height:100%;width:auto;max-height:300px;max-width:100%" alt="Media File"></span>
                     </div>
                 </div>
             </div>

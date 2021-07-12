@@ -82,7 +82,7 @@
           </div>
         </div>
         
-        <div class="row w-100 mt-3" v-if="paymentFormID">
+        <!-- <div class="row w-100 mt-3" v-if="paymentFormID">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -97,7 +97,7 @@
                 <a class="text-decoration-none"
                   ><h4 class="header4 link-color c-pointer" @click="copyPaymentFormLink">Payment Form Link</h4></a
                 >
-                <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+              
                 <p class="para">
                   <span class="d-flex align-items-center"
                     ><input
@@ -118,9 +118,9 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         
-        <div class="row w-100 mt-3" v-if="paymentFormID">
+        <!-- <div class="row w-100 mt-3" v-if="paymentFormID">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
           >
@@ -135,7 +135,7 @@
                 <a class="text-decoration-none"
                   ><h4 class="header4 link-color c-pointer" @click="copyIframeLink">iFrame</h4></a
                 >
-                <!-- <a class="c-pointer text-decoration-none"><h4 class="header4"><router-link class="text-decoration-none text-dark" :to="{ name: 'WebCheckin', params: { code: route.query.code} }">Registration Link</router-link></h4></a> -->
+             
                 <p class="para">
                   <span class="d-flex align-items-center"
                     ><code class="w-100">
@@ -152,7 +152,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="row w-100 mt-3">
           <div
             class="col-md-10 offset-md-1 col-sm-11 offset-1 col-lg-7 offset-lg-2 border rounded"
@@ -243,15 +243,15 @@
                   <span class="d-flex align-items-center"
                     ><input
                       type="text"
-                      ref="checkinLink"
+                      ref="familyLink"
                       @keydown="preventChangingOfCheckinLink"
-                      @click="copyLink"
+                      @click="copyFamilyLink"
                       :value="childCheckinLink"
                       class="form-control"
                       style="width: 95%" />
                     <i
                       class="pi pi-copy ml-2 c-pointer"
-                      @click="copyLink"
+                      @click="copyFamilyLink"
                       style="font-size: 22px"
                     ></i
                   ></span>
@@ -412,6 +412,7 @@ export default {
     const selectedGroups = ref([]);
     const store = useStore();
     const checkinLink = ref(null);
+    const familyLink = ref(null);
     const regLink = ref(null);
     const paymentFormLink = ref(null);
     const iframeLink = ref(null);
@@ -549,6 +550,24 @@ export default {
         life: 3000,
       });
     }
+    
+    const copyFamilyLink = () => {
+      
+      familyLink.value.select();
+      familyLink.value.setSelectionRange(
+        0,
+        familyLink.value.value.length
+      ); /* For mobile devices */
+
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      toast.add({
+        severity: "info",
+        summary: "Link Copied",
+        detail: "Family link copied to your clipboard",
+        life: 3000,
+      });
+    }
 
     const link = computed(() => {
       if (
@@ -577,19 +596,19 @@ export default {
       return attendanceCheckinInStore.value.eventRegistrationLink
     });
     
-    const paymentFormID = computed(() => {
-      if (
-        !attendanceCheckinInStore.value ||
-        !attendanceCheckinInStore.value.paymentFormId
-      )
-        return paymentFormIdResponse.value;
-      return attendanceCheckinInStore.value.paymentFormId
-    });
+    // const paymentFormID = computed(() => {
+    //   if (
+    //     !attendanceCheckinInStore.value ||
+    //     !attendanceCheckinInStore.value.paymentFormId
+    //   )
+    //     return paymentFormIdResponse.value;
+    //   return attendanceCheckinInStore.value.paymentFormId
+    // });
 
-    const iFrameLink = computed(() => {
-      if (!paymentFormID.value) return ""
-      return `<iframe loading="lazy" src="https://my.churchplus.co/iframe/${paymentFormID.value}" style="border:0px #f4f4f4 dashed;" name="online-giving" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="1190px" width="720px" allowfullscreen></iframe>`
-    })
+    // const iFrameLink = computed(() => {
+    //   if (!paymentFormID.value) return ""
+    //   return `<iframe loading="lazy" src="https://my.churchplus.co/iframe/${paymentFormID.value}" style="border:0px #f4f4f4 dashed;" name="online-giving" scrolling="no" frameborder="1" marginheight="0px" marginwidth="0px" height="1190px" width="720px" allowfullscreen></iframe>`
+    // })
 
     const childCheckinLink = computed(() => {
       if (!tenantId.value) return `https://my.churchplus.co/childcheckin/${attendanceCheckinInStore.value.tenantID}`
@@ -619,8 +638,10 @@ export default {
       selectedGroups,
       route,
       checkinLink,
+      familyLink,
       regLink,
       copyLink,
+      copyFamilyLink,
       preventChangingOfCheckinLink,
       link,
       eventRegistration,
@@ -632,8 +653,8 @@ export default {
       copyIframeLink,
       eventLinkResponse,
       paymentFormIdResponse,
-      paymentFormID,
-      iFrameLink,
+      // paymentFormID,
+      // iFrameLink,
       tenantId,
       childCheckinLink,
       routeToChildCheckin

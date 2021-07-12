@@ -60,7 +60,7 @@ export default {
     props: ['registeredMembers', 'updatedGuardian'],
    
     
-    setup (props) {
+    setup (props, { emit }) {
         
         const toast = useToast()
         const checkIn = async(item) => {
@@ -84,6 +84,7 @@ export default {
                             detail: `${res.data}`,
                             life: 4000,
                         });
+                        emit('checkin-event', 'checkin')
                     }
             }
             catch (err) {
@@ -109,6 +110,7 @@ export default {
                             detail: `${res.data}`,
                             life: 4000,
                         });
+                        emit('checkout-event', 'checkout')
                     }
             }
             catch (err) {

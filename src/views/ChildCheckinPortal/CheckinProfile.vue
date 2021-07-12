@@ -106,7 +106,7 @@
 
                 </div>
                 <div class="d-none d-md-block col-12 col-md-4 mt-5 imagefolder">
-                      <div class="grey-bg light-grey-bg mt-5 py-2 image1">
+                      <div class="grey-bg light-grey-bg image1">
                         <div class="person-img mt-3">
                           <img v-if="url" :src="url" alt="Uploaded Image" />
                           <img

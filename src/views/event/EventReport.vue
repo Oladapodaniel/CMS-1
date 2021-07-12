@@ -26,7 +26,7 @@
             <div class="col-md-2 pl-0">
               <span class="theader mb-1">Status</span>
               <div class="my-3">
-                <span class="draft">{{ status }}</span>
+                <span class="draft font-weight-bold ">{{ stats.isSent ? 'Sent' : 'Unsent' }}</span>
               </div>
             </div>
 
@@ -94,15 +94,16 @@
                       class="col-md-6 d-sm-flex justify-content-end"
                       v-if="!reportApproved"
                     >
+                    
                       <a
                         class="def-btn approve-btn mr-4"
                         @click="toggleReportState"
-                        >Approve draft</a
+                        >Approve report</a
                       >
                       <router-link
                         :to="{ name: 'Event', params: { event: activityId } }"
                       >
-                        <a class="def-btn edit-btn">Edit draft</a>
+                        <a class="def-btn edit-btn">Edit report</a>
                       </router-link>
                     </div>
                   </div>
@@ -2259,7 +2260,7 @@ export default {
     const reportApproved = ref(false);
     const lastSent = ref("just a moment ago");
     const status = ref("Draft");
-    const markedAsSent = ref(false);
+    // const markedAsSent = ref(false);
     const sendBtnText = ref("Send report");
     // const eventDataResponse = ref({});
     const topmost = ref(null);
@@ -2277,10 +2278,18 @@ export default {
     };
 
     const markAsSent = () => {
-      lastSent.value = "Marked as sent today";
-      status.value = "Sent";
-      markedAsSent.value = true;
-      sendBtnText.value = "Resend report";
+      axios.get(`/api/Events/markAsSent?activityId=${activityId.value}`)
+                .then(res => {
+                  stats.value.isSent = true;
+              lastSent.value = "Marked as sent today";
+              status.value = "Sent";
+              // markedAsSent.value = true;
+              sendBtnText.value = "Resend report";
+                  console.log(res)
+             
+                }).catch(err => {
+                  console.log(err)
+                })
     };
 
     const stats = ref(store.getters.reportData);
@@ -2373,6 +2382,7 @@ export default {
               detail: "Your report has been sent",
               life: 3000,
             });
+            markAsSent()
           }
         })
         .catch((err) => {
@@ -2424,6 +2434,7 @@ export default {
             `/api/Events/GetAnalysis?activityId=${activityId.value}`
           );
           stats.value = res.data;
+          console.log(stats.value)
           isPending.value = false;
           store.dispatch("setReportData", res.data);
         } catch (err) {
@@ -2437,6 +2448,7 @@ export default {
       getStats();
     } else {
       isPending.value = false;
+      reportApproved.value = stats.value.isSent
     }
 
     const activityOfferings = computed(() => {
@@ -2454,7 +2466,6 @@ export default {
       errorGettingReport,
       reportApproved,
       toggleReportState,
-      markedAsSent,
       markAsSent,
       status,
       lastSent,

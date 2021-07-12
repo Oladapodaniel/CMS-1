@@ -2,15 +2,15 @@
     <div class="container container-wide">
         <div class="row my-5">
             <div class="col-md-8">
-                <h3 class="font-weight-bold">Child Checkin</h3>
+                <h3 class="font-weight-bold">Child Checkin / Checkout</h3>
             </div>
-            <!-- <div class="col-md-4 d-md-flex justify-content-end">
+            <div class="col-md-4 d-md-flex justify-content-end">
                 <button class="default-btn border-0 text-white font-weight-bold primary-bg"
                     data-toggle="modal" data-target="#exampleModal"
                 >
                     Add Family
                 </button>
-            </div> -->
+            </div>
         </div>
 
         <div class="row">
@@ -23,7 +23,7 @@
                             </div>
                             <div class="col-md-9 d-flex">
                                 <input type="text" v-model="code" class="form-control">
-                                <div class="default-btn border-0 primary-bg text-white ml-4 text-center c-pointer" @click="checkIn">Search</div>
+                                <div class="default-btn border-0 primary-bg text-white ml-4 text-center c-pointer" @click="checkIn"><i class="pi pi-spin pi-spinner text-white" v-if="loading"></i>&nbsp;Search</div>
                                 <!-- <SearchWithDropdown /> -->
                             </div>
                         </div>
@@ -42,14 +42,14 @@
                     </div>
 
                     <div class="col-md-12 px-0">
-                        <CheckinTable :registeredMembers="checkinDetails" :updatedGuardian="updatedGuardian"/>
+                        <CheckinTable :registeredMembers="checkinDetails" :updatedGuardian="updatedGuardian" @checkin-event="setCheckinEvent" @checkout-event="setCheckoutEvent"/>
                     </div>
                 </div>
 
                 <div class="row mt-5 mb-3" v-if="searched">
                     <div class="col-md-12 d-flex justify-content-center" @click="save">
                         <button class="default-btn border-0 text-white font-weight-bold primary-bg">
-                            Save and Contnue
+                            Save and Continue
                         </button>
                     </div>
                 </div>
@@ -118,14 +118,15 @@ import CheckinTable from "./components/CheckinTable";
 import ParentCard from "./components/ParentCard";
 import FamilyDescriptionCard from "./components/FamilyDescriptionCard";
 // import AddWard from "./components/AddWard";
-import { useToast } from "primevue/usetoast";
-import MemberForm from "../../ChildCheckinPortal/MemberForm"
+// import { useToast } from "primevue/usetoast";
+import MemberForm from "../../ChildCheckinPortal/FormMember"
+import swal from "sweetalert";
 // import SearchWithDropdown from "@/components/search/SearchWithDropdown";
 
 export default {
     components: { AddFamily, CheckinTable, ParentCard, FamilyDescriptionCard, MemberForm },
     setup () {
-        const toast = useToast()
+        // const toast = useToast()
         const code = ref("")
         const checkinDetails = ref({})
         const guardians = ref()
@@ -133,11 +134,15 @@ export default {
         const updatedGuardian = ref({})
         // const close = ref("")
         const registeredMember = ref([])
+        const checkInOutEvent = ref("")
+        const loading = ref(false)
 
         const checkIn = async() => {
+            loading.value = true
             try {
                 let res = await axios.get(`/api/CheckInAttendance/retrieveFamily?checkInCode=${code.value}`)
                 searched.value = true
+                loading.value = false
                 console.log(res)
                 checkinDetails.value = res.data.returnObject
                 getGuardian(res.data.returnObject.family.id)
@@ -156,6 +161,7 @@ export default {
             }
             catch (err) {
                 console.log(err)
+                loading.value = false
             }
         }
 
@@ -176,14 +182,30 @@ export default {
         }
            
            const save = () => {
-                 toast.add({
-                    severity: "success",
-                    summary: "Success",
-                    detail: ``,
-                    life: 4000,
-                });
-                code.value = ""
-                searched.value = false
+                if(checkInOutEvent.value == "checkin") {
+                     swal(
+                        "Checkin Successful!",
+                        "You have checked in for this event successfully!",
+                        "success"
+                    );
+                    code.value = ""
+                    searched.value = false
+                }   else if (checkInOutEvent.value == "checkout") {
+                    swal(
+                        "Checkout Successful!",
+                        "You have checked out for this event successfully!",
+                        "success"
+                    );
+                    code.value = ""
+                    searched.value = false
+                }else {
+                     swal(
+                        "Hey!",
+                        "You have not checked in anyone for this event.",
+                        "info"
+                    );
+                }
+                
             }
 
             const updateGuardian = (payload) => {
@@ -211,6 +233,14 @@ export default {
             //     familyDetails.value.familyMembers.push(data)
             //     console.log(data)
             // }
+
+            const setCheckinEvent = (payload) => {
+                checkInOutEvent.value = payload
+            }
+
+            const setCheckoutEvent = (payload) => {
+                checkInOutEvent.value = payload
+            }
         return {
             checkIn,
             code,
@@ -224,7 +254,11 @@ export default {
             // dismissModal,
             // close,
             // pushToView
-            registeredMember
+            registeredMember,
+            setCheckinEvent,
+            setCheckoutEvent,
+            checkInOutEvent,
+            loading
         }
     }
 }

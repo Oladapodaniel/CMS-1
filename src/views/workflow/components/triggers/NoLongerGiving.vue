@@ -2,7 +2,7 @@
     <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :header="'Giving - No longer giving'" />
+                <TriggerDescription :header="'Giving - No longer giving'" :description="description" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -11,7 +11,7 @@
                 <label for="" class="font-weight-600">Match an individual who is a member of</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown :options="[ 'Workers', 'Choir', 'New comers' ]" class="w-100" />
+                <MultiSelect v-model="selectedGroups" @change="handleSelectedGroups" :options="groups" optionLabel="name"  placeholder="Select groups" class="w-100"  display="chip" />
             </div>
         </div>
 
@@ -26,7 +26,7 @@
             <div class="col-md-12 mb-2">
                 <div class="row">
                     <div class="col-3 pr-0">
-                        <input type="text" class="form-control" placeholder="#">
+                        <input type="text" class="form-control" v-model.number="givenAtLeastTimes" @input="handleGivenAtLeastTimes" placeholder="#">
                     </div>
                     <div class="col-8 border pl-0 text-center d-flex align-items-center justify-content-center bg-secondary">
                         <span>Times per month</span>
@@ -42,7 +42,7 @@
             <div class="col-md-12 mb-2">
                 <div class="row">
                     <div class="col-3 pr-0">
-                        <input type="text" class="form-control" placeholder="#">
+                        <input type="text" class="form-control" v-model.number="givenForTheLastMonth" @input="handleGivenForTheLastMonth" placeholder="#">
                     </div>
                     <div class="col-8 border pl-0 text-center d-flex align-items-center justify-content-center bg-secondary">
                         <span>Months</span>
@@ -56,7 +56,7 @@
                 <label for="" class="font-weight-600">To</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown :options="[ 'Any category...', 'General', 'Building' ]" class="w-100" />
+                <Dropdown :options="contributionItems" v-model="financialContribution" optionLabel="name" @change="handleFinancialContribution" class="w-100" />
             </div>
         </div>
 
@@ -67,7 +67,7 @@
             <div class="col-md-12 mb-2">
                 <div class="row">
                     <div class="col-3 pr-0">
-                        <input type="text" class="form-control" placeholder="#">
+                        <input type="text" class="form-control" placeholder="#" v-model.number="notGivenForTheLastMonth" @input="handleNotGivenForTheLastMonth">
                     </div>
                     <div class="col-8 border pl-0 text-center d-flex align-items-center justify-content-center bg-secondary">
                         <span>Months</span>
@@ -82,13 +82,76 @@
 <script>
 import Dropdown from "primevue/dropdown"
 import TriggerDescription from "../TriggerDescription.vue"
+import { reactive, ref } from '@vue/reactivity'
+import MultiSelect from "primevue/multiselect"
+import { computed } from '@vue/runtime-core'
 export default {
-    components: { Dropdown, TriggerDescription },
+    components: { Dropdown, TriggerDescription, MultiSelect },
+    props: [ "groups", "contributionItems", "selectedTriggerIndex" ],
 
-    setup () {
-        
+    setup (props, { emit }) {
+        const data = reactive({ })
 
-        return {}
+        const selectedGroups = ref([ ]);
+        const handleSelectedGroups = e => {
+            const allGroupsIndex = selectedGroups.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
+            data.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
+        }
+
+        const givenAtLeastTimes = ref([ ]);
+        const handleGivenAtLeastTimes = e => {
+            data.givenAtLeastTimes = e.target.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
+        }
+
+        const givenForTheLastMonth = ref([ ]);
+        const handleGivenForTheLastMonth = e => {
+            data.givenForTheLastMonth = e.target.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
+        }
+
+        const financialContribution = ref({ });
+        const handleFinancialContribution = e => {
+            data.financialContributionID = e.value.id;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
+        }
+
+        const notGivenForTheLastMonth = ref();
+        const handleNotGivenForTheLastMonth = e => {
+            data.notGivenForTheLastMonth = e.target.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
+        }
+
+        const description = computed(() => {
+            return {
+                id: 2,
+                groups: selectedGroups.value && selectedGroups.value.length > 0 ? selectedGroups.value.map(i => i.name) : ['_____'],
+                givenAtLeastTimes: data.givenAtLeastTimes ? data.givenAtLeastTimes : "____",
+                givenForTheLastMonth: data.givenForTheLastMonth ? data.givenForTheLastMonth : "____",
+                category: data.financialContributionID ? financialContribution.value.name : "____",
+                notGivenForTheLastMonth: data.notGivenForTheLastMonth ? data.notGivenForTheLastMonth : "____",
+            }
+        })
+
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
+
+        return {
+            handleSelectedGroups,
+            selectedGroups,
+            givenAtLeastTimes,
+            handleGivenAtLeastTimes,
+            handleGivenForTheLastMonth,
+            givenForTheLastMonth,
+            financialContribution,
+            handleFinancialContribution,
+            notGivenForTheLastMonth,
+            handleNotGivenForTheLastMonth,
+            description,
+            removeTrigger,
+        }
     }
 }
 </script>

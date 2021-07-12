@@ -1,5 +1,5 @@
 <template>
-    <div class="container max-height">
+    <div class="container max-height scroll-div">
         <div class="row mt-4">
             <div class="col-md-12 px-0">
                 <label for="" class="font-weight-600">Email</label>
@@ -7,27 +7,30 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="checkbox" name="" id="" v-model="sendPersonMail" @change="handleSendPersonMail"> The person
+                        <input type="checkbox" name="" id="" v-model="person" @change="handleSendPersonMail"> The person
                     </div>
                     <div class="col-md-12">
-                        <input type="checkbox" name="" id="" v-model="sendPersonsParentMail" @change="handleSendPersonsParentMail"> The person's parent
+                        <input type="checkbox" name="" id="" v-model="parent" @change="handleSendPersonsParentMail"> The person's parent
                     </div>
                     <div class="col-md-12">
-                        <input type="checkbox" name="" id="" v-model="sendPersonsSpouseMail" @change="handleSendPersonsSpouseMail"> The person's spouse
+                        <input type="checkbox" name="" id="" v-model="spouse" @change="handleSendPersonsSpouseMail"> The person's spouse
+                    </div>
+                    <div class="col-md-12">
+                        <input type="checkbox" name="" id="" v-model="groupLeader" @change="handleSendGroupLeaderMail"> The Group Leaders
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-4">
+        <!-- <div class="row mt-4">
             <div class="col-md-12 px-0">
                 <label for="" class="font-weight-600">And the following</label>
             </div>
             <div class="col-md-12">
-                <input type="text" class="form-control" v-model="otherAddresses" @change="handleOtherAddresses">
+                <input type="text" class="form-control" v-model="otherToContacts" @change="handleOtherAddresses">
                 <span class="small-text">Separate the addresses with comma</span>
             </div>
-        </div>
+        </div> -->
 
         <div class="row mt-4">
             <div class="col-md-12 px-0">
@@ -41,6 +44,9 @@
                     <div class="col-md-12">
                         <input type="checkbox" name="" id="" v-model="spouseBBC" @change="handleSpouseBBC"> The person's spouse
                     </div>
+                    <div class="col-md-12">
+                        <input type="checkbox" name="" id="" v-model="BCCGroupLeader" @change="handleBCCGroupLeader"> The Group Leaders
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,12 +56,12 @@
                 <label for="" class="font-weight-600">And the following</label>
             </div>
             <div class="col-md-12">
-                <input type="text" class="form-control" v-model="otherBBC" @change="handleOtherBBC">
+                <input type="text" class="form-control" v-model="otherToContacts" @change="handleOtherAddresses">
                 <span class="small-text">Separate the addresses with comma</span>
             </div>
         </div>
 
-        <div class="row mt-4">
+        <!-- <div class="row mt-4">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12">
@@ -63,14 +69,14 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <div class="row mt-4">
             <div class="col-md-12 px-0">
                 <label for="" class="font-weight-600">Specify email for "Reply To"</label>
             </div>
             <div class="col-md-12">
-                <input type="text" class="form-control" v-model="replyEmail" @change="handleReplyEmail">
+                <input type="text" class="form-control" v-model="replyToEmailAddress" @change="handleReplyEmail">
             </div>
         </div>
 
@@ -97,91 +103,108 @@
 <script>
 import { reactive, ref } from '@vue/reactivity';
 export default {
+    props: [ "selectedActionIndex" ],
     setup (props, { emit }) {
-        const data = reactive({ })
-        const sendPersonMail = ref(false);
+        const data = reactive({ ActionType: 0, JSONActionParameters: { } })
+        const person = ref(false);
         const handleSendPersonMail = (e) => {
-            data.sendPersonMail = e.target.checked;
-            emit('emailupdated', data);
+            data.JSONActionParameters.person = e.target.checked;
+            emit('updateaction', data, props.selectedActionIndex);
         }
 
-        const sendPersonsParentMail = ref(false);
+        const parent = ref(false);
         const handleSendPersonsParentMail = (e) => {
-            data.sendPersonsParentMail = e.target.checked;
-            emit('emailupdated', data);
+            data.JSONActionParameters.parent = e.target.checked;
+            emit('updateaction', data, props.selectedActionIndex);
         }
 
-        const sendPersonsSpouseMail = ref(false);
+        const spouse = ref(false);
         const handleSendPersonsSpouseMail = (e) => {
-            data.sendPersonsSpouseMail = e.target.checked;
-            emit('emailupdated', data);
+            data.JSONActionParameters.spouse = e.target.checked;
+            emit('updateaction', data, props.selectedActionIndex);
         }
 
-        const otherAddresses = ref('');
+        const groupLeader = ref(false);
+        const handleSendGroupLeaderMail = (e) => {
+            data.JSONActionParameters.groupLeader = e.target.checked;
+            emit('updateaction', data, props.selectedActionIndex);
+        }
+
+        const otherToContacts = ref('');
         const handleOtherAddresses = (e) => {
-            data.otherAddresses = e.target.value;
-            emit('emailupdated', data);
+            data.JSONActionParameters.otherToContacts = e.target.value;
+            emit('updateaction', data, props.selectedActionIndex);
         }
 
-        const parentBBC = ref('');
+        const BCCParent = ref('');
         const handleParentBBC = (e) => {
-            data.parentBBC = e.target.checked;
-            emit('emailupdated', data);
+            data.JSONActionParameters.BCCParent = e.target.checked;
+            emit('updateaction', data, props.selectedActionIndex);
         }
 
-        const spouseBBC = ref('');
+        const BCCSpouse = ref('');
         const handleSpouseBBC = (e) => {
-            data.spouseBBC = e.target.checked;
-            emit('emailupdated', data);
+            data.JSONActionParameters.BCCSpouse = e.target.checked;
+            emit('updateaction', data, props.selectedActionIndex);
+        }
+
+        const BCCGroupLeader = ref('');
+        const handleBCCGroupLeader = (e) => {
+            data.JSONActionParameters.BCCGroupLeader = e.target.checked;
+            emit('updateaction', data, props.selectedActionIndex);
         }
 
         const otherBBC = ref('');
         const handleOtherBBC = (e) => {
-            data.otherBBC = e.target.checked;
-            emit('emailupdated', data);
+            data.JSONActionParameters.otherBBC = e.target.checked;
+            emit('updateaction', data, props.selectedActionIndex);
         }
 
         const sendIndividualMails = ref(false);
         const handleSendIndividualMails = (e) => {
-            data.sendIndividualMails = e.target.checked;
-            emit('emailupdated', data);
+            data.JSONActionParameters.sendIndividualMails = e.target.checked;
+            emit('updateaction', data, props.selectedActionIndex);
         }
 
-        const replyEmail = ref('');
+        const replyToEmailAddress = ref('');
         const handleReplyEmail = (e) => {
-            data.replyEmail = e.target.value;
-            emit('emailupdated', data);
+            data.JSONActionParameters.replyToEmailAddress = e.target.value;
+            emit('updateaction', data, props.selectedActionIndex);
         }
 
         const subject = ref('');
         const handleSubject = (e) => {
-            data.subject = e.target.value;
-            emit('emailupdated', data);
+            data.JSONActionParameters.subject = e.target.value;
+            emit('updateaction', data, props.selectedActionIndex);
         }
         const message = ref('');
         const handleMessage = (e) => {
-            data.message = e.target.value;
-            emit('emailupdated', data);
+            data.JSONActionParameters.message = e.target.value;
+            emit('updateaction', data, props.selectedActionIndex);
         }
 
         return {
-            sendPersonMail,
+            person,
             handleSendPersonMail,
-            sendPersonsParentMail,
+            parent,
             handleSendPersonsParentMail,
-            sendPersonsSpouseMail,
+            spouse,
+            groupLeader,
+            handleSendGroupLeaderMail,
             handleSendPersonsSpouseMail,
-            otherAddresses,
+            otherToContacts,
             handleOtherAddresses,
-            parentBBC,
+            BCCParent,
             handleParentBBC,
-            spouseBBC,
+            BCCSpouse,
             handleSpouseBBC,
+            handleBCCGroupLeader,
             otherBBC,
             handleOtherBBC,
+            BCCGroupLeader,
             sendIndividualMails,
             handleSendIndividualMails,
-            replyEmail,
+            replyToEmailAddress,
             handleReplyEmail,
             subject,
             handleSubject,

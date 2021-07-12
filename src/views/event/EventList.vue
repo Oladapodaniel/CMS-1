@@ -1,38 +1,75 @@
 <template>
-    <div class="row"> 
+  <div>
+    <div class="row">
       <div class="col-sm-12">
         <div class="avg">Overall Average</div>
       </div>
     </div>
-    
-    <div class="row mt-4"> 
-      <div class="col-6 col-sm-1 text-center default-btn cursor-pointer" :class="{ 'active-btn': monthlyActiveBtn }" @click="toggleMonthlyClass">
+
+    <div class="row mt-4">
+      <div
+        class="col-6 col-sm-1 text-center default-btn cursor-pointer"
+        :class="{ 'active-btn': monthlyActiveBtn }"
+        @click="toggleMonthlyClass"
+      >
         <div>Monthly</div>
       </div>
-      <div class="col-6 col-sm-1 ml-sm-2 text-center default-btn cursor-pointer" :class="{ 'active-btn': yearlyActiveBtn }" @click="toggleYearlyClass">
+      <div
+        class="col-6 col-sm-1 ml-sm-2 text-center default-btn cursor-pointer"
+        :class="{ 'active-btn': yearlyActiveBtn }"
+        @click="toggleYearlyClass"
+      >
         <div>Yearly</div>
       </div>
-      <div class="col-6 offset-3 offset-sm-0 col-sm-1 ml-sm-2 mt-3 mt-sm-0 text-center default-btn cursor-pointer" :class="{ 'active-btn': allTimeActiveBtn }" @click="toggleAllTimeClass">
+      <div
+        class="
+          col-6
+          offset-3 offset-sm-0
+          col-sm-1
+          ml-sm-2
+          mt-3 mt-sm-0
+          text-center
+          default-btn
+          cursor-pointer
+        "
+        :class="{ 'active-btn': allTimeActiveBtn }"
+        @click="toggleAllTimeClass"
+      >
         <div>All Time</div>
       </div>
     </div>
 
-<!-- Monthly -->
+    <!-- Monthly -->
     <div class="row avg-table mt-4" v-if="monthlyActiveBtn">
-      <div class="col-6 col-md-3 first-row" v-tooltip.left="`${ eventSummary.attendanceAverage.monthly }`">
+      <div
+        class="col-6 col-md-3 first-row"
+        v-tooltip.left="`${eventSummary.attendanceAverage.monthly}`"
+      >
         <div>Attendance</div>
         <div>{{ convert(eventSummary.attendanceAverage.monthly) }}</div>
-        
       </div>
-      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.offeringAverage.monthly }`">
-        <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div> {{convert(eventSummary.offeringAverage.monthly) }}</div>
+      <div
+        class="col-6 col-md-3"
+        v-tooltip.left="`${eventSummary.offeringAverage.monthly}`"
+      >
+        <div>
+          Offering<span style="font-size: 15px" class="font-weight-700"
+            >({{ userCurrency }})</span
+          >
+        </div>
+        <div>{{ convert(eventSummary.offeringAverage.monthly) }}</div>
       </div>
-      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.firstTimerAverage.monthly }`">
+      <div
+        class="col-6 col-md-3"
+        v-tooltip.left="`${eventSummary.firstTimerAverage.monthly}`"
+      >
         <div>First Timers</div>
         <div>{{ convert(eventSummary.firstTimerAverage.monthly) }}</div>
       </div>
-      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.newConvertAverage.monthly }`">
+      <div
+        class="col-6 col-md-3"
+        v-tooltip.left="`${eventSummary.newConvertAverage.monthly}`"
+      >
         <div>New Converts</div>
         <div>{{ convert(eventSummary.newConvertAverage.monthly) }}</div>
       </div>
@@ -41,22 +78,37 @@
       </div> -->
     </div>
 
-<!-- yearly -->
+    <!-- yearly -->
     <div class="row avg-table mt-4" v-if="yearlyActiveBtn">
-      <div class="col-6 col-md-3 first-row" v-tooltip.left="`${ eventSummary.attendanceAverage.yearly }`">
+      <div
+        class="col-6 col-md-3 first-row"
+        v-tooltip.left="`${eventSummary.attendanceAverage.yearly}`"
+      >
         <div>Attendance</div>
         <div>{{ convert(eventSummary.attendanceAverage.yearly) }}</div>
-        
       </div>
-      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.offeringAverage.yearly }`">
-        <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div> {{ convert(eventSummary.offeringAverage.yearly) }}</div>
+      <div
+        class="col-6 col-md-3"
+        v-tooltip.left="`${eventSummary.offeringAverage.yearly}`"
+      >
+        <div>
+          Offering<span style="font-size: 15px" class="font-weight-700"
+            >({{ userCurrency }})</span
+          >
+        </div>
+        <div>{{ convert(eventSummary.offeringAverage.yearly) }}</div>
       </div>
-      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.firstTimerAverage.yearly }`">
+      <div
+        class="col-6 col-md-3"
+        v-tooltip.left="`${eventSummary.firstTimerAverage.yearly}`"
+      >
         <div>First Timers</div>
         <div>{{ convert(eventSummary.firstTimerAverage.yearly) }}</div>
       </div>
-      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.newConvertAverage.yearly }`">
+      <div
+        class="col-6 col-md-3"
+        v-tooltip.left="`${eventSummary.newConvertAverage.yearly}`"
+      >
         <div>New Converts</div>
         <div>{{ convert(eventSummary.newConvertAverage.yearly) }}</div>
       </div>
@@ -65,23 +117,38 @@
       </div> -->
     </div>
 
-<!-- All time -->
+    <!-- All time -->
     <div class="row avg-table mt-4" v-if="allTimeActiveBtn">
-      <div class="col-6 col-md-3 first-row" v-tooltip.left="`${ eventSummary.attendanceAverage.allTime }`">
+      <div
+        class="col-6 col-md-3 first-row"
+        v-tooltip.left="`${eventSummary.attendanceAverage.allTime}`"
+      >
         <div>Attendance</div>
         <!-- <div>{{ eventSummary.attendance ? eventSummary.attendance.toString().length > 6 ? `${eventSummary.attendance.toString().slice(0, 6)}...` : eventSummary.attendance : 0}}</div> -->
         <div>{{ convert(eventSummary.attendanceAverage.allTime) }}</div>
-        
       </div>
-      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.offeringAverage.allTime }`">
-        <div>Offering<span style="font-size: 15px" class="font-weight-700">({{ userCurrency }})</span></div>
-        <div> {{ convert(eventSummary.offeringAverage.allTime) }}</div>
+      <div
+        class="col-6 col-md-3"
+        v-tooltip.left="`${eventSummary.offeringAverage.allTime}`"
+      >
+        <div>
+          Offering<span style="font-size: 15px" class="font-weight-700"
+            >({{ userCurrency }})</span
+          >
+        </div>
+        <div>{{ convert(eventSummary.offeringAverage.allTime) }}</div>
       </div>
-      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.firstTimerAverage.allTime }`">
+      <div
+        class="col-6 col-md-3"
+        v-tooltip.left="`${eventSummary.firstTimerAverage.allTime}`"
+      >
         <div>First Timers</div>
         <div>{{ convert(eventSummary.firstTimerAverage.allTime) }}</div>
       </div>
-      <div class="col-6 col-md-3" v-tooltip.left="`${ eventSummary.newConvertAverage.allTime }`">
+      <div
+        class="col-6 col-md-3"
+        v-tooltip.left="`${eventSummary.newConvertAverage.allTime}`"
+      >
         <div>New Converts</div>
         <div>{{ convert(eventSummary.newConvertAverage.allTime) }}</div>
       </div>
@@ -89,23 +156,17 @@
         <div>Last Updated 2 hours ago</div>
       </div> -->
     </div>
-  <!-- </div> -->
-  <hr class="hr" />
-  <!-- </div> -->
-  <!-- <div class="container"> -->
+    <!-- </div> -->
+    <hr class="hr" />
+    <!-- </div> -->
+    <!-- <div class="container"> -->
     <div class="row">
       <div class="col-sm-12 p-0">
         <div class="table table-responsive">
           <div class="top-con">
             <div class="table-top my-3">
               <div class="select-all">
-                <input
-                  type="checkbox"
-                  name="all"
-                  id="all"
-       
-            
-                />
+                <input type="checkbox" name="all" id="all" />
                 <label>SELECT ALL</label>
               </div>
               <div class="filter">
@@ -114,15 +175,22 @@
                   FILTER
                 </p>
               </div>
-              <p @click="toggleSearch" class="search-text  mt-2">
+              <p @click="toggleSearch" class="search-text mt-2">
                 <i class="fa fa-search"></i> SEARCH
               </p>
               <div class="search d-flex">
                 <label
                   class="label-search d-flex"
-                  :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
+                  :class="{
+                    'show-search': searchIsVisible,
+                    'hide-search': !searchIsVisible,
+                  }"
                 >
-                  <input type="text" placeholder="Search..." v-model="searchText" />
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    v-model="searchText"
+                  />
                   <span class="empty-btn">x</span>
                   <span class="search-btn">
                     <i class="fa fa-search"></i>
@@ -139,7 +207,13 @@
                   <div class="col-md-9">
                     <div class="row">
                       <div
-                        class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                        class="
+                          col-12 col-sm-6
+                          offset-sm-3 offset-md-0
+                          form-group
+                          inp
+                          w-100
+                        "
                       >
                         <!-- <div class="input-field"> -->
 
@@ -179,11 +253,8 @@
                   </div>
 
                   <div class="col-md-3 d-flex flex-column align-items-center">
-                    <button
-                      class="apply-btn text-white"
-                      
-                    >
-                    <!-- @click="applyFilter"
+                    <button class="apply-btn text-white">
+                      <!-- @click="applyFilter"
                       :disabled="disableBtn" -->
                       Apply
                     </button>
@@ -202,116 +273,191 @@
             </div>
           </div>
           <div class="row table-header">
-                <div class="col-md-1 d-none d-md-block">
-                    STATUS
-                </div>
-                    <div class="col-md-2 d-none d-md-block">
-                    EVENT NAME
-                </div>
-                <div class="col-md-2 d-none d-md-block">
-                    TITLE
-                </div>
-                <div class="col-md-2 d-none d-md-block">
-                    DATE
-                </div>
-                <div class="col-md-1 d-none d-md-block" >
-                    ATTENDANCE
-                </div>
-                <div class="col-md-2 d-none d-md-block" >
-                    FIRST TIMERS
-                </div>
-                <div class="col-md-2 d-none d-md-block" >
-                    NEW CONVERTS
-                </div>
-            </div>
+            <div class="col-1 d-none d-md-block">STATUS</div>
+            <div class="col-2 d-none d-md-block">EVENT NAME</div>
+            <div class="col-2 d-none d-md-block">TITLE</div>
+            <div class="col-2 d-none d-md-block">DATE</div>
+            <div class="col-1 d-none d-md-block">ATTENDANCE</div>
+            <div class="col-2 d-none d-md-block">FIRST TIMERS</div>
+            <div class="col-2 d-none d-md-block">NEW CONVERTS</div>
+          </div>
 
-            <div class="table-body row" v-for="(event, index) in filterEvents" :key="index">
-                <div class="col-6 d-block d-md-none">
-                <div class="col-md-3">
-                    STATUS
-                </div>
-                    <div class="col-md-2">
-                    EVENT NAME
-                </div>
-                    <div class="col-md-2">
-                    TITLE
-                </div>
-                    <div class="col-md-2">
-                    DATE
-                </div>
-                    <div class="col-md-2" >
-                    ATTENDANCE
-                </div>
-                    <div class="col-md-2" >
-                    FIRST TIMERS
-                </div>
-                    <div class="col-md-2" >
-                    NEW  CONVERTS
-                </div>
-            </div>
-            <div class="col-6 col-md-12">
+          <div
+            class="table-body row"
+            v-for="(event, index) in filterEvents"
+            :key="index"
+          >
+            <!-- <div class="col-6 d-block d-md-none">
                 <div class="row">
-                <div class="col-md-1 p-2 align-self-center">
-                    <div class="td-first">Unsent</div>
+                  <div class="col-1">
+                      STATUS
+                  </div>
+                      <div class="col-2">
+                      EVENT NAME
+                  </div>
+                      <div class="col-2">
+                      TITLE
+                  </div>
+                      <div class="col-2">
+                      DATE
+                  </div>
+                      <div class="col-1" >
+                      ATTENDANCE
+                  </div>
+                      <div class="col-2" >
+                      FIRST TIMERS
+                  </div>
+                      <div class="col-2" >
+                      NEW  CONVERTS
+                  </div> 
                 </div>
-                <div class="col-md-2 itemroute-color align-self-center">
-                    <div><router-link :to="`/tenant/event/${event.activityId}`" class="itemroute-color">{{event.eventName}}</router-link></div>
+                
+            </div> -->
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-1 col-sm-12 p-2 align-self-center">
+                  <div class="row px-2">
+                    <div class="col-8 col-md-0 d-md-none">
+                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Status</span>
+                    </div>
+                    <div class="col-4 col-md-12 ">
+                      
+                      <span class="d-flex justify-content-end">
+                          <span class=" d-sm-flex small">
+                            <div class="td-first px-1">
+                              {{ event.isSent ? "Sent" : "Unsent" }}
+                            </div>
+                          </span>
+                        </span>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-2 itemroute-color align-self-center">
-                    <div>{{event.title}}</div>
+                <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
+                  <div>
+                    <span class="d-flex justify-content-between">
+                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Event Name</span>
+                      <span class=" d-sm-flex small">
+                        <router-link
+                          :to="`/tenant/event/${event.activityId}`"
+                          class="itemroute-color px-1"
+                          >{{ event.eventName }}</router-link
+                        >
+                      </span>
+                    </span>
+                  </div>
                 </div>
-                <div class="col-md-2 itemroute-color align-self-center">
-                    <div>{{ date(event.activityDate) }}</div>
+                <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
+                   <div>
+                    <span class="d-flex justify-content-between">
+                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Title</span>
+                      <span class=" d-sm-flex small">
+                        <div class="px-1">{{ event.title }}</div>
+                      </span>
+                    </span>
+                  </div>
+                  
                 </div>
-                <div class="col-md-1 itemroute-color align-self-center">
-                     <div>{{ event.attendances }}</div>
+                <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
+                   <div>
+                    <span class="d-flex justify-content-between">
+                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Date</span>
+                      <span class=" d-sm-flex small">
+                       <div class="px-1">{{ date(event.activityDate) }}</div>
+                      </span>
+                    </span>
+                  </div>
+                  
                 </div>
-                <div class="col-md-2 itemroute-color align-self-center">
-                     <div>{{ event.firstTimers }}</div>
+                <div class="col-md-1 col-sm-12 itemroute-color align-self-center">
+                  <div>
+                    <span class="d-flex justify-content-between">
+                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">Attendance</span>
+                      <span class=" d-sm-flex small">
+                      <div class="px-1">{{ event.attendances }}</div>
+                      </span>
+                    </span>
+                  </div>
                 </div>
-                <div class="col-md-1 itemroute-color align-self-center" >
-                     <div>{{ event.newConverts }}</div>
+                <div class="col-md-2 col-sm-12 itemroute-color align-self-center">
+                  <div>
+                    <span class="d-flex justify-content-between">
+                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">FirstTimers</span>
+                      <span class=" d-sm-flex small">
+                      <div class="px-1">{{ event.firstTimers }}</div>
+                      </span>
+                    </span>
+                  </div>
                 </div>
-                <div class="col-md-1 align-self-center">
-                    <div class="dropdown">
-              <i
-                class="fas fa-ellipsis-v cursor-pointer"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              ></i>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-               
-               <router-link :to="`/tenant/report/${event.activityId}`">
-                <a class="dropdown-item elipsis-items">
-                 View Report
-                </a>
-               </router-link>
-               
-               <router-link :to="`/tenant/event/${event.activityId}`">
-                <a class="dropdown-item elipsis-items">
-                 Edit
-                </a>
-               </router-link>
+                <div class="col-md-1 col-sm-12 itemroute-color align-self-center">
+                  <div>
+                    <span class="d-flex justify-content-between">
+                      <span class="d-md-none d-sm-flex small-text font-weight-700 text-dark px-1">NewConverts</span>
+                      <span class=" d-sm-flex small">
+                      <div class="px-1">{{ event.newConverts }}</div>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-1 col-sm-12 align-self-center  ">
+                  <div class="dropdown">
+                    <span class="d-flex justify-content-between">
+                      <span class="d-md-none d-sm-flex"></span>
+                      <span class=" d-sm-flex small px-1">
+                       <i
+                      class="fas fa-ellipsis-v cursor-pointer"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    ></i>
+                    <div
+                      class="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <router-link
+                        :to="`/tenant/report/${event.activityId}`"
+                        class="text-decoration-none"
+                      >
+                        <a class="dropdown-item elipsis-items"> View Report </a>
+                      </router-link>
+
+                      <router-link
+                        :to="`/tenant/event/${event.activityId}`"
+                        class="text-decoration-none"
+                      >
+                        <a class="dropdown-item elipsis-items"> Edit </a>
+                      </router-link>
+                      <!-- <router-link :to="`/tenant/event/${event.activityId}`"> -->
+                      <a
+                        class="dropdown-item elipsis-items cursor-pointer"
+                        @click="showConfirmModal(event.activityId, index)"
+                      >
+                        Delete
+                      </a>
+                      <!-- </router-link> -->
+                    </div>
+                      </span>
+                    </span>
+                   
+                  </div>
+                </div>
               </div>
             </div>
-            </div>
-            </div>
-          
-                </div>
-            </div>
-            <ConfirmDialog />
-            <Toast />
+          </div>
+          <ConfirmDialog />
+          <Toast />
 
           <div class="table-footer">
-            <PaginationButtons @getcontent="getPeopleByPage" :itemsCount="membersCount" :currentPage="currentPage"
-        />
+            <PaginationButtons
+              @getcontent="getPeopleByPage"
+              :itemsCount="membersCount"
+              :currentPage="currentPage"
+            />
           </div>
         </div>
       </div>
     </div>
-  <!-- </div> -->
+  </div>
 </template>
 
 <script>
@@ -319,33 +465,31 @@ import axios from "@/gateway/backendapi";
 import { ref, computed } from "vue";
 import moment from "moment";
 import { useConfirm } from "primevue/useConfirm";
-import { useToast } from 'primevue/usetoast';
+import { useToast } from "primevue/usetoast";
 import { useStore } from "vuex";
-import userService from "../../services/user/userservice"
-import Tooltip from 'primevue/tooltip';
-import monthDayYear from '../../services/dates/dateformatter'
-import convertNumber from '../../services/numbershortener/numberfomatter'
+import userService from "../../services/user/userservice";
+import Tooltip from "primevue/tooltip";
+import monthDayYear from "../../services/dates/dateformatter";
+import convertNumber from "../../services/numbershortener/numberfomatter";
 import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
+import finish from "../../services/progressbar/progress";
 export default {
   directives: {
-      'tooltip': Tooltip
+    tooltip: Tooltip,
   },
   components: {
-    PaginationButtons
+    PaginationButtons,
   },
-  props: ['eventList', 'eventSummary'],
+  props: ["eventList", "eventSummary"],
   setup(props, { emit }) {
-
     const filterFormIsVissible = ref(false);
     const searchIsVisible = ref(false);
     const store = useStore();
-    const userCurrency = ref(store.getters.currency)
-    const searchText = ref("")
-    const monthlyActiveBtn = ref(true)
-    const yearlyActiveBtn = ref(false)
-    const allTimeActiveBtn = ref(false)
-
-  
+    const userCurrency = ref(store.getters.currency);
+    const searchText = ref("");
+    const monthlyActiveBtn = ref(true);
+    const yearlyActiveBtn = ref(false);
+    const allTimeActiveBtn = ref(false);
 
     // const getEventSummary = async () => {
     //   try {
@@ -358,6 +502,66 @@ export default {
     //   }
     // };
     // getEventSummary();
+    const deleteEvent = (id, index) => {
+      axios
+        .delete(`/api/Events/DeleteActivity?activityId=${id}`)
+        .then((res) => {
+          console.log(res);
+            toast.add({
+              severity: "success",
+              summary: "Delete Successful",
+              detail: `Event Deleted`,
+              life: 4000,
+            });
+            emit("delete-event", index)
+          // } else {
+          //   toast.add({
+          //     severity: "warn",
+          //     summary: "Delete Failed",
+          //     detail: `Please Try Again`,
+          //     life: 3000,
+          //   });
+          // }
+        })
+        .catch((err) => {
+          finish();
+          if (err.response.toString().toLowerCase().includes('network error')) {
+            toast.add({
+              severity: "info",
+              summary: "Network Error",
+              detail: `Please ensure you have a strong internet connection`,
+              life: 4000,
+            });
+          } else {
+            toast.add({
+              severity:"Delete Failed",
+              detail: `Unable to delete, please try again`,
+              life: 4000,
+            });
+          }
+        });
+    };
+    const showConfirmModal = (id, index) => {
+      confirm.require({
+        message: "Are you sure you want to proceed?",
+        header: "Confirmation",
+        icon: "pi pi-exclamation-triangle",
+        acceptClass: "confirm-delete",
+        rejectClass: "cancel-delete",
+        accept: () => {
+          deleteEvent(id, index);
+          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+        },
+        reject: () => {
+          toast.add({
+            severity: "info",
+            summary: "Rejected",
+            detail: "You have rejected",
+            life: 3000,
+          });
+        },
+      });
+    };
 
     const toggleFilterFormVissibility = () => {
       filterFormIsVissible.value = !filterFormIsVissible.value;
@@ -371,98 +575,111 @@ export default {
       const user = await userService.getCurrentUser();
       console.log(user, "user");
       userCurrency.value = user.currency;
-    }
+    };
 
     if (!userCurrency.value) getUserCurrency();
 
-
-  const filterEvents = computed(() => {
-    if (searchText.value !== "") {
-          return props.eventList.filter(i => {
-            return i.eventName.toLowerCase().includes(searchText.value.toLowerCase())
-          })
-        } else {
-          return props.eventList
-        }
-  })
-
-
-const deleteMember = (id) => {
-        //  delete firtimer
-        axios
-          .delete(`/api/People/DeleteOnePerson/${id}`)
-          .then((res) => {
-            console.log(res);
-            toast.add({severity:'success', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-            churchMembers.value = churchMembers.value.filter(item => item.id !== id )
-
-// update first timer summary while deleting
-          //   axios.get("/api/People/GetFirsttimerSummary")
-          //     .then(res => {
-          //       getFirstTimerSummary.value = res.data;
-          //       console.log(res.data)
-          //     })
-          //     .catch(err => console.log(err))            
-          // })
-          // .catch((err) => {
-            /*eslint no-undef: "warn"*/
-            NProgress.done();
-            if (err.response.status === 400) {
-              toast.add({severity:'error', summary:'Unable to delete', detail:'Ensure this member is not in any group', life: 3000});
-            } else {
-              toast.add({severity:'error', summary:'Unable to delete', detail:'An error occurred, please try again', life: 3000});
-            }
-          });
-      };
-
-
-  const confirm = useConfirm();
-    let toast = useToast();
-        const showConfirmModal = (id) => {
-           
-           confirm.require({
-               message: 'Are you sure you want to proceed?',
-                header: 'Confirmation',
-                icon: 'pi pi-exclamation-triangle',
-                acceptClass: 'confirm-delete',
-                rejectClass: 'cancel-delete',
-                accept: () => {
-                    deleteMember(id)
-                    
-                },
-                reject: () => {
-                    // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
-                }
-
+    const filterEvents = computed(() => {
+      if (searchText.value !== "") {
+        return props.eventList.filter((i) => {
+          return i.eventName
+            .toLowerCase()
+            .includes(searchText.value.toLowerCase());
         });
+      } else {
+        return props.eventList;
+      }
+    });
+
+    const deleteMember = (id) => {
+      //  delete firtimer
+      axios.delete(`/api/People/DeleteOnePerson/${id}`).then((res) => {
+        console.log(res);
+        toast.add({
+          severity: "success",
+          summary: "Confirmed",
+          detail: "Member Deleted",
+          life: 3000,
+        });
+        churchMembers.value = churchMembers.value.filter(
+          (item) => item.id !== id
+        );
+
+        // update first timer summary while deleting
+        //   axios.get("/api/People/GetFirsttimerSummary")
+        //     .then(res => {
+        //       getFirstTimerSummary.value = res.data;
+        //       console.log(res.data)
+        //     })
+        //     .catch(err => console.log(err))
+        // })
+        // .catch((err) => {
+        /*eslint no-undef: "warn"*/
+        NProgress.done();
+        if (err.response.status === 400) {
+          toast.add({
+            severity: "error",
+            summary: "Unable to delete",
+            detail: "Ensure this member is not in any group",
+            life: 3000,
+          });
+        } else {
+          toast.add({
+            severity: "error",
+            summary: "Unable to delete",
+            detail: "An error occurred, please try again",
+            life: 3000,
+          });
         }
-        
+      });
+    };
+
+    const confirm = useConfirm();
+    let toast = useToast();
+    // const showConfirmModal = (id) => {
+
+    //    confirm.require({
+    //        message: 'Are you sure you want to proceed?',
+    //         header: 'Confirmation',
+    //         icon: 'pi pi-exclamation-triangle',
+    //         acceptClass: 'confirm-delete',
+    //         rejectClass: 'cancel-delete',
+    //         accept: () => {
+    //             deleteMember(id)
+
+    //         },
+    //         reject: () => {
+    //             // toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
+    //         }
+
+    // });
+    // }
 
     const toggleMonthlyClass = () => {
-      monthlyActiveBtn.value = !monthlyActiveBtn.value
-      yearlyActiveBtn.value = false
-      allTimeActiveBtn.value = false
-    }
+      monthlyActiveBtn.value = !monthlyActiveBtn.value;
+      yearlyActiveBtn.value = false;
+      allTimeActiveBtn.value = false;
+    };
 
     const toggleYearlyClass = () => {
-      yearlyActiveBtn.value = !yearlyActiveBtn.value
-      allTimeActiveBtn.value = false
-      monthlyActiveBtn.value = false
-    }
+      yearlyActiveBtn.value = !yearlyActiveBtn.value;
+      allTimeActiveBtn.value = false;
+      monthlyActiveBtn.value = false;
+    };
 
     const toggleAllTimeClass = () => {
-      allTimeActiveBtn.value = !allTimeActiveBtn.value
-      yearlyActiveBtn.value = false
-      monthlyActiveBtn.value = false
-    }
+      allTimeActiveBtn.value = !allTimeActiveBtn.value;
+      yearlyActiveBtn.value = false;
+      monthlyActiveBtn.value = false;
+    };
 
     const date = (offDate) => {
-      return monthDayYear.monthDayYear(offDate)
-    }
+      return monthDayYear.monthDayYear(offDate);
+    };
 
     const convert = (number) => {
-      return convertNumber.convertNumber(number)
-    }
+      return convertNumber.convertNumber(number);
+    };
 
     const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
@@ -471,11 +688,11 @@ const deleteMember = (id) => {
         const { data } = await axios.get(
           `/api/eventreports/eventReports?page=${page}`
         );
-          if (data.activities.length > 0) {
-            filterEvents.value = [];
-          emit("activity-per-page", data.activities)
+        if (data.activities.length > 0) {
+          filterEvents.value = [];
+          emit("activity-per-page", data.activities);
           currentPage.value = page;
-          } 
+        }
       } catch (error) {
         console.log(error);
       }
@@ -487,7 +704,12 @@ const deleteMember = (id) => {
       return 1;
     });
 
+    // const sentEvent = computed(() => {
+    //   axios.get(`/api/Events/markAsSent?activityId=${event.activity.id}`)
+    // })
+
     return {
+      // sentEvent,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       searchIsVisible,
@@ -508,7 +730,8 @@ const deleteMember = (id) => {
       convert,
       getPeopleByPage,
       currentPage,
-      membersCount
+      membersCount,
+      deleteEvent,
     };
   },
 };
@@ -548,7 +771,6 @@ const deleteMember = (id) => {
 .main-body {
   height: 100%;
 }
-
 
 .button {
   padding: 8px 10px;
@@ -767,13 +989,13 @@ const deleteMember = (id) => {
 }
 
 .show-search {
-    width: 174px;
-    overflow: hidden;
-    border: 1px solid #dde2e6;
-    border-radius: 5px 0px 0px 5px;
-    background: #ebeff4;
-    transition: all 0.9s cubic-bezier(.38,.77,.2,-0.54);
-  }
+  width: 174px;
+  overflow: hidden;
+  border: 1px solid #dde2e6;
+  border-radius: 5px 0px 0px 5px;
+  background: #ebeff4;
+  transition: all 0.9s cubic-bezier(0.38, 0.77, 0.2, -0.54);
+}
 
 /* .filter,
 .search {
@@ -784,10 +1006,10 @@ const deleteMember = (id) => {
   margin: 0 8px 0 -5px !important;
 }
 
- .itemroute-color {
-    color: #136acd;
-  }
-  
+.itemroute-color {
+  color: #136acd;
+}
+
 .add-btn {
   width: 180px;
   background: #136acd;
@@ -867,7 +1089,7 @@ const deleteMember = (id) => {
   border-bottom-left-radius: 25px;
   background: #cecbcb70;
   padding: 7px;
-  margin-left: 10px
+  margin-left: 10px;
 }
 
 .top-con {
@@ -885,7 +1107,7 @@ const deleteMember = (id) => {
 }
 
 .table-responsive {
-  overflow-x: hidden
+  overflow-x: hidden;
 }
 
 @media screen and (max-width: 500px) {
@@ -1075,17 +1297,15 @@ const deleteMember = (id) => {
 }
 
 .table-header {
-    padding: 12px;
-    color: black;
-    box-shadow: none;
-    font-size: 11px;
-    font-weight: 700
+  padding: 12px;
+  color: black;
+  box-shadow: none;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .table-body {
-    padding: 0px;
-    border-bottom: 1.5px solid #6d6d6d19
-    
-
+  padding: 0px;
+  border-bottom: 1.5px solid #6d6d6d19;
 }
 </style>

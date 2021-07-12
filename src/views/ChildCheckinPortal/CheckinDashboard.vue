@@ -2,10 +2,11 @@
      <div class="container-wide container-top">
      <div class="row d-flex justify-content-center justify-content-sm-between">
             <div class="dashboard-header">Dashboard</div>
-            
-            <!-- <div class="register-event default-btn border-0 text-white">Register for this event</div> -->
-            
-      </div>
+       </div>
+       <div class="row mt-3 text-center text-sm-left" v-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : ''">
+           <div class="col-12 welcome-name">Welcome {{ familyDetails && familyDetails.father ? familyDetails.father.firstName : familyDetails && familyDetails.mother ? familyDetails.mother.firstName : "" }} 👋</div> 
+           <div class="col-12">To get started with, add your family members to the family.</div>
+       </div>
         <div class="row d-flex justify-content-center justify-content-sm-between mt-5" v-if="analyticValue && analyticValue.allRegisteredEvents">
             <div class="analytics-text">Analytics Overview</div>
             <!-- <div class="mt-2 mt-sm-0"><input type="datetime-local" class="form-control"></div> -->
@@ -263,7 +264,7 @@
                         <div class=" empty-img my-5 text-center">
                             <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
                             <div class="mt-3">You have not added any family member yet</div>
-                            <router-link :to="{ name: 'Family' }"><div>Go to family to add now</div></router-link>
+                            <router-link to="/checkin/checkinfamily" class="remove-underline"><div class="default-btn border-0 primary-bg text-white mt-2">Go to family to add now</div></router-link>
                         </div>
                     </div>
                     <div v-if="loading" class="text-center col-12">
@@ -591,5 +592,13 @@ color: #020E1C;
 
 .link-text {
     color: #136ACD
+}
+
+.remove-underline:hover {
+    text-decoration: none
+}
+
+.welcome-name {
+    font: normal normal 800 19px/46px Nunito Sans
 }
 </style>

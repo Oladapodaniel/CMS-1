@@ -8,6 +8,8 @@
         Select the subscription that suit your church and the additional tolls
         you need for your church growth.
       </div>
+
+
       <div class="col-md-6 mt-5">
         <div class="row bg-white pb-2 sub">
           <div class="col-md-6 col-lg-6  col-12">
@@ -19,6 +21,9 @@
               optionLabel="description"
               placeholder=""
             />
+             <div class="mt-3 normal-text pl-md-0">
+            Membership: {{ selectedPlan.membershipSize}}
+          </div>
           </div>
           <div class="col-md-6 col-lg-6 col-12">
             <div class="py-2 small-header">
@@ -31,12 +36,14 @@
               optionLabel="name"
               placeholder="Select duration"
             />
-          </div>
-          <div class="col-md-3 col-lg-3 col-3  ml-3 mt-3 normal-text pl-md-0">
+                <div class=" ml-1 mt-3 normal-text pl-md-0">
             {{ subselectedDuratn >  1 ? currentUser.currencySymbol : "" }} {{ subselectedDuratn >  1 ? subselectedDuratn : ""}}
           </div>
+          </div>
+
         </div>
       </div>
+
       <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5">
         <div class="row bg-white rounded pb-2">
           <div class="col-12">
@@ -49,10 +56,12 @@
           </div>
         </div>
       </div>
+
+
       <!-- Add ons -->
       <div class="col-md-12 col-lg-12 pt-3 mt-3">ADD-ONS</div>
 
-      <div class="col-md-6 p-4 sub mt-3 bg-white">
+            <div v-if="false"  class="col-md-6 col-lg-6 p-4 sub mt-3 bg-white">
         <div class="">
           <div class="small-header">Communication</div>
           <div class="row mt-3 normal-text">
@@ -94,7 +103,7 @@
               class="col-12"
               v-if="
                 item.type === 0
-              
+
               "
             >
               <div class="row">
@@ -111,19 +120,20 @@
           </div>
         </div>
       </div>
+
       <!-- payment summary -->
-      <div class="col-md-4 bg-white col-lg-4 col-12 sub mt-3 offset-md-1 ">
+      <div  class="col-md-4 bg-white col-lg-4 col-12 sub mt-3">
         <div class="h-100  rounded">
           <div class="text-center small-header">
             Payment Summary({{ currentUser.currencySymbol }})
           </div>
-          <div class="row mt-3 normal-text" v-if="+selectMonth.name > 0">
+          <!-- <div class="row mt-3 normal-text" v-if="+selectMonth.name > 0">
             <div class="col-md-6 col-6">Subscription</div>
             <div class="col-md-6  col-6 text-right font-weight-bold">
               {{ subselectedDuratn.toFixed(2) }}
             </div>
-          </div>
-          <div class="row mt-2 normal-text">
+          </div> -->
+          <!-- <div class="row mt-2 normal-text">
             <div class="col-md-6 col-6">SMS</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
               {{ smsAmount == "" ? "0.00" : smsAmount.toFixed(2) }}
@@ -134,7 +144,7 @@
             <div class="col-md-6 col-6 text-right font-weight-bold">
               {{ selectEmail.constValue ? emailAmount.toFixed(2) : '0.00' }}
             </div>
-          </div>
+          </div> -->
           <!-- Selected Products -->
           <div
             class="row mt-3 normal-text"
@@ -144,7 +154,6 @@
             <div class="col-md-6 col-6">{{ item.name }}</div>
             <div class="col-md-6 col-6 text-right font-weight-bold">
               {{ daysToEndOfSubscription > 0 ? ((item.price * subscriptionDuration) + ((item.price / 30) * daysToEndOfSubscription)).toFixed(2) : (item.price * subscriptionDuration).toFixed(2) }}
-              <!-- {{ subscriptionDuration }} {{ (item.price * subscriptionDuration) }} {{ ((item.price / 30) * daysToEndOfSubscription) }} -->
             </div>
           </div>
           <hr />
@@ -367,6 +376,7 @@ export default {
     selectCurrencyArr.value = ["NGN", "USD", "GHS", "ZAR"];
 
     const existingPlan = ref({});
+    console.log(existingPlan.value.membershipSize, "🎊🎊🎊");
     const daysToEndOfSubscription = ref(0);
     const selectSubscription = () => {
       axios.get("/api/Subscription/GetSubscription").then((res) => {
@@ -686,7 +696,7 @@ export default {
                   console.log("Payment callback", response)
                     // props.donation.usedPaymentGateway = selectedGateway.value
 
-                   
+
 
                     axios
                           .post(`/confirmDonation?txnref=${response.tx_ref}`,)

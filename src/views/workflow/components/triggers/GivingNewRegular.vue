@@ -2,7 +2,7 @@
     <div class="container max-height px-0 scroll-div">
         <div class="row text-center dotted-border-bottom">
             <div class="col-md-12 my-3">
-                <TriggerDescription :description="description" :header="'Giving - New regular giver'" />
+                <TriggerDescription :description="description" :header="'Giving - New regular giver'" @removetrigger="removeTrigger" />
             </div>
         </div>
 
@@ -11,7 +11,7 @@
                 <label for="" class="font-weight-600">Match an individual who is a member of</label>
             </div>
             <div class="col-md-12 mb-2">
-                <MultiSelect @change="groupSelected" v-model="selectedGroups" :options="[ 'Workers', 'Choir', 'New comers' ]"  placeholder="Select groups" class="w-100"  display="chip" />
+                <MultiSelect @change="groupSelected" v-model="selectedGroups" :options="groups" optionLabel="name"  placeholder="Select groups" class="w-100"  display="chip" />
             </div>
         </div>
 
@@ -52,7 +52,7 @@
                 <label for="" class="font-weight-600">To</label>
             </div>
             <div class="col-md-12 mb-2">
-                <Dropdown :options="[ 'Any category...', 'General', 'Building' ]" class="w-100" v-model="category" @change="cantegorySelected" />
+                <Dropdown :options="contributionItems" optionLabel="name" class="w-100" v-model="category" @change="cantegorySelected" />
             </div>
         </div>
 
@@ -95,54 +95,68 @@
 import Dropdown from "primevue/dropdown"
 import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
-import { ref } from '@vue/reactivity'
+import { reactive, ref } from '@vue/reactivity'
 import { computed } from '@vue/runtime-core'
 export default {
+    props: [ "selectedTriggerIndex", "contributionItems", "groups" ],
     components: { Dropdown, TriggerDescription, MultiSelect },
 
-    setup () {
+    setup (props, { emit }) {
+        
+        const data = reactive({ });
 
-        const selectedGroups = ref('');
+        const selectedGroups = ref([ ]);
         const groupSelected = (e) => {
-            console.log(e.value);
+            const allGroupsIndex = selectedGroups.value.findIndex(i => i.id === "00000000-0000-0000-0000-000000000000");
+            data.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
         const prevNumOfTimes = ref('');
         const handlePrevNumOfTimes = (e) => {
-            console.log(e.value);
+            data.gaveTimes = e.target.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
         const prevNumOfMonths = ref('');
         const handlePrevNumOfMonths = (e) => {
-            console.log(e.value);
+            data.gaveMonth = e.target.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
-        const category = ref('');
+        const category = ref({ });
         const cantegorySelected = (e) => {
-            console.log(e.value);
+            data.financialContributionID = e.value.id;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
         const currentNumOfTimes = ref('');
         const handleCurrentNumOfTimes = (e) => {
-            console.log(e.value);
+            data.givenAtLeastTimes = e.target.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
         const currentNumOfMonths = ref('');
         const handleCurrentNumOfMonths = (e) => {
-            console.log(e.value);
+            data.givenForTheLastMonth = e.target.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
         const description = computed(() => {
             return {
-                groups: selectedGroups.value ? [ selectedGroups.value ] : ['_____'],
+                groups: selectedGroups.value ? selectedGroups.value : ['_____'],
                 prevTimes: prevNumOfTimes.value ? prevNumOfTimes.value + ' times' : '__ times',
                 prevMonths: prevNumOfMonths.value ? prevNumOfMonths.value + ' months' : '__ months',
-                category: category.value.includes('Any category') ? 'any' : category.value ? category.value : '__',
+                category: category.value && category.value.name ? category.value.name : '____',
                 currentTimes: currentNumOfTimes.value ? currentNumOfTimes.value + ' times' : '__ times',
                 currentMonths: currentNumOfMonths.value ? currentNumOfMonths.value + ' months' : '__ months',
                 id: 11,
              };            
         })
+
+        const removeTrigger = () => {
+            emit("removetrigger")
+        }
 
         return {
             selectedGroups,
@@ -158,6 +172,7 @@ export default {
             currentNumOfMonths,
             handleCurrentNumOfMonths,
             description,
+            removeTrigger,
         }
     }
 }
