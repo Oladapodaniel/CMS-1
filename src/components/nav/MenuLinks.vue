@@ -299,7 +299,6 @@
           <hr class="hr" />
 
           <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
-          <router-link class="link routelink" to="/tenant/settings"> Settings </router-link>
           <hr class="hr" />
           <a href="https://churchplus.azurewebsites.net/Account/LogOn" target="_a" class="link routelink">Visit ChurchPlus Classic</a> 
           <div class="link" @click="logout">Logout</div>
