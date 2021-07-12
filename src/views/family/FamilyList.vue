@@ -129,7 +129,7 @@
                 <div class="desc small-text col-md-3 py-2">
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                    <span class="text-decoration-none">{{ formatDate(item.dateCreated) }}</span>
+                    <span class="text-decoration-none c-pointer" @click="moveToEdit(item.fatherID)">{{ formatDate(item.dateCreated) }}</span>
                   </p>
                 </div>
 
@@ -138,7 +138,7 @@
                     <span class="text-dark font-weight-bold d-flex d-md-none">Family Name</span>
                   <div>
                     
-                    <div class="desc small-text text-right text-md-left">{{ item.familyName }}</div>
+                    <div class="desc small-text text-right text-md-left c-pointer" @click="moveToEdit(item.fatherID)">{{ item.familyName }}</div>
                   </div>
                   </div>
                 </div>
@@ -147,14 +147,14 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Email</span>
                     <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
-                    <span>{{ item.email }}</span>
+                    <span @click="moveToEdit(item.fatherID)" class=" c-pointer">{{ item.email }}</span>
                   </p>
                 </div>
 
                 <div class="small-text col-md-2 py-2">
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Phone Number</span>
-                    <span><span class=" c-pointer"
+                    <span @click="moveToEdit(item.fatherID)"><span class=" c-pointer"
                     >{{ item.homePhone }}</span
                   ></span>
                   </p>
@@ -173,6 +173,7 @@
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
+                        style="font-size: 1.6em;"
                       ></i>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <!-- <router-link to="">
@@ -228,6 +229,7 @@ import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import axios from "@/gateway/backendapi"
 import finish from "../../services/progressbar/progress";
+import router from '../../router';
 // import Pagination from "../../components/pagination/PaginationButtons";
 export default {
     
@@ -296,6 +298,10 @@ export default {
         });
         };
 
+        const moveToEdit = (id) => {
+          router.push({ name: 'AddFamily', params: { familyId: id } })
+        }
+
         return {
             formatDate,
             searchFamily,
@@ -303,7 +309,8 @@ export default {
             searchIsVisible,
             toggleSearch,
             showConfirmModal,
-            deleteFamily
+            deleteFamily,
+            moveToEdit
         }
     }
 }
