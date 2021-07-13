@@ -636,12 +636,12 @@ export default {
                 }
 
                  try {
-                let { data } = await axios.post('/api/Family/addFamilyMember', memberDetails)
-                    console.log(data)
-                }
-                catch (err) {
-                    console.log(err)
-                }
+                    let { data } = await axios.post('/api/Family/addFamilyMember', memberDetails)
+                        console.log(data)
+                    }
+                    catch (err) {
+                        console.log(err)
+                    }
             }   else {
 
                 const memberDetails = {
@@ -756,7 +756,8 @@ export default {
                         return {
                             name: i.person.firstName,
                             personId: i.person.id,
-                            roleId: memberRoles.value.find(j => j.id === i.familyRoleID)
+                            roleId: memberRoles.value.find(j => j.id === i.familyRoleID),
+                            id: i.id
                         }
                     })
 

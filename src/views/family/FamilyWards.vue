@@ -44,17 +44,10 @@
             <div class="col-md-1 align-self-center" data-toggle="modal" data-target="#addWard" @click="editMember(member, index)">
                 <i class="pi pi-pencil text-primary c-pointer"></i>
             </div>
-            <div class="col-md-1 align-self-center" @click="showConfirmModal(member.personId, index)">
+            <div class="col-md-1 align-self-center" @click="showConfirmModal(member.id, index)">
                 <i class="pi pi-trash text-danger c-pointer"></i>
             </div>
-        <!-- {{ member }} -->
         </div>
-
-        <!-- <div class="row">
-            <div class="col-md-12 px-0">
-                <Ward />
-            </div>
-        </div> -->
     </div>
     <ConfirmDialog />
     <Toast />
@@ -106,8 +99,9 @@ export default {
                         detail: "Deleted Successfully",
                         life: 3000,
                     });
+                
+                    // emit()
                     console.log(index)
-                    // familyDetails.value.familyMembers.splice(index, 1)
                 }
                 catch (error) {
                     console.log(error)
