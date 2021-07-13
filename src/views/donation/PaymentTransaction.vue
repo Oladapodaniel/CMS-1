@@ -110,7 +110,7 @@
           </div>
         </div>
                 <div class="col-1 align-self-center">
-                    <i class="pi pi-trash" v-tooltip.bottom="'delete'" @click="showConfirmModal(item.financialContribution.id, index)"></i>
+                    <i class="pi pi-trash" v-tooltip.bottom="'delete'" @click="showConfirmModal(item.id, index)"></i>
                 </div>
             </div>
             <div class="col-8 col-md-5 offset-sm-1 offset-md-3 pl-0 offset-lg-4 mt-3">
@@ -461,15 +461,15 @@ export default {
             toast.add({
             severity: "success",
             summary: "Delete Successful",
-            detail: `Contribution Transaction Deleted`,
-            life: 3000,
+            detail: `Contribution item deleted`,
+            life: 4000,
           });
           } else {
             toast.add({
             severity: "warn",
             summary: "Delete Failed",
             detail: `Please Try Again`,
-            life: 3000,
+            life: 4000,
           });
           }
         })

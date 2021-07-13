@@ -610,7 +610,7 @@ export default {
 
         const addWard = async() => {
             console.log(wardState.value)
-            if (wardState.value === 1) {
+            if (wardState.value === 1 && !route.params.familyId) {
                 const constructSelectedMember = new Object()
                 constructSelectedMember.name = selectedMember.value.name
                 constructSelectedMember.personId = selectedMember.value.id
@@ -619,6 +619,29 @@ export default {
                 console.log(constructSelectedMember)
                 console.log(familyMembers.value)
                 wardSearchString.value = ""
+            }   else if (wardState.value === 1 && route.params.familyId) {
+                // Push to view
+                const constructSelectedMember = new Object()
+                constructSelectedMember.name = selectedMember.value.name
+                constructSelectedMember.personId = selectedMember.value.id
+                constructSelectedMember.roleId = roleId.value
+                familyMembers.value.push(constructSelectedMember)
+
+                //  Save to DB
+                const memberDetails = {
+                    familyId: familyMain.value.familyId,
+                    personId: constructSelectedMember.personId,
+                    tenantId: familyMain.value.tenantId,
+                    familyRoleId: roleId.value.id
+                }
+
+                 try {
+                let { data } = await axios.post('/api/Family/addFamilyMember', memberDetails)
+                    console.log(data)
+                }
+                catch (err) {
+                    console.log(err)
+                }
             }   else {
 
                 const memberDetails = {
@@ -643,6 +666,7 @@ export default {
                     console.log(err)
                 }
             }
+                showWardModal.value = false
            }
 
         const createFamily = async() => {
@@ -738,7 +762,7 @@ export default {
 
                     familyMain.value = {
                         familyId: res.data.id,
-                        id: res.data.familyMembers[memberIndex.value].id,
+                        id: res.data.familyMembers.length > 0 ? res.data.familyMembers[memberIndex.value].id : 0,
                         tenantId: res.data.tenantID
                     }
 
