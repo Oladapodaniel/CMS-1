@@ -88,9 +88,15 @@ import axios from "@/gateway/backendapi";
                     console.log('did it emit')
 
                 }
+
+                const formData = new FormData()
+                formData.append("firstName", donor.firstName)
+                formData.append("lastName", donor.lastName)
+                formData.append("mobilePhone", donor.mobilePhone)
+                formData.append("email", donor.email)
                 try {
                      return new Promise((resolve, reject) => {
-                        axios.post("/api/People/createPerson", donor)
+                        axios.post("/api/People/createPerson", formData)
                             .then(res => {
                                 console.log(res)
                                 emit('person-id', {personId: res.data.personId, personFirstName: donor.firstName})

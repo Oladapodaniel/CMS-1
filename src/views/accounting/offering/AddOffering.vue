@@ -905,6 +905,7 @@ import { useStore } from 'vuex'
 import CurrencyConverter from "../../event/CurrencyConverter"
 import CurrencyConverterService from '../../../services/currency-converter/currencyConverter'
 import { useRoute } from "vue-router"
+import finish from '../../../services/progressbar/progress';
 export default {
     components: {
         Dialog, Dropdown, NewDonor, CurrencyConverter
@@ -1360,8 +1361,7 @@ export default {
       const getIncomeAccount = ()=> {
           axios.get('/api/Financials/Accounts/GetIncomeAccounts')
             .then(res => {
-                /*eslint no-undef: "warn"*/
-                NProgress.done();
+               finish()
                 console.log(res)
               incomeAccount.value = res.data
             })
