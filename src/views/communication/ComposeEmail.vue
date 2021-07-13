@@ -465,7 +465,14 @@
                   v-model="editorData"
                   :config="editorConfig"
                 ></ckeditor> -->
-                <Editor v-model="editorData" editorStyle="height: 320px" />
+                <!-- <Editor v-model="editorData" @input="changed" editorStyle="height: 320px" /> -->
+
+                <ckeditor id="ckeditor"
+                  :editor="editor"
+                  @ready="onReady"
+                  v-model="editorData"
+                  :config="editorConfig">
+                </ckeditor>
               </div>
             </div>
           </div>
@@ -707,10 +714,17 @@ import axios from "@/gateway/backendapi";
 import stopProgressBar from "../../services/progressbar/progress";
 import communicationService from '../../services/communication/communicationservice';
 import dateFormatter from "../../services/dates/dateformatter";
-import Editor from 'primevue/editor';
+// import Editor from 'primevue/editor';
+
+import CKEditor from "@ckeditor/ckeditor5-vue";
+import MyUploadAdapter from "../../services/editor/editor_uploader"
+// import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
 
 export default {
-  components: { Editor },
+  components: { 
+    // Editor
+    ckeditor: CKEditor.component
+  },
   setup() {
     const router = useRouter()
     const toast = useToast();
@@ -719,7 +733,36 @@ export default {
     const editorConfig = {
       // The configuration of the editor.
       height: "800",
+      image: {
+        resizeUnit: "%",
+        resizeOptions: [ {
+          name: 'resizeImage:original',
+          value: null,
+          label: "one"
+        },
+        {
+          name: 'resizeImage:50',
+          value: '50',
+          label: "two"
+        },
+        {
+          name: 'resizeImage:75',
+          value: '75',
+          label: "three"
+        } ],
+        toolbar: [ 'resizeImage:50', 'resizeImage:75' ],
+      },
+      // plugins: [
+      //   ImageResize
+      // ],
     };
+
+    const onReady = (editor) => {
+      // Customize upload picture plugin
+      editor.plugins.get("FileRepository").createUploadAdapter = loader => {
+        return new MyUploadAdapter(loader);
+      };
+    }
 
     const possibleEmailDestinations = composeService.possibleEmailDestinations;
     const groupsAreVissible = ref(false);
@@ -927,7 +970,24 @@ export default {
     const contructScheduleMessageBody = (sendOrSchedule) => {
       const data = {
         subject: subject.value,
-        message: editorData.value,
+        message: `<!DOCTYPE html>
+        <html lang="en">
+            <head>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width,initial-scale=1.0">
+              <style>
+                img {
+                  width: 95% !important;
+                  max-width: 1000px !important;
+                  margin-left: auto;
+                  margin-right: auto;
+                }
+              </style>
+            </head>
+            <body>
+              <div style="max-width: 1000px; margin: auto"> ${editorData.value} </div>
+            </body>
+          </html>`,
         // contacts: [],
         // contacts: selectedMembers.value.map(i => {
         //   return { email: i.email }
@@ -1175,6 +1235,8 @@ export default {
       contructScheduleMessageBody,
       executionDate,
       isPersonalized,
+
+      onReady,
     };
   },
 };
