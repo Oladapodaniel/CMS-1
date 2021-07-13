@@ -1227,6 +1227,12 @@ const routes = [
         }
         ]
     },
+    {
+        path: '/unauthorized',
+        name: 'Unauthorized',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
+    }
 ]
 
 
