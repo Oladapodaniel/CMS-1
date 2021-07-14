@@ -976,7 +976,7 @@ export default {
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width,initial-scale=1.0">
               <style>
-                img {
+                .email-body img {
                   width: 95% !important;
                   max-width: 1000px !important;
                   margin-left: auto;
@@ -985,7 +985,7 @@ export default {
               </style>
             </head>
             <body>
-              <div style="max-width: 1000px; margin: auto"> ${editorData.value} </div>
+              <div class="email-body" style="max-width: 1000px; margin: auto"> ${editorData.value} </div>
             </body>
           </html>`,
         // contacts: [],
