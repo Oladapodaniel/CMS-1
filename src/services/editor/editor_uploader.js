@@ -27,6 +27,10 @@ class MyUploadAdapter {
         };
     } catch (error) {
         console.log(error, "error");
+        return {
+            //   default: process.env.VUE_APP_TARGET_URL + res.data.data.url,
+            default: "https://www.tekportal.net/wp-content/uploads/2019/02/failed-7227.jpg",
+        };
     }
 
     // const res = await axios({

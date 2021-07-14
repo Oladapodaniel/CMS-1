@@ -977,7 +977,7 @@ export default {
             <meta name="viewport" content="width=device-width,initial-scale=1.0">
               <style>
                 #email-body img {
-                  width: 95% !important;
+                  width: auto !important;
                   max-width: 1000px !important;
                   margin-left: auto;
                   margin-right: auto;
@@ -989,7 +989,7 @@ export default {
             <body>
               <style>
                 #email-body img {
-                  width: 95% !important;
+                  width: auto !important;
                   max-width: 1000px !important;
                   margin-left: auto;
                   margin-right: auto;
