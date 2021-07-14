@@ -81,7 +81,8 @@
               class="col-md-2 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">ROLES</span>
-              <span class="py-2" v-tooltip.top="`${churchMem.roles}`"> <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</router-link></span>
+              <span class="py-2" v-tooltip.top="`${churchMem.roles.join(', ')}`"
+              > <router-link class="route" :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }" >{{ `${churchMem && churchMem.roles[0] ? churchMem.roles[0].length > 10 ? churchMem.roles[0].substring(0,10)+ ".." : churchMem.roles[0] : ""}` }}</router-link></span>
               <!-- <span v-else>{{ churchMem ? churchMem.roles ? churchMem.roles[0].substring(0,14)+ ".." : '' : '' }}</span> -->
               <!-- "churchMem ? churchMem.roles ? churchMem.roles[0].length<14 : '' : '' " -->
             </div>
@@ -110,7 +111,7 @@
                     >
                   </a>
                   <a class="dropdown-item"><router-link :to="{path:'/tenant/settings/invitenewuser', query:{ email:churchMem.email } }"> Edit</router-link></a>
-                  <a class="dropdown-item" @click="deletePop(churchMem.email)"> <router-link to=""> Delete </router-link></a>
+                  <a class="dropdown-item" @click="deletePop(churchMem.email)"> <router-link to="" v-if="churchMem.email !== getCurrentUser.userEmail"> Delete </router-link></a>
                   <a class="dropdown-item" @click="deactivateChurchUser(churchMem.email, index)"> <router-link to=""> Inactive </router-link></a>
                   <a class="dropdown-item" @click="activateChurchUser(churchMem.email, index)"> <router-link to=""> Active </router-link></a>
                 </div>
@@ -183,7 +184,7 @@ export default {
       try{
         const { data } = await axios.get('/api/Settings/ChurchUsers')
         this.churchUsers = data;
-        console.log(this.churchUsers)
+        console.log(this.churchUsers, 'church users')
         this.loading = false
       }catch(error){
         console.log(error)
