@@ -976,16 +976,28 @@ export default {
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width,initial-scale=1.0">
               <style>
-                .email-body img {
+                #email-body img {
                   width: 95% !important;
                   max-width: 1000px !important;
                   margin-left: auto;
                   margin-right: auto;
+                  max-height: 300px;
+                  object-fit: contain;
                 }
               </style>
             </head>
             <body>
-              <div class="email-body" style="max-width: 1000px; margin: auto"> ${editorData.value} </div>
+              <style>
+                #email-body img {
+                  width: 95% !important;
+                  max-width: 1000px !important;
+                  margin-left: auto;
+                  margin-right: auto;
+                  max-height: 300px;
+                  object-fit: contain;
+                }
+              </style>
+              <div id="email-body" style="max-width: 1000px; margin: auto"> ${editorData.value} </div>
             </body>
           </html>`,
         // contacts: [],
