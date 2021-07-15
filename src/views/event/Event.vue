@@ -2130,6 +2130,16 @@ export default {
             });
         return false;
       }
+     const invalidOfferingItem = this.offeringItem.find(i => !i.amount)
+     if (invalidOfferingItem){
+             this.$toast.add({
+              severity: "warn",
+              summary: "Enter Amount",
+              detail: `Enter amount for Offering item`,
+              life: 3000,
+            });
+        return false;
+     }
       console.log(this.selectedEventCategoryId);
       // let event = {
       //   date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,

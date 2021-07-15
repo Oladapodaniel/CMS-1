@@ -716,6 +716,7 @@ import communicationService from '../../services/communication/communicationserv
 import dateFormatter from "../../services/dates/dateformatter";
 // import Editor from 'primevue/editor';
 
+import swal from "sweetalert";
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import MyUploadAdapter from "../../services/editor/editor_uploader"
 // import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
@@ -908,38 +909,18 @@ export default {
         detail: "Email is being sent....",
         life: 2500,
       });
-
-      console.log(selectedMembers.value, "sm");
-      // const data = {
-      //   subject: subject.value,
-      //   message: editorData.value,
-      //   // contacts: [],
-      //   contacts: selectedMembers.value.map(i => {
-      //     return { email: i.email }
-      //   }),
-      //   isPersonalized: isPersonalized.value,
-      //   groupedContacts: selectedGroups.value.map((i) => i.data),
-      // };
-
-      // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
       
       composeService
         .sendMessage("/api/Messaging/sendEmail", data)
         .then((res) => {
           if (res.status === 200) {
-            toast.add({
-              severity: "success",
-              summary: "Successful operation",
-              detail: "Email was sent successfully",
-            });
-            // let sentEmail = {
-            //   dateSent: 23,
-            //   message: 324,
-            //   sentByUser: 343,
-            //   subject: 4324
-            // }
-            // console.log(res.data.mail)
             store.dispatch('communication/addToSentEmail', res.data.mail)
+            swal({
+              title: "Success!",
+              text: "Your email has been sent successfully!",
+              icon: "success",
+              button: "Good",
+            });
             router.push({ name: 'SentEmails' })
           }
           
@@ -976,16 +957,25 @@ export default {
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width,initial-scale=1.0">
               <style>
-                .email-body img {
-                  width: 95% !important;
+                #email-body img {
+                  width: auto !important;
                   max-width: 1000px !important;
                   margin-left: auto;
                   margin-right: auto;
+                  max-height: 300px;
+                  object-fit: contain;
+                  display: flex;
+                  justify-content: center;
+                }
+                
+                #email-body img {
+                  display: flex;
+                  justify-content: center;
                 }
               </style>
             </head>
             <body>
-              <div class="email-body" style="max-width: 1000px; margin: auto"> ${editorData.value} </div>
+              <div id="email-body" style="max-width: 1000px; margin: auto"> ${editorData.value} </div>
             </body>
           </html>`,
         // contacts: [],
@@ -1184,6 +1174,25 @@ export default {
     };
     const groupSelectInput = ref(null);
     const memberSelectInput = ref(null);
+
+    const getMessage = async messageId => {
+      try {
+        const { message, subject: subj } = await composeService.getSMSById(messageId);
+        editorData.value = message;
+        subject.value = subj;
+      } catch (error) {
+        console.log(error)
+        toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Could not load email!",
+        });
+      }
+    }
+
+    if (route.query.messageId) {
+      getMessage(route.query.messageId);
+    }
 
     return {
       editor,
