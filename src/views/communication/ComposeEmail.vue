@@ -919,12 +919,17 @@ export default {
               title: "Success!",
               text: "Your email has been sent successfully!",
               icon: "success",
-              button: "Good",
+              buttons: ["Send another", "Good"],
+              confirmButtonColor: '#8CD4F5',
+              dangerMode: true,
+            })
+            .then((willDelete) => {
+              if (willDelete) {
+                router.push({ name: 'SentEmails' })
+              }
             });
-            router.push({ name: 'SentEmails' })
-          }
-          
-          console.log(res);
+            
+          }          
         })
         .catch((err) => {
           stopProgressBar();
@@ -991,7 +996,6 @@ export default {
         data.ToContacts = data && data.ToContacts ? data.ToContacts.length > 0 ? "," : "" : "";
         data.ToContacts += selectedMembers.value
           .map((i) => {
-            console.log(i, "person");
             if (i.id) return i.id;
           })
           .join();
@@ -1011,22 +1015,18 @@ export default {
     };
 
     const scheduleMessage = async (data) => {
-      console.log(data, "DATA SCHEDULE");
       display.value = false;
       const formattedDate = dateFormatter.monthDayTime(data.executionDate);
-      console.log(formattedDate, "Formatted Date");
       try {
-        const response = await composerObj.sendMessage(
+        await composerObj.sendMessage(
           "/api/Messaging/saveEmailSchedule",
           data
         );
-        console.log(response, "response");
         toast.add({
           severity: "success",
           summary: "message Scheduled",
           detail: `Message scheduled for ${formattedDate}`,
         });
-        console.log(response, "Schedule response");
       } catch (error) {
         console.log(error);
         toast.add({
@@ -1039,13 +1039,12 @@ export default {
 
     const draftMessage = async () => {
       try {
-        const response = await composerObj.saveDraft({
+        await composerObj.saveDraft({
           subject: subject.value,
           body: editorData.value,
           isDefaultBirthDayMessage: false,
         }, "/api/Messaging/saveEmaillDraft");
         store.dispatch("communication/getEmailDrafts");
-        console.log(response, "draft response");
         toast.add({
           severity: "success",
           summary: "Draft Saved",
@@ -1088,8 +1087,6 @@ export default {
           .then(res => {
             if (res) {
               subject.value = res.subject;
-              console.log(res, "RES");
-              console.log(editorData.value, "CKE");
               editorData.value = res.body;
             }
           })
@@ -1152,7 +1149,6 @@ export default {
             categories.value.push(prop);
             allGroups.value.push(res[prop]);
           }
-          console.log(allGroups.value);
         })
         .catch((err) => console.log(err));
     });
@@ -1165,7 +1161,6 @@ export default {
     const groupListShown = ref(false);
     const showGroupList = () => {
       groupListShown.value = true;
-      console.log(groupSelectInput.value);
     };
 
     const memberListShown = ref(false);
