@@ -83,7 +83,8 @@ const membershipService = {
 
     deletePeople(data) {
         return new Promise((resolve, reject) => {
-            axios.delete(`/api/People/DeletePeoples?peopleIDList=${data}`)
+            // axios.delete(`/api/People/DeletePeoples?peopleIDList=${data}`)
+            axios.post(`/api/People/DeletePeople`, data)
                 .then(res => {
                     resolve(res.data);
                     console.log(res.data)
