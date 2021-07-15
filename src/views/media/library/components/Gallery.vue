@@ -135,9 +135,8 @@ export default {
       .catch((err) => console.log(err));
 
     const deleteMedia = mediaData => {
-      alert(mediaData.mediaId)
       if (mediaData.mediaId) {
-        media.value[mediaData.type] = media.value[mediaData.type].filter(i => i.id !== mediaData.mediaId);
+        media.value[mediaTypes[mediaData.type]] = media.value[mediaTypes[mediaData.type]].filter(i => i.id !== mediaData.mediaId);
       }
     }
 

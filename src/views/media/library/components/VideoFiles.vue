@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <ConfirmPopup></ConfirmPopup>
                 <Toast></Toast>
-                <div class="row d-flex jsutify-content-around">
+                <div class="row d-flex jsutify-content-around" id="popUp">
                     <router-link :to="{ name: 'FileDetails', query: { id: file.id, f:file.filePath,t:file.mediaType }}" class="col-sm-4 my-3 c-pointer text-center text-decoration-none shadow-lg hover-con" v-for="(file, index) in files" :key="index" style="height:fit-content">
                         <span>
                             <img :data-src="file.imagePath" style="height:100%;width:auto;max-height:300px;max-width:100%" alt="Media File">
@@ -54,10 +54,14 @@ import ConfirmPopup from 'primevue/confirmpopup';
 
             const delecteMedia = async (mediaId, type) => {
                 try {
-                    const response = await media_service.deleteMedia(mediaId);
-                    console.log(response);
-                    emit('filedeleted', { mediaId, type: type})
-                    toast.add({severity:'success', summary:'Confirmed', detail:'File deleted', life: 3000});
+                    const { status } = await media_service.deleteMedia(mediaId);
+                    
+                    if (status) {
+                        emit('filedeleted', { mediaId, type: type})
+                        toast.add({severity:'success', summary:'Confirmed', detail:'File deleted', life: 3000});
+                    } else {
+                        toast.add({severity:'error', summary:'Failed', detail:'File could not be deleted', life: 3000});
+                    }
                 } catch (error) {
                     console.log(error);
                     toast.add({severity:'error', summary:'Failed', detail:'File could not be deleted', life: 3000});
@@ -65,17 +69,17 @@ import ConfirmPopup from 'primevue/confirmpopup';
             }
 
             const confirmDelete = (e, media) => {
-                console.log(media, "media");
                 confirm.require({
                     target: e.currentTarget,
                     message: 'Do you want to delete this record?',
                     icon: 'pi pi-info-circle',
-                    acceptClass: 'p-button-danger',
+                    acceptClass: 'p-button-danger confirm-delete',
+                    rejectClass: 'cancel-delete',
                     accept: () => {
                         delecteMedia(media.id, media.mediaType)
                     },
                     reject: () => {
-                        toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
+                        // toast.add({severity:'error', summary:'Rejected', detail:'You have rejected', life: 3000});
                     }
                 });
             }
@@ -118,6 +122,10 @@ import ConfirmPopup from 'primevue/confirmpopup';
 }
 
 .hover-con:hover .del-icon {
+    display: block !important;
+}
+
+#popUp .p-confirm-popup.p-component:hover #popUp .del-icon {
     display: block !important;
 }
 </style>
