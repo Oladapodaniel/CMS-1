@@ -716,6 +716,7 @@ import communicationService from '../../services/communication/communicationserv
 import dateFormatter from "../../services/dates/dateformatter";
 // import Editor from 'primevue/editor';
 
+import swal from "sweetalert";
 import CKEditor from "@ckeditor/ckeditor5-vue";
 import MyUploadAdapter from "../../services/editor/editor_uploader"
 // import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
@@ -927,11 +928,11 @@ export default {
         .sendMessage("/api/Messaging/sendEmail", data)
         .then((res) => {
           if (res.status === 200) {
-            toast.add({
-              severity: "success",
-              summary: "Successful operation",
-              detail: "Email was sent successfully",
-            });
+            // toast.add({
+            //   severity: "success",
+            //   summary: "Successful operation",
+            //   detail: "Email was sent successfully",
+            // });
             // let sentEmail = {
             //   dateSent: 23,
             //   message: 324,
@@ -940,6 +941,12 @@ export default {
             // }
             // console.log(res.data.mail)
             store.dispatch('communication/addToSentEmail', res.data.mail)
+            swal({
+              title: "Success!",
+              text: "Your email has been sent successfully!",
+              icon: "success",
+              button: "Good",
+            });
             router.push({ name: 'SentEmails' })
           }
           
