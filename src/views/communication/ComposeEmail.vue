@@ -983,20 +983,17 @@ export default {
                   margin-right: auto;
                   max-height: 300px;
                   object-fit: contain;
+                  display: flex;
+                  justify-content: center;
+                }
+                
+                #email-body img {
+                  display: flex;
+                  justify-content: center;
                 }
               </style>
             </head>
             <body>
-              <style>
-                #email-body img {
-                  width: auto !important;
-                  max-width: 1000px !important;
-                  margin-left: auto;
-                  margin-right: auto;
-                  max-height: 300px;
-                  object-fit: contain;
-                }
-              </style>
               <div id="email-body" style="max-width: 1000px; margin: auto"> ${editorData.value} </div>
             </body>
           </html>`,
