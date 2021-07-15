@@ -20,14 +20,14 @@
 
   <div class="container" style="width: 80%">
     <div class="row mx-1 mb-4 mt-3">
-      <div class="col-md-2 pl-0">
+      <!-- <div class="col-md-2 pl-0">
         <span class="theader mb-1">Status</span>
         <div class="my-3">
           <div class="my-3">
                 <span class="draft">{{ status }}</span>
               </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="col-md-7">
         <span class="theader">{{ contributionReport.activityName? 'Event' : "" }}</span>
@@ -81,7 +81,7 @@
                 v-if="!reportApproved"
               >
                 <a class="def-btn approve-btn mr-4" @click="toggleReportState"
-                  >Approve draft</a
+                  >Approve report</a
                 >
                       <!-- <router-link
                         :to="{ name: 'AddOffering', params: { offId: activityId } }"
@@ -1572,7 +1572,7 @@ export default {
         const lastSent = ref("just a moment ago");
         const markedAsSent = ref(false);
         const willCopyLink = ref(false);  
-        const status = ref("Draft");  
+        // const status = ref("Draft");  
         const shareableLinkField = ref(null);
         const location = ref(window.location);
 
@@ -1580,7 +1580,7 @@ export default {
 
         const toggleReportState = () => {
         reportApproved.value = !reportApproved.value;
-        status.value = "Unsent";
+        // status.value = "Unsent";
         };
         
         // const getContributionReport = async() => {
