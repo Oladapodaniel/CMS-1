@@ -22,7 +22,7 @@
                       placeholder="--Select membership--"
                       style="width: 100%"
                     /> -->
-              <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/> 
+              <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/>
                   </div>
                 </div>
               </div> -->
@@ -641,7 +641,7 @@ export default {
       dayOfBirth: null,
       yearOfBirth: null,
       monthOfWedding: null,
-      dayOfWedding: 31,
+      dayOfWedding: null,
       yearOfWedding: null,
     });
 
@@ -939,6 +939,7 @@ export default {
     };
 
     const populatePersonDetails = (data) => {
+      console.log(data, "🛒🛒🛒🛒🛒🛒")
       person.firstName = data.firstName;
       person.email = data.email;
       person.lastName = data.lastName;

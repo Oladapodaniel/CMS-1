@@ -233,7 +233,7 @@
           <p>phone</p>
         </div>
         <div class="action small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
-          <p>action</p> 
+          <p>action</p>
         </div>
       </div>
 
@@ -610,7 +610,8 @@ export default {
 // Delete item
     const deleteMarked = async () => {
       try {
-        const IDs = marked.value.map((i) => i.id).join();
+        // const IDs = marked.value.map((i) => i.id).join();
+        const IDs = marked.value.map((i) => i.id);
         const response = await membershipservice.deletePeople(IDs);
         console.log(response, "RESPONSE");
 
@@ -1050,7 +1051,7 @@ a {
   }
 
   .data-con {
- 
+
     /* text-align: center; */
     display: flex;
     justify-content: space-between;

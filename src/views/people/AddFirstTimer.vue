@@ -772,9 +772,9 @@ export default {
           break;
       }
 
-      console.log(birthMonth.value);
+      console.log(birthMonth.value,"🎄🎄🎄🎄");
 
-      console.log(firstTimersObj.value);
+      console.log(firstTimersObj.value,"🎄🎄🎄🎄");
 
 
       if (route.params.firstTimerId) {
