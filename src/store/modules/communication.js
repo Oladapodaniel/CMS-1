@@ -46,7 +46,7 @@ export default {
         },
         addToSentEmail(state, payload) {
             // state.sentEmails.pop()
-            state.sentEmails.push(payload)
+            state.sentEmails.unshift(payload)
             // state.addToSentEmail = payload
         },
         removeSentSMS(state, payload) {
