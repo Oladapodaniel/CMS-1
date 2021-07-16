@@ -1566,7 +1566,7 @@ import axios from "@/gateway/backendapi";
 import store from "@/store/store.js"
 // import { useConfirm } from "primevue/useConfirm";
 
-// import { useToast } from 'primevue/usetoast';
+import Toast from 'primevue/usetoast';
 
 import membershipService from "../../services/membership/membershipservice";
 import CurrencyConverter from "./CurrencyConverter"
@@ -1576,7 +1576,7 @@ import finish from "../../services/progressbar/progress";
 
 export default {
   components: {
-    CurrencyConverter, Dropdown
+    CurrencyConverter, Dropdown, Toast
   },
   data() {
     return {
@@ -2119,6 +2119,27 @@ export default {
       this.showForm3 = !this.showForm3;
     },
     post() {
+      const invalidAttendanceItem = this.attendanceItem.find(i => !i.number);
+      if (invalidAttendanceItem) {
+
+        this.$toast.add({
+              severity: "warn",
+              summary: "Input the empty Field",
+              detail: `Enter count for all attendance item`,
+              life: 3000,
+            });
+        return false;
+      }
+     const invalidOfferingItem = this.offeringItem.find(i => !i.amount)
+     if (invalidOfferingItem){
+             this.$toast.add({
+              severity: "warn",
+              summary: "Enter Amount",
+              detail: `Enter amount for Offering item`,
+              life: 3000,
+            });
+        return false;
+     }
       console.log(this.selectedEventCategoryId);
       // let event = {
       //   date: this.eventDate === "" ? "01.01.0001 00:00:00" : this.eventDate,

@@ -113,8 +113,8 @@
                         <div class="col-md-7 d-md-flex flex-column">
                           <router-link
                             :to="{
-                              name: 'MessageDetails',
-                              params: { messageId: sms.id },
+                              name: 'SendMessage',
+                              query: { messageId: sms.id },
                             }"
                             style="color: #000"
                             class="text-decoration-none"
@@ -130,8 +130,8 @@
                           </router-link>
                           <router-link
                             :to="{
-                              name: 'MessageDetails',
-                              params: { messageId: sms.id },
+                              name: 'SendMessage',
+                              query: { messageId: sms.id },
                             }"
                             class="text-decoration-none"
                           >

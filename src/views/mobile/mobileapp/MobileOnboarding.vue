@@ -34,7 +34,7 @@
 
                 <!-- track 4 -->
             <div class="row mt-3 align-text">
-              <div class="col-lg-12">
+              <div class="col-lg-12" style="position: absolute; z-index: 90;">
                <router-link :to="{ name: 'OnboardingProcess' }"><button class="btn default-btn cta c-pointer">Start Now</button></router-link>
               </div>
             </div>

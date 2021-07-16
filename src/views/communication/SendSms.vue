@@ -1187,6 +1187,25 @@ export default {
 
     if (route.query.defaultId) getDefaultMessage(route.query.defaultId);
 
+    const getMessage = async messageId => {
+      try {
+        const { message, subject: subj } = await composeService.getSMSById(messageId);
+        editorData.value = message;
+        subject.value = subj;
+      } catch (error) {
+        console.log(error)
+        toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Could not load message!",
+        });
+      }
+    }
+
+    if (route.query.messageId) {
+      getMessage(route.query.messageId);
+    }
+
     return {
       editor,
       editorData,

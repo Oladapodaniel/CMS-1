@@ -36,7 +36,6 @@ import loadimage from './assets/loading.gif';
 import errorimage from './assets/file-not-found.png';
 
 
-
 NProgress.configure({ showSpinner: false });
 axios.interceptors.request.use((config) => {
     if (typeof window === 'undefined') return config;

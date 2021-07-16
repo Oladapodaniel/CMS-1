@@ -5,7 +5,7 @@
 
             <div class="col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
                     <div>Name</div>
-                </div>
+             </div>
                 <div class="pl-md-0 col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
                         <input class="form-control h-100" placeholder="Enter name" v-model="newContribution.name" type="text" required>
                     </div>
@@ -115,7 +115,7 @@
                 <div class="mt-3 col-10 offset-sm-1 offset-md-0 col-md-3 col-lg-4 text-md-right align-self-center">
                     <div>Choose Bank</div>
                 </div>
-                <div class="col-12 col-sm-10 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
+                <div class="col-12 offset-sm-1 offset-md-0 col-md-6 col-lg-5 pl-md-0 mt-3" style="height: 43px;">
                         <Dropdown v-model="selectedBank" class="w-100" :options="nigerianBanks" optionLabel="name" :filter="false" :placeholder="selectedBank ? selectedBank.name : 'Select'" :showClear="false">
                         </Dropdown>
                 </div>

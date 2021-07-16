@@ -99,8 +99,8 @@
                               <span class="msg-n-time">
                                 <router-link
                                   :to="{
-                                    name: 'EmailDetails',
-                                    params: { messageId: email.id },
+                                    name: 'ComposeEmail',
+                                    query: { messageId: email.id },
                                   }"
                                   class="text-decoration-none d-flex justify-content-between small-text"
                                 >
@@ -125,8 +125,8 @@
                               <span class="brief-message">
                                 <router-link
                                   :to="{
-                                    name: 'EmailDetails',
-                                    params: { messageId: email.id },
+                                    name: 'ComposeEmail',
+                                    query: { messageId: email.id },
                                   }"
                                   class="text-decoration-none small-text"
                                   ><article>
