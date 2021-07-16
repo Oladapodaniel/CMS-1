@@ -153,7 +153,7 @@
                 <div class="container">
                   <div class="row d-flex justify-content-end text-center">
                     <div class="default-btn mr-3 cursor-pointer" @click="closeModal">Discard</div>
-                    <div class="primary-bg default-btn border-0 text-white text-center cursor-pointer" @click="addToMembers">Save</div>
+                    <div class="primary-bg default-btn border-0 text-white text-center cursor-pointer" @click="addToMembers"><i class="pi pi-spin pi-spinner text-white" v-if="loading"></i> Save</div>
                   </div>
                 </div>
             </template>
@@ -187,6 +187,7 @@ export default {
         const displayModal = ref(false)
         const memberData = ref([])
         const addInstructionClass = ref(false)
+        const loading = ref(false)
 
 
 
@@ -225,14 +226,7 @@ export default {
             catch  (err) {
                 finish()
                 console.log(err)
-                if (err.status === 404 || err.response.status === 404) {
-                    toast.add({
-                    severity: "warn",
-                    summary: "Upload not successful",
-                    detail: "Ensure that there isn't any empty row or field and try again",
-                    // life: 4000,
-                });
-                } else if (err.toString().toLowerCase().includes("network error")) {
+                if (err.toString().toLowerCase().includes("network error")) {
                 toast.add({
                     severity: "warn",
                     summary: "Network Error",
@@ -246,6 +240,12 @@ export default {
                     detail: "Please try again by refreshing the page",
                     life: 3000,
                 });
+                }   else {
+                    toast.add({
+                        severity: "warn",
+                        summary: "Upload not successful",
+                        detail: "Please try again",
+                    });
                 }
             }
         }
@@ -255,6 +255,7 @@ export default {
     }
 
     const addToMembers = async() =>  {
+        loading.value = true
         if (route.query.query === "importpeople") {
             console.log(route.query.query)
             try {
@@ -263,24 +264,18 @@ export default {
                 console.log(memberData.value)
                 store.dispatch('membership/showImportedPeople', memberData.value)
                 displayModal.value = false
+                loading.value = false
                 router.push("/tenant/people")
-                // if (data.returnObject.returnList.length > 0) {
+                
                 toast.add({
                 severity: "info",
                 summary: data.returnObject.createdRecord,
-                detail: `There are ${data.returnObject.returnList.length} ${data.returnObject.returnList.length === 1 ? "member" : "members"} that have been added already`,
+                detail: `There are ${data.returnObject.returnList} ${data.returnObject.returnList === 1 ? "member" : "members"} that have been added already`,
                 });
-                // } else {
-                // toast.add({
-                // severity: "success",
-                // summary: "Created Successfully",
-                // detail: data.createdRecord,
-                // life: 4000,
-                // });
-                // }
                 
             }
             catch  (err) {
+                loading.value = false
                 finish()
                 if (err.toString().toLowerCase().includes("network error")) {
                 toast.add({
@@ -305,11 +300,12 @@ export default {
                 let { data } = await axios.post("/api/People/CreateMultipleFirstTimer", memberData.value)
                 console.log(data)
                 displayModal.value = false
+                loading.value = false
                 if (data.returnObject.returnList.length > 0) {
                 toast.add({
                 severity: "info",
                 summary: data.returnObject.createdRecord,
-                detail: `There are ${data.returnObject.returnList.length} members that have been added already`,
+                detail: `There are ${data.returnObject.returnList} members that have been added already`,
                 });
                 } else {
                 toast.add({
@@ -323,6 +319,7 @@ export default {
             }
             catch  (err) {
                 finish()
+                loading.value = false
                 if (err.toString().toLowerCase().includes("network error")) {
                 toast.add({
                     severity: "warn",
@@ -353,7 +350,7 @@ export default {
     getImportType()
 
         return {
-            imageSelected, image, uploadFile, memberData, addToMembers, closeModal, displayModal, addInstructionClass, toggleInstruction
+            imageSelected, image, uploadFile, memberData, addToMembers, closeModal, displayModal, addInstructionClass, toggleInstruction, loading
         }
     }
 }
