@@ -1206,6 +1206,7 @@ export default {
     /* color: red!important; */
     font-size: 20px;
   }
+
   
 }
 </style>
