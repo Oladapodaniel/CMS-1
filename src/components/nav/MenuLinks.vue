@@ -56,7 +56,7 @@
               ></span>
             </span>
           </a>
-          <ul class="dd-list" :class="{ 'dd-hide-list': !peopleLinkDropped }">
+          <ul class="dd-list people-dd" :class="{ 'dd-hide-list': !peopleLinkDropped }">
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" :to="`/tenant/people`"
                 >Members</router-link
@@ -600,7 +600,7 @@ export default {
   margin-left: 20px !important;
   overflow: hidden;
   /* Change to 180px */
-  height: 170px;
+  height: 80px;
   transition: all 0.3s ease-in-out;
 }
 
@@ -609,7 +609,11 @@ export default {
 }
 
 .acc-list {
-  height: 257px;
+  height: 168px;
+}
+
+.people-dd {
+  height: 170px;
 }
 
 .dd-hide-list {

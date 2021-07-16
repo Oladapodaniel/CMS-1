@@ -53,7 +53,7 @@
               <div class="container">
                 <div class="row d-flex justify-content-end text-center">
                   <div class="default-btn mr-3 cursor-pointer" @click="closeModal">Discard</div>
-                  <div class="primary-bg default-btn border-0 text-white text-center cursor-pointer" @click="addToMembers">Save</div>
+                  <div class="primary-bg default-btn border-0 text-white text-center cursor-pointer" @click="addToMembers"><i class="pi pi-spin pi-spinner text-white" v-if="loading"></i> Save</div>
                 </div>
               </div>
           </template>
@@ -81,6 +81,7 @@ export default {
       const image = ref("")
       const displayModal = ref(false)
       const importFile = ref("")
+      const loading = ref(false)
 
       const fileUpload = () => {
         importFile.value.click()
@@ -146,16 +147,18 @@ export default {
       }
 
       const addToMembers = async() =>  {
+        loading.value = true
         try {
           let { data } = await axios.post("/api/People/CreateMultipleFirstTimer", memberData.value)
           console.log(data)
           memberData.value = data.returnObject
           displayModal.value = false;
+          loading.value = false
           if (data.returnObject.returnList.length > 0) {
             toast.add({
             severity: "info",
             summary: data.returnObject.createdRecord,
-            detail: `There are ${data.returnObject.returnList.length} members that have been added already`,
+            detail: `There are ${data.returnObject.returnList} members that have been added already`,
           });
           } else {
             toast.add({
@@ -169,6 +172,7 @@ export default {
         }
         catch  (err) {
           finish()
+          loading.value = false
           console.log(err)
           if (err.toString().toLowerCase().includes("network error")) {
           toast.add({
@@ -199,7 +203,8 @@ export default {
       displayModal,
       importFile,
       addToMembers,
-      closeModal
+      closeModal,
+      loading
     };
   },
 };

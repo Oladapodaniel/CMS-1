@@ -63,6 +63,7 @@
 
                         <div class="col-md-4">
                             <ImageForm :editPicture="pictureUrl" @image="setImage"/>
+                        <div class="text-danger font-weight-700" v-if="errorMessage">Please add your family member's image before saving.</div>
                         </div>
                     </div>
 
@@ -100,6 +101,7 @@ export default {
         const memberId = ref("")
         const image = ref({})
         const loading = ref(false)
+        const errorMessage = ref(false)
 
 
         const getFamilyRoles = async () => {
@@ -146,7 +148,7 @@ export default {
                         loading.value = false
                     })
                 } else {
-                    addMember()
+                    errorMessage.value = true
                 }
             }
 
@@ -266,7 +268,8 @@ export default {
         uploadImageToAddMember,
         setImage,
         image,
-        loading
+        loading,
+        errorMessage
     }
     }
 }

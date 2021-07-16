@@ -33,7 +33,6 @@
                         </span>
                     </div>
                 </div>
-
                 <div class="row py-2 parent-info">
                     <div class="col-md-3">
                         <span class="font-weight-700">
@@ -42,7 +41,7 @@
                     </div>
                     <div class="col-md-9">
                         <span class="font-weight-600">
-                           {{ guardian && guardian.person ? guardian.person.mobilePhone : "" }}
+                           {{ phone }}
                         </span>
                     </div>
                 </div>
@@ -68,7 +67,7 @@
 import { ref } from 'vue'
 import axios from "@/gateway/backendapi";
 export default {
-    props: ['guardian'],
+    props: ['guardian', 'phone'],
     setup () {
         const roles = ref([])
         
