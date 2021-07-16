@@ -98,9 +98,9 @@
                     </div>
                     <div class="col-12 col-md-5 mt-3">   
                         <div class="row">
-                            <div class="col-4 mt-2"> Group: </div>
+                            <div class="col-4 mt-2 text-right">Group:</div>
                             <div class="col-8">
-                                <Dropdown class="p-0 w-100" :options="attendanceCheckin" v-model="item.selectedAttendanceCheckin" optionLabel="fullGroupName" :filter="false" placeholder="Checkin to a class" @change="setSlot(index, item)" :showClear="false">
+                                <Dropdown class="p-0 w-100" :options="item.attendanceCheckin" v-model="item.selectedAttendanceCheckin" optionLabel="fullGroupName" :filter="false" placeholder="Checkin to a class" @change="setSlot(index, item)" :showClear="false">
                                 </Dropdown>
                             <!-- <div class="slot mt-2 text-danger">{{ item.error ? "You cannot select this group, it's filled up already" : "" }} </div> -->
                             </div>
@@ -218,6 +218,7 @@ export default {
         const addScrollClass = ref(false)
         const registeredPeople = ref([])
         const loading = ref(false)
+        const noSlotGroup = ref({})
         
 
 
@@ -252,6 +253,11 @@ export default {
                 const res = await axios.get(`/api/CheckInAttendance/checkinevents?activityId=${route.params.eventId}`)
                 console.log(res)
                 attendanceCheckin.value = res.data
+                familyDetails.value.familyMembers.map(i => {
+                    i.attendanceCheckin = res.data
+                    return i
+                })
+                console.log(familyDetails.value.familyMembers)
                 
                 let registeredPeopleWithGroup = []
                 res.data.forEach(i => {
@@ -439,35 +445,25 @@ export default {
         }
 
         const slotAvailable = computed(() => {
-            //  if (number.value ) {
-            //      let newNumber = number.value - 1
-            //      return newNumber
-            //  }else {
-            //      return '200m'
-            //  }
-            //  return number.value - 1
-            //  selectedGroup.value.selectedAttendanceCheckin.registrationSlot - 1
-            //  return "200m"
-            // let multiValue = 1;
-      // if (daysToEndOfSubscription.value > 0) multiValue += existingPlan.value.amount * daysToEndOfSubscription.value;
             if (number.value) {
                 let newNumber = number.value - +selectedMember.value.length
                  return newNumber;
-            } else {
-                return "200g"
-            }
+            } 
+            // else {
+            //     return "200"
+            // }
 
         })
 
         const checkForGroup = (item) => {
             if (!item.initialGroup) {
                 const index = attendanceCheckin.value.findIndex(i => i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName);
-                if (index >= 0) attendanceCheckin.value[index].registrationSlot -= 1;
+                if (index >= 0 && (attendanceCheckin.value[index].registrationSlot || typeof attendanceCheckin.value[index].registrationSlot === 'number')) attendanceCheckin.value[index].registrationSlot -= 1;
             } else {
                 const index = attendanceCheckin.value.findIndex(i => i.fullGroupName === item.initialGroup);
                 const indx = attendanceCheckin.value.findIndex(i => i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName);
-                if (index >= 0) attendanceCheckin.value[index].registrationSlot += 1;
-                if (indx >= 0) attendanceCheckin.value[indx].registrationSlot -= 1;
+                if (index >= 0 && (attendanceCheckin.value[index].registrationSlot || typeof attendanceCheckin.value[index].registrationSlot === 'number')) attendanceCheckin.value[index].registrationSlot += 1;
+                if (indx >= 0 && (attendanceCheckin.value[indx].registrationSlot || typeof attendanceCheckin.value[indx].registrationSlot === 'number')) attendanceCheckin.value[indx].registrationSlot -= 1;
             }
         }
 
@@ -483,11 +479,9 @@ export default {
             selectedMember.value.forEach(i => {
                 if (selectedMember.value.length > 0 && i.selectedAttendanceCheckin.groupID !== item.selectedAttendanceCheckin.groupID) {
                     selectedMember.value.push(item)
-                }   else {
-                    console.log('Dont push')
                 }
             })
-            console.log(selectedMember.value)
+            // console.log(selectedMember.value)
 
             // const groupObj = attendanceCheckin.value.find(i => {
             //     return i.fullGroupName === item.selectedAttendanceCheckin.fullGroupName
@@ -503,35 +497,77 @@ export default {
             //     familyDetails.value.familyMembers[index].check = false
             // }
 
-            let checkSlot = groupSlots.value.find(i => {
-                return i.group === item.selectedAttendanceCheckin.fullGroupName
-            })
-            console.log(checkSlot)
             
-            if (checkSlot.slot !== null) {
-                if (checkSlot.slot > 0) {
-                    checkSlot.slot = checkSlot.slot - 1
-                    console.log(checkSlot)
-                }   else {
-                    if(checkSlot.slot === 0) {
-                        toast.add({
-                            severity: "warn",
-                            summary: "No slot available",
-                            detail: "The group to which you want to register this child is full.",
-                            life: 10000
-                        });
-                        // This is meant to 
-                        /*eslint no-undef: "warn"*/
-                        break_code
-                }
-                }
-            }
+
+
+            // let checkSlot = groupSlots.value.find(i => {
+            //     return i.group === item.selectedAttendanceCheckin.fullGroupName
+            // })
+            // console.log(checkSlot)
+            
+            // if (checkSlot.slot !== null) {
+            //     if (checkSlot.slot > 1) {
+            //         checkSlot.slot = checkSlot.slot - 1
+            //         console.log(checkSlot)
+
+                    
+
+            //         // familyDetails.value.familyMembers.forEach(i => {
+            //         //     if (!i.selectedAttendanceCheckin || i.selectedAttendanceCheckin.fullGroupName !== item.selectedAttendanceCheckin.fullGroupName) {
+            //         //         familyDetails.value.familyMembers.map(j => {
+            //         //             j.attendanceCheckin = attendanceCheckin.value
+            //         //             return j
+            //         //         })
+                          
+            //                 // familyDetails.value.familyMembers.forEach(i => {
+            //                     // const selGroup = i.attendanceCheckin.findIndex(j => {
+            //                     //     return item.selectedAttendanceCheckin.fullGroupName !== j.fullGroupName
+            //                     // })
+            //                     // console.log(selGroup)
+            //                     // if (selGroup > 0) {
+            //                     //     console.log('matched')
+            //                     // }
+            //                 //     if ((!i.selectedAttendanceCheckin || i.selectedAttendanceCheckin.fullGroupName !== item.selectedAttendanceCheckin.fullGroupName) && Object.keys(noSlotGroup.value).length > 0) {
+            //                 //         const findIndex = i.attendanceCheckin.findIndex(j => j.fullGroupName === noSlotGroup.value.selectedAttendanceCheckin.fullGroupName)
+            //                 //         console.log(findIndex)
+            //                     // }
+                                
+            //                 // })
+                     
+            //             // }
+            //         // })
+            //     }   else {
+            //         // if(checkSlot.slot === 0) {
+            //             // toast.add({
+            //             //     severity: "warn",
+            //             //     summary: "Group full",
+            //             //     detail: "The group to which you want to register this child is full.",
+            //             //     life: 10000
+            //             // });
+            //             noSlotGroup.value = item
+                     
+            //             // familyDetails.value.familyMembers.forEach(i => {
+            //             //     if (!i.selectedAttendanceCheckin || i.selectedAttendanceCheckin.fullGroupName !== item.selectedAttendanceCheckin.fullGroupName) {
+            //             //         i.attendanceCheckin = i.attendanceCheckin.filter(j => item.selectedAttendanceCheckin.fullGroupName !== j.fullGroupName)
+            //             //         console.log('not selected')
+            //             //     }
+            //             // })
+            //     // }
+            //     }
+            // }  
 
 
             checkForGroup(item)
             item.initialGroup = item.selectedAttendanceCheckin.fullGroupName;
 
+            for (let detail of familyDetails.value.familyMembers) {
+                const zeroes = groupSlots.value.filter(i => i.slot === 0);
 
+                detail.attendanceCheckin = attendanceCheckin.value.filter(i => {
+                    const indexInZeroes = zeroes.findIndex(j => j.group === i.fullGroupName);
+                    if (indexInZeroes < 0 || (detail.selectedAttendanceCheckin && detail.selectedAttendanceCheckin.fullGroupName === i.fullGroupName)) return i;
+                })
+            }
 
 
         }
@@ -582,7 +618,8 @@ export default {
             addScrollClass,
             groupSlots,
             registeredPeople,
-            loading
+            loading,
+            noSlotGroup
         }
     }
 }
@@ -695,6 +732,7 @@ export default {
     height: 60px;
     width: 60px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .header1{

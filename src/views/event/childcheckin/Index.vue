@@ -58,7 +58,7 @@
             <div class="col-md-4 px-0" v-if="searched">
                 <div class="row">
                     <div class="col-md-11 form-box offset-md-1" style="height: 100%">
-                        <ParentCard :guardian="checkinDetails.checkInBy"/>
+                        <ParentCard :guardian="checkinDetails.checkInBy" :phone="checkinDetails.family.homePhone"/>
                         <div class="row tr-border-bottom my-3">
 
                         </div>

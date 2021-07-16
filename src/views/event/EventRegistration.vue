@@ -18,11 +18,12 @@
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       ></div>
-      <div class="col-md-7 text-center mb-3">
-        <div class="font-weight-bold">
+      <div class="col-md-7 mb-3">
+        <span class="font-weight-bold" style="font-size: 1.2em">
           {{ eventData.name }}
-        </div>
-        <h5 class="mt-2">Event Registration</h5>
+        </span>
+        <span v-if="fullEventData.registrationAmount"> - {{ tenantCurrency }} {{ fullEventData.registrationAmount }}</span>
+        <div class="">Event Registration</div>
         <div class="italicize">{{ eventData.date }}</div>
       </div>
     </div>
@@ -215,15 +216,15 @@
           <div class="col-md-7 py-4 text-center">
             <button class="default-btn mr-3" @click="notme">Not Me</button>
             <button
-              data-toggle="modal"
-              data-target="#PaymentOptionModal"
+              :data-toggle="fullEventData.paymentFormId ? 'modal' : ''"
+              :data-target="fullEventData.paymentFormId ? '#PaymentOptionModal' : ''"
               class="default-btn add-btn"
-              @click="confirmCheck"
+              @click="confirmToRegister"
               :disabled="
                 !person.name || person.name.length < 1 || !person.address
               "
             >
-              Confirm To Register
+              {{ fullEventData.paymentFormId ? 'Make payment to register' : 'Confirm to register' }}
             </button>
           </div>
         </div>
@@ -280,6 +281,7 @@ import swal from "sweetalert";
 import Dropdown from "primevue/dropdown";
 import PaymentOptionModal from "../../components/paymentoption/EventRegPayment.vue"
 import finish from '../../services/progressbar/progress';
+import store from '../../store/store';
 // import Dialog from 'primevue/dialog';
 
 export default {
@@ -307,7 +309,7 @@ export default {
     const donationObj = ref({})
     const fullEventData = ref({})
     const selectedGateway = ref("")
-    const confirmDonation = ref(false)
+    const currentUser = ref(store.getters.currentUser)
 
     const birthMonth = ref("");
     const months = [
@@ -382,7 +384,20 @@ export default {
     const personHasAddress = ref(false);
     const personData = ref({});
     const bannerUrl = ref("")
-    
+    const tenantCurrency = ref("")
+
+
+
+
+    const getTenantCurrency = () => {
+      axios.get(`/api/Lookup/TenantCurrency?tenantID=${fullEventData.value.tenantID}`)
+        .then(res => {
+          console.log(res)
+          tenantCurrency.value = res.data.currency
+        })
+        .catch(err => console.log(err))
+    }
+   
 
 
     const checkCharacter = () => {
@@ -590,8 +605,6 @@ export default {
         });
     };
 
-    if(confirmDonation.value) confirm()
-
     // confirm button check
 
     const confirmCheck = async() => {
@@ -629,6 +642,15 @@ export default {
             }
     };
 
+    const confirmToRegister = () => {
+      if (!fullEventData.value.paymentFormId) {
+        confirm()
+      } 
+      if (fullEventData.value.paymentFormId) {
+        confirmCheck()
+      }
+    }
+
     // function to clear input
     const clearNames = () => {
       names.value = [];
@@ -654,6 +676,7 @@ export default {
           fullEventData.value = res.data
           console.log(eventData);
           console.log(res, "response");
+           getTenantCurrency()
         })
         .catch((err) => {
           console.log(err);
@@ -707,8 +730,8 @@ export default {
       donationObj.value.usedPaymentGateway = payload
     }
 
-    const setConfirmDonation = (payload) => {
-      confirmDonation.value = payload
+    const setConfirmDonation = () => {
+      confirm()
     }
 
     /*end of masking functions */
@@ -764,8 +787,10 @@ export default {
       donationObj,
       setGateway,
       selectedGateway,
-      confirmDonation,
-      setConfirmDonation
+      setConfirmDonation,
+      confirmToRegister,
+      currentUser,
+      tenantCurrency
     };
   },
 };
