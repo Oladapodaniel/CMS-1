@@ -483,7 +483,6 @@ export default {
               i.country.toLowerCase().includes(currencyText.value.toLowerCase())
             );
         });
-        // console.log(currencyText)
       } else {
         return currencyList.value;
       }
@@ -495,7 +494,6 @@ export default {
           if (i)
             return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
-        // console.log(currencyText)
       } else {
         return accountType.value;
       }
@@ -507,7 +505,6 @@ export default {
           if (i)
             return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
-        // console.log(currencyText)
       } else {
         return liabilities.value;
       }
@@ -565,23 +562,12 @@ export default {
     const getCashAndBanks = async () => {
       try {
         const response = await transactionService.getCashAndBank();
-        // cashAndBank.value = response;
         cashAndBankItems.value = response;
       } catch (error) {
         console.log(error);
       }
     }
     getCashAndBanks();
-
-    // const testPoint = async () => {
-    //   try {
-    //     const response = await transactionService.getTransactions();
-    //     console.log(response, "test point");
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
-    // testPoint();
 
     const selectedTransactionType = ref(-1)
     const selectAnAccount = (account, index) => {
