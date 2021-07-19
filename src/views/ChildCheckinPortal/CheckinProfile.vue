@@ -71,8 +71,8 @@
                             <div class="col-12 col-md-8 form-group">
                             <input type="text"
                             placeholder="Phone Number"
-                            v-model="profile.mobilePhone"
-                                class="form-control ml-0" disabled/>
+                            v-model="profile.homePhone"
+                                class="form-control ml-0"/>
                             </div>
                     </div>
                      <div class="row">
@@ -84,7 +84,7 @@
                             placeholder="Email"
                                 class="form-control ml-0"
                                 v-model="profile.email" 
-                                disabled/>
+                              />
                             </div>
                       </div>
                       <div class="row">
@@ -196,6 +196,7 @@ import axios from "@/gateway/backendapi";
                   role.value = "mother"
                   profile.value = res.data.mother
                 }
+                profile.value.homePhone = res.data.homePhone
 
             }
             catch (error) {
@@ -218,6 +219,8 @@ import axios from "@/gateway/backendapi";
               id: familyId.value,
               familyName: profile.value.lastName,
               address: profile.value.homeAddress,
+              email: profile.value.email,
+              homePhone: profile.value.homePhone,
             }
             if (role.value === 'father') {
                updateProfile.father = {

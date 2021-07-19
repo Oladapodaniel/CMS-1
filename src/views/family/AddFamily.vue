@@ -41,6 +41,7 @@
                             data-toggle="dropdown"
                             v-model="userSearchString"
                             @input="searchForUsers"
+                            :disabled="routeParams !== ''"
                         />
                         <div
                             class="dropdown-menu w-100"
@@ -119,6 +120,7 @@
                                 data-toggle="dropdown"
                                 v-model="motherSearchString"
                                 @input="motherSearchForUsers"
+                                :disabled="routeParams !== ''"
                             />
                             <div
                                 class="dropdown-menu w-100"
@@ -211,7 +213,7 @@
 
         <div class="row mt-5">
             <div class="col-md-10 mx-auto">
-                <FamilyWards :familyMembers="familyMembers" :memberRoles="memberRoles" @edit-member="editMember" @clear-field="clearField" @member-index="memberOfIndex" :showWardModal="showWardModal"/>
+                <FamilyWards :familyMembers="familyMembers" :memberRoles="memberRoles" @edit-member="editMember" @clear-field="clearField" @member-index="memberOfIndex" :showWardModal="showWardModal" @remove-ward="removeWard"/>
             </div>
         </div>
 
@@ -426,10 +428,12 @@ export default {
         const memberIndex = ref(0)
         // const constructSelectedMember = ref({})
         const showWardModal = ref(false)
+        const routeParams = ref(route.params.familyId)
 
         
 
         const getFamilyRoles = async () => {
+            console.log(routeParams.value !== "")
         try {
             let { data } = await axios.get('/getfamilyroles')
             console.log(data)
@@ -691,8 +695,8 @@ export default {
               familyName: familyName.value,
               email: email.value,
               homePhone: homePhone.value,
-              father: { id: father.value.id },
-              mother: { id: mother.value.id }
+              fatherId: father.value.id,
+              motherId: mother.value.id
             }
             // if (userSearchString.value) {
             //    updateProfile.father = {
@@ -799,6 +803,10 @@ export default {
         const setWardModal = (payload) => {
             showWardModal.value = payload
         }
+
+        const removeWard = (payload) => {
+            familyMembers.value.splice(payload, 1)
+        }
          
 
         return {
@@ -850,7 +858,9 @@ export default {
             memberIndex,
             memberOfIndex,
             showWardModal,
-            setWardModal
+            setWardModal,
+            removeWard,
+            routeParams
         }
     }
 }

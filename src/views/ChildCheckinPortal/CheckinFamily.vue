@@ -538,6 +538,7 @@ opacity: 1;
     height: 60px;
     width: 60px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .empty-img {

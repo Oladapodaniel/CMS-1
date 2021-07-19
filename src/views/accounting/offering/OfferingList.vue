@@ -1,10 +1,10 @@
 <template>
   <div class="pb-4">
-    <div class="row table " style="height: 310px;">
+    <div class="row table ">
       <div class="col-12 mt-4  w-100">
         <div class="row">
           <!-- {{contributionSummary}} -->
-          <div class="col-12 col-md-4" style="height: 50vh;">
+          <div class="col-12 col-md-4">
              <div class="col-12 mb-5">
                 <Dropdown
                   v-model="selectedPeriod"
@@ -23,7 +23,7 @@
           </div>
           <!-- {{ pieChart }} -->
           <!-- title="Analytics" -->
-          <div class="col-12 col-md-4" style="height: 50vh;">
+          <div class="col-12 col-md-4">
             <ContributionPieChart
               domId="chart"
               distance="5"
@@ -31,7 +31,7 @@
               :summary="pieChart"
             />
           </div>
-          <div class="col-12 col-md-4 " style="height: 50vh;" >
+          <div class="col-12 col-md-4 " >
             <!-- <div v-if="attendanceBoolean"> -->
                 <!-- :subtitle="chartData.name"
               :data="chartData && chartData.barChart ? chartData.barChart : {}"
@@ -209,34 +209,34 @@
 
                 <div class="desc small-text col-md-2 px-1">
                   <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                    <router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }"><span class="text-decoration-none">{{ date(item.date) }}</span></router-link>
+                    <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease">Date</span>
+                    <router-link class="text-decoration-none fontIncrease" :to="{ name: 'AddOffering', params: { offId: item.id } }"><span class="text-decoration-none">{{ date(item.date) }}</span></router-link>
                   </p>
                 </div>
 
                 <div class="col-md-3 px-1">
                   <div class="d-flex small justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Offering</span>
+                    <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease">Offering</span>
                   <div>
                     
-                    <div class="desc small-text text-right text-md-left"><router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.contribution }}</router-link></div>
+                    <div class="desc small-text text-right text-md-left"><router-link class="text-decoration-none fontIncrease" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.contribution }}</router-link></div>
                   </div>
                   </div>
                 </div>
 
                 <div class="desc-head small-text col-md-3 px-1">
                   <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
+                    <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease">Amount</span>
                     <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
-                    <span><router-link class="text-decoration-none ml-3" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
+                    <span><router-link class="text-decoration-none ml-3 fontIncrease" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
                   </p>
                 </div>
 
                 <div class="small-text col-md-2 px-1">
                   <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Donor</span>
+                    <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease">Donor</span>
                     <span><span class="primary-text c-pointer"
-                    ><router-link class="text-decoration-none" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.donor }}</router-link></span
+                    ><router-link class="text-decoration-none fontIncrease" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.donor }}</router-link></span
                   ></span>
                   </p>
                 </div>
@@ -252,7 +252,7 @@
                           <span class="d-md-none d-sm-flex"></span>
                           <span class=" d-sm-flex  small ">
                           <i
-                          class="fas fa-ellipsis-v cursor-pointer ml-2"
+                          class="fas fa-ellipsis-v cursor-pointer ml-2 fontIncrease"
                           id="dropdownMenuButton"
                           data-toggle="dropdown"
                           aria-haspopup="true"
@@ -1199,5 +1199,14 @@ export default {
 
 .hover:hover {
   background: #eee
+}
+/* @media Queries */
+@media (max-width:771px) {
+  .fontIncrease{
+    /* color: red!important; */
+    font-size: 20px;
+  }
+
+  
 }
 </style>

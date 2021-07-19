@@ -11,7 +11,7 @@ export default {
         currentUser: {},
         userStartPoint: "",
         settingUserUp: false,
-        churchMembers: { },
+        churchMembers: {},
         // importType: ""
     },
 
@@ -58,33 +58,33 @@ export default {
 
     actions: {
         setCurrentUser({ commit }, payload) {
-          commit("setCurrentUser", payload)
+            commit("setCurrentUser", payload)
         },
 
         async getUser({ commit }) {
-          try {
-            const res = await axios.get(`/api/People/GetPeopleBasicInfo?page=`);
-            commit("setCurrentUser", res.data)
-              router.push(`/tenant/${res.data.tenantId}`)
-          } catch(err) {
-            console.log(err, "in store");
-          }
+            try {
+                const res = await axios.get(`/api/People/GetPeopleBasicInfo?page=`);
+                commit("setCurrentUser", res.data)
+                router.push(`/tenant/${res.data.tenantId}`)
+            } catch (err) {
+                console.log(err, "in store");
+            }
         },
 
         clearPeopleInStore({ commit }) {
             commit("clearPeopleInStore");
         }
-      },
+    },
 
     //   getters: {
-        // currentUser: state => state.currentUser,
-        // userEmail: state => state.userEmail,
-        // onboardingData: state => state.onboardingData,
-        // userRole: state => state.userRole,
-        // userData: state => state.userData,
-        // initialSignUpDetails: state => state.initialSignUpDetails,
-        // userStartPoint: state => state.userStartPoint,
-        // settingUserUp: state => state.settingUserUp,
-        // importType: state => state.importType
+    // currentUser: state => state.currentUser,
+    // userEmail: state => state.userEmail,
+    // onboardingData: state => state.onboardingData,
+    // userRole: state => state.userRole,
+    // userData: state => state.userData,
+    // initialSignUpDetails: state => state.initialSignUpDetails,
+    // userStartPoint: state => state.userStartPoint,
+    // settingUserUp: state => state.settingUserUp,
+    // importType: state => state.importType
     //   },
 }

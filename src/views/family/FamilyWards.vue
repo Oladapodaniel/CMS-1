@@ -100,7 +100,7 @@ export default {
                         life: 3000,
                     });
                 
-                    // emit()
+                    emit("remove-ward", index)
                     console.log(index)
                 }
                 catch (error) {

@@ -654,6 +654,7 @@ export default {
     getGroups();
 
     const onContinue = async () => {
+      console.log(addPaidClass.value)
 
       // const baseFormData = new FormData()
       // selectedEvent.value ? baseFormData.append("eventId", selectedEvent.value.id) : ""
@@ -689,7 +690,7 @@ export default {
       checkinSMS.value ? formData.append("checkinSMS", checkinSMS.value) : ""
       checkinEmail.value ? formData.append("checkinEmail", checkinEmail.value) : ""
       selectedEvent.value ? formData.append("activityDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0]) : ""
-      addPaidClass.value ? formData.append("isPaidFor", addPaidClass.value) : ""
+      formData.append("isPaidFor", addPaidClass.value)
       amount.value ? formData.append("amount", amount.value) : ""
       selectedEvent.value ? formData.append("activityId", selectedEvent.value.id) : ""
       selectedGroup.value ? formData.append("groupId", selectedGroup.value.id) : ""

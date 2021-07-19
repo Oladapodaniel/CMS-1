@@ -61,25 +61,25 @@
           <div class="col-md-12">
             <div class="row">
               <div class="col-md-12 px-0" v-if="tab === 0">
-                <VideoFiles :files="media.Audio" />
+                <VideoFiles @filedeleted="deleteMedia" :files="media.Audio" />
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-12 px-0" v-if="tab === 1">
-                <VideoFiles :files="media.Video" />
+                <VideoFiles @filedeleted="deleteMedia" :files="media.Video" />
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-12 px-0" v-if="tab === 2">
-                <VideoFiles :files="media.Ebook" />
+                <VideoFiles @filedeleted="deleteMedia" :files="media.Ebook" />
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-12 px-0" v-if="tab === 3">
-                <VideoFiles :files="media.Picture" />
+                <VideoFiles @filedeleted="deleteMedia" :files="media.Picture" />
               </div>
             </div>
           </div>
@@ -134,12 +134,19 @@ export default {
       })
       .catch((err) => console.log(err));
 
+    const deleteMedia = mediaData => {
+      if (mediaData.mediaId) {
+        media.value[mediaTypes[mediaData.type]] = media.value[mediaTypes[mediaData.type]].filter(i => i.id !== mediaData.mediaId);
+      }
+    }
+
     return {
       files,
       mediaTypes,
       tab,
       media,
       loading,
+      deleteMedia,
     };
   },
 };
