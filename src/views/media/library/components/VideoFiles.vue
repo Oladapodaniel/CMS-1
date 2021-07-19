@@ -4,9 +4,9 @@
             <div class="col-md-12">
                 <div class="row">
                     <router-link :to="{ name: 'FileDetails', query: { id: file.id, f:file.filePath,t:file.mediaType }}" class="col-sm-4 my-3 c-pointer text-center text-decoration-none" v-for="(file, index) in files" :key="index" style="height:fit-content">
-                        <span><img :data-src="file.imagePath" style="height:100%;width:auto;max-height:300px;max-width:100%" alt="Media File"></span>
+                        <!-- <span><img :data-src="file.imagePath" style="height:100%;width:auto;max-height:300px;max-width:100%" alt="Media File"></span> -->
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <h5 class="primary-text font-weight-bold">{{ fileName(file.name) }}</h5>
                                 <span>{{ formatDate(file.dateAdded) }}</span>
                             </div>
