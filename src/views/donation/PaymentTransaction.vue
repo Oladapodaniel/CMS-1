@@ -510,6 +510,12 @@ export default {
         });
       } else {
           newContribution.value.payment.splice(index, 1)
+          toast.add({
+            severity: "success",
+            summary: "Delete Successful",
+            detail: `Contribution item deleted`,
+            life: 4000,
+          });
       }
     };
 
