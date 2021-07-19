@@ -3,8 +3,8 @@
      <div class="bg col-md-10 offset-md-1">
      <div class="container">
         <div class="row">
-          <div class="col-md-5 events">Offering</div>
-          <div class="col-md-7">
+          <div class="text-center text-sm-left col-sm-5 events">Offering</div>
+          <div class=" text-center text-sm-right col-sm-7 ">
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
                 <div class="dropdown" v-if="false">
@@ -885,6 +885,19 @@
         </textarea>
         <!-- </div> -->
         <Toast />
+      </div>
+      <div class="col-12 mt-3 mb-2 justify-content-end d-flex">
+        <button
+                  class="default-btn primary-bg border-0 ml-3"
+                  @click="post"
+                >
+                  <i
+                    class="fas fa-circle-notch fa-spin mr-2 text-white"
+                    v-if="loading"
+                  ></i>
+                  <span class="text-white">Save and Continue</span>
+                  <span></span>
+                </button>
       </div>
      </div>
      </div>

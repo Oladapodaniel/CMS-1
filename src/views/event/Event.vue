@@ -394,7 +394,9 @@
             </div>
             <div v-if="item.donor == '' " data-toggle="modal" data-target="#exampleModal" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">Add Donor</div>
             <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal" >{{ item.donor }}     <span class="donor-text">edit</span></div>
-               </div>
+            
+          </div>
+               
         </div>
 
         <div
