@@ -125,11 +125,10 @@
                     class="form-check"
                   />
                 </div> -->
-
                 <div class="desc small-text col-md-3 py-2">
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                    <span class="text-decoration-none c-pointer" @click="moveToEdit(item.fatherID)">{{ formatDate(item.dateCreated) }}</span>
+                    <span class="text-decoration-none c-pointer" @click="moveToEdit(item.fatherID ? item.fatherID : item.motherID)">{{ formatDate(item.dateCreated) }}</span>
                   </p>
                 </div>
 
@@ -138,7 +137,7 @@
                     <span class="text-dark font-weight-bold d-flex d-md-none">Family Name</span>
                   <div>
                     
-                    <div class="desc small-text text-right text-md-left c-pointer" @click="moveToEdit(item.fatherID)">{{ item.familyName }}</div>
+                    <div class="desc small-text text-right text-md-left c-pointer" @click="moveToEdit(item.fatherID ? item.fatherID : item.motherID)">{{ item.familyName }}</div>
                   </div>
                   </div>
                 </div>
@@ -147,14 +146,14 @@
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Email</span>
                     <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
-                    <span @click="moveToEdit(item.fatherID)" class=" c-pointer">{{ item.email }}</span>
+                    <span @click="moveToEdit(item.fatherID ? item.fatherID : item.motherID)" class=" c-pointer">{{ item.email }}</span>
                   </p>
                 </div>
 
                 <div class="small-text col-md-2 py-2">
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Phone Number</span>
-                    <span @click="moveToEdit(item.fatherID)"><span class=" c-pointer"
+                    <span @click="moveToEdit(item.fatherID ? item.fatherID : item.motherID)"><span class=" c-pointer"
                     >{{ item.homePhone }}</span
                   ></span>
                   </p>
@@ -181,7 +180,8 @@
                             View Report
                           </a>
                       </router-link> -->
-                      <router-link :to="{ name: 'AddFamily', params: { familyId: item.fatherID } }">
+                      
+                      <router-link :to="{ name: 'AddFamily', params: { familyId: item.fatherID ? item.fatherID : item.motherID } }">
                         <a class="dropdown-item elipsis-items">
                       Edit
                       </a>

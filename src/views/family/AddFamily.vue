@@ -15,7 +15,7 @@
         <div class="row my-4 pt-4">
             <div class="col-md-6 offset-md-2">
                 <div class="row">
-                    <div class="col-md-4 text-right align-self-center">
+                    <div class="col-md-4 text-md-right align-self-center">
                         <label for="" class="">Family Name</label>
                     </div>
             
@@ -27,7 +27,7 @@
 
             <div class="col-md-6 offset-md-2 mt-4">
                 <div class="row">
-                    <div class="col-md-4 text-right align-self-center">
+                    <div class="col-md-4 text-md-right align-self-center">
                         <label for="" class="">Father</label>
                     </div>
                     <!-- Father Dropdown -->
@@ -107,7 +107,7 @@
         <div class="row mt-4">
             <div class="col-md-6 offset-md-2">
                 <div class="row">
-                    <div class="col-md-4 text-right align-self-center">
+                    <div class="col-md-4 text-md-right align-self-center">
                         <label for="" class="">Mother</label>
                     </div>
                     <div class="col-md-8">
@@ -180,7 +180,7 @@
             </div>
             <div class="col-md-6 offset-md-2 mt-4">
                 <div class="row">
-                    <div class="col-md-4 text-right align-self-center">
+                    <div class="col-md-4 text-md-right align-self-center">
                         <label for="" class="">Email</label>
                     </div>
         
@@ -192,7 +192,7 @@
 
             <div class="col-md-6 offset-md-2 my-4">
                 <div class="row">
-                    <div class="col-md-4 text-right align-self-center">
+                    <div class="col-md-4 text-md-right align-self-center">
                         <label for="">Phone Number</label>
                     </div>
         

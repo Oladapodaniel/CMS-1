@@ -58,7 +58,7 @@
             <div class="col-md-4 px-0" v-if="searched">
                 <div class="row">
                     <div class="col-md-11 form-box offset-md-1" style="height: 100%">
-                        <ParentCard :guardian="checkinDetails.checkInBy" :phone="checkinDetails.family.homePhone"/>
+                        <ParentCard :guardian="checkinDetails ? checkinDetails.checkInBy : ''" :phone="checkinDetails ? checkinDetails.family.homePhone : ''"/>
                         <div class="row tr-border-bottom my-3">
 
                         </div>
@@ -141,21 +141,32 @@ export default {
             loading.value = true
             try {
                 let res = await axios.get(`/api/CheckInAttendance/retrieveFamily?checkInCode=${code.value}`)
-                searched.value = true
+                
                 loading.value = false
                 console.log(res)
                 checkinDetails.value = res.data.returnObject
-                getGuardian(res.data.returnObject.family.id)
 
-                res.data.returnObject.registeredMember.map((item) => {
+                if (!checkinDetails.value) {
+                    swal(
+                        "Wrong Code!",
+                        "You have entered the wrong code, please check the code and try again",
+                        "error"
+                    );
+                searched.value = false
+
+                }   else {
+                    searched.value = true
+                    getGuardian(res.data.returnObject.family.id)
+                    res.data.returnObject.registeredMember.map((item) => {
                     const y = res.data.returnObject.groupsInvolved.findIndex((i) => i.id === item.checkInAttendanceID);
-                    if (y >= 0) {
-                        item['group'] = res.data.returnObject.groupsInvolved[y].fullGroupName;
-                    }   else {
-                        item['group'] = ''
-                    }
-                    return item
-                })
+                        if (y >= 0) {
+                            item['group'] = res.data.returnObject.groupsInvolved[y].fullGroupName;
+                        }   else {
+                            item['group'] = ''
+                        }
+                        return item
+                    })
+                }
                
                 console.log(registeredMember.value)
             }
