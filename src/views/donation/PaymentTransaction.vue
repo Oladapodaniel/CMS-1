@@ -452,7 +452,8 @@ export default {
 
     const deleteContribution = (id, index) => {
         console.log(id)
-      axios
+      if (id) {
+          axios
         .delete(`/mobile/v1/PaymentForm/contributionItem?contributionItemID=${id}`)
         .then((res) => {
           console.log(res);
@@ -507,6 +508,9 @@ export default {
           }
         console.log(err)
         });
+      } else {
+          newContribution.value.payment.splice(index, 1)
+      }
     };
 
         // const getPaymentDetails = async() => {
