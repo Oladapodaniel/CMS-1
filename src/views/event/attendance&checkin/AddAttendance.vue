@@ -257,12 +257,12 @@
             <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
               <label for="" class="font-weight-600">Event Banner</label>
             </div>
-            <div class="col-sm-7 col-md-6 col-lg-3 offset-lg-1"  :class="{ 'img-border ' : imageUrl === '' }">
+            <div class="col-sm-5 col-md-3 col-lg-3 offset-md-1"  :class="{ 'img-border ' : imageUrl === '' }">
               <img :src="imageUrl" class="w-100">
             </div>
-            <div @click="altClick" class="col-5 col-sm-2 offset-3 offset-sm-1 my-2 my-sm-0 upload-button align-self-center text-center cursor-pointer">Upload <input type="file" @change="chooseFile" ref="binImage" hidden/></div>
+            <div @click="altClick" class="col-5 col-sm-2 offset-sm-1 my-2 my-sm-0 upload-button align-self-center text-center cursor-pointer">Upload <input type="file" @change="chooseFile" ref="binImage" hidden/></div>
             <div class="col-sm-3 col-md-4"></div>
-            <div class="col-sm-7 col-md-6 col-lg-5 offset-2 offset-sm-0 mt-2">Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
+            <div class="col-sm-7 col-md-6 col-lg-5 offset-sm-0 mt-2 px-0">Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
                 GIF formats.</div>
           </div>
           
@@ -294,8 +294,8 @@
                 <div class="col-sm-4 align-self-center">
                   <span class="font-weight-700 cursor-pointer" @click="showFreeTab" :class="{ 'active-tab' : addFreeClass }">Free</span>&nbsp;&nbsp;/&nbsp;&nbsp;<span class="font-weight-700 cursor-pointer" @click="showPaidTab" :class="{ 'active-tab' : addPaidClass }">Paid</span>
                 </div>
-                <div class="col-sm-8">
-                  <input type="text" class="form-control" placeholder="Enter amount" v-model="amount" :class="{ 'show-amount' : addPaidClass, 'hide-amount' : !addPaidClass }">
+                <div class="col-sm-8" :class="{ 'show-amount' : addPaidClass, 'hide-amount' : !addPaidClass }">
+                  <input type="text" class="form-control" placeholder="Enter amount" v-model="amount">
                 </div>
               </div>     
             </div>
@@ -972,10 +972,12 @@ export default {
 }
 
 .show-tem-free {
-    height: 745px;
+    height: 798px;
     overflow: hidden;
     transition: all 1s ease-in-out
 }
+
+
 
 .show-tem {
     height: 1050px;
@@ -1008,10 +1010,29 @@ export default {
   transition: all 0.6s ease-in-out
 }
 
+
 .hide-paid {
   height: 0;
   overflow: hidden;
   transition: all 0.6s ease-in-out
+}
+
+@media (max-width: 576px) {
+  .show-tem-free {
+    height: 1080px;
+  }
+
+  .show-tem {
+    height: 1550px;
+    /* overflow: hidden; */
+    transition: all 1s ease-in-out
+}
+
+  .show-paid {
+    height: 508px;
+    /* overflow: hidden; */
+    transition: all 0.6s ease-in-out
+  }
 }
 
 .show-amount {

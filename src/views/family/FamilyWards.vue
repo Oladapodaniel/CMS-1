@@ -12,10 +12,10 @@
             <div class="col-md-1">
                 <!-- <span class="py-2 font-weight-700">Picture</span> -->
             </div>
-            <div class="col-md-6">
+            <div class="col-6">
                 <span class="py-2 font-weight-700">Name</span>
             </div>
-            <div class="col-md-4">
+            <div class="col-4">
                 <span class="py-2 font-weight-700">Role</span>
             </div>
             <div class="col-md-1">
@@ -32,19 +32,19 @@
                     <img :src="member.pictureUrl" v-if="member.person.pictureUrl" class="member-image"/>
                 </span> -->
             </div>
-            <div class="col-md-6 align-self-center">
+            <div class="col-6 align-self-center">
                 <span class="py-2">{{ member.name ? member.name : "" }}</span>
             </div>
-            <div class="col-md-3 align-self-center">
+            <div class="col-3 align-self-center">
                 <!-- <span class="py-2">{{ memberRoles.length > 0 ? memberRoles.find(i => i.id === member.familyRoleID).name : "" }}</span> -->
                 <!-- <Dropdown class="p-0 w-100" :options="memberRoles" v-model="member.roleId" optionLabel="name" :filter="false" placeholder="Select role" :showClear="false">
                 </Dropdown> -->
                 {{ member.roleId ? member.roleId.name : "" }}
             </div>
-            <div class="col-md-1 align-self-center" data-toggle="modal" data-target="#addWard" @click="editMember(member, index)">
+            <div class="col-1 align-self-center" data-toggle="modal" data-target="#addWard" @click="editMember(member, index)">
                 <i class="pi pi-pencil text-primary c-pointer"></i>
             </div>
-            <div class="col-md-1 align-self-center" @click="showConfirmModal(member.id, index)">
+            <div class="col-1 align-self-center" @click="showConfirmModal(member.id, index)">
                 <i class="pi pi-trash text-danger c-pointer"></i>
             </div>
         </div>

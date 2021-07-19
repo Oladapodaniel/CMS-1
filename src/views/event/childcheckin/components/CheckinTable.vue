@@ -22,7 +22,7 @@
             <div class="col-md-12 px-0">
                 <!-- <CheckinRow :checkinList="registeredMembers"/> -->
                 <div class="container">
-                    <div class="row py-2" v-for="item in registeredMembers.registeredMember" :key="item.id">
+                    <div class="row py-2" v-for="item in registeredMembers ? registeredMembers.registeredMember : []" :key="item.id">
                         <div class="col-md-2">
                             <div class="ward-img-box">
                                 <img :src="item.person ? item.person.pictureUrl : ''" class="member-image" v-if="item.person ? item.person.pictureUrl : ''"/>

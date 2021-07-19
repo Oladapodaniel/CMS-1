@@ -160,8 +160,9 @@
             <div class="row">
               <div class="col-md-2 col-sm-2 d-flex align-self-center image mt-3">
                 <img
-                  src="../../../assets/link.svg" class="w-100"
+                  src="../../../assets/link.svg" 
                   alt="marked Attendance image"
+                  style="width: 60px; height: 60px"
                 />
               </div>
               <div class="col-md-10 col-sm-10 mt-3">
