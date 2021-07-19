@@ -2,11 +2,6 @@
     <div class="container-fluid mt-2" v-lazy-container="{ selector: 'img' }">
         <div class="row">
             <div class="col-md-12">
-<<<<<<< HEAD
-                <div class="row">
-                    <router-link :to="{ name: 'FileDetails', query: { id: file.id, f:file.filePath,t:file.mediaType }}" class="col-sm-4 my-3 c-pointer text-center text-decoration-none" v-for="(file, index) in files" :key="index" style="height:fit-content">
-                        <!-- <span><img :data-src="file.imagePath" style="height:100%;width:auto;max-height:300px;max-width:100%" alt="Media File"></span> -->
-=======
                 <ConfirmPopup></ConfirmPopup>
                 <Toast></Toast>
                 <div class="row d-flex jsutify-content-around" id="popUp">
@@ -15,7 +10,6 @@
                             <img :data-src="file.imagePath" style="height:100%;width:auto;max-height:300px;max-width:100%" alt="Media File">
                             <span class="del-icon c-pointer d-none font-weight-bold" @click.prevent="confirmDelete($event, file)"><i class="pi pi-trash" style="font-size: 1.5rem"></i></span>
                         </span>
->>>>>>> 4758bf874904cf44f955c8aab7c705e4c46ec2d4
                         <div class="row">
                             <div class="col-md-6">
                                 <h5 class="primary-text font-weight-bold">{{ fileName(file.name) }}</h5>
