@@ -1,5 +1,6 @@
 // import axios from "@/gateway/backendapi";
 import media_service from "../media/media_service";
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Customized upload picture plugin
@@ -11,7 +12,7 @@ class MyUploadAdapter {
 
   async upload() {
     const data = new FormData();
-    data.append("mediaFile", "test_imagee");
+    data.append("mediaFile", `imagee_${uuidv4()}`);
     data.append("mediaFile", await this.loader.file);
     data.append("mediaFileImage", await this.loader.file);
     data.append("mediaType", 0);
@@ -29,7 +30,7 @@ class MyUploadAdapter {
         console.log(error, "error");
         return {
             //   default: process.env.VUE_APP_TARGET_URL + res.data.data.url,
-            default: "https://www.tekportal.net/wp-content/uploads/2019/02/failed-7227.jpg",
+            default: "",
         };
     }
 
