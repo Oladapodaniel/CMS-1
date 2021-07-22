@@ -143,15 +143,26 @@ const routes = [
             meta: {
                 title: 'Churchplus - Ministry Workflow',
             },
-            children: [{
-                path: 'add',
-                name: 'AddWorkflow',
-                component: () =>
-                    import( /* webpackChunkName: "addworkflow" */ '../views/workflow/components/MainBoard.vue'),
-                meta: {
-                    title: 'Churchplus - Add Workflow',
-                }
-            },]
+            children: [
+                {
+                    path: 'list',
+                    name: 'Workflows',
+                    component: () =>
+                        import( /* webpackChunkName: "workflows" */ '../views/workflow/pages/Workflows.vue'),
+                    meta: {
+                        title: 'Churchplus - Add Workflow',
+                    }
+                },
+                {
+                    path: 'add',
+                    name: 'AddWorkflow',
+                    component: () =>
+                        import( /* webpackChunkName: "addworkflow" */ '../views/workflow/components/MainBoard.vue'),
+                    meta: {
+                        title: 'Churchplus - Add Workflow',
+                    }
+                },
+            ]
         },
 
         {

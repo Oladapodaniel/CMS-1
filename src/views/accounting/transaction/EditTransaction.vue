@@ -139,7 +139,7 @@
               <button class="btn btn-default text-left bg-light col-7" :class="{ 'col-12': splittedTransactions.length === 1 }" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                 style="border: 1px solid #ced4da;border-radius: 4px;background: rgb(253, 253, 253)"
               >
-                <span class="text-left">{{ !splittedTransactions.length === 0 || !splittedTransactions[index].text ? "Select" : splittedTransactions[index].text }}</span>
+                <span class="text-left">{{ splittedTransactions.length === 0 || !splittedTransactions[index].text ? "Select" : splittedTransactions[index].text }}</span>
                 <span class="float-right"><i class="pi pi-chevron-down" style="fontSize: .9rem"></i></span> 
               </button><input type="text" placeholder="amount" :class="{ 'col-4': splittedTransactions.length > 1 }" class="form-control d-inline" v-model="i.amount" v-if="splittedTransactions.length > 1"><span v-if="splittedTransactions.length > 1" class="col-1 px-1" @click="removeSplit(index)"><i class="pi pi-trash"></i></span>
               <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
@@ -215,7 +215,15 @@
           Transaction last modified on {{ new Date(Date.now()).toLocaleDateString() }}
         </div>
         <div class="col-6 offset-sm-3 mb-2 mt-3">
-          <div class=" text-center cpon"><button class="default-btn primary-bg text-white border-0" :disabled="!formIsValid" @click="saveIncome">Save</button></div>
+          <div class=" text-center cpon">
+            <button class="default-btn primary-bg text-white border-0 d-flex justify-content-center" :disabled="!formIsValid || savingAccount" @click="saveIncome">
+              <span>
+                Save
+              </span>
+                <span v-if="savingAccount" style="position: absolute;left:1.5rem"><i class="pi pi-spin pi-spinner" style="fontSize: 1rem"></i></span>
+              <!-- <span :class="{ 'pr-5': savingAccount }" class="pr-2" style="width: 20px"></span> -->
+            </button>
+          </div>
           <!-- <div class=" text-center cpon"><button class="default-btn primary-bg text-white border-0" @click="saveIncome" :disabled="!formIsValid">Save</button></div> -->
         </div>
       </div>
@@ -225,7 +233,7 @@
 </template>
 
 <script>
-import { ref, computed, nextTick, onUpdated, watch } from "vue";
+import { ref, computed, nextTick, onUpdated, watch, proxyRefs } from "vue";
 import Tooltip from "primevue/tooltip";
 import transaction_service from "../../../services/financials/transaction_service";
 import chart_of_accounts from '../../../services/financials/chart_of_accounts';
@@ -252,6 +260,7 @@ export default {
     // });
 
     const toast = useToast();
+    const savingAccount = ref(false);
 
     const amountRef = ref("");
     const descrp = ref("");
@@ -503,12 +512,14 @@ export default {
     const saveIncome = async () => {
         try {
           let reqBody = { };
+          savingAccount.value = true;
           if (props.transactionDetails.account === "Income Account" || (props.transactionDetails.creditSplitAccounts && props.transactionDetails.creditSplitAccounts.length >   0)) {
             transacObj.value.creditAccountID = selectedIncomeOrExpenseAccount.value.id;
             transacObj.value.debitAccountID = selectedCashAccount.value.id;
             reqBody = constructSaveTransactionReqBody();
             reqBody.category = "inflow";
             const response = await transaction_service.saveIncome(reqBody);
+            savingAccount.value = false;
             toastMessage(response);
             console.log(response, "Save income response");
           } else {
@@ -535,10 +546,12 @@ export default {
               body.id = props.transactionDetails.id;
             }
             const response = await transaction_service.saveExpense(body);
+            savingAccount.value = false;
             toastMessage(response)
             console.log(response, "Save expense response");
           }
         } catch (error) {
+          savingAccount.value = false;
           console.log();
         }
     }
@@ -686,6 +699,7 @@ export default {
       formIsValid,
       removeSplit,
       dateField,
+      savingAccount
     };
   },
 };
