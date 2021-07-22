@@ -467,13 +467,15 @@
                 ></ckeditor> -->
                 <!-- <Editor v-model="editorData" @input="changed" editorStyle="height: 320px" /> -->
 
-                <ckeditor id="ckeditor"
+                <!-- <ckeditor id="ckeditor"
                   :editor="editor"
                   @ready="onReady"
                   v-model="editorData"
                   :config="editorConfig">
-                </ckeditor>
+                </ckeditor> -->
+                
               </div>
+              <DecoupledEditor v-model="editorData" :loadedMessage="loadedMessage" />
             </div>
           </div>
 
@@ -702,7 +704,7 @@
 </template>
 
 <script>
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { computed, onMounted, ref } from "vue";
 import composeService from "../../services/communication/composer";
 import composerObj from "../../services/communication/composer";
@@ -717,46 +719,22 @@ import dateFormatter from "../../services/dates/dateformatter";
 // import Editor from 'primevue/editor';
 
 import swal from "sweetalert";
-import CKEditor from "@ckeditor/ckeditor5-vue";
+// import CKEditor from "@ckeditor/ckeditor5-vue";
 import MyUploadAdapter from "../../services/editor/editor_uploader"
 // import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
+
+import DecoupledEditor from '@/components/RichEditor';
 
 export default {
   components: { 
     // Editor
-    ckeditor: CKEditor.component
+    // ckeditor: CKEditor.component,
+    DecoupledEditor,
   },
   setup() {
     const router = useRouter()
     const toast = useToast();
-    const editor = ClassicEditor;
     const editorData = ref("");
-    const editorConfig = {
-      // The configuration of the editor.
-      height: "800",
-      image: {
-        resizeUnit: "%",
-        resizeOptions: [ {
-          name: 'resizeImage:original',
-          value: null,
-          label: "one"
-        },
-        {
-          name: 'resizeImage:50',
-          value: '50',
-          label: "two"
-        },
-        {
-          name: 'resizeImage:75',
-          value: '75',
-          label: "three"
-        } ],
-        toolbar: [ 'resizeImage:50', 'resizeImage:75' ],
-      },
-      // plugins: [
-      //   ImageResize
-      // ],
-    };
 
     const onReady = (editor) => {
       // Customize upload picture plugin
@@ -963,7 +941,7 @@ export default {
             <meta name="viewport" content="width=device-width,initial-scale=1.0">
               <style>
                 #email-body img {
-                  width: auto !important;
+                  width: 100% !important;
                   max-width: 1000px !important;
                   margin-left: auto;
                   margin-right: auto;
@@ -976,6 +954,10 @@ export default {
                 #email-body img {
                   display: flex;
                   justify-content: center;
+                }
+                
+                #email-body figure {
+                  margin: auto;
                 }
               </style>
             </head>
@@ -1170,18 +1152,19 @@ export default {
     const groupSelectInput = ref(null);
     const memberSelectInput = ref(null);
 
+    const loadedMessage = ref("")
     const getMessage = async messageId => {
       try {
-        const { message, subject: subj } = await composeService.getSMSById(messageId);
-        editorData.value = message;
-        subject.value = subj;
+          const { message, subject: subj } = await composeService.getSMSById(messageId);
+          loadedMessage.value = message;
+          subject.value = subj;
       } catch (error) {
-        console.log(error)
-        toast.add({
+          console.log(error)
+          toast.add({
           severity: "error",
           summary: "Error",
           detail: "Could not load email!",
-        });
+          });
       }
     }
 
@@ -1190,9 +1173,8 @@ export default {
     }
 
     return {
-      editor,
+      loadedMessage,
       editorData,
-      editorConfig,
       possibleEmailDestinations,
       groupsAreVissible,
       toggleGroupsVissibility,
