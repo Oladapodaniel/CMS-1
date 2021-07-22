@@ -1429,7 +1429,7 @@ export default {
                       name: name.value,
                       id: res.data.id
                     })
-                    toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
+                    toast.add({severity:'success', summary: 'Saved', detail:'Offering Saved', life: 3000});
                     console.log(res)
                     
                   })
@@ -1441,7 +1441,16 @@ export default {
         }
 
         const post =  () => {
-          loading.value = true
+        let invalidOfferingItem = offeringItem.value.find(i => !i.amount)
+        if(invalidOfferingItem){
+          toast.add({
+              severity: "warn",
+              summary: "Enter Amount",
+              detail: `Enter amount for Offering item`,
+              life: 3000,
+          })
+          return false
+        }
               // let financialContributionTrasaction = {
               //   id: 123,
               //   financialContributionID:123,
@@ -1450,6 +1459,7 @@ export default {
               //   activityID: 123,
                 
               // }
+          loading.value = true
         let contributions = offeringItem.value.map(i => {
                 return {
                   name: i.name,
