@@ -266,7 +266,7 @@
                 @reload="getTransactions"
                 :gettingSelectedTrsn="gettingSelectedTrsn"
               />
-              <LedgerForm v-else @close-ledger="closeLedgerForm" />
+              <LedgerForm v-else @entrysaved="journalEntrySaved" @close-ledger="closeLedgerForm" />
               <!-- :transacProp="transacPropsValue" -->
             </div>
           </div>
@@ -615,6 +615,11 @@ export default {
       });
     };
 
+    const journalEntrySaved = () => {
+      getTransactions();
+      emit('reload-accounts');
+    }
+
     return {
       transactions,
       filterFormIsVissible,
@@ -658,6 +663,7 @@ export default {
       showConfirmModal,
       refreshing,
       gettingSelectedTrsn,
+      journalEntrySaved
     };
   },
 };

@@ -645,6 +645,7 @@ export default {
 
     const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
     const reloadAccounts = () => {
+      alert("rloading accounts")
       getAccountBalances()
     }
 

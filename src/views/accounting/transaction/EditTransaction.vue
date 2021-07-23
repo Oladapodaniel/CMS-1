@@ -142,7 +142,7 @@
                 <span class="text-left">{{ splittedTransactions.length === 0 || !splittedTransactions[index].text ? "Select" : splittedTransactions[index].text }}</span>
                 <span class="float-right"><i class="pi pi-chevron-down" style="fontSize: .9rem"></i></span> 
               </button><input type="text" placeholder="amount" :class="{ 'col-4': splittedTransactions.length > 1 }" class="form-control d-inline" v-model="i.amount" v-if="splittedTransactions.length > 1"><span v-if="splittedTransactions.length > 1" class="col-1 px-1" @click="removeSplit(index)"><i class="pi pi-trash"></i></span>
-              <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+              <div class="dropdown-menu w-100" id="noTransfrom" aria-labelledby="dropdownMenuButton">
                 <div class="row">
                   <div class="col-md-11 mx-auto">
                     <input
@@ -706,6 +706,12 @@ export default {
 </script>
 
 <style scoped>
+#noTransfrom {
+  transform:none !important;
+  max-height: 300px;
+  overflow: auto;
+  top: inherit !important;
+}
 .parent-desc.first {
   color: #8898aa;
   font-size: 15px;
