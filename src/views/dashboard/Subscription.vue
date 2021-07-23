@@ -305,6 +305,7 @@ import { useToast } from "primevue/usetoast";
 import userService from "../../services/user/userservice";
 import { v4 as uuidv4 } from "uuid";
 import converter from "../../services/currency-converter/currencyConverter";
+// import Mixins from "@/mixins/auth.mixins.js"
 // import PaymentOptionModal from "./PaymentOptionModal";
 
 export default {

@@ -522,6 +522,7 @@
           </div>
         </div> -->
       <!-- </div> -->
+
       <!-- </div> -->
     </div>
   </main>
@@ -536,6 +537,7 @@ import ColumnChart2 from "@/components/charts/ColumnChart2.vue";
 import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
 // import store from "@/store/store.js"
+import mixin from "@/mixins/auth.mixins.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import moment from "moment";
@@ -546,19 +548,22 @@ import useSubscription from "../../services/subscription/useSubscription";
 import Tooltip from "primevue/tooltip";
 
 export default {
+   mixins: [mixin],
   components: {
-    // PieChart,
     ColumnChart,
     ColumnChart2,
     ByMaritalStatusChart,
     ByGenderChart,
+    
   },
+ 
 
   directives: {
     tooltip: Tooltip,
   },
 
   setup() {
+    // const store = useStore();
     const moreLinksVissible = ref(false);
     const offering = ref([23, 45, 65, 78, 89]);
     const attendanceBoolean = ref(true);
@@ -568,12 +573,16 @@ export default {
     const firstTimerPieExist = ref(false);
     const summed = ref(0);
     const planUserIs = ref("");
+    // const currentUser = ref(store.getters.currentUser);
 
     // const attendance
 
     const toggleMoreLinkVissibility = () => {
       moreLinksVissible.value != moreLinksVissible.value;
     };
+    // const mixinsCurrentUser = () => {
+    //   console.log(store.getters.currentUser)
+    // };
 
     const celebrations = [];
     // const route = useRoute();
