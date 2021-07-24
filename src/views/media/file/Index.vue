@@ -58,7 +58,7 @@
             <div class="col-md-12" v-if="route.query.t === '3'">
                 <div class="row">
                     <div class="col-md-8 mx-auto">
-                        <span><img :data-src="route.query.f" style="height:100%;width:auto;max-height:300px;max-width:100%" alt="Media File"></span>
+                        <span><img :data-src="`${route.query.f}?nocache${uniqueId()}`" style="height:100%;width:auto;max-height:300px;max-width:100%" alt="Media File"></span>
                     </div>
                 </div>
             </div>
@@ -71,6 +71,8 @@ import { ref } from '@vue/reactivity'
 import { useRoute } from "vue-router"
 import media_service from '../../../services/media/media_service';
 import dateFormatter from '../../../services/dates/dateformatter';
+import { v4 as uuidv4 } from 'uuid';
+
     export default {
         setup() {
             const file = ref({ });
@@ -79,6 +81,7 @@ import dateFormatter from '../../../services/dates/dateformatter';
             const getFileById = async () => {
                 try {
                     file.value = await media_service.getMediaById(route.query.id);
+                    console.log(file.value, "by id");
                 } catch (error) {
                     console.log(error);
                 }
@@ -97,6 +100,10 @@ import dateFormatter from '../../../services/dates/dateformatter';
                 return dateFormatter.monthDayYear(date);
             }
 
+            const uniqueId = () => {
+                return uuidv4();
+            }
+
             getFileById();
 
             return {
@@ -104,6 +111,7 @@ import dateFormatter from '../../../services/dates/dateformatter';
                 route,
                 fileName,
                 formatDate,
+                uniqueId,
             }
         }
     }

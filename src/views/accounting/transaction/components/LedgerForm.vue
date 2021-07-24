@@ -372,9 +372,9 @@ export default {
 
         try {
                 const response = await transaction_service.saveJournalTransaction(body);
-                console.log(response, "LEDGER save");
                 if (response.status >= 200 && response.status <= 300) {
                     toast.add({severity:'success', summary:'Successful', detail:`The transaction was succesful`, life: 3000});
+                    emit('entrysaved');
                 } else {
                     toast.add({severity:'error', summary:'Transaction failed', detail:`An error occurred, please try again`, life: 3000});
                 }
