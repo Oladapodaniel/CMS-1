@@ -6,7 +6,7 @@
             </div>
             <div class="col-md-4 d-md-flex justify-content-end">
                 <button class="default-btn border-0 text-white font-weight-bold primary-bg"
-                    data-toggle="modal" data-target="#exampleModal"
+                    data-toggle="modal" data-target="#exampleModal" v-if="false"
                 >
                     Add Family
                 </button>
@@ -19,12 +19,22 @@
                     <div class="col-md-10 mx-auto d-flex align-items-center">
                         <div class="row w-100 mt-3 d-md-flex align-items-center">
                             <div class="col-md-3 text-md-right">
+                                <label for="person" class="font-weight-700">Select group</label>
+                            </div>
+                            <div class="col-md-9 ">
+                                <Dropdown class="p-0 w-100" :options="recentEvents" optionLabel="eventName" v-model="selectedRecentsEvent" :filter="false" placeholder="Select group" :showClear="false">
+                                </Dropdown>
+                            </div>
+                            <!-- <div class="col-md-3">
+                            </div> -->
+                            <div class="col-md-3 text-md-right mt-3">
                                 <label for="person" class="font-weight-700">Enter Code</label>
                             </div>
-                            <div class="col-md-9 d-flex">
+                            <div class="col-md-9 d-flex mt-3">
                                 <input type="text" v-model="code" class="form-control">
-                                <div class="default-btn border-0 primary-bg text-white ml-4 text-center c-pointer" @click="checkIn"><i class="pi pi-spin pi-spinner text-white" v-if="loading"></i>&nbsp;Search</div>
-                                <!-- <SearchWithDropdown /> -->
+                            </div>
+                            <div class="offset-3 col-md-9 d-flex mt-3">
+                                <div class="default-btn border-0 primary-bg text-white text-center c-pointer" @click="checkIn"><i class="pi pi-spin pi-spinner text-white" v-if="loading"></i>&nbsp;Search</div>
                             </div>
                         </div>
                     </div>
@@ -58,13 +68,14 @@
             <div class="col-md-4 px-0" v-if="searched">
                 <div class="row">
                     <div class="col-md-11 form-box offset-md-1" style="height: 100%">
-                        <ParentCard :guardian="checkinDetails ? checkinDetails.checkInBy : ''" :phone="checkinDetails ? checkinDetails.family.homePhone : ''"/>
+                        <ParentCard :guardian="checkinDetails ? checkinDetails.checkInBy : ''" :phone="checkinDetails && checkinDetails.family ? checkinDetails.family.homePhone : ''" />
                         <div class="row tr-border-bottom my-3">
 
                         </div>
+                        
                         <div class="row">
                             <div class="col-md-12">
-                                <FamilyDescriptionCard @addtofamily="openAddToFamilyModal" :guardians="guardians" @update-guardian="updateGuardian" />
+                                <FamilyDescriptionCard :guardians="guardians" @update-guardian="updateGuardian" />
                             </div>
                         </div>
                     </div>
@@ -117,30 +128,28 @@ import AddFamily from "./components/AddFamily";
 import CheckinTable from "./components/CheckinTable";
 import ParentCard from "./components/ParentCard";
 import FamilyDescriptionCard from "./components/FamilyDescriptionCard";
-// import AddWard from "./components/AddWard";
-// import { useToast } from "primevue/usetoast";
 import MemberForm from "../../ChildCheckinPortal/FormMember"
 import swal from "sweetalert";
-// import SearchWithDropdown from "@/components/search/SearchWithDropdown";
+import Dropdown from 'primevue/dropdown';
 
 export default {
-    components: { AddFamily, CheckinTable, ParentCard, FamilyDescriptionCard, MemberForm },
+    components: { AddFamily, CheckinTable, ParentCard, FamilyDescriptionCard, MemberForm, Dropdown },
     setup () {
-        // const toast = useToast()
         const code = ref("")
         const checkinDetails = ref({})
         const guardians = ref()
         const searched = ref(false)
         const updatedGuardian = ref({})
-        // const close = ref("")
         const registeredMember = ref([])
         const checkInOutEvent = ref("")
         const loading = ref(false)
+        const recentEvents = ref([])
+        const selectedRecentsEvent = ref({})
 
         const checkIn = async() => {
             loading.value = true
             try {
-                let res = await axios.get(`/api/CheckInAttendance/retrieveFamily?checkInCode=${code.value}`)
+                let res = await axios.get(`/api/CheckInAttendance/retrieveFamily?checkInCode=${code.value}&attendanceCode=${selectedRecentsEvent.value.attendanceCode}`)
                 
                 loading.value = false
                 console.log(res)
@@ -148,8 +157,8 @@ export default {
 
                 if (!checkinDetails.value) {
                     swal(
-                        "Wrong Code!",
-                        "You have entered the wrong code, please check the code and try again",
+                        "You have entered the wrong code!",
+                        "Please check the code and try again.",
                         "error"
                     );
                 searched.value = false
@@ -191,6 +200,25 @@ export default {
 
             
         }
+        
+        const getRecentEvents = async() => {
+            
+            try {
+                const res = await axios.get(`/api/CheckInAttendance/recentCheckinEvents`)
+                console.log(res)
+                recentEvents.value = res.data.map(i => {
+                    i.eventName = i.fullEventName.slice(0, -12)
+                    return i
+                })
+                console.log(recentEvents.value)
+                
+            }
+            catch (error) {
+                console.log(error)
+          
+            }
+        }
+        getRecentEvents()
            
            const save = () => {
                 if(checkInOutEvent.value == "checkin") {
@@ -201,6 +229,7 @@ export default {
                     );
                     code.value = ""
                     searched.value = false
+                    selectedRecentsEvent.value = new Object()
                 }   else if (checkInOutEvent.value == "checkout") {
                     swal(
                         "Checkout Successful!",
@@ -209,6 +238,7 @@ export default {
                     );
                     code.value = ""
                     searched.value = false
+                    selectedRecentsEvent.value = new Object()
                 }else {
                      swal(
                         "Hey!",
@@ -269,7 +299,9 @@ export default {
             setCheckinEvent,
             setCheckoutEvent,
             checkInOutEvent,
-            loading
+            loading,
+            recentEvents,
+            selectedRecentsEvent
         }
     }
 }

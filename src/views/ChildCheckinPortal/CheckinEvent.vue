@@ -418,8 +418,8 @@ export default {
                 const res = await axios.post(`/api/CheckInAttendance/RegisterChildren`, mappedMembers)
                 console.log(res)
                 loading.value = false
-                if (res.data.response.toLowerCase().includes("successfull")) {
-                    checkinCode.value = res.data.returnObject.childCheckInCode
+                if (res.data.response.toLowerCase().includes("success")) {
+                    checkinCode.value = res.data.returnObject
                     displayModal.value = true
                     finish()
                 }   else {
