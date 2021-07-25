@@ -263,11 +263,13 @@
           <TransactionTable 
             :showEditTransaction="showEditTransaction" 
             :transactionDetails="transacPropsValue" 
-            :selectedTransactionType="selectedTransactionType" 
+            :selectedTransactionType="selectedTransactionType"
+            :journalEntry="journalEntry"
             @toggle-edit-form="closeIt" 
             @select-row="selectRow"
+            @select-journal="selectJournalEntry"
             @reload-accounts="reloadAccounts"
-            />
+          />
           <!-- <LedgerForm /> -->
         </div>
       </div>
@@ -294,62 +296,7 @@ export default {
     // LedgerForm,
   },
   setup() {
-    const transactions = ref([
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-    ]);
+    const transactions = ref([ ]);
     const cashAndBank = ref([
       {
         name: {
@@ -527,6 +474,7 @@ export default {
           type: "ledger",
           account: "Journal",
         };
+        journalEntry.value = { };
       }
       showEditTransaction.value = true;
     };
@@ -584,8 +532,7 @@ export default {
     const saveAccount = async () => {
       try {
         newAccount.value.accountType = 0;
-        const response = await transactionService.saveAccount(newAccount.value)
-        console.log(response, "SAVED response");
+        await transactionService.saveAccount(newAccount.value)
       } catch (error) {
         console.log(error);
       }
@@ -594,6 +541,16 @@ export default {
     const selectRow = (rowData) => {
       showEditTransaction.value = true;
       transacPropsValue.value = rowData;
+    }
+
+    const journalEntry = ref({ })
+    const selectJournalEntry = (rowData) => {
+      journalEntry.value = rowData;
+      showEditTransaction.value = true;
+      transacPropsValue.value = {
+        type: "ledger",
+        account: "Journal"
+      };
     }
     // saveAccount()
 
@@ -635,17 +592,16 @@ export default {
 
     const convertAmountToTenantCurrency = (account) => {
       if (!account.currency.shortCode) return 0;
-      if (currentUser.value && currentUser.value.currency.toLowerCase() === account.currency.shortCode.toLowerCase()) return account.balance;
+      if (currentUser.value && currentUser.value.currency && currentUser.value.currency.toLowerCase() === account.currency.shortCode.toLowerCase()) return account.balance;
       
       const amountInDollars = account.currency.shortCode !== "USD" ? rates.value[`usd${account.currency.shortCode.toLowerCase()}`] * account.balance : account.balance;
       
-      const tenantAmount = rates.value[`usd${currentUser.value.currency.toLowerCase()}`] * amountInDollars;
+      const tenantAmount = rates.value[`usd${currentUser.value && currentUser.value.currency ? currentUser.value.currency.toLowerCase() : ''}`] * amountInDollars;
       return tenantAmount;
     }
 
     const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
     const reloadAccounts = () => {
-      alert("rloading accounts")
       getAccountBalances()
     }
 
@@ -697,6 +653,8 @@ export default {
       currentUser,
       accountsAndBalancesList,
       reloadAccounts,
+      selectJournalEntry,
+      journalEntry,
     };
   },
 };

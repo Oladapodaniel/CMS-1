@@ -40,7 +40,6 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 if (props.fetchUsers === true) {
                     attendanceservice.getReport(route.query.id)
                     .then(res => {
-                        console.log(res, "in computed");
                         people.value = res.peopoleAttendancesDTOs;
                         emit("refreshed")
                     })
@@ -67,7 +66,6 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 attendanceservice.getReport(route.query.id)
                     .then(res => {
                         people.value = res.peopoleAttendancesDTOs;
-                        console.log(res);
                     })
                     .catch(err => {
                         console.log(err);

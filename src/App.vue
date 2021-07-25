@@ -37,11 +37,9 @@ export default {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
         store.dispatch("setCurrentUser", res.data);
-        console.log(res.data);
       } catch (err) {
         /*eslint no-undef: "warn"*/
         NProgress.done();
-        console.log(err.response);
         if (err.response && err.response.status === 401) {
           localStorage.setItem("token", "");
           router.push("/");
