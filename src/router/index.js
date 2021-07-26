@@ -1237,13 +1237,19 @@ const routes = [
                 import( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Guardian')
         }
         ]
-    }
+    },
     // {
     //     path: '/unauthorized',
     //     name: 'Unauthorized',
     //     component: () =>
     //         import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
     // }
+    {
+        path: '/expiredSubscription',
+        name: 'ExpiredSubscription',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/ExpiredSubscription')
+    }
 ]
 
 

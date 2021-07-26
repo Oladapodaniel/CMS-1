@@ -8,12 +8,10 @@ const authMixin = {
     },
     created() {
         const currentUser = store.getters.currentUser;
-        if (currentUser.subStatus === 'LIVE'){
-            router.push('/tenant')
-        }else{
-            return router.push('subscription')
-        }
         console.log(currentUser)
+        if (currentUser.subStatus === 'Expired'){
+            return router.push('/expiredSubcription')
+        }
     },
 }
 
