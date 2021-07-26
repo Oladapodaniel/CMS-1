@@ -134,5 +134,6 @@ export default {
     height: 60px;
     width: 60px;
     border-radius: 50%;
+    object-fit: cover;
 }
 </style>

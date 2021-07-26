@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row pt-4 pb-2 my-5">
             <div class="col-md-8 offset-md-2 border p-0 parent-img-box">
-                <img :src="guardian && guardian.person ? guardian.person.pictureUrl : ''" class="w-100" v-if="guardian && guardian.person ? guardian.person.pictureUrl : ''"/>
+                <img :src="guardian && guardian.person ? guardian.person.pictureUrl : ''" class="w-100 img-box" v-if="guardian && guardian.person ? guardian.person.pictureUrl : ''"/>
             </div>
         </div>
 
@@ -92,8 +92,13 @@ export default {
 <style scoped>
     .parent-img-box {
         height: 150px;
-        width:100px;
+        width:150px;
         border-radius: 22px;
+    }
+    .img-box {
+        height: 100%;
+        border-radius: 22px;
+        object-fit: cover;
     }
 
     .parent-info:nth-child(odd) {

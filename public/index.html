@@ -214,8 +214,6 @@
         let token = {
           accessToken: response.authResponse.accessToken
         }
-        console.log(response, "facebook");
-        console.log(response.authResponse.accessToken)
         axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
           .then(res => {
             if (res.data.isOnboarded) {
