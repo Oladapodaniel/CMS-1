@@ -221,6 +221,7 @@ export default {
       try {
         const response = await transactionals.getTransactionalAccounts();
         transactionalAccounts.value = response;
+        console.log(response, "Assets accs");
       } catch (error) {
         console.log(error);
       }

@@ -30,15 +30,24 @@ import 'primevue/resources/themes/saga-blue/theme.css'       //theme
 import 'primevue/resources/primevue.min.css'                 //core css
 import 'primeicons/primeicons.css'                          //icons
 
+import VueGtag from "vue-gtag-next";
+import VueLazyloadNext from 'vue-lazyload-next'
+import loadimage from './assets/loading.gif';
+import errorimage from './assets/file-not-found.png';
 
 
 NProgress.configure({ showSpinner: false });
 axios.interceptors.request.use((config) => {
     if (typeof window === 'undefined') return config;
     const token =  localStorage.getItem('token');
+    const checkinToken =  localStorage.getItem('checkinToken');
   
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    
+    if (checkinToken) {
+      config.headers.Authorization = `Bearer ${checkinToken}`;
     }
     // config.headers.Authorization = `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}`
     /*eslint no-undef: "warn"*/
@@ -53,6 +62,26 @@ axios.interceptors.request.use((config) => {
   })
 
 const app = createApp(App);
+
+app.use(VueGtag, {
+  property: {
+    id: "G-YNZ7GTSYZV"
+    // id: "UA-123456-7"
+  }
+})
+
+app
+  .use(
+    VueLazyloadNext, 
+    {
+      preLoad: 1.3,
+      error: errorimage,
+      loading: loadimage,
+      attempt: 1
+    }
+  )
+
+
 app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')
 // createApp(App).use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).mount('#app')
 app.component("Toast", Toast);

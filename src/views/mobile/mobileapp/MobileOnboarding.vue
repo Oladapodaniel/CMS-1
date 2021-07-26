@@ -34,8 +34,8 @@
 
                 <!-- track 4 -->
             <div class="row mt-3 align-text">
-              <div class="col-lg-12">
-               <router-link :to="{ name: 'ChurchSetUp' }"><button class="btn default-btn cta c-pointer">Start Now</button></router-link>
+              <div class="col-lg-12" style="position: absolute; z-index: 90;">
+               <router-link :to="{ name: 'OnboardingProcess' }"><button class="btn default-btn cta c-pointer">Start Now</button></router-link>
               </div>
             </div>
              <!-- end track 4 -->
@@ -87,6 +87,22 @@
   </div> -->
   <!-- end footer Area -->
 </template>
+
+<script>
+import { useRoute } from "vue-router"
+export default {
+  setup () {
+    const route = useRoute()
+    const getRoute = () => {
+      console.log(route.fullPath)
+    }
+    getRoute()
+    return {
+
+    }
+  }
+}
+</script>
 
 
 <style scoped>
@@ -149,8 +165,11 @@ h4{
 }
 .wave {
     position: relative;
-  background: #f1faff;
+  background: linear-gradient(
+45deg
+, #ebeff4, transparent);
   height: 80vh;
+  width: 83vw;
 }
 
 .mainheader {
@@ -292,6 +311,10 @@ h4{
   height: 100vh;
     position: fixed;
 }
+}
+
+.main-con {
+  margin: 0;
 }
 </style>
 

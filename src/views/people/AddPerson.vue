@@ -22,7 +22,7 @@
                       placeholder="--Select membership--"
                       style="width: 100%"
                     /> -->
-              <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/> 
+              <!-- <SelectElem :typ="'membership'" name="membership" :options="['--Select membership--', ...peopleClassifications]" value="--Select membership--" @input="itemSelected"/>
                   </div>
                 </div>
               </div> -->
@@ -461,7 +461,7 @@
                   v-model="groupToAddTo"
                   :options="allGroups"
                   style="width: 100%"
-                  :filter="true"
+                  :filter="false"
                   placeholder="Select a group"
                   optionLabel="name"
                 />
@@ -495,7 +495,7 @@
                 </div>
                 <div class="row mt-2">
                   <div class="col-md-6 d-md-flex justify-content-end">
-                    <button class="default-btn">Cancel</button>
+                    <button class="default-btn" data-dismiss="modal">Cancel</button>
                   </div>
                   <div class="col-md-6">
                     <button
@@ -641,7 +641,7 @@ export default {
       dayOfBirth: null,
       yearOfBirth: null,
       monthOfWedding: null,
-      dayOfWedding: 31,
+      dayOfWedding: null,
       yearOfWedding: null,
     });
 
@@ -939,6 +939,7 @@ export default {
     };
 
     const populatePersonDetails = (data) => {
+      console.log(data, "🛒🛒🛒🛒🛒🛒")
       person.firstName = data.firstName;
       person.email = data.email;
       person.lastName = data.lastName;
@@ -1003,6 +1004,8 @@ export default {
     const dismissAddToGroupModal = ref("");
 
     const addMemberToGroup = async () => {
+      console.log('personId:'+ route.params.personId, "groupId:"+ groupToAddTo.value.id,
+          groupToAddTo.value.id)
       addToGroupError.value = false;
       if (!groupToAddTo.value || !groupToAddTo.value.id) {
         addToGroupError.value = true;
@@ -1014,7 +1017,7 @@ export default {
           { personId: route.params.personId, groupId: groupToAddTo.value.id },
           groupToAddTo.value.id
         );
-        console.log(response, "RESPONSE");
+        console.log("RESPONSE", response);
         toast.add({
           severity: "success",
           summary: "Added Successfully",

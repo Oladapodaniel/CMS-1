@@ -1,16 +1,14 @@
 <template>
   <div class="container-wide">
     <div class="row">
-      <div class="col-md-6 mt-4">
+      <div class="col-md-7 mt-5">
         <div class="row">
           <div class="col-12 col-md-10">
             <div class="row">
               <div class="col-12">
-                <h5 class="appBranding mt-3">Customize Your App</h5>
-                <div class="mt-2"
-                  >Click on color tab, brand the App using your church
-                  colors</div
-                >
+                <h5 class="appBranding">Customize Your App</h5>
+                
+                <div class="mt-3"><span class="font-weight-700">NB:</span> Please choose a dark shade color, click out of the color box, the system will verify your color, then click save to continue.</div>
               </div>
 
               <!-- MOBILE AREA -->
@@ -24,9 +22,9 @@
         <div class="row mt-1">
           <div class="col-12 col-md-10">
             <div
-              class="row my-3 d-flex align-items-center justify-content-center"
+              class="row  align-items-center"
             >
-              <div class="d-flex align-items-center col-4 col-sm-8">
+              <div class="d-flex align-items-center col-8">
                 <h5 class="primaryColour mb-0">Primary Colour</h5>
                 <i
                   class="mt-1 pl-2 fa fa-question-circle-o c-pointer"
@@ -105,8 +103,8 @@
                     />
                 <!-- </div> -->
               </div>
-               <div class="row d-flex justify-content-end">
-               <div class="col-4 mt-3 col-md-12 d-flex justify-content-center">
+               <div class="row">
+               <div class="col-12 mt-3 d-flex justify-content-center">
                   <img
                 :src="imageURL"
 
@@ -116,24 +114,30 @@
              </div>
               <LoadingComponent :loading="loading" style="fontsize: 1rem" />
 
-              <div class="col-md-3 col-12 col-sm-0"></div>
-              <div class="col-4"></div>
-              <div
-                class="col-sm-12 btn primary-bg mt-5 mb-4 text-white default-btn border-0"
+              <!-- <div class="col-md-3 col-12 col-sm-0"></div>
+              <div class="col-4"></div> -->
+              
+            </div>
+          </div>
+         
+        </div>
+         <div class="row">
+            <div
+                class="col-6 offset-3 offset-md-2 btn primary-bg mt-5 mb-4 text-white default-btn border-0 px-0"
                 @click="saveAppDetails"
               >
                 Save and continue
               </div>
-            </div>
+               <div
+                  @click="skip"
+                  class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-2">
+                  Skip >>>
+                </div>
           </div>
-        </div>
       </div>
 
-      <div class="col-md-6 backgroundImage d-none d-md-block">
-        <div class="row">
-          <div class="col-12 text-center my-5 step">STEP 3 OF 4</div>
-          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
-        </div>
+      <div class="col-md-5 d-none d-md-block">
+     
         <div class="smartphone">
           <div class="content">
             <iframe style="width: 100%; border: none; height: 100%" />
@@ -367,7 +371,6 @@ import Tooltip from "primevue/tooltip";
 import LoadingComponent from "../../../components/loading/LoadingComponent";
 import { useToast } from "primevue/usetoast";
 import mobile_service from "../../../services/mobile/mobile-service"
-import { useRouter } from "vue-router"
 
 // import {ref} from 'vue'
 export default {
@@ -377,13 +380,12 @@ export default {
   components: {
     LoadingComponent,
   },
-  setup() {
+  setup(props, context) {
     const image = ref("");
     const colorBox = ref("");
     const colorPicked = ref("");
     const colorValid = ref("");
     const toast = useToast();
-     const router = useRouter()
 
     const changeColors = computed(() => {
       console.log(colorPicked);
@@ -401,15 +403,15 @@ export default {
       let stringedColor = `${colorPicked.value}`
       mobile_service.validateColor(stringedColor)
         .then((res) => {
-          console.log(res, "🎄🎄🎄");
+          console.log(res);
            colorValid.value = res.data ;
           loading.value = false;
 
             toast.add({
               severity: "success",
               summary: "Color Matched",
-              detail: "Color Matched successfully",
-              life: 3000,
+              detail: "Choose logo or click save button to continue",
+              life: 6000,
             });
 
 
@@ -420,23 +422,46 @@ export default {
               severity: "info",
               summary: "",
               detail: "Choose darker shade of the color",
-              life: 3000,
+              life: 4000,
             });
           console.log(err);
           loading.value = false;
         });
     };
 
+    const getSocialMediaDetails = () => {
+      axios
+        .get(`/mobile/v1/Profile/GetChurchProfile`)
+        .then((res) => {
+          console.log(res);
+          imageURL.value = res.data.returnObject.logoUrl
+          colorPicked.value = res.data.returnObject.churchAppBackgroundColor
+
+            
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getSocialMediaDetails()
+
  const saveAppDetails = () => {
         const formData = new FormData();
         formData.append("Logo", image.value);
-        formData.append("BackgroundColor", colorPicked.value);
+        formData.append("BackgroundColour", colorPicked.value);
 
         axios
           .put(`/mobile/v1/Profile/CustomizeApp`, formData)
           .then((res) => {
             console.log(res);
-            router.push({ name: "DonationSetup" });
+            let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: false,
+            donationForm: true
+          }
+          context.emit('saved-appbranding', changeState)
           })
           .catch((err) => {
             console.log(err);
@@ -448,10 +473,40 @@ export default {
       image.value = e.target.files[0];
       imageURL.value = URL.createObjectURL(image.value);
       console.log(image.value);
+      console.log(e)
     };
 
     const skip = () => {
-      router.push({ name: 'DonationSetup' })
+      if (imageURL.value && colorPicked.value) {
+        let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: false,
+            donationForm: true
+          }
+          context.emit('saved-appbranding', changeState)
+          console.log('all filllted');
+      } else {
+        let changeState = {
+          // tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: false,
+            donationForm: true
+          }
+          context.emit('saved-appbranding', changeState)
+          console.log('not all')
+      }
+
+    //   let changeState = {
+    //       // tab: true,
+    //       churchSetup: false,
+    //       socialMedia: false,
+    //       appBranding: false,
+    //       donationForm: true
+    //     }
+    //     context.emit('saved-appbranding', changeState)
     }
 
     return {
@@ -509,7 +564,8 @@ export default {
 /* style in iframe */
 .mobile-container-holder {
   position: absolute;
-  top: -40px;
+  top: -16px;
+  width: 194px
 }
 
 /* .image-container-small {
@@ -553,10 +609,10 @@ export default {
 /* The device with borders */
 .smartphone {
   position: relative;
-  width: 200px;
-  height: 350px;
+  width: 226px;
+  height: 439px;
   margin: auto;
-  top: 15.7rem;
+  top: 17.2rem;
   left: 13%;
   transform: translate(-50%, -50%);
   border: 16px black solid;
@@ -723,19 +779,6 @@ opacity: 1;
   height: 46px;
 }
 
-.skip-text {
-  border-top: 1px solid rgb(173, 173, 173);;
-  border-bottom: 1px solid rgb(173, 173, 173);;
-  position: relative;
-  top: 32em;
-}
-
-.skip-text:hover {
-  background: rgb(62, 68, 160);
-  border: 1px solid rgb(62, 68, 160);;
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-  cursor: pointer;
-}
 
 .step {
   font: normal normal bold 18px/24px Nunito Sans;

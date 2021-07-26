@@ -128,11 +128,27 @@
       border: none !important;
       outline: transparent;
     }
+
+    .swal-button--confirm {
+      background-color: #136acd !important;
+    }
   </style>
   <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" />
   <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
 
-  <!-- <link rel="stylesheet" href="style.css"> -->
+ <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/60ccab9765b7290ac636ac8f/1f8folltk';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
+  <!--End of Tawk.to Script-->
 
 </head>
 
@@ -166,16 +182,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
     integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
     crossorigin="anonymous"></script>
+    <span id="tawktohh"></span>
 
   <!-- Facebook SDK for Javascript -->
   <script>
     window.fbAsyncInit = function () {
 
       FB.init({
-        appId: '272808251120368',
+        appId: '479314263454002',
+        // appId: '272808251120368',
         cookie: true,
         xfbml: true,
-        version: 'v10.0'
+        version: 'v11.0'
+        // version: 'v10.0'
       });
 
       FB.AppEvents.logPageView();
@@ -195,8 +214,6 @@
         let token = {
           accessToken: response.authResponse.accessToken
         }
-        console.log(response, "facebook");
-        console.log(response.authResponse.accessToken)
         axios.post('https://churchplusv3coreapi.azurewebsites.net/Login/Facebook', token)
           .then(res => {
             if (res.data.isOnboarded) {
@@ -214,6 +231,8 @@
       });
     }
   </script>
+
+ 
 </body>
 
 </html>

@@ -5,12 +5,27 @@
                 <div class="col-sm-12 py-2">
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'churchplus'}" @click="changeTab('churchplus')">Churchplus</a>
                     <a class="mx-2 tab-link" :class="{'active': activeTab === 'sms'}" @click="changeTab('sms')" >SMS</a>
-                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sharelink'}">Share link</a>
+                    <a class="mx-2 tab-link" :class="{'active': activeTab === 'sharelink'}" @click="changeTab('sharelink')">Share link</a>
+                    <div class="col-md-12 pt-2" v-if=" activeTab === 'sharelink'">
+                        <span class="d-flex" @click="linkcopy">
+                            <input type="text"
+                            @keydown="(e) => e.preventDefault()"
+                            class="form-control mr-2"
+                            :value="location"
+                            ref="linkShareable"
+                            style="width:90%"
+                            />
+                            <span><i class="pi pi-copy c-pointer" style="font-size: 1.5rem"></i></span>
+                        </span>
+                         <Toast />
+                    </div>
                 </div>
             </div>
             <hr style="margin: 0">
-            <div class="mt-4 main-row">
-                <div class="row">
+        <div class="row" v-if="activeTab !== 'sharelink'">
+            <div class="col-md-12">
+                    <div class="mt-4 main-row">
+                <div class="row">  
                     <div class="col-sm-4 d-flex justify-content-end align-items-center text-sm-right label-text">
                         <span>From</span>
                     </div>
@@ -125,11 +140,13 @@
                     </div>
                     <div class="col-sm-12 d-flex justify-content-end">
                         <a class="action-btn mx-2 my-1" data-dismiss="modal">Cancel</a>
-                        <a class="action-btn mx-2 my-1">Preview</a>
+                        <a class="action-btn mx-2 my-1" @click="reportPreview">Preview</a>
                         <a class="action-btn mx-2 my-1 save-action-btn mr-sm-5" @click="sendReport">Send</a>
                     </div>
                 <!-- </div> -->
             </div>
+            </div>
+        </div>
         </div>
     </div>
 </template>
@@ -138,11 +155,14 @@
 import { ref, watch } from 'vue'
 import axios from "@/gateway/backendapi";
 import attendanceservice from '../../services/attendance/attendanceservice';
+import { useToast } from "primevue/usetoast";
+
 
     
     export default {
         props: ['eventName', 'stats'],
         setup(props, { emit }) {
+            const toast = useToast();
             const activeTab = ref("churchplus");
             const userEmail = ref("")
             const message = ref("");
@@ -153,11 +173,18 @@ import attendanceservice from '../../services/attendance/attendanceservice';
             const churchName = ref("")
             const sendCopy = ref("")
             const attachReport = ref(false)
+            const copyMyLink = ref(false);   
+            const linkShareable = ref(null);
+            const location = ref(window.location);
+             const activityToday = ref("");
 
             watch(() => {
                 if (props.stats) {
+                    
                     message.value = attendanceservice.generateEventReportDefaultMessage(props.stats)
                 }
+                console.log(message.value, "Godstar")
+                console.log(message.value, "Ogba")
             })
 
             const changeTab = (tab) => activeTab.value = tab;
@@ -175,9 +202,15 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 if (invalidDestination.value) invalidDestination.value = false;
             }
 
-            const event = ref(props.eventName)
-
+           
+          
             const sendReport = () => {
+                axios.get(`/api/Events/markAsSent?activityId=${props.stats.activityToday.id}`)
+                 .then(res =>{
+                     console.log(res)
+                 }).catch(err => {
+                     console.log(err)
+                 })
                 const messageObj = {
                     contacts: [],
                     // contacts: recipients.value,
@@ -220,6 +253,26 @@ import attendanceservice from '../../services/attendance/attendanceservice';
             }
             getUserEmail()
 
+             const linkcopy = () => {
+              try {
+                copyMyLink.value = true;
+                const b = linkShareable.value;
+                b.select();
+                b.setSelectionRange(0, 200); /* For mobile devices */
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+                toast.add({
+                  severity: "info",
+                  summary: "Link Copied",
+                  detail: "Shareable link copied to your clipboard",
+                  life: 4000,
+                });
+              } catch (error) {
+                console.log(error);
+              }
+            };
+
             const subjectFieldIsActive = ref(false);
 
             const enableSubjectField = () => {
@@ -236,7 +289,9 @@ import attendanceservice from '../../services/attendance/attendanceservice';
             }
 
 
-            return { changeTab, activeTab,  recipients, removeRecipient, addRecipient, event, userEmail, getUserEmail, sendReport,
+            return { changeTab, activeTab, linkcopy, recipients, removeRecipient, addRecipient, userEmail, getUserEmail, sendReport,
+                linkShareable,
+                copyMyLink,
                 message,
                 sendToMysef,
                 subject,
@@ -248,6 +303,8 @@ import attendanceservice from '../../services/attendance/attendanceservice';
                 subjectFieldIsActive,
                 enableSubjectField,
                 attachReport,
+                location,
+                activityToday 
             }
         }
     }

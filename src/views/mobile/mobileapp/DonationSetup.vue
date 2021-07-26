@@ -1,25 +1,83 @@
 <template>
   <div class="container-wide">
+    <Toast />
+    <ConfirmDialog />
     <!-- write up part -->
     <div class="row">
-      <div class="col-md-6 mt-5" :class="{ 'slide-right': slide }">
+      <div class="col-md-12 mt-5" :class="{ 'slide-right': slide }">
         <div class="row">
           <div class="col-md-7">
             <h2 class="events">Online Donation</h2>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-5 d-flex justify-content-end">
             <button
               class="default-btn primary-bg border-0 font-weight-700 text-white" data-toggle="modal" data-target="#paymentModal"
               style="font-size:13px"
             >
-              Add Payment Form
+              Add Donation Form
             </button>
           </div>
+          <!-- <div class="col-12">
+              <Paymentonboarding/>
+          </div> -->
           <div class="col-12">
             <p>Enter bank details to set up online donation</p>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-7">
+            <div class="col-md-7 mt-3 px-md-0 col-9 ">Bank Details</div>
+          </div>
+          <div class="col-md-5 d-flex justify-content-end">
+            <button
+              class=" col-4 mt-2 col-md-4 mr-2 btnIcons c-pointer" data-toggle="modal" data-target="#paymentOnBoardingModal"
+              style="font-size:18px"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+        <!-- List for the bank details -->
 
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Account Name</th>
+              <th>Account Number</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+         <tbody>
+          <tr v-for="(bankAccount, index) in bankAccounts" :key="index">
+            <td>{{bankAccount.accountName}}</td>
+            <td>{{bankAccount.accountNumber}}</td>
+            <td>{{bankAccount.description}}</td>
+            <td>
+                <div class="col-2 align-self-center cursor-pointer" @click="showConfirmModalBank(bankAccount.id)">
+                  <i class="fa fa-trash"></i>
+                </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+        <!-- <div class="row table table-border">
+          <div class="col-md-12 px-0">
+            <div class="row">
+              <div class="col-md-4">Account Name</div>
+              <div class="col-md-3">Account Number</div>
+              <div class="col-md-2">Description</div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row" v-for="(bankAccount, index) in bankAccounts" :key="index">
+              <div class="col-md-4">{{bankAccount.bankName}}</div>
+              <div class="col-md-3">{{bankAccount.bankNumber}}</div>
+              <div class="col-md-2">{{bankAccount.description}}</div>
+              <div class="col-md-1"></div>
+            </div>
+          </div>
+        </div> -->
+       
         <table class="table table-border">
           <thead class="thead-light">
             <tr>
@@ -76,97 +134,65 @@
               </div>
             </div>
           </div>
-
-
-
-        <!-- <div class="row mt-4">
-          <div class="offset-1 offset-md-0 col-10">Choose Bank</div>
-          <div class="offset-1 offset-md-0 col-10">
-            <Dropdown
-              v-model="selectedBank"
-              class="w-100"
-              :options="nigerianBanks"
-              optionLabel="name"
-              :filter="false"
-              :placeholder="selectedBank ? selectedBank.name : 'Select'"
-              :showClear="false"
-            >
-            </Dropdown>
-          </div>
-        </div> -->
-        <!--
-        <div class="row mt-4">
-          <div class="offset-1 offset-md-0 col-10">Enter account number</div>
-          <div class="offset-1 offset-md-0 col-10">
-            <input
-              class="form-control h-100"
-              type="number"
-              v-model="accountNumber"
-              @blur="resolveCustomerDetail"
-              placeholder="Account Number"
-            />
-          </div>
-        </div> -->
-
-        <div class="row mt-4">
-          <!-- <div class="offset-1 offset-md-0 col-10">Enter account name</div>
-          <div class="offset-1 offset-md-0 col-10">
-            <input
-              type="text"
-              v-model="accountName"
-              placeholder="Account name"
-              ref="accNameRef"
-              class="form-control"
-            />
-            <div class="mt-1">
-              <em class="mt-1"
-                >This will automatically come up, kindly confirm before clicking
-                on save.</em
-              >
-            </div>
-          </div> -->
-          <!-- <div
-            class="offset-1 offset-md-0 col-md-2 align-self-start"
-            v-if="loading"
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="paymentOnBoardingModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
           >
-            <div
-              class="spinner-border text-primary"
-              style="width: 3rem; height: 3rem"
-              role="status"
-            >
-              <span class="sr-only">Loading...</span>
+            <div class="modal-dialog modal-lg" style="max-width: 600px;">
+              <div class="modal-content">
+                <div class="modal-header pb-0">
+                  <h5 class="modal-title" style="font: normal normal 800 28px Nunito sans;" id="exampleModalLabel">
+                  Bank Details
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close border-0"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    ref="closeModalButton"
+                  >X</button>
+                </div>
+                <div class="modal-body pt-0">
+                  <paymentonboarding @form-created="formCreated" @closemodal="closeModal" />
+                </div>
+                <!-- <div class="modal-footer">
+                   <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button type="button" class="btn-primary default-btn primary-bg border-0 font-weight-700 text-white">
+                    Save
+                  </button>
+                </div> -->
+              </div>
             </div>
-          </div> -->
+          </div>
+
+        <div class="row mt-4">
+        
           <div
             class="col-11 ml-3
-             btn primary-bg mt-5 text-white default-btn border-0"
+             btn primary-bg my-2 text-white default-btn border-0"
             @click="completeSetUp"
-          >
-             continue
+          ><i class="pi pi-spin pi-spinner text-white mr-2" v-show="setupSpinner"  style="fontSize: 16px"></i>
+             Finish Setup
+          </div>
+          <div
+            @click="skip"
+            class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-3">
+            Skip >>>
           </div>
         </div>
       </div>
-
-      <!-- image part -->
-      <div
-        class="col-md-6 col-12 bg-image d-none d-md-block"
-        :class="{ 'slide-left': slide }"
-      >
-        <div class="row mt-3">
-          <div class="col-md-12 text-center my-5 step">STEP 4 of 4</div>
-          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
-          <div class="col-12 text-center mt-n5" v-if="setupSpinner">
-            <i class="pi pi-spin pi-spinner text-white"  style="fontSize: 5rem"></i>
-          </div>
-        </div>
-        <div class="image-dis">
-          <!-- <img
-            src="../../../assets/mobileonboarding/church1.svg"
-            style="height: 40%; width: 40%"
-          /> -->
-        </div>
       </div>
-    </div>
+   
     <!-- <Toast /> -->
   </div>
 </template>
@@ -178,16 +204,25 @@ import router from "../../../router";
 import finish from "../../../services/progressbar/progress";
 // import { useToast } from "primevue/usetoast";
 import axio from "axios";
-import store from "../../../store/store";
+// import store from "../../../store/store";
 import paymentform from "../../../components/genericmobile/paymentform";
+import store from '../../../store/store';
+import { useToast } from "primevue/usetoast";
+import Paymentonboarding from './PaymentOnBoarding';
+import { useConfirm } from "primevue/useConfirm";
+// import paymentonboarding from './PaymentOnBoarding';
 export default {
   components: {
-    paymentform
+    paymentform,
+    Paymentonboarding
     // DonationSetup,
     // Dropdown,
   },
-  setup() {
+  setup(props, context) {
+    const toast = useToast()
+    const confirm = useConfirm()
     const nigerianBanks = ref([]);
+    const bankAccounts = ref([]);
     const selectedBank = ref("");
     const accountNumber = ref("");
     const accountName = ref("");
@@ -207,27 +242,31 @@ export default {
     const setupSpinner = ref(false)
 
     const completeSetUp = () => {
-      // router.push({ name: "SocialMedia" });
-      // let bankDetails = {
-      //   accountName: accountName.value,
-      //   accountNumber: accountNumber.value,
-      //   banks: selectedBank.value
-      // }
-      // banks.value.push(bankDetails)
-      console.log(banks.value);
-      store.dispatch("completeSetUp", banks.value);
-      axios
-        .put(`/mobile/v1/Profile/UpdateChurchProfile`, store.getters.formData)
-        .then((res) => {
-          console.log(res, "🎄🎄🎄");
+      let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: false,
+            appBranding: false,
+            donationForm: true
+          }
+          context.emit('saved-donation', changeState)
 
+      const currentUser = store.getters.currentUser
+      setupSpinner.value = true
+      axios
+        .post(`/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`)
+        .then((res) => {
+          console.log(res);
+          setupSpinner.value = false
+
+          setTimeout(() => {
+            router.push({ name:'OnboardingSuccessful'});
+          }, 1000)
         })
         .catch((err) => {
           console.log(err);
         });
-        setTimeout(() => {
- router.push({ name:'OnboardingSuccessful'});
-        }, 4000)
+        
     };
 
     const getBanks = () => {
@@ -279,19 +318,19 @@ export default {
       formsArr.value.push({ name: data.name, accountName: data.accountName, bank: data.bank });
     }
 
+    const closeModal = (bankDetails) => {
+      toast.add({severity:'success', summary: 'Bank Details Successfully Added', detail:'The account was added successful', life: 4000});
+      closeModalButton.value.click();
+      console.log(bankDetails, 'bankDetails list');
+      bankAccounts.value.push(bankDetails)
+    }
+
     
     const getPaymentForm = () => {
       axios
         .get("/api/PaymentForm/GetAll")
         .then((res) => {
-          console.log(res);
           formsArr.value = res.data
-          // formsArr.value = nigerianBanks.value.forEach(i => {
-          //   // return i.id === formsArr.
-          //   let index = formsArr.value.findIndex(j => j.id === i.id)
-          //   if(index > 0) return formsArr.value[index] = i
-          // })
-          // console.log(formsArr.value)
         })
         .catch((err) => {
           console.log(err);
@@ -299,12 +338,82 @@ export default {
     };
     getPaymentForm();
 
+    const getAllChurchBank = () => {
+      axios
+        .get("/getAllChurchBanks")
+        .then((res) => {
+          console.log(res, 'all bank details');
+          bankAccounts.value = res.data.returnObject
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getAllChurchBank();
+
+      const showConfirmModalBank = (id) => {
+        confirm.require({
+          message: "Are you sure you want to proceed?",
+          header: "Confirmation",
+          icon: "pi pi-exclamation-triangle",
+          acceptClass: "confirm-delete",
+          rejectClass: "cancel-delete",
+          accept: () => {
+            deleteBankUser(id);
+            // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+          },
+          reject: () => {
+            toast.add({
+              severity: "info",
+              summary: "Rejected",
+              detail: "You have rejected",
+              life: 3000,
+            });
+          },
+        });
+      };
+       const deleteBankUser = (id) => {
+        axios
+          .delete(`deleteTenantBank?Id=${id}`)
+          .then((res) => {
+            // alert('deleted');
+            console.log(res, 'deleted bank user');
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `${res.data.response}`,
+              life: 4000,
+            });
+            bankAccounts.value = bankAccounts.value.filter(
+              (tenant) => tenant.id !== id
+            );
+
+          })
+          .catch((err) => {
+            console.log(err)
+              toast.add({
+                severity: "error",
+                summary: "Unable to delete",
+                detail: "An error occurred, please try again",
+                life: 4000,
+              });
+          });
+      };
+
     const skip = () => {
-      slide.value = true
       setupSpinner.value = true
-      setTimeout(() => {
-        router.push({ name: "OnboardingSuccessful" })
-      }, 4000)
+      const currentUser = store.getters.currentUser
+      axios
+        .post(`/mobile/v1/Feeds/SetupChurchPostCategories?tenantID=${currentUser.tenantId}`)
+        .then((res) => {
+          console.log(res);
+          setTimeout(() => {
+            router.push({ name: "OnboardingSuccessful" })
+          }, 1000)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
     return {
       nigerianBanks,
@@ -321,7 +430,11 @@ export default {
       closeModalButton,
       formsArr,
       skip,
-      setupSpinner
+      setupSpinner,
+      closeModal,
+      bankAccounts,
+      deleteBankUser,
+      showConfirmModalBank
     };
   },
 };
@@ -519,17 +632,10 @@ export default {
 }
 
 .skip-text {
-  border-top: 1px solid rgb(173, 173, 173);
-  border-bottom: 1px solid rgb(173, 173, 173);
-  position: relative;
+  background: rgba(0, 0, 0, 0.707);
+  position: fixed;
   top: 32em;
+  width: 20%
 }
 
-.skip-text:hover {
-  background: rgb(62, 68, 160);
-  border-top: 1px solid rgb(62, 68, 160);;
-  border-bottom: 1px solid rgb(62, 68, 160);;
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-  cursor: pointer;
-}
 </style>

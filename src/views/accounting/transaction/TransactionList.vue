@@ -263,11 +263,13 @@
           <TransactionTable 
             :showEditTransaction="showEditTransaction" 
             :transactionDetails="transacPropsValue" 
-            :selectedTransactionType="selectedTransactionType" 
+            :selectedTransactionType="selectedTransactionType"
+            :journalEntry="journalEntry"
             @toggle-edit-form="closeIt" 
             @select-row="selectRow"
+            @select-journal="selectJournalEntry"
             @reload-accounts="reloadAccounts"
-            />
+          />
           <!-- <LedgerForm /> -->
         </div>
       </div>
@@ -294,62 +296,7 @@ export default {
     // LedgerForm,
   },
   setup() {
-    const transactions = ref([
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-      {
-        check: false,
-        date: "feb 17, 2021",
-        descHead: "Write a descrition",
-        desc: "Cash on Hand",
-        amount: "N0.00",
-        category: "Choose a category",
-        mark: "Marked",
-      },
-    ]);
+    const transactions = ref([ ]);
     const cashAndBank = ref([
       {
         name: {
@@ -441,12 +388,6 @@ export default {
     };
 
     const transactionItem = (e) => {
-      // selectedTransaction.value = e.target.innerHTML
-
-      console.log(
-        e.target.children[0].innerHTML,
-        e.target.children[0].nextElementSibling.innerHTML
-      );
       selectedTransaction.value = {
         type: e.target.children[0].innerHTML,
         amount: e.target.children[0].nextElementSibling.innerHTML,
@@ -475,7 +416,6 @@ export default {
               country: i.name,
             };
           });
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
     };
@@ -490,7 +430,6 @@ export default {
               i.country.toLowerCase().includes(currencyText.value.toLowerCase())
             );
         });
-        // console.log(currencyText)
       } else {
         return currencyList.value;
       }
@@ -502,7 +441,6 @@ export default {
           if (i)
             return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
-        // console.log(currencyText)
       } else {
         return accountType.value;
       }
@@ -514,7 +452,6 @@ export default {
           if (i)
             return i.toLowerCase().includes(accountText.value.toLowerCase());
         });
-        // console.log(currencyText)
       } else {
         return liabilities.value;
       }
@@ -537,6 +474,7 @@ export default {
           type: "ledger",
           account: "Journal",
         };
+        journalEntry.value = { };
       }
       showEditTransaction.value = true;
     };
@@ -572,23 +510,12 @@ export default {
     const getCashAndBanks = async () => {
       try {
         const response = await transactionService.getCashAndBank();
-        // cashAndBank.value = response;
         cashAndBankItems.value = response;
       } catch (error) {
         console.log(error);
       }
     }
     getCashAndBanks();
-
-    // const testPoint = async () => {
-    //   try {
-    //     const response = await transactionService.getTransactions();
-    //     console.log(response, "test point");
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
-    // testPoint();
 
     const selectedTransactionType = ref(-1)
     const selectAnAccount = (account, index) => {
@@ -605,8 +532,7 @@ export default {
     const saveAccount = async () => {
       try {
         newAccount.value.accountType = 0;
-        const response = await transactionService.saveAccount(newAccount.value)
-        console.log(response, "SAVED response");
+        await transactionService.saveAccount(newAccount.value)
       } catch (error) {
         console.log(error);
       }
@@ -616,6 +542,16 @@ export default {
       showEditTransaction.value = true;
       transacPropsValue.value = rowData;
     }
+
+    const journalEntry = ref({ })
+    const selectJournalEntry = (rowData) => {
+      journalEntry.value = rowData;
+      showEditTransaction.value = true;
+      transacPropsValue.value = {
+        type: "ledger",
+        account: "Journal"
+      };
+    }
     // saveAccount()
 
     const accountsAndBalances = ref([ ])
@@ -624,7 +560,6 @@ export default {
         const response = await transaction_service.getCashAndBankAccountBalances();
         accountsAndBalances.value = response;
         accountsAndBalances.value.unshift({ text: "All Accounts", balance: totalAccountBalances.value })
-        console.log(response, "account and balances");
         let index = response.findIndex(i => i.text === "All Accounts")
 
         if (index >= 0) {
@@ -651,40 +586,24 @@ export default {
       let sum = 0;
       for (let account of accountsAndBalances.value) {
         sum += convertAmountToTenantCurrency(account);
-        console.log(sum, "sum");
       }
       return Number.parseFloat(sum).toFixed(2);
     })
 
     const convertAmountToTenantCurrency = (account) => {
-      console.log(rates.value, "rates");
-      console.log(account);
       if (!account.currency.shortCode) return 0;
-      if (currentUser.value.currency.toLowerCase() === account.currency.shortCode.toLowerCase()) return account.balance;
-      console.log(`usd${account.currency.shortCode.toLowerCase()}`, "BB");
-      console.log(rates.value[`usd${account.currency.shortCode.toLowerCase()}`, "AAAA"]);
+      if (currentUser.value && currentUser.value.currency && currentUser.value.currency.toLowerCase() === account.currency.shortCode.toLowerCase()) return account.balance;
+      
       const amountInDollars = account.currency.shortCode !== "USD" ? rates.value[`usd${account.currency.shortCode.toLowerCase()}`] * account.balance : account.balance;
-      console.log(amountInDollars, "AMOunt inDOllars");
-      console.log(rates.value[`usd${currentUser.value.currency.toLowerCase()}`], "Tenant strint");
-      const tenantAmount = rates.value[`usd${currentUser.value.currency.toLowerCase()}`] * amountInDollars;
-      console.log(tenantAmount, "Tenant Amount");
+      
+      const tenantAmount = rates.value[`usd${currentUser.value && currentUser.value.currency ? currentUser.value.currency.toLowerCase() : ''}`] * amountInDollars;
       return tenantAmount;
     }
 
-    axios.get("/api/Financials/Accounts/Transactions/GetIncomeAndExpense")
-      .then(res => {
-        console.log(res, "INCEXP TRANS");
-      })
-      .catch(err => {
-        console.log(err);
-      })
-
-      const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
-      const reloadAccounts = () => {
-        getAccountBalances()
-      }
-
-      
+    const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
+    const reloadAccounts = () => {
+      getAccountBalances()
+    }
 
     return {
       transactions,
@@ -734,6 +653,8 @@ export default {
       currentUser,
       accountsAndBalancesList,
       reloadAccounts,
+      selectJournalEntry,
+      journalEntry,
     };
   },
 };

@@ -1,12 +1,12 @@
 <template>
   <div class="wave">
     <div class="container">
-      <div class="row d-flex align-items-center containerheight">
+      <div class="row containerheight">
         <div class="col-lg-6 col-sm-12">
           <div class="col">
             <!-- track 1 -->
-            <div class="row">
-              <div class="col-lg-12 text-sm-center text-md-left fss align-text-main">
+            <div class="row mt-5">
+              <div class="col-lg-12 text-sm-center text-lg-left fss align-text-main">
                 <h2 class="font-weight-bold mainheader">Welldone! Your app is ready</h2>
               </div>
             </div>
@@ -15,92 +15,90 @@
             <!-- track 2 -->
             <div class="row mt-3 align-text">
               <div class="col-lg-12">
-                <h5 class="text-wrap h6 ">
-                  Congrats, you have successfully set up your Churchplus App.
-                  Curious what you can do? Head on over to the menu.
+                <h5 class="text-wrap h6 line-height">
+                  Congrats, you have successfully set up your Churchplus App. <br />
+                  <span>But what  should i really do next?</span> <span class="d-none d-lg-inline">👉👉👉</span><span class="d-inline d-lg-none">👇👇👇</span>
                 </h5>
               </div>
             </div>
             <!-- end track 2 -->
 
             <!-- track 3 -->
-            <div class="row mt-3  align-text d-flex">
-              <div class="col-lg-9 mt-4">
-                <h5 class="text-wrap h6">Start Sharing with members of your church</h5>
-              </div>
-              <div class="col-lg-9 mt-4">
-                <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" row="5" style="background: transparent"></textarea>
-              </div>
-              <div class="col-3 cta px-0 d-none d-lg-block align-self-center" @click="copyLink">
-                <button class="btn default-btn c-pointer">Copy</button>
-              </div>
-            </div>
-            <!-- end track 3 -->
-
-            <!-- end track 4 -->
-            <div class="row d-sm-block d-lg-none text-center show-on-small-screen at-screen">
-                <div class="col-12 cta px-0">
-                <button class="btn default-btn c-pointer">Copy</button>
-              </div>
-            </div>
-            <!-- end track 4 -->
-
-
-
-            <!-- track 5 -->
-            <div class="row mt-3 align-text d-none d-lg-block">
-              <div class="col-lg-12 d-flex pl-0">
-                <div class="col-4 col-sm-3">
-                  <img
-                    class="w-100 mt-5"
-                    src="../../../assets/mobileonboarding/Google-play-logo.png"
-                    alt="phone image"
-                  />
-                </div>
-                <div class="col-4 col-sm-3">
-                  <img
-                    class="w-100 mt-5"
-                    src="../../../assets/mobileonboarding/app-store-logo.png"
-                    alt="phone image"
-                  />
-                </div>
-              </div>
-            </div>
-             <!-- end track 5 -->
-
- <!--  track 6 -->
-            <div class="row mt-3 align-text d-sm-block d-lg-none text-center show-on-small-screen">
-              <div class="col-lg-12 d-flex pl-0">
-                <div class="col-4 offset-2 col-sm-3">
-                  <img
-                    class="w-100 mt-5"
-                    src="../../../assets/mobileonboarding/Google-play-logo.png"
-                    alt="phone image"
-                  />
-                </div>
-                <div class="col-4 col-sm-3">
-                  <img
-                    class="w-100 mt-5"
-                    src="../../../assets/mobileonboarding/app-store-logo.png"
-                    alt="phone image"
-                  />
-                </div>
-              </div>
-            </div>
-            <!-- end track 6 -->
-          </div>
-        </div>
-
-        <div class="col-lg-6 col-sm-12">
-          <div class="col text-center">
-            <div class="image mt-3">
+            <div class="row mt-5">
+              <div class="col-12">
+            <div class="image">
               <img
-                class="w-100 mt-5"
+                class="w-100 "
                 src="../../../assets/mobileonboarding/phone1.png"
                 alt="phone image"
               />
             </div>
           </div>
+              
+            </div>
+            </div>
+          </div>
+        
+
+        <div class="col-lg-6 col-sm-12">
+          <div class="row mt-5">
+            <div class="col-12 subheader">
+                Here are your next steps 😎
+              </div>
+              <div class="col-12">
+            <div class="row">
+              <div class="col-1 mt-3  number-text">1.</div>
+              <div class="col-9 mt-4">
+                <h5 class="text-wrap h6"> Start Sharing with members of your church</h5>
+                <div class="mt-2">
+                  <textarea type="text" ref="link" value="https://play.google.com/store/apps/details?id=com.churchplus.app.genericapp" class="border-0 w-100 ctatext link-area" rows="2" style="background: transparent" :disabled="false"></textarea>
+                </div>
+                <div class="px-0 cta text-center" @click="copyLink">
+                <button class="btn default-btn c-pointer ml-md-3">Copy Link</button>
+              </div>
+              </div>
+              
+              
+            </div>
+            <div class="row push-down">
+              <div class="col-1 number-text">2.</div>
+              <div class="col-9 mt-1 bring-forward line-height">
+                Click on the button below to make a post to your mobile app and your social media page for you to get your members engaged with events and activities going on in your church.
+                <div class="col-12  px-0 text-center mt-2 bring-forward" @click="post">
+                <button class="btn default-btn bg-primary border-0 text-white c-pointer ml-md-3">Post Now</button>
+              </div>
+              </div>
+            </div>
+
+          </div>
+          
+              <!-- <div class="col-lg-12 d-flex pl-0 bring-forward">
+                <div class="col-4 col-sm-3">
+                  <img
+                    class="w-100 mt-5"
+                    src="../../../assets/mobileonboarding/Google-play-logo.png"
+                    alt="phone image"
+                  />
+                </div>
+                <div class="col-4 col-sm-3">
+                  <img
+                    class="w-100 mt-5"
+                    src="../../../assets/mobileonboarding/app-store-logo.png"
+                    alt="phone image"
+                  />
+                </div>
+              </div> -->
+              
+              
+              <!-- <div class="col-3 ml-3 mt-3 text-white bg-primary default-btn border-0" >
+                 
+              </div> -->
+
+            
+          </div>
+          
+
+          
         </div>
       </div>
 
@@ -120,9 +118,10 @@
           </svg>
         </div>
       </div>
+    </div>
       <!-- end wave area -->
     </div>
-  </div>
+  
 
   <!-- footer Area -->
   <div class="container mt-5 footer-area">
@@ -139,6 +138,7 @@
 <script>
 import { ref } from 'vue'
 import { useToast } from "primevue/usetoast";
+import router from '../../../router';
 export default {
   setup() {
 
@@ -146,6 +146,7 @@ export default {
       const toast = useToast()
 
       const copyLink = () => {
+        console.log(link.value.value)
                 link.value.select();
                 link.value.setSelectionRange(0, link.value.value.length); /* For mobile devices */
 
@@ -158,9 +159,13 @@ export default {
                     life: 3000,
                 });
             }
+      const  post = () => {
+        router.push({ name: 'SocialPost' })
+      }
     return {
       copyLink,
-      link
+      link,
+      post
     }
   },
 }
@@ -175,13 +180,9 @@ export default {
 }
 
 .containerheight {
-  height: 80vh;
+  height: 100vh;
 }
-.wave {
-  position: relative;
-  background: #f1faff;
-  height: 80vh;
-}
+
 .mainheader {
   font: normal normal 800 55px/64px Nunito Sans;
   font-family: Nunito Sans;
@@ -189,16 +190,17 @@ export default {
 }
 
 .subheader {
-  font: normal normal normal 18px Nunito Sans;
+  font: normal normal bold 25px Nunito Sans;
   font-family: Nunito Sans;
-  font-size: 18px;
-  color: #fff;
+  color: #020e1c9f;
+  /* margin-top: 80px; */
 }
 
 .ctatext {
   font: normal normal bold 18px/27px Nunito Sans;
   font-family: Nunito Sans;
  color: #020e1ca1;
+ overflow: hidden;
 }
 
 .cta {
@@ -320,6 +322,43 @@ export default {
 .link-area:focus {
   border: none;
   outline: none
+}
+
+.bring-front {
+  z-index: 1;
+  margin-top: 56px;
+}
+
+.bring-front h5 {
+  font-size: 19px;
+  font-weight: 700
+}
+
+.bring-forward {
+  z-index: 1;
+}
+
+.number-text {
+  font-size: 32px;
+}
+
+.line-height{
+  line-height: 28px;
+}
+
+@media (min-width: 996px) {
+  .push-down {
+    margin-top: 60px
+  }
+}
+
+.wave {
+    position: relative;
+  background: linear-gradient(
+45deg
+, #ebeff4, transparent);
+  height: 80vh;
+  width: 83vw;
 }
 </style>
 

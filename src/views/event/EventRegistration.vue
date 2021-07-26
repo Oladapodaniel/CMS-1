@@ -18,11 +18,12 @@
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       ></div>
-      <div class="col-md-7 text-center mb-3">
-        <div class="font-weight-bold">
+      <div class="col-md-7 mb-3">
+        <span class="font-weight-bold" style="font-size: 1.2em">
           {{ eventData.name }}
-        </div>
-        <h5 class="mt-2">Event Registration</h5>
+        </span>
+        <span v-if="fullEventData.registrationAmount"> - {{ tenantCurrency }} {{ fullEventData.registrationAmount }}</span>
+        <div class="">Event Registration</div>
         <div class="italicize">{{ eventData.date }}</div>
       </div>
     </div>
@@ -215,13 +216,15 @@
           <div class="col-md-7 py-4 text-center">
             <button class="default-btn mr-3" @click="notme">Not Me</button>
             <button
+              :data-toggle="fullEventData.paymentFormId ? 'modal' : ''"
+              :data-target="fullEventData.paymentFormId ? '#PaymentOptionModal' : ''"
               class="default-btn add-btn"
-              @click="confirmCheck"
+              @click="confirmToRegister"
               :disabled="
                 !person.name || person.name.length < 1 || !person.address
               "
             >
-              Confirm To Register
+              {{ fullEventData.paymentFormId ? 'Make payment to register' : 'Confirm to register' }}
             </button>
           </div>
         </div>
@@ -237,7 +240,28 @@
           Powered by CHURCHPLUS
         </p>
       </div>
-
+       <!-- Modal -->
+          <div class="modal fade" id="PaymentOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header bg-modal">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Payment methods</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ref="close">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body p-0 bg-modal pb-5">
+                  <PaymentOptionModal :close="close" :donation="donationObj" @selected-gateway="setGateway" @donation-confirmed="setConfirmDonation"/>
+                  <!-- :orderId="formResponse.orderId" :donation="donationObj"  :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" -->
+                </div>
+                <!-- <div class="modal-footer bg-modal">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div> -->
+                </div>
+              </div>
+            </div>
+      <ConfirmDialog />
       <Toast />
     </div>
   </div>
@@ -255,9 +279,16 @@ import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import swal from "sweetalert";
 import Dropdown from "primevue/dropdown";
+import PaymentOptionModal from "../../components/paymentoption/EventRegPayment.vue"
+import finish from '../../services/progressbar/progress';
+import store from '../../store/store';
+// import Dialog from 'primevue/dialog';
 
 export default {
-  components: { Dropdown },
+  components: {
+    Dropdown,
+    PaymentOptionModal
+  },
   setup() {
     const connectName = ref("");
     const appltoggle = ref(false);
@@ -274,6 +305,11 @@ export default {
     const toast = useToast();
     const submitBtn = ref(null);
     const loaded = ref(false);
+    const close = ref("")
+    const donationObj = ref({})
+    const fullEventData = ref({})
+    const selectedGateway = ref("")
+    const currentUser = ref(store.getters.currentUser)
 
     const birthMonth = ref("");
     const months = [
@@ -348,6 +384,20 @@ export default {
     const personHasAddress = ref(false);
     const personData = ref({});
     const bannerUrl = ref("")
+    const tenantCurrency = ref("")
+
+
+
+
+    const getTenantCurrency = () => {
+      axios.get(`/api/Lookup/TenantCurrency?tenantID=${fullEventData.value.tenantID}`)
+        .then(res => {
+          console.log(res)
+          tenantCurrency.value = res.data.currency
+        })
+        .catch(err => console.log(err))
+    }
+   
 
 
     const checkCharacter = () => {
@@ -557,9 +607,49 @@ export default {
 
     // confirm button check
 
-    const confirmCheck = () => {
-      confirm();
+    const confirmCheck = async() => {
+      
+      donationObj.value = {
+            name: person.value.name,
+            email: person.value.email,
+            phone: enteredValue.value,
+            paymentFormId: fullEventData.value.paymentFormId,
+            tenantID: fullEventData.value.paymentForm.tenantID,
+            orderID: fullEventData.value.paymentFormOrderID,
+            currencyID: fullEventData.value.currencyID,
+            paymentGateway: fullEventData.value.paymentForm.paymentGateWays,
+            contributionItems: fullEventData.value.paymentForm.contributionItems.map(i => {
+              return {
+                contributionItemId: i.financialContribution.id,
+                contributionCurrencyId: fullEventData.value.currencyID,
+                contributionItemName: i.financialContribution.name,
+                amount: fullEventData.value.registrationAmount
+              }
+            }),
+
+          }
+
+
+          try {
+              let  res = await axios.post('/donation', donationObj.value)
+              console.log(res)
+            
+              finish()
+            }
+            catch (error) {
+              finish()
+              console.log(error)
+            }
     };
+
+    const confirmToRegister = () => {
+      if (!fullEventData.value.paymentFormId) {
+        confirm()
+      } 
+      if (fullEventData.value.paymentFormId) {
+        confirmCheck()
+      }
+    }
 
     // function to clear input
     const clearNames = () => {
@@ -583,8 +673,10 @@ export default {
           eventData.value.date = dateFormatter.monthDayTime(res.data.eventDate);
           bannerUrl.value = res.data.bannerUrl
 
+          fullEventData.value = res.data
           console.log(eventData);
           console.log(res, "response");
+           getTenantCurrency()
         })
         .catch((err) => {
           console.log(err);
@@ -634,6 +726,14 @@ export default {
       return autosearch.value && !person.value.name;
     });
 
+    const setGateway = (payload) => {
+      donationObj.value.usedPaymentGateway = payload
+    }
+
+    const setConfirmDonation = () => {
+      confirm()
+    }
+
     /*end of masking functions */
 
     //not me button
@@ -681,7 +781,16 @@ export default {
       birthMonth,
       birthDay,
       personData,
-      bannerUrl
+      bannerUrl,
+      close,
+      fullEventData,
+      donationObj,
+      setGateway,
+      selectedGateway,
+      setConfirmDonation,
+      confirmToRegister,
+      currentUser,
+      tenantCurrency
     };
   },
 };

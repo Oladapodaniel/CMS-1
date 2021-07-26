@@ -4,29 +4,31 @@
     <div class="row" style="height: 100vh">
       <Toast />
       <ConfirmDialog />
-      <div class="col-md-6 mt-6">
-        <div class="row mt-5">
-          <div class="col-12 setup">Set up your church profile</div>
-          <!-- <div class="col-md-6"></div> -->
-          <div class="col-sm-12 align-self-center mt-4 px-md-0">Name</div>
-          <div class="col-12 col-md-10 px-md-0">
+      <!-- <div class="col-md-6 mt-3"> -->
+        <!-- <div class="row mt-5"> -->
+          <div class="col-12 col-sm-6 offset-sm-3 setup mt-5">Set up your church profile</div>
+          <div class="col-sm-3"></div>
+          <div class="col-sm-3 align-self-center mt-4 text-right">Name</div>
+          <div class="col-12 col-md-6 mt-4">
             <input type="text" class="form-control" v-model="churchName" />
           </div>
-          <!-- <div class="col-sm-2"></div> -->
+          <div class="col-sm-3"></div>
 
-          <div class="col-sm-12 align-self-center mt-3 px-md-0">
+          <div class="col-sm-3 align-self-center mt-4 text-right">
             Phone Number
           </div>
-          <div class="col-12 col-md-10 px-md-0">
+          <div class="col-12 col-sm-6 mt-4">
             <input type="text" class="form-control" v-model="phoneNumber" />
           </div>
-          <!-- <div class="col-sm-2"></div> -->
+          <div class="col-sm-3"></div>
 
-          <div class="col-sm-12 align-self-center mt-3 px-md-0">Address</div>
-          <div class="col-12 col-md-10 px-md-0">
+          <div class="col-sm-3 align-self-center mt-4 text-right">Address</div>
+          <div class="col-12 col-md-6 mt-4">
             <input type="text" class="form-control" v-model="address" />
           </div>
-          <div class="col-12 col-md-10 mt-3">
+          <div class="col-sm-3"></div>
+
+          <div class="col-12 col-sm-6 mt-4 offset-sm-3">
             <div class="row d-flex justify-content-md-between">
               <div class="col-md-6 mt-3 px-md-0 col-9">Pastors and Ministers</div>
               <div
@@ -39,30 +41,38 @@
               </div>
             </div>
           </div>
-          <div class="col-11 px-md-0">
+          <div class="col-12 col-sm-6 offset-sm-3">
             <div class="row" v-for="(item, index) in pastors" :key="index">
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
               <div class="col-12 mt-4">
                 <div class="row">
                   <div class="col-md-4 col-12 col-sm-5 person-image">
                     <img
+<<<<<<< HEAD
                       style="width: 110px; height: 110px; border-radius: 50%;"
                       :src="item.url"
                       class="w-75 "
+=======
+                      :src="item.photo"
+                      class="w-100 "
+>>>>>>> development
                     />
                   </div>
                   <div class="col-10 col-sm-5 align-self-center">
-                    <div class="pastorname">{{ item.pastorsName }}</div>
-                    <div>{{ item.text }}</div>
+                    <div class="pastorname">{{ item.name }}</div>
+                    <div>{{ item.bio }}</div>
                   </div>
-                  <div class="col-2 col-sm-2  align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId, index)">
+                  <div class="col-1 align-self-center cursor-pointer mr-3" data-target="#add-pastor" data-toggle="modal" data-whatever="@fat" @click.prevent="editPastor(index)">
+                    edit
+                  </div>
+                  <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId, index)">
                     <i class="fa fa-trash"></i>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-12 col-md-10 mt-3">
+          <div class="col-12 col-sm-6 offset-sm-3 mt-3">
             <div class="row d-flex justify-content-md-between">
               <div class="col-md-6 mt-3 px-md-0 col-9">Other Information</div>
               <div
@@ -75,11 +85,11 @@
               </div>
             </div>
           </div>
-          <div class="col-md-10">
+          <div class="col-12 col-sm-6 offset-sm-3">
             <div class="row" v-for="(item, index) in infoArray"
                 :key="index">
               <div
-                class="col-10"
+                class="col-10 px-0"
               >
                 <div class="col-12 col-md-10 mt-4 p-md-0 font-weight-bold">
                   <span class="display:block">{{ item.title }}</span>
@@ -87,19 +97,19 @@
                 <div class="col-10 p-md-0">
                   <p>
                     <span v-if="!item.showFullMessage" class="display:block">{{
-                      item.information &&
-                      item.information.toString().length > 20
-                        ? `${item.information.substring(0, 20)}...`
-                        : item.information
+                      item.details &&
+                      item.details.toString().length > 20
+                        ? `${item.details.substring(0, 20)}...`
+                        : item.details
                     }}</span>
-                    <span v-else>{{ item.information }}</span>
+                    <span v-else>{{ item.details }}</span>
                     <span
                       @click="
                         () => (item.showFullMessage = !item.showFullMessage)
                       "
                       v-if="
-                        item.information &&
-                        item.information.toString().length > 20
+                        item.details &&
+                        item.details.toString().length > 20
                       "
                       class="text-primary c-pointer pl-2"
                     >
@@ -108,7 +118,7 @@
                   </p>
                 </div>
               </div>
-              <div class="col-2 pl-0 align-self-center cursor-pointer" @click.prevent="showConfirmModalAbout(item.customAboutId)">
+              <div class="col-2 align-self-center cursor-pointer" @click.prevent="showConfirmModalAbout(item.customAboutId)">
                 <i class="fa fa-trash"></i>
               </div>
             </div>
@@ -156,7 +166,7 @@
                             <textarea
                               class="form-control h-200"
                               id="message-text"
-                              v-model="otherInfo.information"
+                              v-model="otherInfo.details"
                             ></textarea>
                           </div>
                         </form>
@@ -218,7 +228,7 @@
                               class="form-control"
                               id="recipient-name"
                               placeholder="Name"
-                              v-model="pastorDetails.pastorsName"
+                              v-model="pastorDetails.name"
                             />
                           </div>
                           <!-- <div class="form-group"> -->
@@ -240,7 +250,7 @@
                             <textarea
                               class="form-control h-100"
                               id="message-text"
-                              v-model="pastorDetails.text"
+                              v-model="pastorDetails.bio"
                               placeholder="About Pastor/Minister"
                             ></textarea>
                           </div>
@@ -251,7 +261,14 @@
                       <div class="container-img mx-auto mx-md-0 mx-lg-0 pt-2">
                         <div class="photo-box">
                           <img
-                            :src="pastorDetails.url"
+                            v-if="!pastorDetails.photo"
+                            src="../../../assets/people/phone-import.svg"
+                            alt="Uploaded Image"
+                            class="w-100 h-100 img-responsive"
+                          />
+                          <img
+                            v-else
+                            :src="pastorDetails.photo"
                             class="w-100 h-100 img-responsive"
                           />
                         </div>
@@ -275,13 +292,29 @@
                       <div class="ml-4">
                         <p class="font-weight-bold">Social media Handles</p>
                       </div>
-                      <div class="row ml-2">
+                      <div class="row ml-2" v-for="(item, index) in pastorSocialMedia" :key="index">
                         <div class="col-md-2">
-                          <div
+                          <div v-if="item.name === 'facebook'"
                             class="d-flex justify-content-center font-container"
                           >
                             <img
                               src="../../../assets/mobileonboarding/facebook-icon.png"
+                              style="width: 78px"
+                            />
+                          </div>
+                          <div v-if="item.name === 'instagram'"
+                            class="d-flex justify-content-center font-container"
+                          >
+                            <img
+                              src="../../../assets/mobileonboarding/instagram-icon.png"
+                              style="width: 78px"
+                            />
+                          </div>
+                          <div v-if="item.name === 'twitter'"
+                            class="d-flex justify-content-center font-container"
+                          >
+                            <img
+                              src="../../../assets/mobileonboarding/twitter-icon.png"
                               style="width: 78px"
                             />
                           </div>
@@ -290,38 +323,9 @@
                           <div class="">
                             <input
                               type="text"
-                              class="social-input mb-2"
-                              v-model="pastorDetails.facebook"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <img
-                            src="../../../assets/mobileonboarding/instagram-icon.png"
-                          />
-                        </div>
-                        <div class="col-md-9 mr-2 p-md-0">
-                          <div class="">
-                            <input
-                              type="text"
-                              class="social-input mb-2"
-                              v-model="pastorDetails.instagram"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="font-container">
-                            <img
-                              src="../../../assets/mobileonboarding/twitter-icon.png"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-9 mr-2 p-md-0">
-                          <div class="">
-                            <input
-                              type="text"
-                              class="social-input mb-2"
-                              v-model="pastorDetails.twitter"
+                              class="social-input mb-2 form-control"
+                              v-model="item.url"
+                              :placeholder="item.name"
                             />
                           </div>
                         </div>
@@ -333,11 +337,10 @@
                 <div
                   class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
                 >
-                  <!-- <button type="button" ref="closePastorModal" class="btn btn-primary" @click="detailsForPastor">Save</button> -->
+                  <button type="button" ref="closePastorModal" class="mr-3 btn default-btn" @click="closeModal">Close</button>
                   <button
                     class="default-btn primary-bg border-0 text-white"
-                    ref="closePastorModal"
-                    :data-dismiss="dismissAddToGroupModal"
+                    data-dismiss="modal"
                     @click="detailsForPastor"
                   >
                     Save
@@ -347,30 +350,21 @@
             </div>
           </div>
           <div
-            class="col-10 offset-1 offset-md-0 btn primary-bg mt-5 text-white default-btn border-0"
+            class="btn primary-bg mt-5 text-white default-btn border-0 col-12 col-sm-6 offset-sm-3"
             @click="saveSetUp"
           >
             Save and continue
           </div>
-        </div>
-      </div>
-
-      <!-- image part -->
-      <div class="col-md-6 col-12 bg-image d-none d-md-block">
-        <div class="row mt-3">
-          <div class="col-md-12 text-center my-5 step">STEP 1 of 4</div>
-          <div class="col-12 text-right text-white skip-text py-3 pr-5" @click="skip">Skip  >>></div>
-        </div>
-        <!-- <div class="image-dis">
-                    <img src="../../../assets/mobileonboarding/setup-image.svg" style="height:100%; width:100%;">
-                </div> -->
-      </div>
+          <div
+            @click="skip"
+            class="btn my-3 mb-5 text-primary text-right col-12 col-sm-6 offset-sm-3">
+            Skip >>>
+          </div>
     </div>
   </div>
 </template>
 <script>
 import { ref } from "vue";
-import router from "../../../router";
 import axios from "@/gateway/backendapi";
 import store from "../../../store/store";
 import { useToast } from "primevue/usetoast";
@@ -379,7 +373,8 @@ import { useConfirm } from "primevue/useConfirm";
 // import { useStore } from "vuex"
 
 export default {
-  setup() {
+  props: [],
+  setup(props, context) {
     // let store = useStore()
     const toast = useToast();
     const confirm = useConfirm()
@@ -387,6 +382,22 @@ export default {
     const pastorDetails = ref({});
     const pastorsName = ref("");
     const pastorsEmail = ref("");
+    const pastorSocialMedia = ref([
+      {
+        name: 'facebook',
+        url: ''
+        },{
+          name: 'twitter',
+          url: ''
+        
+      },{
+        name: 'instagram',
+        url: ''
+      }
+    ])
+    // const pastorFacebook = ref("")
+    // const pastorInstagram = ref("")
+    // const pastorTwitter = ref("")
     const closePastorModal = ref("");
     const image = ref("");
     const pastorImage = ref("");
@@ -397,39 +408,40 @@ export default {
     const otherInfo = ref({ showFullMessage: false });
     const infoArray = ref([]);
     const closeTextArea = ref("");
+    const pastorPayload = ref([])
 
-    const deleteItem = (index) => {
-      pastors.value.splice(index, 1);
-    };
+
     const saveSetUp = async () => {
-      // const pastorsArray = []
-      // pastorsArray.push(otherInfo.value)
-      // const pastorsDetailsArray = []
-      // pastorsDetailsArray.push(pastorDetails.value)
-      infoArray.value = infoArray.value.map((i) => {
-        return {
-          title: i.title,
-          details: i.information,
-        };
-      });
+      
+      
+        infoArray.value.map(i => {
+          if(!i.customAboutId) delete i.showFullMessage
+        })
 
 
-      const formData = new FormData();
-      formData.append("churchName", churchName.value);
-      formData.append("address", address.value);
-      formData.append("phoneNumber", phoneNumber.value);
-      formData.append("abouts", infoArray.value);
-      formData.append("pastors", pastors.value);
-      console.log(churchName.value)
-      console.log(phoneNumber.value)
-      console.log(infoArray.value);
-      console.log(pastors.value);
+
+      const formObj = {
+        churchName: churchName.value,
+        address: address.value,
+        phoneNumber: phoneNumber.value,
+        abouts: infoArray.value
+      }
+      // const formData = new FormData();
+      // formData.append("churchName", churchName.value);
+      // formData.append("address", address.value);
+      // formData.append("phoneNumber", phoneNumber.value);
+      // formData.append("abouts", infoArray.value);
+      // formData.append("pastors", pastors.value);
+      // console.log(churchName.value)
+      // console.log(phoneNumber.value)
+      // console.log(infoArray.value);
+      // console.log(pastors.value);
       // formData.append("logo", payload.logo)
 
       try {
         const response = await axios.put(
           "/mobile/v1/Profile/UpdateChurchProfile",
-          formData
+          formObj
         );
         if (response) {
           toast.add({
@@ -438,32 +450,87 @@ export default {
             detail: "Church Profile Updated Successfully",
             life: 3000,
           });
-
-          setTimeout(() => {
-            router.push({ name: "SocialMedia" });
-          }, 2000)
+          let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: true,
+            appBranding: false,
+            donationForm: false
+          }
+          context.emit('saved-churchsetup', changeState)
         }
         console.log(response);
       } catch (error) {
         stopProgressBar();
-        toast.add({
-          severity: "error",
-          summary: "Time Out",
-          detail: "Network Error",
-          life: 3000,
-        });
+        if(error.toString().toLowerCase().includes('network error')) {
+          toast.add({
+            severity: "warn",
+            summary: "Network Error",
+            detail: "Please ensure you have a strong internet connection",
+            life: 4000,
+          });
+        } else if (error.toString().toLowerCase().includes('timeout'))  {
+          toast.add({
+            severity: "warn",
+            summary: "Timeout",
+            detail: "Request took too long to respond, please try again",
+            life: 4000,
+          });
+        }
         console.log(error);
       }
     };
 
-    const detailsForPastor = () => {
-      pastors.value.push(pastorDetails.value);
-      console.log(pastors.value);
-      // pastorsName.value = pastorDetails.value.pastorsName
-      // pastorsEmail.value = pastorDetails.value.pastorsEmail
-      // pastorImage.value = pastorDetails.value.url
+    const detailsForPastor = async() => {
+      console.log(pastors.value)
+      console.log(pastorDetails.value)
+      console.log(pastorSocialMedia.value)
+
+      
+       pastorSocialMedia.value.forEach(i => {
+        if (i.socialMediaId && i.url) {
+            pastorPayload.value.push(`${i.socialMediaId},${i.name},${i.url},${i.owner}`)
+        }
+        if (!i.socialMediaId && i.url) {
+            pastorPayload.value.push(`new,${i.name},${i.url},new`)
+        }
+      })
+
+      let formData = new FormData()
+        formData.append("name", pastorDetails.value.name)
+        formData.append("bio", pastorDetails.value.bio)
+        formData.append("photo", image.value)
+        if (pastorDetails.value.pastorId) {
+          formData.append("pastorId", pastorDetails.value.pastorId)
+        } else {
+          pastors.value.push({
+         name:pastorDetails.value.name,
+         bio: pastorDetails.value.bio,
+         photo: pastorDetails.value.photo,
+         socialMedia: pastorSocialMedia.value
+       });
+        }
+        pastorPayload.value.forEach(i => {
+          formData.append("socialMedia", i)
+        })
+        console.log(pastorPayload.value)
+
+        try {
+          let res = await axios.post('/mobile/v1/profile/createoreditpastor', formData)
+            console.log(res)
+        }
+        catch (error) {
+          console.log(error)
+        }
       closePastorModal.value.setAttribute("data-dismiss", "modal");
-      pastorDetails.value = {};
+        
+      pastorPayload.value = []
+      pastorDetails.value = {}
+      pastorSocialMedia.value = [
+        { name: 'facebook', url: ''},
+        { name: 'twitter', url: '' },
+        { name: 'instagram', url: '' }
+      ]
     };
 
     const otherInfoDetails = () => {
@@ -472,9 +539,45 @@ export default {
       otherInfo.value = {};
     };
 
+    const editPastor = (index) => {
+      pastorDetails.value = pastors.value[index]
+      // pastorSocialMedia.value = pastors.value[index].socialMedia
+      if (pastors.value[index] && pastors.value[index].socialMedia.length > 0) {
+        if (pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "facebook")) {
+          pastorSocialMedia.value[0] = pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "facebook")
+        } else{
+            pastorSocialMedia.value[0] = {
+            name: 'facebook',
+            url: ''
+          }
+        }
+        if (pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "twitter")) {
+           pastorSocialMedia.value[1] = pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "twitter")
+        } else {
+          pastorSocialMedia.value[1] = {
+            name: 'twitter',
+            url: ''
+          }
+        }
+        if (pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "instagram")) {
+           pastorSocialMedia.value[2] = pastors.value[index].socialMedia.find(i => i.name.trim().toLowerCase() === "instagram")
+        } else {
+          pastorSocialMedia.value[2] = {
+            name: 'instagram',
+            url: ''
+          }
+        }
+       
+       
+      }
+      console.log(pastors.value[index])
+      console.log(pastorSocialMedia.value)
+    }
+
     const uploadFile = (e) => {
       image.value = e.target.files[0];
-      pastorDetails.value.url = URL.createObjectURL(image.value);
+      pastorDetails.value.photo = URL.createObjectURL(image.value);
+      console.log('uploaded', pastorDetails.value)
     };
 
     const getTenantId = async () => {
@@ -502,20 +605,22 @@ export default {
           address.value = response.data.returnObject.address;
           pastors.value = response.data.returnObject.pastors.map(i => {
             return {
-              pastorsName: i.name,
-              url: i.photoUrl,
+              name: i.name,
+              photo: i.photoUrl,
               pastorId: i.pastorId,
-              text: i.bio,
-              tenantId: i.tenantID
+              bio: i.bio,
+              tenantId: i.tenantID,
+              socialMedia: i.socialMedias
             }
           })
           infoArray.value = response.data.returnObject.customAbouts.map(i => {
             return {
               title: i.title,
-              information:  i.details,
+              details:  i.details,
               customAboutId: i.customAboutId
             }
           })
+
         })
         .catch((error) => {
           console.log(error);
@@ -524,7 +629,27 @@ export default {
     getTenantId();
 
     const skip = () => {
-      router.push({ name: "SocialMedia" })
+      if (churchName.value && address.value &&  phoneNumber.value && pastors.value.length > 0 && infoArray.value.length > 0) {
+        let changeState = {
+            tab: true,
+            churchSetup: false,
+            socialMedia: true,
+            appBranding: false,
+            donationForm: false
+          }
+          context.emit('saved-churchsetup', changeState)
+          console.log('sent true to parent')
+      } else {
+        let changeState = {
+          // tab: true,
+            churchSetup: false,
+            socialMedia: true,
+            appBranding: false,
+            donationForm: false
+          }
+          context.emit('saved-churchsetup', changeState)
+          console.log('didnt send true')
+      }
     }
 
     const showConfirmModal = (id, index) => {
@@ -630,9 +755,19 @@ export default {
           });
       };
 
+      const closeModal = () => {
+          pastorPayload.value = []
+          pastorDetails.value = {}
+          pastorSocialMedia.value = [
+            { name: 'facebook', url: ''},
+            { name: 'twitter', url: '' },
+            { name: 'instagram', url: '' }
+          ]
+          closePastorModal.value.setAttribute("data-dismiss", "modal");
+      }
+
     return {
       pastors,
-      deleteItem,
       saveSetUp,
       pastorDetails,
       pastorsName,
@@ -652,7 +787,11 @@ export default {
       address,
       skip,
       showConfirmModal,
-      showConfirmModalAbout
+      showConfirmModalAbout,
+      pastorSocialMedia,
+      editPastor,
+      pastorPayload,
+      closeModal
     };
   },
 };
@@ -828,17 +967,10 @@ export default {
 }
 
 .skip-text {
-  border-top: 1px solid rgb(173, 173, 173);;
-  border-bottom: 1px solid rgb(173, 173, 173);;
-  position: relative;
-  top: 32em;
-}
-
-.skip-text:hover {
-  background: rgb(62, 68, 160);
-  border: 1px solid rgb(62, 68, 160);;
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-  cursor: pointer;
+  background: rgba(0, 0, 0, 0.707);
+  position: fixed;
+  top: 34em;
+  width: 20%
 }
 .person-image {
   width: 50%;

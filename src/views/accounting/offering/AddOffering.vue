@@ -3,35 +3,19 @@
      <div class="bg col-md-10 offset-md-1">
      <div class="container">
         <div class="row">
-          <div class="col-md-5 events">Offering</div>
-          <div class="col-md-7">
+          <div class="text-center text-sm-left col-sm-5 events">Offering</div>
+          <div class=" text-center text-sm-right col-sm-7 ">
             <div class="row">
               <div class="col-md-12 d-lg-flex justify-content-end">
                 <div class="dropdown" v-if="false">
                 <router-link to="/tenant/offeringcategory">
                 <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <span><i class="fa fa-angle-down btn-icon"></i></span></button></router-link>
-                    <!-- <i
-                      class="fas fa-ellipsis-v"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    ></i> -->
                     <div
                       class="dropdown-menu"
                       aria-labelledby="dropdownMenuButton"
                     >
                       <a class="dropdown-item">
                         <router-link to="/tenant/addoffering">Add Offering Category</router-link></a>
-                      <!-- <a class="dropdown-item" href="#">Assign to follow-up</a>
-                      <a class="dropdown-item">
-                        <router-link
-                          :to="`/tenant/sms/compose`"
-                          >Send SMS</router-link
-                        >
-                      </a>
-                      <a class="dropdown-item" href="#">Send Email</a>
-                      <a class="dropdown-item" href="#" >Delete</a> -->
                     </div>
                   </div>
                 <button
@@ -66,21 +50,22 @@
                   class="form-control dd text-left close-modal"
                 >
                   {{ selectedEventAttended.name ? selectedEventAttended.name.length > 20 ? `${selectedEventAttended.name.slice(0, 20)}...` : selectedEventAttended.name : "Select Event" }}
-                  <!-- {{ newEvent.activity.date }}
-                   -->
+                 
                 </button>
-                <i class="pi pi-chevron-down manual-dd-icon align-self-center close-modal"></i>
-                <div class="input-field manual-dd-con" v-if="showEventList">
-                <div class="manual-dd dd">
+                <i
+                @click="selectEventAttended"
+                 class="pi pi-chevron-down cursor-pointer manual-dd-icon align-self-center close-modal"></i>
+                <div class="input-field manual-dd-con close-modal" v-if="showEventList">
+                <div class="manual-dd dd close-modal">
                   <div
-                    class="container-fluid dd dd-search-con"
+                    class="container-fluid dd dd-search-con close-modal"
                     v-if="eventsAttended.length > 5"
                   >
-                    <div class="row dd">
-                      <div class="col-md-12 dd px-0 py-1">
+                    <div class="row dd close-modal">
+                      <div class="col-md-12 dd px-0 py-1 close-modal">
                         <input
                           type="text"
-                          class="form-control dd dd-search-field"
+                          class="form-control close-modal"
                           v-model="eventsSearchString"
                           placeholder="search for event"
                         />
@@ -382,42 +367,6 @@
             <div class="col-sm-2 offset-sm-2" style="margin-left: 74px">Total</div>
           </div>
         </div>
-        <!-- <div class="attendance-body"> -->
-            <!-- <div v-for="(item, index) in remitance" :key="index" class="row">
-         
-            <div class="col-sm-3 col-12">
-            <Dropdown v-model="item.account" class="w-100 p-0" :options="incomeAccount" optionLabel="text" :filter="true" placeholder="Select" :showClear="false">
-
-                  </Dropdown>
-            </div>
-
-            <div class="col-sm-5 col-12">
-              <div>
-                <input type="text" v-model="item.percentage" class="form-control textbox-height" placeholder="" />
-              </div>
-            </div> -->
-
-            <!-- <div class="col-sm-2 col-12 mt-4 mt-sm-0">
-              <button
-                v-on:click="addRemittance"
-                class="btn btnIcons btn-secondary"
-              >
-                <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
-                Add
-              </button>
-            </div> -->
-            <!-- <div class="col-sm-1 mt-1 align-self-center offset-sm-1" @click="deleteItem(index)">
-              <i class="pi pi-trash"></i>
-            </div>
-    
-          </div> -->
-        <!-- </div> -->
-
-        <!-- Selected offerings -->
-        <!-- <div>{{ offeringItem }}</div> -->
-        <!-- <div>{{newOfferings}}</div> -->
-        <!-- <div>{{ currencyList }}</div> -->
-
         <div
           class="attendance-body stretch"
           id="offeringBody"
@@ -470,7 +419,6 @@
              
               </select>
             </div>
-            
             <div class="col-3 col-sm-2 col-lg-1">
               
                 <div
@@ -938,6 +886,19 @@
         <!-- </div> -->
         <Toast />
       </div>
+      <div class="col-12 mt-3 mb-2 justify-content-end d-flex">
+        <button
+                  class="default-btn primary-bg border-0 ml-3"
+                  @click="post"
+                >
+                  <i
+                    class="fas fa-circle-notch fa-spin mr-2 text-white"
+                    v-if="loading"
+                  ></i>
+                  <span class="text-white">Save and Continue</span>
+                  <span></span>
+                </button>
+      </div>
      </div>
      </div>
     </div>
@@ -957,6 +918,7 @@ import { useStore } from 'vuex'
 import CurrencyConverter from "../../event/CurrencyConverter"
 import CurrencyConverterService from '../../../services/currency-converter/currencyConverter'
 import { useRoute } from "vue-router"
+import finish from '../../../services/progressbar/progress';
 export default {
     components: {
         Dialog, Dropdown, NewDonor, CurrencyConverter
@@ -1009,6 +971,7 @@ export default {
         const selectedCurrencyName = ref("")
         const currencyAmount = ref("")
         const convertedAmount = ref([])
+        const convertedAmount2 = ref([])
         const currencyIndex = ref(0)
         const currencyRate = ref("")
         const convertedResult = ref(0)
@@ -1322,6 +1285,7 @@ export default {
                   axios.get(`/api/Lookup/TenantCurrency?tenantID=${store.getters.currentUser.tenantId}`)
                   .then(res => {
                     tenantCurrency.value = res.data.currency
+                    getOneContribution()
                     console.log(res.data)
                   })
                   .catch(err => console.log(err))
@@ -1330,6 +1294,7 @@ export default {
                   axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
                   .then(res => {
                     tenantCurrency.value = res.data.currency
+                    getOneContribution()
                     console.log(res.data)
                   })
                   .catch(err => console.log(err))
@@ -1409,8 +1374,7 @@ export default {
       const getIncomeAccount = ()=> {
           axios.get('/api/Financials/Accounts/GetIncomeAccounts')
             .then(res => {
-                /*eslint no-undef: "warn"*/
-                NProgress.done();
+               finish()
                 console.log(res)
               incomeAccount.value = res.data
             })
@@ -1465,7 +1429,7 @@ export default {
                       name: name.value,
                       id: res.data.id
                     })
-                    toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
+                    toast.add({severity:'success', summary: 'Saved', detail:'Offering Saved', life: 3000});
                     console.log(res)
                     
                   })
@@ -1476,8 +1440,17 @@ export default {
                   e.target.setAttribute('data-dismiss', 'modal')
         }
 
-        const post = () => {
-          loading.value = true
+        const post =  () => {
+        let invalidOfferingItem = offeringItem.value.find(i => !i.amount)
+        if(invalidOfferingItem){
+          toast.add({
+              severity: "warn",
+              summary: "Enter Amount",
+              detail: `Enter amount for Offering item`,
+              life: 3000,
+          })
+          return false
+        }
               // let financialContributionTrasaction = {
               //   id: 123,
               //   financialContributionID:123,
@@ -1486,6 +1459,7 @@ export default {
               //   activityID: 123,
                 
               // }
+          loading.value = true
         let contributions = offeringItem.value.map(i => {
                 return {
                   name: i.name,
@@ -1494,7 +1468,7 @@ export default {
                   amount: i.amount ? i.amount : 0,
                   paymentChannel: i.paymentChannel,
                   activityID: i.activityID,
-                  personID: i.personID ? i.personID : "00000000-0000-0000-0000-000000000000",
+                  personID: i.personID ? i.personID : "",
                   currencyID: i.currencyID
                 }
               })
@@ -1502,7 +1476,6 @@ export default {
               console.log(contributions)
 
           if (!route.params.offId) {
-            console.log('No Id')
             axios.post('/api/Financials/Contributions/Transactions/Save', contributions)
             .then(res => {
               console.log(res)
@@ -1537,14 +1510,15 @@ export default {
               console.log(err)
             })
           } else {
-            console.log('Id avalaible')
-            contributions[0].Id = route.params.offId
-            axios.post(`/api/Financials/Contributions/Transactions/Save`, contributions)
+            contributions[0].id = route.params.offId
+
+            console.log(contributions)
+
+            axios.put(`/api/Financials/Contributions/Transactions/Edit`, contributions)
             .then(res => {
               console.log(res)
               localStorage.setItem('contriTransact', JSON.stringify(res.data.returnObject))
               loading.value = false
-
 
               if (Object.keys(selectedEventAttended.value).length > 0) {
                 router.push({ name: 'OfferingReport', query: { report: eventDate.value, activityID: selectedEventAttended.value.activityID } })
@@ -1575,7 +1549,7 @@ export default {
           }
         }
 
-        const addCurrency = (e, index, item) => {
+        const addCurrency =  async (e, index, item) => {
         // console.log(e.target.innerHTML, index)
         // offeringItem.value[index].currency = e.target.innerHTML.split(" ")[0]
           // if (item.id) {
@@ -1588,6 +1562,23 @@ export default {
           //       offeringItem.value[index].currencyID = 721
           // }
           offeringItem.value[index].fromCurrencyRate = `usd${item.name.toLowerCase()}`
+
+
+
+           let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
+          let fromCurrencyRate = offeringItem.value[index].fromCurrencyRate
+
+          let amount = offeringItem.value[index].amount ? +offeringItem.value[index].amount : 0
+
+  
+          try {
+            let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+            console.log(result)
+            convertedAmount.value[index] = result
+          }
+          catch (err) {
+            console.log(err)
+          }
 
       }
 
@@ -1656,7 +1647,6 @@ export default {
 
           let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
           let fromCurrencyRate = offeringItem.value[index].fromCurrencyRate
-
           let amount = offeringItem.value[index].amount ? +offeringItem.value[index].amount : 0
 
   
@@ -1694,23 +1684,62 @@ export default {
                 offeringItem.value = [{
                   name: data && data.contribution ? data.contribution.name :  "",
                   financialContributionID: data.financialContributionID,
+                  date: data.date.split("T")[0],
+                  activityID: data.activityID,
                   paymentChannel: data.paymentChannel,
-                  donor: data.personName,
                   currencyID: data.currencyID,
-                  amount: data.amount
+                  amount: data.amount,
+                  currencyName: data.currency.shortCode,
+                  fromCurrencyRate: `usd${data.currency.shortCode.toLowerCase()}`
                 }]
+
+                getOnePerson(data.personID)
+
+                for (let index = 0; index < offeringItem.value.length; index++) {
+                  const i = offeringItem.value[index];
+                  let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
+                  let fromCurrencyRate = i.fromCurrencyRate
+                  let amount = i.amount ? +i.amount : 0
+
+          
+                  try {
+                    let result = await CurrencyConverterService.currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate)
+                    console.log(result)
+                    convertedAmount.value.push(result)
+                  }
+                  catch (err) {
+                    console.log(err)
+                  }
+                  
+                }
+                
             }   catch (error) {
                     console.log(error);
             }
           }
         }
-        getOneContribution()
+        
+        
+        
+        const getOnePerson = async(personId) => {
+          if(route.params.offId && personId) {
+            try {
+                let { data } = await axios.get(`/api/People/GetPersonInfoWithAssignments/${personId}`)
+                console.log(data)
+                offeringItem.value[offeringToAddDonor.value].donor = `${data.firstName ? data.firstName : ''} ${data.lastName ? data.lastName : ''}`
+
+                offeringItem.value[offeringToAddDonor.value].personID = personId
+            }   catch (error) {
+                    console.log(error);
+            }
+          }
+        }
 
         return {
             addOffering, offeringDrop, hideModals, selectEventAttended, showEventList, eventsAttended, filteredEvents, closeManualModalIfOpen, eventAttendedSelected,
             newEvents, selectedEventAttended, eventsSearchString, selectEvent, individualEvent, newEvent, showCategory, filterEventCategory, eventText, eventDate, createNewCat,
             newEventCategoryName, displayModal, openModal, closeModal, toast, createNewEvent, invalidEventDetails, savingNewEvent, newOfferings, filterOffering, offeringText,
-            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp, tenantId, selectedCurrencyName, currencyAmount, sendAmount, convertedAmount,  setCurrencyRate, currencyRate, convertResult, convertedResult
+            offering, offeringItem, offeringInput, delOffering, currencyText, filterCurrency, currencyList, addOfferingTotal, routeParams, addRemittance, remitance, deleteItem, incomeAccount, selectedIncomeAccount, applyRem, toggleRem, post, name, selectedCashAccount, cashBankAccount, createNewCon, addCurrency, addDonor, offeringToAddDonor, donorBoolean, modalTogglerGiver, donorText, userSearchString, searchedMembers, searchForUsers, searchingForMembers, showAddMemberForm, display, setAddToDonor, addExistingMember, getPersonId, personId, tenantCurrency, loading, focusInp, tenantId, selectedCurrencyName, currencyAmount, sendAmount, convertedAmount, convertedAmount2,  setCurrencyRate, currencyRate, convertResult, convertedResult
     }
   }
 }

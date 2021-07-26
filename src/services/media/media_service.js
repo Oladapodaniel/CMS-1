@@ -22,7 +22,9 @@ const getMedia = (tenantId) => {
     return new Promise((resolve, reject) => {
         axios.get(`/api/Media/GetAllMedia?tenantId=${tenantId}`)
         .then(res => {
+            console.log(res, "medai")
             resolve(res.data);
+          
         })
         .catch(err => {
             if (err.response) {
@@ -66,9 +68,26 @@ const getImageGallery = (page) => {
     })
 }
 
+const deleteMedia = (mediaId) => {
+    return new Promise((resolve, reject) => {
+        axios.delete(`/api/Media/DeleteMedia?mediaid=${mediaId}`)
+        .then(res => {
+            resolve(res.data);
+        })
+        .catch(err => {
+            if (err.response) {
+                reject(err.response);
+            } else {
+                reject(err);
+            }
+        })
+    })
+}
+
 export default {
     uploadMedia,
     getMedia,
     getMediaById,
     getImageGallery,
+    deleteMedia,
 }

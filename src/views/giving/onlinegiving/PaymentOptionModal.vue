@@ -1,155 +1,5 @@
 
 <template>
-  <!-- <div class="container-fluid d-flex justify-content-center">
-    <main class=" d-flex align-self-center">
-      <div class="col-md-12">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <p class="pc text-nowrap my-4">Continue payment with</p>
-            </div>
-          </div>
-        </div>
-dapo
-
-        <div class="container container-1 px-5 py-2">
-          <div class="row">
-            <div class="col-md-12 hover-shadow border d-md-flex px-3">
-
-              <div class="col-md-8">
-                <div class="row px-3">
-                  <div class="col-md-12">
-                    <p class="pr pt-2">Paystack</p>
-                  </div>
-                </div>
-                <div class="row px-3">
-                  <div class="col-md-12 d-flex">
-                    <div class="col-md-1 d-flex pl-0">
-                      <i
-                        class="fas fa-circle circle d-flex align-self-center"
-                      ></i>
-                    </div>
-                    <div class="col-md-4 d-flex pl-0">
-                       <span class="nationalty">Nigerians</span>
-                    </div>
-                    <div class="col-md-1 d-flex">
-                      <i
-                        class="fas fa-circle circle d-flex align-self-center"
-                      ></i>
-                    </div>
-                    <div class="col-md-5">
-                      <span class="nationalty">International</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4 d-flex align-items-center">
-                  <div class="col-md-12 d-md-flex justify-content-center">
-                    <img
-                      class="image image-fluid py-2"
-                      src="../../../assets/4PaystackLogo.png"
-                      alt=""
-                    />
-                  </div>
-
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="container container-1 px-5 py-2">
-          <div class="row">
-            <div class="col-md-12 hover-shadow border d-md-flex px-3">
-
-              <div class="col-md-6">
-                <div class="row px-3">
-                  <div class="col-md-12">
-                    <p class="pr pt-2">Paystack</p>
-                  </div>
-                </div>
-                <div class="row px-3">
-                  <div class="col-md-12 d-flex">
-                    <div class="col-md-6 d-flex pl-0 mr-4">
-                      <i
-                        class="fas fa-circle circle d-flex align-self-center"
-                      ></i>
-                      &nbsp; <span class="nationalty">Nigerians</span>
-                    </div>
-                    <div class="col-md-6 d-flex ml-n5">
-                      <i
-                        class="fas fa-circle circle d-flex align-self-center"
-                      ></i>
-                      &nbsp; <span class="nationalty">International</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 d-flex align-items-center">
-                  <div class="col-md-12 d-md-flex justify-content-center">
-                    <img
-                      class="image image-fluid py-2"
-                      src="../../../assets/flutterwave_logo_color@2x.png"
-                      alt=""
-                    />
-                  </div>
-
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="container container-1 px-5 py-2">
-          <div class="row">
-            <div class="col-md-12 hover-shadow border d-md-flex px-3">
-
-              <div class="col-md-6">
-                <div class="row px-3">
-                  <div class="col-md-12">
-                    <p class="pr pt-2">Paystack</p>
-                  </div>
-                </div>
-                <div class="row px-3">
-                  <div class="col-md-12 d-flex">
-                    <div class="col-md-6 d-flex pl-0 mr-4">
-                      <i
-                        class="fas fa-circle circle d-flex align-self-center"
-                      ></i>
-                      &nbsp; <span class="nationalty">Nigerians</span>
-                    </div>
-                    <div class="col-md-6 d-flex ml-n5">
-                      <i
-                        class="fas fa-circle circle d-flex align-self-center"
-                      ></i>
-                      &nbsp; <span class="nationalty">International</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-6 d-flex align-items-center">
-                  <div class="col-md-12 d-md-flex justify-content-center">
-                    <img
-                      class="image image-fluid py-2"
-                      src="../../../assets/paypal-logo-2@2x.png"
-                      alt=""
-                    />
-                  </div>
-
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-
-
-      </div>
-    </main>
-  </div> -->
   <div class="container">
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
@@ -216,7 +66,7 @@ dapo
       </div>
 
     </div> -->
-
+    <!-- {{ paymentGatewayObject }} -->
 
   </div>
 </template>
@@ -241,6 +91,7 @@ export default {
     const isProduction = false
     const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
     const selectedGateway = ref("")
+    
 
     const paystackGate = computed(() => {
       if(!props.gateways) return false
@@ -261,12 +112,16 @@ export default {
       if(!props.gateways) return false
       return props.gateways.find(i => i.paymentGateway.name === "Stripe")
     })
+      
 
     const payWithPaystack = (e) => {
-      console.log(e.srcElement.alt)
+
+      // console.log(props.donation)
 
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
+   
+    //  console.log(selectedGateway.value)
 
       props.close.click()
       /*eslint no-undef: "warn"*/
@@ -277,6 +132,11 @@ export default {
         amount: props.converted * 100,
         firstname: props.name,
         ref: props.orderId,
+        subaccount: props.donation.paymentGateway.find(i => {
+            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+          }).subAccountID,
+        // gatewayObject.value.subAccountID,
+        bearer: 'subaccount',
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})

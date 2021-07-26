@@ -214,7 +214,7 @@
                     <div class="desc-head small-text col-md-3 px-1" @click="rowSelected(item)">
                       <p class="mb-0 d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
-                        <span :class="{ 'text-danger': item.amount < 0, 'text-success': item.amount > 0 }">N{{ amountWithCommas(Math.abs(item.amount)) }}</span>
+                        <span class="font-weight-bold" :class="{ 'text-danger': item.amount < 0, 'text-success': item.amount > 0 }">{{ item.currency ? item.currency.symbol : "" }}{{ amountWithCommas(Math.abs(item.amount)) }}</span>
                       </p>
                     </div>
 
@@ -266,7 +266,13 @@
                 @reload="getTransactions"
                 :gettingSelectedTrsn="gettingSelectedTrsn"
               />
-              <LedgerForm v-else @close-ledger="closeLedgerForm" />
+              <LedgerForm 
+                v-else 
+                @entrysaved="journalEntrySaved" 
+                @close-ledger="closeLedgerForm"
+                :journalEntry="journalEntry"
+                :gettingSelectedTrsn="gettingSelectedTrsn"
+              />
               <!-- :transacProp="transacPropsValue" -->
             </div>
           </div>
@@ -294,6 +300,7 @@ export default {
     "showEditTransaction",
     "transactionDetails",
     "selectedTransactionType",
+    "journalEntry"
   ],
   components: {
     TransactionForm,
@@ -513,11 +520,18 @@ export default {
     const rowSelected = async (item) => {
       try {
         gettingSelectedTrsn.value = true;
-        emit("select-row", { });
+        if (item.category === "Journal") {
+          emit("select-journal", { });
+        } else {
+          emit("select-row", { });
+        }
         const response = await transaction_service.getEditTransactions(item.transactionNumber);
         gettingSelectedTrsn.value = false;
-        console.log(response, "Edit Transaction");
-         emit("select-row", response.data);
+        if (item.category === "Journal") {
+          emit("select-journal", response.data);
+        } else {
+          emit("select-row", response.data);
+        }
       } catch (error) {
         console.log(error);
         gettingSelectedTrsn.value = false;
@@ -615,6 +629,11 @@ export default {
       });
     };
 
+    const journalEntrySaved = () => {
+      getTransactions();
+      emit('reload-accounts');
+    }
+
     return {
       transactions,
       filterFormIsVissible,
@@ -658,6 +677,7 @@ export default {
       showConfirmModal,
       refreshing,
       gettingSelectedTrsn,
+      journalEntrySaved
     };
   },
 };

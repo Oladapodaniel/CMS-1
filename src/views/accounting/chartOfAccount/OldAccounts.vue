@@ -277,9 +277,9 @@ export default {
       try {
         const response = await transactionals.getTransactionalAccounts();
         transactionalAccounts.value = response;
-        const equity = response[2];
-        transactionalAccounts.value.splice(2, 1);
-        transactionalAccounts.value.push(equity);
+        // const equity = response[2];
+        // transactionalAccounts.value.splice(2, 1);
+        // transactionalAccounts.value.push(equity);
         console.log(transactionalAccounts.value, "WWWW");
       } catch (error) {
         console.log(error);

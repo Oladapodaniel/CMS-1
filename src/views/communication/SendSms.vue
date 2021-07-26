@@ -8,7 +8,7 @@
           <Toast />
 
           <Dialog
-            header="Select Date nad Time"
+            header="Select Date and Time"
             v-model:visible="display"
             :style="{ width: '50vw', maxWidth: '600px' }"
             :modal="true"
@@ -560,8 +560,15 @@
                           data-dismiss="modal"
                           @click="contructScheduleMessageBody(1, '')"
                         >
-                          Send SMS Now {{ `${nigerian}` }}
+                          Send SMS Now
                         </button>
+                        <!-- <button
+                          class="primary-btn default-btn border-0 px-4 my-2 primary-bg text-white outline-none extra-btn"
+                          data-dismiss="modal"
+                          @click="contructScheduleMessageBody(1, '')"
+                        >
+                          Send SMS Now {{ `${nigerian}` }}
+                        </button> -->
                       </div>
                     </div>
 
@@ -890,7 +897,9 @@ export default {
               }
               console.log(sentObj)
               store.dispatch("communication/addSmsToSentList", sentObj)
-              router.push({ name: "SentMessages" })
+              setTimeout(() => {
+                router.push({ name: "SentMessages" })
+              }, 3500)
 
             }
             
@@ -1165,6 +1174,36 @@ export default {
       };
 
       console.log(data)
+    }
+
+    const getDefaultMessage = async messageId => {
+      try {
+        const { returnObject: { message }} = await communicationService.getDefaultMessage(messageId);
+        editorData.value = message;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (route.query.defaultId) getDefaultMessage(route.query.defaultId);
+
+    const getMessage = async messageId => {
+      try {
+        const { message, subject: subj } = await composeService.getSMSById(messageId);
+        editorData.value = message;
+        subject.value = subj;
+      } catch (error) {
+        console.log(error)
+        toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Could not load message!",
+        });
+      }
+    }
+
+    if (route.query.messageId) {
+      getMessage(route.query.messageId);
     }
 
     return {

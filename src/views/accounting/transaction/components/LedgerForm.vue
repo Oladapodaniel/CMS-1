@@ -5,6 +5,11 @@
         <h5 class="mb-0 py-2 d-flex justify-content-between"><span>General Ledger</span> <span @click="closeLedgerForm"><i class="pi pi-times c-pointer"></i></span></h5>
       </div>
     </div>
+    <div class="row mt-3" v-if="gettingSelectedTrsn">
+      <div class="col-md-12 text-center">
+        <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12">
         <div class="container">
@@ -258,7 +263,7 @@
         <button
           class="default-btn primary-bg text-white font-weight-700 border-0"
           @click="saveTransaction"
-          :disabled="unbalanced"
+          :disabled="unbalanced || journalEntry.date"
         >
           Save
         </button>
@@ -271,11 +276,13 @@
 <script>
 import { ref } from "@vue/reactivity";
 import transactionals from "../../chartOfAccount/utilities/transactionals";
-import { computed } from '@vue/runtime-core';
+import { computed, watch } from '@vue/runtime-core';
 import transaction_service from '../../../../services/financials/transaction_service';
 import { useToast } from "primevue/usetoast"
 
 export default {
+  props: ['journalEntry', 'gettingSelectedTrsn'],
+
   setup(props, { emit }) {
     const toast = useToast();
 
@@ -287,7 +294,6 @@ export default {
       try {
         const response = await transactionals.getGroupedAccounts();
         transactionalAccounts.value = response;
-        console.log(response, "rrrr");
       } catch (error) {
         console.log(error);
       }
@@ -295,29 +301,30 @@ export default {
     getTransactionalAccounts();
 
     const selectAccount = (type, index, account) => {
-      console.log(account, "click account");
       if (type === 0) {
           journalTransactions.value[index].creditAccountID = account.id;
           journalTransactions.value[index].account = account.text;
-          console.log(journalTransactions.value, "CREDITS");
       } else {
-          console.log(journalTransactions.value[index]);
           journalTransactions.value[index].debitAccountID = account.id;
           journalTransactions.value[index].account = account.text;
-          console.log(journalTransactions.value, "Debits");
       }
     };
 
-    const journalTransactions = ref([
-      {
-        category: "inflow",
-        amount: 0.0,
-      },
-      {
-        category: "outflow",
-        amount: 0.0,
-      },
-    ]);
+    const journalTransactions = ref([ ]);
+    const initializeJournalTransactions = () => {
+      journalTransactions.value = [
+        {
+          category: "inflow",
+          amount: 0.0,
+        },
+        {
+          category: "outflow",
+          amount: 0.0,
+        },
+      ]
+    }
+
+    initializeJournalTransactions();
 
     const sumOfRecords = (records) => {
         let sum = 0;
@@ -372,9 +379,9 @@ export default {
 
         try {
                 const response = await transaction_service.saveJournalTransaction(body);
-                console.log(response, "LEDGER save");
                 if (response.status >= 200 && response.status <= 300) {
                     toast.add({severity:'success', summary:'Successful', detail:`The transaction was succesful`, life: 3000});
+                    emit('entrysaved');
                 } else {
                     toast.add({severity:'error', summary:'Transaction failed', detail:`An error occurred, please try again`, life: 3000});
                 }
@@ -382,12 +389,41 @@ export default {
                 toast.add({severity:'error', summary:'Transaction failed', detail:`An error occurred, please try again`, life: 3000});
                 console.log(error);
             }
-        console.log("Hello");
     }
 
     const closeLedgerForm = () => {
         emit("close-ledger")
     }
+
+    watch(() => props.journalEntry, () => {
+      if (props.journalEntry && props.journalEntry.date) {
+        memo.value = props.journalEntry.memo;
+        transactionDate.value = props.journalEntry.date.toLocaleString().includes('T') ? props.journalEntry.date.toLocaleString().split('T')[0] : props.journalEntry.date.toLocaleString();
+        journalTransactions.value = [
+          ...props.journalEntry.debitSplitAccounts.map(i => {
+            i = {
+              ...i,
+              category: 'inflow',
+              account: i.account.name
+            }
+
+            return i;
+          }),
+          ...props.journalEntry.creditSplitAccounts.map(i => {
+            i = {
+              ...i,
+              category: 'outflow',
+              account: i.account.name
+            }
+
+            return i;
+          })
+
+        ]
+      } else {
+        initializeJournalTransactions();
+      }
+    })
 
     return {
       accountTypes,

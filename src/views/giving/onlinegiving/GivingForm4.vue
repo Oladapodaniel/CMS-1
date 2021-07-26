@@ -6,10 +6,10 @@
       <div class="container">
         <nav class="navbar navbar-expand-lg nav-color2">
           <a class="navbar-brand" href="#">
-            <img v-bind:src="formResponse.churchLogo" width="100px" alt="" />
+            <img :src="formResponse.churchLogo" v-if="formResponse.churchLogo" width="100px" alt="" />
           </a>
           <button
-            class="navbar-toggler"
+            class="navbar-toggler border"
             type="button"
             data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -17,7 +17,8 @@
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <!-- <span class="navbar-toggler-icon text-light"></span> -->
+            <i class="pi pi-align-justify text-light"></i>
           </button>
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -53,10 +54,15 @@
       <div class="row mx-0">
         <div class="col-12 px-0">
           <div class="img">
-            <p class="text-center text-white pt-5 main-font">Giving</p>
-            <p class="text-center mt-n3 sub-main-font">
-              Give and you shall recieve. Luke - 6:38
-            </p>
+            <div class="row d-flex justify-content-center">
+              <div class="col-6">
+                <p class="text-center text-white pt-5 main-font">Giving</p>
+              <p class="text-center mt-n3 sub-main-font d-none d-md-block">
+                Give, and it will be given to you. A good measure, pressed down, shaken together and running over, will be poured into your lap. For with the measure you use, it will be measured to you.”
+              </p>
+              <p class="text-white text-center d-none d-md-block">- Luke 6:38 NIV</p>
+              </div>
+            </div>
 
             <!-- form area -->
             <div class="container">
@@ -104,7 +110,7 @@
 
 
                   <!-- start of dynamic Area 1-->
-                  <div class="row">
+                  <div class="row" v-if="false">
                     <div class="col-md-12">
                       <section>
                         <p class="col-12 hfont px-0 mb-1">
@@ -195,11 +201,9 @@
                     </div>
                   </section>
                   <!-- end of date area -->
-                  <div class="col-12">
+                  <div class="col-12" v-if="false">
                   <div class="row mt-4 stroke" v-if="!signedIn" >
-                    <!-- <div class="col-1">
-                     
-                    </div> -->
+                  
                     <div class="col-6 align-self-center pointer" :class="{ 'active-tab' : activeTab1 }" @click="toggleActive1">
                     <div class="p-2 fone">Give Now</div>
                     </div>
@@ -381,13 +385,6 @@
                         alt=""
                       />
                     </div>
-                    <div class="col-1 px-1">
-                      <img
-                        class="w-100"
-                        src="../../../assets/1s519863150871.png"
-                        alt=""
-                      />
-                    </div>
                     <div class="col-3 px-1">
                       <img
                         class="imgg w-100"
@@ -559,6 +556,7 @@ export default {
           selectedContributionType.value = formResponse.value.currencyId;
           console.log(formResponse.value);
           localStorage.setItem('tenantId', res.data.tenantID)
+          tcurrency();
         })
         .catch((err) => {
           console.log(err.response)
@@ -585,7 +583,7 @@ export default {
         })
         .catch((err) => console.log(err.response, "You know me! yes gang"));
     };
-    tcurrency();
+    
 
     const getRates = async() => {
             try {
@@ -634,7 +632,7 @@ export default {
             paymentGateway: formResponse.value.paymentGateWays,
             contributionItems: [
                         {
-                          contributionItemId: selectedContributionType.value.financialContributionID,
+                          contributionItemId: selectedContributionType.value.financialContribution.id,
                           contributionItemName: selectedContributionType.value.financialContribution.name,
                           amount: amount.value,
                           contributionCurrencyId: dfaultCurrency.value.id

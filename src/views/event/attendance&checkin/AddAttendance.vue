@@ -257,12 +257,12 @@
             <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
               <label for="" class="font-weight-600">Event Banner</label>
             </div>
-            <div class="col-sm-7 col-md-6 col-lg-3 offset-lg-1"  :class="{ 'img-border ' : imageUrl === '' }">
+            <div class="col-sm-5 col-md-3 col-lg-3 offset-md-1"  :class="{ 'img-border ' : imageUrl === '' }">
               <img :src="imageUrl" class="w-100">
             </div>
-            <div @click="altClick" class="col-5 col-sm-2 offset-3 offset-sm-1 my-2 my-sm-0 upload-button align-self-center text-center cursor-pointer">Upload <input type="file" @change="chooseFile" ref="binImage" hidden/></div>
+            <div @click="altClick" class="col-5 col-sm-2 offset-sm-1 my-2 my-sm-0 upload-button align-self-center text-center cursor-pointer">Upload <input type="file" @change="chooseFile" ref="binImage" hidden/></div>
             <div class="col-sm-3 col-md-4"></div>
-            <div class="col-sm-7 col-md-6 col-lg-5 offset-2 offset-sm-0 mt-2">Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
+            <div class="col-sm-7 col-md-6 col-lg-5 offset-sm-0 mt-2 px-0">Browse or Drop your banner here.Maximum 5MB in size JPG, PNG, or
                 GIF formats.</div>
           </div>
           
@@ -276,6 +276,15 @@
             </div>
           </div>
           
+          <div class="row my-3">
+            <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right align-self-center">
+              <label for="" class="font-weight-600">Slot</label>
+            </div>
+            <div class="col-sm-7 col-md-6 col-lg-5">
+              <input type="number" class="form-control" v-model="slot" placeholder="slot available"/>         
+            </div>
+          </div>
+          
           <div class="row mt-4">
             <div class="col-sm-3 col-md-4 col-lg-4 text-sm-right">
               
@@ -285,8 +294,8 @@
                 <div class="col-sm-4 align-self-center">
                   <span class="font-weight-700 cursor-pointer" @click="showFreeTab" :class="{ 'active-tab' : addFreeClass }">Free</span>&nbsp;&nbsp;/&nbsp;&nbsp;<span class="font-weight-700 cursor-pointer" @click="showPaidTab" :class="{ 'active-tab' : addPaidClass }">Paid</span>
                 </div>
-                <div class="col-sm-8">
-                  <input type="text" class="form-control" placeholder="Enter amount" v-model="amount" :class="{ 'show-amount' : addPaidClass, 'hide-amount' : !addPaidClass }">
+                <div class="col-sm-8" :class="{ 'show-amount' : addPaidClass, 'hide-amount' : !addPaidClass }">
+                  <input type="text" class="form-control" placeholder="Enter amount" v-model="amount">
                 </div>
               </div>     
             </div>
@@ -538,6 +547,7 @@ export default {
     const binImage = ref("")
     const image = ref ("")
     const imageUrl = ref("")
+    const slot = ref("")
 
 
     const selectedGroup = ref({});
@@ -644,12 +654,27 @@ export default {
     getGroups();
 
     const onContinue = async () => {
+      console.log(addPaidClass.value)
+
+      // const baseFormData = new FormData()
+      // selectedEvent.value ? baseFormData.append("eventId", selectedEvent.value.id) : ""
+      // selectedGroup.value ? baseFormData.append("groupId", selectedGroup.value.id) : ""
+      // baseFormData.append("eventDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0])
+      // slot.value ? baseFormData.append("registrationSlot", slot.value) : ""
+      // eventDetails.value ? baseFormData.append("details", eventDetails.value) : ""
+      // registrationSMS.value ? baseFormData.append("registrationSMS", registrationSMS.value) : ""
+      // registrationEmail.value ? baseFormData.append("registrationEmail", registrationEmail.value) : ""
+      // checkinSMS.value ? baseFormData.append("checkinSMS", checkinSMS.value) : ""
+      // checkinEmail.value ? baseFormData.append("checkinEmail", checkinEmail.value) : ""
+      // image.value ? baseFormData.append("bannerPhoto", image.value) : ""
+
       let checkinEvent = {
           eventId: selectedEvent.value.id,
           groupID: selectedGroup.value.id,
-          eventDate: moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0]
+          eventDate: moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0],
         }
-        console.log(checkinEvent)
+        slot.value ? checkinEvent.registrationSlot = slot.value : ""
+      //   console.log(checkinEvent)
       const formData = new FormData();
 
       image.value ? formData.append("bannerPhoto", image.value) : ""
@@ -660,17 +685,20 @@ export default {
       formData.append("contributionItemName", selectedEvent.value.name)
       selectedCashAccount.value ? formData.append("cashAccountId", selectedCashAccount.value ? selectedCashAccount.value.id : "") : ""
       selectedIncomeAccount.value ? formData.append("incomeAccountId", selectedIncomeAccount.value ? selectedIncomeAccount.value.id : "") : ""
-      formData.append("registrationSMS", registrationSMS.value)
-      formData.append("registrationEmail", registrationEmail.value)
-      formData.append("checkinSMS", checkinSMS.value)
-      formData.append("checkinEmail", checkinEmail.value)
-      formData.append("activityDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0])
+      registrationSMS.value ? formData.append("registrationSMS", registrationSMS.value) : ""
+      registrationEmail.value ? formData.append("registrationEmail", registrationEmail.value) : ""
+      checkinSMS.value ? formData.append("checkinSMS", checkinSMS.value) : ""
+      checkinEmail.value ? formData.append("checkinEmail", checkinEmail.value) : ""
+      selectedEvent.value ? formData.append("activityDate", moment(new Date(selectedEvent.value.name.split("(")[1].split(")")[0]).toISOString()).format().split("T")[0]) : ""
       formData.append("isPaidFor", addPaidClass.value)
       amount.value ? formData.append("amount", amount.value) : ""
-      formData.append("activityId", selectedEvent.value.id)
-      formData.append("groupId", selectedGroup.value.id)
+      selectedEvent.value ? formData.append("activityId", selectedEvent.value.id) : ""
+      selectedGroup.value ? formData.append("groupId", selectedGroup.value.id) : ""
       formData.append("enableRegistration", true)
-      if (!amount.value && !selectedBank.value && !accountNumber.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value && !registrationEmail.value && !registrationSMS.value && !checkinEmail.value && !checkinSMS.value) {
+      slot.value ? formData.append("registrationSlot", slot.value) : ""
+
+      if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  !image.value) {
+        console.log('free and no image')
         
       try {
           const response = await attendanceservice.saveCheckAttendanceItem(checkinEvent);
@@ -691,8 +719,33 @@ export default {
           console.log(error);
         }
       console.log("Only Top")
-      } else {
-        console.log("All fields  filled")
+      } 
+      
+      if (!amount.value && !selectedBank.value && !accountNumber.value && !selectedCashAccount.value && !selectedIncomeAccount.value &&  image.value) {
+        console.log("Free and image")
+        try {
+            let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
+            console.log(data)
+            store.dispatch("attendance/setEventReg", data.returnObject);
+            router.push({
+              name: "CheckinType",
+              query: {
+                activityID: selectedEvent.value.id,
+                activityName: selectedEvent.value.name,
+                groupId: selectedGroup.value.id,
+                groupName: selectedGroup.value.name,
+                id: data.returnObject.checkInAttendanceResult.id,
+                code: data.returnObject.checkInAttendanceResult.attendanceCode
+              },
+            });
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+
+      if (amount.value && selectedBank.value && accountNumber.value && selectedCashAccount.value && selectedIncomeAccount.value &&  image.value) {
+        console.log('image and paid')
         try {
             let { data } = await axios.post('/api/CheckInAttendance/EventRegister', formData)
             console.log(data)
@@ -870,7 +923,8 @@ export default {
       imageUrl,
       setBank,
       bankSearchText,
-      filteredBanks
+      filteredBanks,
+      slot
     };
   },
 };
@@ -918,10 +972,12 @@ export default {
 }
 
 .show-tem-free {
-    height: 745px;
+    height: 798px;
     overflow: hidden;
     transition: all 1s ease-in-out
 }
+
+
 
 .show-tem {
     height: 1050px;
@@ -954,10 +1010,29 @@ export default {
   transition: all 0.6s ease-in-out
 }
 
+
 .hide-paid {
   height: 0;
   overflow: hidden;
   transition: all 0.6s ease-in-out
+}
+
+@media (max-width: 576px) {
+  .show-tem-free {
+    height: 1080px;
+  }
+
+  .show-tem {
+    height: 1550px;
+    /* overflow: hidden; */
+    transition: all 1s ease-in-out
+}
+
+  .show-paid {
+    height: 508px;
+    /* overflow: hidden; */
+    transition: all 0.6s ease-in-out
+  }
 }
 
 .show-amount {

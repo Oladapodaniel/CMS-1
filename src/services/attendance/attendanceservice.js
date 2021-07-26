@@ -131,7 +131,7 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
     if (eventAnalysisData.todayVsLastWeekAttendancePercentage > 0) {
         message += `\n\nWe recorded a ${eventAnalysisData.todayVsLastWeekAttendancePercentage}% increase in attendance since last week.`;
     } else if (eventAnalysisData.todayVsLastWeekAttendancePercentage < 0) {
-        message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastWeekAttendancePercentage)}% decrease in attendance since last week.`;
+        message += `\n\nThere was a ${Math.abs(eventAnalysisData.todayVsLastWeekAttendancePercentage).toFixed(2)}% decrease in attendance since last week.`;
     } else {
         message += `\n\nNo increase or decrease in attendance since last week`;
     }
@@ -148,7 +148,8 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
     return message;
     }
     if (eventAnalysisData.todayContributions) {
-        let message = `CONTRIBUTION REPORT\n          ======\n\nTotal Offering: ${eventAnalysisData.totalToday}`
+        // let message = `OFFERING REPORT\n          ======\n\nTotal Offering: ${eventAnalysisData.totalToday}`
+        let message = `OFFERING REPORT\n          ======\n${eventAnalysisData.todayContributions[0].eventName}\nDate: ${new Date(eventAnalysisData.todayContributions[0].date).toLocaleDateString()}\n\nTotal Amount: ${eventAnalysisData.todayContributions[0].amount}\nTotal Offering: ${eventAnalysisData.tenantCurrency} ${eventAnalysisData.totalToday}`;
 
 
     if (eventAnalysisData.todayVsLastWeek > 0) {
@@ -163,5 +164,6 @@ const generateEventReportDefaultMessage = (eventAnalysisData) => {
     return message;
     }
 }
+
 
 export default { saveCheckAttendanceItem, startCheckinProces, getItems, getItemByCode, getReport, checkin, checkout, generateEventReportDefaultMessage };

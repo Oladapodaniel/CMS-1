@@ -19,11 +19,11 @@
         </div>
       </div>
 
-      <div class="row mt-4 grey-rounded-border">
+      <div class="row mt-4 grey-rounded-border grey-rounded-border2">
         <div class="col-md-12">
           <div class="row main-header">
             <div class="col-md-12">
-              <div class="row">
+              <div class="row row-bg-color">
                 <div class="col-sm-2 d-md-flex align-items-center">
                   <input class="my-2" type="checkbox" />
                 </div>
@@ -147,8 +147,6 @@ import groupsService from "../../services/groups/groupsservice"
 import { useStore } from "vuex";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
-
-
 export default {
   setup() {
     //   const $confirm = getCurrentInstance().ctx.$confirm;
@@ -157,9 +155,7 @@ export default {
     const store = useStore();
     const groups = ref(store.getters["groups/groups"]);
     const toast = useToast();
-
     const confirm = useConfirm();
-
     const confirmDelete = (id, index) => {
       confirm.require({
           message: 'Do you want to delete this group?',
@@ -188,8 +184,6 @@ export default {
           }
       });
     }
-
-
     const getgroups = async () => {
       try {
         console.log("calling");
@@ -211,9 +205,7 @@ export default {
         (loading.value = false), console.log(error.response);
       }
     };
-    
     if (!groups.value || groups.value.length === 0) getgroups();
-
     return {
       groups,
       loading,
@@ -228,42 +220,45 @@ export default {
 * {
   box-sizing: border-box;
 }
-
+.row-bg-color {
+    background-color: #f1f3f9;
+     border-radius: 30px 30px 0 0;
+}
+.grey-rounded-border2 {
+    border: 1px solid #dde2e6 !important;
+    box-shadow: 0 3px 6px rgba(44,40,40,.10980392156862745);
+    border-radius: 30px;
+    text-align: center;
+    width: 100%;
+}
 .events {
       font: normal normal 800 29px Nunito sans;
       }
-      
 .yu {
   margin-top: 5rem !important;
 }
-
 .dropdown-menu a {
   color: #02172e;
 }
-
 .link a {
   text-decoration: none;
 }
-
+/*
 .main-header {
   background: #e9ecef;
-}
-
+} */
 .link a:hover {
   color: #fff;
 }
-
 @media screen and (min-width: 580px) {
   .hidden-header {
     display: none;
   }
 }
-
 @media screen and (max-width: 581px) {
   .main-header {
     display: none;
   }
-
   .f-right {
     float: right;
   }

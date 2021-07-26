@@ -71,20 +71,32 @@
 // import InputText from 'primevue/inputtext';
 import Button from 'primevue/button'
 import { reactive } from 'vue'
-// import { useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import axios from "@/gateway/backendapi";
     export default {
         components:{ Button },
 
         setup(props, { emit }) {
-            // const route = useRoute();
+            const route = useRoute();
             const donor = reactive({ });
 
             const saveDonor = async () => {
                 emit("cancel");
+                console.log(route.fullPath)
+                if (route.fullPath.includes("/tenant/addfamily")) {
+                    emit("show-ward-modal", true)
+                    console.log('did it emit')
+
+                }
+
+                const formData = new FormData()
+                formData.append("firstName", donor.firstName)
+                formData.append("lastName", donor.lastName)
+                formData.append("mobilePhone", donor.mobilePhone)
+                formData.append("email", donor.email)
                 try {
                      return new Promise((resolve, reject) => {
-                        axios.post("/api/People/createPerson", donor)
+                        axios.post("/api/People/createPerson", formData)
                             .then(res => {
                                 console.log(res)
                                 emit('person-id', {personId: res.data.personId, personFirstName: donor.firstName})

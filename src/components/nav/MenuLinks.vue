@@ -5,7 +5,14 @@
         <div class="nav" @click="linkClicked">
           <div class="user">
             <img
+              :src="churchLogo"
+              v-if="churchLogo"
+              class="link-image"
+              alt=""
+            />
+            <img
               src="../../assets/dashboardlinks/churchcloud.png"
+              v-else
               class="link-image"
               alt=""
             />
@@ -49,7 +56,7 @@
               ></span>
             </span>
           </a>
-          <ul class="dd-list" :class="{ 'dd-hide-list': !peopleLinkDropped }">
+          <ul class="dd-list people-dd" :class="{ 'dd-hide-list': !peopleLinkDropped }">
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" :to="`/tenant/people`"
                 >Members</router-link
@@ -66,8 +73,8 @@
               >
             </li>
             <!-- Hidden -->
-            <li class="dd-list-item" v-if="false">
-              <router-link class="dd-link-item routelink" to="">Families</router-link>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" :to="{ name: 'Family' }">Families</router-link>
             </li>
           </ul>
           <!-- </a> -->
@@ -193,6 +200,9 @@
             <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/offering">Offerings</router-link>
             </li>
+            <li class="dd-list-item">
+              <router-link class="dd-link-item routelink" to="/tenant/onlinedonation">Online Donation</router-link>
+            </li>
             <li class="dd-list-item"  v-if="false">
               <router-link class="dd-link-item routelink" to="">Pledges</router-link>
             </li>
@@ -209,11 +219,11 @@
                 >Charts of Account</router-link
               >
             </li>
-            <li class="dd-list-item">
+            <!-- <li class="dd-list-item">
               <router-link class="dd-link-item routelink" to="/tenant/payment"
                 >Payment Form</router-link
               >
-            </li>
+            </li> -->
           </ul>
 
           <!-- Hidden -->
@@ -313,6 +323,7 @@ export default {
     const route = useRoute();
     const router = useRouter()
     const moreShown = ref(false);
+    const churchLogo = ref("");
     const showMore = () => {
       moreShown.value = !moreShown.value;
     };
@@ -365,6 +376,7 @@ export default {
         .catch((err) => console.log(err.respone));
     } else {
       tenantInfo.value.churchName = store.getters.currentUser.churchName;
+      tenantInfo.value.tenantId = store.getters.currentUser.tenantId;
     }
 
     const tenantDisplayName = computed(() => {
@@ -381,6 +393,18 @@ export default {
         emit('linkclicked', true);
       }
     }
+
+    const getChurchProfile = async() => {
+            try {
+                let res = await axios.get(`/GetChurchProfileById?tenantId=${tenantInfo.value.tenantId}`)
+                console.log(res)
+                churchLogo.value = res.data.returnObject.logo
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getChurchProfile()
 
     const logout = () => {
       localStorage.clear()
@@ -404,6 +428,7 @@ export default {
       toggleEventsDropDown,
       tenantDisplayName,
       linkClicked,
+      churchLogo,
       logout
     };
   },
@@ -538,7 +563,7 @@ export default {
   */
 .hide-more-links {
   transition: all 0.5s ease-in-out;
-  height: 100px; 
+  height: 160px; 
 }
 
 .follow-up {
@@ -575,7 +600,7 @@ export default {
   margin-left: 20px !important;
   overflow: hidden;
   /* Change to 180px */
-  height: 125px;
+  height: 80px;
   transition: all 0.3s ease-in-out;
 }
 
@@ -584,7 +609,11 @@ export default {
 }
 
 .acc-list {
-  height: 257px;
+  height: 168px;
+}
+
+.people-dd {
+  height: 170px;
 }
 
 .dd-hide-list {

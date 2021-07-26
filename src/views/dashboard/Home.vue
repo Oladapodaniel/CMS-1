@@ -3,7 +3,7 @@
     <div class="links-menu" :class="{ show: menuShouldShow }">
       <MenuLinks @linkclicked="hideNav" />
     </div>
-    <div class="main-con dim" @click="hideMenu">
+    <div :class="{ 'main-con dim' :  !route.fullPath.includes('/mobileonboarding') && !route.fullPath.includes('/onboardingsuccessful'), 'top-router': route.query.fw }" @click="hideMenu">
       <!-- <transition name="fade" mode="out-in"> -->
       <!-- <div
         aria-live="polite"
@@ -34,19 +34,21 @@
     </div>
   </div>
   <div class="toggle" @click="toggleMenu">
-    <i class="fa fa-bars"></i>
+    <i class="pi pi-bars"></i>
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import MenuLinks from "../../components/nav/MenuLinks.vue";
+import { useRoute }  from "vue-router"
 
 export default {
   components: { MenuLinks },
 
   setup() {
     const menuShouldShow = ref(false);
+    const fullPath = ref("")
 
     const toggleMenu = () => (menuShouldShow.value = !menuShouldShow.value);
 
@@ -60,11 +62,20 @@ export default {
       }
     }
 
+    const route = useRoute()
+    const getRoute = () => {
+      console.log(route.fullPath)
+      fullPath.value = route.fullPath
+    }
+    getRoute()
+
     return {
       menuShouldShow,
       toggleMenu,
       hideMenu,
       hideNav,
+      fullPath,
+      route,
     };
   },
 };
@@ -174,5 +185,9 @@ export default {
 .fade-leave-to {
   transition: translateX(20px);
   opacity: 0;
+}
+
+.top-router {
+  max-width: 1536px !important;
 }
 </style>

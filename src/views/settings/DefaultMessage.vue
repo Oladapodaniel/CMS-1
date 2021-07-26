@@ -13,59 +13,61 @@
           >
         </div>
       </div>
-
-      <div class="row table-header-row py-2 mt-5">
-        <div class="col-md-4">
-          <span class="py-2 font-weight-bold">MESSAGE</span>
-        </div>
-         <div class="col-md-2">
-          <span class="py-2 font-weight-bold">SUBJECT</span>
-        </div>
-        <div class="col-md-2">
-          <span class="py-2 font-weight-bold">TYPE</span>
-        </div>
-        <div class="col-md-4">
-          <span class="py-2 font-weight-bold">CATEGORY</span>
-        </div>
-        <!-- <div class="col-md-2">
-          <span class="py-2 font-weight-bold">MESSAGE</span>
-        </div> -->
-      </div>
-
-      <div class="row py-2">
+      <div class="row header1 mt-5">
         <div class="col-md-12">
-          <div class="row" v-for="(allMessages, index) in defaultMessage" :key="index">
+          <div class="row table-header-row py-2 ">
+        <div class="col-md-4">
+          <span class="py-2 font-weight-bold">Message</span>
+        </div>
+         <div class="col-md-3">
+          <span class="py-2 font-weight-bold">Subject</span>
+        </div>
+        <div class="col-md-3">
+          <span class="py-2 font-weight-bold">Type</span>
+        </div>
+        <div class="col-md-1">
+          <span class="py-2 font-weight-bold">Category</span>
+        </div>
+        <div class="col-md-1">
+          <span class="py-2 font-weight-bold"></span> 
+        </div>
+      </div>
+        </div>
+        <div class="col-md-12">
+          <div class="row py-0">
+        <div class="col-md-12">
+          <div class="row tr-border-bottom py-1 header2" v-for="(allMessages, index) in defaultMessage" :key="index">
             <div
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">CATEGORY</span>
-              <span class="py-2" v-if="allMessages.message.length < 20">{{allMessages.message}}</span>
-              <span v-else v-tooltip.top="`${allMessages.message}`">{{allMessages.message.substring(0,20)+"..."}}</span>
+              <span class="py-2" v-if="allMessages.message.length < 20"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
+              <span v-else v-tooltip.top="`${allMessages.message}`"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message.substring(0,20)+"..."}}</router-link></span>
                <!-- <span class="py-2 text-xs-left"  v-if="churchMem.email.length<10">{{ churchMem.email}}</span>
               <span v-else v-tooltip.top="`${churchMem.email}`">{{churchMem.email.substring(0,10)+ "..."}}</span> -->
             </div>
             <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
+              class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">SUBJECT</span>
-              <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 10">{{allMessages.subject}}</span>
-              <span v-else v-tooltip.top="`${allMessages.subject}`">{{allMessages.subject.substring(0,10)+ "..."}}</span>
+              <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 20"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
+              <span v-else v-tooltip.top="`${allMessages.subject}`">{{allMessages.subject.substring(0,)+ "..."}}</span>
             </div>
             <div
-              class="col-md-2 d-flex justify-content-between align-items-center"
+              class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">TYPE</span>
-              <span class="py-2" v-if="messageName(allMessages.messageType).length < 10">{{messageName(allMessages.messageType)}}</span>
-              <span v-else v-tooltip.top="`${messageName(allMessages.messageType)}`">{{messageName(allMessages.messageType).substring(0,10) + "..."}}</span>
+              <span class="py-2" v-if="messageName(allMessages.messageType).length < 20"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
+              <span v-else v-tooltip.top="`${messageName(allMessages.messageType)}`"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType).substring(0,20) + "..."}}</router-link></span>
               
               
              
             </div>
             <div
-              class="col-md-3 d-flex justify-content-between align-items-center"
+              class="col-md-1 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">CATEGORY</span>
-              <span class="py-2">{{categoryName(allMessages.category)}}</span>
+              <span class="py-2"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{categoryName(allMessages.category)}}</router-link></span>
               
               
             </div>
@@ -87,8 +89,8 @@
                   <a class="dropdown-item">
                     <router-link :to="`/tenant/sms/compose?defaultId=${allMessages.id}`">Send Email</router-link>
                   </a>
-                  <router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}"><a class="dropdown-item button">Edit</a></router-link>
-                  <a class="dropdown-item button" @click="deletePop(allMessages.id)">Delete</a>
+                  <a class="dropdown-item"><router-link :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">Edit</router-link></a>
+                  <a class="dropdown-item" @click="deletePop(allMessages.id)"> <router-link to="">Delete</router-link></a>
                 </div>
               </div>
             </div>
@@ -96,11 +98,16 @@
           <Toast/>
           <ConfirmDialog/>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-12 px-0">
               <hr class="hr my-0" />
             </div>
-          </div>
+          </div> -->
+        </div>
+        <div class=" col-12 text-center p-5" v-if="loading">
+             <i class="pi pi-spin pi-spinner text-center text-primary" style="fontSize: 3rem"></i>
+            </div>
+      </div>
         </div>
       </div>
     </div>
@@ -111,8 +118,9 @@
 import axios from "@/gateway/backendapi";
 import messageOptions from '../../services/defaultmessage/default_message_service';
 import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog'
+import ConfirmDialog from 'primevue/confirmdialog';
 import Tooltip from 'primevue/tooltip';
+import finish from '../../services/progressbar/progress'
 export default {
   components:{
     Toast,
@@ -128,8 +136,8 @@ export default {
 		Membership: messageOptions.Membership,
     selectType: null,
 		Sms: messageOptions.Sms,
-    defaultMessage: []
-
+    defaultMessage: [],
+    loading: false
     }
   },
   methods: {
@@ -155,13 +163,16 @@ export default {
         this.defaultMessage = this.defaultMessage.filter(i => i.id !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Message Deleted Successfully', life: 3000});
       } catch (error){
+        finish()
         console.log(error);
       }
     },
      async AllDefaultMessages(){
       try{
+        this.loading = true
         const  {data} = await axios.get('/api/Settings/AllDefaultMessages')
         this.defaultMessage = data.returnObject;
+        this.loading = false
         console.log(this.defaultMessage)
       }catch(error){
         console.log(error)
@@ -186,8 +197,37 @@ export default {
 </script>
 
 <style scoped>
+.route{
+  color: black!important;
+  text-decoration: none!important;
+
+}
+.route:hover{
+  color: #136acd!important;
+
+}
+.dropdown a{
+  color: black!important;
+  text-decoration: none;
+}
+.dropdown a:hover{
+  color: #136acd!important;
+}
+.header2{
+  cursor: pointer;
+
+}
+.header2:hover{
+  background-color: #eee;
+}
+.header1{
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0px 3px 6px #2c282821;
+  border-radius: 8px;
+}
 .table-header-row {
-  background: #ebeff4;
+  background: #dde2e6;
   border-top: 1px solid #dde2e6;
   border-radius: 8px 8px 0 0;
 }

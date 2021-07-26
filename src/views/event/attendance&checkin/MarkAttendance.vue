@@ -279,6 +279,7 @@ export default {
     }
 
     const sendExistingUser = async () => {
+      console.log(personData.value)
       const response = await attendanceservice.checkin(personData.value);
       if (response) {
         searchText.value = "";

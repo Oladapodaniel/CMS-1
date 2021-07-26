@@ -37,11 +37,9 @@ export default {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
         store.dispatch("setCurrentUser", res.data);
-        console.log(res.data);
       } catch (err) {
         /*eslint no-undef: "warn"*/
         NProgress.done();
-        console.log(err.response);
         if (err.response && err.response.status === 401) {
           localStorage.setItem("token", "");
           router.push("/");
@@ -64,7 +62,17 @@ export default {
 
       setupService.setup();
     }
+
+    
   },
+
+  // mounted() {
+  //   window.addEventListener('DOMContentLoaded', () => {
+  //     const script = document.createElement("script");
+  //     script.src = 'https://embed.tawk.to/60ba6591de99a4282a1b7128/1f7c1pgqv';
+  //     document.getElementsByTagName("head")[0].appendChild(script);
+  //   });
+  // }
 };
 </script>
 
