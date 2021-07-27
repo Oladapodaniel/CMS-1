@@ -90,7 +90,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btnfb" @click="facebookLogin2">
+              <button class="btn default-btn btnfb" @click="showDispay" >
                 Connect
               </button>
             </div>
@@ -100,9 +100,9 @@
       <!--end facebook area  -->
       <Dialog
         header="Account Connected"
-        class="dialogFacebook"
+        class="dialogFacebook heading-text"
         v-model:visible="display"
-        style="width: 100%; max-width: 600px"
+        style="width: 100%; max-width: 700px"
       >
         <!--facebook id-->
         <form action="">
@@ -110,11 +110,40 @@
             <div class="col-md-1 text-right">
               <label for="email"></label>
             </div>
-            <div class="form-group col-md-10 text-center">
-              <h6>Your Account as be connected to facebook Successfully click the button below to make your post</h6>
+            <div class="form-group col-md-12">
+              <h5 class="link-text">
+                Account connected to facebook Successfully, Enter your Facebook
+                Page Id and Page Access Token below to make your post
+              </h5>
               <!-- <h6>Share Your Post to Facebook</h6> -->
             </div>
-            <div class="col-md-1"></div>
+            <div class="col-md-0"></div>
+          </div>
+          <div class="row">
+            <div class="col-4 link-text">Page Id:</div>
+            <div class="col-8 form-group">
+              <input
+                type="text"
+                placeholder="Page Id"
+                class="form-control input"
+                id="pageId"
+                v-model="pageId"
+                required
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 link-text">Page Access Token:</div>
+            <div class="col-8 form-group">
+              <input
+                type="text"
+                placeholder="Page Access Token"
+                class="form-control input w-90"
+                id="pageAccessToken"
+                v-model="pageaccessToken"
+                required
+              />
+            </div>
           </div>
           <div class="row">
             <div class="col-md-4"></div>
@@ -128,12 +157,13 @@
           <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-6">
-              <router-link to="/tenant/social/post"
+              <!-- <router-link to="/tenant/social/post"
                 class="btn default-btn btnfb text-center"
               
               >
                 Create Post
-              </router-link>
+              </router-link> -->
+              <button class="btn default-btn btnfb text-center" @click="getPageAccessToken" >Submit</button>
             </div>
             <div class="col-md-2"></div>
           </div>
@@ -327,7 +357,7 @@
 </template>
 
 <script>
-import firebase from "../../../services/firebase/firebase";
+// import firebase from "../../../services/firebase/firebase";
 import { ref } from "vue";
 import Dialog from "primevue/dialog";
 import axios from "axios";
@@ -335,94 +365,126 @@ import axios from "axios";
 export default {
   components: { Dialog },
   setup() {
-    
     const display = ref(false);
-
-    
-    const facebookLogin2 = () => {
-
-      var provider = new firebase.auth.FacebookAuthProvider();
-      provider.addScope("user_birthday");
-
-      firebase.auth().signOut().then(() => {
-        // Sign-out successful.
-        console.log("logged out");
-        firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-          setTimeout(function () {
-            display.value = true;
-          }, 1500);
-
-          console.log(result, "sign in result");
-          let accessToken = result.credential.accessToken;
-          let profileId = result.additionalUserInfo.profile.id;
-          getAccessToken(accessToken, profileId);
-
-          /** @type {firebase.auth.OAuthCredential} */
-        })
-        .catch((error) => {
-          console.log(error, "sign in error");
-        });
-      }).catch((error) => {
-        // An error happened.
-        console.log(error, "log out failed");
-        firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-          setTimeout(function () {
-            display.value = true;
-          }, 1500);
-
-          console.log(result, "sign in result");
-          let accessToken = result.credential.accessToken;
-          let profileId = result.additionalUserInfo.profile.id;
-          getAccessToken(accessToken, profileId);
-
-          /** @type {firebase.auth.OAuthCredential} */
-        })
-        .catch((error) => {
-          
-          if(error.credential && error.credential.accessToken){
-            display.value = true;
-            //Get Page access token
-              axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`)
-                .then(res => {
-                  console.log(res, "🎉🌹🌹");
-                })
-                .catch(err => {
-                  console.log(err, "err error");
-                })
-          }
-
-          console.log(error, "sign in error");
-        });
-      });
-
-      
-    };
-    const getAccessToken = async (accessToken, profileId) => {
-      try {
-        const data =
-          await axios.get(`https://graph.facebook.com/${profileId}/accounts?fields=name,access_token&access_token=${accessToken}`);
-        console.log(data, "get pages data");
-      } catch (error) {
-        console.log(error, "get pages error")
-      }
-    };
-
-    const pageAccessToken = async (token) =>{
-      try{
-        const data = await axios.get(`https://graph.facebook.com/103263464868380?fields=access_token&access_token=${token}`)
-        console.log(data, "w data");
-      } catch(error){
-        console.log(error);
-      }
+    const showDispay =() =>{
+      return display.value= "true"
     }
 
-  /*eslint no-undef: "warn"*/
+    // const facebookLogin2 = () => {
+    //   var provider = new firebase.auth.FacebookAuthProvider();
+    //   provider.addScope("user_birthday");
+
+    //   firebase
+    //     .auth()
+    //     .signOut()
+    //     .then(() => {
+    //       // Sign-out successful.
+    //       console.log("logged out");
+    //       firebase
+    //         .auth()
+    //         .signInWithPopup(provider)
+    //         .then((result) => {
+    //           setTimeout(function () {
+    //             // display.value = true;
+    //           }, 1500);
+
+    //           console.log(result, "sign in result");
+    //           let accessToken = result.credential.accessToken;
+    //           let profileId = result.additionalUserInfo.profile.id;
+    //           getAccessToken(accessToken, profileId);
+
+    //           /** @type {firebase.auth.OAuthCredential} */
+    //         })
+    //         .catch((error) => {
+    //           console.log(error, "sign in error");
+    //         });
+    //     })
+    //     .catch((error) => {
+    //       // An error happened.
+    //       console.log(error, "log out failed");
+    //       firebase
+    //         .auth()
+    //         .signInWithPopup(provider)
+    //         .then((result) => {
+    //           setTimeout(function () {
+    //             display.value = true;
+    //           }, 1500);
+
+    //           console.log(result, "sign in result");
+    //           let accessToken = result.credential.accessToken;
+    //           let profileId = result.additionalUserInfo.profile.id;
+    //           getAccessToken(accessToken, profileId);
+
+    //           /** @type {firebase.auth.OAuthCredential} */
+    //         })
+    //         .catch((error) => {
+    //           if (error.credential && error.credential.accessToken) {
+    //             display.value = true;
+    //             //Get Page access token
+    //             axios
+    //               .get(
+    //                 `https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`
+    //               )
+    //               .then((res) => {
+    //                 console.log(res, "🎉🌹🌹");
+    //               })
+    //               .catch((err) => {
+    //                 console.log(err, "err error");
+    //               });
+    //           }
+
+    //           console.log(error, "sign in error");
+    //         });
+    //     });
+    // };
+    // const getAccessToken = async (accessToken, profileId) => {
+    //   try {
+    //     const data = await axios.get(
+    //       `https://graph.facebook.com/${profileId}/accounts?fields=name,access_token&access_token=${accessToken}`
+    //     );
+    //     console.log(data, "get pages data");
+    //   } catch (error) {
+    //     console.log(error, "get pages error");
+    //   }
+    // };
+
+    // const pageAccessToken = async (token) => {
+    //   try {
+    //     const data = await axios.get(
+    //       `https://graph.facebook.com/103263464868380?fields=access_token&access_token=${token}`
+    //     );
+    //     console.log(data, "w data");
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    //get page Access Token
+    const pageaccessToken = ref("");
+    const pageId = ref("");
+    const name = ref("Facebook");
+    const pageUrl = ref(`https://graph.facebook.com/114361443274202/feed`)
+
+
+    const getPageAccessToken = async () => {
+      let facebookUser = {
+        name: name.value,
+        pageUrl: pageUrl.value,
+        pageId: pageId.value,
+        pageaccessToken: pageaccessToken.value
+      }
+      try {
+        // const data = await axios.get(
+        //   "https://graph.facebook.com/pageId?fields=access_token&access_token=pageaccessToken"
+        // );
+        axios.post(`/api/Settings/CreatNewUser`,facebookUser)
+        
+        console.log(facebookUser, "🎉🎉🎉🎉");
+      } catch (error) {
+        console.log(error, "get pages error");
+      }
+    };
+
+    /*eslint no-undef: "warn"*/
     // FB.login(function(response) {
     //   // handle the response
     //   console.log(response, "SDK response");
@@ -454,55 +516,57 @@ export default {
     //           })
 
     //     })
-        // .catch((error) => {
-        //   console.log(error, "🤣🤣");
-        //   if (!error.credential) return false;
-        //   axios.get(`https://graph.facebook.com/v11.0/me?fields=id&access_token=${error.credential.accessToken}`)
-        //     .then(res => {
-        //       getAccessToken(error.credential.accessToken, res.data.id)
+    // .catch((error) => {
+    //   console.log(error, "🤣🤣");
+    //   if (!error.credential) return false;
+    //   axios.get(`https://graph.facebook.com/v11.0/me?fields=id&access_token=${error.credential.accessToken}`)
+    //     .then(res => {
+    //       getAccessToken(error.credential.accessToken, res.data.id)
 
-        //       //Get Page access token
-        //       axios.get(`https://graph.facebook.com/108291174831555?fields=access_token&access_token=${error.credential.accessToken}`)
-        //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
-        //         .then(res => {
-        //           console.log(res, "🎉🌹🌹 NEW");
-        //         })
-        //         .catch(err => {
-        //           console.log(err, "err error");
-        //         })
+    //       //Get Page access token
+    //       axios.get(`https://graph.facebook.com/108291174831555?fields=access_token&access_token=${error.credential.accessToken}`)
+    //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+    //         .then(res => {
+    //           console.log(res, "🎉🌹🌹 NEW");
+    //         })
+    //         .catch(err => {
+    //           console.log(err, "err error");
+    //         })
 
-        //       //Get Page access token
-        //       axios.get(`https://graph.facebook.com/v11.0/${res.data.id}/accounts?fields=id,picture,name&access_token=${error.credential.accessToken}`)
-        //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
-        //         .then(res => {
-        //           console.log(res, "🎉🌹🌹");
-        //         })
-        //         .catch(err => {
-        //           console.log(err, "err error");
-        //         })
+    //       //Get Page access token
+    //       axios.get(`https://graph.facebook.com/v11.0/${res.data.id}/accounts?fields=id,picture,name&access_token=${error.credential.accessToken}`)
+    //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+    //         .then(res => {
+    //           console.log(res, "🎉🌹🌹");
+    //         })
+    //         .catch(err => {
+    //           console.log(err, "err error");
+    //         })
 
-        //       //Get Page access token
-        //       axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`)
-        //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
-        //         .then(res => {
-        //           console.log(res, "🎉🌹🌹");
-        //         })
-        //         .catch(err => {
-        //           console.log(err, "err error");
-        //         })
-        //     })
-        //     .catch(err => {
-        //       console.log(err, "err error");
-        //     })
+    //       //Get Page access token
+    //       axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`)
+    //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+    //         .then(res => {
+    //           console.log(res, "🎉🌹🌹");
+    //         })
+    //         .catch(err => {
+    //           console.log(err, "err error");
+    //         })
+    //     })
+    //     .catch(err => {
+    //       console.log(err, "err error");
+    //     })
 
-          
-            
-        // });
+    // });
 
     return {
-      facebookLogin2,
+      pageaccessToken,
+      pageId,
+      // facebookLogin2,
       display,
-      pageAccessToken,
+      showDispay,
+      // pageAccessToken,
+      getPageAccessToken,
     };
   },
 };
