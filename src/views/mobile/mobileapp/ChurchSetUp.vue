@@ -48,14 +48,9 @@
                 <div class="row">
                   <div class="col-md-4 col-12 col-sm-5 person-image">
                     <img
-<<<<<<< HEAD
                       style="width: 110px; height: 110px; border-radius: 50%;"
                       :src="item.url"
                       class="w-75 "
-=======
-                      :src="item.photo"
-                      class="w-100 "
->>>>>>> development
                     />
                   </div>
                   <div class="col-10 col-sm-5 align-self-center">
