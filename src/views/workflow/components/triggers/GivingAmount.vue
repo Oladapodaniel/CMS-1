@@ -58,11 +58,12 @@ import Dropdown from "primevue/dropdown"
 import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
 import { reactive, ref } from '@vue/reactivity'
-import { computed } from '@vue/runtime-core'
+import { computed, watch } from '@vue/runtime-core'
 import { useStore } from "vuex";
+import workflow_util from '../../utlity/workflow_util'
 
 export default {
-    props: [ "groups", "selectedTriggerIndex", "contributionItems" ],
+    props: [ "groups", "selectedTriggerIndex", "contributionItems", "condition" ],
     components: { Dropdown, TriggerDescription, MultiSelect },
 
     setup (props, { emit }) {
@@ -92,6 +93,9 @@ export default {
             emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
         }
 
+        const parsedData = ref({ })
+        
+
         const category = ref('')
         const categorySelected = (e) => {
             data.financialContributionID = e.value.id;
@@ -108,7 +112,7 @@ export default {
             return {
                 groups: selectedGroup.value ? selectedGroup.value.map(i => i.name) : ['_____'],
                 range: selectedRange.value === 'Greater than' ? '>' : '<',
-                category: category.value && category.value.name ? category.value : '____',
+                category: category.value && category.value.name ? category.value.name : '____',
                 amount: amount.value ? amount.value : '',
                 time: givingTime.value ? givingTime.value : '____',
                 id: 1,
@@ -123,6 +127,18 @@ export default {
         const removeTrigger = () => {
             emit("removetrigger")
         }
+
+        watch(() => {
+            console.log(props.condition, "hhhhh");
+            if (props.condition.triggerType >= 0 && props.condition.id) {
+                parsedData.value = JSON.parse(props.condition.jsonCondition);
+                selectedRange.value = parsedData.value.logicalOperator;
+                amount.value = parsedData.value.amount;
+                selectedGroup.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [ ];
+                category.value = workflow_util.getGroup(parsedData.value.financialContributionID, props.contributionItems);
+                givingTime.value = parsedData.value.singleOrLast;
+            }
+        }) 
 
         return {
             groupSelected,
