@@ -9,6 +9,13 @@ import TermsOfUse from '../components/temp/PaymentPage';
 const routes = [
 
     {
+        path: '/expiredSubscription',
+        name: 'ExpiredSubscription',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/ExpiredSubscription')
+    },
+
+    {
         path: '/pagination',
         name: 'Pagination',
         component: Pagination
@@ -1237,7 +1244,7 @@ const routes = [
                 import( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Guardian')
         }
         ]
-    }
+    },
     // {
     //     path: '/unauthorized',
     //     name: 'Unauthorized',
