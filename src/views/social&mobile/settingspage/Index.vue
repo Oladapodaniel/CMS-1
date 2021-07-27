@@ -90,7 +90,7 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btnfb" @click="showDispay" >
+              <button class="btn default-btn btnfb" @click="showDisplay" >
                 Connect
               </button>
             </div>
@@ -366,7 +366,7 @@ export default {
   components: { Dialog },
   setup() {
     const display = ref(false);
-    const showDispay =() =>{
+    const showDisplay =() =>{
       return display.value= "true"
     }
 
@@ -564,7 +564,7 @@ export default {
       pageId,
       // facebookLogin2,
       display,
-      showDispay,
+      showDisplay,
       // pageAccessToken,
       getPageAccessToken,
     };
