@@ -1235,6 +1235,12 @@ const routes = [
             name: 'Guardian',
             component: () =>
                 import( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Guardian')
+        },
+        {
+            path: 'thankyou/:code',
+            name: 'ThankYou',
+            component: () =>
+                import( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/ThankYou')
         }
         ]
     }

@@ -17,7 +17,7 @@
             </div>
 
             <form style="width: 100%" @submit.prevent="next">
-              <!-- <div class="input-div">
+              <div class="input-div">
                 <label class="mb-0">What's your name?</label>
                 <div class="name-input">
                   <input
@@ -35,7 +35,7 @@
                     required
                   />
                 </div>
-              </div> -->
+              </div>
 
               <div class="input-div">
                 <label class="mb-0">What's the name of your ministry?</label>
@@ -113,7 +113,7 @@
             <div :class=" { 'flagCode' : showCode, 'hide-code' : !showCode } " class="codeModal">
                 <input class="codeInput input codeModal" v-model="searchText">
               <div v-for="country in countryCodes" :key="country.id" class="codeModal" >
-                <div class="codeModal" @click="selectCode(country)">
+                <div class="codeModal c-pointer" @click="selectCode(country)">
                   <span style="display: inline-block"><img :src="country.flagUrl"  style="width: 30px;height: 30px; margin: 10px; border-radius: 5px;"></span>
                   <span style="font-weight:700">{{ country.name }}</span> &nbsp;
                   <span style="display: inline-block; color: #6b6b6b;">{{ country.phoneCode ? country.phoneCode.includes('+') ? `(${country.phoneCode})` : `(+${country.phoneCode})`: "" }}</span>
@@ -206,7 +206,7 @@ export default {
       if (!this.userDetails.email) return false;
       this.userDetails.phoneNumber = this.userDetails.phoneNumber.includes("+")
         ? this.userDetails.phoneNumber
-        : `${this.selectedCountry.phoneCode}${this.userDetails.phoneNumber}`;
+        : `+${this.selectedCountry.phoneCode}${this.userDetails.phoneNumber.slice(1)}`;
         console.log(this.selectedCountry, "country");
         this.userDetails.countryId = this.selectedCountry.id;
       console.log(this.userDetails, "userDetails");
