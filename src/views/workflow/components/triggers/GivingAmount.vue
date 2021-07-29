@@ -70,7 +70,6 @@ export default {
         const store = useStore();
 
         const currentUser = ref(store.getters.currentUser);
-        console.log(currentUser.value, "currentUser");
 
         const data = reactive({ });
         const selectedGroup = ref([ ])
@@ -129,14 +128,22 @@ export default {
         }
 
         watch(() => {
-            console.log(props.condition, "hhhhh");
-            if (props.condition.triggerType >= 0 && props.condition.id) {
+            if (props.condition.jsonCondition) {
                 parsedData.value = JSON.parse(props.condition.jsonCondition);
                 selectedRange.value = parsedData.value.logicalOperator;
+                data.logicalOperator = parsedData.value.logicalOperator;
+
                 amount.value = parsedData.value.amount;
+                data.amount = parsedData.value.amount;
+
                 selectedGroup.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [ ];
+                data.groups = parsedData.value.groups;
+
                 category.value = workflow_util.getGroup(parsedData.value.financialContributionID, props.contributionItems);
+                data.financialContributionID = parsedData.value.financialContributionID;
+
                 givingTime.value = parsedData.value.singleOrLast;
+                data.singleOrLast = parsedData.value.singleOrLast;
             }
         }) 
 

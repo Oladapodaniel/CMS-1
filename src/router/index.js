@@ -1263,6 +1263,37 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
+    const checkinToken = localStorage.getItem('checkinToken')
+    //   alert(4)
+    if ((to.name === "CheckinSignUp" || to.name === "CheckinSignin") && checkinToken) {
+      //   alert("hello")
+      return next({ name: 'CheckinDashboard' })
+    } 
+    //   else {
+    //       alert(false)
+    //   }
+    
+    const token = localStorage.getItem("token")
+    const tokenIsValid = token && token.length > 30 ? true : false;
+    const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+    
+    if ((to.name === "ResetPassword" ||
+      to.name === "EmailSent" ||
+      to.name === "OnboardingForm" ||
+      to.name === "WebCheckin" ||
+      to.name === "OnlineGiving4" ||
+      to.name === "iFrame" ||
+      to.name === "SignUpPayment" ||
+      to.name === "SignInPayment" ||
+      to.name === "TransactionPage" ||
+      to.name === "PublicResetPassword" ||
+      to.name === "EventRegistration") && !tokenIsValid) return next(true)
+    
+    
+    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
+    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
+    
+    next(true)
 
     
     // Find the nearest route element with meta tags.
@@ -1299,37 +1330,6 @@ router.beforeEach((to, from, next) => {
     // Add the meta tags to the document head.
     .forEach(tag => document.head.appendChild(tag));
 
-    const checkinToken = localStorage.getItem('checkinToken')
-    //   alert(4)
-    if ((to.name === "CheckinSignUp" || to.name === "CheckinSignin") && checkinToken) {
-      //   alert("hello")
-      return next({ name: 'CheckinDashboard' })
-    } 
-    //   else {
-    //       alert(false)
-    //   }
-    
-    const token = localStorage.getItem("token")
-    const tokenIsValid = token && token.length > 30 ? true : false;
-    const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
-    
-    if ((to.name === "ResetPassword" ||
-      to.name === "EmailSent" ||
-      to.name === "OnboardingForm" ||
-      to.name === "WebCheckin" ||
-      to.name === "OnlineGiving4" ||
-      to.name === "iFrame" ||
-      to.name === "SignUpPayment" ||
-      to.name === "SignInPayment" ||
-      to.name === "TransactionPage" ||
-      to.name === "PublicResetPassword" ||
-      to.name === "EventRegistration") && !tokenIsValid) return next(true)
-    
-    
-    if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
-    if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
-    
-    return next(true)
 })
 
 

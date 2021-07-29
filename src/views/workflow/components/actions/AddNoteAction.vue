@@ -45,8 +45,9 @@
 
 <script>
 import { reactive, ref } from '@vue/reactivity';
+import { watch } from '@vue/runtime-core';
 export default {
-    props: [ "selectedActionIndex" ],
+    props: [ "selectedActionIndex", "parameters" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 10, JSONActionParameters: { } })
         const person = ref(false);
@@ -78,6 +79,46 @@ export default {
             data.JSONActionParameters.note = e.target.value;
             emit('updateaction', data, props.selectedActionIndex);
         }
+
+        const parsedData = ref({ })
+        watch(() => {
+            console.log(props.parameters, "parameters");
+            if (props.parameters.Action) {
+                const actn = JSON.parse(props.parameters.Action);
+                parsedData.value = JSON.parse(actn.JSONActionParameters)
+                person.value = parsedData.value.person;
+                data.JSONActionParameters.person = parsedData.value.person;
+
+                parent.value = parsedData.value.parent;
+                data.JSONActionParameters.parent = parsedData.value.parent;
+
+                spouse.value = parsedData.value.spouse;
+                data.JSONActionParameters.spouse = parsedData.value.spouse;
+
+                groupLeader.value = parsedData.value.groupLeader;
+                data.JSONActionParameters.groupLeader = parsedData.value.groupLeader;
+
+                note.value = parsedData.value.note;
+                data.JSONActionParameters.note = parsedData.value.note;
+            } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
+                parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+                
+                person.value = parsedData.value.person;
+                data.JSONActionParameters.person = parsedData.value.person;
+
+                parent.value = parsedData.value.parent;
+                data.JSONActionParameters.parent = parsedData.value.parent;
+
+                spouse.value = parsedData.value.spouse;
+                data.JSONActionParameters.spouse = parsedData.value.spouse;
+
+                groupLeader.value = parsedData.value.groupLeader;
+                data.JSONActionParameters.groupLeader = parsedData.value.groupLeader;
+
+                note.value = parsedData.value.note;
+                data.JSONActionParameters.note = parsedData.value.note;
+            }
+        })
 
         return {
             person,

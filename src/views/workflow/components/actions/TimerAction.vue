@@ -25,10 +25,10 @@
 <script>
 import { reactive, ref } from '@vue/reactivity';
 import Dropdown from "primevue/dropdown"
-import { computed } from '@vue/runtime-core';
+import { computed, watch } from '@vue/runtime-core';
 
 export default {
-    props: [ "selectedActionIndex" ],
+    props: [ "selectedActionIndex", "parameters" ],
     components: { Dropdown },
     setup (props, { emit }) {
         const data = reactive({ ActionType: 8, JSONActionParameters: { } })
@@ -64,6 +64,27 @@ export default {
                 i.name = i.name ? i.name : `${i.length} ${i.type}`;
                 return i;
             })
+        })
+
+        const parsedData = ref({ })
+        watch(() => {
+            if (props.parameters.Action) {
+                const actn = JSON.parse(props.parameters.Action);
+                parsedData.value = JSON.parse(actn.JSONActionParameters);
+
+                delay.value = parsedData.value.delay;
+                data.JSONActionParameters.delay= parsedData.value.delay;
+
+                executeTime.value = parsedData.value.executeAt;
+                data.JSONActionParameters.executeAt = parsedData.value.executeAt;
+            } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
+                parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+                delay.value = parsedData.value.delay;
+                data.JSONActionParameters.delay= parsedData.value.delay;
+
+                executeTime.value = parsedData.value.executeAt;
+                data.JSONActionParameters.executeAt = parsedData.value.executeAt;
+            }
         })
 
         return {

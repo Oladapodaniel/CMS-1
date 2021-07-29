@@ -163,14 +163,25 @@ export default {
         const parsedData = ref({ })
         watch(() => {
             console.log(props.condiction);
-            if (props.condition.triggerType >= 0 && props.condition.id) {
+            if (props.condition.jsonCondition) {
                 parsedData.value = JSON.parse(props.condition.jsonCondition);
                 prevNumOfTimes.value = parsedData.value.gaveTimes;
+                data.gaveTimes = parsedData.value.gaveTimes;
+
                 prevNumOfMonths.value = parsedData.value.gaveMonth;
+                data.gaveMonth = parsedData.value.gaveMonth;
+
                 selectedGroups.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [ ];
+                data.groups = parsedData.value.groups;
+
                 category.value = workflow_util.getGroup(parsedData.value.financialContributionID, props.contributionItems);
+                data.financialContributionID = parsedData.value.financialContributionID;
+
                 currentNumOfTimes.value = parsedData.value.givenAtLeastTimes;
+                data.givenAtLeastTimes = parsedData.value.givenAtLeastTimes;
+
                 currentNumOfMonths.value = parsedData.value.givenForTheLastMonth;
+                data.givenForTheLastMonth = parsedData.value.givenForTheLastMonth;
             }
         }) 
 

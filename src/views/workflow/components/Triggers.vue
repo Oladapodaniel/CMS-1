@@ -69,7 +69,6 @@ export default {
             return index >= 0 ? true : false;
         }
 
-        console.log(window.innerHeight, "Inner Height");
         const selectTrigger = (trigger) => {
             if (!checkIfAlreadySelected(trigger)) {
                 selectedTriggers.value.push(trigger)
@@ -77,7 +76,6 @@ export default {
             showTriggers.value = false
         }
         const selectAction = (trigger) => {
-            console.log(checkIfActionIsAlreadySelected(trigger));
             if (!checkIfActionIsAlreadySelected(trigger)) {
                 selectedActions.value.push(trigger)
             }

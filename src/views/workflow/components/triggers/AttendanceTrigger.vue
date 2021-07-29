@@ -15,7 +15,7 @@
             </div>
 
             <div class="col-md-12">
-                <label for="" class="font-weight-600">A member of</label>
+                <label for="" class="font-weight-600">Is marked</label>
             </div>
             <div class="col-md-12 mb-2 mt-3">
                 <Dropdown @change="handleStatus" v-model="selectedStatus" :options="[ 'Present', 'Excused', 'Unexcused' ]" class="w-100" />
@@ -44,18 +44,19 @@ import Dropdown from "primevue/dropdown"
 import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
 import { reactive, ref } from '@vue/reactivity'
-import { computed } from '@vue/runtime-core'
+import { computed, watch } from '@vue/runtime-core'
+import workflow_util from '../../utlity/workflow_util'
 
 export default {
     components: { Dropdown, TriggerDescription, MultiSelect },
-    props: [ "groups", "contributionItems", "selectedTriggerIndex" ],
+    props: [ "groups", "contributionItems", "selectedTriggerIndex", "condition" ],
     setup (props, { emit }) {
         const data = reactive({ });
 
         const selectedStatus = ref([ ]);
         const handleStatus = e => {
             data.attendanceStatus = e.value;
-            emit('updatetrigger', JSON.stringify(data));
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
         }
 
         const days = ref(0);
@@ -66,8 +67,8 @@ export default {
 
         const times = ref([ ]);
         const handleTimes = e => {
-            data.timmes = e.value;
-            emit('updatetrigger', JSON.stringify(data));
+            data.times = e.value;
+            emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
         }
 
         const selectedGroups = ref([ ]);
@@ -90,6 +91,23 @@ export default {
         const removeTrigger = () => {
             emit("removetrigger")
         }
+
+        const parsedData = ref({ })
+        watch(() => {
+            if (props.condition.jsonCondition) {
+                parsedData.value = JSON.parse(props.condition.jsonCondition);
+                selectedStatus.value = parsedData.value.attendanceStatus;
+                data.attendanceStatus = parsedData.value.attendanceStatus;
+
+                days.value = parsedData.value.days;
+
+                data.groups = parsedData.value.days;
+                selectedGroups.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [ ];
+
+                data.times = parsedData.value.times;
+                times.value = parsedData.value.times;
+            }
+        }) 
 
         return {
             handleStatus,
