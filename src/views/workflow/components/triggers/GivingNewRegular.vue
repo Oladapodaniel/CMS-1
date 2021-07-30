@@ -96,9 +96,10 @@ import Dropdown from "primevue/dropdown"
 import MultiSelect from "primevue/multiselect"
 import TriggerDescription from "../TriggerDescription.vue"
 import { reactive, ref } from '@vue/reactivity'
-import { computed } from '@vue/runtime-core'
+import { computed, watch } from '@vue/runtime-core'
+import workflow_util from '../../utlity/workflow_util'
 export default {
-    props: [ "selectedTriggerIndex", "contributionItems", "groups" ],
+    props: [ "selectedTriggerIndex", "contributionItems", "groups", "condition" ],
     components: { Dropdown, TriggerDescription, MultiSelect },
 
     setup (props, { emit }) {
@@ -126,6 +127,7 @@ export default {
 
         const category = ref({ });
         const cantegorySelected = (e) => {
+            alert('updated')
             data.financialContributionID = e.value.id;
             emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
@@ -157,6 +159,31 @@ export default {
         const removeTrigger = () => {
             emit("removetrigger")
         }
+
+        const parsedData = ref({ })
+        watch(() => {
+            console.log(props.condiction);
+            if (props.condition.jsonCondition) {
+                parsedData.value = JSON.parse(props.condition.jsonCondition);
+                prevNumOfTimes.value = parsedData.value.gaveTimes;
+                data.gaveTimes = parsedData.value.gaveTimes;
+
+                prevNumOfMonths.value = parsedData.value.gaveMonth;
+                data.gaveMonth = parsedData.value.gaveMonth;
+
+                selectedGroups.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [ ];
+                data.groups = parsedData.value.groups;
+
+                category.value = workflow_util.getGroup(parsedData.value.financialContributionID, props.contributionItems);
+                data.financialContributionID = parsedData.value.financialContributionID;
+
+                currentNumOfTimes.value = parsedData.value.givenAtLeastTimes;
+                data.givenAtLeastTimes = parsedData.value.givenAtLeastTimes;
+
+                currentNumOfMonths.value = parsedData.value.givenForTheLastMonth;
+                data.givenForTheLastMonth = parsedData.value.givenForTheLastMonth;
+            }
+        }) 
 
         return {
             selectedGroups,

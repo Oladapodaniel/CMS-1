@@ -90,31 +90,105 @@
               </div>
             </div>
             <div class="col-md-4 mt-2 mt-md-0 d-md-flex justify-content-end">
-              <button class="btn default-btn btnfb" @click="facebookLogin2">
+              <button class="btn default-btn btnfb" @click="showDisplay" >
                 Connect
               </button>
             </div>
           </div>
         </div>
       </div>
+      <!--second Button-->
       <!--end facebook area  -->
       <Dialog
-        header="Account Connected"
-        class="dialogFacebook"
-        v-model:visible="display"
-        style="width: 100%; max-width: 600px"
+        header="Create a post"
+        class="dialogFacebook heading-text text-center"
+        v-model:visible="display1"
+        style="width: 100%; max-width: 400px"
       >
         <!--facebook id-->
-        <form action="">
-          <div class="row justify-content-center">
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="form-group form-check col-md-6 ml-3">
+              <!-- <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" /> Remember me
+              </label> -->
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-6">
+              <!-- <router-link to="/tenant/social/post"
+                class="btn default-btn btnfb text-center"
+              
+              >
+                Create Post
+              </router-link> -->
+              <button class="btn default-btn btnfb text-center"> <router-link to="/tenant/social/post" class="linkFacebook">Post</router-link></button>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+        <!--facebook id-->
+      </Dialog>
+      <!--second Button-->
+      <!--end facebook area  -->
+      <Dialog
+        header="Enter your facebook information"
+        class="dialogFacebook heading-text"
+        v-model:visible="display"
+        style="width: 100%; max-width: 700px"
+      >
+        <!--facebook id-->
+        
+          <!-- <div class="row justify-content-center">
             <div class="col-md-1 text-right">
               <label for="email"></label>
+            </div> -->
+            <!-- <div class="form-group col-md-12">
+              <h5 class="link-text">
+                Account connected to facebook Successfully, Enter your Facebook
+                Page Id and Page Access Token below to make your post
+              </h5>
+              <h6>Share Your Post to Facebook</h6>
+            </div> -->
+            <div class="row">
+            <div class="col-6 link-text">
+              <p>Click the button below to watch How to get your page Id and Access Token</p>
+              <p><button class="btn default-btn btnfb">Watch</button></p>
+
             </div>
-            <div class="form-group col-md-10 text-center">
-              <h6>Your Account as be connected to facebook Successfully click the button below to make your post</h6>
-              <!-- <h6>Share Your Post to Facebook</h6> -->
+            <div class="col-6 form-group">
+              <p>Click the button below to Download video to get your page Id and Access Token</p>
+              <p><a href="" class="btn default-btn btnfb"></a></p>
             </div>
-            <div class="col-md-1"></div>
+          </div>
+            <!-- <div class="col-md-0"></div>
+          </div> -->
+          <div class="row">
+            <div class="col-4 link-text">Page Id:</div>
+            <div class="col-8 form-group">
+              <input
+                type="text"
+                placeholder="Page Id"
+                class="form-control input"
+                id="pageId"
+                v-model="pageId1"
+                required
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 link-text">Page Access Token:</div>
+            <div class="col-8 form-group">
+              <input
+                type="text"
+                placeholder="Page Access Token"
+                class="form-control input w-90"
+                id="pageAccessToken"
+                v-model="pageaccessToken"
+                required
+              />
+            </div>
           </div>
           <div class="row">
             <div class="col-md-4"></div>
@@ -128,16 +202,24 @@
           <div class="row">
             <div class="col-md-4"></div>
             <div class="col-md-6">
-              <router-link to="/tenant/social/post"
+              <!-- <router-link to="/tenant/social/post"
                 class="btn default-btn btnfb text-center"
               
               >
                 Create Post
-              </router-link>
+              </router-link> -->
+              <button class="btn default-btn btnfb text-center" @click="getPageAccessToken" >Submit</button>
             </div>
             <div class="col-md-2"></div>
           </div>
-        </form>
+          <!-- <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-2">
+              <a href="" class="btn default-btn btnfb">contact customer care for help</a>
+            </div>
+          </div> -->
         <!--facebook id-->
       </Dialog>
       <!--twitter area  -->
@@ -228,7 +310,7 @@
       </div>
       <!--twitter area ended  -->
 
-      <!--instergram area  -->
+      <!--instagram area  -->
       <div class="row mx-2 mx-md-0 my-4">
         <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
@@ -293,6 +375,7 @@
         </div>
       </div>
       <!--what'sApp area ended  -->
+      <Toast/>
 
       <!--mobile-App area  -->
       <div class="row mx-2 mx-md-0 my-4">
@@ -327,102 +410,153 @@
 </template>
 
 <script>
-import firebase from "../../../services/firebase/firebase";
+// import firebase from "../../../services/firebase/firebase";
 import { ref } from "vue";
 import Dialog from "primevue/dialog";
-import axios from "axios";
+import axios from "@/gateway/backendapi";
+import {useToast} from 'primevue/usetoast'
 
 export default {
-  components: { Dialog },
+  components: { Dialog},
   setup() {
-    
+    const toast = useToast()
     const display = ref(false);
+    const display1 = ref(false)
+    const showDisplay =() =>{
+      return display.value= true
+    }
+    const showDisplay1 =()=>{
+      return display1.value = true
 
-    
-    const facebookLogin2 = () => {
-
-      var provider = new firebase.auth.FacebookAuthProvider();
-      provider.addScope("user_birthday");
-
-      firebase.auth().signOut().then(() => {
-        // Sign-out successful.
-        console.log("logged out");
-        firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-          setTimeout(function () {
-            display.value = true;
-          }, 1500);
-
-          console.log(result, "sign in result");
-          let accessToken = result.credential.accessToken;
-          let profileId = result.additionalUserInfo.profile.id;
-          getAccessToken(accessToken, profileId);
-
-          /** @type {firebase.auth.OAuthCredential} */
-        })
-        .catch((error) => {
-          console.log(error, "sign in error");
-        });
-      }).catch((error) => {
-        // An error happened.
-        console.log(error, "log out failed");
-        firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then((result) => {
-          setTimeout(function () {
-            display.value = true;
-          }, 1500);
-
-          console.log(result, "sign in result");
-          let accessToken = result.credential.accessToken;
-          let profileId = result.additionalUserInfo.profile.id;
-          getAccessToken(accessToken, profileId);
-
-          /** @type {firebase.auth.OAuthCredential} */
-        })
-        .catch((error) => {
-          
-          if(error.credential && error.credential.accessToken){
-            display.value = true;
-            //Get Page access token
-              axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`)
-                .then(res => {
-                  console.log(res, "🎉🌹🌹");
-                })
-                .catch(err => {
-                  console.log(err, "err error");
-                })
-          }
-
-          console.log(error, "sign in error");
-        });
-      });
-
-      
-    };
-    const getAccessToken = async (accessToken, profileId) => {
-      try {
-        const data =
-          await axios.get(`https://graph.facebook.com/${profileId}/accounts?fields=name,access_token&access_token=${accessToken}`);
-        console.log(data, "get pages data");
-      } catch (error) {
-        console.log(error, "get pages error")
-      }
-    };
-
-    const pageAccessToken = async (token) =>{
-      try{
-        const data = await axios.get(`https://graph.facebook.com/103263464868380?fields=access_token&access_token=${token}`)
-        console.log(data, "w data");
-      } catch(error){
-        console.log(error);
-      }
     }
 
-  /*eslint no-undef: "warn"*/
+    // const facebookLogin2 = () => {
+    //   var provider = new firebase.auth.FacebookAuthProvider();
+    //   provider.addScope("user_birthday");
+
+    //   firebase
+    //     .auth()
+    //     .signOut()
+    //     .then(() => {
+    //       // Sign-out successful.
+    //       console.log("logged out");
+    //       firebase
+    //         .auth()
+    //         .signInWithPopup(provider)
+    //         .then((result) => {
+    //           setTimeout(function () {
+    //             // display.value = true;
+    //           }, 1500);
+
+    //           console.log(result, "sign in result");
+    //           let accessToken = result.credential.accessToken;
+    //           let profileId = result.additionalUserInfo.profile.id;
+    //           getAccessToken(accessToken, profileId);
+
+    //           /** @type {firebase.auth.OAuthCredential} */
+    //         })
+    //         .catch((error) => {
+    //           console.log(error, "sign in error");
+    //         });
+    //     })
+    //     .catch((error) => {
+    //       // An error happened.
+    //       console.log(error, "log out failed");
+    //       firebase
+    //         .auth()
+    //         .signInWithPopup(provider)
+    //         .then((result) => {
+    //           setTimeout(function () {
+    //             display.value = true;
+    //           }, 1500);
+
+    //           console.log(result, "sign in result");
+    //           let accessToken = result.credential.accessToken;
+    //           let profileId = result.additionalUserInfo.profile.id;
+    //           getAccessToken(accessToken, profileId);
+
+    //           /** @type {firebase.auth.OAuthCredential} */
+    //         })
+    //         .catch((error) => {
+    //           if (error.credential && error.credential.accessToken) {
+    //             display.value = true;
+    //             //Get Page access token
+    //             axios
+    //               .get(
+    //                 `https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`
+    //               )
+    //               .then((res) => {
+    //                 console.log(res, "🎉🌹🌹");
+    //               })
+    //               .catch((err) => {
+    //                 console.log(err, "err error");
+    //               });
+    //           }
+
+    //           console.log(error, "sign in error");
+    //         });
+    //     });
+    // };
+    // const getAccessToken = async (accessToken, profileId) => {
+    //   try {
+    //     const data = await axios.get(
+    //       `https://graph.facebook.com/${profileId}/accounts?fields=name,access_token&access_token=${accessToken}`
+    //     );
+    //     console.log(data, "get pages data");
+    //   } catch (error) {
+    //     console.log(error, "get pages error");
+    //   }
+    // };
+
+    // const pageAccessToken = async (token) => {
+    //   try {
+    //     const data = await axios.get(
+    //       `https://graph.facebook.com/103263464868380?fields=access_token&access_token=${token}`
+    //     );
+    //     console.log(data, "w data");
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
+    //get page Access Token
+    const pageaccessToken = ref("");
+    const pageId1 = ref("");
+    const name = ref("facebook");
+    
+
+    const getPageAccessToken = async () => {
+      let pageUrl = `https://graph.facebook.com/v11.0/${pageId1.value}/feed`
+      let facebookUser = {
+        name: name.value,
+        url: pageUrl,
+        pageId: pageId1.value,
+        accessToken: pageaccessToken.value
+      }
+      if (pageId1.value === "" && pageaccessToken.value === ""){
+        return false
+      }
+      try {
+        // const data = await axios.get(
+        //   "https://graph.facebook.com/pageId?fields=access_token&access_token=pageaccessToken"
+        // );
+        const res = await axios.post(`/api/SocialMedia/connect`,facebookUser)
+        
+        console.log(res, "🎉🎉🎉🎉");
+        toast.add({severity:'success', summary: '', detail:'Submit Successfully', life: 7000});
+        
+        if(res.status === 200){
+          showDisplay1()
+          }
+
+      } catch (error) {
+        console.log(error, "get pages error");
+      }
+    };
+
+    //getSocialDetails
+   
+
+    /*eslint no-undef: "warn"*/
     // FB.login(function(response) {
     //   // handle the response
     //   console.log(response, "SDK response");
@@ -454,55 +588,59 @@ export default {
     //           })
 
     //     })
-        // .catch((error) => {
-        //   console.log(error, "🤣🤣");
-        //   if (!error.credential) return false;
-        //   axios.get(`https://graph.facebook.com/v11.0/me?fields=id&access_token=${error.credential.accessToken}`)
-        //     .then(res => {
-        //       getAccessToken(error.credential.accessToken, res.data.id)
+    // .catch((error) => {
+    //   console.log(error, "🤣🤣");
+    //   if (!error.credential) return false;
+    //   axios.get(`https://graph.facebook.com/v11.0/me?fields=id&access_token=${error.credential.accessToken}`)
+    //     .then(res => {
+    //       getAccessToken(error.credential.accessToken, res.data.id)
 
-        //       //Get Page access token
-        //       axios.get(`https://graph.facebook.com/108291174831555?fields=access_token&access_token=${error.credential.accessToken}`)
-        //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
-        //         .then(res => {
-        //           console.log(res, "🎉🌹🌹 NEW");
-        //         })
-        //         .catch(err => {
-        //           console.log(err, "err error");
-        //         })
+    //       //Get Page access token
+    //       axios.get(`https://graph.facebook.com/108291174831555?fields=access_token&access_token=${error.credential.accessToken}`)
+    //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+    //         .then(res => {
+    //           console.log(res, "🎉🌹🌹 NEW");
+    //         })
+    //         .catch(err => {
+    //           console.log(err, "err error");
+    //         })
 
-        //       //Get Page access token
-        //       axios.get(`https://graph.facebook.com/v11.0/${res.data.id}/accounts?fields=id,picture,name&access_token=${error.credential.accessToken}`)
-        //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
-        //         .then(res => {
-        //           console.log(res, "🎉🌹🌹");
-        //         })
-        //         .catch(err => {
-        //           console.log(err, "err error");
-        //         })
+    //       //Get Page access token
+    //       axios.get(`https://graph.facebook.com/v11.0/${res.data.id}/accounts?fields=id,picture,name&access_token=${error.credential.accessToken}`)
+    //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+    //         .then(res => {
+    //           console.log(res, "🎉🌹🌹");
+    //         })
+    //         .catch(err => {
+    //           console.log(err, "err error");
+    //         })
 
-        //       //Get Page access token
-        //       axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`)
-        //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
-        //         .then(res => {
-        //           console.log(res, "🎉🌹🌹");
-        //         })
-        //         .catch(err => {
-        //           console.log(err, "err error");
-        //         })
-        //     })
-        //     .catch(err => {
-        //       console.log(err, "err error");
-        //     })
+    //       //Get Page access token
+    //       axios.get(`https://graph.facebook.com/v11.0/me/accounts?access_token=${error.credential.accessToken}`)
+    //       // axios.get(`https://graph.facebook.com/v11.0/114361443274202?fields=access_token&access_token=${error.credential.accessToken}`)
+    //         .then(res => {
+    //           console.log(res, "🎉🌹🌹");
+    //         })
+    //         .catch(err => {
+    //           console.log(err, "err error");
+    //         })
+    //     })
+    //     .catch(err => {
+    //       console.log(err, "err error");
+    //     })
 
-          
-            
-        // });
+    // });
 
     return {
-      facebookLogin2,
+      pageaccessToken,
+      pageId1,
+      // facebookLogin2,
       display,
-      pageAccessToken,
+      display1,
+      showDisplay,
+      showDisplay1,
+      // pageAccessToken,
+      getPageAccessToken
     };
   },
 };
@@ -520,6 +658,11 @@ export default {
   border: none !important;
   outline: 0 !important;
   border-radius: 20px;
+}
+ a{
+  color: white!important;
+  text-decoration: none !important;
+  background-color: transparent !important;
 }
 .navTop {
   justify-content: center !important;
