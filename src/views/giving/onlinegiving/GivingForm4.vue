@@ -466,7 +466,7 @@ export default {
   components: {
     PaymentOptionModal,
     Checkbox,
-    SignUp
+    SignUp,
   },
   setup() {
     const route = useRoute()

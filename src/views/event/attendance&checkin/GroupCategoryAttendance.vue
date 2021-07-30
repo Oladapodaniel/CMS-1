@@ -247,9 +247,10 @@
                       ref="familyLink"
                       @keydown="preventChangingOfCheckinLink"
                       @click="copyFamilyLink"
-                      :value="childCheckinLink"
+                      value="https://child-checkin-two.vercel.app/"
                       class="form-control"
                       style="width: 95%" />
+                      <!-- :value="childCheckinLink" -->
                     <i
                       class="pi pi-copy ml-2 c-pointer"
                       @click="copyFamilyLink"

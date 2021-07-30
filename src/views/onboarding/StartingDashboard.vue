@@ -87,7 +87,7 @@
 
     <div class="rcontainer">
       <div class="row">
-        <div class="col-md-10 offset-2 text-center mt-4 text-lg-right" style="max-width: 900px; margin: auto"> 
+        <div class="col-md-10 offset-2 text-center my-4 text-lg-right" style="max-width: 900px; margin: auto"> 
           <router-link to="/tenant" class="font-weight-bold text-decoration-none">Skip To Dashboard  >>></router-link>
         </div>
       </div>
