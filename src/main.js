@@ -57,7 +57,6 @@ axios.interceptors.request.use((config) => {
   
   // before a response is returned stop nprogress
   axios.interceptors.response.use(response => {
-  console.log(response, 'giddyssman')
     NProgress.done()
     return response
   })
