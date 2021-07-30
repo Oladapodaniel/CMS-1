@@ -142,14 +142,17 @@
 
 <script>
 import axios from "@/gateway/backendapi";
+// import { useStore } from "vuex";
 import { reactive, ref } from "vue";
 import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
 import finish from "../../services/progressbar/progress";
+// import membershipService from "../../services/membership/membershipservice";
 import { useGtag } from "vue-gtag-next";
 
 export default {
   setup() {
+    // const store = useStore();
     const { event } = useGtag()
     const track = () => {
       event('aaa', {
@@ -172,6 +175,17 @@ export default {
     const invalidEmailObj = ref({});
 
     const loginFacebook = ref(null);
+
+    // const getCurrentlyUser = () =>{
+    //   console.log(store.getters.currentUser, 'myName is Gideon')
+    //   if(!store.getters.currentUser) {
+    //       membershipService.getSignedInUser()
+    //       .then((res) => {
+    //         console.log(res ,'Tosin like peanut')
+    //       }).catch(err => console.log(err))
+    //       } 
+    //   }; 
+    // getCurrentlyUser();
 
     const login = async (e) => {
       e.preventDefault();
@@ -298,6 +312,7 @@ export default {
       displayModal,
       invalidEmailObj,
       saveEmail,
+      // getCurrentlyUser
     };
   },
 };

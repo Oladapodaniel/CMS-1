@@ -536,8 +536,7 @@ import ColumnChart2 from "@/components/charts/ColumnChart2.vue";
 // import PieChart from "@/components/charts/PieChart"
 import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
-// import store from "@/store/store.js"
-import mixin from "@/mixins/auth.mixins.js"
+import mixin from "@/mixins/expiredSub.mixin.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import moment from "moment";

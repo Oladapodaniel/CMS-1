@@ -10,7 +10,7 @@ const authMixin = {
         const currentUser = store.getters.currentUser;
         console.log(currentUser)
         if (currentUser.subStatus === 'Expired'){
-            return router.push('/expiredSubcription')
+            return router.push('/errorpage/expiredSubscription')
         }
     },
 }

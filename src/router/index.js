@@ -9,13 +9,6 @@ import TermsOfUse from '../components/temp/PaymentPage';
 const routes = [
 
     {
-        path: '/expiredSubscription',
-        name: 'ExpiredSubscription',
-        component: () =>
-            import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/ExpiredSubscription')
-    },
-
-    {
         path: '/pagination',
         name: 'Pagination',
         component: Pagination
@@ -142,6 +135,7 @@ const routes = [
                 ]
             }
         },
+       
         {
             path: 'workflow',
             name: 'WorkFlow',
@@ -1244,6 +1238,26 @@ const routes = [
                 import( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/Guardian')
         }
         ]
+    },
+    {
+        path: '/errorpage',
+        name: 'errorpage',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/PageError'),    
+            children: [
+                {
+                    path: 'expiredSubscription',
+                    name: 'ExpiredSubscription',
+                    component: () =>
+                    import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/ExpiredSubscription'),    
+                },
+                {
+                    path: 'unauthorized',
+                    name: 'Unauthorized',
+                    component: () =>
+                        import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
+                }
+            ]
     },
     // {
     //     path: '/unauthorized',

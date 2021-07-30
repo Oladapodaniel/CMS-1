@@ -37,7 +37,7 @@
               placeholder="Select duration"
             />
                 <div class=" ml-1 mt-3 normal-text pl-md-0">
-            {{ subselectedDuratn >  1 ? currentUser.currencySymbol : "" }} {{ subselectedDuratn >  1 ? subselectedDuratn : ""}}
+            {{ subselectedDuratn >  1 && currentUser ? currentUser.currencySymbol : "" }} {{ subselectedDuratn >  1 ? subselectedDuratn : ""}}
           </div>
           </div>
 
@@ -125,7 +125,7 @@
       <div  class="col-md-4 bg-white col-lg-4 col-12 sub mt-3">
         <div class="h-100  rounded">
           <div class="text-center small-header">
-            Payment Summary({{ currentUser.currencySymbol }})
+            Payment Summary({{ currentUser && currentUser ? currentUser.currencySymbol : ""  }})
           </div>
           <!-- <div class="row mt-3 normal-text" v-if="+selectMonth.name > 0">
             <div class="col-md-6 col-6">Subscription</div>
@@ -164,10 +164,10 @@
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-12 d-flex justify-content-between" v-if="selectedCurrency !== currentUser.currency">
+            <div class="col-12 d-flex justify-content-between" v-if="selectedCurrency && currentUser !== currentUser.currency">
               <span>Converted amount</span>
               <span>
-                <span v-if="selectedCurrency !== currentUser.currency" style="font-size:14px">{{ selectedCurrency }}</span>
+                <span v-if="selectedCurrency && currentUser !== currentUser.currency" style="font-size:14px">{{ selectedCurrency }}</span>
                 <span class="font-weight-bold ml-1">{{ convertAmountToTenantCurrency ? convertAmountToTenantCurrency.toFixed(2) : 0.00 }}</span>
               </span>
             </div>
@@ -305,7 +305,7 @@ import { useToast } from "primevue/usetoast";
 import userService from "../../services/user/userservice";
 import { v4 as uuidv4 } from "uuid";
 import converter from "../../services/currency-converter/currencyConverter";
-// import Mixins from "@/mixins/auth.mixins.js"
+
 // import PaymentOptionModal from "./PaymentOptionModal";
 
 export default {
@@ -462,7 +462,7 @@ export default {
           paymentGateway: "Paystack",
           txnRefID: paystackResponse.trxref,
           productItems: products,
-          currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
+          currency: selectedCurrency.value && currentUser ? selectedCurrency.value : "NGN",
         };
 
         if (selectMonth.value) {
@@ -552,7 +552,7 @@ export default {
     };
 
     const setSelectedPaymentCurrency = () => {
-      if (selectCurrencyArr.value.includes(currentUser.value.currency)) {
+      if ( currentUser.value && selectCurrencyArr.value.includes(currentUser.value.currency)) {
           selectedCurrency.value = currentUser.value.currency;
         } else {
           selectedCurrency.value = "USD";
@@ -615,7 +615,7 @@ export default {
             ? Math.ceil(convertAmountToTenantCurrency.value)
             : TotalAmount.value) * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
-        currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
+        currency: selectedCurrency.value && currentUser ? selectedCurrency.value : "NGN",
         // currency: "zar",
 
         // firstname: name,
