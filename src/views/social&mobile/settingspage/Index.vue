@@ -97,28 +97,73 @@
           </div>
         </div>
       </div>
+      <!--second Button-->
       <!--end facebook area  -->
       <Dialog
-        header="Account Connected"
+        header="Create a post"
+        class="dialogFacebook heading-text text-center"
+        v-model:visible="display1"
+        style="width: 100%; max-width: 400px"
+      >
+        <!--facebook id-->
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="form-group form-check col-md-6 ml-3">
+              <!-- <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" /> Remember me
+              </label> -->
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-6">
+              <!-- <router-link to="/tenant/social/post"
+                class="btn default-btn btnfb text-center"
+              
+              >
+                Create Post
+              </router-link> -->
+              <button class="btn default-btn btnfb text-center"> <router-link to="/tenant/social/post" class="linkFacebook">Post</router-link></button>
+            </div>
+            <div class="col-md-2"></div>
+          </div>
+        <!--facebook id-->
+      </Dialog>
+      <!--second Button-->
+      <!--end facebook area  -->
+      <Dialog
+        header="Enter your facebook information"
         class="dialogFacebook heading-text"
         v-model:visible="display"
         style="width: 100%; max-width: 700px"
       >
         <!--facebook id-->
-        <form action="">
-          <div class="row justify-content-center">
+        
+          <!-- <div class="row justify-content-center">
             <div class="col-md-1 text-right">
               <label for="email"></label>
-            </div>
-            <div class="form-group col-md-12">
+            </div> -->
+            <!-- <div class="form-group col-md-12">
               <h5 class="link-text">
                 Account connected to facebook Successfully, Enter your Facebook
                 Page Id and Page Access Token below to make your post
               </h5>
-              <!-- <h6>Share Your Post to Facebook</h6> -->
+              <h6>Share Your Post to Facebook</h6>
+            </div> -->
+            <div class="row">
+            <div class="col-6 link-text">
+              <p>Click the button below to watch How to get your page Id and Access Token</p>
+              <p><button class="btn default-btn btnfb">Watch</button></p>
+
             </div>
-            <div class="col-md-0"></div>
+            <div class="col-6 form-group">
+              <p>Click the button below to Download video to get your page Id and Access Token</p>
+              <p><a href="" class="btn default-btn btnfb"></a></p>
+            </div>
           </div>
+            <!-- <div class="col-md-0"></div>
+          </div> -->
           <div class="row">
             <div class="col-4 link-text">Page Id:</div>
             <div class="col-8 form-group">
@@ -127,7 +172,7 @@
                 placeholder="Page Id"
                 class="form-control input"
                 id="pageId"
-                v-model="pageId"
+                v-model="pageId1"
                 required
               />
             </div>
@@ -167,7 +212,14 @@
             </div>
             <div class="col-md-2"></div>
           </div>
-        </form>
+          <!-- <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-2">
+              <a href="" class="btn default-btn btnfb">contact customer care for help</a>
+            </div>
+          </div> -->
         <!--facebook id-->
       </Dialog>
       <!--twitter area  -->
@@ -258,7 +310,7 @@
       </div>
       <!--twitter area ended  -->
 
-      <!--instergram area  -->
+      <!--instagram area  -->
       <div class="row mx-2 mx-md-0 my-4">
         <div class="col-md-9 bordersocials py-3 box box-shadow">
           <div class="row">
@@ -323,6 +375,7 @@
         </div>
       </div>
       <!--what'sApp area ended  -->
+      <Toast/>
 
       <!--mobile-App area  -->
       <div class="row mx-2 mx-md-0 my-4">
@@ -360,14 +413,21 @@
 // import firebase from "../../../services/firebase/firebase";
 import { ref } from "vue";
 import Dialog from "primevue/dialog";
-import axios from "axios";
+import axios from "@/gateway/backendapi";
+import {useToast} from 'primevue/usetoast'
 
 export default {
-  components: { Dialog },
+  components: { Dialog},
   setup() {
+    const toast = useToast()
     const display = ref(false);
+    const display1 = ref(false)
     const showDisplay =() =>{
-      return display.value= "true"
+      return display.value= true
+    }
+    const showDisplay1 =()=>{
+      return display1.value = true
+
     }
 
     // const facebookLogin2 = () => {
@@ -460,29 +520,41 @@ export default {
     // };
     //get page Access Token
     const pageaccessToken = ref("");
-    const pageId = ref("");
-    const name = ref("Facebook");
-    const pageUrl = ref(`https://graph.facebook.com/114361443274202/feed`)
-
+    const pageId1 = ref("");
+    const name = ref("facebook");
+    
 
     const getPageAccessToken = async () => {
+      let pageUrl = `https://graph.facebook.com/v11.0/${pageId1.value}/feed`
       let facebookUser = {
         name: name.value,
-        pageUrl: pageUrl.value,
-        pageId: pageId.value,
-        pageaccessToken: pageaccessToken.value
+        url: pageUrl,
+        pageId: pageId1.value,
+        accessToken: pageaccessToken.value
+      }
+      if (pageId1.value === "" && pageaccessToken.value === ""){
+        return false
       }
       try {
         // const data = await axios.get(
         //   "https://graph.facebook.com/pageId?fields=access_token&access_token=pageaccessToken"
         // );
-        axios.post(`/api/Settings/CreatNewUser`,facebookUser)
+        const res = await axios.post(`/api/SocialMedia/connect`,facebookUser)
         
-        console.log(facebookUser, "🎉🎉🎉🎉");
+        console.log(res, "🎉🎉🎉🎉");
+        toast.add({severity:'success', summary: '', detail:'Submit Successfully', life: 7000});
+        
+        if(res.status === 200){
+          showDisplay1()
+          }
+
       } catch (error) {
         console.log(error, "get pages error");
       }
     };
+
+    //getSocialDetails
+   
 
     /*eslint no-undef: "warn"*/
     // FB.login(function(response) {
@@ -561,12 +633,14 @@ export default {
 
     return {
       pageaccessToken,
-      pageId,
+      pageId1,
       // facebookLogin2,
       display,
+      display1,
       showDisplay,
+      showDisplay1,
       // pageAccessToken,
-      getPageAccessToken,
+      getPageAccessToken
     };
   },
 };
@@ -584,6 +658,11 @@ export default {
   border: none !important;
   outline: 0 !important;
   border-radius: 20px;
+}
+ a{
+  color: white!important;
+  text-decoration: none !important;
+  background-color: transparent !important;
 }
 .navTop {
   justify-content: center !important;

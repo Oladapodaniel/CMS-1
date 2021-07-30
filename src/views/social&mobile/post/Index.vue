@@ -96,7 +96,7 @@
                         <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center">
                             <span class="c-pointer"><img class="icon-height" src="../../../assets/social/facebook.svg" alt="Whatsapp icon"></span>
                             <span class="mx-1">Facebook</span>
-                            <input type="checkbox" class="c-pointer" :disabled="false" name="" id="">
+                            <input type="checkbox" v-model="toFacebook" class="c-pointer" :disabled="false" name="" id="">
                         </a>
                         <a class="primary-text text-decoration-none font-weight-700 my-2 px-2 d-flex align-items-center" style="opacity:0.4">
                             <span class="c-pointer"><img class="icon-height" src="../../../assets/social/instagram.svg" alt="Whatsapp icon"></span>
@@ -150,9 +150,14 @@ import { useRoute } from "vue-router"
     export default {
         components: { Dropdown, ProgressBar, Dialog, ImagePicker },
         setup() {
+
+            
             const router = useRouter();
             const postCategory = ref({});
             const postDestination = ref("Facebook");
+            const toFacebook = ref(true);
+            const socialData = ref({ });
+
             
             // const store = useStore();
             const route = useRoute();
@@ -244,8 +249,18 @@ import { useRoute } from "vue-router"
                 )
                     .then(res => {
                         console.log(res, "upload res");
+                        if (toFacebook.value) {
+                            alert('posting to facebook')
+                            axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=Hello Fans!&access_token=${socialData.value.accessToken}`)
+                            .then(res => {
+                                console.log(res, "post res");
+                            })
+                            .catch(err => {
+                                console.log(err, "err");
+                            })
+                        }
                         display.value = false;
-                        router.push("/tenant/social/feed")
+                        // router.push("/tenant/social/feed")
                     })
                     .catch(err => {
                          console.log(err)
@@ -310,10 +325,24 @@ import { useRoute } from "vue-router"
                     console.log(error);
                 }
             }
+             const getSocialDetails = async()=>{
+                try{
+                    // /api/SocialMedia/getSocialDetails?handle=facebook
+                    const {data} = await axios.get("/api/SocialMedia/getSocialDetails?handle=facebook");
+                    socialData.value = data.returnObject;
+                    console.log(data);
+                }catch(error){
+                    console.log(error);
+                }
+            }
+            getSocialDetails()
             
 
             return {
+                
+                toFacebook,
                 postDestination,
+                getSocialDetails,
                 postCategory,
                 selectFile,
                 fileInput,
