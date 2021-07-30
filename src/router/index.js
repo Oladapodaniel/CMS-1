@@ -9,6 +9,13 @@ import TermsOfUse from '../components/temp/PaymentPage';
 const routes = [
 
     {
+        path: '/expiredSubscription',
+        name: 'ExpiredSubscription',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/ExpiredSubscription')
+    },
+
+    {
         path: '/pagination',
         name: 'Pagination',
         component: Pagination
@@ -1251,7 +1258,7 @@ const routes = [
                 import( /* webpackChunkName: "sentemails" */ '@/views/ChildCheckinPortal/ThankYou')
         }
         ]
-    }
+    },
     // {
     //     path: '/unauthorized',
     //     name: 'Unauthorized',
@@ -1270,70 +1277,73 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
-
-      const checkinToken = localStorage.getItem('checkinToken')
+    const checkinToken = localStorage.getItem('checkinToken')
     //   alert(4)
-      if ((to.name === "CheckinSignUp" || to.name === "CheckinSignin") && checkinToken) {
-        //   alert("hello")
-        return next({ name: 'CheckinDashboard' })
-      } 
+    if ((to.name === "CheckinSignUp" || to.name === "CheckinSignin") && checkinToken) {
+      //   alert("hello")
+      return next({ name: 'CheckinDashboard' })
+    } 
     //   else {
     //       alert(false)
     //   }
-      next(true)
+    
+    const token = localStorage.getItem("token")
     const tokenIsValid = token && token.length > 30 ? true : false;
     const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
-
+    
     if ((to.name === "ResetPassword" ||
-        to.name === "EmailSent" ||
-        to.name === "OnboardingForm" ||
-        to.name === "WebCheckin" ||
-        to.name === "OnlineGiving4" ||
-        to.name === "iFrame" ||
-        to.name === "SignUpPayment" ||
-        to.name === "SignInPayment" ||
-        to.name === "TransactionPage" ||
-        to.name === "PublicResetPassword" ||
-        to.name === "EventRegistration") && !tokenIsValid) return next(true)
-    const token = localStorage.getItem("token")
-
+      to.name === "EmailSent" ||
+      to.name === "OnboardingForm" ||
+      to.name === "WebCheckin" ||
+      to.name === "OnlineGiving4" ||
+      to.name === "iFrame" ||
+      to.name === "SignUpPayment" ||
+      to.name === "SignInPayment" ||
+      to.name === "TransactionPage" ||
+      to.name === "PublicResetPassword" ||
+      to.name === "EventRegistration") && !tokenIsValid) return next(true)
+    
+    
     if ((to.name !== "Login" && to.name !== "Register") && to.name !== "Onboarding" && to.name !== "StartingPoint" && to.name !== "ForgotPassword" && to.name !== "ResetPassword" && to.name !== "TermsOfUse" && (!token || token.length < 30)) return next("/")
     if ((to.name === "Login" || to.name === "Register") && tokenIsValid) return next("/next")
+    
     next(true)
 
+    
     // Find the nearest route element with meta tags.
     const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
-
+    
     const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
-
+    
     // If a route with a title was found, set the document (page) title to that value.
     if (nearestWithTitle) {
         document.title = nearestWithTitle.meta.title;
     } else if (previousNearestWithMeta) {
         document.title = previousNearestWithMeta.meta.title;
     }
-
+    
     // Remove any stale meta tags from the document using the key attribute we set below.
     Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode.removeChild(el));
-
+    
     // Skip rendering meta tags if there are none.
     if (!nearestWithMeta) return next();
-
+    
     // Turn the meta tag definitions into actual elements in the head.
     nearestWithMeta.meta.metaTags.map(tagDef => {
         const tag = document.createElement('meta');
-
+        
         Object.keys(tagDef).forEach(key => {
             tag.setAttribute(key, tagDef[key]);
         });
-
+        
         // We use this to track which meta tags we create so we don't interfere with other ones.
         tag.setAttribute('data-vue-router-controlled', '');
-
+        
         return tag;
     })
-        // Add the meta tags to the document head.
-        .forEach(tag => document.head.appendChild(tag));
+    // Add the meta tags to the document head.
+    .forEach(tag => document.head.appendChild(tag));
+
 })
 
 

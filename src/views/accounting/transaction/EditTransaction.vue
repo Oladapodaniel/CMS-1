@@ -12,7 +12,7 @@
       ></i>
     </div>
     <div class="container">
-      <div class="row mt-3" v-if="gettingIcomeAccounts || gettingExpenseAccounts || gettingSelectedTrsn">
+      <div class="row mt-3" v-if="gettingExpenseAccounts || gettingSelectedTrsn">
         <div class="col-md-12 text-center">
           <i class="pi pi-spin pi-spinner primary-text" style="fontSize: 3rem"></i>
         </div>
@@ -218,7 +218,7 @@
           <div class=" text-center cpon">
             <button class="default-btn primary-bg text-white border-0 d-flex justify-content-center" :disabled="!formIsValid || savingAccount" @click="saveIncome">
               <span>
-                Save
+                {{ transactionDetails.id ? 'Update' : 'Save' }}
               </span>
                 <span v-if="savingAccount" style="position: absolute;left:1.5rem"><i class="pi pi-spin pi-spinner" style="fontSize: 1rem"></i></span>
               <!-- <span :class="{ 'pr-5': savingAccount }" class="pr-2" style="width: 20px"></span> -->
@@ -349,7 +349,6 @@ export default {
       // transacObj.value.accountFlow = e.target.innerText;
       showAccount.value = !showAccount.value;
       selectedCashAccount.value = account;
-      console.log(selectedCashAccount.value, "SCA");
     };
 
     const splitWithdrawal = () => {
@@ -394,7 +393,6 @@ export default {
         if (props.transactionDetails.account === "Expense Account") {
           data = expenseAccounts.value;
         }
-        console.log(data, "force array");
         if (!incomeExpenseSearchText.value) return data;
 
         return data.filter(i => i.name.toLowerCase().inludes(incomeExpenseSearchText.value));
@@ -435,7 +433,6 @@ export default {
         gettingIncomeAccounts.value = true;
         const response = await transaction_service.getIncomeAccounts();
         accountType.value = response;
-        console.log(response, "Icome accounts");
         gettingIncomeAccounts.value = false;
       } catch (error) {
         console.log(error);
@@ -450,7 +447,6 @@ export default {
         gettingExpenseAccounts.value = true;
         const response = await transaction_service.getExpenseAccounts();
         expenseAccounts.value = response;
-        console.log(response, "expense accounts");
         gettingExpenseAccounts.value = false;
       } catch (error) {
         console.log(error);
@@ -521,7 +517,6 @@ export default {
             const response = await transaction_service.saveIncome(reqBody);
             savingAccount.value = false;
             toastMessage(response);
-            console.log(response, "Save income response");
           } else {
             const body = {
               debitSplitAccounts: splittedTransactions.value.map(i => {
@@ -548,17 +543,14 @@ export default {
             const response = await transaction_service.saveExpense(body);
             savingAccount.value = false;
             toastMessage(response)
-            console.log(response, "Save expense response");
           }
         } catch (error) {
           savingAccount.value = false;
-          console.log();
+          console.log(error);
         }
     }
 
     const getSplittedAccountNames = () => {
-      console.log(expenseIncomeAccounts.value, "splitted");
-      console.log(splittedTransactions.value);
       splittedTransactions.value = splittedTransactions.value.map(i => {
         const accIncome = accountType.value.find(j => j.id === i.accountID);
         const accExpense = expenseAccounts.value.find(j => j.id === i.accountID);
@@ -569,16 +561,15 @@ export default {
 
     const dateField = ref(null);
     watch(() => props.transactionDetails, (data) => {
-      console.log(data, "in watch");
       transacObj.value.date = new Date(data.date);
       transacObj.value.amount = Math.abs(data.amount);
       transacObj.value.memo = data.memo;
       splittedTransactions.value = [ { }]
-      console.log(transacObj.value, "TO");
       selectedCashAccount.value = data.account;
 
       if (props.transactionDetails.id) {
-        transacObj.value.date = new Date(data.date).toISOString().substr(0, 10)
+        transacObj.value.date = data.date && data.date.toLocaleString().includes('T') ? data.date.toLocaleString().split('T')[0] : data.date.toLocaleString();
+        // transacObj.value.date = new Date(data.date).toISOString().substr(0, 10)
         if (data.debitSplitAccounts && data.debitSplitAccounts.length > 0) {
           splittedTransactions.value = data.debitSplitAccounts.map(i => {
             i.amount = Math.abs(i.amount);
@@ -599,7 +590,6 @@ export default {
     const getAccountHeads = async () => {
       try {
         const response = await chart_of_accounts.getAccountHeads();
-        console.log(response, "d heads");
         accountHeads.value = response;
       } catch (error) {
         console.log(error);
@@ -611,7 +601,6 @@ export default {
     const getCashAndBank = async () => {
       try {
         const response = await transaction_service.getCashAndBank();
-        console.log(response, "cash bandk heads");
         cashandbank.value = response;
       } catch (error) {
         console.log(error);

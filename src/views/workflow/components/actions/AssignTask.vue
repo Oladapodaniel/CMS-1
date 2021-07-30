@@ -61,10 +61,11 @@
 import { reactive, ref } from '@vue/reactivity';
 import Dropdown from 'primevue/dropdown'
 import SearchWithDropdown from '@/components/search/SearchWithDropdown'
+import { watch } from '@vue/runtime-core';
 
 export default {
     components: { Dropdown, SearchWithDropdown },
-    props: [ "selectedActionIndex" ],
+    props: [ "selectedActionIndex", "parameters" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 5, JSONActionParameters: { } })
 
@@ -86,7 +87,7 @@ export default {
             emit('updateaction', data, props.selectedActionIndex);
         }
 
-        const instructions = ref([ ]);
+        const instructions = ref('');
         const handleInstructions = (e) => {
             data.JSONActionParameters.instructions = e.target.value;
             emit('updateaction', data, props.selectedActionIndex);
@@ -107,6 +108,34 @@ export default {
             otherToContacts.value.splice(index, 1);
             data.JSONActionParameters.otherToContacts = otherToContacts.value.length > 0 ? otherToContacts.value.map(i => i.id).join(',') : "";
         }
+
+        const parsedData = ref({ })
+        watch(() => {
+            if (props.parameters.Action) {
+                const actn = JSON.parse(props.parameters.Action);
+                parsedData.value = JSON.parse(actn.JSONActionParameters)
+
+                selectedTaskType.value = taskTypes.find(i => i.index === parsedData.value.taskType);
+                data.JSONActionParameters.taskType = parsedData.value.taskType;
+
+                groupLeaders.value = parsedData.value.groupLeaders;
+                data.JSONActionParameters.groupLeaders = parsedData.value.groupLeaders;
+
+                instructions.value = parsedData.value.instructions;
+                data.JSONActionParameters.instructions = parsedData.value.instructions;
+            } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
+                parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+                
+                selectedTaskType.value = taskTypes.find(i => i.index === parsedData.value.taskType);
+                data.JSONActionParameters.taskType = parsedData.value.taskType;
+
+                groupLeaders.value = parsedData.value.groupLeaders;
+                data.JSONActionParameters.groupLeaders = parsedData.value.groupLeaders;
+
+                instructions.value = parsedData.value.instructions;
+                data.JSONActionParameters.instructions = parsedData.value.instructions;
+            }
+        })
 
         return {
             taskTypes,

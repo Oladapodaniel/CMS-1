@@ -266,7 +266,13 @@
                 @reload="getTransactions"
                 :gettingSelectedTrsn="gettingSelectedTrsn"
               />
-              <LedgerForm v-else @entrysaved="journalEntrySaved" @close-ledger="closeLedgerForm" />
+              <LedgerForm 
+                v-else 
+                @entrysaved="journalEntrySaved" 
+                @close-ledger="closeLedgerForm"
+                :journalEntry="journalEntry"
+                :gettingSelectedTrsn="gettingSelectedTrsn"
+              />
               <!-- :transacProp="transacPropsValue" -->
             </div>
           </div>
@@ -294,6 +300,7 @@ export default {
     "showEditTransaction",
     "transactionDetails",
     "selectedTransactionType",
+    "journalEntry"
   ],
   components: {
     TransactionForm,
@@ -513,11 +520,18 @@ export default {
     const rowSelected = async (item) => {
       try {
         gettingSelectedTrsn.value = true;
-        emit("select-row", { });
+        if (item.category === "Journal") {
+          emit("select-journal", { });
+        } else {
+          emit("select-row", { });
+        }
         const response = await transaction_service.getEditTransactions(item.transactionNumber);
         gettingSelectedTrsn.value = false;
-        console.log(response, "Edit Transaction");
-         emit("select-row", response.data);
+        if (item.category === "Journal") {
+          emit("select-journal", response.data);
+        } else {
+          emit("select-row", response.data);
+        }
       } catch (error) {
         console.log(error);
         gettingSelectedTrsn.value = false;

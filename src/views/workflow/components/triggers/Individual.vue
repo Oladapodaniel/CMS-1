@@ -99,11 +99,12 @@
 import Dropdown from "primevue/dropdown";
 import MultiSelect from "primevue/multiselect";
 import { reactive, ref } from '@vue/reactivity';
-import { computed } from '@vue/runtime-core';
+import { computed, watch } from '@vue/runtime-core';
 import TriggerDescription from '../TriggerDescription.vue'
+import workflow_util from '../../utlity/workflow_util';
 
 export default {
-  props: [ "groups", "selectedTriggerIndex" ],
+  props: [ "groups", "selectedTriggerIndex", "condition" ],
   components: {
     Dropdown, MultiSelect, TriggerDescription
   },
@@ -169,6 +170,25 @@ export default {
     const removeTrigger = () => {
       emit("removetrigger")
     }
+
+    const parsedData = ref({ })
+    watch(() => {
+      console.log(props.condiction);
+      if (props.condition.jsonCondition) {
+          parsedData.value = JSON.parse(props.condition.jsonCondition);
+          eventType.value = parsedData.value.event;
+          data.event = parsedData.value.event;
+
+          days.value = parsedData.value.days;
+          data.days = parsedData.value.days;
+
+          selectedGroups.value = props.groups.length > 0 ? workflow_util.getGroups(parsedData.value.groups, props.groups) : [ ];
+          data.groups = parsedData.value.groups;
+
+          pastOrFuture.value = parsedData.value.givenAtLeastTimes === 1 ? 'Past' : 'Future';
+          data.givenAtLeastTimes = parsedData.value.givenAtLeastTimes;
+      }
+    }) 
 
     return {
       selectedGroups,
