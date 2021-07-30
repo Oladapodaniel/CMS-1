@@ -13,25 +13,25 @@
                 <div>sample@gmail.com <i class="pi pi-copy"></i></div>
             </div>
         </div>
-        <div class="row d-flex justify-content-between mt-5">
+        <div class="row d-flex justify-content-around mt-5">
             <div>
-                <div class="icon-bg"><i class="fa fa-edit"></i></div>
+                <div class="icon-bg"><i class="pi pi-user-edit"></i></div>
                 <div>Note</div>
             </div>
             <div>
-                <div><i class="pi pi-envelope"></i></div>
+                <div class="icon-bg"><i class="pi pi-envelope"></i></div>
                 <div>Email</div>
             </div>
             <div>
-                <div><i class="pi pi-phone"></i></div>
+                <div class="icon-bg"><i class="pi pi-phone"></i></div>
                 <div>Call</div>
             </div>
             <div>
-                <div><i class="pi pi-calendar-plus"></i></div>
+                <div class="icon-bg"><i class="pi pi-calendar-plus"></i></div>
                 <div>Task</div>
             </div>
             <div>
-                <div><i class="pi pi-plus"></i></div>
+                <div class="icon-bg"><i class="pi pi-plus"></i></div>
                 <div>Log</div>
             </div>
         </div>
@@ -171,12 +171,14 @@ export default {
 }
 
 .icon-bg {
-    border: 2px solid red;
+    border: 2px solid #cbd6e2;
     border-radius: 50%;
     width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #506e91;
+    background: #eaf0f6;
 }
 </style>
