@@ -802,53 +802,53 @@ export default {
           updateMember.maritalStatusId = firstTimersObj.value.maritalStatusId;
           console.log(updateMember)
 
-          router.push('/tenant/people/firsttimerworkflow')
+          // router.push('/tenant/people/firsttimerworkflow')
 
-        // try {
-        //   loading.value = true;
-        //   const response = await axios.put(
-        //     `/api/People/EditFirstTimer`,
-        //     // {firstName: "Baba", personId: firstTimersObj.value.personId}
-        //     updateMember
-        //     // firstTimersObj.value
-        //   );
+        try {
+          loading.value = true;
+          const response = await axios.put(
+            `/api/People/EditFirstTimer`,
+            // {firstName: "Baba", personId: firstTimersObj.value.personId}
+            updateMember
+            // firstTimersObj.value
+          );
 
-        //   if (response.status === 200 || response.status === 201) {
-        //     loading.value = false;
-        //     router.push("/tenant/firsttimerslist");
-        //     console.log(firstTimersObj);
-        //     toast.add({
-        //       severity: "success",
-        //       summary: "Update Succesful",
-        //       detail: "Update operation was succesful",
-        //       life: 2500,
-        //     });
-        //   }
-        // } catch (err) {
-        //   loading.value = false;
-        //   finish()
-        //   if (err.toString().toLowerCase().includes("network error")) {
-        //     toast.add({
-        //       severity: "warn",
-        //       summary: "You 're Offline",
-        //       detail: "Please ensure you have internet access",
-        //       life: 2500,
-        //     });
-        //   } else {
-        //     showError.value = true;
-        //     toast.add({
-        //       severity: "warn",
-        //       summary: "Update Failed",
-        //       detail:
-        //         err.response && err.response.data.messsage
-        //           ? err.response.data.messsage
-        //           : "Update operation was not succesful",
-        //       life: 2500,
-        //     });
-        //   }
-        //   showError.value = true;
-        //   console.log(err.response);
-        // }
+          if (response.status === 200 || response.status === 201) {
+            loading.value = false;
+            router.push("/tenant/firsttimerslist");
+            console.log(firstTimersObj);
+            toast.add({
+              severity: "success",
+              summary: "Update Succesful",
+              detail: "Update operation was succesful",
+              life: 2500,
+            });
+          }
+        } catch (err) {
+          loading.value = false;
+          finish()
+          if (err.toString().toLowerCase().includes("network error")) {
+            toast.add({
+              severity: "warn",
+              summary: "You 're Offline",
+              detail: "Please ensure you have internet access",
+              life: 2500,
+            });
+          } else {
+            showError.value = true;
+            toast.add({
+              severity: "warn",
+              summary: "Update Failed",
+              detail:
+                err.response && err.response.data.messsage
+                  ? err.response.data.messsage
+                  : "Update operation was not succesful",
+              life: 2500,
+            });
+          }
+          showError.value = true;
+          console.log(err.response);
+        }
       } else {
         axios
           .post("/api/people/firsttimer", firstTimersObj.value)
