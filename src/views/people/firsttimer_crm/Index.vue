@@ -1,30 +1,30 @@
 <template>
     <div class="container-top container adjust-font">
         <div class="row" style="border: 2px solid red">
-            <div class="col-3">
+            <div class="col-4">
                 <SideActions />
             </div>
-            <div class="col-9" style="border: 2px solid green">
+            <div class="col-8" style="border: 2px solid green">
                 <div class="row">
-                    <div class="col-2 pr-0" @click="toggleActivity">
+                    <div class="col-2 pr-0 c-pointer" @click="toggleActivity">
                         <div class="p-3">Activity</div>
-                        <div class="baseline" v-if="showActivity"></div>
+                        <div :class="{ 'baseline' : showActivity, 'hide-base' : !showActivity }"></div>
                     </div>
-                    <div class="col-2 pr-0" @click="toggleNotes">
+                    <div class="col-2 pr-0 c-pointer" @click="toggleNotes">
                         <div class="p-3">Notes</div>
-                        <div class="baseline" v-if="showNotes"></div>
+                        <div :class="{ 'baseline' : showNotes, 'hide-base' : !showNotes }"></div>
                     </div>
-                    <div class="col-2 pr-0" @click="toggleEmails">
+                    <div class="col-2 pr-0 c-pointer" @click="toggleEmails">
                         <div class="p-3">Emails</div>
-                        <div class="baseline" v-if="showEmails"></div>
+                        <div :class="{ 'baseline' : showEmails, 'hide-base' : !showEmails }"></div>
                     </div>
-                    <div class="col-2 pr-0" @click="toggleCalls">
+                    <div class="col-2 pr-0 c-pointer" @click="toggleCalls">
                         <div class="p-3">Calls</div>
-                        <div class="baseline" v-if="showCalls"></div>
+                        <div :class="{ 'baseline' : showCalls, 'hide-base' : !showCalls }"></div>
                     </div>
-                    <div class="col-2 pr-0" @click="toggleTasks">
+                    <div class="col-2 pr-0 c-pointer" @click="toggleTasks">
                         <div class="p-3">Tasks</div>
-                        <div class="baseline" v-if="showTasks"></div>
+                        <div :class="{ 'baseline' : showTasks, 'hide-base' : !showTasks }"></div>
                     </div>
                 </div>
               
@@ -112,7 +112,7 @@ export default {
 
 <style scoped>
 .baseline {
-    transition: all 150ms ease-out 0s;
+    transition: all 150ms ease-in-out;
     background-color: #33475b;
     border-radius: 24px;
     bottom: -2.5px;
@@ -120,6 +120,17 @@ export default {
     left: 0px;
     width: 100%;
     opacity: 1;
+}
+
+.hide-base {
+    transition: all 150ms ease-in-out;
+    background-color: #33475b;
+    border-radius: 24px;
+    bottom: -2.5px;
+    height: 8px;
+    left: 0px;
+    width: 100%;
+    opacity: 0;
 }
 
 .adjust-font {
