@@ -13,8 +13,8 @@
             <div class="row mt-4">
                 <div class="col-sm-10 col-md-8 mx-auto  pt-1">
                     <div class="row">
-                      <div class="col-6">{{ formResponse.churchName }}</div>
-                      <div class="col-6 d-flex justify-content-end">
+                      <div class="col-8">{{ formResponse.churchName }}</div>
+                      <div class="col-4 d-flex justify-content-end">
                         <div href="#" style="cursor: pointer" class="mr-3" @click="checkForToken"
                           >{{ Object.keys(userData).length > 0 ? userData.email ? userData.email : userData.name : "Sign In"}} <i class="fas fa-user text-white" v-if="signedIn"></i
                       ></div>
@@ -47,7 +47,7 @@
                 <div class="col-md-3 d-sm-none"></div>
               <transition name="move" mode="out-in">
                 <div
-                  class="col-sm-10 col-md-8 mx-auto form-area shadow p-5 mb-5 bg-white rounded MIDDLE"
+                  class="col-sm-10 col-md-8 mx-auto form-area shadow p-md-5 mb-5 bg-white rounded MIDDLE"
                   v-if="!paymentSuccessful"
                   key="form"
                 >
@@ -908,7 +908,7 @@ export default {
 }
 
 .main-font {
-  font-size: 4.375rem;
+  font-size: 50px;
   font: normal normal medium 70px/106px Poppins;
   letter-spacing: 4px;
 }

@@ -150,6 +150,7 @@ export default {
             loading.value = true
             try {
                 let res = await axios.get(`/api/CheckInAttendance/retrieveFamily?checkInCode=${code.value}&attendanceCode=${selectedRecentsEvent.value.attendanceCode}`)
+                // api/checkinattendance/retrievefamily?checkincode=101& activityId=cde65c86-1811-461a-c053-08d9525f7092
                 
                 loading.value = false
                 console.log(res)

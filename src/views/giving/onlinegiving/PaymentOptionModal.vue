@@ -12,7 +12,7 @@
 
 
     <div class="row row-button" v-if="flutterwaveGate" @click="makePayment">
-      <div class="col-4 col-sm-7 offset-2">
+      <div class="col-7 col-sm-7 offset-2">
         <img class="w-100" src="../../../assets/flutterwave_logo_color@2x.png" alt="flutterwave"/>
       </div>
 

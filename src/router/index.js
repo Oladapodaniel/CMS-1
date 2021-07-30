@@ -223,8 +223,16 @@ const routes = [
                     component: () =>
                         import( /* webpackChunkName: "addfirsttimer" */ '../views/people/AddFirstTimer.vue')
                 },
-
+                
             ]
+        },
+        {
+            path: 'firsttimerworkflow',
+            meta: {
+                title: 'Churchplus - First Timer Work Flow',
+            },
+            component: () =>
+                import( /* webpackChunkName: "addfirsttimer" */ '../views/people/firsttimer_crm/Index.vue')
         },
         {
             path: 'family',
