@@ -235,7 +235,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <EmailAction 
+                                                        <EmailAction
                                                             @updateaction="updateAction"
                                                             v-if="selectedAction && selectedAction.actionType === 0"
                                                             :selectedActionIndex="selectedActionIndex"
@@ -248,13 +248,13 @@
                                                             :groups="groups"
                                                             :parameters="getAction(4, selectedTriggerIndex)"
                                                         />
-                                                        <AssignTask 
+                                                        <AssignTask
                                                             v-else-if="selectedAction && selectedAction.actionType === 5" 
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(5, selectedTriggerIndex)"
                                                         />
-                                                        <SMSAction 
+                                                        <SMSAction
                                                             @updateaction="updateAction"
                                                             v-if="selectedAction && selectedAction.actionType === 1"
                                                             :selectedActionIndex="selectedActionIndex"
@@ -266,32 +266,32 @@
                                                             :parameters="getAction(6, selectedTriggerIndex)"
                                                         />
                                                         <UpdateProgress v-else-if="selectedAction && selectedAction.actionType === 66"  />
-                                                        <VoiceAction 
+                                                        <VoiceAction
                                                             v-else-if="selectedAction && selectedAction.actionType === 2" 
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(2, selectedTriggerIndex)"
                                                         />
-                                                        <TimerAction 
+                                                        <TimerAction
                                                             v-else-if="selectedAction && selectedAction.actionType === 8" 
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(8, selectedTriggerIndex)"
                                                         />
-                                                        <MarkPresent 
+                                                        <MarkPresent
                                                             v-else-if="selectedAction && selectedAction.actionType === 9" 
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(9, selectedTriggerIndex)"
                                                         />
                                                         <Interactions v-else-if="selectedAction && selectedAction.actionType === 100"  />
-                                                        <WhatsAppAction 
+                                                        <WhatsAppAction
                                                             v-else-if="selectedAction && selectedAction.actionType === 3"
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
                                                             :parameters="getAction(3, selectedTriggerIndex)"
                                                         />
-                                                        <AddNoteAction 
+                                                        <AddNoteAction
                                                             v-else-if="selectedAction && selectedAction.actionType === 10"
                                                             :selectedActionIndex="selectedActionIndex"
                                                             @updateaction="updateAction"
@@ -301,8 +301,8 @@
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch" style="padding:10px" v-if="false">
-                                                    <button class="btn btn-success w-100 trigger-btn btn-100 ml-n4 font-weight-bold">
+                                                <div class="col-md-12 trigger-btn-div d-flex justify-content-stretch" style="padding:10px">
+                                                    <button @click="onDone" class="btn btn-success w-100 trigger-btn btn-100 ml-n4 font-weight-bold">
                                                         Done
                                                     </button>
                                                 </div>
@@ -809,6 +809,10 @@ export default {
             return triggerAction && (triggerAction.Action || triggerAction.action) ? triggerAction : { };
         }
 
+        const onDone = () => {
+            selectedTriggerIndex.value = null;
+        }
+
         return {
             showTriggers,
             // triggersIsVissible,
@@ -847,7 +851,8 @@ export default {
             removeTrigger,
             removeActiveAction,
             getTrigger,
-            getAction
+            getAction,
+            onDone,
         }
     }
 }
