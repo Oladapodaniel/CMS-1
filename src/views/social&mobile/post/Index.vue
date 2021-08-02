@@ -141,6 +141,7 @@ import { ref } from '@vue/reactivity';
     import social_service from "../../../services/social/social_service"
 import membershipService from '../../../services/membership/membershipservice';
     import axios from "@/gateway/backendapi";
+    import fbClient from "@/gateway/backendapi";
     import ProgressBar from 'primevue/progressbar';
     import { useRouter } from "vue-router";
     import ImagePicker from "../../../components/image-picker/ImagePicker"
@@ -251,7 +252,7 @@ import { useRoute } from "vue-router"
                         console.log(res, "upload res");
                         if (toFacebook.value) {
                             alert('posting to facebook')
-                            axios.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=Hello Fans!&access_token=${socialData.value.accessToken}`)
+                            fbClient.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=Hello Fans!&access_token=${socialData.value.accessToken}`)
                             .then(res => {
                                 console.log(res, "post res");
                             })
