@@ -1,10 +1,10 @@
 <template>
     <div class="container-top container adjust-font">
-        <div class="row" style="border: 2px solid red">
-            <div class="col-4">
+        <div class="row">
+            <div class="col-4 p-0 side-bar">
                 <SideActions />
             </div>
-            <div class="col-8" style="border: 2px solid green">
+            <div class="col-8 main-view">
                 <div class="row">
                     <div class="col-2 pr-0 c-pointer" @click="toggleActivity">
                         <div class="p-3">Activity</div>
@@ -27,13 +27,31 @@
                         <div :class="{ 'baseline' : showTasks, 'hide-base' : !showTasks }"></div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="border-top col-12"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-2">Filter by:</div>
+                    <div class="col-7 font-weight-700">Filter activity (19/21)</div>
+                    <div class="col-3 font-weight-700">All Users</div>
+                </div>
               
-                <div class="row" >
-                    <div class="col-12" v-if="showActivity" transition="bounce">Activity</div>
-                    <div class="col-12" v-if="showNotes" transition="bounce">Notes</div>
-                    <div class="col-12" v-if="showEmails" transition="bounce">Emails</div>
-                    <div class="col-12" v-if="showCalls" transition="bounce">Calls</div>
-                    <div class="col-12" v-if="showTasks" transition="bounce">Tasks</div>
+                <div class="row mt-4">
+                    <div class="col-12" v-if="showActivity" transition="bounce">
+                        <Activity />
+                    </div>
+                    <div class="col-12" v-if="showNotes" transition="bounce">
+                        <Notes />
+                    </div>
+                    <div class="col-12" v-if="showEmails" transition="bounce">
+                        <Emails />
+                    </div>
+                    <div class="col-12" v-if="showCalls" transition="bounce">
+                        <Calls />
+                    </div>
+                    <div class="col-12" v-if="showTasks" transition="bounce">
+                        <Tasks />
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,9 +61,19 @@
 <script>
 import { ref } from "vue"
 import SideActions from "./components/SideActions"
+import Activity from "./components/Activity"
+import Notes from "./components/Notes"
+import Emails from "./components/Emails"
+import Calls from "./components/Calls"
+import Tasks from "./components/Tasks"
 export default {
     components: {
-        SideActions
+        SideActions,
+        Activity,
+        Notes,
+        Emails,
+        Calls,
+        Tasks
     },
     setup () {
         const showActivity = ref(true)
@@ -167,5 +195,14 @@ export default {
   100% {
     transform: scale(0);
   }
+}
+
+.side-bar {
+    border: 1px solid #dfe3eb
+}
+
+.main-view {
+    background: #f5f8fa;
+    border: 1px solid #dfe3eb
 }
 </style>
