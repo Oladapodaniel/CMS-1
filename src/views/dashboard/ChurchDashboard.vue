@@ -679,6 +679,7 @@ export default {
     let getCelebDashboard = () => {
       axios.get("/dashboard/celebrations").then((res) => {
         tenantInfoCeleb.value = res.data.returnObject.celebrations;
+        console.log(tenantInfoCeleb.value)
       });
     };
     getCelebDashboard();

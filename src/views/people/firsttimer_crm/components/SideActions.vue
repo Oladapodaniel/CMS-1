@@ -10,7 +10,7 @@
             </div>
             <div class="col-9">
                 <div class="contact-name">Design Sample</div>
-                <div>sample@gmail.com <i class="pi pi-copy"></i></div>
+                <div>sample@gmail.com <i class="pi pi-copy"></i>&nbsp; &nbsp;<i class="pi pi-pencil" @click="editContactName"></i></div>
             </div>
         </div>
         <div class="row d-flex justify-content-center mt-5">
@@ -45,27 +45,32 @@
         </div>
         <div class="row mt-4">
             <div class="col-12 label-text">Email</div>
-            <div class="col-12 mt-2">
-                Sample@sample.com
+            <div class="col-12 mt-2 ">
+                <div class="task-border border-transparent d-flex justify-content-between p-2" :class="{ 'hover-border' : hoverTask }" @mouseover="onHoverBorder" @mouseleave="outHoverBorder" @click="editEmail">
+                    <div>Sample@sample.com</div>
+                <i class="pi pi-pencil align-self-center" :class="{ 'uniform-primary-color' : hoverTask, 'text-white' : !hoverTask }"></i>
+                    </div>
             </div>
+           
         </div>
-        <div class="row">
+        <div class="row" @mouseover="toggleHoverPhone" @mouseleave="OutHoverPhone">
             <div class="col-12 mt-4 label-text">Phone Number</div>
-            <div class="col-7 mt-2">
-                <input type="text" class="form-control"/>
+            <div class="col-12 ml-2 mt-3" v-if="!hoverPhone">{{ phoneNumber }}</div>
+            <div v-else class="col-12 mt-2">
+                <input type="text" class="form-control phone-input" @blur="OutHoverPhone" v-model="phoneNumber"/>
             </div>
-            <div class="col-5 align-self-center">
+            <div v-if="hoverPhone" class="phone-details align-self-center">
                 <i class="pi pi-pencil icon-edit"></i> <button class="details-btn ml-2">Details</button>
             </div>
         </div>
         <div class="row">
             <div class="col-12 mt-4 label-text">Contact owner</div>
-            <div class="col-7 mt-2">
-                <Dropdown v-model="selectedContact" :options="contacts" class="w-100" optionLabel="name" placeholder="Select Contact" />
+            <div class="col-12 mt-2">
+                <Dropdown v-model="selectedContact" :options="contacts" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" />
             </div>
-            <div class="col-5 align-self-center">
+            <!-- <div class="col-5 align-self-center">
                 <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
-            </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-12 mt-4 label-text">Last contacted</div>
@@ -75,21 +80,21 @@
         </div>
         <div class="row">
             <div class="col-12 mt-4 label-text">Lifecycle stage</div>
-            <div class="col-7">
-                <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100" optionLabel="stage" placeholder="Select Contact" />
+            <div class="col-12">
+                <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="stage" placeholder="Select Contact" />
             </div>
-            <div class="col-5 align-self-center">
+            <!-- <div class="col-5 align-self-center">
                 <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
-            </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-12 label-text mt-4">Lead Status</div>
-            <div class="col-7 mt-2">
-                <Dropdown v-model="selectedLeadStatus" :options="leadStatus" class="w-100" optionLabel="status" placeholder="Select Contact" />
+            <div class="col-12 mt-2">
+                <Dropdown v-model="selectedLeadStatus" :options="leadStatus" class="w-100 phone-input" optionLabel="status" placeholder="Select Contact" />
             </div>
-            <div class="col-5 align-self-center">
+            <!-- <div class="col-5 align-self-center">
                 <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
-            </div>
+            </div> -->
             <!-- <div class="col-6">
                 <button>View all properties</button>
             </div>
@@ -106,20 +111,74 @@
             </div>
         </div>
     </div>
+    
+    <OverlayPanel ref="editEmailRef" appendTo="body" :showCloseIcon="true" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div>Email</div>
+                    <input value="farye" class="form-control mt-3"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-1 p-2 col-2 mt-3 ml-3 save-btn btn-btn pointer-cursor">Save</div>
+                <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" @click="cancelTaskEdit">Cancel</div>
+            </div>
+        </div>
+        </OverlayPanel>
+   
+    <OverlayPanel ref="contactNameRef" appendTo="body" :showCloseIcon="true" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mt-3">
+                    <div class="row">
+                        <div class="col-6">
+                            First Name
+                            <div class="mt-2">
+                                <input type="text" class="form-control"/>
+                            </div>
+                        </div>
+                        
+                        <div class="col-6">
+                            Last Name
+                            <div class="mt-2">
+                                <input type="text" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            Job title
+                            <div><input type="text" class="form-control"/></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-1 p-2 col-2 mt-3 ml-3 save-btn btn-btn pointer-cursor">Save</div>
+                <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" @click="cancelTaskEdit">Cancel</div>
+            </div>
+        </div>
+        </OverlayPanel>
+    <Toast />
 </template>
 
 <script>
 import { ref } from "vue"
 import Dropdown from "primevue/dropdown";
 import Tooltip from 'primevue/tooltip';
+import OverlayPanel from 'primevue/overlaypanel';
+import { useConfirm } from "primevue/useConfirm";
+import { useToast } from "primevue/usetoast";
 export default {
     components: {
-        Dropdown
+        Dropdown,
+        OverlayPanel
     },
     directives: {
         'tooltip': Tooltip
     },
     setup () {
+        const confirm = useConfirm()
+        const toast = useToast()
         const selectedContact = ref("")
         const contacts = ref([
             {
@@ -156,6 +215,36 @@ export default {
             }
         ])
         const selectedLeadStatus = ref("")
+        const editEmailRef = ref()
+        const contactNameRef = ref()
+        const hoverTask = ref(false)
+        const hoverPhone = ref(false)
+        const phoneNumber = ref(8076543254)
+
+
+        const editEmail = (event) => {
+            editEmailRef.value.toggle(event);
+        };
+        
+        const editContactName = (event) => {
+            contactNameRef.value.toggle(event);
+        };
+
+        const onHoverBorder = () => {
+            hoverTask.value = true
+        }
+        
+        const outHoverBorder = () => {
+            hoverTask.value = false
+        }
+
+        const toggleHoverPhone = () => {
+            hoverPhone.value = true
+        }
+        
+        const OutHoverPhone = () => {
+            hoverPhone.value = false
+        }
 
 
         return {
@@ -164,7 +253,18 @@ export default {
             lifeCycle,
             selectedLifeCycle,
             selectedLeadStatus,
-            leadStatus
+            leadStatus,
+            editEmail,
+            editEmailRef,
+            editContactName,
+            contactNameRef,
+            onHoverBorder,
+            outHoverBorder,
+            hoverTask,
+            hoverPhone,
+            toggleHoverPhone,
+            OutHoverPhone,
+            phoneNumber
         }
     }
 }
@@ -215,5 +315,55 @@ export default {
 
 .uniform-primary-color {
     color: #136acd
+}
+
+.btn-btn {
+    font-size: 12px;
+    line-height: 14px;
+    padding: 5px 12px;
+    border-radius: 3px;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+    font-weight: 400;
+    text-align: center;
+}
+
+.save-btn {
+    background-color: #425b76;
+    border: 1px solid #425b76;
+    color: #fff;    
+}
+
+.cancel-btn {
+    background-color: #eaf0f6;
+    border-color: #cbd6e2;
+    color: #506e91; 
+}
+
+.task-border {
+    border: 2px solid rgba(202, 202, 202, 0.096);
+    border-radius: 3px;
+}
+
+.task-border.border-transparent {
+    border: transparent
+}
+.hover-border {
+    border: 2px solid #1269cea6;
+    border-radius: 3px;
+}
+
+.phone-input {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #cbd6e2;
+    border-radius: 0
+}
+
+.phone-details {
+    position: absolute;
+    top: 30em;
+    right: 2em;
+    z-index: 1;
 }
 </style>
