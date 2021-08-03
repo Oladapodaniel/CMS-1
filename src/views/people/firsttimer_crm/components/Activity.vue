@@ -111,7 +111,7 @@
              <div class="col-12 card-bg p-4">
             <div class="row d-flex justify-content-between">
                 <div>
-                    <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up" :class="{'roll-note-icon' : noteIcon, 'unroll-note-icon' : !noteIcon}" @click="toggleNoteIcon"></i>&nbsp;&nbsp;Meeting</span> by Oladapo Daniel <span class="font-weight-700">Actions <i class="pi pi-sort-down"></i></span></div>
+                    <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up" :class="{'roll-note-icon' : meetIcon, 'unroll-note-icon' : !meetIcon}" @click="toggleMeetIcon"></i>&nbsp;&nbsp;Meeting</span> by Oladapo Daniel <span class="font-weight-700">Actions <i class="pi pi-sort-down"></i></span></div>
                 </div>
                 <div>
                     <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
@@ -119,7 +119,7 @@
             </div>
             <div class="row">
                 <transition name="fade">
-                        <div class="mt-4 col-12" v-if="noteIcon">
+                        <div class="mt-4 col-12" v-if="meetIcon">
                             <div class="label-text">Attendee description</div>
                             <div class="mt-3">This is me creating a note</div>
 
@@ -171,6 +171,7 @@ export default {
     setup() {
         const noteIcon = ref(false)
         const taskIcon = ref(false)
+        const meetIcon = ref(false)
         const taskTime = ref([
             {
                 name: '08:00'
@@ -196,6 +197,10 @@ export default {
         
         const toggleTaskIcon = () => {
             taskIcon.value = !taskIcon.value
+        }
+        
+        const toggleMeetIcon = () => {
+            meetIcon.value = !meetIcon.value
         }
         
         const toggleEditTask = () => {
@@ -263,6 +268,8 @@ export default {
             hoverTask2,
             outHoverBorder2,
             cancelTaskEdit2,
+            toggleMeetIcon,
+            meetIcon
 
         }
     }

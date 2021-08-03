@@ -47,7 +47,7 @@
             <div class="col-12 label-text">Email</div>
             <div class="col-12 mt-2 ">
                 <div class="task-border border-transparent d-flex justify-content-between p-2" :class="{ 'hover-border' : hoverTask }" @mouseover="onHoverBorder" @mouseleave="outHoverBorder" @click="editEmail">
-                    <div>Sample@sample.com</div>
+                    <div>{{ email }}</div>
                 <i class="pi pi-pencil align-self-center" :class="{ 'uniform-primary-color' : hoverTask, 'text-white' : !hoverTask }"></i>
                     </div>
             </div>
@@ -112,16 +112,16 @@
         </div>
     </div>
     
-    <OverlayPanel ref="editEmailRef" appendTo="body" :showCloseIcon="true" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
+    <OverlayPanel ref="editEmailRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div>Email</div>
-                    <input value="farye" class="form-control mt-3"/>
+                    <input v-model="email" class="form-control mt-3"/>
                 </div>
             </div>
             <div class="row">
-                <div class="offset-1 p-2 col-2 mt-3 ml-3 save-btn btn-btn pointer-cursor">Save</div>
+                <div class="offset-1 p-2 col-2 mt-3 ml-3 save-btn btn-btn pointer-cursor" @click="saveEmail">Save</div>
                 <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" @click="cancelTaskEdit">Cancel</div>
             </div>
         </div>
@@ -220,6 +220,7 @@ export default {
         const hoverTask = ref(false)
         const hoverPhone = ref(false)
         const phoneNumber = ref(8076543254)
+        const email = ref('olad@gamil.com')
 
 
         const editEmail = (event) => {
@@ -246,6 +247,10 @@ export default {
             hoverPhone.value = false
         }
 
+        const saveEmail = () => {
+             editEmailRef.value.hide();
+        }
+
 
         return {
             selectedContact,
@@ -264,7 +269,9 @@ export default {
             hoverPhone,
             toggleHoverPhone,
             OutHoverPhone,
-            phoneNumber
+            phoneNumber,
+            email,
+            saveEmail
         }
     }
 }
@@ -345,9 +352,9 @@ export default {
     border-radius: 3px;
 }
 
-.task-border.border-transparent {
+/* .task-border.border-transparent {
     border: transparent
-}
+} */
 .hover-border {
     border: 2px solid #1269cea6;
     border-radius: 3px;

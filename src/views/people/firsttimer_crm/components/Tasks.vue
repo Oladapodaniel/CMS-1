@@ -141,7 +141,7 @@ export default {
 }
 
 .btn-btn {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 14px;
     padding: 5px 12px;
     border-radius: 3px;
@@ -155,6 +155,12 @@ export default {
     background-color: #425b76;
     border: 1px solid #425b76;
     color: #fff;    
+}
+
+.cancel-btn {
+    background-color: #eaf0f6;
+    border-color: #cbd6e2;
+    color: #506e91; 
 }
 
 </style>
