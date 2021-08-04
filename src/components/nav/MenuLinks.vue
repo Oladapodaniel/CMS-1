@@ -20,7 +20,7 @@
             <a class="user-link"
               >{{ tenantDisplayName }}
               <span class="user-link-icon"
-                ><i class="fa fa-angle-right"></i></span
+                ><i class="pi pi-angle-right"></i></span
             ></a>
           </div>
           <router-link to="/tenant" class="link routelink dashboard-link">
@@ -50,7 +50,7 @@
                 >People
                 <span class="user-link-icon">
                   <i
-                    class="fa fa-angle-up more-icon"
+                    class="pi pi-angle-up more-icon"
                     :class="{ 'tbb-icon-rotate': peopleLinkDropped }"
                   ></i></span
               ></span>
@@ -95,7 +95,7 @@
                 >Communication
                 <span class="user-link-icon">
                   <i
-                    class="fa fa-angle-up more-icon"
+                    class="pi pi-angle-up more-icon"
                     :class="{ 'tbb-icon-rotate': commLinkDropped }"
                   ></i></span
               ></span>
@@ -140,7 +140,7 @@
                 >Events
                 <span class="user-link-icon">
                   <i
-                    class="fa fa-angle-up more-icon"
+                    class="pi pi-angle-up more-icon"
                     :class="{ 'tbb-icon-rotate': eventsLinkDropped }"
                   ></i></span
               ></span>
@@ -183,7 +183,7 @@
                 >Accounting
                 <span class="user-link-icon">
                   <i
-                    class="fa fa-angle-up more-icon"
+                    class="pi pi-angle-up more-icon"
                     :class="{ 'tbb-icon-rotate': accLinkDropped }"
                   ></i></span
               ></span>
@@ -243,7 +243,7 @@
                 <span>{{ dropDownText }}...</span>
                 <span
                   ><i
-                    class="fa fa-angle-up more-icon"
+                    class="pi pi-angle-up more-icon"
                     :class="{ 'tbb-icon-rotate': moreShown }"
                   ></i
                 ></span>

@@ -18,7 +18,7 @@
             </router-link>
           </div>
         </div>
-        <hr class="hr container-wide" v-if="!isFormPage"/>
+        <hr class="hr container-wide" />
 
         <!-- <transition name="fade" mode="out-in"> -->
           <router-view class="view" />

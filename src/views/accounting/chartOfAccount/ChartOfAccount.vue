@@ -10,14 +10,14 @@
               <div>
                 <span class="chart-head">Charts of Accounts</span>
                 <span class="help"
-                  ><i class="fa fa-question-circle-o" aria-hidden="true"></i
+                  ><i class="pi pi-question-circle" aria-hidden="true"></i
                 ></span>
               </div>
             </div>
             <div
               class="col-12 col-md-6 text-center text-md-right mt-3 mt-md-0 p-0"
             >
-              <!-- <span><i class="fa fa-gift" aria-hidden="true"></i></span>
+              <!-- <span><i class="pi pi-gift" aria-hidden="true"></i></span>
                 <span class="what-new ml-2">What's new</span> -->
               <span
                 class="primary-bg default-btn border-0 text-white ml-3 c-pointer"

@@ -489,7 +489,7 @@
                   <span class="py-2 font-weight-bold">PHONE</span>
                 </div>
                 <div class="col-md-1">
-                  <!-- <i class="fa fa-elipsis-v"></i> -->
+                  <!-- <i class="pi pi-elipsis-v"></i> -->
                 </div>
               </div>
               <div class="row" v-if="loadingMembers">

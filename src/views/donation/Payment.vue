@@ -9,7 +9,7 @@
         <!-- <router-link to="/tenant/offeringcategory"> -->
           <button class="more-btn h-100 button align-items-center default-btn border-0" v-if="false">
               More
-              <span><i class="fa fa-angle-down btn-icon"></i></span>
+              <span><i class="pi pi-angle-down btn-icon"></i></span>
             </button>
         <!-- </router-link> -->
         <router-link to="/tenant/payments" class="add-person-btn no-underline button default-btn border-0 ml-3">

@@ -46,10 +46,11 @@
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
               <div class="col-12 mt-4">
                 <div class="row">
-                  <div class="col-md-4 col-12 col-sm-5 fill">
+                  <div class="col-md-4 col-12 col-sm-5 person-image">
                     <img
-                      :src="item.photo"
-                      class="w-100 "
+                      style="width: 110px; height: 110px; border-radius: 50%;"
+                      :src="item.url"
+                      class="w-75 "
                     />
                   </div>
                   <div class="col-10 col-sm-5 align-self-center">
@@ -60,7 +61,7 @@
                     edit
                   </div>
                   <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId, index)">
-                    <i class="fa fa-trash"></i>
+                    <i class="pi pi-trash"></i>
                   </div>
                 </div>
               </div>
@@ -76,6 +77,43 @@
                 data-whatever="@fat"
               >
                 Add
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 offset-sm-3 mt-3">
+            <div class="row d-flex justify-content-md-between">
+              <div class="col-md-6 mt-3 px-md-0 col-9">Branches</div>
+              <div
+                class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
+                data-target="#branches"
+                data-toggle="modal"
+                data-whatever="@fat"
+              >
+                Add
+              </div>
+            </div>
+          </div>
+          <!-- returnedObject for churchesbranch -->
+          <div class="col-12 col-sm-6 offset-sm-3">
+            <div class="row" v-for="(item, index) in churchBranches" :key="index">
+              <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
+              <div class="col-12 mt-4">
+                <div class="row">
+                  <div class="col-12 col-sm-4 align-self-center">
+                    <div class="pastorname">{{ item.branchName }}</div>
+                    <!-- <div>{{ item.pastorName }}</div> -->
+                  </div>
+                  <div class="col-12 col-sm-5 align-self-center">
+                    <!-- <div class="pastorname">{{ item.branchName }}</div> -->
+                    <div>{{ item.pastorName }}</div>
+                  </div>
+                  <div class="col-1 align-self-center cursor-pointer mr-3" data-target="#branches" data-toggle="modal" data-whatever="@fat" @click.prevent="editBranch(item)">
+                    edit
+                  </div>
+                  <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModalBranch(item.id)">
+                    <i class="pi pi-trash"></i>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -113,7 +151,7 @@
                 </div>
               </div>
               <div class="col-2 align-self-center cursor-pointer" @click.prevent="showConfirmModalAbout(item.customAboutId)">
-                <i class="fa fa-trash"></i>
+                <i class="pi pi-trash"></i>
               </div>
             </div>
           </div>
@@ -225,18 +263,7 @@
                               v-model="pastorDetails.name"
                             />
                           </div>
-                          <!-- <div class="form-group"> -->
-                            <!-- <label for="recipient-email" class="col-form-label"
-                          ></label
-                        > -->
-                            <!-- <input
-                              type="email"
-                              class="form-control"
-                              id="recipient-email"
-                              placeholder="Email"
-                              v-model="pastorDetails.pastorsEmail"
-                            /> -->
-                          <!-- </div> -->
+                        
                           <div class="form-group">
                             <!-- <label for="message-text" class="col-form-label"
                           ></label
@@ -343,6 +370,127 @@
               </div>
             </div>
           </div>
+          <!-- modal for pastors branches-->
+          <div
+            class="modal fade"
+            id="branches"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Add Branch
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-7 mt-4 col-12">
+                      <div class="form-cover w-100">
+                        <form class="mr-5 mr-md-0 mr-lg-0">
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="recipient-name"
+                              placeholder="Branch Name"
+                              v-model="branchDetails.branchName"
+                            />
+                          </div>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="recipient-name"
+                              placeholder="Pastor Name"
+                              v-model="branchDetails.pastorName"
+                            />
+                          </div>
+                           <div class="form-group">
+                            <textarea
+                              class="form-control h-100"
+                              id="message-text"
+                              v-model="branchDetails.pastorDetails"
+                              placeholder="Pastor Details"
+                            ></textarea>
+                          </div>
+                          <div class="form-group">
+                            <input
+                              type="number"
+                              class="form-control"
+                              id="recipient-name"
+                              placeholder="Pastor Phone"
+                              v-model="branchDetails.pastorPhone"
+                            />
+                          </div>
+                          <div class="form-group">
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="recipient-name"
+                              placeholder="Address"
+                              v-model="branchDetails.address"
+                            />
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-md-5 mt-3 col-12">
+                      <div class="container-img mx-auto mx-md-0 mx-lg-0 pt-2">
+                        <div class="photo-box">
+                          <img
+                            v-if="!branchDetails.pastorPicture"
+                            src="../../../assets/people/phone-import.svg"
+                            alt="Uploaded Image"
+                            class="w-100 h-100 img-responsive"
+                          />
+                          <img
+                            v-else
+                            :src="image"
+                            class="w-100 h-100 img-responsive"
+                          />
+                        </div>
+                        <div class="custom-file submit-img">
+                          <input
+                            type="file"
+                            class="custom-file-input"
+                            id="customFile"
+                            @change="uploadPastorPicture"
+                          />
+                          <label
+                            class="custom-file-label px-4"
+                            for="customFile"
+                          ></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="col-md-12 col-12 col-lg-12 mb-4 text-center text-md-right text-lg-right"
+                >
+                  <button type="button" ref="closePastorModal" class="mr-3 btn default-btn" @click="closeModal">Close</button>
+                  <button
+                    class="default-btn primary-bg border-0 text-white"
+                    data-dismiss="modal"
+                    @click="branchPost"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           <div
             class="btn primary-bg mt-5 text-white default-btn border-0 col-12 col-sm-6 offset-sm-3"
             @click="saveSetUp"
@@ -402,7 +550,9 @@ export default {
     const otherInfo = ref({ showFullMessage: false });
     const infoArray = ref([]);
     const closeTextArea = ref("");
-    const pastorPayload = ref([])
+    const pastorPayload = ref([]);
+    const branchDetails = ref({});
+    const churchBranches = ref([]);
 
 
     const saveSetUp = async () => {
@@ -614,6 +764,17 @@ export default {
               customAboutId: i.customAboutId
             }
           })
+          churchBranches.value = response.data.returnObject.churchBranches.map(i => {
+            return {
+              id: i.id,
+              address: i.address,
+              branchName: i.branchName,
+              pastorDetails: i.pastorDetails,
+              pastorName: i.pastorName,
+              pastorPhone: i.pastorPhone,
+              pastorPictureUrl: i.pastorPictureUrl
+            }
+          })
 
         })
         .catch((error) => {
@@ -622,6 +783,56 @@ export default {
     };
     getTenantId();
 
+    const uploadPastorPicture = (e) => {
+          branchDetails.value.pastorPicture  = e.target.files[0];
+          image.value= URL.createObjectURL( branchDetails.value.pastorPicture );
+          
+        console.log('uploaded', branchDetails.value )
+     };
+    const branchPost = async() => {
+       let formData = new FormData()
+        formData.append("branchName", branchDetails.value.branchName)
+        formData.append("pastorName", branchDetails.value.pastorName)
+        formData.append("pastorDetails", branchDetails.value.pastorDetails)
+        formData.append("pastorPhone", branchDetails.value.pastorPhone)
+        formData.append("address", branchDetails.value.address)
+        formData.append("pastorPicture", branchDetails.value.pastorPicture)  
+        closePastorModal.value.setAttribute("data-dismiss", "modal");
+        branchDetails.value = {}
+    }
+
+    const SaveChurchBranch = async (formData) => {
+          try {
+          let res = await axios.post('/mobile/v1/Profile/CreateOrEditBranch', formData)
+            console.log(res, 'brach end point')
+        }
+        
+        catch (error) {
+          console.log(error)
+        }  
+    }
+
+    const editChurchBranch = async (formData) => {
+          try {
+          let res = await axios.edit('/mobile/v1/Profile/CreateOrEditBranch', formData)
+            console.log(res, 'brach end point')
+        }
+        
+        catch (error) {
+          console.log(error)
+        }  
+    }
+   
+    const editBranch = (item) => {
+      console.log(item,'edit itme');
+      branchDetails.value = item;
+      image.value = item.pastorPictureUrl
+    }
+    //  const imageEdit = (e) => {
+    //   image.value = e.target.files[0];
+    //   url.value = URL.createObjectURL(image.value);
+    //   branchDetails.value.pastorPictureUrl = URL.createObjectURL(image.value);
+    // };
     const skip = () => {
       if (churchName.value && address.value &&  phoneNumber.value && pastors.value.length > 0 && infoArray.value.length > 0) {
         let changeState = {
@@ -699,6 +910,58 @@ export default {
         }
      
       };
+
+      // Delete church branch 
+      const deleteBranch = (id) => {
+        console.log(id, 'check delete');
+        axios
+          .delete(`/mobile/v1/Profile/removeBranch?branchId=${id}`)
+          .then((res) => {
+            console.log(res);
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: `${res.data.response}`,
+              life: 4000,
+            });
+            churchBranches.value = churchBranches.value.filter(
+              (item) => item.id !== id
+            );
+
+          })
+          .catch((err) => {
+            console.log(err)
+              toast.add({
+                severity: "error",
+                summary: "Unable to delete",
+                detail: "An error occurred, please try again",
+                life: 4000,
+              });
+          });
+
+      }
+
+        const showConfirmModalBranch = (id) => {
+          confirm.require({
+            message: "Are you sure you want to proceed?",
+            header: "Confirmation",
+            icon: "pi pi-exclamation-triangle",
+            acceptClass: "confirm-delete",
+            rejectClass: "cancel-delete",
+            accept: () => {
+              deleteBranch(id);
+              // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
+            },
+            reject: () => {
+              toast.add({
+                severity: "info",
+                summary: "Rejected",
+                detail: "You have rejected",
+                life: 3000,
+              });
+            },
+          });
+       };
 
       const showConfirmModalAbout = (id) => {
       confirm.require({
@@ -785,7 +1048,16 @@ export default {
       pastorSocialMedia,
       editPastor,
       pastorPayload,
-      closeModal
+      closeModal,
+      branchDetails,
+      branchPost,
+      uploadPastorPicture,
+      churchBranches,
+      editBranch,
+      SaveChurchBranch,
+      editChurchBranch,
+      deleteBranch,
+      showConfirmModalBranch
     };
   },
 };
@@ -965,5 +1237,9 @@ export default {
   position: fixed;
   top: 34em;
   width: 20%
+}
+.person-image {
+  width: 50%;
+  margin: auto;
 }
 </style>

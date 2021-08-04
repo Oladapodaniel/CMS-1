@@ -9,7 +9,7 @@
               <div class="col-md-12 d-lg-flex justify-content-end">
                 <div class="dropdown" v-if="false">
                 <router-link to="/tenant/offeringcategory">
-                <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <span><i class="fa fa-angle-down btn-icon"></i></span></button></router-link>
+                <button class="more-btn button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More <span><i class="pi pi-angle-down btn-icon"></i></span></button></router-link>
                     <div
                       class="dropdown-menu"
                       aria-labelledby="dropdownMenuButton"
@@ -479,7 +479,7 @@
               class="col-2"
               @click="delOffering(index)"
             >
-              <i class="fa fa-trash" aria-hidden="true"></i>
+              <i class="pi pi-trash" aria-hidden="true"></i>
             </div>
 
           
@@ -497,7 +497,7 @@
           id="addOffering"
           @click="addOffering"
         >
-          <i class="fa fa-plus-circle ofering" aria-hidden="true"></i
+          <i class="pi pi-plus-circle ofering" aria-hidden="true"></i
           >&nbsp;&nbsp;Add Offering Item
         </div>
         <div class="display ofering" id="showList" ref="offeringDrop">
@@ -612,7 +612,7 @@
                       v-on:click="addRemittance"
                       class="btn btnIcons btn-secondary"
                     >
-                      <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
+                      <i class="pi pi-plus-circle icons" aria-hidden="true"></i>
                       Add
                     </button>
                   </div>

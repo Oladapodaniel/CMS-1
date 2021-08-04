@@ -13,7 +13,7 @@
           <div class="actions">
             <button class="more-btn button" v-if="false">
               More
-              <span><i class="fa fa-angle-down btn-icon"></i></span>
+              <span><i class="pi pi-angle-down btn-icon"></i></span>
             </button>
               <router-link :to="{ name: 'Event' }">
                 <button class="button add-person-btn">

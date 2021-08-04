@@ -76,7 +76,7 @@
                   href="#"
                   class="craete-event-btn font-weight-bold p-3 close-modal"
                   ><i
-                    class="fa fa-file-text-o close-modal"
+                    class="pi pi-file-text-o close-modal"
                     aria-hidden="true"
                   ></i>
                   Upload Bank Statement</a
@@ -84,7 +84,7 @@
                 <a
                   class="craete-event-btn font-weight-bold px-2 py-3 close-modal"
                   @click="openModal"
-                  ><i class="fa fa-plus-circle" aria-hidden="true"></i> Add a
+                  ><i class="pi pi-plus-circle" aria-hidden="true"></i> Add a
                   new account</a
                 >
               </div>

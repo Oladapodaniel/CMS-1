@@ -188,7 +188,7 @@
           "
           @click="splitTransaction"
         >
-          Split this {{ transactionDetails.account === 'Expense Account' ? 'expense' : 'income' }} <i class="fa fa-info-circle"></i>
+          Split this {{ transactionDetails.account === 'Expense Account' ? 'expense' : 'income' }} <i class="pi pi-info-circle"></i>
         </div>
         <div class="col-3 line pl-0"><hr /></div>
         <div
@@ -196,7 +196,7 @@
           v-if="parseInt(totalAmount.amount) > transacObj.amount"
         >
           <div class="row">
-            <i class="fa fa-exclamation-circle col-1" aria-hidden="true"></i>
+            <i class="pi pi-exclamation-circle col-1" aria-hidden="true"></i>
             <p class="error-message col-10 pl-0">
               The sum of the above lines should not exceed the total deposit
               amount of {{ transacObj.amount }}

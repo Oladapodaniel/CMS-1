@@ -27,7 +27,7 @@
               <div class="d-flex align-items-center col-8">
                 <h5 class="primaryColour mb-0">Primary Colour</h5>
                 <i
-                  class="mt-1 pl-2 fa fa-question-circle-o c-pointer"
+                  class="mt-1 pl-2 pi pi-question-circle c-pointer"
                   v-tooltip.top="'Choose brand color'"
                 ></i>
               </div>

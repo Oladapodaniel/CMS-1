@@ -33,7 +33,7 @@
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                             <router-link class="r-link text-decoration-none" to="/tenant/email/sent">
-                              <i class="fa fa-location-arrow mr-3 menu-icon"></i>
+                              <i class="pi pi-location-arrow mr-3 menu-icon"></i>
                               <span class="active">Sent</span>
                             </router-link>
                         </span>
@@ -46,7 +46,7 @@
                       <a class="btn btn-default font-weight-bold">
                         <span class="menu-item">
                             <router-link class="r-link text-decoration-none" to="/tenant/email/draft">
-                              <i class="fa fa-envelope-open mr-3 menu-icon"></i>
+                              <i class="pi pi-envelope mr-3 menu-icon"></i>
                               <span class="active">Draft</span>
                             </router-link>
                         </span>
