@@ -235,7 +235,7 @@ import { useRoute } from "vue-router"
                 formData.append("mediaFile", file.value ? file.value : "");
                 formData.append("content", message.value ? message.value : "");
                 formData.append("mediaUrl", mediaUrl.value ? mediaUrl.value : "");
-                formData.append("title", "ANouncement");
+                formData.append("title", "Anouncement");
                 formData.append("tenantId", tenantId.value);
                 formData.append("postCategoryId", postCategory.value ? postCategory.value.postCategoryId : "");
                 display.value = true;

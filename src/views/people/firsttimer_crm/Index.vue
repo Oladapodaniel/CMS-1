@@ -6,6 +6,17 @@
             </div>
             <div class="col-8 main-view">
                 <div class="row">
+                    <div class="col-6 mt-3">
+                        <span class="p-input-icon-right">
+                            <InputText type="text" v-model="value3" placeholder="Search activities" />
+                            <i class="pi pi-search uniform-primary-color" />
+                        </span>
+                    </div>
+                    <!-- <div class="col-6 mt-3 border">
+                        <SelectButton v-model="value1" :options="options" />
+                    </div> -->
+                </div>
+                <div class="row">
                     <div class="col-2 pr-0 c-pointer" @click="toggleActivity">
                         <div class="p-3">Activity</div>
                         <div :class="{ 'baseline' : showActivity, 'hide-base' : !showActivity }"></div>
@@ -28,12 +39,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="border-top col-12"></div>
+                    <div class="border-top col-12 push-border-up"></div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-2">Filter by:</div>
-                    <div class="col-7 font-weight-700">Filter activity (19/21)</div>
-                    <div class="col-3 font-weight-700">All Users</div>
+                    <div class="col-7 font-weight-700 uniform-primary-color">Filter activity (19/21)</div>
+                    <div class="col-3 font-weight-700 uniform-primary-color">All Users <span><i class="pi pi-sort-down"></i></span></div>
                 </div>
               
                 <div class="row mt-4">
@@ -66,6 +77,8 @@ import Notes from "./components/Notes"
 import Emails from "./components/Emails"
 import Calls from "./components/Calls"
 import Tasks from "./components/Tasks"
+import InputText from 'primevue/inputtext'
+// import SelectButton from 'primevue/selectbutton';
 export default {
     components: {
         SideActions,
@@ -73,7 +86,9 @@ export default {
         Notes,
         Emails,
         Calls,
-        Tasks
+        Tasks,
+        InputText,
+        // SelectButton
     },
     setup () {
         const showActivity = ref(true)
@@ -81,6 +96,8 @@ export default {
         const showEmails = ref(false)
         const showCalls = ref(false)
         const showTasks = ref(false)
+        // const options = ref(['Expand all', 'Collapse all']);
+        // const value1 = ref("")
 
         const toggleActivity = () => {
             showActivity.value = true
@@ -132,7 +149,9 @@ export default {
             showNotes,
             showEmails,
             showCalls,
-            showTasks
+            showTasks,
+            // options,
+            // value1
         }
     }
 }
@@ -144,7 +163,7 @@ export default {
     background-color: #33475b;
     border-radius: 24px;
     bottom: -2.5px;
-    height: 8px;
+    height: 6px;
     left: 0px;
     width: 100%;
     opacity: 1;
@@ -155,7 +174,7 @@ export default {
     background-color: #33475b;
     border-radius: 24px;
     bottom: -2.5px;
-    height: 8px;
+    height: 6px;
     left: 0px;
     width: 100%;
     opacity: 0;
@@ -163,6 +182,10 @@ export default {
 
 .adjust-font {
     font-size: 17px
+}
+
+.push-border-up {
+    margin-top: -1px
 }
 
 .bounce-transition {
@@ -198,11 +221,17 @@ export default {
 }
 
 .side-bar {
-    border: 1px solid #dfe3eb
+    border: 1px solid #dfe3eb;
+    border-right: 0;
+    background: rgba(202, 202, 202, 0.096);
 }
 
 .main-view {
     background: #f5f8fa;
     border: 1px solid #dfe3eb
+}
+
+.uniform-primary-color {
+    color: #136acd
 }
 </style>
