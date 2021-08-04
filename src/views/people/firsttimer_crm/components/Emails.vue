@@ -1,0 +1,16 @@
+<template>
+    <div>
+        Emails Here
+    </div>
+</template>
+
+
+<script>
+export default {
+    setup() {}
+}
+</script>
+
+<style scoped>
+
+</style>

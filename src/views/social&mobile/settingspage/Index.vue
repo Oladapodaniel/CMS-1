@@ -151,15 +151,15 @@
               </h5>
               <h6>Share Your Post to Facebook</h6>
             </div> -->
-            <div class="row">
+            <div class="row mb-3" >
             <div class="col-6 link-text">
-              <p>Click the button below to watch How to get your page Id and Access Token</p>
-              <p><button class="btn default-btn btnfb">Watch</button></p>
+              <p class="mt-3">Click the button below to watch how to get your page Id and Access Token</p>
+              <p class="mt-4 text-center"><button class="btn default-btn btntwhatapp">Watch</button></p>
 
             </div>
             <div class="col-6 form-group">
-              <p>Click the button below to Download video to get your page Id and Access Token</p>
-              <p><a href="" class="btn default-btn btnfb"></a></p>
+              <p class="mt-3">Click the button below to Download video to get your page Id and Access Token</p>
+              <p class="mt-4 text-center"><a href=""> <button class="btn default-btn btntmobileapp">Download</button> </a></p>
             </div>
           </div>
             <!-- <div class="col-md-0"></div>
@@ -212,14 +212,15 @@
             </div>
             <div class="col-md-2"></div>
           </div>
-          <!-- <div class="row">
-            <div class="col-md-4"></div>
-            <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-4">
+              
             </div>
-            <div class="col-md-2">
-              <a href="" class="btn default-btn btnfb">contact customer care for help</a>
+            <div class="col-md-5">
+             <router-link to> <button @click="getSocialMediaContact" class="btnnon"> Need help contact customer care</button></router-link>
             </div>
-          </div> -->
+          </div>
         <!--facebook id-->
       </Dialog>
       <!--twitter area  -->
@@ -552,8 +553,14 @@ export default {
         console.log(error, "get pages error");
       }
     };
-
-    //getSocialDetails
+    const getSocialMediaContact = async()=>{
+  try{
+    const {data} = await axios.get("/api/SocialMedia/contactChurplus?handle=facebook");
+    console.log(data);
+  }catch(error){
+    console.log(error);
+  }
+}    //getSocialDetails
    
 
     /*eslint no-undef: "warn"*/
@@ -640,7 +647,8 @@ export default {
       showDisplay,
       showDisplay1,
       // pageAccessToken,
-      getPageAccessToken
+      getPageAccessToken,
+      getSocialMediaContact
     };
   },
 };
@@ -748,6 +756,13 @@ export default {
 /* end of instagram Area */
 
 /* whatsapp Area */
+.btnnon{
+   background-color: white;
+  color: none;
+  border: none;
+  outline: 0;
+
+}
 .btntwhatapp {
   background-color: #2eb743;
   color: #fff;

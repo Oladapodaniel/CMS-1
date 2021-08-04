@@ -1,10 +1,21 @@
 <template>
     <div class="container-top container adjust-font">
-        <div class="row" style="border: 2px solid red">
-            <div class="col-4">
+        <div class="row">
+            <div class="col-4 p-0 side-bar">
                 <SideActions />
             </div>
-            <div class="col-8" style="border: 2px solid green">
+            <div class="col-8 main-view">
+                <div class="row">
+                    <div class="col-6 mt-3">
+                        <span class="p-input-icon-right">
+                            <InputText type="text" v-model="value3" placeholder="Search activities" />
+                            <i class="pi pi-search uniform-primary-color" />
+                        </span>
+                    </div>
+                    <!-- <div class="col-6 mt-3 border">
+                        <SelectButton v-model="value1" :options="options" />
+                    </div> -->
+                </div>
                 <div class="row">
                     <div class="col-2 pr-0 c-pointer" @click="toggleActivity">
                         <div class="p-3">Activity</div>
@@ -27,13 +38,31 @@
                         <div :class="{ 'baseline' : showTasks, 'hide-base' : !showTasks }"></div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="border-top col-12 push-border-up"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-2">Filter by:</div>
+                    <div class="col-7 font-weight-700 uniform-primary-color">Filter activity (19/21)</div>
+                    <div class="col-3 font-weight-700 uniform-primary-color">All Users <span><i class="pi pi-sort-down"></i></span></div>
+                </div>
               
-                <div class="row" >
-                    <div class="col-12" v-if="showActivity" transition="bounce">Activity</div>
-                    <div class="col-12" v-if="showNotes" transition="bounce">Notes</div>
-                    <div class="col-12" v-if="showEmails" transition="bounce">Emails</div>
-                    <div class="col-12" v-if="showCalls" transition="bounce">Calls</div>
-                    <div class="col-12" v-if="showTasks" transition="bounce">Tasks</div>
+                <div class="row mt-4">
+                    <div class="col-12" v-if="showActivity" transition="bounce">
+                        <Activity />
+                    </div>
+                    <div class="col-12" v-if="showNotes" transition="bounce">
+                        <Notes />
+                    </div>
+                    <div class="col-12" v-if="showEmails" transition="bounce">
+                        <Emails />
+                    </div>
+                    <div class="col-12" v-if="showCalls" transition="bounce">
+                        <Calls />
+                    </div>
+                    <div class="col-12" v-if="showTasks" transition="bounce">
+                        <Tasks />
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,9 +72,23 @@
 <script>
 import { ref } from "vue"
 import SideActions from "./components/SideActions"
+import Activity from "./components/Activity"
+import Notes from "./components/Notes"
+import Emails from "./components/Emails"
+import Calls from "./components/Calls"
+import Tasks from "./components/Tasks"
+import InputText from 'primevue/inputtext'
+// import SelectButton from 'primevue/selectbutton';
 export default {
     components: {
-        SideActions
+        SideActions,
+        Activity,
+        Notes,
+        Emails,
+        Calls,
+        Tasks,
+        InputText,
+        // SelectButton
     },
     setup () {
         const showActivity = ref(true)
@@ -53,6 +96,8 @@ export default {
         const showEmails = ref(false)
         const showCalls = ref(false)
         const showTasks = ref(false)
+        // const options = ref(['Expand all', 'Collapse all']);
+        // const value1 = ref("")
 
         const toggleActivity = () => {
             showActivity.value = true
@@ -104,7 +149,9 @@ export default {
             showNotes,
             showEmails,
             showCalls,
-            showTasks
+            showTasks,
+            // options,
+            // value1
         }
     }
 }
@@ -116,7 +163,7 @@ export default {
     background-color: #33475b;
     border-radius: 24px;
     bottom: -2.5px;
-    height: 8px;
+    height: 6px;
     left: 0px;
     width: 100%;
     opacity: 1;
@@ -127,7 +174,7 @@ export default {
     background-color: #33475b;
     border-radius: 24px;
     bottom: -2.5px;
-    height: 8px;
+    height: 6px;
     left: 0px;
     width: 100%;
     opacity: 0;
@@ -135,6 +182,10 @@ export default {
 
 .adjust-font {
     font-size: 17px
+}
+
+.push-border-up {
+    margin-top: -1px
 }
 
 .bounce-transition {
@@ -167,5 +218,20 @@ export default {
   100% {
     transform: scale(0);
   }
+}
+
+.side-bar {
+    border: 1px solid #dfe3eb;
+    border-right: 0;
+    background: rgba(202, 202, 202, 0.096);
+}
+
+.main-view {
+    background: #f5f8fa;
+    border: 1px solid #dfe3eb
+}
+
+.uniform-primary-color {
+    color: #136acd
 }
 </style>

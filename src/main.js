@@ -21,6 +21,7 @@ import SplitButton from 'primevue/splitbutton';
 import Checkbox from 'primevue/checkbox';
 import Tag from 'primevue/tag';
 import Editor from 'primevue/editor';
+import SelectButton from 'primevue/selectbutton';
 
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
@@ -89,6 +90,7 @@ app.component("Skeleton", Skeleton);
 app.component("Dialog", Dialog);
 app.component("Button", Button);
 app.component("OverlayPanel", OverlayPanel);
+app.component("SelectButton", SelectButton);
 app.component("ConfirmDialog", ConfirmDialog);
 app.component("SplitButton", SplitButton);
 app.component("Checkbox", Checkbox);
