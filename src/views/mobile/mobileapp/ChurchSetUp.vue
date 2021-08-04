@@ -46,10 +46,11 @@
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
               <div class="col-12 mt-4">
                 <div class="row">
-                  <div class="col-md-4 col-12 col-sm-5 fill">
+                  <div class="col-md-4 col-12 col-sm-5 person-image">
                     <img
-                      :src="item.photo"
-                      class="w-100 "
+                      style="width: 110px; height: 110px; border-radius: 50%;"
+                      :src="item.url"
+                      class="w-75 "
                     />
                   </div>
                   <div class="col-10 col-sm-5 align-self-center">
@@ -965,5 +966,9 @@ export default {
   position: fixed;
   top: 34em;
   width: 20%
+}
+.person-image {
+  width: 50%;
+  margin: auto;
 }
 </style>
