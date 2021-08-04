@@ -22,7 +22,7 @@
                     <div class="col-lg-12 col-md-12">
                         <div class="mt-4">
                             <span>Need help creating your Excel or CSV file?</span> 
-                            <a href="#" @click="toggleInstruction" class=" text-decoration-none  font-weight-bold "> View Instruction <i class="fa fa-angle-down" :class="{ 'rollIcon' : addInstructionClass, 'closeIcon' : !addInstructionClass }"></i></a> 
+                            <a href="#" @click="toggleInstruction" class=" text-decoration-none  font-weight-bold "> View Instruction <i class="pi pi-angle-down" :class="{ 'rollIcon' : addInstructionClass, 'closeIcon' : !addInstructionClass }"></i></a> 
                         </div>
                         
                     </div>
@@ -37,9 +37,9 @@
                     <div class="col-10 col-md-12">
                         <span>The first line of your members Excel/CSV must include all of the headers listed below, which are included in the member Excel/CSV template</span>  
                     </div>
-                    <!-- <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="fa fa-question "></i></div> -->
+                    <!-- <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="pi pi-question "></i></div> -->
                     <div class="row ml-1 bg-secondary my-3 rounded h-100 w-100">
-                        <div class="col-12 my-2 col-md-12 col-lg-12"><i class="fa fa-info-circle"></i><strong> Reminder:</strong> All Excel/CSV file headers are case-sensitive.
+                        <div class="col-12 my-2 col-md-12 col-lg-12"><i class="pi pi-info-circle"></i><strong> Reminder:</strong> All Excel/CSV file headers are case-sensitive.
                             <div class="col-12 col-md-12 col-lg-12 border-bottom  my-2"></div> 
                         </div>
                         <div class="col-4 col-md-4 col-lg-4 font-weight-bold">
@@ -124,7 +124,7 @@
                 </div>
             </div>
             <!-- <div class="my-3 col-6 col-md-12 col-lg-12 text-secondary font-weight-normal lead "> Exporting your CSV file from Excel or other software </div>
-            <div class="col-12 my-2 col-md-12 col-lg-12 fa fa-info-circle "><strong> Reminder:</strong> When importing customer information, your CSV file must be in UTF-8 format.</div>
+            <div class="col-12 my-2 col-md-12 col-lg-12 pi pi-info-circle "><strong> Reminder:</strong> When importing customer information, your CSV file must be in UTF-8 format.</div>
             <div class="my-1 col-12 col-md-12 col-lg-12 "> 
                 <p>
                     You can convert an Excel worsheet (such as the customer CSV template) to a text file by using the Save As command. In the save as type...box, choose the CSV (Comma delimited) text file format for the worsheet.
@@ -133,7 +133,7 @@
             <div class="col-10 col-md-10 col-lg-10">
                 <p>Most spreadsheet applications have the ability to save CSV files in UTF-8 format with the save As... or Export command, depending on the program</p>
             </div>
-            <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="fa fa-question "></i></div> -->
+            <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="pi pi-question "></i></div> -->
             <Dialog header="Members to import from file" v-model:visible="displayModal" :style="{width: '80vw'}" :modal="true">
             <div class="container">
               <div class="row">

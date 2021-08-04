@@ -43,7 +43,7 @@
                             class="r-link text-decoration-none"
                             to="/tenant/sms/sent"
                           >
-                            <i class="fa fa-location-arrow mr-3 menu-icon"></i>
+                            <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i>
                             <span class="active">Sent</span>
                           </router-link>
                         </span>
@@ -88,7 +88,7 @@
                             class="r-link text-decoration-none"
                             to="/tenant/sms/draft"
                           >
-                            <i class="fa fa-envelope-open mr-3 menu-icon"></i>
+                            <i class="pi pi-envelope mr-3 menu-icon"></i>
                             <span class="active">Draft</span>
                           </router-link>
                         </span>
@@ -110,7 +110,7 @@
                             class="r-link text-decoration-none"
                             to="/tenant/sms/contacts"
                           >
-                            <i class="fa fa-list-alt mr-3 menu-icon"></i>
+                            <i class="pi pi-list mr-3 menu-icon"></i>
                             <span class="active">Contact List</span>
                           </router-link>
                         </span>
@@ -132,9 +132,9 @@
                             class="r-link text-decoration-none"
                             to="/tenant/sms/scheduled"
                           >
-                            <!-- <i class="fa fa-list-alt mr-3 menu-icon"></i> -->
+                            <!-- <i class="pi pi-list mr-3 menu-icon"></i> -->
                             <i
-                              class="fa fa-clock-o mr-3 menu-icon"
+                              class="pi pi-clock mr-3 menu-icon"
                               aria-hidden="true"
                             ></i>
                             <span class="active">Scheduled</span>

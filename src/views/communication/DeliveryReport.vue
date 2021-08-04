@@ -4,7 +4,7 @@
       <div class="row mt-3 mb-4">
         <div class="col-md-12">
           <router-link to="/tenant/sms/sent" class="d-flex text-decoration-none">
-            <span class="mr-2"><i class="fa fa-arrow-left text-white back-icon"></i></span>
+            <span class="mr-2"><i class="pi pi-arrow-left text-white back-icon"></i></span>
             <span> Back</span>
           </router-link>
         </div>

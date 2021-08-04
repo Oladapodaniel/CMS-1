@@ -47,7 +47,7 @@
               v-if="!selectedEventCategoryId && !showEditEventCategory"
             >
               <span class="ofering"
-                ><i class="fa fa-calendar ofering"></i>&nbsp;&nbsp;&nbsp;Select
+                ><i class="pi pi-calendar ofering"></i>&nbsp;&nbsp;&nbsp;Select
                 Category</span
               ><span>
                 <i
@@ -90,7 +90,7 @@
               </div>
             </div>
             <div class="selected-category" v-if="selectedEventCategoryId">
-              <p><i class="fa fa-calendar-alt mr-2"></i> Events</p>
+              <p><i class="pi pi-calendar mr-2"></i> Events</p>
               <h4>{{ selectedEventCategoryName }}</h4>
               <div class="event-buttons">
                 <a @click="changeSelectedEventCategory('edit')">Edit Event</a>
@@ -208,7 +208,7 @@
               {{ item.number }}
             </div>
             <div class="col-1" @click="deleteAttendance(item.attendanceId, indx)">
-              <i class="fa fa-trash" aria-hidden="true"></i>
+              <i class="pi pi-trash" aria-hidden="true"></i>
             </div>
           </div>
         </div>
@@ -218,7 +218,7 @@
           id="addAttendance"
           @click="addAttendance"
         >
-          <i class="fa fa-plus-circle ofering" aria-hidden="true"></i
+          <i class="pi pi-plus-circle ofering" aria-hidden="true"></i
           >&nbsp;&nbsp;Add Attendance Item
         </div>
         <div class="display ofering" id="showAttendance" ref="attendanceDrop">
@@ -390,7 +390,7 @@
               class="col-1"
               @click="delOffering(item.id, index)"
             >
-              <i class="fa fa-trash" aria-hidden="true"></i>
+              <i class="pi pi-trash" aria-hidden="true"></i>
             </div>
             <div v-if="item.donor == '' " data-toggle="modal" data-target="#exampleModal" class="col-8 col-sm-3 offset-sm-5 donor-text pt-0 align-self-center" @click="setAddToDonor(index)">Add Donor</div>
             <div v-else class="col-8 col-sm-5 offset-sm-5 donor-text-name pt-0 align-self-center mt-1"  @click="setAddToDonor(index)" data-toggle="modal" data-target="#exampleModal" >{{ item.donor }}     <span class="donor-text">edit</span></div>
@@ -404,7 +404,7 @@
           id="addOffering"
           @click="addOffering"
         >
-          <i class="fa fa-plus-circle ofering" aria-hidden="true"></i
+          <i class="pi pi-plus-circle ofering" aria-hidden="true"></i
           >&nbsp;&nbsp;Add Offering Item
         </div>
         <div class="display ofering" id="showList" ref="offeringDrop">
@@ -493,7 +493,7 @@
             </div>
             <div class="col-2 text-right">
               <i
-                class="fa fa-angle-up"
+                class="pi pi-angle-up"
                 :class="{ roll3: showForm3 }"
                 aria-hidden="true"
               ></i>
@@ -1010,7 +1010,7 @@
                   ><span style="border: 0px solid red; width: 70%"><hr /></span
                   ><span
                     ><i
-                      class="fa fa-angle-up"
+                      class="pi pi-angle-up"
                       :class="{ roll1: showForm1 }"
                       aria-hidden="true"
                     ></i>
@@ -1054,7 +1054,7 @@
                   ><span style="width: 60%"><hr /></span
                   ><span
                     ><i
-                      class="fa fa-angle-up"
+                      class="pi pi-angle-up"
                       :class="{ roll: showForm }"
                       aria-hidden="true"
                     ></i>
@@ -1252,7 +1252,7 @@
                   ><span style="border: 0px solid red; width: 70%"><hr /></span
                   ><span
                     ><i
-                      class="fa fa-angle-up"
+                      class="pi pi-angle-up"
                       :class="{ roll1: showForm1 }"
                       aria-hidden="true"
                     ></i>
@@ -1296,7 +1296,7 @@
                   ><span style="width: 60%"><hr /></span
                   ><span
                     ><i
-                      class="fa fa-angle-up"
+                      class="pi pi-angle-up"
                       :class="{ roll: showForm }"
                       aria-hidden="true"
                     ></i>
@@ -1527,7 +1527,7 @@
                       v-on:click="addRemittance"
                       class="btn btnIcons btn-secondary"
                     >
-                      <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
+                      <i class="pi pi-plus-circle icons" aria-hidden="true"></i>
                       Add
                     </button>
                   </div>

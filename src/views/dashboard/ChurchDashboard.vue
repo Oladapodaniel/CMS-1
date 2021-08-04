@@ -12,7 +12,7 @@
             @click="moreLinksVissible = !moreLinksVissible"
           >
             Create new
-            <i class="fa fa-angle-down create-dd"></i>
+            <i class="pi pi-angle-down create-dd"></i>
           </button>
           <div class="more-items ml-1" v-if="moreLinksVissible">
             <div class="container">
@@ -80,7 +80,7 @@
             <div class="top">
               <div class="box-top">
                 <div class="top-icon-div">
-                  <i class="fa fa-users"></i>
+                  <i class="pi pi-users"></i>
                 </div>
                 <div class="box-top-text">
                   <p>FIRST TIMERS</p>
@@ -115,7 +115,7 @@
             <div class="top">
               <div class="box-top">
                 <div class="top-icon-div">
-                  <i class="fa fa-envelope"></i>
+                  <i class="pi pi-envelope"></i>
                 </div>
                 <div class="box-top-text"></div>
               </div>
@@ -482,12 +482,12 @@
 
       <!-- <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
-            <i class="fa fa-angle-left"></i>
+            <i class="pi pi-angle-left"></i>
           </button>
           <button class="tbl-footer-btn">1</button>
           <button class="tbl-footer-btn">2</button>
           <button class="tbl-footer-btn">
-            <i class="fa fa-angle-right"></i>
+            <i class="pi pi-angle-right"></i>
           </button>
         </div> -->
       <!-- </div> -->

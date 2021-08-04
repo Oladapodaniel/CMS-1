@@ -5,7 +5,7 @@
         <div class="pb-3">
           <span class="chart-head"> Update Charts of Accounts</span>
           <span class="help"
-            ><i class="fa fa-question-circle-o" aria-hidden="true"></i
+            ><i class="pi pi-question-circle-o" aria-hidden="true"></i
           ></span>
         </div>
       </div>
@@ -22,7 +22,7 @@
         <div class="col-6 col-md-5 small-text">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
           <a class="primary-text text-decoration-none font-weight-700 c-pointer" @click="editAccount(itm)" data-toggle="modal" data-target="#assetsModal">
-            <!-- <i class="fa fa-pencil c-pointer"  aria-hidden="true"></i> -->
+            <!-- <i class="pi pi-pencil c-pointer"  aria-hidden="true"></i> -->
             <span>Update</span>
           </a>
           <!-- <i class="pi pi-trash ml-2 c-pointer" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i> -->
@@ -35,7 +35,7 @@
       <div class="row">
         <div class="col-12 py-2 mt-4 account-head">
           {{ item.name }} <small class="font-weight-normal">{{ item.groupSubHead }}</small
-          ><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
+          ><i class="pi pi-question-circle-o help" aria-hidden="true"></i>
         </div>
       </div>
       <div
@@ -49,7 +49,7 @@
         </div>
         <div class="col-6 col-md-5">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
-          <i class="fa fa-pencil c-pointer" data-toggle="modal" data-target="#assetsModal" aria-hidden="true" @click="editAccount(item, itm)"></i>
+          <i class="pi pi-pencil c-pointer" data-toggle="modal" data-target="#assetsModal" aria-hidden="true" @click="editAccount(item, itm)"></i>
           <i class="pi pi-trash ml-2 c-pointer" aria-hidden="true" @click="deleteAccount(itm.id, index, indx)"></i>
         </div>
       </div>
@@ -66,7 +66,7 @@
               class="c-pointer text-decoration-none primary-text"
               data-toggle="modal"
               data-target="#assetsModal"
-              ><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new
+              ><i class="pi pi-plus-circle"></i>&nbsp; &nbsp; Add a new
               Account</a
             >
           </div>

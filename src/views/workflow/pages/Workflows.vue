@@ -42,6 +42,7 @@ import LoadingComponent from "../../../components/loading/LoadingComponent.vue"
 import workflowFunctions from '../utlity/workflow_service'
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
+import axios from 'axios';
 
 export default {
     components: { 
@@ -63,6 +64,7 @@ export default {
             try {
                 loading.value = true;
                 const { returnObject: data } = await workflowFunctions.getWorkflows();
+                console.log(data, 'cj test');
                 workflows.value = data;
                 loading.value = false;
             } catch (error) {
@@ -73,7 +75,14 @@ export default {
         getWorkflows();
 
         const deleteWorkflow = id => {
-            workflows.value = workflows.value.filter(i => i.id !== id);
+            if(id) {
+                axios
+                    .delete(`/api/workflow=${id}`)
+                    .then(res => {
+                        console.log(res, 'delete response');
+                    })
+                      workflows.value = workflows.value.filter(i => i.id !== id);
+           }
         }
 
         const confirmDelete = (id, index) => {

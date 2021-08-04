@@ -250,7 +250,7 @@
             <span class="col-sm-2">
               <span class="tb-icon-span"
               ><i
-                class="fa fa-angle-down tbb-icon"
+                class="pi pi-angle-down tbb-icon"
                 :class="{ 'tb-icon': !hideCelebTab }"
               ></i
             ></span>
