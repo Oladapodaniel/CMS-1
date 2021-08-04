@@ -58,7 +58,12 @@ axios.interceptors.request.use((config) => {
   // before a response is returned stop nprogress
   axios.interceptors.response.use(response => {
     NProgress.done()
-    return response
+    return response,
+    function(error){
+      if(error.response){
+        alert(error.response.data.message);
+      }
+    }
   })
 
 const app = createApp(App);

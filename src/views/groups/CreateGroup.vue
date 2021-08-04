@@ -168,6 +168,7 @@
                                   <div class="row">
                                     <div
                                       class="col-md-12 pl-0 grey-rounded-border"
+                                       
                                     >
                                       <ul
                                         class="d-flex flex-wrap px-1 mb-0 m-dd-item"
@@ -194,12 +195,14 @@
                                         <li
                                           style="list-style: none"
                                           class="m-dd-item"
+                                        
                                         >
                                           <input
                                             type="text"
                                             class="border-0 m-dd-item text outline-none"
                                             ref="memberSelectInput"
                                             @input="searchForMembers"
+                                            
                                             :class="{
                                               'w-100':
                                                 selectedMembers.length === 0,
@@ -216,15 +219,18 @@
                                                 : 'Select from members'
                                             }`"
                                             @blur="() => (inputBlurred = true)"
+                                             
                                           />
                                         </li>
                                       </ul>
                                       <div
                                         class="col-md-12 px-0 select-groups-dropdown m-dd-item"
                                         v-if="memberListShown"
+                                       
                                       >
                                         <div
                                           class="dropdownmenu pt-0 w-100 m-dd-item"
+                                    
                                         >
                                           <a
                                             class="dropdown-item px-1 c-pointer m-dd-item"
@@ -235,14 +241,26 @@
                                             @click="selectMember(member, index)"
                                             >{{ member.nameResult }}</a
                                           >
-                                          <p
-                                            class="bg-secondary p-1 mb-0 disable m-dd-item"
-                                            v-if="
+                                           
+                                          <!-- <p
+                                            class="bg-secondary p-1 mb-0 m-dd-item "
+                                           v-if="
                                               invalidSearchText && !inputBlurred
                                             "
                                           >
                                             Enter 3 or more characters
+                                            
+                                            
+                                          </p>  -->
+                                          <p
+                                            class="bg-secondary p-1 mb-0 "
+                                           
+                                          >
+                                            Enter 3 or more characters
+                                            
                                           </p>
+                                          
+                                             
                                           <p
                                             aria-disabled="true"
                                             class="btn btn-default p-1 mb-0 disable m-dd-item"
@@ -265,8 +283,23 @@
                                               class="fas fa-circle-notch fa-spin m-dd-item"
                                             ></i>
                                           </p>
+                                          <a
+                                            class="font-weight-bold small-text d-flex justify-content-center py-2  text-decoration-none primary-text c-pointer"
+                                            style="border-top: 1px solid #002044; color: #136acd"
+                                            @click="showAddMemberForm"
+                                            data-dismiss="modal"
+                                            
+                                            >
+                                            <i
+                                                class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
+                                                style="color: #136acd"
+                                            ></i>
+                                                Add new member 
+                                            </a>
                                         </div>
+                                         
                                       </div>
+                                     
                                     </div>
                                   </div>
                                 </div>
@@ -778,6 +811,20 @@
         </div>
       </div>
     </div>
+    <Dialog
+        header="Create New Member"
+        v-model:visible="display"
+        :style="{ width: '70vw', maxWidth: '600px' }"
+        :modal="true"
+        position="top"
+        >
+        <div class="row">
+            <div class="col-md-12">
+            <NewPerson @cancel="() => display = false" />
+              <!-- @person-id="getFatherId($event)" -->
+            </div>
+      </div>
+    </Dialog>
   </div>
 </template>
 
@@ -793,14 +840,17 @@ import groupsService from "../../services/groups/groupsservice";
 import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
 import store from "../../store/store";
+import NewPerson from '../accounting/offering/NewDonor.vue';
+import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
-  components: { Dropdown },
+  components: { Dropdown, Dialog, NewPerson },
   setup() {
+     const display = ref(false);
     const memberDia = ref(true);
     const groupData = ref({});
     const searchText = ref("");
@@ -829,6 +879,24 @@ export default {
         console.log(error);
       }
     });
+     const showAddMemberForm = () => {
+        
+          display.value = true;
+         
+        };
+    //   const setWardModal = (payload) => {
+    //     showWardModal.value = payload
+    // }
+    // const getFatherId = (payload) => {
+    //       console.log(payload)
+    //       userSearchString.value = payload.personFirstName
+
+    //       father.value = {
+    //           firstName: payload.personFirstName,
+    //           id: payload.personId
+    //       }
+    //       console.log(father.value)
+    //     }
     const moveMembers = () => {
       let memberMove = {
         memberIDList: marked.value.map((i) => i.personID),
@@ -1288,6 +1356,7 @@ export default {
       selectedMembers,
       groupMembers,
       addSelectedMembersToGroup,
+      showAddMemberForm,
       invalidSearchText,
       position,
       modalStatus,
@@ -1309,13 +1378,15 @@ export default {
       mark1Item,
       selectMembers,
       memberDia,
+      display,
       getAllGroup,
       selectGroupTo,
       moveMembers,
       copyGroupTo,
       copyMemberToGroup,
       awaitingApprovals,
-      requestApproval
+      requestApproval,
+    //  getFatherId
     };
   },
 };
@@ -1345,6 +1416,7 @@ export default {
   border-top: 1px solid #dde2e6;
   border-radius: 8px 8px 0 0;
 }
+
 
 .hidden-header {
   display: none;

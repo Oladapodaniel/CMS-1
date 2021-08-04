@@ -1,4 +1,5 @@
 <template>
+<div>
     <div class="container-wide container-top">
       <div class="row my-3">
       <div class="col-md-4 first-timers-text">
@@ -41,6 +42,7 @@
       <img src="../../../assets/network-disconnected.png" >
       <div>Opps, Your internet connection was disrupted</div>
     </div>
+  </div>
 </div>
 </template>
 
