@@ -238,6 +238,7 @@
                     <tr>
                       <th>NAME</th>
                       <th>DATE</th>
+                      <th>DAY</th>
                       <th>TYPE</th>
                       <th>PHONE</th>
                       <th></th>
@@ -259,6 +260,7 @@
                       <td>
                         {{ dateFormat(celebration.date) }}
                       </td>
+                      <td>{{ celebration.dayOfCelebration }}</td>
                       <td>{{ celebration.celebration }}</td>
                       <td>{{ celebration.phone }}</td>
                       <td>
@@ -274,9 +276,9 @@
                           aria-labelledby="dropdownMenuButton"
                         >
                           <!-- v-if="person.mobilePhone" -->
-                          <a class="dropdown-item elipsis-items">
+                          <a class="dropdown-item elipsis-items" >
                             <router-link
-                              :to="`/tenant/sms/compose?phone=${celebration.phone}`"
+                              :to="celebration.phone ? `/tenant/sms/compose?phone=${celebration.phone}` : ''" :class="{ 'fade-text': !celebration.phone, 'text-color': celebration.phone }"
                               >Send SMS</router-link
                             >
                           </a>
@@ -1525,5 +1527,14 @@ tbody tr:nth-child(even) {
   
 .push-down {
   margin-top: 26px;
+}
+
+.fade-text {
+  color: #a8a8a8;
+  cursor: not-allowed;
+}
+
+.text-color {
+  color: #212529;
 }
 </style>

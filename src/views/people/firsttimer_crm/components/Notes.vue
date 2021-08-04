@@ -2,13 +2,13 @@
    <div class="d-flex justify-content-end mx-3">
         <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveTask">Create</div>
    </div>
-    <div class="col-12 mt-4">
+    <div class="col-12 mt-4" v-for="(note, index) in addNotes" :key="index">
             <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up" :class="{'roll-note-icon' : noteIcon, 'unroll-note-icon' : !noteIcon}" @click="toggleNoteIcon"></i>&nbsp;&nbsp;Note</span> by Oladapo Daniel <span class="font-weight-700">Actions <i class="pi pi-sort-down"></i></span></div>
+                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up" :class="{'roll-note-icon' : note.noteIcon, 'unroll-note-icon' : !note.noteIcon}" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Note</span> by Oladapo Daniel <span class="font-weight-700">Actions <i class="pi pi-sort-down"></i></span></div>
                         <transition name="fade">
-                            <div class="col mt-4" v-if="noteIcon">Creating your Note here</div>
+                            <div class="col mt-4" v-if="note.noteIcon">{{ note.body }}</div>
                         </transition>
                     </div>
                     <div>
@@ -26,7 +26,20 @@
 
 <script>
 export default {
-    setup() {}
+    props: ['addNotes'],
+    emits: ['individualtoggle'],
+    setup(props, { emit }) {
+
+
+        const toggleNoteIcon = (index) => {
+            emit('individualtoggle', index)
+            console.log(index, 'what')
+        }
+
+        return {
+            toggleNoteIcon
+        }
+    }
 }
 </script>
 
