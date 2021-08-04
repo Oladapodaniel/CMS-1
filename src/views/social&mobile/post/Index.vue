@@ -342,10 +342,10 @@ import { useRoute } from "vue-router"
                 }
             }
             getSocialDetails()
+        
             
 
             return {
-                
                 toFacebook,
                 postDestination,
                 getSocialDetails,
