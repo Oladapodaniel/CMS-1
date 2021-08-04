@@ -252,6 +252,7 @@ import { useRoute } from "vue-router"
                         console.log(res, "upload res");
                         if (toFacebook.value) {
                             alert('posting to facebook')
+                            
                             fbClient.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=Hello Fans!&access_token=${socialData.value.accessToken}`)
                             .then(res => {
                                 console.log(res, "post res");
@@ -299,6 +300,7 @@ import { useRoute } from "vue-router"
             const isUrl = ref(false);
             const showImagePicker = ref(false);
             const fileUploaded = payload => {
+                console.log(payload, "payload");
                 isUrl.value = false;
                 if (payload.isUrl) {
                     isUrl.value = true;
