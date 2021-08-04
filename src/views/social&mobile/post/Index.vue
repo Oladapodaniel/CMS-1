@@ -141,7 +141,7 @@ import { ref } from '@vue/reactivity';
     import social_service from "../../../services/social/social_service"
 import membershipService from '../../../services/membership/membershipservice';
     import axios from "@/gateway/backendapi";
-    import fbClient from "@/gateway/backendapi";
+    // import fbClient from "@/gateway/backendapi";
     import ProgressBar from 'primevue/progressbar';
     import { useRouter } from "vue-router";
     import ImagePicker from "../../../components/image-picker/ImagePicker"
@@ -238,6 +238,8 @@ import { useRoute } from "vue-router"
                 formData.append("title", "Anouncement");
                 formData.append("tenantId", tenantId.value);
                 formData.append("postCategoryId", postCategory.value ? postCategory.value.postCategoryId : "");
+                formData.append("socialData.value.pageId", socialData.value.pageId.value? socialData.value.pageId.value : "");
+                formData.append("socialData.value.accessToken", socialData.value.accessToken.value? socialData.value.accessToken: "");
                 display.value = true;
                 axios.post("/mobile/v1/Feeds/CreatePost", formData,
                     {
@@ -250,17 +252,17 @@ import { useRoute } from "vue-router"
                 )
                     .then(res => {
                         console.log(res, "upload res");
-                        if (toFacebook.value) {
-                            alert('posting to facebook')
+                        // if (toFacebook.value) {
+                        //     alert('posting to facebook')
                             
-                            fbClient.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=Hello Fans!&access_token=${socialData.value.accessToken}`)
-                            .then(res => {
-                                console.log(res, "post res");
-                            })
-                            .catch(err => {
-                                console.log(err, "err");
-                            })
-                        }
+                        //     fbClient.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=Hello Fans!&access_token=${socialData.value.accessToken}`)
+                        //     .then(res => {
+                        //         console.log(res, "post res");
+                        //     })
+                        //     .catch(err => {
+                        //         console.log(err, "err");
+                        //     })
+                        // }
                         display.value = false;
                         // router.push("/tenant/social/feed")
                     })
