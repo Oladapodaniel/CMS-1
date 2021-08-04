@@ -21,9 +21,11 @@
 import Dropdown from "primevue/dropdown";
 import { reactive, ref } from '@vue/reactivity';
 import MultiSelect from "primevue/multiselect"
+import workflow_util from '../../utlity/workflow_util';
+import { watch } from '@vue/runtime-core';
 export default {
     components: { Dropdown, MultiSelect },
-    props: [ "groups", "selectedActionIndex" ],
+    props: [ "groups", "selectedActionIndex", "parameters" ],
     setup (props, { emit }) {
         const data = reactive({ ActionType: 4, JSONActionParameters: { } })
 
@@ -33,12 +35,33 @@ export default {
             data.JSONActionParameters.groups = allGroupsIndex < 0 ? e.value.map(i => i.id).join(',') : "00000000-0000-0000-0000-000000000000";
             emit('updateaction', data, props.selectedActionIndex);
         }
-        const addOrRemove = ref([ ]);
+        const addOrRemove = ref('');
         const handleAddOrRemove = (e) => {
             data.JSONActionParameters.addOrRemove = e.value;
             emit('updateaction', data, props.selectedActionIndex);
         }
-        console.log(props.groups, "groups");
+        
+        const parsedData = ref({ })
+        watch(() => {
+            if (props.parameters.Action) {
+                const actn = JSON.parse(props.parameters.Action);
+                parsedData.value = JSON.parse(actn.JSONActionParameters);
+
+                selectedGroups.value = workflow_util.getGroups(parsedData.value.groups, props.groups);
+                data.JSONActionParameters.groups = parsedData.value.groups;
+
+                addOrRemove.value = parsedData.value.addOrRemove;
+                data.JSONActionParameters.addOrRemove = parsedData.value.addOrRemove;
+            } else if (props.parameters.action && props.parameters.action.jsonActionParameters) {
+                parsedData.value = JSON.parse(props.parameters.action.jsonActionParameters);
+                
+                selectedGroups.value = workflow_util.getGroups(parsedData.value.groups, props.groups);
+                data.JSONActionParameters.groups = parsedData.value.groups;
+
+                addOrRemove.value = parsedData.value.addOrRemove;
+                data.JSONActionParameters.addOrRemove = parsedData.value.addOrRemove;
+            }
+        })
 
         return {
             selectedGroups,

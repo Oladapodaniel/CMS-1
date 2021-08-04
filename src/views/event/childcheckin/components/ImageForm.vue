@@ -50,7 +50,7 @@
 import { onUpdated, ref } from 'vue'
 // import axios from "@/gateway/backendapi"
     export default {
-        props: ['editPicture'],
+        props: ['editPicture', 'resetImage', 'memberDetails'],
         setup (props, { emit }) {
             // const disabled =ref(true)
             const pictureUrl = ref("")
@@ -89,8 +89,30 @@ import { onUpdated, ref } from 'vue'
             onUpdated(() => {
                 if (props.editPicture) {
                     pictureUrl.value = props.editPicture
+                    console.log('hereeeee')
+                }
+                console.log(props.memberDetails, 'hereeee')
+                if ((!props.memberDetails || Object.keys(props.memberDetails).length === 0) && (url.value || pictureUrl.value)) {
+                    pictureUrl.value = ""
+                    // url.value = ""
+                }
+
+                if (props.resetImage) {
+                    url.value = ""
                 }
             })
+
+            // onUpdated(() => {
+            //     if(!props.resetImage && pictureUrl.value) {
+            //         pictureUrl.value = props.resetImage
+            //         console.log('here111')
+            //     }
+                // if (!props.resetImage && url.value) {
+                //     url.value = props.resetImage
+                //     console.log('here222')
+                // }
+                // console.log(props.resetImage, 'reset hereee')
+            // })
 
             return {
                 // disabled,

@@ -421,7 +421,7 @@ export default {
     // ByMaritalStatusChart,
     Pagination,
     ContributionAreaChart,
-    ContributionPieChart,
+    ContributionPieChart, 
     Dropdown,
   },
   setup(props, { emit }) {
@@ -485,7 +485,7 @@ export default {
     const searchContribution = computed(() => {
       if (searchText.value !== "") {
         return props.contributionTransactions.filter((i) => {
-          return i.contribution
+          return i.contribution        
             .toLowerCase()
             .includes(searchText.value.toLowerCase());
         });

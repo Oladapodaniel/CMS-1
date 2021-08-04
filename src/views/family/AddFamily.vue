@@ -363,7 +363,7 @@
         <Dialog
         header="Create New Member"
         v-model:visible="wardDisplay"
-        :style="{ width: '70vw', maxWidth: '600px' }"
+        :style="{ width: '70vw', maxWidth: '600px'}"
         :modal="true"
         position="top"
         >

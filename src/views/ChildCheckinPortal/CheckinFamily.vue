@@ -18,7 +18,7 @@
         "
         data-toggle="modal"
         data-target="#familyModal"
-        @click="() => memberDetails = {}"
+        @click="addNewMember"
       >
         Add Member
       </div>
@@ -43,7 +43,7 @@
             ><i class="pi pi-times"></i></div>
           </div>
           <div class="modal-body">
-            <Memberform :familyDetails="familyDetails" @member-roles="getMemberRoles" @remove-modal="dismissModal" @push-to-view="pushToView" :memberDetails="memberDetails" @editted-value="edittedValue"/>
+            <Memberform :familyDetails="familyDetails" @member-roles="getMemberRoles" @remove-modal="dismissModal" @push-to-view="pushToView" :memberDetails="memberDetails" @editted-value="edittedValue" :resetImage="resetImage"/>
           </div>
 
         </div>
@@ -290,6 +290,7 @@ export default {
     const memberDetails = ref({})
     const memberToEditIndex = ref(0)
     const familyDetails = ref({})
+    const resetImage = ref("")
 
 
 
@@ -418,6 +419,10 @@ export default {
               console.log(edittedData)
             familyDetails.value.familyMembers.splice(memberToEditIndex.value, 1, edittedData)
           }
+
+          const addNewMember = () => {
+            memberDetails.value = {}
+          }
         
 
 
@@ -440,7 +445,9 @@ export default {
       editMember,
       memberDetails,
       edittedValue,
-      memberToEditIndex
+      memberToEditIndex,
+      resetImage,
+      addNewMember
     };
   },
 };

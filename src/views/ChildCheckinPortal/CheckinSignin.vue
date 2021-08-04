@@ -4,12 +4,24 @@
             <div class="col-12 col-md-5 offset-md-1">
                 <div class=" container">
                     <div class="row justify-content-center">
-                        <div class=" col-10 my-5 "><img :src="churchLogo" style=" width: 250px" alt=""></div>
+                        <div class=" col-10 mt-5 "><img :src="churchLogo" style=" width: 250px" alt=""></div>
                         <div class="col-10 my-3">
-                            <h1 class="font-weight-bold ">Log in to Child Checkin</h1>
+                            <h1 class="font-weight-bold" v-if="showLogIn">Log in to Child Checkin</h1>
+                            <h1 class="font-weight-bold" v-if="showSignUp">Create an account</h1>
                         </div>
                     </div>
-                    <form @submit.prevent="logIn" class="row justify-content-center mb-3">
+                    <div class="row" v-if="!showLogIn && !showSignUp">
+                        <h4 class="col-10 offset-1 font-weight-bold">
+                            Welcome to {{ churchName }} Child Checkin
+                        </h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-10 offset-1">
+                            <button class="btn btn-primary create-btn font-weight-bold w-100 mt-3" @click="toggleLogIn" v-if="!showLogIn && !showSignUp">Log in</button>
+                            <button class="btn text-white signup-btn font-weight-bold w-100 mt-5" @click="toggleSignUp" v-if="!showLogIn && !showSignUp">Sign Up</button>
+                        </div>
+                    </div>
+                    <form @submit.prevent="logIn" class="row justify-content-center mb-3" v-if="showLogIn">
                         <div class="col-10" v-if="errorMessage">
                             <div class="error-div">
                                 <p class="error-message">{{ errorMessage }}</p>
@@ -28,20 +40,15 @@
                         </div>
                         <div class="col-10"><button class="btn btn-primary create-btn font-weight-bold w-100">Log in</button></div>                       
                     </form>
-                    <!-- <div class="row my-3 justify-content-center ">
-                        <div class="col-4  border-bottom "></div>
-                        <div class="col-1 text-center">or </div>
-                        <div class="col-4  border-bottom "></div>
-                    </div> -->
+                    <div v-if="showSignUp">
+                        <SignUpCheckin @show-log-in="displayLogIn"/>
+                    </div>
                     
-                    <div class="row  offset-1">
-                        <!-- Social Media -->
-                        <!-- <div class="col-2"><img src="../../assets/google.png" alt=""></div>
-                        <div class="col-2"><img src="" alt=""></div>
-                        <div class="col-2"><img src="../../assets/facebook.png" alt=""></div> -->
+                    <div class="row  offset-1" v-if="showLogIn">
+                        
                         <div class="col-10 my-4 font-weight-bold">
                             <span>Don't have an account?</span> 
-                             &nbsp; <router-link :to="{ name: 'CheckinSignup', params: { tenantId: route.params.tenantId } }">Sign up now</router-link>
+                             &nbsp; <span class="text-primary" @click="toggleSignUp">Sign up now</span>
                         </div>
                         <div class="col-10 mt-3 font-weight-bold">All Right Reserved 2021</div>
                     </div>
@@ -63,7 +70,11 @@ import { useRoute } from "vue-router"
 import axios from "@/gateway/backendapi";
 import finish from "../../services/progressbar/progress";
 import router from "../../router";
+import SignUpCheckin from "./CheckinSignup.vue"
 export default ({
+    components: {
+        SignUpCheckin
+    },
     setup() {
         const route = useRoute()
         const userDetails = ref({})
@@ -71,6 +82,8 @@ export default ({
         const churchLogo = ref("")
         const churchName = ref("")
         const errorMessage = ref("")
+        const showLogIn = ref(false)
+        const showSignUp = ref(false)
 
 
         const logIn = async() => {
@@ -132,6 +145,21 @@ export default ({
         }
         getChurchProfile()
 
+        const toggleLogIn = () => {
+            showLogIn.value = true
+            showSignUp.value = false
+        }
+
+        const toggleSignUp = () => {
+            showSignUp.value = true
+            showLogIn.value = false
+        }
+
+        const displayLogIn = (payload) => {
+            showLogIn.value = payload
+            showSignUp.value = false
+        }
+
         return {
             userDetails,
             logIn,
@@ -139,7 +167,12 @@ export default ({
             username,
             churchLogo,
             churchName,
-            errorMessage
+            errorMessage,
+            toggleLogIn,
+            toggleSignUp,
+            showLogIn,
+            showSignUp,
+            displayLogIn
         }
     },
 })
@@ -152,6 +185,10 @@ export default ({
 }
 .create-btn{
     background: #2E67CE 0% 0% no-repeat padding-box;
+    height: 50px;
+}
+.signup-btn {
+    background: #9D9B9B 0% 0% no-repeat padding-box;
     height: 50px;
 }
 .childimage{

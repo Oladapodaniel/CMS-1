@@ -772,10 +772,6 @@ export default {
           break;
       }
 
-      console.log(birthMonth.value,"🎄🎄🎄🎄");
-
-      console.log(firstTimersObj.value,"🎄🎄🎄🎄");
-
 
       if (route.params.firstTimerId) {
         let updateMember = {
@@ -804,7 +800,9 @@ export default {
           updateMember.genderId = firstTimersObj.value.genderId;
         if (firstTimersObj.value.maritalStatusId)
           updateMember.maritalStatusId = firstTimersObj.value.maritalStatusId;
-console.log(updateMember)
+          console.log(updateMember)
+
+          // router.push('/tenant/people/firsttimerworkflow')
 
         try {
           loading.value = true;

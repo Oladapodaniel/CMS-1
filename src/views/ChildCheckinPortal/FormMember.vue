@@ -62,8 +62,7 @@
                         </div>
 
                         <div class="col-md-4">
-                            <ImageForm :editPicture="pictureUrl" @image="setImage"/>
-                        <div class="text-danger font-weight-700" v-if="errorMessage">Please add your family member's image before saving.</div>
+                            <ImageForm :editPicture="pictureUrl" @image="setImage" :resetImage="resetImage" :memberDetails="memberDetails"/>
                         </div>
                     </div>
 
@@ -101,7 +100,7 @@ export default {
         const memberId = ref("")
         const image = ref({})
         const loading = ref(false)
-        const errorMessage = ref(false)
+        const resetImage = ref(false)
 
 
         const getFamilyRoles = async () => {
@@ -148,7 +147,7 @@ export default {
                         loading.value = false
                     })
                 } else {
-                    errorMessage.value = true
+                    addMember()
                 }
             }
 
@@ -188,6 +187,7 @@ export default {
                 console.log(member)
                 emit("remove-modal")
                 emit("push-to-view", member)
+                resetImage.value = true
 
                 // Re-initialize the variables when upload is successful
                 person.value = {}
@@ -246,6 +246,10 @@ export default {
             }) : {} : {}
             pictureUrl.value = props.memberDetails.person ? props.memberDetails.person.pictureUrl : ""
         }
+
+        // if(props.resetImage) {
+        //     pictureUrl.value = props.resetImage
+        // }
     })
 
     const setImage = (payload) => {
@@ -269,7 +273,7 @@ export default {
         setImage,
         image,
         loading,
-        errorMessage
+        resetImage
     }
     }
 }

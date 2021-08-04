@@ -1,14 +1,7 @@
 <template>
     <div class="container-fluid ">
         <div class="row">
-            <div class="col-12 col-md-5 offset-md-1 ">
-                <div class=" container">
-                    <div class="row justify-content-center">
-                        <div class=" col-sm-10 my-5 "><img :src="churchLogo" style="width: 250px" alt=""></div>
-                        <div class="col-sm-10 my-3">
-                            <h1 class="font-weight-bold ">Create an account</h1>
-                        </div>
-                    </div>
+            <div class="col-12">
                     <form @submit.prevent="signUp" class="row justify-content-center mb-3">
                         <div class="col-10" v-if="errorMessage">
                             <div class="error-div">
@@ -38,38 +31,26 @@
                             v-model="selectedRole"
                              />
                         </div>
-                        <div class="col-sm-5 form-group mt-3">
+                        <div class="col-sm-5 form-group">
                             <label class="font-weight-bold"> Password </label>
                             <input type="password" class=" form-control all-input" v-model="userDetails.password" placeholder="Enter password">
                             <span class="py-2">Must be six character long</span>
                         </div>
                         <div class="col-sm-10"><button class="btn btn-primary create-btn font-weight-bold w-100">Create an account</button></div>                       
                     </form>
-                    <!-- <div class="row my-3 justify-content-center ">
-                        <div class="col-4  border-bottom "></div>
-                        <div class="col-1 text-center">or </div>
-                        <div class="col-4  border-bottom "></div>
-                    </div> -->
                     
                     <div class="row justify-content-center ">
-                        <!-- Social Media -->
-                        <!-- <div class="col-2"><img src="../../assets/google.png" alt=""></div>
-                        <div class="col-2"><img src="" alt=""></div>
-                        <div class="col-2"><img src="../../assets/facebook.png" alt=""></div> -->
+                 
                         <div class="col-10 my-4 font-weight-bold">
                             <span>Already have an account?</span> 
-                            &nbsp; <router-link :to="{ name: 'CheckinSignin', params: { tenantId: route.params.tenantId } }">Sign in now</router-link>
+                            &nbsp; <span class="primary-text" @click="showLogIn">Sign in now</span>
                         </div>
                         <div class="col-10 mt-3 font-weight-bold">All Right Reserved 2021</div>
                     </div>
-                    
-                    
-                </div>
             </div>
-            <div class="col-5 col-md-5 offset-md-1 childimage d-none d-md-block  d-lg-block" >
+            <!-- <div class="col-5 col-md-5 offset-md-1 childimage d-none d-md-block  d-lg-block" >
                    <div class="text-white "><h1>{{ churchName }} <br> Child Checkin</h1></div>
-                <!-- <img src="../../../assets/child1.png" alt=""> -->
-            </div>
+            </div> -->
         </div>
     </div>
     
@@ -83,7 +64,7 @@ import router from "../../router";
 import finish from "../../services/progressbar/progress";
 export default ({
     components: { Dropdown },
-    setup() {
+    setup(props, { emit }) {
         const route = useRoute()
         const userDetails = ref({
             tenantId: route.params.tenantId
@@ -179,6 +160,10 @@ export default ({
                 }
             }
             getChurchProfile()
+
+            const showLogIn = () => {
+                emit('show-log-in', true)
+            }
         return {
             userDetails,
             signUp,
@@ -188,7 +173,8 @@ export default ({
             username,
             churchLogo,
             errorMessage,
-            churchName
+            churchName,
+            showLogIn
         }
     },
 })

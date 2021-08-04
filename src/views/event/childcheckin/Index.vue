@@ -19,10 +19,10 @@
                     <div class="col-md-10 mx-auto d-flex align-items-center">
                         <div class="row w-100 mt-3 d-md-flex align-items-center">
                             <div class="col-md-3 text-md-right">
-                                <label for="person" class="font-weight-700">Select group</label>
+                                <label for="person" class="font-weight-700">Select Event</label>
                             </div>
                             <div class="col-md-9 ">
-                                <Dropdown class="p-0 w-100" :options="recentEvents" optionLabel="eventName" v-model="selectedRecentsEvent" :filter="false" placeholder="Select group" :showClear="false">
+                                <Dropdown class="p-0 w-100" :options="events" optionLabel="name" v-model="selectedEvent" :filter="false" placeholder="Select group" :showClear="false">
                                 </Dropdown>
                             </div>
                             <!-- <div class="col-md-3">
@@ -143,13 +143,13 @@ export default {
         const registeredMember = ref([])
         const checkInOutEvent = ref("")
         const loading = ref(false)
-        const recentEvents = ref([])
-        const selectedRecentsEvent = ref({})
+        const events = ref([])
+        const selectedEvent = ref({})
 
         const checkIn = async() => {
             loading.value = true
             try {
-                let res = await axios.get(`/api/CheckInAttendance/retrieveFamily?checkInCode=${code.value}&attendanceCode=${selectedRecentsEvent.value.attendanceCode}`)
+                let res = await axios.get(`/api/CheckInAttendance/retrieveFamily?checkincode=${code.value}&activityId=${selectedEvent.value.activityID}`)
                 
                 loading.value = false
                 console.log(res)
@@ -201,24 +201,19 @@ export default {
             
         }
         
-        const getRecentEvents = async() => {
+        const getEvents = async() => {
             
             try {
-                const res = await axios.get(`/api/CheckInAttendance/recentCheckinEvents`)
+                const res = await axios.get(`/api/Events/EventActivity`)
                 console.log(res)
-                recentEvents.value = res.data.map(i => {
-                    i.eventName = i.fullEventName.slice(0, -12)
-                    return i
-                })
-                console.log(recentEvents.value)
-                
+                events.value = res.data
             }
             catch (error) {
                 console.log(error)
           
             }
         }
-        getRecentEvents()
+        getEvents()
            
            const save = () => {
                 if(checkInOutEvent.value == "checkin") {
@@ -229,7 +224,7 @@ export default {
                     );
                     code.value = ""
                     searched.value = false
-                    selectedRecentsEvent.value = new Object()
+                    selectedEvent.value = new Object()
                 }   else if (checkInOutEvent.value == "checkout") {
                     swal(
                         "Checkout Successful!",
@@ -238,7 +233,7 @@ export default {
                     );
                     code.value = ""
                     searched.value = false
-                    selectedRecentsEvent.value = new Object()
+                    selectedEvent.value = new Object()
                 }else {
                      swal(
                         "Hey!",
@@ -300,8 +295,8 @@ export default {
             setCheckoutEvent,
             checkInOutEvent,
             loading,
-            recentEvents,
-            selectedRecentsEvent
+            events,
+            selectedEvent
         }
     }
 }

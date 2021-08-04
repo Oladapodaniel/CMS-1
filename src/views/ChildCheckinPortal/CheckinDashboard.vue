@@ -7,24 +7,19 @@
            <div class="col-12 welcome-name">Welcome {{ familyDetails && familyDetails.father ? familyDetails.father.firstName : familyDetails && familyDetails.mother ? familyDetails.mother.firstName : "" }} 👋</div> 
            <div class="col-12">To get started with, add your family members to the family.</div>
        </div>
-        <div class="row d-flex justify-content-center justify-content-sm-between mt-5" v-if="analyticValue && analyticValue.allRegisteredEvents">
+       
+       <div class="row mt-3 text-center text-sm-left" v-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length > 0 : '' : ''">
+           <div class="col-12 welcome-name">Hey {{ familyDetails && familyDetails.father ? familyDetails.father.firstName : familyDetails && familyDetails.mother ? familyDetails.mother.firstName : "" }}! 🖐</div> 
+           <div class="col-12">Now that you have registered your family member, click the register button below to register them for the event</div>
+       </div>
+        <!-- <div class="row d-flex justify-content-center justify-content-sm-between mt-5" v-if="analyticValue && analyticValue.allRegisteredEvents">
             <div class="analytics-text">Analytics Overview</div>
-            <!-- <div class="mt-2 mt-sm-0"><input type="datetime-local" class="form-control"></div> -->
         </div>
         <div class="row mt-4" v-show="analyticValue && analyticValue.allRegisteredEvents">
             <div class="col-12 card analytic">
                 <div class="row align-items-center">
                     <div class="col-12 col-md-5 py-2 pl-4">
-                       
-                        <!-- <ColumnChart
-                            domId="chart1"
-                            title="Event Attendance"
-                            subtitle="Weekly Attendance of Events"
-                           
-                            :data="chartData"
-                            :series="series"
-                            :attendanceSeries="attendanceSeries"
-                        /> -->
+               
                         <div v-if="loading" class="text-center col-12">
                             <div class=" mt-5" v-if="loading">
                                 <ProgressSpinner />
@@ -48,42 +43,34 @@
                                 <div class="col-12 attendant-amount">{{ analyticValue.allAttendedEvents }}</div>
                                 <div class="col-12 attendant-text mt-3">Total Event Registered</div>
                                 <div class="col-12 attendant-amount">{{ analyticValue.allRegisteredEvents }}</div>
-                                <!-- <div class="col-12 attendant-text mt-3">Percentage of Number of people in your family that</div>
-                                <div class="col-12 attendant-amount">{{ analyticValue.allRegisteredEvents }}</div>
-                                <div class="col-12 attendant-text mt-3">Total Event Registered</div>
-                                <div class="col-12 attendant-amount">{{ analyticValue.allRegisteredEvents }}</div> -->
+                               
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-12 col-md-8">
+        </div> -->
+        <!-- <div class="row mt-5">
+            <div class="col-sm-6">
+                <div class="family-text" v-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length > 0 : '' : ''">Family Members</div>
+            </div>
+            <div class="col-sm-6 text-right">
+                <div class="default-btn border-0 bg-primary">
+                    Register
+                </div>
+            </div>
+        </div> -->
+        <div class="row">
+            <!-- <div class="col-12 col-md-8">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="family-text" v-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length > 0 : '' : ''">Family Members</div>
-                    </div>
+                    
                     <div class="col-12 px-0 mb-0 table" v-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length > 0 : '' : ''">
                         <div class="top-con">
                             <div class="table-top">
-                                <!-- <div
-                                class="filter col-2"
-                                >
-                            <p class="mt-2">
-                                <i class="pi pi-print"></i>
-                                SORT
-                            </p>
-                            </div>
-                            <div class="filter col-2">
-                            <p @click="toggleFilterFormVissibility" class="mt-2">
-                                <i class="fas fa-filter"></i>
-                                FILTER
-                            </p>
-                            </div> -->
+                              
                             <div class="col-2">
                             <p @click="toggleSearch" class="search-text w-100 mt-2">
-                                <i class="pi pi-search"></i> SEARCH
+                                <i class="fa fa-search"></i> SEARCH
                             </p>
                             </div>
 
@@ -102,72 +89,25 @@
                                 />
                                 <span class="empty-btn">x</span>
                                 <span class="search-btn">
-                                <i class="pi pi-search"></i>
+                                <i class="fa fa-search"></i>
                                 </span>
                             </label>
                             </div>
                         </div>
                         </div>
-                        <!-- <div
-                        class="filter-options"
-                        :class="{ 'filter-options-shown': filterFormIsVissible }"
-                        id="ignore1"
-                        >
-                        <div class="container-fluid">
-                            <div class="row">
-                            <div class="col-md-9">
-                                <div class="row">
-                                <div
-                                    class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
-                                >
-                                
-
-                                    <input
-                                    type="text"
-                                    class="input w-100"
-                                    placeholder="First name"
-                    
-                                    />
-                                </div>
-
-                            
-                                <div class="col-12 col-md-4 form-group d-none d-md-block">
-                                    <input
-                                    type="text"
-                                    class="input w-100"
-                                    placeholder="Role"
-                            
-                                    />
-                                </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3 d-flex flex-column align-items-center">
-                                <button class="apply-btn text-white" @click="applyFilter">
-                                Apply
-                                </button>
-                                <span class="mt-2">
-                                <a class="clear-link mr-2" @click="clearAll">Clear all</a>
-                                <span class="mx-2"
-                                    ><i class="fas fa-circle" style="font-size: 4px"></i></span
-                                ><a class="hide-link ml-2" @click="hide">Hide</a>
-                                </span>
-                            </div>
-                            </div>
-                        </div>
-                        </div> -->
+                        
 
 
                         <div class="container-fluid d-none d-md-block">
                             <div class="row t-header">
-                            <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
+                  
                                 <div class="col-md-1 px-3"></div>
                                 <div class="small-text text-capitalize col-md-2 font-weight-bold">PICTURE</div>
                                 <div class="small-text text-capitalize col-md-3 font-weight-bold">FIRSTNAME</div>
                                 <div class="small-text text-capitalize col-md-3 font-weight-bold">LASTNAME</div>
                                 <div class="small-text text-capitalize col-md-2 font-weight-bold">ROLE</div>
                                 <div class="small-text text-capitalize col-md-1 font-weight-bold"></div>
-                            <!-- </div> -->
+                         
                             </div>
                         </div>
                         <div v-if="searchMember.length > 0">
@@ -178,10 +118,7 @@
                                 
                                 <div class="row w-100" style="margin:0">
                                     <div class="col-md-1 d-flex d-md-block px-3 justify-content-end align-self-center">
-                                    <!-- <input
-                                        type="checkbox"
-                                        class="form-check"
-                                    /> -->
+                                   
                                     </div>
 
                                     <div class="col-md-2" style="height: 52px">
@@ -189,7 +126,7 @@
                                         <span class="text-dark font-weight-bold d-flex d-md-none">PICTURE</span>
                                         <span class="text-decoration-none">
                                             <img :src="item.person.pictureUrl" class="member-image" v-if="item.person.pictureUrl" />
-                                            <!-- <div class="child-pic" v-else></div> -->
+                                   
                                         </span>
                                     </p>
                                     </div>
@@ -222,29 +159,7 @@
 
                                     <div class="col-md-1 align-self-center">
                                     <div class="action data action-icon">
-                                        <!-- <div class="dropdown">
-                                        <i
-                                            class="fas fa-ellipsis-v cursor-pointer"
-                                            id="dropdownMenuButton"
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                        ></i>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            
-                                        <a
-                                            class="dropdown-item elipsis-items cursor-pointer"
-                                            @click="showConfirmModal(item.id, index)"
-                                            >Delete</a
-                                        >
-                                            <a class="dropdown-item elipsis-items">
-                                        Delete
-                                        </a>
-                                            <a class="dropdown-item elipsis-items">
-                                        Edit
-                                        </a>
-                                        </div>
-                                        </div> -->
+                                       
                                         <i class="pi pi-trash" @click="showConfirmModal(item.id, index)"></i>
                                     </div>
                                     </div>
@@ -259,8 +174,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div v-else-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading" class="col-10 col-sm-4 offset-1 offset-sm-3">
+                    </div>-->
+                    <div v-if="familyDetails ? familyDetails.familyMembers ? familyDetails.familyMembers.length === 0 : '' : '' && !loading" class="col-10 col-sm-6  p-0 offset-1 offset-sm-3 offset-md-4 col-md-4">
                         <div class=" empty-img my-5 text-center">
                             <img src="../../assets/people/people-empty.svg" class="w-100" alt="" />
                             <div class="mt-3">You have not added any family member yet</div>
@@ -272,15 +187,14 @@
                             <ProgressSpinner />
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-10 col-sm-6  p-0 offset-1 offset-sm-3 offset-md-1 col-md-3" :class="{ 'col-md-3' : upcomingEvent, 'col-md-5' : !upcomingEvent }" >
+                <!-- </div> -->
+            <!-- </div>  -->
+            <div class="col-10 col-sm-6  p-0 offset-1 offset-sm-3 offset-md-4 col-md-4" >
                 <div class="upcoming-event table" v-if="upcomingEvent">
                     <div class="remove-decoration" @click="viewUpcomingEventDetails">
                     <div class="container">
                         <div class="row mt-2 p-3 d-flex justify-content-between align-items-center">
-                            <div class="upcoming-text">Upcoming Event</div>
-                            <div class="upcoming-date"><i class="pi pi-calendar"></i>  {{ formatDate(upcomingEvent.date) }}</div>
+                            <!-- <div class="upcoming-text">Upcoming Event</div> -->
                             <div class="col-12 p-0">
                                 <img :src="upcomingEvent.eventBanner" v-if="upcomingEvent.eventBanner" class="mt-4 w-100">
                                 <div v-else-if="loading" class="text-center col-12">
@@ -293,16 +207,17 @@
                             <div class="col-12 mt-4 font-weight-700 text-dark text-center">
                                 {{ upcomingEvent.name }}
                             </div>
-                            <div class="col-12 mt-2 link-text text-center add-decoration cursor-pointer">
-                                Register your family for this event.
-                            </div>
+                            <div class="col-12 upcoming-date text-center"><i class="pi pi-calendar"></i>  {{ formatDate(upcomingEvent.date) }}</div>
                         </div>
                     </div>
                     </div>
                 </div>
-            <!-- <div v-else>
-               <img src="../../assets/checkin-assets/CatThumb_UpcomingEvents.jpeg" class="w-100">
-            </div> -->
+                <div v-else> 
+                    <img src="../../assets/checkin-assets/No-Upcoming-Events.png" class="col-12"/>
+                </div>
+            </div>
+            <div v-if="upcomingEvent" class="col-10 col-sm-6 offset-sm-3 col-md-4 offset-md-4 offset-1 mt-2 default-btn primary-bg text-white border-0 text-center cursor-pointer" @click="viewUpcomingEventDetails">
+                Register your family
             </div>
         </div>
     </div>
@@ -578,23 +493,10 @@ color: #020E1C;
 .empty-img {
   font-size: 1.1em
 }
-/*
 
-.empty-img img {
-  width: 100%;
-  max-width: 200px;
-} */
-.add-decoration:hover {
-    text-decoration: underline;
-}
 .remove-decoration:hover {
     text-decoration: none
 }
-
-.link-text {
-    color: #136ACD
-}
-
 .remove-underline:hover {
     text-decoration: none
 }

@@ -537,7 +537,7 @@ import ColumnChart2 from "@/components/charts/ColumnChart2.vue";
 import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
 // import store from "@/store/store.js"
-import mixin from "@/mixins/auth.mixins.js"
+// import mixin from "@/mixins/auth.mixins.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import moment from "moment";
@@ -548,7 +548,7 @@ import useSubscription from "../../services/subscription/useSubscription";
 import Tooltip from "primevue/tooltip";
 
 export default {
-   mixins: [mixin],
+  //  mixins: [mixin],
   components: {
     ColumnChart,
     ColumnChart2,
@@ -679,6 +679,7 @@ export default {
     let getCelebDashboard = () => {
       axios.get("/dashboard/celebrations").then((res) => {
         tenantInfoCeleb.value = res.data.returnObject.celebrations;
+        console.log(tenantInfoCeleb.value)
       });
     };
     getCelebDashboard();

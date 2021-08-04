@@ -2,9 +2,9 @@
     <div class="container-wide container-top">
         <div class="row">
             <div class="col-12 event-header">Event</div>
-            <div class="col-12 mt-5 checkin-text">Checkin</div>
+            <!-- <div class="col-12 mt-5 checkin-text">Checkin</div> -->
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="card col-10 offset-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 p-3">
                 <div class="row">
                     <div class="col-3 offset-4 offset-sm-0">
@@ -24,38 +24,18 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- <div class="row">
             <div class="col-12 my-3">
                 <hr />
             </div>
         </div> -->
 
-         <!-- :class="{ 'fix-card' : addScrollClass, 'default-position' : !addScrollClass }" -->
-         <!-- :class="{ 'col-10 col-md-6' : !addScrollClass}" -->
-        <div class="row mt-4">
-            <div class="offset-1 offset-md-3 card col-10 col-sm-6 p-3" >
-                <div class="row">
-                    <div class="col-6 checkin-text">
-                        Groups
-                    </div>
-                    <div class="col-6 checkin-text">
-                        Slot
-                    </div>
-                </div>
-                <div class="row" v-for="(item, index) in groupSlots" :key="index">
-                    <div class="col-6 mt-3 event-time">
-                        {{ item.group }}
-                    </div>
-                    <div class="col-6 mt-3 font-weight-700"> 
-                        {{ item.slot !== null ? item !== 0 ? item.slot : "" : 'Unlimited' }}
-                    </div>
-                </div>
-            </div>
-        </div>
+       
+        
 
         <div class="row">
-            <div class="col-12 my-3">
+            <div class="col-12">
                 <hr />
             </div>
         </div>
@@ -69,17 +49,39 @@
             </div>
         </div>
 
-        <div class="row" v-if="familyDetails && familyDetails.familyMembers && familyDetails.familyMembers.length > 0">
-            <div class="col-1">
+        <div class="row" v-if="false">
+            <div class="offset-1 offset-md-3 card col-10 col-sm-6 p-3" >
+                <div class="row">
+                    <div class="col-6 checkin-text">
+                        Groups
+                    </div>
+                    <div class="col-6 checkin-text">
+                        Slot
+                    </div>
+                </div>
+                <div class="row" v-for="(item, index) in groupSlots" :key="index">
+                    <div class="col-6 mt-1 event-time">
+                        {{ item.group }}
+                    </div>
+                    <div class="col-6 mt-1 font-weight-700"> 
+                        {{ item.slot !== null ? item !== 0 ? item.slot : "" : 'Unlimited' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-1" v-if="familyDetails && familyDetails.familyMembers && familyDetails.familyMembers.length > 0">
+            <div class="col-1 ml-3">
                 <img src="../../assets/checkin-assets/down-emoji.png" class="emoji"/>
             </div>
-            <div class="col-11 px-sm-0">
+            <div class="col-9 px-sm-0">
                 <span class="event-time">Click the checkbox to select the ward you want to register for this event.</span>
             </div>
         </div>
+
         <div class="row" v-else>
             <div class="col-12">
-                <span class="event-time">When you add members of your family, you will see them here</span>
+                <span class="event-time"> You have not added your family members, when you add them, you will see them here</span>
             </div>
         </div>
    
@@ -89,7 +91,7 @@
                     <div class="col-1 col-md-1">
                         <Checkbox :binary="true" v-model="item.check" @change="checkChild(index)" />
                     </div>
-                    <div class="col-2 offset-8 offset-md-0 col-md-1">
+                    <div class="col-2 offset-3 offset-md-0 col-md-1">
                         <img :src="item.person.pictureUrl" class="member-image" v-if="item.person.pictureUrl" />
                     </div>
                     <div class="col-12 mt-3 mt-md-0 col-md-4">
@@ -98,9 +100,9 @@
                     </div>
                     <div class="col-12 col-md-5 mt-3">   
                         <div class="row">
-                            <div class="col-4 mt-2 text-right">Group:</div>
+                            <div class="col-4 mt-2 text-md-right">Class:</div>
                             <div class="col-8">
-                                <Dropdown class="p-0 w-100" :options="item.attendanceCheckin" v-model="item.selectedAttendanceCheckin" optionLabel="fullGroupName" :filter="false" placeholder="Checkin to a class" @change="setSlot(index, item)" :showClear="false">
+                                <Dropdown class="p-0 w-100" :options="item.attendanceCheckin" v-model="item.selectedAttendanceCheckin" optionLabel="fullGroupName" :filter="false" placeholder="Choose class" @change="setSlot(index, item)" :showClear="false">
                                 </Dropdown>
                             <!-- <div class="slot mt-2 text-danger">{{ item.error ? "You cannot select this group, it's filled up already" : "" }} </div> -->
                             </div>
@@ -115,12 +117,12 @@
         <!-- {{ slotAvailable }} -->
 
 
-        <div class="row d-flex d-flex flex-column flex-sm-row justify-content-between my-5" v-if="familyDetails && familyDetails.familyMembers && familyDetails.familyMembers.length > 0">
-            <div class="col-12 mb-3 p-0 font-weight-700">Check In By</div>
+        <div class="row d-flex d-flex justify-content-md-end mb-5 mt-3" v-if="familyDetails && familyDetails.familyMembers && familyDetails.familyMembers.length > 0">
+            <!-- <div class="col-12 mb-3 p-0 font-weight-700">Check In By</div>
             <div class="col-10 offset-1 offset-md-0 col-md-4 p-0">
                 <Dropdown class="p-0 w-100 guardian" :options="guardians" optionLabel="person.firstName" v-model="checkInBy" :filter="false" placeholder="Select guardian" :showClear="false">
                 </Dropdown> 
-            </div>
+            </div> -->
             <div @click="register" class="col-10 offset-1 offset-md-0 col-md-4 number-checkin-child px-4 py-2 text-white text-center mt-3 mt-md-0 c-pointer font-weight-700" >
                 <i class="pi pi-spin pi-spinner text-white" v-if="loading"></i>&nbsp;
                 Register
@@ -188,6 +190,7 @@ import { useRoute } from "vue-router"
 import dateFormatter from '../../services/dates/dateformatter';
 import { useToast } from "primevue/usetoast";
 import finish from '../../services/progressbar/progress';
+import router from '../../router';
 export default {
     components: {
         Dropdown,
@@ -419,8 +422,9 @@ export default {
                 console.log(res)
                 loading.value = false
                 if (res.data.response.toLowerCase().includes("success")) {
-                    checkinCode.value = res.data.returnObject
-                    displayModal.value = true
+                    router.push({ name: 'ThankYou', params: { code: res.data.returnObject } })
+                    // checkinCode.value = res.data.returnObject
+                    // displayModal.value = true
                     finish()
                 }   else {
                     toast.add({
@@ -771,10 +775,7 @@ opacity: 1;
     }
 } */
 
-.nb {
-    font-size: 0.9em;
-    font-weight: 700
-}
+
 
 
 .emoji {
