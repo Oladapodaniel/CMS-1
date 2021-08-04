@@ -121,7 +121,7 @@
                 <ProgressBar :value="uploadProgress" style="max-width: 600px;width: 100%;min-width:400px" />
             </Dialog>
             <Dialog
-                header="Image Picker"
+                header="Select Image"
                 v-model:visible="showImagePicker"
                 :style="{ width: '70vw', maxWidth: '600px' }"
                 :modal="true"
