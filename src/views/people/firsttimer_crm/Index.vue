@@ -2,7 +2,7 @@
     <div class="container-top container adjust-font">
         <div class="row">
             <div class="col-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal"/>
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor"/>
             </div>
             <div class="col-8 main-view">
                 <div class="row">
@@ -49,10 +49,10 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :addNotes="noteList" @individualtoggle="setIconProp"/>
+                        <Activity :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList"/>
                     </div>
                     <div class="col-12" v-if="showNotes" transition="bounce">
-                        <Notes :addNotes="noteList" @individualtoggle="setIconProp"/>
+                        <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
                     </div>
                     <div class="col-12" v-if="showEmails" transition="bounce">
                         <Emails />
@@ -69,12 +69,12 @@
     </div>
     <!-- <Button label="BottomRight" icon="pi pi-arrow-up" class="p-button-warning" /> -->
             
-    <Dialog header="Header" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="false">
-        <div>Create note here</div>
+    <Dialog header="Header" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
+        <div>Create note</div>
         <Editor v-model="note" editorStyle="height: 320px"/>
         <template #footer>
-            <Button label="No" icon="pi pi-times" class="p-button-text" />
-            <Button label="Yes" icon="pi pi-check" @click="saveNote" autofocus />
+            <Button label="Cancel" icon="pi pi-times" class="p-button-text" />
+            <Button label="Save" icon="pi pi-check" @click="saveNote" autofocus />
         </template>
     </Dialog>
    
@@ -141,6 +141,102 @@
             <Button label="Yes" icon="pi pi-check" @click="saveNote" autofocus />
         </template> -->
     </Dialog>
+
+
+     <Dialog header="Create task" v-model:visible="taskDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
+        <div class="container" style="height: 480px">
+            <div class="row mt-3">
+               <div class="row">
+                        <div class="col-12">
+                            <textarea type="text" class="form-control col-12" placeholder="Enter your task" v-model="theTask"></textarea>
+                        </div>
+                    
+                        <div class="col-8 label-text mt-3">Due date</div>
+                        <div class="col-4 label-text mt-3">Reminder</div>
+                        <div class="col-4 mt-2">
+                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                                In 3 business days&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div v-for="(item, index) in taskTime" :key="index">
+                                    <div class="px-3 py-1">{{ item.name }}</div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+                        <div class="col-4 mt-2">
+                            <input type="date" class="form-control"/>
+                        </div>
+                        <div class="col-4 mt-2">
+                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                                No reminder&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div v-for="(item, index) in taskTime" :key="index">
+                                    <div class="px-3 py-1">{{ item.name }}</div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <hr />
+                        </div>
+                        <div class="col-2 label-text">Type</div>
+                        <div class="col-2 label-text">Priority</div>
+                        <div class="col-2 label-text">Queue</div>
+                        <div class="col-3 label-text">Assigned to</div>
+                        <div class="col-3 label-text"></div>
+                        <!-- <div class="col-4"></div> -->
+                        <div class="col-2 mt-2">
+                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                                Todo&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div v-for="(item, index) in taskTime" :key="index">
+                                    <div class="px-3 py-1">{{ item.name }}</div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+                        <div class="col-2 mt-2">
+                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                                None&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div v-for="(item, index) in taskTime" :key="index">
+                                    <div class="px-3 py-1">{{ item.name }}</div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+                        <div class="col-2 mt-2">
+                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                                None&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div v-for="(item, index) in taskTime" :key="index">
+                                    <div class="px-3 py-1">{{ item.name }}</div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+                        <div class="col-4 mt-2">
+                            <div @click="toggle" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700">
+                                Oladapo Daniel&nbsp; <i class="pi pi-sort-down"></i>
+                            </div>
+                            <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                <div v-for="(item, index) in taskTime" :key="index">
+                                    <div class="px-3 py-1">{{ item.name }}</div>
+                                </div>
+                            </OverlayPanel>
+                        </div>
+
+                        <div class="col-12">
+                        <textarea class="form-control col-12 mt-3" rows="4"  placeholder="Notes..."></textarea>
+                        <div class="d-flex justify-content-start">
+                            <div class="p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveTask">Save</div>
+                        </div>
+                        </div>
+            
+                </div>
+            </div>
+        </div>
+    </Dialog>
 </template>
 
 <script>
@@ -156,6 +252,7 @@ import Dialog from 'primevue/dialog';
 import Editor from 'primevue/editor';
 import composeService from "../../../services/communication/composer";
 import { useToast } from "primevue/usetoast";
+import Dropdown from "primevue/dropdown";
 // import SelectButton from 'primevue/selectbutton';
 export default {
     components: {
@@ -167,7 +264,8 @@ export default {
         Tasks,
         InputText,
         Dialog,
-        Editor
+        Editor,
+        Dropdown
         // SelectButton
     },
     setup () {
@@ -183,10 +281,15 @@ export default {
         const position = ref('bottomright')
         const note = ref("")
         const noteList = ref([])
+        const taskList = ref([])
         const emailDisplayPosition = ref(false)
         const emailBody = ref("")
         const emailSubject = ref("")
         const displayEmailPane = ref(false)
+        const taskDisplayPosition = ref(false)
+        const taskTime = ref([{ name: '08:00' },{ name: '09:00' }, { name: '10:00' }])
+        const op = ref("")
+        const theTask = ref("")
 
         const toggleActivity = () => {
             showActivity.value = true
@@ -234,9 +337,10 @@ export default {
         const saveNote = () => {
             displayPosition.value = false;
             let noteContent = note.value.slice(3, -4)
-            noteList.value.push({ body: noteContent })
+            noteList.value.unshift({ body: noteContent })
             note.value = ""
         };
+        
 
         const openNoteEditor = (payload) => {
             displayPosition.value = payload
@@ -312,6 +416,20 @@ export default {
             displayEmailPane.value = true
         }
 
+        const openTaskEditor = (payload) => {
+            taskDisplayPosition.value = payload
+        }
+
+        const toggle = (event) => {
+            op.value.toggle(event);
+        };
+
+        const saveTask = () => {
+            taskDisplayPosition.value = false;
+            taskList.value.unshift({ body: theTask.value })
+            theTask.value = ""
+        };
+
         return {
             toggleActivity,
             toggleNotes,
@@ -339,7 +457,15 @@ export default {
             emailBody,
             emailSubject,
             toggleDisplayEmailPane,
-            displayEmailPane
+            displayEmailPane,
+            openTaskEditor,
+            taskDisplayPosition,
+            taskTime,
+            toggle,
+            op,
+            theTask,
+            saveTask,
+            taskList
         }
     }
 }
@@ -438,5 +564,27 @@ export default {
 .mail-connect:hover {
     box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     transition: all 0.3s ease-in-out
+}
+
+.label-text {
+    color: #506e91;
+    font-size: 0.9em;
+}
+
+.btn-btn {
+    font-size: 12px;
+    line-height: 14px;
+    padding: 5px 12px;
+    border-radius: 3px;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+    font-weight: 400;
+    text-align: center;
+}
+
+.save-btn {
+    background-color: #425b76;
+    border: 1px solid #425b76;
+    color: #fff;    
 }
 </style>
