@@ -64,7 +64,7 @@
             <router-link to="/tenant/social/feed/instagram" class="row text-white text-decoration">
               <div class="col-md-2">
                 <i
-                  class="fa fa-instagram text-white"
+                  class="pi pi-instagram text-white"
                   style="font-size: 1.5rem"
                 ></i>
               </div>
@@ -80,7 +80,7 @@
             <router-link to="/tenant/social/feed/whatsapp" class="row text-white text-decoration-none">
               <div class="col-md-2">
                 <i
-                  class="fa fa-instagram text-white"
+                  class="pi pi-instagram text-white"
                   style="font-size: 1.5rem"
                 ></i>
               </div>

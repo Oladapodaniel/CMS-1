@@ -35,7 +35,7 @@
               <div class="my-3">
                 <span class="evt-name">
                   {{ stats.activityToday ? stats.activityToday.name : "" }}
-                  <i class="fa fa-info-circle"></i>
+                  <i class="pi pi-info-circle"></i>
                 </span>
               </div>
             </div>
@@ -62,7 +62,7 @@
                   <div class="row" v-if="!reportApproved">
                     <div class="col-md-12 py-3 info-div">
                       <span class="px-2"
-                        ><i class="fa fa-info-circle"></i
+                        ><i class="pi pi-info-circle"></i
                       ></span>
                       <span class="font-weight-bold"
                         >This is a DRAFT event. You can take further actions
@@ -70,14 +70,14 @@
                       >
                       <span class="px-2"
                         ><span style="color: #136acd">Learn more</span>
-                        <i class="fa fa-external-link-alt ml-2"></i
+                        <i class="pi pi-external-link ml-2"></i
                       ></span>
                     </div>
                   </div>
                   <div class="row my-3">
                     <div class="col-md-1 d-flex align-items-center">
                       <span class="file-icon"
-                        ><i class="fa fa-book" style="color: #136acd"></i
+                        ><i class="pi pi-book" style="color: #136acd"></i
                       ></span>
                     </div>
                     <div class="col-md-5">
@@ -117,7 +117,7 @@
                     <div class="col-md-1 d-flex align-items-center">
                       <span class="file-icon"
                         ><i
-                          class="fa fa-location-arrow"
+                          class="pi pi-arrow-down"
                           style="color: #136acd"
                         ></i
                       ></span>

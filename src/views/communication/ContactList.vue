@@ -125,7 +125,7 @@
                         </div>
 
                         <div class="col-md-1 col-ms-12 d-flex justify-content-center align-items-center">
-                          <span @click="showConfirmModal(group.id, index)"><i class="fa fa-trash delete-icon"></i></span>
+                          <span @click="showConfirmModal(group.id, index)"><i class="pi pi-trash delete-icon"></i></span>
                         </div>
                       </div>
                       <div class="row">

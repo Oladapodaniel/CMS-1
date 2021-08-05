@@ -4,8 +4,8 @@
 
       <div class="col-md-12">
         <h1>
-          <!-- <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> -->
-          <i class="fa fa-key" aria-hidden="true"></i> 401</h1>
+          <!-- <i class="pi pi-exclamation-triangle" aria-hidden="true"></i> -->
+          <i class="pi pi-key" aria-hidden="true"></i> 401</h1>
         <!-- <h2>Oops... Page Not Found!</h2> -->
         <h3>No Authorization Found!</h3>
         <div>This page is not publicly available</div>
@@ -13,9 +13,9 @@
         
           <!-- <form action="#" method="post">
             <input type="text" placeholder="Search..." name="search">
-            <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+            <button type="submit"><i class="pi pi-search" aria-hidden="true"></i></button>
           </form> -->
-          <button class="btn btn-primary" style="margin-top: 20px;" @click.prevent="goBack"> <i class="fa fa-arrow-left" aria-hidden="true"></i>  Go Back</button>
+          <button class="btn btn-primary" style="margin-top: 20px;" @click.prevent="goBack"> <i class="pi pi-arrow-left" aria-hidden="true"></i>  Go Back</button>
 
         <p style="margin-top: 20px">If you think you have arrived here by our mistake, please <a href="#">contact us</a></p>
 

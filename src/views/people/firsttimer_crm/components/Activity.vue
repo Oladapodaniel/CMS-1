@@ -1,25 +1,27 @@
 <template>
     <div class="row">
         <div class="col-12 activity-date">July 12</div>
-        <div class="col-12 mt-4">
-            <div class="col-12 card-bg p-4">
-                <div class="row d-flex justify-content-between">
-                    <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up" :class="{'roll-note-icon' : noteIcon, 'unroll-note-icon' : !noteIcon}" @click="toggleNoteIcon"></i>&nbsp;&nbsp;Note</span> by Oladapo Daniel <span class="font-weight-700">Actions <i class="pi pi-sort-down"></i></span></div>
-                        <transition name="fade">
-                            <div class="col mt-4" v-if="noteIcon">Creating your Note here</div>
-                        </transition>
+        <transition-group>
+            <div class="col-12 mt-4" v-for="(note, index) in addNotes" :key="index">
+                <div class="col-12 card-bg p-4">
+                    <div class="row d-flex justify-content-between">
+                        <div>
+                            <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up" :class="{'roll-note-icon' : note.noteIcon, 'unroll-note-icon' : !note.noteIcon}" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Note</span> by Oladapo Daniel <span class="font-weight-700">Actions <i class="pi pi-sort-down"></i></span></div>
+                            <transition name="fade">
+                                <div class="col mt-4" v-if="note.noteIcon">{{ note.body }}</div>
+                            </transition>
+                        </div>
+                        <div>
+                            <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
+                    <div class="row mt-4">
+                        <div class="col font-weight-700">Add Comment</div>
+                        <div class="col text-right font-weight-700">1 Association</div>
                     </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col font-weight-700">Add Comment</div>
-                    <div class="col text-right font-weight-700">1 Association</div>
                 </div>
             </div>
-        </div>
+        </transition-group>
         
         <div class="col-12 mt-4">
             <div class="col-12 card-bg p-4">
@@ -168,7 +170,9 @@ export default {
     components: {
         Dropdown
     },
-    setup() {
+    props: ['addNotes'],
+    emits: ['individualtoggle'],
+    setup(props, { emit }) {
         const noteIcon = ref(false)
         const taskIcon = ref(false)
         const meetIcon = ref(false)
@@ -191,8 +195,8 @@ export default {
         const theTask2 = ref("")
         const hoverTask2 = ref(false)
 
-        const toggleNoteIcon = () => {
-            noteIcon.value = !noteIcon.value
+        const toggleNoteIcon = (index) => {
+            emit('individualtoggle', index)
         }
         
         const toggleTaskIcon = () => {

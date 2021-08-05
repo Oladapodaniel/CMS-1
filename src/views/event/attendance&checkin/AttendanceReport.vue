@@ -133,7 +133,8 @@
               <span class="hidden-header hide font-weight-700"
                 >Phone Number</span
               >
-              <span class="small-text">{{ person.phone }}</span>
+              <span class="small-text" v-if="person.phone">{{ person.phone }}</span>
+              <a class="small-text text-primary" href="#" @click="toggle(person, index)" v-else>{{ person.phoneNumber ? person.phoneNumber : 'view phone' }}</a>
             </span>
           </div>
           <div class="col-md-2">
@@ -166,6 +167,7 @@
       </div>
     </div>
   </div>
+    <Toast />
 </template>
 
 <script>
@@ -177,6 +179,8 @@ import dateFormatter from '../../../services/dates/dateformatter';
 import Tooltip from 'primevue/tooltip';
 import LoadingComponent from "../../../components/loading/LoadingComponent"
 import printJS from 'print-js'
+import axios from "@/gateway/backendapi";
+import { useToast } from "primevue/usetoast";
 
 export default {
     components: { ReportChart, LoadingComponent },
@@ -186,9 +190,14 @@ export default {
     setup() {
         const route = useRoute();
         const data = ref([]);
+        const toast = useToast()
 
         const reportData = ref({ });
         const loading = ref(true);
+        const op = ref()
+        const phoneNumber = ref("")
+        const noNumber = ref("")
+
 
         const errorMessage = ref("")
         const getReportData = async () => {
@@ -197,6 +206,7 @@ export default {
             reportData.value = response;
             loading.value = false;
             sortAttendanceDataByPresent();
+            console.log(response)
           } catch (error) {
             console.log(error);
             if (error.toString().toLowerCase().includes("network error")) {
@@ -318,6 +328,30 @@ export default {
           })
         })
 
+        const toggle = async(people, index) => {
+           
+            try {
+              const  data = await axios.get(`api/CheckInAttendance/revealParentNumber?personId=${people.personID}`)
+              console.log(data)
+              
+       
+                if (typeof(data.data) === "number") {
+                  reportData.value.peopoleAttendancesDTOs[index].phoneNumber = data.data
+                  } else {
+                  reportData.value.peopoleAttendancesDTOs[index].phoneNumber = 'No phone'
+                    toast.add({
+                      severity: "info",
+                      summary: 'Not found',
+                      detail: data.data,
+                      life: 5000,
+                    });
+                    }
+              
+            } catch (err){
+              console.log(err)
+            }
+        };
+
   
         return {
             data,
@@ -338,7 +372,11 @@ export default {
             presentAttendance,
             filterPresentAttendance,
             absentAttendance,
-            filterAbsentAttendance
+            filterAbsentAttendance,
+            toggle,
+            op,
+            phoneNumber,
+            noNumber
         }
     }
 };

@@ -54,7 +54,7 @@
             v-on:click.prevent="addRemittance"
             class="btn btnIcons btn-secondary"
         >
-            <i class="fa fa-plus-circle icons" aria-hidden="true"></i>
+            <i class="pi pi-plus-circle icons" aria-hidden="true"></i>
             Add
         </button>
         </div>

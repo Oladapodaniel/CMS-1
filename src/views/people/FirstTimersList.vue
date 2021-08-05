@@ -66,12 +66,12 @@
             </div>
             <div class="filter">
               <p @click="toggleFilterFormVissibility" class="mt-2">
-                <i class="fas fa-filter"></i>
+                <i class="pi pi-filter"></i>
                 FILTER
               </p>
             </div>
             <p @click="toggleSearch" class="search-text mt-2">
-              <i class="fa fa-search"></i> SEARCH
+              <i class="pi pi-search"></i> SEARCH
             </p>
             <div class="search d-flex">
               <label
@@ -90,7 +90,7 @@
                   ><i class="pi pi-times"></i
                 ></span>
                 <span class="search-btn">
-                  <i class="fa fa-search"></i>
+                  <i class="pi pi-search"></i>
                 </span>
               </label>
             </div>
@@ -772,7 +772,7 @@ export default {
 
     // Function to delete first timer
     const convert = (x) => {
-      return x.map((i) => i.id).join(",");
+      return x.map((i) => i.id);
     };
     const deleteMessage = ref("");
     const display = ref(false);
@@ -780,7 +780,7 @@ export default {
       let dft = convert(checkedFirstTimer.value);
       console.log(dft, "tosin");
       axios
-        .delete(`/api/People/DeletePeoples?peopleIDList=${dft}`)
+        .post(`/api/People/DeletePeople`, dft)
         .then((res) => {
           console.log(res.data, "God is awesome");
           let incomingRes = res.data.response;

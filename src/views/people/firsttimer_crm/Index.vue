@@ -2,13 +2,13 @@
     <div class="container-top container adjust-font">
         <div class="row">
             <div class="col-4 p-0 side-bar">
-                <SideActions />
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal"/>
             </div>
             <div class="col-8 main-view">
                 <div class="row">
                     <div class="col-6 mt-3">
                         <span class="p-input-icon-right">
-                            <InputText type="text" v-model="value3" placeholder="Search activities" />
+                            <InputText type="text" placeholder="Search activities" />
                             <i class="pi pi-search uniform-primary-color" />
                         </span>
                     </div>
@@ -49,10 +49,10 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity />
+                        <Activity :addNotes="noteList" @individualtoggle="setIconProp"/>
                     </div>
                     <div class="col-12" v-if="showNotes" transition="bounce">
-                        <Notes />
+                        <Notes :addNotes="noteList" @individualtoggle="setIconProp"/>
                     </div>
                     <div class="col-12" v-if="showEmails" transition="bounce">
                         <Emails />
@@ -67,6 +67,58 @@
             </div>
         </div>
     </div>
+    <!-- <Button label="BottomRight" icon="pi pi-arrow-up" class="p-button-warning" /> -->
+            
+    <Dialog header="Header" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="false">
+        <div>Create note here</div>
+        <Editor v-model="note" editorStyle="height: 320px"/>
+        <template #footer>
+            <Button label="No" icon="pi pi-times" class="p-button-text" />
+            <Button label="Yes" icon="pi pi-check" @click="saveNote" autofocus />
+        </template>
+    </Dialog>
+   
+    <Dialog header="Create an email" v-model:visible="emailDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="false">
+        <div class="container" style="height: 480px">
+            <div class="row">
+                <div class="col-12 mt-3 font-weight-700 text-center">
+                    Keep track of your email activity in your CRM
+                </div>
+                <div class="col-12 mt-3 text-center">
+                    Connect your email account to Churchplus to begin sending emails from your CRM. All your email conversations will appear in the timeline below.Learn more
+                </div>
+                <div class="col-4 mt-5">
+                    <div class="mail-connect">
+                        <div>
+                            <img src="../../../assets/gmail.svg"/>
+                        </div>
+                        <div class="mt-3">Connect Gmail</div>
+                    </div>
+                </div>
+                <div class="col-4 mt-5">
+                    <div class="mail-connect">
+                        <div>
+                            <img src="../../../assets/outlook-365.png" style="width: 43px"/>
+                        </div>
+                        <div class="mt-3">Connect Office 365</div>
+                    </div>
+                </div>
+                <div class="col-4 mt-5">
+                    <div class="mail-connect">
+                        <div>
+                            <img src="../../../assets/unknown-email.svg"/>
+                        </div>
+                        <div class="mt-3">Connect other</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <template #footer>
+            <Button label="No" icon="pi pi-times" class="p-button-text" />
+            <Button label="Yes" icon="pi pi-check" @click="saveNote" autofocus />
+        </template> -->
+    </Dialog>
 </template>
 
 <script>
@@ -78,6 +130,8 @@ import Emails from "./components/Emails"
 import Calls from "./components/Calls"
 import Tasks from "./components/Tasks"
 import InputText from 'primevue/inputtext'
+import Dialog from 'primevue/dialog';
+import Editor from 'primevue/editor';
 // import SelectButton from 'primevue/selectbutton';
 export default {
     components: {
@@ -88,6 +142,8 @@ export default {
         Calls,
         Tasks,
         InputText,
+        Dialog,
+        Editor
         // SelectButton
     },
     setup () {
@@ -98,6 +154,11 @@ export default {
         const showTasks = ref(false)
         // const options = ref(['Expand all', 'Collapse all']);
         // const value1 = ref("")
+        const displayPosition = ref(false)
+        const position = ref('bottomright')
+        const note = ref("")
+        const noteList = ref([])
+        const emailDisplayPosition = ref(false)
 
         const toggleActivity = () => {
             showActivity.value = true
@@ -139,6 +200,28 @@ export default {
             showTasks.value = true
         }
 
+        const openPosition = () => {
+            displayPosition.value = true;
+        };
+        const saveNote = () => {
+            displayPosition.value = false;
+            let noteContent = note.value.slice(3, -4)
+            noteList.value.push({ body: noteContent })
+            note.value = ""
+        };
+
+        const openNoteEditor = (payload) => {
+            displayPosition.value = payload
+        }
+
+        const openEmailModal = () => {
+            emailDisplayPosition.value = true
+        }
+
+        const setIconProp = (payload) => {
+            noteList.value[payload].noteIcon = !noteList.value[payload].noteIcon
+        }
+
         return {
             toggleActivity,
             toggleNotes,
@@ -152,6 +235,16 @@ export default {
             showTasks,
             // options,
             // value1
+            openPosition,
+            displayPosition,
+            position,
+            note,
+            openNoteEditor,
+            saveNote,
+            noteList,
+            emailDisplayPosition,
+            openEmailModal,
+            setIconProp
         }
     }
 }
@@ -233,5 +326,22 @@ export default {
 
 .uniform-primary-color {
     color: #136acd
+}
+
+.mail-connect {
+    border-radius: 3px;
+    background-color: #fff;
+    border: 1px solid #136acd57;
+    cursor: pointer;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mail-connect:hover {
+    box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transition: all 0.3s ease-in-out
 }
 </style>

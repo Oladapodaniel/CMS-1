@@ -11,7 +11,7 @@
               >
                 <div class="col-md-12 col-sm-12 pl-0">
                   <div class="search-div">
-                    <span><i class="fa fa-search mr-1"></i></span>
+                    <span><i class="pi pi-search mr-1"></i></span>
                     <input
                       type="text"
                       placeholder="Search here..."
@@ -110,7 +110,7 @@
 
                             <span class="small-text ml-5 mr-n4">
                               <i
-                                class="c-pointer pr-3 fa fa-trash delete-icon"
+                                class="c-pointer pr-3 pi pi-trash delete-icon"
                                 @click="showConfirmModal(email.id)"
                                 style="font-size: 18px"
                               >
