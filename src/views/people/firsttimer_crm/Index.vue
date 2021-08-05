@@ -81,7 +81,7 @@
     <Dialog header="Compose
      email" v-model:visible="emailDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
         <div class="container" style="height: 480px">
-            <div class="row" v-if="displayEmailPane">
+            <div class="row" v-if="!displayEmailPane">
                 <div class="col-12 mt-3 font-weight-700 text-center">
                     Keep track of your email activity in your CRM
                 </div>
@@ -114,7 +114,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" v-else>
                 <div class="col-3 mt-2">
                     To:
                 </div>
