@@ -45,11 +45,11 @@
             <div class="row" v-for="(item, index) in pastors" :key="index">
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
               <div class="col-12 mt-4">
-                <div class="row">
+                <div class="row">    
                   <div class="col-md-4 col-12 col-sm-5 person-image">
                     <img
                       style="width: 110px; height: 110px; border-radius: 50%;"
-                      :src="item.url"
+                      :src="item.photo"
                       class="w-75 "
                     />
                   </div>
@@ -61,7 +61,7 @@
                     edit
                   </div>
                   <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId, index)">
-                    <i class="pi pi-trash"></i>
+                    <span><i class="pi pi-trash text-dark"></i></span>
                   </div>
                 </div>
               </div>
@@ -88,6 +88,7 @@
                 data-target="#branches"
                 data-toggle="modal"
                 data-whatever="@fat"
+                @click="clearChurchBranch"
               >
                 Add
               </div>
@@ -111,7 +112,7 @@
                     edit
                   </div>
                   <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModalBranch(item.id)">
-                    <i class="pi pi-trash"></i>
+                    <i class="pi pi-trash text-dark"></i>
                   </div>
                 </div>
               </div>
@@ -426,7 +427,7 @@
                           </div>
                           <div class="form-group">
                             <input
-                              type="number"
+                              type="text"
                               class="form-control"
                               id="recipient-name"
                               placeholder="Pastor Phone"
@@ -775,7 +776,7 @@ export default {
               pastorPictureUrl: i.pastorPictureUrl
             }
           })
-
+ console.log(churchBranches.value, 'testing the branch');
         })
         .catch((error) => {
           console.log(error);
@@ -791,36 +792,79 @@ export default {
      };
     const branchPost = async() => {
        let formData = new FormData()
-        formData.append("branchName", branchDetails.value.branchName)
-        formData.append("pastorName", branchDetails.value.pastorName)
-        formData.append("pastorDetails", branchDetails.value.pastorDetails)
-        formData.append("pastorPhone", branchDetails.value.pastorPhone)
-        formData.append("address", branchDetails.value.address)
-        formData.append("pastorPicture", branchDetails.value.pastorPicture)  
+        formData.append("branchName", branchDetails.value.branchName ? branchDetails.value.branchName : '')
+        formData.append("pastorName", branchDetails.value.pastorName ? branchDetails.value.pastorName : '')
+        formData.append("pastorDetails", branchDetails.value.pastorDetails ? branchDetails.value.pastorDetails : '')
+        formData.append("pastorPhone", branchDetails.value.pastorPhone ? branchDetails.value.pastorPhone : '')
+        formData.append("address", branchDetails.value.address ? branchDetails.value.address : '')
+        formData.append("pastorPicture", branchDetails.value.pastorPicture ? branchDetails.value.pastorPicture : '')  
+          
+        if (branchDetails.value.id) {
+          formData.append("id", branchDetails.value.id)
+          editChurchBranch(formData)
+        } else {
+          SaveChurchBranch(formData)
+        }
         closePastorModal.value.setAttribute("data-dismiss", "modal");
         branchDetails.value = {}
     }
-
+ 
     const SaveChurchBranch = async (formData) => {
-          try {
-          let res = await axios.post('/mobile/v1/Profile/CreateOrEditBranch', formData)
-            console.log(res, 'brach end point')
+       const displayChurchBranch =  {
+          branchName: branchDetails.value.branchName,
+          pastorName: branchDetails.value.pastorName
         }
-        
+         churchBranches.value.push(displayChurchBranch)
+          try {
+          let res = await axios.post('/mobile/v1/Profile/CreateOrEditBranch',formData)
+            console.log(res, 'brach end point') 
+             toast.add({
+                severity: "success",
+                summary: "Branch Saved",
+                detail: `${res.data.response}`,
+                life: 4000,
+              });
+        }
         catch (error) {
           console.log(error)
+           toast.add({
+                severity: "error",
+                summary: "Failed",
+                detail: `${res.data.response}`,
+                life: 4000,
+              });
         }  
     }
 
-    const editChurchBranch = async (formData) => {
+    const editChurchBranch = async (item) => {
+      console.log(item);
+       branchDetails.value = item
+       image.value = item.pastorPictureUrl
           try {
-          let res = await axios.edit('/mobile/v1/Profile/CreateOrEditBranch', formData)
+          let res = await axios.post('/mobile/v1/Profile/CreateOrEditBranch', branchDetails.value)
             console.log(res, 'brach end point')
-        }
-        
-        catch (error) {
+             toast.add({
+                severity: "success",
+                summary: "Updated Successfully",
+                detail: `${res.data.response}`,
+                life: 4000,
+              });
+        } catch (error) {
           console.log(error)
+           toast.add({
+                severity: "error",
+                summary: "Failed",
+                detail: `${res.data.response}`,
+                life: 4000,
+              });
         }  
+    }
+
+    const clearChurchBranch = () => {
+      branchDetails.value = {};
+    }
+    const setChurchBranch = (item) => {
+      branchDetails.value = item;
     }
    
     const editBranch = (item) => {
@@ -910,34 +954,35 @@ export default {
         }
      
       };
-
       // Delete church branch 
       const deleteBranch = (id) => {
-        console.log(id, 'check delete');
-        axios
-          .delete(`/mobile/v1/Profile/removeBranch?branchId=${id}`)
-          .then((res) => {
-            console.log(res);
-            toast.add({
-              severity: "success",
-              summary: "Confirmed",
-              detail: `${res.data.response}`,
-              life: 4000,
-            });
-            churchBranches.value = churchBranches.value.filter(
-              (item) => item.id !== id
-            );
-
-          })
-          .catch((err) => {
-            console.log(err)
+        if (id) {
+            console.log(id, 'check delete');
+          axios
+            .delete(`/mobile/v1/Profile/removeBranch?branchId=${id}`)
+            .then((res) => {
+              console.log(res);
               toast.add({
-                severity: "error",
-                summary: "Unable to delete",
-                detail: "An error occurred, please try again",
+                severity: "success",
+                summary: "Confirmed",
+                detail: `${res.data.response}`,
                 life: 4000,
               });
-          });
+              churchBranches.value = churchBranches.value.filter(
+                (item) => item.id !== id
+              );
+            })
+            .catch((err) => {
+              console.log(err)
+                toast.add({
+                  severity: "error",
+                  summary: "Unable to delete",
+                  detail: "An error occurred, please try again",
+                  life: 4000,
+                });
+            });
+          }
+       
 
       }
 
@@ -1057,7 +1102,9 @@ export default {
       SaveChurchBranch,
       editChurchBranch,
       deleteBranch,
-      showConfirmModalBranch
+      showConfirmModalBranch,
+      clearChurchBranch,
+      setChurchBranch
     };
   },
 };
