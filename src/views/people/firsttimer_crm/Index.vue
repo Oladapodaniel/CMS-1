@@ -78,16 +78,18 @@
         </template>
     </Dialog>
    
-    <Dialog header="Create an email" v-model:visible="emailDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="false">
+    <Dialog header="Compose
+     email" v-model:visible="emailDisplayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
         <div class="container" style="height: 480px">
-            <div class="row">
+            <div class="row" v-if="displayEmailPane">
                 <div class="col-12 mt-3 font-weight-700 text-center">
                     Keep track of your email activity in your CRM
                 </div>
                 <div class="col-12 mt-3 text-center">
-                    Connect your email account to Churchplus to begin sending emails from your CRM. All your email conversations will appear in the timeline below.Learn more
+                    <!-- Connect your email account to Churchplus to begin sending emails from your CRM. All your email conversations will appear in the timeline below.Learn more -->
+                    Send an email from your FRM to Micheal Jordan. All email and conversations will appear in the timeline below.
                 </div>
-                <div class="col-4 mt-5">
+                <!-- <div class="col-4 mt-5">
                     <div class="mail-connect">
                         <div>
                             <img src="../../../assets/gmail.svg"/>
@@ -95,21 +97,41 @@
                         <div class="mt-3">Connect Gmail</div>
                     </div>
                 </div>
-                <div class="col-4 mt-5">
+                 <div class="col-4 mt-5">
                     <div class="mail-connect">
                         <div>
                             <img src="../../../assets/outlook-365.png" style="width: 43px"/>
                         </div>
                         <div class="mt-3">Connect Office 365</div>
                     </div>
-                </div>
-                <div class="col-4 mt-5">
+                </div> -->
+                <div class="offset-4 col-4 mt-5" @click="toggleDisplayEmailPane">
                     <div class="mail-connect">
                         <div>
                             <img src="../../../assets/unknown-email.svg"/>
                         </div>
-                        <div class="mt-3">Connect other</div>
+                        <div class="mt-3">Compose Email</div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3 mt-2">
+                    To:
+                </div>
+                <div class="col-7 mt-2">
+                    <input type="text" class="form-control" value="oladapoadniel@gmail.com" disabled/>
+                </div>
+                <div class="col-3 mt-3">
+                    Subject:
+                </div>
+                <div class="col-7 mt-3">
+                    <input type="text" class="form-control" v-model="emailSubject" placeholder="subject"/>
+                </div>
+                <div class="col-12 mt-3">
+                    <Editor v-model="emailBody" editorStyle="height: 260px"/>
+                </div>
+                <div class="col-12 mt-2 d-flex justify-content-end">
+                    <Button label="Send" icon="pi pi-check" @click="sendEmail" autofocus />
                 </div>
             </div>
         </div>
@@ -132,6 +154,8 @@ import Tasks from "./components/Tasks"
 import InputText from 'primevue/inputtext'
 import Dialog from 'primevue/dialog';
 import Editor from 'primevue/editor';
+import composeService from "../../../services/communication/composer";
+import { useToast } from "primevue/usetoast";
 // import SelectButton from 'primevue/selectbutton';
 export default {
     components: {
@@ -147,6 +171,7 @@ export default {
         // SelectButton
     },
     setup () {
+        const toast = useToast()
         const showActivity = ref(true)
         const showNotes = ref(false)
         const showEmails = ref(false)
@@ -159,6 +184,9 @@ export default {
         const note = ref("")
         const noteList = ref([])
         const emailDisplayPosition = ref(false)
+        const emailBody = ref("")
+        const emailSubject = ref("")
+        const displayEmailPane = ref(false)
 
         const toggleActivity = () => {
             showActivity.value = true
@@ -222,6 +250,68 @@ export default {
             noteList.value[payload].noteIcon = !noteList.value[payload].noteIcon
         }
 
+        const sendEmail = async () => {
+            let data = {
+                ToContacts: "5f33cb89-d002-4607-a688-08d8f38b4d33",
+                groupedContacts: [],
+                isPersonalized: false,
+                message: `<!DOCTYPE html>
+                <html lang="en">
+                    <head>
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+                    <style>
+                        #email-body img {
+                        width: 100% !important;
+                        max-width: 1000px !important;
+                        margin-left: auto;
+                        margin-right: auto;
+                        max-height: 300px;
+                        object-fit: contain;
+                        display: flex;
+                        justify-content: center;
+                        }
+                        
+                        #email-body img {
+                        display: flex;
+                        justify-content: center;
+                        }
+                        
+                        #email-body figure {
+                        margin: auto;
+                        }
+                    </style>
+                    </head>
+                    <body>
+                    <div id="email-body" style="max-width: 1000px; margin: auto"> ${emailBody.value} </div>
+                    </body>
+                </html>`,
+                subject: emailSubject.value
+            }
+
+            try {
+                let response = await composeService.sendMessage("/api/Messaging/sendEmail", data)
+                console.log(response)
+                if(response.status === 200) {
+                    toast.add({
+                        severity: "success",
+                        summary: "Sent",
+                        detail: "Email sent successfully",
+                        life: 5000,
+                    });
+                    emailDisplayPosition.value = false
+                }
+
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+        const toggleDisplayEmailPane = () => {
+            displayEmailPane.value = true
+        }
+
         return {
             toggleActivity,
             toggleNotes,
@@ -244,7 +334,12 @@ export default {
             noteList,
             emailDisplayPosition,
             openEmailModal,
-            setIconProp
+            setIconProp,
+            sendEmail,
+            emailBody,
+            emailSubject,
+            toggleDisplayEmailPane,
+            displayEmailPane
         }
     }
 }

@@ -6,19 +6,21 @@
                 <div class="col-12 card-bg p-4">
                     <div class="row d-flex justify-content-between">
                         <div>
-                            <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up" :class="{'roll-note-icon' : note.noteIcon, 'unroll-note-icon' : !note.noteIcon}" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Note</span> by Oladapo Daniel <span class="font-weight-700">Actions <i class="pi pi-sort-down"></i></span></div>
-                            <transition name="fade">
-                                <div class="col mt-4" v-if="note.noteIcon">{{ note.body }}</div>
-                            </transition>
+                            <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : note.noteIcon, 'unroll-note-icon' : !note.noteIcon}" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Note</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">&nbsp;Actions <i class="pi pi-sort-down"></i></span></div>
+                            
+                                <div class="col mt-4 enlargen-font">{{ note.body }}</div>
+                            
                         </div>
                         <div>
                             <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
                         </div>
                     </div>
-                    <div class="row mt-4">
-                        <div class="col font-weight-700">Add Comment</div>
-                        <div class="col text-right font-weight-700">1 Association</div>
-                    </div>
+                    <transition name="fade">
+                        <div class="row mt-4" v-if="note.noteIcon">
+                            <div class="col font-weight-700">Add Comment</div>
+                            <div class="col text-right font-weight-700">1 Association</div>
+                        </div>
+                    </transition>
                 </div>
             </div>
         </transition-group>
@@ -98,15 +100,16 @@
                         <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="editTask2" @click="cancelTaskEdit2">Cancel</div>
                         </div>
                         </div>
-
-                        </div>
-                
-                </transition></div>
+                     </div>
+                    </transition>
+                </div>
             </div>
+        <transition name="fade">
             <div class="row mt-4">
                 <div class="col font-weight-700">Add Comment</div>
                 <div class="col text-right font-weight-700">1 Association</div>
             </div>
+        </transition>
         </div>
         </div>
         <div class="col-12 mt-4">
@@ -297,7 +300,7 @@ export default {
 }
 .unroll-note-icon {
     transition: all 0.5s ease-in-out;
-    transform: rotateZ(360deg);
+    transform: rotateZ(90deg);
 }
 
 .fade {
@@ -370,5 +373,9 @@ export default {
 .label-text {
     color: #506e91;
     font-size: 0.9em;
+}
+
+.enlargen-font {
+    font-size: 1.2em
 }
 </style>

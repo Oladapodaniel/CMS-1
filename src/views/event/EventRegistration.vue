@@ -674,7 +674,7 @@ export default {
         )
         .then((res) => {
           eventData.value.name = res.data.fullEventName;
-          eventData.value.date = dateFormatter.monthDayTime(res.data.eventDate);
+          eventData.value.date = dateFormatter.monthDayYear(res.data.eventDate);
           bannerUrl.value = res.data.bannerUrl
 
           fullEventData.value = res.data
