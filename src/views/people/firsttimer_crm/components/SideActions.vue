@@ -14,11 +14,11 @@
             </div>
         </div>
         <div class="row d-flex justify-content-center mt-5">
-            <div>
+            <div @click="openNoteEditor">
                 <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
                 <div>Note</div>
             </div>
-            <div class="ml-4">
+            <div class="ml-4" @click="openEmailModal">
                 <div class="icon-bg" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
                 <div>Email</div>
             </div>
@@ -166,8 +166,8 @@ import { ref } from "vue"
 import Dropdown from "primevue/dropdown";
 import Tooltip from 'primevue/tooltip';
 import OverlayPanel from 'primevue/overlaypanel';
-import { useConfirm } from "primevue/useConfirm";
-import { useToast } from "primevue/usetoast";
+// import { useConfirm } from "primevue/useConfirm";
+// import { useToast } from "primevue/usetoast";
 export default {
     components: {
         Dropdown,
@@ -176,9 +176,10 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    setup () {
-        const confirm = useConfirm()
-        const toast = useToast()
+    emits: ["opennoteeditor", "openemailmodal"],
+    setup (props, { emit }) {
+        // const confirm = useConfirm()
+        // const toast = useToast()
         const selectedContact = ref("")
         const contacts = ref([
             {
@@ -251,6 +252,14 @@ export default {
              editEmailRef.value.hide();
         }
 
+        const openNoteEditor = () => {
+            emit('opennoteeditor', true)
+        }
+
+        const openEmailModal = () => {
+            emit('openemailmodal', true)
+        }
+
 
         return {
             selectedContact,
@@ -271,7 +280,9 @@ export default {
             OutHoverPhone,
             phoneNumber,
             email,
-            saveEmail
+            saveEmail,
+            openNoteEditor,
+            openEmailModal
         }
     }
 }

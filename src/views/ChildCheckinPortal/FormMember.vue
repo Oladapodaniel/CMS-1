@@ -244,7 +244,7 @@ export default {
             selectedGender.value = gender.value ? gender.value.lookUps ? gender.value.lookUps.find(i => {
                 if (props.memberDetails.person) return i.id === props.memberDetails.person.genderID
             }) : {} : {}
-            pictureUrl.value = props.memberDetails.person ? props.memberDetails.person.pictureUrl : ""
+            // pictureUrl.value = props.memberDetails.person ? props.memberDetails.person.pictureUrl : ""
         }
 
         // if(props.resetImage) {
