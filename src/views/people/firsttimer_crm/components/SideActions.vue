@@ -26,7 +26,7 @@
                 <div class="icon-bg" v-tooltip.top="'Make a phone call'"><i class="pi pi-phone"></i></div>
                 <div>Call</div>
             </div>
-            <div class="ml-4">
+            <div class="ml-4" @click="openTaskEditor">
                 <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
                 <div>Task</div>
             </div>
@@ -176,7 +176,7 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    emits: ["opennoteeditor", "openemailmodal"],
+    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
         // const toast = useToast()
@@ -259,6 +259,10 @@ export default {
         const openEmailModal = () => {
             emit('openemailmodal', true)
         }
+        
+        const openTaskEditor = () => {
+            emit('opentaskeditor', true)
+        }
 
 
         return {
@@ -282,7 +286,8 @@ export default {
             email,
             saveEmail,
             openNoteEditor,
-            openEmailModal
+            openEmailModal,
+            openTaskEditor
         }
     }
 }
