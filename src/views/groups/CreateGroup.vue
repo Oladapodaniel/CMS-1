@@ -120,6 +120,7 @@
                         class="default-btn outline-none primary-text font-weight-bold border-0"
                         data-toggle="modal"
                         data-target="#exampleModal"
+                        ref="modalBtn"
                       >
                         Add member
                       </button>
@@ -253,13 +254,17 @@
                                             
                                           </p>  -->
                                           <p
-                                            class="bg-secondary p-1 mb-0 "
-                                           
+                                      
+                                            class="bg-secondary p-1 mb-0  "
+                                            
                                           >
                                             Enter 3 or more characters
                                             
                                           </p>
-                                          
+                                          <!-- v-if="
+                                                  wardSearchString.length < 3 &&
+                                                  wardSearchedMembers.length === 0
+                                                " -->
                                              
                                           <p
                                             aria-disabled="true"
@@ -820,7 +825,7 @@
         >
         <div class="row">
             <div class="col-md-12">
-            <NewPerson @cancel="() => display = false" />
+            <NewPerson @cancel="() => display = false" @person-id="getWardId($event)"  @show-group-modal="setGroupModal" />
               <!-- @person-id="getFatherId($event)" -->
             </div>
       </div>
@@ -851,12 +856,16 @@ export default {
   components: { Dropdown, Dialog, NewPerson },
   setup() {
      const display = ref(false);
+    //  const showWardModal = ref(false)
     const memberDia = ref(true);
+    const modalBtn = ref(null);
     const groupData = ref({});
+    // const wardSearchString = ref("");
     const searchText = ref("");
     const loading = ref(false);
     const loadingMembers = ref(false);
     const memberSearchResults = ref([]);
+    // const wardSearchedMembers = ref([]);
     const position = ref("");
     const memberSelectInput = ref(null);
     const marked = ref([]);
@@ -884,7 +893,7 @@ export default {
           display.value = true;
          
         };
-    //   const setWardModal = (payload) => {
+    //   const setGroupModal = (payload) => {
     //     showWardModal.value = payload
     // }
     // const getFatherId = (payload) => {
@@ -1109,6 +1118,29 @@ export default {
 
     const modalStatus = ref("");
     const groupMembers = ref([]);
+
+    const getWardId = (payload) => {
+          console.log(payload)
+          // wardSearchString.value = payload.personFirstName
+        let body = {
+          name: payload.personFirstName,
+          personId: payload.personId,
+          email: payload.personEmail,
+          phoneNumber: payload.personNumber
+        } 
+        selectedMembers.value.push(body)
+        //   const constructSelectedMember = new Object()
+          // selectedMembers.value.name = payload.personFirstName
+          // selectedMembers.value.id = payload.personId
+        //   familyMembers.value.push(constructSelectedMember)
+          console.log(selectedMembers)
+        }
+        //  const wardSearchForUsers = () => {
+        //   if (wardSearchString.value.length >= 3) {
+        //     wardStartSearch(wardSearchString.value);
+        //   }
+        // };
+
     const addSelectedMembersToGroup = () => {
       if (selectedMembers.value.length === 0) {
         modalStatus.value = "modal";
@@ -1141,6 +1173,12 @@ export default {
     const groupNameIsInvalid = ref(false);
     const savingGroup = ref(false);
     const toast = useToast();
+
+    const setGroupModal = () => {
+      //  modalStatus.value = "modal";
+      modalBtn.value.click()
+            // showWardModal.value = payload
+        }
 
     const saveGroupData = () => {
       if (!groupData.value.name) {
@@ -1242,7 +1280,7 @@ export default {
             address: i.person.address,
             email: i.person.email,
             name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
-            phone: i.person.phoneNumber,
+            phone: i.person.mobilePhone,
             position: i.position
           };
 
@@ -1255,7 +1293,7 @@ export default {
               address: i.person.address,
               email: i.person.email,
               name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
-              phone: i.person.phoneNumber,
+              phone: i.person.mobilePhone,
               position: i.position,
               groupID: i.groupID
             }
@@ -1306,7 +1344,8 @@ export default {
           email: member.email,
           personId: member.personID,
           approvalName: member.name,
-          position: member.position
+          position: member.position,
+          phone: member.phone
       }
       console.log(memberToApprove)
       try {
@@ -1386,7 +1425,15 @@ export default {
       copyMemberToGroup,
       awaitingApprovals,
       requestApproval,
-    //  getFatherId
+      setGroupModal,
+      modalBtn,
+      // wardSearchString,
+      // showWardModal
+     getWardId
+    //  wardSearchedMembers,
+    // wardSearchForUsers
+
+
     };
   },
 };

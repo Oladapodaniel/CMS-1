@@ -38,7 +38,8 @@ export default {
         // const router = useRoute()
 
         const goBack = () => {
-            router.go(-1)
+          router.push('/tenant')
+            // router.go(-1)
         }
 
         return {
