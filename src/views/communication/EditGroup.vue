@@ -48,7 +48,7 @@
                         v-on:click="enableGroupName"
                         class="btnIcons btn-secondary"
                       >
-                        <i class="fa fa-pencil-alt icons"></i>
+                        <i class="pi pi-pencil-alt icons"></i>
                         Edit
                       </button>
                     </div>

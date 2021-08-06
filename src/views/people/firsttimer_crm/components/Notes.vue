@@ -1,24 +1,26 @@
 <template>
    <div class="d-flex justify-content-end mx-3">
-        <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveTask">Create</div>
+        <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="openNoteEditor">Create</div>
    </div>
-    <div class="col-12 mt-4">
+    <div class="col-12 mt-4" v-for="(note, index) in addNotes" :key="index">
             <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up" :class="{'roll-note-icon' : noteIcon, 'unroll-note-icon' : !noteIcon}" @click="toggleNoteIcon"></i>&nbsp;&nbsp;Note</span> by Oladapo Daniel <span class="font-weight-700">Actions <i class="pi pi-sort-down"></i></span></div>
-                        <transition name="fade">
-                            <div class="col mt-4" v-if="noteIcon">Creating your Note here</div>
-                        </transition>
+                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : note.noteIcon, 'unroll-note-icon' : !note.noteIcon}" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Note</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
+                        
+                            <div class="col mt-4 enlargen-font">{{ note.body }}</div>
+                        
                     </div>
                     <div>
                         <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
                     </div>
                 </div>
-                <div class="row mt-4">
-                    <div class="col font-weight-700">Add Comment</div>
-                    <div class="col text-right font-weight-700">1 Association</div>
-                </div>
+                <transition name="fade">
+                    <div class="row mt-4" v-if="note.noteIcon">
+                        <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
+                        <div class="col text-right font-weight-700 uniform-primary-color">1 Association</div>
+                    </div>
+                </transition>
             </div>
         </div>
 </template>
@@ -26,7 +28,24 @@
 
 <script>
 export default {
-    setup() {}
+    props: ['addNotes'],
+    emits: ['individualtoggle', 'opennoteeditor'],
+    setup(props, { emit }) {
+
+
+        const toggleNoteIcon = (index) => {
+            emit('individualtoggle', index)
+        }
+
+        const openNoteEditor = () => {
+            emit('opennoteeditor', true)
+        }
+
+        return {
+            toggleNoteIcon,
+            openNoteEditor
+        }
+    }
 }
 </script>
 
@@ -43,7 +62,7 @@ export default {
 }
 .unroll-note-icon {
     transition: all 0.5s ease-in-out;
-    transform: rotateZ(360deg);
+    transform: rotateZ(90deg);
 }
 
 .fade {
@@ -69,7 +88,7 @@ export default {
 }
 
 .btn-btn {
-    font-size: 12px;
+    font-size: 17px;
     line-height: 14px;
     padding: 5px 12px;
     border-radius: 3px;
@@ -89,5 +108,13 @@ export default {
     background-color: #eaf0f6;
     border-color: #cbd6e2;
     color: #506e91; 
+}
+
+.uniform-primary-color {
+    color: #136acd
+}
+
+.enlargen-font {
+    font-size: 1.2em
 }
 </style>

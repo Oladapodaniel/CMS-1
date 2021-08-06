@@ -33,7 +33,7 @@
         <span class="theader">{{ contributionReport.activityName? 'Event' : "" }}</span>
         <div class="my-3">
           <span class="evt-name">
-            {{ contributionReport.activityName ? contributionReport.activityName : ""  }} <i v-if="contributionReport.activityName" class="fa fa-info-circle"></i>
+            {{ contributionReport.activityName ? contributionReport.activityName : ""  }} <i v-if="contributionReport.activityName" class="pi pi-info-circle"></i>
           </span>
         </div>
       </div>
@@ -52,21 +52,21 @@
           <div class="col-md-12">
             <div class="row" v-if="!reportApproved">
               <div class="col-md-12 py-3 info-div">
-                <span class="px-2"><i class="fa fa-info-circle"></i></span>
+                <span class="px-2"><i class="pi pi-info-circle"></i></span>
                 <span class="font-weight-bold"
                   >This is a DRAFT report. You can take further actions once you
                   approve it.</span
                 >
                 <span class="px-2"
                   ><span style="color: #136acd">Learn more</span>
-                  <i class="fa fa-external-link-alt ml-2"></i
+                  <i class="pi pi-external-link-alt ml-2"></i
                 ></span>
               </div>
             </div>
             <div class="row my-3">
               <div class="col-md-1 d-flex align-items-center">
                 <span class="file-icon"
-                  ><i class="fa fa-book" style="color: #136acd"></i
+                  ><i class="pi pi-book" style="color: #136acd"></i
                 ></span>
               </div>
               <div class="col-md-5">
@@ -99,7 +99,7 @@
             <div class="row my-3">
               <div class="col-md-1 d-flex align-items-center">
                 <span class="file-icon"
-                  ><i class="fa fa-location-arrow" style="color: #136acd"></i
+                  ><i class="pi pi-location-arrow" style="color: #136acd"></i
                 ></span>
               </div>
               <div class="col-md-5 grey-text">

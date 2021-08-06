@@ -472,7 +472,7 @@ export default {
         attendanceCheckinInStore.value = response;
 
 
-        eventLinkResponse.value = response.eventRegistrationLink
+        eventLinkResponse.value = response
         paymentFormIdResponse.value = response.paymentFormId
         tenantId.value = response.tenantID
         console.log(response.paymentFormId)
@@ -592,10 +592,11 @@ export default {
     const eventRegLink = computed(() => {
       if (
         !attendanceCheckinInStore.value ||
-        !attendanceCheckinInStore.value.eventRegistrationLink
+        !attendanceCheckinInStore.value.eventID
       )
-        return eventLinkResponse.value;
-      return attendanceCheckinInStore.value.eventRegistrationLink
+        return`https://my.churchplus.co/event/${eventLinkResponse.value.eventID}`;
+      // return attendanceCheckinInStore.value.eventRegistrationLink
+      return `https://my.churchplus.co/event/${attendanceCheckinInStore.value.eventID}`
     });
     
     // const paymentFormID = computed(() => {

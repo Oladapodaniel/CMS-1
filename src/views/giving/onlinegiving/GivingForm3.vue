@@ -75,7 +75,7 @@
               <button
                 class="px-md-4 outline-none default-btn text-white border-0 but"
               >
-                Naira &nbsp; <i class="fa fa-angle-down"></i>
+                Naira &nbsp; <i class="pi pi-angle-down"></i>
               </button>
             </div>
           </div>
@@ -219,7 +219,7 @@
                         class="px-md-4 outline-none default-btn border"
                         @click="addMore()"
                       >
-                        <i class="fa fa-plus-circle"></i> &nbsp; Add More
+                        <i class="pi pi-plus-circle"></i> &nbsp; Add More
                       </button>
                     </div>
                   </div>

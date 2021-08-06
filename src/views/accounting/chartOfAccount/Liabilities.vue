@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-12 py-2 mt-4 account-head">
           {{ item.name }} <small class="font-weight-normal">{{ item.groupSubHead }}</small
-          ><i class="fa fa-question-circle-o help" aria-hidden="true"></i>
+          ><i class="pi pi-question-circle-o help" aria-hidden="true"></i>
         </div>
       </div>
       <div
@@ -18,7 +18,7 @@
         </div>
         <div class="col-6 col-md-5">{{ itm.description }}</div>
         <div class="col-6 col-md-2 text-right">
-          <i class="fa fa-pencil c-pointer" aria-hidden="true" data-toggle="modal" data-target="#liabModal" @click="editAccount(item, itm)"></i>
+          <i class="pi pi-pencil c-pointer" aria-hidden="true" data-toggle="modal" data-target="#liabModal" @click="editAccount(item, itm)"></i>
           <i class="pi pi-trash ml-3 c-pointer" aria-hidden="true"  @click="deleteAccount(itm.id, index, indx)"></i>
         </div>
       </div>
@@ -35,7 +35,7 @@
               class="c-pointer text-decoration-none primary-text"
               data-toggle="modal"
               data-target="#liabModal"
-              ><i class="fa fa-plus-circle"></i>&nbsp; &nbsp; Add a new
+              ><i class="pi pi-plus-circle"></i>&nbsp; &nbsp; Add a new
               Account</a
             >
           </div>

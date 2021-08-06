@@ -5,7 +5,7 @@
         <div class="col-md-12 d-flex">
           <a class="p-2 mx-1 page-btn rounded-circle" @click="prevPage"
            :class="{ 'disable': currentPage === 0 }"
-            ><i class="fa fa-angle-left"></i>
+            ><i class="pi pi-angle-left"></i>
           </a>
           <a
             class="p-2 mx-1 rounded-circle"
@@ -18,7 +18,7 @@
           >
           <a class="p-2 mx-1 page-btn rounded-circle" :class="{ 'disable': currentPage >= pages - 1 }"
             @click="nextPage"
-            ><i class="fa fa-angle-right"></i
+            ><i class="pi pi-angle-right"></i
           ></a>
         </div>
       </div>

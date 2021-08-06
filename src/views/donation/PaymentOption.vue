@@ -6,7 +6,7 @@
                     <h5 class="page-header">Payment Options</h5>
                 </div>
                 <div class="col-sm-5 offset-1 header-contri mt-3">{{ paymentData.name ? paymentData.name : paymentData.title }}</div>
-                <div class="col-10 offset-1 text-sm-right offset-sm-0 col-sm-4 edit mt-3" @click="editPayment"><i class="fa fa-edit"></i> Edit Payment Details</div>
+                <div class="col-10 offset-1 text-sm-right offset-sm-0 col-sm-4 edit mt-3" @click="editPayment"><i class="pi pi-edit"></i> Edit Payment Details</div>
                 <!-- <div class="col-10 offset-1 mt-4" style="font-size: 1.1em">CONTRIBUTION ITEMS</div> -->
                 <div class="col-8 offset-1 mt-3" v-for="item in paymentData.contributionItems" :key="item.id">
                         <div style="font-size: 1.1em"><i class="pi pi2 pi-check-circle"> &nbsp;&nbsp;</i>{{ item.name }}</div>

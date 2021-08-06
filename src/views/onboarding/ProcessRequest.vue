@@ -11,7 +11,7 @@
             <h3>We 're setting things up for you.</h3>
           </div>
         </div>
-        <!-- <i class="fa fa-spinner fa-spin"></i> -->
+        <!-- <i class="pi pi-spinner fa-spin"></i> -->
       </div>
 
       <div class="desc" :class="{ box2: processing }">

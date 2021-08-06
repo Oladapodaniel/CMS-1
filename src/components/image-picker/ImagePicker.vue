@@ -1,5 +1,6 @@
 <template>
-  <div class="container-fluid" v-lazy-container="{ selector: 'img' }">
+  <div class="container-fluid">
+  <!-- <div class="container-fluid" v-lazy-container="{ selector: 'img' }"> -->
     <div class="row bordered">
       <div class="col-md-12">
         <div class="row bordered-bottom">
@@ -26,7 +27,8 @@
           <div class="col-sm-4 my-2" v-for="(image, index) in gallery" :key="index" style="max-height: 200px" @click="uploaded(true, image)">
               <div class="row">
                   <div class="col-md-11 mx-auto c-pointer img-box">
-                      <img :data-src="image" style="height:100%;width:100%" alt="">
+                      <img v-lazy="image" style="height:100%;width:100%" alt="">
+                      <!-- <img :data-src="image" style="height:100%;width:100%" alt=""> -->
                   </div>
               </div>
           </div>
@@ -38,7 +40,7 @@
         <div class="row" v-else>
             <div class="col-md-12 text-center my-4">
                 <span>
-                  <img v-if="file && (file.type && file.type.includes('image'))" style="border-radius:15px;max-width:100%;max-height:300px" class="mx-auto h-100" :src="fileUrl" alt="">
+                  <img v-if="file && (file.type && file.type.includes('image'))" style="border-radius:15px;max-width:100%;max-height:300px" class="mx-auto h-100 no-lazyload" :src="fileUrl" alt="">
                   <video
                     v-if="file && (file.type && file.type.includes('video'))"
                     style="width: 100%;border-radius:10px"
@@ -48,6 +50,7 @@
                     <source :src="fileUrl" />
                     <!-- <source src="movie.mp4" type="video/mp4"> -->
                     Your browser does not support the video tag.
+                    
                   </video>
                 </span>
             </div>

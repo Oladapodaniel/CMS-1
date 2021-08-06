@@ -388,7 +388,7 @@ export default {
         existingPlan.value.description = Plans.value.description;
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
         existingPlan.value.membershipSize = Plans.value.membershipSize;
-        subscriptionPlans.value = res.data.returnObject.subscriptionPlans;
+        subscriptionPlans.value = res.data.returnObject.subscriptionPlans.filter(i => i.description !== "FREE PLAN")
         // selectedPlan.value = subscriptionPlans.value.find(
         //   (i) => i.description === "PLAN"
         // );

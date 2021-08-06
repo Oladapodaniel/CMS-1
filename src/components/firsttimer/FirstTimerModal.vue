@@ -23,7 +23,7 @@
                         </select>
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
-                        <i class="fa fa-question-circle inp-icon my-1"></i>
+                        <i class="pi pi-question-circle inp-icon my-1"></i>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                         <input type="text" class="form-control inp" name="" id="" placeholder="0123456789" v-show="activeTab === 'sms'">
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
-                        <i class="fa fa-plus-circle inp-icon plus-icon my-1" @click="addRecipient"></i>
+                        <i class="pi pi-plus-circle inp-icon plus-icon my-1" @click="addRecipient"></i>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                         <span class="text-danger">Enter {{ activeTab === 'sms' ? 'phone number' : 'email address' }}</span>
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
-                        <i class="fa fa-times inp-icon my-1 remove-icon" @click="removeRecipient(recipient)"></i>
+                        <i class="pi pi-times- inp-icon my-1 remove-icon" @click="removeRecipient(recipient)"></i>
                     </div>
                 </div>
             </div>

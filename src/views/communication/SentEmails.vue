@@ -9,7 +9,7 @@
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-12 col-sm-12">
                   <div class="search-div">
-                    <span><i class="fa fa-search mr-1"></i></span>
+                    <span><i class="pi pi-search mr-1"></i></span>
                     <input
                       type="text"
                       placeholder="Search here..."

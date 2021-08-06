@@ -12,7 +12,7 @@
             @click="moreLinksVissible = !moreLinksVissible"
           >
             Create new
-            <i class="fa fa-angle-down create-dd"></i>
+            <i class="pi pi-angle-down create-dd"></i>
           </button>
           <div class="more-items ml-1" v-if="moreLinksVissible">
             <div class="container">
@@ -80,7 +80,7 @@
             <div class="top">
               <div class="box-top">
                 <div class="top-icon-div">
-                  <i class="fa fa-users"></i>
+                  <i class="pi pi-users"></i>
                 </div>
                 <div class="box-top-text">
                   <p>FIRST TIMERS</p>
@@ -115,7 +115,7 @@
             <div class="top">
               <div class="box-top">
                 <div class="top-icon-div">
-                  <i class="fa fa-envelope"></i>
+                  <i class="pi pi-envelope"></i>
                 </div>
                 <div class="box-top-text"></div>
               </div>
@@ -238,6 +238,7 @@
                     <tr>
                       <th>NAME</th>
                       <th>DATE</th>
+                      <th>DAY</th>
                       <th>TYPE</th>
                       <th>PHONE</th>
                       <th></th>
@@ -259,6 +260,7 @@
                       <td>
                         {{ dateFormat(celebration.date) }}
                       </td>
+                      <td>{{ celebration.dayOfCelebration }}</td>
                       <td>{{ celebration.celebration }}</td>
                       <td>{{ celebration.phone }}</td>
                       <td>
@@ -274,9 +276,9 @@
                           aria-labelledby="dropdownMenuButton"
                         >
                           <!-- v-if="person.mobilePhone" -->
-                          <a class="dropdown-item elipsis-items">
+                          <a class="dropdown-item elipsis-items" >
                             <router-link
-                              :to="`/tenant/sms/compose?phone=${celebration.phone}`"
+                              :to="celebration.phone ? `/tenant/sms/compose?phone=${celebration.phone}` : ''" :class="{ 'fade-text': !celebration.phone, 'text-color': celebration.phone }"
                               >Send SMS</router-link
                             >
                           </a>
@@ -482,12 +484,12 @@
 
       <!-- <div class="table-footer" v-if="tenantInfo.celebrations && tenantInfo.celebrations.length > 0">
           <button class="tbl-footer-btn">
-            <i class="fa fa-angle-left"></i>
+            <i class="pi pi-angle-left"></i>
           </button>
           <button class="tbl-footer-btn">1</button>
           <button class="tbl-footer-btn">2</button>
           <button class="tbl-footer-btn">
-            <i class="fa fa-angle-right"></i>
+            <i class="pi pi-angle-right"></i>
           </button>
         </div> -->
       <!-- </div> -->
@@ -1524,5 +1526,14 @@ tbody tr:nth-child(even) {
   
 .push-down {
   margin-top: 26px;
+}
+
+.fade-text {
+  color: #a8a8a8;
+  cursor: not-allowed;
+}
+
+.text-color {
+  color: #212529;
 }
 </style>

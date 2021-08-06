@@ -121,7 +121,7 @@
                 <ProgressBar :value="uploadProgress" style="max-width: 600px;width: 100%;min-width:400px" />
             </Dialog>
             <Dialog
-                header="Image Picker"
+                header="Select Image"
                 v-model:visible="showImagePicker"
                 :style="{ width: '70vw', maxWidth: '600px' }"
                 :modal="true"
@@ -141,7 +141,7 @@ import { ref } from '@vue/reactivity';
     import social_service from "../../../services/social/social_service"
 import membershipService from '../../../services/membership/membershipservice';
     import axios from "@/gateway/backendapi";
-    import fbClient from "@/gateway/backendapi";
+    // import fbClient from "@/gateway/backendapi";
     import ProgressBar from 'primevue/progressbar';
     import { useRouter } from "vue-router";
     import ImagePicker from "../../../components/image-picker/ImagePicker"
@@ -238,6 +238,9 @@ import { useRoute } from "vue-router"
                 formData.append("title", "Anouncement");
                 formData.append("tenantId", tenantId.value);
                 formData.append("postCategoryId", postCategory.value ? postCategory.value.postCategoryId : "");
+                formData.append("socialData.value.pageId", socialData.value.pageId.value? socialData.value.pageId.value : "");
+                formData.append("socialData.value.accessToken", socialData.value.accessToken.value? socialData.value.accessToken: "");
+                formData.append("toFacebook", toFacebook.value ? toFacebook.value : "")
                 display.value = true;
                 axios.post("/mobile/v1/Feeds/CreatePost", formData,
                     {
@@ -250,16 +253,17 @@ import { useRoute } from "vue-router"
                 )
                     .then(res => {
                         console.log(res, "upload res");
-                        if (toFacebook.value) {
-                            alert('posting to facebook')
-                            fbClient.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=Hello Fans!&access_token=${socialData.value.accessToken}`)
-                            .then(res => {
-                                console.log(res, "post res");
-                            })
-                            .catch(err => {
-                                console.log(err, "err");
-                            })
-                        }
+                        // if (toFacebook.value) {
+                        //     alert('posting to facebook')
+                            
+                        //     fbClient.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=Hello Fans!&access_token=${socialData.value.accessToken}`)
+                        //     .then(res => {
+                        //         console.log(res, "post res");
+                        //     })
+                        //     .catch(err => {
+                        //         console.log(err, "err");
+                        //     })
+                        // }
                         display.value = false;
                         // router.push("/tenant/social/feed")
                     })
@@ -299,6 +303,7 @@ import { useRoute } from "vue-router"
             const isUrl = ref(false);
             const showImagePicker = ref(false);
             const fileUploaded = payload => {
+                console.log(payload, "payload");
                 isUrl.value = false;
                 if (payload.isUrl) {
                     isUrl.value = true;
@@ -337,10 +342,10 @@ import { useRoute } from "vue-router"
                 }
             }
             getSocialDetails()
+        
             
 
             return {
-                
                 toFacebook,
                 postDestination,
                 getSocialDetails,
