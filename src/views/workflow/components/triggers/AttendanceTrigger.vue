@@ -61,13 +61,13 @@ export default {
 
         const days = ref(0);
         const handleDays = e => {
-            data.groups = e.target.value;
+            data.days = e.target.value;
             emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
 
         const times = ref([ ]);
         const handleTimes = e => {
-            data.times = e.value;
+            data.times = e.target.value;
             emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex);
         }
 
@@ -81,10 +81,10 @@ export default {
         const description = computed(() => {
             return {
                 id: 10,
-                selectedStatus: data.selectedStatus && data.selectedStatus.length > 0 ? data.selectedStatus : ['____'],
-                numOfTimes: data.numOfTimes,
-                timesInLastWeek: data.timesInLastWeek,
-                selectedGroups: data.selectedGroups && data.selectedGroups.length > 0 ? data.selectedGroups : ['___']
+                selectedStatus: data.attendanceStatus && data.attendanceStatus.length > 0 ? data.attendanceStatus : ['____'],
+                numOfTimes: data.times,
+                timesInLastWeek: data.days,
+                selectedGroups: selectedGroups.value.length > 0 ? selectedGroups.value.map(i => i.name) : ['___']
             }
         })
 
