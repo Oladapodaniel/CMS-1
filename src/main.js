@@ -22,9 +22,9 @@ import Checkbox from 'primevue/checkbox';
 import Tag from 'primevue/tag';
 import Editor from 'primevue/editor';
 import SelectButton from 'primevue/selectbutton';
-
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
+// import SinchClient from 'sinch-rtc/sinch.min.js'
 
 
 import 'primevue/resources/themes/saga-blue/theme.css'       //theme
@@ -98,6 +98,11 @@ app
       attempt: 1
     }
   )
+
+  // let sinchClient = new SinchClient({
+  //     applicationKey: 'b1392f96-6a4b-4e44-bdf1-0e1f4dd2d1a0',
+  //     capabilities: { calling: true },
+  // })
 
 
 app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')
