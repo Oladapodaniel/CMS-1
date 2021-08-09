@@ -89,7 +89,7 @@
                       <p class="font-weight-bold mb-0">SMS Units</p>
                     </div>
                     <div class="col-sm-7 d-sm-flex justify-content-end">
-                      <button class="btn buy-btn text-center ">
+                      <button class="btn buy-btn">
                         <span class="btn-text">
                             BUY UNITS
                         </span>
