@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-12 activity-date">July 12</div>
+        <div class="col-12 activity-date" v-if="addNotes.length > 0 && addTask.length > 0">July 12</div>
         <transition-group>
             <div class="col-12 mt-4" v-for="(note, index) in addNotes" :key="index">
                 <div class="col-12 card-bg p-4">
@@ -29,7 +29,7 @@
             <div class="col-12 card-bg p-4">
             <div class="row d-flex justify-content-between">
                 <div>
-                    <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : taskIcon, 'unroll-note-icon' : !taskIcon}" @click="toggleTaskIcon"></i>&nbsp;&nbsp;Task</span> assigned to Peter Ihesie <span class="font-weight-700 uniform-primary-color">Actions <i class="pi pi-sort-down"></i></span></div>
+                    <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : task.taskIcon, 'unroll-note-icon' : !task.taskIcon}" @click="toggleTaskIcon(index)"></i>&nbsp;&nbsp;Task</span> assigned to Peter Ihesie <span class="font-weight-700 uniform-primary-color">Actions <i class="pi pi-sort-down"></i></span></div>
                     
                 </div>
                 <div>
@@ -37,13 +37,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 mt-4 enlargen-font" v-if="!taskIcon">
+                <div class="col-12 mt-4 enlargen-font" v-if="!task.taskIcon">
                     {{ task.body ? task.body : "Create your task" }}
                 </div>
                 <div v-if="!taskIcon && task.body" class="col mt-4 enlargen-font">{{ theTask }}</div>
                 <div class="col-12">
                     <transition name="fade">
-                        <div class="row mt-4" v-if="taskIcon">
+                        <div class="row mt-4" v-if="task.taskIcon">
                             <div class="col-1 align-self-center">
                                 <div class="checked"><i class="pi pi-check text-white"></i></div>
                             </div>
@@ -209,6 +209,11 @@
         </div>
         </div> -->
     </div>
+    <div class="row" v-if="addNotes.length === 0 && addTask.length === 0">
+        <div class="col-12 mt-3 no-activity">
+            You have not performed any activities yet
+        </div>
+    </div>
 </template>
 
 
@@ -219,23 +224,12 @@ export default {
     components: {
         Dropdown
     },
-    props: ['addNotes', 'addTask'],
-    emits: ['individualtoggle'],
+    props: ['addNotes', 'addTask', 'taskTime'],
+    emits: ['individualtoggle', 'individualtoggletask'],
     setup(props, { emit }) {
         const noteIcon = ref(false)
         const taskIcon = ref(false)
         // const meetIcon = ref(false)
-        const taskTime = ref([
-            {
-                name: '08:00'
-            },
-            {
-                name: '09:00'
-            },
-            {
-                name: '10:00'
-            }
-        ])
         const selectedTaskTime = ref("")
         const editTask = ref(false)
         const theTask = ref("")
@@ -249,8 +243,8 @@ export default {
             emit('individualtoggle', index)
         }
         
-        const toggleTaskIcon = () => {
-            taskIcon.value = !taskIcon.value
+        const toggleTaskIcon = (index) => {
+            emit("individualtoggletask", index)
         }
         
         // const toggleMeetIcon = () => {
@@ -308,7 +302,6 @@ export default {
             toggleNoteIcon,
             taskIcon,
             toggleTaskIcon,
-            taskTime,
             selectedTaskTime,
             toggleEditTask,
             toggleEditTask2,
@@ -430,5 +423,11 @@ export default {
 
 .enlargen-font {
     font-size: 1.2em
+}
+
+.no-activity {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: rgb(156, 156, 156);
 }
 </style>

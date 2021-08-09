@@ -2,7 +2,7 @@
     <div class="container-top container adjust-font">
         <div class="row">
             <div class="col-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor"/>
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails"/>
             </div>
             <div class="col-8 main-view">
                 <div class="row">
@@ -49,7 +49,7 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList"/>
+                        <Activity :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime"/>
                     </div>
                     <div class="col-12" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
@@ -61,7 +61,7 @@
                         <Calls />
                     </div>
                     <div class="col-12" v-if="showTasks" transition="bounce">
-                        <Tasks />
+                        <Tasks :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime" @opentaskeditor="openTaskEditor" />
                     </div>
                 </div>
             </div>
@@ -115,17 +115,19 @@
                 </div>
             </div>
             <div class="row" v-else>
-                <div class="col-3 mt-2">
-                    To:
+                <div class="col-12 mt-3">
+                    <!-- <input type="text" class="form-control" value="oladapoadniel@gmail.com" disabled/> -->
+                    <span class="p-float-label">
+                        <InputText id="inputtext" class="w-100" style="border-radius: 0.25rem !important; border: 1px solid #ced4da !important;" type="text" disabled/>
+                        <label for="inputtext">{{ personDetails.email }}</label>
+                    </span>
                 </div>
-                <div class="col-7 mt-2">
-                    <input type="text" class="form-control" value="oladapoadniel@gmail.com" disabled/>
-                </div>
-                <div class="col-3 mt-3">
-                    Subject:
-                </div>
-                <div class="col-7 mt-3">
-                    <input type="text" class="form-control" v-model="emailSubject" placeholder="subject"/>
+                <div class="col-12 mt-4">
+                    <!-- <input type="text" class="form-control" v-model="emailSubject" placeholder="subject"/> -->
+                    <span class="p-float-label">
+                        <InputText id="inputtext" class="w-100" style="border-radius: 0.25rem !important; border: 1px solid #ced4da !important;" type="text" />
+                        <label for="inputtext">Enter your subject</label>
+                    </span>
                 </div>
                 <div class="col-12 mt-3">
                     <Editor v-model="emailBody" editorStyle="height: 260px"/>
@@ -253,6 +255,8 @@ import Editor from 'primevue/editor';
 import composeService from "../../../services/communication/composer";
 import { useToast } from "primevue/usetoast";
 import Dropdown from "primevue/dropdown";
+import { useRoute } from "vue-router"
+import axios from "@/gateway/backendapi";
 // import SelectButton from 'primevue/selectbutton';
 export default {
     components: {
@@ -270,6 +274,7 @@ export default {
     },
     setup () {
         const toast = useToast()
+        const route = useRoute()
         const showActivity = ref(true)
         const showNotes = ref(false)
         const showEmails = ref(false)
@@ -290,6 +295,7 @@ export default {
         const taskTime = ref([{ name: '08:00' },{ name: '09:00' }, { name: '10:00' }])
         const op = ref("")
         const theTask = ref("")
+        const personDetails = ref({})
 
         const toggleActivity = () => {
             showActivity.value = true
@@ -353,10 +359,15 @@ export default {
         const setIconProp = (payload) => {
             noteList.value[payload].noteIcon = !noteList.value[payload].noteIcon
         }
+        
+        const setIconPropTask = (payload) => {
+            taskList.value[payload].taskIcon = !taskList.value[payload].taskIcon
+        }
 
         const sendEmail = async () => {
             let data = {
-                ToContacts: "5f33cb89-d002-4607-a688-08d8f38b4d33",
+                ToContacts: route.params.personId,
+                // ToContacts: "5f33cb89-d002-4607-a688-08d8f38b4d33",
                 groupedContacts: [],
                 isPersonalized: false,
                 message: `<!DOCTYPE html>
@@ -430,6 +441,16 @@ export default {
             theTask.value = ""
         };
 
+        const getPersonDetails = () => {
+            axios
+            .get(`/api/People/GetPersonInfoWithAssignments/${route.params.personId}`)
+            .then((res) => {
+                console.log(res)
+                personDetails.value = res.data
+            })
+        }
+        getPersonDetails()
+
         return {
             toggleActivity,
             toggleNotes,
@@ -465,7 +486,9 @@ export default {
             op,
             theTask,
             saveTask,
-            taskList
+            taskList,
+            setIconPropTask,
+            personDetails
         }
     }
 }
