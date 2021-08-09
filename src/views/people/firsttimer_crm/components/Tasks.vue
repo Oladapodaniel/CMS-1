@@ -222,6 +222,11 @@
         </transition>
         </div>
         </div>
+         <div class="row" v-if="addTask.length === 0">
+            <div class="col-12 mt-3 no-activity">
+                You have not added any task yet
+            </div>
+        </div>
 </template>
 
 
@@ -339,6 +344,12 @@ export default {
 
 .enlargen-font {
     font-size: 1.2em
+}
+
+.no-activity {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: rgb(156, 156, 156);
 }
 
 </style>
