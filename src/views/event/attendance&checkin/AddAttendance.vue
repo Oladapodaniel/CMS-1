@@ -478,7 +478,7 @@
               <div class="col-md-12 d-flex justify-content-center">
                 <button
                   class="default-btn primary-bg text-white border-0 contn-btn"
-                  @click="onContinue"
+                  @click.once="onContinue"
                   :disabled="!selectedEvent.id || !selectedGroup.id"
                 >
                   Save and Continue
@@ -655,6 +655,7 @@ export default {
 
     const onContinue = async () => {
       console.log(addPaidClass.value)
+     
 
       // const baseFormData = new FormData()
       // selectedEvent.value ? baseFormData.append("eventId", selectedEvent.value.id) : ""
@@ -667,6 +668,7 @@ export default {
       // checkinSMS.value ? baseFormData.append("checkinSMS", checkinSMS.value) : ""
       // checkinEmail.value ? baseFormData.append("checkinEmail", checkinEmail.value) : ""
       // image.value ? baseFormData.append("bannerPhoto", image.value) : ""
+      //  disabled.value = false
 
       let checkinEvent = {
           eventId: selectedEvent.value.id,
@@ -676,6 +678,7 @@ export default {
         slot.value ? checkinEvent.registrationSlot = slot.value : ""
       //   console.log(checkinEvent)
       const formData = new FormData();
+        // disabled.value = false
 
       image.value ? formData.append("bannerPhoto", image.value) : ""
       formData.append("details", eventDetails.value)
@@ -761,11 +764,13 @@ export default {
                 code: data.returnObject.checkInAttendanceResult.attendanceCode
               },
             });
+            
         }
         catch (err) {
           console.log(err)
         }
       }
+       
     };
 
     const showPaidTab = () => {
