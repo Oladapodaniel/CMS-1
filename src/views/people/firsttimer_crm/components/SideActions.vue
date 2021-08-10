@@ -6,11 +6,13 @@
         </div>
         <div class="row mt-5">
             <div class="col-3">
-                <img src="../../../../assets/people/phone-import.svg" class="contact-image"/>
+                <img :src="personDetails.pictureUrl" class="contact-image" v-if="personDetails.pictureUrl"/>
+                <img src="../../../../assets/people/phone-import.svg" class="contact-image" v-else/>
             </div>
             <div class="col-9">
-                <div class="contact-name">Design Sample</div>
-                <div>sample@gmail.com <i class="pi pi-copy"></i>&nbsp; &nbsp;<i class="pi pi-pencil" @click="editContactName"></i></div>
+                <div class="contact-name">{{ `${personDetails.firstName ? personDetails.firstName : ""} ${personDetails.lastName ? personDetails.lastName : ""}` }}</div>
+                <div>{{ personDetails.email }}</div>
+                <div><i class="pi pi-copy uniform-primary-color"></i>&nbsp;<i class="pi pi-pencil uniform-primary-color" @click="editContactName"></i></div>
             </div>
         </div>
         <div class="row d-flex justify-content-center mt-5">
@@ -22,7 +24,7 @@
                 <div class="icon-bg" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
                 <div>Email</div>
             </div>
-            <div class="ml-4">
+            <div class="ml-4" @click="call">
                 <div class="icon-bg" v-tooltip.top="'Make a phone call'"><i class="pi pi-phone"></i></div>
                 <div>Call</div>
             </div>
@@ -47,7 +49,7 @@
             <div class="col-12 label-text">Email</div>
             <div class="col-12 mt-2 ">
                 <div class="task-border border-transparent d-flex justify-content-between p-2" :class="{ 'hover-border' : hoverTask }" @mouseover="onHoverBorder" @mouseleave="outHoverBorder" @click="editEmail">
-                    <div>{{ email }}</div>
+                    <div>{{ personDetails.email }}</div>
                 <i class="pi pi-pencil align-self-center" :class="{ 'uniform-primary-color' : hoverTask, 'text-white' : !hoverTask }"></i>
                     </div>
             </div>
@@ -55,9 +57,9 @@
         </div>
         <div class="row" @mouseover="toggleHoverPhone" @mouseleave="OutHoverPhone">
             <div class="col-12 mt-4 label-text">Phone Number</div>
-            <div class="col-12 ml-2 mt-3" v-if="!hoverPhone">{{ phoneNumber }}</div>
+            <div class="col-12 ml-2 mt-3" v-if="!hoverPhone">{{ personDetails.mobilePhone }}</div>
             <div v-else class="col-12 mt-2">
-                <input type="text" class="form-control phone-input" @blur="OutHoverPhone" v-model="phoneNumber"/>
+                <input type="text" class="form-control phone-input" @blur="OutHoverPhone" v-model="personDetails.mobilePhone"/>
             </div>
             <div v-if="hoverPhone" class="phone-details align-self-center">
                 <i class="pi pi-pencil icon-edit"></i> <button class="details-btn ml-2">Details</button>
@@ -117,7 +119,7 @@
             <div class="row">
                 <div class="col-12">
                     <div>Email</div>
-                    <input v-model="email" class="form-control mt-3"/>
+                    <input v-model="personDetails.email" class="form-control mt-3"/>
                 </div>
             </div>
             <div class="row">
@@ -127,7 +129,7 @@
         </div>
         </OverlayPanel>
    
-    <OverlayPanel ref="contactNameRef" appendTo="body" :showCloseIcon="true" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
+    <OverlayPanel ref="contactNameRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
         <div class="container">
             <div class="row">
                 <div class="col-12 mt-3">
@@ -135,14 +137,14 @@
                         <div class="col-6">
                             First Name
                             <div class="mt-2">
-                                <input type="text" class="form-control"/>
+                                <input type="text" class="form-control" v-model="personDetails.firstName"/>
                             </div>
                         </div>
                         
                         <div class="col-6">
                             Last Name
                             <div class="mt-2">
-                                <input type="text" class="form-control"/>
+                                <input type="text" class="form-control" v-model="personDetails.lastName"/>
                             </div>
                         </div>
                         <div class="col-12 mt-3">
@@ -166,6 +168,7 @@ import { ref } from "vue"
 import Dropdown from "primevue/dropdown";
 import Tooltip from 'primevue/tooltip';
 import OverlayPanel from 'primevue/overlaypanel';
+// import SinchClient from 'sinch-rtc/sinch.min.js'
 // import { useConfirm } from "primevue/useConfirm";
 // import { useToast } from "primevue/usetoast";
 export default {
@@ -177,6 +180,7 @@ export default {
         'tooltip': Tooltip
     },
     emits: ["opennoteeditor", "openemailmodal", "opentaskeditor"],
+    props: ["personDetails"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
         // const toast = useToast()
@@ -264,6 +268,28 @@ export default {
             emit('opentaskeditor', true)
         }
 
+        const call = () => {
+            let sinchClient = new SinchClient({
+                applicationKey: 'b1392f96-6a4b-4e44-bdf1-0e1f4dd2d1a0',
+                capabilities: { calling: true },
+            })
+            var signUpObj = {};
+                signUpObj.username = 'oladapo'
+             
+                    sinchClient.start(signUpObj, function () {
+                        global_username = signUpObj.username;
+                        // console.log(ticket)
+                        //On success, show the UI
+                    })
+                    // let error = function (error) {
+                    //     console.log(error)
+                    // }
+                    // console.log(error)
+              
+            }
+
+
+
 
         return {
             selectedContact,
@@ -287,7 +313,8 @@ export default {
             saveEmail,
             openNoteEditor,
             openEmailModal,
-            openTaskEditor
+            openTaskEditor,
+            call
         }
     }
 }
@@ -364,7 +391,7 @@ export default {
 }
 
 .task-border {
-    border: 2px solid rgba(202, 202, 202, 0.096);
+    border: 2px solid transparent;
     border-radius: 3px;
 }
 

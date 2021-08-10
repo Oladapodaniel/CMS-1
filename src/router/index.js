@@ -228,9 +228,9 @@ const routes = [
             ]
         },
         {
-            path: 'firsttimerworkflow',
+            path: 'firsttimermanagement/:personId?',
             meta: {
-                title: 'Churchplus - First Timer Work Flow',
+                title: 'Churchplus - First Timer CRM',
             },
             component: () =>
                 import( /* webpackChunkName: "addfirsttimer" */ '../views/people/firsttimer_crm/Index.vue')
