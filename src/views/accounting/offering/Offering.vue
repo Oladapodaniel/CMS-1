@@ -53,8 +53,11 @@ import { useStore } from 'vuex'
 import axios from "@/gateway/backendapi"
 import OfferingList from './OfferingList'
 import Loader from './SkeletonLoader'
+// import mixin from "@/mixins/expiredSub.mixin.js"
 export default {
+  // mixins: [mixin],
     components: {
+       
         OfferingList, Loader
     },
     setup () {
