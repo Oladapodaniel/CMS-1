@@ -238,8 +238,8 @@ import { useRoute } from "vue-router"
                 formData.append("title", "Anouncement");
                 formData.append("tenantId", tenantId.value);
                 formData.append("postCategoryId", postCategory.value ? postCategory.value.postCategoryId : "");
-                formData.append("socialData.value.pageId", socialData.value.pageId.value? socialData.value.pageId.value : "");
-                formData.append("socialData.value.accessToken", socialData.value.accessToken.value? socialData.value.accessToken: "");
+                formData.append("socialData.value.pageId", socialData.value.pageId ? socialData.value.pageId : "");
+                formData.append("socialData.value.accessToken", socialData.value.accessToken ? socialData.value.accessToken: "");
                 formData.append("toFacebook", toFacebook.value ? toFacebook.value : false)
                 display.value = true;
                 axios.post("/mobile/v1/Feeds/CreatePost", formData,
@@ -324,7 +324,7 @@ import { useRoute } from "vue-router"
                 try{
                     // /api/SocialMedia/getSocialDetails?handle=facebook
                     const {data} = await axios.get("/api/SocialMedia/getSocialDetails?handle=facebook");
-                    socialData.value = data.returnObject;
+                    socialData.value = data.status ? data.returnObject : { };
                     console.log(data);
                 }catch(error){
                     console.log(error);
