@@ -88,8 +88,8 @@
                       <h4 class="font-weight-bold mb-0">302</h4>
                       <p class="font-weight-bold mb-0">SMS Units</p>
                     </div>
-                    <div class="col-sm-7 d-sm-flex justify-content-end">
-                      <button class="btn buy-btn">
+                    <div class="col-sm-7 d-sm-flex justify-content-center">
+                      <button class="btn buy-btn border border-danger">
                         <span class="btn-text">
                             BUY UNITS
                         </span>
@@ -98,6 +98,7 @@
                   </div>
                 </div>
               </div>
+
 
               <div class="row">
                 <div class="col-md-12">

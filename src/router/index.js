@@ -1273,13 +1273,48 @@ const routes = [
                 }
             ]
     },
-    // {
-    //     path: '/unauthorized',
-    //     name: 'Unauthorized',
-    //     component: () =>
-    //         import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
-    // }
+    {
+        path: '/newsubscription2',
+        name: 'Subscription2',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/newPage/Subscription2'),    
+            
+    },
+    {
+        path: '/sendmessage2',
+        name: 'sendMessage2',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/newPage/SendMessage2'),    
+            
+    },
+    {
+        path: '/buyunits2',
+        name: 'BuyUnits2',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/newPage/BuyUnits2'),    
+            
+    },
 ]
+// children: [
+            //     {
+            //         path: 'subscription',
+            //         name: 'Subscription',
+            //         component: () =>
+            //         import( /* webpackChunkName: "dashboard" */ '../views/dashboard/Subscription.vue')  
+            //     },
+            //     {
+            //         path: 'compose',
+            //         name: 'SendMessage',
+            //         component: () =>
+            //         import( /* webpackChunkName: "sendmessage" */ '@/views/communication/SendSms') 
+            //     },
+            //     {
+            //         path: 'buyunits',
+            //         name: 'BuyUnits',
+            //         component: () =>
+            //         import( /* webpackChunkName: "buyunits" */ '@/views/payment/BuyUnits')
+            //     }
+            // ]
 
 
 
