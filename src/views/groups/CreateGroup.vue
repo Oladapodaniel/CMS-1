@@ -169,7 +169,7 @@
                                   <div class="row">
                                     <div
                                       class="col-md-12 pl-0 grey-rounded-border"
-                                       
+
                                     >
                                       <ul
                                         class="d-flex flex-wrap px-1 mb-0 m-dd-item"
@@ -196,14 +196,14 @@
                                         <li
                                           style="list-style: none"
                                           class="m-dd-item"
-                                        
+
                                         >
                                           <input
                                             type="text"
                                             class="border-0 m-dd-item text outline-none"
                                             ref="memberSelectInput"
                                             @input="searchForMembers"
-                                            
+
                                             :class="{
                                               'w-100':
                                                 selectedMembers.length === 0,
@@ -220,18 +220,18 @@
                                                 : 'Select from members'
                                             }`"
                                             @blur="() => (inputBlurred = true)"
-                                             
+
                                           />
                                         </li>
                                       </ul>
                                       <div
                                         class="col-md-12 px-0 select-groups-dropdown m-dd-item"
                                         v-if="memberListShown"
-                                       
+
                                       >
                                         <div
                                           class="dropdownmenu pt-0 w-100 m-dd-item"
-                                    
+
                                         >
                                           <a
                                             class="dropdown-item px-1 c-pointer m-dd-item"
@@ -242,7 +242,7 @@
                                             @click="selectMember(member, index)"
                                             >{{ member.nameResult }}</a
                                           >
-                                           
+
                                           <!-- <p
                                             class="bg-secondary p-1 mb-0 m-dd-item "
                                            v-if="
@@ -250,22 +250,22 @@
                                             "
                                           >
                                             Enter 3 or more characters
-                                            
-                                            
+
+
                                           </p>  -->
                                           <p
-                                      
+
                                             class="bg-secondary p-1 mb-0  "
-                                            
+
                                           >
                                             Enter 3 or more characters
-                                            
+
                                           </p>
                                           <!-- v-if="
                                                   wardSearchString.length < 3 &&
                                                   wardSearchedMembers.length === 0
                                                 " -->
-                                             
+
                                           <p
                                             aria-disabled="true"
                                             class="btn btn-default p-1 mb-0 disable m-dd-item"
@@ -293,18 +293,18 @@
                                             style="border-top: 1px solid #002044; color: #136acd"
                                             @click="showAddMemberForm"
                                             data-dismiss="modal"
-                                            
+
                                             >
                                             <i
                                                 class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
                                                 style="color: #136acd"
                                             ></i>
-                                                Add new member 
+                                                Add new member
                                             </a>
                                         </div>
-                                         
+
                                       </div>
-                                     
+
                                     </div>
                                   </div>
                                 </div>
@@ -889,9 +889,9 @@ export default {
       }
     });
      const showAddMemberForm = () => {
-        
+
           display.value = true;
-         
+
         };
     //   const setGroupModal = (payload) => {
     //     showWardModal.value = payload
@@ -1127,7 +1127,7 @@ export default {
           personId: payload.personId,
           email: payload.personEmail,
           phoneNumber: payload.personNumber
-        } 
+        }
         selectedMembers.value.push(body)
         //   const constructSelectedMember = new Object()
           // selectedMembers.value.name = payload.personFirstName
@@ -1263,7 +1263,7 @@ export default {
     const getGroupById = async () => {
       try {
         loadingMembers.value = true;
-        
+
         const { data } = await axios.get(
           `/api/GetGroupsFromId/${route.params.groupId}`,
           groupData.value
@@ -1360,7 +1360,7 @@ export default {
           awaitingApprovals.value = awaitingApprovals.value.filter(i => {
             return i.personID !== member.personID
           })
-          
+
           groupMembers.value.push(member)
       }
       catch (error) {
