@@ -253,19 +253,8 @@ import { useRoute } from "vue-router"
                 )
                     .then(res => {
                         console.log(res, "upload res");
-                        // if (toFacebook.value) {
-                        //     alert('posting to facebook')
-                            
-                        //     fbClient.post(`https://graph.facebook.com/${socialData.value.pageId}/feed?message=Hello Fans!&access_token=${socialData.value.accessToken}`)
-                        //     .then(res => {
-                        //         console.log(res, "post res");
-                        //     })
-                        //     .catch(err => {
-                        //         console.log(err, "err");
-                        //     })
-                        // }
                         display.value = false;
-                        // router.push("/tenant/social/feed")
+                        if (res) router.push("/tenant/social/feed")
                     })
                     .catch(err => {
                          console.log(err)
