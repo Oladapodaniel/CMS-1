@@ -240,7 +240,7 @@ import { useRoute } from "vue-router"
                 formData.append("postCategoryId", postCategory.value ? postCategory.value.postCategoryId : "");
                 formData.append("socialData.value.pageId", socialData.value.pageId.value? socialData.value.pageId.value : "");
                 formData.append("socialData.value.accessToken", socialData.value.accessToken.value? socialData.value.accessToken: "");
-                formData.append("toFacebook", toFacebook.value ? toFacebook.value : "")
+                formData.append("toFacebook", toFacebook.value ? toFacebook.value : false)
                 display.value = true;
                 axios.post("/mobile/v1/Feeds/CreatePost", formData,
                     {
