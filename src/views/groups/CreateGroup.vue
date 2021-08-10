@@ -102,20 +102,8 @@
             </div>
           </div>
 
-          <div class="row pb-4 bottom-box">
-            <div class="col-md-12">
-              <div class="row mid-header-row py-1">
-                <div class="col-md-4 text-lg-center pl-0">
-                  <span class="mid-header-text py-1 px-1"
-                    >Members in group</span
-                  >
-                </div>
-              </div>
-
-              <div class="row py-5">
-                <div class="col-md-12">
-                  <div class="row">
-                    <div class="col-md-4 d-flex justify-content-md-center">
+           <div class="row">
+                    <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
                       <button
                         class="default-btn outline-none primary-text font-weight-bold border-0"
                         data-toggle="modal"
@@ -126,6 +114,19 @@
                       </button>
                     </div>
                   </div>
+
+          <div class="row pb-4 bottom-box">
+            <div class="col-md-12">
+              <div class="row mid-header-row py-1">
+                <div class="col-md-4 text-lg-center pl-0">
+                  <span class="mid-header-text py-1 px-1"
+                    >Members in group</span
+                  >
+                </div>
+              </div>
+
+              <div class="row py-2">
+                <div class="col-md-12">
 
                   <!-- Modal -->
                   <div
