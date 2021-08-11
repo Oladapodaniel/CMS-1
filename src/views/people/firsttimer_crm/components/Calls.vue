@@ -1,29 +1,35 @@
 <template>
 <div class="d-flex justify-content-end mx-3">
-        <div class="col-2 mt-3 save-btn btn-btn c-pointer" @click="openEmailModal">Log call</div>
-        <div class="col-3 mt-3 save-btn btn-btn c-pointer" @click="openEmailModal">Make a phone call</div>
+        <div class="col-2 mt-3 mr-4 log-btn btn-btn c-pointer" @click="openCallLogPane">Log call</div>
+        <div class="col-3 mt-3 save-btn btn-btn c-pointer" >Make a phone call</div>
    </div>
-    <div class="col-12 mt-4">
+    <div class="col-12 mt-4" v-for="(item, index) in logList" :key="index">
             <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Logged call</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
-                        
-                            <div class="col mt-4 enlargen-font">Logged call description </div>
-                        
+                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index)"></i>&nbsp;&nbsp;Logged call</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
                     </div>
                     <div>
                         <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
                     </div>
                 </div>
-                <transition>
-                    <div class="row">
+                <div class="row">
+                    <div class="col-12 mt-4 enlargen-font"  :class="{ 'hover-border' : hoverLog, 'log-border' : !hoverLog }" @mouseover="onHoverBorder" @mouseleave="outHoverBorder" v-if="!editLog" @click="toggleEditLog">
+                        <div>{{ item.desc }}</div>
+                    </div>
+
+                    <textarea v-model="item.desc" class="form-control col-12 mt-4" v-if="editLog" rows="5"></textarea>
+                    <div class="p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveLogDesc" v-if="editLog">Save</div>
+                    <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="editLog" @click="cancelTaskEdit">Cancel</div>
+                </div>
+                <transition name="fade">
+                    <div class="row" v-if="item.logIcon">
                         <div class="col-12">
                             <hr />
                         </div>
                             <div class="col-3">
                                 <div class="label-text">Contacted</div>
-                                <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ selectedContactLog }}Oladapo &nbsp; <i class="pi pi-sort-down"></i></div>
+                                <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 mt-1 c-pointer">Oladapo &nbsp; <i class="pi pi-sort-down"></i></div>
                                 <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                                         <div class="container p-0">
                                             <div class="row">
@@ -86,8 +92,78 @@
 
 
 <script>
+import { ref } from "vue"
 export default {
-    setup() {}
+    emits: ['individualcallicon', 'opencalllogpane'],
+    props: ['personDetails', 'logList'],
+    setup(props, { emit }) {
+        const hoverLog = ref(false)
+        const editLog = ref(false)
+        const loggedDesc = ref("")
+        const contactRef = ref(false)
+        const outcomeRef = ref(false)
+        const date = ref("")
+        const timeRef = ref(false)
+        const logIcon = ref(false)
+
+        const onHoverBorder = () => {
+            hoverLog.value = true
+        }
+        
+        const outHoverBorder = () => {
+            hoverLog.value = false
+        }
+
+        const toggleEditLog = () => {
+            editLog.value = true
+        }
+
+        const saveLogDesc = () => {
+            editLog.value = false
+            hoverLog.value = false
+        }
+
+        const toggleContact = (event) => {
+            contactRef.value.toggle(event);
+        }
+        
+        const toggleOutcome = (event) => {
+            outcomeRef.value.toggle(event);
+        }
+        
+        const toggleTime = (event) => {
+            timeRef.value.toggle(event);
+        }
+
+        const toggleLogIcon = (index) => {
+            // logIcon.value = !logIcon.value
+            emit('individualcallicon', index)
+        }
+
+        const openCallLogPane = () => {
+            emit('opencalllogpane', true)
+        }
+
+        return {
+            hoverLog,
+            onHoverBorder,
+            outHoverBorder,
+            editLog,
+            toggleEditLog,
+            saveLogDesc,
+            loggedDesc,
+            contactRef,
+            outcomeRef,
+            timeRef,
+            toggleContact,
+            toggleOutcome,
+            toggleTime,
+            date,
+            logIcon,
+            toggleLogIcon,
+            openCallLogPane
+        }
+    }
 }
 </script>
 
@@ -158,5 +234,21 @@ export default {
 
 .enlargen-font {
     font-size: 1.2em
+}
+
+.log-btn {
+    background-color: #eaf0f6;
+    border: 1px solid #cbd6e2;
+    color: #506e91;
+}
+
+.hover-border {
+    border: 2px solid #1269cea6;
+    border-radius: 3px;
+}
+
+.log-border {
+    border: 2px solid white;
+    border-radius: 3px;
 }
 </style>

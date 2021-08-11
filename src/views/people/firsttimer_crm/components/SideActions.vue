@@ -223,20 +223,22 @@
                </div> -->
                <div class="row mt-3">
                    <div class="col-12">
-                       <textarea name="" placeholder="Describe the call..." class="w-100 form-control" rows="6"></textarea>
+                       <textarea name="" placeholder="Describe the call..." class="w-100 form-control" rows="6" v-model="callLogDesc"></textarea>
                    </div>
                </div>
            </div>
             <template #footer>
-                <Button label="No" icon="pi pi-times" @click="closePosition" class="p-button-text" />
-                <Button label="Yes" icon="pi pi-check" @click="closePosition" autofocus />
+                <div class="row d-flex justify-content-end">
+                    <div class="default-btn text-center">Cancel</div>
+                    <div class="primary-bg default-btn border-0 text-white text-center ml-3" @click="saveLog">Save</div>
+                </div>
             </template>
         </Dialog>
     <Toast />
 </template>
 
 <script>
-import { computed, ref } from "vue"
+import { computed, ref, watch } from "vue"
 import Dropdown from "primevue/dropdown";
 import Tooltip from 'primevue/tooltip';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -251,8 +253,8 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor"],
-    props: ["personDetails"],
+    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog"],
+    props: ["personDetails", "callLog"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
         // const toast = useToast()
@@ -307,6 +309,7 @@ export default {
         const date = ref("")
         const timeRef = ref(false)
         const logVariable = ref("")
+        const callLogDesc = ref("")
 
 
         const selectedContactLog = computed(() => {
@@ -402,6 +405,18 @@ export default {
             timeRef.value.toggle(event);
         }
 
+        const saveLog = () => {
+            displayLogPane.value = false;
+            emit('calllogdesc', { desc: callLogDesc.value, type: 'callLog' })
+        }
+
+        watch(() => {
+            if (props.callLog) {
+                displayLogPane.value = true
+                emit('resetlog', false)
+            }
+        })
+
 
 
 
@@ -443,7 +458,9 @@ export default {
             timeRef,
             logVariable,
             outcomeList,
-            selectedContactLog
+            selectedContactLog,
+            callLogDesc,
+            saveLog
         }
     }
 }
