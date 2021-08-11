@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <Buyunit />
         <router-view></router-view>
     </div>

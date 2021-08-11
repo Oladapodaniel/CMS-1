@@ -207,6 +207,7 @@ import store from '../../store/store'
 import userService from '../../services/user/userservice'
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress"
+import membershipService from "../../services/membership/membershipservice";
 
 export default {
   components: { PaymentSuccessModal },
@@ -227,7 +228,9 @@ export default {
       return Math.ceil(amount.value);
     });
     
-    const userEmail = ref(store.getters.email);
+    const userEmail = ref(store.getters.userEmail);
+    // console.log(userEmail, "the Lord is Good")
+    const currentUser = store.getters.currentUser;
     const churchName = ref("");
 
     const getUserEmail = async () => {
@@ -241,11 +244,25 @@ export default {
         })
     }
 
+    // const userEmail = ref("");
+      if (!userEmail.value) getUserEmail();
 
-
+    const getEmail = async () => {
+       if (!currentUser || !currentUser.userEmail.value){
+          membershipService.getSignedInUser()
+          .then(res => {
+            console.log(res)
+              // userEmail.value = res.userEmail;
+              // churchName.value = res.churchName;
+          })
+          .catch(err =>{
+            console.log(err)
+          })
+       }
+    }
+     getEmail()
 
     // const userEmail = ref("");
-    if (!userEmail.value) getUserEmail();
 
     const payWithPaystack = (e) => {
       e.preventDefault();
@@ -309,6 +326,7 @@ export default {
       invalidAmount,
       purchaseIsSuccessful,
       closeModal,
+      currentUser
     };
   },
 };

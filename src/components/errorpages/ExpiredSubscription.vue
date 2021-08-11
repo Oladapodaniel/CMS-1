@@ -2,15 +2,15 @@
     <div class="container">
     <div class="row">
       <div class="col-8 mb-5"><h2><i class="fa fa-lock" aria-hidden="true"></i> Subscription  Expired</h2></div>
-      <div class="col-4 mb-5 mt-2 d-flex justify-content-end" ><router-link to="/newsubscription2" class="text-decoration-none">Click here to Subscibe<i class="fa fa-arrow-right ml-2"></i></router-link></div>  
+      <div class="col-4 mb-5 mt-2 d-flex justify-content-end" ><router-link to="/subexpired" class="text-decoration-none">Click here to Subscibe<i class="fa fa-arrow-right ml-2"></i></router-link></div>  
       <div class="col-md-12">
         <div class="mb-3">This page is not publicly available because  your  Subscription has Expired</div>
         <div class="mt-4">
           <div>Things you can still do:</div>
           <ul class="list-unstyled">
-            <li> <i class="fa fa-arrow-right text-primary mr-2"></i><router-link to="/sendmessage2">Send SMS</router-link></li>
-            <li> <i class="fa fa-arrow-right text-primary mr-2 "></i><router-link to="/newsubscription2">Subscribe</router-link></li>
-            <li> <i class="fa fa-arrow-right text-primary mr-2 "></i><router-link to="/buyunits2">Buy Unit</router-link></li>
+            <li> <i class="fa fa-arrow-right text-primary mr-2"></i><router-link to="/sendsmsexpired">Send SMS</router-link></li>
+            <li> <i class="fa fa-arrow-right text-primary mr-2 "></i><router-link to="/subexpired">Subscribe</router-link></li>
+            <li> <i class="fa fa-arrow-right text-primary mr-2 "></i><router-link to="/buyunitsexpired">Buy Unit</router-link></li>
             <!-- <a href="" @click.prevent="plsSubscribe">Subscribe</a> -->
           </ul>
         </div>
