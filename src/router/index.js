@@ -1274,50 +1274,28 @@ const routes = [
             ]
     },
     {
-        path: '/newsubscription2',
-        name: 'Subscription2',
+        path: '/subexpired',
+        name: 'subexpired',
         component: () =>
-            import( /* webpackChunkName: "sentemails" */ '@/components/newPage/Subscription2'),    
+            import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/SubExpired'),    
             
     },
     {
-        path: '/sendmessage2',
-        name: 'sendMessage2',
+        path: '/sendsmsexpired',
+        name: 'SendSmsExpired',
         component: () =>
-            import( /* webpackChunkName: "sentemails" */ '@/components/newPage/SendMessage2'),    
+            import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/SendSmsExpired'),    
             
     },
     {
-        path: '/buyunits2',
-        name: 'BuyUnits2',
+        path: '/buyunitsexpired',
+        name: 'BuyUnitsExpired',
         component: () =>
-            import( /* webpackChunkName: "sentemails" */ '@/components/newPage/BuyUnits2'),    
+            import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),    
             
     },
 ]
-// children: [
-            //     {
-            //         path: 'subscription',
-            //         name: 'Subscription',
-            //         component: () =>
-            //         import( /* webpackChunkName: "dashboard" */ '../views/dashboard/Subscription.vue')  
-            //     },
-            //     {
-            //         path: 'compose',
-            //         name: 'SendMessage',
-            //         component: () =>
-            //         import( /* webpackChunkName: "sendmessage" */ '@/views/communication/SendSms') 
-            //     },
-            //     {
-            //         path: 'buyunits',
-            //         name: 'BuyUnits',
-            //         component: () =>
-            //         import( /* webpackChunkName: "buyunits" */ '@/views/payment/BuyUnits')
-            //     }
-            // ]
-
-
-
+          
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes

@@ -72,7 +72,7 @@
 
             <!-- Bigger row -->
             <div class="col-md-9">
-              <div class="row d-md-flex align-items-center mt-3 mb-4">
+              <div class="row d-sm-flex align-items-center mt-3 mb-4">
                 <div class="col-md-7 col-sm-12">
                   <div class="search-div">
                     <span><i class="pi pi-search mr-1"></i></span>
@@ -89,7 +89,7 @@
                       <p class="font-weight-bold mb-0">SMS Units</p>
                     </div>
                     <div class="col-sm-7 d-sm-flex justify-content-center">
-                      <button class="btn buy-btn border border-danger">
+                      <button class="btn buy-btn">
                         <span class="btn-text">
                             BUY UNITS
                         </span>
