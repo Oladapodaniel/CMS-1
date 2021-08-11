@@ -356,7 +356,7 @@ export default {
     position: relative;
   background: linear-gradient(
 45deg
-, #ebeff4, transparent);
+, #ffffff, transparent);
   height: 80vh;
   width: 83vw;
 }

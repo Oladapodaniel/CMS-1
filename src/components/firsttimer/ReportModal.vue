@@ -38,7 +38,7 @@
                         </select>
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
-                        <i class="fa fa-question-circle inp-icon my-1"></i>
+                        <i class="pi pi-question-circle inp-icon my-1"></i>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                         <input type="text" class="form-control inp" v-model="recipient.phone" name="" id="" v-show="activeTab === 'sms'" @input="hideErrorMessage">
                     </div>
                     <div class="col-sm-2 text-center d-flex justify-content-center align-items-center icon-div">
-                        <i class="fa fa-plus-circle inp-icon plus-icon my-1" @click="addRecipient"></i>
+                        <i class="pi pi-plus-circle inp-icon plus-icon my-1" @click="addRecipient"></i>
                         <i class="pi pi-minus plus-icon ml-1 my-1 c-pointer text-danger" @click="removeRecipient(index)" v-if="recipients.length > 1"></i>
                     </div>
                 </div>

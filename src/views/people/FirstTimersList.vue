@@ -57,7 +57,14 @@
               />
               <label>SELECT ALL </label>
               <i
-                class="pi pi-trash text-danger ml-3 c-pointer d-flex-inline align-items-center"
+                class="
+                  pi pi-trash
+                  text-danger
+                  ml-3
+                  c-pointer
+                  d-flex-inline
+                  align-items-center
+                "
                 style="font-size: 20px"
                 v-if="checkedFirstTimer.length > 0"
                 @click="modal"
@@ -66,12 +73,12 @@
             </div>
             <div class="filter">
               <p @click="toggleFilterFormVissibility" class="mt-2">
-                <i class="fas fa-filter"></i>
+                <i class="pi pi-filter"></i>
                 FILTER
               </p>
             </div>
             <p @click="toggleSearch" class="search-text mt-2">
-              <i class="fa fa-search"></i> SEARCH
+              <i class="pi pi-search"></i> SEARCH
             </p>
             <div class="search d-flex">
               <label
@@ -90,7 +97,7 @@
                   ><i class="pi pi-times"></i
                 ></span>
                 <span class="search-btn">
-                  <i class="fa fa-search"></i>
+                  <i class="pi pi-search"></i>
                 </span>
               </label>
             </div>
@@ -105,13 +112,19 @@
               <div class="col-md-9">
                 <div class="row">
                   <div
-                    class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                    class="
+                      col-12 col-sm-6
+                      offset-sm-3 offset-md-0
+                      form-group
+                      inp
+                      w-100
+                    "
                   >
                     <!-- <div class="input-field"> -->
 
                     <input
                       type="text"
-                      class="input w-100"
+                      class="input w-100 mb-n3"
                       placeholder="Name"
                       v-model="filter.name"
                     />
@@ -128,9 +141,7 @@
                   </div>
                 </div>
 
-                <div class="row">
-              
-                </div>
+                <div class="row"></div>
               </div>
 
               <div class="col-md-3 d-flex flex-column align-items-center">
@@ -148,286 +159,239 @@
           </div>
         </div>
 
-
-        <div class="responsive-table">
-          <table class="table-borderless w-100">
-            <thead class="header">
-              <tr>
-                <th></th>
-                <th>NAME</th>
-                <th>PHONE NUMBER</th>
-                <th>SOURCE</th>
-                <th>INTERESTED</th>
-                <th>DATE</th>
-                <th>STATUS</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="person in searchMember" :key="person.id">
-    
-                <td>
-                  <input
-                    type="checkbox"
-                    name=""
-                    id=""
-                    @change="check1item(person)"
-                    :checked="
-                      checkedFirstTimer.findIndex((i) => i.id === person.id) >=
-                      0
-                    "
-                  />
-                </td>
-                <td>
-                  <router-link
-                    :to="`/tenant/people/addfirsttimer/${person.id}`"
-                    class="itemroute-color"
-                    >{{
-                      person.fullName
-                        ? person.fullName
-                        : `${person.firstName} ${person.lastName}`
-                    }}</router-link
-                  >
-                </td>
-                <td>
-                  <router-link
-                    :to="`/tenant/people/addfirsttimer/${person.id}`"
-                    class="data-value itemroute-color"
-                    >{{ person.phoneNumber }}</router-link
-                  >
-                </td>
-                <td>
-                  <router-link
-                    :to="`/tenant/people/addfirsttimer/${person.id}`"
-                    class="itemroute-color"
-                    >{{ person.howDidYouAboutUsName }}</router-link
-                  >
-                </td>
-                <td>
-                  <router-link
-                    :to="`/tenant/people/addfirsttimer/${person.id}`"
-                    class="itemroute-color"
-                    >{{
-                      person.interestedInJoining === "Not_Specified"
-                        ? "Not Sure"
-                        : person.interestedInJoining
-                    }}</router-link
-                  >
-                </td>
-                <td>
-                  <router-link
-                    :to="`/tenant/people/addfirsttimer/${person.id}`"
-                    class="itemroute-color"
-                    >{{
-                      moment
-                        .parseZone(
-                          new Date(person.date).toDateString(),
-                          "YYYY MM DD HH ZZ"
-                        )
-                        ._i.substr(4, 11)
-                    }}</router-link
-                  >
-                </td>
-                <td>
-                  <router-link
-                    :to="`/tenant/people/addfirsttimer/${person.id}`"
-                    class="data-value itemroute-color"
-                  ></router-link>
-                </td>
-                <td>
-                  <div class="dropdown">
-                    <i
-                      class="fas fa-ellipsis-v"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    ></i>
-                    <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <a class="dropdown-item" @mouseover="toggle($event, person.id)" href="#">Convert to member</a>
-                      <a class="dropdown-item" v-if="person.phoneNumber">
-                        <router-link
-                          :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
-                          >Send SMS</router-link
-                        >
-                      </a>
-                      <a class="dropdown-item" v-if="person.email">
-                        <router-link
-                          :to="`/tenant/email/compose?phone=${person.email}`"
-                        >
-                          Send Email
-                        </router-link>
-                      </a>
-                      <a
-                        class="dropdown-item"
-                        href="#"
-                        @click.prevent="showConfirmModal(person.id)"
-                        >Delete</a
-                      >
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- <div class="container-fluid d-none d-md-block">
-            <div class="row t-header">
-           
-                <div class="col-md-1 px-3"></div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Name</div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Phone Number</div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Source</div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Interested</div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
-  
-                <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
-              
-            </div>
+        <!-- tosin -->
+        <div class="table-header font-weight-700">
+          <div class="check "></div>
+          <div
+            class="
+              picture
+              text-dark
+              small-text
+              text-capitalize
+              font-weight-bold
+            "
+            style="font-size: 11px"
+          >
+            <p>NAME</p>
           </div>
-          {{checkedFirstTimer}}
-        <div class="row" style="margin:0;">
-            <div
-              class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom"
-              v-for="(item) in searchMember"
-              :key="item.id"
-            >
-                <div class="row w-100" style="margin:0">
-                  <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
-                    <input
-                      type="checkbox"
-                        name=""
-                        id=""
-                        @change="check1item(person)"
-                        :checked="
-                          checkedFirstTimer.findIndex((i) => i.id === person.id) >=
-                          0
-                        "
-                    />
-                  </div>
+          <div
+            class="
+              firstname
+              small-text
+              text-dark text-capitalize
+              font-weight-bold pl-3
+            "
+            style="font-size: 11px"
+          >
+            <p>PHONE NUMBER</p>
+          </div>
+          <div
+            class="
+              lastname
+              small-text
+              text-dark text-capitalize
+              font-weight-bold
+            "
+            style="font-size: 11px"
+          >
+            <p>SOURCE</p>
+          </div>
+          <div
+            class="phone small-text text-dark text-capitalize font-weight-bold"
+            style="font-size: 11px"
+          >
+            <p>INTERESTED</p>
+          </div>
+          <div
+            class="action small-text text-dark text-capitalize font-weight-bold"
+            style="font-size: 11px"
+          >
+            <p>DATE</p>
+          </div>
+          <div
+            class="action small-text text-dark text-capitalize font-weight-bold"
+            style="font-size: 11px"
+          >
+            <p>STATUS</p>
+          </div>
+          <div
+            class="action small-text text-dark text-capitalize font-weight-bold"
+            style="font-size: 11px"
+          >
+            <p>ACTION</p>
+          </div>
+        </div>
+        <!-- tosin -->
 
-                  <div class="desc small-text col-md-2 pl-0">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span class="text-dark font-weight-bold d-flex d-md-none">Name</span>
-                      <span>{{
-                      item.fullName
-                        ? item.fullName
-                        : `${item.firstName} ${item.lastName}`
-                    }}</span>
-                    </p>
-                  </div>
+        <!-- tosin 2 -->
+        <div class="table-body mt-2 py-1" v-for="person in searchMember" :key="person.id">
+          <div class="data-row ">
+             <div class="mr-2"></div>
+            <div class="check data">
+              <input
+                type="checkbox"
+                name=""
+                id=""
+                @change="check1item(person)"
+                :checked="
+                  checkedFirstTimer.findIndex((i) => i.id === person.id) >= 0
+                "
+              />
+            </div>
 
-                  <div class="col-md-2 pl-0">
-                    <div class="d-flex justify-content-between">
-                      <span class="text-dark font-weight-bold d-flex d-md-none">Phone Number</span>
-                    <div>
-                      
-                      <div class="desc small-text text-right text-md-left">{{ item.phoneNumber }}</div>
-                    </div>
-                    </div>
-                  </div>
+             <div class="mr-4"></div>
 
-                  <div class="desc-head small-text col-md-2 pl-0">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span class="text-dark font-weight-bold d-flex d-md-none">Source</span>
-                   
-                      <span>{{ item.howDidYouAboutUsName}}</span>
-                    </p>
-                  </div>
+            <div class="firstname data">
+              <div class="data-con">
+                <div class="data-text">
+                  <p>Name</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/addfirsttimer/${person.id}`"
+                  class="itemroute-color"
+                  >{{
+                    person.fullName
+                      ? person.fullName
+                      : `${person.firstName} ${person.lastName}`
+                  }}</router-link
+                >
+              </div>
+            </div>
+            <!-- <div class="mr-4"></div> -->
+            <div class="lastname data">
+              <div class="data-con">
+                <div class="data-text">
+                  <p>Phone</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/addfirsttimer/${person.id}`"
+                  class="data-value itemroute-color"
+                  >{{ person.phoneNumber }}</router-link
+                >
+              </div>
+            </div>
+              <!-- <div class="mr-5"></div> -->
+            <div class="phone data">
+              <div class="data-con mr-4" style="text-align:right">
+                <div class="data-text">
+                  <p>Source</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/addfirsttimer/${person.id}`"
+                  class="itemroute-color"
+                  >{{ person.howDidYouAboutUsName }}</router-link
+                >
+              </div>
+            </div>
 
-                  <div class="small-text col-md-2 pl-0">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span class="text-dark font-weight-bold d-flex d-md-none">Interested</span>
-                      <span><span class="primary-text c-pointer"
-                      >{{
-                      item.interestedInJoining === "Not_Specified"
-                        ? "Not Sure"
-                        : item.interestedInJoining
-                    }}</span
-                    ></span>
-                    </p>
-                  </div>
-                  <div class="small-text col-md-2 pl-0">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                      <span><span class="primary-text c-pointer"
-                      >{{
-                      moment
-                        .parseZone(
-                          new Date(item.date).toDateString(),
-                          "YYYY MM DD HH ZZ"
-                        )
-                        ._i.substr(4, 11)
-                    }}</span
-                    ></span>
-                    </p>
-                  </div>
-                  <div class="small-text col-md-1 pl-0">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span class="text-dark font-weight-bold d-flex d-md-none">Status</span>
-                      <span><span class="primary-text c-pointer"
-                      >st</span
-                    ></span>
-                    </p>
-                  </div>
-                  <div class="small-text col-md-1 px-1">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span class="text-dark font-weight-bold d-flex d-md-none">Action</span>
-                      <span><span class="primary-text c-pointer"
-                      >ee</span
-                    ></span>
-                    </p>
-                  </div>
+              <!-- <div class="mr-5"></div> -->
+            <div class="phone data" style="text-align:right">
+              <div class="data-con mr-4">
+                <div class="data-text">
+                  <p>Interested</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/addfirsttimer/${person.id}`"
+                  class="itemroute-color"
+                  >{{
+                    person.interestedInJoining === "Not_Specified"
+                      ? "Not Sure"
+                      : person.interestedInJoining
+                  }}</router-link
+                >
+              </div>
+            </div>
 
-                  <div class="small-text col-md-1">
-                    <p class="mb-0 d-flex justify-content-between">
-                      <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
-                      <span>Marked</span>
-                    </p>
-                    <div class="action data action-icon">
-                      <div class="dropdown">
-                        <i
-                          class="fas fa-ellipsis-v cursor-pointer"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div
-                      class="dropdown-menu"
-                      aria-labelledby="dropdownMenuButton"
+            <div class="mr-4"></div>
+            <div class="phone data">
+              <div class="data-con" style="text-align:right">
+                <div class="data-text text-right">
+                  <p>Date</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/addfirsttimer/${person.id}`"
+                  class="itemroute-color"
+                  >{{
+                    moment
+                      .parseZone(
+                        new Date(person.date).toDateString(),
+                        "YYYY MM DD HH ZZ"
+                      )
+                      ._i.substr(4, 11)
+                  }}</router-link
+                >
+              </div>
+            </div>
+
+            <div>
+              <router-link
+                :to="`/tenant/people/addfirsttimer/${person.id}`"
+                class="data-value itemroute-color"
+              ></router-link>
+            </div>
+
+            <div class="phone data">
+              <div class="data-con mr-4">
+                <div class="data-text">
+                  <p>Action</p>
+                </div>
+                <div class="dropdown text-right">
+                  <i
+                    class="fas fa-ellipsis-v cursor-pointer"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></i>
+                  <div
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton"
+                  >
+                    <a
+                      class="dropdown-item elipsis-items"
+                      @mouseover="toggle($event, person.id)"
+                      href="#"
                     >
-                      <a class="dropdown-item" @mouseover="toggle($event, item.id)" href="#">Convert to member</a>
-                      <a class="dropdown-item" v-if="item.phoneNumber">
-                        <router-link
-                          :to="`/tenant/sms/compose?phone=${item.phoneNumber}`"
-                          >Send SMS</router-link
-                        >
-                      </a>
-                      <a class="dropdown-item" v-if="item.email">
-                        <router-link
-                          :to="`/tenant/email/compose?phone=${item.email}`"
-                        >
-                          Send Email
-                        </router-link>
-                      </a>
-                      <a
-                        class="dropdown-item"
-                        href="#"
-                        @click.prevent="showConfirmModal(item.id)"
-                        >Delete</a
+                      Convert to member
+                    </a>
+
+                    <a
+                      class="dropdown-item elipsis-items"
+                      v-if="person.phoneNumber"
+                    >
+                      <router-link
+                        :to="`/tenant/sms/compose?phone=${person.phoneNumber}`"
+                        >Send SMS</router-link
                       >
-                    </div>
-                      </div>
-                    </div>
+                    </a>
+
+                    <a class="dropdown-item elipsis-items" v-if="person.email">
+                      <router-link
+                        :to="`/tenant/email/compose?phone=${person.email}`"
+                      >
+                        Send Email
+                      </router-link>
+                    </a>
+                    <a
+                      class="
+                        dropdown-item
+                        elipsis-items
+                        text-color
+                        cursor-pointer
+                      "
+                      href="#"
+                      @click.prevent="showConfirmModal(person.id)"
+                      >Delete</a
+                    >
                   </div>
                 </div>
               </div>
-            </div> -->
+            </div>
+          </div>
+
+          <hr class="row-divider" />
+        </div>
+        <!-- tosin 2 -->
 
         <ConfirmDialog />
         <Toast />
@@ -442,28 +406,28 @@
       </div>
     </div>
 
-    
-
-    <OverlayPanel ref="op" appendTo="body" :showCloseIcon="false" id="overlay_panel" style="width: 134px; margin-top: -25px; box-shadow: 0px 1px 4px #02172e45; border: 1px solid #dde2e6;" :breakpoints="{'960px': '75vw', '640px': '100vw'}">
-        <div v-for="item in membershipCategory" :key="item.id">
-          <div class="dropdown-item cursor-pointer p-0" @click="chooseCategory($event, item.id)">{{ item.name }}</div>
+    <OverlayPanel
+      ref="op"
+      appendTo="body"
+      :showCloseIcon="false"
+      id="overlay_panel"
+      style="
+        width: 134px;
+        margin-top: -25px;
+        box-shadow: 0px 1px 4px #02172e45;
+        border: 1px solid #dde2e6;
+      "
+      :breakpoints="{ '960px': '75vw', '640px': '100vw' }"
+    >
+      <div v-for="item in membershipCategory" :key="item.id">
+        <div
+          class="dropdown-item cursor-pointer p-0"
+          @click="chooseCategory($event, item.id)"
+        >
+          {{ item.name }}
         </div>
+      </div>
     </OverlayPanel>
-    <!-- <OverlayPanel ref="op" appendTo="body" :showCloseIcon="true" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
-            <DataTable :value="products" v-model:selection="selectedProduct" selectionMode="single" :paginator="false" :rows="5" @rowSelect="onProductSelect" responsiveLayout="scroll" >
-                <Column field="name" header="Name" sortable style="width: 50%"></Column>
-                <Column header="Image" style="width: 20%">
-                    <template #body="slotProps">
-                        <img src="https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png" :alt="slotProps.data.image" class="product-image" />
-                    </template>
-                </Column>
-                <Column field="price" header="Price" sortable style="width: 30%">
-                    <template>
-                        {{formatCurrency(slotProps.data.price)}}
-                    </template>
-                </Column>
-            </DataTable>
-        </OverlayPanel> -->
   </div>
 </template>
 
@@ -478,7 +442,7 @@ import moment from "moment";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
-import OverlayPanel from 'primevue/overlaypanel';
+import OverlayPanel from "primevue/overlaypanel";
 
 export default {
   props: ["list"],
@@ -486,7 +450,7 @@ export default {
     ByGenderChart,
     ByMaritalStatusChart,
     Pagination,
-    OverlayPanel
+    OverlayPanel,
   },
 
   setup() {
@@ -497,10 +461,8 @@ export default {
     const filterResult = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
-    const membershipCategory = ref([])
-    const selectedPersonId = ref("")
-
-
+    const membershipCategory = ref([]);
+    const selectedPersonId = ref("");
 
     const route = useRoute();
     const filterFormIsVissible = ref(false);
@@ -540,9 +502,13 @@ export default {
     });
 
     const totalFirsttimersCount = computed(() => {
-      if (getFirstTimerSummary.value || !getFirstTimerSummary.value.totalFirstTimer) return 0;
+      if (
+        getFirstTimerSummary.value ||
+        !getFirstTimerSummary.value.totalFirstTimer
+      )
+        return 0;
       return getFirstTimerSummary.value.totalFirstTimer;
-    })
+    });
 
     const deleteMember = (id) => {
       //  delete firtimer
@@ -590,71 +556,6 @@ export default {
         });
     };
 
-    // const confirm = useConfirm();
-    // let toast = useToast();
-    // const showConfirmModal = (id) => {
-    //      confirm.require({
-    //          message: 'Are you sure you want to proceed?',
-    //           header: 'Confirmation',
-    //           icon: 'pi pi-exclamation-triangle',
-    //           acceptClass: 'confirm-delete',
-    //           rejectClass: 'cancel-delete',
-    //           accept: () => {
-    //               deleteMember(id)
-    //               // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
-    //           },
-    //           reject: () => {
-    //               toast.add({severity:'info', summary:'Rejected', detail:'You have rejected', life: 3000});
-    //           }
-    //      }
-    // }
-
-    // const deleteMember = (id) => {
-    //   //  delete firtimer
-    //   axios
-    //     .delete(`/api/People/DeleteOnePerson/${id}`)
-    //     .then((res) => {
-    //       console.log(res);
-    //       toast.add({
-    //         severity: "success",
-    //         summary: "Confirmed",
-    //         detail: "Member Deleted",
-    //         life: 3000,
-    //       });
-    //       churchMembers.value = churchMembers.value.filter(
-    //         (item) => item.id !== id
-    //       );
-
-    //       // update first timer summary while deleting
-    //       axios
-    //         .get("/api/People/GetFirsttimerSummary")
-    //         .then((res) => {
-    //           getFirstTimerSummary.value = res.data;
-    //           console.log(res.data);
-    //         })
-    //         .catch((err) => console.log(err));
-    //     })
-    //     .catch((err) => {
-    //       /*eslint no-undef: "warn"*/
-    //       NProgress.done();
-    //       if (err.response.status === 400) {
-    //         toast.add({
-    //           severity: "error",
-    //           summary: "Unable to delete",
-    //           detail: "Ensure this member is not in any group",
-    //           life: 3000,
-    //         });
-    //       } else {
-    //         toast.add({
-    //           severity: "error",
-    //           summary: "Unable to delete",
-    //           detail: "An error occurred, please try again",
-    //           life: 3000,
-    //         });
-    //       }
-    //     });
-    // };
-
     const confirm = useConfirm();
     let toast = useToast();
     const showConfirmModal = (id) => {
@@ -684,9 +585,9 @@ export default {
       axios.get("/api/People/FirstTimer").then((res) => {
         churchMembers.value = res.data;
         console.log(churchMembers.value, "Al iz well");
-      })
+      });
     };
-    getFirstTimers()
+    getFirstTimers();
 
     const applyFilter = () => {
       filter.value.name =
@@ -772,7 +673,7 @@ export default {
 
     // Function to delete first timer
     const convert = (x) => {
-      return x.map((i) => i.id).join(",");
+      return x.map((i) => i.id);
     };
     const deleteMessage = ref("");
     const display = ref(false);
@@ -780,21 +681,21 @@ export default {
       let dft = convert(checkedFirstTimer.value);
       console.log(dft, "tosin");
       axios
-        .delete(`/api/People/DeletePeoples?peopleIDList=${dft}`)
+        .post(`/api/People/DeletePeople`, dft)
         .then((res) => {
           console.log(res.data, "God is awesome");
           let incomingRes = res.data.response;
           console.log(incomingRes, "tosin");
           if (incomingRes.toString().toLowerCase().includes("all")) {
-             toast.add({
-                severity: "success",
-                summary: "Confirmed",
-                detail: "First Timer(s) deleted successfully.",
-                life: 4000,
-              });
+            toast.add({
+              severity: "success",
+              summary: "Confirmed",
+              detail: "First Timer(s) deleted successfully.",
+              life: 4000,
+            });
             churchMembers.value = churchMembers.value.filter((item) => {
-            console.log(churchMembers.value, "God is good");
-            const y = checkedFirstTimer.value.findIndex(
+              console.log(churchMembers.value, "God is good");
+              const y = checkedFirstTimer.value.findIndex(
                 (i) => i.id === item.id
               );
               if (y >= 0) return false;
@@ -806,55 +707,50 @@ export default {
             toast.add({
               severity: "success",
               summary: "Confirmed",
-              detail: resArr[0]
+              detail: resArr[0],
             });
 
-            if (resArr[1] !== '') {
+            if (resArr[1] !== "") {
               if (!resArr[1].includes(",")) {
-              churchMembers.value = churchMembers.value.filter((item) => {
-              return !item.id.includes(resArr[1])
-            });
-            } else {
-              let IdArr = resArr[1].split(",");
+                churchMembers.value = churchMembers.value.filter((item) => {
+                  return !item.id.includes(resArr[1]);
+                });
+              } else {
+                let IdArr = resArr[1].split(",");
                 console.log(IdArr);
                 churchMembers.value = churchMembers.value.filter((item) => {
-                const y = IdArr.findIndex(
-                    (i) => i === item.id
-                  );
+                  const y = IdArr.findIndex((i) => i === item.id);
                   if (y >= 0) return false;
                   return true;
                 });
+              }
             }
-            }
-
           }
-          checkedFirstTimer.value = []
-
-
+          checkedFirstTimer.value = [];
         })
         .catch((err) => {
           stopProgressBar();
           if (err.toString().toLowerCase().includes("network error")) {
             toast.add({
-            severity: "warn",
-            summary: "Network Error",
-            detail: "Please ensure you have a strong internet connection",
-            life: 4000,
-          });
+              severity: "warn",
+              summary: "Network Error",
+              detail: "Please ensure you have a strong internet connection",
+              life: 4000,
+            });
           } else if (err.toString().toLowerCase().includes("timeout")) {
             toast.add({
-            severity: "warn",
-            summary: "Request Delayed",
-            detail: "Request took too long to respond",
-            life: 4000,
-          });
+              severity: "warn",
+              summary: "Request Delayed",
+              detail: "Request took too long to respond",
+              life: 4000,
+            });
           } else {
             toast.add({
-            severity: "warn",
-            summary: "Delete Failed",
-            detail: "Unable to delte first timer",
-            life: 4000,
-          });
+              severity: "warn",
+              summary: "Delete Failed",
+              detail: "Unable to delte first timer",
+              life: 4000,
+            });
           }
           console.log(err);
         });
@@ -884,55 +780,57 @@ export default {
 
     const getMembershipCategory = async () => {
       try {
-        let { data }  = await axios.get("/api/Settings/GetTenantPeopleClassification")
-        membershipCategory.value = data
+        let { data } = await axios.get(
+          "/api/Settings/GetTenantPeopleClassification"
+        );
+        membershipCategory.value = data;
+      } catch (err) {
+        console.log(err);
       }
-      catch (err) {
-        console.log(err)
-      }
-    }
-    getMembershipCategory()
+    };
+    getMembershipCategory();
 
-    const op = ref()
+    const op = ref();
     const toggle = (event, id) => {
-      op.value.toggle(event)
-      selectedPersonId.value = id
-    }
+      op.value.toggle(event);
+      selectedPersonId.value = id;
+    };
 
-    const chooseCategory = async(event, id) => {
-      op.value.toggle(event)
+    const chooseCategory = async (event, id) => {
+      op.value.toggle(event);
       try {
-        let { data }  = await axios.post(`/api/People/ConvertFirstTimerToMember?personId=${selectedPersonId.value}&membershipCategoryId=${id}`)
-        console.log(data)
+        let { data } = await axios.post(
+          `/api/People/ConvertFirstTimerToMember?personId=${selectedPersonId.value}&membershipCategoryId=${id}`
+        );
+        console.log(data);
 
-        churchMembers.value = churchMembers.value.filter(i => {
-          return i.id !== selectedPersonId.value
-        })
+        churchMembers.value = churchMembers.value.filter((i) => {
+          return i.id !== selectedPersonId.value;
+        });
         if (data.response) {
           toast.add({
-          severity: "success",
-          summary: "Confirmed",
-          detail: data.response,
-          life: 4000,
-        });
+            severity: "success",
+            summary: "Confirmed",
+            detail: data.response,
+            life: 4000,
+          });
         } else {
           toast.add({
-          severity: "success",
-          summary: "Confirmed",
-          detail: "Moved successfully",
-          life: 4000,
-        });
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Moved successfully",
+            life: 4000,
+          });
         }
-      }
-      catch (err) {
-        console.log(err)
+      } catch (err) {
+        console.log(err);
         if (err.response) {
           toast.add({
-          severity: "warn",
-          summary: "Moving failed",
-          detail: err.response,
-          life: 4000,
-        });
+            severity: "warn",
+            summary: "Moving failed",
+            detail: err.response,
+            life: 4000,
+          });
         } else if (err.toString().toLowerCase().includes("timeout")) {
           toast.add({
             severity: "warn",
@@ -947,21 +845,19 @@ export default {
             detail: "Please ensure that you havve a strong internet",
             life: 4000,
           });
-        }  else {
+        } else {
           toast.add({
             severity: "warn",
             summary: "Unable to move",
-            detail: "Couldn't move successfully, check your connection and try again",
+            detail:
+              "Couldn't move successfully, check your connection and try again",
             life: 4000,
           });
         }
       }
-    }
+    };
 
-    const convertToMembers = async() => {
-
-    }
-
+    const convertToMembers = async () => {};
 
     return {
       churchMembers,
@@ -1045,29 +941,6 @@ export default {
   margin-bottom: auto !important;
   /* padding: 0 21px; */
 }
-/*
-.
-
-.table-header p.name {
-  width: 20em;
-  margin-left: 0;
-}
-
-.picture .phoneNum {
-  margin-left: 14px;
-}
-
-.picture .source, .firstname .interested {
-  margin-left: 17px;
-}
-
-.lastname .date {
-  margin-left: 19px;
-}
-
-.phone .status {
-  margin-left: 20px;
-} */
 
 .summary-header {
   color: #136acd !important;
@@ -1085,8 +958,6 @@ export default {
 .board {
   width: 28%;
   border-radius: 10px;
-  /* padding: 0 8px; */
-  /* box-shadow: 0px 1px 4px #02172e45; */
 }
 
 .chart-con {
@@ -1182,50 +1053,9 @@ a {
 .table-top p:hover {
   cursor: pointer;
 }
-/*
-.label-search {
-  width: 0;
-  background: transparent;
-  padding: 4px;
-  overflow: hidden;
-  transition: all 0.5 ease-in-out;
-}
-.label-search input {
-  border: transparent;
-  background: transparent;
-  width: 70%;
-  outline: none;
-}
-
-.label-search .search-btn {
-  display: flex;
-  align-items: center;
-  background: #7894a6;
-  padding: 4px;
-  border-radius: 5px;
-}
-
-.label-search .empty-btn {
-  display: flex;
-  align-items: center;
-  padding: 0 5px;
-}
-
-.show-search {
-  width: 174px;
-  overflow: hidden;
-  transition: all 0.5 ease-in-out;
-  border: 1px solid #dde2e6;
-  border-radius: 5px 0px 0px 5px;
-  background: #ebeff4;
-  transition: all 0.5s ease-in-out;
-} */
 
 .header {
   background: #f1f3f9;
-
-  /*
-    ; */
 }
 
 .header tr {
@@ -1276,18 +1106,6 @@ a {
   max-height: 310px;
   border-radius: 10px;
 }
-
-/* .boards { */
-/* flex-direction: column; */
-/* flex-wrap: wrap;
-    justify-content: space-between;
-  } */
-
-/* .board {
-    width: 45%;
-    margin: 10px 0;
-    max-height: 310px;
-  } */
 
 .board.members-count {
   padding: 24px;
@@ -1356,21 +1174,6 @@ a {
     width: 100%;
     text-align: right;
   }
-
-  /* @media (max-width: 767px) {
-    .table-responsive .dropdown-menu {
-        position: static !important;
-    }
-}
-@media (min-width: 768px) {
-    .table-responsive {
-        overflow: visible;
-    }
-} */
-
-  /* .table-header {
-    display: none;
-  } */
 }
 
 @media screen and (max-width: 500px) {
@@ -1407,8 +1210,6 @@ a {
 @media (max-width: 575px) {
   .head-button {
     display: flex;
-    /* flex-direction: row; */
-    /* align-items: center; */
     justify-content: center;
   }
 
@@ -1423,19 +1224,6 @@ a {
 }
 
 @media screen and (min-width: 501px) and (max-width: 768px) {
-  /* .boards {
-    flex-direction: column;
-    align-items: center !important;
-    flex-wrap: nowrap !important;
-  }
-
-  .chart-con {
-    width: 85% !important;
-  }
-
-  .chart-con div {
-    width: 40%;
-  } */
 
   .board {
     width: 50% !important;
@@ -1501,7 +1289,7 @@ a {
 .t-header div {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
 }
 .parent-desc.first {
   color: #8898aa;
@@ -1515,8 +1303,107 @@ a {
 }
 .desc {
   color: #9b9a9c;
-  /* opacity: 0.7; */
 }
+
+/* tosin */
+
+@media screen and (max-width: 500px) {
+  .chart1,
+  .chart2,
+  .board,
+  .chart-con {
+    width: 100% !important;
+  }
+
+  .picture,
+  .firstname,
+  .lastname,
+  .phone,
+  .action {
+    width: 100%;
+  }
+
+  .table {
+    padding: 0 10px;
+  }
+
+  .table-body .check {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0;
+  }
+
+  .data-text {
+    display: inline-block;
+  }
+
+  .data-row {
+    flex-direction: column;
+  }
+
+  .data-con {
+    /* text-align: center; */
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .action-icon {
+    width: 100%;
+    text-align: right;
+  }
+
+  .table-header {
+    display: none;
+    padding: 0 0 0 2rem;
+  }
+}
+
+@media screen and (min-width: 500px) {
+
+  .picture > p {
+    margin-left: 43px;
+  }
+
+  .table-body .check {
+    width: 4%;
+  }
+
+  .action {
+    width: 20%;
+  }
+}
+
+@media (max-width: 767px) {
+  .filter-options-shown {
+    height: 150px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .board-top {
+    margin-bottom: 10px;
+  }
+
+  .total {
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (min-width: 501px) and (max-width: 768px) {
+
+  .board {
+    width: 50% !important;
+    margin-bottom: 10px;
+  }
+
+  .summary-header {
+    width: 50%;
+    margin-left: 26.5%;
+  }
+}
+
+/* tosin */
 </style>
 
 

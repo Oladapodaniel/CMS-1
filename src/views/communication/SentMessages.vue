@@ -11,7 +11,7 @@
               >
                 <div class="col-md-8 col-sm-12 pl-0">
                   <div class="search-div">
-                    <span><i class="fa fa-search mr-1"></i></span>
+                    <span><i class="pi pi-search mr-1"></i></span>
                     <input
                       type="text"
                       placeholder="Search here..."
@@ -72,7 +72,7 @@
                             @click="sortByStatus"
                             >Status
                             <i
-                              class="fa fa-question-circle-o c-pointer"
+                              class="pi pi-question-circle c-pointer"
                               v-tooltip.top="'Sent | Processed | Failed'"
                             ></i
                           ></span>

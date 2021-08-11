@@ -226,7 +226,7 @@ export default {
       if (amount.value <= 0) return "";
       return Math.ceil(amount.value);
     });
-
+    
     const userEmail = ref(store.getters.email);
     const churchName = ref("");
 

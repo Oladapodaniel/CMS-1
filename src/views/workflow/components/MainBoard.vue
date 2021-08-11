@@ -25,13 +25,16 @@
                 <div class="row mt-4">
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="border animate col-4 scroll-div scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers || done, 'col-md-1': !showTriggers &&  workflow.triggers.length > 0 }">
+                            <div class="border animate col-4 scroll-div scr-height our-grey-bg" style="height: 400px" :class="{ 'col-md-4': showTriggers || done || selectedTriggerIndex === null, 'col-md-1': !showTriggers &&  workflow.triggers.length > 0 }">
                                 <div class="row h-100" style="overflow-y:scroll">
-                                    <div class="col-md-12 py-3 c-pointer d-flex justify-content-center border" :class="{ 'active-trigger':  selectedTrigger.id === trigger.id}" v-for="(trigger, index) in workflow.triggers" :key="index" @click="changeActiveTrigger(index)">
-                                        <h6 class="d-flex align-items-center" style="height: fit-content">
-                                            <span><i class="mr-3" :class="[trigger.icon, { 'bigger-icon': !showTriggers &&  workflow.triggers.length > 0 }]" style="font-size: 1.5rem"></i></span>
-                                            <span :class="{'d-none': !done }">{{ trigger.name }}</span>
-                                        </h6>
+                                    <div class="col-md-12 py-3 c-pointer border" :class="{ 'active-trigger':  selectedTrigger.id === trigger.id}" v-for="(trigger, index) in workflow.triggers" :key="index" @click="changeActiveTrigger(index)">
+                                        <div class="" style="height: fit-content">
+                                            <div class="container text-center d-flex align-items-center justify-content-center">
+                                                <span><i class="mr-3" :class="[trigger.icon, { 'bigger-icon': !showTriggers &&  workflow.triggers.length > 0 }]" style="font-size: 1.5rem"></i></span>
+                                                <span class="font-weight-700" :class="{'d-none': selectedTriggerIndex !== null }">{{ trigger.name }}</span>
+                                            </div>
+                                            <TriggerDescription v-if="selectedTriggerIndex === null" :description="triggerDescriptions[trigger.triggerType]()" :hideHeader="true" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row" >
@@ -59,8 +62,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-8 border animate" :class="{ 'col-md-8': showTriggers || done, 'col-md-11': !showTriggers &&  workflow.triggers.length > 0 && !done }">
-                                <div class="row" :class="{ 'd-none': workflow.triggers.length === 0 || done }">
+                            <div class="col-8 border animate" :class="{ 'col-md-8': showTriggers || done, 'col-md-11': !showTriggers &&  workflow.triggers.length > 0 && selectedTriggerIndex !== null }">
+                                <div class="row" :class="{ 'd-none': workflow.triggers.length === 0 || done || selectedTriggerIndex === null  }">
                                     <div class="col-12 animate border  scr-height"  style="height: 400px" :class="{ 'col-md-4': actionSelected, 'col-md-6': !actionSelected, 'd-none': done }">
                                         <GivingAmount 
                                             :selectedTriggerIndex="selectedTriggerIndex" 
@@ -351,7 +354,7 @@ import AdminMessage from "./actions/AdminMessage"
 import MarkPresent from "./actions/MarkPresent"
 import UpdateProgress from "./actions/UpdateProgress"
 import Interactions from "./actions/InteractionsAction"
-import { computed } from '@vue/runtime-core'
+import { computed, watch } from '@vue/runtime-core'
 import EmailAction from "./actions/Email"
 import WhatsAppAction from "./actions/WhatsappAction"
 import AssignTask from "./actions/AssignTask"
@@ -361,6 +364,9 @@ import workflow_service from '../utlity/workflow_service'
 import { useToast } from 'primevue/usetoast'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
+
+import descriptionHelper from '../helper/description';
+import TriggerDescription from './TriggerDescription.vue'
 
 export default {
     components: { 
@@ -392,6 +398,7 @@ export default {
         Interactions,
         Individual,
         SMSAction,
+        TriggerDescription,
     },
     setup () {
         const toast = useToast();
@@ -809,8 +816,10 @@ export default {
             return triggerAction && (triggerAction.Action || triggerAction.action) ? triggerAction : { };
         }
 
+        const triggerDescriptions = ref(descriptionHelper(workflow.value.triggers, groups.value, contributionItems.value));
         const onDone = () => {
             selectedTriggerIndex.value = null;
+            triggerDescriptions.value = descriptionHelper(workflow.value.triggers, groups.value, contributionItems.value)
         }
 
         return {
@@ -853,6 +862,7 @@ export default {
             getTrigger,
             getAction,
             onDone,
+            triggerDescriptions,
         }
     }
 }

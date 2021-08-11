@@ -9,13 +9,6 @@ import TermsOfUse from '../components/temp/PaymentPage';
 const routes = [
 
     {
-        path: '/expiredSubscription',
-        name: 'ExpiredSubscription',
-        component: () =>
-            import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/ExpiredSubscription')
-    },
-
-    {
         path: '/pagination',
         name: 'Pagination',
         component: Pagination
@@ -142,6 +135,7 @@ const routes = [
                 ]
             }
         },
+       
         {
             path: 'workflow',
             name: 'WorkFlow',
@@ -234,9 +228,9 @@ const routes = [
             ]
         },
         {
-            path: 'firsttimerworkflow',
+            path: 'firsttimermanagement/:personId?',
             meta: {
-                title: 'Churchplus - First Timer Work Flow',
+                title: 'Churchplus - First Timer CRM',
             },
             component: () =>
                 import( /* webpackChunkName: "addfirsttimer" */ '../views/people/firsttimer_crm/Index.vue')
@@ -1259,13 +1253,68 @@ const routes = [
         }
         ]
     },
-    // {
-    //     path: '/unauthorized',
-    //     name: 'Unauthorized',
-    //     component: () =>
-    //         import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
-    // }
+    {
+        path: '/errorpage',
+        name: 'errorpage',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/PageError'),    
+            children: [
+                {
+                    path: 'expiredSubscription',
+                    name: 'ExpiredSubscription',
+                    component: () =>
+                    import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/ExpiredSubscription'),    
+                },
+                {
+                    path: 'unauthorized',
+                    name: 'Unauthorized',
+                    component: () =>
+                        import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
+                }
+            ]
+    },
+    {
+        path: '/newsubscription2',
+        name: 'Subscription2',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/newPage/Subscription2'),    
+            
+    },
+    {
+        path: '/sendmessage2',
+        name: 'sendMessage2',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/newPage/SendMessage2'),    
+            
+    },
+    {
+        path: '/buyunits2',
+        name: 'BuyUnits2',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/newPage/BuyUnits2'),    
+            
+    },
 ]
+// children: [
+            //     {
+            //         path: 'subscription',
+            //         name: 'Subscription',
+            //         component: () =>
+            //         import( /* webpackChunkName: "dashboard" */ '../views/dashboard/Subscription.vue')  
+            //     },
+            //     {
+            //         path: 'compose',
+            //         name: 'SendMessage',
+            //         component: () =>
+            //         import( /* webpackChunkName: "sendmessage" */ '@/views/communication/SendSms') 
+            //     },
+            //     {
+            //         path: 'buyunits',
+            //         name: 'BuyUnits',
+            //         component: () =>
+            //         import( /* webpackChunkName: "buyunits" */ '@/views/payment/BuyUnits')
+            //     }
+            // ]
 
 
 

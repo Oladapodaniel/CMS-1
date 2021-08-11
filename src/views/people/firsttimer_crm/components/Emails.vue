@@ -1,7 +1,28 @@
 <template>
-    <div>
-        Emails Here
-    </div>
+    <div class="d-flex justify-content-end mx-3">
+        <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="openNoteEditor">Create</div>
+   </div>
+    <div class="col-12 mt-4">
+            <div class="col-12 card-bg p-4">
+                <div class="row d-flex justify-content-between">
+                    <div>
+                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Email</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
+                        
+                            <div class="col mt-4 enlargen-font">Email Body </div>
+                        
+                    </div>
+                    <div>
+                        <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
+                    </div>
+                </div>
+                <transition name="fade">
+                    <div class="row mt-4">
+                        <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
+                        <div class="col text-right font-weight-700 uniform-primary-color">1 Association</div>
+                    </div>
+                </transition>
+            </div>
+        </div>
 </template>
 
 
@@ -12,5 +33,71 @@ export default {
 </script>
 
 <style scoped>
+.card-bg {
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(45 62 80 / 12%) 0px 1px 5px 0px;
+    border-radius: 3px;
+}
 
+.roll-note-icon {
+    transition: all 0.5s ease-in-out;
+    transform: rotateZ(180deg);
+}
+.unroll-note-icon {
+    transition: all 0.5s ease-in-out;
+    transform: rotateZ(90deg);
+}
+
+.fade {
+    transition: all 0.5s ease-in-out;
+    opacity: 0;
+}
+.fade-enter-active {
+  animation: fade-in .3s;
+}
+.fade-leave-active {
+  animation: fade-in .3s reverse;
+}
+@keyframes fade-in {
+  0% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+}
+
+.btn-btn {
+    font-size: 17px;
+    line-height: 14px;
+    padding: 5px 12px;
+    border-radius: 3px;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+    font-weight: 400;
+    text-align: center;
+}
+
+.save-btn {
+    background-color: #425b76;
+    border: 1px solid #425b76;
+    color: #fff;    
+}
+
+.cancel-btn {
+    background-color: #eaf0f6;
+    border-color: #cbd6e2;
+    color: #506e91; 
+}
+
+.uniform-primary-color {
+    color: #136acd
+}
+
+.enlargen-font {
+    font-size: 1.2em
+}
 </style>

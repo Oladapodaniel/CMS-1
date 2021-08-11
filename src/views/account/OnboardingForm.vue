@@ -32,7 +32,6 @@
                     class="input"
                     v-model="userDetails.lastName"
                     placeholder="Last name"
-                    required
                   />
                 </div>
               </div>

@@ -42,7 +42,7 @@
                   <div class="row menu-item-con py-2">
                     <div class="col-md-8 m-auto">
                       <a class="btn btn-default font-weight-bold">
-                        <i class="fa fa-location-arrow mr-3 menu-icon"></i>
+                        <i class="pi pi-arrow-circle-up mr-3 menu-icon"></i>
                         <span class="menu-item">Sent</span>
                     </a>
                     </div>
@@ -51,7 +51,7 @@
                   <div class="row menu-item-con py-2">
                     <div class="col-md-8 m-auto">
                       <a class="btn btn-default font-weight-bold">
-                        <i class="fa fa-envelope-open mr-3 menu-icon"></i>
+                        <i class="pi pi-envelope mr-3 menu-icon"></i>
                         <span class="menu-item">Draft</span>
                     </a>
                     </div>
@@ -60,7 +60,7 @@
                   <div class="row menu-item-con py-2">
                     <div class="col-md-8 m-auto">
                       <a class="btn btn-default font-weight-bold">
-                        <i class="fa fa-list-alt mr-3 menu-icon"></i>
+                        <i class="pi pi-list mr-3 menu-icon"></i>
                         <span class="menu-item">Contact List</span>
                     </a>
                     </div>
@@ -75,7 +75,7 @@
               <div class="row d-md-flex align-items-center mt-3 mb-4">
                 <div class="col-md-7 col-sm-12">
                   <div class="search-div">
-                    <span><i class="fa fa-search mr-1"></i></span>
+                    <span><i class="pi pi-search mr-1"></i></span>
                     <input type="text" placeholder="Search here..." />
                     <span class="mx-2"> | </span>
                     <span class="mx-2">Sort By</span>
@@ -88,8 +88,8 @@
                       <h4 class="font-weight-bold mb-0">302</h4>
                       <p class="font-weight-bold mb-0">SMS Units</p>
                     </div>
-                    <div class="col-sm-7 d-sm-flex justify-content-end">
-                      <button class="btn buy-btn">
+                    <div class="col-sm-7 d-sm-flex justify-content-center">
+                      <button class="btn buy-btn border border-danger">
                         <span class="btn-text">
                             BUY UNITS
                         </span>
@@ -98,6 +98,7 @@
                   </div>
                 </div>
               </div>
+
 
               <div class="row">
                 <div class="col-md-12">

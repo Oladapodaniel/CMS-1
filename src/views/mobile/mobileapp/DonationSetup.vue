@@ -54,7 +54,7 @@
             <td>{{bankAccount.description}}</td>
             <td>
                 <div class="col-2 align-self-center cursor-pointer" @click="showConfirmModalBank(bankAccount.id)">
-                  <i class="fa fa-trash"></i>
+                  <i class="pi pi-trash"></i>
                 </div>
             </td>
           </tr>

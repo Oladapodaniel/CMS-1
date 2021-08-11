@@ -30,7 +30,7 @@
                   <div class="col-sm-5 py-2 py-md-0">
                     <p class="search-tex d-md-flex align-items-center mb-0">
                       <span class="mr-2 c-pointer font-weight-700" @click="toggleSearch"
-                        ><i class="fa fa-search mr-1"></i> <span v-if="!searchIsVisible">SEARCH</span></span
+                        ><i class="pi pi-search mr-1"></i> <span v-if="!searchIsVisible">SEARCH</span></span
                       >
                       <label
                         class="label-search d-flex"
@@ -43,7 +43,7 @@
                         />
                         <span class="empty-btn">x</span>
                         <span class="search-btn">
-                          <i class="fa fa-search"></i>
+                          <i class="pi pi-search"></i>
                         </span>
                       </label>
                     </p>
@@ -69,7 +69,7 @@
                     </p>
                   </div>
                   <p @click="toggleSearch" class="search-text">
-                    <i class="fa fa-search"></i> SEARCH
+                    <i class="pi pi-search"></i> SEARCH
                   </p>
                   <div class="search d-flex">
                     <label
@@ -79,7 +79,7 @@
                       <input type="text" placeholder="Search..." />
                       <span class="empty-btn">x</span>
                       <span class="search-btn">
-                        <i class="fa fa-search"></i>
+                        <i class="pi pi-search"></i>
                       </span>
                     </label>
                   </div>

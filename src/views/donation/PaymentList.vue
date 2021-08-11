@@ -11,7 +11,7 @@
                   </p>
                 </div>
                 <p @click="toggleSearch" class="search-text text-right mt-2">
-                  <i class="fa fa-search"></i> SEARCH
+                  <i class="pi pi-search"></i> SEARCH
                 </p>
                 <div class="search d-flex ml-2">
                   <label
@@ -25,7 +25,7 @@
                     />
                     <span class="empty-btn">x</span>
                     <span class="search-btn">
-                      <i class="fa fa-search"></i>
+                      <i class="pi pi-search"></i>
                     </span>
                   </label>
                 </div>

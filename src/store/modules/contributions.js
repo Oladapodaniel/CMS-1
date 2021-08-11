@@ -35,12 +35,12 @@ export default {
     },
     actions: {
         async contributionList({ commit }) {
-                try {
-                    const { data } = await axios.get("/api/Financials/Contributions/Transactions");
-                    commit("saveList", data);
-                } catch (error) {
-                    console.log(error);
-                }
+                // try {
+                //     const { data } = await axios.get("/api/Financials/Contributions/Transactions");
+                //     commit("saveList", data);
+                // } catch (error) {
+                //     console.log(error);
+                // }
         },
         async contributionItems({ commit }) {
             try {

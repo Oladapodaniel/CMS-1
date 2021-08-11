@@ -1,25 +1,22 @@
 <template>
     <div class="container">
     <div class="row">
-
+      <div class="col-8 mb-5"><h2><i class="fa fa-lock" aria-hidden="true"></i> Subscription  Expired</h2></div>
+      <div class="col-4 mb-5 mt-2 d-flex justify-content-end" ><router-link to="/newsubscription2" class="text-decoration-none">Click here to Subscibe<i class="fa fa-arrow-right ml-2"></i></router-link></div>  
       <div class="col-md-12">
-        <h1>
-          <!-- <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> -->
-          <i class="fa fa-key" aria-hidden="true"></i> 401</h1>
-        <!-- <h2>Oops... Page Not Found!</h2> -->
-        <h3>Subcription  Expired</h3>
-        <div>This page is not publicly available because  your  subsciption has Expired</div>
-        <div>For more info: Contact the administrator of your church.</div>
-          <button class="btn btn-primary" style="margin-top: 20px;" @click.prevent="PlsSubscibe"> <i class="fa fa-arrow-left" aria-hidden="true"></i>Click to Subscibe</button>
-
-        <p style="margin-top: 20px">If you think you have arrived here by our mistake, please <a href="#">contact us</a></p>
-
-        <h3>Follow us:</h3>
-        <div class="social-networks">
-          <a href="https://www.facebook.com/creativedesignthemes/" target="_blank"><i class="fab fa-facebook-square"></i></a>
-          <a href="https://www.pinterest.com/creative3355/" target="_blank"><i class="fab fa-pinterest-square"></i></a>
-          <a href="https://twitter.com/creativedesign_" target="_blank"><i class="fab fa-twitter-square"></i></a>
+        <div class="mb-3">This page is not publicly available because  your  Subscription has Expired</div>
+        <div class="mt-4">
+          <div>Things you can still do:</div>
+          <ul class="list-unstyled">
+            <li> <i class="fa fa-arrow-right text-primary mr-2"></i><router-link to="/sendmessage2">Send SMS</router-link></li>
+            <li> <i class="fa fa-arrow-right text-primary mr-2 "></i><router-link to="/newsubscription2">Subscribe</router-link></li>
+            <li> <i class="fa fa-arrow-right text-primary mr-2 "></i><router-link to="/buyunits2">Buy Unit</router-link></li>
+            <!-- <a href="" @click.prevent="plsSubscribe">Subscribe</a> -->
+          </ul>
         </div>
+        <div class="mt-4">For more info: Contact the administrator of your church</div>
+        <div>If you think you have arrived here by our mistake, please <a href="#" class="text-decoration-none">contact us</a></div>
+        <div class="col-12 d-flex justify-content-end" ><button class="btn btn-primary rounded font-weight-bold" @click="logout">Logout </button> </div>
       </div>
     </div>
   </div>
@@ -28,16 +25,25 @@
 <script>
 // import { useRoute } from "vue-router"
 import router from "../../router/index"
+import store from "@/store/store";
+import setupService from '../../services/setup/setupservice';
 export default {
     setup () {
         // const router = useRoute()
 
-        const plsSubscibe = () => {
-            router.push('subscription')
-        }
+        // const plsSubscribe = () => {
+        //     router.push('/tenant/subscription')
+        // }
+      const logout = () => {
+        localStorage.clear()
+        router.push('/')
+        store.dispatch('clearCurrentUser', {})
+        setupService.clearStore();
+    }
 
         return {
-            plsSubscibe
+            // plsSubscribe,
+            logout
         }
     }
 }

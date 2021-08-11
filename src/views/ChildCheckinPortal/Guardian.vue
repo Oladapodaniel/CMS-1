@@ -35,7 +35,7 @@
                                     class="filter col-2"
                                     >
                                 <p class="mt-2">
-                                    <i class="fa fa-print"></i>
+                                    <i class="pi pi-print"></i>
                                     SORT
                                 </p>
                                 </div>
@@ -47,7 +47,7 @@
                                 </div> -->
                                 <div class="col-2">
                                 <p @click="toggleSearch" class="search-text w-100 mt-2">
-                                    <i class="fa fa-search"></i> SEARCH
+                                    <i class="pi pi-search"></i> SEARCH
                                 </p>
                                 </div>
 
@@ -66,7 +66,7 @@
                                     />
                                     <span class="empty-btn">x</span>
                                     <span class="search-btn">
-                                    <i class="fa fa-search"></i>
+                                    <i class="pi pi-search"></i>
                                     </span>
                                 </label>
                                 </div>

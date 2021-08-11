@@ -1,16 +1,16 @@
 <template>
   <div class="container-slim">
     <div class="container-fluid">
-      <div class="row d-md-flex justify-content-between yu mt-5">
-        <div class="col-md-4">
+      <div class="row d-md-flex yu mt-5">
+        <div class="col-md-6 col-4">
           <div class="events">Groups</div>
           <Toast />
           <ConfirmDialog />
         </div>
-        <div class="col-md-4 mt-2 my-1 link">
+        <div class="col-md-6 col-8 d-flex justify-content-end mt-2 my-1 link">
           <router-link
             to="/tenant/createpeoplegroup"
-            class="grey-border primary-btn default-btn primary-bg border-0"
+            class="grey-border primary-btn default-btn primary-bg border-0 small-screen"
             >Add New Group</router-link
           >
         </div>
@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <div class="row mt-4 grey-rounded-border grey-rounded-border2">
+      <div class="row mt-4 grey-rounded-border grey-rounded-border2 m-auto">
         <div class="col-md-12">
           <div class="row main-header">
             <div class="col-md-12">
@@ -83,13 +83,13 @@
           <div class="row  small-text" v-for="(group, index) in groups" :key="index">
             <div class="col-md-12">
               <div class="row">
-                <div class="col-sm-2 d-md-flex align-items-center">
-                  <input class="my-2" type="checkbox" />
+                <div class="col-sm-2 d-md-flex align-items-center mt-3">
+                  <input class="my-3 d-flex justify-content-end" type="checkbox" />
                 </div>
                 <div class="col-sm-4 d-md-flex align-items-center">
                   <span class="my-2 name-link">
-                    <span class="hidden-header font-sm-weight-600">Group Name</span>
-                    <span class="f-right">
+                    <span class="hidden-header font-sm-weight-600 d-flex justify-content-start d-md-none">Group Name</span>
+                    <span class="f-right mt-n3">
                       <router-link
                       :to="`/tenant/createpeoplegroup/${group.id}`"
                       >{{ group.name }}</router-link
@@ -98,8 +98,8 @@
                   </span>
                 </div>
                 <div class="col-sm-4 d-md-flex align-items-center">
-                  <span class="hidden-header font-weight-600">Group Size</span>
-                  <span class="my-2 f-right">{{ group.peopleInGroupsCount }}</span>
+                  <span class="hidden-header mt-3 font-weight-600 d-flex justify-content-start d-md-none">Group Size</span>
+                  <span class="mb-2 mt-n3 f-right">{{ group.peopleInGroupsCount }}</span>
                 </div>
                 <div class="col-sm-2 d-md-flex align-items-center text-right small-text">
                   <div class="dropdown">
@@ -254,6 +254,17 @@ export default {
   .hidden-header {
     display: none;
   }
+  /* .events{
+    position: relative;
+        display: flex;
+    flex-direction: row;
+  }
+  .small-screen{
+    position: absolute;
+        display: flex;
+    flex-direction: row-reverse;
+    float: right;
+  } */
 }
 @media screen and (max-width: 581px) {
   .main-header {

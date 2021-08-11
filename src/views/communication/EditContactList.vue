@@ -74,7 +74,7 @@
                         </div>
 
                         <div class="col-md-1 col-ms-12">
-                          <span><i class="fa fa-trash delete-icon"></i></span>
+                          <span><i class="pi pi-trash delete-icon"></i></span>
                         </div>
                       </div>
                       <div class="row">
@@ -108,7 +108,7 @@
                           <span>message</span>
                         </div>
                         <div class="col-md-1 col-ms-12">
-                          <span><i class="fa fa-trash delete-icon"></i></span>
+                          <span><i class="pi pi-trash delete-icon"></i></span>
                         </div>
                       </div>
                       <div class="row">

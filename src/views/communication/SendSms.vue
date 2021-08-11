@@ -822,7 +822,10 @@ export default {
     };
 
     const charactersCount = computed(() => editorData.value.length);
-    const pageCount = computed(() => Math.ceil(editorData.value.length / 160));
+    const pageCount = computed(() => {
+      if (editorData.value.length <= 160) return 1;
+      return Math.ceil(editorData.value.length / 153);
+    });
 
     const subject = ref("");
     const phoneNumber = ref("");
