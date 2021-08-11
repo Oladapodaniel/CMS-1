@@ -20,6 +20,7 @@
           </ul>
         </div>
         <div class="mt-4">For more info: Contact the administrator of your church.</div>
+        <div class="default-btn text-dark c-pointer text-center col-2 mt-4" @click="logout">Logout</div>
         <!-- <div>If you think you have arrived here by our mistake, please <a href="#" class="text-decoration-none">contact us</a></div> -->
         
       </div>
