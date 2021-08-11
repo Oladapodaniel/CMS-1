@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
         <div class="col-md-7 col-xl-8 col-lg-8 col-sm-12">
-          <h2 class="font-weight-bolder">{{  churchProfile ? churchProfile : "" }}</h2>
+          <h2 class="font-weight-bolder churchHeader">{{  churchProfile ? churchProfile : "" }}</h2>
         </div>
         <div class="col-lg-4 col-xl-4 col-md-5 col-sm-12 d-flex justify-content-sm-end  mt-2 link d-lg-flex justify-content-end">
           <router-link
@@ -273,6 +273,7 @@ export default {
   text-decoration: none!important;
 
 }
+
 .route:hover{
   color: #136acd!important;
 
@@ -332,5 +333,11 @@ color: white!important;
   .table-header-row {
     display: none;
   }
+}
+@media screen and (max-width: 402px) {
+  .churchHeader{
+  font-size: 20px;
+}
+  
 }
 </style>
