@@ -1,4 +1,8 @@
 <template>
+<div class="d-flex justify-content-end mx-3">
+        <div class="col-2 mt-3 save-btn btn-btn c-pointer" @click="openEmailModal">Log call</div>
+        <div class="col-3 mt-3 save-btn btn-btn c-pointer" @click="openEmailModal">Make a phone call</div>
+   </div>
     <div class="col-12 mt-4">
             <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
