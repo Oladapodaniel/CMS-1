@@ -16,23 +16,23 @@
             </div>
         </div>
         <div class="row d-flex justify-content-center mt-5">
-            <div @click="openNoteEditor">
+            <div @click="openNoteEditor" class="c-pointer">
                 <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
                 <div>Note</div>
             </div>
             <div class="ml-4" @click="openEmailModal">
-                <div class="icon-bg" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
+                <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
                 <div>Email</div>
             </div>
-            <div class="ml-4" @click="call">
+            <div class="ml-4 c-pointer" @click="call">
                 <div class="icon-bg" v-tooltip.top="'Make a phone call'"><i class="pi pi-phone"></i></div>
                 <div>Call</div>
             </div>
-            <div class="ml-4" @click="openTaskEditor">
+            <div class="ml-4 c-pointer" @click="openTaskEditor">
                 <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
                 <div>Task</div>
             </div>
-            <div class="ml-4" v-tooltip.top="'Log a call, email or meeting'">
+            <div class="ml-4 c-pointer" v-tooltip.top="'Log a call, email'" @click="toggleLog" aria:haspopup="true" aria-controls="overlay_panel">
                 <div class="icon-bg"><i class="pi pi-plus"></i></div>
                 <div>Log</div>
             </div>
@@ -160,11 +160,85 @@
             </div>
         </div>
         </OverlayPanel>
+
+        <OverlayPanel ref="logDropDown" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+            <div class="p-0 container-fluid">
+                <div class="row d-flex flex-column">
+                    <div class="py-2 px-3 hover-log" @click="toggleLogPane($event)">Log a call</div>
+                    <div class="py-2 px-3 hover-log" @click="toggleLogPane($event)">Log an email</div>
+                </div>
+            </div>
+        </OverlayPanel>
+
+        <Dialog :header="'Log ' + logVariable" v-model:visible="displayLogPane" :style="{width: '50vw'}" :position="position" :modal="true">
+            <!-- style="height: 480px" -->
+           <div class="container-fluid">
+               <div class="row">
+                   <div class="col-4">
+                       <div class="label-text">Contacted</div>
+                       <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ selectedContactLog }} &nbsp; <i class="pi pi-sort-down"></i></div>
+                       <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                            <div class="container p-0">
+                                <div class="row">
+                                    <div class="col-12 py-2 px-3 hover-cursor-cancel">{{ `${personDetails.firstName} ${personDetails.lastName}(${logVariable === 'email' ? personDetails.email : personDetails.mobilePhone})`}}</div>
+                                </div>
+                            </div>
+                        </OverlayPanel>
+                   </div>
+                   <div class="col-4">
+                       <div class="label-text">Call Outcome</div>
+                       <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleOutcome" aria:haspopup="true" aria-controls="overlay_panel">Select an outcome &nbsp; <i class="pi pi-sort-down"></i></div>
+                       <OverlayPanel ref="outcomeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                            <div class="container-fluid p-0">
+                                <div class="row" v-for="(item, index) in outcomeList" :key="index">
+                                    <div class="col-12 py-2 px-3 hover-log">{{ item }}</div>
+                                </div>
+                            </div>
+                        </OverlayPanel>
+                   </div>
+               </div>
+               <div class="row mt-2">
+                   <div class="col-4">
+                       <div class="label-text">Date</div>
+                       <div class="mt-1 uniform-primary-color font-weight-700">
+                           <input type="date" class="form-control" />
+                       </div>
+                   </div>
+                   <div class="col-4">
+                       <div class="label-text">Time</div>
+                       <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleTime" aria:haspopup="true" aria-controls="overlay_panel">2:12PM &nbsp; <i class="pi pi-sort-down"></i></div>
+                       <OverlayPanel ref="timeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                            <div class="container">
+                                <div class="row">
+                                    here here time
+                                </div>
+                            </div>
+                        </OverlayPanel>
+                   </div>
+               </div>
+               <!-- <div class="row">
+                   <div class="col-12">
+                       <hr />
+                   </div>
+               </div> -->
+               <div class="row mt-3">
+                   <div class="col-12">
+                       <textarea name="" placeholder="Describe the call..." class="w-100 form-control" rows="6" v-model="callLogDesc"></textarea>
+                   </div>
+               </div>
+           </div>
+            <template #footer>
+                <div class="row d-flex justify-content-end">
+                    <div class="default-btn text-center">Cancel</div>
+                    <div class="primary-bg default-btn border-0 text-white text-center ml-3" @click="saveLog">Save</div>
+                </div>
+            </template>
+        </Dialog>
     <Toast />
 </template>
 
 <script>
-import { ref } from "vue"
+import { computed, ref, watch } from "vue"
 import Dropdown from "primevue/dropdown";
 import Tooltip from 'primevue/tooltip';
 import OverlayPanel from 'primevue/overlaypanel';
@@ -179,8 +253,8 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor"],
-    props: ["personDetails"],
+    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog"],
+    props: ["personDetails", "callLog"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
         // const toast = useToast()
@@ -219,6 +293,7 @@ export default {
                 status: 'Open Deal'
             }
         ])
+        const outcomeList = ref(['Busy', 'Connected', 'Left live message', 'Left voicemail', 'No answer', 'Wrong number'])
         const selectedLeadStatus = ref("")
         const editEmailRef = ref()
         const contactNameRef = ref()
@@ -226,7 +301,21 @@ export default {
         const hoverPhone = ref(false)
         const phoneNumber = ref(8076543254)
         const email = ref('olad@gamil.com')
+        const logDropDown = ref(false)
+        const position = ref('bottomright')
+        const displayLogPane = ref(false)
+        const contactRef = ref(false)
+        const outcomeRef = ref(false)
+        const date = ref("")
+        const timeRef = ref(false)
+        const logVariable = ref("")
+        const callLogDesc = ref("")
 
+
+        const selectedContactLog = computed(() => {
+            if (!props.personDetails) return "Select a contact"
+            return `${props.personDetails.firstName} ${props.personDetails.lastName}`
+        })
 
         const editEmail = (event) => {
             editEmailRef.value.toggle(event);
@@ -288,6 +377,46 @@ export default {
               
             }
 
+        const toggleLog = (event) => {
+            logDropDown.value.toggle(event);
+
+        }
+
+        const toggleLogPane = (e) => {
+            logDropDown.value.hide();
+            displayLogPane.value = true;
+            console.log(e)
+            if (e.target.innerText.toLowerCase() === "log a call") {
+                logVariable.value = "call"
+            }   else {
+                logVariable.value = "email"
+            }
+        }
+
+        const toggleContact = (event) => {
+            contactRef.value.toggle(event);
+        }
+        
+        const toggleOutcome = (event) => {
+            outcomeRef.value.toggle(event);
+        }
+        
+        const toggleTime = (event) => {
+            timeRef.value.toggle(event);
+        }
+
+        const saveLog = () => {
+            displayLogPane.value = false;
+            emit('calllogdesc', { desc: callLogDesc.value, type: 'callLog' })
+        }
+
+        watch(() => {
+            if (props.callLog) {
+                displayLogPane.value = true
+                emit('resetlog', false)
+            }
+        })
+
 
 
 
@@ -314,7 +443,24 @@ export default {
             openNoteEditor,
             openEmailModal,
             openTaskEditor,
-            call
+            call,
+            toggleLog,
+            logDropDown,
+            toggleLogPane,
+            position,
+            displayLogPane,
+            toggleContact,
+            contactRef,
+            outcomeRef,
+            toggleOutcome,
+            date,
+            toggleTime,
+            timeRef,
+            logVariable,
+            outcomeList,
+            selectedContactLog,
+            callLogDesc,
+            saveLog
         }
     }
 }
@@ -364,7 +510,7 @@ export default {
 }
 
 .uniform-primary-color {
-    color: #136acd
+    color: #136acdd5
 }
 
 .btn-btn {
@@ -415,5 +561,14 @@ export default {
     top: 30em;
     right: 2em;
     z-index: 1;
+}
+
+.hover-log:hover {
+    background: rgba(202, 202, 202, 0.356);
+    cursor: pointer
+}
+
+.hover-cursor-cancel:hover {
+    cursor: not-allowed;
 }
 </style>
