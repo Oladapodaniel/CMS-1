@@ -1,22 +1,30 @@
 <template>
     <div class="container">
-    <div class="row">
-      <div class="col-8 mb-5"><h2><i class="fa fa-lock" aria-hidden="true"></i> Subscription  Expired</h2></div>
-      <div class="col-4 mb-5 mt-2 d-flex justify-content-end" ><router-link to="/tenant/subscription" class="text-decoration-none">Click here to Subscibe<i class="fa fa-arrow-right ml-2"></i></router-link></div>  
-      <div class="col-md-12">
-        <div class="mb-3">This page is not publicly available because  your  Subscription has Expired</div>
-        <div class="mt-4">
+      <div class="row d-flex justify-content-center d-block d-md-none">
+        <div class="col-12">
+          <img src="../../assets/expired-sub.png" class="w-100"/>
+        </div>
+      </div>
+    <div class="row" d-md-flex justify-content-md-between>
+      <div class="col-md-8 mb-md-5"><h2><i class="fa fa-meh-o" aria-hidden="true"></i> Subscription  Expired</h2></div>
+      <div class="col-md-4 mb-md-5 mt-2 d-md-flex justify-content-md-end text-primary" ><router-link to="/tenant/subscription" class="text-decoration-none text-primary">Click here to Subscibe<i class="fa fa-arrow-right ml-2"></i></router-link></div>  
+      <div class="col-md-8">
+        <div class="mb-3">This page is not publicly available because your subscription has expired.</div>
+        <div class="mt-3 mt-md-5">
           <div>Things you can still do:</div>
-          <ul class="list-unstyled">
-            <li> <i class="fa fa-arrow-right text-primary mr-2"></i><router-link to="/tenant/sms/compose">Send SMS</router-link></li>
-            <li> <i class="fa fa-arrow-right text-primary mr-2 "></i><router-link to="/tenant/subscription">Subscribe</router-link></li>
-            <li> <i class="fa fa-arrow-right text-primary mr-2 "></i><router-link to="/tenant/units">Buy Unit</router-link></li>
+          <ul class="list-unstyled mt-3">
+            <li class="mt-2"> <i class="pi pi-arrow-right text-primary mr-2 "></i><router-link class="text-primary" to="/tenant/subscription">Subscribe</router-link></li>
+            <li class="mt-2"> <i class="pi pi-arrow-right text-primary mr-2"></i><router-link class="text-primary" to="/tenant/sms/compose">Send SMS</router-link></li>
+            <li class="mt-2"> <i class="pi pi-arrow-right text-primary mr-2 "></i><router-link to="/tenant/units" class="text-primary">Buy Unit</router-link></li>
             <!-- <a href="" @click.prevent="plsSubscribe">Subscribe</a> -->
           </ul>
         </div>
-        <div class="mt-4">For more info: Contact the administrator of your church</div>
-        <div>If you think you have arrived here by our mistake, please <a href="#" class="text-decoration-none">contact us</a></div>
-        <div class="col-12 d-flex justify-content-end" ><button class="btn btn-primary rounded font-weight-bold" @click="logout">Logout </button> </div>
+        <div class="mt-4">For more info: Contact the administrator of your church.</div>
+        <!-- <div>If you think you have arrived here by our mistake, please <a href="#" class="text-decoration-none">contact us</a></div> -->
+        
+      </div>
+      <div class="col-md-4 d-none d-md-block">
+        <img src="../../assets/expired-sub.png" />
       </div>
     </div>
   </div>
@@ -63,7 +71,9 @@ html, body {
   text-align: center; }
 
 .container {
-  margin-top: 8%; }
+  margin-top: 8%;
+  font-size: 20px ;
+  color: #707070;}
 
 a {
   color: #3498db; }

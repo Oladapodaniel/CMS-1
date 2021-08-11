@@ -55,7 +55,7 @@
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
                     </div>
                     <div class="col-12" v-if="showEmails" transition="bounce">
-                        <Emails />
+                        <Emails @openemailmodal="openEmailModal"/>
                     </div>
                     <div class="col-12" v-if="showCalls" transition="bounce">
                         <Calls />

@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-end mx-3">
-        <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="openNoteEditor">Create</div>
+        <div class="col-3 mt-3 save-btn btn-btn c-pointer" @click="openEmailModal">Compose</div>
    </div>
     <div class="col-12 mt-4">
             <div class="col-12 card-bg p-4">
@@ -28,7 +28,16 @@
 
 <script>
 export default {
-    setup() {}
+    emits: ['openemailmodal'],
+    setup(props, { emit }) {
+        const openEmailModal = () => {
+            emit('openemailmodal', true)
+        }
+
+        return {
+            openEmailModal
+        }
+    }
 }
 </script>
 
@@ -73,7 +82,7 @@ export default {
 .btn-btn {
     font-size: 17px;
     line-height: 14px;
-    padding: 5px 12px;
+    padding: 11px 16px;
     border-radius: 3px;
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;

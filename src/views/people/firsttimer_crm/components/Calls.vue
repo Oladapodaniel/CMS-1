@@ -1,7 +1,83 @@
 <template>
-    <div>
-        Calls Here
-    </div>
+    <div class="col-12 mt-4">
+            <div class="col-12 card-bg p-4">
+                <div class="row d-flex justify-content-between">
+                    <div>
+                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" @click="toggleNoteIcon(index)"></i>&nbsp;&nbsp;Logged call</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
+                        
+                            <div class="col mt-4 enlargen-font">Logged call description </div>
+                        
+                    </div>
+                    <div>
+                        <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
+                    </div>
+                </div>
+                <transition>
+                    <div class="row">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                            <div class="col-3">
+                                <div class="label-text">Contacted</div>
+                                <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ selectedContactLog }}Oladapo &nbsp; <i class="pi pi-sort-down"></i></div>
+                                <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                        <div class="container p-0">
+                                            <div class="row">
+                                                <div class="col-12 py-2 px-3 hover-cursor-cancel">{{ `${personDetails.firstName} ${personDetails.lastName}(${logVariable === 'email' ? personDetails.email : personDetails.mobilePhone})`}}</div>
+                                            </div>
+                                        </div>
+                                    </OverlayPanel>
+                            </div>
+                            <div class="col-3">
+                                <div class="label-text">Call Outcome</div>
+                                <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleOutcome" aria:haspopup="true" aria-controls="overlay_panel">Select &nbsp; <i class="pi pi-sort-down"></i></div>
+                                <OverlayPanel ref="outcomeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                        <div class="container-fluid p-0">
+                                            <div class="row" v-for="(item, index) in outcomeList" :key="index">
+                                                <div class="col-12 py-2 px-3 hover-log">{{ item }}</div>
+                                            </div>
+                                        </div>
+                                    </OverlayPanel>
+                            </div>
+                        
+                            <div class="col-3">
+                                <div class="label-text">Date</div>
+                                <div class="mt-1 uniform-primary-color font-weight-700">
+                                    <input type="date" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="label-text">Time</div>
+                                <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleTime" aria:haspopup="true" aria-controls="overlay_panel">2:12PM &nbsp; <i class="pi pi-sort-down"></i></div>
+                                <OverlayPanel ref="timeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                        <div class="container">
+                                            <div class="row">
+                                                here here time
+                                            </div>
+                                        </div>
+                                    </OverlayPanel>
+                            </div>
+        
+                        <!-- <div class="row">
+                            <div class="col-12">
+                                <hr />
+                            </div>
+                        </div> -->
+    
+                            <div class="col-12 mt-3">
+                                <textarea name="" placeholder="Describe the call..." class="w-100 form-control" rows="6"></textarea>
+                            </div>
+      
+                    </div>
+                </transition>
+                <transition name="fade">
+                    <div class="row mt-4">
+                        <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
+                        <div class="col text-right font-weight-700 uniform-primary-color">1 Association</div>
+                    </div>
+                </transition>
+            </div>
+        </div>
 </template>
 
 
@@ -12,5 +88,71 @@ export default {
 </script>
 
 <style scoped>
+.card-bg {
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(45 62 80 / 12%) 0px 1px 5px 0px;
+    border-radius: 3px;
+}
 
+.roll-note-icon {
+    transition: all 0.5s ease-in-out;
+    transform: rotateZ(180deg);
+}
+.unroll-note-icon {
+    transition: all 0.5s ease-in-out;
+    transform: rotateZ(90deg);
+}
+
+.fade {
+    transition: all 0.5s ease-in-out;
+    opacity: 0;
+}
+.fade-enter-active {
+  animation: fade-in .3s;
+}
+.fade-leave-active {
+  animation: fade-in .3s reverse;
+}
+@keyframes fade-in {
+  0% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+}
+
+.btn-btn {
+    font-size: 17px;
+    line-height: 14px;
+    padding: 11px 16px;
+    border-radius: 3px;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+    font-weight: 400;
+    text-align: center;
+}
+
+.save-btn {
+    background-color: #425b76;
+    border: 1px solid #425b76;
+    color: #fff;    
+}
+
+.cancel-btn {
+    background-color: #eaf0f6;
+    border-color: #cbd6e2;
+    color: #506e91; 
+}
+
+.uniform-primary-color {
+    color: #136acd
+}
+
+.enlargen-font {
+    font-size: 1.2em
+}
 </style>
