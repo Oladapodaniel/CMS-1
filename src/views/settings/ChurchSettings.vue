@@ -35,7 +35,7 @@
                   
               </p>
               
-             <transition name="fade"> 
+             <transition-group tag="span" name="fade"> 
         <div class="show-modal" :class="{ 'dd-hide-list': !settingLinkDropped }">
          
           <div class="row mb-3" >
@@ -106,7 +106,7 @@
             </div>
            
           </div>
-           </transition>
+             </transition-group>
      
 
           <div class="row mb-3" v-if="false">
@@ -149,7 +149,7 @@ export default {
       moreShown.value = !moreShown.value;
     };
     const dropDownText = computed(() => {
-      return settingLinkDropped.value ? "Hide Menu" : "Show Menu";
+      return settingLinkDropped.value ? "Hide menu" : "Show menu";
     });
 
         return {
@@ -230,11 +230,11 @@ export default {
 }
 .fade-enter-from{
   opacity: 0;
-  transform: translate(-60px);
+  transform: Scale(0.6);
 }
 .fade-enter-to{
   opacity: 1;
-  transform: translate(0);
+  transform: scale(1);
 }
 .fade-enter-active{
   transition: all 0.2s ease;
@@ -252,7 +252,8 @@ export default {
 }
 .fa-angle-up{
   display: inline!important;
-  margin-left: 50px;
+  margin-left: 60%;
+ 
 }
 .small-text1{
   font-size: 15px!important;
