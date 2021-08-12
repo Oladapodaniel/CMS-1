@@ -18,17 +18,26 @@
                   ></i
                 ></span>
               </p> -->
+              
           <div class="nav-show" @click="toggleSettingDropDown" >
+              
             <p>
-            <span class="small-text1 dd-list-item">{{dropDownText}}...
+                <span class="small-text1 dd-list-item">{{dropDownText}}...
+                  
+                  </span>
                
-              </span>
-             <i
+              
+              
+                   <i
                     class="fa fa-angle-up more-icon"
                     :class="{ 'tbb-icon-rotate':settingLinkDropped }"
                   ></i>
-                  </p>
+                  
+              </p>
+              
+             <transition name="fade"> 
         <div class="show-modal" :class="{ 'dd-hide-list': !settingLinkDropped }">
+         
           <div class="row mb-3" >
             <div class="col-md-12 my-2">
               <span class="small-text dd-list-item">User Management
@@ -88,13 +97,17 @@
                 >First Timer Settings</router-link
               >
             </div>
+            
             </div>
             <div class="col-md-12 my-2" v-if="false">
               <router-link class="font-weight-bold link" to="/tenant/settings/giving"
                 >Online Giving Setup</router-link
               >
             </div>
+           
           </div>
+           </transition>
+     
 
           <div class="row mb-3" v-if="false">
             <div class="col-md-12 my-2">
@@ -106,7 +119,9 @@
               >
             </div>
           </div>
+               
           </div>
+           
         </div>
 
         <!-- main content -->
@@ -123,6 +138,7 @@ import { useRoute } from 'vue-router';
 import {ref, computed} from 'vue'
 export default {
     setup() {
+      const showp = ref(false)
         const route = useRoute()
          const settingLinkDropped = ref(false);
          const toggleSettingDropDown = ()=>{
@@ -133,7 +149,7 @@ export default {
       moreShown.value = !moreShown.value;
     };
     const dropDownText = computed(() => {
-      return settingLinkDropped.value ? "Hide Modal" : "Show Modal";
+      return settingLinkDropped.value ? "Hide Menu" : "Show Menu";
     });
 
         return {
@@ -142,7 +158,8 @@ export default {
             toggleSettingDropDown,
             showMore,
             dropDownText,
-            moreShown
+            moreShown,
+            showp
         }
     }
 
@@ -211,12 +228,35 @@ export default {
   color: #190138;
   font-size: 20px;
 }
+.fade-enter-from{
+  opacity: 0;
+  transform: translate(-60px);
+}
+.fade-enter-to{
+  opacity: 1;
+  transform: translate(0);
+}
+.fade-enter-active{
+  transition: all 0.2s ease;
+}
+.fade-leave-from{
+  opacity: 1;
+  transform: translate(0);
+}
+.fade-leave-to{
+  opacity: 0;
+  transform: translate(-60px);
+}
+.fade-leave-active{
+  transition: all 0.3s ease;
+}
 .fa-angle-up{
   display: inline!important;
   margin-left: 50px;
 }
 .small-text1{
   font-size: 15px!important;
+  font-weight: bold;
 }
 .small-text1{
   display: inline;
