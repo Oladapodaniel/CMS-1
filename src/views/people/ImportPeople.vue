@@ -9,7 +9,7 @@
           <img src="../../assets/people/phone-import.svg" alt="Phone Import" />
         </div>
         <div class="option-desc">
-          <p class="option-header">Add members</p>
+          <!-- <p class="option-header">Add members</p> -->
           <p class="option-text">Stay compliant by keeping accurate records</p>
         </div>
       </router-link>

@@ -187,7 +187,6 @@ const routes = [
                 import( /* webpackChunkName: "people" */ '../views/people/People.vue'),
             children: [
 
-
                 {
                     path: '',
                     meta: {

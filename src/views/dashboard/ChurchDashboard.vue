@@ -35,7 +35,7 @@
                   >
                   <router-link
                     to="/tenant/people/addfirsttimer"
-                    class="font-weight-bold text-dec-none"
+                    class="font-weight-bold text-dec-none firstTimerClass"
                     >First timer</router-link
                   >
                 </div>
@@ -377,7 +377,7 @@
                     domId="chart4"
                     title="First Timer And New Convert Inflow"
                     subtitle="How First Timer Come to Church"
-                    header="First Timer Attendence"
+                    header="First Timerssssssss Attendence"
                     :data="monthlyFirstTimerObj"
                     :chartDataNewConvert="chartDataNewConvert"
                     :series2="series2"
@@ -386,8 +386,8 @@
               </div>
               <!-- </div> -->
 
-              <div class="chart-div" v-show="firstTimerPieExist">
-                <div class="container-fluid">
+              <div class="chart-div chart-div-mobile" v-show="firstTimerPieExist">
+                <div class="container-fluid container-fluid-mobile">
                   <div class="row">
                     <div class="col-12 col-md-6 d-flex justify-content-center">
                       <ByGenderChart
@@ -1211,6 +1211,21 @@ export default {
   .celeb-header {
     margin-top: 0;
   }
+  .adjust-view {
+    display: none;
+  }
+  .chart-div-mobile {
+    margin-left: -3rem!important;
+    border: none !important;
+    box-shadow: none !important
+  }
+  .container-fluid-mobile {
+    border: 1px solid !important;
+    width: 85% !important;
+    box-shadow: 0px 1px 4px #b1bfce45 !important;
+    border-radius: 30px;
+    border: 1px solid #DDE2E6 !important;
+  }
 }
 
 .celeb-header-text p {
@@ -1356,6 +1371,9 @@ tbody tr:nth-child(even) {
   .adjust-view {
     left: 65px;
     top: 150px;
+  }
+  .view-report {
+    display: none;
   }
 }
 
@@ -1536,5 +1554,13 @@ tbody tr:nth-child(even) {
 
 .text-color {
   color: #212529;
+}
+
+
+@media screen and (max-width: 480px) {
+ .firstTimerClass {
+  padding-top:9px;
+  /* background-color: lightgreen; */
+}
 }
 </style>

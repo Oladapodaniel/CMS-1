@@ -6,13 +6,13 @@
           <div class="header">
             <div class="events">{{ header }}</div>
           </div>
-          <div>
+          <div class="buttonDiv ml-n3"> 
             <button class="more-btn button default-btn border-0 align-items-center" @click="importMembers">
             Import
             </button>
       
             <router-link :to="`/tenant/people/add`" class="">
-            <button class="add-person-btn button default-btn border-0 ml-3">
+            <button class="add-person-btn button default-btn border-0 ml-2">
               Add Member
             </button>
             </router-link>
@@ -255,6 +255,9 @@ export default {
 .fade-leave-to {
   transition: translateX(20px);
   opacity: 0;
+}
+.buttonDiv {
+  display: flex;
 }
 </style>
 
