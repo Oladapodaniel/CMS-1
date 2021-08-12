@@ -6,31 +6,33 @@
         </div>
         <div class="row mt-5">
             <div class="col-3">
-                <img src="../../../../assets/people/phone-import.svg" class="contact-image"/>
+                <img :src="personDetails.pictureUrl" class="contact-image" v-if="personDetails.pictureUrl"/>
+                <img src="../../../../assets/people/phone-import.svg" class="contact-image" v-else/>
             </div>
             <div class="col-9">
-                <div class="contact-name">Design Sample</div>
-                <div>sample@gmail.com <i class="pi pi-copy"></i>&nbsp; &nbsp;<i class="pi pi-pencil" @click="editContactName"></i></div>
+                <div class="contact-name">{{ `${personDetails.firstName ? personDetails.firstName : ""} ${personDetails.lastName ? personDetails.lastName : ""}` }}</div>
+                <div>{{ personDetails.email }}</div>
+                <div><i class="pi pi-copy uniform-primary-color"></i>&nbsp;<i class="pi pi-pencil uniform-primary-color" @click="editContactName"></i></div>
             </div>
         </div>
         <div class="row d-flex justify-content-center mt-5">
-            <div @click="openNoteEditor">
+            <div @click="openNoteEditor" class="c-pointer">
                 <div class="icon-bg" v-tooltip.top="'Create a note'"><i class="pi pi-user-edit"></i></div>
                 <div>Note</div>
             </div>
             <div class="ml-4" @click="openEmailModal">
-                <div class="icon-bg" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
+                <div class="icon-bg c-pointer" v-tooltip.top="'Create an email'"><i class="pi pi-envelope"></i></div>
                 <div>Email</div>
             </div>
-            <div class="ml-4">
+            <div class="ml-4 c-pointer" @click="call">
                 <div class="icon-bg" v-tooltip.top="'Make a phone call'"><i class="pi pi-phone"></i></div>
                 <div>Call</div>
             </div>
-            <div class="ml-4">
+            <div class="ml-4 c-pointer" @click="openTaskEditor">
                 <div class="icon-bg" v-tooltip.top="'Create a task'"><i class="pi pi-calendar-plus"></i></div>
                 <div>Task</div>
             </div>
-            <div class="ml-4" v-tooltip.top="'Log a call, email or meeting'">
+            <div class="ml-4 c-pointer" v-tooltip.top="'Log a call, email'" @click="toggleLog" aria:haspopup="true" aria-controls="overlay_panel">
                 <div class="icon-bg"><i class="pi pi-plus"></i></div>
                 <div>Log</div>
             </div>
@@ -47,7 +49,7 @@
             <div class="col-12 label-text">Email</div>
             <div class="col-12 mt-2 ">
                 <div class="task-border border-transparent d-flex justify-content-between p-2" :class="{ 'hover-border' : hoverTask }" @mouseover="onHoverBorder" @mouseleave="outHoverBorder" @click="editEmail">
-                    <div>{{ email }}</div>
+                    <div>{{ personDetails.email }}</div>
                 <i class="pi pi-pencil align-self-center" :class="{ 'uniform-primary-color' : hoverTask, 'text-white' : !hoverTask }"></i>
                     </div>
             </div>
@@ -55,9 +57,9 @@
         </div>
         <div class="row" @mouseover="toggleHoverPhone" @mouseleave="OutHoverPhone">
             <div class="col-12 mt-4 label-text">Phone Number</div>
-            <div class="col-12 ml-2 mt-3" v-if="!hoverPhone">{{ phoneNumber }}</div>
+            <div class="col-12 ml-2 mt-3" v-if="!hoverPhone">{{ personDetails.mobilePhone }}</div>
             <div v-else class="col-12 mt-2">
-                <input type="text" class="form-control phone-input" @blur="OutHoverPhone" v-model="phoneNumber"/>
+                <input type="text" class="form-control phone-input" @blur="OutHoverPhone" v-model="personDetails.mobilePhone"/>
             </div>
             <div v-if="hoverPhone" class="phone-details align-self-center">
                 <i class="pi pi-pencil icon-edit"></i> <button class="details-btn ml-2">Details</button>
@@ -117,7 +119,7 @@
             <div class="row">
                 <div class="col-12">
                     <div>Email</div>
-                    <input v-model="email" class="form-control mt-3"/>
+                    <input v-model="personDetails.email" class="form-control mt-3"/>
                 </div>
             </div>
             <div class="row">
@@ -127,7 +129,7 @@
         </div>
         </OverlayPanel>
    
-    <OverlayPanel ref="contactNameRef" appendTo="body" :showCloseIcon="true" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
+    <OverlayPanel ref="contactNameRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" style="width: 450px" :breakpoints="{'960px': '75vw'}">
         <div class="container">
             <div class="row">
                 <div class="col-12 mt-3">
@@ -135,14 +137,14 @@
                         <div class="col-6">
                             First Name
                             <div class="mt-2">
-                                <input type="text" class="form-control"/>
+                                <input type="text" class="form-control" v-model="personDetails.firstName"/>
                             </div>
                         </div>
                         
                         <div class="col-6">
                             Last Name
                             <div class="mt-2">
-                                <input type="text" class="form-control"/>
+                                <input type="text" class="form-control" v-model="personDetails.lastName"/>
                             </div>
                         </div>
                         <div class="col-12 mt-3">
@@ -158,14 +160,89 @@
             </div>
         </div>
         </OverlayPanel>
+
+        <OverlayPanel ref="logDropDown" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+            <div class="p-0 container-fluid">
+                <div class="row d-flex flex-column">
+                    <div class="py-2 px-3 hover-log" @click="toggleLogPane($event)">Log a call</div>
+                    <div class="py-2 px-3 hover-log" @click="toggleLogPane($event)">Log an email</div>
+                </div>
+            </div>
+        </OverlayPanel>
+
+        <Dialog :header="'Log ' + logVariable" v-model:visible="displayLogPane" :style="{width: '50vw'}" :position="position" :modal="true">
+            <!-- style="height: 480px" -->
+           <div class="container-fluid">
+               <div class="row">
+                   <div class="col-4">
+                       <div class="label-text">Contacted</div>
+                       <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ selectedContactLog }} &nbsp; <i class="pi pi-sort-down"></i></div>
+                       <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                            <div class="container p-0">
+                                <div class="row">
+                                    <div class="col-12 py-2 px-3 hover-cursor-cancel">{{ `${personDetails.firstName} ${personDetails.lastName}(${logVariable === 'email' ? personDetails.email : personDetails.mobilePhone})`}}</div>
+                                </div>
+                            </div>
+                        </OverlayPanel>
+                   </div>
+                   <div class="col-4">
+                       <div class="label-text">Call Outcome</div>
+                       <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleOutcome" aria:haspopup="true" aria-controls="overlay_panel">Select an outcome &nbsp; <i class="pi pi-sort-down"></i></div>
+                       <OverlayPanel ref="outcomeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                            <div class="container-fluid p-0">
+                                <div class="row" v-for="(item, index) in outcomeList" :key="index">
+                                    <div class="col-12 py-2 px-3 hover-log">{{ item }}</div>
+                                </div>
+                            </div>
+                        </OverlayPanel>
+                   </div>
+               </div>
+               <div class="row mt-2">
+                   <div class="col-4">
+                       <div class="label-text">Date</div>
+                       <div class="mt-1 uniform-primary-color font-weight-700">
+                           <input type="date" class="form-control" />
+                       </div>
+                   </div>
+                   <div class="col-4">
+                       <div class="label-text">Time</div>
+                       <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleTime" aria:haspopup="true" aria-controls="overlay_panel">2:12PM &nbsp; <i class="pi pi-sort-down"></i></div>
+                       <OverlayPanel ref="timeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                            <div class="container">
+                                <div class="row">
+                                    here here time
+                                </div>
+                            </div>
+                        </OverlayPanel>
+                   </div>
+               </div>
+               <!-- <div class="row">
+                   <div class="col-12">
+                       <hr />
+                   </div>
+               </div> -->
+               <div class="row mt-3">
+                   <div class="col-12">
+                       <textarea name="" placeholder="Describe the call..." class="w-100 form-control" rows="6" v-model="callLogDesc"></textarea>
+                   </div>
+               </div>
+           </div>
+            <template #footer>
+                <div class="row d-flex justify-content-end">
+                    <div class="default-btn text-center">Cancel</div>
+                    <div class="primary-bg default-btn border-0 text-white text-center ml-3" @click="saveLog">Save</div>
+                </div>
+            </template>
+        </Dialog>
     <Toast />
 </template>
 
 <script>
-import { ref } from "vue"
+import { computed, ref, watch } from "vue"
 import Dropdown from "primevue/dropdown";
 import Tooltip from 'primevue/tooltip';
 import OverlayPanel from 'primevue/overlaypanel';
+// import SinchClient from 'sinch-rtc/sinch.min.js'
 // import { useConfirm } from "primevue/useConfirm";
 // import { useToast } from "primevue/usetoast";
 export default {
@@ -176,7 +253,8 @@ export default {
     directives: {
         'tooltip': Tooltip
     },
-    emits: ["opennoteeditor", "openemailmodal"],
+    emits: ["opennoteeditor", "openemailmodal", "opentaskeditor", "calllogdesc", "resetlog"],
+    props: ["personDetails", "callLog"],
     setup (props, { emit }) {
         // const confirm = useConfirm()
         // const toast = useToast()
@@ -215,6 +293,7 @@ export default {
                 status: 'Open Deal'
             }
         ])
+        const outcomeList = ref(['Busy', 'Connected', 'Left live message', 'Left voicemail', 'No answer', 'Wrong number'])
         const selectedLeadStatus = ref("")
         const editEmailRef = ref()
         const contactNameRef = ref()
@@ -222,7 +301,21 @@ export default {
         const hoverPhone = ref(false)
         const phoneNumber = ref(8076543254)
         const email = ref('olad@gamil.com')
+        const logDropDown = ref(false)
+        const position = ref('bottomright')
+        const displayLogPane = ref(false)
+        const contactRef = ref(false)
+        const outcomeRef = ref(false)
+        const date = ref("")
+        const timeRef = ref(false)
+        const logVariable = ref("")
+        const callLogDesc = ref("")
 
+
+        const selectedContactLog = computed(() => {
+            if (!props.personDetails) return "Select a contact"
+            return `${props.personDetails.firstName} ${props.personDetails.lastName}`
+        })
 
         const editEmail = (event) => {
             editEmailRef.value.toggle(event);
@@ -259,6 +352,72 @@ export default {
         const openEmailModal = () => {
             emit('openemailmodal', true)
         }
+        
+        const openTaskEditor = () => {
+            emit('opentaskeditor', true)
+        }
+
+        const call = () => {
+            let sinchClient = new SinchClient({
+                applicationKey: 'b1392f96-6a4b-4e44-bdf1-0e1f4dd2d1a0',
+                capabilities: { calling: true },
+            })
+            var signUpObj = {};
+                signUpObj.username = 'oladapo'
+             
+                    sinchClient.start(signUpObj, function () {
+                        global_username = signUpObj.username;
+                        // console.log(ticket)
+                        //On success, show the UI
+                    })
+                    // let error = function (error) {
+                    //     console.log(error)
+                    // }
+                    // console.log(error)
+              
+            }
+
+        const toggleLog = (event) => {
+            logDropDown.value.toggle(event);
+
+        }
+
+        const toggleLogPane = (e) => {
+            logDropDown.value.hide();
+            displayLogPane.value = true;
+            console.log(e)
+            if (e.target.innerText.toLowerCase() === "log a call") {
+                logVariable.value = "call"
+            }   else {
+                logVariable.value = "email"
+            }
+        }
+
+        const toggleContact = (event) => {
+            contactRef.value.toggle(event);
+        }
+        
+        const toggleOutcome = (event) => {
+            outcomeRef.value.toggle(event);
+        }
+        
+        const toggleTime = (event) => {
+            timeRef.value.toggle(event);
+        }
+
+        const saveLog = () => {
+            displayLogPane.value = false;
+            emit('calllogdesc', { desc: callLogDesc.value, type: 'callLog' })
+        }
+
+        watch(() => {
+            if (props.callLog) {
+                displayLogPane.value = true
+                emit('resetlog', false)
+            }
+        })
+
+
 
 
         return {
@@ -282,7 +441,26 @@ export default {
             email,
             saveEmail,
             openNoteEditor,
-            openEmailModal
+            openEmailModal,
+            openTaskEditor,
+            call,
+            toggleLog,
+            logDropDown,
+            toggleLogPane,
+            position,
+            displayLogPane,
+            toggleContact,
+            contactRef,
+            outcomeRef,
+            toggleOutcome,
+            date,
+            toggleTime,
+            timeRef,
+            logVariable,
+            outcomeList,
+            selectedContactLog,
+            callLogDesc,
+            saveLog
         }
     }
 }
@@ -332,7 +510,7 @@ export default {
 }
 
 .uniform-primary-color {
-    color: #136acd
+    color: #136acdd5
 }
 
 .btn-btn {
@@ -359,7 +537,7 @@ export default {
 }
 
 .task-border {
-    border: 2px solid rgba(202, 202, 202, 0.096);
+    border: 2px solid transparent;
     border-radius: 3px;
 }
 
@@ -383,5 +561,14 @@ export default {
     top: 30em;
     right: 2em;
     z-index: 1;
+}
+
+.hover-log:hover {
+    background: rgba(202, 202, 202, 0.356);
+    cursor: pointer
+}
+
+.hover-cursor-cancel:hover {
+    cursor: not-allowed;
 }
 </style>

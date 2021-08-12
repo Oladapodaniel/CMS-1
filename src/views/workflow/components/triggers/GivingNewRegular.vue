@@ -127,7 +127,6 @@ export default {
 
         const category = ref({ });
         const cantegorySelected = (e) => {
-            alert('updated')
             data.financialContributionID = e.value.id;
             emit('updatetrigger', JSON.stringify(data), props.selectedTriggerIndex)
         }
@@ -153,7 +152,7 @@ export default {
                 currentTimes: currentNumOfTimes.value ? currentNumOfTimes.value + ' times' : '__ times',
                 currentMonths: currentNumOfMonths.value ? currentNumOfMonths.value + ' months' : '__ months',
                 id: 11,
-             };            
+            };            
         })
 
         const removeTrigger = () => {

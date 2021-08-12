@@ -14,15 +14,14 @@
                   class="w-100"
                 />
               </div>
-              <div class="col-12 w-100"> 
+              <div class="col-12 w-100">
                  <h2 class="font-weight-bold py-3 mb-3">
                      {{tenantCurrency.currency}} {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
                  </h2>
               </div>
-           
+
           </div>
-          <!-- {{ pieChart }} -->
-          <!-- title="Analytics" -->
+
           <div class="col-12 col-md-4">
             <ContributionPieChart
               domId="chart"
@@ -32,14 +31,8 @@
             />
           </div>
           <div class="col-12 col-md-4 " >
-            <!-- <div v-if="attendanceBoolean"> -->
-                <!-- :subtitle="chartData.name"
-              :data="chartData && chartData.barChart ? chartData.barChart : {}"
-              :series="series" -->
-              <!-- :chartClass="chartClass" -->
 
-            <!-- 2{{ chartData }} -->
-       
+
             <ContributionAreaChart
                elemId="chart"
                   domId="areaChart3"
@@ -54,6 +47,7 @@
         </div>
       </div>
     </div>
+
     <div class="row table">
       <div class="col-12 px-0" id="table">
         <div class="top-con" id="ignore2">
@@ -142,15 +136,6 @@
                     />
                   </div>
 
-                  <!-- <div class="col-12 col-md-4 form-group d-none d-md-block">
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="event"
-                      v-model="filter.event"  
-                    />
-                  </div> -->
-
                   <div class="col-12 col-md-4 form-group d-none d-md-block">
                     <input
                       type="text"
@@ -181,23 +166,22 @@
         <div v-if="searchContribution.length > 0">
           <div class="container-fluid d-none d-md-block">
             <div class="row t-header">
-              <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
                 <div class="col-md-1"></div>
                 <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
                 <div class="small-text text-capitalize col-md-3 font-weight-bold">Offering</div>
                 <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
                 <div class="small-text text-capitalize col-md-2 font-weight-bold">Donor</div>
                 <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
-              <!-- </div> -->
             </div>
           </div>
+
         <div class="row" style="margin:0;">
             <div
               class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom  hover"
               v-for="(item, index) in searchContribution"
               :key="item.id"
             >
-            
+
               <div class="row w-100" style="margin:0">
                 <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
                   <input
@@ -218,7 +202,7 @@
                   <div class="d-flex small justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease">Offering</span>
                   <div>
-                    
+
                     <div class="desc small-text text-right text-md-left"><router-link class="text-decoration-none fontIncrease" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.contribution }}</router-link></div>
                   </div>
                   </div>
@@ -227,7 +211,6 @@
                 <div class="desc-head small-text col-md-3 px-1">
                   <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease">Amount</span>
-                    <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
                     <span><router-link class="text-decoration-none ml-3 fontIncrease" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
                   </p>
                 </div>
@@ -242,10 +225,6 @@
                 </div>
 
                 <div class=" col-md-1  ">
-                  <!-- <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
-                    <span>Marked</span>
-                  </p> -->
                   <div>
                     <div class="dropdown ">
                       <span class="d-flex justify-content-between">
@@ -282,99 +261,10 @@
               </div>
             </div>
           </div>
-          <!-- <div class="row">
-            <div
-              class="col-12 col-md-12 col-lg-12 overflow-auto border-bottom border-top border-left"
-            >
-              <div class="row table-header">
-                <div class="col-sm-3">DATE</div>
-                 <div class="col-sm-2">
-                          EVENT
-                       </div> 
-                <div class="col-sm-3 d-none d-sm-block">OFFERING</div>
-                <div class="col-sm-3 d-none d-sm-block">AMOUNT</div>
-                <div class="col-sm-3 d-none d-sm-block">DONOR</div>
-              </div>
-              <div
-                class="table-body row"
-                v-for="(offering, index) in searchContribution"
-                :key="offering.id"
-              >
-                <div class="col-6 d-block d-sm-none">
-                  <div class="col-sm-3">DATE</div>
-                   <div class="col-sm-2">
-                            EVENT
-                        </div> 
-                  <div class="col-sm-3">OFFERING</div>
-                  <div class="col-sm-3">AMOUNT</div>
-                  <div class="col-sm-3">DONOR</div>
-                </div>
-                <div class="col-6 col-sm-12">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <div>{{ date(offering.date) }}</div>
-                    </div>
-                     <div class="col-sm-3">
-                            <div>{{ offering.eventName ? offering.eventName : "Online Giving" }}</div>
-                        </div> 
-                    <div class="col-sm-3">
-                      <div>{{ offering.contribution }}</div>
-                    </div>
-                    <div class="col-sm-3">
-                      <div class="d-flex">
-                        <div class="currency" v-if="offering.currencyName">
-                          {{ offering.currencyName }}
-                        </div>
-                        <div
-                          class="align-self-center ml-1"
-                          style="font-weight: 800"
-                        >
-                          {{ offering.amount }}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-2">
-                      <div>{{ offering.donor }}</div>
-                    </div>
-                    <div class="col-sm-1">
-                      <div class="dropdown">
-                        <i
-                          class="fas fa-ellipsis-v cursor-pointer"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        
-                        
-                          <router-link :to="!offering.activityId || offering.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: offering.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: offering.date.split('T')[0], activityID: offering.activityId } }">
-                            <a class="dropdown-item elipsis-items">
-                          View Report
-                          </a>
-                          </router-link>
-                          <router-link :to="{ name: 'AddOffering', params: { offId: offering.id } }">
-                            <a class="dropdown-item elipsis-items">
-                          Edit
-                          </a>
-                          </router-link>
-                          <a
-                            class="dropdown-item elipsis-items cursor-pointer"
-                            @click="showConfirmModal(offering.id, index)"
-                            >Delete</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
         </div>
         <div class="text-danger" v-else>No records found</div>
 
-        
+
 
         <div class="col-12">
           <div class="table-footer">
@@ -385,7 +275,7 @@
               :totalItems="totalItem"
             />
           </div>
-  
+
         </div>
 
         <ConfirmDialog />
@@ -421,7 +311,7 @@ export default {
     // ByMaritalStatusChart,
     Pagination,
     ContributionAreaChart,
-    ContributionPieChart, 
+    ContributionPieChart,
     Dropdown,
   },
   setup(props, { emit }) {
@@ -485,7 +375,7 @@ export default {
     const searchContribution = computed(() => {
       if (searchText.value !== "") {
         return props.contributionTransactions.filter((i) => {
-          return i.contribution        
+          return i.contribution
             .toLowerCase()
             .includes(searchText.value.toLowerCase());
         });
@@ -677,7 +567,7 @@ export default {
                     console.log(res.data)
                   })
                   .catch(err => console.log(err))
-                
+
               } catch (err) {
                 console.log(err);
             }
@@ -691,7 +581,7 @@ export default {
         }
     }
     getTenantCurrency();
-        
+
     const chartData = computed(() => {
       if (
         contributionSummary.value &&
@@ -864,6 +754,7 @@ export default {
   box-sizing: border-box;
   color: #02172e;
 }
+
 .myselectContr {
   height: 2.5rem;
 }
@@ -1207,6 +1098,6 @@ export default {
     font-size: 20px;
   }
 
-  
+
 }
 </style>

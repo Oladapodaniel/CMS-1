@@ -2,13 +2,13 @@
   <div>
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-12 d-flex justify-content-sm-start">
           <h2>Default Message</h2>
         </div>
-        <div class="col-md-6 mt-2 link d-md-flex justify-content-end">
+        <div class="col-md-6 col-sm-12 mt-2 link d-flex justify-content-sm-end d-md-flex justify-content-end">
           <router-link
             to="adddefaultmessage"
-            class="grey-border btn primary-btn text-white mess"
+            class="primary-btn text-white mess"
             >Add Default Message</router-link
           >
         </div>
@@ -40,9 +40,9 @@
             <div
               class="col-md-4 d-flex justify-content-between align-items-center"
             >
-              <span class="py-2 hidden-header">CATEGORY</span>
-              <span class="py-2" v-if="allMessages.message.length < 20"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
-              <span v-else v-tooltip.top="`${allMessages.message}`"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message.substring(0,20)+"..."}}</router-link></span>
+              <span class="py-2 hidden-header">MESSAGE</span>
+              <span class="py-2" v-if="allMessages.message.length < 18"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message}}</router-link></span>
+              <span v-else v-tooltip.top="`${allMessages.message}`"><router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.message.substring(0,18)+"..."}}</router-link></span>
                <!-- <span class="py-2 text-xs-left"  v-if="churchMem.email.length<10">{{ churchMem.email}}</span>
               <span v-else v-tooltip.top="`${churchMem.email}`">{{churchMem.email.substring(0,10)+ "..."}}</span> -->
             </div>
@@ -50,15 +50,15 @@
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-2 hidden-header">SUBJECT</span>
-              <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 20"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
+              <span class="py-2 text-xs-left" v-if="allMessages.subject.length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{allMessages.subject}}</router-link></span>
               <span v-else v-tooltip.top="`${allMessages.subject}`">{{allMessages.subject.substring(0,)+ "..."}}</span>
             </div>
             <div
               class="col-md-3 d-flex justify-content-between align-items-center"
             >
               <span class="py-4 hidden-header">TYPE</span>
-              <span class="py-2" v-if="messageName(allMessages.messageType).length < 20"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
-              <span v-else v-tooltip.top="`${messageName(allMessages.messageType)}`"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType).substring(0,20) + "..."}}</router-link></span>
+              <span class="py-2" v-if="messageName(allMessages.messageType).length < 18"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType)}}</router-link></span>
+              <span v-else v-tooltip.top="`${messageName(allMessages.messageType)}`"> <router-link class="route" :to="{path:'/tenant/settings/adddefaultmessage',query:{messageId:allMessages.id}}">{{messageName(allMessages.messageType).substring(0,18) + "..."}}</router-link></span>
               
               
              
@@ -72,7 +72,7 @@
               
             </div>
             <div
-              class="col-md-1 d-flex justify-content-between align-items-center"
+              class="col-sm-12 d-flex col-12 justify-content-sm-end col-md-1 col-lg-1 col-xl-1 d-flex justify-content-end align-items-center"
             >
               <div class="dropdown">
                 <i

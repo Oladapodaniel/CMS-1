@@ -167,8 +167,9 @@ import ImageForm from '../../event/childcheckin/components/ImageForm'
             const saveDonor = async () => {
                 emit("cancel");
                 console.log(route.fullPath)
-                if (route.fullPath.includes("/tenant/addfamily")) {
+                if (route.fullPath.includes("/tenant/addfamily") || route.fullPath.includes("/tenant/createpeoplegroup") ) {
                     emit("show-ward-modal", true)
+                    emit("show-group-modal", true)
                     console.log('did it emit')
 
                 }
@@ -187,7 +188,8 @@ import ImageForm from '../../event/childcheckin/components/ImageForm'
                         axios.post("/api/People/createPerson", formData)
                             .then(res => {
                                 console.log(res)
-                                emit('person-id', {personId: res.data.personId, personFirstName: donor.firstName})
+                                emit('person-id', {personId: res.data.personId, personFirstName: donor.firstName, personEmail: donor.email, personNumber: donor.mobilePhone})
+                                // emit('persondetails', res.data)
                                 resolve(res.data);
                                 
                             })

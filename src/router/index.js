@@ -9,13 +9,6 @@ import TermsOfUse from '../components/temp/PaymentPage';
 const routes = [
 
     {
-        path: '/expiredSubscription',
-        name: 'ExpiredSubscription',
-        component: () =>
-            import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/ExpiredSubscription')
-    },
-
-    {
         path: '/pagination',
         name: 'Pagination',
         component: Pagination
@@ -142,6 +135,7 @@ const routes = [
                 ]
             }
         },
+       
         {
             path: 'workflow',
             name: 'WorkFlow',
@@ -233,9 +227,9 @@ const routes = [
             ]
         },
         {
-            path: 'firsttimerworkflow',
+            path: 'firsttimermanagement/:personId?',
             meta: {
-                title: 'Churchplus - First Timer Work Flow',
+                title: 'Churchplus - First Timer CRM',
             },
             component: () =>
                 import( /* webpackChunkName: "addfirsttimer" */ '../views/people/firsttimer_crm/Index.vue')
@@ -1258,16 +1252,49 @@ const routes = [
         }
         ]
     },
-    // {
-    //     path: '/unauthorized',
-    //     name: 'Unauthorized',
-    //     component: () =>
-    //         import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
-    // }
+    {
+        path: '/errorpage',
+        name: 'errorpage',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/PageError'),    
+            children: [
+                {
+                    path: 'expiredSubscription',
+                    name: 'ExpiredSubscription',
+                    component: () =>
+                    import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/ExpiredSubscription'),    
+                },
+                {
+                    path: 'unauthorized',
+                    name: 'Unauthorized',
+                    component: () =>
+                        import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
+                }
+            ]
+    },
+    {
+        path: '/subexpired',
+        name: 'subexpired',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/SubExpired'),    
+            
+    },
+    {
+        path: '/sendsmsexpired',
+        name: 'SendSmsExpired',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/SendSmsExpired'),    
+            
+    },
+    {
+        path: '/buyunitsexpired',
+        name: 'BuyUnitsExpired',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),    
+            
+    },
 ]
-
-
-
+          
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes

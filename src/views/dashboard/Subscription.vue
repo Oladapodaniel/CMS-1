@@ -9,11 +9,23 @@
         you need for your church growth.
       </div>
 
+      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5 d-block d-md-none  card-bg">
+        <div class="row rounded pb-2">
+          <div class="col-12 col-sm-6">
+            <div class="small-header">Current plan</div>
+            <div class="normal-text mt-1">{{ currentPlan }}</div>
+          </div>
+          <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+            <div class="small-header">Expiry Date</div>
+            <div class="normal-text mt-1">{{ expiryDate }}</div>
+          </div>
+        </div>
+      </div>
 
       <div class="col-md-6 mt-5">
-        <div class="row bg-white pb-2 sub">
+        <div class="row bg-white pb-4 sub">
           <div class="col-md-6 col-lg-6  col-12">
-            <div class="py-2 small-header">Subscription Type <span class="text-danger">*</span></div>
+            <div class="py-2 small-header">Select Subscription Plan <span class="text-danger">*</span></div>
             <Dropdown
               class=" plandropdown w-100"
               v-model="selectedPlan"
@@ -21,13 +33,13 @@
               optionLabel="description"
               placeholder=""
             />
-             <div class="mt-3 normal-text pl-md-0">
+             <div class="mt-3 normal-text text-right text-md-left italic pl-md-0">
             Membership: {{ selectedPlan.membershipSize}}
           </div>
           </div>
           <div class="col-md-6 col-lg-6 col-12">
             <div class="py-2 small-header">
-              Duration (month)
+              Select Duration (month)
             </div>
             <Dropdown
               class="w-100"
@@ -37,15 +49,15 @@
               placeholder="Select duration"
             />
                 <div class=" ml-1 mt-3 normal-text pl-md-0">
-            {{ subselectedDuratn >  1 ? currentUser.currencySymbol : "" }} {{ subselectedDuratn >  1 ? subselectedDuratn : ""}}
+            {{ subselectedDuratn >  1 && currentUser ? currentUser.currencySymbol : "" }} {{ subselectedDuratn >  1 ? subselectedDuratn : ""}}
           </div>
           </div>
 
         </div>
       </div>
 
-      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5">
-        <div class="row bg-white rounded pb-2">
+      <div class="col-md-4 col-lg-4 col-12 offset-md-1 sub mt-5 d-none d-md-block  card-bg">
+        <div class="row rounded pb-2">
           <div class="col-12">
             <div class="small-header">Current plan</div>
             <div class="normal-text mt-1">{{ currentPlan }}</div>
@@ -122,10 +134,10 @@
       </div>
 
       <!-- payment summary -->
-      <div  class="col-md-4 bg-white col-lg-4 col-12 sub mt-3">
+      <div  class="col-md-6 bg-white col-12 sub mt-3">
         <div class="h-100  rounded">
           <div class="text-center small-header">
-            Payment Summary({{ currentUser.currencySymbol }})
+            Payment Summary({{ currentUser && currentUser ? currentUser.currencySymbol : ""  }})
           </div>
           <!-- <div class="row mt-3 normal-text" v-if="+selectMonth.name > 0">
             <div class="col-md-6 col-6">Subscription</div>
@@ -164,10 +176,10 @@
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-12 d-flex justify-content-between" v-if="selectedCurrency !== currentUser.currency">
+            <div class="col-12 d-flex justify-content-between" v-if="selectedCurrency && currentUser !== currentUser.currency">
               <span>Converted amount</span>
               <span>
-                <span v-if="selectedCurrency !== currentUser.currency" style="font-size:14px">{{ selectedCurrency }}</span>
+                <span v-if="selectedCurrency && currentUser !== currentUser.currency" style="font-size:14px">{{ selectedCurrency }}</span>
                 <span class="font-weight-bold ml-1">{{ convertAmountToTenantCurrency ? convertAmountToTenantCurrency.toFixed(2) : 0.00 }}</span>
               </span>
             </div>
@@ -252,9 +264,9 @@
                 </div>
               </div>
               <div class="row row-button c-pointer" @click="payWithPaystack">
-                <div class="col-12 col-md-4 col-sm-7 offset-2">
+                <div class="col-12 col-md-4 col-sm-7 offset-1">
                   <img
-                    class="w-100"
+                    style="width: 150px"
                     src="../../assets/4PaystackLogo.png"
                     alt="paystack"
                   />
@@ -262,9 +274,9 @@
                 <!-- <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/> -->
               </div>
               <div class="row row-button c-pointer" @click="payWithFlutterwave">
-                <div class="col-12 col-md-4 col-sm-7 offset-2">
+                <div class="col-12 col-md-4 col-sm-7 offset-1">
                   <img
-                    class="w-100"
+                    style="width: 150px"
                     src="../../assets/flutterwave_logo_color@2x.png"
                     alt="flutterwave"
                   />
@@ -305,7 +317,7 @@ import { useToast } from "primevue/usetoast";
 import userService from "../../services/user/userservice";
 import { v4 as uuidv4 } from "uuid";
 import converter from "../../services/currency-converter/currencyConverter";
-// import Mixins from "@/mixins/auth.mixins.js"
+
 // import PaymentOptionModal from "./PaymentOptionModal";
 
 export default {
@@ -462,7 +474,7 @@ export default {
           paymentGateway: "Paystack",
           txnRefID: paystackResponse.trxref,
           productItems: products,
-          currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
+          currency: selectedCurrency.value && currentUser ? selectedCurrency.value : "NGN",
         };
 
         if (selectMonth.value) {
@@ -552,7 +564,7 @@ export default {
     };
 
     const setSelectedPaymentCurrency = () => {
-      if (selectCurrencyArr.value.includes(currentUser.value.currency)) {
+      if ( currentUser.value && selectCurrencyArr.value.includes(currentUser.value.currency)) {
           selectedCurrency.value = currentUser.value.currency;
         } else {
           selectedCurrency.value = "USD";
@@ -615,7 +627,7 @@ export default {
             ? Math.ceil(convertAmountToTenantCurrency.value)
             : TotalAmount.value) * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
-        currency: selectedCurrency.value ? selectedCurrency.value : "NGN",
+        currency: selectedCurrency.value && currentUser ? selectedCurrency.value : "NGN",
         // currency: "zar",
 
         // firstname: name,
@@ -819,7 +831,7 @@ export default {
 .sub {
   background: #ffffff 0% 0% no-repeat padding-box;
   /* box-shadow: 4px 10px 35px #0000000d; */
-  box-shadow: 0px 1px 4px #02172e45;
+  box-shadow: 0px 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   /* border: 1px solid #0f022021; */
 
   border-radius: 15px;
@@ -878,5 +890,13 @@ export default {
 
 .form-control {
   width: 60% !important;
+}
+
+.italic {
+  font-style: italic
+}
+
+.card-bg {
+  background: #cae2ee49;
 }
 </style>

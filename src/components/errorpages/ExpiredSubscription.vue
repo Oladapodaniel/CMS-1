@@ -1,25 +1,31 @@
 <template>
     <div class="container">
-    <div class="row">
-
-      <div class="col-md-12">
-        <h1>
-          <!-- <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> -->
-          <i class="fa fa-key" aria-hidden="true"></i> 401</h1>
-        <!-- <h2>Oops... Page Not Found!</h2> -->
-        <h3>Subcription  Expired</h3>
-        <div>This page is not publicly available because  your  subsciption has Expired</div>
-        <div>For more info: Contact the administrator of your church.</div>
-          <button class="btn btn-primary" style="margin-top: 20px;" @click.prevent="PlsSubscibe"> <i class="fa fa-arrow-left" aria-hidden="true"></i>Click to Subscibe</button>
-
-        <p style="margin-top: 20px">If you think you have arrived here by our mistake, please <a href="#">contact us</a></p>
-
-        <h3>Follow us:</h3>
-        <div class="social-networks">
-          <a href="https://www.facebook.com/creativedesignthemes/" target="_blank"><i class="fab fa-facebook-square"></i></a>
-          <a href="https://www.pinterest.com/creative3355/" target="_blank"><i class="fab fa-pinterest-square"></i></a>
-          <a href="https://twitter.com/creativedesign_" target="_blank"><i class="fab fa-twitter-square"></i></a>
+      <div class="row d-flex justify-content-center d-block d-md-none">
+        <div class="col-12">
+          <img src="../../assets/expired-sub.png" class="w-100"/>
         </div>
+      </div>
+    <div class="row" d-md-flex justify-content-md-between>
+      <div class="col-md-8 mb-md-5"><h2><i class="fa fa-meh-o" aria-hidden="true"></i> Subscription  Expired</h2></div>
+      <div class="col-md-4 mb-md-5 mt-2 d-md-flex justify-content-md-end text-primary" ><router-link to="/subexpired" class="text-decoration-none text-primary">Click here to Subscibe<i class="fa fa-arrow-right ml-2"></i></router-link></div>  
+      <div class="col-md-8">
+        <div class="mb-3">This page is not publicly available because your subscription has expired.</div>
+        <div class="mt-3 mt-md-5">
+          <div>Things you can still do:</div>
+          <ul class="list-unstyled mt-3">
+            <li class="mt-2"> <i class="pi pi-arrow-right text-primary mr-2 "></i><router-link class="text-primary" to="/subexpired">Subscribe</router-link></li>
+            <li class="mt-2"> <i class="pi pi-arrow-right text-primary mr-2"></i><router-link class="text-primary" to="/sendsmsexpired">Send SMS</router-link></li>
+            <li class="mt-2"> <i class="pi pi-arrow-right text-primary mr-2 "></i><router-link to="/buyunitsexpired" class="text-primary">Buy Unit</router-link></li>
+            <!-- <a href="" @click.prevent="plsSubscribe">Subscribe</a> -->
+          </ul>
+        </div>
+        <div class="mt-4">For more info: Contact the administrator of your church.</div>
+        <div class="default-btn text-dark c-pointer text-center col-2 mt-4" @click="logout">Logout</div>
+        <!-- <div>If you think you have arrived here by our mistake, please <a href="#" class="text-decoration-none">contact us</a></div> -->
+        
+      </div>
+      <div class="col-md-4 d-none d-md-block">
+        <img src="../../assets/expired-sub.png" />
       </div>
     </div>
   </div>
@@ -28,16 +34,25 @@
 <script>
 // import { useRoute } from "vue-router"
 import router from "../../router/index"
+import store from "@/store/store";
+import setupService from '../../services/setup/setupservice';
 export default {
     setup () {
         // const router = useRoute()
 
-        const plsSubscibe = () => {
-            router.push('subscription')
-        }
+        // const plsSubscribe = () => {
+        //     router.push('/tenant/subscription')
+        // }
+      const logout = () => {
+        localStorage.clear()
+        router.push('/')
+        store.dispatch('clearCurrentUser', {})
+        setupService.clearStore();
+    }
 
         return {
-            plsSubscibe
+            // plsSubscribe,
+            logout
         }
     }
 }
@@ -57,7 +72,9 @@ html, body {
   text-align: center; }
 
 .container {
-  margin-top: 8%; }
+  margin-top: 8%;
+  font-size: 20px ;
+  color: #707070;}
 
 a {
   color: #3498db; }

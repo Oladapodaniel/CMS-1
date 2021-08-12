@@ -22,9 +22,9 @@ import Checkbox from 'primevue/checkbox';
 import Tag from 'primevue/tag';
 import Editor from 'primevue/editor';
 import SelectButton from 'primevue/selectbutton';
-
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
+// import SinchClient from 'sinch-rtc/sinch.min.js'
 
 
 import 'primevue/resources/themes/saga-blue/theme.css'       //theme
@@ -57,10 +57,27 @@ axios.interceptors.request.use((config) => {
   })
   
   // before a response is returned stop nprogress
+
+
+
+    
   axios.interceptors.response.use(response => {
     NProgress.done()
     return response
   })
+
+  axios.interceptors.response.use(
+    function(response) {
+      return response;
+    },
+    function(error) {
+      if (error.response.status == 403) {
+        router.push('/errorpage/unauthorized')
+        // alert('Something like dapo')
+        }
+      }
+    );
+  
 
 const app = createApp(App);
 
@@ -81,6 +98,11 @@ app
       attempt: 1
     }
   )
+
+  // let sinchClient = new SinchClient({
+  //     applicationKey: 'b1392f96-6a4b-4e44-bdf1-0e1f4dd2d1a0',
+  //     capabilities: { calling: true },
+  // })
 
 
 app.use(store).use(router).use(VueHighcharts, { Highcharts }).use( CKEditor).use(Toaster).use(PrimeVue).use(ToastService).use(ConfirmationService).mount('#app')

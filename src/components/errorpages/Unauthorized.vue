@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container justify-content-center">
     <div class="row">
 
       <div class="col-md-12">
@@ -38,7 +38,8 @@ export default {
         // const router = useRoute()
 
         const goBack = () => {
-            router.go(-1)
+          router.push('/tenant')
+            // router.go(-1)
         }
 
         return {

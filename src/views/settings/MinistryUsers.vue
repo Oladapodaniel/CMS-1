@@ -2,10 +2,10 @@
   <div> 
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
-        <div class="col-md-8 col-lg-8 col-sm-6">
-          <h2 class="font-weight-bolder">{{  churchProfile ? churchProfile : "" }}</h2>
+        <div class="col-md-7 col-xl-8 col-lg-8 col-sm-12">
+          <h2 class="font-weight-bolder churchHeader">{{  churchProfile ? churchProfile : "" }}</h2>
         </div>
-        <div class="col-lg-4 col-sm-6 mt-2 link d-lg-flex justify-content-end">
+        <div class="col-lg-4 col-xl-4 col-md-5 col-sm-12 d-flex justify-content-sm-end  mt-2 link d-lg-flex justify-content-end">
           <router-link
             to="/tenant/settings/invitenewuser"
             class="grey-border primary-bg border-0 text-white addnew default-btn"
@@ -88,7 +88,7 @@
             </div>
             <!-- {{churchMem && churchMem.roles[0] ? churchMem.roles[0]? churchMem.roles[0] : '' : '' }} -->
             <div
-              class="col-md-1 d-flex justify-content-between align-items-center"
+              class="col-sm-12 d-flex col-12 justify-content-sm-end col-md-1 col-lg-1 col-xl-1 d-flex justify-content-end align-items-center"
             >
               <div class="dropdown">
                 <i
@@ -273,6 +273,7 @@ export default {
   text-decoration: none!important;
 
 }
+
 .route:hover{
   color: #136acd!important;
 
@@ -332,5 +333,11 @@ color: white!important;
   .table-header-row {
     display: none;
   }
+}
+@media screen and (max-width: 402px) {
+  .churchHeader{
+  font-size: 20px;
+}
+  
 }
 </style>

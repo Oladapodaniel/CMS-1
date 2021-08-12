@@ -102,6 +102,19 @@
             </div>
           </div>
 
+           <div class="row">
+                    <div class="col-md-12 col-12 d-flex justify-content-end mb-4">
+                      <button
+                        class="default-btn outline-none primary-text font-weight-bold border-0"
+                        data-toggle="modal"
+                        data-target="#exampleModal"
+                        ref="modalBtn"
+                      >
+                        Add member
+                      </button>
+                    </div>
+                  </div>
+
           <div class="row pb-4 bottom-box">
             <div class="col-md-12">
               <div class="row mid-header-row py-1">
@@ -112,19 +125,8 @@
                 </div>
               </div>
 
-              <div class="row py-5">
+              <div class="row py-2">
                 <div class="col-md-12">
-                  <div class="row">
-                    <div class="col-md-4 d-flex justify-content-md-center">
-                      <button
-                        class="default-btn outline-none primary-text font-weight-bold border-0"
-                        data-toggle="modal"
-                        data-target="#exampleModal"
-                      >
-                        Add member
-                      </button>
-                    </div>
-                  </div>
 
                   <!-- Modal -->
                   <div
@@ -168,6 +170,7 @@
                                   <div class="row">
                                     <div
                                       class="col-md-12 pl-0 grey-rounded-border"
+
                                     >
                                       <ul
                                         class="d-flex flex-wrap px-1 mb-0 m-dd-item"
@@ -194,12 +197,14 @@
                                         <li
                                           style="list-style: none"
                                           class="m-dd-item"
+
                                         >
                                           <input
                                             type="text"
                                             class="border-0 m-dd-item text outline-none"
                                             ref="memberSelectInput"
                                             @input="searchForMembers"
+
                                             :class="{
                                               'w-100':
                                                 selectedMembers.length === 0,
@@ -216,15 +221,18 @@
                                                 : 'Select from members'
                                             }`"
                                             @blur="() => (inputBlurred = true)"
+
                                           />
                                         </li>
                                       </ul>
                                       <div
                                         class="col-md-12 px-0 select-groups-dropdown m-dd-item"
                                         v-if="memberListShown"
+
                                       >
                                         <div
                                           class="dropdownmenu pt-0 w-100 m-dd-item"
+
                                         >
                                           <a
                                             class="dropdown-item px-1 c-pointer m-dd-item"
@@ -235,14 +243,30 @@
                                             @click="selectMember(member, index)"
                                             >{{ member.nameResult }}</a
                                           >
-                                          <p
-                                            class="bg-secondary p-1 mb-0 disable m-dd-item"
-                                            v-if="
+
+                                          <!-- <p
+                                            class="bg-secondary p-1 mb-0 m-dd-item "
+                                           v-if="
                                               invalidSearchText && !inputBlurred
                                             "
                                           >
                                             Enter 3 or more characters
+
+
+                                          </p>  -->
+                                          <p
+
+                                            class="bg-secondary p-1 mb-0  "
+
+                                          >
+                                            Enter 3 or more characters
+
                                           </p>
+                                          <!-- v-if="
+                                                  wardSearchString.length < 3 &&
+                                                  wardSearchedMembers.length === 0
+                                                " -->
+
                                           <p
                                             aria-disabled="true"
                                             class="btn btn-default p-1 mb-0 disable m-dd-item"
@@ -265,8 +289,23 @@
                                               class="fas fa-circle-notch fa-spin m-dd-item"
                                             ></i>
                                           </p>
+                                          <a
+                                            class="font-weight-bold small-text d-flex justify-content-center py-2  text-decoration-none primary-text c-pointer"
+                                            style="border-top: 1px solid #002044; color: #136acd"
+                                            @click="showAddMemberForm"
+                                            data-dismiss="modal"
+
+                                            >
+                                            <i
+                                                class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
+                                                style="color: #136acd"
+                                            ></i>
+                                                Add new member
+                                            </a>
                                         </div>
+
                                       </div>
+
                                     </div>
                                   </div>
                                 </div>
@@ -778,6 +817,20 @@
         </div>
       </div>
     </div>
+    <Dialog
+        header="Create New Member"
+        v-model:visible="display"
+        :style="{ width: '70vw', maxWidth: '600px' }"
+        :modal="true"
+        position="top"
+        >
+        <div class="row">
+            <div class="col-md-12">
+            <NewPerson @cancel="() => display = false" @person-id="getWardId($event)"  @show-group-modal="setGroupModal" />
+              <!-- @person-id="getFatherId($event)" -->
+            </div>
+      </div>
+    </Dialog>
   </div>
 </template>
 
@@ -793,20 +846,27 @@ import groupsService from "../../services/groups/groupsservice";
 import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
 import store from "../../store/store";
+import NewPerson from '../accounting/offering/NewDonor.vue';
+import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
 
 export default {
   directives: {
     tooltip: Tooltip,
   },
-  components: { Dropdown },
+  components: { Dropdown, Dialog, NewPerson },
   setup() {
+     const display = ref(false);
+    //  const showWardModal = ref(false)
     const memberDia = ref(true);
+    const modalBtn = ref(null);
     const groupData = ref({});
+    // const wardSearchString = ref("");
     const searchText = ref("");
     const loading = ref(false);
     const loadingMembers = ref(false);
     const memberSearchResults = ref([]);
+    // const wardSearchedMembers = ref([]);
     const position = ref("");
     const memberSelectInput = ref(null);
     const marked = ref([]);
@@ -829,6 +889,24 @@ export default {
         console.log(error);
       }
     });
+     const showAddMemberForm = () => {
+
+          display.value = true;
+
+        };
+    //   const setGroupModal = (payload) => {
+    //     showWardModal.value = payload
+    // }
+    // const getFatherId = (payload) => {
+    //       console.log(payload)
+    //       userSearchString.value = payload.personFirstName
+
+    //       father.value = {
+    //           firstName: payload.personFirstName,
+    //           id: payload.personId
+    //       }
+    //       console.log(father.value)
+    //     }
     const moveMembers = () => {
       let memberMove = {
         memberIDList: marked.value.map((i) => i.personID),
@@ -1041,6 +1119,29 @@ export default {
 
     const modalStatus = ref("");
     const groupMembers = ref([]);
+
+    const getWardId = (payload) => {
+          console.log(payload)
+          // wardSearchString.value = payload.personFirstName
+        let body = {
+          name: payload.personFirstName,
+          personId: payload.personId,
+          email: payload.personEmail,
+          phoneNumber: payload.personNumber
+        }
+        selectedMembers.value.push(body)
+        //   const constructSelectedMember = new Object()
+          // selectedMembers.value.name = payload.personFirstName
+          // selectedMembers.value.id = payload.personId
+        //   familyMembers.value.push(constructSelectedMember)
+          console.log(selectedMembers)
+        }
+        //  const wardSearchForUsers = () => {
+        //   if (wardSearchString.value.length >= 3) {
+        //     wardStartSearch(wardSearchString.value);
+        //   }
+        // };
+
     const addSelectedMembersToGroup = () => {
       if (selectedMembers.value.length === 0) {
         modalStatus.value = "modal";
@@ -1073,6 +1174,12 @@ export default {
     const groupNameIsInvalid = ref(false);
     const savingGroup = ref(false);
     const toast = useToast();
+
+    const setGroupModal = () => {
+      //  modalStatus.value = "modal";
+      modalBtn.value.click()
+            // showWardModal.value = payload
+        }
 
     const saveGroupData = () => {
       if (!groupData.value.name) {
@@ -1157,7 +1264,7 @@ export default {
     const getGroupById = async () => {
       try {
         loadingMembers.value = true;
-        
+
         const { data } = await axios.get(
           `/api/GetGroupsFromId/${route.params.groupId}`,
           groupData.value
@@ -1174,7 +1281,7 @@ export default {
             address: i.person.address,
             email: i.person.email,
             name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
-            phone: i.person.phoneNumber,
+            phone: i.person.mobilePhone,
             position: i.position
           };
 
@@ -1187,7 +1294,7 @@ export default {
               address: i.person.address,
               email: i.person.email,
               name: i.person.firstName ? i.person.firstName : '' + " " + i.person.lastName ? i.person.lastName : '',
-              phone: i.person.phoneNumber,
+              phone: i.person.mobilePhone,
               position: i.position,
               groupID: i.groupID
             }
@@ -1238,7 +1345,8 @@ export default {
           email: member.email,
           personId: member.personID,
           approvalName: member.name,
-          position: member.position
+          position: member.position,
+          phone: member.phone
       }
       console.log(memberToApprove)
       try {
@@ -1253,7 +1361,7 @@ export default {
           awaitingApprovals.value = awaitingApprovals.value.filter(i => {
             return i.personID !== member.personID
           })
-          
+
           groupMembers.value.push(member)
       }
       catch (error) {
@@ -1288,6 +1396,7 @@ export default {
       selectedMembers,
       groupMembers,
       addSelectedMembersToGroup,
+      showAddMemberForm,
       invalidSearchText,
       position,
       modalStatus,
@@ -1309,13 +1418,23 @@ export default {
       mark1Item,
       selectMembers,
       memberDia,
+      display,
       getAllGroup,
       selectGroupTo,
       moveMembers,
       copyGroupTo,
       copyMemberToGroup,
       awaitingApprovals,
-      requestApproval
+      requestApproval,
+      setGroupModal,
+      modalBtn,
+      // wardSearchString,
+      // showWardModal
+     getWardId
+    //  wardSearchedMembers,
+    // wardSearchForUsers
+
+
     };
   },
 };
@@ -1345,6 +1464,7 @@ export default {
   border-top: 1px solid #dde2e6;
   border-radius: 8px 8px 0 0;
 }
+
 
 .hidden-header {
   display: none;

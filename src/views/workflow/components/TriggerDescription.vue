@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="row d-flex justify-content-end">
+        <div v-if="!hideHeader" class="row d-flex justify-content-end">
             <div class="col-md-4">
                 <div class="dropdown text-right">
                     <span class="font-weight-bold text-dark c-pointer"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="pi pi-ellipsis-h" style="font-size: 1.5rem"></i></span>
@@ -15,7 +15,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <p class="text-center" style="font-size:28px">{{ header ? header : 'Giving - Amount' }}</p>
+                <p v-show="!hideHeader" class="text-center" style="font-size:28px">{{ header ? header : 'Giving - Amount' }}</p>
                 <p class="text-center" v-if="description && description.id === 2">
                     A member of 
                     <span class="text-success">{{ description.groups.join(' or ') }}</span>
@@ -64,17 +64,17 @@
                 >
                     <span>A member of </span>
                     <span class="text-success">{{ description.selectedGroups.join(', ') }}</span> is marked
-                    <span class="text-success">{{ description.selectedStatus.join(', ') }} {{ description.numOfTimes }} </span>
+                    <span class="text-success">{{ description.selectedStatus }} {{ description.numOfTimes }} </span>
                     <span>
-                        {{ description.numOfTimes > 1 ? ' times ' : ' time '}}
+                        {{ +description.numOfTimes > 1 ? ' times ' : ' time '}}
                     </span>
-                    <span class="text-success"> in the last {{ description.timesInLastWeek }} </span>
+                    <span class="text-success"> in the last {{ description.timesInLastWeek }} </span> <span>days</span>
                 </p>
 
                 <p class="text-center"
                     v-if="description && description.id === 4"
                 >
-                    <span>A member of </span>
+                    <span>A member is added to </span>
                     <span class="text-success">{{ description.selectedGroups.join(', ') }}</span> group
                     
                 </p>
@@ -106,7 +106,7 @@
 
 <script>
 export default {
-    props: [ 'header', 'description', 'currency' ],
+    props: [ 'header', 'description', 'currency', 'hideHeader' ],
 
     setup (props, { emit }) {
         const removeCurrentTrigger = () => {

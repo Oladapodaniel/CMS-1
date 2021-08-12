@@ -205,7 +205,7 @@ export default {
             try {
                 let { data } = await axios.post("/api/People/UploadFirstTimerFile", formData)
                 console.log(data)
-                if   (!data.response.toString().includes('0')) {
+                // if   (!data.response.toString().includes('0')) {
                     toast.add({
                     severity: "success",
                     summary: "Confirmed",
@@ -214,14 +214,14 @@ export default {
                 });
                 memberData.value = data.returnObject
                 displayModal.value = true;
-                } else {
-                toast.add({
-                severity: "success",
-                summary: "No Member found",
-                detail: "Download our template and add members before you upload",
-                life: 4000,
-                });
-                }        
+                // } else {
+                // toast.add({
+                // severity: "success",
+                // summary: "No Member found",
+                // detail: "Download our template and add members before you upload",
+                // life: 4000,
+                // });
+                // }        
             }
             catch  (err) {
                 finish()

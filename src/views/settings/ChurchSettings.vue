@@ -9,12 +9,34 @@
               <h2 class="mb-5 font-weight-700">Settings</h2>
             </div>
           </div>
-
-          <div class="row mb-3">
+          <!-- <p @click="showMore" class="more-tab">
+                <span>{{ dropDownText }}...</span>
+                <span
+                  ><i
+                    class="fa fa-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate': moreShown }"
+                  ></i
+                ></span>
+              </p> -->
+          <div class="nav-show" @click="toggleSettingDropDown" >
+            <p>
+            <span class="small-text1 dd-list-item">{{dropDownText}}...
+               
+              </span>
+             <i
+                    class="fa fa-angle-up more-icon"
+                    :class="{ 'tbb-icon-rotate':settingLinkDropped }"
+                  ></i>
+                  </p>
+        <div class="show-modal" :class="{ 'dd-hide-list': !settingLinkDropped }">
+          <div class="row mb-3" >
             <div class="col-md-12 my-2">
-              <span class="small-text">User Management</span>
+              <span class="small-text dd-list-item">User Management
+               
+              </span>
+              
             </div>
-            <div class="col-md-12 py-2 my-2 link-con" :class="{'active-link': route.path.endsWith('/settings')}">
+            <div class="col-md-12 py-2 my-2 link-con dd-list-item" :class="{'active-link': route.path.endsWith('/settings')}">
               <router-link class="font-weight-bold link" to="/tenant/settings"
                 >Users</router-link
               >
@@ -23,10 +45,10 @@
 
           <div class="row mb-3">
             <div class="col-md-12 my-2">
-              <span class="small-text">Organisation profile</span>
+              <span class="small-text dd-list-item">Organisation profile</span>
             </div>
             <div class="col-md-12 py-2 my-2" :class="{'active-link': route.path.endsWith('/settings/profile')}">
-              <router-link class="font-weight-bold link" to="/tenant/settings/profile"
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/profile"
                 >Profile</router-link
               >
             </div>
@@ -34,37 +56,38 @@
 
           <div class="row mb-3">
             <div class="col-md-12 my-2">
-              <span class="small-text">System setting</span>
+              <span class="small-text dd-list-item">System setting</span>
             </div>
             <div class="col-md-12 py-2 my-2" :class="{'active-link': route.path.endsWith('/settings/defaultmessage')}">
-              <router-link class="font-weight-bold link" to="/tenant/settings/defaultmessage"
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/defaultmessage"
                 >Default message</router-link
               >
             </div>
             <div class="col-md-12 py-2 my-2" :class="{'active-link': route.path.endsWith('/tenant/settings/membership')}">
-              <router-link class="font-weight-bold link" to="/tenant/settings/membership"
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/membership"
                 >Membership Category</router-link
               >
             </div>
             <div class="col-md-12 my-2">
-              <router-link class="font-weight-bold link" to="/tenant/settings/ageGroup"
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/ageGroup"
                 >Age Group Category</router-link
               >
             </div>
             <div class="col-md-12 my-2">
-              <router-link class="font-weight-bold link" to="/tenant/settings/attendance"
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/attendance"
                 >Attendance Category</router-link
               >
             </div>
             <div class="col-md-12 my-2" v-if="false">
-              <router-link class="font-weight-bold link" to="/tenant/settings/followupstatus"
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/followupstatus"
                 >Follow Up Status</router-link
               >
             </div>
             <div class="col-md-12 my-2">
-              <router-link class="font-weight-bold link" to="/tenant/settings/firsttimersettings"
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/firsttimersettings"
                 >First Timer Settings</router-link
               >
+            </div>
             </div>
             <div class="col-md-12 my-2" v-if="false">
               <router-link class="font-weight-bold link" to="/tenant/settings/giving"
@@ -83,6 +106,7 @@
               >
             </div>
           </div>
+          </div>
         </div>
 
         <!-- main content -->
@@ -96,12 +120,29 @@
 
 <script>
 import { useRoute } from 'vue-router';
+import {ref, computed} from 'vue'
 export default {
     setup() {
         const route = useRoute()
+         const settingLinkDropped = ref(false);
+         const toggleSettingDropDown = ()=>{
+           settingLinkDropped.value = !settingLinkDropped.value
+         };
+         const moreShown = ref(false);
+         const showMore = () => {
+      moreShown.value = !moreShown.value;
+    };
+    const dropDownText = computed(() => {
+      return settingLinkDropped.value ? "Hide Modal" : "Show Modal";
+    });
 
         return {
             route,
+            settingLinkDropped,
+            toggleSettingDropDown,
+            showMore,
+            dropDownText,
+            moreShown
         }
     }
 
@@ -122,12 +163,20 @@ export default {
 .small-text {
   font-size: 14px;
 }
+.small-text1{
+  display: none;
+}
 
 .active-link {
     background: #EBEFF4;
     border-radius: 5px;
     width: 100%;
 }
+.fa-angle-up{
+  display: none!important;
+}
+
+
 
 @media screen and (min-width: 767px) {
     .sidebar {
@@ -144,5 +193,34 @@ export default {
     .link {
         font-size: 14px;
     }
+}
+@media screen and (max-width: 767px) {
+  .dd-hide-list {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  display: none;
+}
+.dd-list-item {
+  list-style: none;
+  padding-top: 19px;
+}
+.tbb-icon-rotate {
+  transition: all 0.5s ease-in-out;
+  transform: rotate(0deg);
+  color: #190138;
+  font-size: 20px;
+}
+.fa-angle-up{
+  display: inline!important;
+  margin-left: 50px;
+}
+.small-text1{
+  font-size: 15px!important;
+}
+.small-text1{
+  display: inline;
+}
+    
 }
 </style>

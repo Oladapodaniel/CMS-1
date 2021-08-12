@@ -127,7 +127,7 @@
             <div class="bottom">
               <div class="box-bottom">
                 <span class="plan-text"></span>
-                <router-link :to="{ name: 'BuyUnits', path: '/tenant/units' }" class="push-down">
+                <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="push-down">
                   <button class="upgrade-btn buy-btn">
                     <h4 class="box-btn-text">BUY UNIT</h4>
                   </button>
@@ -526,6 +526,7 @@
       <!-- </div> -->
 
       <!-- </div> -->
+      
     </div>
   </main>
 </template>
@@ -538,8 +539,7 @@ import ColumnChart2 from "@/components/charts/ColumnChart2.vue";
 // import PieChart from "@/components/charts/PieChart"
 import { computed, onMounted, ref } from "vue";
 // import { useRoute } from 'vue-router';
-// import store from "@/store/store.js"
-// import mixin from "@/mixins/auth.mixins.js"
+import mixin from "@/mixins/expiredSub.mixin.js"
 import router from "@/router/index";
 import axios from "@/gateway/backendapi";
 import moment from "moment";
@@ -550,7 +550,7 @@ import useSubscription from "../../services/subscription/useSubscription";
 import Tooltip from "primevue/tooltip";
 
 export default {
-  //  mixins: [mixin],
+   mixins: [mixin],
   components: {
     ColumnChart,
     ColumnChart2,

@@ -8,7 +8,7 @@
       <div class="col-md-6 offset-md-3 mb-3"></div>
     </div>
     <div class="row">
-      <div class="col-6 offset-sm-3 p-0">
+      <div class="col-12 col-sm-5 offset-sm-4 p-0">
         <img :src="bannerUrl" class="w-100">
       </div>
     </div>
@@ -18,7 +18,7 @@
       <div
         class="col-md-3 d-md-flex align-items-center justify-content-end text-md-right mt-1 font-weight-700"
       ></div>
-      <div class="col-md-7 mb-3">
+      <div class="col-md-7 mb-3 text-center">
         <span class="font-weight-bold" style="font-size: 1.2em">
           {{ eventData.name }}
         </span>
@@ -65,14 +65,18 @@
             type="text"
             v-model="enteredValue"
             aria-required=""
+            placeholder="Enter your phone number"
           />
         </span>
         <!-- v-if="autosearch && !person.name" -->
       </div>
+      <div class="col-3 offset-5 mt-4" v-if="!names">
+        <div class="default-btn primary-bg text-white border-0 text-center">Search</div>
+      </div>
     </div>
     <div class="row mb-4">
       <div class="col-md-3"></div>
-      <div class="col-md-5">
+      <div class="col-md-5 offset-1">
         <div class="loading-div my-5" v-if="showLoading">
           <i
             class="pi pi-spin pi-spinner loading-indicator"
@@ -218,7 +222,7 @@
             <button
               :data-toggle="fullEventData.paymentFormId ? 'modal' : ''"
               :data-target="fullEventData.paymentFormId ? '#PaymentOptionModal' : ''"
-              class="default-btn add-btn"
+              class="default-btn add-btn mt-3 mt-sm-0"
               @click="confirmToRegister"
               :disabled="
                 !person.name || person.name.length < 1 || !person.address
@@ -670,7 +674,7 @@ export default {
         )
         .then((res) => {
           eventData.value.name = res.data.fullEventName;
-          eventData.value.date = dateFormatter.monthDayTime(res.data.eventDate);
+          eventData.value.date = dateFormatter.monthDayYear(res.data.eventDate);
           bannerUrl.value = res.data.bannerUrl
 
           fullEventData.value = res.data
