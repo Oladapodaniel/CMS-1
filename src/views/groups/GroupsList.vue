@@ -156,7 +156,7 @@
 
                   <div class="col-md-2 col-sm-2 d-md-flex align-items-center">
                     <input
-                      class="my-3 d-flex justify-content-end"
+                      class="my-2 d-flex justify-content-end"
                       type="checkbox"
                     />
                   </div>
@@ -535,11 +535,6 @@ export default {
 .fa-ellipsis-v:hover {
   cursor: pointer;
 }
-#chart {
-  width: 48%;
-  max-height: 310px;
-  border-radius: 10px;
-}
 .board.members-count {
   padding: 24px;
 }
@@ -547,10 +542,7 @@ export default {
   color: rgba(184, 5, 5, 0.726);
   font-size: 1.1em;
 }
-.chart1,
-.chart2 {
-  border-radius: 10px;
-}
+
 .itemroute-color {
   color: #136acd;
 }
