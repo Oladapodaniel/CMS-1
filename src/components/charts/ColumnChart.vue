@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="ml-n5">
     <div class="chart-header" v-if="header">
           <div class="icon-div">
               <img src="../../assets/people/members-icon.svg" alt="">
@@ -189,6 +189,12 @@ const getRoute = () => {
       width: 100% !important;
     }
 }
+
+  @media (max-width: 575px) {
+      .wrapper {
+          margin-left: -1.4rem!important;
+      }
+  }
 </style>
 
 <style>

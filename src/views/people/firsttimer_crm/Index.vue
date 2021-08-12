@@ -2,7 +2,7 @@
     <div class="container-top container adjust-font">
         <div class="row">
             <div class="col-4 p-0 side-bar">
-                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails"/>
+                <SideActions @opennoteeditor="openNoteEditor" @openemailmodal="openEmailModal" @opentaskeditor="openTaskEditor" :personDetails="personDetails" @calllogdesc="setCallLogDesc" :callLog="callLog" @resetlog="resetLog"/>
             </div>
             <div class="col-8 main-view">
                 <div class="row">
@@ -49,16 +49,16 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime"/>
+                        <Activity :activities="activities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime"/>
                     </div>
                     <div class="col-12" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
                     </div>
                     <div class="col-12" v-if="showEmails" transition="bounce">
-                        <Emails />
+                        <Emails @openemailmodal="openEmailModal"/>
                     </div>
                     <div class="col-12" v-if="showCalls" transition="bounce">
-                        <Calls />
+                        <Calls :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opencalllogpane="openCallLogPane"/>
                     </div>
                     <div class="col-12" v-if="showTasks" transition="bounce">
                         <Tasks :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime" @opentaskeditor="openTaskEditor" />
@@ -69,12 +69,13 @@
     </div>
     <!-- <Button label="BottomRight" icon="pi pi-arrow-up" class="p-button-warning" /> -->
             
-    <Dialog header="Header" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
-        <div>Create note</div>
+    <Dialog header="Create note" v-model:visible="displayPosition" :breakpoints="{'960px': '75vw'}" :style="{width: '50vw'}" :position="position" :modal="true">
         <Editor v-model="note" editorStyle="height: 320px"/>
         <template #footer>
-            <Button label="Cancel" icon="pi pi-times" class="p-button-text" />
-            <Button label="Save" icon="pi pi-check" @click="saveNote" autofocus />
+            <div class="row d-flex justify-content-end">
+                <div class="default-btn text-center">Cancel</div>
+                <div class="primary-bg default-btn border-0 text-white text-center ml-3" @click="saveNote">Save</div>
+            </div>
         </template>
     </Dialog>
    
@@ -133,7 +134,8 @@
                     <Editor v-model="emailBody" editorStyle="height: 260px"/>
                 </div>
                 <div class="col-12 mt-2 d-flex justify-content-end">
-                    <Button label="Send" icon="pi pi-check" @click="sendEmail" autofocus />
+                    <Button label="Send" icon="pi pi-check"  autofocus />
+                    <div class="primary-bg default-btn border-0 text-white text-center ml-3" @click="sendEmail">Send</div>
                 </div>
             </div>
         </div>
@@ -296,6 +298,10 @@ export default {
         const op = ref("")
         const theTask = ref("")
         const personDetails = ref({})
+        const logList = ref([])
+        const activities = ref([])
+        const callLog = ref(false)
+        
 
         const toggleActivity = () => {
             showActivity.value = true
@@ -344,6 +350,8 @@ export default {
             displayPosition.value = false;
             let noteContent = note.value.slice(3, -4)
             noteList.value.unshift({ body: noteContent })
+
+            activities.value.unshift({ body: noteContent, type: 'note' })
             note.value = ""
         };
         
@@ -357,11 +365,13 @@ export default {
         }
 
         const setIconProp = (payload) => {
-            noteList.value[payload].noteIcon = !noteList.value[payload].noteIcon
+            // noteList.value[payload].noteIcon = !noteList.value[payload].noteIcon
+            activities.value[payload].noteIcon = !activities.value[payload].noteIcon
         }
         
         const setIconPropTask = (payload) => {
-            taskList.value[payload].taskIcon = !taskList.value[payload].taskIcon
+            // taskList.value[payload].taskIcon = !taskList.value[payload].taskIcon
+            activities.value[payload].taskIcon = !activities.value[payload].taskIcon
         }
 
         const sendEmail = async () => {
@@ -438,6 +448,7 @@ export default {
         const saveTask = () => {
             taskDisplayPosition.value = false;
             taskList.value.unshift({ body: theTask.value })
+            activities.value.unshift({ body: theTask.value, type: 'task' })
             theTask.value = ""
         };
 
@@ -450,6 +461,23 @@ export default {
             })
         }
         getPersonDetails()
+
+        const setCallLogDesc = (payload) => {
+            logList.value.unshift(payload)
+            activities.value.unshift(payload)
+        }
+        
+        const setCallLogIcon = (payload) => {
+            logList.value[payload].logIcon = !logList.value[payload].logIcon
+        }
+
+        const openCallLogPane = (payload) => {
+            callLog.value = payload
+        }
+
+        const resetLog = (payload) => {
+            callLog.value = payload
+        }
 
         return {
             toggleActivity,
@@ -488,7 +516,14 @@ export default {
             saveTask,
             taskList,
             setIconPropTask,
-            personDetails
+            personDetails,
+            setCallLogDesc,
+            logList,
+            activities,
+            setCallLogIcon,
+            openCallLogPane,
+            callLog,
+            resetLog
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
    <div class="d-flex justify-content-end mx-3">
-        <div class="col-3 mt-3 save-btn btn-btn pointer-cursor" @click="openTaskEditor">Create Task</div>
+        <div class="col-3 mt-3 save-btn btn-btn pointer-cursor" @click="openTaskEditor">Create</div>
    </div>
     <!-- <div class="col-12 mt-4" v-for="(task, index) in addTask" :key="index">
             <div class="col-12 card-bg p-4">

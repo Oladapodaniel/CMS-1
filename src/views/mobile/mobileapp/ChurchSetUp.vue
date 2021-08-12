@@ -1,7 +1,7 @@
 <template>
   <div class="container-wide">
     <!-- write up part -->
-    <div class="row" style="height: 100vh">
+    <div class="row" style="height: 10vh">
       <Toast />
       <ConfirmDialog />
       <!-- <div class="col-md-6 mt-3"> -->
@@ -30,7 +30,7 @@
 
           <div class="col-12 col-sm-6 mt-4 offset-sm-3">
             <div class="row d-flex justify-content-md-between">
-              <div class="col-md-6 mt-3 px-md-0 col-9">Pastors and Ministers</div>
+              <div class="col-md-6 mt-3 px-md-0 col-9 font-weight-700">Pastors and Ministers</div>
               <div
                 class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
                 data-target="#add-pastor"
@@ -69,7 +69,7 @@
           </div>
           <div class="col-12 col-sm-6 offset-sm-3 mt-3">
             <div class="row d-flex justify-content-md-between">
-              <div class="col-md-6 mt-3 px-md-0 col-9">Other Information</div>
+              <div class="col-md-6 mt-3 px-md-0 col-9 font-weight-700">Other Information</div>
               <div
                 class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
                 data-target="#other-info"
@@ -80,45 +80,8 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-sm-6 offset-sm-3 mt-3">
-            <div class="row d-flex justify-content-md-between">
-              <div class="col-md-6 mt-3 px-md-0 col-9">Branches</div>
-              <div
-                class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
-                data-target="#branches"
-                data-toggle="modal"
-                data-whatever="@fat"
-                @click="clearChurchBranch"
-              >
-                Add
-              </div>
-            </div>
-          </div>
-          <!-- returnedObject for churchesbranch -->
-          <div class="col-12 col-sm-6 offset-sm-3">
-            <div class="row" v-for="(item, index) in churchBranches" :key="index">
-              <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
-              <div class="col-12 mt-4">
-                <div class="row">
-                  <div class="col-12 col-sm-4 align-self-center">
-                    <div class="pastorname">{{ item.branchName }}</div>
-                    <!-- <div>{{ item.pastorName }}</div> -->
-                  </div>
-                  <div class="col-12 col-sm-5 align-self-center">
-                    <!-- <div class="pastorname">{{ item.branchName }}</div> -->
-                    <div>{{ item.pastorName }}</div>
-                  </div>
-                  <div class="col-1 align-self-center cursor-pointer mr-3" data-target="#branches" data-toggle="modal" data-whatever="@fat" @click.prevent="editBranch(item)">
-                    edit
-                  </div>
-                  <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModalBranch(item.id)">
-                    <i class="pi pi-trash text-dark"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-sm-6 offset-sm-3">
+          <!-- other information add button -->
+           <div class="col-12 col-sm-7 offset-sm-2">
             <div class="row" v-for="(item, index) in infoArray"
                 :key="index">
               <div
@@ -152,7 +115,46 @@
                 </div>
               </div>
               <div class="col-2 align-self-center cursor-pointer" @click.prevent="showConfirmModalAbout(item.customAboutId)">
-                <i class="pi pi-trash"></i>
+                <i class="pi pi-trash text-dark"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 offset-sm-3 mt-3">
+            <div class="row d-flex justify-content-md-between">
+              <div class="col-md-6 mt-3 px-md-0 col-9 font-weight-700">Branches</div>
+              <div
+                class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
+                data-target="#branches"
+                data-toggle="modal"
+                data-whatever="@fat"
+                @click="clearChurchBranch"
+              >
+                Add
+              </div>
+            </div>
+          </div>
+          <!-- returnedObject for churchesbranch -->
+          <div class="col-12 col-sm-6 offset-sm-3 p-md-0">
+            <div class="row" v-for="(item, index) in churchBranches" :key="index">
+              <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
+              <div class="col-12 mt-4">
+                <div class="row">
+                  <div class="col-12 col-sm-4 align-self-center">
+                    <div class="pastorname">{{ item.branchName }}</div>
+                    <!-- <div>{{ item.pastorName }}</div> -->
+                  </div>
+                  <div class="col-12 col-sm-5 align-self-center">
+                    <!-- <div class="pastorname">{{ item.branchName }}</div> -->
+                    <div>{{ item.pastorName }}</div>
+                  </div>
+                  <div class="col-1 align-self-center cursor-pointer mr-3" data-target="#branches" data-toggle="modal" data-whatever="@fat" @click.prevent="editBranch(item)">
+                    edit
+                  </div>
+                  <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModalBranch(item.id)">
+                    <i class="pi pi-trash text-dark"></i>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -449,14 +451,14 @@
                     <div class="col-md-5 mt-3 col-12">
                       <div class="container-img mx-auto mx-md-0 mx-lg-0 pt-2">
                         <div class="photo-box">
-                          <img
+                          <!-- <img
                             v-if="!branchDetails.pastorPicture"
                             src="../../../assets/people/phone-import.svg"
                             alt="Uploaded Image"
                             class="w-100 h-100 img-responsive"
-                          />
+                          /> -->
                           <img
-                            v-else
+                           
                             :src="image"
                             class="w-100 h-100 img-responsive"
                           />
@@ -773,7 +775,7 @@ export default {
               pastorDetails: i.pastorDetails,
               pastorName: i.pastorName,
               pastorPhone: i.pastorPhone,
-              pastorPictureUrl: i.pastorPictureUrl
+              pastorPictureUrl: i.pastorPicturUrl
             }
           })
  console.log(churchBranches.value, 'testing the branch');
@@ -807,17 +809,22 @@ export default {
         }
         closePastorModal.value.setAttribute("data-dismiss", "modal");
         branchDetails.value = {}
+        image.value = ""
     }
  
     const SaveChurchBranch = async (formData) => {
-       const displayChurchBranch =  {
-          branchName: branchDetails.value.branchName,
-          pastorName: branchDetails.value.pastorName
-        }
-         churchBranches.value.push(displayChurchBranch)
           try {
           let res = await axios.post('/mobile/v1/Profile/CreateOrEditBranch',formData)
             console.log(res, 'brach end point') 
+            const displayChurchBranch =  {
+              branchName: res.data.returnObject.branchName,
+              pastorName: res.data.returnObject.pastorName, 
+              pastorPhone: res.data.returnObject.pastorPhone,
+              details: res.data.returnObject.pastorDetails,
+              address: res.data.returnObject.address,
+              pastorPicture: res.data.returnObject.pastorPicturUrl
+            }
+            churchBranches.value.unshift(displayChurchBranch)
              toast.add({
                 severity: "success",
                 summary: "Branch Saved",
@@ -839,7 +846,7 @@ export default {
     const editChurchBranch = async (item) => {
       console.log(item);
        branchDetails.value = item
-       image.value = item.pastorPictureUrl
+       image.value = item.pastorPicturUrl
           try {
           let res = await axios.post('/mobile/v1/Profile/CreateOrEditBranch', branchDetails.value)
             console.log(res, 'brach end point')
@@ -862,6 +869,7 @@ export default {
 
     const clearChurchBranch = () => {
       branchDetails.value = {};
+      image.value = ""
     }
     const setChurchBranch = (item) => {
       branchDetails.value = item;
@@ -870,7 +878,7 @@ export default {
     const editBranch = (item) => {
       console.log(item,'edit itme');
       branchDetails.value = item;
-      image.value = item.pastorPictureUrl
+      image.value =  item.pastorPictureUrl 
     }
     //  const imageEdit = (e) => {
     //   image.value = e.target.files[0];

@@ -38,7 +38,7 @@
                         <span>The first line of your members Excel/CSV must include all of the headers listed below, which are included in the member Excel/CSV template</span>  
                     </div>
                     <!-- <div class="col-md-2 col-lg-2 col-2 text-right"> <i class="pi pi-question "></i></div> -->
-                    <div class="row ml-1 bg-secondary my-3 rounded h-100 w-100">
+                    <div class="row ml-1 bg-secondary my-3 mx-1 rounded h-100 w-100">
                         <div class="col-12 my-2 col-md-12 col-lg-12"><i class="pi pi-info-circle"></i><strong> Reminder:</strong> All Excel/CSV file headers are case-sensitive.
                             <div class="col-12 col-md-12 col-lg-12 border-bottom  my-2"></div> 
                         </div>
@@ -205,7 +205,7 @@ export default {
             try {
                 let { data } = await axios.post("/api/People/UploadFirstTimerFile", formData)
                 console.log(data)
-                if   (!data.response.toString().includes('0')) {
+                // if   (!data.response.toString().includes('0')) {
                     toast.add({
                     severity: "success",
                     summary: "Confirmed",
@@ -214,14 +214,14 @@ export default {
                 });
                 memberData.value = data.returnObject
                 displayModal.value = true;
-                } else {
-                toast.add({
-                severity: "success",
-                summary: "No Member found",
-                detail: "Download our template and add members before you upload",
-                life: 4000,
-                });
-                }        
+                // } else {
+                // toast.add({
+                // severity: "success",
+                // summary: "No Member found",
+                // detail: "Download our template and add members before you upload",
+                // life: 4000,
+                // });
+                // }        
             }
             catch  (err) {
                 finish()

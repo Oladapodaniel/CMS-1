@@ -323,7 +323,7 @@
               </div>
             <div class="dropdown text-left">
               <i
-                class="fas fa-ellipsis-v cursor-pointer"
+                class="fas fa-ellipsis-v cursor-pointer alignLeft"
                 id="dropdownMenuButton"
                 data-toggle="dropdown"
                 aria-haspopup="true"
@@ -1093,6 +1093,12 @@ a {
 @media (max-width: 767px) {
   .filter-options-shown {
     height: 150px;
+  }
+  .data-text {
+    display: none;
+  }
+  .alignLeft {
+    float: right;
   }
 }
 

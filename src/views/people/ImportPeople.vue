@@ -9,7 +9,7 @@
           <img src="../../assets/people/phone-import.svg" alt="Phone Import" />
         </div>
         <div class="option-desc">
-          <p class="option-header">Add members</p>
+          <!-- <p class="option-header">Add members</p> -->
           <p class="option-text">Stay compliant by keeping accurate records</p>
         </div>
       </router-link>
@@ -95,7 +95,7 @@ export default {
         try {
           let { data } = await axios.post("/api/People/UploadFirstTimerFile", formData)
           console.log(data)
-          if (!data.response.toString().includes('0')) {
+          // if (!data.response.toString().includes('0')) {
                 toast.add({
                 severity: "success",
                 summary: "Confirmed",
@@ -105,14 +105,14 @@ export default {
               memberData.value = data.returnObject
               displayModal.value = true;
               emit('people-list', data.returnObject)
-            } else {
-              toast.add({
-              severity: "success",
-              summary: "No Member found",
-              detail: "Download our template and add members before you upload",
-              life: 4000,
-            });
-          }          
+            // } else {
+            //   toast.add({
+            //   severity: "success",
+            //   summary: "No Member found",
+            //   detail: "Download our template and add members before you upload",
+            //   life: 4000,
+            // });
+          // }          
         }
         catch  (err) {
           finish()
