@@ -31,11 +31,11 @@
         <div class="col-12 px-0" id="table">
           <div class="top-con" id="ignore2">
             <div class="table-top">
-              <div class="col-4">
+              <!-- <div class="col-4">
                 <p @click="toggleSearch" class="search-text w-100 mt-2">
                   <i class="pi pi-search"></i> SEARCH
                 </p>
-              </div>
+              </div> -->
 
               <div class="search d-flex ml-2">
                 <label
