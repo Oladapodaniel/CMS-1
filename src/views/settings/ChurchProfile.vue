@@ -3,12 +3,12 @@
     <div class="container my-content">
       <div class="row page-header">
         <div class="col-12">
-          <h3 class="header-text font-weight-bold">Church Profile</h3>
+          <h3 class="header-text font-weight-bold text-md-left text-lg-left text-xl-left text-sm-center text-center">Church Profile</h3>
         </div>
       </div>
 
       <div class="row form-container">
-        <div class="col-10 offset-1 offset-sm-0 col-sm-12">
+        <div class="col-10 offset-1 offset-sm-0 col-sm-12 text-md-left text-lg-left text-xl-left text-sm-center text-center">
           <span class="sub-header">Church Details </span>
           <div class="row first-row">
             <div class="col-12 col-md-3 text-md-right pr-0">

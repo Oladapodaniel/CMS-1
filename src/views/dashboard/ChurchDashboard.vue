@@ -127,7 +127,7 @@
             <div class="bottom">
               <div class="box-bottom">
                 <span class="plan-text"></span>
-                <router-link :to="{ name: 'BuyUnits', path: '/tenant/units' }" class="push-down">
+                <router-link :to="{ name: 'BuyUnits', path: '/tenant/buyunits' }" class="push-down">
                   <button class="upgrade-btn buy-btn">
                     <h4 class="box-btn-text">BUY UNIT</h4>
                   </button>
@@ -526,6 +526,7 @@
       <!-- </div> -->
 
       <!-- </div> -->
+      
     </div>
   </main>
 </template>

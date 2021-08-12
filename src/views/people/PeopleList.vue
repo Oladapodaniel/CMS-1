@@ -218,6 +218,7 @@
           </div>
         </div>
       </div>
+
       <div class="table-header font-weight-700">
         <div class="check"></div>
         <div class="picture text-dark  small-text text-capitalize  font-weight-bold" style="font-size: 16px">

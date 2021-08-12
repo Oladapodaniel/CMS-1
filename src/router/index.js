@@ -1273,16 +1273,29 @@ const routes = [
                 }
             ]
     },
-    // {
-    //     path: '/unauthorized',
-    //     name: 'Unauthorized',
-    //     component: () =>
-    //         import( /* webpackChunkName: "sentemails" */ '@/components/errorpages/Unauthorized')
-    // }
+    {
+        path: '/subexpired',
+        name: 'subexpired',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/SubExpired'),    
+            
+    },
+    {
+        path: '/sendsmsexpired',
+        name: 'SendSmsExpired',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/SendSmsExpired'),    
+            
+    },
+    {
+        path: '/buyunitsexpired',
+        name: 'BuyUnitsExpired',
+        component: () =>
+            import( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),    
+            
+    },
 ]
-
-
-
+          
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes

@@ -768,7 +768,7 @@ export default {
                 }
 
                 // alert(i)
-                return i
+                return i.name.toLowerCase().includes("paystack")
             })
             // const x = paymentGateWaysDb.value.filter(i => (paymentGateWays.value.findIndex(j => j.paymentGateWayID === i.id)) >= 0)
             // console.log(x, "XXX");
