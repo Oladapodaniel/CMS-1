@@ -83,7 +83,7 @@
         </div>
 
         <div class="row" style="margin: 0">
-          <div class="col-12 parent-desc py-2 px-0">
+          <div class="col-12 parent-desc px-0">
             <!-- removed v-for above -->
             <!-- loading group -->
             <!-- <div class="row" v-if="!loading && groups.length === 0">
@@ -146,6 +146,7 @@
                 hover
                 d-flex
                 align-items-center
+                py-2
               "
               style="margin: 0"
               v-for="(item, index) in list"
