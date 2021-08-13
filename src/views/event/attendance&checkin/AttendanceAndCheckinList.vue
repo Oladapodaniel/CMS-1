@@ -1,34 +1,5 @@
 
 <template>
-  <!-- <div class="mt-4 parent-element" style=" border-radius: 30px;">
-
-    <div class="container-fluid small-text">
-      <div
-        class="row table-header font-weight-700 "
-      >
-
-        <div class="col-md-4">
-          Event  Name
-        </div>
-
-        <div class="col-md-4">
-          Date
-        </div>
-
-        <div class="col-md-3">
-          Group Name
-        </div>
-        <div class="col-md-1"></div>
-      </div>
-
-      <div  class="row" v-if="errorOccurred">
-        <div class="col-md-12 text-center">
-          <p>Error getting items</p>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
   <!-- tosin working on tables -->
   <div class="row table">
     <div class="col-12 px-0" id="table">
