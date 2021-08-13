@@ -58,23 +58,24 @@ axios.interceptors.request.use((config) => {
   
   // before a response is returned stop nprogress
 
-
-
-    
-  axios.interceptors.response.use(response => {
-    NProgress.done()
-    return response
-  })
-
   axios.interceptors.response.use(
     function(response) {
       return response;
     },
     function(error) {
+      NProgress.done()
       if (error.response.status == 403) {
         router.push('/errorpage/unauthorized')
-        // alert('Something like dapo')
+        } else if (error.response.status == 400) {
+          return error.response
         }
+        // if(error.response.toString().includes('ERR_INTER')) {
+          alert(error)
+        //   console.log(error)
+        //   console.log(error.response)
+        return error.response
+        // }
+        
       }
     );
   

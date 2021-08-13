@@ -7,14 +7,14 @@
             <div class="col-12 card-bg p-4">
                 <div class="row d-flex justify-content-between">
                     <div>
-                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index)"></i>&nbsp;&nbsp;Logged call</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
+                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index)"></i>&nbsp;&nbsp;Logged {{ item.type }}</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
                     </div>
                     <div>
                         <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 mt-4 enlargen-font"  :class="{ 'hover-border' : hoverLog, 'log-border' : !hoverLog }" @mouseover="onHoverBorder" @mouseleave="outHoverBorder" v-if="!editLog" @click="toggleEditLog">
+                    <div class="col-12 mt-4 enlargen-font"  :class="{ 'hover-border' : item.hoverLog, 'log-border' : !item.hoverLog }" @mouseover="onHoverBorderLog(index)" @mouseleave="outHoverBorderLog(index)" v-if="!editLog" @click="toggleEditLog">
                         <div>{{ item.desc }}</div>
                     </div>
 
@@ -80,12 +80,6 @@
       
                     </div>
                 </transition>
-                <transition name="fade">
-                    <div class="row mt-4">
-                        <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
-                        <div class="col text-right font-weight-700 uniform-primary-color">1 Association</div>
-                    </div>
-                </transition>
             </div>
         </div>
 </template>
@@ -94,7 +88,7 @@
 <script>
 import { ref } from "vue"
 export default {
-    emits: ['individualcallicon', 'opencalllogpane'],
+    emits: ['individualcallicon', 'opencalllogpane', 'hoverlog', 'outHoverLog'],
     props: ['personDetails', 'logList'],
     setup(props, { emit }) {
         const hoverLog = ref(false)
@@ -106,12 +100,14 @@ export default {
         const timeRef = ref(false)
         const logIcon = ref(false)
 
-        const onHoverBorder = () => {
-            hoverLog.value = true
+        const onHoverBorderLog = (index) => {
+            // hoverLog.value = true
+            emit('hoverlog', index)
         }
         
-        const outHoverBorder = () => {
-            hoverLog.value = false
+        const outHoverBorderLog = (index) => {
+            // hoverLog.value = false
+            emit('outHoverLog', index)
         }
 
         const toggleEditLog = () => {
@@ -136,7 +132,6 @@ export default {
         }
 
         const toggleLogIcon = (index) => {
-            // logIcon.value = !logIcon.value
             emit('individualcallicon', index)
         }
 
@@ -146,8 +141,8 @@ export default {
 
         return {
             hoverLog,
-            onHoverBorder,
-            outHoverBorder,
+            onHoverBorderLog,
+            outHoverBorderLog,
             editLog,
             toggleEditLog,
             saveLogDesc,

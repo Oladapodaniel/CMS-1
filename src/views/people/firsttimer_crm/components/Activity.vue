@@ -2,7 +2,7 @@
     <div class="row" v-for="(item, index) in activities" :key="index">
         <!-- <div class="col-12 activity-date" v-if="addNotes.length > 0 && addTask.length > 0">July 12</div> -->
             <div class="col-12 mt-4" v-if="item.type === 'note'">
-                <!-- v-for="(note, index) in addNotes" :key="index" -->
+              <!-- Card for Notes -->
                 <div class="col-12 card-bg p-4">
                     <div class="row d-flex justify-content-between">
                         <div>
@@ -23,7 +23,9 @@
                     </transition>
                 </div>
             </div>
-        <!-- v-for="(task, index) in addTask" :key="index" -->
+
+
+        <!-- Card for tasks -->
         <div class="col-12 mt-4" v-if="item.type === 'task'">
             <div class="col-12 card-bg p-4">
             <div class="row d-flex justify-content-between">
@@ -48,14 +50,14 @@
                             </div>
                             <!-- <div class="col-11">Call the firstimers</div> -->
                 
-                        <div class="col-11 p-2 d-flex task-border justify-content-between" :class="{ 'hover-border' : hoverTask }" @mouseover="onHoverBorder" @mouseleave="outHoverBorder" v-if="!editTask" @click="toggleEditTask">
+                        <div class="col-11 p-2 d-flex task-border justify-content-between" :class="{ 'hover-border' : item.hoverTask }" @mouseover="onHoverBorderTask(index)" @mouseleave="outHoverBorderTask(index)" v-if="!item.editTask" @click="toggleEditTask(index)">
                             <div v-if="!item.body">Create a task here</div>
                             <div v-else>{{ item.body }}</div>
                             <div><i class="pi pi-pencil" :class="{ 'uniform-primary-color' : hoverTask, 'text-white' : !hoverTask }"></i></div>
                         </div>
-                        <input type="text" class="form-control col-10" v-model="item.body" v-if="editTask"/>
-                        <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveTask" v-if="editTask">Save</div>
-                        <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="editTask" @click="cancelTaskEdit">Cancel</div>
+                        <input type="text" class="form-control col-10" v-model="item.body" v-if="item.editTask"/>
+                        <div class="offset-1 p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveTask(index)" v-if="item.editTask">Save</div>
+                        <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="item.editTask" @click="cancelTaskEdit">Cancel</div>
                         <div class="col-12">
                             <hr />
                         </div>
@@ -134,15 +136,15 @@
                         </div>
 
                         <div class="col-12">
-                                <div class="col-12 p-2 d-flex task-border justify-content-between mt-4" :class="{ 'hover-border' : hoverTask2 }" @mouseover="onHoverBorder2" @mouseleave="outHoverBorder2" v-if="!editTask2" @click="toggleEditTask2">
+                                <div class="col-12 p-2 d-flex task-border justify-content-between mt-4" :class="{ 'hover-border' : item.hoverTask2 }" @mouseover="onHoverBorderTask2(index)" @mouseleave="outHoverBorderTask2(index)" v-if="!item.editTask2" @click="toggleEditTask2(index)">
                             <div v-if="!theTask2">Create a task here</div>
                             <div v-else>{{ theTask2 }}</div>
                             <div><i class="pi pi-pencil" :class="{ 'uniform-primary-color' : hoverTask2, 'text-white' : !hoverTask2 }"></i></div>
                         </div>
-                        <textarea class="form-control col-12 mt-3" rows="4" v-model="theTask2" v-if="editTask2"></textarea>
+                        <textarea class="form-control col-12 mt-3" rows="4" v-model="theTask2" v-if="item.editTask2"></textarea>
                         <div class="d-flex justify-content-start">
-                            <div class="p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveTask2" v-if="editTask2">Save</div>
-                        <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="editTask2" @click="cancelTaskEdit2">Cancel</div>
+                            <div class="p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveTask2(index)" v-if="item.editTask2">Save</div>
+                        <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="item.editTask2" @click="cancelTaskEdit2">Cancel</div>
                         </div>
                         </div>
                      </div>
@@ -158,8 +160,97 @@
         </div>
         </div>
 
+
+        <!-- Card for Call and Email Logs -->
+
+        <div class="col-12 mt-4" v-if="item.type === 'call' || item.type === 'email'">
+            <div class="col-12 card-bg p-4">
+                <div class="row d-flex justify-content-between">
+                    <div>
+                        <div class="col align-self-center"><span class="font-weight-700"><i class="pi pi-angle-up uniform-primary-color" :class="{'roll-note-icon' : item.logIcon, 'unroll-note-icon' : !item.logIcon}" @click="toggleLogIcon(index)"></i>&nbsp;&nbsp;Logged {{ item.type }}</span> by Oladapo Daniel <span class="font-weight-700 uniform-primary-color">Actions&nbsp;<i class="pi pi-sort-down"></i></span></div>
+                    </div>
+                    <div>
+                        <div class="col text-right"><span class="ml-2 small-text">July 29 2021 at 12:50pm GMT +1</span></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mt-4 enlargen-font"  :class="{ 'hover-border' : hoverLog, 'log-border' : !hoverLog }" @mouseover="onHoverBorder" @mouseleave="outHoverBorder" v-if="!editLog" @click="toggleEditLog">
+                        <div>{{ item.desc }}</div>
+                    </div>
+
+                    <textarea v-model="item.desc" class="form-control col-12 mt-4" v-if="editLog" rows="5"></textarea>
+                    <div class="p-2 col-2 mt-3 save-btn btn-btn pointer-cursor" @click="saveLogDesc" v-if="editLog">Save</div>
+                    <div class="cancel-btn btn-btn col-2 ml-3 p-2 mt-3" v-if="editLog" @click="cancelTaskEdit">Cancel</div>
+                </div>
+                <transition name="fade">
+                    <div class="row" v-if="item.logIcon">
+                        <div class="col-12">
+                            <hr />
+                        </div>
+                            <div class="col-3">
+                                <div class="label-text">Contacted</div>
+                                <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 mt-1 c-pointer">Oladapo &nbsp; <i class="pi pi-sort-down"></i></div>
+                                <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                        <div class="container p-0">
+                                            <div class="row">
+                                                <div class="col-12 py-2 px-3 hover-cursor-cancel">{{ `${personDetails.firstName} ${personDetails.lastName}(${logVariable === 'email' ? personDetails.email : personDetails.mobilePhone})`}}</div>
+                                            </div>
+                                        </div>
+                                    </OverlayPanel>
+                            </div>
+                            <div class="col-3">
+                                <div class="label-text">Call Outcome</div>
+                                <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleOutcome" aria:haspopup="true" aria-controls="overlay_panel">Select &nbsp; <i class="pi pi-sort-down"></i></div>
+                                <OverlayPanel ref="outcomeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                        <div class="container-fluid p-0">
+                                            <div class="row" v-for="(item, index) in outcomeList" :key="index">
+                                                <div class="col-12 py-2 px-3 hover-log">{{ item }}</div>
+                                            </div>
+                                        </div>
+                                    </OverlayPanel>
+                            </div>
+                        
+                            <div class="col-3">
+                                <div class="label-text">Date</div>
+                                <div class="mt-1 uniform-primary-color font-weight-700">
+                                    <input type="date" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="label-text">Time</div>
+                                <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleTime" aria:haspopup="true" aria-controls="overlay_panel">2:12PM &nbsp; <i class="pi pi-sort-down"></i></div>
+                                <OverlayPanel ref="timeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
+                                        <div class="container">
+                                            <div class="row">
+                                                here here time
+                                            </div>
+                                        </div>
+                                    </OverlayPanel>
+                            </div>
+        
+                        <!-- <div class="row">
+                            <div class="col-12">
+                                <hr />
+                            </div>
+                        </div> -->
+    
+                            <div class="col-12 mt-3">
+                                <textarea name="" placeholder="Describe the call..." class="w-100 form-control" rows="6"></textarea>
+                            </div>
+      
+                    </div>
+                </transition>
+                <!-- <transition name="fade">
+                    <div class="row mt-4">
+                        <div class="col font-weight-700 uniform-primary-color">Add Comment</div>
+                        <div class="col text-right font-weight-700 uniform-primary-color">1 Association</div>
+                    </div>
+                </transition> -->
+            </div>
+        </div>
+
     </div>
-    <div class="row" v-if="addNotes.length === 0 && addTask.length === 0">
+    <div class="row" v-if="activities.length === 0" >
         <div class="col-12 mt-3 no-activity">
             You have not performed any activities yet
         </div>
@@ -175,16 +266,14 @@ export default {
         Dropdown
     },
     props: ['addNotes', 'addTask', 'taskTime', 'activities'],
-    emits: ['individualtoggle', 'individualtoggletask'],
+    emits: ['individualtoggle', 'individualtoggletask', 'individualcallicon', 'edittask', 'edittask2', 'savetask', 'savetask2', 'hovertask', 'outhovertask', 'hovertask2', 'outhovertask2'],
     setup(props, { emit }) {
         const noteIcon = ref(false)
         const taskIcon = ref(false)
         // const meetIcon = ref(false)
         const selectedTaskTime = ref("")
-        const editTask = ref(false)
         const theTask = ref("")
         const hoverTask = ref(false)
-        const editTask2 = ref(false)
         const theTask2 = ref("")
         const hoverTask2 = ref(false)
         const op = ref()
@@ -197,42 +286,46 @@ export default {
             emit("individualtoggletask", index)
         }
         
-        // const toggleMeetIcon = () => {
-        //     meetIcon.value = !meetIcon.value
-        // }
-        
-        const toggleEditTask = () => {
-            editTask.value = true
+        const toggleEditTask = (index) => {
+            // editTask.value = true
+            emit('edittask', index)
         }
         
-        const toggleEditTask2 = () => {
-            editTask2.value = true
+        const toggleEditTask2 = (index) => {
+
+            emit('edittask2', index)
         }
 
-        const onHoverBorder = () => {
-            hoverTask.value = true
+        const onHoverBorderTask = (index) => {
+        
+            emit('hovertask', index)
         }
         
-        const outHoverBorder = () => {
-            hoverTask.value = false
+        const outHoverBorderTask = (index) => {
+         
+            emit('outhovertask', index)
         }
         
-        const onHoverBorder2 = () => {
-            hoverTask2.value = true
+        const onHoverBorderTask2 = (index) => {
+          
+            emit('hovertask2', index)
         }
         
-        const outHoverBorder2 = () => {
-            hoverTask2.value = false
+        const outHoverBorderTask2 = (index) => {
+       
+            emit('outhovertask2', index)
         }
 
-        const saveTask = () => {
-            editTask.value = false
+        const saveTask = (index) => {
+            // editTask.value = false
             hoverTask.value = false
+            emit('savetask', index)
         }
         
-        const saveTask2 = () => {
-            editTask2.value = false
+        const saveTask2 = (index) => {
+            // editTask2.value = false
             hoverTask2.value = false
+            emit('savetask2', index)
         }
         
         const cancelTaskEdit = () => {
@@ -247,6 +340,10 @@ export default {
             op.value.toggle(event);
         };
 
+        const toggleLogIcon = (index) => {
+            emit('individualcallicon', index)
+        }
+
         return {
             noteIcon,
             toggleNoteIcon,
@@ -255,24 +352,21 @@ export default {
             selectedTaskTime,
             toggleEditTask,
             toggleEditTask2,
-            editTask,
             theTask,
-            editTask2,
             theTask2,
             saveTask,
             saveTask2,
-            onHoverBorder,
+            onHoverBorderTask,
             hoverTask,
-            outHoverBorder,
+            outHoverBorderTask,
             cancelTaskEdit,
-            onHoverBorder2,
+            onHoverBorderTask2,
             hoverTask2,
-            outHoverBorder2,
+            outHoverBorderTask2,
             cancelTaskEdit2,
             toggle,
-            op
-            // toggleMeetIcon,
-            // meetIcon
+            op,
+            toggleLogIcon
 
         }
     }

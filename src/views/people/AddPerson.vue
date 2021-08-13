@@ -542,6 +542,7 @@ export default {
     const showCelebTab = () => (hideCelebTab.value = !hideCelebTab.value);
     const showAddInfoTab = () => (hideAddInfoTab.value = !hideAddInfoTab.value);
     const routeParams = ref("");
+    const peopleInGroupIDs = ref([])
 
     const loading = ref(false);
     const months = [
@@ -650,9 +651,16 @@ export default {
     const errMessage = ref("");
     const showError = ref(false);
 
-    const addPerson = async () => {
+    // const peopleInGroups = computed(() => {
+    //   if (!route.params.personId) return {
+
+    //   } 
+    // })
+
+    const addPerson = async() => {
       const personObj = { ...person };
       errMessage.value = "";
+
       const formData = new FormData();
       formData.append(
         "firstName",
@@ -693,6 +701,13 @@ export default {
         "peopleClassificationID",
         selectedMembership.value ? selectedMembership.value.id : ""
       );
+      formData.append(
+        "peopleInGroups",
+        peopleInGroupIDs.value.length > 0 ? peopleInGroupIDs.value.map(i => {
+          delete i.name
+          return i
+        })  : []
+      );
       formData.append("homeAddress", personObj.address ? personObj.address : "");
       // formData.append("picture", image.value ? image.value : "");
       formData.append(
@@ -713,7 +728,7 @@ export default {
       if (route.params.personId) {
         try {
           loading.value = true;
-          const response = await axios.put(
+          const response =  axios.put(
             `/api/People/UpdatePerson/${route.params.personId}`,
             formData
           );
@@ -764,12 +779,15 @@ export default {
           console.log(err.response);
         }
       } else {
+
         try {
           loading.value = true;
-          const response = await axios.post(
+          let response = await axios.post(
             "/api/people/createperson",
             formData
           );
+          console.log(response)
+
 
           if (response.status === 200 || response.status === 201) {
             // store.dispatch("membership/getMembers")
@@ -777,8 +795,20 @@ export default {
             membershipService.addPersonToStore(response.data.person);
             loading.value = false;
             router.push("/tenant/people");
-          }
+          } else if (response && response.status === 400) {
+            errMessage.value = response.data.message;
+            loading.value = false;
+            toast.add({
+              severity: "warn",
+              summary: "Saving Failed",
+              detail: errMessage.value
+                ? errMessage.value
+                : "Save operation failed",
+              life: 8000,
+            });
+            }
         } catch (err) {
+          console.log(err)
           loading.value = false;
           NProgress.done();
           if (err.toString().toLowerCase().includes("network error")) {
@@ -788,12 +818,12 @@ export default {
               detail: "Please ensure you have internet access",
               life: 6000,
             });
-          } else {
+          } 
+          else {
             showError.value = true;
             loading.value = false;
             if (err.response && err.response.status === 400) {
-              errMessage.value = err.response.data.message;
-            }
+              errMessage.value = err.response.data.message;          
             toast.add({
               severity: "warn",
               summary: "Saving Failed",
@@ -802,6 +832,7 @@ export default {
                 : "Save operation failed",
               life: 6000,
             });
+            }
           }
         }
       }
@@ -985,13 +1016,13 @@ export default {
       try {
         let groups = store.getters["groups/groups"];
 
-        if (groups && groups.length === 0) {
+        if (groups && groups.length > 0) {
           allGroups.value = groups;
           return true;
         } else {
-          groups = await grousService.getGroups();
-          if (groups) {
-            allGroups.value = groups;
+          let group = await grousService.getGroups();
+          if (group) {
+            allGroups.value = group;
           }
         }
       } catch (error) {
@@ -1012,7 +1043,8 @@ export default {
         return false;
       }
       dismissAddToGroupModal.value = "modal";
-      try {
+      if (route.params.personId) {
+        try {
         const response = await membershipService.addMemberToGroup(
           { personId: route.params.personId, groupId: groupToAddTo.value.id },
           groupToAddTo.value.id
@@ -1024,9 +1056,19 @@ export default {
           detail: `Member add to ${groupToAddTo.value.name}`,
           life: 3000,
         });
-      } catch (error) {
-        console.log(error);
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        console.log(groupToAddTo.value)
+        peopleInGroupIDs.value.push({
+          name: groupToAddTo.value.name,
+          id: groupToAddTo.value.id,
+          position: position.value
+        })
       }
+      console.log(peopleInGroupIDs.value)
+      
     };
 
     return {
@@ -1079,6 +1121,7 @@ export default {
       addToGroupError,
       dismissAddToGroupModal,
       routeParams,
+      peopleInGroupIDs
     };
   },
 };
