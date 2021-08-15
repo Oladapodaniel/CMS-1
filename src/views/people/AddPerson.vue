@@ -795,18 +795,7 @@ export default {
             membershipService.addPersonToStore(response.data.person);
             loading.value = false;
             router.push("/tenant/people");
-          } else if (response && response.status === 400) {
-            errMessage.value = response.data.message;
-            loading.value = false;
-            toast.add({
-              severity: "warn",
-              summary: "Saving Failed",
-              detail: errMessage.value
-                ? errMessage.value
-                : "Save operation failed",
-              life: 8000,
-            });
-            }
+          } 
         } catch (err) {
           console.log(err)
           loading.value = false;
@@ -1171,9 +1160,9 @@ export default {
 }
 
 @media (min-width: 663px) and (max-width: 667px) {
-  .bio-info.celeb-info {
-    /* margin-top: 30px; */
-  }
+  /* .bio-info.celeb-info {
+
+  } */
 }
 
 /* @media (min-width: 377px) and (max-width: 662px) {

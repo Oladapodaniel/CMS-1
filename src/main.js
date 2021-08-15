@@ -60,29 +60,14 @@ axios.interceptors.request.use((config) => {
   axios.interceptors.response.use(response => {
     NProgress.done()
     return response
-  })
-  
-
-  axios.interceptors.response.use(
-    function(response) {
-      return response;
-    },
-    function(error) {
+  }, error => {
       NProgress.done()
-      if (error.response.status == 403) {
+      if (error && error.response && error.response.status == 403) {
         router.push('/errorpage/unauthorized')
-        } else if (error.response.status == 400) {
-          return error.response
+        } else {
+          return Promise.reject(error)
         }
-        // if(error.response.toString().includes('ERR_INTER')) {
-          alert(error)
-        //   console.log(error)
-        //   console.log(error.response)
-        return error.response
-        // }
-        
-      }
-    );
+      })
   
 
 const app = createApp(App);
