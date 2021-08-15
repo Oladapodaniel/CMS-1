@@ -1,21 +1,21 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-sm-12">
+      <div class="col-sm-12 text-center">
         <div class="avg">Overall Average</div>
       </div>
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-4 mobileResponsive">
       <div
-        class="col-6 col-sm-1 text-center default-btn cursor-pointer"
+        class="col-6 col-sm-1 text-center default-btn cursor-pointer monthRessponsive"
         :class="{ 'active-btn': monthlyActiveBtn }"
         @click="toggleMonthlyClass"
       >
         <div>Monthly</div>
       </div>
       <div
-        class="col-6 col-sm-1 ml-sm-2 text-center default-btn cursor-pointer"
+        class="col-6 col-sm-1 ml-sm-2 text-center default-btn cursor-pointer yearResponsive"
         :class="{ 'active-btn': yearlyActiveBtn }"
         @click="toggleYearlyClass"
       >
@@ -1174,6 +1174,18 @@ export default {
     height: 300px !important;
     overflow: hidden;
     transition: all 0.5s ease-in-out;
+  }
+  .mobileResponsive {
+    display: block !important;
+    margin: auto !important;
+  }
+  .monthRessponsive {
+      margin: auto !important;
+      transition-timing-function: ease;
+  }
+  .yearResponsive {
+      margin: auto !important;
+      margin-top: 15px !important;
   }
 }
 

@@ -177,7 +177,7 @@
                   <div class="col-md-3">
                     <div class="d-flex small justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease" style="font-size:15px">Membership Size</span>
-                        <div class="desc small-text text-right text-md-center ml-md-5">
+                        <div class="desc small-text text-right text-md-center">
                           {{ group.peopleInGroupsCount }}
                         </div>
                     </div>

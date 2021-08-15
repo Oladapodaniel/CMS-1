@@ -42,7 +42,7 @@
               <span class="py-2 font-weight-bold">NAME</span>
             </div>
             <div class="col-md-5 text-center">
-              <span class="py-2 font-weight-bold">ACTION</span>
+              <span class="py-2 font-weight-bold mr-md-5 mr-0">ACTION</span>
             </div>
           </div>
 
@@ -53,7 +53,7 @@
                   class="col-md-7 d-flex px-md-0 px-5 justify-content-between align-items-center mb-md-0 mb-5"
                 >
                   <span class="py-2 hidden-header ">NAME</span>
-                  <span class="py-2 text-xs-left mr-md-0 mr-4 mr-md-0 mr-4">{{ type.name }}</span>
+                  <span class="py-2 text-xs-left mr-md-0 mr-4 mr-md-0 ml-md-3 mr-4">{{ type.name }}</span>
                 </div>
                 <div
                   class="col-md-5 mb-md-0 mb-2 col-12 d-flex justify-md-content-end justify-content-start align-items-end"
