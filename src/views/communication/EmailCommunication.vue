@@ -2,8 +2,8 @@
   <div>
     <div class="container">
       <div class="row mt-4">
-        <div class="col-md-12">
-          <h1 class="font-weight-bold px-30">Email</h1>
+        <div class="col-md-12 d-flex justify-content-center">
+          <h1 class="font-weight-bold">Email</h1>
         </div>
       </div>
       <div class="row">
@@ -17,22 +17,17 @@
         <div class="container-fluid">
           <div class="row">
             <!-- Side mennu -->
-            <div class="col-md-3" id="side-menu"  @click="hideMenu">
+            <div class="col-md-3" id="side-menu" >
               <div class="row">
-                 <div class="toggle ml-3 mt-2" @click="toggleMenu">
-                    <i class="pi pi-bars"></i>
-                  </div>
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
+                  <div class="toggle ml-3 mt-2">
+                    <i class="pi pi-bars" @click="toggleMenu"></i>
+                  </div>
                   <router-link to="/tenant/email/compose" class="btn compose-btn font-weight-700">Compose Email</router-link>
                 </div>
-                 
               </div>
-              <div class="row mb-3" :class="{ show: menuShouldShow }">
-                <div
-                  class="col-md-12"
-                  
-                >
-
+              <div class="row mb-3 " :class="{ 'show': menuShouldShow, 'links-menu' : !menuShouldShow }">
+                <div class="col-md-12">
                   <div class="row menu-item-con py-2" :class="{ 'active-link': route.path === '/tenant/email/sent'}">
                     <div class="col-md-12 menu-item-div m-auto">
                       <a class="btn btn-default font-weight-bold">
@@ -99,18 +94,15 @@ import { useRoute } from 'vue-router';
 export default {
   setup() {
     const route = useRoute();
-     const menuShouldShow = ref(false);
-
-    const toggleMenu = () => (menuShouldShow.value = !menuShouldShow.value);
-    const hideMenu = () => {
-      if (menuShouldShow.value) menuShouldShow.value = false;
-    };
+    const menuShouldShow = ref(false);
+    const toggleMenu = ()=>{
+           menuShouldShow.value = !menuShouldShow.value
+         };
 
     return {
       menuShouldShow,
       route,
-      toggleMenu,
-      hideMenu
+      toggleMenu
     }
   }
 };
@@ -186,13 +178,12 @@ export default {
 }
 
 .active {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .active-link {
-    background: rgba(19, 106, 205, 0.05);
-    border-left: 2px solid #136ACD;
-    
+  background: rgba(19, 106, 205, 0.05) ;
+  border-left: 2px solid #136acd;
 }
 
 .router-link-exact-active .active {
@@ -238,57 +229,14 @@ export default {
   box-sizing: border-box;
 }
 
-.whole-page {
-  position: relative;
-  display: flex;
-  min-height: 100vh;
-  overflow: auto;
-  background: #fff;
-}
-
-.links-menu {
-  width: 266px;
-  min-height: 100%;
-  background: #ebeff4;
-  height: inherit;
-  overflow: auto;
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.links-menu::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.links-menu {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.main-con {
-  width: 80%;
-  max-width: 1200px;
-  margin: 0 auto;
-  background: #fff;
-}
-
-.main-con::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.main-con {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
 
 .toggle {
   display: none;
-  width: 30px;
+  width: 20px;
   text-align: center;
   position: absolute;
-  top: 4px;
-  right: 8px;
+  top: -40px;
+  left: 4px;
   font-size: 30px;
 }
 
@@ -296,26 +244,19 @@ export default {
   cursor: pointer;
 }
 
-@media screen and (max-width: 1184px) {
+@media screen and (max-width: 765px){
   .toggle {
     display: block;
   }
-
+  .show {
+    overflow: hidden;
+    height: 150px;
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
   .links-menu {
-    position: fixed;
-    left: -266px;
-    z-index: 9;
+    height: 0;
+    overflow: hidden;
     transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-  }
-
-  .links-menu.show {
-    position: fixed;
-    left: 0;
-    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-  }
-
-  .main-con {
-    width: 100%;
   }
 }
 
@@ -328,6 +269,7 @@ export default {
   .header-row {
     display: none;
   }
+   
 
   #menu-items {
     flex-direction: row !important;
@@ -363,6 +305,12 @@ export default {
 @media screen and (min-width: 1000px) {
   #menu-items {
     min-width: 100% !important;
+  }
+  .show {
+     display: block;
+    position: fixed;
+    left: 0;
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 }
 
