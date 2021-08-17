@@ -1209,7 +1209,10 @@ const routes = [
             import ( /* webpackChunkName: "workflow" */ '../views/ChildCheckinPortal/CheckinSignin.vue'),
         meta: {
             title: 'Churchplus - ChildSignin',
-        }
+        },
+        beforeEnter(to, from, next) {
+            window.location.href = "https://child-checkin-seven.vercel.app/";
+        },
     },
     {
         path: '/checkin',

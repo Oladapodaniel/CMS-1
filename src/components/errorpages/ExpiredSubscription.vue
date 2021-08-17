@@ -7,7 +7,7 @@
       </div>
     <div class="row" d-md-flex justify-content-md-between>
       <div class="col-md-8 mb-md-5"><h2><i class="fa fa-meh-o" aria-hidden="true"></i> Subscription  Expired</h2></div>
-      <div class="col-md-4 mb-md-5 mt-2 d-md-flex justify-content-md-end text-primary" ><router-link to="/subexpired" class="text-decoration-none text-primary">Click here to Subscibe<i class="fa fa-arrow-right ml-2"></i></router-link></div>  
+      <div class="col-md-4 mb-md-5 mt-2 mb-3 d-md-flex justify-content-md-end text-primary" ><router-link to="/subexpired" class="text-decoration-none default-btn primary-bg text-white border-0">Click here to Subscibe</router-link></div>  
       <div class="col-md-8">
         <div class="mb-3">This page is not publicly available because your subscription has expired.</div>
         <div class="mt-3 mt-md-5">
@@ -26,6 +26,12 @@
       </div>
       <div class="col-md-4 d-none d-md-block">
         <img src="../../assets/expired-sub.png" />
+      </div>
+    </div>
+    <div class="row d-flex justify-content-sm-end mt-5">
+      <div class="text-center">
+        <div class="chat">Chat with us</div>
+        <a class="mt-2" href="https://wa.me/+2348023739961"><img src="../../assets/WhatsApp.svg" style="width: 70px"/></a>
       </div>
     </div>
   </div>
@@ -127,6 +133,12 @@ footer {
   .btn-primary {
       background: #3498db;
       color: #eee;
+  }
+
+  .chat {
+    font-weight: 600;
+    font-size: 1.2em;
+    color: #e9a063;
   }
 
 /* Modules */

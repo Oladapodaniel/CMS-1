@@ -1,7 +1,7 @@
 
 <template>
   <div
-    class="container-wide shadow p-3 mb-5 bg-body rounded mt-5"
+    class="container-wide p-3 mb-5 bg-body rounded mt-5"
     style="max-width: 700px"
   >
     <div class="row mt-2">
@@ -214,6 +214,14 @@
             </div>
           </div>
         </div>
+        
+        <div class="row">
+          <div class="col-12 offset-3 mt-3 align-self-center"><Checkbox v-model="displayFamily" :binary="true" /> <span class="ml-3">Do you want to register your family for this event?</span></div>
+        </div>
+
+        <div class="row mt-4" v-if="displayFamily">
+          <FamilyWards :familyMembers="familyWards" :memberRoles="memberRoles"/>
+        </div>
 
         <div class="row my-2">
           <div class="col-md-3"></div>
@@ -286,12 +294,14 @@ import Dropdown from "primevue/dropdown";
 import PaymentOptionModal from "../../components/paymentoption/EventRegPayment.vue"
 import finish from '../../services/progressbar/progress';
 import store from '../../store/store';
+import FamilyWards from './component/EventRegFamilyWards.vue'
 // import Dialog from 'primevue/dialog';
 
 export default {
   components: {
     Dropdown,
-    PaymentOptionModal
+    PaymentOptionModal,
+    FamilyWards
   },
   setup() {
     const connectName = ref("");
@@ -314,6 +324,9 @@ export default {
     const fullEventData = ref({})
     const selectedGateway = ref("")
     const currentUser = ref(store.getters.currentUser)
+    const displayFamily = ref(false)
+    const memberRoles = ref([])
+    const familyWards = ref([])
 
     const birthMonth = ref("");
     const months = [
@@ -446,6 +459,8 @@ export default {
           birthDay.value = res.data[0] && res.data[0].dayOfBirth ? Number(res.data[0].dayOfBirth) : 0;
           birthMonth.value = res.data[0] && res.data[0].monthOfBirth ? months[Number(res.data[0].monthOfBirth)] : 0;
 
+          getFamilyDetails(personData.value.personId)
+          console.log(personData.value.personId)
           if (
             person.value.personId &&
             person.value.address &&
@@ -456,19 +471,10 @@ export default {
           {
             personHasAddress.value = true;
           }
-
-          // if (person.value.name) {
-          //   person.value.name = formatString(person.value.name, 2, 4);
-          // }
-          // if (person.value.email) {
-          //   person.value.email = maskEmail(person.value.email, 2, 4);
-          // }
-          // if (person.value.address) {
-          //   person.value.address = formatString(person.value.address, 2, 4);
-          // }
           populateInputfields(person.value);
-
           if (person.value) appltoggle.value = true;
+
+          
         })
         .catch((err) => {
           fetchingFailed.value = true;
@@ -738,11 +744,69 @@ export default {
       confirm()
     }
 
+
+    const getFamilyDetails = async(id) => {
+      console.log(id)
+      if (id) {
+        try {
+                    const res = await axios.get(`/api/Family/family?personId=${id}`)
+                    console.log(res)
+                    familyWards.value = res.data.familyMembers
+                //     familyName.value = res.data.familyName
+
+                //     userSearchString.value = `${res.data.father && res.data.father.firstName ? res.data.father.firstName : ""} ${res.data.father && res.data.father.lastName? res.data.father.lastName : ""}`
+
+                //     motherSearchString.value = `${res.data.mother && res.data.mother.firstName ? res.data.mother.firstName : ""} ${res.data.mother && res.data.mother.lastName ? res.data.mother.lastName : ""}`
+
+                //     father.value = { id: res.data.fatherID }
+
+                //     mother.value = { id: res.data.motherID }
+
+                //     email.value = res.data.email
+
+                //     homePhone.value = res.data.homePhone
+
+                //     familyMembers.value = res.data.familyMembers.map(i => {
+                //         return {
+                //             name: i.person.firstName,
+                //             personId: i.person.id,
+                //             roleId: memberRoles.value.find(j => j.id === i.familyRoleID),
+                //             id: i.id
+                //         }
+                //     })
+
+                //     familyMain.value = {
+                //         familyId: res.data.id,
+                //         id: res.data.familyMembers.length > 0 ? res.data.familyMembers[memberIndex.value].id : 0,
+                //         tenantId: res.data.tenantID
+                //     }
+
+                // console.log(memberRoles.value)
+                //     console.log(familyMembers.value)
+
+
+                }
+                catch (error) {
+                    console.log(error)
+                }
+      } else {
+        console.log('no id')
+      }
+    }
+
+    const getFamilyRoles = async () => {
+        try {
+            let { data } = await axios.get('/getfamilyroles')
+            console.log(data)
+            memberRoles.value = data.result
+            getFamilyDetails()
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+    getFamilyRoles()
     /*end of masking functions */
-
-    //not me button
-    // const notMe = () => {};
-
     return {
       toggleBase,
       checkCharacter,
@@ -794,7 +858,11 @@ export default {
       setConfirmDonation,
       confirmToRegister,
       currentUser,
-      tenantCurrency
+      tenantCurrency,
+      displayFamily,
+      familyWards,
+      getFamilyDetails,
+      memberRoles
     };
   },
 };

@@ -334,8 +334,9 @@ export default {
               const  data = await axios.get(`api/CheckInAttendance/revealParentNumber?personId=${people.personID}`)
               console.log(data)
               
-       
-                if (typeof(data.data) === "number") {
+                let reg = new RegExp('^[0-9]+$');
+                let removePlus = data.data.includes('+') ? data.data.slice(1) : data.data
+                if (reg.test(removePlus)) {
                   reportData.value.peopoleAttendancesDTOs[index].phoneNumber = data.data
                   } else {
                   reportData.value.peopoleAttendancesDTOs[index].phoneNumber = 'No phone'
