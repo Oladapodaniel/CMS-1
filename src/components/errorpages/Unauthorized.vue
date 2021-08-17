@@ -3,10 +3,7 @@
     <div class="row">
 
       <div class="col-md-12">
-        <h1>
-          <!-- <i class="pi pi-exclamation-triangle" aria-hidden="true"></i> -->
-          <i class="pi pi-key" aria-hidden="true"></i> 401</h1>
-        <!-- <h2>Oops... Page Not Found!</h2> -->
+        <h1><i class="pi pi-key font-weight-bold"  style="font-size: 70px;" aria-hidden="true"></i> 401</h1>
         <h3>No Authorization Found!</h3>
         <div>This page is not publicly available</div>
         <div>For more info: Contact the administrator of your church.</div>
@@ -15,17 +12,19 @@
             <input type="text" placeholder="Search..." name="search">
             <button type="submit"><i class="pi pi-search" aria-hidden="true"></i></button>
           </form> -->
-          <button class="btn btn-primary" style="margin-top: 20px;" @click.prevent="goBack"> <i class="pi pi-arrow-left" aria-hidden="true"></i>  Go Back</button>
+         
 
         <p style="margin-top: 20px">If you think you have arrived here by our mistake, please <a href="#">contact us</a></p>
-
-        <h3>Follow us:</h3>
-        <div class="social-networks">
-          <a href="https://www.facebook.com/creativedesignthemes/" target="_blank"><i class="fab fa-facebook-square"></i></a>
-          <a href="https://www.pinterest.com/creative3355/" target="_blank"><i class="fab fa-pinterest-square"></i></a>
-          <a href="https://twitter.com/creativedesign_" target="_blank"><i class="fab fa-twitter-square"></i></a>
-        </div>
       </div>
+      <!-- <div class="col-md-4 d-none d-md-block">
+            <img src="../../assets/expired-sub.png" />
+          </div> -->
+      <div class="col-md-6"><button class="btn btn-primary mt-4 "  @click.prevent="goBack"> <i class="pi pi-arrow-left" aria-hidden="true"></i>  Go Back</button></div>
+        <div class="col-md-6 text-right " > <button class="default-btn btn text-dark c-pointer hovar font-weight-bold  text-center  mt-4" @click="logout">Logout</button> </div>
+        <div class="col-md-12 text-right">
+          <h3>Chat with us now:</h3>
+        </div>
+
     </div>
   </div>
 </template>
@@ -33,6 +32,8 @@
 <script>
 // import { useRoute } from "vue-router"
 import router from "../../router/index"
+import store from "@/store/store";
+import setupService from '../../services/setup/setupservice';
 export default {
     setup () {
         // const router = useRoute()
@@ -41,9 +42,16 @@ export default {
           router.push('/tenant')
             // router.go(-1)
         }
+        const logout = () => {
+        localStorage.clear()
+        router.push('/')
+        store.dispatch('clearCurrentUser', {})
+        setupService.clearStore();
+    }
 
         return {
-            goBack
+            goBack,
+            logout
         }
     }
 }
@@ -61,6 +69,7 @@ html, body {
   background-size: cover;
   background-attachment: fixed;
   text-align: center; }
+
 
 .container {
   margin-top: 8%; }

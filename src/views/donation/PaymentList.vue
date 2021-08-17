@@ -2,18 +2,24 @@
 <div class="row container-top">
           <div class="col-12 table">
             <div class="top-con">
-              <div class="table-top my-4 px-4">
-                <div class="select-all"></div>
-                <div class="filter">
+              <div class="table-top my-4 select-all  px-4">
+                <!-- <div class="select-all col-1"></div> -->
+                <div class="filter col-md-3">
                   <p @click="toggleFilterFormVissibility" class="mt-2">
                     <i class="fas fa-filter"></i>
                     FILTER
                   </p>
                 </div>
-                <p @click="toggleSearch" class="search-text text-right mt-2">
-                  <i class="pi pi-search"></i> SEARCH
-                </p>
-                <div class="search d-flex ml-2">
+                <p @click="toggleSearch" class=" mt-2 mr-1">
+                      <i class="pi pi-search"></i> SEARCH
+                    </p>
+                
+                
+                <div class="search d-flex">
+                  <!-- <div class="col-4"> -->
+                    
+                <!-- </div> -->
+                 
                   <label
                     class="label-search d-flex"
                     :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
@@ -103,15 +109,15 @@
 
            
             <div class="row table-header">
-                <div class="col-sm-3 d-none d-sm-block">
+                <div class="col-sm-4 d-none d-sm-block">
                     NAME
                 </div>
-                    <div class="col-sm-2 d-none d-sm-block">
+                    <div class="col-sm-3 d-none d-sm-block">
                     BANK
                 </div>
-                    <div class="col-sm-2 d-none d-sm-block">
+                    <!-- <div class="col-sm-2 d-none d-sm-block">
                     AMOUNT
-                </div>
+                </div> -->
                     <div class="col-sm-2 d-none d-sm-block">
                     DATE
                 </div>
@@ -121,15 +127,15 @@
             </div>
             <div class="table-body row" v-for="item in paymentList" :key="item.id">
                 <div class="col-6 d-block d-sm-none">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     NAME
                 </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                     BANK
                 </div>
-                    <div class="col-sm-2">
+                    <!-- <div class="col-sm-2">
                     AMOUNT
-                </div>
+                </div> -->
                     <div class="col-sm-2">
                     DATE
                 </div>
@@ -139,15 +145,15 @@
             </div>
             <div class="col-6 col-sm-12">
                 <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.name }}</router-link>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.bankName }}</router-link>
                 </div>
-                <div class="col-sm-2">
-                     <!-- <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">10</router-link> -->
-                </div>
+                <!-- <div class="col-sm-2">
+                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.amount }}</router-link>
+                </div> -->
                 <div class="col-sm-2">
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ date(item.date) }}</router-link>
                 </div>
@@ -402,6 +408,19 @@ header {
 .itemroute-color:hover {
   text-decoration: none;
 }
+@media screen and (max-width: 660px) {
+
+    .filter{
+      width: 60%;
+    }
+    .table-top {
+    font-weight: 800;
+    font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
 
 
 
