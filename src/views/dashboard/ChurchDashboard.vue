@@ -232,6 +232,10 @@
                     >View all</router-link
                   >
                 </div>
+                <div class="d-flex justify-content-start ml-3 my-3">
+                  <div class="celeb-badge align-self-center"></div>
+                  <div class="ml-2">represents celebrations for today</div> 
+                </div>
 
                 <table class="w-100">
                   <thead>
@@ -256,6 +260,7 @@
                         /><span class="project-name">{{
                           celebration.name
                         }}</span>
+                        <div class="celeb-badge-desc celeb-badge" v-if="celebration.dayOfCelebration.toString().toLowerCase().includes('today')"></div>
                       </td>
                       <td>
                         {{ dateFormat(celebration.date) }}
@@ -591,7 +596,7 @@ export default {
 
     const tenantInfo = ref({});
     const tenantInfoBasic = ref({});
-    const tenantInfoCeleb = ref([]);
+    const celeb = ref([]);
     const attendanceSeries = ref("weekly");
     const firstTimerSeries = ref("weekly");
     const tenantInfoAttendanceWeekly = ref([]);
@@ -680,11 +685,25 @@ export default {
 
     let getCelebDashboard = () => {
       axios.get("/dashboard/celebrations").then((res) => {
-        tenantInfoCeleb.value = res.data.returnObject.celebrations;
+        celeb.value = res.data.returnObject.celebrations;
         console.log(tenantInfoCeleb.value)
+        var arr = [{celebration: "Birthday",date: "2021-08-18T00:00:00",dayOfCelebration: "Tomorrow",email: null,id: "34d9680a-4d6c-4ccd-b64f-2c1cd3823fc1",
+name: "erg"
+},{	celebration: "Birthday",date: "2021-08-22T00:00:00",dayOfCelebration: "5 days",email: null,id: "bc319f00-f121-4bdf-9532-c0b09cfca43b",name: "rfvrcr"
+}, {celebration: "Birthday",date: "2021-08-19T00:00:00",dayOfCelebration: "2 days",email: null,id: "dd52ba24-3c74-4884-bcfc-654167268d95",name: "fff"
+}]
+
+console.log(arr)
+let sorted = arr.sort((a, b) => new Date(b.date) - new Date(a.date))
+console.log(sorted)
       });
     };
     getCelebDashboard();
+
+    let tenantInfoCeleb = computed (() => {
+      if (celeb.value.length === 0) return []
+      return celeb.value.sort((b, a) => new Date(b.date) - new Date(a.date))
+    })
 
     onMounted(() => {
       attendanceLoading.value = true;
@@ -921,6 +940,7 @@ export default {
       calculatePercentage,
       checkRenewalDate,
       buttonTextCheck,
+      celeb
     };
   },
 };
@@ -1563,4 +1583,18 @@ tbody tr:nth-child(even) {
   /* background-color: lightgreen; */
 }
 }
+  .celeb-badge {
+    border-radius: 50%;
+    border: 1px solid red;
+    width: 10px;
+    height: 10px;
+    background: red;
+  }
+
+.celeb-badge-desc {
+  position: relative;
+  left: 34px;
+  top: -41px;
+}
+
 </style>

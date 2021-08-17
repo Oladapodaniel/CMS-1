@@ -58,7 +58,7 @@
                         <span  @click="selectFile"><i class="pi pi-video mr-1"></i></span>
                         <span class="text-dark" @click="selectFile">Video</span>
                     </a>
-                    <a class="text-decoration-none px-md-2 c-pointer">
+                    <a class="text-decoration-none px-md-2 c-pointer ml-3">
                         <span @click="selectFile"><i class="pi pi-images mr-1"></i></span>
                         <span class="text-dark" @click="selectFile">Photo/Video</span>
                     </a>

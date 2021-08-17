@@ -37,6 +37,9 @@ export default {
       try {
         const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
         store.dispatch("setCurrentUser", res.data);
+        if (res.data.subStatus.toLowerCase() === 'expired'){
+            return router.push('/errorpage/expiredSubscription')
+        }
       } catch (err) {
         /*eslint no-undef: "warn"*/
         NProgress.done();

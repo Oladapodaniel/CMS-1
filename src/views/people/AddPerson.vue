@@ -375,6 +375,12 @@
               </div>
             </div>
             <div class="info-box-body py-3">
+            <div class="font-weight-700 " v-if="peopleInGroupIDs.length > 0 && areaInView === 'groups'">Groups added</div>
+              <div v-if="areaInView === 'groups'">
+                <span v-for="item in peopleInGroupIDs" :key="item.id" >
+                <span class="text-grey">{{ item.name }}</span>&nbsp; | &nbsp;
+              </span>
+              </div>
               <button
                 @click.prevent="uploadImage"
                 class="info-btn"
@@ -815,7 +821,7 @@ export default {
               errMessage.value = err.response.data.message;          
             toast.add({
               severity: "warn",
-              summary: "Saving Failed",
+              summary: "Attention!",
               detail: errMessage.value
                 ? errMessage.value
                 : "Save operation failed",
@@ -1193,5 +1199,9 @@ export default {
   .showtab {
     height: 100px;
   }
+}
+
+.text-grey {
+  color: rgb(90, 90, 90)
 }
 </style>
