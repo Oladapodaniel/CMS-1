@@ -26,11 +26,11 @@
               <span class="text-dark">Video</span>
             </a>
             <a class="text-decoration-none px-md-4">
-              <span><i class="pi pi-images mr-3"></i></span>
+              <span><i class="pi pi-images mr-3 mobileRes"></i></span>
               <span class="text-dark">Photo/Video</span>
             </a>
             <a class="text-decoration-none px-md-4">
-              <span><i class="pi pi-video mr-3"></i></span>
+              <span><i class="pi pi-video mr-3 mobileRes"></i></span>
               <span class="text-dark">Feeling/Activity</span>
             </a>
           </div>
@@ -127,7 +127,7 @@
             <a class="text-decoration-none c-pointer px-3 bg-primary date py-2 active-date">Sep 16</a>
             <a class="text-decoration-none c-pointer px-3 date py-2">Sep 16</a>
             <a class="text-decoration-none c-pointer px-3 date py-2">Sep 16</a>
-            <a class="text-decoration-none c-pointer px-3 date py-2">Sep 16</a>
+            <a class="text-decoration-none c-pointer  date ">Sep 16</a>
         </div>
     </div>
   </div>
@@ -192,5 +192,10 @@ export default {
 .active-date {
     box-shadow: 0px 10px 35px #136ACD38;
     border-radius: 10px;
+}
+@media (max-width: 751px) {
+  .mobileRes {
+    margin-left: 1rem!important;
+  }
 }
 </style>

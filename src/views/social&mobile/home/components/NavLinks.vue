@@ -7,7 +7,11 @@
                     <span class="text-white">New Post</span>
                 </router-link>
             </div>
-            <div class="col-md-12">
+            <div class="ml-3 toggle" @click="showToggle">
+              <i class="fa fa-angle-up" style="font-size: 1.5rem;" aria-hidden="true" :class=" {'iconTransform' : showToggleList}"></i>
+               <span class="hideOrShowMenu  ml-3"> {{ showToggleList ? 'Hide menu' : 'Show menu' }}</span>
+            </div>
+            <div class="col-md-12" :class=" { 'show': showToggleList, 'notShow': !showToggleList} ">
                 <ul class="list-style-none px-0">
                     <li v-for="(link, index) in links" :key="index" class="py-3">
                         <i :class="link.icon" class="mr-2"></i>
@@ -93,6 +97,10 @@ import Badge from 'primevue/badge';
                 }
             ]
 
+            const showToggleList = ref(false);
+            const showToggle = () => {
+                showToggleList.value = !showToggleList.value
+            }
             const pendingPosts = ref(0);
             const getPendingPosts = async () => {
                 try {
@@ -114,6 +122,8 @@ import Badge from 'primevue/badge';
             return {
                 links,
                 pendingPostsCount,
+                showToggleList,
+                showToggle
             }
         }
     }
@@ -141,4 +151,27 @@ import Badge from 'primevue/badge';
     .router-link-exact-active {
         color: #146acd;
     }
+    .toggle {
+        display: none;
+    }
+
+    @media screen and (max-width: 760px) {
+        .toggle {
+            display: block;
+        }
+        .show {
+            height: 44vh;
+            overflow: hidden;
+
+        }
+        .notShow {
+            height: 0;
+             overflow: hidden;
+        }
+        .iconTransform {
+            transition: all 0.5s ease-in-out;
+            transform: rotate(180deg);
+        }
+     }
+  
 </style>
