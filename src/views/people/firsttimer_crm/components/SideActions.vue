@@ -42,10 +42,12 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-12">
-                <i class="pi pi-angle-down uniform-primary-color"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-weight-700">About This Contact</span>
+                <i class="pi pi-angle-up uniform-primary-color" :class="{ 'unroll-icon' : !contactIcon, 'roll-icon' : contactIcon }" @click="toggleContactIcon"></i>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-weight-700">About This Contact</span>
             </div>
         </div>
-        <div class="row mt-4">
+        <div class="row" :class="{ 'hide-contact' : !contactIcon, 'show-contact' : contactIcon }">
+            <div class="col-12">
+                <div class="row mt-4">
             <div class="col-12 label-text">Email</div>
             <div class="col-12 mt-2 ">
                 <div class="task-border border-transparent d-flex justify-content-between p-2" :class="{ 'hover-border' : hoverTask }" @mouseover="onHoverBorder" @mouseleave="outHoverBorder" @click="editEmail">
@@ -54,63 +56,82 @@
                     </div>
             </div>
            
-        </div>
-        <div class="row" @mouseover="toggleHoverPhone" @mouseleave="OutHoverPhone">
-            <div class="col-12 mt-4 label-text">Phone Number</div>
-            <div class="col-12 ml-2 mt-3" v-if="!hoverPhone">{{ personDetails.mobilePhone }}</div>
-            <div v-else class="col-12 mt-2">
-                <input type="text" class="form-control phone-input" @blur="OutHoverPhone" v-model="personDetails.mobilePhone"/>
             </div>
-            <div v-if="hoverPhone" class="phone-details align-self-center">
-                <i class="pi pi-pencil icon-edit"></i> <button class="details-btn ml-2">Details</button>
+            <div class="row" @mouseover="toggleHoverPhone" @mouseleave="OutHoverPhone">
+                <div class="col-12 mt-4 label-text">Phone Number</div>
+                <div class="col-12 ml-2 mt-3" v-if="!hoverPhone">{{ personDetails.phoneNumber }}</div>
+                <div v-else class="col-12 mt-2">
+                    <input type="text" class="form-control phone-input" @blur="OutHoverPhone" v-model="personDetails.phoneNumber"/>
+                </div>
+                <div v-if="hoverPhone" class="phone-details align-self-center">
+                    <i class="pi pi-pencil icon-edit"></i> <button class="details-btn ml-2">Details</button>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12 mt-4 label-text">Contact owner</div>
-            <div class="col-12 mt-2">
-                <Dropdown v-model="selectedContact" :options="contacts" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" />
+            <div class="row">
+                <div class="col-12 mt-4 label-text">Contact owner</div>
+                <div class="col-12 mt-2">
+                    <Dropdown v-model="selectedContact" :options="contacts" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" />
+                </div>
+                <!-- <div class="col-5 align-self-center">
+                    <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
+                </div> -->
             </div>
-            <!-- <div class="col-5 align-self-center">
-                <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
+            <!-- <div class="row">
+                <div class="col-12 mt-4 label-text">Last contacted</div>
+                <div class="col-12 mt-2">
+                    12/05/2012 11:59 PM GMT+1
+                </div>
             </div> -->
-        </div>
-        <div class="row">
-            <div class="col-12 mt-4 label-text">Last contacted</div>
-            <div class="col-12 mt-2">
-                12/05/2012 11:59 PM GMT+1
+            <div class="row">
+                <div class="col-12 mt-4 label-text">Lifecycle stage</div>
+                <div class="col-12">
+                    <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="stage" placeholder="Select Contact" />
+                </div>
+                <!-- <div class="col-5 align-self-center">
+                    <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
+                </div> -->
+            </div>
+            <div class="row">
+                <div class="col-12 label-text mt-4">Lead Status</div>
+                <div class="col-12 mt-2">
+                    <Dropdown v-model="selectedLeadStatus" :options="leadStatus" class="w-100 phone-input" optionLabel="status" placeholder="Select Contact" />
+                </div>
+            </div>
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
-            <div class="col-12 mt-4 label-text">Lifecycle stage</div>
-            <div class="col-12">
-                <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="stage" placeholder="Select Contact" />
+            <div class="col-12 mt-4 font-weight-700">
+                <i class="pi pi-angle-up uniform-primary-color" :class="{ 'unroll-icon' : !insightIcon, 'roll-icon' : insightIcon }" @click="toggleInsightIcon"></i>&nbsp;&nbsp;&nbsp;&nbsp;Insights
             </div>
-            <!-- <div class="col-5 align-self-center">
-                <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
-            </div> -->
+            <div class="col-12" :class="{ 'hide-contact' : !insightIcon, 'show-contact' : insightIcon }">
+                <div class="row">
+                    <div class="col-12 mt-4 label-text">How did you hear about us</div>
+                    <div class="col-12 mt-2">
+                        <Dropdown :options="aboutUsSource" class="w-100 phone-input" optionLabel="name" v-model="selectedAboutUsSource" placeholder="Select option" />
+                    </div>
+                    <div class="col-12 mt-4 label-text">Preferred means of communication</div>
+                    <div class="col-12 mt-2">
+                        <Dropdown v-model="selectedCommunicationMeans" :options="communicationMeans" class="w-100 phone-input" placeholder="Select option" />
+                    </div>
+                    <div class="col-12 mt-4 label-text">Are you interested in joining us?</div>
+                    <div class="col-12 mt-2">
+                        <Dropdown v-model="selectedJoinInterest" :options="joinInterestArr" class="w-100 phone-input" placeholder="Select option" />
+                    </div>
+                    <div class="col-12 mt-4 label-text">Would you like to be visited?</div>
+                    <div class="col-12 mt-2">
+                        <Dropdown v-model="selectedVisitOption" :options="wantVisitArr" class="w-100 phone-input" placeholder="Select option" />
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
-            <div class="col-12 label-text mt-4">Lead Status</div>
-            <div class="col-12 mt-2">
-                <Dropdown v-model="selectedLeadStatus" :options="leadStatus" class="w-100 phone-input" optionLabel="status" placeholder="Select Contact" />
-            </div>
-            <!-- <div class="col-5 align-self-center">
-                <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
-            </div> -->
-            <!-- <div class="col-6">
-                <button>View all properties</button>
-            </div>
-            <div class="col-6">
-                <button>View property history</button>
-            </div> -->
-        </div>
-        <div class="row">
-            <div class="col-12 mt-4">
-                <i class="pi pi-angle-down uniform-primary-color"></i> About This Contact
-            </div>
             <div class="col-12 mt-2 pb-5">
-                Website activity shows you how many times a contact has visited your site and viewed your pages.
-            </div>
+                        
+                    </div>
         </div>
     </div>
     
@@ -180,7 +201,7 @@
                        <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                             <div class="container p-0">
                                 <div class="row">
-                                    <div class="col-12 py-2 px-3 hover-cursor-cancel">{{ `${personDetails.firstName} ${personDetails.lastName}(${logVariable === 'email' ? personDetails.email : personDetails.mobilePhone})`}}</div>
+                                    <div class="col-12 py-2 px-3 hover-cursor-cancel">{{ `${personDetails.firstName} ${personDetails.lastName}(${logVariable === 'email' ? personDetails.email : personDetails.phoneNumber})`}}</div>
                                 </div>
                             </div>
                         </OverlayPanel>
@@ -242,6 +263,7 @@ import { computed, ref, watch } from "vue"
 import Dropdown from "primevue/dropdown";
 import Tooltip from 'primevue/tooltip';
 import OverlayPanel from 'primevue/overlaypanel';
+import axios from "@/gateway/backendapi";
 // import SinchClient from 'sinch-rtc/sinch.min.js'
 // import { useConfirm } from "primevue/useConfirm";
 // import { useToast } from "primevue/usetoast";
@@ -310,6 +332,16 @@ export default {
         const timeRef = ref(false)
         const logVariable = ref("")
         const callLogDesc = ref("")
+        const contactIcon = ref(true)
+        const insightIcon = ref(false)
+        const aboutUsSource = ref([])
+        const selectedAboutUsSource = ref({})
+        const communicationMeans = ref(["Call", "Email", "Visit", "SMS"]);
+        const selectedCommunicationMeans = ref(null);
+        const joinInterestArr = ref(["Yes", "No", "Maybe", "On Transit"]);
+        const selectedJoinInterest = ref(null);
+        const wantVisitArr = ref(["Yes", "No", "Maybe", "On Transit"]);
+        const selectedVisitOption = ref(null);
 
 
         const selectedContactLog = computed(() => {
@@ -407,7 +439,7 @@ export default {
 
         const saveLog = () => {
             displayLogPane.value = false;
-            emit('calllogdesc', { desc: callLogDesc.value, type: 'callLog' })
+            emit('calllogdesc', { desc: callLogDesc.value, type: logVariable.value })
         }
 
         watch(() => {
@@ -416,6 +448,26 @@ export default {
                 emit('resetlog', false)
             }
         })
+
+        const toggleContactIcon = () => {
+            // toggle icon state
+            contactIcon.value = !contactIcon.value
+        }
+        
+        const toggleInsightIcon = () => {
+            insightIcon.value = !insightIcon.value
+        }
+
+        const getKnowlegdeSource = async() => {
+            try {
+                let { data } = await axios.get("/api/membership/howyouheardaboutus")
+                console.log(data)
+                aboutUsSource.value = data
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getKnowlegdeSource()
 
 
 
@@ -460,8 +512,21 @@ export default {
             outcomeList,
             selectedContactLog,
             callLogDesc,
-            saveLog
+            saveLog,
+            toggleContactIcon,
+            contactIcon,
+            insightIcon,
+            toggleInsightIcon,
+            aboutUsSource,
+            selectedAboutUsSource,
+            communicationMeans,
+            selectedCommunicationMeans,
+            joinInterestArr,
+            selectedJoinInterest,
+            wantVisitArr,
+            selectedVisitOption
         }
+            
     }
 }
 </script>
@@ -570,5 +635,26 @@ export default {
 
 .hover-cursor-cancel:hover {
     cursor: not-allowed;
+}
+
+.roll-icon {
+    transition: all 0.5s ease-in-out;
+    transform: rotateZ(180deg);
+}
+.unroll-icon {
+    transition: all 0.5s ease-in-out;
+    transform: rotateZ(0deg);
+}
+
+.hide-contact {
+    height: 0;
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.show-contact {
+    height: 480px;
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
 }
 </style>

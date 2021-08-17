@@ -49,7 +49,7 @@
               
                 <div class="row mt-4">
                     <div class="col-12" v-if="showActivity" transition="bounce">
-                        <Activity :activities="activities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime"/>
+                        <Activity :activities="activities" :addNotes="noteList" @individualtoggle="setIconProp" :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime" @individualcallicon="setIconPropLog" @edittask="setEditTaskProp" @edittask2="setEditTaskProp2" @savetask="saveTaskItem" @savetask2="saveTaskItem2" @hovertask="setHoverTaskProp" @outhovertask="setOutHoverTaskProp" @hovertask2="setHoverTaskProp2" @outhovertask2="setOutHoverTaskProp2"/>
                     </div>
                     <div class="col-12" v-if="showNotes" transition="bounce">
                         <Notes :addNotes="noteList" @individualtoggle="setIconProp" @opennoteeditor="openNoteEditor"/>
@@ -58,7 +58,7 @@
                         <Emails @openemailmodal="openEmailModal"/>
                     </div>
                     <div class="col-12" v-if="showCalls" transition="bounce">
-                        <Calls :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opencalllogpane="openCallLogPane"/>
+                        <Calls :personDetails="personDetails" :logList="logList" @individualcallicon="setCallLogIcon" @opencalllogpane="openCallLogPane" @hoverLog="setHoverLogProp" @outhoverLog="setOutHoverLogProp"/>
                     </div>
                     <div class="col-12" v-if="showTasks" transition="bounce">
                         <Tasks :addTask="taskList" @individualtoggletask="setIconPropTask" :taskTime="taskTime" @opentaskeditor="openTaskEditor" />
@@ -454,7 +454,7 @@ export default {
 
         const getPersonDetails = () => {
             axios
-            .get(`/api/People/GetPersonInfoWithAssignments/${route.params.personId}`)
+            .get(`/api/People/firstTimer/${route.params.personId}`)
             .then((res) => {
                 console.log(res)
                 personDetails.value = res.data
@@ -477,6 +477,50 @@ export default {
 
         const resetLog = (payload) => {
             callLog.value = payload
+        }
+
+        const setIconPropLog = (payload) => {
+            activities.value[payload].logIcon = !activities.value[payload].logIcon
+        }
+
+        const setEditTaskProp = (payload) => {
+            activities.value[payload].editTask = true
+        }
+
+        const setEditTaskProp2 = (payload) => {
+            activities.value[payload].editTask2 = true
+        }
+
+        const saveTaskItem = (payload) => {
+            activities.value[payload].editTask = false
+        }
+
+        const saveTaskItem2 = (payload) => {
+            activities.value[payload].editTask2 = false
+        }
+
+        const setHoverTaskProp = (payload) => {
+            activities.value[payload].hoverTask = true
+        }
+
+        const setOutHoverTaskProp = (payload) => {
+            activities.value[payload].hoverTask = false
+        }
+
+        const setHoverTaskProp2 = (payload) => {
+            activities.value[payload].hoverTask2 = true
+        }
+
+        const setOutHoverTaskProp2 = (payload) => {
+            activities.value[payload].hoverTask2 = false
+        }
+
+        const setHoverLogProp = (payload) => {
+            logList.value[payload].hoverLog = true
+        }
+
+        const setOutHoverLogProp = (payload) => {
+            logList.value[payload].hoverLog = false
         }
 
         return {
@@ -523,7 +567,18 @@ export default {
             setCallLogIcon,
             openCallLogPane,
             callLog,
-            resetLog
+            resetLog,
+            setIconPropLog,
+            setEditTaskProp,
+            setEditTaskProp2,
+            saveTaskItem,
+            saveTaskItem2,
+            setHoverTaskProp,
+            setOutHoverTaskProp,
+            setHoverTaskProp2,
+            setOutHoverTaskProp2,
+            setHoverLogProp,
+            setOutHoverLogProp
         }
     }
 }

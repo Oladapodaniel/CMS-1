@@ -827,7 +827,8 @@
     color: #002044;
     font-size: 12px;
     outline: transparent;
-    margin: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-weight: 400;
   }
   

@@ -1365,9 +1365,9 @@ a {
     margin-left: 43px;
   }
 
-  .table-body .check {
+  /* .table-body .check {
     width: 4%;
-  }
+  } */
 
   .action {
     width: 20%;

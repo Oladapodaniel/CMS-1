@@ -8,6 +8,7 @@ const expiredSubMixin = {
     //     if (token) return router.push('/tenant')
     // },
     created() {
+        //  Route users to Expiry subscription page if subscription is expired
         const currentUser = store.getters.currentUser;
         console.log(currentUser)
         if (!currentUser || !currentUser.subStatus) {
