@@ -232,10 +232,10 @@
                     >View all</router-link
                   >
                 </div>
-                <div class="d-flex justify-content-start ml-3 my-3">
+                <!-- <div class="d-flex justify-content-start ml-3 my-3">
                   <div class="celeb-badge align-self-center"></div>
                   <div class="ml-2">represents celebrations for today</div> 
-                </div>
+                </div> -->
 
                 <table class="w-100">
                   <thead>
