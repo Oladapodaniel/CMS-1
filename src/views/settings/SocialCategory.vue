@@ -30,6 +30,9 @@
                       />
                     </div>
                     <div class="col-md-3 d-flex justify-content-end">
+                      <div class="" style="width:80%;height: 100px">
+                        <img class="picturedp" style="width:100%;height: 40px;object-fit: cover;border-radius: 5px;" :src="url" alt="insert Image">
+                     </div>
                       <!-- <button class="btn primary-btn text-white px-md-5 px-4 py-1 bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="savePost">Save</button> -->
                     </div>
                   </div>
@@ -282,7 +285,16 @@ export default {
           console.log("current user found");
         }
   },
-};
+//   if(data.roles.length > 0){
+//           data.roles.forEach(i => {
+//           if(i.toLowerCase() == "mobileuser" || i.toLowerCase() == "family"){
+//             localStorage.clear()
+//             toast.add({severity:'success', summary: '', detail:'Church User Deleted Successfully', life: 3000}) 
+//             router.push('/')
+//           }
+          
+//         })
+ }
 </script>
 
 <style scoped>
@@ -369,6 +381,20 @@ input::placeholder {
     letter-spacing: 0px;
     color: #02172E;
     opacity: 1;
+}
+ 
+.picturedp{
+    width: 4rem;
+    height: 4rem;
+}
+img.picturedp{
+    width: 100%;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+img{
+  width: 30px;
 }
 
 
