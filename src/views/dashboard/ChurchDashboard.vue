@@ -687,15 +687,6 @@ export default {
       axios.get("/dashboard/celebrations").then((res) => {
         celeb.value = res.data.returnObject.celebrations;
         console.log(tenantInfoCeleb.value)
-        var arr = [{celebration: "Birthday",date: "2021-08-18T00:00:00",dayOfCelebration: "Tomorrow",email: null,id: "34d9680a-4d6c-4ccd-b64f-2c1cd3823fc1",
-name: "erg"
-},{	celebration: "Birthday",date: "2021-08-22T00:00:00",dayOfCelebration: "5 days",email: null,id: "bc319f00-f121-4bdf-9532-c0b09cfca43b",name: "rfvrcr"
-}, {celebration: "Birthday",date: "2021-08-19T00:00:00",dayOfCelebration: "2 days",email: null,id: "dd52ba24-3c74-4884-bcfc-654167268d95",name: "fff"
-}]
-
-console.log(arr)
-let sorted = arr.sort((a, b) => new Date(b.date) - new Date(a.date))
-console.log(sorted)
       });
     };
     getCelebDashboard();

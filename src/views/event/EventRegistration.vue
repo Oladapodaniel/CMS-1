@@ -71,7 +71,7 @@
         <!-- v-if="autosearch && !person.name" -->
       </div>
       <div class="col-3 offset-5 mt-4" v-if="!names">
-        <div class="default-btn primary-bg text-white border-0 text-center">Search</div>
+        <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Search</div>
       </div>
     </div>
     <div class="row mb-4">
@@ -220,7 +220,7 @@
         </div>
 
         <div class="row mt-4" v-if="displayFamily">
-          <FamilyWards :familyMembers="familyWards" :memberRoles="memberRoles"/>
+          <FamilyWards :family="familyWards" :memberRoles="memberRoles" :fullEventData="fullEventData" @newmember="setNewMember" @nofamilynewmember="setMemberDetails"/>
         </div>
 
         <div class="row my-2">
@@ -326,7 +326,8 @@ export default {
     const currentUser = ref(store.getters.currentUser)
     const displayFamily = ref(false)
     const memberRoles = ref([])
-    const familyWards = ref([])
+    const familyWards = ref({ familyMembers: [] })
+    const familyMembers = ref([])
 
     const birthMonth = ref("");
     const months = [
@@ -581,30 +582,22 @@ export default {
           appltoggle.value = false;
           checkedIn.value = true;
           loaded.value = false;
-
-          // toast.add({
-          //   severity: "success",
-          //   summary: "Checkin Successful",
-          //   detail: "Member Checkin Successful",
-          //   life: 3000,
-          // });
         })
         .catch((err) => {
-          // appltoggle.value = false;
           stopProgressBar();
           loading.value = false;
           autosearch.value = false;
-          console.log(err, "ajose");
+          console.log(err);
           noError.value = false;
           
           if (err.toString().toLowerCase().includes('network error')) {
             toast.add({
               severity: "error",
               summary: "Network Error",
-              detail: "Please ensure you have a strong internt connection and try again",
+              detail: "Please ensure you have a strong internet connection and try again",
               life: 4000,
             });
-          } else if (err.toString().toLowerCase().includes('network error')) {
+          } else if (err.toString().toLowerCase().includes('timeout')) {
             toast.add({
               severity:"warn",
               summary: "Request took too long",
@@ -654,10 +647,218 @@ export default {
 
     const confirmToRegister = () => {
       if (!fullEventData.value.paymentFormId) {
-        confirm()
+        
+        // Scenerio when the person exist and we want to create family
+        if (personData.value.personId && !familyWards.value.id) {
+          console.log('found in church but no family')
+            if (displayFamily.value) {
+              console.log('intends to add family')
+              let familyDetails = {
+                fatherId: personData.value.personId,
+                familyName: personData.value.firstName,
+                familyMembers: familyMembers.value.map(i => {
+                  delete i.name
+                  return i
+                }),
+                tenantId: fullEventData.value.tenantID
+              }
+              console.log(familyDetails)
+              axios.post('/createFamily', familyDetails)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+
+                let newFamily = {
+                  person: {
+                    personId: personData.value.personId,
+                    mobilePhone: enteredValue.value,
+                    homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
+                    email: personData.value.email ? personData.value.email : person.value.email,
+                  },
+                  // familyMembers: familyWards.value.familyMembers.filter(i => {
+                  //   return i.checkMember
+                  // }).map(i => {
+                  //   return { personId: i.person.id }
+                  // }),
+                  activityID: route.params.eventId
+                };
+                console.log(newFamily)
+
+                // Register Family members individually
+                  familyWards.value.familyMembers.forEach(i => {
+                    console.log(i)
+                      if(i.checkMember) {
+                        let regFamMembers = {
+                          person: {
+                            personId: i.person.id
+                          },
+                          activityID: route.params.eventId
+                        }
+                        axios.post("/EventRegistration", regFamMembers).then(res => {
+                          console.log(res)
+                        })
+                        .catch(err => {
+                          console.log(err)
+                        })
+                      }
+                    })
+
+                registerMember(newFamily)
+
+            } else {
+              // console.log('does not intend to add family')
+              confirm()
+            }
+        } else if (personData.value.personId && familyWards.value.id) {
+            console.log('found in church and a family')
+            if (displayFamily.value) {
+              console.log(' intends to add family')
+                let newFamily = {
+                  person: {
+                    personId: personData.value.personId,
+                    mobilePhone: enteredValue.value,
+                    homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
+                    email: personData.value.email ? personData.value.email : person.value.email,
+                  },
+                  // familyMembers: familyWards.value.familyMembers.filter(i => {
+                  //   return i.checkMember
+                  // }).map(i => {
+                  //   return { personId: i.person.id }
+                  // }),
+                  activityID: route.params.eventId
+                };
+                console.log(newFamily)
+
+                // Register Family members individually
+                familyWards.value.familyMembers.forEach(i => {
+                  console.log(i)
+                    if(i.checkMember) {
+                      let regFamMembers = {
+                        person: {
+                          personId: i.person.id
+                        },
+                        activityID: route.params.eventId
+                      }
+                      axios.post("/EventRegistration", regFamMembers).then(res => {
+                        console.log(res)
+                      })
+                      .catch(err => {
+                        console.log(err)
+                      })
+                    }
+                  })
+
+                registerMember(newFamily)
+
+            } else {
+              console.log('does not intent to add family')
+              confirm()
+            }
+          } else {
+            console.log('not found in church and no family')
+          createNewPerson()
+        }
+
+        
+
+
       } 
       if (fullEventData.value.paymentFormId) {
         confirmCheck()
+      }
+    }
+
+    const createNewPerson = async() => {
+      let createNewPerson = {
+              firstName: person.value.name,
+              email: person.value.email,
+              homeAddress: person.value.address,
+              mobilePhone: enteredValue.value,
+              tenantId: fullEventData.value.tenantID
+            }
+
+          try {
+            let { data } = await axios.post("/createPublicPerson", createNewPerson)
+              console.log(data)
+              if (displayFamily.value) {
+                createNewFamily(data.returnObject.id)
+              } else {
+                confirm()
+              }
+              
+          }
+          catch (error) {
+            console.log(error)
+          }
+    }
+
+    const createNewFamily = (id) => {
+      let familyDetails = {
+            fatherId: id,
+            familyName: person.value.name,
+            familyMembers: familyMembers.value.map(i => {
+              delete i.name
+              return i
+            }),
+            tenantId: fullEventData.value.tenantID
+          }
+          console.log(familyDetails)
+          axios.post('/createFamily', familyDetails)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+
+            let newFamily = {
+                  person: {
+                    personId: id,
+                    mobilePhone: enteredValue.value,
+                    homeAddress: personData.value.homeAddress ? personData.value.homeAddress : '',
+                    email: personData.value.email ? personData.value.email : person.value.email,
+                  },
+                  // familyMembers: familyWards.value.familyMembers.filter(i => {
+                  //   return i.checkMember
+                  // }).map(i => {
+                  //   return { personId: i.person.id }
+                  // }),
+                  activityID: route.params.eventId
+                };
+                // console.log(newFamily)
+
+                // Register Family members individually
+                familyWards.value.familyMembers.forEach(i => {
+                  console.log(i)
+                  if (i.checkMember) {
+                    let regFamMembers = {
+                      person: {
+                        personId: i.person.id
+                      },
+                      activityID: route.params.eventId
+                    }
+                    axios.post("/EventRegistration", regFamMembers).then(res => {
+                      console.log(res)
+                    })
+                    .catch(err => {
+                      console.log(err)
+                    })
+                  }
+                })
+
+                registerMember(newFamily)
+    }
+
+
+    const registerMember = async(registerData) => {
+      try {
+        let res = await axios.post("/EventRegistration", registerData)
+          console.log(res)
+          swal(
+            "Registration Successful!",
+            "You have registered for this event successfully!",
+            "success"
+          );
+          displayFamily.value = false
+          familyWards.value.familyMembers = []
+      }
+      catch (error) {
+        console.log(error)
       }
     }
 
@@ -747,11 +948,20 @@ export default {
 
     const getFamilyDetails = async(id) => {
       console.log(id)
+     
       if (id) {
         try {
-                    const res = await axios.get(`/api/Family/family?personId=${id}`)
+                    // const res = await axios.get(`/api/Family/family?personId=${id}`)
+                    const res = await axios.get(`/family?tenantID=${fullEventData.value.tenantID}&&personId=${id}`)
                     console.log(res)
-                    familyWards.value = res.data.familyMembers
+                    familyWards.value = res.data
+                    familyWards.value.familyMembers.map(i => {
+                      i.checkMember = true
+                      return i
+                    })
+
+                    console.log(familyWards.value.familyMembers)
+
                 //     familyName.value = res.data.familyName
 
                 //     userSearchString.value = `${res.data.father && res.data.father.firstName ? res.data.father.firstName : ""} ${res.data.father && res.data.father.lastName? res.data.father.lastName : ""}`
@@ -806,6 +1016,27 @@ export default {
         }
     }
     getFamilyRoles()
+
+    const setNewMember = (payload) => {
+      familyWards.value.familyMembers.push(payload)
+    }
+
+    const setMemberDetails = (payload) => {
+      familyMembers.value.push(payload)
+console.log(payload)
+      let pushMemberToView = {
+        person: {
+          firstName: payload.name,
+          id: payload.personId,
+        },
+        familyRoleID: payload.familyRoleId,
+        checkMember: payload.checkMember
+      }
+      // familyWards.value.familyMembers = new Array()
+      familyWards.value.familyMembers.push(pushMemberToView)
+
+    }
+
     /*end of masking functions */
     return {
       toggleBase,
@@ -862,7 +1093,10 @@ export default {
       displayFamily,
       familyWards,
       getFamilyDetails,
-      memberRoles
+      memberRoles,
+      setNewMember,
+      setMemberDetails,
+      familyMembers
     };
   },
 };

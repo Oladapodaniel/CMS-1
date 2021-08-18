@@ -247,7 +247,7 @@
                       ref="familyLink"
                       @keydown="preventChangingOfCheckinLink"
                       @click="copyFamilyLink"
-                      value="https://child-checkin-two.vercel.app/"
+                      value="https://child-checkin-seven.vercel.app/"
                       class="form-control"
                       style="width: 95%" />
                       <!-- :value="childCheckinLink" -->

@@ -7,7 +7,7 @@
                 >Add ward</button>
             </div>
         </div>
-        <div class="row th py-2" v-if="familyMembers.length > 0">
+        <div class="row th py-2" v-if="family && family.familyMembers && family.familyMembers.length > 0">
             <div class="offset-1 col-md-1">
                 <!-- <span class="py-2 font-weight-700">Picture</span> -->
             </div>
@@ -25,7 +25,7 @@
             When you add wards, they will show up here
         </div>
         
-        <div class="row py-2" v-for="(member, index) in familyMembers" :key="index">
+        <div class="row py-2" v-for="(member, index) in family.familyMembers" :key="index">
             <div class="offset-1 col-md-1">
                 <Checkbox v-model="member.checkMember" :binary="true" />
             </div>
@@ -66,8 +66,8 @@
 
                                 <div class="col-sm-4 align-self-center text-right">Name</div>
                                 <div class="col-sm-8">
-                                    <!-- <input type="text" class="form-control" /> -->
-                                        <div class="dropdown">
+                                    <input type="text" class="form-control" v-model="memberName" />
+                                        <!-- <div class="dropdown">
                             
                                         <input
                                             type="text"
@@ -129,17 +129,17 @@
                                                 Add new member
                                             </a>
                                         </div>
-                                        </div>
+                                        </div> -->
                                 </div>
                                 
-                                <div class="col-sm-4 align-self-center mt-3 text-right">Gender</div>
+                                <!-- <div class="col-sm-4 align-self-center mt-3 text-right">Gender</div>
                                 <div class="col-sm-8 mt-3">
                                     <input type="text" class="form-control" />
-                                </div>
+                                </div> -->
                                 
                                 <div class="col-sm-4 align-self-center mt-3 text-right">Phone Number</div>
                                 <div class="col-sm-8 mt-3">
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" v-model="memberPhone"/>
                                 </div>
 
                                 <div class="col-sm-4 align-self-center mt-3 text-right">Relationship</div>
@@ -154,7 +154,7 @@
                                         <button
                                         class="default-btn primary-bg border-0 text-white"
                                         data-dismiss="modal"
-                                        @click="addWard"
+                                        @click="createPerson"
                                         >
                                         Save
                                         </button>
@@ -173,34 +173,38 @@
 import { ref } from "vue"
 import { watch } from '@vue/runtime-core'
 import axios from "@/gateway/backendapi";
-import { useConfirm } from "primevue/useConfirm";
-import { useToast } from "primevue/usetoast";
+// import { useConfirm } from "primevue/useConfirm";
+// import { useToast } from "primevue/usetoast";
 import Dropdown from "primevue/dropdown";
-import membershipService from "../../../services/membership/membershipservice";
+// import membershipService from "../../../services/membership/membershipservice";
 
 export default {
-    props: ['familyMembers', 'memberRoles', 'showWardModal'],
+    props: ['family', 'memberRoles', 'showWardModal', 'fullEventData'],
+    emits: ['newmember', 'nofamilynewmember'],
     components: {
         Dropdown
     },
     setup (props, { emit }) {
         
         const showModal = ref("")
-        const confirm = useConfirm()
-        const toast = useToast()
-        const userSearchStringWard = ref("")
-        const searchingForMembers = ref(false)
-        const searchedMembers = ref([])
+        // const confirm = useConfirm()
+        // const toast = useToast()
+        // const userSearchStringWard = ref("")
+        // const searchingForMembers = ref(false)
+        // const searchedMembers = ref([])
+        const memberName = ref("")
+        const memberPhone = ref("")
+        const roleId = ref({})
 
-        const editMember = (member, index) => {
-            console.log(member)
-            emit('edit-member', member)
-            emit('member-index', index)
-        }
+        // const editMember = (member, index) => {
+        //     console.log(member)
+        //     emit('edit-member', member)
+        //     emit('member-index', index)
+        // }
 
-        const addNewWard = () => {
-            emit("clear-field", { name: "", roleId: new Object() })
-        }
+        // const addNewWard = () => {
+        //     emit("clear-field", { name: "", roleId: new Object() })
+        // }
 
         watch(() => {
             console.log(props.showWardModal)
@@ -210,87 +214,197 @@ export default {
             }
         })
 
-        const deleteMember = async(id, index) => {
-        console.log(id)
-            if (id) {
-            try {
-                    const res = await axios.delete(`/api/Family/removeAFamilyMember?id=${id}`)
-                    console.log(res)
-                    toast.add({
-                        severity: "success",
-                        summary: "Deleted",
-                        detail: "Deleted Successfully",
-                        life: 3000,
-                    });
+        // const deleteMember = async(id, index) => {
+        // console.log(id)
+        //     if (id) {
+        //     try {
+        //             const res = await axios.delete(`/api/Family/removeAFamilyMember?id=${id}`)
+        //             console.log(res)
+        //             toast.add({
+        //                 severity: "success",
+        //                 summary: "Deleted",
+        //                 detail: "Deleted Successfully",
+        //                 life: 3000,
+        //             });
                 
-                    emit("remove-ward", index)
-                    console.log(index)
+        //             emit("remove-ward", index)
+        //             console.log(index)
+        //         }
+        //         catch (error) {
+        //             console.log(error)
+        //         }
+        //         } else {
+              
+        //         toast.add({
+        //                 severity: "success",
+        //                 summary: "Deleted",
+        //                 detail: "Deleted Successfully",
+        //                 life: 3000,
+        //             });
+        //         }
+
+        //     }
+
+        // const showConfirmModal = (id, index) => {
+        //     confirm.require({
+        //         message: "Are you sure you want to proceed?",
+        //         header: "Confirmation",
+        //         icon: "pi pi-exclamation-triangle",
+        //         acceptClass: "confirm-delete",
+        //         rejectClass: "cancel-delete",
+        //         accept: () => {
+        //         deleteMember(id, index);
+        //         },
+        //         reject: () => {
+        //         toast.add({
+        //             severity: "info",
+        //             summary: "Discarded",
+        //             detail: "Delete discarded",
+        //             life: 3000,
+        //         });
+        //         },
+        //     });
+        //     };
+
+            const createPerson = () => {
+                if (props.family.id) {
+                    // let formData = new FormData()
+                    // formData.append('firstName', memberName.value)
+                    // formData.append('mobilePhone', memberPhone.value)
+                    const createPerson = {
+                        firstName: memberName.value,
+                        mobilePhone: memberPhone.value,
+                        tenantId: props.fullEventData.tenantID
+                    }
+                    try {
+                        return new Promise((resolve, reject) => {
+                            axios.post("/createPublicPerson", createPerson)
+                                .then(res => {
+                                    console.log(res)
+                                    resolve(res.data); 
+                                    let newPerson = {
+                                        name: res.data.returnObject.firstName,
+                                        id: res.data.returnObject.id,
+                                        checkMember: true
+                                    }
+                                    addMembers(newPerson)
+                                })
+                                .catch(error => {
+                                    console.log(error)
+                                    if (error.response) {
+                                        reject(error.response);
+                                    } else {
+                                        reject(error);
+                                    }
+                                })
+                        })
+        
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }   else {
+                    // let formData = new FormData()
+                    // formData.append('firstName', memberName.value)
+                    // formData.append('mobilePhone', memberPhone.value)
+                    const createPerson = {
+                        firstName: memberName.value,
+                        mobilePhone: memberPhone.value,
+                        tenantId: props.fullEventData.tenantID
+                    }
+                    try {
+                        return new Promise((resolve, reject) => {
+                            axios.post("/createPublicPerson", createPerson)
+                                .then(res => {
+                                    console.log(res)
+                                    resolve(res.data); 
+                                    let newPerson = {
+                                        name: res.data.returnObject.firstName,
+                                        personId: res.data.returnObject.id,
+                                        familyRoleId: roleId.value.id,
+                                        checkMember: true
+                                    }
+                                    emit('nofamilynewmember', newPerson)
+
+                                    memberPhone.value = ""
+                                    memberName.value = ""
+                                    roleId.value = {}
+                                    
+                                })
+                                .catch(error => {
+                                    console.log(error)
+                                    if (error.response) {
+                                        reject(error.response);
+                                    } else {
+                                        reject(error);
+                                    }
+                                })
+                        })
+        
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
+
+            const addMembers = async(personDetails) => {
+                let memberDetails = {
+                    familyId: props.family.id,
+                    familyRoleId: roleId.value.id,
+                    personId: personDetails.id,
+                    tenantId: props.fullEventData.tenantID
+                }
+                try {
+                    let { data } = await axios.post('/addFamilyMember', memberDetails)
+                    console.log(data)
+                    let newMember = {
+                        person: {
+                            firstName: memberName.value,
+                            phone: memberPhone.value
+                        },
+                        familyRoleID: roleId.value.id,
+                        checkMember: true
+                    }
+                    emit('newmember', newMember)
                 }
                 catch (error) {
                     console.log(error)
                 }
-                } else {
-                // familyDetails.value.familyMembers.splice(index, 1)
-                toast.add({
-                        severity: "success",
-                        summary: "Deleted",
-                        detail: "Deleted Successfully",
-                        life: 3000,
-                    });
-                }
-
             }
 
-        const showConfirmModal = (id, index) => {
-            confirm.require({
-                message: "Are you sure you want to proceed?",
-                header: "Confirmation",
-                icon: "pi pi-exclamation-triangle",
-                acceptClass: "confirm-delete",
-                rejectClass: "cancel-delete",
-                accept: () => {
-                deleteMember(id, index);
-                },
-                reject: () => {
-                toast.add({
-                    severity: "info",
-                    summary: "Discarded",
-                    detail: "Delete discarded",
-                    life: 3000,
-                });
-                },
-            });
-            };
+        // const searchForUsersWard = () => {
+        //   if (userSearchStringWard.value.length >= 3) {
+        //     startSearchWard(userSearchStringWard.value);
+        //   }
+        // };
 
-        const searchForUsersWard = () => {
-          if (userSearchStringWard.value.length >= 3) {
-            startSearchWard(userSearchStringWard.value);
-          }
-        };
-
-        const startSearchWard = async (str) => {
-          try {
-            searchingForMembers.value = true;
-            const response = await membershipService.searchMembers(str);
-            searchingForMembers.value = false;
-            searchedMembers.value = response;
-          } catch (error) {
-            searchingForMembers.value = false;
-            console.log(error);
-          }
-        };
+        // const startSearchWard = async (str) => {
+        //   try {
+        //     searchingForMembers.value = true;
+        //     const response = await membershipService.searchMembers(str);
+        //     searchingForMembers.value = false;
+        //     searchedMembers.value = response;
+        //   } catch (error) {
+        //     searchingForMembers.value = false;
+        //     console.log(error);
+        //   }
+        // };
 
         return {
-            editMember,
-            addNewWard,
+            // editMember,
+            // addNewWard,
             showModal,
-            deleteMember,
-            showConfirmModal,
-            searchForUsersWard,
-            searchForUsersWard,
-            userSearchStringWard,
-            searchingForMembers,
-            searchedMembers
+            // deleteMember,
+            // showConfirmModal,
+            // searchForUsersWard,
+            // searchForUsersWard,
+            // userSearchStringWard,
+            // searchingForMembers,
+            // searchedMembers
+            memberPhone,
+            memberName,
+            createPerson,
+            addMembers,
+            roleId
         }
     }
 }
