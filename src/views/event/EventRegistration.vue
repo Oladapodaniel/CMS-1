@@ -1,8 +1,7 @@
 
 <template>
   <div
-    class="container-wide p-3 mb-5 bg-body rounded mt-5"
-    style="max-width: 700px"
+    class="container-slim p-3 mb-5 mt-5"
   >
     <div class="row mt-2">
       <div class="col-md-6 offset-md-3 mb-3"></div>
@@ -70,7 +69,7 @@
         </span>
         <!-- v-if="autosearch && !person.name" -->
       </div>
-      <div class="col-3 offset-5 mt-4" v-if="!names">
+      <div class="col-3 offset-3 offset-sm-4 offset-md-5 mt-4" v-if="!names">
         <div class="default-btn primary-bg text-white border-0 text-center c-pointer">Search</div>
       </div>
     </div>
@@ -216,7 +215,7 @@
         </div>
         
         <div class="row">
-          <div class="col-12 offset-3 mt-3 align-self-center"><Checkbox v-model="displayFamily" :binary="true" /> <span class="ml-3">Do you want to register your family for this event?</span></div>
+          <div class="col-md-8 offset-md-3 mt-3 align-self-center"><Checkbox v-model="displayFamily" :binary="true" /> <span class="ml-3">Do you want to register your family for this event?</span></div>
         </div>
 
         <div class="row mt-4" v-if="displayFamily">

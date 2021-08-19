@@ -1058,7 +1058,7 @@ export default {
         console.log(groupToAddTo.value)
         peopleInGroupIDs.value.push({
           name: groupToAddTo.value.name,
-          id: groupToAddTo.value.id,
+          groupId: groupToAddTo.value.id,
           position: position.value
         })
       }
