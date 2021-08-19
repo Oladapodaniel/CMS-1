@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="row th py-2" v-if="family && family.familyMembers && family.familyMembers.length > 0">
-            <div class="offset-1 col-md-1">
+            <div class="offset-1 col-1">
                 <!-- <span class="py-2 font-weight-700">Picture</span> -->
             </div>
             <div class="col-5">
@@ -26,23 +26,16 @@
         </div>
         
         <div class="row py-2" v-for="(member, index) in family.familyMembers" :key="index">
-            <div class="offset-1 col-md-1">
+            <div class="offset-1 col-1">
                 <Checkbox v-model="member.checkMember" :binary="true" />
             </div>
             <div class="col-5 align-self-center">
                 <span class="py-2">{{ member.person ? member.person.firstName : "" }} {{ member.person && member.person.lastName ? member.person.lastName : "" }}</span>
             </div>
             <div class="col-3 align-self-center">
-                <!-- <span class="py-2">{{ memberRoles.length > 0 ? memberRoles.find(i => i.id === member.familyRoleID).name : "" }}</span> -->
-                <!-- <Dropdown class="p-0 w-100" :options="memberRoles" v-model="member.roleId" optionLabel="name" :filter="false" placeholder="Select role" :showClear="false">
-                </Dropdown> -->
                 {{ memberRoles.find(i => i.id === member.familyRoleID).name }}
             </div>
-            <!-- <div class="col-1 align-self-center" data-toggle="modal" data-target="#addWard" @click="editMember(member, index)">
-                <i class="pi pi-pencil text-primary c-pointer"></i>
-            </div> -->
             <div class="col-1 align-self-center" @click="showConfirmModal(member.id, index)">
-                <!-- <i class="pi pi-trash text-danger c-pointer"></i> -->
             </div>
         </div>
     </div>
@@ -64,86 +57,19 @@
                     <div class="row px-4 pb-3">
                         
 
-                                <div class="col-sm-4 align-self-center text-right">Name</div>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" v-model="memberName" />
-                                        <!-- <div class="dropdown">
-                            
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            id="dropdownMenuButton"
-                                            data-toggle="dropdown"
-                                            v-model="userSearchStringWard"
-                                            @input="searchForUsersWard"
-                                        />
-                                        <div
-                                            class="dropdown-menu w-100"
-                                            aria-labelledby="dropdownMenuButton"
-                                        >
-                                            <div class="row w-100 mx-auto" v-if="false">
-                                            <div class="col-md-12">
-                                                <input
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="Find event"
-                                                />
-                                            </div>
-                                            </div>
-
-                                            <a
-                                            class="dropdown-item font-weight-700 small-text"
-                                            href="#"
-                                            v-for="(member, index) in searchedMembers"
-                                            :key="index"
-                                            @click="addExistingMember(member)"
-                                            >{{ member.name }}</a
-                                            >
-                                            <a
-                                            class="dropdown-item font-weight-700 small-text"
-                                            href="#"
-                                            v-if="
-                                                searchingForMembers && searchedMembers.length === 0
-                                            "
-                                            ><i class="pi pi-spin pi-spinner"></i
-                                            ></a>
-                                            <p
-                                            class="modal-promt pl-1 bg-secondary m-0"
-                                            v-if="
-                                                userSearchStringWard.length < 3 &&
-                                                searchedMembers.length === 0
-                                            "
-                                            >
-                                            Enter 3 or more characters
-                                            </p>
-                                            <a
-                                            class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
-                                            style="border-top: 1px solid #002044; color: #136acd"
-                                            @click="showAddMemberForm"
-                                            data-dismiss="modal"
-                                            >
-                                            <i
-                                                class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
-                                                style="color: #136acd"
-                                            ></i>
-                                                Add new member
-                                            </a>
-                                        </div>
-                                        </div> -->
+                                <div class="col-sm-12 align-self-center">Name  <span class="text-danger">*</span></div>
+                                <div class="col-sm-12 mt-2">
+                                    <input type="text" class="form-control" v-model="memberName" placeholder="Enter your name"/>
                                 </div>
                                 
-                                <!-- <div class="col-sm-4 align-self-center mt-3 text-right">Gender</div>
-                                <div class="col-sm-8 mt-3">
-                                    <input type="text" class="form-control" />
-                                </div> -->
-                                
-                                <div class="col-sm-4 align-self-center mt-3 text-right">Phone Number</div>
-                                <div class="col-sm-8 mt-3">
-                                    <input type="text" class="form-control" v-model="memberPhone"/>
+                                <div class="col-sm-12 align-self-center mt-3">Phone Number</div>
+                                <div class="col-sm-12 mt-2">
+                                    <input type="text" class="form-control" v-model="memberPhone" placeholder="Enter phone number"/>
+                                    <div class="small-text mt-1"><span class="font-weight-700">Note</span>: <em>Phone number is optional</em></div>
                                 </div>
 
-                                <div class="col-sm-4 align-self-center mt-3 text-right">Relationship</div>
-                                <div class="col-sm-8 mt-3">
+                                <div class="col-sm-12 align-self-center mt-3">Relationship</div>
+                                <div class="col-sm-12 mt-2">
                                     <Dropdown class="p-0 w-100" :options="memberRoles" v-model="roleId" optionLabel="name" :filter="false" placeholder="Select role" :showClear="false">
                                     </Dropdown>
                                 </div>
