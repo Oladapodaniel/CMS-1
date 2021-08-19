@@ -266,6 +266,13 @@
         </div>
       </div>
 
+       <!-- <div class="row py-3" v-if="loading">
+                            <div class="col-md-11 mx-auto d-flex justify-content-center"
+                            ><i class="pi pi-spin text-primary pi-spinner" style="fontSize: 3rem"></i>
+                            </div>
+                            <p class="col text-primary mx-auto d-flex justify-content-center my-3">Be patient while we search</p>
+                        </div> -->
+                        <loadingComponent :loading="loading" />
       <div
         class="table-body"
         v-for="(person, index) in searchMember"
@@ -413,12 +420,8 @@
         </div>
         <hr class="row-divider" />
       </div>
-       <div class="row py-3" v-if="loading">
-                            <div class="col-md-11 mx-auto d-flex justify-content-center"
-                            ><i class="pi pi-spin text-primary pi-spinner" style="fontSize: 3rem"></i>
-                            </div>
-                            <p class="col text-primary mx-auto d-flex justify-content-center my-3">Be patient while we search</p>
-                        </div>
+
+
 
       <!-- tosin -->
       <div
@@ -426,7 +429,7 @@
           v-if="listOfPeople.length === 0 && churchMembers.length !== 0 && !loading"
         >
           <p class="text-danger d-flex justify-content-center">
-          Record not available in database
+          Record not available
           </p>
         </div>
       <!-- tosin -->
@@ -454,6 +457,7 @@ import stopProgressBar from "../../services/progressbar/progress";
 import membershipservice from "../../services/membership/membershipservice";
 import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
+import loadingComponent from "@/components/loading/LoadingComponent"
 
 export default {
   props: ["list", "peopleCount"],
@@ -462,6 +466,7 @@ export default {
     ByMaritalStatusChart,
     PaginationButtons,
     Dropdown,
+    loadingComponent
   },
 
   directives: {
