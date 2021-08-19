@@ -226,6 +226,19 @@
         <!-- tosin -->
 
         <!-- tosin 2 -->
+
+         <!-- <div class="row py-3" v-if="loading">
+          <div class="col-md-11 mx-auto d-flex justify-content-center">
+            <i
+              class="pi pi-spin text-primary pi-spinner"
+              style="fontsize: 3rem"></i>
+          </div>
+          <p
+            class="col text-primary mx-auto d-flex justify-content-center my-3"
+          >
+            Be patient while we search
+          </p>
+        </div> -->
         <loadingComponent :loading="loading" />
         <div v-if="!loading">
           <div
@@ -400,18 +413,7 @@
           <hr class="row-divider" />
         </div>
         </div>
-        <!-- <div class="row py-3" v-if="loading">
-          <div class="col-md-11 mx-auto d-flex justify-content-center">
-            <i
-              class="pi pi-spin text-primary pi-spinner"
-              style="fontsize: 3rem"></i>
-          </div>
-          <p
-            class="col text-primary mx-auto d-flex justify-content-center my-3"
-          >
-            Be patient while we search
-          </p>
-        </div> -->
+
 
         <div
           class="col-md-12 col py-3"
