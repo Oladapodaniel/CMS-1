@@ -268,7 +268,7 @@
 
       <div
         class="table-body"
-        v-for="(person, index) in listOfPeople"
+        v-for="(person, index) in searchMember"
         :key="person.id"
       >
         <div class="data-row">
@@ -417,7 +417,7 @@
                             <div class="col-md-11 mx-auto d-flex justify-content-center"
                             ><i class="pi pi-spin text-primary pi-spinner" style="fontSize: 3rem"></i>
                             </div>
-                            <p class="col text-primary mx-auto d-flex justify-content-center my-3">Be Patient While We Search</p>
+                            <p class="col text-primary mx-auto d-flex justify-content-center my-3">Be patient while we search</p>
                         </div>
 
       <!-- tosin -->
@@ -426,7 +426,7 @@
           v-if="listOfPeople.length === 0 && churchMembers.length !== 0 && !loading"
         >
           <p class="text-danger d-flex justify-content-center">
-          Record Not Available In DataBase
+          Record not available in database
           </p>
         </div>
       <!-- tosin -->
@@ -520,37 +520,6 @@ export default {
           });
           console.log(err);
         });
-    };
-
-    const applyFilter = () => {
-      filter.value.name =
-        filter.value.name == undefined ? "" : filter.value.name;
-      filter.value.phoneNumber =
-        filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
-
-      let url =
-        "/api/People/FilterMembers?firstname=" +
-        filter.value.name +
-        "&lastname=" +
-        filter.value.name +
-        "&phone_number=" +
-        filter.value.phoneNumber +
-        "&page=1";
-      axios
-        .get(url)
-        .then((res) => {
-          noRecords.value = true;
-          filterResult.value = res.data;
-          console.log(res.data);
-        })
-        .catch((err) => console.log(err));
-    };
-
-    const clearAll = () => {
-      filter.value.name = "";
-
-      filter.value.filterDate = "";
-      filter.value.phoneNumber = "";
     };
 
     const hide = () => {
@@ -761,14 +730,44 @@ export default {
       selectAll.value = !selectAll.value;
     };
 
+       const applyFilter = () => {
+      filter.value.name =
+        filter.value.name == undefined ? "" : filter.value.name;
+      filter.value.phoneNumber =
+        filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
+
+      let url =
+        "/api/People/FilterMembers?firstname=" +
+        filter.value.name +
+        "&lastname=" +
+        filter.value.name +
+        "&phone_number=" +
+        filter.value.phoneNumber +
+        "&page=1";
+      axios
+        .get(url)
+        .then((res) => {
+          noRecords.value = true;
+          filterResult.value = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    const clearAll = () => {
+      filter.value.name = "";
+
+      filter.value.filterDate = "";
+      filter.value.phoneNumber = "";
+    };
+
      // Tosin
     const searchPeopleNamesInDB = ref([]);
-    const searchPeopleInDB = (event) => {
-      console.log("munachi", "🎉🎉🎉");
+    const searchPeopleInDB = () => {
       loading.value = true;
       let url =
         //  "/api/People/FilterFirstTimers?firstname=" +
-         `/api/Membership/GetSearchedUSers?searchText=${event.target.value}`
+         `/api/Membership/GetSearchedUSers?searchText=${searchText.value}`
       axios
         .get(url)
         .then((res) => {
@@ -777,7 +776,7 @@ export default {
               return {
                 firstName : i.name.split(" ")[0],
                 lastName: i.name.split(" ")[1],
-                mobilekPhone: i.phone,
+                mobilePhone: i.phone,
                 email : i.email
               }
           })
@@ -796,24 +795,25 @@ export default {
     });
     // Tosin
 
-    // const searchMember = computed(() => {
-    //   if (searchText.value !== "") {
-    //     return churchMembers.value.filter((i) => {
-    //       if (i.firstName)
-    //         return `${i.firstName}${i.lastName}${i.mobilePhone}`
-    //           .toLowerCase()
-    //           .includes(searchText.value.toLowerCase());
-    //       return "";
-    //     });
-    //   } else if (
-    //     filterResult.value.length > 0 &&
-    //     (filter.value.name || filter.value.phoneNumber)
-    //   ) {
-    //     return filterResult.value;
-    //   } else {
-    //     return churchMembers.value;
-    //   }
-    // });
+    const searchMember = computed(() => {
+      if (searchText.value !== "" && searchPeopleNamesInDB.value.length > 0) {
+        // return searchPeopleInDB()
+        return searchPeopleNamesInDB.value
+        // return churchMembers.value.filter((i) => {
+        //   if (i.firstName)
+        //     return `${i.firstName}${i.lastName}${i.mobilePhone}`
+        //       .toLowerCase()
+        //       .includes(searchText.value.toLowerCase());
+        //   return "";
+        // });
+      } else if (
+        filterResult.value.length > 0
+      ) {
+        return filterResult.value;
+      } else {
+        return churchMembers.value;
+      }
+    });
 
     const membersCount = computed(() => {
       if (membershipSummary.value.totalMember > 100)
@@ -918,7 +918,8 @@ export default {
       moveMemberToGroup,
       searchPeopleInDB,
       listOfPeople,
-      loading
+      loading,
+      searchMember
     };
   },
 };
