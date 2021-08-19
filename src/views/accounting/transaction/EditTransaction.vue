@@ -117,11 +117,11 @@
            
           </div>
         </div>
-        <div class="col-sm-5 pl-0">
+        <div class="col-sm-5 col-md-5 col-lg-5 col-12 ">
           <div class="label-text">Amount</div>
           <input
             type="number"
-            class="form-control"
+            class="form-control w-100"
             v-model="transacObj.amount"
             placeholder="0.00"
           />

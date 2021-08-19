@@ -42,7 +42,7 @@
                   <div class="row header-row light-grey-bg">
                     <div class="col-md-12">
                       <div class="row light-grey-bg py-1">
-                        <div class="col-md-1" v-if="schedules.length > 0">
+                        <div class="col-md-1 " v-if="schedules.length > 0">
                           <input
                             type="checkbox"
                             class="mark-box"

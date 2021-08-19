@@ -1,13 +1,13 @@
 <template>
     <div class="container-fluid">
-        <div class="row d-sm-flex align-items-center units-div">
+        <div class="row d-sm-flex align-items-center units-div mt-3">
             <div class="col-sm-12">
                 <h4 class="font-weight-bold mb-0 center-flexed">{{ balance }}</h4>
                 <p class="font-weight-bold mb-0 center-flexed">
                 SMS Units
                 </p>
             </div>
-            <div class="col-sm-12 d-sm-flex justify-content-center">
+            <div class="col-sm-12 d-flex justify-content-center">
                 <button
                 class="btn buy-btn center-flexed"
                 @click="payWithPaystack"

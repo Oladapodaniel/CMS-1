@@ -1,6 +1,6 @@
 <template>
   <div class="pb-4">
-    <div class="row table " style="height: 300px">
+    <div class="row table ">
       <div class="col-12 mt-4  w-100">
         <div class="row">
           <!-- {{donationSummary}} -->
@@ -214,7 +214,7 @@
                   </p>
                 </div>
 
-                <div class="col-md-3 px-1">
+                <div class="col-md-3 small-text px-1">
                   <div class="d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Donation</span>
                   <div>
@@ -240,16 +240,23 @@
                   ></span>
                   </p>
                 </div>
+               
 
                 <div class="small-text col-md-1 px-1">
+                    
                   <!-- <p class="mb-0 d-flex justify-content-between">
                     <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
                     <span>Marked</span>
                   </p> -->
-                  <div class="action data action-icon">
-                    <div class="dropdown">
+                  <div class=" data d-flex justify-content-between">
+                    <div>
+                      <p class="mb-0">
+                        <span class="text-dark font-weight-bold d-flex d-md-none">Action</span>
+                      </p>
+                    </div>
+                    <div class="dropdown ">
                       <i
-                        class="fas fa-ellipsis-v cursor-pointer"
+                        class="fas fa-ellipsis-v cursor-pointer "
                         id="dropdownMenuButton"
                         data-toggle="dropdown"
                         aria-haspopup="true"
