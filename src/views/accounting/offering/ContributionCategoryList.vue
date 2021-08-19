@@ -91,7 +91,7 @@
             </div>
           </div>
         </div>
-            
+
             <div class="container-fluid d-none d-md-block">
             <div class="row t-header">
               <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
@@ -129,7 +129,7 @@
                     <div class="d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none">Cash Account</span>
                     <div>
-                      
+
                       <div class="desc small-text text-right text-md-left">{{ item.cashBankAccount }}</div>
                     </div>
                     </div>
@@ -143,7 +143,7 @@
                     </p>
                   </div>
 
-        
+
 
                   <div class="small-text col-md-2">
                     <!-- <p class="mb-0 d-flex justify-content-between">
@@ -153,7 +153,7 @@
                     <div class="action data action-icon">
                       <div class="dropdown">
                         <i
-                          class="fas fa-ellipsis-v cursor-pointer"
+                          class="fas fa-ellipsis-v cursor-pointerfas fa-ellipsis-v cursor-pointer d-flex d-md-block justify-content-end "
                           id="dropdownMenuButton"
                           data-toggle="dropdown"
                           aria-haspopup="true"
@@ -182,10 +182,10 @@
                       <Pagination  @getcontent="getPeopleByPage" :itemsCount="offeringCount" :currentPage="currentPage"/>
                     </div>
                 </div>
-            
+
             <ConfirmDialog />
             <Toast />
-            
+
           </div>
 
     </div>
@@ -589,7 +589,7 @@ export default {
 
 
  @media (max-width: 767px) {
- 
+
    .first-timers-text {
     text-align: center;
   }
@@ -631,7 +631,7 @@ export default {
 
   .add-btn {
     margin-top: 10px
-  } 
+  }
 }
 
 @media (max-width: 575px) {
@@ -647,7 +647,7 @@ export default {
     margin-top: 10px;
   } */
 
-  
+
 }
 
 @media screen and (min-width: 501px) and (max-width: 768px) {
@@ -736,7 +736,7 @@ export default {
 .table-body {
     padding: 12px;
     border-bottom: 1.5px solid #6d6d6d19
-    
+
 
 }
 

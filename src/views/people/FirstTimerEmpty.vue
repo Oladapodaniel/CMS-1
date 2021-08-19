@@ -1,7 +1,4 @@
 <template>
-
-
-
   <div class="whole-con">
     <div class="main-con">
       <div class="main-body">
@@ -23,7 +20,7 @@
               </button>
             </router-link>
           </div>
-          
+
         </div>
         <Dialog header="First Timers to import from file" v-model:visible="displayModal" :style="{width: '80vw'}" :modal="true">
             <div class="container">
@@ -63,7 +60,7 @@
       <div v-else-if="networkError && !loading" class="adjust-network">
         <img src="../../assets/network-disconnected.png" >
         <div>Opps, Your internet connection was disrupted</div>
-      </div>  
+      </div>
 
         <div class="row container-wide" v-if="loading">
     <div class="col-md-12">
@@ -105,26 +102,10 @@
       </div>
     </div>
   </div>
-<!-- v-if="!loading && people.length === 0" -->
-<!-- v-if="!loading && people.length > 0" -->
 
-
-
-
-        <!-- Transitio area -->
-        <!-- <transition
-          :name="$store.state.pageTransition.name"
-          :mode="$store.state.pageTransition.mode"
-          v-on:after-enter="afterEvent"
-          v-on:after-leave="afterLeave"
-        >
-          <router-view class="view transition" />
-        </transition> -->
-        <!-- End of Transition -->
-        <!-- <transition name="fade" mode="out-in"> -->
           <router-view class="view" />
         <!-- </transition> -->
-        
+
         <Toast />
       </div>
     </div>
@@ -150,7 +131,7 @@ export default {
       const firstTimersList = ref([])
       const loading = ref(false)
       const toast = useToast()
-      const importFile = ref("") 
+      const importFile = ref("")
       const image = ref("");
       const displayModal = ref(false)
       const firstTimerData = ref([])
@@ -209,7 +190,7 @@ export default {
               detail: "Download our template and add first timers before you upload",
               life: 4000,
             });
-          }          
+          }
         }
         catch  (err) {
           finish()
@@ -259,7 +240,7 @@ export default {
         });
         }
         firstTimersList.value = firstTimerData.value
-        
+
       }
       catch  (err) {
         finish()
@@ -368,13 +349,7 @@ export default {
 .empty-img img {
   width: 100%;
   max-width: 200px;
-}/*
-
-.tip {
-  color: #02172e;
-  font-size: 20px;
-  font-weight: 600;
-} */
+}
 
 .hr {
   border: 0.8px solid #0020440a;
@@ -417,12 +392,14 @@ export default {
 
 @media (max-width: 640px) {
     .top {
-  display: flex;;
+  display: flex;
   align-items: center;
   flex-direction: column;
     }
     .actions {
         margin-top: 15px;
+        display: flex;
+
     }
 }
 
@@ -435,7 +412,7 @@ export default {
 @media (max-width: 399px) {
     .actions {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
     }
 

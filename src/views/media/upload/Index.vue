@@ -25,7 +25,7 @@
             </div>
             <div class="col-md-3"></div>
         </div>
-        
+
 
         <div class="row my-3">
             <div class="col-md-4 text-md-right">
@@ -84,18 +84,18 @@
             <div class="col-md-4 text-md-right">
             </div>
             <div class="col-md-5">
-                <div class="row">
-                    <div class="col-md-4">
-                    Is free
-                    <Checkbox id="binary" v-model="uploadData.isFree" :binary="true" />
+                <div class="row adjust-text d-flex justify-content-center">
+                    <div class="col-md-4 col d-flex align-items-center ">
+                        <p class="mb-0">Is free</p>
+                        <Checkbox class="ml-2" id="binary" v-model="uploadData.isFree" :binary="true" />
                 </div>
-                <div class="col-md-4">
-                    Is Pushed
-                    <Checkbox id="binary" v-model="uploadData.isPushed" :binary="true" />
+                <div class="col-md-4 col d-flex align-items-center p-0">
+                    <p class="mb-0">Is Pushed</p>
+                   <div> <Checkbox class="ml-2" id="binary" v-model="uploadData.isPushed" :binary="true" /></div>
                 </div>
-                <div class="col-md-4">
-                    Is Public
-                    <Checkbox id="binary" v-model="uploadData.public" :binary="true" />
+                <div class="col-md-4 col d-flex align-items-center p-md-0">
+                    <p class="mb-0">Is Public</p>
+                    <div><Checkbox class="ml-2" id="binary" v-model="uploadData.public" :binary="true" /></div>
                 </div>
                 </div>
             </div>
@@ -259,4 +259,10 @@ button:disabled {
     overflow-x: hidden;
 }
 
+/* @media Queries */
+@media (max-width: 966px) {
+  .adjust-text {
+    font-size: 12px;
+  }
+}
 </style>
