@@ -97,6 +97,7 @@
           <!-- <p class="sign-up-prompt">Don't have an account yet? <router-link to="/register" class="sign-up"><strong>Sign up now</strong></router-link></p> -->
         </div>
       </div>
+      <Toast></Toast>
       <!-- <a class="fb-login-button" id="fb" data-width="380px" data-size="large" scope="public_profile,email" onlogin="checkLoginState();" data-button-type="continue_with" data-layout="rounded" data-auto-logout-link="false" data-use-continue-as="false" ref="loginFacebook" style="margin-top: 10px;"></a> -->
       <!-- <Button label="Show" icon="pi pi-external-link" @click="openModal" /> -->
       <Dialog
@@ -143,6 +144,7 @@
 <script>
 import axios from "@/gateway/backendapi";
 // import { useStore } from "vuex";
+import { useToast } from "primevue/usetoast"
 import { reactive, ref } from "vue";
 import router from "../../router/index";
 import setupService from "../../services/setup/setupservice";
@@ -153,6 +155,7 @@ import { useGtag } from "vue-gtag-next";
 export default {
   setup() {
     // const store = useStore();
+    const toast = useToast()
     const { event } = useGtag()
     const track = () => {
       event('aaa', {
@@ -186,6 +189,7 @@ export default {
     //       } 
     //   }; 
     // getCurrentlyUser();
+      
 
     const login = async (e) => {
       e.preventDefault();
@@ -210,7 +214,22 @@ export default {
         setTimeout(() => {
           setupService.setup();
         }, 5000);
-        if (data.churchSize > 0) {
+        if(data.roles.length > 0){
+          data.roles.forEach(i => {
+          if(i.toLowerCase() == "mobileuser" || i.toLowerCase() == "family"){
+            localStorage.clear()
+            toast.add({
+              severity:'info', 
+              summary: 'Unauthorized', 
+              detail:'You do not have access to this page, contact your church admin', 
+              life: 10000}) 
+            router.push('/')
+          }
+          
+        })
+        loading.value = false
+        }
+         if (data.churchSize > 0) {
           router.push("/tenant");
         } else {
           router.push("/next");

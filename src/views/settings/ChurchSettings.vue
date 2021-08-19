@@ -98,7 +98,22 @@
               >
             </div>
             
+            
+            
             </div>
+             <div class="row mb-3" >
+            <div class="col-md-12 my-2">
+              <span class="small-text dd-list-item">Social & Mobile Setting
+               
+              </span>
+              
+            </div>
+            <div class="col-md-12 my-2">
+              <router-link class="font-weight-bold link dd-list-item" to="/tenant/settings/social"
+                >Post Category</router-link
+              >
+            </div>
+          </div>
             <div class="col-md-12 my-2" v-if="false">
               <router-link class="font-weight-bold link" to="/tenant/settings/giving"
                 >Online Giving Setup</router-link
@@ -106,6 +121,7 @@
             </div>
            
           </div>
+          
              </transition-group>
      
 
@@ -119,6 +135,7 @@
               >
             </div>
           </div>
+         
                
           </div>
            
