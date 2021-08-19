@@ -397,19 +397,30 @@
 
           <hr class="row-divider" />
         </div>
-         <div class="row py-3" v-if="loading">
-                            <div class="col-md-11 mx-auto d-flex justify-content-center"
-                            ><i class="pi pi-spin text-primary pi-spinner" style="fontSize: 3rem"></i>
-                            </div>
-                            <p class="col text-primary mx-auto d-flex justify-content-center my-3">Be patient while we search</p>
-                        </div>
+        <div class="row py-3" v-if="loading">
+          <div class="col-md-11 mx-auto d-flex justify-content-center">
+            <i
+              class="pi pi-spin text-primary pi-spinner"
+              style="fontsize: 3rem"
+            ></i>
+          </div>
+          <p
+            class="col text-primary mx-auto d-flex justify-content-center my-3"
+          >
+            Be patient while we search
+          </p>
+        </div>
 
         <div
           class="col-md-12 col py-3"
-          v-if="listOfFirsttimers.length === 0 && churchMembers.length !== 0 && !loading "
+          v-if="
+            listOfFirsttimers.length === 0 &&
+            churchMembers.length !== 0 &&
+            !loading
+          "
         >
           <p class="text-danger d-flex justify-content-center">
-          Record not available in database
+            Record not available in database
           </p>
         </div>
         <!-- tosin 2 -->
@@ -505,7 +516,6 @@ export default {
         .catch((err) => console.log(err));
     };
     firstTimerSummary();
-
 
     const totalFirsttimersCount = computed(() => {
       if (
@@ -622,26 +632,26 @@ export default {
     // Tosin
     const loading = ref(false);
     const searchNamesInDB = ref([]);
-    const searchMemberInDB = () => {
+    const searchMemberInDB = (event) => {
       loading.value = true;
       let url =
         "/api/People/FilterFirstTimers?firstname=" +
-        searchText.value +
+        event.target.value +
         "&lastname=" +
-        searchText.value +
+        event.target.value +
         "&phone_number=" +
-        searchText.value +
+        event.target.value +
         "&page=1";
-        console.log(searchText.value, "✌️✌️✌️");
+
       axios
         .get(url)
         .then((res) => {
-          loading.value = false
+          loading.value = false;
           searchNamesInDB.value = res.data;
         })
         .catch((err) => {
-          console.log(err)
-          loading.value = false
+          console.log(err);
+          loading.value = false;
         });
     };
 
@@ -651,9 +661,9 @@ export default {
     });
     // Tosin
 
-      const searchMember = computed(() => {
-      if (searchText.value !== "" &&  searchNamesInDB.value > 0) {
-        return searchNamesInDB.value
+    const searchMember = computed(() => {
+      if (searchText.value !== "" && searchNamesInDB.value.length > 0) {
+        return searchNamesInDB.value;
         // return churchMembers.value.filter((i) => {
         //   return `${i.fullName}${i.phoneNumber}`
         //     .toLowerCase()
@@ -662,14 +672,17 @@ export default {
       } else if (
         // filterResult.value.length > 0 &&
         // (filter.value.name || filter.value.phoneNumber)
-         filterResult.value.length > 0
-
+        filterResult.value.length > 0
       ) {
         return filterResult.value;
       } else {
         return churchMembers.value;
       }
     });
+
+     const hide = () => {
+      filterFormIsVissible.value = false;
+    };
 
     const membersCount = computed(() => {
       if (getFirstTimerSummary.value.totalFirstTimer > 100)
@@ -692,6 +705,13 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    };
+
+     const clearAll = () => {
+      filter.value.name = "";
+
+      filter.value.filterDate = "";
+      filter.value.phoneNumber = "";
     };
 
     const clearInput = () => {
@@ -955,7 +975,9 @@ export default {
       searchNamesInDB,
       listOfFirsttimers,
       loading,
-      searchMember
+      searchMember,
+      clearAll,
+      hide
     };
   },
 };

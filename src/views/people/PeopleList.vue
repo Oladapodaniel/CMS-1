@@ -780,8 +780,6 @@ export default {
                 email : i.email
               }
           })
-
-          console.log(searchPeopleNamesInDB.value, "🎉🎉🎉");
         })
         .catch((err) =>{
           loading.value = false;
