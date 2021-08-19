@@ -1,11 +1,11 @@
 <template>
   <div class="container">
     <div class="row my-3">
-      <div class="col-md-12 d-md-flex justify-content-between">
+      <div class="col-md-12 d-sm-flex justify-content-between">
         <h2 class="main-title font-weight-bold">Media Library</h2>
         <router-link
           to="/tenant/upload"
-          class="default-btn border-0 primary-bg text-white font-weight-700 text-decoration-none"
+          class="default-btn border-0 primary-bg text-white font-weight-700 text-decoration-none adjustButton"
           >Upload file</router-link
         >
       </div>
@@ -23,7 +23,7 @@
 
 export default {
   setup() {
-    
+
   },
 };
 </script>
@@ -47,5 +47,12 @@ export default {
 
 .tab:hover {
   background: #d7e0ea;
+}
+
+/* @media Queries */
+@media (max-width: 771px) {
+  .adjustButton {
+    float: right;
+  }
 }
 </style>

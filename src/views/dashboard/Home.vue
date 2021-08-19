@@ -1,4 +1,5 @@
 <template>
+<div> 
   <div class="whole-page">
     <div class="links-menu" :class="{ show: menuShouldShow }">
       <MenuLinks @linkclicked="hideNav" />
@@ -33,9 +34,10 @@
       <!-- <router-view></router-view> -->
     </div>
   </div>
-  <div class="toggle" @click="toggleMenu">
-    <i class="pi pi-bars"></i>
-  </div>
+      <div class="toggle" @click="toggleMenu">
+        <i class="pi pi-bars"></i>
+      </div>
+</div>
 </template>
 
 <script>
@@ -136,7 +138,7 @@ export default {
   text-align: center;
   position: absolute;
   top: 4px;
-  right: 8px;
+  left: 40px;
   font-size: 30px;
 }
 

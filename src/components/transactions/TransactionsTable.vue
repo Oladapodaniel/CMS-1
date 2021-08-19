@@ -6,10 +6,10 @@
           <ConfirmDialog />
           <Toast />
           <div class="parent-table">
-            <div class="table" style="height: fit-content" :class="{ 'bordered': !showEditTransaction }">
+            <div class="table" style="height: fit-content" :class="{ 'bordered': !showEditTransaction , 'removeTable': showEditTransaction}">
               <div class="container-fluid small-text py-2">
-                <div class="row">
-                  <div class="col-sm-5 py-2 py-md-0 d-flex align-items-center">
+                <div class="row justify-content-center">
+                  <div class="col-sm-3  col-md-3 col-lg-3 col-8 py-2 py-md-0 d-flex align-items-center justify-content-center ">
                     <input
                       type="checkbox"
                       name="all"
@@ -18,17 +18,17 @@
                     />
                     <label class="ml-2 mb-0 c-pointer font-weight-700">SELECT ALL</label>
                   </div>
-                  <div class="col-sm-2 py-2 py-md-0 d-flex align-items-center">
+                  <div class="col-sm-3 col-md-3 col-lg-3 col-8  py-md-0 d-flex align-items-center justify-content-center">
                     <p
                       @click="toggleFilterFormVissibility"
-                      class="mb-0 c-pointer font-weight-700"
+                      class="mb-0 c-pointer mt-2 mt-sm-0 mt-md-0 mt-lg-0 font-weight-700"
                     >
                       <i class="fas fa-filter"></i>
                       FILTER
                     </p>
                   </div>
-                  <div class="col-sm-5 py-2 py-md-0">
-                    <p class="search-tex d-md-flex align-items-center mb-0">
+                  <div class="col-sm-3 col-md-3 col-lg-3 col-8  d-flex align-items-center justify-content-center mt-2 py-2 py-md-0">
+                    <p class="search-tex mb-0 mt-0 mt-sm-4 mt-md-4 mt-lg-4">
                       <span class="mr-2 c-pointer font-weight-700" @click="toggleSearch"
                         ><i class="pi pi-search mr-1"></i> <span v-if="!searchIsVisible">SEARCH</span></span
                       >
@@ -201,7 +201,7 @@
                       </p>
                     </div>
 
-                    <div class="col-md-3 px-1" @click="rowSelected(item)">
+                    <div class="col-md-3 small-text  px-1" @click="rowSelected(item)">
                       <div class="d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Description</span>
                       <div>
@@ -232,7 +232,12 @@
                         <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
                         <span>Marked</span>
                       </p> -->
-                      <div class="action data action-icon">
+                      <div class="action w-100  data action-icon">
+                         <div>
+                            <p class="mb-0">
+                              <span class="text-dark font-weight-bold d-flex d-md-none">Action</span>
+                            </p>
+                          </div>
                         <div class="dropdown">
                           <i
                             class="fas fa-ellipsis-v cursor-pointer"
@@ -256,7 +261,7 @@
               </div>
             </div>
             <!-- :class="{ 'slide-form' : showEditTransaction, 'hide-form' : !showEditTransaction }" -->
-            <div class="table edit-transac mobile-form" v-if="showEditTransaction">
+            <div class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt " v-if="showEditTransaction">
               <TransactionForm
                 v-if="transactionDetails.type !== 'ledger'"
                 @close-it="closeIt"
@@ -692,6 +697,7 @@ html {
   scroll-behavior: smooth;
 }
 
+
 .events {
   font: normal normal 800 29px Nunito sans;
 }
@@ -822,6 +828,20 @@ html {
     transition: all 0.5s ease-in-out;
   }
 }
+@media screen and (max-width: 991px) {
+
+  .removeTable{
+        display: none;
+  }
+
+}
+@media screen and (max-width: 991px) {
+
+  .table.edit-transac{
+        border-radius: 22px;
+  }
+
+}
 
 /* .parent-desc {
   display: grid;
@@ -945,7 +965,7 @@ html {
 .table.edit-transac {
   background: #dde2e6bb;
   /* margin-left: 15px; */
-  width: 50%;
+  width: 100%;
   height: fit-content;
   /* max-height: 518px;
         overflow-y: auto */
@@ -980,7 +1000,7 @@ html {
   display: flex;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 900px) {
   .parent-table {
     flex-direction: column;
   }
@@ -999,11 +1019,24 @@ html {
 @media (max-width: 600px) {
   .actions {
     display: flex;
+    justify-content: end;
     /* flex-direction: column */
   }
 }
+@media screen and (max-width: 767px) {
+  .action {
+    display: flex;
+    justify-content: space-between;
+    /* justify-content: end; */
+    /* flex-direction: column */
+  }
+  .mywidt{
+    width: 100%;
+    /* display: flex; */
+  }
+}
 
-@media (min-width: 1100px) {
+@media (min-width: 900px) {
   .table {
     border-radius: 22px 0 22px 22px;
   }

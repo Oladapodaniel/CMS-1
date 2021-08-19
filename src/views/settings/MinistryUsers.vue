@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row d-md-flex justify-content-between mt-3 mb-4">
         <div class="col-md-7 col-xl-8 col-lg-8 col-sm-12">
-          <h2 class="font-weight-bolder churchHeader">{{  churchProfile ? churchProfile : "" }}</h2>
+          <h2 class="font-weight-bolder churchHeader">{{churchProfile ? churchProfile.churchName : ""}}</h2>
         </div>
         <div class="col-lg-4 col-xl-4 col-md-5 col-sm-12 d-flex justify-content-sm-end  mt-2 link d-lg-flex justify-content-end">
           <router-link
@@ -166,16 +166,17 @@ export default {
   data(){
     return{
       getCurrentUser: store.getters.currentUser,
+      churchProfile: '',
       churchUsers: [],
       churchNames: {},
       loading: false,
     }
   },
   computed:{
-    churchProfile(){
-      if(!this.getCurrentUser || !this.getCurrentUser.churchName) return "";
-      return this.getCurrentUser.churchName;
-    }
+    // churchProfile(){
+    //   if(!this.getCurrentUser || !this.getCurrentUser.churchName) return "";
+    //   return this.getCurrentUser.churchName;
+    // }
 
   },
   methods:{
@@ -195,7 +196,6 @@ export default {
         let response = await axios.post(`/api/Settings/ActivateChurchUser?churchUserEmail=${email}`);
         console.log(response);
          this.churchUsers.users[index].status = "Active";
-        console.log();
         this.$toast.add({severity:'success', summary: '', detail:'Status Make Active', life: 3000});
       }catch(error){
         finish()
@@ -260,9 +260,30 @@ export default {
         }
 
   }, 
+  mounted(){
+    
+
+  },
   created() {
+    if(store.getters.currentUser === new Object()){
+     
+          this.churchProfile = store.getters.currentUser
+          console.log(store.getters.currentUser)
+          console.log("current user found");
+        }else{
+           axios
+            .get(`/api/Membership/GetCurrentSignedInUser`)
+            .then((response) =>{
+                this.churchProfile = response.data;
+                console.log(this.churchProfile.churchName);
+                 console.log("no current user found");
+        })
+            .catch((error)=> console.log(error))
+          
+        }
     this.churchUser()
     this.currentUser()
+     
   },
 };
 </script>

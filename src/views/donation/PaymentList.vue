@@ -2,20 +2,22 @@
 <div class="row container-top">
           <div class="col-12 table">
             <div class="top-con">
-              <div class="table-top my-4 px-4">
-                <div class="select-all"></div>
-                <div class="filter">
-                  <p @click="toggleFilterFormVissibility" class="mt-2">
-                    <i class="fas fa-filter"></i>
-                    FILTER
-                  </p>
-                </div>
-                <p @click="toggleSearch" class="search-text text-right mt-2">
-                  <i class="pi pi-search"></i> SEARCH
-                </p>
-                <div class="search d-flex ml-2">
+              <div class="table-top w-100 my-3 select-all  px-4">
+                <!-- <div class="select-all col-1"></div> -->
+                <div class="row w-100">
+                    <div class="col-md-6 col-sm-6 col-12 text-center ">
+                      <p @click="toggleFilterFormVissibility" class="mt-2">
+                        <i class="fas fa-filter"></i>
+                        FILTER
+                      </p>
+                    </div>
+                      
+                <div class="col-md-6 col-sm-6 col-12">
+                  <p @click="toggleSearch" class=" mt-2 ">
+                      <i class="pi pi-search"></i>{{!searchIsVisible ? 'SEARCH' : ""}}
+                    </p>
                   <label
-                    class="label-search d-flex"
+                    class="label-search d-flex m-auto m-sm-0 m-md-0"
                     :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
                   >
                     <input
@@ -28,6 +30,7 @@
                       <i class="pi pi-search"></i>
                     </span>
                   </label>
+                </div>
                 </div>
               </div>
             </div>
@@ -103,15 +106,15 @@
 
            
             <div class="row table-header">
-                <div class="col-sm-3 d-none d-sm-block">
+                <div class="col-sm-4 d-none d-sm-block">
                     NAME
                 </div>
-                    <div class="col-sm-2 d-none d-sm-block">
+                    <div class="col-sm-3 d-none d-sm-block">
                     BANK
                 </div>
-                    <div class="col-sm-2 d-none d-sm-block">
+                    <!-- <div class="col-sm-2 d-none d-sm-block">
                     AMOUNT
-                </div>
+                </div> -->
                     <div class="col-sm-2 d-none d-sm-block">
                     DATE
                 </div>
@@ -121,15 +124,15 @@
             </div>
             <div class="table-body row" v-for="item in paymentList" :key="item.id">
                 <div class="col-6 d-block d-sm-none">
-                <div class="col-sm-3">
+                <div class="col-sm-4">
                     NAME
                 </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                     BANK
                 </div>
-                    <div class="col-sm-2">
+                    <!-- <div class="col-sm-2">
                     AMOUNT
-                </div>
+                </div> -->
                     <div class="col-sm-2">
                     DATE
                 </div>
@@ -139,22 +142,22 @@
             </div>
             <div class="col-6 col-sm-12">
                 <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-4 text-right text-sm-left text-md-left ">
                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.name }}</router-link>
                 </div>
-                <div class="col-sm-2">
-                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.bankName }}</router-link>
+                <div class="col-sm-3 text-right text-sm-left text-md-left">
+                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color  ">{{ item.bankName }}</router-link>
                 </div>
-                <div class="col-sm-2">
-                     <!-- <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">10</router-link> -->
-                </div>
-                <div class="col-sm-2">
+                <!-- <div class="col-sm-2">
+                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.amount }}</router-link>
+                </div> -->
+                <div class="col-sm-2 text-right text-sm-left text-md-left">
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ date(item.date) }}</router-link>
                 </div>
-                <div class="col-sm-2" >
+                <div class="col-sm-2 text-right text-sm-left text-md-left" >
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.isActive ? "Active" : "Inactive" }}</router-link>
                 </div>
-                <div class="col-sm-1">
+                <div class="col-sm-1 text-right text-sm-left text-md-left">
                     <div class="dropdown">
               <i
                 class="fas fa-ellipsis-v cursor-pointer"
@@ -402,6 +405,19 @@ header {
 .itemroute-color:hover {
   text-decoration: none;
 }
+@media screen and (max-width: 660px) {
+
+    .filter{
+      width: 50%;
+    }
+    .table-top {
+    font-weight: 800;
+    font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
 
 
 
