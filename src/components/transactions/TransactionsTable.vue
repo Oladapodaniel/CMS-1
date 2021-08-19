@@ -261,7 +261,7 @@
               </div>
             </div>
             <!-- :class="{ 'slide-form' : showEditTransaction, 'hide-form' : !showEditTransaction }" -->
-            <div class="table edit-transac col-12 mobile-form w-100" v-if="showEditTransaction">
+            <div class="table edit-transac col-12 border col-sm-10 col-md-8 w-100 w-sm-50 w-md-50 w-lg-50 col-lg-4 mobile-form mywidt " v-if="showEditTransaction">
               <TransactionForm
                 v-if="transactionDetails.type !== 'ledger'"
                 @close-it="closeIt"
@@ -696,9 +696,7 @@ export default {
 html {
   scroll-behavior: smooth;
 }
-.removeTable{
-  display: none;
-}
+
 
 .events {
   font: normal normal 800 29px Nunito sans;
@@ -830,6 +828,20 @@ html {
     transition: all 0.5s ease-in-out;
   }
 }
+@media screen and (max-width: 991px) {
+
+  .removeTable{
+        display: none;
+  }
+
+}
+@media screen and (max-width: 991px) {
+
+  .table.edit-transac{
+        border-radius: 22px;
+  }
+
+}
 
 /* .parent-desc {
   display: grid;
@@ -953,7 +965,7 @@ html {
 .table.edit-transac {
   background: #dde2e6bb;
   /* margin-left: 15px; */
-  width: 50%;
+  width: 100%;
   height: fit-content;
   /* max-height: 518px;
         overflow-y: auto */
@@ -988,7 +1000,7 @@ html {
   display: flex;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 900px) {
   .parent-table {
     flex-direction: column;
   }
@@ -1018,9 +1030,13 @@ html {
     /* justify-content: end; */
     /* flex-direction: column */
   }
+  .mywidt{
+    width: 100%;
+    /* display: flex; */
+  }
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 900px) {
   .table {
     border-radius: 22px 0 22px 22px;
   }
