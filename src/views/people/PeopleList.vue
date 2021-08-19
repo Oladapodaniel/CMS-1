@@ -522,37 +522,6 @@ export default {
         });
     };
 
-    const applyFilter = () => {
-      filter.value.name =
-        filter.value.name == undefined ? "" : filter.value.name;
-      filter.value.phoneNumber =
-        filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
-
-      let url =
-        "/api/People/FilterMembers?firstname=" +
-        filter.value.name +
-        "&lastname=" +
-        filter.value.name +
-        "&phone_number=" +
-        filter.value.phoneNumber +
-        "&page=1";
-      axios
-        .get(url)
-        .then((res) => {
-          noRecords.value = true;
-          filterResult.value = res.data;
-          console.log(res.data);
-        })
-        .catch((err) => console.log(err));
-    };
-
-    const clearAll = () => {
-      filter.value.name = "";
-
-      filter.value.filterDate = "";
-      filter.value.phoneNumber = "";
-    };
-
     const hide = () => {
       filterFormIsVissible.value = false;
     };
@@ -759,6 +728,37 @@ export default {
 
     const toggleSelect = () => {
       selectAll.value = !selectAll.value;
+    };
+
+       const applyFilter = () => {
+      filter.value.name =
+        filter.value.name == undefined ? "" : filter.value.name;
+      filter.value.phoneNumber =
+        filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
+
+      let url =
+        "/api/People/FilterMembers?firstname=" +
+        filter.value.name +
+        "&lastname=" +
+        filter.value.name +
+        "&phone_number=" +
+        filter.value.phoneNumber +
+        "&page=1";
+      axios
+        .get(url)
+        .then((res) => {
+          noRecords.value = true;
+          filterResult.value = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    const clearAll = () => {
+      filter.value.name = "";
+
+      filter.value.filterDate = "";
+      filter.value.phoneNumber = "";
     };
 
      // Tosin
