@@ -227,7 +227,8 @@
 
         <!-- tosin 2 -->
         <loadingComponent :loading="loading" />
-        <div
+        <div v-if="!loading">
+          <div
           class="table-body mt-2 py-1"
           v-for="person in searchMember"
           :key="person.id"
@@ -397,6 +398,7 @@
           </div>
 
           <hr class="row-divider" />
+        </div>
         </div>
         <!-- <div class="row py-3" v-if="loading">
           <div class="col-md-11 mx-auto d-flex justify-content-center">
