@@ -401,7 +401,7 @@
                             <div class="col-md-11 mx-auto d-flex justify-content-center"
                             ><i class="pi pi-spin text-primary pi-spinner" style="fontSize: 3rem"></i>
                             </div>
-                            <p class="col text-primary mx-auto d-flex justify-content-center my-3">Be Patient While We Search</p>
+                            <p class="col text-primary mx-auto d-flex justify-content-center my-3">Be patient while we search</p>
                         </div>
 
         <div
@@ -409,7 +409,7 @@
           v-if="listOfFirsttimers.length === 0 && churchMembers.length !== 0 && !loading "
         >
           <p class="text-danger d-flex justify-content-center">
-          Record Not Available
+          Record not available in database
           </p>
         </div>
         <!-- tosin 2 -->
@@ -506,37 +506,6 @@ export default {
     };
     firstTimerSummary();
 
-    // Tosin
-    const loading = ref(false);
-    const searchNamesInDB = ref([]);
-    const searchMemberInDB = (event) => {
-      console.log("munachi", "🎉🎉🎉");
-      loading.value = true;
-      let url =
-        "/api/People/FilterFirstTimers?firstname=" +
-        event.target.value +
-        "&lastname=" +
-        event.target.value +
-        "&phone_number=" +
-        event.target.value +
-        "&page=1";
-      axios
-        .get(url)
-        .then((res) => {
-          loading.value = false
-          searchNamesInDB.value = res.data;
-        })
-        .catch((err) => {
-          console.log(err)
-          loading.value = false
-        });
-    };
-
-    const listOfFirsttimers = computed(() => {
-      if (searchText.value !== "") return searchNamesInDB.value;
-      return churchMembers.value;
-    });
-    // Tosin
 
     const totalFirsttimersCount = computed(() => {
       if (
@@ -649,6 +618,57 @@ export default {
         })
         .catch((err) => console.log(err));
     };
+
+    const searchMember = computed(() => {
+      if (searchText.value !== "") {
+        return churchMembers.value.filter((i) => {
+          return `${i.fullName}${i.phoneNumber}`
+            .toLowerCase()
+            .includes(searchText.value.toLowerCase());
+        });
+      } else if (
+        filterResult.value.length > 0 &&
+        (filter.value.name || filter.value.phoneNumber)
+      ) {
+        return filterResult.value;
+      } else {
+        return churchMembers.value;
+      }
+    });
+
+    // Tosin
+    const loading = ref(false);
+    const searchNamesInDB = ref([]);
+    const searchMemberInDB = (event) => {
+      console.log("munachi", "🎉🎉🎉");
+      loading.value = true;
+      let url =
+        "/api/People/FilterFirstTimers?firstname=" +
+        event.target.value +
+        "&lastname=" +
+        event.target.value +
+        "&phone_number=" +
+        event.target.value +
+        "&page=1";
+      axios
+        .get(url)
+        .then((res) => {
+          loading.value = false
+          searchNamesInDB.value = res.data;
+        })
+        .catch((err) => {
+          console.log(err)
+          loading.value = false
+        });
+    };
+
+    const listOfFirsttimers = computed(() => {
+      if (searchText.value !== "") return searchNamesInDB.value;
+      return churchMembers.value;
+    });
+    // Tosin
+
+
 
     const membersCount = computed(() => {
       if (getFirstTimerSummary.value.totalFirstTimer > 100)
@@ -933,7 +953,8 @@ export default {
       searchMemberInDB,
       searchNamesInDB,
       listOfFirsttimers,
-      loading
+      loading,
+      searchMember
     };
   },
 };
