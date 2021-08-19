@@ -3,35 +3,42 @@
     <div class="main-co">
       <div class="main-bod">
         <div class="top container-wide mt-3">
-          <div class="header">
-            <div class="events">Transaction</div>
-          </div>
-          <div class="actions">
-            <button
-              class="more-btn align-items-center default-btn border-0"
-              @click="toggleTransac(1)"
-            >
-              Add Income
-            </button>
+           <div class="header ">
+                <div class="events">Transaction</div>
+              </div>
+          <div class="row  justify-content-center">
+            <!-- <div class="actions"> -->
+              <div class="col-md-4 col-8  col-sm-3 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
+                 <button
+                    class="more-btn align-items-center justify-content-center d-flex w-100 default-btn border-0"
+                    @click="toggleTransac(1)"
+                  >
+                    Add Income
+                  </button>
+              </div>
+                 
+              <div class="col-md-4 col-8  col-sm-3 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+                <button
+                  class="more-btn align-items-center justify-content-center d-flex w-100 default-btn border-0"
+                  @click="toggleTransac(2)">
+                   Add Expense
+                </button>
+              </div>
+              <div class="col-md-4 col-8  col-sm-3 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+                <a class="dropdown show more-btn align-items-center justify-content-center w-100 d-flex default-btn border-0 text-decoration-none">
+                  <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                  </a>
 
-            <button
-              class="more-btn align-items-center default-btn border-0"
-              @click="toggleTransac(2)"
-            >
-              Add Expense
-            </button>
-
-            <!-- <button class="more-btn align-items-center default-btn border-0"> -->
-              <a class="dropdown show more-btn align-items-center default-btn border-0 text-decoration-none">
-                <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  More
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item c-pointer" @click="toggleTransac(3)">General Ledger</a>
+                  </div>
                 </a>
-
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item c-pointer" @click="toggleTransac(3)">General Ledger</a>
-                </div>
-              </a>
-            <!-- </button> -->
+              </div>
+                  <!-- <button class="more-btn align-items-center default-btn border-0"> -->
+                    
+                  <!-- </button> -->
+            <!-- </div> -->
           </div>
         </div>
 
@@ -39,11 +46,11 @@
           <div class="col-12 col-sm-8 col-lg-6 px-0 mt-5">
             <div class="d-flex">
               <button
-                class="form-control transaction-button close-modal"
+                class="form-control  align-items-center d-flex transaction-button close-modal"
                 @click="toggleAccount"
               >
                 <div class="close-modal">{{ selectedTransaction.type }}</div>
-                <div class="close-modal"> {{ selectedTransaction.amount }}</div>
+                <div class="close-modal  mr-2"> {{ selectedTransaction.amount }}</div>
               </button>
               <i
                 class="pi pi-angle-down arrow-icon close-modal"
@@ -712,6 +719,7 @@ html {
 
 .more-btn {
   background: #dde2e6;
+  /* overflow: hidden; */
 }
 
 .more-btn:first-child,

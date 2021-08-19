@@ -14,15 +14,18 @@
           </form> -->
          
 
-        <p style="margin-top: 20px">If you think you have arrived here by our mistake, please <a href="#">contact us</a></p>
+        <p style="margin-top: 20px">If you think you have arrived here by our mistake, please <a href="https://wa.me/+2348023739961" class="text-decoration-none" >contact us</a></p>
       </div>
       <!-- <div class="col-md-4 d-none d-md-block">
             <img src="../../assets/expired-sub.png" />
           </div> -->
-      <div class="col-md-6"><button class="btn btn-primary mt-4 "  @click.prevent="goBack"> <i class="pi pi-arrow-left" aria-hidden="true"></i>  Go Back</button></div>
+      <div class="col-md-6"><button class="btn primary-bg default-btn border-0 text-white mt-4 "  @click.prevent="goBack">Go Back</button></div>
         <div class="col-md-6 text-right " > <button class="default-btn btn text-dark c-pointer hovar font-weight-bold  text-center  mt-4" @click="logout">Logout</button> </div>
-        <div class="col-md-12 text-right">
-          <h3>Chat with us now:</h3>
+        <div class="row d-flex justify-content-end w-100 mt-5">
+          <div class="text-center">
+            <div class="chat">Chat with us</div>
+            <a class="mt-2" href="https://wa.me/+2348023739961"><img src="../../assets/WhatsApp.svg" style="width: 70px"/></a>
+          </div>
         </div>
 
     </div>
@@ -70,6 +73,12 @@ html, body {
   background-attachment: fixed;
   text-align: center; }
 
+
+.chat {
+    font-weight: 600;
+    font-size: 1.2em;
+    color: #e9a063;
+  }
 
 .container {
   margin-top: 8%; }

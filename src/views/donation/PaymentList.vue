@@ -2,26 +2,22 @@
 <div class="row container-top">
           <div class="col-12 table">
             <div class="top-con">
-              <div class="table-top my-4 select-all  px-4">
+              <div class="table-top w-100 my-3 select-all  px-4">
                 <!-- <div class="select-all col-1"></div> -->
-                <div class="filter col-md-3">
-                  <p @click="toggleFilterFormVissibility" class="mt-2">
-                    <i class="fas fa-filter"></i>
-                    FILTER
-                  </p>
-                </div>
-                <p @click="toggleSearch" class=" mt-2 mr-1">
-                      <i class="pi pi-search"></i> SEARCH
+                <div class="row w-100">
+                    <div class="col-md-6 col-sm-6 col-12 text-center ">
+                      <p @click="toggleFilterFormVissibility" class="mt-2">
+                        <i class="fas fa-filter"></i>
+                        FILTER
+                      </p>
+                    </div>
+                      
+                <div class="col-md-6 col-sm-6 col-12">
+                  <p @click="toggleSearch" class=" mt-2 ">
+                      <i class="pi pi-search"></i>{{!searchIsVisible ? 'SEARCH' : ""}}
                     </p>
-                
-                
-                <div class="search d-flex">
-                  <!-- <div class="col-4"> -->
-                    
-                <!-- </div> -->
-                 
                   <label
-                    class="label-search d-flex"
+                    class="label-search d-flex m-auto m-sm-0 m-md-0"
                     :class="{ 'show-search': searchIsVisible, 'hide-search' : !searchIsVisible }"
                   >
                     <input
@@ -34,6 +30,7 @@
                       <i class="pi pi-search"></i>
                     </span>
                   </label>
+                </div>
                 </div>
               </div>
             </div>
@@ -145,22 +142,22 @@
             </div>
             <div class="col-6 col-sm-12">
                 <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-4 text-right text-sm-left text-md-left ">
                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.name }}</router-link>
                 </div>
-                <div class="col-sm-3">
-                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.bankName }}</router-link>
+                <div class="col-sm-3 text-right text-sm-left text-md-left">
+                     <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color  ">{{ item.bankName }}</router-link>
                 </div>
                 <!-- <div class="col-sm-2">
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.amount }}</router-link>
                 </div> -->
-                <div class="col-sm-2">
+                <div class="col-sm-2 text-right text-sm-left text-md-left">
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ date(item.date) }}</router-link>
                 </div>
-                <div class="col-sm-2" >
+                <div class="col-sm-2 text-right text-sm-left text-md-left" >
                      <router-link :to="`/tenant/payments/${item.id}`" class="itemroute-color">{{ item.isActive ? "Active" : "Inactive" }}</router-link>
                 </div>
-                <div class="col-sm-1">
+                <div class="col-sm-1 text-right text-sm-left text-md-left">
                     <div class="dropdown">
               <i
                 class="fas fa-ellipsis-v cursor-pointer"
@@ -411,7 +408,7 @@ header {
 @media screen and (max-width: 660px) {
 
     .filter{
-      width: 60%;
+      width: 50%;
     }
     .table-top {
     font-weight: 800;
