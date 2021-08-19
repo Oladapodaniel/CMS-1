@@ -233,9 +233,6 @@
                 </button>
 
             </div>
-            <!-- <div class="col-12 col-sm-10 offset-sm-1 col-md-5 offset-md-4 mt-5">
-                    <img src="../../assets/payment-options.png" class="w-100" style="opacity: 0.9">
-            </div> -->
             </div>
         </form>
         <ConfirmDialog />

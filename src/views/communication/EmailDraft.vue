@@ -221,7 +221,7 @@ export default {
         return drafts.value;
       console.log(drafts.value, "🎈🎈");
       return drafts.value.filter((i) => {
-        i.body.toLowerCase().includes(searchMails.value.toLocaleLowerCase());
+        i.body.toLowerCase().includes(searchMails.value.toLowerCase());
       });
     });
 

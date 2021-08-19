@@ -31,13 +31,14 @@
         <div class="col-12 px-0" id="table">
           <div class="top-con" id="ignore2">
             <div class="table-top">
-              <!-- <div class="col-4">
-                <p @click="toggleSearch" class="search-text w-100 mt-2">
-                  <i class="pi pi-search"></i> SEARCH
+              <div class="col-4">
+                <p @click="toggleSearch" class="search-text w-100 mt-2 d-flex justify-content-center">
+                  <i class="pi pi-search"></i>SEARCH
                 </p>
-              </div> -->
+              </div>
 
-              <div class="search d-flex ml-2">
+              <div class="search d-flex ml-2 mr-3"
+               >
                 <label
                   class="label-search d-flex"
                   :class="{
@@ -50,8 +51,12 @@
                     placeholder="Search..."
                     v-model="searchText"
                   />
-                  <span class="empty-btn">x</span>
-                  <span class="search-btn">
+                  <span class="empty-btn"
+                        @click="clearInput">
+                        <i class="pi pi-times"></i
+                ></span>
+                  <span class="search-btn"
+                  @click="removeSearchText">
                     <i class="pi pi-search"></i>
                   </span>
                 </label>
@@ -150,7 +155,7 @@
 
 
 
-                <div class="row w-100 c-pointer text-dark tr-border-bottom hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in groups" :key="index">
+                <div class="row w-100 c-pointer text-dark border-top hover d-flex align-items-center" style="margin: 0" v-for="(group, index) in searchGroup" :key="index">
 
                   <div class="col-md-1 d-flex d-md-block px-3 justify-content-end"></div>
 
@@ -246,7 +251,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import groupsService from "../../services/groups/groupsservice";
 import { useStore } from "vuex";
 import { useConfirm } from "primevue/useConfirm";
@@ -314,11 +319,38 @@ export default {
       }
     };
     if (!groups.value || groups.value.length === 0) getgroups();
+
+    const searchIsVisible = ref(false);
+      const toggleSearch = () => {
+      searchIsVisible.value = !searchIsVisible.value;
+    };
+
+    let searchText = ref("");
+    const searchGroup = computed(() => {
+     if (searchText.value !== "" && groups.value.length > 0)  {
+       return groups.value.filter((i) => {
+            return i.name.toLowerCase().includes(searchText.value.toLowerCase())
+      })
+     }  else {
+       return groups.value;
+     }
+
+    });
+    const removeSearchText = () => {
+        searchText = "";
+    }
+
+
     return {
       groups,
       loading,
       displayConfirmModal,
       confirmDelete,
+      searchIsVisible,
+      searchText,
+      toggleSearch,
+      searchGroup,
+      removeSearchText,
     };
   },
 };
