@@ -228,7 +228,7 @@
         <!-- tosin 2 -->
         <div
           class="table-body mt-2 py-1"
-          v-for="person in listOfFirsttimers"
+          v-for="person in searchMember"
           :key="person.id"
         >
           <div class="data-row">
@@ -619,37 +619,20 @@ export default {
         .catch((err) => console.log(err));
     };
 
-    const searchMember = computed(() => {
-      if (searchText.value !== "") {
-        return churchMembers.value.filter((i) => {
-          return `${i.fullName}${i.phoneNumber}`
-            .toLowerCase()
-            .includes(searchText.value.toLowerCase());
-        });
-      } else if (
-        filterResult.value.length > 0 &&
-        (filter.value.name || filter.value.phoneNumber)
-      ) {
-        return filterResult.value;
-      } else {
-        return churchMembers.value;
-      }
-    });
-
     // Tosin
     const loading = ref(false);
     const searchNamesInDB = ref([]);
-    const searchMemberInDB = (event) => {
-      console.log("munachi", "🎉🎉🎉");
+    const searchMemberInDB = () => {
       loading.value = true;
       let url =
         "/api/People/FilterFirstTimers?firstname=" +
-        event.target.value +
+        searchText.value +
         "&lastname=" +
-        event.target.value +
+        searchText.value +
         "&phone_number=" +
-        event.target.value +
+        searchText.value +
         "&page=1";
+        console.log(searchText.value, "✌️✌️✌️");
       axios
         .get(url)
         .then((res) => {
@@ -668,7 +651,25 @@ export default {
     });
     // Tosin
 
+      const searchMember = computed(() => {
+      if (searchText.value !== "" &&  searchNamesInDB.value > 0) {
+        return searchNamesInDB.value
+        // return churchMembers.value.filter((i) => {
+        //   return `${i.fullName}${i.phoneNumber}`
+        //     .toLowerCase()
+        //     .includes(searchText.value.toLowerCase());
+        // });
+      } else if (
+        // filterResult.value.length > 0 &&
+        // (filter.value.name || filter.value.phoneNumber)
+         filterResult.value.length > 0
 
+      ) {
+        return filterResult.value;
+      } else {
+        return churchMembers.value;
+      }
+    });
 
     const membersCount = computed(() => {
       if (getFirstTimerSummary.value.totalFirstTimer > 100)
