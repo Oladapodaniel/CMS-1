@@ -105,6 +105,7 @@ const membershipService = {
         return new Promise((resolve, reject) => {
             axios.put(`/api/AssignPeopleToGroup/${groupId}`, data)
                 .then(res => {
+                    console.log(res)
                     resolve(res.data);
                 })
                 .catch(error => {

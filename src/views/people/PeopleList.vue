@@ -293,27 +293,18 @@
                 </div>
                 <div class="data-value">
                   <div class="image-con">
-                    <div v-if="person.gender == 'Male'">
-                      <img
-                        src="../../assets/people/avatar-male.png"
-                        alt=""
-                        style="border-radius: 50%; height: 26px; width: 55%"
-                      />
-                    </div>
-                    <div v-else-if="person.gender == 'Female'">
-                      <img
-                        src="../../assets/people/avatar-female.png"
-                        alt=""
-                        style="height: 26px; width: 55%"
-                      />
-                    </div>
-                    <div v-else>
-                      <img
-                        src="../../assets/people/no-gender-avatar.png"
-                        alt=""
-                        style="height: 26px; width: 55%"
-                      />
-                    </div>
+                   <img
+                      :src="person.pictureUrl"
+                      alt=""
+                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
+                      v-if="person.pictureUrl"
+                    />
+                    <img
+                      src="../../assets/people/avatar-male.png"
+                      alt=""
+                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
+                      v-else
+                    />
                   </div>
                 </div>
               </div>
@@ -781,13 +772,14 @@ export default {
         .then((res) => {
           loading.value = false;
           searchPeopleNamesInDB.value = res.data.map((i) => {
-            return {
-              firstName: i.name.split(" ")[0],
-              lastName: i.name.split(" ")[1],
-              mobilePhone: i.phone,
-              email: i.email,
-            };
-          });
+              return {
+                firstName : i.name.split(" ")[0],
+                lastName: i.name.split(" ")[1],
+                mobilePhone: i.phone,
+                email : i.email,
+                id: i.id
+              }
+          })
         })
         .catch((err) => {
           loading.value = false;
