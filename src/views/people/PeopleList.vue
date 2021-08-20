@@ -139,9 +139,12 @@
               'hide-search': !searchIsVisible,
             }"
           >
-            <input type="text" placeholder="Search..." v-model="searchText"
-            @input="searchPeopleInDB"
-             />
+            <input
+              type="text"
+              placeholder="Search..."
+              v-model="searchText"
+              @input="searchPeopleInDB"
+            />
             <span class="empty-btn" @click="clearInput"
               ><i class="pi pi-times"></i
             ></span>
@@ -266,169 +269,163 @@
         </div>
       </div>
 
-      <div
-        class="table-body"
-        v-for="(person, index) in searchMember"
-        :key="person.id"
-      >
-        <div class="data-row">
-          <div class="check data">
-            <input
-              type="checkbox"
-              name=""
-              id=""
-              @change="markOne(person)"
-              :checked="marked.findIndex((i) => i.id === person.id) >= 0"
-            />
-          </div>
-          <div class="picture data">
-            <div class="data-con">
-              <div class="data-text">
-                <p>Picture</p>
-              </div>
-              <div class="data-value">
-                <div class="image-con">
-                  <div v-if="person.gender == 'Male'">
+         <loadingComponent :loading="loading" />
+      <div v-if="!loading">
+        <div
+          class="table-body"
+          v-for="(person, index) in searchMember"
+          :key="person.id"
+        >
+          <div class="data-row">
+            <div class="check data">
+              <input
+                type="checkbox"
+                name=""
+                id=""
+                @change="markOne(person)"
+                :checked="marked.findIndex((i) => i.id === person.id) >= 0"
+              />
+            </div>
+            <div class="picture data">
+              <div class="data-con">
+                <div class="data-text">
+                  <p>Picture</p>
+                </div>
+                <div class="data-value">
+                  <div class="image-con">
+                   <img
+                      :src="person.pictureUrl"
+                      alt=""
+                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
+                      v-if="person.pictureUrl"
+                    />
                     <img
                       src="../../assets/people/avatar-male.png"
                       alt=""
-                      style="border-radius: 50%; height: 26px; width: 55%"
-                    />
-                  </div>
-                  <div v-else-if="person.gender == 'Female'">
-                    <img
-                      src="../../assets/people/avatar-female.png"
-                      alt=""
-                      style="height: 26px; width: 55%"
-                    />
-                  </div>
-                  <div v-else>
-                    <img
-                      src="../../assets/people/no-gender-avatar.png"
-                      alt=""
-                      style="height: 26px; width: 55%"
+                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
+                      v-else
                     />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="firstname data">
-            <div class="data-con">
-              <div class="data-text">
-                <p>Firstname</p>
-              </div>
-              <router-link
-                :to="`/tenant/people/add/${person.id}`"
-                class="data-value small-text text-secondary itemroute-color"
-                >{{ person.firstName }}</router-link
-              >
-            </div>
-          </div>
-          <div class="lastname data">
-            <div class="data-con">
-              <div class="data-text">
-                <p>Lastname</p>
-              </div>
-              <router-link
-                :to="`/tenant/people/add/${person.id}`"
-                class="data-value small-text text-secondary itemroute-color"
-                >{{ person.lastName }}</router-link
-              >
-            </div>
-          </div>
-          <div class="phone data">
-            <div class="data-con mr-4">
-              <div class="data-text">
-                <p>Phone</p>
-              </div>
-              <router-link
-                :to="`/tenant/people/add/${person.id}`"
-                class="
-                  data-value
-                  small-text
-                  text-left text-secondary
-                  itemroute-color
-                "
-                >{{ person.mobilePhone }}</router-link
-              >
-            </div>
-          </div>
-          <div class="action data action-icon">
-            <div class="data-text">
-              <p>Action</p>
-            </div>
-            <div class="dropdown text-left">
-              <i
-                class="fas fa-ellipsis-v cursor-pointer alignLeft"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              ></i>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item elipsis-items">
-                  <router-link
-                    :to="
-                      person.mobilePhone
-                        ? `/tenant/sms/compose?phone=${person.mobilePhone}`
-                        : ''
-                    "
-                    :class="{
-                      'fade-text': !person.mobilePhone,
-                      'text-color': person.mobilePhone,
-                    }"
-                    >Send SMS</router-link
-                  >
-                </a>
-                <a class="dropdown-item elipsis-items">
-                  <router-link
-                    :to="
-                      person.email
-                        ? `/tenant/email/compose?phone=${person.email}`
-                        : ''
-                    "
-                    :class="{
-                      'fade-text': !person.email,
-                      'text-color': person.email,
-                    }"
-                    >Send Email</router-link
-                  >
-                </a>
-                <a class="dropdown-item elipsis-items">
-                  <router-link
-                    :to="`/tenant/people/add/${person.id}`"
-                    class="text-color"
-                    >Edit</router-link
-                  >
-                </a>
-                <a
-                  class="dropdown-item elipsis-items text-color cursor-pointer"
-                  @click.prevent="showConfirmModal(person.id, index)"
-                  >Delete</a
+            <div class="firstname data">
+              <div class="data-con">
+                <div class="data-text">
+                  <p>Firstname</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/add/${person.id}`"
+                  class="data-value small-text text-secondary itemroute-color"
+                  >{{ person.firstName }}</router-link
                 >
               </div>
             </div>
+            <div class="lastname data">
+              <div class="data-con">
+                <div class="data-text">
+                  <p>Lastname</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/add/${person.id}`"
+                  class="data-value small-text text-secondary itemroute-color"
+                  >{{ person.lastName }}</router-link
+                >
+              </div>
+            </div>
+            <div class="phone data">
+              <div class="data-con mr-4">
+                <div class="data-text">
+                  <p>Phone</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/add/${person.id}`"
+                  class="
+                    data-value
+                    small-text
+                    text-left text-secondary
+                    itemroute-color
+                  "
+                  >{{ person.mobilePhone }}</router-link
+                >
+              </div>
+            </div>
+            <div class="action data action-icon">
+              <div class="data-text">
+                <p>Action</p>
+              </div>
+              <div class="dropdown text-left">
+                <i
+                  class="fas fa-ellipsis-v cursor-pointer alignLeft"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                ></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item elipsis-items">
+                    <router-link
+                      :to="
+                        person.mobilePhone
+                          ? `/tenant/sms/compose?phone=${person.mobilePhone}`
+                          : ''
+                      "
+                      :class="{
+                        'fade-text': !person.mobilePhone,
+                        'text-color': person.mobilePhone,
+                      }"
+                      >Send SMS</router-link
+                    >
+                  </a>
+                  <a class="dropdown-item elipsis-items">
+                    <router-link
+                      :to="
+                        person.email
+                          ? `/tenant/email/compose?phone=${person.email}`
+                          : ''
+                      "
+                      :class="{
+                        'fade-text': !person.email,
+                        'text-color': person.email,
+                      }"
+                      >Send Email</router-link
+                    >
+                  </a>
+                  <a class="dropdown-item elipsis-items">
+                    <router-link
+                      :to="`/tenant/people/add/${person.id}`"
+                      class="text-color"
+                      >Edit</router-link
+                    >
+                  </a>
+                  <a
+                    class="
+                      dropdown-item
+                      elipsis-items
+                      text-color
+                      cursor-pointer
+                    "
+                    @click.prevent="showConfirmModal(person.id, index)"
+                    >Delete</a
+                  >
+                </div>
+              </div>
+            </div>
           </div>
+          <hr class="row-divider" />
         </div>
-        <hr class="row-divider" />
       </div>
-       <div class="row py-3" v-if="loading">
-                            <div class="col-md-11 mx-auto d-flex justify-content-center"
-                            ><i class="pi pi-spin text-primary pi-spinner" style="fontSize: 3rem"></i>
-                            </div>
-                            <p class="col text-primary mx-auto d-flex justify-content-center my-3">Be patient while we search</p>
-                        </div>
-
-      <!-- tosin -->
+     <!-- tosin -->
       <div
-          class="col-md-12 col py-3"
-          v-if="listOfPeople.length === 0 && churchMembers.length !== 0 && !loading"
-        >
-          <p class="text-danger d-flex justify-content-center">
-          Record not available in database
-          </p>
-        </div>
+        class="col-md-12 col py-3"
+        v-if="
+          listOfPeople.length === 0 && churchMembers.length !== 0 && !loading
+        "
+      >
+        <p class="text-danger d-flex justify-content-center">
+          Record not available
+        </p>
+      </div>
       <!-- tosin -->
       <div class="table-footer">
         <PaginationButtons
@@ -454,6 +451,7 @@ import stopProgressBar from "../../services/progressbar/progress";
 import membershipservice from "../../services/membership/membershipservice";
 import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
+import loadingComponent from "@/components/loading/LoadingComponent";
 
 export default {
   props: ["list", "peopleCount"],
@@ -462,6 +460,7 @@ export default {
     ByMaritalStatusChart,
     PaginationButtons,
     Dropdown,
+    loadingComponent,
   },
 
   directives: {
@@ -476,7 +475,7 @@ export default {
     const filterResult = ref([]);
     const selectAll = ref(false);
     const noRecords = ref(false);
-    const loading = ref(false)
+    const loading = ref(false);
     const searchText = ref("");
     // const store = useStore();
 
@@ -730,7 +729,7 @@ export default {
       selectAll.value = !selectAll.value;
     };
 
-       const applyFilter = () => {
+    const applyFilter = () => {
       filter.value.name =
         filter.value.name == undefined ? "" : filter.value.name;
       filter.value.phoneNumber =
@@ -761,13 +760,13 @@ export default {
       filter.value.phoneNumber = "";
     };
 
-     // Tosin
+    // Tosin
     const searchPeopleNamesInDB = ref([]);
     const searchPeopleInDB = () => {
       loading.value = true;
       let url =
         //  "/api/People/FilterFirstTimers?firstname=" +
-         `/api/Membership/GetSearchedUSers?searchText=${searchText.value}`
+        `/api/Membership/GetSearchedUSers?searchText=${searchText.value}`;
       axios
         .get(url)
         .then((res) => {
@@ -777,14 +776,15 @@ export default {
                 firstName : i.name.split(" ")[0],
                 lastName: i.name.split(" ")[1],
                 mobilePhone: i.phone,
-                email : i.email
+                email : i.email,
+                id: i.id
               }
           })
         })
-        .catch((err) =>{
+        .catch((err) => {
           loading.value = false;
-          console.log(err)
-        })
+          console.log(err);
+        });
     };
 
     const listOfPeople = computed(() => {
@@ -796,7 +796,7 @@ export default {
     const searchMember = computed(() => {
       if (searchText.value !== "" && searchPeopleNamesInDB.value.length > 0) {
         // return searchPeopleInDB()
-        return searchPeopleNamesInDB.value
+        return searchPeopleNamesInDB.value;
         // return churchMembers.value.filter((i) => {
         //   if (i.firstName)
         //     return `${i.firstName}${i.lastName}${i.mobilePhone}`
@@ -804,9 +804,7 @@ export default {
         //       .includes(searchText.value.toLowerCase());
         //   return "";
         // });
-      } else if (
-        filterResult.value.length > 0
-      ) {
+      } else if (filterResult.value.length > 0) {
         return filterResult.value;
       } else {
         return churchMembers.value;
@@ -917,7 +915,7 @@ export default {
       searchPeopleInDB,
       listOfPeople,
       loading,
-      searchMember
+      searchMember,
     };
   },
 };
