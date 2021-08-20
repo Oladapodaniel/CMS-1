@@ -288,28 +288,42 @@
               </div>
               <div class="data-value">
                 <div class="image-con">
-                  <div v-if="person.gender == 'Male'">
+                  <!-- <div v-if="person.gender == 'Male'"> -->
+                    <img
+                      :src="person.pictureUrl"
+                      alt=""
+                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
+                      v-if="person.pictureUrl"
+                    />
                     <img
                       src="../../assets/people/avatar-male.png"
                       alt=""
-                      style="border-radius: 50%; height: 26px; width: 55%"
+                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
+                      v-else
                     />
-                  </div>
-                  <div v-else-if="person.gender == 'Female'">
+                  <!-- </div>
+                  <div v-else-if="person.gender == 'Female'"> -->
+                    <!-- <img
+                      :src="person.pictureUrl"
+                      alt=""
+                      style="height: 26px; width: 55%"
+                      v-if="person.pictureUrl"
+                    />
                     <img
                       src="../../assets/people/avatar-female.png"
                       alt=""
                       style="height: 26px; width: 55%"
-                    />
+                      v-else
+                    /> -->
                   </div>
-                  <div v-else>
+                  <!-- <div>
                     <img
                       src="../../assets/people/no-gender-avatar.png"
                       alt=""
                       style="height: 26px; width: 55%"
                     />
-                  </div>
-                </div>
+                  </div> -->
+                <!-- </div> -->
               </div>
             </div>
           </div>
@@ -777,11 +791,10 @@ export default {
                 firstName : i.name.split(" ")[0],
                 lastName: i.name.split(" ")[1],
                 mobilePhone: i.phone,
-                email : i.email
+                email : i.email,
+                id: i.id
               }
           })
-
-          console.log(searchPeopleNamesInDB.value, "🎉🎉🎉");
         })
         .catch((err) =>{
           loading.value = false;
