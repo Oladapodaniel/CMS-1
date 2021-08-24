@@ -6,11 +6,11 @@
           <div class="header">
             <div class="events">{{ header }}</div>
           </div>
-          <div class="buttonDiv ml-n3"> 
+          <div class="buttonDiv ml-n3">
             <button class="more-btn button default-btn border-0 align-items-center" @click="importMembers">
             Import
             </button>
-      
+
             <router-link :to="`/tenant/people/add`" class="">
             <button class="add-person-btn button default-btn border-0 ml-2">
               Add Member
@@ -40,8 +40,8 @@ export default {
   setup() {
     const route = useRoute();
     // const toast = useToast()
-    // const importFile = ref("") 
-    
+    // const importFile = ref("")
+
     // const displayModal = ref(false)
     // const memberData = ref([])
     const isFormPage = computed(() => {
@@ -80,7 +80,7 @@ export default {
     //   importFile.value.click()
     // }
 
-    
+
 
     // const closeModal = () => {
     //   displayModal.value = false
@@ -105,7 +105,7 @@ export default {
     //       life: 4000,
     //     });
     //     }
-        
+
     //   }
     //   catch  (err) {
     //     finish()
@@ -259,5 +259,6 @@ export default {
 .buttonDiv {
   display: flex;
 }
+
 </style>
 

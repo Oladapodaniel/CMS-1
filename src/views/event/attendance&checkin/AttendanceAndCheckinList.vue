@@ -5,11 +5,11 @@
     <div class="col-12 px-0" id="table">
       <div class="top-con" id="ignore2">
         <div class="table-top">
-          <!-- <div class="col-4">
+          <div class="col-4">
                 <p @click="toggleSearch" class="search-text w-100 mt-2">
                   <i class="pi pi-search"></i> SEARCH
                 </p>
-              </div> -->
+              </div>
 
           <div class="search d-flex ml-2">
             <label
@@ -20,7 +20,8 @@
               }"
             >
               <input type="text" placeholder="Search..." v-model="searchText" />
-              <span class="empty-btn">x</span>
+              <span class="empty-btn"
+              @click="removeSearchText">x</span>
               <span class="search-btn">
                 <i class="pi pi-search"></i>
               </span>
@@ -149,19 +150,12 @@
                 py-2
               "
               style="margin: 0"
-              v-for="(item, index) in list"
+              v-for="(item, index) in searchAttendance"
               :key="index"
             >
               <div
                 class="col-md-1 d-flex d-md-block px-3 justify-content-end"
               ></div>
-
-              <!-- <div class="col-md-2 col-sm-2 d-md-flex align-items-center">
-                    <input
-                      class="my-2 d-flex justify-content-end"
-                      type="checkbox"
-                    />
-                  </div> -->
 
               <div class="col-md-3 desc">
                 <p class="mb-0 d-flex justify-content-between">
@@ -348,7 +342,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import dateFormatter from "../../../services/dates/dateformatter";
 import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
@@ -441,12 +435,37 @@ export default {
       });
     };
 
+      const searchIsVisible = ref(false);
+      const toggleSearch = () => {
+      searchIsVisible.value = !searchIsVisible.value;
+    };
+    let searchText = ref("");
+    const searchAttendance = computed(() => {
+      if (searchText.value !== "" && props.list.length > 0) {
+        return props.list.filter((i) => {
+          return i.fullEventName.toLowerCase().includes(searchText.value.toLowerCase())
+        })
+      } else {
+        return props.list
+      }
+
+    });
+
+     const removeSearchText = () => {
+        searchText = "";
+    }
+
     return {
       expose,
       toggleEllips,
       formatDate,
       showConfirmModal,
       deleteAttendance,
+      searchText,
+      searchAttendance,
+      toggleSearch,
+      searchIsVisible,
+      removeSearchText,
     };
   },
 };

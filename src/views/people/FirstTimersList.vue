@@ -92,6 +92,7 @@
                   type="text"
                   placeholder="Search..."
                   v-model="searchText"
+                  @input="searchMemberInDB"
                 />
                 <span class="empty-btn" @click="clearInput"
                   ><i class="pi pi-times"></i
@@ -161,7 +162,7 @@
 
         <!-- tosin -->
         <div class="table-header font-weight-700">
-          <div class="check "></div>
+          <div class="check"></div>
           <div
             class="
               picture
@@ -179,7 +180,8 @@
               firstname
               small-text
               text-dark text-capitalize
-              font-weight-bold pl-3
+              font-weight-bold
+              pl-3
             "
             style="font-size: 11px"
           >
@@ -224,9 +226,28 @@
         <!-- tosin -->
 
         <!-- tosin 2 -->
-        <div class="table-body mt-2 py-1" v-for="person in searchMember" :key="person.id">
-          <div class="data-row ">
-             <div class="mr-2"></div>
+
+         <!-- <div class="row py-3" v-if="loading">
+          <div class="col-md-11 mx-auto d-flex justify-content-center">
+            <i
+              class="pi pi-spin text-primary pi-spinner"
+              style="fontsize: 3rem"></i>
+          </div>
+          <p
+            class="col text-primary mx-auto d-flex justify-content-center my-3"
+          >
+            Be patient while we search
+          </p>
+        </div> -->
+        <loadingComponent :loading="loading" />
+        <div v-if="!loading">
+          <div
+          class="table-body mt-2 py-1"
+          v-for="person in searchMember"
+          :key="person.id"
+        >
+          <div class="data-row">
+            <div class="mr-2"></div>
             <div class="check data">
               <input
                 type="checkbox"
@@ -239,7 +260,7 @@
               />
             </div>
 
-             <div class="mr-4"></div>
+            <div class="mr-4"></div>
 
             <div class="firstname data">
               <div class="data-con">
@@ -270,9 +291,9 @@
                 >
               </div>
             </div>
-              <!-- <div class="mr-5"></div> -->
+            <!-- <div class="mr-5"></div> -->
             <div class="phone data">
-              <div class="data-con mr-4" style="text-align:right">
+              <div class="data-con mr-4" style="text-align: right">
                 <div class="data-text">
                   <p>Source</p>
                 </div>
@@ -284,8 +305,8 @@
               </div>
             </div>
 
-              <!-- <div class="mr-5"></div> -->
-            <div class="phone data" style="text-align:right">
+            <!-- <div class="mr-5"></div> -->
+            <div class="phone data" style="text-align: right">
               <div class="data-con mr-4">
                 <div class="data-text">
                   <p>Interested</p>
@@ -304,7 +325,7 @@
 
             <div class="mr-4"></div>
             <div class="phone data">
-              <div class="data-con" style="text-align:right">
+              <div class="data-con" style="text-align: right">
                 <div class="data-text text-right">
                   <p>Date</p>
                 </div>
@@ -391,6 +412,21 @@
 
           <hr class="row-divider" />
         </div>
+        </div>
+
+
+        <div
+          class="col-md-12 col py-3"
+          v-if="
+            listOfFirsttimers.length === 0 &&
+            churchMembers.length !== 0 &&
+            !loading && searchText.length === 0
+          "
+        >
+          <p class="text-danger d-flex justify-content-center">
+            Record not available in database
+          </p>
+        </div>
         <!-- tosin 2 -->
 
         <ConfirmDialog />
@@ -404,6 +440,7 @@
           />
         </div>
       </div>
+      <!-- tosin 1 -->
     </div>
 
     <OverlayPanel
@@ -443,6 +480,7 @@ import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import OverlayPanel from "primevue/overlaypanel";
+import loadingComponent from "@/components/loading/LoadingComponent"
 
 export default {
   props: ["list"],
@@ -451,6 +489,7 @@ export default {
     ByMaritalStatusChart,
     Pagination,
     OverlayPanel,
+    loadingComponent
   },
 
   setup() {
@@ -483,23 +522,6 @@ export default {
         .catch((err) => console.log(err));
     };
     firstTimerSummary();
-
-    const searchMember = computed(() => {
-      if (searchText.value !== "") {
-        return churchMembers.value.filter((i) => {
-          return `${i.fullName}${i.phoneNumber}`
-            .toLowerCase()
-            .includes(searchText.value.toLowerCase());
-        });
-      } else if (
-        filterResult.value.length > 0 &&
-        (filter.value.name || filter.value.phoneNumber)
-      ) {
-        return filterResult.value;
-      } else {
-        return churchMembers.value;
-      }
-    });
 
     const totalFirsttimersCount = computed(() => {
       if (
@@ -613,6 +635,61 @@ export default {
         .catch((err) => console.log(err));
     };
 
+    // Tosin
+    const loading = ref(false);
+    const searchNamesInDB = ref([]);
+    const searchMemberInDB = (event) => {
+      loading.value = true;
+      let url =
+        "/api/People/FilterFirstTimers?firstname=" +
+        event.target.value +
+        "&lastname=" +
+        event.target.value +
+        "&phone_number=" +
+        event.target.value +
+        "&page=1";
+
+      axios
+        .get(url)
+        .then((res) => {
+          loading.value = false;
+          searchNamesInDB.value = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+          loading.value = false;
+        });
+    };
+
+    const listOfFirsttimers = computed(() => {
+      if (searchText.value !== "") return searchNamesInDB.value;
+      return churchMembers.value;
+    });
+    // Tosin
+
+    const searchMember = computed(() => {
+      if (searchText.value !== "" && searchNamesInDB.value.length > 0) {
+        return searchNamesInDB.value;
+        // return churchMembers.value.filter((i) => {
+        //   return `${i.fullName}${i.phoneNumber}`
+        //     .toLowerCase()
+        //     .includes(searchText.value.toLowerCase());
+        // });
+      } else if (
+        filterResult.value.length > 0 &&
+        (filter.value.name || filter.value.phoneNumber)
+        // filterResult.value.length > 0
+      ) {
+        return filterResult.value;
+      } else {
+        return churchMembers.value;
+      }
+    });
+
+     const hide = () => {
+      filterFormIsVissible.value = false;
+    };
+
     const membersCount = computed(() => {
       if (getFirstTimerSummary.value.totalFirstTimer > 100)
         return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 100);
@@ -627,13 +704,20 @@ export default {
           `/api/people/getPaginatedFirstTimer?page=${page}`
         );
         filterResult.value = [];
-        searchMember.value = [];
+        searchMemberInDB.value = [];
         noRecords.value = false;
         churchMembers.value = data;
         currentPage.value = page;
       } catch (error) {
         console.log(error);
       }
+    };
+
+     const clearAll = () => {
+      filter.value.name = "";
+
+      filter.value.filterDate = "";
+      filter.value.phoneNumber = "";
     };
 
     const clearInput = () => {
@@ -873,7 +957,6 @@ export default {
       filterResult,
       noRecords,
       searchText,
-      searchMember,
       showConfirmModal,
       deleteMember,
       membersCount,
@@ -894,6 +977,13 @@ export default {
       convertToMembers,
       selectedPersonId,
       totalFirsttimersCount,
+      searchMemberInDB,
+      searchNamesInDB,
+      listOfFirsttimers,
+      loading,
+      searchMember,
+      clearAll,
+      hide
     };
   },
 };
@@ -1224,7 +1314,6 @@ a {
 }
 
 @media screen and (min-width: 501px) and (max-width: 768px) {
-
   .board {
     width: 50% !important;
     margin-bottom: 10px;
@@ -1360,7 +1449,6 @@ a {
 }
 
 @media screen and (min-width: 500px) {
-
   .picture > p {
     margin-left: 43px;
   }
@@ -1391,7 +1479,6 @@ a {
 }
 
 @media screen and (min-width: 501px) and (max-width: 768px) {
-
   .board {
     width: 50% !important;
     margin-bottom: 10px;
@@ -1402,7 +1489,6 @@ a {
     margin-left: 26.5%;
   }
 }
-
 /* tosin */
 </style>
 

@@ -117,7 +117,7 @@
                       v-else
                       :src="memberToEdit.pictureUrl"
                       alt="Uploaded Image"
-                      style="width: 110px; height: 110px; border-radius: 50%"
+                      style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover"
                     />
                   </div>
                 </div>
@@ -132,7 +132,7 @@
                       v-else
                       :src="url"
                       alt="Uploaded Image"
-                      style="width: 110px; height: 110px; border-radius: 50%"
+                      style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover"
                     />
                   </div>
                 </div>
@@ -377,7 +377,7 @@
             <div class="info-box-body py-3">
             <div class="font-weight-700 " v-if="peopleInGroupIDs.length > 0 && areaInView === 'groups'">Groups added</div>
               <div v-if="areaInView === 'groups'">
-                <span v-for="item in peopleInGroupIDs" :key="item.id" >
+                <span v-for="item in peopleInGroupIDs" :key="item.id" >| &nbsp;
                 <span class="text-grey">{{ item.name }}</span>&nbsp; | &nbsp;
               </span>
               </div>
@@ -983,6 +983,12 @@ export default {
         ? months[data.monthOfWedding - 1]
         : null;
       person.yearOfWedding = data.yearOfWedding;
+      peopleInGroupIDs.value = data.personSpecificGroups.map(i => {
+        return {
+          groupId: i.id,
+          name: i.name
+        }
+      })
     };
 
     const getMemberToEdit = () => {
@@ -1039,10 +1045,20 @@ export default {
       }
       dismissAddToGroupModal.value = "modal";
       if (route.params.personId) {
+      let personInfo = {
+      people: [
+          {
+            // id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            groupId: groupToAddTo.value.id ,
+            position: position.value,
+            personId: route.params.personId
+          }
+        ]
+      }
+
         try {
         const response = await membershipService.addMemberToGroup(
-          { personId: route.params.personId, groupId: groupToAddTo.value.id },
-          groupToAddTo.value.id
+          personInfo, groupToAddTo.value.id
         );
         console.log("RESPONSE", response);
         toast.add({
@@ -1051,6 +1067,15 @@ export default {
           detail: `Member add to ${groupToAddTo.value.name}`,
           life: 3000,
         });
+
+        peopleInGroupIDs.value.push({
+          name: groupToAddTo.value.name,
+          groupId: groupToAddTo.value.id,
+          position: position.value
+        })
+
+        groupToAddTo.value = {}
+        position.value = ""
         } catch (error) {
           console.log(error);
         }
@@ -1058,7 +1083,7 @@ export default {
         console.log(groupToAddTo.value)
         peopleInGroupIDs.value.push({
           name: groupToAddTo.value.name,
-          id: groupToAddTo.value.id,
+          groupId: groupToAddTo.value.id,
           position: position.value
         })
       }

@@ -84,7 +84,7 @@
               class="btn groupicon-color default-btn"
               data-dismiss="modal"
               @click="moveMemberToGroup"
-              style="border:none"
+              style="border: none"
             >
               Add to Group
             </button>
@@ -95,7 +95,7 @@
     <!-- group box area -->
 
     <div class="table mx-0" :class="{ 'mt-0': marked.length > 0 }">
-      <div class="table-top ">
+      <div class="table-top">
         <div class="select-all">
           <input
             type="checkbox"
@@ -128,7 +128,7 @@
             FILTER
           </p>
         </div>
-        <p @click="toggleSearch" class="search-text ">
+        <p @click="toggleSearch" class="search-text">
           <i class="pi pi-search"></i> SEARCH
         </p>
         <div class="search d-flex">
@@ -139,7 +139,12 @@
               'hide-search': !searchIsVisible,
             }"
           >
-            <input type="text" placeholder="Search..." v-model="searchText" />
+            <input
+              type="text"
+              placeholder="Search..."
+              v-model="searchText"
+              @input="searchPeopleInDB"
+            />
             <span class="empty-btn" @click="clearInput"
               ><i class="pi pi-times"></i
             ></span>
@@ -158,7 +163,13 @@
             <div class="col-md-9">
               <div class="row">
                 <div
-                  class="col-12 col-sm-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                  class="
+                    col-12 col-sm-6
+                    offset-sm-3 offset-md-0
+                    form-group
+                    inp
+                    w-100
+                  "
                 >
                   <!-- <div class="input-field"> -->
 
@@ -221,162 +232,201 @@
 
       <div class="table-header font-weight-700">
         <div class="check"></div>
-        <div class="picture text-dark  small-text text-capitalize  font-weight-bold" style="font-size: 16px">
+        <div
+          class="picture text-dark small-text text-capitalize font-weight-bold"
+          style="font-size: 16px"
+        >
           <p>picture</p>
         </div>
-        <div class="firstname small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+        <div
+          class="
+            firstname
+            small-text
+            text-dark text-capitalize
+            font-weight-bold
+          "
+          style="font-size: 16px"
+        >
           <p>firstname</p>
         </div>
-        <div class="lastname small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+        <div
+          class="lastname small-text text-dark text-capitalize font-weight-bold"
+          style="font-size: 16px"
+        >
           <p>lastname</p>
         </div>
-        <div class="phone small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+        <div
+          class="phone small-text text-dark text-capitalize font-weight-bold"
+          style="font-size: 16px"
+        >
           <p>phone</p>
         </div>
-        <div class="action small-text text-dark text-capitalize  font-weight-bold"  style="font-size: 16px">
+        <div
+          class="action small-text text-dark text-capitalize font-weight-bold"
+          style="font-size: 16px"
+        >
           <p>action</p>
         </div>
       </div>
 
-      <div
-        class="table-body"
-        v-for="(person, index) in searchMember"
-        :key="person.id"
-      >
-        <div class="data-row">
-          <div class="check data">
-            <input
-              type="checkbox"
-              name=""
-              id=""
-              @change="markOne(person)"
-              :checked="marked.findIndex((i) => i.id === person.id) >= 0"
-            />
-          </div>
-          <div class="picture data">
-            <div class="data-con">
-              <div class="data-text">
-                <p>Picture</p>
-              </div>
-              <div class="data-value">
-                <div class="image-con">
-                  <div v-if="person.gender == 'Male'">
+         <loadingComponent :loading="loading" />
+      <div v-if="!loading">
+        <div
+          class="table-body"
+          v-for="(person, index) in searchMember"
+          :key="person.id"
+        >
+          <div class="data-row">
+            <div class="check data">
+              <input
+                type="checkbox"
+                name=""
+                id=""
+                @change="markOne(person)"
+                :checked="marked.findIndex((i) => i.id === person.id) >= 0"
+              />
+            </div>
+            <div class="picture data">
+              <div class="data-con">
+                <div class="data-text">
+                  <p>Picture</p>
+                </div>
+                <div class="data-value">
+                  <div class="image-con">
+                   <img
+                      :src="person.pictureUrl"
+                      alt=""
+                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
+                      v-if="person.pictureUrl"
+                    />
                     <img
                       src="../../assets/people/avatar-male.png"
                       alt=""
-                      style="border-radius: 50%; height:26px; width:55%;"
-                    />
-                  </div>
-                  <div v-else-if="person.gender == 'Female'">
-                    <img src="../../assets/people/avatar-female.png" alt="" style="height:26px; width:55%;"/>
-                  </div>
-                  <div v-else>
-                    <img
-                      src="../../assets/people/no-gender-avatar.png"
-                      alt=""
-                      style="height:26px; width:55%;"
+                      style="border-radius: 50%; height: 26px; width: 26px; object-fit: cover"
+                      v-else
                     />
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="firstname data">
-            <div class="data-con">
-              <div class="data-text">
-                <p>Firstname</p>
-              </div>
-              <router-link
-                :to="`/tenant/people/add/${person.id}`"
-                class="data-value small-text text-secondary itemroute-color"
-                >{{ person.firstName }}</router-link
-              >
-            </div>
-          </div>
-          <div class="lastname data">
-            <div class="data-con">
-              <div class="data-text">
-                <p>Lastname</p>
-              </div>
-              <router-link
-                :to="`/tenant/people/add/${person.id}`"
-                class="data-value small-text text-secondary itemroute-color"
-                >{{ person.lastName }}</router-link
-              >
-            </div>
-          </div>
-          <div class="phone data">
-            <div class="data-con mr-4">
-              <div class="data-text">
-                <p>Phone</p>
-              </div>
-              <router-link
-                :to="`/tenant/people/add/${person.id}`"
-                class="data-value small-text text-left  text-secondary itemroute-color"
-                >{{ person.mobilePhone }}</router-link
-              >
-            </div>
-          </div>
-          <div class="action data action-icon">
-            <div class="data-text">
-                <p>Action</p>
-              </div>
-            <div class="dropdown text-left">
-              <i
-                class="fas fa-ellipsis-v cursor-pointer alignLeft"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              ></i>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item elipsis-items">
-                  <router-link
-                    :to="
-                      person.mobilePhone
-                        ? `/tenant/sms/compose?phone=${person.mobilePhone}`
-                        : ''
-                    "
-                    :class="{
-                      'fade-text': !person.mobilePhone,
-                      'text-color': person.mobilePhone,
-                    }"
-                    >Send SMS</router-link
-                  >
-                </a>
-                <a class="dropdown-item elipsis-items">
-                  <router-link
-                    :to="
-                      person.email
-                        ? `/tenant/email/compose?phone=${person.email}`
-                        : ''
-                    "
-                    :class="{
-                      'fade-text': !person.email,
-                      'text-color': person.email,
-                    }"
-                    >Send Email</router-link
-                  >
-                </a>
-                <a class="dropdown-item elipsis-items">
-                  <router-link
-                    :to="`/tenant/people/add/${person.id}`"
-                    class="text-color"
-                    >Edit</router-link
-                  >
-                </a>
-                <a
-                  class="dropdown-item elipsis-items text-color cursor-pointer"
-                  @click.prevent="showConfirmModal(person.id, index)"
-                  >Delete</a
+            <div class="firstname data">
+              <div class="data-con">
+                <div class="data-text">
+                  <p>Firstname</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/add/${person.id}`"
+                  class="data-value small-text text-secondary itemroute-color"
+                  >{{ person.firstName }}</router-link
                 >
               </div>
             </div>
+            <div class="lastname data">
+              <div class="data-con">
+                <div class="data-text">
+                  <p>Lastname</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/add/${person.id}`"
+                  class="data-value small-text text-secondary itemroute-color"
+                  >{{ person.lastName }}</router-link
+                >
+              </div>
+            </div>
+            <div class="phone data">
+              <div class="data-con mr-4">
+                <div class="data-text">
+                  <p>Phone</p>
+                </div>
+                <router-link
+                  :to="`/tenant/people/add/${person.id}`"
+                  class="
+                    data-value
+                    small-text
+                    text-left text-secondary
+                    itemroute-color
+                  "
+                  >{{ person.mobilePhone }}</router-link
+                >
+              </div>
+            </div>
+            <div class="action data action-icon">
+              <div class="data-text">
+                <p>Action</p>
+              </div>
+              <div class="dropdown text-left">
+                <i
+                  class="fas fa-ellipsis-v cursor-pointer alignLeft"
+                  id="dropdownMenuButton"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                ></i>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item elipsis-items">
+                    <router-link
+                      :to="
+                        person.mobilePhone
+                          ? `/tenant/sms/compose?phone=${person.mobilePhone}`
+                          : ''
+                      "
+                      :class="{
+                        'fade-text': !person.mobilePhone,
+                        'text-color': person.mobilePhone,
+                      }"
+                      >Send SMS</router-link
+                    >
+                  </a>
+                  <a class="dropdown-item elipsis-items">
+                    <router-link
+                      :to="
+                        person.email
+                          ? `/tenant/email/compose?phone=${person.email}`
+                          : ''
+                      "
+                      :class="{
+                        'fade-text': !person.email,
+                        'text-color': person.email,
+                      }"
+                      >Send Email</router-link
+                    >
+                  </a>
+                  <a class="dropdown-item elipsis-items">
+                    <router-link
+                      :to="`/tenant/people/add/${person.id}`"
+                      class="text-color"
+                      >Edit</router-link
+                    >
+                  </a>
+                  <a
+                    class="
+                      dropdown-item
+                      elipsis-items
+                      text-color
+                      cursor-pointer
+                    "
+                    @click.prevent="showConfirmModal(person.id, index)"
+                    >Delete</a
+                  >
+                </div>
+              </div>
+            </div>
           </div>
+          <hr class="row-divider" />
         </div>
-
-        <hr class="row-divider" />
       </div>
+     <!-- tosin -->
+      <div
+        class="col-md-12 col py-3"
+        v-if="
+          listOfPeople.length === 0 && churchMembers.length !== 0 && !loading
+        "
+      >
+        <p class="text-danger d-flex justify-content-center">
+          Record not available
+        </p>
+      </div>
+      <!-- tosin -->
       <div class="table-footer">
         <PaginationButtons
           @getcontent="getPeopleByPage"
@@ -401,6 +451,7 @@ import stopProgressBar from "../../services/progressbar/progress";
 import membershipservice from "../../services/membership/membershipservice";
 import Tooltip from "primevue/tooltip";
 import Dropdown from "primevue/dropdown";
+import loadingComponent from "@/components/loading/LoadingComponent";
 
 export default {
   props: ["list", "peopleCount"],
@@ -409,6 +460,7 @@ export default {
     ByMaritalStatusChart,
     PaginationButtons,
     Dropdown,
+    loadingComponent,
   },
 
   directives: {
@@ -423,6 +475,7 @@ export default {
     const filterResult = ref([]);
     const selectAll = ref(false);
     const noRecords = ref(false);
+    const loading = ref(false);
     const searchText = ref("");
     // const store = useStore();
 
@@ -466,37 +519,6 @@ export default {
           });
           console.log(err);
         });
-    };
-
-    const applyFilter = () => {
-      filter.value.name =
-        filter.value.name == undefined ? "" : filter.value.name;
-      filter.value.phoneNumber =
-        filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
-
-      let url =
-        "/api/People/FilterMembers?firstname=" +
-        filter.value.name +
-        "&lastname=" +
-        filter.value.name +
-        "&phone_number=" +
-        filter.value.phoneNumber +
-        "&page=1";
-      axios
-        .get(url)
-        .then((res) => {
-          noRecords.value = true;
-          filterResult.value = res.data;
-          console.log(res.data);
-        })
-        .catch((err) => console.log(err));
-    };
-
-    const clearAll = () => {
-      filter.value.name = "";
-
-      filter.value.filterDate = "";
-      filter.value.phoneNumber = "";
     };
 
     const hide = () => {
@@ -550,7 +572,6 @@ export default {
           `/api/People/GetPeopleBasicInfo?page=${page}`
         );
         filterResult.value = [];
-        searchMember.value = [];
         noRecords.value = false;
         churchMembers.value = data;
         currentPage.value = page;
@@ -608,7 +629,7 @@ export default {
       console.log(marked.value);
     };
 
-// Delete item
+    // Delete item
     const deleteMarked = async () => {
       try {
         // const IDs = marked.value.map((i) => i.id).join();
@@ -616,53 +637,52 @@ export default {
         const response = await membershipservice.deletePeople(IDs);
         console.log(response, "RESPONSE");
 
+        if (response.response.toString().toLowerCase().includes("all")) {
+          toast.add({
+            severity: "success",
+            summary: "Confirmed",
+            detail: "Member(s) Deleted",
+            life: 4000,
+          });
 
-          if (response.response.toString().toLowerCase().includes("all")) {
-            toast.add({
-              severity:'success',
-              summary:'Confirmed',
-              detail:'Member(s) Deleted',
-              life: 4000
-            });
+          churchMembers.value = churchMembers.value.filter((item) => {
+            const y = marked.value.findIndex((i) => i.id === item.id);
+            if (y >= 0) return false;
+            return true;
+          });
+        } else {
+          let displayRes = response.response.split("@");
+          toast.add({
+            severity: "info",
+            detail: `${displayRes[0]}`,
+          });
 
-            churchMembers.value = churchMembers.value.filter((item) => {
-              const y = marked.value.findIndex((i) => i.id === item.id);
-              if (y >= 0) return false;
-              return true;
-            });
-          } else {
-            let displayRes = response.response.split("@")
-            toast.add({
-              severity:'info',
-              detail: `${displayRes[0]}`,
-            });
-
-            if (displayRes[1] !== '') {
-              if (!displayRes[1].includes(',')) {
-                churchMembers.value = churchMembers.value.filter((item) => {
-                console.log(item.id.includes(displayRes[1]))
-                return !item.id.includes(displayRes[1])
+          if (displayRes[1] !== "") {
+            if (!displayRes[1].includes(",")) {
+              churchMembers.value = churchMembers.value.filter((item) => {
+                console.log(item.id.includes(displayRes[1]));
+                return !item.id.includes(displayRes[1]);
               });
-              } else {
-                let IDs = displayRes[1].split(",")
-                churchMembers.value = churchMembers.value.filter((item) => {
+            } else {
+              let IDs = displayRes[1].split(",");
+              churchMembers.value = churchMembers.value.filter((item) => {
                 const y = IDs.findIndex((i) => i === item.id);
                 if (y >= 0) return false;
                 return true;
               });
-              }
             }
           }
-          marked.value = []
-           store.dispatch("membership/removeMember")
-          axios
-            .get(`/api/People/GetMembershipSummary`)
-            .then((res) => {
-              console.log(res, "new chart");
-              membershipSummary.value = res.data;
-            })
-            .catch((err) => {
-              console.log(err)
+        }
+        marked.value = [];
+        store.dispatch("membership/removeMember");
+        axios
+          .get(`/api/People/GetMembershipSummary`)
+          .then((res) => {
+            console.log(res, "new chart");
+            membershipSummary.value = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
           });
       } catch (error) {
         console.log(error);
@@ -709,19 +729,82 @@ export default {
       selectAll.value = !selectAll.value;
     };
 
-    const searchMember = computed(() => {
-      if (searchText.value !== "") {
-        return churchMembers.value.filter((i) => {
-          if (i.firstName)
-            return `${i.firstName}${i.lastName}${i.mobilePhone}`
-              .toLowerCase()
-              .includes(searchText.value.toLowerCase());
-          return "";
+    const applyFilter = () => {
+      filter.value.name =
+        filter.value.name == undefined ? "" : filter.value.name;
+      filter.value.phoneNumber =
+        filter.value.phoneNumber == undefined ? "" : filter.value.phoneNumber;
+
+      let url =
+        "/api/People/FilterMembers?firstname=" +
+        filter.value.name +
+        "&lastname=" +
+        filter.value.name +
+        "&phone_number=" +
+        filter.value.phoneNumber +
+        "&page=1";
+      axios
+        .get(url)
+        .then((res) => {
+          noRecords.value = true;
+          filterResult.value = res.data;
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    const clearAll = () => {
+      filter.value.name = "";
+
+      filter.value.filterDate = "";
+      filter.value.phoneNumber = "";
+    };
+
+    // Tosin
+    const searchPeopleNamesInDB = ref([]);
+    const searchPeopleInDB = () => {
+      loading.value = true;
+      let url =
+        //  "/api/People/FilterFirstTimers?firstname=" +
+        `/api/Membership/GetSearchedUSers?searchText=${searchText.value}`;
+      axios
+        .get(url)
+        .then((res) => {
+          loading.value = false;
+          searchPeopleNamesInDB.value = res.data.map((i) => {
+              return {
+                firstName : i.name.split(" ")[0],
+                lastName: i.name.split(" ")[1],
+                mobilePhone: i.phone,
+                email : i.email,
+                id: i.id
+              }
+          })
+        })
+        .catch((err) => {
+          loading.value = false;
+          console.log(err);
         });
-      } else if (
-        filterResult.value.length > 0 &&
-        (filter.value.name || filter.value.phoneNumber)
-      ) {
+    };
+
+    const listOfPeople = computed(() => {
+      if (searchText.value !== "") return searchPeopleNamesInDB.value;
+      return churchMembers.value;
+    });
+    // Tosin
+
+    const searchMember = computed(() => {
+      if (searchText.value !== "" && searchPeopleNamesInDB.value.length > 0) {
+        // return searchPeopleInDB()
+        return searchPeopleNamesInDB.value;
+        // return churchMembers.value.filter((i) => {
+        //   if (i.firstName)
+        //     return `${i.firstName}${i.lastName}${i.mobilePhone}`
+        //       .toLowerCase()
+        //       .includes(searchText.value.toLowerCase());
+        //   return "";
+        // });
+      } else if (filterResult.value.length > 0) {
         return filterResult.value;
       } else {
         return churchMembers.value;
@@ -754,32 +837,36 @@ export default {
 
     const chooseGrouptoMoveto = ref({});
     const moveMemberToGroup = () => {
-      let peopleMoved = marked.value.map ((i) => {
-          return {
-            "groupId": chooseGrouptoMoveto.value.id,
-            "position": "member",
-            "personId": i.id,
-          }
-        })
+      let peopleMoved = marked.value.map((i) => {
+        return {
+          groupId: chooseGrouptoMoveto.value.id,
+          position: "member",
+          personId: i.id,
+        };
+      });
       axios
-        .put(`/api/AssignPeopleToGroup/${chooseGrouptoMoveto.value.id}`,
-          {people: peopleMoved}
-        )
+        .put(`/api/AssignPeopleToGroup/${chooseGrouptoMoveto.value.id}`, {
+          people: peopleMoved,
+        })
         .then((res) => {
-          console.log(res,);
-            toast.add({
+          console.log(res);
+          toast.add({
             severity: "success",
             summary: "Confirmed",
             detail: "Member(s) Added Successfully",
             life: 3000,
           });
 
-         store.dispatch("groups/updateGroupPeopleCount", { groupId: chooseGrouptoMoveto.value.id, count: marked.value.length, operation:"add"});
+          store.dispatch("groups/updateGroupPeopleCount", {
+            groupId: chooseGrouptoMoveto.value.id,
+            count: marked.value.length,
+            operation: "add",
+          });
 
           marked.value = [];
         })
         .catch((err) => {
-            stopProgressBar();
+          stopProgressBar();
           toast.add({
             severity: "error",
             summary: "Adding Error",
@@ -812,7 +899,6 @@ export default {
       toggleSelect,
       noRecords,
       searchText,
-      searchMember,
       membersCount,
       marked,
       mark,
@@ -826,6 +912,10 @@ export default {
       getAllGroups,
       chooseGrouptoMoveto,
       moveMemberToGroup,
+      searchPeopleInDB,
+      listOfPeople,
+      loading,
+      searchMember,
     };
   },
 };
@@ -846,13 +936,13 @@ a {
 }
 
 .picture,
-  .firstname,
-  .lastname,
-  .phone,
-  .action {
-    width: 100%;
-    /* font-size: 20px; */
-  }
+.firstname,
+.lastname,
+.phone,
+.action {
+  width: 100%;
+  /* font-size: 20px; */
+}
 
 .my-con {
   /* display: flex; */
@@ -927,11 +1017,6 @@ a {
 .percent {
   color: #136acd;
 }
-
-/* .hr {
-  border: 1px solid #0020440a;
-  margin: 0 4px 10px 0;
-} */
 
 .tbl-footer-btn {
   background: transparent;
@@ -1052,8 +1137,6 @@ a {
   }
 
   .data-con {
-
-    /* text-align: center; */
     display: flex;
     justify-content: space-between;
   }
@@ -1070,13 +1153,6 @@ a {
 }
 
 @media screen and (min-width: 500px) {
-  /* .picture,
-  .firstname,
-  .lastname,
-  .phone {
-     width: 19%;
-  } */
-
   .picture > p {
     margin-left: 43px;
   }
@@ -1113,20 +1189,6 @@ a {
 }
 
 @media screen and (min-width: 501px) and (max-width: 768px) {
-  /* .boards {
-    flex-direction: column;
-    align-items: center !important;
-    flex-wrap: nowrap !important;
-  }
-
-  .chart-con {
-    width: 85% !important;
-  }
-
-  .chart-con div {
-    width: 40%;
-  } */
-
   .board {
     width: 50% !important;
     margin-bottom: 10px;

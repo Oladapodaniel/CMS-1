@@ -82,7 +82,7 @@
                       >
                         <div class="col-md-12">
                           <div class="row">
-                            <div class="col-md-1">
+                            <div class="col-md-1 mt-2">
                               <input
                                 type="checkbox"
                                 name=""

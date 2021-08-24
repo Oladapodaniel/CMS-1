@@ -2,8 +2,8 @@
   <div>
     <div class="container">
       <div class="row mt-4">
-        <div class="col-md-12">
-          <h1 class="font-weight-bold px-30">SMS</h1>
+        <div class="col-md-12 d-flex justify-content-center">
+          <h1 class="font-weight-bold ">SMS</h1>
         </div>
       </div>
       <div class="row">
@@ -17,9 +17,12 @@
         <div class="container-fluid">
           <div class="row">
             <!-- Side mennu -->
-            <div class="col-md-3" id="side-menu">
+            <div class="col-md-3" id="side-menu">  
               <div class="row">
                 <div class="col-md-12 d-flex justify-content-center mt-4 mb-5">
+                  <div class=" ml-3 mt-2 toggle"  >
+                    <i class="pi pi-bars" @click="toggleMenu"></i>
+                  </div>
                   <router-link
                     to="/tenant/sms/compose"
                     class="btn compose-btn border-0 font-weight-bold default-btn border-none"
@@ -27,8 +30,8 @@
                   >
                 </div>
               </div>
-              <div class="row mb-3">
-                <div class="col-md-12">
+              <div class="row mb-3" :class="{ 'show': menuShouldShow, 'links-menu' : !menuShouldShow }"  >
+                <div class="col-md-12 " >
                   <div
                     class="row menu-item-con py-2"
                     :class="{
@@ -159,19 +162,41 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 export default {
   setup() {
     const route = useRoute();
+    const menuShouldShow = ref(false);
+    const toggleMenu = ()=>{
+           menuShouldShow.value = !menuShouldShow.value
+         };
 
     return {
       route,
+      toggleMenu,
+      menuShouldShow
     };
   },
 };
 </script>
 
 <style scoped>
+
+.toggle {
+  display: none;
+  width: 20px;
+  text-align: center;
+  position: absolute;
+  top: -40px;
+  left: 4px;
+  font-size: 30px;
+}
+
+.toggle:hover {
+  cursor: pointer;
+}
+
 #main {
   border: 1px solid #02172e30;
   border-radius: 30px;
@@ -285,6 +310,22 @@ export default {
 .router-link-exact-active i {
   color: #136acd;
   opacity: 1;
+}
+
+@media screen and (max-width: 765px){
+  .toggle {
+    display: block;
+  }
+  .show {
+    overflow: hidden;
+    height: 270px;
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  .links-menu {
+    height: 0;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
 }
 
 @media screen and (max-width: 767px) {
