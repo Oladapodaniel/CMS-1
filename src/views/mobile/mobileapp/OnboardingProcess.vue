@@ -2,32 +2,32 @@
 <!-- v-if="churchSetupSaved -->
     <div class="container container-top font">
         <div class="row">
-            <div class="col-6 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showChurchSetup">
-                    <div v-if="churchSetup" :class="{ 'active-tab' : churchSetup, 'circle' : !churchSetup }">1</div>    
+            <div class="col-6 mt-2 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showChurchSetup">
+                    <div  v-if="churchSetup" :class="{ 'active-tab' : churchSetup, 'circle' : !churchSetup }">1</div>    
                     <div v-else-if="churchSetupSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div>
                     <div v-else :class="{ 'active-tab' : churchSetup, 'circle' : !churchSetup }">1</div>    
-                    <div>Church setup</div> 
+                    <div class="font-weight-bold">Church setup</div> 
                     <hr class="hr">   
             </div>
-            <div class="col-6 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showSocialMedia">
+            <div class="col-6  mt-2 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showSocialMedia">
                     <div v-if="socialMedia" :class="{ 'active-tab' : socialMedia, 'circle' : !socialMedia }">2</div>    
                     <div v-else-if="socialMediaSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div> 
                      <div v-else :class="{ 'active-tab' : socialMedia, 'circle' : !socialMedia }">2</div>
-                    <div>Social Media</div>    
+                    <div class="font-weight-bold">Social Media</div>    
                     <hr class="hr">
             </div>
-            <div class="col-6 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showAppBranding">
+            <div class="col-6  mt-2 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showAppBranding">
                     <div v-if="appBranding" :class="{ 'active-tab' : appBranding, 'circle' : !appBranding }">3</div>    
                     <div v-else-if="appBrandingSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div>
                     <div v-else :class="{ 'active-tab' : appBranding, 'circle' : !appBranding }">3</div>
-                    <div>App Branding</div>   
+                    <div class="font-weight-bold">App Branding</div>   
                     <hr class="hr"> 
             </div>
-            <div class="col-6 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showOnlineDonation">
+            <div class="col-6  mt-2 col-md-3 d-flex justify-content-between align-items-center cursor-pointer" @click="showOnlineDonation">
                     <div v-if="donationForm" :class="{ 'active-tab' : donationForm, 'circle' : !donationForm }">4</div>    
                     <div v-else-if="donationSaved" class="success-bg"><i class="pi pi-check" style="font-weight: 900"></i></div>
                     <div v-else :class="{ 'active-tab' : donationForm, 'circle' : !donationForm }">4</div>
-                    <div>Online Donation</div>  
+                    <div class="font-weight-bold">Online Donation</div>  
             </div>
         </div>
         <div class="row">
@@ -178,7 +178,7 @@ export default {
   font: normal normal normal 20px/27px Nunito Sans;
 }
 .circle {
-    border-radius: 50%;
+    /* border-radius: 50%;
     background: rgba(175, 216, 238, 0.481);
     width: 50px;
     height: 50px;
@@ -186,11 +186,23 @@ export default {
     align-items: center;
     justify-content: center;
     color: rgb(20, 74, 253);
-    margin-right: 10px
+    margin-right: 10px; */
+
+ background: rgba(175, 216, 238, 0.481);
+     font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 50%;
+    padding: 0.6rem 2rem 1rem 1.3rem;
+    /* width: auto; */
+    outline: transparent !important;
+    height: 50px;
+    width: 50px;
+    color: rgb(20, 74, 253);
 }
 
 .active-tab {
-    background: rgb(0, 106, 220);
+    /* background: rgb(0, 106, 220);
     color: #eee;
     border-radius: 50%;
     width: 50px;
@@ -198,19 +210,44 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 10px
+    margin-right: 10px; */
+
+ background: rgb(0, 106, 220);
+    color: #eee;
+     font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 50%;
+    padding: 0.6rem 2rem 1rem 1.3rem;
+    /* width: auto; */
+    width: 50px;
+    height: 50px;
+    outline: transparent !important;
+    /* max-height: 50px;
+    min-width: 50px; */
 }
 
 .success-bg {
     background: rgba(0, 220, 51, 0.201);
     color: rgba(3, 120, 31, 0.729);
-    border-radius: 50%;
+    /* border-radius: 50%;
     width: 50px;
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 10px
+    margin-right: 10px */
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 50%;
+    /* padding: 1rem 1.6rem 3rem 1.6rem; */
+    padding: 0.6rem 2rem 1rem 1.3rem;
+
+    /* width: auto; */
+    outline: transparent !important;
+    width: 50px;
+    height: 50px;
 }
 
 .hr {
