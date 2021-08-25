@@ -696,9 +696,13 @@ export default {
       }
     };
 
-   c
     const clearInput = () => {
       searchText.value = "";
+    };
+
+ const clearAll = () => {
+filter.value.name = "";
+filter.value.phoneNumber ="";
     };
 
     // function to checkmark a single first timer
