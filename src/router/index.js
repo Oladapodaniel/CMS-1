@@ -1311,12 +1311,6 @@ const routes = [
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
-    {
-        path: '/report',
-        name: 'Report',
-        component: () =>
-            import ( /* webpackChunkName: "sentemails" */ '@/views/Report.vue'),
-    },
 ]
 
 const router = createRouter({
