@@ -226,7 +226,22 @@
         <!-- tosin -->
 
         <!-- tosin 2 -->
-        <div
+
+         <!-- <div class="row py-3" v-if="loading">
+          <div class="col-md-11 mx-auto d-flex justify-content-center">
+            <i
+              class="pi pi-spin text-primary pi-spinner"
+              style="fontsize: 3rem"></i>
+          </div>
+          <p
+            class="col text-primary mx-auto d-flex justify-content-center my-3"
+          >
+            Be patient while we search
+          </p>
+        </div> -->
+        <loadingComponent :loading="loading" />
+        <div v-if="!loading">
+          <div
           class="table-body mt-2 py-1"
           v-for="person in searchMember"
           :key="person.id"
@@ -397,26 +412,15 @@
 
           <hr class="row-divider" />
         </div>
-        <div class="row py-3" v-if="loading">
-          <div class="col-md-11 mx-auto d-flex justify-content-center">
-            <i
-              class="pi pi-spin text-primary pi-spinner"
-              style="fontsize: 3rem"
-            ></i>
-          </div>
-          <p
-            class="col text-primary mx-auto d-flex justify-content-center my-3"
-          >
-            Be patient while we search
-          </p>
         </div>
+
 
         <div
           class="col-md-12 col py-3"
           v-if="
             listOfFirsttimers.length === 0 &&
             churchMembers.length !== 0 &&
-            !loading
+            !loading && searchText.length === 0
           "
         >
           <p class="text-danger d-flex justify-content-center">
@@ -476,6 +480,7 @@ import { useConfirm } from "primevue/useConfirm";
 import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress";
 import OverlayPanel from "primevue/overlaypanel";
+import loadingComponent from "@/components/loading/LoadingComponent"
 
 export default {
   props: ["list"],
@@ -484,6 +489,7 @@ export default {
     ByMaritalStatusChart,
     Pagination,
     OverlayPanel,
+    loadingComponent
   },
 
   setup() {
@@ -670,9 +676,9 @@ export default {
         //     .includes(searchText.value.toLowerCase());
         // });
       } else if (
-        // filterResult.value.length > 0 &&
-        // (filter.value.name || filter.value.phoneNumber)
-        filterResult.value.length > 0
+        filterResult.value.length > 0 &&
+        (filter.value.name || filter.value.phoneNumber)
+        // filterResult.value.length > 0
       ) {
         return filterResult.value;
       } else {

@@ -20,8 +20,8 @@
               </div>
               <div class="row">
                 <div class="col-md-12 py-5 grey-background">
-                  <div class="row d-md-flex justify-content-around">
-                    <div class="col-md-7">
+                  <div class="row d-md-flex justify-content-between">
+                    <div class="col-md-7 d-flex">
                       <input
                         type="text"
                         class="form-control"
@@ -29,26 +29,22 @@
                         v-model="postName"
                       />
                     </div>
-                    <div class="col-md-3 d-flex justify-content-end">
+                    <div class="col-md-5 d-flex justify-content-end">
                       <div class="" style="width:80%;height: 100px">
-                        <img class="picturedp" style="width:100%;height: 40px;object-fit: cover;border-radius: 5px;" :src="url" alt="insert Image">
+                        <img v-show="url" class="picturedp" style="width:100%;height: 40px;object-fit: cover;border-radius: 5px;" :src="url" alt="insert Image">
+                        <img v-show="!url" src="../../assets/people/phone-import.svg" alt="">
                      </div>
-                      <!-- <button class="btn primary-btn text-white px-md-5 px-4 py-1 bold  mt-sm-3 mt-lg-0 mt-xl-0 mt-md-0 mt-3" @click="savePost">Save</button> -->
                     </div>
                   </div>
                 </div>
                  <div class="col-md-12 py-2 grey-background">
-                  <div class="row d-md-flex justify-content-around">
-                    <div class="col-md-7">
-                      <!-- <input
-                        type="file"
-                        class="form-control"
-                        placeholder="Post category name"
-                        @change="imageSelected"
-                      /> -->
-                      <div class="row">
-                    <div class="cs-input col-md-10">
-                    <label for="imgUpload" class="choose-file">
+                  <div class="row d-md-flex justify-content-between">
+                    <div class="col-md-3 mb-5">
+                      <button class="btn primary-btn text-white bold px-4 py-1 mt-sm-3 mt-lg-0 mt-xl-0" @click="savePost">Save</button>
+                    </div>
+                    <div class="col-md-7 d-flex justify-content-end">
+                    <div class="">
+                    <label for="imgUpload" class="choose-image btn btn-secondary">
                       Choose file
                       <input
                         type="file"
@@ -60,10 +56,8 @@
                     </label>
                   </div>
                   </div>
-                  </div>
-                    <div class="col-md-5">
-                      <button class="btn primary-btn text-white bold px-4 py-1 mt-sm-3 mt-lg-0 mt-xl-0 mt-3" @click="savePost">Save</button>
-                    </div>
+                  
+                  
                   </div>
                 </div>
               </div>
@@ -97,7 +91,7 @@
                       <button class="btn secondary-btn py-1 px-4" @click="openType(index)">View</button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="py-1 primary-btn px-3 delbtn" @click="deletePop(type.id)">Delete</button>
+                      <button class="py-1 primary-btn px-3 delbtn" @click="deletePop(type.postCategoryId)">Delete</button>
                     </div>
                   </div>
                 </div>
@@ -117,7 +111,7 @@
                 >
                   <div class="row">
                     <div class="col-md-6 col-6 d-flex justify-content-start">
-                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updateAttendant(type.id, index)">Save</button>
+                      <button class="btn primary-btn save-btn py-1 px-4 ml-md-0 ml-5" @click="updatePost(type.postCategoryId, index)">Save</button>
                     </div>
                     <div class="col-md-6 col-6 d-flex justify-content-end">
                       <button class="btn secondary-btn py-1 px-3" @click="discard">Discard</button>
@@ -193,7 +187,7 @@ export default {
                 acceptClass: 'confirm-delete',
                 rejectClass: 'cancel-delete',
                 accept: () => {
-                  this.deleteAttendant(id)
+                  this.deletePost(id)
                     //callback to execute when user confirms the action
                 },
                 reject: () => {
@@ -202,22 +196,27 @@ export default {
             });
         },
     
-    async deleteAttendant(id){
+    async deletePost(id){
       try {
-        await axios.delete('/api/Settings/DeleteAttendanceType/'+id);
-        this.types = this.types.filter(i => i.id !== id);
-         this.$toast.add({severity:'success', summary: '', detail:'Attendance Deleted Successfully', life: 3000});
+        let {data} = await axios.delete(`/mobile/v1/Feeds/DeletePostCategory?PostCategoryId=${id}`);
+        if(data.status === false){
+          this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.', life: 9000})
+        }else{
+          this.types = this.types.filter(i => i.postCategoryId !== id);
+         this.$toast.add({severity:'success', summary: '', detail:'Post Category Deleted Successfully', life: 3000});
+        }
+        
       } catch (error){
         finish()
         console.log(error);
       }
     },
-    async updateAttendant(id, index){
+    async updatePost(id, index){
       try{
-        await axios.put('/api/Settings/UpdateAttendanceType', { attendanceTypeName: this.typeName, attendanceTypeId:id});
+        await axios.put('/mobile/v1/Feeds/UpdatePostCategory', { name: this.typeName, postCategoryId:id});
         this.types[index].name = this.typeName;
         this.discard()
-        this.$toast.add({severity:'success', summary: '', detail:'Attendance Updated Successfully', life: 3000});
+        this.$toast.add({severity:'success', summary: '', detail:'Post Category Updated Successfully', life: 3000});
       }catch (error){
         finish()
         console.log(error)
@@ -300,6 +299,12 @@ export default {
 <style scoped>
 input::placeholder {
   text-align: center;
+}
+.input{
+  width: 10%;
+  height: 0px;
+  border: 1px solid #b9c5cf;
+  background: #DDE2E6;
 }
 
 .table-header-row {
