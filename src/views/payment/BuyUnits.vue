@@ -306,7 +306,8 @@ export default {
     const tenantId = ref(currentUser.tenantId)
     const churchName = ref("");
     const churchLogo = ref('https://images.app.goo.gl/cdhuWQU7a11CRJnRA');
-    
+    const close = ref(null);
+    const isSuccessful = ref(false);
 
     const getUserEmail = async () => {
       userService.getCurrentUser()
@@ -348,19 +349,27 @@ export default {
         invalidAmount.value = true;
         return false;
       }
-
+       initializePayment(0);
       console.log(userEmail.value, "UE");
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: userEmail.value,
         amount: amount.value * 100,
         firstname: churchName.value,
         lastname: "",
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
-          toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
+          if (!isSuccessful.value) {
+                axios
+                  .put('/cancelpayment', {paymentTransactionId: initializedOrder.value.id})
+                  .then((res) => {
+                    console.log('payment cancelled');
+                  toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
+
+                  })
+          }
         },
         callback: function (response) {
           //Route to where you confirm payment status
@@ -373,11 +382,17 @@ export default {
           //Route to where you confirm payment status
 
           axios
-            .post("/api/Payment/buySms", returnres)
+            .post(`/api/Payment/initializesmspayment?paymentType=0`, returnres)
             .then((res) => {
-              console.log(res, "success data");
-              purchaseIsSuccessful.value = true;
-              store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+             if (res.data) {
+                console.log(res, "success data");
+                close.value.click();
+                purchaseIsSuccessful.value = true;
+                store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+             } else {
+                toast.add({ severity: 'error', summary: 'Confirmation failed', detail: "Confirming your purchase failed, please contact support at info@churchplus.co"})
+
+             }
             })
             .catch((err) => {
               stopProgressBar();
@@ -394,19 +409,21 @@ export default {
     })
 
     const closeModal = () => purchaseIsSuccessful.value = false;
-    const initializedOrderId = ref('')
-    const initializePayment = () => {
+    const initializedOrder = ref({})
+    const initializePayment = (paymentType) => {
        const payload = {
         smsUnit: totalSMSUnits.value,
         amount: totalAmount.value,
         tenantId: tenantId.value,
         orderId: uuidv4()
       }
-     axios.post(`/api/Payment/initializesmspayment?paymentType=1`,payload)
+     axios
+     .post(`/api/Payment/initializesmspayment?paymentType=${paymentType}`,payload)
      .then((res) => {
-       purchaseIsSuccessful.value = true;
-        store.dispatch("addPurchasedUnits", totalSMSUnits.value);
-       initializedOrderId.value = res.data.transactionNumber;
+       close.value.click();
+      //  purchaseIsSuccessful.value = true;
+        // store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+       initializedOrder.value = res.data;
        console.log(res, 'initializepayment');
      })
     }
@@ -422,9 +439,8 @@ export default {
     }
     getFlutterwaveModules()
     
-
     const payWithFlutterwave = (e) => {
-      initializePayment();
+      initializePayment(1);
       console.log(e.srcElement.alt)
       // Get and send clicked payment gateway to parent
       // selectedGateway.value = e.srcElement.alt
@@ -437,7 +453,7 @@ export default {
                     // console.log(email)
 
       window.FlutterwaveCheckout({
-                public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+                public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 tx_ref: uuidv4().substring(0,8),
                 amount: totalAmount.value,
                 currency: 'NGN',
@@ -445,7 +461,7 @@ export default {
                 customer: {
                   // name: props.name,
                   // email: currentUser.value.userEmail,
-                  email: "anichijioke81@gmail.com"
+                  email: userEmail.value,
                 },
                 callback: (response) => {
                   console.log("Payment callback", response)
@@ -455,15 +471,26 @@ export default {
                         transaction_Reference:response.transaction_id,
                         amount: totalAmount.value,
                         tenantId: tenantId.value,
-                        orderId: initializedOrderId.value
+                        orderId: initializedOrder.value.id
                     }
-
                     axios
                           .post(`/api/Payment/purchasesmsunits?paymentType=1`, payload)
                           .then((res) => {
-                            // finish()
-                            console.log(res, "success data");
-
+                            if (res.data) {
+                              purchaseIsSuccessful.value = true;
+                              store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+                              // finish()
+                              console.log(res, "success data");
+                              isSuccessful.value = true;
+                            } else {
+                              toast.add({
+                                severity: 'error',
+                                summary: 'Confirmation failed',
+                                detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
+                                life: 4000
+                              })
+                            }
+                            
                           })
                           .catch((err) => {
                             // finish()
@@ -475,14 +502,24 @@ export default {
                               })
                             console.log(err, "error confirming payment");
                           });
-
                         // emit('payment-successful', true)
                   },
-                onclose: () => console.log('Payment closed'),
+                onclose: () => {
+                  if (!isSuccessful.value) {
+                      axios
+                      .put('/cancelpayment', {paymentTransactionId: initializedOrder.value.id})
+                      .then((res) => {
+                        console.log('payment cancelled');
+                      toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
+
+                      })
+                  } 
+
+                },
                 customizations: {
                   title: 'Subscription',
                   description: "Payment for Subcription ",
-                  // logo: churchLogo.value,
+                  logo: "https://churchplusstorage.blob.core.windows.net/mediacontainer/coreldrawskill_e9749fad-85e8-4130-b553-37acc8acde61_08062021.png",
                 },
               });
     }
@@ -502,8 +539,9 @@ export default {
       payWithFlutterwave,
       tenantId,
       initializePayment,
-      initializedOrderId,
-      churchLogo
+      initializedOrder,
+      churchLogo,
+      close
     };
   },
 };
