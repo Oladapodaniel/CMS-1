@@ -112,16 +112,26 @@ export default {
       if(!props.gateways) return false
       return props.gateways.find(i => i.paymentGateway.name === "Stripe")
     })
-      
 
     const payWithPaystack = (e) => {
-
-      // console.log(props.donation)
-
+if (props.donation){
+      console.log(props.donation)
+} else {
+  console.log('donation not avaliable')
+}
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
    
     //  console.log(selectedGateway.value)
+    // console.log()
+let res = props.donation.paymentGateway.find(i => {
+            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+          }).subAccountID
+      console.log(props.email, 'email')
+      console.log(props.converted * 100, 'amount')
+      console.log(props.name, 'name')
+      console.log(props.orderId, 'orderid')
+      console.log(res, 'subaccountid')
 
       props.close.click()
       /*eslint no-undef: "warn"*/
@@ -129,14 +139,14 @@ export default {
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: props.email,
-        amount: props.converted * 100,
+        amount: props.converted * 100 ? props.converted * 100 : props.amount * 100,
         firstname: props.name,
         ref: props.orderId,
-        subaccount: props.donation.paymentGateway.find(i => {
-            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
-          }).subAccountID,
-        // gatewayObject.value.subAccountID,
-        bearer: 'subaccount',
+        // subaccount: props.donation.paymentGateway.find(i => {
+        //     return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+        //   }).subAccountID,
+        // // gatewayObject.value.subAccountID,
+        // bearer: 'subaccount',
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
@@ -145,10 +155,12 @@ export default {
         callback: function (response) {
           //Route to where you confirm payment status
           console.log(response, "Payment Received");
-          console.log(props.donation);
-
+          emit('transaction-reference', response.trxref)
+          emit('paystack-amount')
+          console.log(props.donation)
+// `/confirmDonation?txnref=${response.trxref}`
           axios
-            .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
+            .post(`/donated?paymentType=0`, props.donation)
             .then((res) => {
               finish()
               console.log(res, "success data");
@@ -202,11 +214,13 @@ export default {
                 callback: (response) => {
                   console.log("Payment callback", response)
                     // props.donation.usedPaymentGateway = selectedGateway.value
-
+                        // `/confirmDonation?txnref=${response.tx_ref}`
                     console.log(props.donation)
+                    emit('transaction-reference', response.transaction_id)
+                    emit('paystack-amount')
 
                     axios
-                          .post(`/confirmDonation?txnref=${response.tx_ref}`, props.donation)
+                          .post(`/donated?paymentType=1`, props.donation)
                           .then((res) => {
                             finish()
                             console.log(res, "success data");

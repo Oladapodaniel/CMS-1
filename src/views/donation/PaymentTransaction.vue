@@ -768,7 +768,7 @@ export default {
                 }
 
                 // alert(i)
-                return i.name.toLowerCase().includes("paystack")
+                return i.name.toLowerCase().includes("paystack") || i.name.toLowerCase().includes("flutterwave")
             })
             // const x = paymentGateWaysDb.value.filter(i => (paymentGateWays.value.findIndex(j => j.paymentGateWayID === i.id)) >= 0)
             // console.log(x, "XXX");
