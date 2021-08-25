@@ -234,6 +234,14 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/people/firsttimer_crm/Index.vue')
             },
             {
+                path: 'reports',
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Index.vue')
+            },
+            {
                 path: 'family',
                 name: 'Family',
                 component: () =>
@@ -1302,6 +1310,12 @@ const routes = [
         component: () =>
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
+    },
+    {
+        path: '/report',
+        name: 'Report',
+        component: () =>
+            import ( /* webpackChunkName: "sentemails" */ '@/views/Report.vue'),
     },
 ]
 
