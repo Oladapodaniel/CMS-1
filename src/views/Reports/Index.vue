@@ -55,12 +55,12 @@
 <script>
 
 import { ref } from "vue"
-import People from "./components/People.vue"
-import Performance from "./components/Performance.vue"
-import Financial from "./components/Financial.vue"
-import MobileUsage from "./components/MobileUsage.vue"
-import FollowUp from "./components/FollowUp.vue"
-import Others from "./components/Others.vue"
+import People from "./Membershipreport/Index.vue"
+import Performance from "./Performancereport/Index.vue"
+import Financial from "./Financialreport/Index.vue"
+import MobileUsage from "./Mobileusagereport/Index.vue"
+import FollowUp from "./Followup/Index.vue"
+import Others from "./Others/Index.vue"
 export default {
     components: {
         People,
