@@ -200,7 +200,7 @@ export default {
       try {
         let {data} = await axios.delete(`/mobile/v1/Feeds/DeletePostCategory?PostCategoryId=${id}`);
         if(data.status === false){
-          this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save contacts. You can not delete it. You can rename instead.', life: 9000})
+          this.$toast.add({severity:'error', summary: '', detail: 'This people classification you are trying to delete has been used to save Image. You can not delete it. You can rename instead.', life: 9000})
         }else{
           this.types = this.types.filter(i => i.postCategoryId !== id);
          this.$toast.add({severity:'success', summary: '', detail:'Post Category Deleted Successfully', life: 3000});
