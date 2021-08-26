@@ -317,7 +317,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference" @paystack-amount="setPaystackAmount"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="computeAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference" @paystack-amount="setPaystackAmount"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -434,7 +434,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
 import PaymentOptionModal from "./PaymentOptionModal";
@@ -495,6 +495,11 @@ export default {
     const showSignInForm = ref(true)
     const tenantCurrency = ref("")
     const convertedAmount = ref(0)
+
+    const computeAmount = computed(() => {
+        if (convertedAmount.value) return convertedAmount.value
+        return amount.value
+    })
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -892,7 +897,8 @@ export default {
       convertedAmount,
       convertAmount,
       setTransactionReference,
-      setPaystackAmount
+      setPaystackAmount,
+      computeAmount
     };
   },
 };
