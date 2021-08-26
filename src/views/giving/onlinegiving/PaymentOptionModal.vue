@@ -129,11 +129,11 @@ export default {
         amount: props.converted * 100 ? props.converted * 100 : props.amount * 100,
         firstname: props.name,
         ref: props.orderId,
-        // subaccount: props.donation.paymentGateway.find(i => {
-        //     return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
-        //   }).subAccountID,
-        // // gatewayObject.value.subAccountID,
-        // bearer: 'subaccount',
+        subaccount: props.donation.paymentGateway.find(i => {
+            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+          }).subAccountID,
+        // gatewayObject.value.subAccountID,
+        bearer: 'subaccount',
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
@@ -175,7 +175,7 @@ export default {
               ? "https://ravemodal-dev.herokuapp.com/v3.js"
               : "https://checkout.flutterwave.com/v3.js";
             document.getElementsByTagName("head")[0].appendChild(script);
-            console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
+            // console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
     }
     getFlutterwaveModules()
 
