@@ -1355,6 +1355,7 @@ router.beforeEach((to, from, next) => {
             to.name === "OnboardingForm" ||
             to.name === "WebCheckin" ||
             to.name === "OnlineGiving4" ||
+            to.name === "Pay" ||
             to.name === "iFrame" ||
             to.name === "SignUpPayment" ||
             to.name === "SignInPayment" ||

@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     <div class="row">
@@ -75,9 +74,10 @@
 // import PaystackPay from "../../../components/payment/PaystackPay"
 
 import { ref, computed } from 'vue'
-import axios from "@/gateway/backendapi";
-import finish from "../../../services/progressbar/progress"
+// import axios from "@/gateway/backendapi";
+// import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
+import router from '../../../router';
 export default {
   components: {
     // PaystackPay
@@ -88,7 +88,7 @@ export default {
 
     const toast = useToast()
 
-    const isProduction = false
+    const isProduction = true
     const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
     const selectedGateway = ref("")
     
@@ -114,26 +114,13 @@ export default {
     })
 
     const payWithPaystack = (e) => {
-if (props.donation){
-      console.log(props.donation)
-} else {
-  console.log('donation not avaliable')
-}
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
-   
-    //  console.log(selectedGateway.value)
-    // console.log()
-let res = props.donation.paymentGateway.find(i => {
-            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
-          }).subAccountID
-      console.log(props.email, 'email')
-      console.log(props.converted * 100, 'amount')
-      console.log(props.name, 'name')
-      console.log(props.orderId, 'orderid')
-      console.log(res, 'subaccountid')
+  
 
       props.close.click()
+      // localStorage.setItem('donation', JSON.stringify(props.donation))
+      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'paystack', currency: props.currency } })
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
@@ -142,11 +129,11 @@ let res = props.donation.paymentGateway.find(i => {
         amount: props.converted * 100 ? props.converted * 100 : props.amount * 100,
         firstname: props.name,
         ref: props.orderId,
-        subaccount: props.donation.paymentGateway.find(i => {
-            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
-          }).subAccountID,
-        // gatewayObject.value.subAccountID,
-        bearer: 'subaccount',
+        // subaccount: props.donation.paymentGateway.find(i => {
+        //     return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+        //   }).subAccountID,
+        // // gatewayObject.value.subAccountID,
+        // bearer: 'subaccount',
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
@@ -200,7 +187,8 @@ let res = props.donation.paymentGateway.find(i => {
 
       // Close payment modal
       props.close.click()
-
+      // localStorage.setItem('donation', JSON.stringify(props.donation))
+      // router.push({ name: 'Pay', query: { amount: props.amount, currency: props.currency, email: props.email, gateway: 'flutterwave', currencyId: '0000-00000-000-0000-000-0000-0000', itemId: '0000-00000-000-0000-000-0000-0000' } })
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 tx_ref: props.orderId,
@@ -212,9 +200,7 @@ let res = props.donation.paymentGateway.find(i => {
                   email: props.email,
                 },
                 callback: (response) => {
-                  console.log("Payment callback", response)
-                    // props.donation.usedPaymentGateway = selectedGateway.value
-                        // `/confirmDonation?txnref=${response.tx_ref}`
+                    console.log("Payment callback", response)
                     console.log(props.donation)
                     emit('transaction-reference', response.transaction_id)
                     emit('paystack-amount')
