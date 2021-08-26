@@ -1,82 +1,83 @@
 <template>
   <div class="container-wide">
     <!-- write up part -->
-    <div class="row" style="height: 10vh">
+    <div class="row " style="height: 10vh">
       <Toast />
       <ConfirmDialog />
       <!-- <div class="col-md-6 mt-3"> -->
         <!-- <div class="row mt-5"> -->
-          <div class="col-12 col-sm-6 offset-sm-3 setup mt-5">Set up your church profile</div>
-          <div class="col-sm-3"></div>
-          <div class="col-sm-3 align-self-center mt-4 text-right">Name</div>
-          <div class="col-12 col-md-6 mt-4">
+          <div class="col-12 justify-content-center d-flex  setup mt-5">Set up your church profile</div>
+          <!-- <div class="col-sm-3"></div> -->
+          <div class=" col-12 col-sm-12 col-md-3 col-lg-3 align-self-center mt-4 text-left text-sm-left text-md-right text-lg-right">Name</div>
+          <div class="col-12 col-sm-12 col-md-7 col-lg-7  mt-4">
             <input type="text" class="form-control" v-model="churchName" />
           </div>
-          <div class="col-sm-3"></div>
+          <!-- <div class="col-sm-3"></div> -->
 
-          <div class="col-sm-3 align-self-center mt-4 text-right">
+          <div class="col-12 col-sm-12 col-md-3 col-lg-3 align-self-center mt-4 text-left text-sm-left text-md-right text-lg-right">
             Phone Number
           </div>
-          <div class="col-12 col-sm-6 mt-4">
+          <div class="col-12 col-sm-12 col-md-7 col-lg-7 mt-4">
             <input type="text" class="form-control" v-model="phoneNumber" />
           </div>
-          <div class="col-sm-3"></div>
+          <!-- <div class="col-sm-3"></div> -->
 
-          <div class="col-sm-3 align-self-center mt-4 text-right">Address</div>
-          <div class="col-12 col-md-6 mt-4">
+          <div class="col-12 col-sm-12 col-md-3 col-lg-3 align-self-center mt-4 text-left text-sm-left text-md-right text-lg-right">Address</div>
+          <div class="col-12 col-sm-12 col-md-7 col-lg-7 mt-4">
             <input type="text" class="form-control" v-model="address" />
           </div>
-          <div class="col-sm-3"></div>
+          <!-- <div class="col-sm-3"></div> -->
 
-          <div class="col-12 col-sm-6 mt-4 offset-sm-3">
-            <div class="row d-flex justify-content-md-between">
-              <div class="col-md-6 mt-3 px-md-0 col-9 font-weight-700">Pastors and Ministers</div>
+          <div class="col-12  mt-4 justify-content-center">
+            <div class="row justify-content-between ">
+              <div class="col-12 col-sm-5 col-md-5 col-lg-5 font-weight-700">Pastors and Ministers</div>
               <div
-                class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
+                class="col-12 col-sm-2 col-md-2 col-lg-2 ml-3 mt-2  "
                 data-target="#add-pastor"
                 data-toggle="modal"
                 data-whatever="@fat"
               >
-                Add
+              <button class="align-items-center default-btn btn primary-bg border-0 text-white  c-pointer">  Add</button>
               </div>
             </div>
           </div>
-          <div class="col-12 col-sm-6 offset-sm-3">
+          <div class="col-12 ">
             <div class="row" v-for="(item, index) in pastors" :key="index">
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
-              <div class="col-12 mt-4">
+              <div class="col-12  justify-content-center mx-auto   mt-4">
                 <div class="row">    
-                  <div class="col-md-4 col-12 col-sm-5 person-image">
+                  <div class="col-md-2 col-lg-2 col-sm-5  text-center col-5  person-image">
                     <img
-                      style="width: 110px; height: 110px; border-radius: 50%;"
+                      style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover;"
                       :src="item.photo"
-                      class="w-75 "
                     />
                   </div>
-                  <div class="col-10 col-sm-5 align-self-center">
-                    <div class="pastorname">{{ item.name }}</div>
-                    <div>{{ item.bio }}</div>
+                  <div class="col-12 col-md-8 col-sm-8  col-lg-8 mx-auto align-self-center ">
+                    <div class="pastorname text-center w-100 person-image">{{ item.name }}</div>
+                    <div class="person-image  w-100 text-center">{{ item.bio }}</div>
                   </div>
-                  <div class="col-1 align-self-center cursor-pointer mr-3" data-target="#add-pastor" data-toggle="modal" data-whatever="@fat" @click.prevent="editPastor(index)">
-                    edit
-                  </div>
-                  <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModal(item.pastorId, index)">
-                    <span><i class="pi pi-trash text-dark"></i></span>
-                  </div>
+                  <!-- <div class="row mx-auto   mx-lg-0  justify-content-center"> -->
+                      <div class="col-12  text-center text-sm-left text-md-left text-lg-left col-sm-1 col-md-1 col-lg-1 align-self-center cursor-pointer " data-target="#add-pastor" data-toggle="modal" data-whatever="@fat" @click.prevent="editPastor(index)">
+                        <i class="fa fa-pencil"></i>
+                      </div>
+                      <div class="col-12 col-md-1 col-lg-1 col-sm-1 text-center text-sm-left text-md-left text-lg-left align-self-center cursor-pointer  " @click.prevent="showConfirmModal(item.pastorId, index)">
+                        <i class="pi pi-trash text-dark"></i>
+                      </div>
+                  <!-- </div> -->
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-12 col-sm-6 offset-sm-3 mt-3">
-            <div class="row d-flex justify-content-md-between">
-              <div class="col-md-6 mt-3 px-md-0 col-9 font-weight-700">Other Information</div>
+          <div class="col-12   mt-3">
+            <div class="row justify-content-between ">
+              <div class=" col-sm-5 col-md-5 col-lg-5   col-12 font-weight-700">Other Information</div>
               <div
-                class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
+                class="col-12 mt-2 col-sm-2 col-lg-2 col-md-2  c-pointer"
                 data-target="#other-info"
                 data-toggle="modal"
                 data-whatever="@fat"
               >
-                Add
+                <button class="align-items-center default-btn btn primary-bg border-0 text-white c-pointer">  Add</button>
               </div>
             </div>
           </div>
@@ -120,36 +121,36 @@
             </div>
           </div>
 
-          <div class="col-12 col-sm-6 offset-sm-3 mt-3">
-            <div class="row d-flex justify-content-md-between">
-              <div class="col-md-6 mt-3 px-md-0 col-9 font-weight-700">Branches</div>
+          <div class="col-12  mt-3">
+            <div class="row justify-content-between">
+              <div class="col-sm-5 col-md-5 col-lg-5 col-12 font-weight-700">Branches</div>
               <div
-                class="col-2 mt-2 col-md-2 mr-2 btnIcons c-pointer"
+                class="col-12 mt-2 col-md-2 col-sm-2 col-lg-2 c-pointer"
                 data-target="#branches"
                 data-toggle="modal"
                 data-whatever="@fat"
                 @click="clearChurchBranch"
               >
-                Add
+                <button class=" align-items-center default-btn btn primary-bg border-0 text-white c-pointer">  Add</button>
               </div>
             </div>
           </div>
           <!-- returnedObject for churchesbranch -->
-          <div class="col-12 col-sm-6 offset-sm-3 p-md-0">
-            <div class="row" v-for="(item, index) in churchBranches" :key="index">
+          <div class="col-12  ">
+            <div class="row " v-for="(item, index) in churchBranches" :key="index">
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
-              <div class="col-12 mt-4">
-                <div class="row">
-                  <div class="col-12 col-sm-4 align-self-center">
+              <div class="col-12 col-sm-12 col-md-12 col-lg-12    mt-4">
+                <div class="row ">
+                  <div class="col-12 col-sm-5 col-md-5 col-lg-5 align-self-center">
                     <div class="pastorname">{{ item.branchName }}</div>
                     <!-- <div>{{ item.pastorName }}</div> -->
                   </div>
-                  <div class="col-12 col-sm-5 align-self-center">
+                  <div class="col-12 col-sm-5 col-md-5 col-lg-5  align-self-center">
                     <!-- <div class="pastorname">{{ item.branchName }}</div> -->
                     <div>{{ item.pastorName }}</div>
                   </div>
-                  <div class="col-1 align-self-center cursor-pointer mr-3" data-target="#branches" data-toggle="modal" data-whatever="@fat" @click.prevent="editBranch(item)">
-                    edit
+                  <div class="col-1 align-self-center cursor-pointer " data-target="#branches" data-toggle="modal" data-whatever="@fat" @click.prevent="editBranch(item)">
+                    <i class="fa fa-pencil"></i>
                   </div>
                   <div class="col-1  align-self-center cursor-pointer" @click.prevent="showConfirmModalBranch(item.id)">
                     <i class="pi pi-trash text-dark"></i>
