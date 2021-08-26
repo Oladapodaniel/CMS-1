@@ -317,7 +317,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference" @paystack-amount="setPaystackAmount"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -595,7 +595,8 @@ export default {
                           amount: amount.value,
                           contributionCurrencyId: dfaultCurrency.value.id
                         }
-            ]
+            ],
+            contributionItem: selectedContributionType.value.financialContribution.id
 
           }
           return {}
@@ -625,47 +626,6 @@ export default {
     }
 
     const donation = async() => {
-
-      //     try {
-      //   let { data } = await axios.get(`/api/Lookup/TenantCurrency?tenantID=${formResponse.value ? formResponse.value.tenantID : ""}`)
-      //   tenantCurrency.value = data.currency
-      // }
-
-      // catch (err) {
-      //   console.log(err)
-      // }
-      //     // Heres where im converting the currenccy
-      //     try {
-      //       let fromCurrencyRate = `usd${dfaultCurrency.value.shortCode.toLowerCase()}`
-      //       let toDestinationCurrencyRate = `usd${tenantCurrency.value.toLowerCase()}`
-      //       const result = await convertCurrency.currencyConverter(amount.value, fromCurrencyRate, toDestinationCurrencyRate)
-      //       console.log(result)
-      //       convertedAmount.value = Math.round(result)
-      //     }
-      //     catch (err) {
-      //       console.log(err)
-      //     }
-
-      //     donationObj.value = {
-      //       paymentFormId: formResponse.value.id,
-      //       churchLogoUrl: formResponse.value.churchLogo,
-      //       churchName: formResponse.value.churchName,
-      //       tenantID: formResponse.value.tenantID,
-      //       merchantID: formResponse.value.merchantId,
-      //       orderID: formResponse.value.orderId,
-      //       currencyID: dfaultCurrency.value.id,
-      //       paymentGateway: formResponse.value.paymentGateWays,
-          
-      //       contributionItems: [
-      //                   {
-      //                     contributionItemId: selectedContributionType.value.financialContribution.id,
-      //                     contributionItemName: selectedContributionType.value.financialContribution.name,
-      //                     amount: amount.value,
-      //                     contributionCurrencyId: dfaultCurrency.value.id
-      //                   }
-      //       ]
-
-      //     }
           
      
           if(localStorage.getItem('giverToken') !== "" || localStorage.getItem('giverToken') !== null || localStorage.getItem('giverToken')) {
@@ -881,6 +841,11 @@ export default {
       donationObj.value.transactionReference = payload
     }
 
+    const setPaystackAmount = () => {
+      delete donationObj.value[amount]
+      donationObj.value.amount = convertedAmount.value * 100
+    }
+
     return {
       hideTabOne,
       toggleTabOne,
@@ -926,7 +891,8 @@ export default {
       tenantCurrency,
       convertedAmount,
       convertAmount,
-      setTransactionReference
+      setTransactionReference,
+      setPaystackAmount
     };
   },
 };

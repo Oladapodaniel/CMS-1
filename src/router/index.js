@@ -1163,6 +1163,15 @@ const routes = [
             import ( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/iFrame')
     },
     {
+        path: '/pay',
+        name: 'Pay',
+        meta: {
+            title: 'Churchplus - Pay',
+        },
+        component: () =>
+            import ( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/Pay')
+    },
+    {
         path: '/onlinegivingform5',
         name: 'OnlineGiving5',
         component: () =>

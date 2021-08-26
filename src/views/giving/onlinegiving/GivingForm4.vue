@@ -515,6 +515,12 @@ export default {
     const tenantCurrency = ref("")
     const convertedAmount = ref(0)
     
+    
+
+    const computeAmount = computed(() => {
+        if (convertedAmount.value) return convertedAmount.value
+        return amount.value
+    })
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -647,30 +653,6 @@ export default {
     }
 
     const donation = async() => {
-        
-
-
-          // donationObj.value = {
-          //   paymentFormId: formResponse.value.id,
-          //   churchLogoUrl: formResponse.value.churchLogo,
-          //   churchName: formResponse.value.churchName,
-          //   tenantID: formResponse.value.tenantID,
-          //   merchantID: formResponse.value.merchantId,
-          //   orderID: formResponse.value.orderId,
-          //   currencyID: dfaultCurrency.value.id,
-          //   paymentGateway: formResponse.value.paymentGateWays,
-          //   contributionItems: [
-          //               {
-          //                 contributionItemId: selectedContributionType.value.financialContribution.id,
-          //                 contributionItemName: selectedContributionType.value.financialContribution.name,
-          //                 amount: amount.value,
-          //                 contributionCurrencyId: dfaultCurrency.value.id
-          //               }
-          //   ]
-
-          // }
-
-          
           
           
           if(localStorage.getItem('giverToken') === null || !signedIn.value) {
@@ -938,7 +920,8 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
       convertedAmount,
       convertAmount,
       setTransactionReference,
-      setPaystackAmount
+      setPaystackAmount,
+      computeAmount
     };
   },
 };

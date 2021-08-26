@@ -832,7 +832,7 @@
       </div>
     </Dialog>
   </div>
-  <GroupCategory />
+  <!-- <GroupCategory /> -->
 </template>
 
 <script>

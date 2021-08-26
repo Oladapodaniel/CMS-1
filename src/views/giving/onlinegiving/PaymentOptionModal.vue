@@ -142,11 +142,11 @@ let res = props.donation.paymentGateway.find(i => {
         amount: props.converted * 100 ? props.converted * 100 : props.amount * 100,
         firstname: props.name,
         ref: props.orderId,
-        // subaccount: props.donation.paymentGateway.find(i => {
-        //     return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
-        //   }).subAccountID,
-        // // gatewayObject.value.subAccountID,
-        // bearer: 'subaccount',
+        subaccount: props.donation.paymentGateway.find(i => {
+            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+          }).subAccountID,
+        // gatewayObject.value.subAccountID,
+        bearer: 'subaccount',
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
@@ -202,7 +202,7 @@ let res = props.donation.paymentGateway.find(i => {
       props.close.click()
 
       window.FlutterwaveCheckout({
-                public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+                public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 tx_ref: props.orderId,
                 amount: props.amount,
                 currency: props.currency,
