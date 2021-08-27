@@ -74,8 +74,8 @@
 // import PaystackPay from "../../../components/payment/PaystackPay"
 
 import { ref, computed } from 'vue'
-// import axios from "@/gateway/backendapi";
-// import finish from "../../../services/progressbar/progress"
+import axios from "@/gateway/backendapi";
+import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
 import router from '../../../router';
 export default {
@@ -116,57 +116,57 @@ export default {
     const payWithPaystack = (e) => {
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
-  
+  console.log(props.converted)
 
       props.close.click()
       // localStorage.setItem('donation', JSON.stringify(props.donation))
-      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'paystack', currency: props.currency, 'cae496a0-4cec-4c85-5d84-08d948e1da4e': 2000,  '2dd132fc-8977-4f18-3e4c-08d942c135e9': 5600,  '6e563186-d33e-4f67-3e14-08d942c135e315': 400, tenantId: '00000-000-000', currencyId: '999-999-999' } })
-      /*eslint no-undef: "warn"*/
-      let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
-        email: props.email,
-        amount: props.converted * 100 ? props.converted * 100 : props.amount * 100,
-        firstname: props.name,
-        ref: props.orderId,
-        subaccount: props.donation.paymentGateway.find(i => {
-            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
-          }).subAccountID,
-        // gatewayObject.value.subAccountID,
-        bearer: 'subaccount',
-        onClose: function () {
-          // swal("Transaction Canceled!", { icon: "error" });
-          toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
-          console.log('closed')
-        },
-        callback: function (response) {
-          //Route to where you confirm payment status
-          console.log(response, "Payment Received");
-          emit('transaction-reference', response.trxref)
-          emit('paystack-amount')
-          console.log(props.donation)
-// `/confirmDonation?txnref=${response.trxref}`
-          axios
-            .post(`/donated?paymentType=0`, props.donation)
-            .then((res) => {
-              finish()
-              console.log(res, "success data");
+      router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'paystack', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
+//       /*eslint no-undef: "warn"*/
+//       let handler = PaystackPop.setup({
+//         // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+//         key: process.env.VUE_APP_PAYSTACK_API_KEY,
+//         email: props.email,
+//         amount: props.converted * 100 ? props.converted * 100 : props.amount * 100,
+//         firstname: props.name,
+//         ref: props.orderId,
+//         // subaccount: props.donation.paymentGateway.find(i => {
+//         //     return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+//         //   }).subAccountID,
+//         // // gatewayObject.value.subAccountID,
+//         // bearer: 'subaccount',
+//         onClose: function () {
+//           // swal("Transaction Canceled!", { icon: "error" });
+//           toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
+//           console.log('closed')
+//         },
+//         callback: function (response) {
+//           //Route to where you confirm payment status
+//           console.log(response, "Payment Received");
+//           emit('transaction-reference', response.trxref)
+//           emit('paystack-amount')
+//           console.log(props.donation)
+// // `/confirmDonation?txnref=${response.trxref}`
+//           axios
+//             .post(`/donated?paymentType=0`, props.donation)
+//             .then((res) => {
+//               finish()
+//               console.log(res, "success data");
 
-            })
-            .catch((err) => {
-              finish()
-              toast.add({ severity: 'error',
-              summary: 'Confirmation failed',
-              detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
-              life: 4000
-              })
-              console.log(err, "error confirming payment");
-            });
+//             })
+//             .catch((err) => {
+//               finish()
+//               toast.add({ severity: 'error',
+//               summary: 'Confirmation failed',
+//               detail: "Confirming your purchase failed, please contact support at info@churchplus.co",
+//               life: 4000
+//               })
+//               console.log(err, "error confirming payment");
+//             });
 
-          emit('payment-successful', true)
-        },
-      });
-      handler.openIframe();
+//           emit('payment-successful', true)
+//         },
+//       });
+//       handler.openIframe();
     };
 
     const getFlutterwaveModules = () => {
@@ -184,13 +184,15 @@ export default {
       // Get and send clicked payment gateway to parent
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
+      console.log(props.amount)
 
       // Close payment modal
       props.close.click()
       // localStorage.setItem('donation', JSON.stringify(props.donation))
-      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'flutterwave', currency: props.currency, 'cae496a0-4cec-4c85-5d84-08d948e1da4e': 2000,  '2dd132fc-8977-4f18-3e4c-08d942c135e9': 5600,  '6e563186-d33e-4f67-3e14-08d942c135e315': 400, tenantId: '00000-000-000', currencyId: '999-999-999' } })
+      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'flutterwave', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+                // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
                 tx_ref: props.orderId,
                 amount: props.amount,
                 currency: props.currency,
@@ -203,7 +205,6 @@ export default {
                     console.log("Payment callback", response)
                     console.log(props.donation)
                     emit('transaction-reference', response.transaction_id)
-                    emit('paystack-amount')
 
                     axios
                           .post(`/donated?paymentType=1`, props.donation)

@@ -3,6 +3,7 @@
         <div class="row" v-if="paymentSuccessful">
             <div class="col-12">Thank you</div>
             <div class="col-12">You have made successfully made your payment</div>
+            {{ queryValue }}
         </div>
     </div>
 </template>
@@ -40,25 +41,30 @@ export default {
             getFlutterwaveModules()
 
             const queryValue = computed(() => {
-                return {
+                if (contributionItem.value.length > 0) return {
                         email: route.query.email,
                         amount: amount.value,
                         currencyId: route.query.currencyId,
+                        contributionItems: contributionItem.value,
                         gateway: route.query.gateway.toLowerCase(),
                         orderId: uniqueId.value,
                         tenantId: route.query.tenantId
                     }
                 })
 
-            // const initializePayment = () => {
-            //     axios.post('/initailizedonationpayment', queryValue.value)
-            //         .then(res => {
-            //             console.log(res)
-            //         })
-            //         .catch(err => {
-            //             console.log(err)
-            //         })
-            // }
+            const initializePayment = () => {
+                setTimeout(() => {
+                    if(contributionItem.value.length > 0) {
+                    axios.post('/initailizedonationpayment', queryValue.value)
+                    .then(res => {
+                        console.log(res)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                }
+                }, 1000);
+            }
 
             const callFlutterWave = () => {
         
@@ -73,7 +79,7 @@ export default {
                         contributionItem.value.push({contributionItemId: i, amount: Object.values(route.query)[index]})
                     }
                 });
-                queryValue.value.contributionItem = contributionItem.value
+                // queryValue.value.contributionItem = contributionItem.value
   
                 window.FlutterwaveCheckout({
                     // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
@@ -160,7 +166,7 @@ export default {
                         contributionItem.value.push({contributionItemId: i, amount: Object.values(route.query)[index]})
                     }
                 });
-                queryValue.value.contributionItem = contributionItem.value
+                // queryValue.value.contributionItems = contributionItem.value
              
 
                 let summedAmount = contributionItem.value.reduce((a, b) => { 
@@ -179,8 +185,8 @@ export default {
             // }
             /*eslint no-undef: "warn"*/
                 let handler = PaystackPop.setup({
-                    // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-                    key: process.env.VUE_APP_PAYSTACK_API_KEY,
+                    key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+                    // key: process.env.VUE_APP_PAYSTACK_API_KEY,
                     email: route.query.email,
                     amount: amount.value * 100,
                     ref: uniqueId.value,
@@ -228,7 +234,7 @@ export default {
             
         const openPaymentGatewayHandler = () => {
             if (route.query.gateway === 'paystack') {
-                // initializePayment()
+                initializePayment()
                 callPaystack()
             } else if (route.query.gateway === 'flutterwave') {
                 // initializePayment()
