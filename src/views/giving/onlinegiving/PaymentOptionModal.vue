@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     <div class="row">
@@ -75,9 +74,10 @@
 // import PaystackPay from "../../../components/payment/PaystackPay"
 
 import { ref, computed } from 'vue'
-import axios from "@/gateway/backendapi";
-import finish from "../../../services/progressbar/progress"
+// import axios from "@/gateway/backendapi";
+// import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
+import router from '../../../router';
 export default {
   components: {
     // PaystackPay
@@ -88,7 +88,7 @@ export default {
 
     const toast = useToast()
 
-    const isProduction = false
+    const isProduction = true
     const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
     const selectedGateway = ref("")
     
@@ -112,31 +112,28 @@ export default {
       if(!props.gateways) return false
       return props.gateways.find(i => i.paymentGateway.name === "Stripe")
     })
-      
 
     const payWithPaystack = (e) => {
-
-      // console.log(props.donation)
-
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
-   
-    //  console.log(selectedGateway.value)
+  
 
       props.close.click()
+      // localStorage.setItem('donation', JSON.stringify(props.donation))
+      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'paystack', currency: props.currency } })
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
         // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: props.email,
-        amount: props.converted * 100,
+        amount: props.converted * 100 ? props.converted * 100 : props.amount * 100,
         firstname: props.name,
         ref: props.orderId,
-        subaccount: props.donation.paymentGateway.find(i => {
-            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
-          }).subAccountID,
-        // gatewayObject.value.subAccountID,
-        bearer: 'subaccount',
+        // subaccount: props.donation.paymentGateway.find(i => {
+        //     return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+        //   }).subAccountID,
+        // // gatewayObject.value.subAccountID,
+        // bearer: 'subaccount',
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           toast.add({ severity: 'info', summary: 'Transaction cancelled', detail: "You have cancelled the transaction", life: 2500})
@@ -145,10 +142,12 @@ export default {
         callback: function (response) {
           //Route to where you confirm payment status
           console.log(response, "Payment Received");
-          console.log(props.donation);
-
+          emit('transaction-reference', response.trxref)
+          emit('paystack-amount')
+          console.log(props.donation)
+// `/confirmDonation?txnref=${response.trxref}`
           axios
-            .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
+            .post(`/donated?paymentType=0`, props.donation)
             .then((res) => {
               finish()
               console.log(res, "success data");
@@ -188,9 +187,10 @@ export default {
 
       // Close payment modal
       props.close.click()
-
+      // localStorage.setItem('donation', JSON.stringify(props.donation))
+      // router.push({ name: 'Pay', query: { amount: props.amount, currency: props.currency, email: props.email, gateway: 'flutterwave', currencyId: '0000-00000-000-0000-000-0000-0000', itemId: '0000-00000-000-0000-000-0000-0000' } })
       window.FlutterwaveCheckout({
-                public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+                public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 tx_ref: props.orderId,
                 amount: props.amount,
                 currency: props.currency,
@@ -200,13 +200,13 @@ export default {
                   email: props.email,
                 },
                 callback: (response) => {
-                  console.log("Payment callback", response)
-                    // props.donation.usedPaymentGateway = selectedGateway.value
-
+                    console.log("Payment callback", response)
                     console.log(props.donation)
+                    emit('transaction-reference', response.transaction_id)
+                    emit('paystack-amount')
 
                     axios
-                          .post(`/confirmDonation?txnref=${response.tx_ref}`, props.donation)
+                          .post(`/donated?paymentType=1`, props.donation)
                           .then((res) => {
                             finish()
                             console.log(res, "success data");

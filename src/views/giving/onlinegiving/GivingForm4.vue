@@ -76,17 +76,7 @@
                 >
                   <div class="row">
                     <div class="col-md-4 my-3 pr-md-0">
-                      <label class="hfont">Purpose</label>
-
-                      <Dropdown
-                        v-model="selectedContributionType"
-                        :options="formResponse.contributionItems"
-                        optionLabel="financialContribution.name"
-                        placeholder="Select"
-                        class="w-100 px-0"
-                      />
-                    </div>
-                    <div class="col-md-4 my-3">
+                      
                       <label class="hfont">Currency</label>
                        <Dropdown
                             v-model="dfaultCurrency"
@@ -96,7 +86,7 @@
                             class="w-100 px-0"
                           />
                     </div>
-                    <div class="col-md-4 my-3 pl-md-0">
+                    <div class="col-md-4 my-3">
                       <label class="hfont">Amount</label>
 
                       <input
@@ -105,6 +95,17 @@
                             v-model="amount"
                             placeholder="Amount"
                           />
+                    </div>
+                    <div class="col-md-4 my-3 pl-md-0">
+                      <label class="hfont">Purpose</label>
+
+                      <Dropdown
+                        v-model="selectedContributionType"
+                        :options="formResponse.contributionItems"
+                        optionLabel="financialContribution.name"
+                        placeholder="Select"
+                        class="w-100 px-0"
+                      />
                     </div>
                   </div>
 
@@ -310,9 +311,10 @@
                         v-if="!hideTabOne || hideTabOne"
                       >
                         <!-- button section -->
-                        <div class="row my-3" @click="donation">
+                        <div class="row my-3">
                           <div class="col-md-12 text-center mt-4">
                             <button
+                              @click="convertAmount"
                               data-toggle="modal"
                               data-target="#PaymentOptionModal"
                               class="btn btn-default btngive default-color hfontb btt"
@@ -337,7 +339,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="convertedAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="computeAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference" @paystack-amount="setPaystackAmount"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -451,7 +453,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import Dropdown from "primevue/dropdown";
 import axios from "@/gateway/backendapi";
 import PaymentOptionModal from "./PaymentOptionModal";
@@ -499,7 +501,7 @@ export default {
     const phone = ref("")
     const email = ref("anonymous@churchplus.co")
     const checked = ref(true)
-    const donationObj = ref({})
+    // const donationObj = ref({})
     const close = ref("")
     const paymentSuccessful = ref(false)
     const userData = ref({})
@@ -513,6 +515,12 @@ export default {
     const tenantCurrency = ref("")
     const convertedAmount = ref(0)
     
+    
+
+    const computeAmount = computed(() => {
+        if (convertedAmount.value) return convertedAmount.value
+        return amount.value
+    })
 
     const givingOften = (e) => {
       console.log(e.target.innerText);
@@ -596,9 +604,32 @@ export default {
         }
     getRates()
 
-    const donation = async() => {
+    const donationObj = computed(() => {
+      if (selectedContributionType.value && selectedContributionType.value.financialContribution) return {
+            paymentFormId: formResponse.value.id,
+            churchLogoUrl: formResponse.value.churchLogo,
+            churchName: formResponse.value.churchName,
+            tenantID: formResponse.value.tenantID,
+            merchantID: formResponse.value.merchantId,
+            orderID: formResponse.value.orderId,
+            currencyID: dfaultCurrency.value.id,
+            paymentGateway: formResponse.value.paymentGateWays,
+            amount: convertedAmount.value,
+            contributionItems: [
+                        {
+                          contributionItemId: selectedContributionType.value.financialContribution.id,
+                          contributionItemName: selectedContributionType.value.financialContribution.name,
+                          amount: amount.value,
+                          contributionCurrencyId: dfaultCurrency.value.id
+                        }
+            ],
+            contributionItem: selectedContributionType.value.financialContribution.id
 
+          }
+          return {}
+    })
 
+    const convertAmount = async() => {
       try {
         let { data } = await axios.get(`/api/Lookup/TenantCurrency?tenantID=${formResponse.value ? formResponse.value.tenantID : ""}`)
         tenantCurrency.value = data.currency
@@ -619,29 +650,9 @@ export default {
           catch (err) {
             console.log(err)
           }
+    }
 
-
-          donationObj.value = {
-            paymentFormId: formResponse.value.id,
-            churchLogoUrl: formResponse.value.churchLogo,
-            churchName: formResponse.value.churchName,
-            tenantID: formResponse.value.tenantID,
-            merchantID: formResponse.value.merchantId,
-            orderID: formResponse.value.orderId,
-            currencyID: dfaultCurrency.value.id,
-            paymentGateway: formResponse.value.paymentGateWays,
-            contributionItems: [
-                        {
-                          contributionItemId: selectedContributionType.value.financialContribution.id,
-                          contributionItemName: selectedContributionType.value.financialContribution.name,
-                          amount: amount.value,
-                          contributionCurrencyId: dfaultCurrency.value.id
-                        }
-            ]
-
-          }
-
-          
+    const donation = async() => {
           
           
           if(localStorage.getItem('giverToken') === null || !signedIn.value) {
@@ -669,7 +680,7 @@ export default {
          
 console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'))
           try {
-            let  res = await axios.post('/donation', donationObj.value)
+            let  res = await axios.post('/initailizedonationpayment', donationObj.value)
             console.log(res)
           
             finish()
@@ -847,8 +858,18 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
     }
 
     const gatewaySelected  = (payload) => {
-        donationObj.value.usedPaymentGateway = payload
+        donationObj.value.gateway = payload
         console.log(payload)
+        donation()
+    }
+
+    const setTransactionReference = (payload) => {
+      donationObj.value.transactionReference = payload
+    }
+
+    const setPaystackAmount = () => {
+      delete donationObj.value[amount]
+      donationObj.value.amount = convertedAmount.value * 100
     }
 
     
@@ -896,7 +917,11 @@ console.log(donationObj.value, signedIn.value, localStorage.getItem('giverToken'
       displaySignInForm,
       gatewaySelected,
       tenantCurrency,
-      convertedAmount
+      convertedAmount,
+      convertAmount,
+      setTransactionReference,
+      setPaystackAmount,
+      computeAmount
     };
   },
 };

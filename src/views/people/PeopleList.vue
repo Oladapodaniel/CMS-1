@@ -797,13 +797,6 @@ export default {
       if (searchText.value !== "" && searchPeopleNamesInDB.value.length > 0) {
         // return searchPeopleInDB()
         return searchPeopleNamesInDB.value;
-        // return churchMembers.value.filter((i) => {
-        //   if (i.firstName)
-        //     return `${i.firstName}${i.lastName}${i.mobilePhone}`
-        //       .toLowerCase()
-        //       .includes(searchText.value.toLowerCase());
-        //   return "";
-        // });
       } else if (filterResult.value.length > 0) {
         return filterResult.value;
       } else {
