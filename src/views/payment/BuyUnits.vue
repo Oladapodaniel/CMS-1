@@ -61,7 +61,7 @@
                         id=""
                         class="form-control flat-right-border px-sm-0"
                       >
-                        <option value="">Naira(N)</option>
+                        <option value="">{{ userCurrencyName ? userCurrencyName.toUpperCase() : ''}}</option>
                       </select>
                     </div>
                     <div class="col-7 col-sm-8 pl-0 d-flex align-items-center">
@@ -113,6 +113,7 @@
                     v-model="totalAmount"
                     disabled
                     class="form-control flat-left-border"
+                    @input="userCurrencyConversion()"
                   />
                 </div>
                 <div class="col-md-3"></div>
@@ -279,6 +280,8 @@ import { useToast } from "primevue/usetoast";
 import stopProgressBar from "../../services/progressbar/progress"
 import membershipService from "../../services/membership/membershipservice";
 import { v4 as uuidv4 } from 'uuid';
+import currencyConverter from "../../services/currency-converter/currencyConverter"
+
 
 export default {
   components: { PaymentSuccessModal },
@@ -289,10 +292,10 @@ export default {
     const purchaseIsSuccessful = ref(false);
     const toast = useToast();
     const isProduction = ref(false);
-
+    const uuid = ref(uuidv4());
     const totalSMSUnits = computed(() => {
       if (amount.value <= 0) return "";
-      return Math.ceil(amount.value / 2);
+      return Math.ceil(amount.value / currentUser.value.pricePerUnitSMS);
     });
 
     const totalAmount = computed(() => {
@@ -302,8 +305,9 @@ export default {
     
     const userEmail = ref(store.getters.userEmail);
     // console.log(userEmail, "the Lord is Good")
-    const currentUser = store.getters.currentUser;
-    const tenantId = ref(currentUser.tenantId)
+    const currentUser = ref(store.getters.currentUser);
+    const tenantId = ref(currentUser.tenantId);
+    const userCurrency = ref(currentUser.currency);
     const churchName = ref("");
     const churchLogo = ref('https://images.app.goo.gl/cdhuWQU7a11CRJnRA');
     const close = ref(null);
@@ -314,19 +318,22 @@ export default {
         .then(res => {
           userEmail.value = res.userEmail;
           churchName.value = res.churchName;
-          tenantId.value = res.tenantId
+          tenantId.value = res.tenantId;
+          userCurrency.value = res.currency;
+          currentUser.value = res
+
         })
         .catch(err => {
           console.log(err);
         })
     }
-  
+    console.log(currentUser, 'current user ...');
 
     // const userEmail = ref("");
       if (!userEmail.value || !tenantId.value) getUserEmail();
 
     const getEmail = async () => {
-       if (!currentUser.value || !currentUser.userEmail.value){
+       if (!currentUser.value || !currentUser.value.userEmail){
           membershipService.getSignedInUser()
           .then(res => {
             console.log(res)
@@ -341,15 +348,43 @@ export default {
      getEmail()
 
     // const userEmail = ref("");
+     const userCurrencyName = computed(() => {
+        if (!currentUser.value) return "ngn";
+        // console.log(currentUser, 'compute current user');
+        if (currentUser.value.flutterwaveEnabled) return currentUser.value.currency.toLowerCase();
+        return 'usd';
+      });
 
     const payWithPaystack = (e) => {
+      initializePayment(0)    
+      const currencyConvertedAmount = currencyConverter.convertCurrencyTo(+amount.value, 'ngn', 'usd').then((res) => {
+        console.log(res, 'res success');
+      })
+      console.log(currencyConvertedAmount, 'currencyConvertedAmount successful');
       e.preventDefault();
       invalidAmount.value = false;
       if (amount.value <= 0) {
         invalidAmount.value = true;
         return false;
       }
-       initializePayment(0);
+         const getUserEmail = async () => {
+         userService.getCurrentUser()
+        .then(res => {
+          userEmail.value = res.userEmail;
+          churchName.value = res.churchName;
+          tenantId.value = res.tenantId;
+          userCurrency.value = res.currency;
+          currentUser.value = res
+
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
+  
+
+    // const userEmail = ref("");
+      if (!userEmail.value || !tenantId.value) getUserEmail();(0);
       console.log(userEmail.value, "UE");
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
@@ -359,6 +394,8 @@ export default {
         amount: amount.value * 100,
         firstname: churchName.value,
         lastname: "",
+        ref: uuid.value,
+        currency: userCurrencyName.value,
         onClose: function () {
           // swal("Transaction Canceled!", { icon: "error" });
           if (!isSuccessful.value) {
@@ -376,13 +413,24 @@ export default {
           console.log(response, "response");
           var returnres = {
             smsUnit: totalSMSUnits.value,
-            transaction_Reference: response.reference,
-            amount: amount.value * 100,
+            transaction_Reference: response.trxref,
+            amount: amount.value * 100 ,
+            orderId: response.trxref,
+            tenantId: currentUser.value.tenantId,
           };
+          
+          // const paymentAmount = ref(0)
+          // const userCurrencyConversion = async () => {
+          //   if (!currentUser.value.flutterwaveEnabled) return 
+          //     const currencyConvertedAmount = await currencyConverter.convertCurrencyTo(+amount.value, 'ngn', 'usd')
+          //     paymentAmount.value = currencyConvertedAmount
+
+          // }
+
           //Route to where you confirm payment status
 
           axios
-            .post(`/api/Payment/initializesmspayment?paymentType=0`, returnres)
+            .post(`/api/Payment/purchasesmsunits?paymentType=0`, returnres)
             .then((res) => {
              if (res.data) {
                 console.log(res, "success data");
@@ -410,6 +458,7 @@ export default {
 
     const closeModal = () => purchaseIsSuccessful.value = false;
     const initializedOrder = ref({})
+    
     const initializePayment = (paymentType) => {
        const payload = {
         smsUnit: totalSMSUnits.value,
@@ -441,7 +490,7 @@ export default {
     
     const payWithFlutterwave = (e) => {
       initializePayment(1);
-      console.log(e.srcElement.alt)
+      // console.log(e.srcElement.alt)
       // Get and send clicked payment gateway to parent
       // selectedGateway.value = e.srcElement.alt
       // emit('selected-gateway', selectedGateway.value)
@@ -451,12 +500,12 @@ export default {
        console.log(totalAmount.value)
                     // console.log(selectedCurrency.value)
                     // console.log(email)
-
+    // alert('test')
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 tx_ref: uuidv4().substring(0,8),
                 amount: totalAmount.value,
-                currency: 'NGN',
+                currency: userCurrencyName.value,
                 payment_options: 'card,ussd',
                 customer: {
                   // name: props.name,
@@ -541,7 +590,11 @@ export default {
       initializePayment,
       initializedOrder,
       churchLogo,
-      close
+      close,
+      userCurrency,
+      userCurrencyName,
+      uuid,
+      // userCurrencyConversion,
     };
   },
 };
