@@ -120,7 +120,7 @@ export default {
 
       props.close.click()
       // localStorage.setItem('donation', JSON.stringify(props.donation))
-      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'paystack', currency: props.currency } })
+      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'paystack', currency: props.currency, 'cae496a0-4cec-4c85-5d84-08d948e1da4e': 2000,  '2dd132fc-8977-4f18-3e4c-08d942c135e9': 5600,  '6e563186-d33e-4f67-3e14-08d942c135e315': 400, tenantId: '00000-000-000', currencyId: '999-999-999' } })
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
@@ -188,7 +188,7 @@ export default {
       // Close payment modal
       props.close.click()
       // localStorage.setItem('donation', JSON.stringify(props.donation))
-      // router.push({ name: 'Pay', query: { amount: props.amount, currency: props.currency, email: props.email, gateway: 'flutterwave', currencyId: '0000-00000-000-0000-000-0000-0000', itemId: '0000-00000-000-0000-000-0000-0000' } })
+      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'flutterwave', currency: props.currency, 'cae496a0-4cec-4c85-5d84-08d948e1da4e': 2000,  '2dd132fc-8977-4f18-3e4c-08d942c135e9': 5600,  '6e563186-d33e-4f67-3e14-08d942c135e315': 400, tenantId: '00000-000-000', currencyId: '999-999-999' } })
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 tx_ref: props.orderId,

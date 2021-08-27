@@ -28,6 +28,7 @@ export default {
         const nonPaystackCompactible = ref(true)
         const converted = ref(0)
         const paymentSuccessful = ref(false)
+        const contributionItem = ref([])
         
         const getFlutterwaveModules = () => {
             const script = document.createElement("script");
@@ -41,32 +42,44 @@ export default {
             const queryValue = computed(() => {
                 return {
                         email: route.query.email,
-                        amount: route.query.amount,
-                        contributionItemId: route.query.itemId,
+                        amount: amount.value,
                         currencyId: route.query.currencyId,
                         gateway: route.query.gateway.toLowerCase(),
-                        orderId: uniqueId.value
-                        // orderId: Math.floor(Math.random() * 6) + 1
+                        orderId: uniqueId.value,
+                        tenantId: route.query.tenantId
                     }
                 })
 
-            const initializePayment = () => {
-                axios.post('/initailizedonationpayment', queryValue.value)
-                    .then(res => {
-                        console.log(res)
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-            }
+            // const initializePayment = () => {
+            //     axios.post('/initailizedonationpayment', queryValue.value)
+            //         .then(res => {
+            //             console.log(res)
+            //         })
+            //         .catch(err => {
+            //             console.log(err)
+            //         })
+            // }
 
             const callFlutterWave = () => {
-                console.log(uniqueId.value)
+        
+                // Regular expression to test if a string is a valid GUID
+                // This is to validate the GUID query route name as a contributionItemId
+
+                let regex = /[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}/i;
+                Object.keys(route.query).forEach((i, index) => {
+                    let result = regex.test(i)
+                    console.log(result)
+                    if (result) {
+                        contributionItem.value.push({contributionItemId: i, amount: Object.values(route.query)[index]})
+                    }
+                });
+                queryValue.value.contributionItem = contributionItem.value
+  
                 window.FlutterwaveCheckout({
                     // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                     public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
                     tx_ref: uniqueId.value,
-                    amount: route.query.amount,
+                    amount: amount.value,
                     currency: route.query.currency,
                     payment_options: 'card,ussd',
                     customer: {
@@ -119,7 +132,9 @@ export default {
 
         const amount  = computed(() => {
             if (converted.value) return converted.value
-            return route.query.amount
+            if (contributionItem.value.length > 0) return contributionItem.value.reduce((a, b) => { 
+                    return { amount: +a.amount + +b.amount } 
+                }).amount
         })
 
         const callPaystack = async() => {
@@ -133,8 +148,26 @@ export default {
             // })
 
             // if (nonPaystackCompactible.value) {
+                console.log(Object.keys(route.query))
+                // Regular expression to test if a string is a valid GUID
+                // This is to validate the GUID query route name as a contributionItemId
+
+                let regex = /[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}/i;
+                Object.keys(route.query).forEach((i, index) => {
+                    let result = regex.test(i)
+                    console.log(result)
+                    if (result) {
+                        contributionItem.value.push({contributionItemId: i, amount: Object.values(route.query)[index]})
+                    }
+                });
+                queryValue.value.contributionItem = contributionItem.value
+             
+
+                let summedAmount = contributionItem.value.reduce((a, b) => { 
+                    return { amount: +a.amount + +b.amount } 
+                })
                 try {
-                    const rate = await convertCurrency.currencyConverter(route.query.amount, `usd${route.query.currency.toLowerCase()}`,'usdngn')
+                    const rate = await convertCurrency.currencyConverter(+summedAmount.amount, `usd${route.query.currency.toLowerCase()}`,'usdngn')
                     // currency.value = 'USD'
                     console.log(Math.floor(rate))
                     converted.value = Math.floor(rate)
@@ -142,13 +175,14 @@ export default {
                 } catch (err) {
                     console.log(err)
                 }
+         
             // }
             /*eslint no-undef: "warn"*/
                 let handler = PaystackPop.setup({
                     // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
                     key: process.env.VUE_APP_PAYSTACK_API_KEY,
                     email: route.query.email,
-                    amount: +amount.value * 100,
+                    amount: amount.value * 100,
                     ref: uniqueId.value,
                     currency: currency.value,
                     channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
@@ -169,7 +203,7 @@ export default {
                     //Route to where you confirm payment status
                     console.log(response, "Payment Received");
 
-                    queryValue.value.amount = route.query.amount * 100
+                    queryValue.value.amount = amount.value * 100
                     queryValue.value.transactionReference = response.trxref
                     axios
                         .post(`/donated?paymentType=0`, queryValue.value)
@@ -194,10 +228,10 @@ export default {
             
         const openPaymentGatewayHandler = () => {
             if (route.query.gateway === 'paystack') {
-                initializePayment()
+                // initializePayment()
                 callPaystack()
             } else if (route.query.gateway === 'flutterwave') {
-                initializePayment()
+                // initializePayment()
                 setTimeout(() => {
                     callFlutterWave()
                 }, 2000)
@@ -215,7 +249,8 @@ export default {
             nonPaystackCompactible,
             converted,
             amount,
-            paymentSuccessful
+            paymentSuccessful,
+            contributionItem
         }
     }
 }
