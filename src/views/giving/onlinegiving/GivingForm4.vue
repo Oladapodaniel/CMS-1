@@ -1,5 +1,15 @@
 
 <template>
+<!-- To whoever will update this page -->
+<!-- This page is the main online giving platform for churchplus -->
+
+<!-- It similar to the Iframe version in churchplus, with few differences in styles. -->
+
+<!-- The logic is quite the same, so any changes made to this page should be made in the iFrame Page which is iFrame.vue, except the changes that is to be made is specific for the main online giving platform -->
+
+<!-- Bless you :)-->
+
+
   <div>
     <!-- nav section area -->
     <div class="container-fluid nav-color">

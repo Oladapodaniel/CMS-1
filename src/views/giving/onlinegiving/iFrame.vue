@@ -1,5 +1,14 @@
 
 <template>
+<!-- To whoever will update this page -->
+<!-- This page is the online giving platform for the IFrame version -->
+
+<!-- It similar to the Online Giving in churchplus, with few differences in styles. -->
+
+<!-- The logic is quite the same, so any changes made to this page should be made in the main Online Giving Page which is GivingForm4.vue, except the changes that is to be made is specific for the Iframe version -->
+
+<!-- Bless you :)-->
+
   <div>
     <!-- nav section area -->
     <div class="container-fluid nav-color">
