@@ -66,7 +66,6 @@
 
     </div> -->
     <!-- {{ paymentGatewayObject }} -->
-
   </div>
 </template>
 
@@ -83,13 +82,12 @@ export default {
     // PaystackPay
     // paystack
   },
-  props: ['orderId', 'donation', 'close', 'amount', 'converted', 'name', 'email', 'gateways', 'currency'],
+  props: ['orderId', 'donation', 'close', 'amount', 'converted', 'name', 'email', 'gateways', 'currency', 'churchLogo', 'churchName'],
   setup (props, { emit }) {
 
     const toast = useToast()
 
     const isProduction = true
-    const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
     const selectedGateway = ref("")
     
 
@@ -228,9 +226,9 @@ export default {
                   },
                 onclose: () => console.log('Payment closed'),
                 customizations: {
-                  title: 'Church Giving',
+                  title: props.churchName,
                   description: "Payment for contribution items",
-                  logo: logoUrl,
+                  logo: props.churchLogo,
                 },
               });
     }

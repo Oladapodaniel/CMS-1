@@ -85,7 +85,7 @@
                   key="form"
                 >
                   <div class="row">
-                    <div class="col-md-4 my-3 pr-md-0">
+                    <div class="col-md-3 my-3 pr-md-0">
                       
                       <label class="hfont">Currency</label>
                        <Dropdown
@@ -94,19 +94,10 @@
                             optionLabel="shortCode"
                             :placeholder="dfaultCurrency.shortCode"
                             class="w-100 px-0"
+                            :filter="true"
                           />
                     </div>
-                    <div class="col-md-4 my-3">
-                      <label class="hfont">Amount</label>
-
-                      <input
-                            class="form-control col-md-12 text-left imp1 border"
-                            type="text"
-                            v-model="amount"
-                            placeholder="Amount"
-                          />
-                    </div>
-                    <div class="col-md-4 my-3 pl-md-0">
+                    <div class="col-md-5 my-3">
                       <label class="hfont">Purpose</label>
 
                       <Dropdown
@@ -115,7 +106,18 @@
                         optionLabel="financialContribution.name"
                         placeholder="Select"
                         class="w-100 px-0"
+                        :filter="true"
                       />
+                    </div>
+                    <div class="col-md-4 my-3 pl-md-0">
+                      <label class="hfont">Amount</label>
+
+                      <input
+                            class="form-control col-md-12 text-left imp1 border"
+                            type="text"
+                            v-model="amount"
+                            placeholder="Amount"
+                          />
                     </div>
                   </div>
 
@@ -349,7 +351,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="computeAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference" @paystack-amount="setPaystackAmount"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="computeAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference" @paystack-amount="setPaystackAmount" :churchLogo="formResponse.churchLogo" :churchName="formResponse.churchName"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
