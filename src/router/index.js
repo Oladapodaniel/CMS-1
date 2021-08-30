@@ -242,6 +242,14 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Index.vue')
             },
             {
+                path: 'membershipreport',
+                meta: {
+                    title: 'Churchplus - Membership Report',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/MemberShipReport.vue')
+            },
+            {
                 path: 'family',
                 name: 'Family',
                 component: () =>
