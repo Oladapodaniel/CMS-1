@@ -85,7 +85,7 @@
                   key="form"
                 >
                   <div class="row">
-                    <div class="col-md-3 my-3 pr-md-0">
+                    <div class="col-sm-4 col-md-3 my-3 pr-md-0">
                       
                       <label class="hfont">Currency</label>
                        <Dropdown
@@ -94,10 +94,9 @@
                             optionLabel="shortCode"
                             :placeholder="dfaultCurrency.shortCode"
                             class="w-100 px-0"
-                            :filter="true"
                           />
                     </div>
-                    <div class="col-md-5 my-3">
+                    <div class="col-sm-4 col-md-5 my-3">
                       <label class="hfont">Purpose</label>
 
                       <Dropdown
@@ -106,10 +105,9 @@
                         optionLabel="financialContribution.name"
                         placeholder="Select"
                         class="w-100 px-0"
-                        :filter="true"
                       />
                     </div>
-                    <div class="col-md-4 my-3 pl-md-0">
+                    <div class="col-sm-4 col-md-4 my-3 pl-md-0">
                       <label class="hfont">Amount</label>
 
                       <input
