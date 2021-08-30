@@ -74,7 +74,7 @@
 
     <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2" >
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border" >
         <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
@@ -263,5 +263,9 @@ padding-right: 0;
  padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
+}
+
+.remove-border{
+    box-shadow: none !important;
 }
 </style>
