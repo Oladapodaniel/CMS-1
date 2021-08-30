@@ -534,13 +534,6 @@ export default {
       searchIsVisible.value = !searchIsVisible.value;
     };
 
-    // onMounted(() => {
-    //    console.log('working')
-    //    confirm.require({
-    //       message: "Are you sure?"
-    //    })
-    // })
-
     const confirm = useConfirm();
     let toast = useToast();
     const showConfirmModal = (id, index) => {
@@ -588,6 +581,7 @@ export default {
       .get(`/api/People/GetMembershipSummary`)
       .then((res) => {
         membershipSummary.value = res.data;
+        console.log( membershipSummary.value, "🎉🎉");
       })
       .catch((err) => console.log(err));
     // })
