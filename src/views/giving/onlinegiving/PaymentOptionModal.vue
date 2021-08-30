@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     <div class="row">
@@ -67,7 +66,6 @@
 
     </div> -->
     <!-- {{ paymentGatewayObject }} -->
-
   </div>
 </template>
 
@@ -78,18 +76,18 @@ import { ref, computed } from 'vue'
 import axios from "@/gateway/backendapi";
 import finish from "../../../services/progressbar/progress"
 import { useToast } from "primevue/usetoast";
+import router from '../../../router';
 export default {
   components: {
     // PaystackPay
     // paystack
   },
-  props: ['orderId', 'donation', 'close', 'amount', 'converted', 'name', 'email', 'gateways', 'currency'],
+  props: ['orderId', 'donation', 'close', 'amount', 'converted', 'name', 'email', 'gateways', 'currency', 'churchLogo', 'churchName'],
   setup (props, { emit }) {
 
     const toast = useToast()
 
-    const isProduction = false
-    const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
+    const isProduction = true
     const selectedGateway = ref("")
     
 
@@ -112,24 +110,21 @@ export default {
       if(!props.gateways) return false
       return props.gateways.find(i => i.paymentGateway.name === "Stripe")
     })
-      
 
     const payWithPaystack = (e) => {
-
-      // console.log(props.donation)
-
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
-   
-    //  console.log(selectedGateway.value)
+  console.log(props.converted)
 
       props.close.click()
+      // localStorage.setItem('donation', JSON.stringify(props.donation))
+      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'paystack', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: props.email,
-        amount: props.converted * 100,
+        amount: props.converted * 100 ? props.converted * 100 : props.amount * 100,
         firstname: props.name,
         ref: props.orderId,
         subaccount: props.donation.paymentGateway.find(i => {
@@ -145,10 +140,12 @@ export default {
         callback: function (response) {
           //Route to where you confirm payment status
           console.log(response, "Payment Received");
-          console.log(props.donation);
-
+          emit('transaction-reference', response.trxref)
+          emit('paystack-amount')
+          console.log(props.donation)
+// `/confirmDonation?txnref=${response.trxref}`
           axios
-            .post(`/confirmDonation?txnref=${response.trxref}`, props.donation)
+            .post(`/donated?paymentType=0`, props.donation)
             .then((res) => {
               finish()
               console.log(res, "success data");
@@ -176,7 +173,7 @@ export default {
               ? "https://ravemodal-dev.herokuapp.com/v3.js"
               : "https://checkout.flutterwave.com/v3.js";
             document.getElementsByTagName("head")[0].appendChild(script);
-            console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
+            // console.log(process.env.VUE_APP_FLUTTERWAVE_TEST_KEY)
     }
     getFlutterwaveModules()
 
@@ -185,12 +182,15 @@ export default {
       // Get and send clicked payment gateway to parent
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
+      console.log(props.amount)
 
       // Close payment modal
       props.close.click()
-
+      // localStorage.setItem('donation', JSON.stringify(props.donation))
+      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'flutterwave', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
       window.FlutterwaveCheckout({
-                public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
+                public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+                // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
                 tx_ref: props.orderId,
                 amount: props.amount,
                 currency: props.currency,
@@ -200,13 +200,12 @@ export default {
                   email: props.email,
                 },
                 callback: (response) => {
-                  console.log("Payment callback", response)
-                    // props.donation.usedPaymentGateway = selectedGateway.value
-
+                    console.log("Payment callback", response)
                     console.log(props.donation)
+                    emit('transaction-reference', response.transaction_id)
 
                     axios
-                          .post(`/confirmDonation?txnref=${response.tx_ref}`, props.donation)
+                          .post(`/donated?paymentType=1`, props.donation)
                           .then((res) => {
                             finish()
                             console.log(res, "success data");
@@ -227,9 +226,9 @@ export default {
                   },
                 onclose: () => console.log('Payment closed'),
                 customizations: {
-                  title: 'Church Giving',
+                  title: props.churchName,
                   description: "Payment for contribution items",
-                  logo: logoUrl,
+                  logo: props.churchLogo,
                 },
               });
     }

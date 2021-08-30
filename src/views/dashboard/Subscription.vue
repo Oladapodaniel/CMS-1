@@ -341,6 +341,27 @@ export default {
     const fixedAsset = ref("");
     const selectedCurrency = ref("");
     const currentUser = ref(store.getters.currentUser);
+    const tenantId = ref(currentUser.tenantId);
+
+    const getUserEmail = async () => {
+      userService.getCurrentUser()
+        .then(res => {
+          currentUser.value = res
+          console.log(res.tenantId, 'tenanatId logged');
+          userEmail.value = res.userEmail;
+          churchName.value = res.churchName;
+          tenantId.value = res.tenantId;
+          userCurrency.value = res.currency;
+          currentUser.value = res
+
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    }
+  
+    // const userEmail = ref("");
+      if (!tenantId.value) getUserEmail();
     // const userEmail = ref(store.getters.email);
     const acctReceived = ref("");
     const paymentSummary = ref([]);
@@ -360,6 +381,7 @@ export default {
     const emailSelectedValue = ref("");
     const subSelectedAmount = ref("");
     const isProduction = false
+    const initializedOrder = ref("");
     const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
 
     const expiryDate = ref("");
@@ -609,7 +631,28 @@ export default {
       currentDate.getMilliseconds()
     )}`;
     console.log(formattedDate);
+
+    const initializePayment = (paymentGateway) => {
+      console.log(currentUser.value, 'curent user list');
+      const payload = {
+      gateway: paymentGateway === 0 ? 'paystack' : 'flutterwave',
+      totalAmount: TotalAmount.value,
+      tenantId: currentUser.value.tenantId,
+      orderId: uuidv4()
+    }
+    // console.log(payload, 'initialize payment payload');
+     axios
+     .post('/api/payment/initializesubscription',payload)
+     .then((res) => {
+       close.value.click();
+      //  purchaseIsSuccessful.value = true;
+        // store.dispatch("addPurchasedUnits", totalSMSUnits.value);
+       initializedOrder.value = res.data;
+       console.log(res, 'initializepayment');
+     })
+    }
     const payWithPaystack = (e) => {
+      initializePayment(0);
       console.log(e.srcElement.alt);
 
       // selectedGateway.value = e.srcElement.alt;
@@ -683,6 +726,8 @@ export default {
     getFlutterwaveModules()
 
     const payWithFlutterwave = (e) => {
+      console.log(TotalAmount.value, 'total amount calculated')
+      initializePayment(1)
       console.log(e.srcElement.alt)
       // Get and send clicked payment gateway to parent
       // selectedGateway.value = e.srcElement.alt
@@ -690,13 +735,13 @@ export default {
 
       // Close payment modal
       // props.close.click()
-       console.log(TotalAmount.value)
-                    console.log(selectedCurrency.value)
-                    // console.log(email)
+       
+       console.log(selectedCurrency.value)
+      // console.log(email)
 
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
-                // tx_ref: props.orderId,
+                tx_ref: uuidv4().substring(0,8),
                 amount: TotalAmount.value,
                 currency: selectedCurrency.value,
                 payment_options: 'card,ussd',
@@ -810,6 +855,9 @@ export default {
       payWithFlutterwave,
       daysToEndOfSubscription,
       subscriptionDuration,
+      initializePayment,
+      tenantId,
+      initializedOrder 
     };
   },
 };

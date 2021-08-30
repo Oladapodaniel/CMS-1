@@ -520,13 +520,12 @@
               @click="data"
             ></SplitButton>
           </span>
-          <router-link to="/tenant/sms/sent"
+          <router-link :to=" route.fullPath === '/tenant/sms/compose' ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
             class="default-btn d-flex justify-content-center short-btn align-items-center ml-3 text-decoration-none text-dark"
           >
             Discard
           </router-link>
-        </div>
-
+        </div> 
         <div class="row">
           <div class="col-md-12">
             <div
@@ -1261,7 +1260,8 @@ export default {
       executionDate,
       moment,
       isPersonalized,
-      data
+      data,
+      route
     };
   },
 };

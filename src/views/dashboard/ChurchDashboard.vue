@@ -1052,8 +1052,8 @@ export default {
 }
 
 .can-do-links {
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 }
 
 .can-do-links a {
@@ -1385,6 +1385,15 @@ tbody tr:nth-child(even) {
   }
   .view-report {
     display: none;
+  }
+}
+
+@media (max-width: 705px) {
+  .can-do-links {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-left: -3rem;
   }
 }
 

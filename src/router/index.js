@@ -1172,6 +1172,15 @@ const routes = [
             import ( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/iFrame')
     },
     {
+        path: '/pay',
+        name: 'Pay',
+        meta: {
+            title: 'Churchplus - Pay',
+        },
+        component: () =>
+            import ( /* webpackChunkName: "giving" */ '@/views/giving/onlinegiving/Pay')
+    },
+    {
         path: '/onlinegivingform5',
         name: 'OnlineGiving5',
         component: () =>
@@ -1320,12 +1329,6 @@ const routes = [
             import ( /* webpackChunkName: "sentemails" */ '@/components/expiredpages/BuyUnitsExpired'),
 
     },
-    {
-        path: '/report',
-        name: 'Report',
-        component: () =>
-            import ( /* webpackChunkName: "sentemails" */ '@/views/Report.vue'),
-    },
 ]
 
 const router = createRouter({
@@ -1355,6 +1358,7 @@ router.beforeEach((to, from, next) => {
             to.name === "OnboardingForm" ||
             to.name === "WebCheckin" ||
             to.name === "OnlineGiving4" ||
+            to.name === "Pay" ||
             to.name === "iFrame" ||
             to.name === "SignUpPayment" ||
             to.name === "SignInPayment" ||
