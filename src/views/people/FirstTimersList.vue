@@ -226,19 +226,6 @@
         <!-- tosin -->
 
         <!-- tosin 2 -->
-
-         <!-- <div class="row py-3" v-if="loading">
-          <div class="col-md-11 mx-auto d-flex justify-content-center">
-            <i
-              class="pi pi-spin text-primary pi-spinner"
-              style="fontsize: 3rem"></i>
-          </div>
-          <p
-            class="col text-primary mx-auto d-flex justify-content-center my-3"
-          >
-            Be patient while we search
-          </p>
-        </div> -->
         <loadingComponent :loading="loading" />
         <div v-if="!loading">
           <div
@@ -642,12 +629,13 @@ export default {
       loading.value = true;
       let url =
         "/api/People/FilterFirstTimers?firstname=" +
-        event.target.value +
-        "&lastname=" +
-        event.target.value +
-        "&phone_number=" +
-        event.target.value +
-        "&page=1";
+        event.target.value;
+        // event.target.value +
+        // "&lastname=" +
+        // event.target.value +
+        // "&phone_number=" +
+        // event.target.value +
+        // "&page=1";
 
       axios
         .get(url)
@@ -670,11 +658,6 @@ export default {
     const searchMember = computed(() => {
       if (searchText.value !== "" && searchNamesInDB.value.length > 0) {
         return searchNamesInDB.value;
-        // return churchMembers.value.filter((i) => {
-        //   return `${i.fullName}${i.phoneNumber}`
-        //     .toLowerCase()
-        //     .includes(searchText.value.toLowerCase());
-        // });
       } else if (
         filterResult.value.length > 0 &&
         (filter.value.name || filter.value.phoneNumber)
@@ -713,15 +696,13 @@ export default {
       }
     };
 
-     const clearAll = () => {
-      filter.value.name = "";
-
-      filter.value.filterDate = "";
-      filter.value.phoneNumber = "";
-    };
-
     const clearInput = () => {
       searchText.value = "";
+    };
+
+ const clearAll = () => {
+filter.value.name = "";
+filter.value.phoneNumber ="";
     };
 
     // function to checkmark a single first timer

@@ -16,7 +16,7 @@
                     Add Income
                   </button>
               </div>
-                 
+
               <div class="col-md-4 col-8  col-sm-3 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
                 <button
                   class="more-btn align-items-center justify-content-center d-flex w-100 default-btn border-0"
@@ -35,10 +35,7 @@
                   </div>
                 </a>
               </div>
-                  <!-- <button class="more-btn align-items-center default-btn border-0"> -->
-                    
-                  <!-- </button> -->
-            <!-- </div> -->
+
           </div>
         </div>
 
@@ -74,7 +71,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <!-- <div class="row"> -->
               <div
                 class="col-md-12 create-event px-2 d-flex justify-content-between close-modal small-text"
@@ -99,9 +96,6 @@
             </div>
           </div>
 
-          <!-- <div style="border: 2px solid red" class="row">
-            <div class="col-12">select all</div>
-        </div> -->
           <!-- <h5>Modal</h5> -->
           <Dialog
             header="Add an Account"
@@ -248,8 +242,7 @@
               </div>
             </div>
             <template #footer>
-              <!-- <Button label="No" icon="pi pi-times" @click="closeModal" class="p-button-text"/>
-        <Button label="Yes" icon="pi pi-check" @click="closeModal" autofocus /> -->
+
               <button
                 type="button"
                 class="btn secondary-btn px-4"
@@ -267,12 +260,12 @@
             </template>
           </Dialog>
 
-          <TransactionTable 
-            :showEditTransaction="showEditTransaction" 
-            :transactionDetails="transacPropsValue" 
+          <TransactionTable
+            :showEditTransaction="showEditTransaction"
+            :transactionDetails="transacPropsValue"
             :selectedTransactionType="selectedTransactionType"
             :journalEntry="journalEntry"
-            @toggle-edit-form="closeIt" 
+            @toggle-edit-form="closeIt"
             @select-row="selectRow"
             @select-journal="selectJournalEntry"
             @reload-accounts="reloadAccounts"
@@ -532,7 +525,7 @@ export default {
       }
       accountDisplay.value = false;
       console.log(index);
-      selectedTransactionType.value = account.id ? account.id : ""; 
+      selectedTransactionType.value = account.id ? account.id : "";
     }
 
     const newAccount = ref({ });
@@ -600,9 +593,9 @@ export default {
     const convertAmountToTenantCurrency = (account) => {
       if (!account.currency.shortCode) return 0;
       if (currentUser.value && currentUser.value.currency && currentUser.value.currency.toLowerCase() === account.currency.shortCode.toLowerCase()) return account.balance;
-      
+
       const amountInDollars = account.currency.shortCode !== "USD" ? rates.value[`usd${account.currency.shortCode.toLowerCase()}`] * account.balance : account.balance;
-      
+
       const tenantAmount = rates.value[`usd${currentUser.value && currentUser.value.currency ? currentUser.value.currency.toLowerCase() : ''}`] * amountInDollars;
       return tenantAmount;
     }

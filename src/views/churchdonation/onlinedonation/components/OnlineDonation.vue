@@ -1,55 +1,58 @@
 <template>
   <div class="pb-4">
-    <div class="row table ">
-      <div class="col-12 mt-4  w-100">
+    <div class="row table">
+      <div class="col-12 mt-4 w-100">
         <div class="row">
           <!-- {{donationSummary}} -->
           <div class="col-12 col-md-4">
-             <div class="col-12 mb-5">
-                <Dropdown
-                  v-model="selectedPeriod"
-                  :options="periods"
-                  optionLabel="name"
-                  placeholder="Select a period "
-                  class="w-100"
-                />
-              </div>
-              <div class="col-12 w-100"> 
-                 <h2 class="font-weight-bold py-3 mb-3">
-                    {{ tenantCurrency ? tenantCurrency.currency : "" }} {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
-                 </h2>
-              </div>
-           
+            <div class="col-12 mb-5">
+              <Dropdown
+                v-model="selectedPeriod"
+                :options="periods"
+                optionLabel="name"
+                placeholder="Select a period "
+                class="w-100"
+              />
+            </div>
+            <div class="col-12 w-100">
+              <h2 class="font-weight-bold py-3 mb-3">
+                {{ tenantCurrency ? tenantCurrency.currency : "" }}
+                {{
+                  chartData ? amountWithCommas(Math.round(chartData.income)) : 0
+                }}
+              </h2>
+            </div>
           </div>
           <!-- {{ pieChart }} -->
           <div class="col-12 col-md-4">
             <DonationPieChart
               domId="chart"
-            
               distance="5"
               :titleMargin="10"
               :summary="pieChart"
             />
           </div>
-          <div class="col-12 col-md-4 " >
+          <div class="col-12 col-md-4">
             <!-- <div v-if="attendanceBoolean"> -->
-                <!-- :subtitle="chartData.name"
+            <!-- :subtitle="chartData.name"
               :data="chartData && chartData.barChart ? chartData.barChart : {}"
               :series="series" -->
-              <!-- :chartClass="chartClass" -->
+            <!-- :chartClass="chartClass" -->
 
             <!-- 2{{ chartData }} -->
-       
+
             <DonationAreaChart
-               elemId="chart"
-                  domId="areaChart3"
-                  title="So Far"
-                  lineColor="#002044"
-                  :subtitle="chartData.name"
-                  :series="chartData && chartData.barChart ? chartData.barChart.data : {}"
-                  :attendanceSeries="attendanceSeries"
-                  :xAxis="LineGraphXAxis"
-                />
+              elemId="chart"
+              domId="areaChart3"
+              title="So Far"
+              lineColor="#002044"
+              :subtitle="chartData.name"
+              :series="
+                chartData && chartData.barChart ? chartData.barChart.data : {}
+              "
+              :attendanceSeries="attendanceSeries"
+              :xAxis="LineGraphXAxis"
+            />
           </div>
         </div>
       </div>
@@ -66,12 +69,7 @@
                   maxWidth: 867,
                   header: 'DONATION TRANSACTIONS',
                   printable: printDonation,
-                  properties: [
-                    'DATE',
-                    'DONATION',
-                    'AMOUNT',
-                    'DONOR',
-                  ],
+                  properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
                   type: 'json',
                   headerStyle:
                     'font-family: Nunito Sans, Calibri; text-align: center;',
@@ -111,6 +109,7 @@
                   type="text"
                   placeholder="Search..."
                   v-model="searchText"
+                  @input="searchDonationInDB"
                 />
                 <span class="empty-btn">x</span>
                 <span class="search-btn">
@@ -130,7 +129,13 @@
               <div class="col-md-9">
                 <div class="row">
                   <div
-                    class="col-12 col-sm-6 col-md-6 offset-sm-3 offset-md-0 form-group inp w-100"
+                    class="
+                      col-12 col-sm-6 col-md-6
+                      offset-sm-3 offset-md-0
+                      form-group
+                      inp
+                      w-100
+                    "
                   >
                     <!-- <div class="input-field"> -->
 
@@ -141,15 +146,6 @@
                       v-model="filter.contribution"
                     />
                   </div>
-
-                  <!-- <div class="col-12 col-md-4 form-group d-none d-md-block">
-                    <input
-                      type="text"
-                      class="input w-100"
-                      placeholder="event"
-                      v-model="filter.event"
-                    />
-                  </div> -->
 
                   <div class="col-12 col-md-6 form-group d-none d-md-block">
                     <input
@@ -181,166 +177,106 @@
         <div v-if="searchDonation.length > 0">
           <div class="container-fluid d-none d-md-block">
             <div class="row t-header">
-              <!-- <div class="col-12 parent-desc first p-2 pl-4"> -->
-                <div class="col-md-1 px-3"></div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Donation</div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Donor</div>
-                <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
+              <div class="col-md-1 px-3"></div>
+              <div class="small-text text-capitalize col-md-2 font-weight-bold">
+                Date
+              </div>
+              <div class="small-text text-capitalize col-md-3 font-weight-bold">
+                Donation
+              </div>
+              <div class="small-text text-capitalize col-md-3 font-weight-bold">
+                Amount
+              </div>
+              <div class="small-text text-capitalize col-md-2 font-weight-bold">
+                Donor
+              </div>
+              <div class="small-text text-capitalize col-md-1 font-weight-bold">
+                Action
+              </div>
               <!-- </div> -->
             </div>
           </div>
-        <div class="row" style="margin:0;">
-            <div
-              class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom  hover"
-              v-for="(item, index) in searchDonation"
-              :key="item.id"
-            >
-            <!-- <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }"> -->
-              <div class="row w-100" style="margin:0">
-                <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
-                  <input
-                    type="checkbox"
-                    v-model="item.check"
-                    class="form-check"
-                  />
-                </div>
-
-                <div class="desc small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                    <span>{{ date(item.date) }}</span>
-                  </p>
-                </div>
-
-                <div class="col-md-3 small-text px-1">
-                  <div class="d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Donation</span>
-                  <div>
-                    
-                    <div class="desc small-text text-right text-md-left">{{ item.contribution }}</div>
-                  </div>
-                  </div>
-                </div>
-
-                <div class="desc-head small-text col-md-3 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Amount</span>
-                    <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
-                    <span>{{ item.currencyName }} {{ item.amount }}</span>
-                  </p>
-                </div>
-
-                <div class="small-text col-md-2 px-1">
-                  <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Donor</span>
-                    <span><span class="primary-text c-pointer"
-                    >{{ item.donor }}</span
-                  ></span>
-                  </p>
-                </div>
-               
-
-                <div class="small-text col-md-1 px-1">
-                    
-                  <!-- <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none">Mark</span>
-                    <span>Marked</span>
-                  </p> -->
-                  <div class=" data d-flex justify-content-between">
-                    <div>
-                      <p class="mb-0">
-                        <span class="text-dark font-weight-bold d-flex d-md-none">Action</span>
-                      </p>
-                    </div>
-                    <div class="dropdown ">
-                      <i
-                        class="fas fa-ellipsis-v cursor-pointer "
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      ></i>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <!-- <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
-                        <a class="dropdown-item elipsis-items">
-                      View Report
-                      </a>
-                      </router-link>
-                      <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
-                        <a class="dropdown-item elipsis-items">
-                      Edit
-                      </a>
-                      </router-link> -->
-                      <a
-                        class="dropdown-item elipsis-items cursor-pointer"
-                        @click="showConfirmModal(item.id, index)"
-                        >Delete</a
-                      >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- </router-link> -->
-            </div>
-          </div>
-          <!-- <div class="row">
-            <div
-              class="col-12 col-md-12 col-lg-12 overflow-auto border-bottom border-top border-left"
-            >
-              <div class="row table-header">
-                <div class="col-sm-3">DATE</div>
-                 <div class="col-sm-2">
-                          EVENT
-                       </div> 
-                <div class="col-sm-3 d-none d-sm-block">CONTRIBUTION</div>
-                <div class="col-sm-3 d-none d-sm-block">AMOUNT</div>
-                <div class="col-sm-3 d-none d-sm-block">DONOR</div>
-              </div>
+          <loadingComponent :loading="loading" />
+          <div v-if="!loading">
+            <div class="row" style="margin: 0">
               <div
-                class="table-body row"
-                v-for="(offering, index) in searchDonation"
-                :key="offering.id"
+                class="
+                  col-12
+                  parent-desc
+                  py-2
+                  px-0
+                  c-pointer
+                  tr-border-bottom
+                  hover
+                "
+                v-for="(item, index) in searchDonation"
+                :key="item.id"
               >
-                <div class="col-6 d-block d-sm-none">
-                  <div class="col-sm-3">DATE</div>
-                   <div class="col-sm-2">
-                            EVENT
-                        </div> 
-                  <div class="col-sm-3">CONTRIBUTION</div>
-                  <div class="col-sm-3">AMOUNT</div>
-                  <div class="col-sm-3">DONOR</div>
-                </div>
-                <div class="col-6 col-sm-12">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <div>{{ date(offering.date) }}</div>
-                    </div>
-                     <div class="col-sm-3">
-                            <div>{{ offering.eventName ? offering.eventName : "Online Giving" }}</div>
-                        </div> 
-                    <div class="col-sm-3">
-                      <div>{{ offering.contribution }}</div>
-                    </div>
-                    <div class="col-sm-3">
-                      <div class="d-flex">
-                        <div class="currency" v-if="offering.currencyName">
-                          {{ offering.currencyName }}
-                        </div>
-                        <div
-                          class="align-self-center ml-1"
-                          style="font-weight: 800"
-                        >
-                          {{ offering.amount }}
+                <div class="row w-100" style="margin: 0">
+                  <div
+                    class="col-md-1 d-flex d-md-block px-3 justify-content-end"
+                  >
+                    <input
+                      type="checkbox"
+                      v-model="item.check"
+                      class="form-check"
+                    />
+                  </div>
+
+                  <div class="desc small-text col-md-2 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none"
+                        >Date</span
+                      >
+                      <span>{{ date(item.date) }}</span>
+                    </p>
+                  </div>
+
+                  <div class="col-md-3 small-text px-1">
+                    <div class="d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none"
+                        >Donation</span
+                      >
+                      <div>
+                        <div class="desc small-text text-right text-md-left">
+                          {{ item.contribution }}
                         </div>
                       </div>
                     </div>
-                    <div class="col-sm-2">
-                      <div>{{ offering.donor }}</div>
-                    </div>
-                    <div class="col-sm-1">
+                  </div>
+
+                  <div class="desc-head small-text col-md-3 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none"
+                        >Amount</span
+                      >
+                      <span>{{ item.currencyName }} {{ item.amount }}</span>
+                    </p>
+                  </div>
+
+                  <div class="small-text col-md-2 px-1">
+                    <p class="mb-0 d-flex justify-content-between">
+                      <span class="text-dark font-weight-bold d-flex d-md-none"
+                        >Donor</span
+                      >
+                      <span
+                        ><span class="primary-text c-pointer">{{
+                          item.donor
+                        }}</span></span
+                      >
+                    </p>
+                  </div>
+
+                  <div class="small-text col-md-1 px-1">
+                    <div class="data d-flex justify-content-between">
+                      <div>
+                        <p class="mb-0">
+                          <span
+                            class="text-dark font-weight-bold d-flex d-md-none"
+                            >Action</span
+                          >
+                        </p>
+                      </div>
                       <div class="dropdown">
                         <i
                           class="fas fa-ellipsis-v cursor-pointer"
@@ -349,22 +285,13 @@
                           aria-haspopup="true"
                           aria-expanded="false"
                         ></i>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        
-                        
-                          <router-link :to="!offering.activityId || offering.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: offering.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: offering.date.split('T')[0], activityID: offering.activityId } }">
-                            <a class="dropdown-item elipsis-items">
-                          View Report
-                          </a>
-                          </router-link>
-                          <router-link :to="{ name: 'AddOffering', params: { offId: offering.id } }">
-                            <a class="dropdown-item elipsis-items">
-                          Edit
-                          </a>
-                          </router-link>
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                        >
                           <a
                             class="dropdown-item elipsis-items cursor-pointer"
-                            @click="showConfirmModal(offering.id, index)"
+                            @click="showConfirmModal(item.id, index)"
                             >Delete</a
                           >
                         </div>
@@ -372,24 +299,30 @@
                     </div>
                   </div>
                 </div>
+                <!-- </router-link> -->
               </div>
             </div>
-          </div> -->
+          </div>
         </div>
-        <div class="text-danger" v-else>No records found</div>
 
-        
+   <div  class="col-md-12 col py-3"
+          v-if="listOfDonationItems.length === 0 && props.donationTransactions.length !== 0 && !loading">
+          <p class="text-danger d-flex justify-content-center">
+            Record not available in database
+          </p>
+    </div>
+
+    <!-- <div class="text-danger d-flex justify-content-center" v-else>No records found</div> -->
 
         <div class="col-12">
           <div class="table-footer">
             <Pagination
               @getcontent="getPeopleByPage"
-              :itemsCount="50 "
+              :itemsCount="50"
               :currentPage="currentPage"
               :totalItems="totalItem"
             />
           </div>
-  
         </div>
 
         <ConfirmDialog />
@@ -413,8 +346,9 @@ import printJS from "print-js";
 import Dropdown from "primevue/dropdown";
 import DonationPieChart from "../../../../components/charts/PieChart.vue";
 import DonationAreaChart from "../../../../components/charts/AreaChart.vue";
-import numbers_formatter from '../../../../services/numbers/numbers_formatter';
-import store from '../../../../store/store';
+import numbers_formatter from "../../../../services/numbers/numbers_formatter";
+import store from "../../../../store/store";
+import loadingComponent from "@/components/loading/LoadingComponent"
 export default {
   props: ["donationTransactions", "totalItem"],
   components: {
@@ -422,6 +356,7 @@ export default {
     DonationAreaChart,
     DonationPieChart,
     Dropdown,
+    loadingComponent
   },
   setup(props, { emit }) {
     const filter = ref({});
@@ -429,7 +364,7 @@ export default {
     const filterResult = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
-    const tenantCurrency = ref({})
+    const tenantCurrency = ref({});
     const Allsummary = ref([
       { name: "Not Sure", y: 20 },
       { name: "Male", y: 16 },
@@ -464,37 +399,7 @@ export default {
       }
     };
     getRoute();
-    // const getContributionTranactions = () => {
-    //   // let store = useStore()
-    //   axios
-    //     .get("/api/Financials/Contributions/Transactions")
-    //     .then((res) => {
-    //       donationTransactions.value = res.data;
-    //       console.log(res.data);
-    //     })
-    //     .catch((err) => console.log(err));
-    // // get from  to store
-    // // console.log(store.getters['contributions/contributionList'])
-    // // savev to sstore
-    // // store.dispatch('contributions/contributionList')
-    // };
-    // getContributionTranactions();
-    const searchDonation = computed(() => {
-      if (searchText.value !== "") {
-        return props.donationTransactions.filter((i) => {
-          return i.contribution
-            .toLowerCase()
-            .includes(searchText.value.toLowerCase());
-        });
-      } else if (
-        filterResult.value.length > 0 &&
-        (filter.value.contribution || filter.value.event || filter.value.donor)
-      ) {
-        return filterResult.value;
-      } else {
-        return props.donationTransactions;
-      }
-    });
+
     const printDonation = computed(() => {
       if (props.donationTransactions.length === 0) return [];
       return props.donationTransactions.map((i) => {
@@ -553,7 +458,6 @@ export default {
         rejectClass: "cancel-delete",
         accept: () => {
           deleteOffering(id, index);
-          // toast.add({severity:'info', summary:'Confirmed', detail:'Member Deleted', life: 3000});
         },
         reject: () => {
           toast.add({
@@ -567,64 +471,60 @@ export default {
     };
     const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
-      console.log(page)
-      // if (page < 1) return false;
+      console.log(page);
       try {
         const { data } = await axios.get(
           `/api/Financials/Donation/Transactions?page=${page}`
         );
         if (data) {
-          console.log(data)
-        emit("get-pages", data);
-        currentPage.value = page;
+          console.log(data);
+          emit("get-pages", data);
+          currentPage.value = page;
         }
       } catch (error) {
         console.log(error);
       }
     };
 
-   
-    const getCurrentlySignedInUser = async() => {
-            try {
-                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-                axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
-                .then(res => {
-                    tenantCurrency.value = res.data
-                    console.log(res.data)
-                  })
-                  .catch(err => console.log(err))
-                
-              } catch (err) {
-                console.log(err);
-            }
-        }
+    const getCurrentlySignedInUser = async () => {
+      try {
+        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+        axios
+          .get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
+          .then((res) => {
+            tenantCurrency.value = res.data;
+            console.log(res.data);
+          })
+          .catch((err) => console.log(err));
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
     const getTenantCurrency = () => {
-      if (store.getters.currentUser && Object.keys(store.getters.currentUser).length > 0) {
-          tenantCurrency.value = store.getters.currentUser
-        } else {
-            getCurrentlySignedInUser()
-        }
-    }
+      if (
+        store.getters.currentUser &&
+        Object.keys(store.getters.currentUser).length > 0
+      ) {
+        tenantCurrency.value = store.getters.currentUser;
+      } else {
+        getCurrentlySignedInUser();
+      }
+    };
     getTenantCurrency();
     const donationCount = computed(() => {
-      if (!props.donationTransactions || props.donationTransactions.length === 0) return 0;
-        return props.donationTransactions.length;
+      if (
+        !props.donationTransactions ||
+        props.donationTransactions.length === 0
+      )
+        return 0;
+      return props.donationTransactions.length;
     });
-    // const itemsCount = computed(() => {
-    //   if (!sentSMS.value || sentSMS.value.length === 0) return 0;
-    //   return sentSMS.value.length;
-    // });
+
     const date = (offDate) => {
       return monthDayYear.monthDayYear(offDate);
     };
-    // onMounted(() => {
-    //   console.log(route, "route");
-    //   axios.get("/api/People/FirstTimer").then((res) => {
-    //     churchMembers.value = res.data;
-    //     console.log(churchMembers.value);
-    //   });
-    // });
+
     const applyFilter = () => {
       filter.value.contribution =
         filter.value.contribution == undefined ? "" : filter.value.contribution;
@@ -639,13 +539,7 @@ export default {
         filter.value.event +
         "&donor=" +
         filter.value.donor;
-      // "/api/People/FilterMembers?firstname=" +
-      // filter.value.filterFirstName +
-      // "&lastname=" +
-      // filter.value.filterLastName +
-      // "&phone_number=" +
-      // filter.value.phoneNumber +
-      // "&page=1";
+
       axios
         .get(url)
         .then((res) => {
@@ -660,11 +554,63 @@ export default {
         })
         .catch((err) => console.log(err));
     };
-    // const membersCount = computed(() => {
-    //   if (getFirstTimerSummary.value.totalFirstTimer > 20)
-    //     return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 20);
-    //   return 0;
-    // });
+
+    // Tosin
+    const loading = ref(false);
+    const searchDonationsInDB = ref([]);
+    const searchDonationInDB = (event) => {
+      loading.value = true;
+      let url =
+        "/api/Financials/Contributions/FilteredTransactions?contribution=" +
+        event.target.value;
+
+      axios
+        .get(url)
+        .then((res) => {
+          loading.value = false;
+          console.log(res);
+          searchDonationsInDB.value = res.data;
+          console.log(searchDonationsInDB.value, "🎉🎉");
+        })
+        .catch((err) => {
+          console.log(err);
+          loading.value = false;
+        });
+    };
+
+    const listOfDonationItems = computed(() => {
+      if (searchText.value !== "") return searchDonationsInDB.value;
+      return props.donationTransactions;
+    });
+
+    const clearAll = () => {
+      filter.value.contribution = "";
+      filter.value.donor = "";
+    };
+
+    const hide = () => {
+      filterFormIsVissible.value = false;
+    };
+    // Tosin
+
+    const searchDonation = computed(() => {
+      if (searchText.value !== "" && searchDonationsInDB.value.length > 0) {
+        return searchDonationsInDB.value;
+        // return props.donationTransactions.filter((i) => {
+        //   return i.contribution
+        //     .toLowerCase()
+        //     .includes(searchText.value.toLowerCase());
+        // });
+      } else if (
+        filterResult.value.length > 0 &&
+        (filter.value.contribution || filter.value.event || filter.value.donor)
+      ) {
+        return filterResult.value;
+      } else {
+        return props.donationTransactions;
+      }
+    });
+
     const getdonationSummary = async () => {
       try {
         let { data } = await axios.get(
@@ -727,7 +673,6 @@ export default {
       )
         return donationSummary.value.oneYear;
       return [];
-      // donationSummary.value.oneWeek.barChart.data
     });
     const pieChart = computed(() => {
       if (
@@ -789,27 +734,32 @@ export default {
       return [];
     });
     const LineGraphXAxis = computed(() => {
-      if(selectedPeriod.value.name === "This Week") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "One Week") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "Last Week") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "This Month") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "Last Month") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "Last 30days") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "Last 90days") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "One Year") return [1, 2, 3, 4, 5, 6, 7]
-    })
+      if (selectedPeriod.value.name === "This Week")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "One Week")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "Last Week")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "This Month")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "Last Month")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "Last 30days")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "Last 90days")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "One Year")
+        return [1, 2, 3, 4, 5, 6, 7];
+    });
 
-    const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount)
-
+    const amountWithCommas = (amount) =>
+      numbers_formatter.amountWithCommas(amount);
 
     return {
-      // donationTransactions,
       deleteOffering,
       filterFormIsVissible,
       toggleFilterFormVissibility,
       moment,
-      // firstTimerSummary,
-      // getFirstTimerSummary,
       applyFilter,
       filter,
       toggleSearch,
@@ -819,7 +769,6 @@ export default {
       searchText,
       searchDonation,
       showConfirmModal,
-      // deleteMember,
       donationCount,
       currentPage,
       getPeopleByPage,
@@ -837,7 +786,13 @@ export default {
       pieChart,
       LineGraphXAxis,
       amountWithCommas,
-      tenantCurrency
+      tenantCurrency,
+      searchDonationsInDB,
+      searchDonationInDB,
+      loading,
+      listOfDonationItems,
+      hide,
+      clearAll,
     };
   },
 };
@@ -1164,7 +1119,7 @@ export default {
 .t-header div {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
 }
 .parent-desc.first {
   color: #8898aa;
@@ -1182,6 +1137,6 @@ export default {
 }
 
 .hover:hover {
-  background: #eee
+  background: #eee;
 }
 </style>

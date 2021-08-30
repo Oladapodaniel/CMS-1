@@ -4,7 +4,7 @@
             <h3 class="font-weight-bold">MEMBERSHIP REPORT</h3>
         </div>
         <div class="row border">
-            <div style="background: #ebeff4;" class="row border">
+            <div style="background: #ebeff4;" class="col-12 d-flex flex-row border">
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">SELECT MEMBERSHIP</label></div>
                     <div>
@@ -134,13 +134,79 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
-                    <table>
-                        <thead>
-                            <tr></tr>
-                        </thead>
-                    </table>
-                </div>
+                <section>
+      <!-- table header -->
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border" >
+        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+          <thead class="table-header-area-main">
+            <tr
+              class="small-text text-capitalize text-nowrap"
+              style="border-bottom: 0"
+            >
+              <th scope="col">Church Activity</th>
+              <th scope="col">Name</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Email</th>
+              <th scope="col">Home Address</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Marital Status</th>
+              <th scope="col">Activity Date</th>
+              <th scope="col">Current Status</th>
+            </tr>
+          </thead>
+          <tbody class="font-weight-normal text-nowrap">
+            <tr>
+              <td>Childrens Day Program</td>
+              <td>Ajose Oluwatosin</td>
+              <td>07090875463</td>
+              <td>nonitosinajose7@gmail.com</td>
+              <td>41 imam dauda Str. Lagos</td>
+              <td>Female</td>
+              <td>Married</td>
+              <td>24/10/2021</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Childrens Day Program</td>
+              <td>Ajose Oluwatosin</td>
+              <td>07090875463</td>
+              <td>nonitosinajose7@gmail.com</td>
+              <td>41 imam dauda Str. Lagos</td>
+              <td>Female</td>
+              <td>Married</td>
+              <td>24/10/2021</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Childrens Day Program</td>
+              <td>Ajose Oluwatosin</td>
+              <td>07090875463</td>
+              <td>nonitosinajose7@gmail.com</td>
+              <td>41 imam dauda Str. Lagos</td>
+              <td>Female</td>
+              <td>Married</td>
+              <td>24/10/2021</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Childrens Day Program</td>
+              <td>Ajose Oluwatosin</td>
+              <td>07090875463</td>
+              <td>nonitosinajose7@gmail.com</td>
+              <td>41 imam dauda Str. Lagos</td>
+              <td>Female</td>
+              <td>Married</td>
+              <td>24/10/2021</td>
+              <td>Active</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-foot d-flex justify-content-end mt-n3">
+          <PaginationButtons />
+        </div>
+      </div>
+      <!--end table header -->
+    </section>
         </div>
     </div>
 </template>
@@ -148,10 +214,11 @@
 <script>
 import { onMounted, ref } from "vue";
 import MembershipPieChart from '../../../components/chart/PieChart.vue';
+import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
 export default {
-    components: {MembershipPieChart,Dropdown, MultiSelect},
+    components: {MembershipPieChart,Dropdown, MultiSelect,PaginationButtons},
     setup() {
         const membership = ref([
       { name: "FIRST-TIMER" },

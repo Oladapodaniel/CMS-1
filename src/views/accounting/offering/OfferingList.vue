@@ -1,25 +1,27 @@
 <template>
   <div class="pb-4">
-    <div class="row table ">
-      <div class="col-12 mt-4  w-100">
+    <div class="row table">
+      <div class="col-12 mt-4 w-100">
         <div class="row">
           <!-- {{contributionSummary}} -->
           <div class="col-12 col-md-4">
-             <div class="col-12 mb-5">
-                <Dropdown
-                  v-model="selectedPeriod"
-                  :options="periods"
-                  optionLabel="name"
-                  placeholder="Select a period "
-                  class="w-100"
-                />
-              </div>
-              <div class="col-12 w-100">
-                 <h2 class="font-weight-bold py-3 mb-3">
-                     {{tenantCurrency.currency}} {{ chartData ? amountWithCommas(Math.round(chartData.income)) : 0 }}
-                 </h2>
-              </div>
-
+            <div class="col-12 mb-5">
+              <Dropdown
+                v-model="selectedPeriod"
+                :options="periods"
+                optionLabel="name"
+                placeholder="Select a period "
+                class="w-100"
+              />
+            </div>
+            <div class="col-12 w-100">
+              <h2 class="font-weight-bold py-3 mb-3">
+                {{ tenantCurrency.currency }}
+                {{
+                  chartData ? amountWithCommas(Math.round(chartData.income)) : 0
+                }}
+              </h2>
+            </div>
           </div>
 
           <div class="col-12 col-md-4">
@@ -30,19 +32,19 @@
               :summary="pieChart"
             />
           </div>
-          <div class="col-12 col-md-4 " >
-
-
+          <div class="col-12 col-md-4">
             <ContributionAreaChart
-               elemId="chart"
-                  domId="areaChart3"
-                  title="So Far"
-                  lineColor="#002044"
-                  :subtitle="chartData.name"
-                  :series="chartData && chartData.barChart ? chartData.barChart.data : {}"
-                  :attendanceSeries="attendanceSeries"
-                  :xAxis="LineGraphXAxis"
-                />
+              elemId="chart"
+              domId="areaChart3"
+              title="So Far"
+              lineColor="#002044"
+              :subtitle="chartData.name"
+              :series="
+                chartData && chartData.barChart ? chartData.barChart.data : {}
+              "
+              :attendanceSeries="attendanceSeries"
+              :xAxis="LineGraphXAxis"
+            />
           </div>
         </div>
       </div>
@@ -60,12 +62,7 @@
                   maxWidth: 867,
                   header: 'OFFERING TRANSACTIONS',
                   printable: printContribution,
-                  properties: [
-                    'DATE',
-                    'OFFERING',
-                    'AMOUNT',
-                    'DONOR',
-                  ],
+                  properties: ['DATE', 'OFFERING', 'AMOUNT', 'DONOR'],
                   type: 'json',
                   headerStyle:
                     'font-family: Nunito Sans, Calibri; text-align: center;',
@@ -105,6 +102,7 @@
                   type="text"
                   placeholder="Search..."
                   v-model="searchText"
+                  @input="searchOfferingInDB"
                 />
                 <span class="empty-btn">x</span>
                 <span class="search-btn">
@@ -124,7 +122,13 @@
               <div class="col-md-9">
                 <div class="row">
                   <div
-                    class="col-12 col-sm-6 col-md-4 offset-sm-3 offset-md-0 form-group inp w-100"
+                    class="
+                      col-12 col-sm-6 col-md-4
+                      offset-sm-3 offset-md-0
+                      form-group
+                      inp
+                      w-100
+                    "
                   >
                     <!-- <div class="input-field"> -->
 
@@ -163,27 +167,49 @@
         </div>
 
         <!-- contribution -->
-        <div v-if="searchContribution.length > 0">
+
+ <div v-if="searchContribution.length > 0">
           <div class="container-fluid d-none d-md-block">
             <div class="row t-header">
-                <div class="col-md-1"></div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Date</div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Offering</div>
-                <div class="small-text text-capitalize col-md-3 font-weight-bold">Amount</div>
-                <div class="small-text text-capitalize col-md-2 font-weight-bold">Donor</div>
-                <div class="small-text text-capitalize col-md-1 font-weight-bold">Action</div>
+              <div class="col-md-1"></div>
+              <div class="small-text text-capitalize col-md-2 font-weight-bold">
+                Date
+              </div>
+              <div class="small-text text-capitalize col-md-3 font-weight-bold">
+                Offering
+              </div>
+              <div class="small-text text-capitalize col-md-3 font-weight-bold">
+                Amount
+              </div>
+              <div class="small-text text-capitalize col-md-2 font-weight-bold">
+                Donor
+              </div>
+              <div class="small-text text-capitalize col-md-1 font-weight-bold">
+                Action
+              </div>
             </div>
           </div>
 
-        <div class="row" style="margin:0;">
+        <loadingComponent :loading="loading" />
+        <div v-if="!loading">
+          <div class="row" style="margin: 0">
             <div
-              class="col-12 parent-desc py-2 px-0 c-pointer tr-border-bottom  hover"
+              class="
+                col-12
+                parent-desc
+                py-2
+                px-0
+                c-pointer
+                tr-border-bottom
+                hover
+              "
               v-for="(item, index) in searchContribution"
               :key="item.id"
             >
-
-              <div class="row w-100" style="margin:0">
-                <div class="col-md-1 d-flex d-md-block px-3 justify-content-end">
+              <div class="row w-100" style="margin: 0">
+                <div
+                  class="col-md-1 d-flex d-md-block px-3 justify-content-end"
+                >
                   <input
                     type="checkbox"
                     v-model="item.check"
@@ -193,66 +219,162 @@
 
                 <div class="desc small-text col-md-2 px-1">
                   <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease">Date</span>
-                    <router-link class="text-decoration-none fontIncrease" :to="{ name: 'AddOffering', params: { offId: item.id } }"><span class="text-decoration-none">{{ date(item.date) }}</span></router-link>
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Date</span
+                    >
+                    <router-link
+                      class="text-decoration-none fontIncrease"
+                      :to="{ name: 'AddOffering', params: { offId: item.id } }"
+                      ><span class="text-decoration-none">{{
+                        date(item.date)
+                      }}</span></router-link
+                    >
                   </p>
                 </div>
 
                 <div class="col-md-3 px-1">
                   <div class="d-flex small justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease">Offering</span>
-                  <div>
-
-                    <div class="desc small-text text-right text-md-left"><router-link class="text-decoration-none fontIncrease" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.contribution }}</router-link></div>
-                  </div>
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Offering</span
+                    >
+                    <div>
+                      <div class="desc small-text text-right text-md-left">
+                        <router-link
+                          class="text-decoration-none fontIncrease"
+                          :to="{
+                            name: 'AddOffering',
+                            params: { offId: item.id },
+                          }"
+                          >{{ item.contribution }}</router-link
+                        >
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div class="desc-head small-text col-md-3 px-1">
                   <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease">Amount</span>
-                    <span><router-link class="text-decoration-none ml-3 fontIncrease" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.currencyName }} {{ item.amount }}</router-link></span>
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Amount</span
+                    >
+                    <span
+                      ><router-link
+                        class="text-decoration-none ml-3 fontIncrease"
+                        :to="{
+                          name: 'AddOffering',
+                          params: { offId: item.id },
+                        }"
+                        >{{ item.currencyName }} {{ item.amount }}</router-link
+                      ></span
+                    >
                   </p>
                 </div>
 
                 <div class="small-text col-md-2 px-1">
                   <p class="mb-0 d-flex justify-content-between">
-                    <span class="text-dark font-weight-bold d-flex d-md-none fontIncrease">Donor</span>
-                    <span><span class="primary-text c-pointer"
-                    ><router-link class="text-decoration-none fontIncrease" :to="{ name: 'AddOffering', params: { offId: item.id } }">{{ item.donor }}</router-link></span
-                  ></span>
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Donor</span
+                    >
+                    <span
+                      ><span class="primary-text c-pointer"
+                        ><router-link
+                          class="text-decoration-none fontIncrease"
+                          :to="{
+                            name: 'AddOffering',
+                            params: { offId: item.id },
+                          }"
+                          >{{ item.donor }}</router-link
+                        ></span
+                      ></span
+                    >
                   </p>
                 </div>
 
-                <div class=" col-md-1  ">
+                <div class="col-md-1">
                   <div>
-                    <div class="dropdown ">
+                    <div class="dropdown">
                       <span class="d-flex justify-content-between">
-                          <span class="d-md-none d-sm-flex"></span>
-                          <span class=" d-sm-flex  small ">
+                        <span class="d-md-none d-sm-flex"></span>
+                        <span class="d-sm-flex small">
                           <i
-                          class="fas fa-ellipsis-v cursor-pointer ml-2 fontIncrease"
-                          id="dropdownMenuButton"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        ></i>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <router-link :to="!item.activityId || item.activityId === '00000000-0000-0000-0000-000000000000' ? { name: 'OfferingReport', query: { report: item.date.split('T')[0] } } : { name: 'OfferingReport', query: { report: item.date.split('T')[0], activityID: item.activityId } }">
+                            class="
+                              fas
+                              fa-ellipsis-v
+                              cursor-pointer
+                              ml-2
+                              fontIncrease
+                            "
+                            id="dropdownMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          ></i>
+                          <div
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton"
+                          >
+                            <router-link
+                              :to="
+                                !item.activityId ||
+                                item.activityId ===
+                                  '00000000-0000-0000-0000-000000000000'
+                                  ? {
+                                      name: 'OfferingReport',
+                                      query: {
+                                        report: item.date.split('T')[0],
+                                      },
+                                    }
+                                  : {
+                                      name: 'OfferingReport',
+                                      query: {
+                                        report: item.date.split('T')[0],
+                                        activityID: item.activityId,
+                                      },
+                                    }
+                              "
+                            >
                               <a class="dropdown-item elipsis-items">
                                 View Report
                               </a>
                             </router-link>
-                            <router-link :to="{ name: 'AddOffering', params: { offId: item.id } }">
-                              <a class="dropdown-item elipsis-items">
-                                Edit
-                              </a>
+                            <router-link
+                              :to="{
+                                name: 'AddOffering',
+                                params: { offId: item.id },
+                              }"
+                            >
+                              <a class="dropdown-item elipsis-items"> Edit </a>
                             </router-link>
                             <a
                               class="dropdown-item elipsis-items cursor-pointer"
                               @click="showConfirmModal(item.id, index)"
-                              >Delete</a>
-                        </div>
+                              >Delete</a
+                            >
+                          </div>
                         </span>
                       </span>
                     </div>
@@ -262,9 +384,23 @@
             </div>
           </div>
         </div>
-        <div class="text-danger" v-else>No records found</div>
+
+</div>
 
 
+         <!-- <div
+          class="col-md-12 col py-3"
+          v-if="
+            listOfOfferingItems.length === 0 &&
+            props.contributionTransactions.length !== 0 &&
+            !loading
+          "
+        >
+          <p class="text-danger d-flex justify-content-center">
+            Record not available in database
+          </p>
+        </div> -->
+        <div class="text-danger d-flex justify-content-center" v-else>No records found</div>
 
         <div class="col-12">
           <div class="table-footer">
@@ -275,7 +411,6 @@
               :totalItems="totalItem"
             />
           </div>
-
         </div>
 
         <ConfirmDialog />
@@ -302,8 +437,9 @@ import Dropdown from "primevue/dropdown";
 // import ContributionColumnChart from "../../../components/charts/ColumnChart.vue";
 import ContributionPieChart from "../../../components/charts/PieChart.vue";
 import ContributionAreaChart from "../../../components/charts/AreaChart.vue";
-import numbers_formatter from '../../../services/numbers/numbers_formatter';
-import store from '../../../store/store';
+import numbers_formatter from "../../../services/numbers/numbers_formatter";
+import store from "../../../store/store";
+import loadingComponent from "@/components/loading/LoadingComponent";
 export default {
   props: ["contributionTransactions", "totalItem"],
   components: {
@@ -313,6 +449,7 @@ export default {
     ContributionAreaChart,
     ContributionPieChart,
     Dropdown,
+    loadingComponent,
   },
   setup(props, { emit }) {
     // const contributionTransactions = ref([]);
@@ -322,7 +459,7 @@ export default {
     const filterResult = ref([]);
     const noRecords = ref(false);
     const searchText = ref("");
-    const tenantCurrency = ref({})
+    const tenantCurrency = ref({});
     const Allsummary = ref([
       { name: "Not Sure", y: 20 },
       { name: "Male", y: 16 },
@@ -357,37 +494,7 @@ export default {
       }
     };
     getRoute();
-    // const getContributionTranactions = () => {
-    //   // let store = useStore()
-    //   axios
-    //     .get("/api/Financials/Contributions/Transactions")
-    //     .then((res) => {
-    //       contributionTransactions.value = res.data;
-    //       console.log(res.data);
-    //     })
-    //     .catch((err) => console.log(err));
-    // // get from  to store
-    // // console.log(store.getters['contributions/contributionList'])
-    // // savev to sstore
-    // // store.dispatch('contributions/contributionList')
-    // };
-    // getContributionTranactions();
-    const searchContribution = computed(() => {
-      if (searchText.value !== "") {
-        return props.contributionTransactions.filter((i) => {
-          return i.contribution
-            .toLowerCase()
-            .includes(searchText.value.toLowerCase());
-        });
-      } else if (
-        filterResult.value.length > 0 &&
-        (filter.value.contribution || filter.value.event || filter.value.donor)
-      ) {
-        return filterResult.value;
-      } else {
-        return props.contributionTransactions;
-      }
-    });
+
     const printContribution = computed(() => {
       if (props.contributionTransactions.length === 0) return [];
       return props.contributionTransactions.map((i) => {
@@ -460,51 +567,35 @@ export default {
     };
     const currentPage = ref(0);
     const getPeopleByPage = async (page) => {
-      console.log(page)
+      console.log(page);
       // if (page < 1) return false;
       try {
         const { data } = await axios.get(
           `/api/Financials/Contributions/Transactions?page=${page}`
         );
         if (data) {
-          console.log(data)
-        emit("get-pages", data);
-        currentPage.value = page;
+          console.log(data);
+          emit("get-pages", data);
+          currentPage.value = page;
         }
       } catch (error) {
         console.log(error);
       }
     };
-    // const getSMSByPage = async (page) => {
-    //   try {
-    //     const data = await communicationService.getAllSentSMS(page);
-    //     if (data) {
-    //       sentSMS.value = data.sentSMS;
-    //       currentPage.value = page;
-    //       isSortedByStatus.value = true;
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
+
     const offeringCount = computed(() => {
-      if (!props.contributionTransactions || props.contributionTransactions.length === 0) return 0;
-        return props.contributionTransactions.length;
+      if (
+        !props.contributionTransactions ||
+        props.contributionTransactions.length === 0
+      )
+        return 0;
+      return props.contributionTransactions.length;
     });
-    // const itemsCount = computed(() => {
-    //   if (!sentSMS.value || sentSMS.value.length === 0) return 0;
-    //   return sentSMS.value.length;
-    // });
+
     const date = (offDate) => {
       return monthDayYear.monthDayYear(offDate);
     };
-    // onMounted(() => {
-    //   console.log(route, "route");
-    //   axios.get("/api/People/FirstTimer").then((res) => {
-    //     churchMembers.value = res.data;
-    //     console.log(churchMembers.value);
-    //   });
-    // });
+
     const applyFilter = () => {
       filter.value.contribution =
         filter.value.contribution == undefined ? "" : filter.value.contribution;
@@ -519,13 +610,6 @@ export default {
         filter.value.event +
         "&donor=" +
         filter.value.donor;
-      // "/api/People/FilterMembers?firstname=" +
-      // filter.value.filterFirstName +
-      // "&lastname=" +
-      // filter.value.filterLastName +
-      // "&phone_number=" +
-      // filter.value.phoneNumber +
-      // "&page=1";
       axios
         .get(url)
         .then((res) => {
@@ -540,11 +624,62 @@ export default {
         })
         .catch((err) => console.log(err));
     };
-    // const membersCount = computed(() => {
-    //   if (getFirstTimerSummary.value.totalFirstTimer > 20)
-    //     return Math.ceil(getFirstTimerSummary.value.totalFirstTimer / 20);
-    //   return 0;
-    // });
+
+    // Tosin
+    const loading = ref(false);
+    const searchOfferingsInDB = ref([]);
+    const searchOfferingInDB = (event) => {
+      loading.value = true;
+      let url =
+        "/api/Financials/Contributions/FilteredTransactions?contribution=" +
+        event.target.value;
+      axios
+        .get(url)
+        .then((res) => {
+          loading.value = false;
+          console.log(res);
+          searchOfferingsInDB.value = res.data;
+          console.log(searchOfferingsInDB.value, "🎁🎁");
+        })
+        .catch((err) => {
+          console.log(err);
+          loading.value = false;
+        });
+    };
+
+    const listOfOfferingItems = computed(() => {
+      if (searchText.value !== "") return searchOfferingsInDB.value;
+      return props.contributionTransactions;
+    });
+
+  const clearAll = () => {
+    filter.value.contribution ="";
+     filter.value.donor = "";
+    };
+
+     const hide = () => {
+      filterFormIsVissible.value = false;
+    };
+    // Tosin
+
+ const searchContribution = computed(() => {
+      if (searchText.value !== "" && searchOfferingsInDB.value.length > 0 ) {
+             return searchOfferingsInDB.value
+        // return props.contributionTransactions.filter((i) => {
+        //   return i.contribution
+        //     .toLowerCase()
+        //     .includes(searchText.value.toLowerCase());
+        // });
+      } else if (
+        filterResult.value.length > 0 &&
+        (filter.value.contribution || filter.value.event || filter.value.donor)
+      ) {
+        return filterResult.value;
+      } else {
+        return props.contributionTransactions;
+      }
+    });
+
     const getContributionSummary = async () => {
       try {
         let { data } = await axios.get(
@@ -558,28 +693,31 @@ export default {
     };
     getContributionSummary();
 
-    const getCurrentlySignedInUser = async() => {
-            try {
-                const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
-                axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
-                .then(res => {
-                    tenantCurrency.value = res.data
-                    console.log(res.data)
-                  })
-                  .catch(err => console.log(err))
-
-              } catch (err) {
-                console.log(err);
-            }
-        }
+    const getCurrentlySignedInUser = async () => {
+      try {
+        const res = await axios.get("/api/Membership/GetCurrentSignedInUser");
+        axios
+          .get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
+          .then((res) => {
+            tenantCurrency.value = res.data;
+            console.log(res.data);
+          })
+          .catch((err) => console.log(err));
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
     const getTenantCurrency = () => {
-      if (store.getters.currentUser && Object.keys(store.getters.currentUser).length > 0) {
-          tenantCurrency.value = store.getters.currentUser
-        } else {
-            getCurrentlySignedInUser()
-        }
-    }
+      if (
+        store.getters.currentUser &&
+        Object.keys(store.getters.currentUser).length > 0
+      ) {
+        tenantCurrency.value = store.getters.currentUser;
+      } else {
+        getCurrentlySignedInUser();
+      }
+    };
     getTenantCurrency();
 
     const chartData = computed(() => {
@@ -694,18 +832,26 @@ export default {
       return [];
     });
     const LineGraphXAxis = computed(() => {
-      if(selectedPeriod.value.name === "This Week") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "One Week") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "Last Week") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "This Month") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "Last Month") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "Last 30days") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "Last 90days") return [1, 2, 3, 4, 5, 6, 7]
-      if(selectedPeriod.value.name === "One Year") return [1, 2, 3, 4, 5, 6, 7]
-    })
+      if (selectedPeriod.value.name === "This Week")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "One Week")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "Last Week")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "This Month")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "Last Month")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "Last 30days")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "Last 90days")
+        return [1, 2, 3, 4, 5, 6, 7];
+      if (selectedPeriod.value.name === "One Year")
+        return [1, 2, 3, 4, 5, 6, 7];
+    });
 
-    const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount)
-
+    const amountWithCommas = (amount) =>
+      numbers_formatter.amountWithCommas(amount);
 
     return {
       // contributionTransactions,
@@ -742,8 +888,14 @@ export default {
       pieChart,
       LineGraphXAxis,
       amountWithCommas,
-       tenantCurrency,
-       getCurrentlySignedInUser
+      tenantCurrency,
+      getCurrentlySignedInUser,
+      loading,
+      searchOfferingsInDB,
+      searchOfferingInDB,
+      listOfOfferingItems,
+      clearAll,
+        hide
     };
   },
 };
@@ -768,9 +920,7 @@ export default {
   font-size: 1.7rem;
 }
 .summary {
-  /* width: 20%; */
   border-radius: 30px;
-  /* box-shadow: 0px 3px 6px #2c28281c; */
   padding: 24px 10px;
   background: #fff;
   box-shadow: 0px 3px 6px #2c28281c;
@@ -880,7 +1030,6 @@ export default {
 }
 .currency {
   background: #fafafa 0% 0% no-repeat padding-box;
-  /* border: 1px solid #C5D9F2; */
   border-radius: 5px;
   letter-spacing: 0px;
   color: #1c252c;
@@ -980,27 +1129,10 @@ export default {
 @media (max-width: 575px) {
   .head-button {
     display: flex;
-    /* flex-direction: row; */
-    /* align-items: center; */
     justify-content: center;
   }
-  /* .add-btn,
-  .more {
-    margin-top: 10px;
-  } */
 }
 @media screen and (min-width: 501px) and (max-width: 768px) {
-  /* .boards {
-    flex-direction: column;
-    align-items: center !important;
-    flex-wrap: nowrap !important;
-  }
-  .chart-con {
-    width: 85% !important;
-  }
-  .chart-con div {
-    width: 40%;
-  } */
   .board {
     width: 50% !important;
     margin-bottom: 10px;
@@ -1071,7 +1203,7 @@ export default {
 .t-header {
   background: #dde2e6 0% 0% no-repeat padding-box;
   font-size: 16px;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
 }
 .parent-desc.first {
   color: #8898aa;
@@ -1089,15 +1221,13 @@ export default {
 }
 
 .hover:hover {
-  background: #eee
+  background: #eee;
 }
 /* @media Queries */
-@media (max-width:771px) {
-  .fontIncrease{
+@media (max-width: 771px) {
+  .fontIncrease {
     /* color: red!important; */
     font-size: 20px;
   }
-
-
 }
 </style>
