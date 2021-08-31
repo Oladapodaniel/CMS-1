@@ -388,7 +388,7 @@
 </div>
 
 
-         <div
+         <!-- <div
           class="col-md-12 col py-3"
           v-if="
             listOfOfferingItems.length === 0 &&
@@ -399,8 +399,8 @@
           <p class="text-danger d-flex justify-content-center">
             Record not available in database
           </p>
-        </div>
-        <!-- <div class="text-danger d-flex justify-content-center" v-else>No records found</div> -->
+        </div> -->
+        <div class="text-danger d-flex justify-content-center" v-else>No records found</div>
 
         <div class="col-12">
           <div class="table-footer">

@@ -1,5 +1,14 @@
 
 <template>
+<!-- To whoever will update this page -->
+<!-- This page is the online giving platform for the IFrame version -->
+
+<!-- It similar to the Online Giving in churchplus, with few differences in styles. -->
+
+<!-- The logic is quite the same, so any changes made to this page should be made in the main Online Giving Page which is GivingForm4.vue, except the changes that is to be made is specific for the Iframe version -->
+
+<!-- Bless you :)-->
+
   <div>
     <!-- nav section area -->
     <div class="container-fluid nav-color">
@@ -52,18 +61,7 @@
                   key="form"
                 >
                   <div class="row">
-                    <div class="col-12 col-md-4 my-3 pr-md-0">
-                      <label class="hfont">Purpose</label>
-
-                      <Dropdown
-                        v-model="selectedContributionType"
-                        :options="formResponse.contributionItems"
-                        optionLabel="financialContribution.name"
-                        placeholder="Select"
-                        class="w-100 px-0"
-                      />
-                    </div>
-                    <div class="col-5 col-md-4 my-3">
+                    <div class="col-3 my-3 pr-md-0">
                       <label class="hfont">Currency</label>
 
                        <Dropdown
@@ -74,7 +72,19 @@
                             class="w-100 px-0"
                           />
                     </div>
-                    <div class="col-7 col-md-4 my-3 pl-0">
+                    <div class="col-5 my-3">
+                      <label class="hfont">Purpose</label>
+
+                      <Dropdown
+                        v-model="selectedContributionType"
+                        :options="formResponse.contributionItems"
+                        optionLabel="financialContribution.name"
+                        placeholder="Select"
+                        class="w-100 px-0"
+                      />
+                      
+                    </div>
+                    <div class="col-4 my-3 pl-0">
                       <label class="hfont">Amount</label>
 
                       <input
@@ -317,7 +327,7 @@
                             </button>
                           </div>
                           <div class="modal-body p-0 bg-modal pb-5">
-                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="computeAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference" @paystack-amount="setPaystackAmount"/>
+                            <PaymentOptionModal :orderId="formResponse.orderId" :donation="donationObj" :close="close" :name="name" :amount="amount" :converted="computeAmount" :email="email" @payment-successful="successfulPayment" :gateways="formResponse.paymentGateWays" :currency="dfaultCurrency.shortCode" @selected-gateway="gatewaySelected" @transaction-reference="setTransactionReference" @paystack-amount="setPaystackAmount" :churchLogo="formResponse.churchLogo" :churchName="formResponse.churchName"/>
                           </div>
                           <!-- <div class="modal-footer bg-modal">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

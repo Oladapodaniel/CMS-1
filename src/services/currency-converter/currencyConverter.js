@@ -3,7 +3,21 @@ import store from "../../store/store";
 
 let converter = {
   async currencyConverter(amount, fromCurrencyRate, toDestinationCurrencyRate) {
-    let currencyRate = store.getters.getRates;
+    let currencyRate = store.getters.getRates
+    if (Object.keys(store.getters.getRates).length > 0) { 
+      currencyRate = store.getters.getRates
+      console.log(currencyRate)
+    } else {
+      await axios.get("/fxRates")
+          .then((res) => {
+            currencyRate = res.data;
+          })
+          .catch((err) => {
+            console.log(err)
+          });
+    }
+        
+    
     let propertyArr = Object.keys(currencyRate);
     let valueArr = Object.values(currencyRate);
     let fromIndex = propertyArr.indexOf(fromCurrencyRate);
