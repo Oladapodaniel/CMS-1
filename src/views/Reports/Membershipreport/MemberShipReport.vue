@@ -1,10 +1,10 @@
 <template>
-    <div class="container container-top border">
+    <div class="container container-top overflow-hidden border">
         <div>
             <h3 class="font-weight-bold">MEMBERSHIP REPORT</h3>
         </div>
         <div class="row border">
-            <div style="background: #ebeff4;" class="col-12 d-flex flex-row border">
+            <div style="background: #ebeff4;" class="row mx-2 w-100 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">SELECT MEMBERSHIP</label></div>
                     <div>
@@ -82,7 +82,7 @@
                     <div class="col-12 border  text-center" style="height: 60vh;">
                         <div class="col-12 font-weight-bold">Membership By Gender</div>
                         <div class="col-12">No Data Available</div>
-                        <div class="col-12 bg-primary border">
+                        <div class="col-12" style="height: 50vh;">
                             <MembershipPieChart
                             domId="chart"
                             distance="5"
@@ -96,7 +96,7 @@
                     <div class="col-12 border  text-center" style="height: 60vh;">
                         <div class="col-12  font-weight-bold">Membership By Marital Status</div>
                         <div class="col-12">No Data Available</div>
-                        <div class="col-12 bg-primary border">
+                        <div class="col-12 " style="height: 50vh;">
                             <MembershipPieChart
                             domId="chart"
                             distance="5"
@@ -110,7 +110,7 @@
                     <div class="col-12 border text-center mt-3" style="height: 60vh; ">
                         <div class="col-12  font-weight-bold ">Membership By Distribution</div>
                         <div class="col-12">No Data Available</div>
-                        <div class="col-12 bg-primary border">
+                        <div class="col-12 " style="height: 50vh;">
                             <MembershipPieChart
                             domId="chart"
                             distance="5"
@@ -124,7 +124,7 @@
                     <div class="col-12  border text-center mt-3 " style="height: 60vh;">
                         <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
                         <div class="col-12">No Data Available</div>
-                        <div class="col-12 bg-primary border">
+                        <div class="col-12 " style="height: 50vh;">
                             <MembershipPieChart
                             domId="chart"
                             distance="5"
@@ -136,8 +136,8 @@
                 </div>
                 <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border" >
-        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+      <div class="container-top container  overflow-hidden table-striped table-main   remove-styles2 remove-border" style="padding-right: 30px;"  >
+        <table class="table  remove-styles mt-0 table-responsive table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
               class="small-text text-capitalize text-nowrap"
@@ -213,7 +213,7 @@
 
 <script>
 import { onMounted, ref } from "vue";
-import MembershipPieChart from '../../../components/chart/PieChart.vue';
+import MembershipPieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
@@ -245,7 +245,7 @@ export default {
     // const selectedMaritalStatus = ref({ name: "SINGLE" });
     const selectedMaritalStatus = ref();
 
-    const pieChart = ref([
+    const pieChart = ref(
         [ 
              { name: "Tithe Offering", value: 9592 }, 
              { name: "casterion", value: 2770 }, 
@@ -253,16 +253,15 @@ export default {
              { name: "Worship Concert", value : 200 }, 
              { name: "Oh My Baba", value: 100 } 
         ]
-    ]
     
     )
-     onMounted(() => {
-      return pieChart.value;
-    });
+    //  onMounted(() => {
+    //   return pieChart.value;
+    // });
 
 
      return {
-        //  pieChart,
+         pieChart,
          membership,
          gender,
          maritalStatus,
