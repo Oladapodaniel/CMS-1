@@ -242,6 +242,16 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Index.vue')
             },
             {
+                path: 'membershipreport',
+                name:  "MemberShipReport",
+                meta: {
+                    title: 'Churchplus - Membership Report',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/MemberShipReport.vue')
+            
+            },
+            {
                 path: 'firsttimersreport',
                 name:"FirstTimersReport",
                 meta: {
@@ -249,6 +259,15 @@ const routes = [
                 },
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/firstTimersReport.vue')
+            },
+            {
+                path: 'celebrationsreport',
+                name:"CelebrationsReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/celebrationsReport.vue')
             },
             {
                 path: 'family',
