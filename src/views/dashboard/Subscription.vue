@@ -175,7 +175,7 @@
               {{ TotalAmount.toFixed(2) }}
             </div>
           </div>
-          <div class="row mt-4">
+          <!-- <div class="row mt-4">
             <div class="col-12 d-flex justify-content-between" v-if="selectedCurrency && currentUser !== currentUser.currency">
               <span>Converted amount</span>
               <span>
@@ -191,7 +191,7 @@
                 placeholder="Select Currency Type"
               />
             </div>
-          </div>
+          </div> -->
           <div class="row mt-5">
             <div
               class="col-12"
@@ -414,15 +414,16 @@ export default {
     console.log(existingPlan.value.membershipSize, "🎊🎊🎊");
     const daysToEndOfSubscription = ref(0);
     const selectSubscription = () => {
-      axios.get("/api/Subscription/GetSubscription").then((res) => {
-        console.log(res.data.returnObject, "RES");
-        Plans.value = res.data.returnObject;
+      // axios.get("/api/Subscription/GetSubscription").then((res) => {
+      axios.get("/api/Subscription/subscriptions").then((res) => {
+        console.log(res, "RES");
+        Plans.value = res.data;
         existingPlan.value.id = Plans.value.id;
         existingPlan.value.amount = Plans.value.amount;
         existingPlan.value.description = Plans.value.description;
         existingPlan.value.amountInDollar = Plans.value.amountInDollar;
         existingPlan.value.membershipSize = Plans.value.membershipSize;
-        subscriptionPlans.value = res.data.returnObject.subscriptionPlans.filter(i => i.description !== "FREE PLAN")
+        subscriptionPlans.value = res.data.subscriptionPlans.filter(i => i.description !== "FREE PLAN")
         // selectedPlan.value = subscriptionPlans.value.find(
         //   (i) => i.description === "PLAN"
         // );
@@ -431,18 +432,20 @@ export default {
         selectedPlan.value = subscriptionPlans.value.find(
           (i) => i.id === Plans.value.id
         );
-        currentAmount.value = res.data.returnObject.amountInNaira;
+        currentAmount.value = res.data.amountInNaira;
         currentPlan.value = existingPlan.value.description;
-        productsList.value = res.data.returnObject.productsList;
+        productsList.value = res.data.productsList;
+        expiryDate.value = formatDate.monthDayYear(
+          Plans.value.subscriptionExpiration
+        );
         emailPrice.value = productsList.value.find(
           (i) => i.name === "Email"
         ).price;
         smsPrice.value = productsList.value.find((i) => i.name === "SMS").price;
-        expiryDate.value = formatDate.monthDayYear(
-          res.data.returnObject.subscriptionExpiration
-        );
+       
+        // console.log(plans.value.subscriptionExpiration, 'qwer');
 
-        daysToEndOfSubscription.value = calculateRemomainingMonthsOfSubscription(res.data.returnObject.subscriptionExpiration)
+        daysToEndOfSubscription.value = calculateRemomainingMonthsOfSubscription(res.data.subscriptionExpiration)
       });
     };
 
@@ -670,7 +673,7 @@ export default {
             ? Math.ceil(convertAmountToTenantCurrency.value)
             : TotalAmount.value) * 100,
         ref: `${formattedDate.substring(0, 4)}${uuidv4().substring(0, 4)}sub`,
-        currency: selectedCurrency.value && currentUser ? selectedCurrency.value : "NGN",
+        currency: Plans.value.paymentCurrency,
         // currency: "zar",
 
         // firstname: name,
@@ -743,6 +746,7 @@ export default {
                 public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY,
                 tx_ref: uuidv4().substring(0,8),
                 amount: TotalAmount.value,
+                currency: Plans.value.paymentCurrency,
                 currency: selectedCurrency.value,
                 payment_options: 'card,ussd',
                 customer: {

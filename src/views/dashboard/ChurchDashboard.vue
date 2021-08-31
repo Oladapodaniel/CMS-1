@@ -61,7 +61,7 @@
           <img src="../../assets/can-do.svg" alt="" />
           <div class="can-do">
             <h4>Things You Can Do</h4>
-            <div class="can-do-links">
+            <div class="can-do-links can-do">
               <router-link to="/tenant/people/add">Add Member</router-link>
               <router-link to="/tenant/sms/compose">Send SMS</router-link>
               <router-link to="/tenant/people/addfirsttimer"
@@ -1051,9 +1051,9 @@ export default {
   font-size: 20px;
 }
 
-.can-do-links {
-  /* display: flex;
-  flex-direction: column; */
+.can-do {
+  display: flex;
+  flex-direction: column;
 }
 
 .can-do-links a {
@@ -1500,7 +1500,7 @@ tbody tr:nth-child(even) {
   }
 
   .can-do-links {
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-around;
   }
 }
