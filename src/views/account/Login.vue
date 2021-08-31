@@ -215,8 +215,10 @@ export default {
           setupService.setup();
         }, 5000);
         if(data.roles.length > 0){
-          data.roles.forEach(i => {
-          if(i.toLowerCase() == "mobileuser" || i.toLowerCase() == "family"){
+        let roleIndex = data.roles.findIndex(i => {
+          return i.toLowerCase() == "admin" || i.toLowerCase() == "basicuser" || i.toLowerCase() == "canaccessfirsttimers" || i.toLowerCase() == "canaccessfollowups" || i.toLowerCase() == "centerleader" || i.toLowerCase() == "financialaccount" || i.toLowerCase() == "mobileadmin" || i.toLowerCase() == "reports"
+        })
+        if (roleIndex === -1) {
             localStorage.clear()
             toast.add({
               severity:'info', 
@@ -224,16 +226,18 @@ export default {
               detail:'You do not have access to this page, contact your church admin', 
               life: 10000}) 
             router.push('/')
+          } else {
+            if (data.churchSize > 0) {
+              router.push("/tenant");
+            } else {
+              router.push("/next");
+            }
           }
-          
-        })
+        console.log(roleIndex)
+        }
         loading.value = false
-        }
-         if (data.churchSize > 0) {
-          router.push("/tenant");
-        } else {
-          router.push("/next");
-        }
+        
+         
       } catch (err) {
         /*eslint no-undef: "warn"*/
         console.log(err.response, "login error");

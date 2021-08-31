@@ -242,6 +242,34 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Index.vue')
             },
             {
+                path: 'membershipreport',
+                name:  "MemberShipReport",
+                meta: {
+                    title: 'Churchplus - Membership Report',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/MemberShipReport.vue')
+            
+            },
+            {
+                path: 'firsttimersreport',
+                name:"FirstTimersReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/firstTimersReport.vue')
+            },
+            {
+                path: 'celebrationsreport',
+                name:"CelebrationsReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/celebrationsReport.vue')
+            },
+            {
                 path: 'family',
                 name: 'Family',
                 component: () =>
@@ -1349,6 +1377,7 @@ router.beforeEach((to, from, next) => {
             to.name === "OnboardingForm" ||
             to.name === "WebCheckin" ||
             to.name === "OnlineGiving4" ||
+            to.name === "Pay" ||
             to.name === "iFrame" ||
             to.name === "SignUpPayment" ||
             to.name === "SignInPayment" ||

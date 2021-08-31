@@ -1,6 +1,24 @@
 // import axios from "@/gateway/backendapi";
 import media_service from "../media/media_service";
 import { v4 as uuidv4 } from 'uuid';
+import membershipService from "../../services/membership/membershipservice"
+
+
+let tenantId;
+
+let getTenantId = () => {
+  membershipService.getSignedInUser()
+      .then(res => {
+          tenantId = res.tenantId;
+      })
+      .catch(err => {
+          console.log(err);
+      })
+}
+
+if (!tenantId) {
+  getTenantId();
+}
 
 /**
  * Customized upload picture plugin
@@ -16,7 +34,7 @@ class MyUploadAdapter {
     data.append("mediaFile", await this.loader.file);
     data.append("mediaFileImage", await this.loader.file);
     data.append("mediaType", 0);
-    data.append("tenantId", 'e9749fad-85e8-4130-b553-37acc8acde61');
+    data.append("tenantId", tenantId);
 
     try {
         const res = await media_service.uploadMedia(data);

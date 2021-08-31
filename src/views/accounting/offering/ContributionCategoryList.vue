@@ -160,11 +160,11 @@
                           aria-expanded="false"
                         ></i>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <!-- <router-link :to="{ name: 'OfferingCategory', params: { offId: item.id } }">
-                            <a class="dropdown-item elipsis-items">
+                          <router-link :to="{ name: 'OfferingCategory', params: { offId: item.id } }">
+                            <a class="dropdown-item elipsis-items" style="text-decoration:none;">
                             Edit
                             </a>
-                          </router-link> -->
+                          </router-link>
                             <a
                               class="dropdown-item elipsis-items cursor-pointer"
                               @click="showConfirmModal(item.id, index)"

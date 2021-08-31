@@ -197,7 +197,7 @@
                     <div class="desc small-text col-md-2 px-1" @click="rowSelected(item)">
                       <p class="mb-0 d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                        <span>{{ formatDate(item.date) }}</span>
+                        <span>{{ format(item.date) }}</span>
                       </p>
                     </div>
 
@@ -205,7 +205,7 @@
                       <div class="d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Description</span>
                       <div>
-                        
+
                         <div class="desc small-text text-right text-md-left">{{ item.narration }}</div>
                       </div>
                       </div>
@@ -271,9 +271,9 @@
                 @reload="getTransactions"
                 :gettingSelectedTrsn="gettingSelectedTrsn"
               />
-              <LedgerForm 
-                v-else 
-                @entrysaved="journalEntrySaved" 
+              <LedgerForm
+                v-else
+                @entrysaved="journalEntrySaved"
                 @close-ledger="closeLedgerForm"
                 :journalEntry="journalEntry"
                 :gettingSelectedTrsn="gettingSelectedTrsn"
@@ -281,7 +281,7 @@
               <!-- :transacProp="transacPropsValue" -->
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -578,7 +578,7 @@ export default {
 
     const amountWithCommas = amount => numbers_formatter.amountWithCommas(amount);
 
-    
+
     const deleteTransaction = async (id, index) => {
       try {
         const response = await transaction_service.deleteTransaction(id);
