@@ -1,7 +1,7 @@
 <template>
-    <div class="container-slim mb-5">
+    <div class="container-wide container-top mb-5">
         <div class="d-flex justify-content-between">
-            <div class="header">Group Category Performance Report</div>
+            <div class="header">Group Category Report</div>
             <div class="default-btn  d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-sort-down"></i></div>
         </div>
         <div class="row mt-4">

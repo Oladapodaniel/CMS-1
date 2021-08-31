@@ -832,7 +832,6 @@
       </div>
     </Dialog>
   </div>
-  <!-- <GroupCategory /> -->
 </template>
 
 <script>
@@ -850,7 +849,6 @@ import store from "../../store/store";
 import NewPerson from '../accounting/offering/NewDonor.vue';
 import Dialog from "primevue/dialog";
 import finish from "../../services/progressbar/progress.js";
-import GroupCategory from "./GroupCategoryReport";
 
 export default {
   directives: {

@@ -162,7 +162,7 @@ export default {
                     let result = regex.test(i)
                     console.log(result)
                     if (result) {
-                        contributionItem.value.push({contributionItemId: i, amount: Object.values(route.query)[index]})
+                        contributionItem.value.push({contributionItemId: i, amount: +Object.values(route.query)[index]})
                     }
                 });
                 // queryValue.value.contributionItems = contributionItem.value
