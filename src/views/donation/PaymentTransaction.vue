@@ -1,5 +1,5 @@
 <template>
-    <div class="container-wide container-top">{{ paymentGateWays }}
+    <div class="container-wide container-top">
         <div class="row">
             <div class="col-12  d-flex justify-content-between">
                 <div class="page-header">{{ header ? header : "Payment Form" }}</div>
