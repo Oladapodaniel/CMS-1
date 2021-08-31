@@ -66,6 +66,9 @@
 
     </div> -->
     <!-- {{ paymentGatewayObject }} -->
+    <!-- {{donation && donation.paymentGateway ? donation.paymentGateway.find(i => {
+            return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+          }).subAccountID : "here"}}eeeee -->
   </div>
 </template>
 
@@ -118,7 +121,7 @@ export default {
 
       props.close.click()
       // localStorage.setItem('donation', JSON.stringify(props.donation))
-      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'paystack', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
+      // router.push({ name: 'Pay', query: { email: props.email, gateway: 'paystack', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
         // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
@@ -182,12 +185,11 @@ export default {
       // Get and send clicked payment gateway to parent
       selectedGateway.value = e.srcElement.alt
       emit('selected-gateway', selectedGateway.value)
-      console.log(props.amount)
 
       // Close payment modal
       props.close.click()
       // localStorage.setItem('donation', JSON.stringify(props.donation))
-      // router.push({ name: 'Pay', query: { amount: props.converted, email: props.email, gateway: 'flutterwave', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
+      // router.push({ name: 'Pay', query: { email: props.email, gateway: 'flutterwave', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
@@ -199,6 +201,13 @@ export default {
                   name: props.name,
                   email: props.email,
                 },
+                subaccounts: [
+                  {
+                    id: props.donation.paymentGateway.find(i => {
+                      return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
+                    }).subAccountID
+                  }
+                ],
                 callback: (response) => {
                     console.log("Payment callback", response)
                     console.log(props.donation)

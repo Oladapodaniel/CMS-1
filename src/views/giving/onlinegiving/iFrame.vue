@@ -70,7 +70,6 @@
                             optionLabel="shortCode"
                             :placeholder="dfaultCurrency.shortCode"
                             class="w-100 px-0"
-                            :filter="true"
                           />
                     </div>
                     <div class="col-5 my-3">
@@ -82,7 +81,6 @@
                         optionLabel="financialContribution.name"
                         placeholder="Select"
                         class="w-100 px-0"
-                        :filter="true"
                       />
                       
                     </div>

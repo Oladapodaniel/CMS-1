@@ -1,9 +1,8 @@
 <template>
-    <div class="container" >
-        <div class="row" v-if="paymentSuccessful">
-            <div class="col-12">Thank you</div>
-            <div class="col-12">You have made successfully made your payment</div>
-            {{ queryValue }}
+    <div class="container-wide container-top" >
+        <div class="row adjust-font" v-if="paymentSuccessful">
+            <div class="col-12">Thank you.</div>
+            <div class="col-12">You have made successfully made your payment.</div>
         </div>
     </div>
 </template>
@@ -21,7 +20,7 @@ export default {
     setup () {
         const route = useRoute()
         const toast  = useToast()
-        const isProduction = false
+        const isProduction = true
         const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
         const uniqueId = ref(uuidv4())
         const paystackCurrencies = ref(['NGN', 'GHS', 'ZAR'])
@@ -82,8 +81,8 @@ export default {
                 // queryValue.value.contributionItem = contributionItem.value
   
                 window.FlutterwaveCheckout({
-                    // public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
-                    public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
+                    public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
+                    // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
                     tx_ref: uniqueId.value,
                     amount: amount.value,
                     currency: route.query.currency,
@@ -234,11 +233,11 @@ export default {
             
         const openPaymentGatewayHandler = () => {
             if (route.query.gateway === 'paystack') {
-                initializePayment()
                 callPaystack()
+                initializePayment()
             } else if (route.query.gateway === 'flutterwave') {
-                // initializePayment()
                 setTimeout(() => {
+                    initializePayment()
                     callFlutterWave()
                 }, 2000)
             }
@@ -263,5 +262,7 @@ export default {
 </script>
 
 <style scoped>
-
+.adjust-font {
+    font-size: 1.5em
+}
 </style>
