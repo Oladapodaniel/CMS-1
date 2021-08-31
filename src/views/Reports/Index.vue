@@ -1,15 +1,15 @@
 <template>
-    <div class="container container-top">
+    <div class="container container-top container-wide">
         <div class=" row mt-2" >
             <div ><h3 class="font-weight-bold"> Reports</h3></div>
         </div>
         <div class="row" style=" background: #f5f8fa;">
             <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer " @click="togglePeople">
-                <div class="p-3"> People </div> 
+                <div class="p-3"> Membership </div> 
                 <div :class="{ 'baseline' : showPeople, 'hide-base' : !showPeople }"></div>
             </div>
             <div class="col-12 col-sm-6  col-md-2 col-lg-2 c-pointer" @click="togglePerformance">
-                <div class="p-3"> Performance </div> 
+                <div class="p-3"> Attendance </div> 
                 <div :class="{ 'baseline' : showPerformance, 'hide-base' : !showPerformance }"></div>
             </div>
             <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer" @click="toggleFinancial">
