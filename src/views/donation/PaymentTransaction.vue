@@ -1,5 +1,5 @@
 <template>
-    <div class="container-wide container-top">
+    <div class="container-wide container-top">{{ paymentGateWays }}
         <div class="row">
             <div class="col-12  d-flex justify-content-between">
                 <div class="page-header">{{ header ? header : "Payment Form" }}</div>
@@ -622,7 +622,10 @@ export default {
                     return { financialContributionID: id }
                 }),
                  paymentGateWays: paymentGateWays.value.map(i => {
-                     return { paymentGateWayID: i.id }
+                     return {
+                        paymentGateWayID: i.id,
+                        subAccountID: i.subAccountID
+                     }
                  })
             }
             emit('form-details', paymentForm)
@@ -740,6 +743,7 @@ export default {
                             id: i.paymentGateway.id,
                             isActive: i.paymentGateway.isActive,
                             isSubAccountSupported: i.paymentGateway.isSubAccountSupported,
+                            subAccountID: i.subAccountID
                         }
                     })
                     console.log(newContribution.value.payment)
