@@ -31,11 +31,11 @@
                 <img src="../../../assets/social/facebook.svg" alt="" />
               </span>
             </div>
-            <div class="col-md-6 per text-sm-center text-center">+1%</div>
+            <div class="col-md-6 per text-sm-center text-center">+0%</div>
           </div>
           <div class="row mt-5">
             <div class="col-md-12 text-lg-center text-sm-center text-center">
-              <h2 class="">33445</h2>
+              <h2 class="">0</h2>
             </div>
           </div>
           <div class="row mb-4">
@@ -54,11 +54,11 @@
                 <img src="../../../assets/social/instagram.svg" alt="" />
               </span>
             </div>
-            <div class="col-md-6 per text-sm-center text-center">+3%</div>
+            <div class="col-md-6 per text-sm-center text-center">+0%</div>
           </div>
           <div class="row mt-5">
             <div class="col-md-12 text-lg-center text-sm-center text-center">
-              <h2 class="">444</h2>
+              <h2 class="">0</h2>
             </div>
           </div>
           <div class="row mb-4">
@@ -75,11 +75,11 @@
                 <img src="../../../assets/social/twitter.svg" alt="" />
               </span>
             </div>
-            <div class="col-md-6 per text-sm-center text-center">+3%</div>
+            <div class="col-md-6 per text-sm-center text-center">+0%</div>
           </div>
           <div class="row mt-5">
             <div class="col-md-12 text-lg-center text-sm-center text-center">
-              <h2 class="">234</h2>
+              <h2 class="">0</h2>
             </div>
           </div>
           <div class="row mb-4">
@@ -96,11 +96,11 @@
                 <img src="../../../assets/social/whatsapp.svg" alt="" />
               </span>
             </div>
-            <div class="col-md-6 per text-sm-center text-center">+3%</div>
+            <div class="col-md-6 per text-sm-center text-center">+0%</div>
           </div>
           <div class="row mt-5">
             <div class="col-md-12 text-lg-center text-sm-center text-center">
-              <h2 class="">124</h2>
+              <h2 class="">0</h2>
             </div>
           </div>
           <div class="row mb-4">
@@ -144,7 +144,7 @@
         <div class="col-md-8">
           <Button
             label="Likes"
-            badge="8"
+            badge="0"
             icon="pi pi-check"
             iconPos="right"
             class="p-button-raised p-button-rounded mt-5 mb-5"
@@ -200,7 +200,7 @@
                   <span><i class="pi pi-comments text-light"></i></span>
                 </div>
                 <div class="col-md-2 text-sm-center">
-                  <h5 class="num4">11</h5>
+                  <h5 class="num4">0</h5>
                 </div>
               </div>
             </div>
@@ -211,7 +211,7 @@
                     <span><i class="pi pi-heart text-light"></i></span>
                   </div>
                   <div class="col-md-2 text-sm-center">
-                    <h5 class="num4">11</h5>
+                    <h5 class="num4">0</h5>
                   </div>
                 </div>
               </div>
@@ -222,7 +222,7 @@
                   <span><i class="pi pi-share-alt text-light"></i></span>
                 </div>
                 <div class="col-md-2 text-sm-center">
-                  <h5 class="num4">23</h5>
+                  <h5 class="num4">0</h5>
                 </div>
               </div>
             </div>
@@ -264,7 +264,7 @@
             <div
               class="col-md-12 text-lg-center num mt-3 text-sm-center text-center"
             >
-              <h3>2445</h3>
+              <h3>0</h3>
             </div>
           </div>
         </div>
@@ -283,7 +283,7 @@
             <div
               class="col-md-12 text-lg-center num mt-3 text-sm-center text-center"
             >
-              <h3>244</h3>
+              <h3>0</h3>
             </div>
           </div>
         </div>
@@ -300,7 +300,7 @@
             <div
               class="col-md-12 text-lg-center num mt-3 text-sm-center text-center"
             >
-              <h3>244</h3>
+              <h3>0</h3>
             </div>
           </div>
         </div>

@@ -61,7 +61,7 @@
                         id=""
                         class="form-control flat-right-border px-sm-0"
                       >
-                        <option value="">{{ userCurrencyName ? userCurrencyName.toUpperCase() : ''}}</option>
+                        <option value="">{{ userCurrencyName ? userCurrencyName : ''}}</option>
                       </select>
                     </div>
                     <div class="col-7 col-sm-8 pl-0 d-flex align-items-center">
@@ -312,6 +312,7 @@ export default {
     const churchLogo = ref('https://images.app.goo.gl/cdhuWQU7a11CRJnRA');
     const close = ref(null);
     const isSuccessful = ref(false);
+    const pricePerUnitSMS = ref(0);
 
     const getUserEmail = async () => {
       userService.getCurrentUser()
@@ -320,6 +321,7 @@ export default {
           churchName.value = res.churchName;
           tenantId.value = res.tenantId;
           userCurrency.value = res.currency;
+          pricePerUnitSMS.value = res.pricePerUnitSMS
           currentUser.value = res
 
         })
@@ -330,7 +332,7 @@ export default {
     console.log(currentUser, 'current user ...');
 
     // const userEmail = ref("");
-      if (!userEmail.value || !tenantId.value) getUserEmail();
+      if (!userEmail.value || !tenantId.value|| !pricePerUnitSMS.value ) getUserEmail();
 
     const getEmail = async () => {
        if (!currentUser.value || !currentUser.value.userEmail){
@@ -351,7 +353,7 @@ export default {
      const userCurrencyName = computed(() => {
         if (!currentUser.value) return "ngn";
         // console.log(currentUser, 'compute current user');
-        if (currentUser.value.flutterwaveEnabled) return currentUser.value.currency.toLowerCase();
+        if (currentUser.value.flutterwaveEnabled) return currentUser.value.currency;
         return 'usd';
       });
 
@@ -594,6 +596,7 @@ export default {
       userCurrency,
       userCurrencyName,
       uuid,
+      pricePerUnitSMS
       // userCurrencyConversion,
     };
   },

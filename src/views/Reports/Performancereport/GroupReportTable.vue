@@ -17,7 +17,7 @@
                         <tr>
                             <td>2222222222222222</td>
                             <td>2222222222222222</td>
-                            <td>22222222222222222222222222222222222222222222222222222</td>
+                            <td>2222222222222222</td>
                             <td>22</td>
                             <td>22</td>
                             <td>22</td>
@@ -31,7 +31,7 @@
 
 <script>
 import { ref } from "vue"
-import PaginationButtons from "../../components/pagination/PaginationButtons.vue";
+import PaginationButtons from "../../../components/pagination/PaginationButtons.vue";
 export default {
     components: {
         PaginationButtons

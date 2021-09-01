@@ -613,7 +613,7 @@ export default {
 
             let paymentForm = {
                 name: newContribution.value.name,
-                bankID: selectedBank.value.id,
+                bankCode: selectedBank.value.code,
                 accountName: accountName.value,
                 accountNumber: accountNumber.value,
                 isActive: isActive.value,
@@ -622,7 +622,10 @@ export default {
                     return { financialContributionID: id }
                 }),
                  paymentGateWays: paymentGateWays.value.map(i => {
-                     return { paymentGateWayID: i.id }
+                     return {
+                        paymentGateWayID: i.id,
+                        subAccountID: i.subAccountID
+                     }
                  })
             }
             emit('form-details', paymentForm)
@@ -731,7 +734,7 @@ export default {
                     newContribution.value.payment = res.data.contributionItems.map(i => i)
                     accountNumber.value = res.data.accountNumber
                     accountName.value = res.data.accountName
-                    selectedBank.value = { name: nigerianBanks.value.length > 0 ? nigerianBanks.value.find(i => i.id === res.data.bankID).name :  [], id: res.data.bankID },
+                    selectedBank.value = { name: nigerianBanks.value.length > 0 ? nigerianBanks.value.find(i => i.code == res.data.bankCode).name :  [], bankCode: res.data.bankCode },
                     isActive.value = res.data.isActive
                     paymentGateWays.value = res.data.paymentGateWays.map(i => {
                         return {
@@ -740,6 +743,7 @@ export default {
                             id: i.paymentGateway.id,
                             isActive: i.paymentGateway.isActive,
                             isSubAccountSupported: i.paymentGateway.isSubAccountSupported,
+                            subAccountID: i.subAccountID
                         }
                     })
                     console.log(newContribution.value.payment)

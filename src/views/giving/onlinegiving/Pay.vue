@@ -117,7 +117,7 @@ export default {
                     },
                     onclose: () => console.log('Payment closed'),
                     customizations: {
-                    title: 'Church Giving',
+                    title: route.query.churchName,
                     description: "Payment for contribution items",
                     logo: logoUrl,
                     },
@@ -162,7 +162,7 @@ export default {
                     let result = regex.test(i)
                     console.log(result)
                     if (result) {
-                        contributionItem.value.push({contributionItemId: i, amount: Object.values(route.query)[index]})
+                        contributionItem.value.push({contributionItemId: i, amount: +Object.values(route.query)[index]})
                     }
                 });
                 // queryValue.value.contributionItems = contributionItem.value

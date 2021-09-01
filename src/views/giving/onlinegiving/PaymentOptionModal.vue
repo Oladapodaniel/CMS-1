@@ -124,8 +124,8 @@ export default {
       // router.push({ name: 'Pay', query: { email: props.email, gateway: 'paystack', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
       /*eslint no-undef: "warn"*/
       let handler = PaystackPop.setup({
-        // key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
-        key: process.env.VUE_APP_PAYSTACK_API_KEY,
+        key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
+        // key: process.env.VUE_APP_PAYSTACK_API_KEY,
         email: props.email,
         amount: props.converted * 100 ? props.converted * 100 : props.amount * 100,
         firstname: props.name,
@@ -189,7 +189,7 @@ export default {
       // Close payment modal
       props.close.click()
       // localStorage.setItem('donation', JSON.stringify(props.donation))
-      // router.push({ name: 'Pay', query: { email: props.email, gateway: 'flutterwave', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
+      // router.push({ name: 'Pay', query: { email: props.email, gateway: 'flutterwave', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, churchName: 'Overflow Parish', tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
