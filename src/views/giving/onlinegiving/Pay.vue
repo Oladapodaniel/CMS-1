@@ -117,7 +117,7 @@ export default {
                     },
                     onclose: () => console.log('Payment closed'),
                     customizations: {
-                    title: 'Church Giving',
+                    title: route.query.churchName,
                     description: "Payment for contribution items",
                     logo: logoUrl,
                     },
