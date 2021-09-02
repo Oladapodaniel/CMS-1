@@ -374,9 +374,9 @@ export default {
         const getBanks = () => {
             axios.get('/api/Financials/GetBanks')
                 .then(res => {
-
-                    console.log(res)
+                console.log(res)
                 nigerianBanks.value = res.data
+                getEditPayment()
                 })
                 .catch(err => {
 
@@ -561,13 +561,70 @@ export default {
 
                 let { data } = await axio.get(`https://api.paystack.co/bank/resolve?account_number=${accountNumber.value}&bank_code=${selectedBank.value.code}`, header)
                 console.log(data)
-                accountName.value = data.data.account_name
-                accNameRef.value.focus()
+                // accountName.value = data.data.account_name
+                // accNameRef.value.focus()
+                // disabled.value = false
+
+                // loading.value = false
+
+                // toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 4000});
+
+            }
+            catch (error) {
+                finish()
+                console.log(error)
+                if (error.toString().includes('422') || error.toString().includes('400')) {
+                    console.log('didnt verify')
+                    const gateway = gateways.value.find(i => i.name.toLowerCase().includes('paystack'))
+                    if (gateway) {
+                        paymentGateWaysDb.value = gateways.value.filter(i => gateway.name !== i.name)
+                    }   else {
+                        console.log('already removed')
+                    }
+                    
+                }   else {
+                    // if (!accountNumber.value || accountNumber.value === "") {
+                    //     toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
+                    // }   else {
+                    //     toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
+                    // }
+                }
+
+                loading.value = false
+
+                
+            }
+            
+            try {
+                let header = { headers: { Authorization: `Bearer ${process.env.VUE_APP_PAYSTACK_SECRET_KEY}` }}
+                console.log(header, "header");
+
+                let { data } = await axio.post(`https://api.ravepay.co/flwv3-pug/getpaidx/api/resolve_account`, {
+                    recipientaccount: accountNumber.value,
+                    destbankcode: selectedBank.value.code,
+                    PBFPubKey: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE
+                })
+                console.log(data)
+                accountName.value = data.data.data.accountname
                 disabled.value = false
 
                 loading.value = false
 
-                toast.add({severity:'success', summary: 'Account Check Successful', detail:'The account check was successful', life: 4000});
+                if (data.data.data.responsemessage.toLowerCase().includes('sorry')) {
+                    toast.add({
+                    severity:'warn', 
+                    summary: 'Unable to verify', 
+                    detail: data.data.data.responsemessage, 
+                    life: 4000
+                });
+                }   else {
+                    toast.add({
+                    severity:'success', 
+                    summary: 'Account Check Successful', 
+                    detail:'The account check was successful', 
+                    life: 4000
+                });
+                }
 
             }
             catch (error) {
@@ -576,13 +633,20 @@ export default {
 
                 loading.value = false
 
-                if (!accountNumber.value || accountNumber.value === "") {
-                    toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
-                }   else {
-                    toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
-                }
+                // if (error.toString().includes('422') || error.toString().includes('400')) {
+                //     console.log('didnt verify')
+                //     const gatewayIndex = gateways.value.findIndex(i => i.name.toLowerCase().includes('flutterwave'))
+                //     gateways.value.splice(gatewayIndex, 1)
+                // }   else {
+                    if (!accountNumber.value || accountNumber.value === "") {
+                        toast.add({severity:'warn', summary: 'No account number found', detail:'Please enter your account number', life: 4000});
+                    }   else {
+                        toast.add({severity:'error', summary: 'Account Check Error', detail:'Please check your banks details again', life: 4000});
+                    }
+                // }
+
+                
             }
-            console.log(selectedBank.value.code, accountNumber.value)
         }
 
 
@@ -624,7 +688,8 @@ export default {
                  paymentGateWays: paymentGateWays.value.map(i => {
                      return {
                         paymentGateWayID: i.id,
-                        subAccountID: i.subAccountID
+                        subAccountID: i.subAccountID,
+                        updateId: i.updateId
                      }
                  })
             }
@@ -641,7 +706,7 @@ export default {
             if (!route.params.editPayment) {
 
                 try {
-                    const res = await axios.post("/api/PaymentForm/Save", paymentForm);
+                    const res = await axios.post("/api/PaymentForm/newpaymentform", paymentForm);
                     console.log(res)
                     loadingSave.value = false
                     // toast.add({severity:'success', summary: 'Account Check Error', detail:'Please check your banks details again', life: 3000});
@@ -649,7 +714,7 @@ export default {
 
 
                     if (route.fullPath === "/tenant/payments") {
-                        router.push({ name: 'PaymentOption', params: { paymentId: res.data.result.id } })
+                        router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
                     } else if (route.fullPath === "/donationsetup") {
                         router.push({ name: 'OnboardingSuccessful' })
                     }
@@ -682,8 +747,6 @@ export default {
                     loadingSave.value = false
                     store.dispatch('contributions/paymentData', res.data)
                     router.push({ name: 'PaymentOption', params: { paymentId: res.data.id } })
-
-
                     finish()
                 }
                 catch (err) {
@@ -734,7 +797,7 @@ export default {
                     newContribution.value.payment = res.data.contributionItems.map(i => i)
                     accountNumber.value = res.data.accountNumber
                     accountName.value = res.data.accountName
-                    selectedBank.value = { name: nigerianBanks.value.length > 0 ? nigerianBanks.value.find(i => i.code == res.data.bankCode).name :  [], bankCode: res.data.bankCode },
+                    selectedBank.value = { name: nigerianBanks.value.find(i => i.code == res.data.bankCode).name, code: res.data.bankCode },
                     isActive.value = res.data.isActive
                     paymentGateWays.value = res.data.paymentGateWays.map(i => {
                         return {
@@ -743,7 +806,8 @@ export default {
                             id: i.paymentGateway.id,
                             isActive: i.paymentGateway.isActive,
                             isSubAccountSupported: i.paymentGateway.isSubAccountSupported,
-                            subAccountID: i.subAccountID
+                            subAccountID: i.subAccountID,
+                            updateId: i.updateId
                         }
                     })
                     console.log(newContribution.value.payment)
@@ -759,7 +823,6 @@ export default {
                 isActive.value = true
             }
         }
-        getEditPayment()
 
         const gateways = computed(() => {
             // if (!route.params.editPayment) return paymentGateWaysDb.value;

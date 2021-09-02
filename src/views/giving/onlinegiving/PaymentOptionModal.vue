@@ -189,7 +189,7 @@ export default {
       // Close payment modal
       props.close.click()
       // localStorage.setItem('donation', JSON.stringify(props.donation))
-      // router.push({ name: 'Pay', query: { email: props.email, gateway: 'flutterwave', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, churchName: 'Overflow Parish', tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af' } })
+      // router.push({ name: 'Pay', query: { email: props.email, gateway: 'flutterwave', currency: props.currency, 'b2bc6285-f61a-4a9b-807f-0117d573c892': 400, churchName: 'Overflow Parish', tenantId: 'e9749fad-85e8-4130-b553-37acc8acde61', currencyId: 'dfce0a14-2741-46c5-b0c7-b327d55923af', subAccountId: 'RS_668182BB786E8204B9F82C173056C6ED', churchLogo: 'https://churchplusstorage.blob.core.windows.net/mediacontainer/logo_b2d434ab-970d-477f-a2aa-4090d499f2e7_01072021.png' } })
       window.FlutterwaveCheckout({
                 public_key: process.env.VUE_APP_FLUTTERWAVE_PUBLIC_KEY_LIVE,
                 // public_key: process.env.VUE_APP_FLUTTERWAVE_TEST_KEY_TEST,
