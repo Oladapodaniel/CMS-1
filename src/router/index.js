@@ -243,17 +243,17 @@ const routes = [
             },
             {
                 path: 'membershipreport',
-                name:  "MemberShipReport",
+                name: "MemberShipReport",
                 meta: {
                     title: 'Churchplus - Membership Report',
                 },
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/MemberShipReport.vue')
-            
+
             },
             {
                 path: 'firsttimersreport',
-                name:"FirstTimersReport",
+                name: "FirstTimersReport",
                 meta: {
                     title: 'Churchplus - Reports',
                 },
@@ -261,13 +261,31 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/firstTimersReport.vue')
             },
             {
+                path: 'newconvertreport',
+                name: "NewConvertReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/NewConvertReport.vue')
+            },
+            {
                 path: 'celebrationsreport',
-                name:"CelebrationsReport",
+                name: "CelebrationsReport",
                 meta: {
                     title: 'Churchplus - Reports',
                 },
                 component: () =>
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/celebrationsReport.vue')
+            },
+            {
+                path: 'summaryreport',
+                name: "SummaryReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/SummaryReport.vue')
             },
             {
                 path: 'family',

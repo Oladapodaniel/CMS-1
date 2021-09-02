@@ -1,7 +1,7 @@
 <template>
     <div class="container container-top overflow-hidden border">
         <div>
-            <h3 class="font-weight-bold">MEMBERSHIP REPORT</h3>
+            <h3 class="font-weight-bold">SUMMARY REPORT</h3>
         </div>
         <div class="row border">
             <div style="background: #ebeff4;" class="row mx-2 w-100 py-5" >

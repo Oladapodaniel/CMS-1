@@ -29,7 +29,7 @@
                         v-model="postName"
                       />
                     </div>
-                    <div class="col-md-5 mt-md-0 mt-5 col-12 d-flex justify-content-end">
+                    <div class="col-md-5 mt-md-0 mt-5 col-12 d-flex justify-content-center">
                       <div class="" style="width:80%;height: 100px">
                         <img v-show="url" class="picturedp" style="width:100%;height: 40px;object-fit: cover;border-radius: 5px;" :src="url" alt="insert Image">
                         <img v-show="!url" src="../../assets/people/phone-import.svg" alt="">
@@ -42,7 +42,7 @@
                     <div class="col-md-3 col-6 mb-md-5">
                       <button class="btn primary-btn text-white bold px-4 py-1 mt-sm-3 mt-lg-0 mt-xl-0" @click="savePost">Save</button>
                     </div>
-                    <div class="col-md-7 col-6 d-flex justify-content-end">
+                    <div class="col-md-7 col-6 d-flex justify-content-center">
                     <div class="">
                     <label for="imgUpload" class="choose-image btn btn-secondary">
                       Choose file
