@@ -6,9 +6,9 @@
            <div class="header ">
                 <div class="events">Transaction</div>
               </div>
-          <div class="row  justify-content-center">
+          <div class="row mt-2 header-btns justify-content-center">
             <!-- <div class="actions"> -->
-              <div class="col-md-4 col-8  col-sm-3 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
+              <div class="col-8 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0  mx-auto mx-sm-0 mx-md-0">
                  <button
                     class="more-btn align-items-center justify-content-center d-flex w-100 default-btn border-0"
                     @click="toggleTransac(1)"
@@ -17,14 +17,14 @@
                   </button>
               </div>
 
-              <div class="col-md-4 col-8  col-sm-3 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+              <div class="col-8 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
                 <button
                   class="more-btn align-items-center justify-content-center d-flex w-100 default-btn border-0"
                   @click="toggleTransac(2)">
                    Add Expense
                 </button>
               </div>
-              <div class="col-md-4 col-8  col-sm-3 col-lg-3 mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
+              <div class="col-8 col-sm-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 mx-auto mx-sm-0 mx-md-0">
                 <a class="dropdown show more-btn align-items-center justify-content-center w-100 d-flex default-btn border-0 text-decoration-none">
                   <a class="dropdown-toggle text-decoration-none text-dark" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     More
@@ -980,5 +980,11 @@ html {
   .row {
     margin-right: 0 !important;
     margin-left: 0 !important;
+  }
+
+  @media (min-width: 768px) and (max-width: 840px) {
+    .header-btns {
+      margin-top: 10px;
+    }
   }
 </style>

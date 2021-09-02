@@ -3,10 +3,10 @@
         <div>
             <h3 class="font-weight-bold">SUMMARY REPORT</h3>
         </div>
-        <div class="row border">
-            <div style="background: #ebeff4;" class="row mx-2 w-100 py-5" >
+        <div class="container-fluid ">
+            <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">SELECT MEMBERSHIP</label></div>
+                    <div><label for="" class="font-weight-bold">Select Members</label></div>
                     <div>
                         <MultiSelect v-model="selectedMember" :options="membership" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
                             <template #value="slotProps">
@@ -27,7 +27,7 @@
 
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div class=""><label for="" class=" ml-2 font-weight-bold">GENDER</label></div>
+                    <div class=""><label for="" class=" ml-2 font-weight-bold">Gender</label></div>
                     <div>
                         <MultiSelect v-model="selectedGender" :options="gender" optionLabel="name" placeholder="Select gender" :filter="true" class="multiselect-custom w-100">
                             <template #value="slotProps">
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">MARITAL STATUS</label></div>
+                    <div><label for="" class="font-weight-bold">Marital Status</label></div>
                     <div>
                         <MultiSelect v-model="selectedMaritalStatus" :options="maritalStatus" optionLabel="name" placeholder="Marital status" :filter="true" class="multiselect-custom w-100">
                             <template #value="slotProps">
@@ -71,154 +71,157 @@
                     <div class="mt-2">
                         <button class="btn default-btn primary-bg "><div class="text-white">Generate Report</div></button>
                     </div>
-                </div>
-             </div>    
-            <div class="col-12">
-                <div class="mt-4 text-center">
-                    <h4>CONGREGATION MEMBERS REPORT </h4>
-                </div>
+                </div> 
             </div>
-                <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 ">
+                    <div class="mt-5 text-center heading-text">
+                        CONGREGATION MEMBERS REPORT 
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                     <div class="col-12 border  text-center" style="height: 60vh;">
                         <div class="col-12 font-weight-bold">Membership By Gender</div>
                         <div class="col-12">No Data Available</div>
                         <div class="col-12" style="height: 50vh;">
                             <MembershipPieChart
-                            domId="chart"
-                            distance="5"
-                            :titleMargin="10"
-                            :summary="pieChart"
+                               
                             />
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6  col-md-6 col-lg-6">
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                     <div class="col-12 border  text-center" style="height: 60vh;">
                         <div class="col-12  font-weight-bold">Membership By Marital Status</div>
                         <div class="col-12">No Data Available</div>
                         <div class="col-12 " style="height: 50vh;">
                             <MembershipPieChart
-                            domId="chart"
-                            distance="5"
-                            :titleMargin="10"
-                            :summary="pieChart"
+                              
                             />
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6  col-md-6 col-lg-6">
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                     <div class="col-12 border text-center mt-3" style="height: 60vh; ">
                         <div class="col-12  font-weight-bold ">Membership By Distribution</div>
                         <div class="col-12">No Data Available</div>
                         <div class="col-12 " style="height: 50vh;">
                             <MembershipPieChart
-                            domId="chart"
-                            distance="5"
-                            :titleMargin="10"
-                            :summary="pieChart"
+                               
                             />
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6  col-md-6 col-lg-6">
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                     <div class="col-12  border text-center mt-3 " style="height: 60vh;">
                         <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
                         <div class="col-12">No Data Available</div>
                         <div class="col-12 " style="height: 50vh;">
                             <MembershipPieChart
-                            domId="chart"
-                            distance="5"
-                            :titleMargin="10"
-                            :summary="pieChart"
+                                
+                               
                             />
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <!-- <div > -->
+            <!-- <div class="row "> -->
                 <section>
-      <!-- table header -->
-      <div class="container-top container  overflow-hidden table-striped table-main   remove-styles2 remove-border" style="padding-right: 30px;"  >
-        <table class="table  remove-styles mt-0 table-responsive table-hover table-header-area">
-          <thead class="table-header-area-main">
-            <tr
-              class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
-            >
-              <th scope="col">Church Activity</th>
-              <th scope="col">Name</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Email</th>
-              <th scope="col">Home Address</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Marital Status</th>
-              <th scope="col">Activity Date</th>
-              <th scope="col">Current Status</th>
-            </tr>
-          </thead>
-          <tbody class="font-weight-normal text-nowrap">
-            <tr>
-              <td>Childrens Day Program</td>
-              <td>Ajose Oluwatosin</td>
-              <td>07090875463</td>
-              <td>nonitosinajose7@gmail.com</td>
-              <td>41 imam dauda Str. Lagos</td>
-              <td>Female</td>
-              <td>Married</td>
-              <td>24/10/2021</td>
-              <td>Active</td>
-            </tr>
-            <tr>
-              <td>Childrens Day Program</td>
-              <td>Ajose Oluwatosin</td>
-              <td>07090875463</td>
-              <td>nonitosinajose7@gmail.com</td>
-              <td>41 imam dauda Str. Lagos</td>
-              <td>Female</td>
-              <td>Married</td>
-              <td>24/10/2021</td>
-              <td>Active</td>
-            </tr>
-            <tr>
-              <td>Childrens Day Program</td>
-              <td>Ajose Oluwatosin</td>
-              <td>07090875463</td>
-              <td>nonitosinajose7@gmail.com</td>
-              <td>41 imam dauda Str. Lagos</td>
-              <td>Female</td>
-              <td>Married</td>
-              <td>24/10/2021</td>
-              <td>Active</td>
-            </tr>
-            <tr>
-              <td>Childrens Day Program</td>
-              <td>Ajose Oluwatosin</td>
-              <td>07090875463</td>
-              <td>nonitosinajose7@gmail.com</td>
-              <td>41 imam dauda Str. Lagos</td>
-              <td>Female</td>
-              <td>Married</td>
-              <td>24/10/2021</td>
-              <td>Active</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="table-foot d-flex justify-content-end mt-n3">
-          <PaginationButtons />
-        </div>
-      </div>
-      <!--end table header -->
-    </section>
-        </div>
+                    <!-- table header -->
+                    <div  class=" container  container-top table-main px-0  remove-styles2 remove-border "  >
+                        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+                        <thead class="table-header-area-main">
+                            <tr
+                            class="small-text text-capitalize text-nowrap"
+                            style="border-bottom: 0"
+                            >
+                            <th scope="col">Church Activity</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Home Address</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Marital Status</th>
+                            <th scope="col">Activity Date</th>
+                            <th scope="col">Current Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="font-weight-normal text-nowrap">
+                            <tr>
+                            <td>Childrens Day Program</td>
+                            <td>Ajose Oluwatosin</td>
+                            <td>07090875463</td>
+                            <td>nonitosinajose7@gmail.com</td>
+                            <td>41 imam dauda Str. Lagos</td>
+                            <td>Female</td>
+                            <td>Married</td>
+                            <td>24/10/2021</td>
+                            <td>Active</td>
+                            </tr>
+                            <tr>
+                            <td>Childrens Day Program</td>
+                            <td>Ajose Oluwatosin</td>
+                            <td>07090875463</td>
+                            <td>nonitosinajose7@gmail.com</td>
+                            <td>41 imam dauda Str. Lagos</td>
+                            <td>Female</td>
+                            <td>Married</td>
+                            <td>24/10/2021</td>
+                            <td>Active</td>
+                            </tr>
+                            <tr>
+                            <td>Childrens Day Program</td>
+                            <td>Ajose Oluwatosin</td>
+                            <td>07090875463</td>
+                            <td>nonitosinajose7@gmail.com</td>
+                            <td>41 imam dauda Str. Lagos</td>
+                            <td>Female</td>
+                            <td>Married</td>
+                            <td>24/10/2021</td>
+                            <td>Active</td>
+                            </tr>
+                            <tr>
+                            <td>Childrens Day Program</td>
+                            <td>Ajose Oluwatosin</td>
+                            <td>07090875463</td>
+                            <td>nonitosinajose7@gmail.com</td>
+                            <td>41 imam dauda Str. Lagos</td>
+                            <td>Female</td>
+                            <td>Married</td>
+                            <td>24/10/2021</td>
+                            <td>Active</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <div class="table-foot d-flex justify-content-end mt-n3">
+                        <PaginationButtons />
+                        </div>
+                    </div>
+                    <!--end table header -->
+                </section>
+            <!-- </div> -->
+        <!-- </div> -->
     </div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
-import MembershipPieChart from '../../../components/charts/PieChart.vue';
+import {ref } from "vue";
+// import MembershipPieChart from '../../../components/charts/PieChart.vue';
+import MembershipPieChart from '../../../components/charts/ReportPieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
+// import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
-    components: {MembershipPieChart,Dropdown, MultiSelect,PaginationButtons},
+    components: {
+        MembershipPieChart,
+        Dropdown, 
+        MultiSelect, 
+        PaginationButtons },
     setup() {
         const membership = ref([
       { name: "FIRST-TIMER" },
@@ -246,13 +249,15 @@ export default {
     const selectedMaritalStatus = ref();
 
     const pieChart = ref(
-        [ 
-             { name: "Tithe Offering", value: 9592 }, 
-             { name: "casterion", value: 2770 }, 
-             { name : "Building Project Offering", value : 130 }, 
-             { name: "Worship Concert", value : 200 }, 
-             { name: "Oh My Baba", value: 100 } 
-        ]
+
+        [ { name: null, value: 4 }, { name: "Newsletter", value: 1 } ]
+        // [ 
+        //      { name: "Tithe Offering", value: 9592 }, 
+        //      { name: "casterion", value: 2770 }, 
+        //      { name : "Building Project Offering", value : 130 }, 
+        //      { name: "Worship Concert", value : 200 }, 
+        //      { name: "Oh My Baba", value: 100 } 
+        // ]   
     
     )
     //  onMounted(() => {
@@ -277,6 +282,87 @@ export default {
 * {
   box-sizing: border-box;
 }
+
+.default-btn {
+  font-weight: 800;
+  /* font-size: 1rem; */
+  /* white-space: initial; */
+  /* border-radius: 3rem; */
+  border: 1px solid #136acd;
+  /* padding: 0.5rem 1.25rem; */
+  /* color: #136acd; */
+  /* width: auto; */
+  outline: transparent !important;
+  /* max-height: 2.5rem; */
+  background: #fff;
+  /* min-width: 7.6rem; */
+}
+
+.generate-report {
+  font-size: 1rem;
+  color: #fff;
+  background-color: #136acd;
+  border: none;
+  min-width: 7rem;
+}
+
+.heading-text {
+  font: normal normal 800 1.5rem Nunito sans;
+}
+
+.bg-area {
+  background-color: #ebeff4;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0 1.2rem 0;
+}
+
+.table {
+  width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45;
+  border: 0.063rem solid #dde2e6;
+  border-radius: 30px;
+  text-align: left;
+  margin-bottom: auto !important;
+  padding-bottom: 0.5rem;
+}
+
+.table-header-area {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.table-header-area-main {
+  background-color: #ebeff4;
+}
+
+.table-main {
+    width: 100% !important;
+    box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
+    border: 0.063rem solid #dde2e6 !important;
+    border-radius: 30px !important;
+    text-align: left !important;
+    margin-bottom: auto !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.remove-styles{
+  border: none !important;
+box-shadow: none !important;
+    border-bottom: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.remove-styles2{
+padding-right: 0;
+ padding-left: 0;
+border-top-left-radius: 0 !important;
+border-top-right-radius: 0 !important;
+}
+
+.remove-border{
+    box-shadow: none !important;
+}
+
 .p-multiselect {
     width: 18rem;
 }

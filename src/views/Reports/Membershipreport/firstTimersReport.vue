@@ -251,8 +251,8 @@ console.log(membersInChurch.value, "✌️✌️");
 }
 
 .remove-styles{
-  border: none !important;
-box-shadow: none !important;
+    border: none !important;
+    box-shadow: none !important;
     border-bottom: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
@@ -260,7 +260,7 @@ box-shadow: none !important;
 
 .remove-styles2{
 padding-right: 0;
- padding-left: 0;
+padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
 }
