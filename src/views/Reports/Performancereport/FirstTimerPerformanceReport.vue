@@ -1,0 +1,394 @@
+<template>
+    <div class="container-top container-wide mb-4  ">
+        <div class="heading-text col-12 pl-2">
+            First Timer Performance Report
+        </div>
+           <!-- date area -->
+            <div class="container-fluid my-3 px-0 bg-area">
+                <div
+                    style="padding: 0.2rem 0 1.2rem 0"
+                    class="row d-flex flex-row justify-content-center align-items-center"
+                >
+                    <div class="col-md-2">
+                    <h4 class="small font-weight-bold ml-1">DATE RANGE</h4>
+                    </div>
+
+                    <div class="col-md-7 d-sm-flex">
+                    <div class="p-field p-col-12 p-md-4 mt-1">
+                        <!-- <label for="icon">Start Date</label> -->
+                        <Calendar id="icon" v-model="startDate" :showIcon="true" />
+                    </div>
+                    <div class="p-field p-col-12 p-md-4 my-1">
+                        <!-- <label for="icon">End Date</label> -->
+                        <Calendar id="endDate" v-model="endDate" :showIcon="true" />
+                    </div>
+                    </div>
+
+                    <div @click="genarateReport" class="col-md-3 d-sm-flex justify-content-end   align-items-center">
+                        <button
+                            class="default-btn generate-report  c-pointer font-weight-bold"
+                        >
+                            Generate report
+                        </button>
+                    </div>
+                </div>
+            </div>
+    <!--end of date area -->
+        <div class="container-fluid  " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+            <div class="row">
+                <div class="col-12 ">
+                    <div class="mt-5 display-1 font-weight-bold text-center heading-text">
+                       First Timers Analysis Report 
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="col-12 border  text-center" style="height: 60vh;">
+                        <div class="col-12 font-weight-bold">Membership By Gender</div>
+                        <div class="col-12">No Data Available</div>
+                        <div class="col-12" style="height: 50vh;">
+                            <MembershipPieChart
+                               
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12 border  text-center" style="height: 60vh;">
+                        <div class="col-12  font-weight-bold">Membership By Marital Status</div>
+                        <div class="col-12">No Data Available</div>
+                        <div class="col-12 " style="height: 50vh;">
+                            <MembershipPieChart
+                              
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12 border text-center mt-3" style="height: 60vh; ">
+                        <div class="col-12  font-weight-bold ">Membership By Distribution</div>
+                        <div class="col-12">No Data Available</div>
+                        <div class="col-12 " style="height: 50vh;">
+                            <MembershipPieChart
+                               
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12  border text-center mt-3 " style="height: 60vh;">
+                        <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
+                        <div class="col-12">No Data Available</div>
+                        <div class="col-12 " style="height: 50vh;">
+                            <MembershipPieChart
+                                
+                               
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div > -->
+            <!-- <div class="row "> -->
+                <section>
+                    <!-- table header -->
+                    <div class=" container container-top table-main px-0  remove-styles2 remove-border "
+                     :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
+                        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+                        <thead class="table-header-area-main">
+                            <tr
+                            class="small-text text-capitalize text-nowrap"
+                            style="border-bottom: 0"
+                            >
+                            <th scope="col">Church Activity</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Home Address</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Marital Status</th>
+                            <th scope="col">Activity Date</th>
+                            <th scope="col">Current Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="font-weight-normal text-nowrap">
+                            <tr>
+                            <td>Childrens Day Program</td>
+                            <td>Ajose Oluwatosin</td>
+                            <td>07090875463</td>
+                            <td>nonitosinajose7@gmail.com</td>
+                            <td>41 imam dauda Str. Lagos</td>
+                            <td>Female</td>
+                            <td>Married</td>
+                            <td>24/10/2021</td>
+                            <td>Active</td>
+                            </tr>
+                            <tr>
+                            <td>Childrens Day Program</td>
+                            <td>Ajose Oluwatosin</td>
+                            <td>07090875463</td>
+                            <td>nonitosinajose7@gmail.com</td>
+                            <td>41 imam dauda Str. Lagos</td>
+                            <td>Female</td>
+                            <td>Married</td>
+                            <td>24/10/2021</td>
+                            <td>Active</td>
+                            </tr>
+                            <tr>
+                            <td>Childrens Day Program</td>
+                            <td>Ajose Oluwatosin</td>
+                            <td>07090875463</td>
+                            <td>nonitosinajose7@gmail.com</td>
+                            <td>41 imam dauda Str. Lagos</td>
+                            <td>Female</td>
+                            <td>Married</td>
+                            <td>24/10/2021</td>
+                            <td>Active</td>
+                            </tr>
+                            <tr>
+                            <td>Childrens Day Program</td>
+                            <td>Ajose Oluwatosin</td>
+                            <td>07090875463</td>
+                            <td>nonitosinajose7@gmail.com</td>
+                            <td>41 imam dauda Str. Lagos</td>
+                            <td>Female</td>
+                            <td>Married</td>
+                            <td>24/10/2021</td>
+                            <td>Active</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                        <div class="table-foot d-flex justify-content-end mt-n3">
+                        <PaginationButtons />
+                        </div>
+                    </div>
+                    <!--end table header -->
+                </section>
+            <!-- </div> -->
+        <!-- </div> -->
+    </div>
+</template>
+
+<script>
+import {ref } from "vue";
+// import MembershipPieChart from '../../../components/charts/PieChart.vue';
+import Calendar from "primevue/calendar";
+import axios from "@/gateway/backendapi";
+import MembershipPieChart from '../../../components/charts/ReportPieChart.vue';
+import PaginationButtons from "../../../components/pagination/PaginationButtons";
+import Dropdown from "primevue/dropdown";
+// import MultiSelect from 'primevue/multiselect';
+// import Piechart from "../../../components/charts/PieChart2.vue"
+export default {
+    components: {
+        MembershipPieChart,
+        Dropdown, 
+        Calendar, 
+        PaginationButtons },
+    setup() {
+        const membership = ref([
+      { name: "FIRST-TIMER" },
+      { name: "NEW-CONVERT" },
+      { name: "FULL MEMBER" },
+    ]);
+        const gender = ref([
+      { name: "MALE" },
+      { name: "FEMALE" },
+    ]);
+        const maritalStatus = ref([
+      { name: "SINGLE" },
+      { name: "MARRIED" },
+      { name: "ENGAGED" },
+      { name: "SINGLE PARENT" },
+      { name: "DIVORCED" },
+      { name: "SEPERATED" },
+      { name: "WIDOW" },
+      { name: "WIDOWER" },
+    ]);
+
+    // const selectedMember = ref();
+    // const selectedGender = ref();
+    // const selectedMaritalStatus = ref();
+    const showReport = ref(false);
+    const pieChart = ref([ { name: null, value: 4 }, { name: "Newsletter", value: 1 } ]);
+    const startDate = ref(new Date());
+    const endDate = ref(new Date());
+    const membersInChurch = ref([]);
+    const allMembersInChurch = () => {
+      axios
+        .get(`/api/People/GetMembershipSummary`)
+        .then((res) => {
+          console.log(res);
+          membersInChurch.value = res.data;
+        console.log(membersInChurch.value, "✌️✌️");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    const genarateReport = () => {
+        showReport.value = true;
+
+    }
+
+    
+    const getMemberClassification = async () => {
+      try {
+        // let { data } = await axios.get("/api​/Reports​/people​/getMemberClassification");
+        // console.log(data);
+
+        axios
+          .get('/api/Membership/GetCurrentSignedInUser')
+          .then((res) => {
+            // tenantCurrency.value = res.data;
+            console.log(res.data);
+          })
+          .catch((err) => console.log(err));
+        // donationSummary.value = data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMemberClassification();
+
+     return {
+         allMembersInChurch,
+         startDate,
+         endDate,
+         genarateReport,
+         showReport,
+         pieChart,
+         membership,
+         gender,
+         maritalStatus,
+        //  selectedMember,
+        //  selectedGender,
+        //  selectedMaritalStatus
+     }
+    }
+}
+</script>
+
+<style scoped>
+* {
+  box-sizing: border-box;
+}
+.show-report{
+    display: block;
+}
+.hide-report{
+    display: none;
+}
+
+.default-btn {
+  font-weight: 800;
+  /* font-size: 1rem; */
+  /* white-space: initial; */
+  /* border-radius: 3rem; */
+  border: 1px solid #136acd;
+  /* padding: 0.5rem 1.25rem; */
+  /* color: #136acd; */
+  /* width: auto; */
+  outline: transparent !important;
+  /* max-height: 2.5rem; */
+  background: #fff;
+  /* min-width: 7.6rem; */
+}
+
+.generate-report {
+  font-size: 1rem;
+  color: #fff;
+  background-color: #136acd;
+  border: none;
+  min-width: 7rem;
+}
+
+.heading-text {
+  font: normal normal 800 1.5rem Nunito sans;
+}
+
+.bg-area {
+  background-color: #ebeff4;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0 1.2rem 0;
+}
+
+.table {
+  width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45;
+  border: 0.063rem solid #dde2e6;
+  border-radius: 30px;
+  text-align: left;
+  margin-bottom: auto !important;
+  padding-bottom: 0.5rem;
+}
+
+.table-header-area {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.table-header-area-main {
+  background-color: #ebeff4;
+}
+
+.table-main {
+    width: 100% !important;
+    box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
+    border: 0.063rem solid #dde2e6 !important;
+    border-radius: 30px !important;
+    text-align: left !important;
+    margin-bottom: auto !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.remove-styles{
+  border: none !important;
+box-shadow: none !important;
+    border-bottom: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.remove-styles2{
+padding-right: 0;
+ padding-left: 0;
+border-top-left-radius: 0 !important;
+border-top-right-radius: 0 !important;
+}
+
+.remove-border{
+    box-shadow: none !important;
+}
+
+.p-multiselect {
+    width: 18rem;
+}
+
+.multiselect-custom {
+    
+        padding-top: .1rem;
+        padding-bottom: .1rem;
+    
+}
+
+    .country-item-value {
+        padding: .25rem .5rem;
+        border-radius: 3px;
+        display: inline-flex;
+        margin-right: .5rem;
+        /* background-color:  */
+        /* background-color: var(--primary-color); */
+        /* color: var(--primary-color-text); */
+    }
+        img.flag {
+            width: 17px;
+        }
+
+
+@media screen and (max-width: 640px) {
+    .p-multiselect {
+        width: 100%;
+    }
+}
+</style>

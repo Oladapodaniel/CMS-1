@@ -288,13 +288,44 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/GroupCategoryReport.vue')
             },
             {
+                path: 'firsttimerperformancereport',
+                name:"FirstTimerPerformanceReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/FirstTimerPerformanceReport.vue')
+            },
+            {
                 path: 'summaryreport',
                 name: "SummaryReport",
                 meta: {
                     title: 'Churchplus - Reports',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/SummaryReport.vue')
+                import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/SummaryReport.vue')
+                   
+            },
+               
+            {
+                path: 'newconvertperformancereport',
+                name:"NewConvertPerformanceReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/NewConvertPerformanceReport.vue')
+                   
+            },
+            {
+                path: 'weddinganniversaryreport',
+                name:"weddinganniversaryreport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                   
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/weddinganniversaryReport.vue')
             },
             {
                 path: 'family',

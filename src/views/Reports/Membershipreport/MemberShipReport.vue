@@ -8,7 +8,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">Select Members</label></div>
                     <div>
-                        <MultiSelect v-model="selectedMember" :options="membership" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
+                        <MultiSelect v-model="selectedMember" :options="memberShips" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
                             <template #value="slotProps">
                                 <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
                                     <div>{{option.name}}</div>
@@ -29,7 +29,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div class=""><label for="" class=" ml-2 font-weight-bold">Gender</label></div>
                     <div>
-                        <MultiSelect v-model="selectedGender" :options="gender" optionLabel="name" placeholder="Select gender" :filter="true" class="multiselect-custom w-100">
+                        <MultiSelect v-model="selectedGender" :options="memberGender" optionLabel="name" placeholder="Select gender" :filter="true" class="multiselect-custom w-100">
                             <template #value="slotProps">
                                 <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
                                     <div>{{option.name}}</div>
@@ -49,7 +49,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">Marital Status</label></div>
                     <div>
-                        <MultiSelect v-model="selectedMaritalStatus" :options="maritalStatus" optionLabel="name" placeholder="Marital status" :filter="true" class="multiselect-custom w-100">
+                        <MultiSelect v-model="selectedMaritalStatus" :options="memberMaritalStatus" optionLabel="name" placeholder="Marital status" :filter="true" class="multiselect-custom w-100">
                             <template #value="slotProps">
                                 <div class="country-item country-item-value bg-secondary font-weight-bold small " v-for="option of slotProps.value" :key="option.code">
                                     <div>{{option.name}}</div>
@@ -68,59 +68,71 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="" ></label>
-                    <div class="mt-2">
+                    <div class="mt-2" @click="genarateReport">
                         <button class="btn default-btn primary-bg "><div class="text-white">Generate Report</div></button>
                     </div>
                 </div> 
             </div>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid  ">
             <div class="row">
                 <div class="col-12 ">
-                    <div class="mt-5 text-center heading-text">
-                        CONGREGATION MEMBERS REPORT 
+                    <div class="mt-5 text-center Display-1 heading-text">
+                        Congregation Members Report 
                     </div>
                 </div>
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 60vh;">
+                    <div class="col-12 border  text-center" style="height: 40vh;">
                         <div class="col-12 font-weight-bold">Membership By Gender</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12" style="height: 50vh;">
+                        <div class="col-12"  :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                        <div class="col-12" style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <MembershipPieChart
-                               
+                                domId="chart1"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="genderSummary"
                             />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 60vh;">
+                    <div class="col-12 border mt-3 mt-sm-3 mt-md-0 mt-lg-0 text-center" style="height: 40vh;">
                         <div class="col-12  font-weight-bold">Membership By Marital Status</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
+                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <MembershipPieChart
-                              
+                                domId="chart2"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="maritalStatusSummary"
                             />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border text-center mt-3" style="height: 60vh; ">
+                    <div class="col-12 border text-center mt-3 mt-sm-3 mt-md-0 mt-lg-0 " style="height: 40vh; ">
                         <div class="col-12  font-weight-bold ">Membership By Distribution</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
+                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <MembershipPieChart
-                               
+                                domId="chart3"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="membersSummary"
                             />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12  border text-center mt-3 " style="height: 60vh;">
+                    <div class="col-12  border text-center mt-3 mt-sm-3 mt-md-0 mt-lg-0  " style="height: 40vh;">
                         <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
+                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <MembershipPieChart
-                                
+                                domId="char4"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="ageGroupSummary"
                                
                             />
                         </div>
@@ -132,9 +144,10 @@
             <!-- <div class="row "> -->
                 <section>
                     <!-- table header -->
-                    <div  class=" container  container-top table-main px-0  remove-styles2 remove-border "  >
+                    <div class=" container container-top table-main px-0  remove-styles2 remove-border "
+                    :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                         <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
-                        <thead class="table-header-area-main">
+                        <thead class="table-header-area-main" >
                             <tr
                             class="small-text text-capitalize text-nowrap"
                             style="border-bottom: 0"
@@ -209,67 +222,152 @@
 </template>
 
 <script>
-import {ref } from "vue";
-// import MembershipPieChart from '../../../components/charts/PieChart.vue';
-import MembershipPieChart from '../../../components/charts/ReportPieChart.vue';
+import {onMounted, ref } from "vue";
+import axios from "@/gateway/backendapi";
+import MembershipPieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
 // import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
     components: {
+        // GenderPieChart,
         MembershipPieChart,
         Dropdown, 
         MultiSelect, 
         PaginationButtons },
     setup() {
-        const membership = ref([
-      { name: "FIRST-TIMER" },
-      { name: "NEW-CONVERT" },
-      { name: "FULL MEMBER" },
-    ]);
-        const gender = ref([
-      { name: "MALE" },
-      { name: "FEMALE" },
-    ]);
-        const maritalStatus = ref([
-      { name: "SINGLE" },
-      { name: "MARRIED" },
-      { name: "ENGAGED" },
-      { name: "SINGLE PARENT" },
-      { name: "DIVORCED" },
-      { name: "SEPERATED" },
-      { name: "WIDOW" },
-      { name: "WIDOWER" },
-    ]);
+    //     const membership = ref([
+    //   { name: "FIRST-TIMER" },
+    //   { name: "NEW-CONVERT" },
+    //   { name: "FULL MEMBER" },
+    // ]);
+    //     const gender = ref([
+    //   { name: "MALE" },
+    //   { name: "FEMALE" },
+    // ]);
+    //     const maritalStatus = ref([
+    //   { name: "SINGLE" },
+    //   { name: "MARRIED" },
+    //   { name: "ENGAGED" },
+    //   { name: "SINGLE PARENT" },
+    //   { name: "DIVORCED" },
+    //   { name: "SEPERATED" },
+    //   { name: "WIDOW" },
+    //   { name: "WIDOWER" },
+    // ]);
 
     const selectedMember = ref();
     const selectedGender = ref();
-    // const selectedMaritalStatus = ref({ name: "SINGLE" });
     const selectedMaritalStatus = ref();
+    const showReport = ref(false)
+    const memberShips = ref({});
+    const memberMaritalStatus = ref({});
+    const memberGender = ref({});
+    const genderSummary = ref([]);
+    const membersSummary = ref([]);
+    const maritalStatusSummary = ref([]);
+    const ageGroupSummary = ref([]);
 
-    const pieChart = ref(
-
-        [ { name: null, value: 4 }, { name: "Newsletter", value: 1 } ]
-        // [ 
-        //      { name: "Tithe Offering", value: 9592 }, 
-        //      { name: "casterion", value: 2770 }, 
-        //      { name : "Building Project Offering", value : 130 }, 
-        //      { name: "Worship Concert", value : 200 }, 
-        //      { name: "Oh My Baba", value: 100 } 
-        // ]   
+    onMounted(() =>{
+        genderSummary.value =  [ { name: 'male', value: 4 }, { name: "female", value: 1 } ];
+        membersSummary.value =  [ { name: 'Full-member', value: 9 }, { name: "New-Convert", value: 6 },{ name: "First-Timer", value: 3 } ];
+        maritalStatusSummary.value =  [ { name: 'Single', value: 10 }, { name: "Married", value: 4 },{ name: "Widow", value: 10 }  ];
+        ageGroupSummary.value =  [ { name: '13years Above', value: 10 }, { name: "22years Above", value: 4 },{ name: "35years", value: 10 }  ];
+    })
     
-    )
-    //  onMounted(() => {
-    //   return pieChart.value;
-    // });
+    const genarateReport = () => {
+        const memberID =  selectedMember.value.map((i) => i.id)
+        const genderID =  selectedGender.value.map((i) => i.id)
+        const maritalStatusID = selectedMaritalStatus.value.map((i) => i.id)
+        // console.log(memberID)
+        // console.log(genderID)
+        // console.log(maritalStatusID)
 
+        let body = {
+        gender : genderID,
+        maritalStatus : maritalStatusID,
+        membershipType : memberID
+        }
+        axios.post('/api/Reports/people/getAllContactsByParameterReport',body)
+        .then((res) =>{
+            console.log(res)
+          
+        }).catch((error) =>{
+            console.log(error)
+        })
+
+          showReport.value = true;
+        console.log(selectedMember.value);
+        console.log(selectedGender.value);
+        console.log(selectedMaritalStatus.value);
+
+    }
+
+    
+    const getMemberClassification = async () => {
+      try {
+        axios
+          .get('/api/Reports/people/getMemberClassification')
+          .then((res) => {
+            // tenantCurrency.value = res.data;
+            memberShips.value = res.data;
+            console.log(res.data,'Fejiro');
+          })
+          .catch((err) => console.log(err));
+        // donationSummary.value = data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMemberClassification();
+
+    const getMaritalStatus = async () => {
+      try {
+        axios
+          .get('/api/Reports/people/getMaritalStatus')
+          .then((res) => {
+            memberMaritalStatus.value = res.data;
+            console.log(res,'gideon');
+          })
+          .catch((err) => console.log(err));
+        // donationSummary.value = data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getMaritalStatus();
+
+    const getGender = async () => {
+      try {
+        axios
+          .get('/api/Reports/people/getGender')
+          .then((res) => {
+            memberGender.value = res.data;
+            console.log(res,'Samson');
+          })
+          .catch((err) => console.log(err));
+        // donationSummary.value = data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getGender();
 
      return {
-         pieChart,
-         membership,
-         gender,
-         maritalStatus,
+         genarateReport,
+         showReport,
+         genderSummary,
+         membersSummary,
+         maritalStatusSummary,
+         memberShips,
+         memberMaritalStatus,
+         memberGender,
+         ageGroupSummary,
+        //  pieChart,
+        //  membership,
+        //  gender,
+        //  maritalStatus,
          selectedMember,
          selectedGender,
          selectedMaritalStatus
@@ -281,6 +379,12 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
+}
+.show-report{
+    display: block;
+}
+.hide-report{
+    display: none;
 }
 
 .default-btn {

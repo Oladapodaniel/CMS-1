@@ -118,30 +118,30 @@
                     />
                   </div>
 
-                  <div class="desc small-text col-md-3">
+                  <router-link class="desc small-text col-md-3 remove-text-decoration"
+                  :to="{ name: 'OfferingCategory', params: { offId: item.id } }">
                     <p class="mb-0 d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none">Name</span>
                       <span>{{ item.name }}</span>
                     </p>
-                  </div>
+                  </router-link>
 
-                  <div class="col-md-3">
+                  <router-link class="col-md-3 remove-text-decoration" :to="{ name: 'OfferingCategory', params: { offId: item.id } }">
                     <div class="d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none">Cash Account</span>
                     <div>
-
                       <div class="desc small-text text-right text-md-left">{{ item.cashBankAccount }}</div>
                     </div>
                     </div>
-                  </div>
+                  </router-link>
 
-                  <div class="desc-head small-text col-md-3">
+                  <router-link  :to="{ name: 'OfferingCategory', params: { offId: item.id } }" class="desc-head small-text col-md-3 remove-text-decoration">
                     <p class="mb-0 d-flex justify-content-between">
                       <span class="text-dark font-weight-bold d-flex d-md-none">Income Account</span>
                       <!-- <span>{{ amountWithCommas(Math.abs(item.amount)) }}</span> -->
                       <span>{{ item.incomeAccount}}</span>
                     </p>
-                  </div>
+                  </router-link>
 
 
 
@@ -160,8 +160,8 @@
                           aria-expanded="false"
                         ></i>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <router-link :to="{ name: 'OfferingCategory', params: { offId: item.id } }">
-                            <a class="dropdown-item elipsis-items" style="text-decoration:none;">
+                          <router-link class="remove-text-decoration" :to="{ name: 'OfferingCategory', params: { offId: item.id } }">
+                            <a class="dropdown-item elipsis-items" >
                             Edit
                             </a>
                           </router-link>
@@ -360,6 +360,10 @@ export default {
 * {
   box-sizing: border-box;
   color: #02172e;
+}
+
+.remove-text-decoration{
+text-decoration: none;
 }
 
 .data-value a {
