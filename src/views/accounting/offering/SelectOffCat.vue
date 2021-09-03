@@ -227,31 +227,40 @@ export default {
     }
     getIncomeAccount()
 
+    const createOfferingItems = (contributionCategory) => {
+      axios.post('/api/financials/contributions/items/save', contributionCategory)
+            .then(res => {
+              toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
+              console.log(res)
+              router.push({ name: "ContributionCategory" })
+            })
+            .catch(err => {
+              toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
+              console.log(err)
+            })
+    }
+
+    const editOfferingItems = (contributionCategory) => {
+      contributionCategory.id = route.params.offId
+       axios.put(`/api/Financials/Contributions/Items/edit`, contributionCategory)
+            .then(res => {
+              toast.add({severity:'success', summary: 'edited', detail:'Edit Succefully', life: 3000});
+              console.log(res)
+              router.push({ name: "ContributionCategory" })
+            })
+            .catch(err => {
+              toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
+              console.log(err)
+            })
+    }
+
     const save = () => {
       let contributionCategory = {
         name: name.value,
-        // isPublic: true,
-        // incomeAccount: {
-        //     id: selectedIncomeAccount.value.id,
-        //     name: selectedIncomeAccount.value.text,
-        //     accountType: incomeAccount.value.findIndex(i => i.id === selectedIncomeAccount.value.id),
-        //     code: selectedIncomeAccount.value.code,
-        //     isGroupAccount: selectedIncomeAccount.value.isGroupAccount,
-        //     financialFundID: selectedIncomeAccount.value.financialFundID
-        //   },
         incomeAccountId: selectedIncomeAccount.value ? selectedIncomeAccount.value.id : "",
-        // cashAccount: {
-        //     id: selectedCashAccount.value.id,
-        //     name: selectedCashAccount.value.text,
-        //     accountType: cashBankAccount.value.findIndex(i => i.id === selectedCashAccount.value.id),
-        //     code: selectedCashAccount.value.code,
-        //     isGroupAccount: selectedCashAccount.value.isGroupAccount,
-        //     financialFundID: selectedCashAccount.value.financialFundID
-        //   },
         cashAccountId: selectedCashAccount.value ? selectedCashAccount.value.id : "",
         incomeRemittance: remitance.value
       }
-
         if (remitance.value[0].account || remitance.value[0].percentage) {
                 contributionCategory.incomeRemittance = remitance.value.map(i => {
                   return {
@@ -265,16 +274,9 @@ export default {
               }
       console.log(contributionCategory)
        if (selectedIncomeAccount.value && selectedCashAccount.value) {
-         axios.post('/api/financials/contributions/items/save', contributionCategory)
-            .then(res => {
-              toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
-              console.log(res)
-              router.push({ name: "ContributionCategory" })
-            })
-            .catch(err => {
-              toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
-              console.log(err)
-            })
+         if (route.params.offId) {
+               editOfferingItems(contributionCategory)
+         } else { createOfferingItems(contributionCategory)}
        }  else {
           toast.add({
             severity: "error",
@@ -330,7 +332,7 @@ export default {
     getOffItems()
 
     return {
-      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage, openResponsive, closeResponsive, displayResponsive
+      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage, openResponsive, closeResponsive, displayResponsive, createOfferingItems, editOfferingItems
     };
   },
 };
