@@ -8,7 +8,7 @@ import Highcharts from "highcharts";
 
 export default {
     name: "Chart1",
-    props: ["chartType", "data"],
+    // props: ["chartType", "data"],
   setup(props) {
     const chart = ref(null);
     onUpdated(() => {
@@ -25,7 +25,7 @@ export default {
         //   enabled: false,
         // },
         title: {
-          text: props.chartType,
+          text: "The title",
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -85,7 +85,7 @@ export default {
           {
             name: "Brands",
             colorByPoint: true,
-            data: props.data ? props.data : [
+            data: [
               {
                 name: "Chrome",
                 y: 61.41,

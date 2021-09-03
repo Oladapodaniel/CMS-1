@@ -41,8 +41,8 @@
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                        <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">New Convert</h4>
-                        <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span>
+                         <router-link to= "/tenant/newconvertreport" class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">New Convert</h4></router-link>
+                       <router-link to= "/tenant/newconvertreport"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed report of new converts in your ministry.</p>

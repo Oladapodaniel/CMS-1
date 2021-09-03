@@ -243,7 +243,7 @@ const routes = [
             },
             {
                 path: 'membershipreport',
-                name:  "MemberShipReport",
+                name: "MemberShipReport",
                 meta: {
                     title: 'Churchplus - Membership Report',
                 },
@@ -253,7 +253,7 @@ const routes = [
             },
             {
                 path: 'firsttimersreport',
-                name:"FirstTimersReport",
+                name: "FirstTimersReport",
                 meta: {
                     title: 'Churchplus - Reports',
                 },
@@ -261,13 +261,40 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/firstTimersReport.vue')
             },
             {
-                path: 'celebrationsreport',
-                name:"CelebrationsReport",
+                path: 'newconvertreport',
+                name: "NewConvertReport",
                 meta: {
                     title: 'Churchplus - Reports',
                 },
                 component: () =>
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/celebrationsReport.vue')
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/NewConvertReport.vue')
+            },
+            {
+                path: 'celebrationsreport',
+                name: "CelebrationsReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/BirthdayReport.vue')
+            },
+            {
+                path: 'attendancereport',
+                name: "GroupCategoryReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/GroupCategoryReport.vue')
+            },
+            {
+                path: 'summaryreport',
+                name: "SummaryReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/SummaryReport.vue')
             },
             {
                 path: 'weddinganniversaryreport',

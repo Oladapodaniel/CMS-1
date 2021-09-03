@@ -13,7 +13,7 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">Celebrations Report</h3>
+          <h3 class="heading-text ml-2">Birthday Report</h3>
         </div>
 
         <div class="centered-items">
@@ -46,17 +46,17 @@
           </div>
         </div>
 
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
+        <div class="col-md-2 d-sm-flex justify-content-end align-items-center">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
+            @click="getBirthdayReport"
           >
-            Generate &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
+            Generate
           </button>
         </div>
       </div>
     </div>
     <!--end of date area -->
-
     <section>
       <!-- chart area -->
       <div class="chart">
@@ -74,8 +74,8 @@
 
     <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border" >
-        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border mt-5 scroll-table" >
+        <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
               class="small-text text-capitalize text-nowrap"
@@ -93,32 +93,17 @@
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr>
-              <td>Ajose Oluwatosin</td>
-              <td>25/12/2022</td>
-              <td>07090875463</td>
-              <td>nonitosinajose7@gmail.com</td>
-              <td>Female</td>
-              <td>Married</td>
-              <td>25-30</td>
-              <td>Full Member</td>
-              <td>14, imam dauda Str. Lagos mainland</td>
+            <tr v-for="(item, index) in birthdays" :key="index">
+              <td>{{ item.name }}</td>
+              <td>{{ item.birthDay }}</td>
+              <td>{{ item.mobilePhone }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.gender }}</td>
+              <td>{{ item.maritalStatus }}</td>
+              <td>{{ item.ageGroup}}</td>
+              <td>{{ item.membership }}</td>
+              <td>{{ item.homeAddress }}</td>
             </tr>
-            <tr>
-              <td>Clement Oluwatosin</td>
-              <td>25/12/2012</td>
-              <td>07090875463</td>
-              <td>nonitosinajose7@gmail.com</td>
-              <td>Male</td>
-              <td>Married</td>
-              <td>25-30</td>
-              <td>Full Member</td>
-              <td>14, imam dauda Str. Lagos mainland</td>
-            </tr>
-
-
-
-
           </tbody>
         </table>
         <div class="table-foot d-flex justify-content-end mt-n3">
@@ -144,8 +129,9 @@ export default {
     PaginationButtons,
   },
   setup() {
-    const startDate = ref(new Date());
-    const endDate = ref(new Date());
+    const startDate = ref();
+    const endDate = ref("");
+    const birthdays = ref("")
     const membersInChurch = ref([]);
     const allMembersInChurch = () => {
       axios
@@ -153,18 +139,35 @@ export default {
         .then((res) => {
           console.log(res);
           membersInChurch.value = res.data;
-console.log(membersInChurch.value, "✌️✌️");
+          console.log(membersInChurch.value, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
         });
     };
+
+
+    const getBirthdayReport = async() => {
+      let start = new Date(startDate.value).toLocaleDateString()
+      let end = new Date(endDate.value).toLocaleDateString()
+      try {
+        let data = await axios.get(`/api/Reports/people/getBirthdaysReport?startdate=${start}&enddate=${end}`)
+        console.log(data)
+        birthdays.value = data.data
+      }
+      catch (err) {
+        console.log(err)
+      }
+    }
+
     return {
       Calendar,
       startDate,
       endDate,
+      birthdays,
       membersInChurch,
       allMembersInChurch,
+      getBirthdayReport
     };
   },
 };
@@ -249,5 +252,9 @@ border-top-right-radius: 0 !important;
 
 .remove-border{
     box-shadow: none !important;
+}
+
+.scroll-table {
+    overflow-x: scroll;
 }
 </style>

@@ -13,7 +13,8 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">First Timers Report</h3>
+          <h3 class="heading-text ml-2">New Convert Report</h3>
+          <p class="ml-2">This reports provides a detailed report of new converts in your ministry.</p>
         </div>
 
         <div class="centered-items">
@@ -24,6 +25,7 @@
       </div>
     </div>
     <!--end of header area -->
+
     <!-- date area -->
     <div class="container-fluid my-3 px-0 bg-area">
       <div
@@ -36,11 +38,11 @@
 
         <div class="col-md-7 d-sm-flex">
           <div class="p-field p-col-12 p-md-4 mt-1">
-            <!-- <label for="icon">Start Date</label> -->
+           <div><label for="" class="font-weight-bold">START DATE</label></div>
             <Calendar id="icon" v-model="startDate" :showIcon="true" />
           </div>
           <div class="p-field p-col-12 p-md-4 my-1">
-            <!-- <label for="icon">End Date</label> -->
+           <div><label for="" class="font-weight-bold">END DATE</label></div>
             <Calendar id="endDate" v-model="endDate" :showIcon="true" />
           </div>
         </div>
@@ -48,9 +50,8 @@
         <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
-            @click="generateReport"
           >
-            Generate
+            Generate &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
         </div>
       </div>
@@ -66,7 +67,6 @@
             title="By Gender"
             distance="5"
             :titleMargin="10"
-            :summary="firstTimerChart"
           />
         </div>
       </div>
@@ -94,18 +94,49 @@
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(firstTimer, index) in firstTimerInChurch"
-            :key="index">
-              <td>{{ firstTimer.event }}</td>
-               {{ firstTimer.lastName }}
-              <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
-              <td>{{ firstTimer.mobilePhone }}</td>
-              <td>{{ firstTimer.email }}</td>
-              <td>{{ firstTimer.homeAddress }}</td>
-              <td>{{ firstTimer.gender }}</td>
-              <td>{{ firstTimer.maritalStatus }}</td>
-              <td>{{ formatDate(firstTimer.activityDate) }}</td>
-              <td>{{ firstTimer.status }}</td>
+            <tr>
+              <td>Prayers</td>
+              <td>Charity Uche</td>
+              <td>08067383789</td>
+              <td>charityucche@gmail.com</td>
+              <td>Bode Thomas</td>
+              <td>Couple</td>
+              <td>Couple</td>
+              <td>24/10/2021</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Youth Class</td>
+              <td>Charity Uche</td>
+              <td>08067383789</td>
+              <td>charityucche@gmail.com</td>
+              <td>Bode Thomas</td>
+              <td>Couple</td>
+              <td>Couple</td>
+              <td>24/10/2021</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Fasting</td>
+              <td>Charity Uche</td>
+              <td>08067383789</td>
+              <td>charityucche@gmail.com</td>
+              <td>Bode Thomas</td>
+              <td>Female</td>
+              <td>Couple</td>
+              <td>24/10/2021</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Sunday school</td>
+              <td>Charity Uche</td>
+              <td>08067383789</td>
+              <td>charityucche@gmail.com</td>
+              <td>Bode Thomas</td>
+              <td>Female</td>
+              <td>Couple</td>
+              <td>24/10/2021</td>
+              <td>Active</td>
             </tr>
           </tbody>
         </table>
@@ -119,12 +150,11 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
-import dateFormatter from  "../../../services/dates/dateformatter";
 
 export default {
   components: {
@@ -133,42 +163,27 @@ export default {
     PaginationButtons,
   },
   setup() {
-    const startDate = ref("");
-    const endDate = ref("");
-    const firstTimerInChurch = ref([]);
-    const firstTimerChart = ref([])
-    const generateReport = () => {
-
+    const startDate = ref();
+    const endDate = ref(new Date());
+    const membersInChurch = ref([]);
+    const allMembersInChurch = () => {
       axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/People/GetMembershipSummary`)
         .then((res) => {
-
-          console.log(res, "🎄🎄🎄");
-          firstTimerInChurch.value = res.data;
-          console.log(firstTimerInChurch.value, "✌️✌️");
+          console.log(res);
+          membersInChurch.value = res.data;
+console.log(membersInChurch.value, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
         });
     };
-
-     const formatDate = (activityDate) => {
-      return dateFormatter.monthDayYear(activityDate);
-    };
-
-    onMounted(() => {
-      firstTimerChart.value = [{name: "Dapo", value: 77}]
-    })
-
-
     return {
       Calendar,
       startDate,
       endDate,
-      firstTimerInChurch,
-      generateReport,
-      formatDate,
-      firstTimerChart
+      membersInChurch,
+      allMembersInChurch,
     };
   },
 };
@@ -237,8 +252,8 @@ export default {
 }
 
 .remove-styles{
-    border: none !important;
-    box-shadow: none !important;
+  border: none !important;
+box-shadow: none !important;
     border-bottom: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;

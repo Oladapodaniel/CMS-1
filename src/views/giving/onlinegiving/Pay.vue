@@ -86,6 +86,11 @@ export default {
                     tx_ref: uniqueId.value,
                     amount: amount.value,
                     currency: route.query.currency,
+                    subaccounts: [
+                        {
+                            id: route.query.subAccountId
+                        }
+                    ],
                     payment_options: 'card,ussd',
                     customer: {
                     // name: props.name,
@@ -117,9 +122,9 @@ export default {
                     },
                     onclose: () => console.log('Payment closed'),
                     customizations: {
-                    title: 'Church Giving',
+                    title: route.query.churchName,
                     description: "Payment for contribution items",
-                    logo: logoUrl,
+                    logo: route.query.churchLogo,
                     },
                 });
             }
@@ -162,7 +167,7 @@ export default {
                     let result = regex.test(i)
                     console.log(result)
                     if (result) {
-                        contributionItem.value.push({contributionItemId: i, amount: Object.values(route.query)[index]})
+                        contributionItem.value.push({contributionItemId: i, amount: +Object.values(route.query)[index]})
                     }
                 });
                 // queryValue.value.contributionItems = contributionItem.value
@@ -190,6 +195,7 @@ export default {
                     amount: amount.value * 100,
                     ref: uniqueId.value,
                     currency: currency.value,
+                    subaccount: route.query.subAccountId,
                     channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
                     // subaccount: props.donation.paymentGateway.find(i => {
                     //     return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()

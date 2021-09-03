@@ -197,7 +197,7 @@
                     <div class="desc small-text col-md-2 px-1" @click="rowSelected(item)">
                       <p class="mb-0 d-flex justify-content-between">
                         <span class="text-dark font-weight-bold d-flex d-md-none">Date</span>
-                        <span>{{ format(item.date) }}</span>
+                        <span>{{ formatDate(item.date) }}</span>
                       </p>
                     </div>
 
