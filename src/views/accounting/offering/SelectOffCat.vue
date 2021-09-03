@@ -23,8 +23,8 @@
            <label for="" class="label">Name</label>
         </div>
       <div class="col-sm-5 mt-sm-3">
- 
-         
+
+
           <input
             type="text"
             class="form-control textbox-height"
@@ -32,7 +32,7 @@
             v-model="name"
             required
           />
- 
+
       </div>
       <div class="col-sm-4 mt-3 mt-sm-3 text-sm-right">
            <label for="" class="label">Income Account</label>
@@ -63,9 +63,9 @@
         <hr class="hr"/>
       </div>
       <div class="col-12 pl-0" v-if="applyRem">
-       
+
       </div>
-  
+
         <div class="col-lg-6 offset-lg-4" v-if="applyRem">
         <div v-for="(item, index) in remitance" :key="index">
         <div class="row mt-3 mb-4">
@@ -93,9 +93,9 @@
           <div class="col-10 mt-3 text-right">Percentage Remaining: <span class="font-weight-700">{{ sumPercentage ? sumPercentage.percentage ? 100 - +sumPercentage.percentage : 0 : 0 }}%</span></div>
         </div>
       </div>
-      
+
       <!--end of diisplay bottom area -->
-      
+
     </div>
     <div class="row">
           <div class="col-2 mt-3 mb-3 offset-sm-4" v-if="applyRem">
@@ -114,17 +114,17 @@
         </div>
         </div>
     </div>
-    
+
     <!-- End input area -->
 
     <!-- elipse Area -->
-  
+
     <!-- End of elipse Area -->
 
     <!-- diisplay bottom area -->
-    
 
-    
+
+
     <Toast />
   <!-- </div> -->
 </template>
@@ -173,6 +173,8 @@ export default {
           .then(res => {
             console.log(res.data)
             cashBankAccount.value = res.data
+            x(route.params.offId)
+            console.log(cashBankAccount.value, "🎁🎁🎁");
           })
           .catch (err => {
             console.log(err)
@@ -225,31 +227,40 @@ export default {
     }
     getIncomeAccount()
 
+    const createOfferingItems = (contributionCategory) => {
+      axios.post('/api/financials/contributions/items/save', contributionCategory)
+            .then(res => {
+              toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
+              console.log(res)
+              router.push({ name: "ContributionCategory" })
+            })
+            .catch(err => {
+              toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
+              console.log(err)
+            })
+    }
+
+    const editOfferingItems = (contributionCategory) => {
+      contributionCategory.id = route.params.offId
+       axios.put(`/api/Financials/Contributions/Items/edit`, contributionCategory)
+            .then(res => {
+              toast.add({severity:'success', summary: 'edited', detail:'Edit Succefully', life: 3000});
+              console.log(res)
+              router.push({ name: "ContributionCategory" })
+            })
+            .catch(err => {
+              toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
+              console.log(err)
+            })
+    }
+
     const save = () => {
       let contributionCategory = {
         name: name.value,
-        // isPublic: true,
-        // incomeAccount: {
-        //     id: selectedIncomeAccount.value.id,
-        //     name: selectedIncomeAccount.value.text,
-        //     accountType: incomeAccount.value.findIndex(i => i.id === selectedIncomeAccount.value.id),
-        //     code: selectedIncomeAccount.value.code,
-        //     isGroupAccount: selectedIncomeAccount.value.isGroupAccount,
-        //     financialFundID: selectedIncomeAccount.value.financialFundID
-        //   },
         incomeAccountId: selectedIncomeAccount.value ? selectedIncomeAccount.value.id : "",
-        // cashAccount: {
-        //     id: selectedCashAccount.value.id,
-        //     name: selectedCashAccount.value.text,
-        //     accountType: cashBankAccount.value.findIndex(i => i.id === selectedCashAccount.value.id),
-        //     code: selectedCashAccount.value.code,
-        //     isGroupAccount: selectedCashAccount.value.isGroupAccount,
-        //     financialFundID: selectedCashAccount.value.financialFundID
-        //   },
         cashAccountId: selectedCashAccount.value ? selectedCashAccount.value.id : "",
         incomeRemittance: remitance.value
       }
-
         if (remitance.value[0].account || remitance.value[0].percentage) {
                 contributionCategory.incomeRemittance = remitance.value.map(i => {
                   return {
@@ -263,16 +274,9 @@ export default {
               }
       console.log(contributionCategory)
        if (selectedIncomeAccount.value && selectedCashAccount.value) {
-         axios.post('/api/financials/contributions/items/save', contributionCategory)
-            .then(res => {
-              toast.add({severity:'success', summary: 'Saved', detail:'Contribution Saved', life: 3000});
-              console.log(res)
-              router.push({ name: "ContributionCategory" })
-            })
-            .catch(err => {
-              toast.add({severity:'error', summary: 'Error', detail:'Not Sucessful', life: 3000});
-              console.log(err)
-            })
+         if (route.params.offId) {
+               editOfferingItems(contributionCategory)
+         } else { createOfferingItems(contributionCategory)}
        }  else {
           toast.add({
             severity: "error",
@@ -286,7 +290,7 @@ export default {
       if (remitance.value.length === 0) return 0
       return remitance.value.reduce((a, b) => {
           return { percentage: +a.percentage + +b.percentage }
-      }) 
+      })
     })
 
     const openResponsive = () => {
@@ -297,6 +301,12 @@ export default {
             router.push({ name: "ChartOfAccount" })
         }
 
+        const x = id => {
+          selectedCashAccount.value = cashBankAccount.value.find(i => {
+            return i.id  === id
+          })
+        }
+
     const getOffItems = async() => {
       if(route.params.offId) {
         try {
@@ -305,11 +315,14 @@ export default {
           selectedIncomeAccount.value = incomeAccount.value.find(i => {
             return i.id  === res.data.incomeAccountID
           })
-          selectedCashAccount.value = cashBankAccount.value.find(i => {
-            return i.id  === res.data.cashAccountID
-          })
-          isPublic.
+          // selectedCashAccount.value = cashBankAccount.value.find(i => {
+          //   return i.id  === res.data.cashAccountID
+          // })
+          x(res.data.cashAccountID)
+          // isPublic.
           console.log(res.data)
+         console.log( name.value, "💐💐💐");
+         console.log(selectedIncomeAccount.value, "💐💐💐");
         }
         catch (err) {
           console.log(err)
@@ -319,7 +332,7 @@ export default {
     getOffItems()
 
     return {
-      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage, openResponsive, closeResponsive, displayResponsive
+      applyRem, toggleRem, cashBankAccount, remitance, addRemittance, incomeAccount, save, selectedIncomeAccount, name, selectedCashAccount, toast, deleteItem, sumPercentage, openResponsive, closeResponsive, displayResponsive, createOfferingItems, editOfferingItems
     };
   },
 };

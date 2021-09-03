@@ -1,7 +1,7 @@
 <template>
-    <div class="container-top container-wide mb-4  ">
-        <div class="heading-text col-12 pl-2">
-            People Report
+    <div class="container container-top overflow-hidden border">
+        <div>
+            <h3 class="font-weight-bold">SUMMARY REPORT</h3>
         </div>
         <div class="container-fluid ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">

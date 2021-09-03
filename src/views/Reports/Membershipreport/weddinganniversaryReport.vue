@@ -13,7 +13,7 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">First Timers Report</h3>
+          <h3 class="heading-text ml-2">Wedding Anniversary Report</h3>
         </div>
 
         <div class="centered-items">
@@ -24,6 +24,7 @@
       </div>
     </div>
     <!--end of header area -->
+
     <!-- date area -->
     <div class="container-fluid my-3 px-0 bg-area">
       <div
@@ -48,9 +49,9 @@
         <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
-            @click="generateReport"
+            @click="generateWeddingAnniversaryReport"
           >
-            Generate
+            Generate &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
         </div>
       </div>
@@ -66,7 +67,6 @@
             title="By Gender"
             distance="5"
             :titleMargin="10"
-            :summary="firstTimerChart"
           />
         </div>
       </div>
@@ -82,30 +82,28 @@
               class="small-text text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
-              <th scope="col">Church Activity</th>
               <th scope="col">Name</th>
+              <th scope="col">Birthday</th>
               <th scope="col">Phone</th>
               <th scope="col">Email</th>
-              <th scope="col">Home Address</th>
               <th scope="col">Gender</th>
               <th scope="col">Marital Status</th>
-              <th scope="col">Activity Date</th>
-              <th scope="col">Current Status</th>
+              <th scope="col">Age Group</th>
+              <th scope="col">Membership</th>
+              <th scope="col">Home Address</th>
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(firstTimer, index) in firstTimerInChurch"
-            :key="index">
-              <td>{{ firstTimer.event }}</td>
-               {{ firstTimer.lastName }}
-              <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
-              <td>{{ firstTimer.mobilePhone }}</td>
-              <td>{{ firstTimer.email }}</td>
-              <td>{{ firstTimer.homeAddress }}</td>
-              <td>{{ firstTimer.gender }}</td>
-              <td>{{ firstTimer.maritalStatus }}</td>
-              <td>{{ formatDate(firstTimer.activityDate) }}</td>
-              <td>{{ firstTimer.status }}</td>
+            <tr>
+              <td>Ajose Oluwatosin</td>
+              <td>25/12/2022</td>
+              <td>07090875463</td>
+              <td>nonitosinajose7@gmail.com</td>
+              <td>Female</td>
+              <td>Married</td>
+              <td>25-30</td>
+              <td>Full Member</td>
+              <td>14, imam dauda Str. Lagos mainland</td>
             </tr>
           </tbody>
         </table>
@@ -119,12 +117,11 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
-import dateFormatter from  "../../../services/dates/dateformatter";
 
 export default {
   components: {
@@ -135,40 +132,25 @@ export default {
   setup() {
     const startDate = ref("");
     const endDate = ref("");
-    const firstTimerInChurch = ref([]);
-    const firstTimerChart = ref([])
-    const generateReport = () => {
-
+    const weddingAnniversary = ref([]);
+    const generateWeddingAnniversaryReport = () => {
       axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/people/getWeddingsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
-
-          console.log(res, "🎄🎄🎄");
-          firstTimerInChurch.value = res.data;
-          console.log(firstTimerInChurch.value, "✌️✌️");
+          console.log(res);
+          weddingAnniversary.value = res.data;
+          console.log(weddingAnniversary.value, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
         });
     };
-
-     const formatDate = (activityDate) => {
-      return dateFormatter.monthDayYear(activityDate);
-    };
-
-    onMounted(() => {
-      firstTimerChart.value = [{name: "Dapo", value: 77}]
-    })
-
-
     return {
       Calendar,
       startDate,
       endDate,
-      firstTimerInChurch,
-      generateReport,
-      formatDate,
-      firstTimerChart
+     weddingAnniversary,
+     generateWeddingAnniversaryReport,
     };
   },
 };
@@ -237,8 +219,8 @@ export default {
 }
 
 .remove-styles{
-    border: none !important;
-    box-shadow: none !important;
+  border: none !important;
+box-shadow: none !important;
     border-bottom: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
@@ -246,7 +228,7 @@ export default {
 
 .remove-styles2{
 padding-right: 0;
-padding-left: 0;
+ padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
 }
