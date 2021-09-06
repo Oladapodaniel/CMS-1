@@ -112,11 +112,12 @@ export default {
       return props.gateways.find(i => i.paymentGateway.name === "Stripe")
     })
 
-    const payWithPaystack = (e) => {
-      selectedGateway.value = e.srcElement.alt
+    const payWithPaystack = () => {
+      selectedGateway.value = 'paystack'
       emit('selected-gateway', selectedGateway.value)
   console.log(props.converted)
   console.log(props.donation.paymentGateway)
+
   console.log(selectedGateway.value)
 
       props.close.click()
@@ -180,10 +181,9 @@ export default {
     }
     getFlutterwaveModules()
 
-    const makePayment = (e) => {
-      console.log(e.srcElement.alt)
+    const makePayment = () => {
       // Get and send clicked payment gateway to parent
-      selectedGateway.value = e.srcElement.alt
+      selectedGateway.value = 'flutterwave'
       emit('selected-gateway', selectedGateway.value)
 
       // Close payment modal
