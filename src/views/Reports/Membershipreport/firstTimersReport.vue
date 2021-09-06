@@ -77,10 +77,9 @@
       <!-- table header -->
       <div class="container-fluid table-main px-0 remove-styles2 remove-border" >
         <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
-          <thead class="table-header-area-main">
+          <thead class="table-header-area-main d-flex">
             <tr
-              class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
+              class="small-text text-capitalize text-nowrap tablerow-style d-flex justify-content-between"
             >
               <th scope="col">Church Activity</th>
               <th scope="col">Name</th>
@@ -252,5 +251,10 @@ border-top-right-radius: 0 !important;
 
 .remove-border{
     box-shadow: none !important;
+}
+
+.tablerow-style {
+  min-width: 100%;
+  border-bottom: 0
 }
 </style>
