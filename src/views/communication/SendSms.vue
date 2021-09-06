@@ -892,7 +892,7 @@ export default {
             // Save the res to store in other to get it in the view sent sms page
             let sentObj = {
                 message: res.data.message,
-                id: res.data.returnObjects ? res.data.returnObjects[0].id : [],
+                id: res.data.returnObjects ? res.data.returnObjects[0].communicationReportID : '',
                 smsUnitsUsed: res.data.unitsUsed,
                 dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
                 deliveryReport: [{ report: res.data.messageStatus }]
