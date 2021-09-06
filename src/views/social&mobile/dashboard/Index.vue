@@ -35,7 +35,7 @@
           </div>
           <div class="row mt-5">
             <div class="col-md-12 text-lg-center text-sm-center text-center">
-              <h2 class="">0</h2>
+              <h2 class=""></h2>
             </div>
           </div>
           <div class="row mb-4">
@@ -58,7 +58,7 @@
           </div>
           <div class="row mt-5">
             <div class="col-md-12 text-lg-center text-sm-center text-center">
-              <h2 class="">0</h2>
+              <h2 class=""></h2>
             </div>
           </div>
           <div class="row mb-4">
@@ -79,7 +79,7 @@
           </div>
           <div class="row mt-5">
             <div class="col-md-12 text-lg-center text-sm-center text-center">
-              <h2 class="">0</h2>
+              <h2 class=""></h2>
             </div>
           </div>
           <div class="row mb-4">
@@ -100,7 +100,7 @@
           </div>
           <div class="row mt-5">
             <div class="col-md-12 text-lg-center text-sm-center text-center">
-              <h2 class="">0</h2>
+              <h2 class=""></h2>
             </div>
           </div>
           <div class="row mb-4">
@@ -264,7 +264,7 @@
             <div
               class="col-md-12 text-lg-center num mt-3 text-sm-center text-center"
             >
-              <h3>0</h3>
+              <h3></h3>
             </div>
           </div>
         </div>
@@ -283,7 +283,7 @@
             <div
               class="col-md-12 text-lg-center num mt-3 text-sm-center text-center"
             >
-              <h3>0</h3>
+              <h3></h3>
             </div>
           </div>
         </div>
@@ -300,7 +300,7 @@
             <div
               class="col-md-12 text-lg-center num mt-3 text-sm-center text-center"
             >
-              <h3>0</h3>
+              <h3></h3>
             </div>
           </div>
         </div>
