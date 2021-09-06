@@ -175,11 +175,14 @@
               <div class="small-text text-capitalize col-md-2 font-weight-bold">
                 Date
               </div>
-              <div class="small-text text-capitalize col-md-3 font-weight-bold">
+              <div class="small-text text-capitalize col-md-2 font-weight-bold">
                 Offering
               </div>
-              <div class="small-text text-capitalize col-md-3 font-weight-bold">
+              <div class="small-text text-capitalize col-md-2 font-weight-bold">
                 Amount
+              </div>
+              <div class="small-text text-capitalize col-md-2 font-weight-bold">
+                Source
               </div>
               <div class="small-text text-capitalize col-md-2 font-weight-bold">
                 Donor
@@ -238,7 +241,7 @@
                   </p>
                 </div>
 
-                <div class="col-md-3 px-1">
+                <div class="col-md-2 px-1">
                   <div class="d-flex small justify-content-between">
                     <span
                       class="
@@ -264,7 +267,7 @@
                   </div>
                 </div>
 
-                <div class="desc-head small-text col-md-3 px-1">
+                <div class="desc-head small-text col-md-2 px-1">
                   <p class="mb-0 d-flex justify-content-between">
                     <span
                       class="
@@ -283,6 +286,30 @@
                           params: { offId: item.id },
                         }"
                         >{{ item.currencyName }} {{ item.amount }}</router-link
+                      ></span
+                    >
+                  </p>
+                </div>
+                
+                <div class="desc-head small-text col-md-2 px-1">
+                  <p class="mb-0 d-flex justify-content-between">
+                    <span
+                      class="
+                        text-dark
+                        font-weight-bold
+                        d-flex d-md-none
+                        fontIncrease
+                      "
+                      >Source</span
+                    >
+                    <span
+                      ><router-link
+                        class="text-decoration-none ml-3 fontIncrease"
+                        :to="{
+                          name: 'AddOffering',
+                          params: { offId: item.id },
+                        }"
+                        >{{ item.channel }}</router-link
                       ></span
                     >
                   </p>
