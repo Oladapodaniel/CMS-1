@@ -97,7 +97,6 @@
             <tr v-for="(firstTimer, index) in firstTimerInChurch"
             :key="index">
               <td>{{ firstTimer.event }}</td>
-               {{ firstTimer.lastName }}
               <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
               <td>{{ firstTimer.mobilePhone }}</td>
               <td>{{ firstTimer.email }}</td>
