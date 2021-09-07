@@ -56,9 +56,9 @@
         </div>
       </div>
     </div>
-    <!--end of date area -->
+    <!-- end of date area
     <section>
-      <!-- chart area -->
+      
       <div class="chart">
         <div style="width: 45%" class="ml-md-4 chart1">
           <ByGenderChart
@@ -69,8 +69,75 @@
           />
         </div>
       </div>
-      <!--end of chart area -->
-    </section>
+     
+    </section> -->
+
+
+    <div class="container-fluid  ">
+            <div class="row">
+                <div class="col-12 ">
+                    <div class="mt-5 text-center Display-1 heading-text">
+                        Congregation Members Report 
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="col-12 border  text-center" style="height: 40vh;">
+                        <div class="col-12 font-weight-bold">Membership By Gender</div>
+                        <div class="col-12"  :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                        <div class="col-12" style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <BirthdayChart
+                                domId="chart1"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="genderSummary"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12 border mt-3 mt-sm-3 mt-md-0 mt-lg-0 text-center" style="height: 40vh;">
+                        <div class="col-12  font-weight-bold">Membership By Marital Status</div>
+                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <BirthdayChart
+                                domId="chart2"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="maritalStatusSummary"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12 border text-center mt-3 mt-sm-3 mt-md-0 mt-lg-0 " style="height: 40vh; ">
+                        <div class="col-12  font-weight-bold ">Membership By Distribution</div>
+                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <BirthdayChart
+                                domId="chart3"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="membersSummary"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12  border text-center mt-3 mt-sm-3 mt-md-0 mt-lg-0  " style="height: 40vh;">
+                        <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
+                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <BirthdayChart
+                                domId="char4"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="ageGroupSummary"
+                              />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     <section>
       <!-- table header -->
@@ -119,6 +186,7 @@
 import { ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
+import BirthdayChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 
@@ -127,6 +195,7 @@ export default {
     Calendar,
     ByGenderChart,
     PaginationButtons,
+    BirthdayChart
   },
   setup() {
     const startDate = ref();
