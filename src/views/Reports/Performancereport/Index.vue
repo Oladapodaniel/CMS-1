@@ -13,8 +13,8 @@
                 </div>
                 <div class="col-md-5 col-12 border-bottom">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                        <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Attendance Report</h4>
-                        <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span>
+                       <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Attendance Report</h4>
+                         <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed Attendance of your ministry</p>
@@ -25,8 +25,8 @@
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                        <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Group Category Report</h4>
-                        <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span>
+                        <router-link to="/tenant/attendancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Group Category Report</h4></router-link>
+                         <router-link to="/tenant/attendancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed Group Category Attendance of your ministry</p>
@@ -48,8 +48,8 @@
                 </div>
                 <div class="col-md-5 col-12 border-bottom">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                        <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">First Timer Report</h4>
-                        <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span>
+                       <router-link to="/tenant/firsttimerperformancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">First Timer Report</h4></router-link>
+                         <router-link to="/tenant/firsttimerperformancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed Group Category Attendance of your ministry</p>
@@ -59,8 +59,8 @@
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                        <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">New Convert Report</h4>
-                        <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span>
+                       <router-link to="/tenant/newconvertperformancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">New Convert Report</h4></router-link>
+                         <router-link to="/tenant/newconvertperformancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed New Convert Attendance of your ministry</p>
