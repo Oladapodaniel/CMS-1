@@ -21,7 +21,6 @@ export default {
         const route = useRoute()
         const toast  = useToast()
         const isProduction = true
-        const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
         const uniqueId = ref(uuidv4())
         const paystackCurrencies = ref(['NGN', 'GHS', 'ZAR'])
         const currency = ref("")

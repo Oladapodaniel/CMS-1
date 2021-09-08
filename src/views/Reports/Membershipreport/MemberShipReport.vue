@@ -1,7 +1,7 @@
 <template>
-    <div class="container container-top overflow-hidden border">
-        <div>
-            <h3 class="font-weight-bold">SUMMARY REPORT</h3>
+    <div class="container container-top container-wide mb-4">
+        <div class="heading-text col-12 pl-2">
+            People Report
         </div>
         <div class="container-fluid ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
@@ -90,7 +90,7 @@
                                 domId="chart1"
                                 distance="5"
                                 :titleMargin="10"
-                                :summary="genderSummary"
+                                :summary="mappedGender"
                             />
                         </div>
                     </div>
@@ -104,27 +104,27 @@
                                 domId="chart2"
                                 distance="5"
                                 :titleMargin="10"
-                                :summary="maritalStatusSummary"
+                                :summary="mappedMaritalStatus"
                             />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border text-center mt-3 mt-sm-3 mt-md-0 mt-lg-0 " style="height: 40vh; ">
-                        <div class="col-12  font-weight-bold ">Membership By Distribution</div>
+                    <div class="col-12 border text-center mt-3 mt-sm-3 mt-md-0 mt-lg-3 " style="height: 40vh; ">
+                        <div class="col-12  font-weight-bold ">Membership By Members</div>
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
                         <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <MembershipPieChart
                                 domId="chart3"
                                 distance="5"
                                 :titleMargin="10"
-                                :summary="membersSummary"
+                                :summary="mappedMember"
                             />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12  border text-center mt-3 mt-sm-3 mt-md-0 mt-lg-0  " style="height: 40vh;">
+                    <div class="col-12  border text-center mt-3 mt-sm-3 mt-md-0 mt-lg-3  " style="height: 40vh;">
                         <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
                         <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
@@ -132,7 +132,7 @@
                                 domId="char4"
                                 distance="5"
                                 :titleMargin="10"
-                                :summary="ageGroupSummary"
+                                :summary="mappedAgeGroup"
                                
                             />
                         </div>
@@ -153,6 +153,7 @@
                             style="border-bottom: 0"
                             >
                             <th scope="col">Church Activity</th>
+                            <th scope="col">New Convert</th>
                             <th scope="col">Name</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Email</th>
@@ -164,49 +165,17 @@
                             </tr>
                         </thead>
                         <tbody class="font-weight-normal text-nowrap">
-                            <tr>
-                            <td>Childrens Day Program</td>
-                            <td>Ajose Oluwatosin</td>
-                            <td>07090875463</td>
-                            <td>nonitosinajose7@gmail.com</td>
-                            <td>41 imam dauda Str. Lagos</td>
-                            <td>Female</td>
-                            <td>Married</td>
-                            <td>24/10/2021</td>
-                            <td>Active</td>
-                            </tr>
-                            <tr>
-                            <td>Childrens Day Program</td>
-                            <td>Ajose Oluwatosin</td>
-                            <td>07090875463</td>
-                            <td>nonitosinajose7@gmail.com</td>
-                            <td>41 imam dauda Str. Lagos</td>
-                            <td>Female</td>
-                            <td>Married</td>
-                            <td>24/10/2021</td>
-                            <td>Active</td>
-                            </tr>
-                            <tr>
-                            <td>Childrens Day Program</td>
-                            <td>Ajose Oluwatosin</td>
-                            <td>07090875463</td>
-                            <td>nonitosinajose7@gmail.com</td>
-                            <td>41 imam dauda Str. Lagos</td>
-                            <td>Female</td>
-                            <td>Married</td>
-                            <td>24/10/2021</td>
-                            <td>Active</td>
-                            </tr>
-                            <tr>
-                            <td>Childrens Day Program</td>
-                            <td>Ajose Oluwatosin</td>
-                            <td>07090875463</td>
-                            <td>nonitosinajose7@gmail.com</td>
-                            <td>41 imam dauda Str. Lagos</td>
-                            <td>Female</td>
-                            <td>Married</td>
-                            <td>24/10/2021</td>
-                            <td>Active</td>
+                            <tr v-for="(member, index) in membersInChurch" :key="index">
+                            <td>{{member.churchActivity}}</td>
+                            <td>{{member.membership}}</td>
+                            <td>{{member.name}}</td>
+                            <td>{{member.mobilePhone}}</td>
+                            <td>{{member.email}}</td>
+                            <td>{{member.homeAddress}}</td>
+                            <td>{{member.gender}}</td>
+                            <td>{{member.maritalStatus}}</td>
+                            <td>{{member.activityDate}}</td>
+                            <td>{{member.isActive}}</td>
                             </tr>
                         </tbody>
                         </table>
@@ -222,41 +191,21 @@
 </template>
 
 <script>
-import {onMounted, ref } from "vue";
+import {onMounted,computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
-import Dropdown from "primevue/dropdown";
+// import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
 // import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
     components: {
         // GenderPieChart,
         MembershipPieChart,
-        Dropdown, 
+        // Dropdown, 
         MultiSelect, 
         PaginationButtons },
     setup() {
-    //     const membership = ref([
-    //   { name: "FIRST-TIMER" },
-    //   { name: "NEW-CONVERT" },
-    //   { name: "FULL MEMBER" },
-    // ]);
-    //     const gender = ref([
-    //   { name: "MALE" },
-    //   { name: "FEMALE" },
-    // ]);
-    //     const maritalStatus = ref([
-    //   { name: "SINGLE" },
-    //   { name: "MARRIED" },
-    //   { name: "ENGAGED" },
-    //   { name: "SINGLE PARENT" },
-    //   { name: "DIVORCED" },
-    //   { name: "SEPERATED" },
-    //   { name: "WIDOW" },
-    //   { name: "WIDOWER" },
-    // ]);
-
     const selectedMember = ref();
     const selectedGender = ref();
     const selectedMaritalStatus = ref();
@@ -264,43 +213,142 @@ export default {
     const memberShips = ref({});
     const memberMaritalStatus = ref({});
     const memberGender = ref({});
-    const genderSummary = ref([]);
-    const membersSummary = ref([]);
-    const maritalStatusSummary = ref([]);
-    const ageGroupSummary = ref([]);
+    // const genderSummary = ref([]);
+    const membersInChurch = ref([]);
+    const genderChartResult = ref([]);
+    const memberChartResult = ref([]);
+    const maritalStatusChartResult = ref([]);
+    const ageGroupChartResult = ref([]);
 
-    onMounted(() =>{
-        genderSummary.value =  [ { name: 'male', value: 4 }, { name: "female", value: 1 } ];
-        membersSummary.value =  [ { name: 'Full-member', value: 9 }, { name: "New-Convert", value: 6 },{ name: "First-Timer", value: 3 } ];
-        maritalStatusSummary.value =  [ { name: 'Single', value: 10 }, { name: "Married", value: 4 },{ name: "Widow", value: 10 }  ];
-        ageGroupSummary.value =  [ { name: '13years Above', value: 10 }, { name: "22years Above", value: 4 },{ name: "35years", value: 10 }  ];
-    })
     
+   const genderChart = (array, key) => {
+       // Accepts the array and key
+      // Return the end result
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
+        return result;
+      }, []); // empty object is the initial value for result object
+      // genderChartResult.value
+      for (const prop in result) {
+        // genderChartResult.value
+        console.log(prop, result[prop])
+        genderChartResult.value.push({
+          name: prop,
+          value: result[prop].length
+        })
+      }
+      console.log(genderChartResult.value)
+    };
+
+    const mappedGender = computed(() => {
+      if (genderChartResult.value.length === 0) return []
+      return genderChartResult.value.map(i => i)
+    })
+   const memberChart = (array, key) => {
+       // Accepts the array and key
+      // Return the end result
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      }, []); // empty object is the initial value for result object
+      // genderChartResult.value
+
+      for (const prop in result) {
+        // genderChartResult.value
+        console.log(prop, result[prop])
+        memberChartResult.value.push({
+          name: prop,
+          value: result[prop].length
+        })
+      }
+    };
+
+    const mappedMember = computed(() => {
+      if (memberChartResult.value.length === 0) return []
+      return memberChartResult.value.map(i => i)
+    })
+   const maritalStatusChart = (array, key) => {
+       // Accepts the array and key
+      // Return the end result
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      }, []); // empty object is the initial value for result object
+      // genderChartResult.value
+      for (const prop in result) {
+        // genderChartResult.value
+        console.log(prop, result[prop])
+        maritalStatusChartResult.value.push({
+          name: prop,
+          value: result[prop].length
+        })
+      }
+      console.log(maritalStatusChartResult.value)
+    };
+
+    const mappedMaritalStatus = computed(() => {
+      if (maritalStatusChartResult.value.length === 0) return []
+      return maritalStatusChartResult.value.map(i => i)
+    })
+   const ageGroupChart = (array, key) => {
+       // Accepts the array and key
+      // Return the end result
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      }, []); // empty object is the initial value for result object
+      // genderChartResult.value
+      for (const prop in result) {
+        // genderChartResult.value
+        console.log(prop, result[prop])
+        ageGroupChartResult.value.push({
+          name: prop,
+          value: result[prop].length
+        })
+      }
+    };
+
+    const mappedAgeGroup = computed(() => {
+      if (ageGroupChartResult.value.length === 0) return []
+      return ageGroupChartResult.value.map(i => i)
+    })
+
+
     const genarateReport = () => {
         const memberID =  selectedMember.value.map((i) => i.id)
         const genderID =  selectedGender.value.map((i) => i.id)
         const maritalStatusID = selectedMaritalStatus.value.map((i) => i.id)
-        // console.log(memberID)
-        // console.log(genderID)
-        // console.log(maritalStatusID)
-
         let body = {
         gender : genderID,
         maritalStatus : maritalStatusID,
+        membershipStatus : maritalStatusID,
         membershipType : memberID
         }
         axios.post('/api/Reports/people/getAllContactsByParameterReport',body)
         .then((res) =>{
-            console.log(res)
+            console.log(res.data)
+            membersInChurch.value = res.data;
+            console.log(membersInChurch.value, 'allbyGideon')
+            genderChart(res.data,'gender')
+            memberChart(res.data,'membership')
+            maritalStatusChart(res.data,'maritalStatus')
+            ageGroupChart(res.data,'ageGroup')
           
         }).catch((error) =>{
             console.log(error)
         })
 
           showReport.value = true;
-        console.log(selectedMember.value);
-        console.log(selectedGender.value);
-        console.log(selectedMaritalStatus.value);
 
     }
 
@@ -312,7 +360,7 @@ export default {
           .then((res) => {
             // tenantCurrency.value = res.data;
             memberShips.value = res.data;
-            console.log(res.data,'Fejiro');
+            // console.log(res.data,'Fejiro');
           })
           .catch((err) => console.log(err));
         // donationSummary.value = data;
@@ -328,7 +376,7 @@ export default {
           .get('/api/Reports/people/getMaritalStatus')
           .then((res) => {
             memberMaritalStatus.value = res.data;
-            console.log(res,'gideon');
+            // console.log(res,'gideon');
           })
           .catch((err) => console.log(err));
         // donationSummary.value = data;
@@ -344,7 +392,7 @@ export default {
           .get('/api/Reports/people/getGender')
           .then((res) => {
             memberGender.value = res.data;
-            console.log(res,'Samson');
+            // console.log(res,'Samson');
           })
           .catch((err) => console.log(err));
         // donationSummary.value = data;
@@ -356,18 +404,24 @@ export default {
 
      return {
          genarateReport,
+         genderChartResult,
+         memberChartResult,
+         maritalStatusChartResult,
+         ageGroupChartResult,
+         genderChart,
+         memberChart,
+         maritalStatusChart,
+         ageGroupChart,
          showReport,
-         genderSummary,
-         membersSummary,
-         maritalStatusSummary,
+        //  genderSummary,
          memberShips,
          memberMaritalStatus,
          memberGender,
-         ageGroupSummary,
-        //  pieChart,
-        //  membership,
-        //  gender,
-        //  maritalStatus,
+         membersInChurch,
+         mappedGender,
+         mappedMember,
+         mappedMaritalStatus,
+         mappedAgeGroup,
          selectedMember,
          selectedGender,
          selectedMaritalStatus

@@ -3,16 +3,14 @@
     <div class="row">
       <div class="col-sm-12 p-4 text-center continue-text">Continue payment with</div>
     </div>
-    <div class="row row-button" @click="payWithPaystack" v-if="paystackGate">
-      <div class="col-4 col-sm-7 offset-2">
-        <img class="w-100" src="../../../assets/4PaystackLogo.png" alt="paystack"/>
-      </div>
+    <div class="row row-button d-flex justify-content-center" @click="payWithPaystack" v-if="paystackGate">
+        <img class="img-pay" src="../../../assets/4PaystackLogo.png" alt="paystack"/>
     </div>
 
 
-    <div class="row row-button" v-if="flutterwaveGate" @click="makePayment">
-      <div class="col-7 col-sm-7 offset-2">
-        <img class="w-100" src="../../../assets/flutterwave_logo_color@2x.png" alt="flutterwave"/>
+    <div class="row row-button d-flex justify-content-center" v-if="flutterwaveGate" @click="makePayment">
+      <div>
+        <img class="img-pay" src="../../../assets/flutterwave_logo_color@2x.png" alt="flutterwave"/>
       </div>
 
       <!-- <div class="col-7 col-sm-4 option-text">Flutterwave</div> -->
@@ -114,10 +112,13 @@ export default {
       return props.gateways.find(i => i.paymentGateway.name === "Stripe")
     })
 
-    const payWithPaystack = (e) => {
-      selectedGateway.value = e.srcElement.alt
+    const payWithPaystack = () => {
+      selectedGateway.value = 'paystack'
       emit('selected-gateway', selectedGateway.value)
   console.log(props.converted)
+  console.log(props.donation.paymentGateway)
+
+  console.log(selectedGateway.value)
 
       props.close.click()
       // localStorage.setItem('donation', JSON.stringify(props.donation))
@@ -180,10 +181,9 @@ export default {
     }
     getFlutterwaveModules()
 
-    const makePayment = (e) => {
-      console.log(e.srcElement.alt)
+    const makePayment = () => {
       // Get and send clicked payment gateway to parent
-      selectedGateway.value = e.srcElement.alt
+      selectedGateway.value = 'flutterwave'
       emit('selected-gateway', selectedGateway.value)
 
       // Close payment modal
@@ -297,5 +297,9 @@ export default {
 .row-button:hover {
   cursor: pointer;
   transform: scale(1.05, 1.05)
+}
+
+.img-pay {
+  width: 125px
 }
 </style>
