@@ -6,7 +6,7 @@
         <div class="col-md-3 pt-3 sidebar">
           <div class="row">
             <div class="col-md-12">
-              <h2 class="mb-5 font-weight-700">Settings</h2>
+              <h2 class="mb-5 mt-5 font-weight-700">Settings</h2>
             </div>
           </div>
           <!-- <p @click="showMore" class="more-tab">

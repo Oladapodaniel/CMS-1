@@ -67,6 +67,8 @@
               <th scope="col">Debit</th>
               <th scope="col">Credit</th>
               <th scope="col">Balance</th>
+              <th scope="col">Credit</th>
+              <th scope="col">Balance</th>
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
@@ -78,6 +80,8 @@
               <td>0.00</td>
               <td>0.00</td>
               <td>4267,677.00</td>
+              <td>0.00</td>
+              <td>4267,677.00</td>
             </tr>
             <tr>
               <td>1 oct, 2019</td>
@@ -87,6 +91,8 @@
               <td>32.00</td>
               <td>0.00</td>
               <td>439,729.00</td>
+              <td>0.00</td>
+              <td>439,729.00</td>
             </tr>
             <tr>
               <td>5 Dem, 2021</td>
@@ -94,6 +100,8 @@
               <td>067383789</td>
               <td>widom Giving</td>
               <td>32.00</td>
+              <td>0.00</td>
+              <td>438.729.00</td>
               <td>0.00</td>
               <td>438.729.00</td>
             </tr>
@@ -107,6 +115,8 @@
               </td>
               <!-- <td colspan="2" class="">438,729.00</td> -->
               <td>Couple</td>
+              <td>0.00</td>
+              <td>438.729.00</td>
             </tr>
           </tbody>
         </table>
