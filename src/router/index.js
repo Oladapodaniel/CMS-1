@@ -289,7 +289,7 @@ const routes = [
             },
             {
                 path: 'firsttimerperformancereport',
-                name:"FirstTimerPerformanceReport",
+                name: "FirstTimerPerformanceReport",
                 meta: {
                     title: 'Churchplus - Reports',
                 },
@@ -303,23 +303,23 @@ const routes = [
                     title: 'Churchplus - Reports',
                 },
                 component: () =>
-                import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/SummaryReport.vue')
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/SummaryReport.vue')
 
             },
 
             {
                 path: 'newconvertperformancereport',
-                name:"NewConvertPerformanceReport",
+                name: "NewConvertPerformanceReport",
                 meta: {
                     title: 'Churchplus - Reports',
                 },
                 component: () =>
-                import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/NewConvertPerformanceReport.vue')
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/NewConvertPerformanceReport.vue')
 
             },
             {
                 path: 'accountingtransactionreport',
-                name:"accountingtransactionreport",
+                name: "accountingtransactionreport",
                 meta: {
                     title: 'Churchplus - Reports',
                 },
@@ -330,16 +330,33 @@ const routes = [
             {
                 path: 'financialofferingreport',
                 name:"FinancialOfferingReport",
+                component: () =>
+
+                import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialOfferingReport.vue')
+            }, 
+            { 
+                path: 'financialactivitiesbalance',
+                name: "financialActivitiesBalance",
                 meta: {
                     title: 'Churchplus - Reports',
                 },
                 component: () =>
 
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialOfferingReport.vue')
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialActivitiesBalance.vue')
+            },
+            {
+                path: 'financialexpense',
+                name: "financialExpense",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialExpense.vue')
             },
             {
                 path: 'weddinganniversaryreport',
-                name:"weddinganniversaryreport",
+                name: "weddinganniversaryreport",
                 meta: {
                     title: 'Churchplus - Reports',
                 },
