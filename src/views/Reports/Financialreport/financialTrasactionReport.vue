@@ -75,11 +75,12 @@
 
     <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border" >
-        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
-          <thead class="table-header-area-main d-flex">
+      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+        <table class="table remove-styles mt-0 table-hover table-header-area">
+          <thead class="table-header-area-main">
             <tr
-              class="small-text text-capitalize text-nowrap tablerow-style d-flex justify-content-between"
+             class="small-text text-capitalize text-nowrap"
+              style="border-bottom: 0"
             >
               <th scope="col">Fund</th>
               <th scope="col">Account Name</th>
@@ -91,15 +92,15 @@
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(firstTimer, index) in firstTimerInChurch"
+            <tr v-for="(transaction, index) in accountTransaction"
             :key="index">
-              <td>{{ firstTimer.event }}</td>
-              <td>{{ firstTimer.mobilePhone }}</td>
-              <td>{{ firstTimer.email }}</td>
-              <td>{{ firstTimer.homeAddress }}</td>
-              <td>{{ firstTimer.gender }}</td>
-              <td>{{ firstTimer.maritalStatus }}</td>
-              <td>{{ formatDate(firstTimer.activityDate) }}</td>
+              <td>{{ transaction.fund }}</td>
+              <td>{{ transaction.accountName }}</td>
+              <td>{{ transaction.refNumber }}</td>
+              <td>{{ transaction.description }}</td>
+              <td>{{ transaction.debit }}</td>
+              <td>{{ transaction.credit }}</td>
+              <td>{{ formatDate(transaction.date) }}</td>
             </tr>
           </tbody>
         </table>
@@ -113,7 +114,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -129,17 +130,16 @@ export default {
   setup() {
     const startDate = ref("");
     const endDate = ref("");
-    const firstTimerInChurch = ref([]);
-    const firstTimerChart = ref([])
+    const accountTransaction = ref([]);
+    // const firstTimerChart = ref([])
     const generateReport = () => {
-
       axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/financials/getAccountTransactionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
 
           console.log(res, "🎄🎄🎄");
-          firstTimerInChurch.value = res.data;
-          console.log(firstTimerInChurch.value, "✌️✌️");
+          accountTransaction.value = res.data;
+          console.log(accountTransaction.value, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
@@ -150,19 +150,19 @@ export default {
       return dateFormatter.monthDayYear(activityDate);
     };
 
-    onMounted(() => {
-      firstTimerChart.value = [{name: "Dapo", value: 77}]
-    })
+    // onMounted(() => {
+    //   firstTimerChart.value = [{name: "Dapo", value: 77}]
+    // })
 
 
     return {
       Calendar,
       startDate,
       endDate,
-      firstTimerInChurch,
+      accountTransaction,
       generateReport,
       formatDate,
-      firstTimerChart
+      // firstTimerChart
     };
   },
 };
@@ -225,7 +225,7 @@ export default {
     width: 100% !important;
     box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
     border: 0.063rem solid #dde2e6 !important;
-    border-radius: 30px !important;
+    /* border-radius: 30px !important; */
     text-align: left !important;
     margin-bottom: auto !important;
     padding-bottom: 0.5rem !important;
@@ -253,5 +253,17 @@ border-top-right-radius: 0 !important;
 .tablerow-style {
   min-width: 100%;
   border-bottom: 0px;
+}
+
+.graph-area{
+    border: 1px solid #dde2e6;
+    border-radius: 0.5rem;
+    padding: 1rem 0rem;
+    margin: 2rem 0rem;
+}
+
+.responsiveness{
+  max-width: 100%;
+  overflow-y: scroll;
 }
 </style>
