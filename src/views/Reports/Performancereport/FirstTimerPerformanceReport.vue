@@ -48,9 +48,10 @@
                                 distance="5"
                                 :titleMargin="10"
                                 :data="pieChart"
-                    subtitle="Monthly Attendance of Events"
-                    :series="series"
-                    :attendanceSeries="attendanceSeries"
+                                subtitle="Monthly Attendance of Events"
+                                :series="series"
+                                :attendanceSeries="attendanceSeries"
+                                :microtitle="`Firsttimer By Event Date`"
                             />
                         </div>
                     </div>
@@ -197,7 +198,7 @@ export default {
     // const selectedGender = ref();
     // const selectedMaritalStatus = ref();
     const showReport = ref(false);
-    const pieChart = ref({ name: "Attendance", color: "", data: [ 0, 650, 13, 44, 0, 35, 150, 0, 5362, 44, 21, 1020, 21389, 20, 55, 290, 516, 293, 733, 661, 879, 151, 7, 540, 229, 21, 36, 483, 4345 ] });
+    const pieChart = ref({ name: "Attendance", color: "", data: [ 0, 3, 13, 14, 0, 15, 20, 20 ] });
     const series = ref( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]);
     const startDate = ref(new Date());
     const endDate = ref(new Date());
