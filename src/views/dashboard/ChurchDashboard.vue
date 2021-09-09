@@ -325,7 +325,6 @@
                     >
                   </div>
                 </div>
-
                 <div v-if="attendanceBoolean">
                   <ColumnChart
                     domId="chart1"
@@ -335,6 +334,7 @@
                     :data="chartData"
                     :series="series"
                     :attendanceSeries="attendanceSeries"
+                    :microtitle="`Church Attendance Data`"
                   />
                 </div>
                 <div v-else>
@@ -346,6 +346,7 @@
                     :data="monthlyAttendanceObj"
                     :series="series"
                     :attendanceSeries="attendanceSeries"
+                     :microtitle="`Church Attendance Data`"
                   />
                 </div>
               </div>

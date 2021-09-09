@@ -4,89 +4,105 @@
             First Timer Performance Report
         </div>
            <!-- date area -->
-            <div class="container-fluid my-3 px-0 bg-area">
-                <div
-                    style="padding: 0.2rem 0 1.2rem 0"
-                    class="row d-flex flex-row justify-content-center align-items-center"
-                >
-                    <div class="col-md-2">
-                    <h4 class="small font-weight-bold ml-1">DATE RANGE</h4>
+            <div class="container-fluid my-2 py-5   bg-area">
+                <div class="row justify-content-center ">
+                    <div class="col-4 "> 
+                        <div><label for="icon" class="font-weight-bold">Start Date</label></div>
+                        <div>
+                            <Calendar id="icon" v-model="startDate" :showIcon="true" />
+                        </div>
+                    </div>
+                    <div class="col-4 ">
+                        <div><label for="icon" class="font-weight-bold">Start Date</label></div>
+                        <div>
+                            <Calendar id="icon" v-model="endDate" :showIcon="true" />
+                        </div>
                     </div>
 
-                    <div class="col-md-7 d-sm-flex">
-                    <div class="p-field p-col-12 p-md-4 mt-1">
-                        <!-- <label for="icon">Start Date</label> -->
-                        <Calendar id="icon" v-model="startDate" :showIcon="true" />
-                    </div>
-                    <div class="p-field p-col-12 p-md-4 my-1">
-                        <!-- <label for="icon">End Date</label> -->
-                        <Calendar id="endDate" v-model="endDate" :showIcon="true" />
-                    </div>
-                    </div>
-
-                    <div @click="genarateReport" class="col-md-3 d-sm-flex justify-content-end   align-items-center">
-                        <button
-                            class="default-btn generate-report  c-pointer font-weight-bold"
-                        >
-                            Generate report
-                        </button>
+                    <div @click="genarateReport" class="col-md-4 ">
+                        <label for="icon"></label>
+                        <div class="mt-2">
+                            <button class="default-btn generate-report  c-pointer font-weight-bold">
+                                Generate
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
     <!--end of date area -->
-        <div class="container-fluid  " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-            <div class="row">
+        <div class="container-fluid ">
+            <div class="row ">
                 <div class="col-12 ">
                     <div class="mt-5 display-1 font-weight-bold text-center heading-text">
                        First Timers Analysis Report 
                     </div>
                 </div>
-                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 60vh;">
-                        <div class="col-12 font-weight-bold">Membership By Gender</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12" style="height: 50vh;">
-                            <MembershipPieChart
-                               
+                <div class="col-12 table ">
+                    <div class="col-12   text-center">
+                        <div class="col-12 font-weight-bold">Firsttimer By Event Date</div>
+                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                        <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <PerformanceColumnChart
+                                domId="chart1"
+                                title="Firsttimer By Event Date"
+                                distance="5"
+                                :titleMargin="10"
+                                :data="pieChart"
+                    subtitle="Monthly Attendance of Events"
+                    :series="series"
+                    :attendanceSeries="attendanceSeries"
                             />
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 60vh;">
-                        <div class="col-12  font-weight-bold">Membership By Marital Status</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
-                            <MembershipPieChart
-                              
-                            />
+             </div>
+            <div class="  row ">
+                <div class="col-12 table d-flex flex-wrap">
+                    <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                        <div class="col-12  text-center">
+                            <div class="col-12  font-weight-bold">Gender Distribution</div>
+                            <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                            <div class="col-12 "  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                                <PerformancePieChart
+                                domId="chart2"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="mappedGender"
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border text-center mt-3" style="height: 60vh; ">
-                        <div class="col-12  font-weight-bold ">Membership By Distribution</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
-                            <MembershipPieChart
-                               
+                    <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                        <div class="col-12  text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
+                            <div class="col-12  font-weight-bold ">Marital Status</div>
+                            <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                            <div class="col-12 "   :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <PerformancePieChart
+                               domId="chart3"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="mappedMaritalStatus"
                             />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12  border text-center mt-3 " style="height: 60vh;">
-                        <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
-                        <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
-                            <MembershipPieChart
-                                
-                               
+                    <!-- <div class="col-12 col-sm-12  col-md-4 col-lg-4">
+                        <div class="col-12 text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
+                            <div class="col-12  font-weight-bold ">Current Status</div>
+                            <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                            <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <PerformancePieChart
+                               domId="chart4"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="pieChart"
                             />
+                            </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
+                
         </div>
         <!-- <div > -->
             <!-- <div class="row "> -->
@@ -100,7 +116,7 @@
                             class="small-text text-capitalize text-nowrap"
                             style="border-bottom: 0"
                             >
-                            <th scope="col">Church Activity</th>
+                            <!-- <th scope="col">Church Activity</th> -->
                             <th scope="col">Name</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Email</th>
@@ -108,53 +124,20 @@
                             <th scope="col">Gender</th>
                             <th scope="col">Marital Status</th>
                             <th scope="col">Activity Date</th>
-                            <th scope="col">Current Status</th>
+                            <!-- <th scope="col">Current Status</th> -->
                             </tr>
                         </thead>
                         <tbody class="font-weight-normal text-nowrap">
-                            <tr>
-                            <td>Childrens Day Program</td>
-                            <td>Ajose Oluwatosin</td>
-                            <td>07090875463</td>
-                            <td>nonitosinajose7@gmail.com</td>
-                            <td>41 imam dauda Str. Lagos</td>
-                            <td>Female</td>
-                            <td>Married</td>
-                            <td>24/10/2021</td>
-                            <td>Active</td>
-                            </tr>
-                            <tr>
-                            <td>Childrens Day Program</td>
-                            <td>Ajose Oluwatosin</td>
-                            <td>07090875463</td>
-                            <td>nonitosinajose7@gmail.com</td>
-                            <td>41 imam dauda Str. Lagos</td>
-                            <td>Female</td>
-                            <td>Married</td>
-                            <td>24/10/2021</td>
-                            <td>Active</td>
-                            </tr>
-                            <tr>
-                            <td>Childrens Day Program</td>
-                            <td>Ajose Oluwatosin</td>
-                            <td>07090875463</td>
-                            <td>nonitosinajose7@gmail.com</td>
-                            <td>41 imam dauda Str. Lagos</td>
-                            <td>Female</td>
-                            <td>Married</td>
-                            <td>24/10/2021</td>
-                            <td>Active</td>
-                            </tr>
-                            <tr>
-                            <td>Childrens Day Program</td>
-                            <td>Ajose Oluwatosin</td>
-                            <td>07090875463</td>
-                            <td>nonitosinajose7@gmail.com</td>
-                            <td>41 imam dauda Str. Lagos</td>
-                            <td>Female</td>
-                            <td>Married</td>
-                            <td>24/10/2021</td>
-                            <td>Active</td>
+                            <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
+                            <!-- <td>{{ firstTimer.event }}</td> -->
+                            <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
+                            <td>{{ firstTimer.mobilePhone }}</td>
+                            <td>{{ firstTimer.email }}</td>
+                            <td>{{ firstTimer.homeAddress }}</td>
+                            <td>{{ firstTimer.gender }}</td>
+                            <td>{{ firstTimer.maritalStatus }}</td>
+                            <td>{{ formatDate(firstTimer.activityDate) }}</td>
+                            <!-- <td>{{ firstTimer.status }}</td> -->
                             </tr>
                         </tbody>
                         </table>
@@ -170,19 +153,23 @@
 </template>
 
 <script>
-import {ref } from "vue";
-// import MembershipPieChart from '../../../components/charts/PieChart.vue';
+import {onMounted,computed,ref } from "vue";
+// import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
-import MembershipPieChart from '../../../components/charts/ReportPieChart.vue';
+import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
-import Dropdown from "primevue/dropdown";
-// import MultiSelect from 'primevue/multiselect';
+import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
+// import Dropdown from "primevue/dropdown";
+import MultiSelect from 'primevue/multiselect';
+import dateFormatter from  "../../../services/dates/dateformatter";
 // import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
     components: {
-        MembershipPieChart,
-        Dropdown, 
+        MultiSelect,
+        PerformancePieChart,
+        PerformanceColumnChart,
+        // Dropdown, 
         Calendar, 
         PaginationButtons },
     setup() {
@@ -210,58 +197,168 @@ export default {
     // const selectedGender = ref();
     // const selectedMaritalStatus = ref();
     const showReport = ref(false);
-    const pieChart = ref([ { name: null, value: 4 }, { name: "Newsletter", value: 1 } ]);
+    const pieChart = ref({ name: "Attendance", color: "", data: [ 0, 650, 13, 44, 0, 35, 150, 0, 5362, 44, 21, 1020, 21389, 20, 55, 290, 516, 293, 733, 661, 879, 151, 7, 540, 229, 21, 36, 483, 4345 ] });
+    const series = ref( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]);
     const startDate = ref(new Date());
     const endDate = ref(new Date());
-    const membersInChurch = ref([]);
-    const allMembersInChurch = () => {
-      axios
-        .get(`/api/People/GetMembershipSummary`)
+    const firstTimerInChurch = ref([]);
+    const genderChartResult = ref([]);
+    const maritalStatusChartResult = ref([]);
+    const eventDateChartResult = ref([]);
+    const attendanceSeries = ref("weekly");
+    // const allMembersInChurch = () => {
+    //   axios
+    //     .get(`/api/People/GetMembershipSummary`)
+    //     .then((res) => {
+    //       console.log(res);
+    //       membersInChurch.value = res.data;
+    //     console.log(membersInChurch.value, "✌️✌️");
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // };
+    const genderChart = (array, key) => {
+       // Accepts the array and key
+      // Return the end result
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
+        return result;
+      }, []); // empty object is the initial value for result object
+      // genderChartResult.value
+      for (const prop in result) {
+        // genderChartResult.value
+        console.log(prop, result[prop])
+        genderChartResult.value.push({
+          name: prop,
+          value: result[prop].length
+        })
+      }
+      console.log(genderChartResult.value)
+    };
+
+    const mappedGender = computed(() => {
+      if (genderChartResult.value.length === 0) return []
+      return genderChartResult.value.map(i => i)
+    })
+
+       const maritalStatusChart = (array, key) => {
+       // Accepts the array and key
+      // Return the end result
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      }, []); // empty object is the initial value for result object
+      // genderChartResult.value
+      for (const prop in result) {
+        // genderChartResult.value
+        console.log(prop, result[prop])
+        maritalStatusChartResult.value.push({
+          name: prop,
+          value: result[prop].length
+        })
+      }
+      console.log(maritalStatusChartResult.value)
+    };
+
+    const mappedMaritalStatus = computed(() => {
+      if (maritalStatusChartResult.value.length === 0) return []
+      return maritalStatusChartResult.value.map(i => i)
+    })
+    const eventDateChart = (array, key) => {
+       // Accepts the array and key
+      // Return the end result
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      }, []); // empty object is the initial value for result object
+      // genderChartResult.value
+      for (const prop in result) {
+        // genderChartResult.value
+        console.log(prop, result[prop])
+        eventDateChartResult.value.push({
+          name: prop,
+          value: result[prop].length
+        })
+      }
+      console.log(eventDateChartResult.value)
+    };
+
+    const mappedEventDate = computed(() => {
+      if (eventDateChartResult.value.length === 0) return []
+      return eventDateChartResult.value.map(i => i)
+    })
+
+    const genarateReport = () => {
+        axios
+        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
-          console.log(res);
-          membersInChurch.value = res.data;
-        console.log(membersInChurch.value, "✌️✌️");
+
+          console.log(res, "🎄🎄🎄");
+          firstTimerInChurch.value = res.data;
+          console.log(firstTimerInChurch.value, "✌️✌️");
+          genderChart(res.data,'gender')
+          maritalStatusChart(res.data,'maritalStatus')
+          eventDateChart(res.data,'activityDate')
         })
         .catch((err) => {
           console.log(err);
         });
-    };
-
-    const genarateReport = () => {
         showReport.value = true;
 
     }
 
-    
-    const getMemberClassification = async () => {
-      try {
-        // let { data } = await axios.get("/api​/Reports​/people​/getMemberClassification");
-        // console.log(data);
-
-        axios
-          .get('/api/Membership/GetCurrentSignedInUser')
-          .then((res) => {
-            // tenantCurrency.value = res.data;
-            console.log(res.data);
-          })
-          .catch((err) => console.log(err));
-        // donationSummary.value = data;
-      } catch (err) {
-        console.log(err);
-      }
+     const formatDate = (activityDate) => {
+      return dateFormatter.monthDayYear(activityDate);
     };
-    getMemberClassification();
+
+    
+    // const getMemberClassification = async () => {
+    //   try {
+    //     axios
+    //       .get('/api/Reports/people/getAllContactsReport')
+    //       .then((res) => {
+    //         // tenantCurrency.value = res.data;
+    //         console.log(res.data,'myall');
+    //       })
+    //       .catch((err) => console.log(err));
+    //     // donationSummary.value = data;
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
+    // getMemberClassification();
 
      return {
-         allMembersInChurch,
+        //  allMembersInChurch,
+        genderChartResult,
+        attendanceSeries,
+        maritalStatusChart,
+        genderChart,
+        eventDateChart,
+        mappedGender,
+        mappedMaritalStatus,
+        mappedEventDate,
+        maritalStatusChartResult,
+        eventDateChartResult,
          startDate,
          endDate,
          genarateReport,
          showReport,
          pieChart,
+         series,
          membership,
          gender,
          maritalStatus,
+         formatDate,
+         firstTimerInChurch
         //  selectedMember,
         //  selectedGender,
         //  selectedMaritalStatus
