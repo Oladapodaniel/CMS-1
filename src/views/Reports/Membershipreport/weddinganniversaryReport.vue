@@ -60,13 +60,43 @@
 
     <section>
       <!-- chart area -->
-      <div class="chart">
-        <div style="width: 45%" class="ml-md-4 chart1">
+      <div class="chart row graph-area table">
+        <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart"
-            title="By Gender"
+            title="Gender"
             distance="5"
             :titleMargin="10"
+            :summary="membershipByGender"
+          />
+        </div>
+        <div class="chart1 col-12 col-md-6">
+          <ByGenderChart
+            domId="chart2"
+            title="Marital Status"
+            distance="5"
+            :titleMargin="10"
+            :summary="membershipMaritalStatus"
+          />
+        </div>
+      </div>
+      <div class="chart row graph-area my-3 table">
+        <div class="chart1 col-12 col-md-6">
+          <ByGenderChart
+            domId="chart3"
+            title="Membership Status"
+            distance="5"
+            :titleMargin="10"
+            :summary="membershipDistribution"
+          />
+        </div>
+        <div class="chart1 col-12 col-md-6">
+          <ByGenderChart
+            domId="chart4"
+            title="Age Group"
+            distance="5"
+            :titleMargin="10"
+            :summary="membershipAgeGroup"
           />
         </div>
       </div>
@@ -75,11 +105,12 @@
 
     <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border" >
-        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
-          <thead class="table-header-area-main d-flex">
+      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+        <table class="table remove-styles mt-0 table-hover table-header-area">
+          <thead class="table-header-area-main">
             <tr
-              class="small-text text-capitalize text-nowrap tablerow-style d-flex justify-content-between"
+              class="small-text text-capitalize text-nowrap"
+              style="border-bottom: 0"
             >
               <th scope="col">Name</th>
               <th scope="col">Wedding Day</th>
@@ -88,6 +119,7 @@
               <th scope="col">Gender</th>
               <th scope="col">Marital Status</th>
               <th scope="col">Age Group</th>
+              <th scope="col">Membership</th>
               <th scope="col">Home Address</th>
             </tr>
           </thead>
@@ -101,6 +133,7 @@
               <td>{{ anniversary.gender }}</td>
               <td>{{ anniversary.maritalStatus }}</td>
               <td>{{ anniversary.ageGroup }}</td>
+              <td>{{ anniversary.membership }}</td>
               <td>{{ anniversary.homeAddress }}</td>
             </tr>
           </tbody>
@@ -132,18 +165,66 @@ export default {
     const startDate = ref("");
     const endDate = ref("");
     const weddingAnniversary = ref([]);
+    const membershipByGender = ref([]);
+    const membershipMaritalStatus = ref([]);
+    const membershipDistribution = ref([]);
+    const membershipAgeGroup = ref([]);
     const generateWeddingAnniversaryReport = () => {
       axios
         .get(`/api/Reports/people/getWeddingsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
           console.log(res);
           weddingAnniversary.value = res.data;
+          membershipByGender.value = getMembershipGenderChart(res.data);
+          membershipMaritalStatus.value =membershipMaritalStatusChart(res.data);
+          membershipDistribution.value = membershipStatusChart(res.data)
+          membershipAgeGroup.value = membershipAgeGroupChart(res.data)
           console.log(weddingAnniversary.value, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
         });
     };
+
+    const getAllItemsInWeddingReport = (arr, key, value) => {
+      return{
+              name: value,
+              value: weddingAnniversary.value.filter(i => i[key]=== value).length
+      }
+    }
+
+    const getMembershipGenderChart =  arr => {
+      return [
+          getAllItemsInWeddingReport(arr, 'gender', 'Male'),
+          getAllItemsInWeddingReport(arr, 'gender', 'Female'),
+          getAllItemsInWeddingReport(arr, 'gender', null),
+          getAllItemsInWeddingReport(arr, 'gender', 'Other')
+      ]
+    };
+
+    const membershipMaritalStatusChart = arr => {
+      return [
+        getAllItemsInWeddingReport(arr, 'maritalStatus', 'Married'),
+        getAllItemsInWeddingReport(arr, 'maritalStatus', 'Single')
+      ]
+    };
+
+    const membershipStatusChart = arr => {
+      return [
+        getAllItemsInWeddingReport(arr, 'membership', 'Full Member'),
+        getAllItemsInWeddingReport(arr, 'membership', 'Friend'),
+        getAllItemsInWeddingReport(arr, 'membership', 'Not Member')
+      ]
+    };
+
+    const membershipAgeGroupChart = arr => {
+      return [
+        getAllItemsInWeddingReport(arr, 'agegroup', 'None'),
+        getAllItemsInWeddingReport(arr, 'agegroup', '20-30'),
+        getAllItemsInWeddingReport(arr, 'agegroup', '30-40'),
+        getAllItemsInWeddingReport(arr, 'agegroup', '40-60'),
+      ]
+    }
 
        const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
@@ -153,9 +234,13 @@ export default {
       Calendar,
       startDate,
       endDate,
-     weddingAnniversary,
-     generateWeddingAnniversaryReport,
-     formatDate
+      weddingAnniversary,
+      generateWeddingAnniversaryReport,
+      formatDate,
+      membershipByGender,
+      membershipMaritalStatus,
+      membershipDistribution,
+      membershipAgeGroup
     };
   },
 };
@@ -217,7 +302,7 @@ export default {
     width: 100% !important;
     box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
     border: 0.063rem solid #dde2e6 !important;
-    border-radius: 30px !important;
+    /* border-radius: 30px !important; */
     text-align: left !important;
     margin-bottom: auto !important;
     padding-bottom: 0.5rem !important;
@@ -245,5 +330,17 @@ border-top-right-radius: 0 !important;
 .tablerow-style {
   min-width: 100%;
   border-bottom: 0
+}
+
+.graph-area{
+    border: 1px solid #dde2e6;
+    border-radius: 0.5rem;
+    padding: 1rem 0rem;
+    margin: 2rem 0rem;
+}
+
+.responsiveness{
+  max-width: 100%;
+  overflow-y: scroll;
 }
 </style>

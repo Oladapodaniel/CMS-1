@@ -334,7 +334,6 @@
                     :data="chartData"
                     :series="series"
                     :attendanceSeries="attendanceSeries"
-                    :microtitle="`Church Attendance Data`"
                   />
                 </div>
                 <div v-else>
@@ -346,7 +345,6 @@
                     :data="monthlyAttendanceObj"
                     :series="series"
                     :attendanceSeries="attendanceSeries"
-                     :microtitle="`Church Attendance Data`"
                   />
                 </div>
               </div>
@@ -799,11 +797,20 @@ export default {
 
     const chartData = computed(() => {
       if (!tenantInfoAttendanceWeekly.value) return [];
-      return tenantInfoAttendanceWeekly.value[0];
+          let chartWeekly = []
+          let chartObj = tenantInfoAttendanceWeekly.value.find(i => i.name === "Attendance")
+          chartObj['color'] = '#002044'
+          chartWeekly.push(chartObj)
+          return chartWeekly
     });
     const monthlyAttendanceObj = computed(() => {
       if (!tenantInfoAttendanceMonthly.value) return [];
-      return tenantInfoAttendanceMonthly.value[0];
+      // return [tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")];
+        let chartMonthly = []
+        let chartObj = tenantInfoAttendanceMonthly.value.find(i => i.name === "Attendance")
+        chartObj['color'] = '#002044'
+        chartMonthly.push(chartObj)
+        return chartMonthly
     });
 
     const chartData2 = computed(() => {
