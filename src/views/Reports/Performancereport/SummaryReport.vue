@@ -1,5 +1,5 @@
 <template>
-<div class="container container-wide mt-5 overflow-hidden border mb-4">
+<div class="container container-wide mt-5 overflow-hidden mb-4">
      <div>
             <h3 class="font-weight-bold mt-5">Church Activities Performance Analysis Report</h3>
         </div>
@@ -49,29 +49,47 @@
                 </div>
              </div> 
              </div>
-             <div style="width: 45%" class="ml-md-4 chart1">
-          <ByGenderChart
-            domId="chart"
-            title="Analysis"
-            distance="5"
-            :titleMargin="10"
-            :summary="report"
-          />
-        </div>
              <div>
                  <h3 class="font-weight-bold mt-5 ml-2">SERVICE PERFORMANCE ANALYSIS REPORT </h3>
-                 <div class="border borderInner mb-5">
+                 <div class=" borderInner mb-5">
                      <h5 class="ml-3 mt-4">Service performance Chart</h5>
-                  
-        
-
+                        <div class="">
+                        <PerformanceColumnChart
+                            domId="chart"
+                            title="Analysis"
+                            distance="5"
+                            :titleMargin="10"
+                            :data ="colunmChart"
+                            :series = "series"
+                        />
+                        </div>
                  </div>
-                  <div class="border borderInner mb-5">
+                  <div class="borderInner mb-5">
                      <h5 class="ml-3 mt-4">Attendance Analysis Chart</h5>
+                     <div class="">
+                        <PerformanceColumnChart
+                            domId="chart1"
+                            title=" Attendance Analysis"
+                            distance="5"
+                            :titleMargin="10"
+                            :data ="colunmChartAttendance "
+                            :series1= "series1"
+                        />
+                        </div>
 
                  </div>
-                   <div class="border borderInner mb-2">
+                   <div class="borderInner mb-2">
                      <h5 class="ml-3 mt-4">First Timers Analysis Chart</h5>
+                     <div class="">
+                        <PerformanceColumnChart
+                            domId="chart2"
+                            title="First Timers Analysis"
+                            distance="5"
+                            :titleMargin="10"
+                            :data ="colunmChart"
+                            :series = "series"
+                        />
+                        </div>
 
                  </div>
              </div>
@@ -81,8 +99,10 @@
 
 
 <script>
-import { onMounted,ref} from 'vue';
-import ByGenderChart from "@/components/charts/PieChart.vue";
+import {ref} from 'vue';
+// import ByGenderChart from "@/components/charts/PieChart.vue";
+import PerformanceColumnChart from "@/components/charts/ColumnChart.vue";
+
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
@@ -92,11 +112,16 @@ import axios from "@/gateway/backendapi";
         components:{
             Dropdown,
             Calendar,
-            ByGenderChart
+            PerformanceColumnChart
 
         }, 
 
         setup() {
+    const colunmChart = ref({name: "Service", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890,678,69]});
+    const colunmChartAttendance = ref({name: "Attendance", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890]});
+    const series = ref([{name:'FirstTimers', data: [1,2,3,4,5,6,7,8,9]}, {name:'NewConverts', data: [1,2,3,4,5,6,7,8,9]}, {name:'Testmonial', data: [1,2,3,4,5,6,7,8,9]}])
+    const microTitle = ref([])
+    const series1 = ref([1,2,3,4,5,6,7,8,9])
     const allEvents = ref({});
     const analysisReport = ref({})
     const startDate = ref('');
@@ -148,7 +173,12 @@ import axios from "@/gateway/backendapi";
             selectedSummaryChart,
             allEvents,
             analysisReport,
-            getAnalysisReport
+            getAnalysisReport,
+            colunmChart,
+            series,
+            series1,
+            colunmChartAttendance,
+            microTitle 
             
         }
         
@@ -189,7 +219,7 @@ import axios from "@/gateway/backendapi";
     }
     .borderInner{
         width: 100%;
-        height: 200px;
+        height: 700px;
     }
         img.flag {
             width: 17px;
