@@ -22,7 +22,7 @@ import { useRoute } from 'vue-router'
 export default {
   components: {},
 
-  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries", "chartClass" ],
+  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries", "chartClass","microtitle" ],
   
   setup(props) {
     const chart = ref(null);
@@ -93,7 +93,7 @@ export default {
     },
         series: [
           {
-            name: "Church Attendance Data",
+            name: props.microtitle,
             color: "#002044",
             // data: props.data.data
             data: props.data ? props.data.data : props.data

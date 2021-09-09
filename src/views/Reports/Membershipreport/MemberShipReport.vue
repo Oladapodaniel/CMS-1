@@ -81,11 +81,12 @@
                         Congregation Members Report 
                     </div>
                 </div>
-                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 40vh;">
+                <div class="col-12 table d-flex flex-wrap">
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="col-12 mt-sm-3 mt-md-0 mt-lg-2  text-center">
                         <div class="col-12 font-weight-bold">Membership By Gender</div>
                         <div class="col-12"  :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12" style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <div class="col-12" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <MembershipPieChart
                                 domId="chart1"
                                 distance="5"
@@ -96,10 +97,10 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border mt-3 mt-sm-3 mt-md-0 mt-lg-0 text-center" style="height: 40vh;">
+                    <div class="col-12  mt-3 mt-sm-3 mt-md-0 mt-lg-2 text-center">
                         <div class="col-12  font-weight-bold">Membership By Marital Status</div>
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <MembershipPieChart
                                 domId="chart2"
                                 distance="5"
@@ -109,11 +110,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border text-center mt-3 mt-sm-3 mt-md-0 mt-lg-3 " style="height: 40vh; ">
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-12 table d-flex flex-wrap">
+                  <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12 text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2 " >
                         <div class="col-12  font-weight-bold ">Membership By Members</div>
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <MembershipPieChart
                                 domId="chart3"
                                 distance="5"
@@ -122,12 +127,12 @@
                             />
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12  border text-center mt-3 mt-sm-3 mt-md-0 mt-lg-3  " style="height: 40vh;">
+                  </div>
+                  <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12   text-center mt-3 mt-sm-3 mt-md-0 mt-lg-2  ">
                         <div class="col-12 w-100  font-weight-bold">Membership By Age Group</div>
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <MembershipPieChart
                                 domId="char4"
                                 distance="5"
@@ -138,6 +143,7 @@
                         </div>
                     </div>
                 </div>
+              </div>
             </div>
         </div>
         <!-- <div > -->
@@ -152,8 +158,8 @@
                             class="small-text text-capitalize text-nowrap"
                             style="border-bottom: 0"
                             >
-                            <th scope="col">Church Activity</th>
-                            <th scope="col">New Convert</th>
+                            <!-- <th scope="col">Church Activity</th> -->
+                            <th scope="col">Membership</th>
                             <th scope="col">Name</th>
                             <th scope="col">Phone</th>
                             <th scope="col">Email</th>
@@ -166,7 +172,7 @@
                         </thead>
                         <tbody class="font-weight-normal text-nowrap">
                             <tr v-for="(member, index) in membersInChurch" :key="index">
-                            <td>{{member.churchActivity}}</td>
+                            <!-- <td>{{member.churchActivity}}</td> -->
                             <td>{{member.membership}}</td>
                             <td>{{member.name}}</td>
                             <td>{{member.mobilePhone}}</td>
@@ -191,7 +197,7 @@
 </template>
 
 <script>
-import {onMounted,computed, ref } from "vue";
+import {computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";

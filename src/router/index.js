@@ -328,6 +328,13 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/financialTrasactionReport.vue')
             },
             {
+                path: 'financialofferingreport',
+                name:"FinancialOfferingReport",
+                component: () =>
+
+                import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialOfferingReport.vue')
+            }, 
+            { 
                 path: 'financialactivitiesbalance',
                 name: "financialActivitiesBalance",
                 meta: {
