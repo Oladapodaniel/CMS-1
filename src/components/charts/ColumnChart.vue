@@ -22,7 +22,7 @@ import { useRoute } from 'vue-router'
 export default {
   components: {},
 
-  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries", "chartClass","microtitle" ],
+  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries" ],
   
   setup(props) {
     const chart = ref(null);
@@ -33,13 +33,7 @@ export default {
 
     onMounted(() => {
         headerText.value = props.header;
-        
-        // if (props.chartClass) {
-        //   console.log(props.chartClass)
-        // } else {
-        //   console.log("It is Undefined")
-        // }
-
+      
       var highchartsOptions = {
         chart: {
           type: "column",
@@ -118,13 +112,13 @@ export default {
     });
 
     onMounted(() => {
-      console.log(props.series, "passed data")
+      console.log(props.series, "take data")
       console.log(props.data, "passed data")
       console.log(props.attendanceSeries)
     })
 
     onUpdated(() => {
-      console.log(props.series, "passed data")
+      console.log(props.series, "take water data")
       console.log(props.data, "passed data")
       
     })

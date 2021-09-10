@@ -366,25 +366,25 @@
                 </div>
 
                 <div v-if="firstTimerBoolean">
-                  <ColumnChart2
+                  <ColumnChart
                     domId="chart3"
-                    title="First Timer And New Convert Inflow"
-                    subtitle="How First Timer Come to Church"
+                    title="First Timer Inflow"
+                    subtitle="How First Timers Come to Church"
                     header="First Timers Attendance"
                     :data="chartData2"
-                    :chartDataNewConvert="chartDataNewConvert"
-                    :series2="series2"
+                    :series="series2"
+                    :attendanceSeries="attendanceSeries"
                   />
                 </div>
                 <div v-else>
-                  <ColumnChart2
+                  <ColumnChart
                     domId="chart4"
-                    title="First Timer And New Convert Inflow"
+                    title="First Timer Inflow"
                     subtitle="How First Timer Come to Church"
                     header="First Timers Attendance"
                     :data="monthlyFirstTimerObj"
-                    :chartDataNewConvert="chartDataNewConvert"
-                    :series2="series2"
+                    :series="series2"
+                    :attendanceSeries="attendanceSeries"
                   />
                 </div>
               </div>
@@ -425,14 +425,13 @@
           </div>
         </div>
       </div>
-
       <div
         v-if="
           tenantInfoCeleb.length === 0 &&
-          tenantInfoFirstTimerWeekly[0] &&
-          tenantInfoFirstTimerWeekly[0].data.length === 0 &&
-          tenantInfoAttendanceWeekly[0] &&
-          tenantInfoAttendanceWeekly[0].data[0] === 0
+          (tenantInfoFirstTimerWeekly[0] &&
+          tenantInfoFirstTimerWeekly[0].data.length === 0) ||
+          (tenantInfoAttendanceWeekly[0] &&
+          tenantInfoAttendanceWeekly[0].data[0] === 0)
         "
       >
         <div class="container-fluid">
@@ -815,12 +814,14 @@ export default {
 
     const chartData2 = computed(() => {
       if (!tenantInfoFirstTimerWeekly.value) return [];
-      return tenantInfoFirstTimerWeekly.value[0];
+      tenantInfoFirstTimerWeekly.value[0].color = '#002044';
+      return tenantInfoFirstTimerWeekly.value
     });
 
     const monthlyFirstTimerObj = computed(() => {
       if (!tenantInfoFirstTimerMonthly.value) return [];
-      return tenantInfoFirstTimerMonthly.value[0];
+      tenantInfoFirstTimerMonthly.value[0].color = '#002044';
+      return tenantInfoFirstTimerMonthly.value
     });
 
     const chartDataNewConvert = computed(() => {
