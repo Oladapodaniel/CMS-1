@@ -1,6 +1,6 @@
 <template>
  <div class="container">
-     <div class="font-weight-bold">People
+     <div class="font-weight-bold">
           </div>
         <div class="row mt-5">
          <div class="col-md-12 col-12 text-center">
@@ -8,7 +8,7 @@
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Membership</h4>
-                    <p class="ju paragraph1">How many Members are you gathering? Think about fast growing church and maintaining your members information and reaching out to them.</p>
+                    <p class="ju paragraph1">Generate your membership report and know the progress of your church members.</p>
 
 
                 </div>
@@ -21,25 +21,25 @@
                         </router-link>
                     </div>
                     <div class="row">
-                        <p class="ju mb-3 paragraph1">This reports provides a detailed report of the Membership to your ministry.</p>
+                        <p class="ju mb-3 paragraph1">This reports provides a detailed report of the Membership in your ministry.</p>
                     </div>
                 </div>
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                 </div>
-                <div class="col-md-5 col-12 border-bottom mt-4">
+                <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
                         <router-link to="/tenant/firsttimersreport" class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">First Timer Report</h4></router-link>
                        <router-link to="/tenant/firsttimersreport"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
-                        <p class="ju mb-3 paragraph1">This reports provides a detailed report of the first timers to your ministry.</p>
+                        <p class="ju mb-3 paragraph1">This reports provides a detailed report of the first timers in your ministry.</p>
                     </div>
                 </div>
 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                 </div>
-                <div class="col-md-5 col-12 mt-4">
+                <!-- <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
                          <router-link to= "/tenant/newconvertreport" class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">New Convert</h4></router-link>
                        <router-link to= "/tenant/newconvertreport"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
@@ -47,7 +47,7 @@
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed report of new converts in your ministry.</p>
                     </div>
-                </div>
+                </div> -->
             </div>
      </div>
     </div>

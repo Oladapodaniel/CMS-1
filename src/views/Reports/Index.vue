@@ -4,19 +4,19 @@
             <div ><h3 class="font-weight-bold"> Reports</h3></div>
         </div>
         <div class="row" style=" background: #f5f8fa;">
-            <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer " @click="togglePeople">
+            <div class="col-12 col-sm-6  c-pointer " @click="togglePeople">
                 <div class="p-3"> Membership </div> 
                 <div :class="{ 'baseline' : showPeople, 'hide-base' : !showPeople }"></div>
             </div>
-            <div class="col-12 col-sm-6  col-md-2 col-lg-2 c-pointer" @click="togglePerformance">
+            <div class="col-12 col-sm-6 c-pointer" @click="togglePerformance">
                 <div class="p-3"> Attendance </div> 
                 <div :class="{ 'baseline' : showPerformance, 'hide-base' : !showPerformance }"></div>
             </div>
-            <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer" @click="toggleFinancial">
+            <!-- <div class="col-12 col-sm-6 col-md-4 c-pointer" @click="toggleFinancial">
                 <div class="p-3"> Financial </div> 
                 <div :class="{ 'baseline' : showFinancial, 'hide-base' : !showFinancial }"></div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer" @click="toggleMobile">
+            </div> -->
+            <!-- <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer" @click="toggleMobile">
                 <div class="p-3"> Mobile usage </div> 
                 <div :class="{ 'baseline' : showMobile, 'hide-base' : !showMobile }"></div>
             </div>
@@ -27,7 +27,7 @@
             <div class="col-12 col-sm-6 col-md-2 col-lg-2 c-pointer" @click="toggleOthers">
                 <div class="p-3"> Others </div> 
                 <div :class="{ 'baseline' : showOthers, 'hide-base' : !showOthers }"></div>
-            </div>
+            </div> -->
         </div>
         <div class="row mt-3">
             <div class="col-12" v-if="showPeople">
