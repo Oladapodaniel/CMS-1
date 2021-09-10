@@ -95,8 +95,8 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 60vh;">
-                        <div class="col-12 font-weight-bold">Membership By Gender</div>
+                    <div class="col-12 border  text-center" >
+                        <!-- <div class="col-12 font-weight-bold">Membership By Gender</div> -->
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
                         <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <OfferingColumnChart
@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 60vh;">
+                    <div class="col-12  text-center" >
                         <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
                         <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
