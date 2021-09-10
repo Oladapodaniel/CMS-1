@@ -38,11 +38,11 @@
 
         <div class="col-md-7 d-sm-flex">
           <div class="p-field p-col-12 p-md-4 mt-1">
-           <div><label for="" class="font-weight-bold">START DATE</label></div>
+          <!--  <div><label for="" class="font-weight-bold">START DATE</label></div> -->
             <Calendar id="icon" v-model="startDate" :showIcon="true" />
           </div>
           <div class="p-field p-col-12 p-md-4 my-1">
-           <div><label for="" class="font-weight-bold">END DATE</label></div>
+           <!-- <div><label for="" class="font-weight-bold">END DATE</label></div> -->
             <Calendar id="endDate" v-model="endDate" :showIcon="true" />
           </div>
         </div>
@@ -75,58 +75,28 @@
 
     <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border" >
-        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+        <table class="table remove-styles mt-0  table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
-              class="small-text text-capitalize text-nowrap"
+             class="small-text text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
-              <th scope="col">Church Activity</th>
+              <th scope="col">Title</th>
               <th scope="col">Name</th>
-              <th scope="col">Phone</th>
               <th scope="col">Email</th>
-              <th scope="col">Home Address</th>
+              <th scope="col">Phone</th>
               <th scope="col">Gender</th>
               <th scope="col">Marital Status</th>
+              <th scope="col">Home Address</th>
+              <th scope="col">Event Name</th>
+              <th scope="col">Description</th>
               <th scope="col">Activity Date</th>
-              <th scope="col">Current Status</th>
+              <th scope="col">Contact Date</th>
+              <th scope="col">Contact Status</th>
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr>
-              <td>Prayers</td>
-              <td>Charity Uche</td>
-              <td>08067383789</td>
-              <td>charityucche@gmail.com</td>
-              <td>Bode Thomas</td>
-              <td>Couple</td>
-              <td>Couple</td>
-              <td>24/10/2021</td>
-              <td>Active</td>
-            </tr>
-            <tr>
-              <td>Youth Class</td>
-              <td>Charity Uche</td>
-              <td>08067383789</td>
-              <td>charityucche@gmail.com</td>
-              <td>Bode Thomas</td>
-              <td>Couple</td>
-              <td>Couple</td>
-              <td>24/10/2021</td>
-              <td>Active</td>
-            </tr>
-            <tr>
-              <td>Fasting</td>
-              <td>Charity Uche</td>
-              <td>08067383789</td>
-              <td>charityucche@gmail.com</td>
-              <td>Bode Thomas</td>
-              <td>Female</td>
-              <td>Couple</td>
-              <td>24/10/2021</td>
-              <td>Active</td>
-            </tr>
             <tr>
               <td>Sunday school</td>
               <td>Charity Uche</td>
@@ -140,9 +110,9 @@
             </tr>
           </tbody>
         </table>
-        <div class="table-foot d-flex justify-content-end mt-n3">
+        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
           <PaginationButtons />
-        </div>
+        </div> -->
       </div>
       <!--end table header -->
     </section>
@@ -153,26 +123,26 @@
 import { ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
-import PaginationButtons from "../../../components/pagination/PaginationButtons";
+// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
-    PaginationButtons,
+    // PaginationButtons,
   },
   setup() {
-    const startDate = ref();
-    const endDate = ref(new Date());
-    const membersInChurch = ref([]);
+    const startDate = ref("");
+    const endDate = ref("");
+    const newConvertsInChurch = ref([]);
     const allMembersInChurch = () => {
       axios
-        .get(`/api/People/GetMembershipSummary`)
+        .get(`/api/Reports/people/getNewConvertsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
           console.log(res);
-          membersInChurch.value = res.data;
-console.log(membersInChurch.value, "✌️✌️");
+          newConvertsInChurch.value = res.data;
+console.log(newConvertsInChurch.value, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
@@ -182,7 +152,7 @@ console.log(membersInChurch.value, "✌️✌️");
       Calendar,
       startDate,
       endDate,
-      membersInChurch,
+      newConvertsInChurch,
       allMembersInChurch,
     };
   },
@@ -268,5 +238,19 @@ border-top-right-radius: 0 !important;
 
 .remove-border{
     box-shadow: none !important;
+}
+
+.graph-area{
+    border: 1px solid #dde2e6;
+    border-radius: 0.5rem;
+    padding: 1rem 0rem;
+    margin: 2rem 0rem !important;
+     width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45;
+}
+
+.responsiveness{
+  max-width: 100%;
+  overflow-y: scroll;
 }
 </style>

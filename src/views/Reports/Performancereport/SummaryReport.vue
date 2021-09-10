@@ -88,6 +88,7 @@
                             :titleMargin="10"
                             :data ="colunmChart"
                             :series = "series"
+                            :microtitle = "microTitle"
                         />
                         </div>
 
@@ -117,10 +118,9 @@ import axios from "@/gateway/backendapi";
         }, 
 
         setup() {
-    const colunmChart = ref({name: "Service", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890,678,69]});
+    const colunmChart = ref([{name: "Service", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890,678,69]}, {name: "Service", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890,678,69]}, {name: "Service", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890,678,69]}  ]);
     const colunmChartAttendance = ref({name: "Attendance", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890]});
-    const series = ref([{name:'FirstTimers', data: [1,2,3,4,5,6,7,8,9]}, {name:'NewConverts', data: [1,2,3,4,5,6,7,8,9]}, {name:'Testmonial', data: [1,2,3,4,5,6,7,8,9]}])
-    const microTitle = ref([])
+    const series = ref([1,2,3,4,5,6,7,8,9])
     const series1 = ref([1,2,3,4,5,6,7,8,9])
     const allEvents = ref({});
     const analysisReport = ref({})

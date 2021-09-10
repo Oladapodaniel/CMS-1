@@ -104,9 +104,9 @@
             </tr>
           </tbody>
         </table>
-        <div class="table-foot d-flex justify-content-end mt-n3">
+        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
           <PaginationButtons />
-        </div>
+        </div> -->
       </div>
       <!--end table header -->
     </section>
@@ -117,7 +117,7 @@
 import { ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
-import PaginationButtons from "../../../components/pagination/PaginationButtons";
+// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
 
@@ -125,7 +125,7 @@ export default {
   components: {
     Calendar,
     ByGenderChart,
-    PaginationButtons,
+    // PaginationButtons,
   },
   setup() {
     const startDate = ref("");

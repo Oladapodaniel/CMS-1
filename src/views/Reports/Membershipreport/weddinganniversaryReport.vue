@@ -60,7 +60,8 @@
 
     <section>
       <!-- chart area -->
-      <div class="chart row graph-area table">
+      <div class="chart row"
+            :class=" weddingAnniversary &&  weddingAnniversary.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart"
@@ -80,7 +81,8 @@
           />
         </div>
       </div>
-      <div class="chart row graph-area my-3 table">
+      <div class="chart row my-1"
+            :class=" weddingAnniversary &&  weddingAnniversary.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart3"
@@ -336,7 +338,9 @@ border-top-right-radius: 0 !important;
     border: 1px solid #dde2e6;
     border-radius: 0.5rem;
     padding: 1rem 0rem;
-    margin: 2rem 0rem;
+    margin: 2rem 0rem !important;
+     width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45;
 }
 
 .responsiveness{
