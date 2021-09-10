@@ -20,13 +20,13 @@ import Highcharts from "highcharts";
 export default {
   components: {},
 
-  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series2", "attendanceSeries", "chartDataNewConvert" ],
+  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries", "seriesText" ],
   
   setup(props) {
     const chart = ref(null);
     const headerText = ref(null);
 
-    onMounted(() => {
+    onUpdated(() => {
         headerText.value = props.header;
 
       var highchartsOptions = {
@@ -55,9 +55,9 @@ export default {
         xAxis: {
           allowDecimals: false,
           title: {
-            text:  props.series2[0] == 1 ? "Weekly" : "Monthly",
+            text:  props.seriesText,
           },
-          categories: props.series2
+          categories: props.series
         },
         yAxis: {
           title: {
@@ -79,26 +79,27 @@ export default {
           borderWidth: 1,
         }
     },
-        series: [
-          {
-            name: "First Timer",
-            color: "#002044",
-            // data: props.data.data
-            // data: props.data ? props.data.data : props.data
-            // data: [12, 33, 40, 34, 300, 0, 0]
-            data: props.data ? props.data.data : props.data
-          },
-          {
-            name: "New Convert",
-            color: "#002044",
-            data: props.data ? props.chartDataNewConvert.data : props.data
-          }
+        series: props.data
+        //  [
         //   {
-        //     name: "Others",
+        //     name: "First Timer",
         //     color: "#002044",
-        //     data: [59, 22, 51, 84, 61, 12],
+        //     // data: props.data.data
+        //     // data: props.data ? props.data.data : props.data
+        //     // data: [12, 33, 40, 34, 300, 0, 0]
+        //     data: props.data ? props.data.data : props.data
         //   },
-        ],
+        //   {
+        //     name: "New Convert",
+        //     color: "#002044",
+        //     data: props.data ? props.chartDataNewConvert.data : props.data
+        //   }
+        // //   {
+        // //     name: "Others",
+        // //     color: "#002044",
+        // //     data: [59, 22, 51, 84, 61, 12],
+        // //   },
+        // ],
         //   credits: false,
       };
       chart.value = new Highcharts.chart(highchartsOptions);

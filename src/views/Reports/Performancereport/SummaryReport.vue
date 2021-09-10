@@ -50,35 +50,37 @@
              </div> 
              </div>
              <div>
-                 <h3 class="font-weight-bold mt-5 ml-2">SERVICE PERFORMANCE ANALYSIS REPORT </h3>
+                 <h3 class="font-weight-bold mt-5 ml-2"  v-show="analysisReport.length > 0">SERVICE PERFORMANCE ANALYSIS REPORT </h3>
                  <div class=" borderInner mb-5">
                      <h5 class="ml-3 mt-4"></h5>
-                        <div class="">
+                        <div class="" v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart"
                             title="Service Analysis"
                             distance="5"
                             :titleMargin="10"
-                            :data ="colunmChart"
+                            :data ="attendanceChart"
                             :series = "series"
+                            :seriesText="`Attendance analysis`"
                         />
                         </div>
                  </div>
                   <div class="borderInner mb-5">
                      <h5 class="ml-3 mt-4"></h5>
-                     <div class="">
+                     <div class=""  v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart1"
                             title=" First Timers Analysis"
                             distance="5"
                             :titleMargin="10"
-                            :data ="colunmChartAttendance "
-                            :series1= "series1"
+                            :data ="FTNCChart"
+                            :series= "series"
+                            :seriesText="`First timer and new convert analysis`"
                         />
                         </div>
 
                  </div>
-                   <div class="borderInner mb-2">
+                   <!-- <div class="borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
                      <div class="">
                         <PerformanceColumnChart
@@ -88,12 +90,13 @@
                             :titleMargin="10"
                             :data ="colunmChartNewCovert"
                             :series = "series"
+                            
                         />
                         </div>
 
-                 </div>
+                 </div> -->
              </div>
-             </div>{{ attendanceChart }}hereee
+             </div>
      
 
 </template>
@@ -102,7 +105,7 @@
 <script>
 import { ref, computed } from 'vue';
 // import ByGenderChart from "@/components/charts/PieChart.vue";
-import PerformanceColumnChart from "@/components/charts/ColumnChart.vue";
+import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
 
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
@@ -121,7 +124,7 @@ import axios from "@/gateway/backendapi";
     
     const colunmChartAttendance = ref([{name: "First Timers", color: "", data: [1,67,89,67,80,66,80,67,789,7,80,47, 90]}]);
     const colunmChartNewCovert = ref([{name: "New Convert", color: "", data: [1,67,89,67,80,56,70,67,79,7,80,89,80]}]);
-    const  series = ref([1,2,3,4,5,6,7,8,9])
+    const  series = ref([])
     const series1 = ref([1,2,3,4,5,6,7,8,9])
     const allEvents = ref({});
     const analysisReport = ref([])
@@ -131,7 +134,11 @@ import axios from "@/gateway/backendapi";
     const selectedSummaryChart = ref([]);
     const report = ref([])
     const attendanceData = ref([])
+    const firstTimerData = ref([])
+    const newConvertData = ref([])
     const mainAttendanceData = ref([])
+    const mainFirsttimerNewCovertData = ref([])
+
     const getAllEvents = ()=>{
             axios.get('/api/Reports/events/getEvents')
             .then((res)=>{
@@ -145,6 +152,7 @@ import axios from "@/gateway/backendapi";
          axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${selectedSummary.value.id}`)
          .then((res)=>{
              analysisReport.value = res.data;
+             getEventServices()
              console.log(report.value); 
              console.log(res, 'Good');
 
@@ -157,11 +165,12 @@ import axios from "@/gateway/backendapi";
            analysisReport.value.forEach(i => {
             let attendanceIndex = Object.keys(i).findIndex(i => i === 'attendance')
             let attendanceValue = Object.values(i)[attendanceIndex]
-            attendanceData.value.push(attendanceValue)     
+            attendanceData.value.unshift(attendanceValue)     
          });
+         mainAttendanceData.value = []
          mainAttendanceData.value.push({
              name: 'Attendance',
-             color: '',
+             color: '#002044',
              data: attendanceData.value
          })
          return mainAttendanceData.value  
@@ -169,15 +178,42 @@ import axios from "@/gateway/backendapi";
 
      const colunmChart = ref(attendanceChart.value);
 
-    //  const getAttendanceData = computed(() => {
-    //      if (attendanceChart.value.length === 0) return []
+     const getEventServices = () => {
+           analysisReport.value.forEach(i => {
+            let serviceIndex = Object.keys(i).findIndex(i => i === 'name')
+            let serviceValue = Object.values(i)[serviceIndex]
+            series.value.unshift(serviceValue) 
+           })
+           console.log(series.value)
+           console.log(attendanceData.value)
+           
+     }
+
+    const FTNCChart = computed(() => {
+         if (analysisReport.value.length === 0) return []
+           analysisReport.value.forEach(i => {
+            let firstTimersIndex = Object.keys(i).findIndex(i => i === 'firstTimers')
+            let firstTimersValue = Object.values(i)[firstTimersIndex]
+            firstTimerData.value.unshift(firstTimersValue)     
+            
+            let newConvertIndex = Object.keys(i).findIndex(i => i === 'newConverts')
+            let newConvertValue = Object.values(i)[newConvertIndex]
+            newConvertData.value.unshift(newConvertValue)     
+         });
+         mainFirsttimerNewCovertData.value = []
+         mainFirsttimerNewCovertData.value.push({
+             name: 'First Timers',
+             color: '#002044',
+             data: firstTimerData.value
+         })
          
-
-    //  })
-     
-
-    
-     
+         mainFirsttimerNewCovertData.value.push({
+             name: 'New Converts',
+             color: '#002044',
+             data: newConvertData.value
+         })
+         return mainFirsttimerNewCovertData.value  
+     })
 
         return{
             startDate,
@@ -194,7 +230,11 @@ import axios from "@/gateway/backendapi";
             colunmChartNewCovert,
             attendanceChart,
             attendanceData,
-            mainAttendanceData
+            mainAttendanceData,
+            mainFirsttimerNewCovertData,
+            FTNCChart,
+            firstTimerData,
+            newConvertData
             
         }
         
