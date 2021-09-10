@@ -4,62 +4,62 @@
             New Convert Performance Report
         </div>
            <!-- date area -->
-            <div class="container-fluid my-3 px-0 bg-area">
-                <div
-                    style="padding: 0.2rem 0 1.2rem 0"
-                    class="row d-flex flex-row justify-content-center align-items-center"
-                >
-                    <div class="col-md-2">
-                    <h4 class="small font-weight-bold ml-1">DATE RANGE</h4>
-                    </div>
-
-                    <div class="col-md-7 d-sm-flex">
-                    <div class="p-field p-col-12 p-md-4 mt-1">
-                        <!-- <label for="icon">Start Date</label> -->
+        <div class="container-fluid my-2 py-5   bg-area">
+            <div class="row justify-content-center pl-3 ">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 "> 
+                    <div><label for="icon" class="font-weight-bold">Start Date</label></div>
+                    <div>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
-                    <div class="p-field p-col-12 p-md-4 my-1">
-                        <!-- <label for="icon">End Date</label> -->
-                        <Calendar id="endDate" v-model="endDate" :showIcon="true" />
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 ">
+                    <div><label for="icon" class="font-weight-bold">End Date</label></div>
+                    <div>
+                        <Calendar id="icon" v-model="endDate" :showIcon="true" />
                     </div>
-                    </div>
+                </div>
 
-                    <div @click="genarateReport" class="col-md-3 d-sm-flex justify-content-end   align-items-center">
-                        <button
-                            class="default-btn generate-report  c-pointer font-weight-bold"
-                        >
-                            Generate report
+                <div @click="genarateReport" class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                    <label for="icon"></label>
+                    <div class="mt-2">
+                        <button class=" default-btn primary-bg text-white  c-pointer font-weight-bold">
+                            Generate
                         </button>
                     </div>
                 </div>
             </div>
+        </div>
     <!--end of date area -->
         <div class="container-fluid ">
-            <div class="row ">
+            <div class="row w-100">
                 <div class="col-12 ">
                     <div class="mt-5 display-1 font-weight-bold text-center heading-text">
                        New Convert Analysis Report 
                     </div>
                 </div>
-                <div class="col-12 table ">
+                <!-- <div class="col-12 w-100 text-center ">
                     <div class="col-12   text-center">
-                        <div class="col-12 font-weight-bold">New Convert By Event Date</div>
+                        <div class="col-12 font-weight-bold">Firsttimer By Event Date</div>
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
                         <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <PerformanceColumnChart
                                 domId="chart1"
-                                title="New Convert By Event Date"
+                                title="Firsttimer By Event Date"
                                 distance="5"
                                 :titleMargin="10"
-                                :series2="mappedEventDate"
+                                :data="pieChart"
+                                subtitle="Monthly Attendance of Events"
+                                :series="mappedEventDate"
+                                :attendanceSeries="attendanceSeries"
+                        
                             />
-                        </div>
+                        </div>            
                     </div>
-                </div>
+                </div> -->
              </div>
             <div class="  row ">
-                <div class="col-12 table d-flex flex-wrap">
-                    <div class="col-12 col-sm-12  col-md-4 col-lg-4">
+                <div class="col-12 container-fluid table d-flex flex-wrap">
+                    <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center">
                             <div class="col-12  font-weight-bold">Gender Distribution</div>
                             <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-12  col-md-4 col-lg-4">
+                    <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
                             <div class="col-12  font-weight-bold ">Marital Status</div>
                             <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
@@ -87,7 +87,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-sm-12  col-md-4 col-lg-4">
+                    <!-- <div class="col-12 col-sm-12  col-md-4 col-lg-4">
                         <div class="col-12 text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
                             <div class="col-12  font-weight-bold ">Current Status</div>
                             <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
@@ -100,67 +100,66 @@
                             />
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
-                
         </div>
         <!-- <div > -->
             <!-- <div class="row "> -->
-                <section>
-                    <!-- table header -->
-                    <div class=" container container-top table-main px-0  remove-styles2 remove-border "
-                     :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
-                        <thead class="table-header-area-main">
-                            <tr
-                            class="small-text text-capitalize text-nowrap"
-                            style="border-bottom: 0"
-                            >
-                            <th scope="col">Church Activity</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Home Address</th>
-                            <th scope="col">Gender</th>
-                            <th scope="col">Marital Status</th>
-                            <th scope="col">Activity Date</th>
-                            <th scope="col">Current Status</th>
-                            </tr>
-                        </thead>
-                        <tbody class="font-weight-normal text-nowrap">
-                            <tr v-for="(newConvert, index) in newConvertInChurch" :key="index">
-                            <td>{{ newConvert.event }}</td>
-                            <td>{{ newConvert.lastName }} {{ newConvert.firstName }}</td>
-                            <td>{{ newConvert.mobilePhone }}</td>
-                            <td>{{ newConvert.email }}</td>
-                            <td>{{ newConvert.homeAddress }}</td>
-                            <td>{{ newConvert.gender }}</td>
-                            <td>{{ newConvert.maritalStatus }}</td>
-                            <td>{{ formatDate(newConvert.activityDate) }}</td>
-                            <td>{{ newConvert.status }}</td>
-                            </tr>
-                        </tbody>
-                        </table>
-                        <div class="table-foot d-flex justify-content-end mt-n3">
-                        <PaginationButtons />
-                        </div>
-                    </div>
-                    <!--end table header -->
-                </section>
+        <section>
+            <!-- table header -->
+            <div class=" container container-top table-main px-0  remove-styles2 remove-border "
+                :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
+                <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+                <thead class="table-header-area-main">
+                    <tr
+                    class="small-text text-capitalize text-nowrap"
+                    style="border-bottom: 0"
+                    >
+                    <!-- <th scope="col">Church Activity</th> -->
+                    <th scope="col">Name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Home Address</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Marital Status</th>
+                    <th scope="col">Activity Date</th>
+                    <!-- <th scope="col">Current Status</th> -->
+                    </tr>
+                </thead>
+                <tbody class="font-weight-normal text-nowrap">
+                    <tr v-for="(NewConvert, index) in newConvertInChurch" :key="index">
+                    <!-- <td>{{ firstTimer.event }}</td> -->
+                    <td>{{ NewConvert.lastName }} {{ NewConvert.firstName }}</td>
+                    <td>{{ NewConvert.mobilePhone }}</td>
+                    <td>{{ NewConvert.email }}</td>
+                    <td>{{ NewConvert.homeAddress }}</td>
+                    <td>{{ NewConvert.gender }}</td>
+                    <td>{{ NewConvert.maritalStatus }}</td>
+                    <td>{{ formatDate(NewConvert.activityDate) }}</td>
+                    <!-- <td>{{ firstTimer.status }}</td> -->
+                    </tr>
+                </tbody>
+                </table>
+                <div class="table-foot d-flex justify-content-end mt-n3">
+                <PaginationButtons />
+                </div>
+            </div>
+            <!--end table header -->
+        </section>
             <!-- </div> -->
         <!-- </div> -->
     </div>
 </template>
 
 <script>
-import {onMounted,computed,ref } from "vue";
+import {computed,ref } from "vue";
 // import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
-import PerformanceColumnChart from "../../../components/charts/ColumnChart2.vue";
+import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
 // import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
 import dateFormatter from  "../../../services/dates/dateformatter";
@@ -174,49 +173,56 @@ export default {
         Calendar, 
         PaginationButtons },
     setup() {
-        const membership = ref([
-      { name: "FIRST-TIMER" },
-      { name: "NEW-CONVERT" },
-      { name: "FULL MEMBER" },
-    ]);
-        const gender = ref([
-      { name: "MALE" },
-      { name: "FEMALE" },
-    ]);
-        const maritalStatus = ref([
-      { name: "SINGLE" },
-      { name: "MARRIED" },
-      { name: "ENGAGED" },
-      { name: "SINGLE PARENT" },
-      { name: "DIVORCED" },
-      { name: "SEPERATED" },
-      { name: "WIDOW" },
-      { name: "WIDOWER" },
-    ]);
+    //     const membership = ref([
+    //   { name: "FIRST-TIMER" },
+    //   { name: "NEW-CONVERT" },
+    //   { name: "FULL MEMBER" },
+    // ]);
+    //     const gender = ref([
+    //   { name: "MALE" },
+    //   { name: "FEMALE" },
+    // ]);
+    //     const maritalStatus = ref([
+    //   { name: "SINGLE" },
+    //   { name: "MARRIED" },
+    //   { name: "ENGAGED" },
+    //   { name: "SINGLE PARENT" },
+    //   { name: "DIVORCED" },
+    //   { name: "SEPERATED" },
+    //   { name: "WIDOW" },
+    //   { name: "WIDOWER" },
+    // ]);
 
     // const selectedMember = ref();
     // const selectedGender = ref();
     // const selectedMaritalStatus = ref();
     const showReport = ref(false);
-    const pieChart = ref([]);
+    const pieChart = ref([{ name: "First Timer ", color: "#002044", data: [ 0, 3, 13, 14, 0, 15, 20, 20 ] }]);
+    // const series = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 24, 25, 26, 27, 28, 29, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]);
     const startDate = ref(new Date());
     const endDate = ref(new Date());
     const newConvertInChurch = ref([]);
     const genderChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
     const eventDateChartResult = ref([]);
-    // const allMembersInChurch = () => {
-    //   axios
-    //     .get(`/api/People/GetMembershipSummary`)
-    //     .then((res) => {
-    //       console.log(res);
-    //       membersInChurch.value = res.data;
-    //     console.log(membersInChurch.value, "✌️✌️");
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
+    const attendanceSeries = ref("weekly");
+    const attendanceData = ref([]);
+    const mainAttendanceData = ref([]);
+
+    const attendanceChart = computed(() => {
+         if (newConvertInChurch.value.length === 0) return []
+           newConvertInChurch.value.forEach(i => {
+            let attendanceIndex = Object.keys(i).findIndex(i => i === 'activityDate')
+            let attendanceValue = Object.values(i)[attendanceIndex]
+            attendanceData.value.push(attendanceValue)     
+         });
+         mainAttendanceData.value.push({
+             name: 'Attendance',
+             color: '#002044',
+             data: attendanceData.value
+         })
+         return mainAttendanceData.value  
+     })
     const genderChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
@@ -225,7 +231,6 @@ export default {
         (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         return result;
       }, []); // empty object is the initial value for result object
-      // genderChartResult.value
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
@@ -284,7 +289,7 @@ export default {
         console.log(prop, result[prop])
         eventDateChartResult.value.push({
           name: prop,
-          value: result[prop].length
+        //   value: result[prop].length
         })
       }
       console.log(eventDateChartResult.value)
@@ -292,7 +297,7 @@ export default {
 
     const mappedEventDate = computed(() => {
       if (eventDateChartResult.value.length === 0) return []
-      return eventDateChartResult.value.map(i => i)
+      return eventDateChartResult.value.map(i => formatDate(i.name))
     })
 
     const genarateReport = () => {
@@ -313,9 +318,7 @@ export default {
         showReport.value = true;
 
     }
-    onMounted(() => {
-      pieChart.value = [{ name: null, value: 4 }, { name: "Newsletter", value: 1 } ]
-    })
+
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
     };
@@ -339,7 +342,11 @@ export default {
 
      return {
         //  allMembersInChurch,
+        attendanceChart,
+        mainAttendanceData,
+        attendanceData,
         genderChartResult,
+        attendanceSeries,
         maritalStatusChart,
         genderChart,
         eventDateChart,
@@ -353,14 +360,12 @@ export default {
          genarateReport,
          showReport,
          pieChart,
-         membership,
-         gender,
-         maritalStatus,
+        //  series,
+        //  membership,
+        //  gender,
+        //  maritalStatus,
          formatDate,
          newConvertInChurch
-        //  selectedMember,
-        //  selectedGender,
-        //  selectedMaritalStatus
      }
     }
 }

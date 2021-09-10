@@ -8,33 +8,13 @@
         </div>
         <div class="container-fluid ">
                 <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
-                    <div class="p-field col-12 col-md-3 col-lg-2 font-weight-bold  mt-1">
+                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold  mt-1">
                         <label for="icon" >Start Date</label>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
-                    <div class="p-field col-12 col-md-3 col-lg-2 font-weight-bold my-1">
+                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold my-1">
                         <label for="icon">End Date</label>
                         <Calendar id="endDate" v-model="endDate" :showIcon="true" />
-                    </div>
-                    <div class="col-12 col-md-6 col-lg-3">
-                        <div><label for="" class="font-weight-bold">  Offering Category</label></div>
-                        <div>
-                            <MultiSelect v-model="selectedofferingCategory" :options="offeringCategory" optionLabel="name" placeholder="Offering Category" :filter="true" class="multiselect-custom w-100">
-                                <template #value="slotProps">
-                                    <div class="country-item country-item-value bg-secondary font-weight-bold small " v-for="option of slotProps.value" :key="option.code">
-                                        <div>{{option.name}}</div>
-                                    </div>
-                                    <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                        Offering Category
-                                    </template>
-                                </template>
-                                <template #option="slotProps">
-                                    <div class="country-item">
-                                        <div>{{slotProps.option.name}}</div>
-                                    </div>
-                                </template>
-                            </MultiSelect>
-                        </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-3">
                         <div><label for="" class="font-weight-bold">Select Members</label></div>
@@ -55,7 +35,6 @@
                                 </template>
                             </MultiSelect>
                         </div>
-
                     </div>
                     <div class="col-12 col-md-6 col-lg-2">
                         <label for="" ></label>
@@ -156,14 +135,14 @@
  import Calendar from "primevue/calendar";
  import MultiSelect from 'primevue/multiselect';
  import PaginationButtons from "../../../components/pagination/PaginationButtons";
- import OfferingPieChart from '../../../components/charts/ReportPieChart.vue';
+ import OfferingPieChart from '../../../components/charts/PieChart.vue';
+ import OfferingColumnChart from "../../../components/charts/ColumnChart.vue";
 
 export default {
       components: {
-        // GenderPieChart,
         OfferingPieChart,
+        OfferingColumnChart,
         Calendar,
-        // Dropdown, 
         MultiSelect, 
         PaginationButtons 
         },

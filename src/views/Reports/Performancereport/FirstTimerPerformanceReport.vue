@@ -4,40 +4,40 @@
             First Timer Performance Report
         </div>
            <!-- date area -->
-            <div class="container-fluid my-2 py-5   bg-area">
-                <div class="row justify-content-center ">
-                    <div class="col-4 "> 
-                        <div><label for="icon" class="font-weight-bold">Start Date</label></div>
-                        <div>
-                            <Calendar id="icon" v-model="startDate" :showIcon="true" />
-                        </div>
+        <div class="container-fluid my-2 py-5   bg-area">
+            <div class="row justify-content-center pl-3 ">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 "> 
+                    <div><label for="icon" class="font-weight-bold">Start Date</label></div>
+                    <div>
+                        <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
-                    <div class="col-4 ">
-                        <div><label for="icon" class="font-weight-bold">Start Date</label></div>
-                        <div>
-                            <Calendar id="icon" v-model="endDate" :showIcon="true" />
-                        </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 ">
+                    <div><label for="icon" class="font-weight-bold">End Date</label></div>
+                    <div>
+                        <Calendar id="icon" v-model="endDate" :showIcon="true" />
                     </div>
+                </div>
 
-                    <div @click="genarateReport" class="col-md-4 ">
-                        <label for="icon"></label>
-                        <div class="mt-2">
-                            <button class="default-btn generate-report  c-pointer font-weight-bold">
-                                Generate
-                            </button>
-                        </div>
+                <div @click="genarateReport" class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                    <label for="icon"></label>
+                    <div class="mt-2">
+                        <button class=" default-btn primary-bg text-white  c-pointer font-weight-bold">
+                            Generate
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
     <!--end of date area -->
         <div class="container-fluid ">
-            <div class="row ">
+            <div class="row w-100">
                 <div class="col-12 ">
                     <div class="mt-5 display-1 font-weight-bold text-center heading-text">
                        First Timers Analysis Report 
                     </div>
                 </div>
-                <div class="col-12 table ">
+                <!-- <div class="col-12 w-100 text-center ">
                     <div class="col-12   text-center">
                         <div class="col-12 font-weight-bold">Firsttimer By Event Date</div>
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
@@ -49,16 +49,16 @@
                                 :titleMargin="10"
                                 :data="pieChart"
                                 subtitle="Monthly Attendance of Events"
-                                :series="series"
+                                :series="mappedEventDate"
                                 :attendanceSeries="attendanceSeries"
-                                :microtitle="`Firsttimer By Event Date`"
+                        
                             />
-                        </div>
+                        </div>            
                     </div>
-                </div>
+                </div> -->
              </div>
             <div class="  row ">
-                <div class="col-12 table d-flex flex-wrap">
+                <div class="col-12 container-fluid table d-flex flex-wrap">
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center">
                             <div class="col-12  font-weight-bold">Gender Distribution</div>
@@ -103,58 +103,57 @@
                     </div> -->
                 </div>
             </div>
-                
         </div>
         <!-- <div > -->
             <!-- <div class="row "> -->
-                <section>
-                    <!-- table header -->
-                    <div class=" container container-top table-main px-0  remove-styles2 remove-border "
-                     :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
-                        <thead class="table-header-area-main">
-                            <tr
-                            class="small-text text-capitalize text-nowrap"
-                            style="border-bottom: 0"
-                            >
-                            <!-- <th scope="col">Church Activity</th> -->
-                            <th scope="col">Name</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Home Address</th>
-                            <th scope="col">Gender</th>
-                            <th scope="col">Marital Status</th>
-                            <th scope="col">Activity Date</th>
-                            <!-- <th scope="col">Current Status</th> -->
-                            </tr>
-                        </thead>
-                        <tbody class="font-weight-normal text-nowrap">
-                            <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
-                            <!-- <td>{{ firstTimer.event }}</td> -->
-                            <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
-                            <td>{{ firstTimer.mobilePhone }}</td>
-                            <td>{{ firstTimer.email }}</td>
-                            <td>{{ firstTimer.homeAddress }}</td>
-                            <td>{{ firstTimer.gender }}</td>
-                            <td>{{ firstTimer.maritalStatus }}</td>
-                            <td>{{ formatDate(firstTimer.activityDate) }}</td>
-                            <!-- <td>{{ firstTimer.status }}</td> -->
-                            </tr>
-                        </tbody>
-                        </table>
-                        <div class="table-foot d-flex justify-content-end mt-n3">
-                        <PaginationButtons />
-                        </div>
-                    </div>
-                    <!--end table header -->
-                </section>
+        <section>
+            <!-- table header -->
+            <div class=" container container-top table-main px-0  remove-styles2 remove-border "
+                :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
+                <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+                <thead class="table-header-area-main">
+                    <tr
+                    class="small-text text-capitalize text-nowrap"
+                    style="border-bottom: 0"
+                    >
+                    <!-- <th scope="col">Church Activity</th> -->
+                    <th scope="col">Name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Home Address</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Marital Status</th>
+                    <th scope="col">Activity Date</th>
+                    <!-- <th scope="col">Current Status</th> -->
+                    </tr>
+                </thead>
+                <tbody class="font-weight-normal text-nowrap">
+                    <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
+                    <!-- <td>{{ firstTimer.event }}</td> -->
+                    <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
+                    <td>{{ firstTimer.mobilePhone }}</td>
+                    <td>{{ firstTimer.email }}</td>
+                    <td>{{ firstTimer.homeAddress }}</td>
+                    <td>{{ firstTimer.gender }}</td>
+                    <td>{{ firstTimer.maritalStatus }}</td>
+                    <td>{{ formatDate(firstTimer.activityDate) }}</td>
+                    <!-- <td>{{ firstTimer.status }}</td> -->
+                    </tr>
+                </tbody>
+                </table>
+                <div class="table-foot d-flex justify-content-end mt-n3">
+                <PaginationButtons />
+                </div>
+            </div>
+            <!--end table header -->
+        </section>
             <!-- </div> -->
         <!-- </div> -->
     </div>
 </template>
 
 <script>
-import {onMounted,computed,ref } from "vue";
+import {computed,ref } from "vue";
 // import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
@@ -174,32 +173,32 @@ export default {
         Calendar, 
         PaginationButtons },
     setup() {
-        const membership = ref([
-      { name: "FIRST-TIMER" },
-      { name: "NEW-CONVERT" },
-      { name: "FULL MEMBER" },
-    ]);
-        const gender = ref([
-      { name: "MALE" },
-      { name: "FEMALE" },
-    ]);
-        const maritalStatus = ref([
-      { name: "SINGLE" },
-      { name: "MARRIED" },
-      { name: "ENGAGED" },
-      { name: "SINGLE PARENT" },
-      { name: "DIVORCED" },
-      { name: "SEPERATED" },
-      { name: "WIDOW" },
-      { name: "WIDOWER" },
-    ]);
+    //     const membership = ref([
+    //   { name: "FIRST-TIMER" },
+    //   { name: "NEW-CONVERT" },
+    //   { name: "FULL MEMBER" },
+    // ]);
+    //     const gender = ref([
+    //   { name: "MALE" },
+    //   { name: "FEMALE" },
+    // ]);
+    //     const maritalStatus = ref([
+    //   { name: "SINGLE" },
+    //   { name: "MARRIED" },
+    //   { name: "ENGAGED" },
+    //   { name: "SINGLE PARENT" },
+    //   { name: "DIVORCED" },
+    //   { name: "SEPERATED" },
+    //   { name: "WIDOW" },
+    //   { name: "WIDOWER" },
+    // ]);
 
     // const selectedMember = ref();
     // const selectedGender = ref();
     // const selectedMaritalStatus = ref();
     const showReport = ref(false);
-    const pieChart = ref({ name: "Attendance", color: "", data: [ 0, 3, 13, 14, 0, 15, 20, 20 ] });
-    const series = ref( [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]);
+    const pieChart = ref([{ name: "First Timer ", color: "#002044", data: [ 0, 3, 13, 14, 0, 15, 20, 20 ] }]);
+    // const series = ref([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 24, 25, 26, 27, 28, 29, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52 ]);
     const startDate = ref(new Date());
     const endDate = ref(new Date());
     const firstTimerInChurch = ref([]);
@@ -207,18 +206,23 @@ export default {
     const maritalStatusChartResult = ref([]);
     const eventDateChartResult = ref([]);
     const attendanceSeries = ref("weekly");
-    // const allMembersInChurch = () => {
-    //   axios
-    //     .get(`/api/People/GetMembershipSummary`)
-    //     .then((res) => {
-    //       console.log(res);
-    //       membersInChurch.value = res.data;
-    //     console.log(membersInChurch.value, "✌️✌️");
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
+    const attendanceData = ref([]);
+    const mainAttendanceData = ref([]);
+
+    const attendanceChart = computed(() => {
+         if (firstTimerInChurch.value.length === 0) return []
+           firstTimerInChurch.value.forEach(i => {
+            let attendanceIndex = Object.keys(i).findIndex(i => i === 'activityDate')
+            let attendanceValue = Object.values(i)[attendanceIndex]
+            attendanceData.value.push(attendanceValue)     
+         });
+         mainAttendanceData.value.push({
+             name: 'Attendance',
+             color: '#002044',
+             data: attendanceData.value
+         })
+         return mainAttendanceData.value  
+     })
     const genderChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
@@ -227,7 +231,6 @@ export default {
         (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
         return result;
       }, []); // empty object is the initial value for result object
-      // genderChartResult.value
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
@@ -286,7 +289,7 @@ export default {
         console.log(prop, result[prop])
         eventDateChartResult.value.push({
           name: prop,
-          value: result[prop].length
+        //   value: result[prop].length
         })
       }
       console.log(eventDateChartResult.value)
@@ -294,7 +297,7 @@ export default {
 
     const mappedEventDate = computed(() => {
       if (eventDateChartResult.value.length === 0) return []
-      return eventDateChartResult.value.map(i => i)
+      return eventDateChartResult.value.map(i => formatDate(i.name))
     })
 
     const genarateReport = () => {
@@ -339,6 +342,9 @@ export default {
 
      return {
         //  allMembersInChurch,
+        attendanceChart,
+        mainAttendanceData,
+        attendanceData,
         genderChartResult,
         attendanceSeries,
         maritalStatusChart,
@@ -354,15 +360,12 @@ export default {
          genarateReport,
          showReport,
          pieChart,
-         series,
-         membership,
-         gender,
-         maritalStatus,
+        //  series,
+        //  membership,
+        //  gender,
+        //  maritalStatus,
          formatDate,
          firstTimerInChurch
-        //  selectedMember,
-        //  selectedGender,
-        //  selectedMaritalStatus
      }
     }
 }

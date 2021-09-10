@@ -31,7 +31,7 @@ export default {
     const fullPath = ref("")
     
 
-    onMounted(() => {
+    onUpdated(() => {
         headerText.value = props.header;
         
         // if (props.chartClass) {
@@ -118,13 +118,13 @@ export default {
     });
 
     onMounted(() => {
-      console.log(props.series, "passed data")
+      console.log(props.series, "take data")
       console.log(props.data, "passed data")
       console.log(props.attendanceSeries)
     })
 
     onUpdated(() => {
-      console.log(props.series, "passed data")
+      console.log(props.series, "take water data")
       console.log(props.data, "passed data")
       
     })
