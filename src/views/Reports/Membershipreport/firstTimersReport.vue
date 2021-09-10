@@ -59,7 +59,9 @@
 
     <section>
       <!-- chart area -->
-      <div class="chart row graph-area table">
+      <div
+       class="chart row"
+       :class="firstTimerInChurch && firstTimerInChurch.length > 0 ? 'graph-area' : '' ">
         <div class="chart1 col-12 col-md-6 ">
           <ByGenderChart
             domId="chart"
@@ -117,9 +119,9 @@
             </tr>
           </tbody>
         </table>
-        <div class="table-foot d-flex justify-content-end mt-n3">
+        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
           <PaginationButtons />
-        </div>
+        </div> -->
       </div>
       <!--end table header -->
     </section>
@@ -130,7 +132,7 @@
 import {  ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
-import PaginationButtons from "../../../components/pagination/PaginationButtons";
+// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
 
@@ -138,7 +140,7 @@ export default {
   components: {
     Calendar,
     ByGenderChart,
-    PaginationButtons,
+    // PaginationButtons
   },
   setup() {
     const startDate = ref(new Date());
@@ -169,7 +171,7 @@ export default {
       return [
         getSumOfItems(arr, 'gender', 'Male'),
         getSumOfItems(arr, 'gender', 'Female'),
-        getSumOfItems(arr, 'gender', null),
+        getSumOfItems(arr, 'gender',  null),
         getSumOfItems(arr, 'gender', 'Other'),
         ]
     }
@@ -335,7 +337,9 @@ border-top-right-radius: 0 !important;
     border: 1px solid #dde2e6;
     border-radius: 0.5rem;
     padding: 1rem 0rem;
-    margin: 2rem 0rem;
+    margin: 2rem 0rem !important;
+     width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45;
 }
 
 .responsiveness{
