@@ -52,11 +52,11 @@
              <div>
                  <h3 class="font-weight-bold mt-5 ml-2">SERVICE PERFORMANCE ANALYSIS REPORT </h3>
                  <div class=" borderInner mb-5">
-                     <h5 class="ml-3 mt-4">Service performance Chart</h5>
+                     <h5 class="ml-3 mt-4"></h5>
                         <div class="">
                         <PerformanceColumnChart
                             domId="chart"
-                            title="Analysis"
+                            title="Service Analysis"
                             distance="5"
                             :titleMargin="10"
                             :data ="colunmChart"
@@ -65,11 +65,11 @@
                         </div>
                  </div>
                   <div class="borderInner mb-5">
-                     <h5 class="ml-3 mt-4">Attendance Analysis Chart</h5>
+                     <h5 class="ml-3 mt-4"></h5>
                      <div class="">
                         <PerformanceColumnChart
                             domId="chart1"
-                            title=" Attendance Analysis"
+                            title=" First Timers Analysis"
                             distance="5"
                             :titleMargin="10"
                             :data ="colunmChartAttendance "
@@ -79,28 +79,28 @@
 
                  </div>
                    <div class="borderInner mb-2">
-                     <h5 class="ml-3 mt-4">First Timers Analysis Chart</h5>
+                     <h5 class="ml-3 mt-4"></h5>
                      <div class="">
                         <PerformanceColumnChart
                             domId="chart2"
-                            title="First Timers Analysis"
+                            title="New Convert"
                             distance="5"
                             :titleMargin="10"
-                            :data ="colunmChart"
+                            :data ="colunmChartNewCovert"
                             :series = "series"
-                            :microtitle = "microTitle"
                         />
                         </div>
 
                  </div>
              </div>
-             </div>
+             </div>{{ attendanceChart }}hereee
+     
 
 </template>
 
 
 <script>
-import {ref} from 'vue';
+import { ref, computed } from 'vue';
 // import ByGenderChart from "@/components/charts/PieChart.vue";
 import PerformanceColumnChart from "@/components/charts/ColumnChart.vue";
 
@@ -118,17 +118,20 @@ import axios from "@/gateway/backendapi";
         }, 
 
         setup() {
-    const colunmChart = ref([{name: "Service", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890,678,69]}, {name: "Service", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890,678,69]}, {name: "Service", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890,678,69]}  ]);
-    const colunmChartAttendance = ref({name: "Attendance", color: "", data: [1,67,89,67,890,566,780,67,7889,7,890]});
-    const series = ref([1,2,3,4,5,6,7,8,9])
+    
+    const colunmChartAttendance = ref([{name: "First Timers", color: "", data: [1,67,89,67,80,66,80,67,789,7,80,47, 90]}]);
+    const colunmChartNewCovert = ref([{name: "New Convert", color: "", data: [1,67,89,67,80,56,70,67,79,7,80,89,80]}]);
+    const  series = ref([1,2,3,4,5,6,7,8,9])
     const series1 = ref([1,2,3,4,5,6,7,8,9])
     const allEvents = ref({});
-    const analysisReport = ref({})
+    const analysisReport = ref([])
     const startDate = ref('');
     const endDate = ref('');
     const selectedSummary = ref();
     const selectedSummaryChart = ref([]);
     const report = ref([])
+    const attendanceData = ref([])
+    const mainAttendanceData = ref([])
     const getAllEvents = ()=>{
             axios.get('/api/Reports/events/getEvents')
             .then((res)=>{
@@ -142,28 +145,38 @@ import axios from "@/gateway/backendapi";
          axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${selectedSummary.value.id}`)
          .then((res)=>{
              analysisReport.value = res.data;
-             report.value = getAttendanceChart(res.data)
              console.log(report.value); 
              console.log(res, 'Good');
 
          })
          .catch((err)=> console.log(err))
      };
-    //    onMounted(() => {
-    //   selectedSummaryChart.value = [{name: "Dapo", value: 77}]
-    // })
-    const getAttendanceChart = arr =>{
-        return[
-            getSumReport(arr, 'date' )
-        ]
-    }
-    const getSumReport = (arr, key, value)=>{
-        return{
-            name: value,
-            value:arr.filter(i => i[key] === value).length 
-            
-        }
-    }
+
+     const attendanceChart = computed(() => {
+         if (analysisReport.value.length === 0) return []
+           analysisReport.value.forEach(i => {
+            let attendanceIndex = Object.keys(i).findIndex(i => i === 'attendance')
+            let attendanceValue = Object.values(i)[attendanceIndex]
+            attendanceData.value.push(attendanceValue)     
+         });
+         mainAttendanceData.value.push({
+             name: 'Attendance',
+             color: '',
+             data: attendanceData.value
+         })
+         return mainAttendanceData.value  
+     })
+
+     const colunmChart = ref(attendanceChart.value);
+
+    //  const getAttendanceData = computed(() => {
+    //      if (attendanceChart.value.length === 0) return []
+         
+
+    //  })
+     
+
+    
      
 
         return{
@@ -178,7 +191,10 @@ import axios from "@/gateway/backendapi";
             series,
             series1,
             colunmChartAttendance,
-            microTitle 
+            colunmChartNewCovert,
+            attendanceChart,
+            attendanceData,
+            mainAttendanceData
             
         }
         
