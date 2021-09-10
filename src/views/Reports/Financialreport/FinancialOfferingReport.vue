@@ -18,7 +18,50 @@
                     </div>
                     <div class="col-12 col-md-6 col-lg-3">
                         <div><label for="" class="font-weight-bold">Select Members</label></div>
-                        <div>
+                        <div class="dropdown">
+                        <button id="dropdownMenuButton" data-toggle="dropdown">Select Member</button> 
+                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
+                                 <input type="text" class="form-control" 
+                                    v-model="userSearchString"
+                                    @input="searchForUsers"
+                                />
+                                <a
+                                class="dropdown-item font-weight-700 small-text" href="#"
+                                v-for="(member, index) in searchedMembers"
+                                :key="index"
+                                @click="addExistingMember(member)"
+                                >{{ member.name }}</a>
+                                <a
+                                class="dropdown-item font-weight-700 small-text"
+                                href="#"
+                                v-if="
+                                    searchingForMembers && searchedMembers.length === 0
+                                "
+                                ><i class="pi pi-spin pi-spinner"></i></a>
+                                <p
+                                class="modal-promt pl-1 bg-secondary m-0"
+                                v-if="
+                                    userSearchString.length < 3 &&
+                                    searchedMembers.length === 0
+                                "
+                                >
+                                Enter 3 or moore characters
+                                </p>
+                                <a
+                                class="font-weight-bold small-text d-flex justify-content-center py-2 text-decoration-none primary-text c-pointer"
+                                style="border-top: 1px solid #002044; color: #136acd"
+                                @click="showAddMemberForm"
+                                data-dismiss="modal"
+                                >
+                                <i
+                                    class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
+                                    style="color: #136acd"
+                                ></i>
+                                    Create Person
+                                </a>
+                            </div>
+                        </div>
+                        <!-- <div>
                             <MultiSelect v-model="selectedMember" :options="memberShip" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
                                 <template #value="slotProps">
                                     <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
@@ -34,7 +77,7 @@
                                     </div>
                                 </template>
                             </MultiSelect>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="col-12 col-md-6 col-lg-2">
                         <label for="" ></label>
@@ -52,23 +95,26 @@
                     </div>
                 </div>
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 60vh;">
-                        <div class="col-12 font-weight-bold">Membership By Gender</div>
+                    <div class="col-12 border  text-center" >
+                        <!-- <div class="col-12 font-weight-bold">Membership By Gender</div> -->
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
                         <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                            <OfferingPieChart
-                               
+                            <OfferingColumnChart
+                                
                             />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 60vh;">
-                        <div class="col-12  font-weight-bold">Membership By Marital Status</div>
+                    <div class="col-12  text-center" >
+                        <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
                         <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                             <OfferingPieChart
-                              
+                              domId="chart3"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="mappedOffering"
                             />
                         </div>
                     </div>
@@ -80,43 +126,28 @@
                 <div class=" container container-top table-main px-0  remove-styles2 remove-border "
                      :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                         <table class="table remove-styles mt-0 w-100 table-responsive table-hover table-header-area">
-                        <thead class="table-header-area-main w-100">
-                            <tr
-                            class="small-text text-capitalize text-nowrap"
+                        <div class="table-header-area-main row w-100">
+                            <div
+                            class="small-text text-capitalize col-12 d-flex text-nowrap"
                             style="border-bottom: 0"
                             >
-                            <th scope="col-2">Building Project</th>
-                            <th scope="col-2">Amount</th>
-                            <th scope="col-2">Event Name</th>
-                            <th scope="col-2">Date</th>
-                            <th scope="col-2">Contact Name</th>
-                            <th scope="col-2">Channel</th>
-                            </tr>
-                        </thead>
+                            <!-- <th scope="col-2">Building Project</th> -->
+                            <div scope="col-2">Offering name</div>
+                            <div scope="col-2">Amount</div>
+                            <div scope="col-2">Event Name</div>
+                            <div scope="col-2">Date</div>
+                            <div scope="col-2">Contact Name</div>
+                            <div scope="col-2">Channel</div>
+                            </div>
+                        </div>
                         <tbody class="font-weight-normal text-nowrap">
-                            <tr>
-                            <td>building project </td>
-                            <td>N40,00</td>
-                            <td>faith CLINIC</td>
-                            <td>12-Apr-21</td>
-                            <td>OLAOLUWA</td>
-                            <td>Cash</td>
-                            </tr>
-                            <tr>
-                            <td>building project </td>
-                            <td>N40,00</td>
-                            <td>faith CLINIC</td>
-                            <td>12-Apr-21</td>
-                            <td>OLAOLUWA</td>
-                            <td>Cash</td>
-                            </tr>
-                            <tr>
-                            <td>building project </td>
-                            <td>N40,00</td>
-                            <td>faith CLINIC</td>
-                            <td>12-Apr-21</td>
-                            <td>OLAOLUWA</td>
-                            <td>Cash</td>
+                            <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
+                            <td>{{ OfferingList.contributionName }}</td>
+                            <td>{{ OfferingList.amount }}</td>
+                            <td>{{ OfferingList.eventName }}</td>
+                            <td>{{ formatDate(OfferingList.date) }}</td>
+                            <td>{{ OfferingList.contactName }}</td>
+                            <td>{{ OfferingList.channel }}</td>
                             </tr>
                         </tbody>
                         </table>
@@ -131,12 +162,15 @@
 
 <script>
 
- import { ref } from "vue";
+ import { onMounted,computed, ref } from "vue";
  import Calendar from "primevue/calendar";
  import MultiSelect from 'primevue/multiselect';
+ import axios from "@/gateway/backendapi";
  import PaginationButtons from "../../../components/pagination/PaginationButtons";
  import OfferingPieChart from '../../../components/charts/PieChart.vue';
  import OfferingColumnChart from "../../../components/charts/ColumnChart.vue";
+ import membershipService from "../../../services/membership/membershipservice";
+ import dateFormatter from  "../../../services/dates/dateformatter";
 
 export default {
       components: {
@@ -152,7 +186,18 @@ export default {
         const endDate = ref(new Date());
         const selectedMember = ref();
         const selectedofferingCategory = ref();
-
+        const userSearchString = ref("");
+        const searchingForMembers = ref(false);
+        const searchedMembers = ref([]);
+        const offeringReportItem = ref('');
+        const offeringInChurch = ref([]);
+        const display = ref(false);
+        const offeringChartResult = ref([]);
+        const pieChart= ref([])
+         
+        onMounted(()=>{
+        pieChart.value = { name: "First Timer ", value: 2, name: "First Timer ", value: 2, };
+        })
          const memberShip = ref([
       { name: "FIRST-TIMER" },
       { name: "NEW-CONVERT" },
@@ -165,22 +210,97 @@ export default {
       { name: "MEMBER 2" },
       { name: "CONCERT" },
     ]);
+     const offeringChart = (array, key) => {
+       // Accepts the array and key
+      // Return the end result
+      let result = array.reduce((result, currentValue) => {
+        // If an array already present for key, push it to the array. Else create an array and push the object
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
+        return result;
+      }, []); // empty object is the initial value for result object
+      for (const prop in result) {
+        // genderChartResult.value
+        console.log(prop, result[prop])
+        offeringChartResult.value.push({
+          name: prop,
+          value: result[prop].length
+        })
+      }
+      console.log(offeringChartResult.value)
+    };
+    const mappedOffering = computed(() => {
+      if (offeringChartResult.value.length === 0) return []
+      return offeringChartResult.value.map(i => i)
+    })
+
 
      const genarateReport = () => {
+        axios.get(`/api/Reports/financials/getContactAllContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&personID=${offeringReportItem.value}`)
+        .then((res) => {
+          console.log(res, "🎄🎄🎄");
+          offeringInChurch.value = res.data;
+          console.log(offeringInChurch.value, "✌️✌️");
+          offeringChart(res.data,'contributionName')
+        //   maritalStatusChart(res.data,'maritalStatus')
+        //   eventDateChart(res.data,'activityDate')
+        })
+        .catch((err) => {
+          console.log(err);
+        });
         showReport.value = true;
 
     }
-
+    const searchForUsers = () => {
+          if (userSearchString.value.length >= 3) {
+            startSearch(userSearchString.value);
+          }
+        };
+    const startSearch = async (str) => {
+          try {
+            searchingForMembers.value = true;
+            const response = await membershipService.searchMembers(str);
+            searchingForMembers.value = false;
+            searchedMembers.value = response;
+          } catch (error) {
+            searchingForMembers.value = false;
+            console.log(error);
+          }
+        };
+        const addExistingMember = (member) => {
+          userSearchString.value = member.name;
+          offeringReportItem.value = member.id
+          console.log(userSearchString.value, member)
+        }
+        const showAddMemberForm = () => {
+          display.value = true;
+        };
+         const formatDate = (date) => {
+      return dateFormatter.monthDayYear(date);
+    };
 
         return{
+            offeringChart,
+            mappedOffering,
+            offeringChartResult,
+            display,
             startDate,
+            formatDate,
+            showAddMemberForm,
+            addExistingMember,
+            searchForUsers,
+            userSearchString,
+            searchingForMembers,
+            searchedMembers,
+            offeringReportItem,
+            offeringInChurch,
             endDate,
             memberShip,
             offeringCategory,
             genarateReport,
             showReport,
             selectedMember,
-            selectedofferingCategory
+            selectedofferingCategory,
+            pieChart
             
         }
     },
