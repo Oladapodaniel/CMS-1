@@ -348,7 +348,6 @@
                   />
                 </div>
               </div>
-              {{ tenantInfo && tenantInfo.eventAttendanceChartData ? tenantInfo.eventAttendanceChartData : 'wack' }}
 
               <div v-if="tenantInfoFirstTimerWeekly && firstTimerDataExist">
                 <div class="adjust-view col-10 col-sm-3 offset-sm-9">
