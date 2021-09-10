@@ -56,9 +56,9 @@
         </div>
       </div>
     </div>
-    <!--end of date area -->
+    <!-- end of date area
     <section>
-      <!-- chart area -->
+      
       <div class="chart">
         <div style="width: 45%" class="ml-md-4 chart1">
           <ByGenderChart
@@ -69,8 +69,47 @@
           />
         </div>
       </div>
-      <!--end of chart area -->
-    </section>
+     
+    </section> -->
+
+
+    <div class="container-fluid  ">
+            <div class="row mt-4">
+                <div class="col-12 ">
+                    <div class="mb-3 text-center Display-1 heading-text">
+                        Birthday Report 
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                    <div class="col-12 border p-3 text-center" style="height: 40vh;">
+                        <div class="col-12 font-weight-bold">Membership By Gender</div>
+                        <div class="col-12" v-if="genderSummary.length === 0">No Data Available</div>
+                        <div class="col-12" style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <BirthdayChart
+                                domId="chart1"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="genderSummary"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12 border p-3 mt-3 mt-sm-3 mt-md-0 mt-lg-0 text-center" style="height: 40vh;">
+                        <div class="col-12  font-weight-bold">Membership By Marital Status</div>
+                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <BirthdayChart
+                                domId="chart2"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="maritalStatusSummary"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     <section>
       <!-- table header -->
@@ -116,9 +155,10 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
+import BirthdayChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 
@@ -127,12 +167,14 @@ export default {
     Calendar,
     ByGenderChart,
     PaginationButtons,
+    BirthdayChart
   },
   setup() {
     const startDate = ref();
     const endDate = ref("");
     const birthdays = ref("")
     const membersInChurch = ref([]);
+    const genderResult = ref([])
     const allMembersInChurch = () => {
       axios
         .get(`/api/People/GetMembershipSummary`)
@@ -146,6 +188,34 @@ export default {
         });
     };
 
+    // onMounted(() => {
+    //   genderSummary.value =  [ { name: 'male', value: 4 }, { name: "female", value: 1 } ];
+    // })
+    const genderSummary = computed(() => {
+      if (genderResult.value.length === 0) return []
+      return genderResult.value
+    })
+    const groupByGender = (array, key) => {
+            let result = array.reduce((result, currentValue) => {
+                // If an array already present for key, push it to the array. Else create an array and push the object
+                (result[currentValue[key]] = result[currentValue[key]] || []).push(
+                currentValue
+                );
+                // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+                return result;
+            }, {}); // empty object is the initial value for result object
+            console.log(result)
+            genderSummary.value = []
+            for (const prop in result) {
+                console.log(prop, result[prop])
+                genderResult.value.push({
+                name: prop,
+                value: result[prop].length
+                })
+            }
+            console.log(genderResult.value)
+        };
+
 
     const getBirthdayReport = async() => {
       let start = new Date(startDate.value).toLocaleDateString()
@@ -154,6 +224,7 @@ export default {
         let data = await axios.get(`/api/Reports/people/getBirthdaysReport?startdate=${start}&enddate=${end}`)
         console.log(data)
         birthdays.value = data.data
+        groupByGender(data.data, 'gender')
       }
       catch (err) {
         console.log(err)
@@ -167,7 +238,10 @@ export default {
       birthdays,
       membersInChurch,
       allMembersInChurch,
-      getBirthdayReport
+      getBirthdayReport,
+      genderSummary,
+      groupByGender,
+      genderResult
     };
   },
 };

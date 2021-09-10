@@ -84,7 +84,7 @@
                       />
                       
                     </div>
-                    <div class="col-12 my-3 pl-0">
+                    <div class="col-12 my-3">
                       <label class="hfont">Amount</label>
 
                       <input
