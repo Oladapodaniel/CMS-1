@@ -734,7 +734,7 @@ export default {
       if (route.params.personId) {
         try {
           loading.value = true;
-          const response =  axios.put(
+          const response =  await axios.put(
             `/api/People/UpdatePerson/${route.params.personId}`,
             formData
           );

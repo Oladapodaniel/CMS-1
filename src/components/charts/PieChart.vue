@@ -53,7 +53,7 @@ var highchartsOptions = {
           layout: 'horizontal',
           // verticalAlign: 'top',
           x: 10,
-          y: 10
+          y: 20
         },
     title: {
         text: props.title
