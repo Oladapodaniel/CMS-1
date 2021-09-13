@@ -49,11 +49,11 @@ var highchartsOptions = {
         height: 250,
     },
     legend : {
-          align: 'right',
-          layout: 'vertical',
-          verticalAlign: 'top',
-          x: 40,
-          y: 0
+          align: 'bottom',
+          layout: 'horizontal',
+          // verticalAlign: 'top',
+          x: 10,
+          y: 10
         },
     title: {
         text: props.title

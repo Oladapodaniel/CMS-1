@@ -50,8 +50,9 @@
         <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
+            @click="allMembersInChurch"
           >
-            Generate &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
+            Generate
           </button>
         </div>
       </div>
@@ -97,16 +98,20 @@
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr>
-              <td>Sunday school</td>
-              <td>Charity Uche</td>
-              <td>08067383789</td>
-              <td>charityucche@gmail.com</td>
-              <td>Bode Thomas</td>
-              <td>Female</td>
-              <td>Couple</td>
-              <td>24/10/2021</td>
-              <td>Active</td>
+            <tr v-for="(newConvert, index) in newConvertsInChurch"
+            :key="index">
+              <td>{{ newConvert.title }}</td>
+              <td>{{ newConvert.firstName }} {{ newConvert.lastName }}</td>
+              <td>{{ newConvert.email }}</td>
+              <td>{{ newConvert.mobilePhone }}</td>
+              <td>{{ newConvert.gender }}</td>
+              <td>{{ newConvert.maritalStatus }}</td>
+              <td>{{ newConvert.homeAddress }}</td>
+              <td>{{ newConvert.name }}</td>
+              <td>{{ newConvert.description }}</td>
+              <td>{{ formatDate(newConvert.activityDate) }}</td>
+              <td>{{ formatDate(newConvert.contactDate)}}</td>
+              <td>{{ newConvert.contactStatus}}</td>
             </tr>
           </tbody>
         </table>
@@ -125,6 +130,7 @@ import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
+import dateFormatter from  "../../../services/dates/dateformatter";
 
 export default {
   components: {
@@ -148,12 +154,18 @@ console.log(newConvertsInChurch.value, "✌️✌️");
           console.log(err);
         });
     };
+
+        const formatDate = (activityDate) => {
+      return dateFormatter.monthDayYear(activityDate);
+    };
+
     return {
       Calendar,
       startDate,
       endDate,
       newConvertsInChurch,
       allMembersInChurch,
+      formatDate,
     };
   },
 };

@@ -425,14 +425,13 @@
           </div>
         </div>
       </div>
-
       <div
         v-if="
           tenantInfoCeleb.length === 0 &&
-          tenantInfoFirstTimerWeekly[0] &&
-          tenantInfoFirstTimerWeekly[0].data.length === 0 &&
-          tenantInfoAttendanceWeekly[0] &&
-          tenantInfoAttendanceWeekly[0].data[0] === 0
+          (tenantInfoFirstTimerWeekly[0] &&
+          tenantInfoFirstTimerWeekly[0].data.length === 0) ||
+          (tenantInfoAttendanceWeekly[0] &&
+          tenantInfoAttendanceWeekly[0].data[0] === 0)
         "
       >
         <div class="container-fluid">
