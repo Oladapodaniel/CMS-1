@@ -209,7 +209,7 @@ import axios from "@/gateway/backendapi";
          
          mainFirsttimerNewCovertData.value.push({
              name: 'New Converts',
-             color: '#002044',
+             color: '#080044',
              data: newConvertData.value
          })
          return mainFirsttimerNewCovertData.value  
