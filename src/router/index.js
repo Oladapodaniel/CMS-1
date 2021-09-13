@@ -353,29 +353,29 @@ const routes = [
         
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialActivitiesBalance.vue')
                     },
+                    {
+                        path: 'financialexpense',
+                        name: "financialExpense",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+        
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialExpense.vue')
+                    },
+                    {
+                        path: 'weddinganniversaryreport',
+                        name: "weddinganniversaryreport",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+        
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/weddinganniversaryReport.vue')
+                    },
                 ]
             },
             
-            {
-                path: 'financialexpense',
-                name: "financialExpense",
-                meta: {
-                    title: 'Churchplus - Reports',
-                },
-                component: () =>
-
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialExpense.vue')
-            },
-            {
-                path: 'weddinganniversaryreport',
-                name: "weddinganniversaryreport",
-                meta: {
-                    title: 'Churchplus - Reports',
-                },
-                component: () =>
-
-                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/weddinganniversaryReport.vue')
-            },
             {
                 path: 'family',
                 name: 'Family',
