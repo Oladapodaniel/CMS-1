@@ -248,7 +248,7 @@ const routes = [
                         },
                         component: () =>
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Index.vue'),
-        
+
                     },
                     {
                         path: 'membershipreport',
@@ -258,7 +258,7 @@ const routes = [
                         },
                         component: () =>
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/MemberShipReport.vue')
-        
+
                     },
                     {
                         path: 'firsttimersreport',
@@ -313,9 +313,9 @@ const routes = [
                         },
                         component: () =>
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/SummaryReport.vue')
-        
+
                     },
-        
+
                     {
                         path: 'newconvertperformancereport',
                         name: "NewConvertPerformanceReport",
@@ -324,23 +324,34 @@ const routes = [
                         },
                         component: () =>
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/NewConvertPerformanceReport.vue')
-        
+
                     },
                     {
                         path: 'accountingtransactionreport',
-                        name: "accountingtransactionreport",
+                        name: "FinancialTransactionReport",
                         meta: {
                             title: 'Churchplus - Reports',
                         },
                         component: () =>
-        
-                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/financialTrasactionReport.vue')
+
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialTransactionReport.vue')
                     },
+                    {
+                        path: 'expensereport',
+                        name: "BasicExpenseReport",
+                        meta: {
+                            title: 'Churchplus - Reports',
+                        },
+                        component: () =>
+
+                            import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/BasicExpenseReport.vue')
+                    },
+
                     {
                         path: 'financialofferingreport',
                         name:"FinancialOfferingReport",
                         component: () =>
-        
+
                         import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialOfferingReport.vue')
                     },
                     {
@@ -350,7 +361,7 @@ const routes = [
                             title: 'Churchplus - Reports',
                         },
                         component: () =>
-        
+
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialActivitiesBalance.vue')
                     },
                     {
@@ -360,7 +371,7 @@ const routes = [
                             title: 'Churchplus - Reports',
                         },
                         component: () =>
-        
+
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/FinancialExpense.vue')
                     },
                     {
@@ -370,12 +381,12 @@ const routes = [
                             title: 'Churchplus - Reports',
                         },
                         component: () =>
-        
+
                             import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Membershipreport/weddinganniversaryReport.vue')
                     },
                 ]
             },
-            
+
             {
                 path: 'family',
                 name: 'Family',
