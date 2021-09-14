@@ -61,7 +61,7 @@
                   key="form"
                 >
                   <div class="row">
-                    <div class="col-3 my-3 pr-md-0">
+                    <div class="col-12 my-3 pr-md-0">
                       <label class="hfont">Currency</label>
 
                        <Dropdown
@@ -72,7 +72,7 @@
                             class="w-100 px-0"
                           />
                     </div>
-                    <div class="col-5 my-3">
+                    <div class="col-12 my-3">
                       <label class="hfont">Purpose</label>
 
                       <Dropdown
@@ -84,7 +84,7 @@
                       />
                       
                     </div>
-                    <div class="col-4 my-3 pl-0">
+                    <div class="col-12 my-3">
                       <label class="hfont">Amount</label>
 
                       <input

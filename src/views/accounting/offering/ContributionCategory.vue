@@ -23,11 +23,11 @@
     <div v-if="loading">
         <Loader />
     </div>
-    
+
 
     <div v-if="contributionItems.length > 0 && !loading && !networkError">
         <ContributionCategoryList :contributionItems="contributionItems" @get-pages="getOfferingPages" @contri-items="updateItems"/>
-    </div> 
+    </div>
     <div class="no-person"  v-if="contributionItems.length === 0 && !loading && !networkError">
         <div class="empty-img">
             <p><img src="../../../assets/people/people-empty.svg" alt="" /></p>
@@ -71,7 +71,7 @@ export default {
                     .then((res) => {
                         loading.value = false
                     contributionItems.value = res.data;
-                    console.log(res.data);
+                    console.log(res.data, '🎁🍾🍾s');
                     })
                     .catch((err) => {
                       finish()
@@ -84,9 +84,9 @@ export default {
                         console.log(err)
                     });
             }
-    
+
     // get from  to store
-    
+
     // savev to sstore
     // store.dispatch('contributions/contributionList')
     };
@@ -128,7 +128,7 @@ export default {
 
   .add-btn {
     margin-top: 10px
-  } 
+  }
 }
 
 @media (max-width: 575px) {
@@ -144,7 +144,7 @@ export default {
     margin-top: 10px;
   } */
 
-  
+
 }
 
 .add-btn {
@@ -178,7 +178,7 @@ export default {
 }
 
  @media (max-width: 767px) {
-     
+
 
    .first-timers-text {
     text-align: center;

@@ -227,7 +227,8 @@
           </ul>
 
           <!-- Hidden -->
-          <a class="link routelink" v-if="false">
+          <!-- <router-link to="tenant/reports"> -->
+          <a class="link routelink" @click="goToReport">
             <img
               src="../../assets/dashboardlinks/reports-icon.svg"
               class="link-icon"
@@ -236,6 +237,7 @@
             />
             Reports
           </a>
+          <!-- </router-link> -->
 
           <div>
             <div>
@@ -413,6 +415,10 @@ export default {
       setupService.clearStore();
     }
 
+    const goToReport = () => {
+      router.push('/tenant/reports')
+    }
+
     return {
       route,
       moreShown,
@@ -429,7 +435,8 @@ export default {
       tenantDisplayName,
       linkClicked,
       churchLogo,
-      logout
+      logout,
+      goToReport
     };
   },
 };

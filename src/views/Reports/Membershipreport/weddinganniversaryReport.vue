@@ -13,7 +13,7 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">First Timers Report</h3>
+          <h3 class="heading-text ml-2">Wedding Anniversary Report</h3>
         </div>
 
         <div class="centered-items">
@@ -24,6 +24,7 @@
       </div>
     </div>
     <!--end of header area -->
+
     <!-- date area -->
     <div class="container-fluid my-3 px-0 bg-area">
       <div
@@ -48,7 +49,7 @@
         <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
-            @click="generateReport"
+            @click="generateWeddingAnniversaryReport"
           >
             Generate
           </button>
@@ -59,25 +60,45 @@
 
     <section>
       <!-- chart area -->
-      <div
-       class="chart row"
-       :class="firstTimerInChurch && firstTimerInChurch.length > 0 ? 'graph-area' : '' ">
-        <div class="chart1 col-12 col-md-6 ">
+      <div class="chart row"
+            :class=" weddingAnniversary &&  weddingAnniversary.length > 0 ? 'graph-area' : '' ">
+        <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart"
-            title="By Gender"
+            title="Gender"
             distance="5"
             :titleMargin="10"
-            :summary="data"
+            :summary="membershipByGender"
           />
         </div>
-        <div  class="chart1 col-12 col-md-6 ">
+        <div class="chart1 col-12 col-md-6">
           <ByGenderChart
-            domId="chartid"
+            domId="chart2"
             title="Marital Status"
             distance="5"
             :titleMargin="10"
-            :summary="maritalChartInfo"
+            :summary="membershipMaritalStatus"
+          />
+        </div>
+      </div>
+      <div class="chart row my-1"
+            :class=" weddingAnniversary &&  weddingAnniversary.length > 0 ? 'graph-area' : '' ">
+        <div class="chart1 col-12 col-md-6">
+          <ByGenderChart
+            domId="chart3"
+            title="Membership Status"
+            distance="5"
+            :titleMargin="10"
+            :summary="membershipDistribution"
+          />
+        </div>
+        <div class="chart1 col-12 col-md-6">
+          <ByGenderChart
+            domId="chart4"
+            title="Age Group"
+            distance="5"
+            :titleMargin="10"
+            :summary="membershipAgeGroup"
           />
         </div>
       </div>
@@ -86,36 +107,36 @@
 
     <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness">
-        <table class="table remove-styles mt-0  table-hover table-header-area">
+      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+        <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
               class="small-text text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
-              <th scope="col">Church Activity</th>
               <th scope="col">Name</th>
-              <th scope="col">Phone</th>
+              <th scope="col">Wedding Day</th>
+              <th scope="col">Mobile Phone</th>
               <th scope="col">Email</th>
-              <th scope="col">Home Address</th>
               <th scope="col">Gender</th>
               <th scope="col">Marital Status</th>
-              <th scope="col">Activity Date</th>
-              <th scope="col">Current Status</th>
+              <th scope="col">Age Group</th>
+              <th scope="col">Membership</th>
+              <th scope="col">Home Address</th>
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(firstTimer, index) in firstTimerInChurch"
-            :key="index">
-              <td>{{ firstTimer.event }}</td>
-              <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
-              <td>{{ firstTimer.mobilePhone }}</td>
-              <td>{{ firstTimer.email }}</td>
-              <td>{{ firstTimer.homeAddress }}</td>
-              <td>{{ firstTimer.gender }}</td>
-              <td>{{ firstTimer.maritalStatus }}</td>
-              <td>{{ formatDate(firstTimer.activityDate) }}</td>
-              <td>{{ firstTimer.status }}</td>
+            <tr  v-for="(anniversary, index) in weddingAnniversary"
+            :key='index'>
+              <td>{{ anniversary.name }}</td>
+              <td>{{ formatDate(anniversary.weddingDay) }}</td>
+              <td>{{ anniversary.mobilePhone }}</td>
+              <td>{{ anniversary.email }}</td>
+              <td>{{ anniversary.gender }}</td>
+              <td>{{ anniversary.maritalStatus }}</td>
+              <td>{{ anniversary.ageGroup }}</td>
+              <td>{{ anniversary.membership }}</td>
+              <td>{{ anniversary.homeAddress }}</td>
             </tr>
           </tbody>
         </table>
@@ -129,7 +150,7 @@
 </template>
 
 <script>
-import {  ref } from "vue";
+import { ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -140,116 +161,91 @@ export default {
   components: {
     Calendar,
     ByGenderChart,
-    // PaginationButtons
+    // PaginationButtons,
   },
   setup() {
-    const startDate = ref(new Date());
+    const startDate = ref("");
     const endDate = ref("");
-    const firstTimerInChurch = ref([]);
-    const genderChartResult = ref([]);
-    const data= ref([]);
-    const maritalChartInfo = ref([]);
-    const generateReport = () => {
+    const weddingAnniversary = ref([]);
+    const membershipByGender = ref([]);
+    const membershipMaritalStatus = ref([]);
+    const membershipDistribution = ref([]);
+    const membershipAgeGroup = ref([]);
+    const generateWeddingAnniversaryReport = () => {
       axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/people/getWeddingsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
-          firstTimerInChurch.value = res.data;
-          console.log(firstTimerInChurch.value, "✌️✌️");
-          data.value = getGenderChart(res.data)
-          maritalChartInfo.value = maritalChart(res.data)
-          console.log(maritalChartInfo.value, "🎉🎉🎉🎉✌️✌️")
-
-          // genderChart(res.data, 'gender')
-          // genderChart(res.data, 'maritalStatus')
+          console.log(res);
+          weddingAnniversary.value = res.data;
+          membershipByGender.value = getMembershipGenderChart(res.data);
+          membershipMaritalStatus.value =membershipMaritalStatusChart(res.data);
+          membershipDistribution.value = membershipStatusChart(res.data)
+          membershipAgeGroup.value = membershipAgeGroupChart(res.data)
+          console.log(weddingAnniversary.value, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
         });
     };
 
-    const getGenderChart = arr => {
-      return [
-        getSumOfItems(arr, 'gender', 'Male'),
-        getSumOfItems(arr, 'gender', 'Female'),
-        getSumOfItems(arr, 'gender',  null),
-        getSumOfItems(arr, 'gender', 'Other'),
-        ]
+    const getAllItemsInWeddingReport = (arr, key, value) => {
+      return{
+              name: value,
+              value: weddingAnniversary.value.filter(i => i[key]=== value).length
+      }
     }
 
-    const maritalChart = arr => {
-      return[
-        getSumOfItems(arr, 'maritalStatus', 'Married'),
-        getSumOfItems(arr, 'maritalStatus', 'Single'),
-        getSumOfItems(arr, 'maritalStatus', null),
+    const getMembershipGenderChart =  arr => {
+      return [
+          getAllItemsInWeddingReport(arr, 'gender', 'Male'),
+          getAllItemsInWeddingReport(arr, 'gender', 'Female'),
+          getAllItemsInWeddingReport(arr, 'gender', null),
+          getAllItemsInWeddingReport(arr, 'gender', 'Other')
+      ]
+    };
+
+    const membershipMaritalStatusChart = arr => {
+      return [
+        getAllItemsInWeddingReport(arr, 'maritalStatus', 'Married'),
+        getAllItemsInWeddingReport(arr, 'maritalStatus', 'Single')
+      ]
+    };
+
+    const membershipStatusChart = arr => {
+      return [
+        getAllItemsInWeddingReport(arr, 'membership', 'Full Member'),
+        getAllItemsInWeddingReport(arr, 'membership', 'Friend'),
+        getAllItemsInWeddingReport(arr, 'membership', 'Not Member')
+      ]
+    };
+
+    const membershipAgeGroupChart = arr => {
+      return [
+        getAllItemsInWeddingReport(arr, 'agegroup', 'None'),
+        getAllItemsInWeddingReport(arr, 'agegroup', '20-30'),
+        getAllItemsInWeddingReport(arr, 'agegroup', '30-40'),
+        getAllItemsInWeddingReport(arr, 'agegroup', '40-60'),
       ]
     }
 
-    // const getMaritalStatusChart =(arr, key, value) => {
-    //   return {
-    //     name: value,
-    //     value: firstTimerInChurch.value.filter(i => i[key] === value).length
-    //   }
-    //   }
-
-   const getSumOfItems = (arr, key, value) => {
-      return {
-        name: value,
-        value: firstTimerInChurch.value.filter(i => i[key] === value).length
-    }
-   }
-
- /*   const genderChart = (array, key) => {
-       // Accepts the array and key
-      // Return the end result
-      let result = array.reduce((result, currentValue) => {
-        // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
-        // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
-        return result;
-      }, []); // empty object is the initial value for result object
-      // genderChartResult.value
-      for (const prop in result) {
-        // genderChartResult.value
-        console.log(prop, result[prop])
-        genderChartResult.value.push({
-          name: prop,
-          value: result[prop].length
-        })
-      }
-      console.log(genderChartResult.value, "💐💐💐");
-      return genderChartResult.value
-      // console.log(genderChartResult.value, )
-    };
-*/
-
-
-      const formatDate = (activityDate) => {
+       const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
     };
-
-    // const mappedGender = computed(() => {
-    //   if (genderChartResult.value.length === 0) return []
-    //   return genderChartResult.value.map(i => i)
-    // });
-
 
     return {
       Calendar,
       startDate,
       endDate,
-      firstTimerInChurch,
-      generateReport,
+      weddingAnniversary,
+      generateWeddingAnniversaryReport,
       formatDate,
-      // genderChart,
-      genderChartResult,
-      // mappedGender,
-      data,
-     maritalChartInfo
-    }
-   }
-  };
+      membershipByGender,
+      membershipMaritalStatus,
+      membershipDistribution,
+      membershipAgeGroup
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -315,8 +311,8 @@ export default {
 }
 
 .remove-styles{
-    border: none !important;
-    box-shadow: none !important;
+  border: none !important;
+box-shadow: none !important;
     border-bottom: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
@@ -324,13 +320,18 @@ export default {
 
 .remove-styles2{
 padding-right: 0;
-padding-left: 0;
+ padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
 }
 
 .remove-border{
     box-shadow: none !important;
+}
+
+.tablerow-style {
+  min-width: 100%;
+  border-bottom: 0
 }
 
 .graph-area{

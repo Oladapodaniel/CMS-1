@@ -13,18 +13,17 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">Celebrations Report</h3>
+          <h3 class="heading-text ml-2">Accounting Transactions Report</h3>
         </div>
 
-        <div class="centered-items">
+        <!-- <div class="centered-items">
           <button class="default-btn font-weight-normal">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
     <!--end of header area -->
-
     <!-- date area -->
     <div class="container-fluid my-3 px-0 bg-area">
       <div
@@ -49,8 +48,9 @@
         <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
+            @click="generateReport"
           >
-            Generate &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
+            Generate
           </button>
         </div>
       </div>
@@ -66,6 +66,7 @@
             title="By Gender"
             distance="5"
             :titleMargin="10"
+            :summary="firstTimerChart"
           />
         </div>
       </div>
@@ -74,56 +75,38 @@
 
     <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border" >
-        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+        <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
-              class="small-text text-capitalize text-nowrap"
+             class="small-text text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
-              <th scope="col">Name</th>
-              <th scope="col">Birthday</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Email</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Marital Status</th>
-              <th scope="col">Age Group</th>
-              <th scope="col">Membership</th>
-              <th scope="col">Home Address</th>
+              <th scope="col">Fund</th>
+              <th scope="col">Account Name</th>
+              <th scope="col">Reference Number</th>
+              <th scope="col">Description</th>
+              <th scope="col">Debit</th>
+              <th scope="col">Credit</th>
+              <th scope="col">Date</th>
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr>
-              <td>Ajose Oluwatosin</td>
-              <td>25/12/2022</td>
-              <td>07090875463</td>
-              <td>nonitosinajose7@gmail.com</td>
-              <td>Female</td>
-              <td>Married</td>
-              <td>25-30</td>
-              <td>Full Member</td>
-              <td>14, imam dauda Str. Lagos mainland</td>
+            <tr v-for="(transaction, index) in accountTransaction"
+            :key="index">
+              <td>{{ transaction.fund }}</td>
+              <td>{{ transaction.accountName }}</td>
+              <td>{{ transaction.refNumber }}</td>
+              <td>{{ transaction.description }}</td>
+              <td>{{ transaction.debit }}</td>
+              <td>{{ transaction.credit }}</td>
+              <td>{{ formatDate(transaction.date) }}</td>
             </tr>
-            <tr>
-              <td>Clement Oluwatosin</td>
-              <td>25/12/2012</td>
-              <td>07090875463</td>
-              <td>nonitosinajose7@gmail.com</td>
-              <td>Male</td>
-              <td>Married</td>
-              <td>25-30</td>
-              <td>Full Member</td>
-              <td>14, imam dauda Str. Lagos mainland</td>
-            </tr>
-
-
-
-
           </tbody>
         </table>
-        <div class="table-foot d-flex justify-content-end mt-n3">
+        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
           <PaginationButtons />
-        </div>
+        </div> -->
       </div>
       <!--end table header -->
     </section>
@@ -134,37 +117,52 @@
 import { ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
-import PaginationButtons from "../../../components/pagination/PaginationButtons";
+// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
+import dateFormatter from  "../../../services/dates/dateformatter";
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
-    PaginationButtons,
+    // PaginationButtons,
   },
   setup() {
-    const startDate = ref(new Date());
-    const endDate = ref(new Date());
-    const membersInChurch = ref([]);
-    const allMembersInChurch = () => {
+    const startDate = ref("");
+    const endDate = ref("");
+    const accountTransaction = ref([]);
+    // const firstTimerChart = ref([])
+    const generateReport = () => {
       axios
-        .get(`/api/People/GetMembershipSummary`)
+        .get(`/api/Reports/financials/getAccountTransactionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
-          console.log(res);
-          membersInChurch.value = res.data;
-console.log(membersInChurch.value, "✌️✌️");
+
+          console.log(res, "🎄🎄🎄");
+          accountTransaction.value = res.data;
+          console.log(accountTransaction.value, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
         });
     };
+
+     const formatDate = (activityDate) => {
+      return dateFormatter.monthDayYear(activityDate);
+    };
+
+    // onMounted(() => {
+    //   firstTimerChart.value = [{name: "Dapo", value: 77}]
+    // })
+
+
     return {
       Calendar,
       startDate,
       endDate,
-      membersInChurch,
-      allMembersInChurch,
+      accountTransaction,
+      generateReport,
+      formatDate,
+      // firstTimerChart
     };
   },
 };
@@ -218,6 +216,7 @@ console.log(membersInChurch.value, "✌️✌️");
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
 .table-header-area-main {
   background-color: #ebeff4;
 }
@@ -226,15 +225,15 @@ console.log(membersInChurch.value, "✌️✌️");
     width: 100% !important;
     box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
     border: 0.063rem solid #dde2e6 !important;
-    border-radius: 30px !important;
+    /* border-radius: 30px !important; */
     text-align: left !important;
     margin-bottom: auto !important;
     padding-bottom: 0.5rem !important;
 }
 
 .remove-styles{
-  border: none !important;
-box-shadow: none !important;
+    border: none !important;
+    box-shadow: none !important;
     border-bottom: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
@@ -242,12 +241,29 @@ box-shadow: none !important;
 
 .remove-styles2{
 padding-right: 0;
- padding-left: 0;
+padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
 }
 
 .remove-border{
     box-shadow: none !important;
+}
+
+.tablerow-style {
+  min-width: 100%;
+  border-bottom: 0px;
+}
+
+.graph-area{
+    border: 1px solid #dde2e6;
+    border-radius: 0.5rem;
+    padding: 1rem 0rem;
+    margin: 2rem 0rem;
+}
+
+.responsiveness{
+  max-width: 100%;
+  overflow-y: scroll;
 }
 </style>

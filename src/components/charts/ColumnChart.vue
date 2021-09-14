@@ -22,7 +22,7 @@ import { useRoute } from 'vue-router'
 export default {
   components: {},
 
-  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries", "chartClass" ],
+  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries" ],
   
   setup(props) {
     const chart = ref(null);
@@ -33,13 +33,7 @@ export default {
 
     onMounted(() => {
         headerText.value = props.header;
-        
-        // if (props.chartClass) {
-        //   console.log(props.chartClass)
-        // } else {
-        //   console.log("It is Undefined")
-        // }
-
+      
       var highchartsOptions = {
         chart: {
           type: "column",
@@ -91,39 +85,40 @@ export default {
           borderWidth: 1,
         }
     },
-        series: [
-          {
-            name: "Church Attendance Data",
-            color: "#002044",
-            // data: props.data.data
-            data: props.data ? props.data.data : props.data
-            // data: [127, 335, 400, 345, 307, 0, 0]
-              //  data: [2, 6, 3, 1, 1, 6],
-          }
-          // {
-          //   name: "Female",
-          //   color: "#EBEFF4",#136ACD
-          //   data: [1, 4, 1, 6, 5, 4],
-          // },
-          // {
-          //   name: "Others",
-          //   color: "#002044",
-          //   data: [5, 2, 5, 4, 6, 2],
-          // },
-        ],
+        series: props.data
+        //  [
+        //   {
+        //     name: props.microtitle,
+        //     color: "#002044",
+        //     // data: props.data.data
+        //     data: props.data ? props.data.data : props.data
+        //     // data: [127, 335, 400, 345, 307, 0, 0]
+        //       //  data: [2, 6, 3, 1, 1, 6],
+        //   },
+        //   {
+        //     name: "Female",
+        //     color: "#EBEFF4",
+        //     data: [10, 34, 21, 16, 15, 4],
+        //   },
+        //   {
+        //     name: "Others",
+        //     color: "#002044",
+        //     data: [5, 12, 25, 4, 16, 2],
+        //   },
+        // ],
         //   credits: false,
       };
       chart.value = new Highcharts.chart(highchartsOptions);
     });
 
     onMounted(() => {
-      console.log(props.series, "passed data")
+      console.log(props.series, "take data")
       console.log(props.data, "passed data")
       console.log(props.attendanceSeries)
     })
 
     onUpdated(() => {
-      console.log(props.series, "passed data")
+      console.log(props.series, "take water data")
       console.log(props.data, "passed data")
       
     })

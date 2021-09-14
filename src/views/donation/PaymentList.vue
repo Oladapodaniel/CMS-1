@@ -178,7 +178,7 @@
                 </a>
                 </router-link>
                 <a
-                  class="dropdown-item elipsis-items"
+                  class="dropdown-item elipsis-items cursor-pointer"
                   @click="showConfirmModal(item.id)"
                   >Delete</a
                 >
@@ -269,7 +269,7 @@ export default {
                 toast.add({
                     severity: "success",
                     summary: "Confirmed",
-                    detail: "Member Deleted",
+                    detail: "Payment form deleted",
                     life: 3000,
                 });
                 emit('delete-payment', id)

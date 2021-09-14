@@ -13,14 +13,15 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">First Timers Report</h3>
+          <h3 class="heading-text ml-2">Income Statement Report</h3>
+           <p class="ml-2">This is a detailed report of all the income and expenses of the ministry in a given period, it also gives the margin of the two.</p>
         </div>
 
-        <div class="centered-items">
+        <!-- <div class="centered-items">
           <button class="default-btn font-weight-normal">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
     <!--end of header area -->
@@ -59,25 +60,14 @@
 
     <section>
       <!-- chart area -->
-      <div
-       class="chart row"
-       :class="firstTimerInChurch && firstTimerInChurch.length > 0 ? 'graph-area' : '' ">
-        <div class="chart1 col-12 col-md-6 ">
+      <div class="chart">
+        <div style="width: 45%" class="ml-md-4 chart1">
           <ByGenderChart
             domId="chart"
             title="By Gender"
             distance="5"
             :titleMargin="10"
-            :summary="data"
-          />
-        </div>
-        <div  class="chart1 col-12 col-md-6 ">
-          <ByGenderChart
-            domId="chartid"
-            title="Marital Status"
-            distance="5"
-            :titleMargin="10"
-            :summary="maritalChartInfo"
+            :summary="firstTimerChart"
           />
         </div>
       </div>
@@ -86,36 +76,31 @@
 
     <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness">
-        <table class="table remove-styles mt-0  table-hover table-header-area">
+      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+        <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
-              class="small-text text-capitalize text-nowrap"
+             class="small-text text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
-              <th scope="col">Church Activity</th>
-              <th scope="col">Name</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Email</th>
-              <th scope="col">Home Address</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Marital Status</th>
-              <th scope="col">Activity Date</th>
-              <th scope="col">Current Status</th>
+              <th scope="col">Fund</th>
+              <th scope="col">Account Name</th>
+              <th scope="col">Account Category</th>
+              <th scope="col">Description</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Date</th>
             </tr>
           </thead>
+
           <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(firstTimer, index) in firstTimerInChurch"
+            <tr v-for="(statement, index) in incomeStatement"
             :key="index">
-              <td>{{ firstTimer.event }}</td>
-              <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
-              <td>{{ firstTimer.mobilePhone }}</td>
-              <td>{{ firstTimer.email }}</td>
-              <td>{{ firstTimer.homeAddress }}</td>
-              <td>{{ firstTimer.gender }}</td>
-              <td>{{ firstTimer.maritalStatus }}</td>
-              <td>{{ formatDate(firstTimer.activityDate) }}</td>
-              <td>{{ firstTimer.status }}</td>
+              <td>{{ statement ? statement.fund : ""}}</td>
+              <td>{{ statement ? statement.accountName : "" }}</td>
+              <td>{{ statement ? statement.accountCategory : "" }}</td>
+              <td>{{ statement ? statement.description : "" }}</td>
+              <td>{{ statement ? statement.amount : "" }}</td>
+              <td>{{ formatDate(statement ? statement.date : "") }}</td>
             </tr>
           </tbody>
         </table>
@@ -129,7 +114,7 @@
 </template>
 
 <script>
-import {  ref } from "vue";
+import { ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -140,116 +125,47 @@ export default {
   components: {
     Calendar,
     ByGenderChart,
-    // PaginationButtons
+    // PaginationButtons,
   },
   setup() {
-    const startDate = ref(new Date());
+    const startDate = ref("");
     const endDate = ref("");
-    const firstTimerInChurch = ref([]);
-    const genderChartResult = ref([]);
-    const data= ref([]);
-    const maritalChartInfo = ref([]);
+    const incomeStatement = ref([]);
+    // const firstTimerChart = ref([])
     const generateReport = () => {
       axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
-          firstTimerInChurch.value = res.data;
-          console.log(firstTimerInChurch.value, "✌️✌️");
-          data.value = getGenderChart(res.data)
-          maritalChartInfo.value = maritalChart(res.data)
-          console.log(maritalChartInfo.value, "🎉🎉🎉🎉✌️✌️")
-
-          // genderChart(res.data, 'gender')
-          // genderChart(res.data, 'maritalStatus')
+          console.log(res, "🎄🎄🎄");
+          incomeStatement.value = res.data;
+          console.log(incomeStatement.value, "✌️✌️");
+          // console.log(incomeStatement.value.fund, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
         });
     };
 
-    const getGenderChart = arr => {
-      return [
-        getSumOfItems(arr, 'gender', 'Male'),
-        getSumOfItems(arr, 'gender', 'Female'),
-        getSumOfItems(arr, 'gender',  null),
-        getSumOfItems(arr, 'gender', 'Other'),
-        ]
-    }
-
-    const maritalChart = arr => {
-      return[
-        getSumOfItems(arr, 'maritalStatus', 'Married'),
-        getSumOfItems(arr, 'maritalStatus', 'Single'),
-        getSumOfItems(arr, 'maritalStatus', null),
-      ]
-    }
-
-    // const getMaritalStatusChart =(arr, key, value) => {
-    //   return {
-    //     name: value,
-    //     value: firstTimerInChurch.value.filter(i => i[key] === value).length
-    //   }
-    //   }
-
-   const getSumOfItems = (arr, key, value) => {
-      return {
-        name: value,
-        value: firstTimerInChurch.value.filter(i => i[key] === value).length
-    }
-   }
-
- /*   const genderChart = (array, key) => {
-       // Accepts the array and key
-      // Return the end result
-      let result = array.reduce((result, currentValue) => {
-        // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
-        // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
-        return result;
-      }, []); // empty object is the initial value for result object
-      // genderChartResult.value
-      for (const prop in result) {
-        // genderChartResult.value
-        console.log(prop, result[prop])
-        genderChartResult.value.push({
-          name: prop,
-          value: result[prop].length
-        })
-      }
-      console.log(genderChartResult.value, "💐💐💐");
-      return genderChartResult.value
-      // console.log(genderChartResult.value, )
-    };
-*/
-
-
-      const formatDate = (activityDate) => {
+     const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
     };
 
-    // const mappedGender = computed(() => {
-    //   if (genderChartResult.value.length === 0) return []
-    //   return genderChartResult.value.map(i => i)
-    // });
+    // onMounted(() => {
+    //   firstTimerChart.value = [{name: "Dapo", value: 77}]
+    // })
 
 
     return {
       Calendar,
       startDate,
       endDate,
-      firstTimerInChurch,
+      incomeStatement,
       generateReport,
       formatDate,
-      // genderChart,
-      genderChartResult,
-      // mappedGender,
-      data,
-     maritalChartInfo
-    }
-   }
-  };
+      // firstTimerChart
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -300,6 +216,7 @@ export default {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
 .table-header-area-main {
   background-color: #ebeff4;
 }
@@ -333,13 +250,16 @@ border-top-right-radius: 0 !important;
     box-shadow: none !important;
 }
 
+.tablerow-style {
+  min-width: 100%;
+  border-bottom: 0px;
+}
+
 .graph-area{
     border: 1px solid #dde2e6;
     border-radius: 0.5rem;
     padding: 1rem 0rem;
-    margin: 2rem 0rem !important;
-     width: 100% !important;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
+    margin: 2rem 0rem;
 }
 
 .responsiveness{

@@ -511,13 +511,11 @@
           </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end">
-          <span>
+          <span @click="data" data-toggle="modal" data-target="#sendsmsbtn" :class="{ 'cursor-close' : disableBtn }">
             <SplitButton
               label="Send"
               :model="sendOptions"
-              data-toggle="modal"
-              data-target="#sendsmsbtn"
-              @click="data"
+              :disabled="disableBtn"
             ></SplitButton>
           </span>
           <router-link :to=" route.fullPath === '/tenant/sms/compose' ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
@@ -709,6 +707,7 @@ export default {
     const router = useRouter()
     const editor = ClassicEditor;
     const editorData = ref("");
+    const disableBtn = ref(false)
     const editorConfig = {
       // The configuration of the editor.
       height: "800",
@@ -864,9 +863,11 @@ export default {
       console.log(data)
 
       // if (selectedMembers.value.length > 0) data.contacts = selectedMembers.value;
+      disableBtn.value = true
       composeService
         .sendMessage("/api/Messaging/sendSms", data)
         .then((res) => {
+          disableBtn.value = false
           // if (res.status === 200) {
             if (res.data.message.includes("You do not have")) {
               toast.add({
@@ -892,7 +893,7 @@ export default {
             // Save the res to store in other to get it in the view sent sms page
             let sentObj = {
                 message: res.data.message,
-                id: res.data.returnObjects ? res.data.returnObjects[0].id : [],
+                id: res.data.returnObjects ? res.data.returnObjects[0].communicationReportID : '',
                 smsUnitsUsed: res.data.unitsUsed,
                 dateSent: res.data.returnObjects ? `Today | ${moment.parseZone(new Date(res.data.returnObjects[0].communicationReport.date).toLocaleDateString(), 'YYYY MM DD HH ZZ')._i}` : "",
                 deliveryReport: [{ report: res.data.messageStatus }]
@@ -920,6 +921,7 @@ export default {
         })
         .catch((err) => {
           stopProgressBar();
+          disableBtn.value = false
           toast.removeAllGroups();
           console.log(err)
           if (err.toString().toLowerCase().includes("network error")) {
@@ -1261,7 +1263,8 @@ export default {
       moment,
       isPersonalized,
       data,
-      route
+      route,
+      disableBtn
     };
   },
 };
@@ -1502,5 +1505,9 @@ input:focus {
 <style>
 .ck-editor__editable {
   min-height: 300px;
+}
+
+.cursor-close {
+  cursor: not-allowed;
 }
 </style>

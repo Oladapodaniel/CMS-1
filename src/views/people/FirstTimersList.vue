@@ -1,5 +1,5 @@
 <template>
-  <div class="container-wide">{{ getFirstTimerSummary ? getFirstTimerSummary.invitationSource: "" }}
+  <div class="container-wide">
     <div class="my-con">
       <div class="summary px-3">
         <p class="summary-header">Summary</p>

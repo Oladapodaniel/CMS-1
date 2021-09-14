@@ -21,7 +21,6 @@ export default {
         const route = useRoute()
         const toast  = useToast()
         const isProduction = true
-        const logoUrl = `https://flutterwave.com/images/logo-colored.svg`
         const uniqueId = ref(uuidv4())
         const paystackCurrencies = ref(['NGN', 'GHS', 'ZAR'])
         const currency = ref("")
@@ -86,6 +85,11 @@ export default {
                     tx_ref: uniqueId.value,
                     amount: amount.value,
                     currency: route.query.currency,
+                    subaccounts: [
+                        {
+                            id: route.query.subAccountId
+                        }
+                    ],
                     payment_options: 'card,ussd',
                     customer: {
                     // name: props.name,
@@ -119,7 +123,7 @@ export default {
                     customizations: {
                     title: route.query.churchName,
                     description: "Payment for contribution items",
-                    logo: logoUrl,
+                    logo: route.query.churchLogo,
                     },
                 });
             }
@@ -190,6 +194,7 @@ export default {
                     amount: amount.value * 100,
                     ref: uniqueId.value,
                     currency: currency.value,
+                    subaccount: route.query.subAccountId,
                     channels: ['card', 'bank', 'ussd', 'qr', 'mobile_money', 'bank_transfer'],
                     // subaccount: props.donation.paymentGateway.find(i => {
                     //     return i.paymentGateway.name.toLowerCase() === selectedGateway.value.toLowerCase()
