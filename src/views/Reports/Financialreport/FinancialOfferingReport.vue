@@ -8,18 +8,18 @@
         </div>
         <div class="container-fluid ">
                 <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
-                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold  mt-1">
+                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold  mt-0">
                         <label for="icon" >Start Date</label>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
-                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold my-1">
+                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold mt-0">
                         <label for="icon">End Date</label>
                         <Calendar id="endDate" v-model="endDate" :showIcon="true" />
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3">
-                        <div><label for="" class="font-weight-bold">Select Members</label></div>
-                        <div class="dropdown">
-                        <button id="dropdownMenuButton" data-toggle="dropdown">Select Member</button> 
+                    <div class="col-12 col-md-6 col-lg-3 mt-0 ">
+                        <div class="col-12 "><label for="" class="font-weight-bold ml-2">Select Member</label></div>
+                        <div class="dropdown col-12  w-100">
+                           <button id="dropdownMenuButton" class="col-12 w-100 btn default-btn" data-toggle="dropdown">{{ member.name ? member.name : " Search Member" }}</button> 
                             <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
                                  <input type="text" class="form-control" 
                                     v-model="userSearchString"
@@ -53,35 +53,13 @@
                                 @click="showAddMemberForm"
                                 data-dismiss="modal"
                                 >
-                                <i
-                                    class="pi pi-plus-circle mr-2 primary-text d-flex align-items-center"
-                                    style="color: #136acd"
-                                ></i>
-                                    Create Person
                                 </a>
                             </div>
                         </div>
-                        <!-- <div>
-                            <MultiSelect v-model="selectedMember" :options="memberShip" optionLabel="name" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
-                                <template #value="slotProps">
-                                    <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
-                                        <div>{{option.name}}</div>
-                                    </div>
-                                    <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                        Select Member
-                                    </template>
-                                </template>
-                                <template #option="slotProps">
-                                    <div class="country-item">
-                                        <div>{{slotProps.option.name}}</div>
-                                    </div>
-                                </template>
-                            </MultiSelect>
-                        </div> -->
                     </div>
-                    <div class="col-12 col-md-6 col-lg-2">
-                        <label for="" ></label>
-                        <div class="mt-2" @click="genarateReport">
+                    <div class="col-12 col-md-6 col-lg-2 mt-2">
+                        <div><label for="" ></label></div>
+                        <div @click="genarateReport">
                             <button class="btn default-btn primary-bg "><div class="text-white">Generate</div></button>
                         </div>
                     </div> 
@@ -94,18 +72,28 @@
                       Offering And Givings Report
                     </div>
                 </div>
-                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" >
-                        <!-- <div class="col-12 font-weight-bold">Membership By Gender</div> -->
-                        <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                            <OfferingColumnChart
-                                
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+            </div>
+            <div class="row">
+              <div class="col-12 container-fluid d-flex mt-2 flex-wrap">
+                  <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                      <div class="col-12   text-center" >
+                          <!-- <div class="col-12 font-weight-bold">Membership By Gender</div> -->
+                          <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
+                          <div class="col-12" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                              <OfferingColumnChart
+                                  domId="chart1"
+                                  title="Offering Report"
+                                  distance="5"
+                                  :titleMargin="10"
+                                  :data="offeringDetail"
+                                  subtitle="Offering And Giving Data"
+                                  :series="mappedOfferingCol"
+                                  
+                              />
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                     <div class="col-12  text-center" >
                         <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
@@ -119,27 +107,38 @@
                         </div>
                     </div>
                 </div>
+              </div>
             </div>
         </div>
            <section>
                     <!-- table header -->
-                <div class=" container container-top table-main px-0  remove-styles2 remove-border "
-                     :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                        <table class="table remove-styles mt-0 w-100 table-responsive table-hover table-header-area">
-                        <div class="table-header-area-main row w-100">
-                            <div
+                <div class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
+                        <table class="table remove-styles mt-0  table-hover table-header-area ">
+                          <thead class="table-header-area-main">
+                            <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0">
+                                <!-- <th class="">Group Name</th> -->
+                                <th scope="col">Offering name</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Event name</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Contact name</th>
+                                <th scope="col">Channel</th>
+                            </tr>
+                          </thead>
+                        <!-- <div class=" row t-header row font-weight-bold"> -->
+                            <!-- <div
                             class="small-text text-capitalize col-12 d-flex text-nowrap"
                             style="border-bottom: 0"
-                            >
+                            > -->
                             <!-- <th scope="col-2">Building Project</th> -->
-                            <div scope="col-2">Offering name</div>
-                            <div scope="col-2">Amount</div>
-                            <div scope="col-2">Event Name</div>
-                            <div scope="col-2">Date</div>
-                            <div scope="col-2">Contact Name</div>
-                            <div scope="col-2">Channel</div>
-                            </div>
-                        </div>
+                              <!-- <div class="col-2">Offering name</div>
+                              <div class="col-2">Amount</div>
+                              <div class="col-2">Event Name</div>
+                              <div class="col-2">Date</div>
+                              <div class="col-2">Contact Name</div>
+                              <div class="col-2">Channel</div> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
                         <tbody class="font-weight-normal text-nowrap">
                             <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
                             <td>{{ OfferingList.contributionName }}</td>
@@ -168,7 +167,7 @@
  import axios from "@/gateway/backendapi";
  import PaginationButtons from "../../../components/pagination/PaginationButtons";
  import OfferingPieChart from '../../../components/charts/PieChart.vue';
- import OfferingColumnChart from "../../../components/charts/ColumnChart.vue";
+ import OfferingColumnChart from "../../../components/charts/ColumnChart2.vue";
  import membershipService from "../../../services/membership/membershipservice";
  import dateFormatter from  "../../../services/dates/dateformatter";
 
@@ -184,7 +183,6 @@ export default {
         const showReport = ref(false);
         const startDate = ref(new Date());
         const endDate = ref(new Date());
-        const selectedMember = ref();
         const selectedofferingCategory = ref();
         const userSearchString = ref("");
         const searchingForMembers = ref(false);
@@ -192,24 +190,28 @@ export default {
         const offeringReportItem = ref('');
         const offeringInChurch = ref([]);
         const display = ref(false);
+        const offeringData = ref([]);
         const offeringChartResult = ref([]);
-        const pieChart= ref([])
+        // const pieChart= ref([])
+        const mainOfferingData= ref([])
          
-        onMounted(()=>{
-        pieChart.value = { name: "First Timer ", value: 2, name: "First Timer ", value: 2, };
-        })
-         const memberShip = ref([
-      { name: "FIRST-TIMER" },
-      { name: "NEW-CONVERT" },
-      { name: "FULL MEMBER" },
-    ]);
-        const offeringCategory = ref([
-      { name: "WORSHIP CENTER" },
-      { name: "FAITH CLINIC" },
-      { name: "MEMBER 1" },
-      { name: "MEMBER 2" },
-      { name: "CONCERT" },
-    ]);
+        // onMounted(()=>{
+        // pieChart.value = { name: "First Timer ", value: 2, name: "First Timer ", value: 2, };
+        // })
+    const offeringDetail = computed(() => {
+         if (offeringInChurch.value.length === 0) return []
+           offeringInChurch.value.forEach(i => {
+            let offeringIndex = Object.keys(i).findIndex(i => i === 'amount')
+            let offeringValue = Object.values(i)[offeringIndex]
+            offeringData.value.push(offeringValue)     
+         });
+         mainOfferingData.value.push({
+             name: 'Attendance',
+             color: '#002044',
+             data: offeringData.value
+         })
+         return mainOfferingData.value  
+     })
      const offeringChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
@@ -226,13 +228,16 @@ export default {
           value: result[prop].length
         })
       }
-      console.log(offeringChartResult.value)
+      console.log(offeringChartResult.value,'giddy')
     };
     const mappedOffering = computed(() => {
       if (offeringChartResult.value.length === 0) return []
       return offeringChartResult.value.map(i => i)
     })
-
+    const mappedOfferingCol = computed(() => {
+      if (offeringChartResult.value.length === 0) return []
+      return offeringChartResult.value.map(i => i.name)
+    })
 
      const genarateReport = () => {
         axios.get(`/api/Reports/financials/getContactAllContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&personID=${offeringReportItem.value}`)
@@ -279,8 +284,12 @@ export default {
     };
 
         return{
+            mainOfferingData,
+            offeringDetail,
+            offeringData,
             offeringChart,
             mappedOffering,
+            mappedOfferingCol,
             offeringChartResult,
             display,
             startDate,
@@ -294,13 +303,11 @@ export default {
             offeringReportItem,
             offeringInChurch,
             endDate,
-            memberShip,
-            offeringCategory,
+            // offeringCategory,
             genarateReport,
             showReport,
-            selectedMember,
             selectedofferingCategory,
-            pieChart
+            // pieChart
             
         }
     },
@@ -311,11 +318,27 @@ export default {
 * {
   box-sizing: border-box;
 }
+.table-row-bg {
+    background: #ebeff4
+}
 .show-report{
     display: block;
 }
 .hide-report{
     display: none;
+}
+.responsiveness{
+  max-width: 100%;
+  overflow-y: scroll;
+}
+.table-main {
+    width: 100% !important;
+    box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
+    border: 0.063rem solid #dde2e6 !important;
+    /* border-radius: 30px !important; */
+    text-align: left !important;
+    margin-bottom: auto !important;
+    padding-bottom: 0.5rem !important;
 }
 
 .heading-text {
