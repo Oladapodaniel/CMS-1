@@ -44,9 +44,9 @@
           <div class="col-12 ">
             <div class="row" v-for="(item, index) in pastors" :key="index">
               <!-- <div class="col-sm-12 text-right align-self-center mt-2"></div> -->
-              <div class="col-12  justify-content-center mx-auto   mt-4">
+              <div class="col-12 justify-content-center mx-auto mt-4">
                 <div class="row">    
-                  <div class="col-md-2 col-lg-2 col-sm-5  text-center col-5  person-image">
+                  <div class="col-md-2 col-lg-2 col-sm-5 text-center col-5 person-image">
                     <img
                       style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover;"
                       :src="item.photo"
@@ -70,14 +70,14 @@
           </div>
           <div class="col-12   mt-3">
             <div class="row justify-content-between ">
-              <div class=" col-sm-5 col-md-5 col-lg-5   col-12 font-weight-700">Other Information</div>
+              <div class=" col-sm-5 col-md-5 col-lg-5 col-12 font-weight-700">Other Information</div>
               <div
                 class="col-12 mt-2 col-sm-2 col-lg-2 col-md-2  c-pointer"
                 data-target="#other-info"
                 data-toggle="modal"
                 data-whatever="@fat"
               >
-                <button class="align-items-center default-btn btn primary-bg border-0 text-white c-pointer">  Add</button>
+                <button class="align-items-center default-btn btn primary-bg border-0 text-white c-pointer">Add</button>
               </div>
             </div>
           </div>
