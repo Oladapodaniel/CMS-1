@@ -13,7 +13,8 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">Accounting Transactions Report</h3>
+          <h3 class="heading-text ml-2">Income Statement Report</h3>
+           <p class="ml-2">This is a detailed report of all the income and expenses of the ministry in a given period, it also gives the margin of the two.</p>
         </div>
 
         <!-- <div class="centered-items">
@@ -84,23 +85,22 @@
             >
               <th scope="col">Fund</th>
               <th scope="col">Account Name</th>
-              <th scope="col">Reference Number</th>
+              <th scope="col">Account Category</th>
               <th scope="col">Description</th>
-              <th scope="col">Debit</th>
-              <th scope="col">Credit</th>
+              <th scope="col">Amount</th>
               <th scope="col">Date</th>
             </tr>
           </thead>
+
           <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(transaction, index) in accountTransaction"
+            <tr v-for="(statement, index) in incomeStatement"
             :key="index">
-              <td>{{ transaction.fund }}</td>
-              <td>{{ transaction.accountName }}</td>
-              <td>{{ transaction.refNumber }}</td>
-              <td>{{ transaction.description }}</td>
-              <td>{{ transaction.debit }}</td>
-              <td>{{ transaction.credit }}</td>
-              <td>{{ formatDate(transaction.date) }}</td>
+              <td>{{ statement ? statement.fund : ""}}</td>
+              <td>{{ statement ? statement.accountName : "" }}</td>
+              <td>{{ statement ? statement.accountCategory : "" }}</td>
+              <td>{{ statement ? statement.description : "" }}</td>
+              <td>{{ statement ? statement.amount : "" }}</td>
+              <td>{{ formatDate(statement ? statement.date : "") }}</td>
             </tr>
           </tbody>
         </table>
@@ -130,16 +130,16 @@ export default {
   setup() {
     const startDate = ref("");
     const endDate = ref("");
-    const accountTransaction = ref([]);
+    const incomeStatement = ref([]);
     // const firstTimerChart = ref([])
     const generateReport = () => {
       axios
-        .get(`/api/Reports/financials/getAccountTransactionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
-
           console.log(res, "🎄🎄🎄");
-          accountTransaction.value = res.data;
-          console.log(accountTransaction.value, "✌️✌️");
+          incomeStatement.value = res.data;
+          console.log(incomeStatement.value, "✌️✌️");
+          // console.log(incomeStatement.value.fund, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
@@ -159,7 +159,7 @@ export default {
       Calendar,
       startDate,
       endDate,
-      accountTransaction,
+      incomeStatement,
       generateReport,
       formatDate,
       // firstTimerChart

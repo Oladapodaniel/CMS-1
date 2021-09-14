@@ -13,7 +13,8 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">Accounting Transactions Report</h3>
+          <h3 class="heading-text ml-2">Basic Expense Report</h3>
+           <p class="ml-2">This reports provides a detailed list of all the church expenses in a simplied display.</p>
         </div>
 
         <!-- <div class="centered-items">
@@ -84,10 +85,8 @@
             >
               <th scope="col">Fund</th>
               <th scope="col">Account Name</th>
-              <th scope="col">Reference Number</th>
               <th scope="col">Description</th>
-              <th scope="col">Debit</th>
-              <th scope="col">Credit</th>
+              <th scope="col">Amount</th>
               <th scope="col">Date</th>
             </tr>
           </thead>
@@ -96,9 +95,8 @@
             :key="index">
               <td>{{ transaction.fund }}</td>
               <td>{{ transaction.accountName }}</td>
-              <td>{{ transaction.refNumber }}</td>
               <td>{{ transaction.description }}</td>
-              <td>{{ transaction.debit }}</td>
+              <td>{{ transaction.amount }}</td>
               <td>{{ transaction.credit }}</td>
               <td>{{ formatDate(transaction.date) }}</td>
             </tr>
