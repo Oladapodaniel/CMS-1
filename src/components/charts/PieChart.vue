@@ -109,7 +109,7 @@ var highchartsOptions = {
     //     y: 50,
     //   },
     // ];
-    console.log(props.summary)
+    // console.log(props.summary)
     console.log(getSummary.value)
     });
 

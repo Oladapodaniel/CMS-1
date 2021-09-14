@@ -279,6 +279,33 @@ const routes = [
                     import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/GroupCategoryReport.vue')
             },
             {
+                path: 'attendanceservicereport',
+                name:"ServiceAttendanceReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Performancereport/ServiceAttendanceReport.vue')
+            },
+            {
+                path: 'statementofactivity',
+                name:"StatementOfActivity",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/StatementOfActivity.vue')
+            },
+            {
+                path: 'incomereport',
+                name:"IncomeReport",
+                meta: {
+                    title: 'Churchplus - Reports',
+                },
+                component: () =>
+                    import ( /* webpackChunkName: "addfirsttimer" */ '../views/Reports/Financialreport/IncomeReport.vue')
+            },
+            {
                 path: 'family',
                 name: 'Family',
                 component: () =>
