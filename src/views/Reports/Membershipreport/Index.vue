@@ -15,8 +15,8 @@
                 <div class="col-md-5 col-12 border-bottom">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
                        
-                        <router-link to="/tenant/membershipreport" class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Membership Report</h4></router-link>
-                         <router-link to="/tenant/membershipreport">
+                        <router-link to="/tenant/reports/membershipreport" class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Membership Report</h4></router-link>
+                         <router-link to="/tenant/reports/membershipreport">
                         <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span>
                         </router-link>
                     </div>
@@ -29,8 +29,8 @@
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                        <router-link to="/tenant/firsttimersreport" class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">First Timer Report</h4></router-link>
-                       <router-link to="/tenant/firsttimersreport"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
+                        <router-link to="/tenant/reports/firsttimersreport" class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">First Timer Report</h4></router-link>
+                       <router-link to="/tenant/reports/firsttimersreport"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed report of the first timers in your ministry.</p>
@@ -90,8 +90,8 @@
                 </div>
                 <div class="col-md-5 col-12 border-bottom">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                        <router-link to="/tenant/celebrationsreport" class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Birthday Report</h4></router-link>
-                        <router-link to="/tenant/celebrationsreport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
+                        <router-link to="/tenant/reports/celebrationsreport" class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Birthday Report</h4></router-link>
+                        <router-link to="/tenant /reports/celebrationsreport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed list of all the church contacts celebrating their birthday within the selected period</p>
@@ -101,8 +101,8 @@
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                       <router-link to="/tenant/weddinganniversaryreport" class="linked" ><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Wedding Annivarsary Report</h4></router-link>
-                        <router-link to="/tenant/weddinganniversaryreport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
+                       <router-link to="/tenant/reports/weddinganniversaryreport" class="linked" ><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Wedding Annivarsary Report</h4></router-link>
+                        <router-link to="/tenant/reports/weddinganniversaryreport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed list of all the church contacts celebrating their weddings within the selected period.</p>

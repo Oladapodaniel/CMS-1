@@ -1,7 +1,7 @@
 <template>
-<div class="container container-wide mt-5 overflow-hidden mb-4">
+<div class="container container-wide mt-5 mb-4">
      <div>
-            <h3 class="font-weight-bold mt-5">Church Activities Performance Analysis Report</h3>
+            <h3 class="font-weight-bold mt-5 mb-2">Church Activities Performance Analysis Report</h3>
         </div>
         <div class="row">
   <div style="background: #ebeff4;" class="row mx-2 w-100 py-5" >
@@ -51,51 +51,130 @@
              </div>
              <div>
                  <h3 class="font-weight-bold mt-5 ml-2"  v-show="analysisReport.length > 0">SERVICE PERFORMANCE ANALYSIS REPORT </h3>
-                 <div class=" borderInner mb-5">
+                 
+                 <div class=" borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
                         <div class="" v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart"
-                            title="Service Analysis"
+                            title="Service Performance Chart"
                             distance="5"
                             :titleMargin="10"
-                            :data ="attendanceChart"
+                            :data ="FTNCChart"
                             :series = "series"
-                            :seriesText="`Attendance analysis`"
+                            :seriesText="`First timer and new convert analysis`"
+                           
                         />
                         </div>
                  </div>
-                  <div class="borderInner mb-5">
+                  <div class="borderInner mb-2">
                      <h5 class="ml-3 mt-4"></h5>
                      <div class=""  v-show="analysisReport.length > 0">
                         <PerformanceColumnChart
                             domId="chart1"
-                            title=" First Timers Analysis"
+                            title=" Attendance Analysis Chart"
                             distance="5"
                             :titleMargin="10"
-                            :data ="FTNCChart"
+                            :data ="attendanceChart"
                             :series= "series"
-                            :seriesText="`First timer and new convert analysis`"
-                        />
-                        </div>
-
-                 </div>
-                   <!-- <div class="borderInner mb-2">
-                     <h5 class="ml-3 mt-4"></h5>
-                     <div class="">
-                        <PerformanceColumnChart
-                            domId="chart2"
-                            title="New Convert"
-                            distance="5"
-                            :titleMargin="10"
-                            :data ="colunmChartNewCovert"
-                            :series = "series"
+                            :seriesText="`Attendance analysis`"
                             
                         />
                         </div>
 
-                 </div> -->
+                 </div>
+                   <div class="borderInner mb-2">
+                     <h5 class="ml-3 mt-4"></h5>
+                     <div class="" v-show="analysisReport.length > 0">
+                        <PerformanceColumnChart
+                            domId="chart2"
+                            title="First Timers Analysis Chart"
+                            distance="5"
+                            :titleMargin="10"
+                            :data ="firstTimerChart"
+                            :series = "series"
+                            :seriesText="`First Timers Analysis Chart`"
+                            
+                        />
+                        </div>
+
+                 </div>
+                 <div class="borderInner mb-2">
+                     <h5 class="ml-3 mt-4"></h5>
+                     <div class="" v-show="analysisReport.length > 0">
+                        <PerformanceColumnChart
+                            domId="chart3"
+                            title="New Converts Analysis Chart"
+                            distance="5"
+                            :titleMargin="10"
+                            :data ="newConvertsChart"
+                            :series = "series"
+                            :seriesText="`New Converts Analysis Chart`"
+                            
+                        />
+                        </div>
+
+                 </div>
              </div>
+             <section>
+       <!-- table header -->
+       
+      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness mb-5 mt-2" >
+        <table class="table remove-styles mt-0 table-hover table-header-area">
+          <thead class="table-header-area-main">
+            <tr
+              class="small-text text-capitalize text-nowrap"
+              style="border-bottom: 0"
+            >
+              <th scope="col">Event Name</th>
+              <th scope="col">Date</th>
+              <th scope="col">Description</th>
+              <th scope="col">Topic</th>
+              <th scope="col">Text</th>
+              <th scope="col">First Timers</th>
+              <th scope="col">New Converts</th>
+              <th scope="col">Testimonies</th>
+            </tr>
+          </thead>
+          <tbody class="font-weight-normal text-nowrap">
+            <tr v-for="(analysisTable, index) in analysisReport" :key="index" >
+              <td>{{analysisTable.eventName}}</td>
+              <td>{{formatDate(analysisTable.date)}}</td>
+              <td>{{analysisTable.description}}</td>
+              <td>{{analysisTable.topic}}</td>
+              <td>{{analysisTable.text}}</td>
+              <td>{{analysisTable.firstTimers}}</td>
+              <td>{{analysisTable.newConverts}}</td>
+              <td>{{analysisTable.testmonies}}</td>
+            </tr>
+            <!-- <tr>
+               <td></td>
+              <td>Aug 8 2021</td>
+              <td>Sunday Service 08 aug, 21</td>
+              <td></td>
+              <td></td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr> -->
+            <!-- <tr>
+               <td></td>
+              <td>Aug 8 2021</td>
+              <td>Sunday Service 08 aug, 21</td>
+              <td></td>
+              <td></td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr> -->
+          </tbody>
+        </table>
+        <!-- <div class="table-foot d-flex justify-content-end">
+          <PaginationButtons />
+        </div> -->
+      </div>
+      <!--end table header -->
+      </section>
              </div>
      
 
@@ -110,6 +189,7 @@ import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
+import dateFormatter from "../../../services/dates/dateformatter.js"
 // import MultiSelect from 'primevue/multiselect'
 
     export default {
@@ -121,7 +201,9 @@ import axios from "@/gateway/backendapi";
         }, 
 
         setup() {
-    
+     const formatDate = (date) => {
+      return dateFormatter.monthDayYear(date);
+    };
     const colunmChartAttendance = ref([{name: "First Timers", color: "", data: [1,67,89,67,80,66,80,67,789,7,80,47, 90]}]);
     const colunmChartNewCovert = ref([{name: "New Convert", color: "", data: [1,67,89,67,80,56,70,67,79,7,80,89,80]}]);
     const  series = ref([])
@@ -136,7 +218,12 @@ import axios from "@/gateway/backendapi";
     const attendanceData = ref([])
     const firstTimerData = ref([])
     const newConvertData = ref([])
+    const newConvert1Data = ref([])
+    const firstTimer1Data = ref([])
+    const testmoniesData = ref([])
     const mainAttendanceData = ref([])
+    const mainFirstTimerData = ref([])
+    const mainNewConvertData = ref([])
     const mainFirsttimerNewCovertData = ref([])
 
     const getAllEvents = ()=>{
@@ -152,6 +239,12 @@ import axios from "@/gateway/backendapi";
          axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${selectedSummary.value.id}`)
          .then((res)=>{
              analysisReport.value = res.data;
+             console.log(analysisReport.value);
+             mainAttendanceData.value = []
+             mainFirstTimerData.value = []
+             mainNewConvertData.value = []
+             mainFirsttimerNewCovertData.value = []
+             
              getEventServices()
              console.log(report.value); 
              console.log(res, 'Good');
@@ -167,10 +260,10 @@ import axios from "@/gateway/backendapi";
             let attendanceValue = Object.values(i)[attendanceIndex]
             attendanceData.value.unshift(attendanceValue)     
          });
-         mainAttendanceData.value = []
+         
          mainAttendanceData.value.push({
              name: 'Attendance',
-             color: '#002044',
+             color: '#f94144',
              data: attendanceData.value
          })
          return mainAttendanceData.value  
@@ -178,11 +271,45 @@ import axios from "@/gateway/backendapi";
 
      const colunmChart = ref(attendanceChart.value);
 
+      const firstTimerChart = computed(() => {
+         if (analysisReport.value.length === 0) return []
+           analysisReport.value.forEach(i => {
+            let firstTimersIndex = Object.keys(i).findIndex(i => i === 'firstTimers')
+            let firstTimersValue = Object.values(i)[firstTimersIndex]
+            firstTimer1Data.value.unshift(firstTimersValue)  
+               
+         });
+         
+         mainFirstTimerData.value.push({
+             name: 'first Timers',
+             color: '#3f37c9',
+             data: firstTimer1Data.value
+         })
+         return mainFirstTimerData.value  
+     })
+     const colunmChart1 = ref(firstTimerChart.value)
+
+     const newConvertsChart = computed(()=>{
+         if(analysisReport.value.length === 0) return []
+         analysisReport.value.forEach(i =>{
+             let newConvertsIndex = Object.keys(i).findIndex(i => i === 'newConverts')
+             let newConvertsValue = Object.values(i)[newConvertsIndex]
+             newConvert1Data.value.unshift(newConvertsValue)
+         });
+         mainNewConvertData.value.push({
+             name: 'New Converts',
+             color: '#fca311',
+             data: newConvert1Data.value
+         })
+         console.log(newConvert1Data.value)
+         return mainNewConvertData.value
+     })
+
      const getEventServices = () => {
            analysisReport.value.forEach(i => {
-            let serviceIndex = Object.keys(i).findIndex(i => i === 'name')
+            let serviceIndex = Object.keys(i).findIndex(i => i === 'date')
             let serviceValue = Object.values(i)[serviceIndex]
-            series.value.unshift(serviceValue) 
+            series.value.unshift(dateFormatter.monthDayYear(serviceValue)) 
            })
            console.log(series.value)
            console.log(attendanceData.value)
@@ -198,24 +325,46 @@ import axios from "@/gateway/backendapi";
             
             let newConvertIndex = Object.keys(i).findIndex(i => i === 'newConverts')
             let newConvertValue = Object.values(i)[newConvertIndex]
-            newConvertData.value.unshift(newConvertValue)     
+            newConvertData.value.unshift(newConvertValue)
+
+            let testmoniesIndex = Object.keys(i).findIndex(i => i === 'testmonies')
+            let testmoniesValue = Object.values(i)[testmoniesIndex]
+            testmoniesData.value.unshift(testmoniesValue)      
          });
-         mainFirsttimerNewCovertData.value = []
+         
          mainFirsttimerNewCovertData.value.push({
              name: 'First Timers',
-             color: '#002044',
+             color: '#3f37c9',
              data: firstTimerData.value
          })
          
          mainFirsttimerNewCovertData.value.push({
              name: 'New Converts',
-             color: '#002044',
+             color: '#fca311',
              data: newConvertData.value
          })
+         mainFirsttimerNewCovertData.value.push({
+             name: 'Testimonies',
+             color: '#d00000',
+             data: testmoniesData.value
+         })
+
+        //  mainFirstTimerData.value.push({
+        //      name: 'firstTimers',
+        //      color: '#3f37c9',
+        //      data: firstTimerData.value
+        //  })
+
+        //  mainNewConvertData.value.push({
+        //      name: 'newConverts',
+        //      color: '#3f37c9',
+        //      data: newConvertData.value
+        //  })
          return mainFirsttimerNewCovertData.value  
      })
 
         return{
+            formatDate,
             startDate,
             endDate,
             selectedSummary,
@@ -224,18 +373,25 @@ import axios from "@/gateway/backendapi";
             analysisReport,
             getAnalysisReport,
             colunmChart,
+            colunmChart1,
             series,
             series1,
             colunmChartAttendance,
             colunmChartNewCovert,
             attendanceChart,
+            firstTimerChart,
             attendanceData,
             mainAttendanceData,
+            mainFirstTimerData,
             mainFirsttimerNewCovertData,
+            mainNewConvertData,
             FTNCChart,
             firstTimerData,
-            newConvertData
-            
+            newConvertData,
+            newConvert1Data,
+            testmoniesData,
+            firstTimer1Data,
+            newConvertsChart
         }
         
     }
@@ -248,6 +404,68 @@ import axios from "@/gateway/backendapi";
 * {
   box-sizing: border-box;
 }
+.table {
+  width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45;
+  border: 0.063rem solid #dde2e6; 
+  border-radius: 30px;
+  text-align: left;
+  margin-bottom: auto !important;
+  padding-bottom: 0.9rem;
+}
+
+.table-header-area {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.table-header-area-main {
+  background-color: #ebeff4;
+}
+
+.table-main {
+    width: 100% !important;
+    box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
+    border: 0.063rem solid #dde2e6 !important;
+    border-radius: 30px !important;
+    text-align: left !important;
+    margin-bottom: auto !important;
+    padding-bottom: 0.5rem !important;
+}
+.remove-styles{
+    border: none !important;
+    box-shadow: none !important;
+    border-bottom: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.remove-styles2{
+padding-right: 0;
+padding-left: 0;
+border-top-left-radius: 0 !important;
+border-top-right-radius: 0 !important;
+}
+
+.remove-border{
+    box-shadow: none !important;
+}
+.tablerow-style {
+  min-width: 100%;
+  border-bottom: 0px;
+}
+
+.graph-area{
+    border: 1px solid #dde2e6;
+    border-radius: 0.5rem;
+    padding: 1rem 0rem;
+    margin: 2rem 0rem;
+}
+
+.responsiveness{
+  max-width: 100%;
+  overflow-y: scroll;
+}
+
 .p-multiselect {
     width: 18rem;
 }
@@ -275,7 +493,7 @@ import axios from "@/gateway/backendapi";
     }
     .borderInner{
         width: 100%;
-        height: 700px;
+        /* height: 700px; */
     }
         img.flag {
             width: 17px;
