@@ -174,6 +174,7 @@
         </div> -->
       </div>
       <!--end table header -->
+      <Toast/>
       </section>
              </div>
      
@@ -190,17 +191,19 @@ import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter.js"
+import {useToast} from 'primevue/usetoast'
 // import MultiSelect from 'primevue/multiselect'
 
     export default {
         components:{
             Dropdown,
             Calendar,
-            PerformanceColumnChart
+            PerformanceColumnChart,
 
         }, 
 
         setup() {
+    const toast = useToast()
      const formatDate = (date) => {
       return dateFormatter.monthDayYear(date);
     };
@@ -236,7 +239,7 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
     }
      getAllEvents()
      const getAnalysisReport = ()=>{
-         axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&activityId=${selectedSummary.value.id}`)
+         axios.get(`/api/Reports/events/getActivityAnalysisReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&eventId=${selectedSummary.value.id}`)
          .then((res)=>{
              analysisReport.value = res.data;
              console.log(analysisReport.value);
@@ -248,8 +251,18 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
              getEventServices()
              console.log(report.value); 
              console.log(res, 'Good');
+             if(res.status >=400 && res.status <= 499){
+                 toast.add({
+              severity: "error",
+              summary: "",
+              detail: "Check Internet Connectivity",
+              life: 9000,
+            });
 
-         })
+             }
+             
+
+          }) 
          .catch((err)=> console.log(err))
      };
 
