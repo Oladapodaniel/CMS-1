@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="" ></label>
-                    <div class="mt-2">
+                    <div class="mt-2" @click="generateReport">
                         <button class="btn default-btn primary-bg "><div class="text-white">Generate Report</div></button>
                     </div>
                 </div>
@@ -133,6 +133,7 @@
 
 <script>
 import Dropdown from "primevue/dropdown";
+import axios from "@/gateway/backendapi";
 import Calendar from "primevue/calendar";
 import {ref} from 'vue';
 import MultiSelect from 'primevue/multiselect';
@@ -152,17 +153,58 @@ import MultiSelect from 'primevue/multiselect';
     const startDate = ref(new Date());
     const endDate = ref(new Date());
     const selectedSummary = ref();
+    const accountInChurch = ref([]);
+    const acountID = ref([]);
+
+
+        const generateReport = () => {
+          axios.get(`/api/Reports/financials/getAccountActivityReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&accountID=${acountID.value.id}`)
+          .then((res) => {
+            console.log(res, "🎄🎄🎄");
+            accountInChurch.value = res.data;
+            console.log(accountInChurch.value, "✌️✌️");
+            // offeringChart(res.data,'contributionName')
+          //   maritalStatusChart(res.data,'maritalStatus')
+          //   eventDateChart(res.data,'activityDate')
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+          // showReport.value = true;
+
+      };
+
+      const getAllFinancialAccount = async () => {
+          try {
+            axios
+              .get('/api/Reports/financials/getAllFinancialAccounts')
+              .then((res) => {
+                // tenantCurrency.value = res.data;
+                allAccount.value = res.data;
+                acountID.value = res.data.id;
+                console.log(res.data,'Fejiro');
+              })
+              .catch((err) => console.log(err));
+            // donationSummary.value = data;
+          } catch (err) {
+            console.log(err);
+          }
+      };
+    getAllFinancialAccount();
         return{
             accountBalance,
             startDate,
             endDate,
-            selectedSummary
+            selectedSummary,
+            generateReport,
+            // offeringInChurch,
+            acountID
             
         }
         
     }
         
-    }
+  }
     
 </script>
 
