@@ -1,6 +1,6 @@
 <template>
     <div class="col-sm-12 p-0 scroll-table">
-                <table class="table table-hover" style="border-radius: 0">
+                <table class="table table-hover" style="border-radius: 0" id="table">
                     <thead>
                         <tr class="table-row-bg">
                             <!-- <th class="">Group Name</th> -->
@@ -30,15 +30,16 @@
 </template>
 
 <script>
-import { ref } from "vue"
+import { ref, computed, watchEffect } from "vue"
 import PaginationButtons from "../../../components/pagination/PaginationButtons.vue";
 import dateFormatter from '../../../services/dates/dateformatter';
 export default {
     props: ['groupedReport', 'groupedReportByDate'],
+    emits: ['data-to-export', 'data-header-to-export'],
     components: {
         PaginationButtons
     },
-    setup() {
+    setup(props, { emit }) {
         const searchText = ref("")
         const searchIsVisible = ref(false);
         const filterFormIsVissible = ref(false);
@@ -53,7 +54,7 @@ export default {
         };
 
         const formatDate = (date) => {
-            return dateFormatter.monthDayYear(date)
+            return dateFormatter.normalDate(date)
         }
 
         const attendanceGrouped = (array, key) => {
@@ -74,6 +75,59 @@ export default {
             }
             return attendanceGroup
         };
+
+        const tableHeaderToJson = () => {
+            // let _htmlToJSON = function(){
+                // let _tr = _table.getElementsByTagName("tr")[index];
+                let _th = document.getElementsByTagName("th");
+                let _arr = [].map.call( _th, function( th ) {
+                    return th.innerHTML;
+                }).join( ',' );
+                let _data = _arr.split(",");
+                console.log(_data)
+                console.log("html to JSON", _data);
+                emit('data-header-to-export', _data)          
+            // };
+                // _htmlToJSON();
+        }
+
+
+        const tableToJson = () => {
+            let _table = document.getElementById("table");
+            let _trLength = _table.getElementsByTagName("tr").length;
+            let _jsonData = [];
+            let _obj = {};
+
+            let _htmlToJSON = function(index){
+                let _tr = _table.getElementsByTagName("tr")[index];
+                let _td = _tr.getElementsByTagName("td");
+                let _arr = [].map.call( _td, function( td ) {
+                    return td.innerHTML;
+                }).join( ',' );
+                let _data = _arr.split(",");
+                console.log(_data)
+                
+                _obj = Object.assign({}, _data)
+                
+                _jsonData.push(_obj);
+                
+            };
+            for(var i = 1; i < _trLength; i++){
+                _htmlToJSON(i);
+            }
+            console.log("html to JSON",_jsonData);
+            emit('data-to-export', _jsonData)
+        }
+
+        watchEffect(() => {
+            if (props.groupedReport.length > 0) {
+                    setTimeout(() => {
+                        tableHeaderToJson()
+                        tableToJson()
+                    }, 1000)
+            }
+        })
+
 
         
 

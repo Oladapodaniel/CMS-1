@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div>{{possibleSMSDestinations}}
     <div class="container" @click="closeDropdownIfOpen">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
@@ -103,7 +103,7 @@
               value="All Contacts"
               disabled
             />
-            <span class="close-allcontacts c-pointer" @click="() => sendToAll = false">x</span>
+            <span class="close-allcontacts c-pointer" @click="() => sendToAll = false"><i class="pi pi-times"></i></span>
           </span>
         </div>
       </div>
@@ -422,6 +422,18 @@
           </div>
         </div>
       </div>
+      
+      <!-- Start upload contact -->
+      <div v-if="contactUpload" class="row my-1">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10 px-0">
+          <div class="d-flex justify-content-between">
+            <input type="file" class="form-control-file">
+            <div><i class="pi pi-times mr-2 c-pointer" @click="() => contactUpload = false"></i></div>
+          </div>
+          <div class="mt-1 text-primary">Download template</div>
+        </div>
+      </div>
 
       <div
         class="row mt-1"
@@ -721,6 +733,7 @@ export default {
     const selectedGroups = ref([]);
     const sendToAll = ref(false);
     const executionDate = ref("");
+    const contactUpload = ref(false)
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
@@ -730,6 +743,7 @@ export default {
       if (index === 1) groupSelectionTab.value = true;
       if (index === 2) membershipSelectionTab.value = true;
       if (index === 3) phoneNumberSelectionTab.value = true;
+      if (index === 4) contactUpload.value = true;
       if (index === 0) {
         sendToAll.value = true;
         selectedGroups.value.push({ data: "membership_00000000-0000-0000-0000-000000000000", name: "All Contacts" })
@@ -1264,7 +1278,8 @@ export default {
       isPersonalized,
       data,
       route,
-      disableBtn
+      disableBtn,
+      contactUpload
     };
   },
 };
