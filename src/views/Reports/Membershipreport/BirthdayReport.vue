@@ -80,11 +80,12 @@
                         Birthday Report 
                     </div>
                 </div>
-                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                    <div class="col-12 border p-3 text-center" style="height: 40vh;">
+                <!-- <div class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
+                    <div class="row table">
+                      <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
                         <div class="col-12 font-weight-bold">Membership By Gender</div>
                         <div class="col-12" v-if="genderSummary.length === 0">No Data Available</div>
-                        <div class="col-12" style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <div class="col-12" style="height: 30vh;">
                             <BirthdayChart
                                 domId="chart1"
                                 distance="5"
@@ -93,9 +94,22 @@
                             />
                         </div>
                     </div>
-                </div>
-                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border p-3 mt-3 mt-sm-3 mt-md-0 mt-lg-0 text-center" style="height: 40vh;">
+                    <div class="col-12 col-sm-12 col-md-6 col-lg-6 p-3 text-center">
+                        <div class="col-12 font-weight-bold">Membership By Marital Status</div>
+                        <div class="col-12" v-if="maritalStatusSummary.length === 0">No Data Available</div>
+                        <div class="col-12" style="height: 30vh;">
+                            <BirthdayChart
+                                domId="chart2"
+                                distance="5"
+                                :titleMargin="10"
+                                :summary="maritalStatusSummary"
+                            />
+                        </div>
+                    </div>
+                    </div>
+                <!-- </div> -->
+                <!-- <div class="col-12 col-sm-12  col-md-6 col-lg-6">
+                    <div class="col-12 border p-3 mt-3 mt-sm-3 mt-md-0 mt-lg-0 text-center">
                         <div class="col-12  font-weight-bold">Membership By Marital Status</div>
                         <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
                         <div class="col-12 " style="height: 30vh;"  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
@@ -107,7 +121,7 @@
                             />
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -175,6 +189,7 @@ export default {
     const birthdays = ref("")
     const membersInChurch = ref([]);
     const genderResult = ref([])
+    const maritalStatusResult = ref([])
     const allMembersInChurch = () => {
       axios
         .get(`/api/People/GetMembershipSummary`)
@@ -195,6 +210,11 @@ export default {
       if (genderResult.value.length === 0) return []
       return genderResult.value
     })
+    
+    const maritalStatusSummary = computed(() => {
+      if (maritalStatusResult.value.length === 0) return []
+      return maritalStatusResult.value
+    })
     const groupByGender = (array, key) => {
             let result = array.reduce((result, currentValue) => {
                 // If an array already present for key, push it to the array. Else create an array and push the object
@@ -213,7 +233,26 @@ export default {
                 value: result[prop].length
                 })
             }
-            console.log(genderResult.value)
+        };
+    
+    const groupByMaritalStatus = (array, key) => {
+            let result = array.reduce((result, currentValue) => {
+                // If an array already present for key, push it to the array. Else create an array and push the object
+                (result[currentValue[key]] = result[currentValue[key]] || []).push(
+                currentValue
+                );
+                // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+                return result;
+            }, {}); // empty object is the initial value for result object
+            console.log(result)
+            maritalStatusSummary.value = []
+            for (const prop in result) {
+                console.log(prop, result[prop])
+                maritalStatusResult.value.push({
+                name: prop,
+                value: result[prop].length
+                })
+            }
         };
 
 
@@ -225,6 +264,7 @@ export default {
         console.log(data)
         birthdays.value = data.data
         groupByGender(data.data, 'gender')
+        groupByMaritalStatus(data.data, 'maritalStatus')
       }
       catch (err) {
         console.log(err)
@@ -241,7 +281,10 @@ export default {
       getBirthdayReport,
       genderSummary,
       groupByGender,
-      genderResult
+      genderResult,
+      groupByMaritalStatus,
+      maritalStatusResult,
+      maritalStatusSummary
     };
   },
 };
