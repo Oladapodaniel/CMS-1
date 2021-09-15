@@ -17,7 +17,7 @@
 <script>
     import DecoupledDocument from '@ckeditor/ckeditor5-build-decoupled-document';
     import MyUploadAdapter from "@/services/editor/editor_uploader"
-import { ref, watch } from '@vue/runtime-core';
+import { ref, watchEffect } from '@vue/runtime-core';
 
   export default {
     name: "TextEditor",
@@ -28,7 +28,7 @@ import { ref, watch } from '@vue/runtime-core';
       },
       label: {
         type: String,
-        required: true,
+        required: false,
       },
       "labelDivClass": {
         type: String,
@@ -70,7 +70,7 @@ import { ref, watch } from '@vue/runtime-core';
             };
         }
 
-        watch(() => props.loadedMessage, () => {
+        watchEffect(() => {
             editorData.value = props.loadedMessage;
         })
 
