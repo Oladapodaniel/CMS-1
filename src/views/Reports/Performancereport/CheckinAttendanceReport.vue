@@ -1,8 +1,23 @@
 <template>
     <div class="container-wide container-top mb-5">
-        <div class="d-flex justify-content-between">
+        <div class="row d-flex justify-content-between">
             <div class="header">Attendance Report</div>
-            <div class="default-btn  d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-sort-down"></i></div>
+            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+        </div>
+        <div class="row my-4 d-flex justify-content-end" v-if="showExport">
+            <!-- <div class="col-sm-2">Enter file name</div> -->
+            <div class="col-sm-4">
+                <!-- <input type="text" class="form-control" /> -->
+                <span class="p-float-label">
+                    <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
+                    <label for="inputtext">Enter file name</label>
+                </span>
+            </div>
+            <div class="col-sm-3">
+                <Dropdown v-model="selectedFileType" :options="bookTypeList" placeholder="Select file type" />
+            </div>
+            <!-- <div class="">Export</div> -->
+            <div @click="downLoadExcel" class="col-"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
         </div>
         <div class="row mt-4 py-4 px-3" style="background: #ebeff4;  border-radius: 0.5rem;">
             <!-- <div class="col-sm-2">Date Range</div> -->
@@ -45,7 +60,7 @@
 
 
         <div class="row mt-4">
-            <GroupReportTable :groupedReport="groupedReport" :groupedReportByDate="groupedReportByDate"/>
+            <GroupReportTable :groupedReport="groupedReport" :groupedReportByDate="groupedReportByDate" @data-to-export="setDataToExport" @data-header-to-export="setTableHeaderData"/>
         </div>
     </div>
 </template>
@@ -53,14 +68,17 @@
 <script>
 import { ref } from "vue"
 import Dropdown from "primevue/dropdown";
+import InputText from 'primevue/inputtext';
 import Calendar from 'primevue/calendar';
 import GroupReportTable from "./CheckinAttendanceReportTable.vue"
 import axios from "@/gateway/backendapi";
+import ExcelExport from "../../../services/exportFile/exportToExcel"
 // import axio from "axios"
 export default {
     components: {
         Dropdown,
         Calendar,
+        InputText,
         GroupReportTable
     },
     setup() {
@@ -73,6 +91,12 @@ export default {
         const attendanceReport = ref([])
         const groupedReport = ref([])
         const groupedReportByDate = ref([])
+        const bookTypeList = ref([ 'xlsx', 'csv', 'txt', 'pdf' ])
+        const selectedFileType = ref("")
+        const fileName = ref("")
+        const showExport = ref(false)
+        const fileToExport = ref([])
+        const fileHeaderToExport = ref([])
 
         const getEvents = async() => {
             try {
@@ -175,6 +199,29 @@ export default {
 
 
         // getIPDetails()
+
+        const downLoadExcel = () => {
+            const filterVal = fileHeaderToExport.value.map((i, index) => index)
+            // Object.keys(attendanceReport.value[0])
+            const list = fileToExport.value
+            const header = fileHeaderToExport.value
+            // Object.keys(attendanceReport.value[0])
+            console.log(filterVal)
+            console.log(fileHeaderToExport.value)
+             
+            ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
+                // .then(res => console.log(res))
+                // .catch((err) => console.log(err))
+        }
+
+        const setDataToExport = (payload) => {
+            fileToExport.value = payload
+        }
+
+        const setTableHeaderData = (payload) => {
+            fileHeaderToExport.value = payload
+        }
+
         return {
             startDate,
             endDate,
@@ -189,7 +236,16 @@ export default {
             groupReport,
             groupedReport,
             groupReportByDate,
-            groupedReportByDate
+            groupedReportByDate,
+            downLoadExcel,
+            selectedFileType,
+            bookTypeList,
+            fileName,
+            showExport,
+            setDataToExport,
+            fileToExport,
+            setTableHeaderData,
+            fileHeaderToExport
         }
     }
 }

@@ -475,7 +475,7 @@
                 </ckeditor> -->
                 
               </div>
-              <DecoupledEditor v-model="editorData" :loadedMessage="loadedMessage" />
+              <DecoupledEditor v-model="editorData" :loadedMessage="editorData" :label="'you find me'" />
             </div>
           </div>
 
@@ -1067,6 +1067,7 @@ export default {
       if (route.query.emaildraft) {
         communicationService.getEmailDraftById(route.query.emaildraft)
           .then(res => {
+            console.log(res)
             if (res) {
               subject.value = res.subject;
               editorData.value = res.body;
@@ -1074,6 +1075,7 @@ export default {
           })
       }
     }
+    onEditorReady()
 
     if (store.getters.currentUser && store.getters.currentUser.isoCode) {
       isoCode.value = store.getters.currentUser.isoCode;
@@ -1123,7 +1125,6 @@ export default {
     const allGroups = ref([]);
     const categories = ref([]);
     onMounted(() => {
-      onEditorReady()
       composeService
         .getCommunicationGroups()
         .then((res) => {
