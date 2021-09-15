@@ -60,14 +60,14 @@
 
     <section>
       <!-- chart area -->
-      <div class="chart">
-        <div style="width: 45%" class="ml-md-4 chart1">
+      <div class="chart row">
+       <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart"
-            title="By Gender"
+            title="Fuel and Power"
             distance="5"
             :titleMargin="10"
-            :summary="firstTimerChart"
+            :summary="membershipByGender"
           />
         </div>
       </div>
@@ -97,8 +97,14 @@
               <td>{{ transaction.accountName }}</td>
               <td>{{ transaction.description }}</td>
               <td>{{ transaction.amount }}</td>
-              <td>{{ transaction.credit }}</td>
               <td>{{ formatDate(transaction.date) }}</td>
+            </tr>
+            <tr class="answer-row">
+              <td class="answer">Total</td>
+              <td></td>
+              <td></td>
+              <td class="answer">{{amountTotal.toLocalString()}}</td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -106,13 +112,14 @@
           <PaginationButtons />
         </div> -->
       </div>
+      <!-- <button @click="amountTotal">click me</button> -->
       <!--end table header -->
     </section>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -129,20 +136,45 @@ export default {
     const startDate = ref("");
     const endDate = ref("");
     const accountTransaction = ref([]);
-    // const firstTimerChart = ref([])
+    const acccountType = ref();
+    // const expensesChart = ref([])
     const generateReport = () => {
       axios
-        .get(`/api/Reports/financials/getAccountTransactionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&acccountType=${3}`)
         .then((res) => {
 
           console.log(res, "🎄🎄🎄");
           accountTransaction.value = res.data;
-          console.log(accountTransaction.value, "✌️✌️");
+          console.log(accountTransaction.value[0], "✌️✌️");
+          // expensesChart.value = getBasicExpensesReport(res.data)
         })
         .catch((err) => {
           console.log(err);
         });
     };
+
+    // const getAllExpenses = (arr, key, value) => {
+    //   return {
+    //     name: value,
+    //     value: accountTransaction.value.filter(i => i[key] === value).length
+    //   }
+    // };
+
+    // const getBasicExpensesReport = arr => {
+    //   return [
+    //         getAllExpenses(arr, 'fund', '' ),
+    //         getAllExpenses(arr, 'accountName', '' ),
+    //         getAllExpenses(arr, 'description', '' ),
+    //         getAllExpenses(arr, 'amount', '' ),
+    //         getAllExpenses(arr, 'date', '' ),
+    //   ]
+    // }
+
+    const amountTotal = computed (() => {
+     return  accountTransaction.value.reduce((acc, cur) => {
+        return acc + cur.amount
+      }, 0)
+    })
 
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
@@ -160,6 +192,8 @@ export default {
       accountTransaction,
       generateReport,
       formatDate,
+      acccountType,
+      amountTotal
       // firstTimerChart
     };
   },
@@ -263,5 +297,18 @@ border-top-right-radius: 0 !important;
 .responsiveness{
   max-width: 100%;
   overflow-y: scroll;
+}
+
+.answer{
+  font-weight: bolder;
+   color:#fff ;
+}
+
+.answer-row{
+  background-color: #136acd;
+}
+
+.answer-row:hover{
+  background-color:#136acd;
 }
 </style>
