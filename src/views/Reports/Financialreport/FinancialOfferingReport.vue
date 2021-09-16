@@ -19,7 +19,7 @@
                     <div class="col-12 col-md-6 col-lg-3 mt-0 ">
                         <div class="col-12 "><label for="" class="font-weight-bold ml-2">Select Member</label></div>
                         <div class="dropdown col-12  w-100">
-                           <button id="dropdownMenuButton" class="col-12 w-100 btn default-btn" data-toggle="dropdown">{{ member.name ? member.name : " Search Member" }}</button> 
+                           <button id="dropdownMenuButton" class="col-12 w-100 btn default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button> 
                             <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
                                  <input type="text" class="form-control" 
                                     v-model="userSearchString"

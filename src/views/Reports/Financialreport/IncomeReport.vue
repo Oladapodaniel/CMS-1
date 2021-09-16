@@ -52,34 +52,35 @@
         </div>
       </div>
     </div>
-    <section  :class="{'hideClass' : !toggleReport, 'showClass':toggleReport}"> 
+    <section :class="{'hideClass' : !toggleReport, 'showClass':toggleReport}"> 
         <!-- chart area -->
-       
           <div class="row">
                 <div class="col-12 ">
                     <div class="my-5 text-center text-secondary serviceAttendance">
                        <span class="heading-text">INCOME STATEMENT</span> <span class="statement">-[Statement of Activities]</span> 
                     </div>
                 </div>
-                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 50vh;">
+                <div class="col-12 col-sm-12  col-md-12 col-lg-12">
+                    <div class="col-12 text-center" style="">
                         <div class="col-12  font-weight-bold pt-3">Membership By Marital Status</div>
                         <div class="col-12">No Data Available</div>
-                        <div class="col-12 " style="height: 50vh;">
-                         <ByMaritalStatusChart
+                        <div class="col-12 " style="">
+                         <ColumnChart2
                             domId="chart"
                             title="Interested In Joining"
                             :titleMargin="10"
-                            :summary="summary"
+                            :series="series"
+                            :yAxisText="'Amount'"
+                            :data="columnChartData"
                          />
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-12  col-md-6 col-lg-6">
-                    <div class="col-12 border  text-center" style="height: 50vh;">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <div class="col-12 text-center">
                         <div class="col-12 font-weight-bold pt-3">Membership By Marital Status</div>
                         <!-- <div class="col-12">No Data Available</div> -->
-                        <div class="col-12 " style="height: 50vh;">
+                        <div class="col-12 chart-div " style="">
                          <ByMaritalStatusChart
                             domId="chart1"
                             title="Interested In Joining"
@@ -155,17 +156,19 @@
 </template>
 
 <script>
-import { ref,onMounted } from "vue";
+import { ref, onMounted} from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import ByMaritalStatusChart from "@/components/charts/PieChart";
+import ColumnChart2 from "@/components/charts/ColumnChart2";
 
 import axios from "@/gateway/backendapi";
 
 export default {
   components: {
     ByMaritalStatusChart,
+    ColumnChart2,
     Calendar,
     ByGenderChart,
     PaginationButtons,
@@ -176,36 +179,44 @@ export default {
     const membersInChurch = ref([]);
     const toggleReport = ref(false);
     const summary = ref([]);
+     const columnChartData = ref([]);
+     const series = ref([]);
     //   onMounted (() => {
-    //        pieChartData.value = [
+    //        columnChartData.value = [
     //             {
     //                 name: "Male",
-    //                 value: 50,
+    //                 color: "#ddd",
+    //                 data: [50],
     //             },
     //             {
     //                 name: "Female",
-    //                 value: 50,
+    //                 data: [50],
+    //                 color: "#ddd",
     //             },
     //             {
     //                 name: "Both",
-    //                 value: 30,
+    //                 data: [30],
+    //                 color: "#ddd",
     //             },
     //           ];
     //  })
      const pieChartData = ref([]);
+    
      const getIncomeDetails = ref([]);
      const incomeEndPoint = () => {
         axios
         .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
             pieChartData.value = [];
-            //  console.log(res, 'income response');
+             console.log(res, 'income response');
              toggleReport.value = true;
              getIncomeDetails.value = res.data
              console.log(res.data, 'getIncomeDetails');
              const accountNameMap = res.data.map(i => i && i.accountName ? i.accountName : '')
             //  console.log(accountNameMap, "CCCCCCCC");
              const groupAccountName = new Set(accountNameMap)
+             series.value = groupAccountName
+            //  console.log(series.value, 'serrrrr');
             console.log(groupAccountName, 'groupAccountName...');
             groupAccountName.forEach(i => {
                 const data = {
@@ -215,11 +226,39 @@ export default {
                 pieChartData.value.push(data)
                 // console.log(i, 'groupAccountNameLLL');
             })
+
+            columnChartData.value = constructChartData(res.data, groupAccountName);
+            console.log(columnChartData.value, "COLUMN CHART DATA");
             console.log(pieChartData.value, 'pieChartData,,,,');
         })
     }
     // incomeEndPoint();
+    const constructChartData  = (accounts, series) => {
+        console.log(series, 'SERIES...');
+        const data = []
+        series.forEach(i => {
 
+            const datum = {
+                name: i,
+                color: getRandomColor(),
+                data: Array.from( new Set(accounts.filter(j => j && j.accountName ? j.accountName === i : false)
+                .map(i => Math.abs(i.amount))))
+            }
+            console.log(datum, 'DATUM');
+            data.push(datum)
+            // console.log(i, 'groupAccountNameLLL');
+        })
+            console.log(data, 'DATUM');
+        return data;
+    }
+    const getRandomColor = () => {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
    
     return {
       summary,
@@ -230,7 +269,11 @@ export default {
       toggleReport,
       getIncomeDetails,
       pieChartData,
+      columnChartData,
+      series,
       incomeEndPoint,
+      getRandomColor,
+
     };
   },
 };
@@ -312,6 +355,14 @@ export default {
     border-bottom-right-radius: 0 !important;
 }
 
+ .chart-div{
+         border: 1px solid #DDE2E6;
+        border-radius: 30px;
+        margin: 0 0 24px 0;
+        box-shadow: 0px 1px 4px #02172E45;
+        border: 1px solid #DDE2E6;
+        padding: 25px 0;
+    }
 .remove-styles2{
  padding-right: 0;
  padding-left: 0;

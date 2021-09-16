@@ -1,5 +1,5 @@
 <template>
-  <div>{{possibleSMSDestinations}}
+  <div>
     <div class="container" @click="closeDropdownIfOpen">
       <!-- <div class="container" @click="closeDropdownIfOpen"> -->
       <div class="row">
@@ -426,12 +426,12 @@
       <!-- Start upload contact -->
       <div v-if="contactUpload" class="row my-1">
         <div class="col-sm-2"></div>
-        <div class="col-sm-10 px-0">
+        <div class="col-sm-10 px-0 grey-rounded-border p-2">
           <div class="d-flex justify-content-between">
-            <input type="file" class="form-control-file">
+            <input type="file" class="form-control-file" @change="uploadFile">
             <div><i class="pi pi-times mr-2 c-pointer" @click="() => contactUpload = false"></i></div>
           </div>
-          <div class="mt-1 text-primary">Download template</div>
+          <div class="mt-1"><a href="/files/Upload_Contact Template.csv" class="template-text text-decoration-none font-weight-bold" download>Download template</a></div>
         </div>
       </div>
 
@@ -523,11 +523,12 @@
           </p>
         </div>
         <div class="col-md-12 d-flex justify-content-end">
-          <span @click="data" data-toggle="modal" data-target="#sendsmsbtn" :class="{ 'cursor-close' : disableBtn }">
+          <span  :class="{ 'cursor-close' : disableBtn }">
             <SplitButton
               label="Send"
               :model="sendOptions"
               :disabled="disableBtn"
+              @click="data" data-toggle="modal" data-target="#sendsmsbtn"
             ></SplitButton>
           </span>
           <router-link :to=" route.fullPath === '/tenant/sms/compose' ? '/tenant/sms/sent' : '/errorpage/expiredSubscription'"
@@ -734,6 +735,7 @@ export default {
     const sendToAll = ref(false);
     const executionDate = ref("");
     const contactUpload = ref(false)
+    const multipleContact = ref({})
 
     const toggleGroupsVissibility = () => {
       groupsAreVissible.value = !groupsAreVissible.value;
@@ -857,7 +859,7 @@ export default {
         selectedGroups.value.length === 0 &&
         !phoneNumber.value &&
         selectedMembers.value.length === 0 &&
-        !sendToAll.value
+        !sendToAll.value && !multipleContact.value instanceof File
       ) {
         invalidDestination.value = true;
         return false;
@@ -1024,9 +1026,10 @@ export default {
           })
           .join();
       }
-      console.log(selectedMembers.value)
 
-      if (sendOrSchedule == 2) {
+      if (multipleContact.value instanceof File) {
+        sendSMSToUploadedContacts(gateway)
+      } else if (sendOrSchedule == 2) {
         const dateToBeExecuted = executionDate.value
         data.executionDate = dateToBeExecuted.split("T")[0];
         data.date = dateToBeExecuted
@@ -1068,6 +1071,35 @@ export default {
         });
       }
     };
+
+    const sendSMSToUploadedContacts = async(gateway) => {
+      let formData = new FormData()
+      formData.append("file", multipleContact.value)
+      formData.append("message", editorData.value)
+      formData.append('category', '')
+      formData.append('gatewayToUse', gateway)
+      formData.append('isoCode', isoCode.value)
+
+      try {
+        let { data } = await axios.post('/api/messaging/upload', formData)
+        console.log(data)
+        toast.add({
+          severity: "success",
+          summary: "Success",
+          detail: data.response,
+          life: 5000
+        });
+      }
+      catch (err) {
+        console.log(err);
+        toast.add({
+          severity: "error",
+          summary: "Not sent",
+          detail: "Sending failed, please try again",
+          life: 5000
+        });
+      }
+    }
 
     const userCountry = ref("");
 
@@ -1224,6 +1256,10 @@ export default {
       getMessage(route.query.messageId);
     }
 
+    const uploadFile = (e) => {
+      multipleContact.value = e.target.files[0]
+    }
+
     return {
       editor,
       editorData,
@@ -1279,7 +1315,10 @@ export default {
       data,
       route,
       disableBtn,
-      contactUpload
+      contactUpload,
+      uploadFile,
+      multipleContact,
+      sendSMSToUploadedContacts
     };
   },
 };
@@ -1524,5 +1563,9 @@ input:focus {
 
 .cursor-close {
   cursor: not-allowed;
+}
+
+.template-text {
+  color: rgb(15, 71, 134)
 }
 </style>
