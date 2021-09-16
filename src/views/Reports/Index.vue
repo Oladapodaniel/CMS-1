@@ -61,6 +61,8 @@ import Financial from "./Financialreport/Index.vue"
 import MobileUsage from "./Mobileusagereport/Index.vue"
 import FollowUp from "./Followup/Index.vue"
 import Others from "./Others/Index.vue"
+// import { useRoute }  from "vue-router"
+// import router from "@/router/index";
 export default {
     components: {
         People,
@@ -79,7 +81,7 @@ export default {
         const showFollowup = ref(false)
         const showOthers = ref(false)
 
-
+        // const route = useRoute()
         const togglePeople = () => {
             showPeople.value = true
             showPerformance.value = false
@@ -144,7 +146,8 @@ export default {
             toggleFinancial,
             toggleFollowup,
             toggleMobile,
-            toggleOthers
+            toggleOthers,
+            // route
         }
     }
 }

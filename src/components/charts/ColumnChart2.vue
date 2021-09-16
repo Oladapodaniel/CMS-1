@@ -10,7 +10,7 @@
       </div>
 </div>
   <div class="wrapper">
-    <div class="chart-div" :id="domId" style="height: 530px" ref="chartDiv"></div>
+    <div class="chart-div" :id="domId" style="height: 100%" ref="chartDiv"></div>
   </div>
 </template>
 
@@ -20,7 +20,7 @@ import Highcharts from "highcharts";
 export default {
   components: {},
 
-  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries", "seriesText" ],
+  props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries", "seriesText", "yAxisText" ],
   
   setup(props) {
     const chart = ref(null);
@@ -61,8 +61,10 @@ export default {
         },
         yAxis: {
           title: {
-            text: "Attendance",
+            text: props.yAxisText,
           },
+           min: 0,
+          // categories: [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
           labels: {
             formatter: function () {
               return this.value
@@ -84,9 +86,6 @@ export default {
         //   {
         //     name: "First Timer",
         //     color: "#002044",
-        //     // data: props.data.data
-        //     // data: props.data ? props.data.data : props.data
-        //     // data: [12, 33, 40, 34, 300, 0, 0]
         //     data: props.data ? props.data.data : props.data
         //   },
         //   {
@@ -106,7 +105,7 @@ export default {
     });
 
     onMounted(() => {
-    //   console.log(props.series, "passed data")
+      console.log(props.series, "passed series")
       console.log(props.data, "passed data")
     //   console.log(props.attendanceSeries)
     })

@@ -1,28 +1,20 @@
 <template>
-<div class="container container-wide mt-5 overflow-hidden border mb-4">
+<div class="container container-wide mt-5 overflow-hidden  mb-4">
      <div>
             <h3 class="font-weight-bold mt-5">Accounting Activity and Balance Report </h3>
         </div>
         <div class="row">
-  <div style="background: #ebeff4;" class="row mx-2 w-100 py-5" >
+  <div style="background: #ebeff4;  border-radius: 0.5rem;" class="row mx-2 w-100 py-5" >
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">SELECT ACCOUNT</label></div>
                     <div>
-                        <MultiSelect v-model="selectedSummary" :options="accountBalance" optionLabel="name" placeholder="Select Summary" :filter="true" class="multiselect-custom w-100">
-                            <template #value="slotProps">
-                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
-                                    <div>{{option.name}}</div>
-                                </div>
-                                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                    Select account
-                                </template>
-                            </template>
-                            <template #option="slotProps">
-                                <div class="country-item">
-                                    <div>{{slotProps.option.name}}</div>
-                                </div>
-                            </template>
-                        </MultiSelect>
+                        <Dropdown
+                          v-model="selectedAccount"
+                          :options="accountType"
+                          optionLabel="name"
+                          placeholder="Select Account "
+                          class="w-100"
+                        />
                     </div>
 
                 </div>
@@ -42,7 +34,7 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="" ></label>
-                    <div class="mt-2">
+                    <div class="mt-2" @click="generateReport">
                         <button class="btn default-btn primary-bg "><div class="text-white">Generate Report</div></button>
                     </div>
                 </div>
@@ -53,13 +45,10 @@
        <div>
             <h3 class="font-weight-bold mt-5">ACCOUNT ACTIVITY REPORT</h3>
         </div>
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border mb-5 mt-2" >
-        <table class="table remove-styles mt-0 table-hover table-responsive-lg table-header-area">
+      <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
+        <table class="table remove-styles mt-0  table-hover table-header-area">
           <thead class="table-header-area-main">
-            <tr
-              class="small-text text-capitalize text-nowrap"
-              style=""
-            >
+            <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0" >
               <th scope="col">Date</th>
               <th scope="col">Account Name</th>
               <th scope="col">Ref Number</th>
@@ -67,56 +56,26 @@
               <th scope="col">Debit</th>
               <th scope="col">Credit</th>
               <th scope="col">Balance</th>
-              <th scope="col">Credit</th>
-              <th scope="col">Balance</th>
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr>
-              <td>Aug 9, 2021</td>
-              <td>petty Cash</td>
-              <td>0806738372</td>
-              <td>Opening Balance</td>
-              <td>0.00</td>
-              <td>0.00</td>
-              <td>4267,677.00</td>
-              <td>0.00</td>
-              <td>4267,677.00</td>
+            <tr v-for="(AccountList, index) in accountInChurch" :key="index">
+              <td>{{ formatDate(AccountList.date) }}</td>
+              <td>{{ AccountList.accountName }}</td>
+              <td>{{ AccountList.refNumber }}</td>
+              <td>{{ AccountList.description }}</td>
+              <td>{{AccountList.debit}}</td>
+              <td>{{ AccountList.credit }}</td>
+              <td>{{ AccountList.balance }}</td>
             </tr>
-            <tr>
-              <td>1 oct, 2019</td>
-              <td>Liquid Cash</td>
-              <td>8067383789</td>
-              <td>Benovenlence</td>
-              <td>32.00</td>
-              <td>0.00</td>
-              <td>439,729.00</td>
-              <td>0.00</td>
-              <td>439,729.00</td>
-            </tr>
-            <tr>
-              <td>5 Dem, 2021</td>
-              <td>widom giving</td>
-              <td>067383789</td>
-              <td>widom Giving</td>
-              <td>32.00</td>
-              <td>0.00</td>
-              <td>438.729.00</td>
-              <td>0.00</td>
-              <td>438.729.00</td>
-            </tr>
-            <tr class="bg-secondary">
+            <tr class="answer-row">
+              <td class="answer">Total</td>
+              <td></td>
+              <td></td>
+              <td class="answer">{{amountTotal.toLocaleString()}}</td>
               <td></td>
               <td></td>
               <td></td>
-              <td>Account Balance</td>
-              <td colspan="2" class="">NGN
-                  <span class="ml-3"> 438,729.00</span>
-              </td>
-              <!-- <td colspan="2" class="">438,729.00</td> -->
-              <td>Couple</td>
-              <td>0.00</td>
-              <td>438.729.00</td>
             </tr>
           </tbody>
         </table>
@@ -132,10 +91,12 @@
 
 
 <script>
+import { computed, ref } from "vue";
 import Dropdown from "primevue/dropdown";
+import axios from "@/gateway/backendapi";
 import Calendar from "primevue/calendar";
-import {ref} from 'vue';
 import MultiSelect from 'primevue/multiselect';
+ import dateFormatter from  "../../../services/dates/dateformatter";
     export default {
         components:{
             Dropdown, MultiSelect,Calendar
@@ -144,25 +105,74 @@ import MultiSelect from 'primevue/multiselect';
 
         setup() {
 
-      const accountBalance = ref([
-      { name: "Pretty account" },
-      { name: "Benevelnece acccount" },
-      { name: "Charity account" },
-    ]);
+      const accountType = ref([]);
     const startDate = ref(new Date());
     const endDate = ref(new Date());
-    const selectedSummary = ref();
+    const selectedAccount = ref({});
+    const accountInChurch = ref([]);
+    const acountID = ref([]);
+
+
+        const generateReport = () => {
+          axios.get(`/api/Reports/financials/getAccountActivityReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&accountID=${selectedAccount.value.id}`)
+          .then((res) => {
+            accountInChurch.value = res.data;
+            console.log(accountInChurch.value, "✌️✌️");
+            // offeringChart(res.data,'contributionName')
+          //   maritalStatusChart(res.data,'maritalStatus')
+          //   eventDateChart(res.data,'activityDate')
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+          // showReport.value = true;
+
+      };
+
+      const getAllFinancialAccount = async () => {
+          try {
+            axios
+              .get('/api/Reports/financials/getAllFinancialAccounts')
+              .then((res) => {
+                // tenantCurrency.value = res.data;
+                accountType.value = res.data;
+              })
+              .catch((err) => console.log(err));
+            // donationSummary.value = data;
+          } catch (err) {
+            console.log(err);
+          }
+      };
+    getAllFinancialAccount();
+
+      const amountTotal = computed (() =>{
+        return accountInChurch.value.reduce((acc, cur) =>{
+
+          return acc + cur.amount
+
+        },0)
+      })
+
+     const formatDate = (date) => {
+      return dateFormatter.monthDayYear(date);
+    };
         return{
-            accountBalance,
+          amountTotal,
+          formatDate,
+            accountType,
             startDate,
             endDate,
-            selectedSummary
+            selectedAccount,
+            generateReport,
+            accountInChurch,
+            // offeringInChurch,
+            acountID
             
         }
         
     }
         
-    }
+  }
     
 </script>
 
@@ -179,6 +189,20 @@ import MultiSelect from 'primevue/multiselect';
         padding-top: .1rem;
         padding-bottom: .1rem;
     
+}
+.answer{
+  font-weight: bolder;
+  color: #fff;
+}
+.answer-row{
+  background-color: #136acd;
+  border-radius: 30px !important;
+  border-bottom-left-radius:  50px !important;
+  border-bottom-right-radius: 50px !important;
+}
+
+.answer-row:hover{
+  background-color: #136acd;
 }
 
     .country-item-value {

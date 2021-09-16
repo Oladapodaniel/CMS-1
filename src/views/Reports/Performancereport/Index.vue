@@ -12,8 +12,8 @@
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                        <router-link to="/tenant/attendancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Attendance Report</h4></router-link>
-                         <router-link to="/tenant/attendancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
+                        <router-link to="/tenant/reports/attendancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Attendance Report</h4></router-link>
+                         <router-link to="/tenant/reports/attendancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed Attendance report of your ministry</p>
@@ -47,8 +47,8 @@
                 </div>
                 <div class="col-md-5 col-12 border-bottom">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                       <router-link to="/tenant/firsttimerperformancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">First Timer Report</h4></router-link>
-                         <router-link to="/tenant/firsttimerperformancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
+                       <router-link to="/tenant/reports/firsttimerperformancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">First Timer Report</h4></router-link>
+                         <router-link to="/tenant/reports/firsttimerperformancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed Group Category Attendance of your ministry</p>
@@ -58,8 +58,8 @@
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                       <router-link to="/tenant/newconvertperformancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">New Convert Report</h4></router-link>
-                         <router-link to="/tenant/newconvertperformancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
+                       <router-link to="/tenant/reports/newconvertperformancereport" class="linked"> <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">New Convert Report</h4></router-link>
+                         <router-link to="/tenant/reports/newconvertperformancereport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed New Convert Attendance of your ministry</p>
@@ -84,8 +84,8 @@
                 </div>
                 <div class="col-md-5 col-12">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                       <router-link to="/tenant/summaryreport"  class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Summary Report</h4></router-link> 
-                       <router-link to="/tenant/summaryreport"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
+                       <router-link to="/tenant/reports/summaryreport"  class="linked"><h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Summary Report</h4></router-link> 
+                       <router-link to="/tenant/reports/summaryreport"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
                         <p class="ju mb-3 paragraph1">This reports provides a detailed Summary Attendance of your ministry</p>

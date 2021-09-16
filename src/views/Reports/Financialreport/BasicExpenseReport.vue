@@ -13,19 +13,18 @@
         "
       >
         <div class="centered-items">
-          <h3 class="heading-text ml-2">New Convert Report</h3>
-          <p class="ml-2">This reports provides a detailed report of new converts in your ministry.</p>
+          <h3 class="heading-text ml-2">Basic Expense Report</h3>
+           <p class="ml-2">This reports provides a detailed list of all the church expenses in a simplied display.</p>
         </div>
 
-        <div class="centered-items">
+        <!-- <div class="centered-items">
           <button class="default-btn font-weight-normal">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
     <!--end of header area -->
-
     <!-- date area -->
     <div class="container-fluid my-3 px-0 bg-area">
       <div
@@ -38,11 +37,11 @@
 
         <div class="col-md-7 d-sm-flex">
           <div class="p-field p-col-12 p-md-4 mt-1">
-          <!--  <div><label for="" class="font-weight-bold">START DATE</label></div> -->
+            <!-- <label for="icon">Start Date</label> -->
             <Calendar id="icon" v-model="startDate" :showIcon="true" />
           </div>
           <div class="p-field p-col-12 p-md-4 my-1">
-           <!-- <div><label for="" class="font-weight-bold">END DATE</label></div> -->
+            <!-- <label for="icon">End Date</label> -->
             <Calendar id="endDate" v-model="endDate" :showIcon="true" />
           </div>
         </div>
@@ -50,7 +49,7 @@
         <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
-            @click="allMembersInChurch"
+            @click="generateReport"
           >
             Generate
           </button>
@@ -68,6 +67,7 @@
             title="By Gender"
             distance="5"
             :titleMargin="10"
+            :summary="firstTimerChart"
           />
         </div>
       </div>
@@ -76,42 +76,29 @@
 
     <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table class="table remove-styles mt-0  table-hover table-header-area">
+      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+        <table class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
              class="small-text text-capitalize text-nowrap"
               style="border-bottom: 0"
             >
-              <th scope="col">Title</th>
-              <th scope="col">Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Marital Status</th>
-              <th scope="col">Home Address</th>
-              <th scope="col">Event Name</th>
+              <th scope="col">Fund</th>
+              <th scope="col">Account Name</th>
               <th scope="col">Description</th>
-              <th scope="col">Activity Date</th>
-              <th scope="col">Contact Date</th>
-              <th scope="col">Contact Status</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Date</th>
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(newConvert, index) in newConvertsInChurch"
+            <tr v-for="(transaction, index) in accountTransaction"
             :key="index">
-              <td>{{ newConvert.title }}</td>
-              <td>{{ newConvert.firstName }} {{ newConvert.lastName }}</td>
-              <td>{{ newConvert.email }}</td>
-              <td>{{ newConvert.mobilePhone }}</td>
-              <td>{{ newConvert.gender }}</td>
-              <td>{{ newConvert.maritalStatus }}</td>
-              <td>{{ newConvert.homeAddress }}</td>
-              <td>{{ newConvert.name }}</td>
-              <td>{{ newConvert.description }}</td>
-              <td>{{ formatDate(newConvert.activityDate) }}</td>
-              <td>{{ formatDate(newConvert.contactDate)}}</td>
-              <td>{{ newConvert.contactStatus}}</td>
+              <td>{{ transaction.fund }}</td>
+              <td>{{ transaction.accountName }}</td>
+              <td>{{ transaction.description }}</td>
+              <td>{{ transaction.amount }}</td>
+              <td>{{ transaction.credit }}</td>
+              <td>{{ formatDate(transaction.date) }}</td>
             </tr>
           </tbody>
         </table>
@@ -141,31 +128,39 @@ export default {
   setup() {
     const startDate = ref("");
     const endDate = ref("");
-    const newConvertsInChurch = ref([]);
-    const allMembersInChurch = () => {
+    const accountTransaction = ref([]);
+    // const firstTimerChart = ref([])
+    const generateReport = () => {
       axios
-        .get(`/api/Reports/people/getNewConvertsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(`/api/Reports/financials/getAccountTransactionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
-          console.log(res);
-          newConvertsInChurch.value = res.data;
-console.log(newConvertsInChurch.value, "✌️✌️");
+
+          console.log(res, "🎄🎄🎄");
+          accountTransaction.value = res.data;
+          console.log(accountTransaction.value, "✌️✌️");
         })
         .catch((err) => {
           console.log(err);
         });
     };
 
-        const formatDate = (activityDate) => {
+     const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
     };
+
+    // onMounted(() => {
+    //   firstTimerChart.value = [{name: "Dapo", value: 77}]
+    // })
+
 
     return {
       Calendar,
       startDate,
       endDate,
-      newConvertsInChurch,
-      allMembersInChurch,
+      accountTransaction,
+      generateReport,
       formatDate,
+      // firstTimerChart
     };
   },
 };
@@ -219,6 +214,7 @@ console.log(newConvertsInChurch.value, "✌️✌️");
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
 .table-header-area-main {
   background-color: #ebeff4;
 }
@@ -227,15 +223,15 @@ console.log(newConvertsInChurch.value, "✌️✌️");
     width: 100% !important;
     box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
     border: 0.063rem solid #dde2e6 !important;
-    border-radius: 30px !important;
+    /* border-radius: 30px !important; */
     text-align: left !important;
     margin-bottom: auto !important;
     padding-bottom: 0.5rem !important;
 }
 
 .remove-styles{
-  border: none !important;
-box-shadow: none !important;
+    border: none !important;
+    box-shadow: none !important;
     border-bottom: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
@@ -252,13 +248,16 @@ border-top-right-radius: 0 !important;
     box-shadow: none !important;
 }
 
+.tablerow-style {
+  min-width: 100%;
+  border-bottom: 0px;
+}
+
 .graph-area{
     border: 1px solid #dde2e6;
     border-radius: 0.5rem;
     padding: 1rem 0rem;
-    margin: 2rem 0rem !important;
-     width: 100% !important;
-  box-shadow: 0 0.063rem 0.25rem #02172e45;
+    margin: 2rem 0rem;
 }
 
 .responsiveness{

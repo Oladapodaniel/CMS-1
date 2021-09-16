@@ -16,11 +16,11 @@
           <h3 class="heading-text ml-2">Accounting Transactions Report</h3>
         </div>
 
-        <div class="centered-items">
+        <!-- <div class="centered-items">
           <button class="default-btn font-weight-normal">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
     <!--end of header area -->
