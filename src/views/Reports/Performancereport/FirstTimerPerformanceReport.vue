@@ -1,7 +1,23 @@
 <template>
     <div class="container-top container-wide mb-4  ">
-        <div class="heading-text col-12 pl-2">
-            First Timer Performance Report
+        <div class="row d-flex justify-content-between">
+            <div class="heading-text">First Timer Performance Report</div>
+            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+        </div>
+        <div class="row my-4 d-flex justify-content-end" v-if="showExport">
+            <!-- <div class="col-sm-2">Enter file name</div> -->
+            <div class="col-sm-4">
+                <!-- <input type="text" class="form-control" /> -->
+                <span class="p-float-label">
+                    <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
+                    <label for="inputtext">Enter file name</label>
+                </span>
+            </div>
+            <div class="col-sm-3">
+                <Dropdown v-model="selectedFileType" :options="bookTypeList" placeholder="Select file type" />
+            </div>
+            <!-- <div class="">Export</div> -->
+            <div @click="downLoadExcel" class="col-"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
         </div>
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
@@ -108,9 +124,9 @@
             <!-- <div class="row "> -->
         <section>
             <!-- table header -->
-            <div class=" container container-top table-main px-0  remove-styles2 remove-border "
+            <div class=" container container-top table-main px-0  remove-styles2 remove-border responsiveness "
                 :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+                <table class="table remove-styles mt-0  table-hover table-header-area">
                 <thead class="table-header-area-main">
                     <tr
                     class="small-text text-capitalize text-nowrap"
@@ -156,20 +172,22 @@
 import {computed,ref } from "vue";
 // import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import Calendar from "primevue/calendar";
+import Dropdown from "primevue/dropdown";
+import InputText from 'primevue/inputtext';
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
-// import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
 import dateFormatter from  "../../../services/dates/dateformatter";
 // import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
     components: {
         MultiSelect,
+        InputText,
         PerformancePieChart,
         PerformanceColumnChart,
-        // Dropdown, 
+        Dropdown, 
         Calendar, 
         PaginationButtons },
     setup() {
@@ -205,9 +223,13 @@ export default {
     const genderChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
     const eventDateChartResult = ref([]);
-    const attendanceSeries = ref("weekly");
+    // const attendanceSeries = ref("weekly");
     const attendanceData = ref([]);
     const mainAttendanceData = ref([]);
+    const showExport = ref(false);
+    const fileName = ref("")
+    const bookTypeList = ref([ 'xlsx', 'csv', 'txt', 'pdf' ])
+    const selectedFileType = ref("")
 
     const attendanceChart = computed(() => {
          if (firstTimerInChurch.value.length === 0) return []
@@ -318,6 +340,19 @@ export default {
         showReport.value = true;
 
     }
+    const downLoadExcel = () => {
+            const filterVal = fileHeaderToExport.value.map((i, index) => index)
+            // Object.keys(attendanceReport.value[0])
+            const list = fileToExport.value
+            const header = fileHeaderToExport.value
+            // Object.keys(attendanceReport.value[0])
+            console.log(filterVal)
+            console.log(fileHeaderToExport.value)
+             
+            ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
+                // .then(res => console.log(res))
+                // .catch((err) => console.log(err))
+        }
 
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
@@ -342,11 +377,15 @@ export default {
 
      return {
         //  allMembersInChurch,
+        selectedFileType,
+        bookTypeList,
+        downLoadExcel,
+        fileName,
         attendanceChart,
         mainAttendanceData,
         attendanceData,
         genderChartResult,
-        attendanceSeries,
+        // attendanceSeries,
         maritalStatusChart,
         genderChart,
         eventDateChart,
@@ -360,6 +399,7 @@ export default {
          genarateReport,
          showReport,
          pieChart,
+         showExport,
         //  series,
         //  membership,
         //  gender,
@@ -380,6 +420,11 @@ export default {
 }
 .hide-report{
     display: none;
+}
+
+.responsiveness{
+  max-width: 100%;
+  overflow-y: scroll;
 }
 
 .default-btn {
