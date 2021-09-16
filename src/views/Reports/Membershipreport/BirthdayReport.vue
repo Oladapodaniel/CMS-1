@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid px-5">
+  <div class="container-fluid px-5" id="element-to-print">
     <!-- header area -->
     <div class="container">
       <div
@@ -17,7 +17,7 @@
         </div>
 
         <div class="centered-items">
-          <button class="default-btn font-weight-normal">
+          <button class="default-btn font-weight-normal" @click="exportReport">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
         </div>
@@ -271,6 +271,21 @@ export default {
       }
     }
 
+    const exportReport = () => {
+      var element = document.getElementById('element-to-print');
+          var opt = {
+              // margin:       1,
+              filename:     `${fileName.value}.pdf`,
+              image:        { type: 'jpeg', quality: 0.98 },
+              html2canvas:  { scale: 2 },
+              jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+              pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+          };
+
+              // New Promise-based usage:
+              html2pdf().set(opt).from(element).save();
+    }
+
     return {
       Calendar,
       startDate,
@@ -284,7 +299,8 @@ export default {
       genderResult,
       groupByMaritalStatus,
       maritalStatusResult,
-      maritalStatusSummary
+      maritalStatusSummary,
+      exportReport
     };
   },
 };

@@ -1,23 +1,23 @@
 <template>
-    <div class="container-wide container-top mb-5">
+    <div class="container-wide container-top mb-5" id="element-to-print">
         <div class="row d-flex justify-content-between">
             <div class="header">Attendance Report</div>
             <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
         </div>
-        <div class="row my-4 d-flex justify-content-end" v-if="showExport">
+        <div class="row my-4" v-if="showExport">
             <!-- <div class="col-sm-2">Enter file name</div> -->
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <!-- <input type="text" class="form-control" /> -->
                 <span class="p-float-label">
                     <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
                     <label for="inputtext">Enter file name</label>
                 </span>
             </div>
-            <div class="col-sm-3">
-                <Dropdown v-model="selectedFileType" :options="bookTypeList" placeholder="Select file type" />
+            <div class="col-sm-4">
+                <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
             </div>
             <!-- <div class="">Export</div> -->
-            <div @click="downLoadExcel" class="col-"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
+            <div @click="downLoadExcel" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
         </div>
         <div class="row mt-4 py-4 px-3" style="background: #ebeff4;  border-radius: 0.5rem;">
             <!-- <div class="col-sm-2">Date Range</div> -->
@@ -73,6 +73,8 @@ import Calendar from 'primevue/calendar';
 import GroupReportTable from "./CheckinAttendanceReportTable.vue"
 import axios from "@/gateway/backendapi";
 import ExcelExport from "../../../services/exportFile/exportToExcel"
+import printJS from "print-js";
+import html2pdf from "html2pdf.js"
 // import axio from "axios"
 export default {
     components: {
@@ -130,14 +132,14 @@ export default {
                 let { data } = await axios.get(`/api/Reports/events/getCheckInAttendanceReport?groupID=${selectedGroups.value.id}&eventID=${selectedEvent.value.id}&startDate=${start}&endDate=${end}`)
                     console.log(data)
                     attendanceReport.value = data
-                    groupReport(data, 'name')
-                    groupReportByDate(data, 'activityDate')
+                    groupReport(data, 'personId')
+                    groupReportByDate(data, 'activityID')
 
-                    groupedReport.value.forEach(i => {
-                            for (let j = 0; i.value.length < groupedReportByDate.value.length; j++) {
-                                    i.value.unshift({ attendance: '' })             
-                            }  
-                    })
+                    // groupedReport.value.forEach(i => {
+                    //         for (let j = 0; i.value.length < groupedReportByDate.value.length; j++) {
+                    //                 i.value.unshift({ attendance: '' })             
+                    //         }  
+                    // })
             }
             catch (err) {
                 console.log(err)
@@ -201,17 +203,49 @@ export default {
         // getIPDetails()
 
         const downLoadExcel = () => {
-            const filterVal = fileHeaderToExport.value.map((i, index) => index)
-            // Object.keys(attendanceReport.value[0])
-            const list = fileToExport.value
-            const header = fileHeaderToExport.value
-            // Object.keys(attendanceReport.value[0])
-            console.log(filterVal)
-            console.log(fileHeaderToExport.value)
-             
-            ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
-                // .then(res => console.log(res))
-                // .catch((err) => console.log(err))
+            if (selectedFileType.value === "pdf") {
+                // printJS({
+                // //   ignoreElements: ['ignore1', 'ignore2'],
+                //   maxWidth: 867,
+                //   header: 'DONATION TRANSACTIONS',
+                //   printable: [{
+                //         DATE: '543',
+                //         EVENT: '5242',
+                //         DONATION: '4242',
+                //         AMOUNT: 23432,
+                //         DONOR: '234234234'
+                //         }],
+                //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
+                //   type: 'json',
+                //   headerStyle:
+                //     'font-family: Nunito Sans, Calibri; text-align: center;',
+                //   gridHeaderStyle:
+                //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+                //   gridStyle:
+                //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+                // })
+                var element = document.getElementById('element-to-print');
+                var opt = {
+                    // margin:       1,
+                    filename:     `${fileName.value}.pdf`,
+                    // image:        { type: 'jpeg', quality: 0.98 },
+                    // html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                };
+
+                    // New Promise-based usage:
+                    html2pdf().set(opt).from(element).save();
+                // html2pdf(element);
+            } else {
+                const filterVal = fileHeaderToExport.value.map((i, index) => index)
+                const list = fileToExport.value
+                const header = fileHeaderToExport.value
+                console.log(filterVal)
+                console.log(fileHeaderToExport.value)
+                
+                ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
+            }
         }
 
         const setDataToExport = (payload) => {
@@ -245,7 +279,8 @@ export default {
             setDataToExport,
             fileToExport,
             setTableHeaderData,
-            fileHeaderToExport
+            fileHeaderToExport,
+            printJS
         }
     }
 }

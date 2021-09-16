@@ -3,11 +3,10 @@
                 <table class="table table-hover" style="border-radius: 0" id="table">
                     <thead>
                         <tr class="table-row-bg">
-                            <!-- <th class="">Group Name</th> -->
                             <th class="">Name</th>
                             <th class="">Gender</th>
                             <th class="">Phone</th>
-                            <th class=" rotate-text" v-for="(item, index) in groupedReportByDate" :key="index">{{ formatDate(item.name) }}</th>
+                            <th class=" rotate-text" v-for="(item, index) in groupedReportByDate" :key="index">{{ formatDate(item.value[0].activityDate) }}</th>
                             <th class=" rotate-text">Total Absent</th>
                             <th class=" rotate-text">Total Present</th>
                             <th class=" rotate-text">Percentages</th>
@@ -15,14 +14,13 @@
                     </thead>
                     <tbody>
                         <tr v-for="(item, index) in groupedReport" :key="index">
-                            <!-- <td>{{ item.groupName }}</td> -->
-                            <td>{{ item.name }}</td>
+                            <td>{{ item.value[0].name }}</td>
                             <td>{{ item.value[0].gender }}</td>
                             <td>{{ item.value[0].phone }}</td>
-                            <td v-for="(itemm, index) in item.value" :key='index'>{{ itemm.attendance }}</td>
-                            <td>{{ attendanceGrouped(item.value, 'attendance').length > 0 ? attendanceGrouped(item.value, 'attendance').find(i => i.name === '--') ? attendanceGrouped(item.value, 'attendance').find(i => i.name === '--').value ? attendanceGrouped(item.value, 'attendance').find(i => i.name === '--').value.length : 0 : 0 : 0 }}</td>
-                            <td>{{ attendanceGrouped(item.value, 'attendance').length > 0 ? attendanceGrouped(item.value, 'attendance').find(i => i.name === 'P') ? attendanceGrouped(item.value, 'attendance').find(i => i.name === 'P').value ? attendanceGrouped(item.value, 'attendance').find(i => i.name === 'P').value.length : 0 : 0 : 0 }}</td>
-                            <td>{{ attendanceGrouped(item.value, 'attendance').length > 0 ? attendanceGrouped(item.value, 'attendance').find(i => i.name === 'P') ? attendanceGrouped(item.value, 'attendance').find(i => i.name === 'P').value ? (attendanceGrouped(item.value, 'attendance').find(i => i.name === 'P').value.length / groupedReportByDate.length * 100).toFixed(2) + '%' : 0 : 0 : 0 }}</td>
+                            <td v-for="(itemm, index) in groupedReportByDate" :key='index'>{{ itemm.value.find(i => i.personId === item.value[0].personId) ? itemm.value.find(i => i.personId === item.value[0].personId).attendance : "" }}</td>
+                            <td> {{ attendance(item.value[0].personId, 1) }}</td>
+                            <td>{{ attendance(item.value[0].personId, 2) }}</td>
+                            <td>{{ attendance(item.value[0].personId, 3) }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -33,6 +31,7 @@
 import { ref, computed, watchEffect } from "vue"
 import PaginationButtons from "../../../components/pagination/PaginationButtons.vue";
 import dateFormatter from '../../../services/dates/dateformatter';
+import { find } from 'highcharts';
 export default {
     props: ['groupedReport', 'groupedReportByDate'],
     emits: ['data-to-export', 'data-header-to-export'],
@@ -52,6 +51,33 @@ export default {
         const toggleFilterFormVissibility = () => {
             filterFormIsVissible.value = !filterFormIsVissible.value;
         };
+
+        const attendance = (personId, type) => {
+            let attendance = []
+            let absentee = []
+            let presentee = []
+            props.groupedReportByDate.forEach(i => {
+                let findAbsentee = i.value.find(i => {
+                    if (i.personId === personId) {
+                        return i
+                    }
+                })
+                attendance.push(findAbsentee)
+            })
+            let filteredAttendance = attendance.filter(i => i !== undefined)
+            filteredAttendance.forEach(i => {
+                if (i.attendance === "--") {
+                    absentee.push(i)
+                }   else {
+                    presentee.push(i)
+                }
+            })
+            let percentage = +presentee.length/+filteredAttendance.length * 100
+            console.log(percentage)
+            if (type === 1) return absentee.length
+            if (type === 2) return presentee.length
+            if (type === 3) return percentage.toString().includes(".") ? percentage.toFixed(2) + '%' : percentage + '%'
+        }
 
         const formatDate = (date) => {
             return dateFormatter.normalDate(date)
@@ -73,6 +99,7 @@ export default {
                 value: result[prop]
                 })
             }
+            console.log(attendanceGroup)
             return attendanceGroup
         };
 
@@ -105,7 +132,7 @@ export default {
                     return td.innerHTML;
                 }).join( ',' );
                 let _data = _arr.split(",");
-                console.log(_data)
+                // console.log(_data)
                 
                 _obj = Object.assign({}, _data)
                 
@@ -139,7 +166,8 @@ export default {
             toggleFilterFormVissibility,
             filterGroupReport,
             formatDate,
-            attendanceGrouped
+            attendanceGrouped,
+            attendance
          
         }
     }
