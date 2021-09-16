@@ -44,7 +44,7 @@
                         <p class="ju mb-3 paragraph1">Snapshot of what your business owns or is due to receive from others (assets). what it owes to others (liabilities). and what you</p>
                     </div>
                 </div>
-                 <div class="col-md-6 col-12 pr-md-4 p-0">
+                 <!-- <div class="col-md-6 col-12 pr-md-4 p-0">
                 </div>
                 <div class="col-md-5 col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
@@ -54,7 +54,7 @@
                     <div class="row">
                         <p class="ju mb-3 paragraph1">Snapshot of what your business owns or is due to receive from others (assets). what it owes to others (liabilities). and what you</p>
                     </div>
-                </div>
+                </div> -->
             </div>
      </div>
     </div>
