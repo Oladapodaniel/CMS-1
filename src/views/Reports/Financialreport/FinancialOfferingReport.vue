@@ -194,22 +194,29 @@ export default {
         const offeringChartResult = ref([]);
         // const pieChart= ref([])
         const mainOfferingData= ref([])
+        const mappedOfferingCol = ref([])
          
         // onMounted(()=>{
         // pieChart.value = { name: "First Timer ", value: 2, name: "First Timer ", value: 2, };
         // })
     const offeringDetail = computed(() => {
          if (offeringInChurch.value.length === 0) return []
+           offeringData.value = []
+            mainOfferingData.value = []
+            mappedOfferingCol.value = []
            offeringInChurch.value.forEach(i => {
             let offeringIndex = Object.keys(i).findIndex(i => i === 'amount')
             let offeringValue = Object.values(i)[offeringIndex]
-            offeringData.value.push(offeringValue)     
+            offeringData.value.push(offeringValue)  
+            console.log(offeringInChurch.value)  
+            mappedOfferingCol.value.push(i.contributionName) 
          });
          mainOfferingData.value.push({
-             name: 'Attendance',
+             name: 'Offering',
              color: '#002044',
              data: offeringData.value
          })
+         console.log(mainOfferingData.value)
          return mainOfferingData.value  
      })
      const offeringChart = (array, key) => {
@@ -223,6 +230,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        offeringChartResult.value = []
         offeringChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -234,10 +242,11 @@ export default {
       if (offeringChartResult.value.length === 0) return []
       return offeringChartResult.value.map(i => i)
     })
-    const mappedOfferingCol = computed(() => {
-      if (offeringChartResult.value.length === 0) return []
-      return offeringChartResult.value.map(i => i.name)
-    })
+    // const mappedOfferingCol = computed(() => {
+    //   if (offeringChartResult.value.length === 0) return []
+    //   console.log(offeringChartResult.value.map(i => i.name))
+    //   return offeringChartResult.value.map(i => i.name)
+    // })
 
      const genarateReport = () => {
         axios.get(`/api/Reports/financials/getContactAllContributionsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&personID=${offeringReportItem.value}`)
