@@ -7,7 +7,7 @@
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Statement of activities</h4>
-                    <p class="ju paragraph1">How many Members are you gathering? Think about fast growing church and maintaining your members information and reaching out to them.</p>
+                    <p class="ju paragraph1">Have an Overview of your cash flow.</p>
 
 
                 </div>
