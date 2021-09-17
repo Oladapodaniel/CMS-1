@@ -60,17 +60,18 @@
 
     <section>
       <!-- chart area -->
-      <div class="chart">
-        <div style="width: 45%" class="ml-md-4 chart1">
+      <!-- <div class="chart row"
+      :class=" accountTransaction &&  accountTransaction.length > 0 ? 'graph-area' : '' ">
+        <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart"
             title="By Gender"
             distance="5"
             :titleMargin="10"
-            :summary="firstTimerChart"
+            :summary="groupedAllIncome"
           />
         </div>
-      </div>
+      </div> -->
       <!--end of chart area -->
     </section>
 
@@ -102,6 +103,16 @@
               <td>{{ statement ? statement.amount : "" }}</td>
               <td>{{ formatDate(statement ? statement.date : "") }}</td>
             </tr>
+            <tr class="answer-row">
+              <td class="answer">Total</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="answer">
+                {{ totalIncome.toLocaleString()}}
+              </td>
+              <td></td>
+            </tr>
           </tbody>
         </table>
         <!-- <div class="table-foot d-flex justify-content-end mt-n3">
@@ -114,9 +125,10 @@
 </template>
 
 <script>
-import { ref } from "vue";
+
+import { ref, computed } from "vue";
 import Calendar from "primevue/calendar";
-import ByGenderChart from "@/components/charts/PieChart.vue";
+// import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
@@ -124,27 +136,68 @@ import dateFormatter from  "../../../services/dates/dateformatter";
 export default {
   components: {
     Calendar,
-    ByGenderChart,
+    // ByGenderChart,
     // PaginationButtons,
   },
   setup() {
     const startDate = ref("");
     const endDate = ref("");
     const incomeStatement = ref([]);
-    // const firstTimerChart = ref([])
+    const groupedIncomeStatements = ref([])
+    // const groupedAllIncome = ref([])
+
+
+
     const generateReport = () => {
       axios
         .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
           console.log(res, "🎄🎄🎄");
-          incomeStatement.value = res.data;
-          console.log(incomeStatement.value, "✌️✌️");
-          // console.log(incomeStatement.value.fund, "✌️✌️");
+          incomeStatement.value = res.data.filter(i => i !== null)
+          console.log(incomeStatement.value);
+          let response = res.data
+          console.log(response)
+
+          churchIncomes(incomeStatement.value, 'accountCategory')
+
         })
         .catch((err) => {
           console.log(err);
         });
     };
+
+    const churchIncomes = (array, key) => {
+            let result = array.reduce((result, currentValue) => {
+                // If an array already present for key, push it to the array. Else create an array and push the object
+                (result[currentValue[key]] = result[currentValue[key]] || []).push(
+                currentValue
+                );
+                // console.log(result, currentValue, key)
+                // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+
+                return result;
+            }, {}); // empty object is the initial value for result object
+            console.log(result)
+
+             groupedIncomeStatements.value = []
+            for (const prop in result) {
+                console.log(prop, result[prop])
+                groupedIncomeStatements.value.push({
+                name: prop,
+                value: result[prop]
+                })
+            }
+            console.log(groupedIncomeStatements.value)
+            console.log(groupedIncomeStatements.value.[1])
+        };
+
+
+        const totalIncome = computed (() => {
+         if(incomeStatement.value.length === 0) return []
+          return incomeStatement.value.reduce((acc, cur) => {
+                return acc + cur.amount
+          }, 0)
+        })
 
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
@@ -162,7 +215,9 @@ export default {
       incomeStatement,
       generateReport,
       formatDate,
-      // firstTimerChart
+      groupedIncomeStatements,
+      churchIncomes,
+      totalIncome
     };
   },
 };
@@ -265,5 +320,18 @@ border-top-right-radius: 0 !important;
 .responsiveness{
   max-width: 100%;
   overflow-y: scroll;
+}
+
+.answer{
+  font-weight: bolder;
+   color:#fff ;
+}
+
+.answer-row{
+  background-color: #136acd;
+}
+
+.answer-row:hover{
+  background-color:#136acd;
 }
 </style>

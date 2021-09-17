@@ -1,5 +1,5 @@
 <template>
-    <div class="container-wide container-top mb-5" id="element-to-print">
+    <div class="container-wide container-top mb-5">
         <div class="row d-flex justify-content-between">
             <div class="header">Attendance Report</div>
             <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
@@ -59,7 +59,7 @@
 
 
 
-        <div class="row mt-4">
+        <div class="row mt-4" id="element-to-print">
             <GroupReportTable :groupedReport="groupedReport" :groupedReportByDate="groupedReportByDate" @data-to-export="setDataToExport" @data-header-to-export="setTableHeaderData"/>
         </div>
     </div>
@@ -228,10 +228,10 @@ export default {
                 var opt = {
                     // margin:       1,
                     filename:     `${fileName.value}.pdf`,
-                    // image:        { type: 'jpeg', quality: 0.98 },
-                    // html2canvas:  { scale: 2 },
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2 },
                     jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
-                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                    pagebreak: { mode: ['avoid-all'] }
                 };
 
                     // New Promise-based usage:
