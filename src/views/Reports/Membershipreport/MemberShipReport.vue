@@ -213,7 +213,7 @@
 </template>
 
 <script>
-import {computed, ref,watchEffect } from "vue";
+import {computed, ref } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -413,7 +413,8 @@ export default {
                 let _data = _arr.split(",");
                 console.log(_data)
                 console.log("html to JSON", _data);
-                // emit('data-header-to-export', _data)          
+                // emit('data-header-to-export', _data)  
+                 fileHeaderToExport.value = _data       
             // };
                 // _htmlToJSON();
       }
@@ -441,6 +442,7 @@ export default {
             for(var i = 1; i < _trLength; i++){
                 _htmlToJSON(i);
             }
+            fileToExport.value = _jsonData
             console.log("html to JSON",_jsonData);
             // emit('data-to-export', _jsonData)
         }
