@@ -19,7 +19,7 @@
             <!-- <div class="">Export</div> -->
             <div @click="downLoadExcel" class="col-"><div class="default-btn d-flex align-items-center c-pointer justify-content-center">Export</div></div>
         </div>
-        <div class="container-fluid ">
+        <div class="container-fluid mt-2 ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
                 <div class="col-12 col-md-6 col-lg-3">
                     <div><label for="" class="font-weight-bold">Select Members</label></div>
@@ -217,7 +217,7 @@ import {computed, ref,watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
-// import Dropdown from "primevue/dropdown";
+import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
 import ExcelExport from "../../../services/exportFile/exportToExcel"
 import InputText from 'primevue/inputtext';
