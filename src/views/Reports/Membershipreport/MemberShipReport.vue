@@ -229,7 +229,7 @@ export default {
         // GenderPieChart,
         InputText,
         MembershipPieChart,
-        // Dropdown, 
+        Dropdown, 
         MultiSelect, 
         PaginationButtons },
     setup() {
