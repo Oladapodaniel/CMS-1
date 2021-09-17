@@ -11,9 +11,10 @@
 
 
                 </div>
-                <div class="col-md-5 col-12 border-bottom">
+                <!-- border-bottom -->
+                <div class="col-md-5 col-12">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
-                     <router-link to="/tenant/financialexpense" class="linked">   <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Expense Report</h4> </router-link>
+                     <router-link to="/tenant/reports/expensereport" class="linked">   <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Expense Report</h4> </router-link>
                        <router-link to="/tenant/financialexpense"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
@@ -32,7 +33,7 @@
                         <p class="ju mb-3 paragraph1">Snapshot of what your business owns or is due to receive from others (assets). what it owes to others (liabilities). and what you</p>
                     </div>
                 </div> -->
-
+<!-- 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                 </div>
                 <div class="col-md-5 col-12 mt-4">
@@ -43,7 +44,7 @@
                         <div class="row">
                             <p class="ju mb-3 paragraph1">Snapshot of what your business owns or is due to receive from others (assets). what it owes to others (liabilities). and what you</p>
                         </div>
-                </div>
+                </div> -->
                  <!-- <div class="col-md-6 col-12 pr-md-4 p-0">
                 </div>
                 <div class="col-md-5 col-12 mt-4">
