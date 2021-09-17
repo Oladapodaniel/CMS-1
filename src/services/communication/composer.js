@@ -14,7 +14,7 @@ const composerObj = {
         "Select group from database",
         "Select person from membership database",
         "Phone numbers",
-        // "Upload contacts"
+        "Upload contacts"
     ],
 
     getCommunicationGroups() {

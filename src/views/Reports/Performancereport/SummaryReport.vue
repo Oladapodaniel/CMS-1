@@ -138,7 +138,7 @@
           </thead>
           <tbody class="font-weight-normal text-nowrap">
             <tr v-for="(analysisTable, index) in analysisReport" :key="index" >
-              <td>{{analysisTable.eventName}}</td>
+              <td>{{index === 0 ? analysisTable.eventName : ""}}</td>
               <td>{{formatDate(analysisTable.date)}}</td>
               <td>{{analysisTable.description}}</td>
               <td>{{analysisTable.topic}}</td>
