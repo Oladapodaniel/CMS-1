@@ -4,7 +4,7 @@
           </div>
         <div class="row mt-5">
          <div class="col-md-12 col-12 text-center">
-            <div class="row  border rounded report d-flex justify-content-between p-2 p-md-4">
+            <div class="row  table border-0 report d-flex justify-content-between p-2 p-md-4">
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Membership</h4>
@@ -56,7 +56,7 @@
         <!--border 2-->
         <!-- <div class="row mt-5">
          <div class="col-md-12 col-12 text-center">
-            <div class="row  border rounded report d-flex justify-content-between p-2 p-md-4">
+            <div class="row  table border-0 report d-flex justify-content-between p-2 p-md-4">
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Stay on top of taxes</h4>
@@ -80,7 +80,7 @@
         <!--border 3-->
            <div class="row mt-5 mb-5">
          <div class="col-md-12 col-12 text-center">
-            <div class="row  border rounded report d-flex justify-content-between p-2 p-md-4">
+            <div class="row  table border-0 report d-flex justify-content-between p-2 p-md-4">
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Celebrations</h4>

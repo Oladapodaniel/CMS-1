@@ -1281,7 +1281,16 @@ export default {
                 //     isPaypal.value = true
                 //     isFlutterwave.value = true
                 // }
-                if (store.getters.currentUser.tenantId) {
+                console.log(store.getters.currentUser)
+                if (store.getters.currentUser === undefined) {
+                   axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
+                  .then(res => {
+                    tenantCurrency.value = res.data.currency
+                    getOneContribution()
+                    console.log(res.data)
+                  })
+                  .catch(err => console.log(err))
+                } else {
                   axios.get(`/api/Lookup/TenantCurrency?tenantID=${store.getters.currentUser.tenantId}`)
                   .then(res => {
                     tenantCurrency.value = res.data.currency
@@ -1289,16 +1298,7 @@ export default {
                     console.log(res.data)
                   })
                   .catch(err => console.log(err))
-              console.log(store.getters.currentUser)
-                } else {
-                  axios.get(`/api/Lookup/TenantCurrency?tenantID=${res.data.tenantId}`)
-                  .then(res => {
-                    tenantCurrency.value = res.data.currency
-                    getOneContribution()
-                    console.log(res.data)
-                  })
-                  .catch(err => console.log(err))
-              console.log(store.getters.currentUser)
+                console.log(store.getters.currentUser)  
                 }
                 
                 
