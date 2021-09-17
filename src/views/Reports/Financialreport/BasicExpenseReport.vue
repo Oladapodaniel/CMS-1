@@ -60,14 +60,15 @@
 
     <section>
       <!-- chart area -->
-      <div class="chart row">
+      <div class="chart row"
+       :class=" accountTransaction &&  accountTransaction.length > 0 ? 'graph-area' : '' ">
        <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart"
-            title="Fuel and Power"
+            title="Funds"
             distance="5"
             :titleMargin="10"
-            :summary="membershipByGender"
+            :summary="groupedAccountName"
           />
         </div>
       </div>
@@ -103,7 +104,8 @@
               <td class="answer">Total</td>
               <td></td>
               <td></td>
-              <td class="answer">{{amountTotal.toLocalString()}}</td>
+              <td class="answer">{{amountTotal.toLocaleString()}}</td>
+              <!-- <td class="answer">{{amountTotal}}</td> -->
               <td></td>
             </tr>
           </tbody>
@@ -125,11 +127,14 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
+// import numbers_formatter from "../../../services/numbers/numbers_formatter.js"
+// import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
+    // PerformanceColumnChart,
     // PaginationButtons,
   },
   setup() {
@@ -137,7 +142,7 @@ export default {
     const endDate = ref("");
     const accountTransaction = ref([]);
     const acccountType = ref();
-    // const expensesChart = ref([])
+    const groupedAccountName = ref([])
     const generateReport = () => {
       axios
         .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&acccountType=${3}`)
@@ -146,35 +151,47 @@ export default {
           console.log(res, "🎄🎄🎄");
           accountTransaction.value = res.data;
           console.log(accountTransaction.value[0], "✌️✌️");
-          // expensesChart.value = getBasicExpensesReport(res.data)
+
+          groupChart( accountTransaction.value, 'accountName')
+
         })
         .catch((err) => {
           console.log(err);
         });
     };
 
-    // const getAllExpenses = (arr, key, value) => {
-    //   return {
-    //     name: value,
-    //     value: accountTransaction.value.filter(i => i[key] === value).length
-    //   }
-    // };
 
-    // const getBasicExpensesReport = arr => {
-    //   return [
-    //         getAllExpenses(arr, 'fund', '' ),
-    //         getAllExpenses(arr, 'accountName', '' ),
-    //         getAllExpenses(arr, 'description', '' ),
-    //         getAllExpenses(arr, 'amount', '' ),
-    //         getAllExpenses(arr, 'date', '' ),
-    //   ]
-    // }
+      const groupChart = (array, key) => {
+            let result = array.reduce((result, currentValue) => {
+                // If an array already present for key, push it to the array. Else create an array and push the object
+                (result[currentValue[key]] = result[currentValue[key]] || []).push(
+                currentValue
+                );
+                // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+                return result;
+            }, {}); // empty object is the initial value for result object
+            console.log(result)
+            groupedAccountName.value = []
+            for (const prop in result) {
+                console.log(prop, result[prop])
+                groupedAccountName.value.push({
+                name: prop,
+                value: result[prop].reduce((acc, cur) => {
+                  return acc + cur.amount
+                }, 0),
+                })
+            }
+
+            console.log(groupedAccountName.value)
+        };
 
     const amountTotal = computed (() => {
+    if(accountTransaction.value.length === 0) return []
      return  accountTransaction.value.reduce((acc, cur) => {
         return acc + cur.amount
       }, 0)
-    })
+    });
+
 
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
@@ -192,9 +209,10 @@ export default {
       accountTransaction,
       generateReport,
       formatDate,
-      acccountType,
-      amountTotal
-      // firstTimerChart
+     acccountType,
+      amountTotal,
+      groupChart,
+      groupedAccountName
     };
   },
 };
@@ -297,6 +315,15 @@ border-top-right-radius: 0 !important;
 .responsiveness{
   max-width: 100%;
   overflow-y: scroll;
+}
+
+.graph-area{
+    border: 1px solid #dde2e6;
+    border-radius: 0.5rem;
+    padding: 1rem 0rem;
+    margin: 2rem 0rem !important;
+     width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45;
 }
 
 .answer{
