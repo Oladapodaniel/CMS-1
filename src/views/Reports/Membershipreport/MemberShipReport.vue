@@ -1,7 +1,23 @@
 <template>
     <div class="container container-top container-wide mb-4">
-        <div class="heading-text col-12 pl-2">
-            People Report
+       <div class="row d-flex justify-content-between">
+            <div class="heading-text">People Report</div>
+            <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
+        </div>
+        <div class="row my-4 d-flex justify-content-end" v-if="showExport">
+            <!-- <div class="col-sm-2">Enter file name</div> -->
+            <div class="col-sm-4">
+                <!-- <input type="text" class="form-control" /> -->
+                <span class="p-float-label">
+                    <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
+                    <label for="inputtext">Enter file name</label>
+                </span>
+            </div>
+            <div class="col-sm-3">
+                <Dropdown v-model="selectedFileType" :options="bookTypeList" placeholder="Select file type" />
+            </div>
+            <!-- <div class="">Export</div> -->
+            <div @click="downLoadExcel" class="col-"><div class="default-btn d-flex align-items-center c-pointer justify-content-center">Export</div></div>
         </div>
         <div class="container-fluid ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
@@ -152,7 +168,7 @@
                     <!-- table header -->
                     <div class=" container container-top table-main px-0  remove-styles2 remove-border "
                     :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area">
+                        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area " id="table" > 
                         <thead class="table-header-area-main" >
                             <tr
                             class="small-text text-capitalize text-nowrap"
@@ -197,16 +213,21 @@
 </template>
 
 <script>
-import {computed, ref } from "vue";
+import {computed, ref,watchEffect } from "vue";
 import axios from "@/gateway/backendapi";
 import MembershipPieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 // import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
+import ExcelExport from "../../../services/exportFile/exportToExcel"
+import InputText from 'primevue/inputtext';
+import printJS from "print-js";
+import html2pdf from "html2pdf.js"
 // import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
     components: {
         // GenderPieChart,
+        InputText,
         MembershipPieChart,
         // Dropdown, 
         MultiSelect, 
@@ -225,6 +246,12 @@ export default {
     const memberChartResult = ref([]);
     const maritalStatusChartResult = ref([]);
     const ageGroupChartResult = ref([]);
+    const showExport = ref(false);
+    const fileName = ref("")
+    const bookTypeList = ref([ 'xlsx', 'csv', 'txt', 'pdf' ])
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([])
+    const fileToExport = ref([]);
 
     
    const genderChart = (array, key) => {
@@ -330,6 +357,94 @@ export default {
     })
 
 
+     const downLoadExcel = () => {
+            if (selectedFileType.value === "pdf") {
+                // printJS({
+                // //   ignoreElements: ['ignore1', 'ignore2'],
+                //   maxWidth: 867,
+                //   header: 'DONATION TRANSACTIONS',
+                //   printable: [{
+                //         DATE: '543',
+                //         EVENT: '5242',
+                //         DONATION: '4242',
+                //         AMOUNT: 23432,
+                //         DONOR: '234234234'
+                //         }],
+                //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
+                //   type: 'json',
+                //   headerStyle:
+                //     'font-family: Nunito Sans, Calibri; text-align: center;',
+                //   gridHeaderStyle:
+                //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+                //   gridStyle:
+                //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+                // })
+                var element = document.getElementById('element-to-print');
+                var opt = {
+                    // margin:       1,
+                    filename:     `${fileName.value}.pdf`,
+                    // image:        { type: 'jpeg', quality: 0.98 },
+                    // html2canvas:  { scale: 2 },
+                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                };
+
+                    // New Promise-based usage:
+                    html2pdf().set(opt).from(element).save();
+                // html2pdf(element);
+            } else {
+                const filterVal = fileHeaderToExport.value.map((i, index) => index)
+                const list = fileToExport.value
+                const header = fileHeaderToExport.value
+                console.log(filterVal)
+                console.log(fileHeaderToExport.value)
+                
+                ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
+            }
+        }
+
+      const tableHeaderToJson = () => {
+            // let _htmlToJSON = function(){
+                // let _tr = _table.getElementsByTagName("tr")[index];
+                let _th = document.getElementsByTagName("th");
+                let _arr = [].map.call( _th, function( th ) {
+                    return th.innerHTML;
+                }).join( ',' );
+                let _data = _arr.split(",");
+                console.log(_data)
+                console.log("html to JSON", _data);
+                // emit('data-header-to-export', _data)          
+            // };
+                // _htmlToJSON();
+      }
+
+      const tableToJson = () => {
+            let _table = document.getElementById("table");
+            let _trLength = _table.getElementsByTagName("tr").length;
+            let _jsonData = [];
+            let _obj = {};
+
+            let _htmlToJSON = function(index){
+                let _tr = _table.getElementsByTagName("tr")[index];
+                let _td = _tr.getElementsByTagName("td");
+                let _arr = [].map.call( _td, function( td ) {
+                    return td.innerHTML;
+                }).join( ',' );
+                let _data = _arr.split(",");
+                // console.log(_data)
+                
+                _obj = Object.assign({}, _data)
+                
+                _jsonData.push(_obj);
+                
+            };
+            for(var i = 1; i < _trLength; i++){
+                _htmlToJSON(i);
+            }
+            console.log("html to JSON",_jsonData);
+            // emit('data-to-export', _jsonData)
+        }
+
     const genarateReport = () => {
         const memberID =  selectedMember.value.map((i) => i.id)
         const genderID =  selectedGender.value.map((i) => i.id)
@@ -349,6 +464,10 @@ export default {
             memberChart(res.data,'membership')
             maritalStatusChart(res.data,'maritalStatus')
             ageGroupChart(res.data,'ageGroup')
+            setTimeout(() => {
+                        tableHeaderToJson()
+                        tableToJson()
+                    }, 1000)
           
         }).catch((error) =>{
             console.log(error)
@@ -430,7 +549,15 @@ export default {
          mappedAgeGroup,
          selectedMember,
          selectedGender,
-         selectedMaritalStatus
+         selectedMaritalStatus,
+         showExport,
+        fileName,
+        bookTypeList, 
+        selectedFileType,
+        fileToExport,
+        fileHeaderToExport,
+        printJS,
+        downLoadExcel
      }
     }
 }
