@@ -18,7 +18,7 @@
                        <router-link to="/tenant/financialexpense"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
-                          <p class="ju mb-3 paragraph1">Snapshot of what your business owns or is due to receive from others (assets). what it owes to others (liabilities). and what you</p> 
+                          <p class="ju mb-3 paragraph1">Snapshot of what your church owes to others (liabilities).</p> 
                     </div>
                 </div>
                 
@@ -68,7 +68,7 @@
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Contributions</h4>
-                    <p class="ju paragraph1">How much profit are you making? Are your assets growing faster than your liabilities? is cash flowing or getting stuck</p>
+                    <p class="ju paragraph1">See an overview of how contributions are made in your ministry</p>
 
 
                 </div>
@@ -80,7 +80,7 @@
                         </div>
                     </router-link>
                     <div class="row">
-                        <p class="ju mb-3 paragraph1">Snapshot of what your business owns or is due to receive from others (assets). what it owes to others (liabilities). and what you</p>
+                        <p class="ju mb-3 paragraph1">Snapshot of contribution(offering) made to your church</p>
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Transactions</h4>
-                    <p class="ju paragraph1">How much profit are you making? Are your assets growing faster than your liabilities? is cash flowing or getting stuck</p>
+                    <p class="ju paragraph1">See an overflow of transactions performed in your church</p>
 
 
                 </div>
@@ -104,7 +104,7 @@
                          <router-link to="accountingtransactionreport"><span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
-                        <p class="ju mb-3 paragraph1">Snapshot of what your business owns or is due to receive from others (assets). what it owes to others (liabilities). and what you</p>
+                        <p class="ju mb-3 paragraph1">Snapshot of account transactions. and what you</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-12 pr-md-4 p-0">
@@ -115,7 +115,7 @@
                        <router-link to="/tenant/financialactivitiesbalance"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span> </router-link>
                     </div>
                     <div class="row">
-                        <p class="ju mb-3 paragraph1">Snapshot of what your business owns or is due to receive from others (assets). what it owes to others (liabilities). and what you</p>
+                        <p class="ju mb-3 paragraph1">Snapshot of account activities and balance.</p>
                     </div>
                 </div>
             </div>
