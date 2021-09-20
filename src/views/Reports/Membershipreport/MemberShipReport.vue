@@ -1,6 +1,6 @@
 <template>
     <div class="container container-top container-wide mb-4">
-       <div class="row d-flex justify-content-between">
+       <div class="row d-flex justify-content-between pl-2">
             <div class="heading-text">People Report</div>
             <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
         </div>
