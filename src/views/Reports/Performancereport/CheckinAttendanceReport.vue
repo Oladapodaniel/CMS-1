@@ -74,7 +74,7 @@ import GroupReportTable from "./CheckinAttendanceReportTable.vue"
 import axios from "@/gateway/backendapi";
 import ExcelExport from "../../../services/exportFile/exportToExcel"
 import printJS from "print-js";
-import html2pdf from "html2pdf.js"
+// import html2pdf from "html2pdf.js"
 // import axio from "axios"
 export default {
     components: {
@@ -93,7 +93,7 @@ export default {
         const attendanceReport = ref([])
         const groupedReport = ref([])
         const groupedReportByDate = ref([])
-        const bookTypeList = ref([ 'xlsx', 'csv', 'txt', 'pdf' ])
+        const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
         const selectedFileType = ref("")
         const fileName = ref("")
         const showExport = ref(false)
@@ -224,19 +224,31 @@ export default {
                 //   gridStyle:
                 //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
                 // })
-                var element = document.getElementById('element-to-print');
-                var opt = {
-                    // margin:       1,
-                    filename:     `${fileName.value}.pdf`,
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { scale: 2 },
-                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
-                    pagebreak: { mode: ['avoid-all'] }
-                };
+                // var element = document.getElementById('element-to-print');
+                // var opt = {
+                //     // margin:       1,
+                //     filename:     `${fileName.value}.pdf`,
+                //     image:        { type: 'jpeg', quality: 0.98 },
+                //     html2canvas:  { scale: 2 },
+                //     jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+                //     pagebreak: { mode: ['avoid-all'] }
+                // };
 
                     // New Promise-based usage:
-                    html2pdf().set(opt).from(element).save();
+                    // html2pdf().set(opt).from(element).save();
                 // html2pdf(element);
+
+                // var doc = new jsPDF();  //create jsPDF object
+                // doc.fromHTML(document.getElementById("element-to-print"), // page element which you want to print as PDF
+                // 15,
+                // 15, 
+                // {
+                //     'width': 170  //set width
+                // },
+                // function(a) 
+                // {
+                //     doc.save(`${fileName.value}.pdf`); // save file name as HTML2PDF.pdf
+                // });
             } else {
                 const filterVal = fileHeaderToExport.value.map((i, index) => index)
                 const list = fileToExport.value
