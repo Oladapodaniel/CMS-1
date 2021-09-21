@@ -17,7 +17,7 @@
                 <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
             </div>
             <!-- <div class="">Export</div> -->
-            <div @click="downLoadExcel" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
+            <div @click="downloadFile" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
         </div>
         <div class="container-fluid mt-2 ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
@@ -87,14 +87,14 @@
                     <div class="mt-2" @click="genarateReport">
                         <button class="btn default-btn border-0 primary-bg "><div class="text-white">Generate Report</div></button>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
         <div class="container-fluid  ">
             <div class="row">
                 <div class="col-12 ">
                     <div class="mt-5 text-center Display-1 heading-text">
-                        Congregation Members Report 
+                        Congregation Members Report
                     </div>
                 </div>
                 <div class="col-12 table d-flex flex-wrap">
@@ -154,7 +154,7 @@
                                 distance="5"
                                 :titleMargin="10"
                                 :summary="mappedAgeGroup"
-                               
+
                             />
                         </div>
                     </div>
@@ -168,7 +168,7 @@
                     <!-- table header -->
                     <div class=" container container-top table-main px-0  remove-styles2 remove-border "
                     :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area " id="table" > 
+                        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area " id="table" >
                         <thead class="table-header-area-main" >
                             <tr
                             class="small-text text-capitalize text-nowrap"
@@ -219,18 +219,19 @@ import MembershipPieChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import Dropdown from "primevue/dropdown";
 import MultiSelect from 'primevue/multiselect';
-import ExcelExport from "../../../services/exportFile/exportToExcel"
+// import ExcelExport from "../../../services/exportFile/exportToExcel"
 import InputText from 'primevue/inputtext';
 import printJS from "print-js";
-import html2pdf from "html2pdf.js"
+// import html2pdf from "html2pdf.js"
+import exportService from "@/services/dataexport/exportservice.js"
 // import Piechart from "../../../components/charts/PieChart2.vue"
 export default {
     components: {
         // GenderPieChart,
         InputText,
         MembershipPieChart,
-        Dropdown, 
-        MultiSelect, 
+        Dropdown,
+        MultiSelect,
         PaginationButtons },
     setup() {
     const selectedMember = ref();
@@ -253,7 +254,7 @@ export default {
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
 
-    
+
    const genderChart = (array, key) => {
        // Accepts the array and key
       // Return the end result
@@ -356,68 +357,73 @@ export default {
       return ageGroupChartResult.value.map(i => i)
     })
 
+    const downloadFile = () => {
+      exportService.downLoadExcel(selectedFileType.value, document.getElementById('element-to-print'), fileName.value, fileHeaderToExport.value, fileToExport)
+    }
 
-     const downLoadExcel = () => {
-            if (selectedFileType.value === "pdf") {
-                // printJS({
-                // //   ignoreElements: ['ignore1', 'ignore2'],
-                //   maxWidth: 867,
-                //   header: 'DONATION TRANSACTIONS',
-                //   printable: [{
-                //         DATE: '543',
-                //         EVENT: '5242',
-                //         DONATION: '4242',
-                //         AMOUNT: 23432,
-                //         DONOR: '234234234'
-                //         }],
-                //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
-                //   type: 'json',
-                //   headerStyle:
-                //     'font-family: Nunito Sans, Calibri; text-align: center;',
-                //   gridHeaderStyle:
-                //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
-                //   gridStyle:
-                //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
-                // })
-                var element = document.getElementById('element-to-print');
-                var opt = {
-                    // margin:       1,
-                    filename:     `${fileName.value}.pdf`,
-                    // image:        { type: 'jpeg', quality: 0.98 },
-                    // html2canvas:  { scale: 2 },
-                    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
-                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-                };
 
-                    // New Promise-based usage:
-                    html2pdf().set(opt).from(element).save();
-                // html2pdf(element);
-            } else {
-                const filterVal = fileHeaderToExport.value.map((i, index) => index)
-                const list = fileToExport.value
-                const header = fileHeaderToExport.value
-                console.log(filterVal)
-                console.log(fileHeaderToExport.value)
-                
-                ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
-            }
-        }
+    //  const downLoadExcel = () => {
+    //         if (selectedFileType.value === "pdf") {
+    //             // printJS({
+    //             // //   ignoreElements: ['ignore1', 'ignore2'],
+    //             //   maxWidth: 867,
+    //             //   header: 'DONATION TRANSACTIONS',
+    //             //   printable: [{
+    //             //         DATE: '543',
+    //             //         EVENT: '5242',
+    //             //         DONATION: '4242',
+    //             //         AMOUNT: 23432,
+    //             //         DONOR: '234234234'
+    //             //         }],
+    //             //   properties: ['DATE', 'DONATION', 'AMOUNT', 'DONOR'],
+    //             //   type: 'json',
+    //             //   headerStyle:
+    //             //     'font-family: Nunito Sans, Calibri; text-align: center;',
+    //             //   gridHeaderStyle:
+    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; text-align: left;',
+    //             //   gridStyle:
+    //             //     'border: 1.5px solid #6d6d6d19; font-family: Nunito Sans, calibri; padding: 7px; font-weight: 300',
+    //             // })
+    //             var element = document.getElementById('element-to-print');
+    //             var opt = {
+    //                 // margin:       1,
+    //                 filename:     `${fileName.value}.pdf`,
+    //                 // image:        { type: 'jpeg', quality: 0.98 },
+    //                 // html2canvas:  { scale: 2 },
+    //                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
+    //                 pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    //             };
 
-      const tableHeaderToJson = () => {
-            // let _htmlToJSON = function(){
-                // let _tr = _table.getElementsByTagName("tr")[index];
-                let _th = document.getElementsByTagName("th");
-                let _arr = [].map.call( _th, function( th ) {
-                    return th.innerHTML;
-                }).join( ',' );
-                let _data = _arr.split(",");
-                console.log(_data)
-                console.log("html to JSON", _data);
-                // emit('data-header-to-export', _data)  
-                 fileHeaderToExport.value = _data       
-            // };
-                // _htmlToJSON();
-      }
+    //                 // New Promise-based usage:
+    //                 html2pdf().set(opt).from(element).save();
+    //             // html2pdf(element);
+    //         } else {
+    //             const filterVal = fileHeaderToExport.value.map((i, index) => index)
+    //             const list = fileToExport.value
+    //             const header = fileHeaderToExport.value
+    //             console.log(filterVal)
+    //             console.log(fileHeaderToExport.value)
+
+    //             ExcelExport.exportToExcel(filterVal, list, header, fileName.value, selectedFileType.value)
+    //         }
+    //     }
+
+
+      // const tableHeaderToJson = () => {
+      //       // let _htmlToJSON = function(){
+      //           // let _tr = _table.getElementsByTagName("tr")[index];
+      //           let _th = document.getElementsByTagName("th");
+      //           let _arr = [].map.call( _th, function( th ) {
+      //               return th.innerHTML;
+      //           }).join( ',' );
+      //           let _data = _arr.split(",");
+      //           console.log(_data)
+      //           console.log("html to JSON", _data);
+      //           // emit('data-header-to-export', _data)
+      //            fileHeaderToExport.value = _data
+      //       // };
+      //           // _htmlToJSON();
+      // }
 
       const tableToJson = () => {
             let _table = document.getElementById("table");
@@ -433,11 +439,11 @@ export default {
                 }).join( ',' );
                 let _data = _arr.split(",");
                 // console.log(_data)
-                
+
                 _obj = Object.assign({}, _data)
-                
+
                 _jsonData.push(_obj);
-                
+
             };
             for(var i = 1; i < _trLength; i++){
                 _htmlToJSON(i);
@@ -467,10 +473,11 @@ export default {
             maritalStatusChart(res.data,'maritalStatus')
             ageGroupChart(res.data,'ageGroup')
             setTimeout(() => {
-                        tableHeaderToJson()
-                        tableToJson()
+              //  tableHeaderToJson()
+                        fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
+                        fileToExport.value = exportService.tableToJson(document.getElementById("table"))
                     }, 1000)
-          
+
         }).catch((error) =>{
             console.log(error)
         })
@@ -479,7 +486,7 @@ export default {
 
     }
 
-    
+
     const getMemberClassification = async () => {
       try {
         axios
@@ -554,12 +561,15 @@ export default {
          selectedMaritalStatus,
          showExport,
         fileName,
-        bookTypeList, 
+        bookTypeList,
         selectedFileType,
         fileToExport,
         fileHeaderToExport,
         printJS,
-        downLoadExcel
+        // downLoadExcel,
+        downloadFile,
+        // tableHeaderToJson,
+        tableToJson,
      }
     }
 }
@@ -648,10 +658,10 @@ border-top-right-radius: 0 !important;
 }
 
 .multiselect-custom {
-    
+
         padding-top: .1rem;
         padding-bottom: .1rem;
-    
+
 }
 
     .country-item-value {
