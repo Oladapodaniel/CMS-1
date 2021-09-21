@@ -854,7 +854,7 @@ export default {
   directives: {
     tooltip: Tooltip,
   },
-  components: { Dropdown, Dialog, NewPerson, GroupCategory },
+  components: { Dropdown, Dialog, NewPerson },
   setup() {
      const display = ref(false);
     //  const showWardModal = ref(false)
