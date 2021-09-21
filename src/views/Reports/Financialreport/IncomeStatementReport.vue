@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
+        <div class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
             @click="generateReport"
@@ -60,14 +60,15 @@
 
     <section>
       <!-- chart area -->
-      <div class="chart">
-        <div style="width: 45%" class="ml-md-4 chart1">
+      <div class="chart row"
+      :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
+        <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart"
             title="By Gender"
             distance="5"
             :titleMargin="10"
-            :summary="firstTimerChart"
+            :summary="groupofIcomeAndExpense"
           />
         </div>
       </div>
@@ -93,15 +94,46 @@
           </thead>
 
           <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(statement, index) in incomeStatement"
+            <tr v-for="(groupedIncome, index) in groupedIncomeItemToDisplay"
             :key="index">
-              <td>{{ statement ? statement.fund : ""}}</td>
-              <td>{{ statement ? statement.accountName : "" }}</td>
-              <td>{{ statement ? statement.accountCategory : "" }}</td>
-              <td>{{ statement ? statement.description : "" }}</td>
-              <td>{{ statement ? statement.amount : "" }}</td>
-              <td>{{ formatDate(statement ? statement.date : "") }}</td>
+              <td>{{ groupedIncome ? groupedIncome.fund : ""}}</td>
+              <td>{{ groupedIncome ? groupedIncome.accountName : "" }}</td>
+              <td>{{ groupedIncome ? groupedIncome.accountCategory : "" }}</td>
+              <td>{{ groupedIncome ? groupedIncome.description : "" }}</td>
+              <td>{{ groupedIncome ? groupedIncome.amount : "" }}</td>
+              <td>{{ formatDate(groupedIncome ? groupedIncome.date : "") }}</td>
             </tr>
+            <tr class="answer-row">
+              <td class="answer">Total Income</td>
+              <td></td>
+              <td ></td>
+              <td></td>
+              <td class="answer">
+                {{ totalIncome.toLocaleString()}}
+              </td>
+              <td></td>
+            </tr>
+
+             <tr v-for="(groupedExpense, index) in groupedExpenseItemToDisplay"
+            :key="index">
+              <td>{{ groupedExpense ? groupedExpense.fund : ""}}</td>
+              <td>{{ groupedExpense ? groupedExpense.accountName : "" }}</td>
+              <td>{{ groupedExpense ? groupedExpense.accountCategory : "" }}</td>
+              <td>{{ groupedExpense ? groupedExpense.description : "" }}</td>
+              <td>{{ groupedExpense ? groupedExpense.amount : "" }}</td>
+              <td>{{ formatDate(groupedExpense ? groupedExpense.date : "") }}</td>
+            </tr>
+            <tr class="answer-row">
+              <td class="answer">Total Expense Incure</td>
+              <td></td>
+              <td ></td>
+              <td></td>
+              <td class="answer">
+                {{ totalExpense.toLocaleString()}}
+              </td>
+              <td></td>
+            </tr>
+
           </tbody>
         </table>
         <!-- <div class="table-foot d-flex justify-content-end mt-n3">
@@ -114,7 +146,8 @@
 </template>
 
 <script>
-import { ref } from "vue";
+
+import { ref, computed} from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
@@ -131,20 +164,134 @@ export default {
     const startDate = ref("");
     const endDate = ref("");
     const incomeStatement = ref([]);
-    // const firstTimerChart = ref([])
+    const groupedIncomeStatements = ref([])
+    const groupedExpenseStatements = ref([])
+    const groupedExpenseItemToDisplay = ref([])
+    let chartForIcomeAndExpense = ref([])
+    const groupofIcomeAndExpense =ref([])
+
+
+
+
     const generateReport = () => {
       axios
         .get(`/api/Reports/financials/getIncomeStatementReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
         .then((res) => {
           console.log(res, "🎄🎄🎄");
-          incomeStatement.value = res.data;
-          console.log(incomeStatement.value, "✌️✌️");
-          // console.log(incomeStatement.value.fund, "✌️✌️");
+          incomeStatement.value = res.data.filter(i => i !== null)
+          console.log(incomeStatement.value);
+          let response = res.data
+           chartForIcomeAndExpense = response ;
+          // console.log(chartForIcomeAndExpense)
+
+
+          churchIncomes(incomeStatement.value, 'accountCategory');
+          churchExpense(incomeStatement.value, 'accountCategory');
+          pieChart(incomeStatement.value, 'accountCategory')
         })
         .catch((err) => {
           console.log(err);
         });
     };
+
+    const pieChart = (array, key) => {
+            let result = array.reduce((result, currentValue) => {
+                // If an array already present for key, push it to the array. Else create an array and push the object
+                (result[currentValue[key]] = result[currentValue[key]] || []).push(
+                currentValue
+                );
+                // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+                return result;
+            }, {}); // empty object is the initial value for result object
+            console.log(result)
+            groupofIcomeAndExpense.value = []
+            for (const prop in result) {
+                console.log(prop, result[prop])
+                groupofIcomeAndExpense.value.push({
+                name: prop,
+                value: result[prop].reduce((acc, cur) => {
+                  return acc + cur.amount
+                }, 0),
+                })
+            }
+
+            console.log(groupofIcomeAndExpense.value)
+        };
+
+    let groupedIncomeItemToDisplay = ref([])
+    const churchIncomes = (array, key) => {
+            let result = array.reduce((result, currentValue) => {
+                // If an array already present for key, push it to the array. Else create an array and push the object
+                (result[currentValue[key]] = result[currentValue[key]] || []).push(
+                currentValue
+                );
+                // console.log(result, currentValue, key)
+                // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
+
+                return result;
+            }, {}); // empty object is the initial value for result object
+            console.log(result)
+             groupedIncomeStatements.value = []
+            for (const prop in result) {
+                console.log(prop, result[prop])
+                groupedIncomeStatements.value.push({
+                name: prop,
+                value: result[prop]
+                })
+            }
+            // console.log(groupedIncomeStatements.value)
+            // console.log(groupedIncomeStatements.value.[1])
+
+             groupedIncomeItemToDisplay.value = groupedIncomeStatements.value[0].value
+
+            // console.log(groupedIncomeItemToDisplay.value, "💐💐")
+        };
+
+        const totalIncome = computed (() => {
+                if(groupedIncomeItemToDisplay.value.length === 0) return []
+                return groupedIncomeItemToDisplay.value.reduce((acc, cur) => {
+                  return acc + cur.amount
+                }, 0)
+        })
+        // console.log(totalIncome.value, "🥁🥁")
+
+
+    const churchExpense = (array, key) => {
+            let result = array.reduce((result, currentValue) => {
+                (result[currentValue[key]] = result[currentValue[key]] || []).push(
+                currentValue
+                );
+                return result;
+            }, {});
+            console.log(result)
+             groupedExpenseStatements.value = []
+            for (const prop in result) {
+                console.log(prop, result[prop])
+                groupedExpenseStatements.value.push({
+                name: prop,
+                value: result[prop]
+                })
+            }
+            // console.log(groupedExpenseStatements.value)
+            // console.log(groupedExpenseStatements.value.[1])
+
+            groupedExpenseItemToDisplay.value = groupedExpenseStatements.value[1].value
+
+            // console.log(groupedExpenseItemToDisplay.value, "💐💐")
+        };
+
+        const totalExpense = computed (() => {
+                if(groupedExpenseItemToDisplay.value.length === 0) return []
+                return groupedExpenseItemToDisplay.value.reduce((acc, cur) => {
+                  return acc + cur.amount
+                }, 0)
+        })
+        // console.log(totalExpense.value, "🥁🥁")
+
+        /*Code For Chart Area */
+        /*Code For Chart Area */
+
+
 
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
@@ -162,7 +309,19 @@ export default {
       incomeStatement,
       generateReport,
       formatDate,
-      // firstTimerChart
+      groupedIncomeStatements,
+      groupedExpenseStatements,
+      churchIncomes,
+      churchExpense,
+      totalExpense,
+      totalIncome,
+      groupedIncomeItemToDisplay,
+      groupedExpenseItemToDisplay,
+      chartForIcomeAndExpense,
+      groupofIcomeAndExpense,
+      pieChart
+      // incomeAndExpenseChart,
+      // groupedExpenseAndIncomeStatements
     };
   },
 };
@@ -265,5 +424,18 @@ border-top-right-radius: 0 !important;
 .responsiveness{
   max-width: 100%;
   overflow-y: scroll;
+}
+
+.answer{
+  font-weight: bolder;
+   color:#fff ;
+}
+
+.answer-row{
+  background-color: #136acd;
+}
+
+.answer-row:hover{
+  background-color:#136acd;
 }
 </style>

@@ -2,7 +2,7 @@
     <div class="container">
          <div class="row mt-5">
          <div class="col-md-12 col-12 text-center">
-            <div class="row  border rounded report d-flex justify-content-between p-2 p-md-4">
+            <div class="row  border-0 table report d-flex justify-content-between p-2 p-md-4">
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Attendance</h4>
@@ -37,7 +37,7 @@
     </div>
     <div class="row mt-5">
          <div class="col-md-12 col-12 text-center">
-            <div class="row  border rounded report d-flex justify-content-between p-2 p-md-4">
+            <div class="row  border-0 table report d-flex justify-content-between p-2 p-md-4">
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Performance</h4>
@@ -74,7 +74,7 @@
         <!--border 2-->
         <div class="row mt-5 mb-5">
          <div class="col-md-12 col-12 text-center">
-            <div class="row  border rounded report d-flex justify-content-between p-2 p-md-4">
+            <div class="row  border-0 table report d-flex justify-content-between p-2 p-md-4">
                 
                 <div class="col-md-6 col-12 pr-md-4 p-0">
                     <h4 class="ju header4">Summary Attendance Report</h4>

@@ -175,6 +175,7 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 import BirthdayChart from '../../../components/charts/PieChart.vue';
 import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
+import html2pdf from "html2pdf.js"
 
 export default {
   components: {
@@ -275,7 +276,7 @@ export default {
       var element = document.getElementById('element-to-print');
           var opt = {
               // margin:       1,
-              filename:     `${fileName.value}.pdf`,
+              filename:     `file.pdf`,
               image:        { type: 'jpeg', quality: 0.98 },
               html2canvas:  { scale: 2 },
               jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' },
