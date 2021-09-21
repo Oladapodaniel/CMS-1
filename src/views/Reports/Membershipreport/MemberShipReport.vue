@@ -17,7 +17,7 @@
                 <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
             </div>
             <!-- <div class="">Export</div> -->
-            <div @click="downLoadExcel" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
+            <div @click="downLoadExcel" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center c-pointer justify-content-center">Export</div></div>
         </div>
         <div class="container-fluid mt-2 ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
@@ -166,9 +166,8 @@
             <!-- <div class="row "> -->
                 <section>
                     <!-- table header -->
-                    <div class=" container container-top table-main px-0  remove-styles2 remove-border "
-                    :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area " id="table" > 
+                    <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness   ">
+                        <table class="table remove-styles mt-0 table-hover table-header-area " id="table" > 
                         <thead class="table-header-area-main" >
                             <tr
                             class="small-text text-capitalize text-nowrap"
@@ -266,6 +265,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        //  genderChartResult.value = []
         genderChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -293,6 +293,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        // memberChartResult.value = []
         memberChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -318,6 +319,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        // maritalStatusChartResult.value = []
         maritalStatusChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -344,6 +346,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        // ageGroupChartResult.value = []
         ageGroupChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -530,29 +533,29 @@ export default {
     getGender();
 
      return {
-         genarateReport,
-         genderChartResult,
-         memberChartResult,
-         maritalStatusChartResult,
-         ageGroupChartResult,
-         genderChart,
-         memberChart,
-         maritalStatusChart,
-         ageGroupChart,
-         showReport,
+        genarateReport,
+        genderChartResult,
+        memberChartResult,
+        maritalStatusChartResult,
+        ageGroupChartResult,
+        genderChart,
+        memberChart,
+        maritalStatusChart,
+        ageGroupChart,
+        showReport,
         //  genderSummary,
-         memberShips,
-         memberMaritalStatus,
-         memberGender,
-         membersInChurch,
-         mappedGender,
-         mappedMember,
-         mappedMaritalStatus,
-         mappedAgeGroup,
-         selectedMember,
-         selectedGender,
-         selectedMaritalStatus,
-         showExport,
+        memberShips,
+        memberMaritalStatus,
+        memberGender,
+        membersInChurch,
+        mappedGender,
+        mappedMember,
+        mappedMaritalStatus,
+        mappedAgeGroup,
+        selectedMember,
+        selectedGender,
+        selectedMaritalStatus,
+        showExport,
         fileName,
         bookTypeList, 
         selectedFileType,
@@ -634,9 +637,10 @@ box-shadow: none !important;
 
 .remove-styles2{
 padding-right: 0;
- padding-left: 0;
+padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
+overflow-x: scroll;
 }
 
 .remove-border{

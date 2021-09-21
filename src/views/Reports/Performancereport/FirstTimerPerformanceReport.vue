@@ -1,23 +1,23 @@
 <template>
-    <div class="container-top container-wide mb-4  ">
-        <div class="row d-flex justify-content-between ml-2">
+    <div class=" container container-top container-wide mb-4  ">
+        <div class="row d-flex justify-content-between px-3">
             <div class="heading-text">First Timer Performance Report</div>
             <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
         </div>
-        <div class="row my-4 d-flex justify-content-end" v-if="showExport">
+        <div class="row my-4 " v-if="showExport">
             <!-- <div class="col-sm-2">Enter file name</div> -->
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <!-- <input type="text" class="form-control" /> -->
                 <span class="p-float-label">
                     <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
                     <label for="inputtext">Enter file name</label>
                 </span>
             </div>
-            <div class="col-sm-3">
-                <Dropdown v-model="selectedFileType" :options="bookTypeList" placeholder="Select file type" />
+            <div class="col-sm-4">
+                <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
             </div>
             <!-- <div class="">Export</div> -->
-            <div @click="downLoadExcel" class="col-"><div class="default-btn d-flex align-items-center c-pointer justify-content-center">Export</div></div>
+            <div @click="downLoadExcel" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center c-pointer justify-content-center">Export</div></div>
         </div>
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
@@ -124,9 +124,8 @@
             <!-- <div class="row "> -->
         <section>
             <!-- table header -->
-            <div class=" container container-top table-main px-0  remove-styles2 remove-border responsiveness "
-                :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
-                <table class="table remove-styles mt-0  table-hover table-header-area " id="table">
+            <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
+                <table class="table remove-styles mt-0  table-hover table-header-area  " id="table">
                 <thead class="table-header-area-main">
                     <tr
                     class="small-text text-capitalize text-nowrap"
@@ -169,7 +168,7 @@
 </template>
 
 <script>
-import {computed,ref,watchEffect } from "vue";
+import {computed,ref } from "vue";
 // import PerformancePieChart from '../../../components/charts/PieChart.vue';
 import Calendar from "primevue/calendar";
 import Dropdown from "primevue/dropdown";
@@ -231,7 +230,7 @@ export default {
     const mainAttendanceData = ref([]);
     const showExport = ref(false);
     const fileName = ref("")
-    const bookTypeList = ref([ 'xlsx', 'csv', 'txt', 'pdf' ])
+    const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
     const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
@@ -239,6 +238,8 @@ export default {
 
     const attendanceChart = computed(() => {
          if (firstTimerInChurch.value.length === 0) return []
+            attendanceData.value = []
+            mainAttendanceData.value = []
            firstTimerInChurch.value.forEach(i => {
             let attendanceIndex = Object.keys(i).findIndex(i => i === 'activityDate')
             let attendanceValue = Object.values(i)[attendanceIndex]
@@ -262,6 +263,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        // genderChartResult.value = []
         genderChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -289,6 +291,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        // maritalStatusChartResult.value = []
         maritalStatusChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -315,6 +318,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        eventDateChartResult.value = []
         eventDateChartResult.value.push({
           name: prop,
         //   value: result[prop].length
@@ -465,10 +469,6 @@ export default {
 
      return {
         //  allMembersInChurch,
-        selectedFileType,
-        bookTypeList,
-        downLoadExcel,
-        fileName,
         attendanceChart,
         mainAttendanceData,
         attendanceData,
@@ -482,15 +482,19 @@ export default {
         mappedEventDate,
         maritalStatusChartResult,
         eventDateChartResult,
-         startDate,
-         endDate,
-         genarateReport,
-         showReport,
-         pieChart,
-         showExport,
-         fileHeaderToExport,
-         fileToExport,
-         printJS,
+        startDate,
+        endDate,
+        genarateReport,
+        showReport,
+        pieChart,
+        showExport,
+        fileHeaderToExport,
+        fileToExport,
+        selectedFileType,
+        bookTypeList,
+        fileName,
+        printJS,
+        downLoadExcel,
         //  series,
         //  membership,
         //  gender,
