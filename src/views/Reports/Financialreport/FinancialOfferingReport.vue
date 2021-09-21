@@ -181,7 +181,7 @@
 
  import { computed, ref } from "vue";
  import Calendar from "primevue/calendar";
- import MultiSelect from 'primevue/multiselect';
+//  import MultiSelect from 'primevue/multiselect';
  import axios from "@/gateway/backendapi";
  import PaginationButtons from "../../../components/pagination/PaginationButtons";
  import OfferingPieChart from '../../../components/charts/PieChart.vue';
@@ -201,7 +201,7 @@ export default {
         OfferingPieChart,
         OfferingColumnChart,
         Calendar,
-        MultiSelect, 
+        // MultiSelect, 
         PaginationButtons 
         },
     setup() {
