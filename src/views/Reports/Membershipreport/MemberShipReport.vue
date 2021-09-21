@@ -166,9 +166,8 @@
             <!-- <div class="row "> -->
                 <section>
                     <!-- table header -->
-                    <div class=" container container-top table-main px-0  remove-styles2 remove-border "
-                    :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
-                        <table class="table remove-styles mt-0 table-responsive table-hover table-header-area " id="table" >
+                    <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness   ">
+                        <table class="table remove-styles mt-0 table-hover table-header-area " id="table" >
                         <thead class="table-header-area-main" >
                             <tr
                             class="small-text text-capitalize text-nowrap"
@@ -267,6 +266,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        //  genderChartResult.value = []
         genderChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -294,6 +294,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        // memberChartResult.value = []
         memberChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -319,6 +320,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        // maritalStatusChartResult.value = []
         maritalStatusChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -345,6 +347,7 @@ export default {
       for (const prop in result) {
         // genderChartResult.value
         console.log(prop, result[prop])
+        // ageGroupChartResult.value = []
         ageGroupChartResult.value.push({
           name: prop,
           value: result[prop].length
@@ -534,29 +537,29 @@ export default {
     getGender();
 
      return {
-         genarateReport,
-         genderChartResult,
-         memberChartResult,
-         maritalStatusChartResult,
-         ageGroupChartResult,
-         genderChart,
-         memberChart,
-         maritalStatusChart,
-         ageGroupChart,
-         showReport,
+        genarateReport,
+        genderChartResult,
+        memberChartResult,
+        maritalStatusChartResult,
+        ageGroupChartResult,
+        genderChart,
+        memberChart,
+        maritalStatusChart,
+        ageGroupChart,
+        showReport,
         //  genderSummary,
-         memberShips,
-         memberMaritalStatus,
-         memberGender,
-         membersInChurch,
-         mappedGender,
-         mappedMember,
-         mappedMaritalStatus,
-         mappedAgeGroup,
-         selectedMember,
-         selectedGender,
-         selectedMaritalStatus,
-         showExport,
+        memberShips,
+        memberMaritalStatus,
+        memberGender,
+        membersInChurch,
+        mappedGender,
+        mappedMember,
+        mappedMaritalStatus,
+        mappedAgeGroup,
+        selectedMember,
+        selectedGender,
+        selectedMaritalStatus,
+        showExport,
         fileName,
         bookTypeList,
         selectedFileType,
@@ -639,9 +642,10 @@ box-shadow: none !important;
 
 .remove-styles2{
 padding-right: 0;
- padding-left: 0;
+padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
+overflow-x: scroll;
 }
 
 .remove-border{
