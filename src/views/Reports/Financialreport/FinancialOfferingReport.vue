@@ -13,29 +13,29 @@
                     <label for="inputtext">Enter file name</label>
                 </span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
                 <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
             </div>
             <!-- <div class="">Export</div> -->
-            <div @click="downloadFile" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center c-pointer justify-content-center">Export</div></div>
+            <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center border-secondary c-pointer justify-content-center">Download</div></div>
         </div>
-        <div class="col-12 pl-2">
+        <div class="col-12 pl-2 py-1">
            This reports provides a detailed list of all the offerings and contribution reports, you can also generate report for individual contributions 
         </div>
         <div class="container-fluid ">
                 <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
-                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold  mt-0">
-                        <label for="icon" >Start Date</label>
+                    <div class="p-field col-12 col-md-6 col-lg-3 font-weight-bold  mt-0">
+                        <div><label for="icon">Start Date</label></div>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
-                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold mt-0">
-                        <label for="icon">End Date</label>
+                    <div class="p-field col-12 col-md-12 col-lg-3 font-weight-bold mt-0">
+                        <div><label for="icon">End Date</label></div>
                         <Calendar id="endDate" v-model="endDate" :showIcon="true" />
                     </div>
                     <div class="col-12 col-md-6 col-lg-3 mt-0 ">
-                        <div class="col-12 "><label for="" class="font-weight-bold ml-2">Select Member</label></div>
-                        <div class="dropdown col-12  w-100">
-                           <button id="dropdownMenuButton" class="col-12 w-100 btn default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button> 
+                        <div><label for="" class="font-weight-bold ">Select Member</label></div>
+                        <div class="dropdown ">
+                           <button id="dropdownMenuButton" class="btn border-secondary default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button> 
                             <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
                                  <input type="text" class="form-control" 
                                     v-model="userSearchString"
@@ -566,9 +566,10 @@ box-shadow: none !important;
 
 .remove-styles2{
 padding-right: 0;
- padding-left: 0;
+padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
+overflow-x: scroll;
 }
 
 .remove-border{

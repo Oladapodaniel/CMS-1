@@ -13,11 +13,11 @@
                     <label for="inputtext">Enter file name</label>
                 </span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
                 <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
             </div>
             <!-- <div class="">Export</div> -->
-            <div @click="downloadFile" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
+            <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn border-secondary d-flex align-items-center justify-content-center">Download</div></div>
         </div>
         <div class="container-fluid mt-2 ">
             <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
@@ -85,7 +85,7 @@
                 <div class="col-12 col-md-6 col-lg-3">
                     <label for="" ></label>
                     <div class="mt-2" @click="genarateReport">
-                        <button class="btn default-btn border-0 primary-bg "><div class="text-white">Generate Report</div></button>
+                        <button class="btn default-btn border-0 primary-bg "><div class="text-white">Generate </div></button>
                     </div>
                 </div>
             </div>

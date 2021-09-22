@@ -6,18 +6,18 @@
         </div>
         <div class="row my-4 " v-if="showExport">
             <!-- <div class="col-sm-2">Enter file name</div> -->
-            <div class="col-sm-5">
+            <div class="col-sm-5  ">
                 <!-- <input type="text" class="form-control" /> -->
                 <span class="p-float-label">
                     <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
                     <label for="inputtext">Enter file name</label>
                 </span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
                 <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
             </div>
             <!-- <div class="">Export</div> -->
-            <div @click="downloadFile" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center c-pointer justify-content-center">Export</div></div>
+            <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center border-secondary c-pointer justify-content-center">Download</div></div>
         </div>
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
@@ -600,9 +600,10 @@ box-shadow: none !important;
 
 .remove-styles2{
 padding-right: 0;
- padding-left: 0;
+padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
+overflow-x: scroll;
 }
 
 .remove-border{
