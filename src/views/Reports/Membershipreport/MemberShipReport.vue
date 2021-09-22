@@ -249,7 +249,7 @@ export default {
     const showExport = ref(false);
     const fileName = ref("")
     const bookTypeList = ref([ 'xlsx', 'csv', 'txt' ])
-    const selectedFileType = ref("");`  `
+    const selectedFileType = ref("");
     const fileHeaderToExport = ref([])
     const fileToExport = ref([]);
 
