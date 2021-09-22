@@ -62,16 +62,32 @@
       <!-- chart area -->
       <div class="chart row"
       :class=" incomeStatement &&  incomeStatement.length > 0 ? 'graph-area' : '' ">
-        <div class="chart1 col-12 col-md-6">
+        <div class="chart1 col-12 col-md-12">
           <ByGenderChart
             domId="chart"
-            title="By Gender"
+            title="Income Statement Report"
             distance="5"
             :titleMargin="10"
             :summary="groupofIcomeAndExpense"
           />
+           </div>
         </div>
-      </div>
+        <NegativeChart :data="incomeStatementDetail"/>
+
+        <div class="chart row">
+          <div class="chart1 col-12 col-md-12">
+         <IncomeStatmentColumnChart
+            domId="chart1"
+            title="Income Statement Report"
+            distance="5"
+            :titleMargin="10"
+            :data="incomeStatementDetail"
+            subtitle="Income Statement Report"
+            :series="['Income', 'Expense']"
+            yAxisText = "Amount"
+             />
+        </div>
+        </div>
       <!--end of chart area -->
     </section>
 
@@ -150,14 +166,18 @@
 import { ref, computed} from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
-// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
+import IncomeStatmentColumnChart from "../../../components/charts/ColumnChart2.vue";
+import NegativeChart from "../../../components/charts/NegativeColumnChart"
+// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
+    IncomeStatmentColumnChart,
+    NegativeChart
     // PaginationButtons,
   },
   setup() {
@@ -167,8 +187,11 @@ export default {
     const groupedIncomeStatements = ref([])
     const groupedExpenseStatements = ref([])
     const groupedExpenseItemToDisplay = ref([])
-    let chartForIcomeAndExpense = ref([])
+    const chartForIcomeAndExpense = ref([])
     const groupofIcomeAndExpense =ref([])
+    // const mappedIncomeAndExpense = ref([])
+    const allIncomeAndExpenses = ref([])
+    const incomeStatementData = ref([])
 
 
 
@@ -181,7 +204,7 @@ export default {
           incomeStatement.value = res.data.filter(i => i !== null)
           console.log(incomeStatement.value);
           let response = res.data
-           chartForIcomeAndExpense = response ;
+           chartForIcomeAndExpense.value = response ;
           // console.log(chartForIcomeAndExpense)
 
 
@@ -193,7 +216,7 @@ export default {
           console.log(err);
         });
     };
-
+/* Chart Area */
     const pieChart = (array, key) => {
             let result = array.reduce((result, currentValue) => {
                 // If an array already present for key, push it to the array. Else create an array and push the object
@@ -218,6 +241,35 @@ export default {
             console.log(groupofIcomeAndExpense.value)
         };
 
+
+         const incomeStatementDetail = computed(() => {
+         if (groupofIcomeAndExpense.value.length === 0) return []
+        //    incomeStatementData.value = []
+        //     allIncomeAndExpenses.value = []
+        //     mappedIncomeAndExpense.value = []
+        //    groupofIcomeAndExpense.value.forEach(i => {
+        //     let incomeExpenseIndex = Object.keys(i).findIndex(i => i === 'amount')
+        //     let incomeExpenseValue = Object.values(i)[incomeExpenseIndex]
+        //     incomeStatementData.value.push(incomeExpenseValue)
+        //     console.log(groupofIcomeAndExpense.value)
+        //     mappedIncomeAndExpense.value.push(i.amount)
+        //     console.log(mappedIncomeAndExpense.value,"🎄🎄🎄")
+        //  });
+         allIncomeAndExpenses.value.push({
+             name: 'Income',
+            //  color: '#002044',
+             data: [groupofIcomeAndExpense.value[0].value]
+         })
+
+         allIncomeAndExpenses.value.push({
+             name: 'Expense',
+            //  color: '#002044',
+             data: [groupofIcomeAndExpense.value[1].value]
+         })
+         console.log(allIncomeAndExpenses.value)
+         return allIncomeAndExpenses.value
+     })
+/*End of Chart Area */
     let groupedIncomeItemToDisplay = ref([])
     const churchIncomes = (array, key) => {
             let result = array.reduce((result, currentValue) => {
@@ -319,7 +371,9 @@ export default {
       groupedExpenseItemToDisplay,
       chartForIcomeAndExpense,
       groupofIcomeAndExpense,
-      pieChart
+      pieChart,
+      incomeStatementDetail,
+      incomeStatementData,
       // incomeAndExpenseChart,
       // groupedExpenseAndIncomeStatements
     };

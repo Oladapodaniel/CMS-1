@@ -16,10 +16,51 @@
           <h3 class="heading-text ml-2">First Timers Report</h3>
         </div>
 
-        <div class="centered-items">
-          <button class="default-btn font-weight-normal">
+        <div  class="centered-items pr-3">
+          <button
+            class="default-btn font-weight-normal"
+
+            @click="() => (showExport = !showExport)"
+          >
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
+        </div>
+      </div>
+      <div class="row my-4" v-if="showExport">
+        <!-- <div class="col-sm-2">Enter file name</div> -->
+        <div class="col-sm-5">
+          <!-- <input type="text" class="form-control" /> -->
+          <span class="p-float-label ml-n3">
+            <InputText
+              id="inputtext"
+              class="w-100"
+              type="text"
+              v-model="fileName"
+            />
+            <label for="inputtext">Enter file name</label>
+          </span>
+        </div>
+        <div class="col-sm-4">
+          <Dropdown
+            v-model="selectedFileType"
+            class="w-100"
+            :options="bookTypeList"
+            placeholder="Select file type"
+          />
+        </div>
+        <!-- <div class="">Export</div> -->
+        <div @click="downloadFile" class="col-sm-2 offset-sm-1">
+          <div
+            class="
+              default-btn
+              d-flex
+              align-items-center
+              justify-content-center
+              c-pointer
+            "
+          >
+            Download
+          </div>
         </div>
       </div>
     </div>
@@ -45,7 +86,9 @@
           </div>
         </div>
 
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
+        <div
+          class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5"
+        >
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
             @click="generateReport"
@@ -60,9 +103,14 @@
     <section>
       <!-- chart area -->
       <div
-       class="chart row"
-       :class="firstTimerInChurch && firstTimerInChurch.length > 0 ? 'graph-area' : '' ">
-        <div class="chart1 col-12 col-md-6 ">
+        class="chart row"
+        :class="
+          firstTimerInChurch && firstTimerInChurch.length > 0
+            ? 'graph-area'
+            : ''
+        "
+      >
+        <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart"
             title="By Gender"
@@ -71,7 +119,7 @@
             :summary="data"
           />
         </div>
-        <div  class="chart1 col-12 col-md-6 ">
+        <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chartid"
             title="Marital Status"
@@ -86,8 +134,19 @@
 
     <section>
       <!-- table header -->
-      <div class="container-fluid table-main px-0 remove-styles2 remove-border responsiveness">
-        <table class="table remove-styles mt-0  table-hover table-header-area">
+      <div
+        class="
+          container-fluid
+          table-main
+          px-0
+          remove-styles2 remove-border
+          responsiveness
+        "
+      >
+        <table
+          id="table"
+          class="table remove-styles mt-0 table-hover table-header-area"
+        >
           <thead class="table-header-area-main">
             <tr
               class="small-text text-capitalize text-nowrap"
@@ -105,8 +164,7 @@
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(firstTimer, index) in firstTimerInChurch"
-            :key="index">
+            <tr v-for="(firstTimer, index) in firstTimerInChurch" :key="index">
               <td>{{ firstTimer.event }}</td>
               <td>{{ firstTimer.lastName }} {{ firstTimer.firstName }}</td>
               <td>{{ firstTimer.mobilePhone }}</td>
@@ -129,17 +187,23 @@
 </template>
 
 <script>
-import {  ref } from "vue";
+import { ref } from "vue";
 import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
-import dateFormatter from  "../../../services/dates/dateformatter";
+import dateFormatter from "../../../services/dates/dateformatter";
+import Dropdown from "primevue/dropdown";
+import InputText from "primevue/inputtext";
+import printJS from "print-js";
+import exportService from "../../../services/exportFile/exportservice";
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
+    Dropdown,
+    InputText,
     // PaginationButtons
   },
   setup() {
@@ -147,93 +211,82 @@ export default {
     const endDate = ref("");
     const firstTimerInChurch = ref([]);
     const genderChartResult = ref([]);
-    const data= ref([]);
+    const data = ref([]);
     const maritalChartInfo = ref([]);
+    const showExport = ref(false);
+    const fileName = ref("");
+    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([]);
+    const fileToExport = ref([]);
     const generateReport = () => {
       axios
-        .get(`/api/Reports/people/getFirstTimersReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(
+          `/api/Reports/people/getFirstTimersReport?startDate=${new Date(
+            startDate.value
+          ).toLocaleDateString()}&endDate=${new Date(
+            endDate.value
+          ).toLocaleDateString()}`
+        )
         .then((res) => {
           firstTimerInChurch.value = res.data;
-          console.log(firstTimerInChurch.value, "✌️✌️");
-          data.value = getGenderChart(res.data)
-          maritalChartInfo.value = maritalChart(res.data)
-          console.log(maritalChartInfo.value, "🎉🎉🎉🎉✌️✌️")
-
-          // genderChart(res.data, 'gender')
-          // genderChart(res.data, 'maritalStatus')
+          data.value = getGenderChart(res.data);
+          maritalChartInfo.value = maritalChart(res.data);
+          /* function to call service and populate table */
+          setTimeout(() => {
+            fileHeaderToExport.value = exportService.tableHeaderToJson(
+              document.getElementsByTagName("th")
+            );
+            fileToExport.value = exportService.tableToJson(
+              document.getElementById("table")
+            );
+          }, 1000);
+          /* End function to call service and populate table */
         })
         .catch((err) => {
           console.log(err);
         });
     };
 
-    const getGenderChart = arr => {
+    const getGenderChart = (arr) => {
       return [
-        getSumOfItems(arr, 'gender', 'Male'),
-        getSumOfItems(arr, 'gender', 'Female'),
-        getSumOfItems(arr, 'gender',  null),
-        getSumOfItems(arr, 'gender', 'Other'),
-        ]
-    }
+        getSumOfItems(arr, "gender", "Male"),
+        getSumOfItems(arr, "gender", "Female"),
+        getSumOfItems(arr, "gender", null),
+        getSumOfItems(arr, "gender", "Other"),
+      ];
+    };
 
-    const maritalChart = arr => {
-      return[
-        getSumOfItems(arr, 'maritalStatus', 'Married'),
-        getSumOfItems(arr, 'maritalStatus', 'Single'),
-        getSumOfItems(arr, 'maritalStatus', null),
-      ]
-    }
+    const maritalChart = (arr) => {
+      return [
+        getSumOfItems(arr, "maritalStatus", "Married"),
+        getSumOfItems(arr, "maritalStatus", "Single"),
+        getSumOfItems(arr, "maritalStatus", null),
+      ];
+    };
 
-    // const getMaritalStatusChart =(arr, key, value) => {
-    //   return {
-    //     name: value,
-    //     value: firstTimerInChurch.value.filter(i => i[key] === value).length
-    //   }
-    //   }
-
-   const getSumOfItems = (arr, key, value) => {
+    const getSumOfItems = (arr, key, value) => {
       return {
         name: value,
-        value: firstTimerInChurch.value.filter(i => i[key] === value).length
-    }
-   }
-
- /*   const genderChart = (array, key) => {
-       // Accepts the array and key
-      // Return the end result
-      let result = array.reduce((result, currentValue) => {
-        // If an array already present for key, push it to the array. Else create an array and push the object
-        (result[currentValue[key]] = result[currentValue[key]] || []).push(
-          currentValue
-        );
-        // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
-        return result;
-      }, []); // empty object is the initial value for result object
-      // genderChartResult.value
-      for (const prop in result) {
-        // genderChartResult.value
-        console.log(prop, result[prop])
-        genderChartResult.value.push({
-          name: prop,
-          value: result[prop].length
-        })
-      }
-      console.log(genderChartResult.value, "💐💐💐");
-      return genderChartResult.value
-      // console.log(genderChartResult.value, )
+        value: firstTimerInChurch.value.filter((i) => i[key] === value).length,
+      };
     };
-*/
 
+    /* Code For Exporting File */
+    const downloadFile = () => {
+      exportService.downLoadExcel(
+        selectedFileType.value,
+        document.getElementById("element-to-print"),
+        fileName.value,
+        fileHeaderToExport.value,
+        fileToExport.value
+      );
+    };
+    /* End Code For Exporting File */
 
-      const formatDate = (activityDate) => {
+    const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
     };
-
-    // const mappedGender = computed(() => {
-    //   if (genderChartResult.value.length === 0) return []
-    //   return genderChartResult.value.map(i => i)
-    // });
-
 
     return {
       Calendar,
@@ -242,14 +295,18 @@ export default {
       firstTimerInChurch,
       generateReport,
       formatDate,
-      // genderChart,
       genderChartResult,
-      // mappedGender,
       data,
-     maritalChartInfo
-    }
-   }
-  };
+      maritalChartInfo,
+      fileName,
+      downloadFile,
+      showExport,
+      bookTypeList,
+      printJS,
+      selectedFileType,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -305,44 +362,44 @@ export default {
 }
 
 .table-main {
-    width: 100% !important;
-    box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
-    border: 0.063rem solid #dde2e6 !important;
-    /* border-radius: 30px !important; */
-    text-align: left !important;
-    margin-bottom: auto !important;
-    padding-bottom: 0.5rem !important;
+  width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
+  border: 0.063rem solid #dde2e6 !important;
+  /* border-radius: 30px !important; */
+  text-align: left !important;
+  margin-bottom: auto !important;
+  padding-bottom: 0.5rem !important;
 }
 
-.remove-styles{
-    border: none !important;
-    box-shadow: none !important;
-    border-bottom: 0 !important;
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
+.remove-styles {
+  border: none !important;
+  box-shadow: none !important;
+  border-bottom: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
-.remove-styles2{
-padding-right: 0;
-padding-left: 0;
-border-top-left-radius: 0 !important;
-border-top-right-radius: 0 !important;
+.remove-styles2 {
+  padding-right: 0;
+  padding-left: 0;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
 }
 
-.remove-border{
-    box-shadow: none !important;
+.remove-border {
+  box-shadow: none !important;
 }
 
-.graph-area{
-    border: 1px solid #dde2e6;
-    border-radius: 0.5rem;
-    padding: 1rem 0rem;
-    margin: 2rem 0rem !important;
-     width: 100% !important;
+.graph-area {
+  border: 1px solid #dde2e6;
+  border-radius: 0.5rem;
+  padding: 1rem 0rem;
+  margin: 2rem 0rem !important;
+  width: 100% !important;
   box-shadow: 0 0.063rem 0.25rem #02172e45;
 }
 
-.responsiveness{
+.responsiveness {
   max-width: 100%;
   overflow-y: scroll;
 }
