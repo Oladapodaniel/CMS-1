@@ -872,6 +872,7 @@
 
                   <div class="area-charts analytics-container mb-5">
                     <!-- <div id="chart" style="width:50%;height:500px"></div> -->
+                      {{stats.attendanceSoFar}}
                     <div
                       class="area-chart mt-5"
                       v-if="
@@ -888,6 +889,7 @@
                         :series="stats.attendanceSoFar"
                       />
                     </div>
+                  
                     <div
                       class="area-chart mt-5"
                       v-if="
