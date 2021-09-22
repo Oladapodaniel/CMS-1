@@ -16,10 +16,48 @@
           <h3 class="heading-text ml-2">Wedding Anniversary Report</h3>
         </div>
 
-        <div class="centered-items">
-          <button class="default-btn font-weight-normal">
+        <div class="centered-items pr-3">
+          <button class="default-btn font-weight-normal"
+              @click="() => (showExport = !showExport)">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
+        </div>
+      </div>
+      <div class="row my-4" v-if="showExport">
+        <!-- <div class="col-sm-2">Enter file name</div> -->
+        <div class="col-sm-5">
+          <!-- <input type="text" class="form-control" /> -->
+          <span class="p-float-label ml-n3">
+            <InputText
+              id="inputtext"
+              class="w-100"
+              type="text"
+              v-model="fileName"
+            />
+            <label for="inputtext">Enter file name</label>
+          </span>
+        </div>
+        <div class="col-sm-4">
+          <Dropdown
+            v-model="selectedFileType"
+            class="w-100"
+            :options="bookTypeList"
+            placeholder="Select file type"
+          />
+        </div>
+        <!-- <div class="">Export</div> -->
+        <div @click="downloadFile" class="col-sm-2 offset-sm-1">
+          <div
+            class="
+              default-btn
+              d-flex
+              align-items-center
+              justify-content-center
+              c-pointer
+            "
+          >
+            Download
+          </div>
         </div>
       </div>
     </div>
@@ -46,7 +84,7 @@
           </div>
         </div>
 
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
+        <div class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
             @click="generateWeddingAnniversaryReport"
@@ -60,8 +98,14 @@
 
     <section>
       <!-- chart area -->
-      <div class="chart row"
-            :class=" weddingAnniversary &&  weddingAnniversary.length > 0 ? 'graph-area' : '' ">
+      <div
+        class="chart row"
+        :class="
+          weddingAnniversary && weddingAnniversary.length > 0
+            ? 'graph-area'
+            : ''
+        "
+      >
         <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart"
@@ -81,8 +125,14 @@
           />
         </div>
       </div>
-      <div class="chart row my-1"
-            :class=" weddingAnniversary &&  weddingAnniversary.length > 0 ? 'graph-area' : '' ">
+      <div
+        class="chart row my-1"
+        :class="
+          weddingAnniversary && weddingAnniversary.length > 0
+            ? 'graph-area'
+            : ''
+        "
+      >
         <div class="chart1 col-12 col-md-6">
           <ByGenderChart
             domId="chart3"
@@ -107,8 +157,17 @@
 
     <section>
       <!-- table header -->
-      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table class="table remove-styles mt-0 table-hover table-header-area">
+      <div
+        class="
+          mt-2
+          container-fluid
+          table-main
+          px-0
+          remove-styles2 remove-border
+          responsiveness
+        "
+      >
+        <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
               class="small-text text-capitalize text-nowrap"
@@ -126,8 +185,7 @@
             </tr>
           </thead>
           <tbody class="font-weight-normal text-nowrap">
-            <tr  v-for="(anniversary, index) in weddingAnniversary"
-            :key='index'>
+            <tr v-for="(anniversary, index) in weddingAnniversary" :key="index">
               <td>{{ anniversary.name }}</td>
               <td>{{ formatDate(anniversary.weddingDay) }}</td>
               <td>{{ anniversary.mobilePhone }}</td>
@@ -155,12 +213,18 @@ import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
-import dateFormatter from  "../../../services/dates/dateformatter";
+import dateFormatter from "../../../services/dates/dateformatter";
+import Dropdown from "primevue/dropdown";
+import InputText from "primevue/inputtext";
+import printJS from "print-js";
+import exportService from "../../../services/exportFile/exportservice";
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
+    Dropdown,
+    InputText,
     // PaginationButtons,
   },
   setup() {
@@ -171,17 +235,40 @@ export default {
     const membershipMaritalStatus = ref([]);
     const membershipDistribution = ref([]);
     const membershipAgeGroup = ref([]);
+    const showExport = ref(false);
+    const fileName = ref("");
+    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([]);
+    const fileToExport = ref([]);
     const generateWeddingAnniversaryReport = () => {
       axios
-        .get(`/api/Reports/people/getWeddingsReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}`)
+        .get(
+          `/api/Reports/people/getWeddingsReport?startDate=${new Date(
+            startDate.value
+          ).toLocaleDateString()}&endDate=${new Date(
+            endDate.value
+          ).toLocaleDateString()}`
+        )
         .then((res) => {
           console.log(res);
           weddingAnniversary.value = res.data;
           membershipByGender.value = getMembershipGenderChart(res.data);
-          membershipMaritalStatus.value =membershipMaritalStatusChart(res.data);
-          membershipDistribution.value = membershipStatusChart(res.data)
-          membershipAgeGroup.value = membershipAgeGroupChart(res.data)
-          console.log(weddingAnniversary.value, "✌️✌️");
+          membershipMaritalStatus.value = membershipMaritalStatusChart(
+            res.data
+          );
+          membershipDistribution.value = membershipStatusChart(res.data);
+          membershipAgeGroup.value = membershipAgeGroupChart(res.data);
+            /* function to call service and populate table */
+          setTimeout(() => {
+            fileHeaderToExport.value = exportService.tableHeaderToJson(
+              document.getElementsByTagName("th")
+            );
+            fileToExport.value = exportService.tableToJson(
+              document.getElementById("table")
+            );
+          }, 1000);
+          /* End function to call service and populate table */
         })
         .catch((err) => {
           console.log(err);
@@ -189,46 +276,46 @@ export default {
     };
 
     const getAllItemsInWeddingReport = (arr, key, value) => {
-      return{
-              name: value,
-              value: weddingAnniversary.value.filter(i => i[key]=== value).length
-      }
-    }
-
-    const getMembershipGenderChart =  arr => {
-      return [
-          getAllItemsInWeddingReport(arr, 'gender', 'Male'),
-          getAllItemsInWeddingReport(arr, 'gender', 'Female'),
-          getAllItemsInWeddingReport(arr, 'gender', null),
-          getAllItemsInWeddingReport(arr, 'gender', 'Other')
-      ]
+      return {
+        name: value,
+        value: weddingAnniversary.value.filter((i) => i[key] === value).length,
+      };
     };
 
-    const membershipMaritalStatusChart = arr => {
+    const getMembershipGenderChart = (arr) => {
       return [
-        getAllItemsInWeddingReport(arr, 'maritalStatus', 'Married'),
-        getAllItemsInWeddingReport(arr, 'maritalStatus', 'Single')
-      ]
+        getAllItemsInWeddingReport(arr, "gender", "Male"),
+        getAllItemsInWeddingReport(arr, "gender", "Female"),
+        getAllItemsInWeddingReport(arr, "gender", null),
+        getAllItemsInWeddingReport(arr, "gender", "Other"),
+      ];
     };
 
-    const membershipStatusChart = arr => {
+    const membershipMaritalStatusChart = (arr) => {
       return [
-        getAllItemsInWeddingReport(arr, 'membership', 'Full Member'),
-        getAllItemsInWeddingReport(arr, 'membership', 'Friend'),
-        getAllItemsInWeddingReport(arr, 'membership', 'Not Member')
-      ]
+        getAllItemsInWeddingReport(arr, "maritalStatus", "Married"),
+        getAllItemsInWeddingReport(arr, "maritalStatus", "Single"),
+      ];
     };
 
-    const membershipAgeGroupChart = arr => {
+    const membershipStatusChart = (arr) => {
       return [
-        getAllItemsInWeddingReport(arr, 'agegroup', 'None'),
-        getAllItemsInWeddingReport(arr, 'agegroup', '20-30'),
-        getAllItemsInWeddingReport(arr, 'agegroup', '30-40'),
-        getAllItemsInWeddingReport(arr, 'agegroup', '40-60'),
-      ]
-    }
+        getAllItemsInWeddingReport(arr, "membership", "Full Member"),
+        getAllItemsInWeddingReport(arr, "membership", "Friend"),
+        getAllItemsInWeddingReport(arr, "membership", "Not Member"),
+      ];
+    };
 
-       const formatDate = (activityDate) => {
+    const membershipAgeGroupChart = (arr) => {
+      return [
+        getAllItemsInWeddingReport(arr, "agegroup", "None"),
+        getAllItemsInWeddingReport(arr, "agegroup", "20-30"),
+        getAllItemsInWeddingReport(arr, "agegroup", "30-40"),
+        getAllItemsInWeddingReport(arr, "agegroup", "40-60"),
+      ];
+    };
+
+    const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
     };
 
@@ -242,7 +329,12 @@ export default {
       membershipByGender,
       membershipMaritalStatus,
       membershipDistribution,
-      membershipAgeGroup
+      membershipAgeGroup,
+      printJS,
+      showExport,
+      fileName,
+      bookTypeList,
+      selectedFileType
     };
   },
 };
@@ -301,49 +393,49 @@ export default {
 }
 
 .table-main {
-    width: 100% !important;
-    box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
-    border: 0.063rem solid #dde2e6 !important;
-    /* border-radius: 30px !important; */
-    text-align: left !important;
-    margin-bottom: auto !important;
-    padding-bottom: 0.5rem !important;
+  width: 100% !important;
+  box-shadow: 0 0.063rem 0.25rem #02172e45 !important;
+  border: 0.063rem solid #dde2e6 !important;
+  /* border-radius: 30px !important; */
+  text-align: left !important;
+  margin-bottom: auto !important;
+  padding-bottom: 0.5rem !important;
 }
 
-.remove-styles{
+.remove-styles {
   border: none !important;
-box-shadow: none !important;
-    border-bottom: 0 !important;
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
+  box-shadow: none !important;
+  border-bottom: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
-.remove-styles2{
-padding-right: 0;
- padding-left: 0;
-border-top-left-radius: 0 !important;
-border-top-right-radius: 0 !important;
+.remove-styles2 {
+  padding-right: 0;
+  padding-left: 0;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
 }
 
-.remove-border{
-    box-shadow: none !important;
+.remove-border {
+  box-shadow: none !important;
 }
 
 .tablerow-style {
   min-width: 100%;
-  border-bottom: 0
+  border-bottom: 0;
 }
 
-.graph-area{
-    border: 1px solid #dde2e6;
-    border-radius: 0.5rem;
-    padding: 1rem 0rem;
-    margin: 2rem 0rem !important;
-     width: 100% !important;
+.graph-area {
+  border: 1px solid #dde2e6;
+  border-radius: 0.5rem;
+  padding: 1rem 0rem;
+  margin: 2rem 0rem !important;
+  width: 100% !important;
   box-shadow: 0 0.063rem 0.25rem #02172e45;
 }
 
-.responsiveness{
+.responsiveness {
   max-width: 100%;
   overflow-y: scroll;
 }
