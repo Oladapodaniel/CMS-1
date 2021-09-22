@@ -28,6 +28,7 @@ export default {
         const converted = ref(0)
         const paymentSuccessful = ref(false)
         const contributionItem = ref([])
+        const summedAmount = ref({})
         
         const getFlutterwaveModules = () => {
             const script = document.createElement("script");
@@ -172,11 +173,11 @@ export default {
                 // queryValue.value.contributionItems = contributionItem.value
              
 
-                let summedAmount = contributionItem.value.reduce((a, b) => { 
+                summedAmount.value = contributionItem.value.reduce((a, b) => { 
                     return { amount: +a.amount + +b.amount } 
                 })
                 try {
-                    const rate = await convertCurrency.currencyConverter(+summedAmount.amount, `usd${route.query.currency.toLowerCase()}`,'usdngn')
+                    const rate = await convertCurrency.currencyConverter(+summedAmount.value.amount, `usd${route.query.currency.toLowerCase()}`,'usdngn')
                     // currency.value = 'USD'
                     console.log(Math.floor(rate))
                     converted.value = Math.floor(rate)
@@ -191,7 +192,7 @@ export default {
                     key: process.env.VUE_APP_PAYSTACK_PUBLIC_KEY_LIVE,
                     // key: process.env.VUE_APP_PAYSTACK_API_KEY,
                     email: route.query.email,
-                    amount: amount.value * 100,
+                    amount: route.query.currency === "NGN" ? +summedAmount.value.amount * 100 : amount.value * 100,
                     ref: uniqueId.value,
                     currency: currency.value,
                     subaccount: route.query.subAccountId,
@@ -260,7 +261,8 @@ export default {
             converted,
             amount,
             paymentSuccessful,
-            contributionItem
+            contributionItem,
+            summedAmount
         }
     }
 }

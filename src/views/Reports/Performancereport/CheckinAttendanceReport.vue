@@ -17,7 +17,7 @@
                 <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type" />
             </div>
             <!-- <div class="">Export</div> -->
-            <div @click="downLoadExcel" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
+            <div @click="downLoadExcel" class="cursor-pointer col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center justify-content-center">Export</div></div>
         </div>
         <div class="row mt-4 py-4 px-3" style="background: #ebeff4;  border-radius: 0.5rem;">
             <!-- <div class="col-sm-2">Date Range</div> -->
@@ -53,15 +53,19 @@
             </div>
             <div class="offset-sm-1 col-sm-2">
                 <div style="height: 33%"></div>
-                <div class="mt-2 default-btn primary-bg text-center border-0 text-white" @click="getAttendanceReport">Generate</div>
+                <div class="cursor-pointer mt-2 default-btn primary-bg text-center border-0 text-white" @click="getAttendanceReport"><i class="pi pi-spin" v-show="loading"></i>Generate</div>
             </div>
         </div>
 
 
 
-        <div class="row mt-4" id="element-to-print">
+        <div class="row mt-4" id="element-to-print" v-if="groupedReport.length > 0 && searched">
             <GroupReportTable :groupedReport="groupedReport" :groupedReportByDate="groupedReportByDate" @data-to-export="setDataToExport" @data-header-to-export="setTableHeaderData"/>
         </div>
+        <!-- <div class="row mt-4" id="element-to-print" v-if="groupedReport.length === 0 && searched">
+            No data available for this date range
+        </div> -->
+        <Toast />
     </div>
 </template>
 
@@ -73,7 +77,8 @@ import Calendar from 'primevue/calendar';
 import GroupReportTable from "./CheckinAttendanceReportTable.vue"
 import axios from "@/gateway/backendapi";
 import ExcelExport from "../../../services/exportFile/exportToExcel"
-import printJS from "print-js";
+import { useToast } from 'primevue/usetoast';
+// import printJS from "print-js";
 // import html2pdf from "html2pdf.js"
 // import axio from "axios"
 export default {
@@ -84,6 +89,7 @@ export default {
         GroupReportTable
     },
     setup() {
+        const toast = useToast()
         const startDate = ref("")
         const endDate = ref("")
         const events = ref([])
@@ -99,6 +105,8 @@ export default {
         const showExport = ref(false)
         const fileToExport = ref([])
         const fileHeaderToExport = ref([])
+        const searched = ref(false)
+        const loading = ref(false)
 
         const getEvents = async() => {
             try {
@@ -128,12 +136,24 @@ export default {
         const getAttendanceReport = async() => {
             let start = new Date(startDate.value).toLocaleDateString()
             let end = new Date(endDate.value).toLocaleDateString()
+            loading.value = true
             try {
                 let { data } = await axios.get(`/api/Reports/events/getCheckInAttendanceReport?groupID=${selectedGroups.value.id}&eventID=${selectedEvent.value.id}&startDate=${start}&endDate=${end}`)
+                    searched.value = true
+                    loading.value = false
                     console.log(data)
                     attendanceReport.value = data
                     groupReport(data, 'personId')
                     groupReportByDate(data, 'activityID')
+
+                    if(data.length === 0 && searched.value) {
+                        toast.add({
+                            severity: 'warn', 
+                            summary:'No data available', 
+                            detail:'Select other parameters to generate report', 
+                            life: 8000
+                        })
+                    }
 
                     // groupedReport.value.forEach(i => {
                     //         for (let j = 0; i.value.length < groupedReportByDate.value.length; j++) {
@@ -143,6 +163,7 @@ export default {
             }
             catch (err) {
                 console.log(err)
+                loading.value = false
             }
                 
         }
@@ -292,7 +313,8 @@ export default {
             fileToExport,
             setTableHeaderData,
             fileHeaderToExport,
-            printJS
+            searched,
+            loading
         }
     }
 }
