@@ -13,34 +13,36 @@
                     <label for="inputtext">Enter file name</label>
                 </span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
                 <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
             </div>
             <!-- <div class="">Export</div> -->
-            <div @click="downloadFile" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center c-pointer justify-content-center">Export</div></div>
+            <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center border-secondary c-pointer justify-content-center">Download</div></div>
         </div>
-        <div class="col-12 pl-2">
+        <div class="col-12 pl-2 mt-3 py-2">
            This reports provides a detailed list of all the offerings and contribution reports, you can also generate report for individual contributions 
         </div>
         <div class="container-fluid ">
                 <div class="row py-5 " style="background: #ebeff4;  border-radius: 0.5rem;">
-                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold  mt-0">
-                        <label for="icon" >Start Date</label>
+                    <div class="p-field col-12 col-md-6 col-lg-3 font-weight-bold  mt-0">
+                        <div><label for="icon">Start Date</label></div>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
-                    <div class="p-field col-12 col-md-3 col-lg-3 font-weight-bold mt-0">
-                        <label for="icon">End Date</label>
+                    <div class="p-field col-12 col-md-12 col-lg-3 font-weight-bold mt-0">
+                        <div><label for="icon">End Date</label></div>
                         <Calendar id="endDate" v-model="endDate" :showIcon="true" />
                     </div>
-                    <div class="col-12 col-md-6 col-lg-3 mt-0 ">
-                        <div class="col-12 "><label for="" class="font-weight-bold ml-2">Select Member</label></div>
-                        <div class="dropdown col-12  w-100">
-                           <button id="dropdownMenuButton" class="col-12 w-100 btn default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button> 
-                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
-                                 <input type="text" class="form-control" 
+                    <div class="col-8 col-sm-7 col-md-5 col-lg-3 mt-0 ">
+                        <div><label for="" class="font-weight-bold ">Select Member</label></div>
+                        <div class="dropdown ">
+                           <!-- <button id="dropdownMenuButton" class="btn border-secondary default-btn" data-toggle="dropdown">{{ userSearchString ? userSearchString: 'Search Member' }}</button>  -->
+                           <input type="text" class="form-control" 
                                     v-model="userSearchString"
                                     @input="searchForUsers"
+                                    data-toggle="dropdown"
                                 />
+                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton" >
+                                 
                                 <a
                                 class="dropdown-item font-weight-700 small-text" href="#"
                                 v-for="(member, index) in searchedMembers"
@@ -82,20 +84,19 @@
                 </div>
         </div>
         <div class="container-fluid  ">
-            <div class="row">
+            <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                 <div class="col-12 ">
-                    <div class="mt-5 display-1 font-weight-bold text-center heading-text">
+                    <div class="mt-5 display-1 pb-2 font-weight-bold text-center heading-text" >
                       Offering And Givings Report
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
               <!-- <div class="col-12 container-fluid d-flex mt-2 flex-wrap"> -->
                   <!-- <div class="col-12 col-sm-12 col-md-12 col-lg-12"> -->
                       <!-- <div class="col-12   text-center" > -->
-                          <!-- <div class="col-12 font-weight-bold">Membership By Gender</div> -->
-                          <div class="col-12 text-center" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                          <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                          <!-- <div class="col-12 text-center" :class="{ 'show-report': showReport, 'hide-report' : !showReport}">No Data Available</div> -->
+                          <div class="col-12 " >
                               <OfferingColumnChart
                                   domId="chart1"
                                   title="Offering Report"
@@ -109,13 +110,11 @@
                               />
                           </div>
                       <!-- </div> -->
-                  <!-- </div> -->
                   <!-- <div class="col-12 "> -->
                     <!-- <div class="col-12  text-center" > -->
                         <!-- <div class="col-12  font-weight-bold">Membership By Marital Status</div> -->
-                        <div class="col-12 text-center" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                        <div>
-                          <div class="col-12 table " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                        <!-- <div class="col-12 text-center" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                          <div class="col-12 table " >
                             <OfferingPieChart
                               domId="chart3"
                                 distance="5"
@@ -123,7 +122,6 @@
                                 :summary="mappedOffering"
                             />
                           </div>
-                        </div>
                     <!-- </div> -->
                 <!-- </div> -->
               <!-- </div> -->
@@ -131,7 +129,8 @@
         </div>
            <section>
                     <!-- table header -->
-                <div class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
+                <div class=" container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness "
+                :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                         <table class="table remove-styles mt-0  table-hover table-header-area " id="table">
                           <thead class="table-header-area-main">
                             <tr class="small-text text-capitalize text-nowrap" style="border-bottom: 0">
@@ -144,34 +143,20 @@
                                 <th scope="col">Channel</th>
                             </tr>
                           </thead>
-                        <!-- <div class=" row t-header row font-weight-bold"> -->
-                            <!-- <div
-                            class="small-text text-capitalize col-12 d-flex text-nowrap"
-                            style="border-bottom: 0"
-                            > -->
-                            <!-- <th scope="col-2">Building Project</th> -->
-                              <!-- <div class="col-2">Offering name</div>
-                              <div class="col-2">Amount</div>
-                              <div class="col-2">Event Name</div>
-                              <div class="col-2">Date</div>
-                              <div class="col-2">Contact Name</div>
-                              <div class="col-2">Channel</div> -->
-                            <!-- </div> -->
-                        <!-- </div> -->
-                        <tbody class="font-weight-normal text-nowrap">
-                            <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
-                            <td>{{ OfferingList.contributionName }}</td>
-                            <td>{{ OfferingList.amount }}</td>
-                            <td>{{ OfferingList.eventName }}</td>
-                            <td>{{ formatDate(OfferingList.date) }}</td>
-                            <td>{{ OfferingList.contactName }}</td>
-                            <td>{{ OfferingList.channel }}</td>
-                            </tr>
-                        </tbody>
+                          <tbody class="font-weight-normal text-nowrap">
+                              <tr v-for="(OfferingList, index) in offeringInChurch" :key="index">
+                              <td>{{ OfferingList.contributionName }}</td>
+                              <td>{{ OfferingList.amount }}</td>
+                              <td>{{ OfferingList.eventName }}</td>
+                              <td>{{ formatDate(OfferingList.date) }}</td>
+                              <td>{{ OfferingList.contactName }}</td>
+                              <td>{{ OfferingList.channel }}</td>
+                              </tr>
+                          </tbody>
                         </table>
-                        <div class="table-foot d-flex justify-content-end mt-n3">
+                        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
                         <PaginationButtons />
-                        </div>
+                        </div> -->
                 </div>
                     <!--end table header -->
             </section>
@@ -184,7 +169,7 @@
  import Calendar from "primevue/calendar";
 //  import MultiSelect from 'primevue/multiselect';
  import axios from "@/gateway/backendapi";
- import PaginationButtons from "../../../components/pagination/PaginationButtons";
+//  import PaginationButtons from "../../../components/pagination/PaginationButtons";
  import OfferingPieChart from '../../../components/charts/PieChart.vue';
  import OfferingColumnChart from "../../../components/charts/ColumnChart2.vue";
  import membershipService from "../../../services/membership/membershipservice";
@@ -204,7 +189,7 @@ export default {
         OfferingColumnChart,
         Calendar,
         // MultiSelect, 
-        PaginationButtons 
+        // PaginationButtons 
         },
     setup() {
         const showReport = ref(false);
@@ -419,7 +404,7 @@ export default {
           display.value = true;
         };
          const formatDate = (date) => {
-      return dateFormatter.monthDayYear(date);
+      return dateFormatter.normalDate(date);
     };
 
         return{
@@ -566,9 +551,10 @@ box-shadow: none !important;
 
 .remove-styles2{
 padding-right: 0;
- padding-left: 0;
+padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
+overflow-x: scroll;
 }
 
 .remove-border{

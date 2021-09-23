@@ -6,18 +6,18 @@
         </div>
         <div class="row my-4 " v-if="showExport">
             <!-- <div class="col-sm-2">Enter file name</div> -->
-            <div class="col-sm-5">
+            <div class="col-sm-5  ">
                 <!-- <input type="text" class="form-control" /> -->
                 <span class="p-float-label">
                     <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
                     <label for="inputtext">Enter file name</label>
                 </span>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
                 <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
             </div>
             <!-- <div class="">Export</div> -->
-            <div @click="downloadFile" class="col-sm-2 offset-sm-1"><div class="default-btn d-flex align-items-center c-pointer justify-content-center">Export</div></div>
+            <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center border-secondary c-pointer justify-content-center">Download</div></div>
         </div>
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
@@ -47,8 +47,8 @@
         </div>
     <!--end of date area -->
         <div class="container-fluid ">
-            <div class="row w-100">
-                <div class="col-12 ">
+            <div class="row w-100" >
+                <div class="col-12 " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                     <div class="mt-5 display-1 font-weight-bold text-center heading-text">
                        First Timers Analysis Report 
                     </div>
@@ -73,13 +73,13 @@
                     </div>
                 </div> -->
              </div>
-            <div class="  row ">
+            <div class="  row " :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
                 <div class="col-12 container-fluid table d-flex flex-wrap">
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center">
                             <div class="col-12  font-weight-bold">Gender Distribution</div>
-                            <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                            <div class="col-12 "  :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                            <div class="col-12 " >
                                 <PerformancePieChart
                                 domId="chart2"
                                 distance="5"
@@ -92,8 +92,8 @@
                     <div class="col-12 col-sm-12  col-md-6 col-lg-6">
                         <div class="col-12  text-center mt-3 mt-sm-0 mt-md-0 mt-lg-0 ">
                             <div class="col-12  font-weight-bold ">Marital Status</div>
-                            <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div>
-                            <div class="col-12 "   :class="{ 'show-report': showReport, 'hide-report' : !showReport}">
+                            <!-- <div class="col-12" :class="{ 'show-report': !showReport, 'hide-report' : showReport}">No Data Available</div> -->
+                            <div class="col-12 " >
                             <PerformancePieChart
                                domId="chart3"
                                 distance="5"
@@ -124,7 +124,8 @@
             <!-- <div class="row "> -->
         <section>
             <!-- table header -->
-            <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " >
+            <div class="container-top container-fluid table-main px-0 remove-styles2 remove-border responsiveness " 
+            :class="{ 'show-report': showReport, 'hide-report' : !showReport}" >
                 <table class="table remove-styles mt-0  table-hover table-header-area  " id="table">
                 <thead class="table-header-area-main">
                     <tr
@@ -156,9 +157,9 @@
                     </tr>
                 </tbody>
                 </table>
-                <div class="table-foot d-flex justify-content-end mt-n3">
+                <!-- <div class="table-foot d-flex justify-content-end mt-n3">
                 <PaginationButtons />
-                </div>
+                </div> -->
             </div>
             <!--end table header -->
         </section>
@@ -175,7 +176,7 @@ import Dropdown from "primevue/dropdown";
 import InputText from 'primevue/inputtext';
 import axios from "@/gateway/backendapi";
 import PerformancePieChart from '../../../components/charts/PieChart.vue';
-import PaginationButtons from "../../../components/pagination/PaginationButtons";
+// import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import PerformanceColumnChart from "../../../components/charts/ColumnChart.vue";
 import MultiSelect from 'primevue/multiselect';
 import dateFormatter from  "../../../services/dates/dateformatter";
@@ -192,7 +193,8 @@ export default {
         PerformanceColumnChart,
         Dropdown, 
         Calendar, 
-        PaginationButtons },
+        // PaginationButtons 
+        },
     setup() {
     //     const membership = ref([
     //   { name: "FIRST-TIMER" },
@@ -452,8 +454,8 @@ export default {
     //     }
         
 
-     const formatDate = (activityDate) => {
-      return dateFormatter.monthDayYear(activityDate);
+    const formatDate = (date) => {
+      return dateFormatter.normalDate(date);
     };
 
     
@@ -600,9 +602,10 @@ box-shadow: none !important;
 
 .remove-styles2{
 padding-right: 0;
- padding-left: 0;
+padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
+overflow-x: scroll;
 }
 
 .remove-border{
