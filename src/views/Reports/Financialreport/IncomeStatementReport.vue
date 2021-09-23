@@ -17,12 +17,58 @@
            <p class="ml-2">This is a detailed report of all the income and expenses of the ministry in a given period, it also gives the margin of the two.</p>
         </div>
 
-        <!-- <div class="centered-items">
-          <button class="default-btn font-weight-normal">
+        <div class="centered-items pr-3">
+          <button class="default-btn font-weight-normal"
+          @click="() => (showExport = !showExport)">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div> -->
+        </div>
       </div>
+<!-- name="fade" -->
+    <transition
+      name="move" mode="out-in">
+     <div class="row my-4" v-if="showExport">
+        <!-- <div class="col-sm-2">Enter file name</div> -->
+        <div class="col-sm-5">
+          <!-- <input type="text" class="form-control" /> -->
+          <span class="p-float-label ml-n1">
+            <InputText
+              id="inputtext"
+              class="w-100"
+              type="text"
+              v-model="fileName"
+            />
+            <label for="inputtext">Enter file name</label>
+          </span>
+        </div>
+        <div class="col-sm-4">
+          <Dropdown
+            v-model="selectedFileType"
+            class="w-100"
+            :options="bookTypeList"
+            placeholder="Select file type"
+          />
+        </div>
+        <!-- <div class="">Export</div> -->
+        <div @click="downloadFile" class="col-sm-2 offset-sm-1">
+          <div
+		class="
+			default-btn
+			d-flex
+			align-items-center
+			justify-content-center
+			c-pointer
+			generate-report
+		"
+          >
+            Download
+          </div>
+        </div>
+      </div>
+
+    </transition>
+
+
     </div>
     <!--end of header area -->
     <!-- date area -->
@@ -70,11 +116,14 @@
             :titleMargin="10"
             :summary="groupofIcomeAndExpense"
           />
-           </div>
+      </div>
         </div>
-        <NegativeChart :data="incomeStatementDetail"/>
-
         <div class="chart row">
+          <div class="col-12 col-md-12">
+        <NegativeChart :data="incomeStatementDetail"/>
+        </div>
+        </div>
+        <!-- <div class="chart row">
           <div class="chart1 col-12 col-md-12">
          <IncomeStatmentColumnChart
             domId="chart1"
@@ -82,19 +131,20 @@
             distance="5"
             :titleMargin="10"
             :data="incomeStatementDetail"
-            subtitle="Income Statement Report"
+            subtitle="c"
             :series="['Income', 'Expense']"
             yAxisText = "Amount"
              />
         </div>
-        </div>
+        </div> -->
       <!--end of chart area -->
     </section>
 
     <section>
       <!-- table header -->
-      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table class="table remove-styles mt-0 table-hover table-header-area">
+	<div v-if="groupedIncomeItemToDisplay.length > 0">
+         <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+        <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
              class="small-text text-capitalize text-nowrap"
@@ -140,7 +190,7 @@
               <td>{{ formatDate(groupedExpense ? groupedExpense.date : "") }}</td>
             </tr>
             <tr class="answer-row">
-              <td class="answer">Total Expense Incure</td>
+              <td class="answer">Total Expense</td>
               <td></td>
               <td ></td>
               <td></td>
@@ -156,6 +206,9 @@
           <PaginationButtons />
         </div> -->
       </div>
+
+	</div>
+
       <!--end table header -->
     </section>
   </div>
@@ -168,16 +221,22 @@ import Calendar from "primevue/calendar";
 import ByGenderChart from "@/components/charts/PieChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
-import IncomeStatmentColumnChart from "../../../components/charts/ColumnChart2.vue";
-import NegativeChart from "../../../components/charts/NegativeColumnChart"
+// import IncomeStatmentColumnChart from "../../../components/charts/ColumnChart2.vue";
+import NegativeChart from "../../../components/charts/NegativeColumnChart";
+import Dropdown from "primevue/dropdown";
+import InputText from "primevue/inputtext";
+import printJS from "print-js";
+import exportService from "../../../services/exportFile/exportservice";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 
 export default {
   components: {
     Calendar,
     ByGenderChart,
-    IncomeStatmentColumnChart,
-    NegativeChart
+    // IncomeStatmentColumnChart,
+    NegativeChart,
+      Dropdown,
+    InputText,
     // PaginationButtons,
   },
   setup() {
@@ -192,6 +251,12 @@ export default {
     // const mappedIncomeAndExpense = ref([])
     const allIncomeAndExpenses = ref([])
     const incomeStatementData = ref([])
+     const showExport = ref(false);
+    const fileName = ref("");
+    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([]);
+    const fileToExport = ref([]);
 
 
 
@@ -205,17 +270,38 @@ export default {
           console.log(incomeStatement.value);
           let response = res.data
            chartForIcomeAndExpense.value = response ;
-          // console.log(chartForIcomeAndExpense)
-
-
           churchIncomes(incomeStatement.value, 'accountCategory');
           churchExpense(incomeStatement.value, 'accountCategory');
           pieChart(incomeStatement.value, 'accountCategory')
+
+              /* function to call service and populate table */
+          setTimeout(() => {
+            fileHeaderToExport.value = exportService.tableHeaderToJson(
+              document.getElementsByTagName("th")
+            );
+            fileToExport.value = exportService.tableToJson(
+              document.getElementById("table")
+            );
+          }, 1000);
+          /* End function to call service and populate table */
         })
         .catch((err) => {
           console.log(err);
         });
     };
+
+                /* Code For Exporting File */
+    const downloadFile = () => {
+      exportService.downLoadExcel(
+        selectedFileType.value,
+        document.getElementById("element-to-print"),
+        fileName.value,
+        fileHeaderToExport.value,
+        fileToExport.value
+      );
+    };
+    /* End Code For Exporting File */
+
 /* Chart Area */
     const pieChart = (array, key) => {
             let result = array.reduce((result, currentValue) => {
@@ -340,10 +426,6 @@ export default {
         })
         // console.log(totalExpense.value, "🥁🥁")
 
-        /*Code For Chart Area */
-        /*Code For Chart Area */
-
-
 
      const formatDate = (activityDate) => {
       return dateFormatter.monthDayYear(activityDate);
@@ -374,6 +456,12 @@ export default {
       pieChart,
       incomeStatementDetail,
       incomeStatementData,
+      printJS,
+       showExport,
+      fileName,
+      bookTypeList,
+      selectedFileType,
+      downloadFile
       // incomeAndExpenseChart,
       // groupedExpenseAndIncomeStatements
     };
@@ -382,7 +470,7 @@ export default {
 </script>
 
 <style scoped>
-.default-btn {
+/* .default-btn {
   font-weight: 800;
   font-size: 1rem;
   white-space: initial;
@@ -395,12 +483,27 @@ export default {
   max-height: 2.5rem;
   background: #fff;
   min-width: 7.6rem;
+} */
+
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    min-width: 121px;
 }
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important;
   border: none;
   min-width: 7rem;
 }
@@ -482,14 +585,51 @@ border-top-right-radius: 0 !important;
 
 .answer{
   font-weight: bolder;
-   color:#fff ;
+   color: #000;
+
 }
 
 .answer-row{
-  background-color: #136acd;
+  background-color: #ebeff4;
 }
 
 .answer-row:hover{
-  background-color:#136acd;
+  background-color:none;
 }
+
+.move-enter-active {
+  animation: move-in .8s;
+}
+.move-leave-active {
+  animation: move-in .8s reverse;
+}
+@keyframes move-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+}
+
+/* .fade-enter-active {
+  animation: fade-in .5s;
+}
+.fade-leave-active {
+  animation: fade-in .5s reverse;
+}
+@keyframes fade-in {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+} */
 </style>

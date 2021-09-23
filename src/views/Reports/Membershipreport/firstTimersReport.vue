@@ -26,7 +26,9 @@
           </button>
         </div>
       </div>
-      <div class="row my-4" v-if="showExport">
+
+      <transition name="move" mode="out-in">
+          <div class="row my-4" v-if="showExport">
         <!-- <div class="col-sm-2">Enter file name</div> -->
         <div class="col-sm-5">
           <!-- <input type="text" class="form-control" /> -->
@@ -57,12 +59,15 @@
               align-items-center
               justify-content-center
               c-pointer
+              generate-report
             "
           >
             Download
           </div>
         </div>
       </div>
+      </transition>
+
     </div>
     <!--end of header area -->
     <!-- date area -->
@@ -134,7 +139,8 @@
 
     <section>
       <!-- table header -->
-      <div
+     <div v-if="firstTimerInChurch.length > 0">
+        <div
         class="
           container-fluid
           table-main
@@ -181,6 +187,7 @@
           <PaginationButtons />
         </div> -->
       </div>
+     </div>
       <!--end table header -->
     </section>
   </div>
@@ -207,7 +214,7 @@ export default {
     // PaginationButtons
   },
   setup() {
-    const startDate = ref(new Date());
+    const startDate = ref("");
     const endDate = ref("");
     const firstTimerInChurch = ref([]);
     const genderChartResult = ref([]);
@@ -285,7 +292,7 @@ export default {
     /* End Code For Exporting File */
 
     const formatDate = (activityDate) => {
-      return dateFormatter.monthDayYear(activityDate);
+      return dateFormatter.monthDayTime(activityDate);
     };
 
     return {
@@ -310,7 +317,7 @@ export default {
 </script>
 
 <style scoped>
-.default-btn {
+/* .default-btn {
   font-weight: 800;
   font-size: 1rem;
   white-space: initial;
@@ -323,12 +330,27 @@ export default {
   max-height: 2.5rem;
   background: #fff;
   min-width: 7.6rem;
+} */
+
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    min-width: 121px;
 }
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important ;
   border: none;
   min-width: 7rem;
 }
@@ -402,5 +424,23 @@ export default {
 .responsiveness {
   max-width: 100%;
   overflow-y: scroll;
+}
+
+.move-enter-active {
+  animation: move-in .8s;
+}
+.move-leave-active {
+  animation: move-in .8s reverse;
+}
+@keyframes move-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
 }
 </style>

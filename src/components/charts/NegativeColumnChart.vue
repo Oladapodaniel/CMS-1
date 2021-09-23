@@ -1,6 +1,4 @@
-<template>
-<div>gkggkgk</div>
-</template>
+
 
 <script>
 import { onUpdated, ref } from '@vue/runtime-core'
@@ -20,10 +18,10 @@ export default {
                     renderTo: "chart"
                 },
                 title: {
-                    text: 'Column chart with negative values'
+                    text: 'Income Statement Report'
                 },
                 xAxis: {
-                    // categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+                    categories: ['Income', 'Expenses']
                 },
                 credits: {
                     enabled: false

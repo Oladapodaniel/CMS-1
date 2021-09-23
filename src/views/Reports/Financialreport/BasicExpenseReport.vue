@@ -17,12 +17,54 @@
            <p class="ml-2">This reports provides a detailed list of all the church expenses in a simplied display.</p>
         </div>
 
-        <!-- <div class="centered-items">
-          <button class="default-btn font-weight-normal">
+        <div class="centered-items pr-3">
+          <button class="default-btn font-weight-normal"
+          @click="() => (showExport = !showExport)">
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
-        </div> -->
+        </div>
       </div>
+      <transition name="move" mode="out-in">
+               <div class="row my-4" v-if="showExport">
+        <!-- <div class="col-sm-2">Enter file name</div> -->
+        <div class="col-sm-5">
+          <!-- <input type="text" class="form-control" /> -->
+          <span class="p-float-label ml-n3">
+            <InputText
+              id="inputtext"
+              class="w-100"
+              type="text"
+              v-model="fileName"
+            />
+            <label for="inputtext">Enter file name</label>
+          </span>
+        </div>
+        <div class="col-sm-4">
+          <Dropdown
+            v-model="selectedFileType"
+            class="w-100"
+            :options="bookTypeList"
+            placeholder="Select file type"
+          />
+        </div>
+        <!-- <div class="">Export</div> -->
+        <div @click="downloadFile" class="col-sm-2 offset-sm-1">
+          <div
+            class="
+              default-btn
+              d-flex
+              align-items-center
+              justify-content-center
+              c-pointer
+              generate-report
+            "
+          >
+            Download
+          </div>
+        </div>
+      </div>
+      </transition>
+
     </div>
     <!--end of header area -->
     <!-- date area -->
@@ -46,7 +88,7 @@
           </div>
         </div>
 
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center">
+        <div class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5">
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
             @click="generateReport"
@@ -77,8 +119,9 @@
 
     <section>
       <!-- table header -->
-      <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
-        <table class="table remove-styles mt-0 table-hover table-header-area">
+    <div v-if="accountTransaction.length > 0">
+        <div class="mt-2 container-fluid table-main px-0 remove-styles2 remove-border responsiveness" >
+        <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
           <thead class="table-header-area-main">
             <tr
              class="small-text text-capitalize text-nowrap"
@@ -114,6 +157,7 @@
           <PaginationButtons />
         </div> -->
       </div>
+    </div>
       <!-- <button @click="amountTotal">click me</button> -->
       <!--end table header -->
     </section>
@@ -127,6 +171,10 @@ import ByGenderChart from "@/components/charts/PieChart.vue";
 // import PaginationButtons from "../../../components/pagination/PaginationButtons";
 import axios from "@/gateway/backendapi";
 import dateFormatter from  "../../../services/dates/dateformatter";
+import Dropdown from "primevue/dropdown";
+import InputText from "primevue/inputtext";
+import printJS from "print-js";
+import exportService from "../../../services/exportFile/exportservice";
 // import numbers_formatter from "../../../services/numbers/numbers_formatter.js"
 // import PerformanceColumnChart from "@/components/charts/ColumnChart2.vue";
 
@@ -134,6 +182,8 @@ export default {
   components: {
     Calendar,
     ByGenderChart,
+    Dropdown,
+    InputText,
     // PerformanceColumnChart,
     // PaginationButtons,
   },
@@ -143,6 +193,12 @@ export default {
     const accountTransaction = ref([]);
     const acccountType = ref();
     const groupedAccountName = ref([])
+    const showExport = ref(false);
+    const fileName = ref("");
+    const bookTypeList = ref(["xlsx", "csv", "txt"]);
+    const selectedFileType = ref("");
+    const fileHeaderToExport = ref([]);
+    const fileToExport = ref([]);
     const generateReport = () => {
       axios
         .get(`/api/Reports/financials/getAccountTypeReport?startDate=${new Date(startDate.value).toLocaleDateString()}&endDate=${new Date(endDate.value).toLocaleDateString()}&acccountType=${3}`)
@@ -152,7 +208,17 @@ export default {
           accountTransaction.value = res.data;
           console.log(accountTransaction.value[0], "✌️✌️");
 
-          groupChart( accountTransaction.value, 'accountName')
+          groupChart( accountTransaction.value, 'accountName');
+           /* function to call service and populate table */
+          setTimeout(() => {
+            fileHeaderToExport.value = exportService.tableHeaderToJson(
+              document.getElementsByTagName("th")
+            );
+            fileToExport.value = exportService.tableToJson(
+              document.getElementById("table")
+            );
+          }, 1000);
+          /* End function to call service and populate table */
 
         })
         .catch((err) => {
@@ -160,6 +226,17 @@ export default {
         });
     };
 
+         /* Code For Exporting File */
+    const downloadFile = () => {
+      exportService.downLoadExcel(
+        selectedFileType.value,
+        document.getElementById("element-to-print"),
+        fileName.value,
+        fileHeaderToExport.value,
+        fileToExport.value
+      );
+    };
+    /* End Code For Exporting File */
 
       const groupChart = (array, key) => {
             let result = array.reduce((result, currentValue) => {
@@ -212,14 +289,20 @@ export default {
      acccountType,
       amountTotal,
       groupChart,
-      groupedAccountName
+      groupedAccountName,
+       printJS,
+      showExport,
+      fileName,
+      bookTypeList,
+      selectedFileType,
+      downloadFile
     };
   },
 };
 </script>
 
 <style scoped>
-.default-btn {
+/* .default-btn {
   font-weight: 800;
   font-size: 1rem;
   white-space: initial;
@@ -232,12 +315,27 @@ export default {
   max-height: 2.5rem;
   background: #fff;
   min-width: 7.6rem;
+} */
+
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    min-width: 121px;
 }
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important;
   border: none;
   min-width: 7rem;
 }
@@ -328,14 +426,32 @@ border-top-right-radius: 0 !important;
 
 .answer{
   font-weight: bolder;
-   color:#fff ;
+   color: #000;
 }
 
 .answer-row{
-  background-color: #136acd;
+  background-color: #ebeff4;
 }
 
 .answer-row:hover{
-  background-color:#136acd;
+  background-color: none;
+}
+
+.move-enter-active {
+  animation: move-in .8s;
+}
+.move-leave-active {
+  animation: move-in .8s reverse;
+}
+@keyframes move-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
 }
 </style>

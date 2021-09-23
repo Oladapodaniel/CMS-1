@@ -17,49 +17,55 @@
         </div>
 
         <div class="centered-items pr-3">
-          <button class="default-btn font-weight-normal"
-              @click="() => (showExport = !showExport)">
+          <button
+            class="default-btn font-weight-normal"
+            @click="() => (showExport = !showExport)"
+          >
             Export &nbsp; &nbsp; <i class="pi pi-angle-down"></i>
           </button>
         </div>
       </div>
-      <div class="row my-4" v-if="showExport">
-        <!-- <div class="col-sm-2">Enter file name</div> -->
-        <div class="col-sm-5">
-          <!-- <input type="text" class="form-control" /> -->
-          <span class="p-float-label ml-n3">
-            <InputText
-              id="inputtext"
+
+      <transition name="move" mode="out-in">
+        <div class="row my-4" v-if="showExport">
+          <!-- <div class="col-sm-2">Enter file name</div> -->
+          <div class="col-sm-5">
+            <!-- <input type="text" class="form-control" /> -->
+            <span class="p-float-label ml-n3">
+              <InputText
+                id="inputtext"
+                class="w-100"
+                type="text"
+                v-model="fileName"
+              />
+              <label for="inputtext">Enter file name</label>
+            </span>
+          </div>
+          <div class="col-sm-4">
+            <Dropdown
+              v-model="selectedFileType"
               class="w-100"
-              type="text"
-              v-model="fileName"
+              :options="bookTypeList"
+              placeholder="Select file type"
             />
-            <label for="inputtext">Enter file name</label>
-          </span>
-        </div>
-        <div class="col-sm-4">
-          <Dropdown
-            v-model="selectedFileType"
-            class="w-100"
-            :options="bookTypeList"
-            placeholder="Select file type"
-          />
-        </div>
-        <!-- <div class="">Export</div> -->
-        <div @click="downloadFile" class="col-sm-2 offset-sm-1">
-          <div
-            class="
-              default-btn
-              d-flex
-              align-items-center
-              justify-content-center
-              c-pointer
-            "
-          >
-            Download
+          </div>
+          <!-- <div class="">Export</div> -->
+          <div @click="downloadFile" class="col-sm-2 offset-sm-1">
+            <div
+              class="
+                default-btn
+                d-flex
+                align-items-center
+                justify-content-center
+                c-pointer
+                generate-report
+              "
+            >
+              Download
+            </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
     <!--end of header area -->
 
@@ -84,7 +90,9 @@
           </div>
         </div>
 
-        <div class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5">
+        <div
+          class="col-md-3 d-sm-flex justify-content-end align-items-center pr-5"
+        >
           <button
             class="default-btn generate-report c-pointer font-weight-normal"
             @click="generateWeddingAnniversaryReport"
@@ -157,50 +165,58 @@
 
     <section>
       <!-- table header -->
-      <div
-        class="
-          mt-2
-          container-fluid
-          table-main
-          px-0
-          remove-styles2 remove-border
-          responsiveness
-        "
-      >
-        <table id="table" class="table remove-styles mt-0 table-hover table-header-area">
-          <thead class="table-header-area-main">
-            <tr
-              class="small-text text-capitalize text-nowrap"
-              style="border-bottom: 0"
-            >
-              <th scope="col">Name</th>
-              <th scope="col">Wedding Day</th>
-              <th scope="col">Mobile Phone</th>
-              <th scope="col">Email</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Marital Status</th>
-              <th scope="col">Age Group</th>
-              <th scope="col">Membership</th>
-              <th scope="col">Home Address</th>
-            </tr>
-          </thead>
-          <tbody class="font-weight-normal text-nowrap">
-            <tr v-for="(anniversary, index) in weddingAnniversary" :key="index">
-              <td>{{ anniversary.name }}</td>
-              <td>{{ formatDate(anniversary.weddingDay) }}</td>
-              <td>{{ anniversary.mobilePhone }}</td>
-              <td>{{ anniversary.email }}</td>
-              <td>{{ anniversary.gender }}</td>
-              <td>{{ anniversary.maritalStatus }}</td>
-              <td>{{ anniversary.ageGroup }}</td>
-              <td>{{ anniversary.membership }}</td>
-              <td>{{ anniversary.homeAddress }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- <div class="table-foot d-flex justify-content-end mt-n3">
+      <div v-if="weddingAnniversary.length > 0">
+        <div
+          class="
+            mt-2
+            container-fluid
+            table-main
+            px-0
+            remove-styles2 remove-border
+            responsiveness
+          "
+        >
+          <table
+            id="table"
+            class="table remove-styles mt-0 table-hover table-header-area"
+          >
+            <thead class="table-header-area-main">
+              <tr
+                class="small-text text-capitalize text-nowrap"
+                style="border-bottom: 0"
+              >
+                <th scope="col">Name</th>
+                <th scope="col">Wedding Day</th>
+                <th scope="col">Mobile Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Marital Status</th>
+                <th scope="col">Age Group</th>
+                <th scope="col">Membership</th>
+                <th scope="col">Home Address</th>
+              </tr>
+            </thead>
+            <tbody class="font-weight-normal text-nowrap">
+              <tr
+                v-for="(anniversary, index) in weddingAnniversary"
+                :key="index"
+              >
+                <td>{{ anniversary.name }}</td>
+                <td>{{ formatDate(anniversary.weddingDay) }}</td>
+                <td>{{ anniversary.mobilePhone }}</td>
+                <td>{{ anniversary.email }}</td>
+                <td>{{ anniversary.gender }}</td>
+                <td>{{ anniversary.maritalStatus }}</td>
+                <td>{{ anniversary.ageGroup }}</td>
+                <td>{{ anniversary.membership }}</td>
+                <td>{{ anniversary.homeAddress }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="table-foot d-flex justify-content-end mt-n3">
           <PaginationButtons />
         </div> -->
+        </div>
       </div>
       <!--end table header -->
     </section>
@@ -259,7 +275,7 @@ export default {
           );
           membershipDistribution.value = membershipStatusChart(res.data);
           membershipAgeGroup.value = membershipAgeGroupChart(res.data);
-            /* function to call service and populate table */
+          /* function to call service and populate table */
           setTimeout(() => {
             fileHeaderToExport.value = exportService.tableHeaderToJson(
               document.getElementsByTagName("th")
@@ -274,6 +290,18 @@ export default {
           console.log(err);
         });
     };
+
+    /* Code For Exporting File */
+    const downloadFile = () => {
+      exportService.downLoadExcel(
+        selectedFileType.value,
+        document.getElementById("element-to-print"),
+        fileName.value,
+        fileHeaderToExport.value,
+        fileToExport.value
+      );
+    };
+    /* End Code For Exporting File */
 
     const getAllItemsInWeddingReport = (arr, key, value) => {
       return {
@@ -334,14 +362,15 @@ export default {
       showExport,
       fileName,
       bookTypeList,
-      selectedFileType
+      selectedFileType,
+      downloadFile,
     };
   },
 };
 </script>
 
 <style scoped>
-.default-btn {
+/* .default-btn {
   font-weight: 800;
   font-size: 1rem;
   white-space: initial;
@@ -354,12 +383,27 @@ export default {
   max-height: 2.5rem;
   background: #fff;
   min-width: 7.6rem;
+} */
+
+.default-btn {
+    font-weight: 600;
+    white-space: initial;
+    font-size: 1rem;
+    border-radius: 3rem;
+    /* border: 1px solid #002044; */
+    padding: .5rem 1.25rem;
+    width: auto;
+	border:none;
+    /* outline: transparent !important; */
+    max-height: 40px;
+    background: #6c757d47 !important;
+    min-width: 121px;
 }
 
 .generate-report {
   font-size: 1rem;
   color: #fff;
-  background-color: #136acd;
+  background-color: #136acd !important;
   border: none;
   min-width: 7rem;
 }
@@ -438,5 +482,23 @@ export default {
 .responsiveness {
   max-width: 100%;
   overflow-y: scroll;
+}
+
+.move-enter-active {
+  animation: move-in .8s;
+}
+.move-leave-active {
+  animation: move-in .8s reverse;
+}
+@keyframes move-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
 }
 </style>
