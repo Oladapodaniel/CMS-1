@@ -12,36 +12,21 @@
                     
                     <div>
                         <Dropdown v-model="selectedEvents" :options="allEvents" optionLabel="text" class="w-100" placeholder="Select Member" :filter="false" filterPlaceholder="Find Car"/>
-                        <!-- <MultiSelect v-model="selectedEvents" :options="allEvents" optionLabel="text" placeholder="Select Member" :filter="true" class="multiselect-custom w-100">
-                            <template #value="slotProps">
-                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
-                                    <div>{{option.text}}</div>
-                                </div>
-                                <template v-if="!slotProps.value || slotProps.value.length === 0">
-                                    Select Event
-                                </template>
-                            </template>
-                            <template #option="slotProps">
-                                <div class="country-item">
-                                    <div>{{slotProps.option.text}}</div>
-                                </div>
-                            </template>
-                        </MultiSelect> -->
                     </div>
 
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div class=""><label for="" class=" ml-2 font-weight-bold">START DATE</label></div>
+                    <div class=""><label for="" class=" ml-2 font-weight-bold mt-3">START DATE</label></div>
                     <div>
                         <div>
-                            <Calendar id="icon" v-model="startDate" class="calendar1" :showIcon="true" />
+                            <Calendar id="icon" v-model="startDate" class="calendar1 w-100" :showIcon="true" />
                         </div>
                     </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
-                    <div><label for="" class="font-weight-bold">END DATE</label></div>
+                    <div><label for="" class="font-weight-bold mt-3">END DATE</label></div>
                      <div>
-                            <Calendar id="icon" v-model="endDate" :showIcon="true" />
+                            <Calendar id="icon" class="w-100" v-model="endDate" :showIcon="true" />
                         </div>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3">
@@ -102,7 +87,7 @@
                         />
                         </div>
                  </div>
-                 <div
+                 <!-- <div
                       class="area-chart mt-5"
                       v-show="
                         activityReport.length > 0
@@ -117,7 +102,7 @@
                         :xAxis="series"
                         :series="categoryData"
                       />
-                    </div>
+                    </div> -->
              </div>
              <section>
                  <!-- table header -->
@@ -147,38 +132,7 @@
                   <div class="py-2">{{item.attendance}}</div>
                 </div>
               </td>
-              
-              <!-- <tr v-for="(item, index) in activityTable.value" :key="index">
-                <td>{{item.attendanceCategory}}</td>
-              </tr> -->
-            
-              <!-- <td v-for="(item, index) in activityTable.value" :key="index">{{item.attendance}}</td> -->
-              <!-- <td>{{analysisTable.topic}}</td>
-              <td>{{analysisTable.text}}</td>
-              <td>{{analysisTable.firstTimers}}</td>
-              <td>{{analysisTable.newConverts}}</td>
-              <td>{{analysisTable.testmonies}}</td> -->
             </tr>
-            <!-- <tr>
-               <td></td>
-              <td>Aug 8 2021</td>
-              <td>Sunday Service 08 aug, 21</td>
-              <td></td>
-              <td></td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-            </tr> -->
-            <!-- <tr>
-               <td></td>
-              <td>Aug 8 2021</td>
-              <td>Sunday Service 08 aug, 21</td>
-              <td></td>
-              <td></td>
-              <td>0</td>
-              <td>0</td>
-              <td>0</td>
-            </tr> -->
           </tbody>
         </table>
         <!-- <div class="table-foot d-flex justify-content-end">
@@ -203,8 +157,6 @@ import Calendar from "primevue/calendar";
 import ReportAreaChart from "@/components/charts/AreaChart.vue";
 import axios from "@/gateway/backendapi";
 import dateFormatter from "../../../services/dates/dateformatter.js"
-// import grousService from '../../../services/groups/groupsservice';
-
     export default {
         components:{
           Dropdown,
@@ -257,8 +209,6 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
              series.value = []
              groupCategory()
              groupName()
-            // groupCatergory(activityReport.value, 'attendanceCategory')
-            // groupCatergory(activityReport.value, 'name')
              categoryData.value = []
              getActivityServices()  
           }) 
@@ -267,13 +217,6 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
 
      const groupCategory = () => {
         attendanceGroup.value = groupData.groupData(activityReport.value, 'attendanceCategory');
-
-      //  for (const prop in result) {
-      //           attendanceGroup.value.push({
-      //           name: prop,
-      //           value: result[prop]
-      //           })
-      //       }
             console.log(attendanceGroup.value)
      }
      const groupName = () =>{
@@ -304,27 +247,6 @@ import dateFormatter from "../../../services/dates/dateformatter.js"
          return mainAttendanceData.value
           
      })
-
-
-      // const groupCatergory = (array, key) => {
-      //       let result = array.reduce((result, currentValue) => {
-      //           // If an array already present for key, push it to the array. Else create an array and push the object
-      //           (result[currentValue[key]] = result[currentValue[key]] || []).push(
-      //           currentValue
-      //           );
-      //           // Return the current iteration `result` value, this will be taken as next iteration `result` value and accumulate
-      //           return result;
-      //       }, {}); // empty object is the initial value for result object
-      //        attendanceGroup.value = result
-      //       // for (const prop in result) {
-      //       //     attendanceGroup.value.push({
-      //       //     name: prop,
-      //       //     value: result[prop]
-      //       //     })
-      //       // }
-      //       console.log(attendanceGroup.value)
-      //       return attendanceGroup.value
-      //   };
      const getActivityServices = () => {
            activityReport.value.forEach(i => {
             let serviceIndex = Object.keys(i).findIndex(i => i === 'date')
