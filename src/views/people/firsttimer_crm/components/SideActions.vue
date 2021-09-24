@@ -70,8 +70,8 @@
             <div class="row">
                 <div class="col-12 mt-4 label-text">Contact owner</div>
                 <div class="col-12 mt-2">
-                    <Contacts />
-                    <!-- <Dropdown v-model="selectedContact" :options="contacts" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" /> -->
+                    <!-- <Contacts /> -->
+                    <Dropdown v-model="selectedContact" :options="contacts" :filter="true" class="w-100 phone-input" optionLabel="firstName" placeholder="Select Contact" />
                 </div>
                 <!-- <div class="col-5 align-self-center">
                     <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
@@ -87,6 +87,21 @@
                 <div class="col-12 mt-4 label-text">Lifecycle stage</div>
                 <div class="col-12">
                     <Dropdown v-model="selectedLifeCycle" :options="lifeCycle" class="w-100 phone-input" optionLabel="stage" placeholder="Select Contact" />
+                    <!-- <MultiSelect v-model="selectedLifeCycle" :options="lifeCycle" optionLabel="stage" placeholder="Select Life cycle" :filter="true" class="multiselect-custom w-100">
+                            <template #value="slotProps">
+                                <div class="country-item country-item-value bg-secondary font-weight-bold small" v-for="option of slotProps.value" :key="option.code">
+                                    <div>{{option.stage}}</div>
+                                </div>
+                                <template v-if="!slotProps.value || slotProps.value.length === 0">
+                                    Select Member
+                                </template>
+                            </template>
+                            <template #option="slotProps">
+                                <div class="country-item">
+                                    <div>{{slotProps.option.name}}</div>
+                                </div>
+                            </template>
+                        </MultiSelect> -->
                 </div>
                 <!-- <div class="col-5 align-self-center">
                     <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
@@ -95,7 +110,7 @@
             <div class="row">
                 <div class="col-12 label-text mt-4">Lead Status</div>
                 <div class="col-12 mt-2">
-                    <Dropdown v-model="selectedLeadStatus" :options="leadStatus" class="w-100 phone-input" optionLabel="status" placeholder="Select Contact" />
+                    <Dropdown v-model="selectedLeadStatus" :filter="true" :options="leadStatus" class="w-100 phone-input" optionLabel="status" placeholder="Select status" />
                 </div>
             </div>
             </div>
@@ -268,6 +283,7 @@ import OverlayPanel from 'primevue/overlaypanel';
 import axios from "@/gateway/backendapi";
 import lookupTable from "../../../../services/lookup/lookupservice"
 import Contacts from "./AllMembers.vue"
+// import MultiSelect from 'primevue/multiselect';
 // import SinchClient from 'sinch-rtc/sinch.min.js'
 // import { useConfirm } from "primevue/useConfirm";
 // import { useToast } from "primevue/usetoast";
@@ -299,13 +315,25 @@ export default {
         ])
         const lifeCycle = ref([
             {
-                stage: 'First Timer'
+                stage: 'FirstTimer'
             },
             {
-                stage: 'Member'
+                stage: 'Believers Foundation Class'
             },
             {
-                stage: 'Visitor'
+                stage: 'Join Cell Group'
+            },
+            {
+                stage: 'Water Baptism'
+            },
+            {
+                stage: 'Wofbi'
+            },
+            {
+                stage: 'Holy Spirit Baptism'
+            },
+            {
+                stage: 'Join Church Department'
             }
         ])
         const selectedLifeCycle = ref("")
@@ -317,8 +345,14 @@ export default {
                 status: 'Unqualified'
             },
             {
-                status: 'Open Deal'
-            }
+                status: 'Active'
+            },
+            {
+                status: 'Paused'
+            },
+            {
+                status: 'Completed'
+            },
         ])
         // 'Busy', 'Connected', 'Left live message', 'Left voicemail', 'No answer', 'Wrong number'
         const outcomeList = ref([])
@@ -492,6 +526,16 @@ export default {
             selectedCallOutcome.value = outcome
             outcomeRef.value.hide()
         }
+
+        const getMembers = async () => {
+          try {
+            const { data } = await axios.get('/api/People/GetPeopleBasicInfo');
+            contacts.value = data;
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        getMembers();
 
 
 
@@ -681,6 +725,6 @@ export default {
 .show-contact {
     height: 480px;
     transition: all 0.5s ease-in-out;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 </style>
