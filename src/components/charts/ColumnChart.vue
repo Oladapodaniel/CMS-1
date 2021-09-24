@@ -23,17 +23,17 @@ export default {
   components: {},
 
   props: [ "domId", "title", "subtitle", "header", "data", "xaxis", "series", "attendanceSeries" ],
-  
+
   setup(props) {
     const chart = ref(null);
     const headerText = ref(null);
     const route = useRoute()
     const fullPath = ref("")
-    
+
 
     onMounted(() => {
         headerText.value = props.header;
-      
+
       var highchartsOptions = {
         chart: {
           type: "column",
@@ -120,7 +120,7 @@ export default {
     onUpdated(() => {
       console.log(props.series, "take water data")
       console.log(props.data, "passed data")
-      
+
     })
 
 const getRoute = () => {
@@ -201,7 +201,7 @@ const getRoute = () => {
         border: 1px solid #DDE2E6;
         padding: 25px 0;
     }
-    
+
     .no-chart-div {
          border: none;
         border-radius: 0px;
