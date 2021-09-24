@@ -1,6 +1,5 @@
 <template>
     <div class="container">
-        <div class="font-weight-bold">Financial</div>
          <div class="row mt-5">
          <div class="col-md-12 col-12 text-center">
             <div class="row  table border-0 report d-flex justify-content-between p-2 p-md-4">
@@ -14,11 +13,15 @@
                 <!-- border-bottom -->
                 <div class="col-md-5 border-bottom col-12 mt-4">
                     <div class="row d-md-flex justify-content-md-between d-flex justify-content-between">
+                        <router-link to="/tenant/reports/incomestatementreport" class="linked">
                             <h4 class="ju header4 d-md-flex justify-content-md-start" style="color: #136acd">Income Statement</h4>
+                        </router-link>
+                        <router-link to="/tenant/reports/incomestatementreport" class="linked">
                             <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span>
+                        </router-link>
                         </div>
                         <div class="row">
-                            <p class="ju mb-3 paragraph1">Snapshot of what your business owns or is due to receive from others (assets). what it owes to others (liabilities). and what you</p>
+                            <p class="ju mb-3 paragraph1">Snapshot of income statement activitites for your church</p>
                         </div>
                 </div>
                 
@@ -35,7 +38,7 @@
                         </router-link>
                     </div>
                     <div class="row">
-                        <p class="ju mb-3 paragraph1">Snapshot of what your business owns or is due to receive from others (assets). what it owes to others (liabilities). and what you</p>
+                        <p class="ju mb-3 paragraph1">Snapshot of income inflow report for your church</p>
                     </div>
                 </div>
 
@@ -48,7 +51,7 @@
                        <router-link to="/tenant/financialexpense"> <span><i class="pi pi-angle-right" style="font-size: 30px; color: #136acd"></i></span></router-link>
                     </div>
                     <div class="row">
-                          <p class="ju mb-3 paragraph1">Snapshot of what your church owes to others (liabilities).</p> 
+                          <p class="ju mb-3 paragraph1">Snapshot of what your church owes to others.</p> 
                     </div>
                 </div>
                 
