@@ -172,9 +172,9 @@ export default {
 }
 
   @media (max-width: 575px) {
-      .chart-div {
+      /* .chart-div {
         margin-left: -46px
-      }
+      } */
       .header-text p {
         font-size: 25px;
         font-weight: 600;
