@@ -4,31 +4,33 @@
             <div class="heading-text">First Timer Performance Report</div>
             <div @click="() => showExport = !showExport" class="cursor-pointer default-btn border-0 bg-secondary d-flex align-items-center justify-content-center"><div>Export</div>&nbsp;&nbsp;<i class="pi pi-chevron-down"></i></div>
         </div>
-        <div class="row my-4 " v-if="showExport">
-            <!-- <div class="col-sm-2">Enter file name</div> -->
-            <div class="col-sm-5  ">
-                <!-- <input type="text" class="form-control" /> -->
-                <span class="p-float-label">
-                    <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
-                    <label for="inputtext">Enter file name</label>
-                </span>
-            </div>
-            <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
-                <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
-            </div>
-            <!-- <div class="">Export</div> -->
-            <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center border-secondary c-pointer justify-content-center">Download</div></div>
-        </div>
+        <transition name="move" mode="out-in">
+          <div class="row my-4 " v-if="showExport">
+              <!-- <div class="col-sm-2">Enter file name</div> -->
+              <div class="col-sm-5  ">
+                  <!-- <input type="text" class="form-control" /> -->
+                  <span class="p-float-label">
+                      <InputText id="inputtext" class="w-100" type="text" v-model="fileName" />
+                      <label for="inputtext">Enter file name</label>
+                  </span>
+              </div>
+              <div class="col-sm-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0">
+                  <Dropdown v-model="selectedFileType" class="w-100" :options="bookTypeList" placeholder="Select file type"  />
+              </div>
+              <!-- <div class="">Export</div> -->
+              <div @click="downloadFile" class="col-sm-2 mt-2 mt-sm-0 mt-md-0 mt-lg-0 offset-sm-1"><div class="default-btn d-flex align-items-center generate-report c-pointer justify-content-center">Download</div></div>
+          </div>
+        </transition>
            <!-- date area -->
         <div class="container-fluid my-2 py-5   bg-area">
             <div class="row justify-content-center pl-3 ">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 "> 
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4 mt-2 mt-sm-0 mt-md-0 mt-lg-0  "> 
                     <div><label for="icon" class="font-weight-bold">Start Date</label></div>
                     <div>
                         <Calendar id="icon" v-model="startDate" :showIcon="true" />
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 col-lg-4 ">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-4  mt-2 mt-sm-0 mt-md-0 mt-lg-0 ">
                     <div><label for="icon" class="font-weight-bold">End Date</label></div>
                     <div>
                         <Calendar id="icon" v-model="endDate" :showIcon="true" />
@@ -38,7 +40,7 @@
                 <div @click="genarateReport" class="col-12 col-sm-6 col-md-4 col-lg-3 ">
                     <label for="icon"></label>
                     <div class="mt-2">
-                        <button class=" default-btn primary-bg text-white  c-pointer font-weight-bold">
+                        <button class=" default-btn generate-report   c-pointer font-weight-bold">
                             Generate
                         </button>
                     </div>
@@ -350,11 +352,13 @@ export default {
                         fileHeaderToExport.value = exportService.tableHeaderToJson(document.getElementsByTagName("th"))
                         fileToExport.value = exportService.tableToJson(document.getElementById("table"))
                     }, 1000)
+
+                     showReport.value = true;
         })
         .catch((err) => {
           console.log(err);
         });
-        showReport.value = true;
+       
 
     }
 
@@ -606,6 +610,23 @@ padding-left: 0;
 border-top-left-radius: 0 !important;
 border-top-right-radius: 0 !important;
 overflow-x: scroll;
+}
+.move-enter-active {
+  animation: move-in .8s;
+}
+.move-leave-active {
+  animation: move-in .8s reverse;
+}
+@keyframes move-in {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
 }
 
 .remove-border{
