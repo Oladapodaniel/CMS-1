@@ -70,7 +70,8 @@
             <div class="row">
                 <div class="col-12 mt-4 label-text">Contact owner</div>
                 <div class="col-12 mt-2">
-                    <Dropdown v-model="selectedContact" :options="contacts" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" />
+                    <Contacts />
+                    <!-- <Dropdown v-model="selectedContact" :options="contacts" class="w-100 phone-input" optionLabel="name" placeholder="Select Contact" /> -->
                 </div>
                 <!-- <div class="col-5 align-self-center">
                     <i class="pi pi-pencil icon-edit"></i> <button class="ml-2 details-btn">Details</button>
@@ -191,11 +192,12 @@
             </div>
         </OverlayPanel>
 
+        <!-- Log Pane -->
         <Dialog :header="'Log ' + logVariable" v-model:visible="displayLogPane" :style="{width: '50vw'}" :position="position" :modal="true">
             <!-- style="height: 480px" -->
            <div class="container-fluid">
                <div class="row">
-                   <div class="col-4">
+                   <div class="col-6">
                        <div class="label-text">Contacted</div>
                        <div @click="toggleContact" aria:haspopup="true" aria-controls="overlay_panel" class="uniform-primary-color font-weight-700 mt-1 c-pointer">{{ selectedContactLog }} &nbsp; <i class="pi pi-sort-down"></i></div>
                        <OverlayPanel ref="contactRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
@@ -206,26 +208,26 @@
                             </div>
                         </OverlayPanel>
                    </div>
-                   <div class="col-4">
+                   <div class="col-6">
                        <div class="label-text">Call Outcome</div>
-                       <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleOutcome" aria:haspopup="true" aria-controls="overlay_panel">Select an outcome &nbsp; <i class="pi pi-sort-down"></i></div>
+                       <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleOutcome" aria:haspopup="true" aria-controls="overlay_panel">{{ Object.keys(selectedCallOutcome).length > 0 ? selectedCallOutcome.value : "Select an outcome &nbsp;" }} <i class="pi pi-sort-down"></i></div>
                        <OverlayPanel ref="outcomeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
                             <div class="container-fluid p-0">
                                 <div class="row" v-for="(item, index) in outcomeList" :key="index">
-                                    <div class="col-12 py-2 px-3 hover-log">{{ item }}</div>
+                                    <div class="col-12 py-2 px-3 hover-log" @click="chooseCallOutcome(item)">{{ item.value }}</div>
                                 </div>
                             </div>
                         </OverlayPanel>
                    </div>
                </div>
                <div class="row mt-2">
-                   <div class="col-4">
+                   <div class="col-6">
                        <div class="label-text">Date</div>
                        <div class="mt-1 uniform-primary-color font-weight-700">
                            <input type="date" class="form-control" />
                        </div>
                    </div>
-                   <div class="col-4">
+                   <div class="col-6">
                        <div class="label-text">Time</div>
                        <div class="mt-1 uniform-primary-color font-weight-700 c-pointer" @click="toggleTime" aria:haspopup="true" aria-controls="overlay_panel">2:12PM &nbsp; <i class="pi pi-sort-down"></i></div>
                        <OverlayPanel ref="timeRef" appendTo="body" :showCloseIcon="false" id="overlay_panel" :breakpoints="{'960px': '75vw'}">
@@ -259,18 +261,21 @@
 </template>
 
 <script>
-import { computed, ref, watch } from "vue"
+import { computed, ref, watchEffect } from "vue"
 import Dropdown from "primevue/dropdown";
 import Tooltip from 'primevue/tooltip';
 import OverlayPanel from 'primevue/overlaypanel';
 import axios from "@/gateway/backendapi";
+import lookupTable from "../../../../services/lookup/lookupservice"
+import Contacts from "./AllMembers.vue"
 // import SinchClient from 'sinch-rtc/sinch.min.js'
 // import { useConfirm } from "primevue/useConfirm";
 // import { useToast } from "primevue/usetoast";
 export default {
     components: {
         Dropdown,
-        OverlayPanel
+        OverlayPanel,
+        Contacts
     },
     directives: {
         'tooltip': Tooltip
@@ -315,7 +320,8 @@ export default {
                 status: 'Open Deal'
             }
         ])
-        const outcomeList = ref(['Busy', 'Connected', 'Left live message', 'Left voicemail', 'No answer', 'Wrong number'])
+        // 'Busy', 'Connected', 'Left live message', 'Left voicemail', 'No answer', 'Wrong number'
+        const outcomeList = ref([])
         const selectedLeadStatus = ref("")
         const editEmailRef = ref()
         const contactNameRef = ref()
@@ -328,6 +334,7 @@ export default {
         const displayLogPane = ref(false)
         const contactRef = ref(false)
         const outcomeRef = ref(false)
+        const selectedCallOutcome = ref({})
         const date = ref("")
         const timeRef = ref(false)
         const logVariable = ref("")
@@ -442,7 +449,7 @@ export default {
             emit('calllogdesc', { desc: callLogDesc.value, type: logVariable.value })
         }
 
-        watch(() => {
+        watchEffect(() => {
             if (props.callLog) {
                 displayLogPane.value = true
                 emit('resetlog', false)
@@ -468,6 +475,23 @@ export default {
             }
         }
         getKnowlegdeSource()
+
+        const getCallOutcome = async () => {
+            try {
+                let data = await lookupTable.getLookUps()
+                console.log(data)
+                outcomeList.value = data.outcome
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+        getCallOutcome()
+
+        const chooseCallOutcome = (outcome) => {
+            selectedCallOutcome.value = outcome
+            outcomeRef.value.hide()
+        }
 
 
 
@@ -510,6 +534,8 @@ export default {
             timeRef,
             logVariable,
             outcomeList,
+            selectedCallOutcome,
+            chooseCallOutcome,
             selectedContactLog,
             callLogDesc,
             saveLog,

@@ -58,13 +58,20 @@ const lookupService = {
             axios
                 .get("/api/LookUp/GetAllLookUps")
                 .then((res) => {
+                    console.log(res)
                     const genders = res.data.find(
                         (i) => i.type.toLowerCase() === "gender"
                     ).lookUps;
                     const maritalStatus = res.data.find(
                         (i) => i.type.toLowerCase() === "maritalstatus"
                     ).lookUps;
-                    resolve({ genders, maritalStatus })
+                    const outcome = res.data.find(
+                        (i) => i.type.toLowerCase() === "outcome"
+                    ).lookUps;
+                    const activityType = res.data.find(
+                        (i) => i.type.toLowerCase() === "activitytype"
+                    ).lookUps;
+                    resolve({ genders, maritalStatus, outcome, activityType})
                 })
                 .catch((err) => {
                     console.log(err)
