@@ -137,17 +137,14 @@
           </div>
         </div>
       </div>
-
       <div class="container-fluid">
         <div class="row">
           <div
             class="col-8 offset-2 offset-md-0 col-md-3 p-0"
             v-if="
               tenantInfoCeleb.length > 0 ||
-              (tenantInfoFirstTimerWeekly[0] &&
-                tenantInfoFirstTimerWeekly[0].data.length > 0) ||
-              (tenantInfoAttendanceWeekly[0] &&
-                tenantInfoAttendanceWeekly[0].data[0] > 0)
+              (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.some(i => i > 0)) ||
+              (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.some(i => i > 0))
             "
           >
             <div
@@ -428,10 +425,8 @@
       <div
         v-if="
           tenantInfoCeleb.length === 0 &&
-          (tenantInfoFirstTimerWeekly[0] &&
-          tenantInfoFirstTimerWeekly[0].data.length === 0) ||
-          (tenantInfoAttendanceWeekly[0] &&
-          tenantInfoAttendanceWeekly[0].data[0] === 0)
+          (tenantInfoFirstTimerWeekly[0] && tenantInfoFirstTimerWeekly[0].data.every(i => i === 0)) &&
+          (tenantInfoAttendanceWeekly[0] && tenantInfoAttendanceWeekly[0].data.every(i => i === 0))
         "
       >
         <div class="container-fluid">
@@ -644,10 +639,8 @@ export default {
           console.log(tenantInfoBasic.value);
           console.log(res.data);
 
-          tenantInfoExtra.value.hasMobileApp =
-            res.data.returnObject.hasMobileApp;
-          tenantInfoExtra.value.hasOnlineGiving =
-            res.data.returnObject.hasOnlineGiving;
+          tenantInfoExtra.value.hasMobileApp = res.data.returnObject.hasMobileApp;
+          tenantInfoExtra.value.hasOnlineGiving = res.data.returnObject.hasOnlineGiving;
           tenantInfoExtra.value.hasWebsite = res.data.returnObject.hasWebsite;
           // tenantInfo.value.eventAttendanceChartDataWeekly[0].data.forEach(element => {
           //   if (element > 0) {
